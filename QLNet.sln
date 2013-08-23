@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLNet", "QLNet\QLNet.csproj", "{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2EF8B45B-940A-4B77-8776-E8CE0036961E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF8B45B-940A-4B77-8776-E8CE0036961E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF8B45B-940A-4B77-8776-E8CE0036961E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF8B45B-940A-4B77-8776-E8CE0036961E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF8B45B-940A-4B77-8776-E8CE0036961E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
