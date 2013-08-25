@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -30,7 +30,6 @@ namespace QLNet {
        <li>Saturdays</li>
        <li>Sundays</li>
        <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Ching Ming Festival, April 5th </li>
        <li>Good Friday</li>
        <li>Easter Monday</li>
        <li>Labor Day, May 1st (possibly moved to Monday)</li>
@@ -41,10 +40,11 @@ namespace QLNet {
        </ul>
 
        Other holidays for which no rule is given
-       (data available for 2004-2012 only:)
+       (data available for 2004-2013 only:)
        <ul>
        <li>Lunar New Year</li>
        <li>Chinese New Year</li>
+       <li>Ching Ming Festival</li>
        <li>Buddha's birthday</li>
        <li>Tuen NG Festival</li>
        <li>Mid-autumn Festival</li>
@@ -74,8 +74,6 @@ namespace QLNet {
                     // New Year's Day
                     || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday))
                         && m == Month.January)
-                    // Ching Ming Festival
-                    || (d == 5 && m == Month.April)
                     // Good Friday
                     || (dd == em-3)
                     // Easter Monday
@@ -96,6 +94,8 @@ namespace QLNet {
                 if (y == 2004) {
                     if (// Lunar New Year
                         ((d==22 || d==23 || d==24) && m == Month.January)
+                        // Ching Ming Festival
+                        || (d == 5 && m == Month.April) 
                         // Buddha's birthday
                         || (d == 26 && m == Month.May)
                         // Tuen NG festival
@@ -110,6 +110,8 @@ namespace QLNet {
                 if (y == 2005) {
                     if (// Lunar New Year
                         ((d==9 || d==10 || d==11) && m == Month.February)
+                        // Ching Ming Festival
+                        || (d == 5 && m == Month.April) 
                         // Buddha's birthday
                         || (d == 16 && m == Month.May)
                         // Tuen NG festival
@@ -124,6 +126,8 @@ namespace QLNet {
                 if (y == 2006) {
                     if (// Lunar New Year
                         ((d >= 28 && d <= 31) && m == Month.January)
+                        // Ching Ming Festival
+                        || (d == 5 && m == Month.April) 
                         // Buddha's birthday
                         || (d == 5 && m == Month.May)
                         // Tuen NG festival
@@ -138,6 +142,8 @@ namespace QLNet {
                 if (y == 2007) {
                     if (// Lunar New Year
                         ((d >= 17 && d <= 20) && m == Month.February)
+                        // Ching Ming Festival
+                        || (d == 5 && m == Month.April) 
                         // Buddha's birthday
                         || (d == 24 && m == Month.May)
                         // Tuen NG festival
@@ -228,7 +234,23 @@ namespace QLNet {
                        || (d == 23 && m == Month.October))
 	  	             return false;
 	  	         }
-                return true;
+
+               if (y == 2013) {
+                  if (// Lunar New Year
+                     (d >= 11 && d <= 13 && m == Month.February)
+                     // Ching Ming Festival
+                     || (d == 4 && m == Month.April)
+                     // Buddha's birthday
+                     || (d == 17 && m == Month.May)
+                     // Tuen Ng festival
+                     || (d == 12 && m == Month.June)
+                     // Mid-autumn festival
+                     || (d == 20 && m == Month.September)
+                     // Chung Yeung festival
+                     || (d == 14 && m == Month.October))
+                     return false;
+               } 
+               return true;
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008 Andrea Maggiulli
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project http://qlnet.sourceforge.net/
@@ -104,7 +104,7 @@ namespace QLNet {
                     // Holiday for a Nation
                     || (d == 4  && m == Month.May)
                     // Children's Day
-                    || ((d == 5 || (d == 6 && w == DayOfWeek.Monday)) && m == Month.May)
+                    || (d == 5 && m == Month.May)
                     // any of the three above observed later if on Saturday or Sunday
                     || (d == 6 && m == Month.May && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday || w == DayOfWeek.Wednesday))
                     // Marine Day (3rd Monday in July),

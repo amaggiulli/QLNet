@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -25,32 +25,32 @@ using System.Text;
 
 namespace QLNet {
     //! %Singapore calendars
-    /*! Holidays for the Singapore exchange
-        (data from <http://www.simex.com.sg>):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's day, January 1st</li>
-        <li>Good Friday</li>
-        <li>Labour Day, May 1st</li>
-        <li>National Day, August 9th</li>
-        <li>Christmas, December 25th </li>
-        </ul>
+   /*! Holidays for the Singapore exchange
+       (data from <http://www.sgx.com/wps/portal/sgxweb/home/trading/securities/trading_hours_calendar>):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's day, January 1st</li>
+       <li>Good Friday</li>
+       <li>Labour Day, May 1st</li>
+       <li>National Day, August 9th</li>
+       <li>Christmas, December 25th </li>
+       </ul>
 
-        Other holidays for which no rule is given
-        (data available for 2004-2010 only:)
-        <ul>
-        <li>Chinese New Year</li>
-        <li>Hari Raya Haji</li>
-        <li>Vesak Poya Day</li>
-        <li>Deepavali</li>
-        <li>Diwali</li>
-        <li>Hari Raya Puasa</li>
-        </ul>
+       Other holidays for which no rule is given
+       (data available for 2004-2010, 2012-2013 only:)
+       <ul>
+       <li>Chinese New Year</li>
+       <li>Hari Raya Haji</li>
+       <li>Vesak Poya Day</li>
+       <li>Deepavali</li>
+       <li>Diwali</li>
+       <li>Hari Raya Puasa</li>
+       </ul>
 
-        \ingroup calendars
-    */
-    public class Singapore : Calendar {
+       \ingroup calendars
+   */
+   public class Singapore : Calendar {
         public Singapore() : base(Impl.Singleton) { }
 
         class Impl : Calendar.WesternImpl {
@@ -67,14 +67,13 @@ namespace QLNet {
 
                 if (isWeekend(w)
                     // New Year's Day
-                    || (d == 1 && m == Month.January)
+                    || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January) 
                     // Good Friday
                     || (dd == em - 3)
                     // Labor Day
                     || (d == 1 && m == Month.May)
                     // National Day
-                    || (d == 9 && m == Month.August)
-                    || (d == 10 && m == Month.August && y == 2009)
+                    || ((d == 9 || (d == 10 && w == DayOfWeek.Monday)) && m == Month.August) 
                     // Christmas Day
                     || (d == 25 && m == Month.December)
 
@@ -86,6 +85,8 @@ namespace QLNet {
                     || ((d == 7 || d == 8) && m == Month.February && y == 2008)
                     || ((d == 26 || d == 27) && m == Month.January && y == 2009)
                     || ((d == 15 || d == 16) && m == Month.January && y == 2010)
+                    || ((d == 23 || d == 24) && m == Month.January && y == 2012)
+                    || ((d == 11 || d == 12) && m == Month.February && y == 2013) 
 
                     // Hari Raya Haji
                     || ((d == 1 || d == 2) && m == Month.February && y == 2004)
@@ -96,6 +97,8 @@ namespace QLNet {
                     || (d == 8 && m == Month.December && y == 2008)
                     || (d == 27 && m == Month.November && y == 2009)
                     || (d == 17 && m == Month.November && y == 2010)
+                    || (d == 26 && m == Month.October && y == 2012)
+                     || (d == 15 && m == Month.October && y == 2013) 
 
                     // Vesak Poya Day
                     || (d == 2 && m == Month.June && y == 2004)
@@ -105,6 +108,8 @@ namespace QLNet {
                     || (d == 18 && m == Month.May && y == 2008)
                     || (d == 9 && m == Month.May && y == 2009)
                     || (d == 28 && m == Month.May && y == 2010)
+                    || (d == 5 && m == Month.May && y == 2012)
+                    || (d == 24 && m == Month.May && y == 2013) 
 
                     // Deepavali
                     || (d == 11 && m == Month.November && y == 2004)
@@ -112,6 +117,8 @@ namespace QLNet {
                     || (d == 28 && m == Month.October && y == 2008)
                     || (d == 16 && m == Month.November && y == 2009)
                     || (d == 5 && m == Month.November && y == 2010)
+                    || (d == 13 && m == Month.November && y == 2012)
+                    || (d == 2 && m == Month.November && y == 2013) 
 
                     // Diwali
                     || (d == 1 && m == Month.November && y == 2005)
@@ -124,6 +131,8 @@ namespace QLNet {
                     || (d == 1 && m == Month.October && y == 2008)
                     || (d == 21 && m == Month.September && y == 2009)
                     || (d == 10 && m == Month.September && y == 2010)
+                    || (d == 20 && m == Month.August && y == 2012)
+                    || (d == 8 && m == Month.August && y == 2013) 
                     )
                     return false;
                 return true;

@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -25,42 +25,43 @@ using System.Text;
 
 namespace QLNet {
     //! Indian calendars
-    /*! Holidays for the National Stock Exchange
-        (data from <http://www.nse-india.com/>):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>Republic Day, January 26th</li>
-        <li>Good Friday</li>
-        <li>Ambedkar Jayanti, April 14th</li>
-        <li>Independence Day, August 15th</li>
-        <li>Gandhi Jayanti, October 2nd</li>
-        <li>Christmas, December 25th</li>
-        </ul>
+   /*! Holidays for the National Stock Exchange
+       (data from <http://www.nse-india.com/>):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>Republic Day, January 26th</li>
+       <li>Good Friday</li>
+       <li>Ambedkar Jayanti, April 14th</li>
+       <li>May Day, May 1st</li> 
+       <li>Independence Day, August 15th</li>
+       <li>Gandhi Jayanti, October 2nd</li>
+       <li>Christmas, December 25th</li>
+       </ul>
 
-        Other holidays for which no rule is given 
-        (data available for 2005-2011 only:)
-        <ul>
-        <li>Bakri Id</li>
-        <li>Moharram</li>
-        <li>Mahashivratri</li>
-        <li>Holi</li>
-        <li>Ram Navami</li>
-        <li>Mahavir Jayanti</li>
-        <li>Id-E-Milad</li>
-        <li>Maharashtra Day</li>
-        <li>Buddha Pournima</li>
-        <li>Ganesh Chaturthi</li>
-        <li>Dasara</li>
-        <li>Laxmi Puja</li>
-        <li>Bhaubeej</li>
-        <li>Ramzan Id</li>
-        <li>Guru Nanak Jayanti</li>
-        </ul>
+       Other holidays for which no rule is given 
+       (data available for 2005-2013 only:)
+       <ul>
+       <li>Bakri Id</li>
+       <li>Moharram</li>
+       <li>Mahashivratri</li>
+       <li>Holi</li>
+       <li>Ram Navami</li>
+       <li>Mahavir Jayanti</li>
+       <li>Id-E-Milad</li>
+       <li>Maharashtra Day</li>
+       <li>Buddha Pournima</li>
+       <li>Ganesh Chaturthi</li>
+       <li>Dasara</li>
+       <li>Laxmi Puja</li>
+       <li>Bhaubeej</li>
+       <li>Ramzan Id</li>
+       <li>Guru Nanak Jayanti</li>
+       </ul>
 
-        \ingroup calendars
-    */
-    public class India : Calendar {
+       \ingroup calendars
+   */
+   public class India : Calendar {
         public India() : base(Impl.Singleton) { }
 
         class Impl : Calendar.WesternImpl {
@@ -78,15 +79,17 @@ namespace QLNet {
                 if (isWeekend(w)
                     // Republic Day
                     || (d == 26 && m == Month.January)
-                            // Good Friday
+                    // Good Friday
                     || (dd == em - 3)
-                            // Ambedkar Jayanti
+                    // Ambedkar Jayanti
                     || (d == 14 && m == Month.April)
-                            // Independence Day
+                    // May Day
+                    || (d == 1 && m == Month.May) 
+                    // Independence Day
                     || (d == 15 && m == Month.August)
-                            // Gandhi Jayanti
+                    // Gandhi Jayanti
                     || (d == 2 && m == Month.October)
-                            // Christmas
+                    // Christmas
                     || (d == 25 && m == Month.December)
                     )
                     return false;
@@ -257,6 +260,47 @@ namespace QLNet {
  	  	                 return false;
  	  	         }
 
+               if (y == 2012) {
+                  if (// Mahashivratri
+                      (d == 20 && m == Month.February)
+                      // Holi
+                      || (d == 8 && m == Month.March)
+                      // Mahavir Jayanti
+                      || (d == 5 && m == Month.April)
+                      // Ramzan Id
+                      || (d == 20 && m == Month.August)
+                      // Ganesh Chaturthi
+                      || (d == 19 && m == Month.September)
+                      // Dasara
+                      || (d == 24 && m == Month.October)
+                      // Diwali - Balipratipada
+                      || (d == 14 && m == Month.November)
+                      // Gurunanak Jayanti
+                      || (d == 28 && m == Month.November)
+                     )
+                     return false;
+               }
+
+               if (y == 2013) {
+                  if (// Holi
+                      (d == 27 && m == Month.March)
+                      // Ram Navmi
+                      || (d == 19 && m == Month.April)
+                      // Mahavir Jayanti
+                      || (d == 24 && m == Month.April)
+                      // Ramzan Id
+                      || (d == 9 && m == Month.August)
+                      // Ganesh Chaturthi
+                      || (d == 9 && m == Month.September)
+                      // Bakri Id
+                      || (d == 16 && m == Month.October)
+                      // Diwali - Balipratipada
+                      || (d == 4 && m == Month.November)
+                      // Moharram
+                      || (d == 14 && m == Month.November)
+                  )
+                  return false;
+               } 
                 return true;
             }
         }

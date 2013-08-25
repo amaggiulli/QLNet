@@ -1,6 +1,6 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project http://qlnet.sourceforge.net/
@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace QLNet {
     //! Turkish calendar
    /*! Holidays for the Istanbul Stock Exchange:
-       (data from <http://www.ise.org/Markets/OfficialHolidays.aspx?sflang=en>):
+       (data from <http://borsaistanbul.com/en/products-and-markets/official-holidays>):
        <ul>
        <li>Saturdays</li>
        <li>Sundays</li>
@@ -34,7 +34,7 @@ namespace QLNet {
        <li>Youth and Sports Day, May 19th</li>
        <li>Victory Day, August 30th</li>
        <li>Republic Day, October 29th</li>
-       <li>Local Holidays (Kurban, Ramadan; 2004 to 2010 only) </li>
+       <li>Local Holidays (Kurban, Ramadan; 2004 to 2013 only) </li>
        </ul>
 
        \ingroup calendars
@@ -121,6 +121,31 @@ namespace QLNet {
                    if ((m == Month.September && d >= 9 && d <= 11)
                       // Kurban
                        || (m == Month.November && d >= 16 && d <= 19))
+                      return false;
+                }
+                else if (y == 2011) 
+                {
+                   // not clear from borsainstanbul.com
+                   if ((m == Month.October && d == 1)
+                   || (m == Month.November && d >= 9 && d <= 13))
+                     return false;
+                } 
+                else if (y == 2012) 
+                {
+                   // Ramadan
+                   if ((m == Month.August && d >= 18 && d <= 21)
+                   // Kurban
+                   || (m == Month.October && d >= 24 && d <= 28))
+                     return false;
+                }
+                else if (y == 2013)
+                {
+                   // Ramadan
+                   if ((m == Month.August && d >= 7 && d <= 10)
+                   // Kurban
+                   || (m == Month.October && d >= 14 && d <= 18)
+                   // additional holiday for Republic Day
+                   || (m == Month.October && d == 28))
                       return false;
                 }
                 return true;

@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -38,7 +38,7 @@ namespace QLNet {
        </ul>
 
        Other holidays for which no rule is given
-       (data available for 2005-2011 only:)
+       (data available for 2005-2013 only:)
        <ul>
        <li>Idul Adha</li>
        <li>Ied Adha</li>
@@ -254,9 +254,49 @@ namespace QLNet {
  	  	                 // Public Holiday
                        || (d == 26 && m == Month.December)
  	  	                 )
- 	  	                 return false;
- 	  	         }
-                return true;
+                      return false;
+                }
+
+               if (y == 2012) {
+                  if (// Chinese New Year
+                      (d == 23 && m == Month.January)
+                      // Saka New Year
+                      || (d == 23 && m == Month.March)
+                      // Ied ul-Fitr
+                      || (d >= 20 && d <= 22 && m == Month.August)
+                      // Eid ul-Adha
+                      || (d == 26 && m == Month.October)
+                      // Islamic New Year
+                      || (d >= 15 && d <= 16 && m == Month.November)
+                      // Public Holiday
+                      || (d == 24 && m == Month.December)
+                      // Trading Holiday
+                      || (d == 31 && m == Month.December)
+                     )
+                     return false;
+               }
+
+               if (y == 2013) {
+                  if (// Birthday of the prophet Muhammad SAW
+                      (d == 24 && m == Month.January)
+                      // Saka New Year
+                      || (d == 12 && m == Month.March)
+                      // Isra' Mi'raj of the prophet Muhammad SAW
+                      || (d == 6 && m == Month.June)
+                      // Ied ul-Fitr
+                      || (d >= 5 && d <= 9 && m == Month.August)
+                      // Eid ul-Adha
+                      || (d >= 14 && d <= 15 && m == Month.October)
+                      // Islamic New Year
+                      || (d == 5 && m == Month.November)
+                      // Public Holiday
+                      || (d == 26 && m == Month.December)
+                      // Trading Holiday
+                      || (d == 31 && m == Month.December)
+                     )
+                     return false;
+               } 
+               return true;
             }
         }
     }
