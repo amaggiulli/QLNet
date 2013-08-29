@@ -154,7 +154,7 @@ namespace QLNet
                     }
                 }
             } 
-            catch(Exception e) 
+            catch(Exception) 
             {
                 return false;
             }

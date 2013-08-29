@@ -96,7 +96,7 @@ namespace QLNet {
                 f_x_2n += 2.0;
                 if (!flag && n <= itrmax)
                     break;
-            L10:
+            
                 bound = t * x / f_x_2n;
                 if (bound <= errmax || n > itrmax)
                     goto L_End;
