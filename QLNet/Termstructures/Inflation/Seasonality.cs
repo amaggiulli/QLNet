@@ -286,7 +286,6 @@ namespace QLNet
             default:
                throw new ApplicationException("bad frequency specified: " + this.frequency()
                         + ", only semi-annual through daily permitted.");
-            break;
         }
 
       }

@@ -64,11 +64,9 @@ namespace QLNet {
                 case Exercise.Type.American:
                     throw new NotImplementedException();
                     // engine = new FDAmericanEngine(newProcess);
-                    break;
                 case Exercise.Type.Bermudan:
                     throw new NotImplementedException();
                     // engine = new FDBermudanEngine(newProcess);
-                    break;
                 default:
                     throw new ArgumentException("unknown exercise type");
             }

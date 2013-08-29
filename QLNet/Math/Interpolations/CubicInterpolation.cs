@@ -271,7 +271,6 @@ namespace QLNet {
                     switch (da_) {
                         case CubicInterpolation.DerivativeApprox.FourthOrder:
                             throw new NotImplementedException("FourthOrder not implemented yet");
-                            break;
                         case CubicInterpolation.DerivativeApprox.Parabolic:
                             // intermediate points
                             for (int i = 1; i < size_ - 1; ++i) {
@@ -280,7 +279,6 @@ namespace QLNet {
                             // end points
                             tmp[0] = ((2.0 * dx[0] + dx[1]) * S[0] - dx[0] * S[1]) / (dx[0] + dx[1]);
                             tmp[size_ - 1] = ((2.0 * dx[size_ - 2] + dx[size_ - 3]) * S[size_ - 2] - dx[size_ - 2] * S[size_ - 3]) / (dx[size_ - 2] + dx[size_ - 3]);
-                            break;
                             break;
                         case CubicInterpolation.DerivativeApprox.FritschButland:
                             // intermediate points

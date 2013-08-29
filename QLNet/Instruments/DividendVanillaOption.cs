@@ -42,32 +42,32 @@ namespace QLNet {
         public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process,
              double accuracy, int maxEvaluations, double minVol, double maxVol) {
 
-            if(isExpired()) throw new ApplicationException("option expired");
+            throw new NotImplementedException();
+            //if(isExpired()) throw new ApplicationException("option expired");
 
-            SimpleQuote volQuote = new SimpleQuote();
+            //SimpleQuote volQuote = new SimpleQuote();
 
-            GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
+            //GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
 
-            // engines are built-in for the time being
-            IPricingEngine engine;
-            switch (exercise_.type()) {
-                case Exercise.Type.European:
-                    throw new NotImplementedException();
-                    //engine.reset(new AnalyticDividendEuropeanEngine(newProcess));
-                    //break;
-                case Exercise.Type.American:
-                    throw new NotImplementedException();
-                    //engine.reset(new FDDividendAmericanEngine(newProcess));
-                    //break;
-                case Exercise.Type.Bermudan:
-                    throw new ApplicationException("engine not available for Bermudan option with dividends");
-                    break;
-                default:
-                    throw new ArgumentException("unknown exercise type");
-            }
+            //// engines are built-in for the time being
+            //IPricingEngine engine;
+            //switch (exercise_.type()) {
+            //    case Exercise.Type.European:
+            //        throw new NotImplementedException();
+            //        //engine.reset(new AnalyticDividendEuropeanEngine(newProcess));
+            //        //break;
+            //    case Exercise.Type.American:
+            //        throw new NotImplementedException();
+            //        //engine.reset(new FDDividendAmericanEngine(newProcess));
+            //        //break;
+            //    case Exercise.Type.Bermudan:
+            //        throw new ApplicationException("engine not available for Bermudan option with dividends");
+            //    default:
+            //        throw new ArgumentException("unknown exercise type");
+            //}
 
-            return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
-                                                     maxEvaluations, minVol, maxVol);
+            //return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
+            //                                         maxEvaluations, minVol, maxVol);
         }
 
 
