@@ -540,7 +540,7 @@ namespace QLNet {
         private Calendar calendar_;
         private Date effectiveDate_, terminationDate_;
         private Period tenor_;
-        private BusinessDayConvention convention_, terminationDateConvention_;
+        private Nullable<BusinessDayConvention> convention_, terminationDateConvention_;
         private DateGeneration.Rule rule_;
         private bool endOfMonth_;
         private Date firstDate_, nextToLastDate_;
@@ -654,7 +654,7 @@ namespace QLNet {
            // if a convention was set, we use it.
            if (convention_ != null )
            {
-              convention = convention_;
+              convention = convention_.Value;
            }
            else
            {
@@ -674,7 +674,7 @@ namespace QLNet {
            // if set explicitly, we use it;
            if (terminationDateConvention_ != null )
            {
-              terminationDateConvention = terminationDateConvention_;
+              terminationDateConvention = terminationDateConvention_.Value;
            }
            else
            {
@@ -691,7 +691,7 @@ namespace QLNet {
            }
 
             return new Schedule(effectiveDate_, terminationDate_, tenor_, calendar_,
-                                convention_, terminationDateConvention_,
+                                convention, terminationDateConvention,
                                 rule_, endOfMonth_, firstDate_, nextToLastDate_);
         }
     }

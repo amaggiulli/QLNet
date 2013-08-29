@@ -135,7 +135,7 @@ namespace QLNet
    {
       private double faceAmount_;
       private List<CashFlow> cashflows_;
-      private double PVDifference_;
+      //private double PVDifference_;
       private Date settlement_;
 
       public MonthlyYieldFinder(double faceAmount, List<CashFlow> cashflows,Date settlement)

@@ -141,7 +141,7 @@ namespace QLNet
         private double bestAccuracy_;
         //! maximum and real number of iterations
         private int maxIterations_;
-        private int nbIterations_;
+        //private int nbIterations_;
         //! Optimization method
         private OptimizationMethod om_;
         //constraint
@@ -229,9 +229,9 @@ namespace QLNet
         }
 
         //! return the performed number of iterations
-        public int iterationsNumber()
-        {
-            return nbIterations_;
-        }
+        //public int iterationsNumber()
+        //{
+        //    return nbIterations_;
+        //}
     }
 }

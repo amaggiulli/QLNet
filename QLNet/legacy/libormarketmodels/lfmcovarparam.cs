@@ -101,7 +101,7 @@ namespace QLNet
             return tmp;
         }
 
-        private Var_Helper varHelper_;
+        //private Var_Helper varHelper_;
     }
 
 }

@@ -43,7 +43,7 @@ namespace QLNet {
         protected double sMin_, center_, sMax_;
 
         // temporaries
-        private double gridLogSpacing_;
+        //private double gridLogSpacing_;
         const double safetyZoneFactor_ = 1.1;
 
         // required for generics and template iheritance

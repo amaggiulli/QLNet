@@ -250,7 +250,7 @@ namespace QLNet
 
    public class Arguments : Swap.Arguments
    {
-      double fixedRate;
+      //double fixedRate;
       public override void validate()
       {
         // you don't actually need to do anything else because it is so simple
