@@ -175,10 +175,10 @@ namespace QLNet
             process_ = process;
             antithetic_ = false;
             controlVariate_ = false;
-            //steps_=null;
-            //samples_(Null<Size>());
-            //maxSamples_(Null<Size>());
-            //tolerance_(Null<Real>()); 
+            steps_= null;
+            samples_ = null;
+            maxSamples_ = null;
+            tolerance_ = null;
             brownianBridge_ = true;
             seed_ = 0;
         }
@@ -199,16 +199,14 @@ namespace QLNet
         }
 
         public MakeMCDiscreteArithmeticAPEngine<RNG, S> withSamples(int samples){
-            if (tolerance_ == null/*Null<Real>()*/)
-                throw new ApplicationException("tolerance already set");
+            Utils.QL_REQUIRE(tolerance_ == null,"tolerance already set");
             samples_ = samples;
             return this;
         }
 
         public MakeMCDiscreteArithmeticAPEngine<RNG, S> withTolerance(double tolerance)
         {
-            if (samples_ == null /*Null<Size>()*/)
-                throw new ApplicationException("number of samples already set");
+            Utils.QL_REQUIRE(samples_ == null,"number of samples already set");
             if ((new RNG().allowsErrorEstimate == 0))
                 throw new ApplicationException("chosen random generator policy " +
                                                "does not allow an error estimate");
@@ -251,19 +249,19 @@ namespace QLNet
             if (steps_ == null)
                 throw new ApplicationException("max number of steps per year not given");
             return (IPricingEngine)new MCDiscreteArithmeticAPEngine<RNG, S>(process_,
-                                                    steps_,
+                                                    steps_.Value,
                                                     brownianBridge_,
                                                     antithetic_, controlVariate_,
-                                                    samples_, tolerance_,
-                                                    maxSamples_,
+                                                    samples_.Value, tolerance_.Value,
+                                                    maxSamples_.Value,
                                                     seed_);
 
         }
 
         private GeneralizedBlackScholesProcess process_;
         private bool antithetic_, controlVariate_;
-        private int steps_, samples_, maxSamples_;
-        private double tolerance_;
+        private int? steps_, samples_, maxSamples_;
+        private double? tolerance_;
         private bool brownianBridge_;
         private ulong seed_;
     }
