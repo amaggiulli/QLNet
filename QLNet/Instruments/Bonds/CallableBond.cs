@@ -39,7 +39,7 @@ namespace QLNet
    */
    public class CallableBond : Bond
    {
-      public class Arguments : Bond.Arguments 
+      public new class Arguments : Bond.Arguments 
       {
          public Arguments() {}
          public List<Date> couponDates;
@@ -53,11 +53,11 @@ namespace QLNet
          //! bond full/dirty/cash prices
          public List<double> callabilityPrices;
          public List<Date> callabilityDates;
-         public void validate()
+         public override void validate()
          {
             Utils.QL_REQUIRE(settlementDate != null,"null settlement date");
             
-            Utils.QL_REQUIRE(redemption != null, "null redemption");
+            //Utils.QL_REQUIRE(redemption != null, "null redemption");
             Utils.QL_REQUIRE(redemption >= 0.0, "positive redemption required: " + redemption + " not allowed");
 
             Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count, "different number of callability dates and prices");
@@ -65,12 +65,12 @@ namespace QLNet
          }
     }
       //! results for a callable bond calculation
-      public class Results : Bond.Results 
+      public new class Results : Bond.Results 
       {
          // no extra results set yet
       }
       //! base class for callable fixed rate bond engine
-      public class Engine :  GenericEngine<CallableBond.Arguments,CallableBond.Results> {};
+      public new class Engine :  GenericEngine<CallableBond.Arguments,CallableBond.Results> {};
 
       //! \name Inspectors
       //@{

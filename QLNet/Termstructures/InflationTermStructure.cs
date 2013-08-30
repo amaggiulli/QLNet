@@ -279,7 +279,7 @@ namespace QLNet {
       protected virtual void setBaseRate(double r){ baseRate_ = r; }
 
       // range-checking
-      void checkRange(Date d,bool extrapolate)
+      protected override void checkRange(Date d,bool extrapolate)
       {
          if (d < baseDate())
             throw new ApplicationException("date (" + d + ") is before base date");
@@ -289,7 +289,7 @@ namespace QLNet {
                                             + maxDate() + ")");
       }
 
-      Seasonality seasonality_;
+      private Seasonality seasonality_;
    }
 
 

@@ -45,25 +45,23 @@ namespace QLNet {
         private Parameter sigma_;
         private Parameter r0_;
 
-        public CoxIngersollRoss(double r0 ,
-                         double theta,
-                         double k,
-                         double sigma)
-            :base(2){}
+        public CoxIngersollRoss(double r0 = 0.05,
+                         double theta = 0.1,
+                         double k = 0.1,
+                         double sigma = 0.1)
+            :base(4)
+        {
+           theta_ = arguments_[0];
+           k_=arguments_[1];
+           sigma_=arguments_[2];
+           r0_ = arguments_[3];
+           //theta_ = new ConstantParameter(theta, new PositiveConstraint());
+           //k_ = new ConstantParameter(k, new PositiveConstraint());
+           //sigma_ = new ConstantParameter(sigma, new VolatilityConstraint(k,theta));
+           //r0_ = new ConstantParameter(r0, new PositiveConstraint());
+        }
 
-        public CoxIngersollRoss(double r0,double theta,double k)
-            :this(r0,theta,k,0.1){}
-
-        public CoxIngersollRoss(double r0,double theta)
-            :this(r0,theta,0.1,0.1){}
-
-        public CoxIngersollRoss(double r0)
-            :this(r0,0.1,0.1,0.1){}
-
-        public CoxIngersollRoss()
-            :this(0.05,0.1,0.1,0.1){}
-
-        public virtual double discountBondOption(Option.Type type,
+        public override double discountBondOption(Option.Type type,
                                         double strike,
                                         double maturity,
                                         double bondMaturity)

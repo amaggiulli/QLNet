@@ -210,12 +210,12 @@ namespace QLNet
           overnightIndex_ = overnightIndex;
           paymentAdjustment_ = BusinessDayConvention.Following;
        }
-       public OvernightLeg withNotionals(double notional)
+       public new OvernightLeg withNotionals(double notional)
        {
           notionals_ = new List<double>(); notionals_.Add(notional);
           return this;
        }
-       public OvernightLeg withNotionals(List<double> notionals)
+       public new OvernightLeg withNotionals(List<double> notionals)
        {
           notionals_ = notionals;
           return this;
@@ -225,7 +225,7 @@ namespace QLNet
           paymentDayCounter_ = dayCounter;
           return this;
        }
-       public OvernightLeg withPaymentAdjustment(BusinessDayConvention convention)
+       public new OvernightLeg withPaymentAdjustment(BusinessDayConvention convention)
        {
           paymentAdjustment_ = convention;
           return this;

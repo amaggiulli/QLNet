@@ -114,7 +114,7 @@ namespace QLNet
       //! \name augmented Coupon interface
       //@{
       //! swap(let) rate
-      public double rate()
+      public override double rate()
       {
          double swapletRate = underlying_ != null ? underlying_.rate() : base.rate();
 

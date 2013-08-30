@@ -202,9 +202,9 @@ namespace QLNet
         //! \name Limits
         //@{
         //! the minimum strike for which the term structure can return vols
-        public virtual double minStrike() { return 0; }
+        public override double minStrike() { return 0; }
         //! the maximum strike for which the term structure can return vols
-        public virtual double maxStrike() { return 0; }
+        public override double maxStrike() { return 0; }
         //@}
 
         protected virtual void checkRange(Date d, double strike, bool extrapolate)

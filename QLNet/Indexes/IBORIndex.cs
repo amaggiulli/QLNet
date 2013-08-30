@@ -77,7 +77,7 @@ namespace QLNet {
         }
 
         //! returns a copy of itself linked to a different forwarding curve
-        public IborIndex clone(Handle<YieldTermStructure> forwarding)
+        public virtual IborIndex clone(Handle<YieldTermStructure> forwarding)
         {
             return new IborIndex(familyName(), tenor(), fixingDays(), currency(), fixingCalendar(),
                                  businessDayConvention(), endOfMonth(), dayCounter(), forwarding);

@@ -54,12 +54,12 @@ namespace QLNet
 
       //! \name InflationCouponPricer interface
       //@{
-      public virtual double swapletPrice()
+      public override double swapletPrice()
       {
          double swapletPrice = adjustedFixing() * coupon_.accrualPeriod() * discount_;
          return gearing_ * swapletPrice + spreadLegValue_;
       }
-      public virtual double swapletRate()
+      public override double swapletRate()
       {
          // This way we do not require the index to have
          // a yield curve, i.e. we do not get the problem
@@ -68,25 +68,25 @@ namespace QLNet
          //std::cout << (gearing_ * adjustedFixing() + spread_) << " SWAPLET rate" << gearing_ << " " << spread_ << std::endl;
          return gearing_ * adjustedFixing() + spread_;
       }
-      public virtual double capletPrice(double effectiveCap)
+      public override double capletPrice(double effectiveCap)
       {
          double capletPrice = optionletPrice(Option.Type.Call, effectiveCap);
          return gearing_ * capletPrice;
       }
-      public virtual double capletRate(double effectiveCap)
+      public override double capletRate(double effectiveCap)
       {
          return capletPrice(effectiveCap)/(coupon_.accrualPeriod()*discount_);
       }
-      public virtual double floorletPrice(double effectiveFloor)
+      public override double floorletPrice(double effectiveFloor)
       {
          double floorletPrice = optionletPrice(Option.Type.Put, effectiveFloor);
          return gearing_ * floorletPrice;
       }
-      public virtual double floorletRate(double effectiveFloor)
+      public override double floorletRate(double effectiveFloor)
       {
          return floorletPrice(effectiveFloor) / (coupon_.accrualPeriod()*discount_);
       }
-      public virtual void initialize( InflationCoupon coupon)
+      public override void initialize( InflationCoupon coupon)
       {
          coupon_ = coupon as CPICoupon;
          gearing_ = coupon_.fixedRate();

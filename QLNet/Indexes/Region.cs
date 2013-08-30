@@ -27,7 +27,6 @@ namespace QLNet
    //! Region class, used for inflation applicability.
    public class Region
    {
-
       //! \name Inspectors
       //@{
       public string name() 
@@ -56,7 +55,6 @@ namespace QLNet
       public static bool operator ==(Region r1, Region r2) 
       {
         return r1.name() == r2.name();
-    
       }
 
       public static bool operator !=(Region r1, Region r2)
@@ -64,6 +62,15 @@ namespace QLNet
          return !(r1.name() == r2.name());
       }
 
+      public override bool Equals(object o)
+      {
+         return true;
+      }
+
+      public override int GetHashCode()
+      {
+         return 0;
+      }
    }
 
    //! Australia as geographical/economic region

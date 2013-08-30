@@ -49,8 +49,6 @@ namespace QLNet
         where RNG : IRSG, new()
             where S : IGeneralStatistics, new()
     {
-        public GeneralizedBlackScholesProcess process_;
-
         public MCDiscreteGeometricAPEngine(
              GeneralizedBlackScholesProcess process,
              int maxTimeStepPerYear,

@@ -83,7 +83,7 @@ namespace QLNet
        }
 
 
-       public void setTermStructure(ZeroInflationTermStructure z)
+       public override void setTermStructure(ZeroInflationTermStructure z)
        {
 
         //  base.setTermStructure(z);
@@ -112,7 +112,7 @@ namespace QLNet
         //zciis_.setPricingEngine(new DiscountingSwapEngine(z.nominalTermStructure()));
        }
 
-       public double impliedQuote() 
+       public override double impliedQuote() 
        {
           // what does the term structure imply?
           // in this case just the same value ... trivial case

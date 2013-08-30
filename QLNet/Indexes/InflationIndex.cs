@@ -176,11 +176,11 @@ namespace QLNet
         /*! \warning the forecastTodaysFixing parameter (required by
                      the Index interface) is currently ignored.
         */
-        public double fixing(Date fixingDate)
+        public override double fixing(Date fixingDate)
         {
            return fixing(fixingDate,false);
         }
-        public double fixing(Date aFixingDate, bool forecastTodaysFixing)
+        public override double fixing(Date aFixingDate, bool forecastTodaysFixing)
         {
            // Stored fixings are always non-interpolated.
            // If an interpolated fixing is required then
@@ -213,7 +213,7 @@ namespace QLNet
                {
                   // fixings stored flat & for every day
                   Date fixingDate2 = aFixingDate + new Period(frequency_);
-                  double pastFixing2 = IndexManager.instance().getHistory(name()).value()[fixingDate2];
+                  double? pastFixing2 = IndexManager.instance().getHistory(name()).value()[fixingDate2];
                   if ( pastFixing2 == null )
                      throw new ApplicationException("Missing " + name() + " fixing for " + fixingDate2);
 
@@ -221,7 +221,7 @@ namespace QLNet
                   KeyValuePair<Date,Date> lim2 = Utils.inflationPeriod(aFixingDate, frequency_);
                   double daysInPeriod = lim2.Value+1 - lim2.Key;
                   theFixing = pastFixing.Value
-                       + (pastFixing2 -pastFixing.Value)*(aFixingDate-lim2.Key)/daysInPeriod;
+                       + (pastFixing2.Value -pastFixing.Value)*(aFixingDate-lim2.Key)/daysInPeriod;
                }
                return theFixing;
            } 
@@ -312,8 +312,8 @@ namespace QLNet
       /*! \warning the forecastTodaysFixing parameter (required by
            the Index interface) is currently ignored.
       */
-      public double fixing(Date fixingDate) { return fixing(fixingDate,false); }
-      public double fixing(Date fixingDate, bool forecastTodaysFixing)
+      public override double fixing(Date fixingDate) { return fixing(fixingDate,false); }
+      public override double fixing(Date fixingDate, bool forecastTodaysFixing)
       {
          Date today = Settings.evaluationDate();
          Date todayMinusLag = today - availabilityLag_;
@@ -348,29 +348,29 @@ namespace QLNet
                 double dlBef = fixMinus1Y - limBef.Key;
                 // get the four relevant fixings
                 // recall that they are stored flat for every day
-                double limFirstFix =
+                double? limFirstFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Key];
                 if( limFirstFix == null)
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + lim.Key );
-                double limSecondFix =
+                double? limSecondFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Value+1];
                 if ( limSecondFix == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + lim.Value+1 );
-                double limBefFirstFix =
+                double? limBefFirstFix =
                 IndexManager.instance().getHistory(name()).value()[limBef.Key];
                 if ( limBefFirstFix == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + limBef.Key );
-                double limBefSecondFix =
+                double? limBefSecondFix =
                 IndexManager.instance().getHistory(name()).value()[limBef.Value+1];
                 if ( limBefSecondFix == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + limBef.Value+1 );
 
-                double linearNow = limFirstFix + (limSecondFix-limFirstFix)*dl/dp;
-                double linearBef = limBefFirstFix + (limBefSecondFix-limBefFirstFix)*dlBef/dpBef;
+                double linearNow = limFirstFix.Value + (limSecondFix.Value-limFirstFix.Value)*dl/dp;
+                double linearBef = limBefFirstFix.Value + (limBefSecondFix.Value-limBefFirstFix.Value)*dlBef/dpBef;
                 double wasYES = linearNow / linearBef - 1.0;
 
                 return wasYES;
@@ -379,19 +379,19 @@ namespace QLNet
             else 
             {    
                // IS ratio, NOT interpolated
-               double pastFixing =
+               double? pastFixing =
                     IndexManager.instance().getHistory(name()).value()[fixingDate];
                if ( pastFixing == null )
                   throw new ApplicationException("Missing " + name() + " fixing for "
                                                  + fixingDate);
                 Date previousDate = fixingDate - new Period(1,TimeUnit.Years);
-                double previousFixing =
+                double? previousFixing =
                 IndexManager.instance().getHistory(name()).value()[previousDate];
                 if( previousFixing == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + previousDate );
 
-                return pastFixing/previousFixing - 1.0;
+                return pastFixing.Value/previousFixing.Value - 1.0;
             }
          } 
          else 
@@ -403,17 +403,17 @@ namespace QLNet
                 KeyValuePair<Date,Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
                 double dp= lim.Value + 1 - lim.Key;
                 double dl = fixingDate-lim.Key;
-                double limFirstFix =
+                double? limFirstFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Key];
                 if ( limFirstFix == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + lim.Key );
-                double limSecondFix =
+                double? limSecondFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Value+1];
                 if ( limSecondFix == null )
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + lim.Value+1 );
-                double linearNow = limFirstFix + (limSecondFix-limFirstFix)*dl/dp;
+                double linearNow = limFirstFix.Value + (limSecondFix.Value-limFirstFix.Value)*dl/dp;
 
                 return linearNow;
 
@@ -422,12 +422,12 @@ namespace QLNet
             { 
                // NOT ratio, NOT interpolated
                // so just flat
-                double pastFixing =
+                double? pastFixing =
                     IndexManager.instance().getHistory(name()).value()[fixingDate];
                 if ( pastFixing == null ) 
                    throw new ApplicationException("Missing " + name() + " fixing for "
                                                   + fixingDate);
-                return pastFixing;
+                return pastFixing.Value;
 
             }
          }

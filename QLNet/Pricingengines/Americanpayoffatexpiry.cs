@@ -36,7 +36,7 @@ namespace QLNet {
 
         private double strike_;
         private double K_;
-        private double DKDstrike_;
+        //private double DKDstrike_;
 
         private double mu_;
         private double log_H_S_;
@@ -51,9 +51,9 @@ namespace QLNet {
 
         private bool inTheMoney_;
         private double Y_;
-        private double DYDstrike_;
+        //private double DYDstrike_;
         private double X_;
-        private double DXDstrike_;
+        //private double DXDstrike_;
 
         public AmericanPayoffAtExpiry(double spot, double discount, double dividendDiscount, double variance, StrikedTypePayoff payoff) {
             spot_ = spot;
@@ -87,14 +87,14 @@ namespace QLNet {
             CashOrNothingPayoff coo = payoff as CashOrNothingPayoff;
             if (coo != null) {
                 K_ = coo.cashPayoff();
-                DKDstrike_ = 0.0;
+                //DKDstrike_ = 0.0;
             }
 
             // binary asset-or-nothing payoff?
             AssetOrNothingPayoff aoo = payoff as AssetOrNothingPayoff;
             if (aoo != null) {
                 K_ = forward_;
-                DKDstrike_ = 0.0;
+                //DKDstrike_ = 0.0;
                 mu_ += 1.0;
             }
 
@@ -166,8 +166,8 @@ namespace QLNet {
             if (inTheMoney_) {
                 Y_ = 1.0;
                 X_ = 1.0;
-                DYDstrike_ = 0.0;
-                DXDstrike_ = 0.0;
+                //DYDstrike_ = 0.0;
+                //DXDstrike_ = 0.0;
             } else {
                 Y_ = 1.0;
                 X_ = Math.Pow((double)(strike_ / spot_), (double)(2.0 * mu_));

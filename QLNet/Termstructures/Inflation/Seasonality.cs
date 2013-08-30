@@ -219,7 +219,7 @@ namespace QLNet
       //! \name Seasonality interface
       //@{
 
-      public virtual double correctZeroRate(Date d,double r,InflationTermStructure iTS)
+      public override double correctZeroRate(Date d,double r,InflationTermStructure iTS)
       {
         KeyValuePair<Date,Date> lim = Utils.inflationPeriod(iTS.baseDate(), iTS.frequency());
         Date curveBaseDate = lim.Value;
@@ -227,14 +227,14 @@ namespace QLNet
 
       }
       
-      public virtual double correctYoYRate(Date d, double r, InflationTermStructure iTS)
+      public override double correctYoYRate(Date d, double r, InflationTermStructure iTS)
       {
          KeyValuePair<Date,Date> lim = Utils.inflationPeriod(iTS.baseDate(), iTS.frequency());
          Date curveBaseDate = lim.Value;
          return seasonalityCorrection(r, d, iTS.dayCounter(), curveBaseDate, false);
       }
 
-      public virtual bool isConsistent(InflationTermStructure iTS) 
+      public override bool isConsistent(InflationTermStructure iTS) 
       {
 
          // If multi-year is the specification consistent with the term structure start date?

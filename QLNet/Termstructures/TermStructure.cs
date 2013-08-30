@@ -109,7 +109,7 @@ namespace QLNet
         public double timeFromReference(Date d) { return dayCounter().yearFraction(referenceDate(), d); }
 
         //! date-range check
-        protected void checkRange(Date d, bool extrapolate)
+        protected virtual void checkRange(Date d, bool extrapolate)
         {
             if (!(d >= referenceDate()))
                 throw new ApplicationException("date (" + d + ") before reference date (" + referenceDate() + ")");

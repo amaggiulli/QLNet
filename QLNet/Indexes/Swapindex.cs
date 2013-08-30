@@ -171,7 +171,7 @@ namespace QLNet
       /*! \warning Relinking the term structure underlying the index will
                    not have effect on the returned swap.
       */
-      OvernightIndexedSwap underlyingSwap(Date fixingDate)
+      public new OvernightIndexedSwap underlyingSwap(Date fixingDate)
       {
          double fixedRate = 0.0;
          return new MakeOIS(tenor_, overnightIndex_, fixedRate)

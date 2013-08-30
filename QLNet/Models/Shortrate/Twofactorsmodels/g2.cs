@@ -195,7 +195,7 @@ namespace QLNet
         }
 
         #region protected
-        protected void generateArguments()
+        protected override void generateArguments()
         {
             phi_ = new FittingParameter(termStructure(),
                 a(), sigma(), b(), eta(), rho());
@@ -295,7 +295,7 @@ namespace QLNet
         public class FittingParameter : TermStructureFittingParameter
             {
 
-                private class Impl : Parameter.Impl
+                private new class Impl : Parameter.Impl
                 {
 
 

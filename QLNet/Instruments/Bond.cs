@@ -607,7 +607,7 @@ namespace QLNet {
             public List<CashFlow> cashflows;
             public Calendar calendar;
 
-            public void validate() {
+            public virtual void validate() {
                 if (settlementDate == null) throw new ApplicationException("no settlement date provided");
                 if (cashflows.Count == 0) throw new ApplicationException("no cash flow provided");
                 foreach(CashFlow cf in cashflows)

@@ -177,7 +177,7 @@ namespace QLNet {
 
         //! \name Modifiers
         //public void reset(Size dimension = 0) {
-        public void reset(int dimension) {
+        public virtual void reset(int dimension) {
             // (re-)initialize
             if (dimension > 0) {
                 if (dimension == dimension_) {
@@ -195,10 +195,10 @@ namespace QLNet {
         }
 
         //philippe2009_16
-        public void add(List<double> begin) { add(begin, 1); }
+        public virtual void add(List<double> begin) { add(begin, 1); }
 
         //public void add(S sample, double weight = 1.0) {
-        public void add(List<double> begin, double weight) {
+        public virtual void add(List<double> begin, double weight) {
             if (dimension_ == 0) {
                 // stat wasn't initialized yet
                 int dimension = begin.Count;

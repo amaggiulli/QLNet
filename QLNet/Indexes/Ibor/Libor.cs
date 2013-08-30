@@ -79,7 +79,7 @@ namespace QLNet {
         }
 
         //! \name Other methods
-        public IborIndex clone(Handle<YieldTermStructure> h) {
+        public override IborIndex clone(Handle<YieldTermStructure> h) {
             return new Libor(familyName(), tenor(), fixingDays(), currency(), financialCenterCalendar_,
                              dayCounter(), h);
         }
