@@ -94,17 +94,6 @@ namespace QLNet
 
         public Handle<YieldTermStructure> termStructure_ { get; set; }
         
-        public event Callback notifyObserversEvent;
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-
-        public void notifyObservers(){
-            Callback handler = notifyObserversEvent;
-            if (handler != null)
-            {
-                handler();
-            }
-        }
         #endregion
     }
 

@@ -73,17 +73,6 @@ namespace QLNet{
         public void reset() { results_.reset(); }
         */
         #region Observer & Observable
-        // observable interface
-        public event Callback notifyObserversEvent;
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
-        }
-
         public override void update()
         {
             if (!timeGrid_.empty())

@@ -186,11 +186,6 @@ namespace QLNet
       }
       //@}
 
-      //! \name Observer interface
-      //@{
-      public void update() { notifyObservers(); }
-      //@}
-
       public bool isCapped() { return isCapped_; }
       public bool isFloored() { return isFloored_; }
 
