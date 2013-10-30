@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Andrea Maggiulli</authors>
+    <owners>Andrea Maggiulli</owners>
+    <licenseUrl>http://qlnet.sourceforge.net/License.html</licenseUrl>
+    <projectUrl>http://github.com/amaggiulli/qlnet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A free/open-source library for quantitative finance</description>
+    <releaseNotes>Initial release to NuGet for version 1.2.0.0</releaseNotes>
+    <copyright>Copyright (c) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)</copyright>
+    <tags>QLNet QuantLib quantitative finance financial</tags>
+  </metadata>
+</package>
