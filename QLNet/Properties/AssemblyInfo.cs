@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
 [assembly: AssemblyTitle("QLNet")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A free/open-source library for quantitative finance")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("QLNet")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright (c) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
