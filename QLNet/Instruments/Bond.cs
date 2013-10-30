@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
-  
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ 
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -442,18 +443,12 @@ namespace QLNet {
             return CashFlows.previousCouponRate(cashflows_, false, settlement);
         }
 
-        public Date nextCouponDate() { return nextCouponDate(null); }
-        public Date nextCouponDate(Date settlement) {
-            if (settlement == null)
-                settlement = settlementDate();
-            return CashFlows.nextCouponDate(cashflows_, false, settlement);
+        public Date nextCashFlowDate(Date settlement = null)  {
+               return BondFunctions.nextCashFlowDate(this, settlement);
         }
 
-        public Date previousCouponDate() { return previousCouponDate(null); }
-        public Date previousCouponDate(Date settlement) {
-            if (settlement == null)
-                settlement = settlementDate();
-            return CashFlows.previousCouponDate(cashflows_, false, settlement);
+        public Date previousCashFlowDate(Date settlement = null) {
+           return BondFunctions.previousCashFlowDate(this, settlement);
         }
 
         protected override void setupExpired() {

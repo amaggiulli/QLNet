@@ -363,6 +363,7 @@
     <Compile Include="Pricingengines\blackformula.cs" />
     <Compile Include="Pricingengines\Blackscholescalculator.cs" />
     <Compile Include="Pricingengines\Bond\BlackCallableBondEngine.cs" />
+    <Compile Include="Pricingengines\Bond\BondFunctions.cs" />
     <Compile Include="Pricingengines\Bond\Discountingbondengine.cs" />
     <Compile Include="Pricingengines\Bond\TreeCallableBondEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\analyticcapfloorengine.cs" />

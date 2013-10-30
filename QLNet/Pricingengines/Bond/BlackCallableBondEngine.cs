@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com) 
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com) 
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -69,13 +69,9 @@ namespace QLNet
 
          List<CashFlow> fixedLeg = arguments_.cashflows;
 
-         double value = CashFlows.npv(fixedLeg,
-                                      discountCurve_,
-                                      settle);
+         double value = CashFlows.npv(fixedLeg, discountCurve_, false, settle);
 
-         double npv = CashFlows.npv(fixedLeg,
-                                    discountCurve_,
-                                    discountCurve_.link.referenceDate());
+         double npv = CashFlows.npv(fixedLeg, discountCurve_,false,  discountCurve_.link.referenceDate());
 
          double fwdCashPrice = (value - spotIncome())/
                               discountCurve_.link.discount(exerciseDate);
@@ -146,9 +142,7 @@ namespace QLNet
          List<CashFlow> fixedLeg = arguments_.cashflows;
 
          // value of bond cash flows at option maturity
-         double fwdNpv = CashFlows.npv(fixedLeg,
-                                       discountCurve_,
-                                       exerciseDate);
+         double fwdNpv = CashFlows.npv(fixedLeg, discountCurve_,false, exerciseDate);
 
          DayCounter dayCounter = arguments_.paymentDayCounter;
          Frequency frequency = arguments_.frequency;
@@ -169,7 +163,7 @@ namespace QLNet
 
          double fwdDur = CashFlows.duration(fixedLeg,
                                             fwdRate,
-                                            Duration.Type.Modified,
+                                            Duration.Type.Modified,false,
                                             exerciseDate);
 
          double cashStrike = arguments_.callabilityPrices[0];

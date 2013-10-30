@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -67,7 +68,8 @@ namespace QLNet {
         }
 
         protected override void initializeDates() {
-            earliestDate_ = bond_.nextCouponDate();
+           latestDate_ = bond_.cashflows().Last().date();
+           earliestDate_ = bond_.nextCashFlowDate();
         }
     }
 
