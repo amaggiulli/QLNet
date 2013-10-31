@@ -453,7 +453,7 @@ namespace QLNet {
 
       //@{
       //! truncated schedule
-      Schedule until(Date truncationDate)
+      public Schedule until(Date truncationDate)
       {
          Schedule result = (Schedule)this.MemberwiseClone();
 
