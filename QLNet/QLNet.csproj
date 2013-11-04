@@ -142,6 +142,9 @@
     <Compile Include="Indexes\swap\JpyLiborSwap.cs" />
     <Compile Include="Indexes\swap\UsdLiborSwap.cs" />
     <Compile Include="Instruments\AsianOption.cs" />
+    <Compile Include="Instruments\AssetSwap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Instruments\AverageType.cs" />
     <Compile Include="Instruments\BarrierOption.cs" />
     <Compile Include="Instruments\BarrierType.cs" />

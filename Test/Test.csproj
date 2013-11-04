@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="T_AsianOptions.cs" />
+    <Compile Include="T_AssetSwap.cs" />
     <Compile Include="T_Bermudanswaption.cs" />
     <Compile Include="T_Inflation.cs" />
     <Compile Include="T_LinearLeastSquaresRegression.cs" />

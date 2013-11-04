@@ -197,13 +197,13 @@ namespace QLNet {
 
     //! base pricer for vanilla CMS coupons
     public abstract class CmsCouponPricer : FloatingRateCouponPricer {
-        public CmsCouponPricer()
-            : this(new Handle<SwaptionVolatilityStructure>()) {
-        }
-        public CmsCouponPricer(Handle<SwaptionVolatilityStructure> v) {
+       public CmsCouponPricer(Handle<SwaptionVolatilityStructure> v = null) {
+          if (v.link == null)
+             swaptionVol_ = new Handle<SwaptionVolatilityStructure>();
+          else
             swaptionVol_ = v;
-            if (swaptionVol_ != null)
-                swaptionVol_.registerWith(update);
+
+          swaptionVol_.registerWith(update);
         }
 
         public Handle<SwaptionVolatilityStructure> swaptionVolatility() {
@@ -271,6 +271,13 @@ namespace QLNet {
             if (pricer == null)
                 throw new ApplicationException("pricer not compatible with CMS coupon");
             c.setPricer(pricer);
+        }
+        public void visit(CappedFlooredCoupon c)
+        {
+           CmsCouponPricer pricer = pricer_ as CmsCouponPricer;
+           if (pricer == null)
+              throw new ApplicationException("pricer not compatible with CMS coupon");
+           c.setPricer(pricer);
         }
         public void visit(CappedFlooredCmsCoupon c) {
             CmsCouponPricer pricer = pricer_ as CmsCouponPricer;

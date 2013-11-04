@@ -66,6 +66,16 @@ namespace QLNet {
         //}
         //@}
         private SwapIndex swapIndex_;
+
+        // Factory - for Leg generators
+        public override CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays,
+                     InterestRateIndex index, double gearing, double spread,
+                     Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
+        {
+           return new CmsCoupon(nominal, paymentDate, startDate, endDate, fixingDays,
+                      (SwapIndex)index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
+        }
+
     }
 
 
