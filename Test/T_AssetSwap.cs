@@ -43,13 +43,13 @@ namespace TestSuite
 
          // clean-up
          public SavedSettings backup;
-         public IndexHistoryCleaner indexCleaner;
+         //public IndexHistoryCleaner indexCleaner;
 
          // initial setup
          public CommonVars() 
          {
             backup = new SavedSettings();
-            indexCleaner = new IndexHistoryCleaner();
+            //indexCleaner = new IndexHistoryCleaner();
             termStructure = new RelinkableHandle<YieldTermStructure>();
             int swapSettlementDays = 2;
             faceAmount = 100.0;
