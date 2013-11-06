@@ -37,6 +37,9 @@ namespace QLNet {
         [ThreadStatic]
         private static bool enforcesTodaysHistoricFixings_ = false;
 
+        [ThreadStatic]
+        private static bool? includeTodaysCashFlows_;
+
         public static Date evaluationDate() 
         {
             if (evaluationDate_ == null)
@@ -61,6 +64,12 @@ namespace QLNet {
             set { includeReferenceDateEvents_ = value; }
         }
 
+        public static bool? includeTodaysCashFlows
+        {
+           get { return includeTodaysCashFlows_; }
+            set { includeTodaysCashFlows_ = value; }
+        }
+
         ////////////////////////////////////////////////////
         // Observable interface
         private static event Callback notifyObserversEvent;
@@ -80,11 +89,13 @@ namespace QLNet {
         private Date evaluationDate_;
         private bool enforcesTodaysHistoricFixings_;
         private bool includeReferenceDateEvents_;
+        private bool? includeTodaysCashFlows_;
 
         public SavedSettings() {
             evaluationDate_ = Settings.evaluationDate();
             enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
             includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
+            includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
         }
 
         ~SavedSettings() {
@@ -92,6 +103,7 @@ namespace QLNet {
                 Settings.setEvaluationDate(evaluationDate_);
             Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
             Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
+            Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
         }
     }
 }
