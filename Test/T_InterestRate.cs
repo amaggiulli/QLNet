@@ -126,7 +126,8 @@ namespace TestSuite
 
             // check that the equivalent InterestRate with *same* daycounter,
             // compounding, and frequency is the *same* InterestRate
-            ir2 = ir.equivalentRate(d1, d2, ir.dayCounter(), ir.compounding(), ir.frequency());
+            //ir2 = ir.equivalentRate(d1, d2, ir.dayCounter(), ir.compounding(), ir.frequency());
+            ir2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(), d1, d2);
             error = Math.Abs(ir.rate() - ir2.rate());
             if (error > 1e-15)
                Assert.Fail("original interest rate: " + ir + " equivalent interest rate: " + ir2 + " rate error: " + error);
@@ -139,14 +140,16 @@ namespace TestSuite
 
             // check that the equivalent rate with *same* daycounter,
             // compounding, and frequency is the *same* rate
-            r2 = ir.equivalentRate(d1, d2, ir.dayCounter(), ir.compounding(), ir.frequency()).rate();
+            //r2 = ir.equivalentRate(d1, d2, ir.dayCounter(), ir.compounding(), ir.frequency()).rate();
+            r2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(),d1, d2).value();
             error = Math.Abs(ir.rate() - r2);
             if (error > 1e-15)
                Assert.Fail("original rate: " + ir + " equivalent rate: " + r2 + " error: " + error);
 
             // check that the equivalent InterestRate with *different*
             // compounding, and frequency is the *expected* InterestRate
-            ir3 = ir.equivalentRate(d1, d2, ir.dayCounter(), cases[i].comp2, cases[i].freq2);
+            //ir3 = ir.equivalentRate(d1, d2, ir.dayCounter(), cases[i].comp2, cases[i].freq2);
+            ir3 = ir.equivalentRate(ir.dayCounter(), cases[i].comp2, cases[i].freq2, d1, d2);
             expectedIR = new InterestRate(cases[i].expected, ir.dayCounter(), cases[i].comp2, cases[i].freq2);
             r3 = roundingPrecision.Round(ir3.rate());
             error = Math.Abs(r3 - expectedIR.rate());
@@ -161,7 +164,8 @@ namespace TestSuite
 
             // check that the equivalent rate with *different*
             // compounding, and frequency is the *expected* rate
-            r3 = ir.equivalentRate(d1, d2, ir.dayCounter(), cases[i].comp2, cases[i].freq2).rate();
+            //r3 = ir.equivalentRate(d1, d2, ir.dayCounter(), cases[i].comp2, cases[i].freq2).rate();
+            r3 = ir.equivalentRate(ir.dayCounter(), cases[i].comp2, cases[i].freq2,  d1, d2).value();
             r3 = roundingPrecision.Round(r3);
             error = Math.Abs(r3 - cases[i].expected);
             if (error > 1.0e-17)

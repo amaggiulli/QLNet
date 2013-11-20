@@ -27,7 +27,7 @@ namespace QLNet {
         private Handle<BlackVarianceCurve> blackVarianceCurve_;
 
         public LocalVolCurve(Handle<BlackVarianceCurve> curve)
-            : base(curve.link.calendar(), curve.link.businessDayConvention(), curve.link.dayCounter()) {
+            : base(curve.link.businessDayConvention(), curve.link.dayCounter()) {
             blackVarianceCurve_ = curve;
 
             blackVarianceCurve_.registerWith(update);
@@ -35,6 +35,7 @@ namespace QLNet {
 
         //! \name TermStructure interface
         public override Date referenceDate() { return blackVarianceCurve_.link.referenceDate(); }
+        public override Calendar calendar()  { return blackVarianceCurve_.link.calendar();   }
         public override DayCounter dayCounter() { return blackVarianceCurve_.link.dayCounter(); }
         public override Date maxDate() { return blackVarianceCurve_.link.maxDate(); }
 

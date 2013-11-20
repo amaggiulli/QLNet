@@ -72,7 +72,7 @@ namespace QLNet
             // ADD
             CashFlow c1 = new VoluntaryPrepay(prepay, schedule_[i + 1]);
             CashFlow c2 = new AmortizingPayment(actualamort, schedule_[i + 1]);
-            CashFlow c3 = new FixedRateCoupon(currentNotional, schedule_[i + 1], new InterestRate(PassThroughRate_, dCounter_, Compounding.Simple), schedule_[i], schedule_[i + 1]);
+            CashFlow c3 = new FixedRateCoupon(currentNotional, schedule_[i + 1], new InterestRate(PassThroughRate_, dCounter_, Compounding.Simple,Frequency.Annual), schedule_[i], schedule_[i + 1]);
             expectedcashflows.Add(c1);
             expectedcashflows.Add(c2);
             expectedcashflows.Add(c3);

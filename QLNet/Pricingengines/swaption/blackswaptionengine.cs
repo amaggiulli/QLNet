@@ -105,7 +105,7 @@ namespace QLNet
                   DayCounter dayCount = firstCoupon.dayCounter();
                   double fixedLegCashBPS =
                       CashFlows.bps(fixedLeg,
-                                     new InterestRate(atmForward, dayCount,QLNet.Compounding.Compounded),false,
+                                     new InterestRate(atmForward, dayCount,QLNet.Compounding.Compounded,Frequency.Annual),false,
                                      termStructure_.link.referenceDate()) ;
                   annuity = Math.Abs(fixedLegCashBPS/basisPoint);
                   break;

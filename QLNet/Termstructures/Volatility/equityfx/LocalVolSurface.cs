@@ -39,7 +39,7 @@ namespace QLNet {
 
         public LocalVolSurface(Handle<BlackVolTermStructure> blackTS, Handle<YieldTermStructure> riskFreeTS,
                                Handle<YieldTermStructure> dividendTS, Handle<Quote> underlying)
-            : base(blackTS.link.calendar(), blackTS.link.businessDayConvention(), blackTS.link.dayCounter()) {
+            : base( blackTS.link.businessDayConvention(), blackTS.link.dayCounter()) {
             blackTS_ = blackTS;
             riskFreeTS_ = riskFreeTS;
             dividendTS_ = dividendTS;
@@ -53,7 +53,7 @@ namespace QLNet {
 
         public LocalVolSurface(Handle<BlackVolTermStructure> blackTS, Handle<YieldTermStructure> riskFreeTS,
                                Handle<YieldTermStructure> dividendTS, double underlying)
-             : base(blackTS.link.calendar(), blackTS.link.businessDayConvention(), blackTS.link.dayCounter()) {
+             : base( blackTS.link.businessDayConvention(), blackTS.link.dayCounter()) {
             blackTS_ = blackTS;
             riskFreeTS_ = riskFreeTS;
             dividendTS_ = dividendTS;

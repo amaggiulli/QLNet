@@ -219,6 +219,7 @@
     <Compile Include="Math\Distributions\poissondistribution.cs" />
     <Compile Include="Math\factorial.cs" />
     <Compile Include="Math\integrals\gaussianorthogonalpolynomial.cs" />
+    <Compile Include="Math\integrals\GaussianQuadratures.cs" />
     <Compile Include="Math\integrals\Integral.cs" />
     <Compile Include="Math\integrals\Kronrodintegral.cs" />
     <Compile Include="Math\integrals\Segmentintegral.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />
     <Compile Include="Math\Interpolations\sabrinterpolation.cs" />
+    <Compile Include="Math\Interpolations\TqrEigenDecomposition.cs" />
     <Compile Include="Math\linearleastsquaresregression.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\matrixutilities\choleskydecomposition.cs" />
@@ -423,6 +425,9 @@
     <Compile Include="StochasticProcess.cs" />
     <Compile Include="Termstructures\Bootstraperror.cs" />
     <Compile Include="Termstructures\Bootstraphelper.cs" />
+    <Compile Include="Termstructures\Credit\FlatHazardRate.cs" />
+    <Compile Include="Termstructures\Credit\HazardRateStructure.cs" />
+    <Compile Include="Termstructures\Credit\ProbabilityTraits.cs" />
     <Compile Include="Termstructures\DefaultProbabilityTermStructure.cs" />
     <Compile Include="Termstructures\InflationTermStructure.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />

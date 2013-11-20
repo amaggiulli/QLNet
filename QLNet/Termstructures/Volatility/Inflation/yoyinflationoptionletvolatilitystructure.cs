@@ -34,7 +34,8 @@ namespace QLNet
 
    public class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
    {
-      public YoYOptionletVolatilitySurface() { }
+      public YoYOptionletVolatilitySurface()
+      : base (BusinessDayConvention.Following,null) {}
 
       //! \name Constructor
       //! calculate the reference date based on the global evaluation date

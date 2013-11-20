@@ -21,131 +21,278 @@ using QLNet;
 
 namespace QLNet
 {
-    //! Basic term-structure functionality
-    public class TermStructure : Extrapolator, IObservable, IObserver
-    {
-        // fields
-        private Date referenceDate_;
-        private bool updated_;
-        private int settlementDays_;
-        private DayCounter dayCounter_;
-        public virtual DayCounter dayCounter() { return dayCounter_; }
+   //! Basic term-structure functionality
+   public class TermStructure : Extrapolator, IObserver, IObservable
+   {
+        
+      #region Constructors
 
-        protected bool moving_;
-        protected Calendar calendar_;
+      // There are three ways in which a term structure can keep
+      // track of its reference date.  The first is that such date
+      // is fixed; the second is that it is determined by advancing
+      // the current date of a given number of business days; and
+      // the third is that it is based on the reference date of
+      // some other structure.
+      // 
+      // In the first case, the constructor taking a date is to be
+      // used; the default implementation of referenceDate() will
+      // then return such date. In the second case, the constructor
+      // taking a number of days and a calendar is to be used;
+      // referenceDate() will return a date calculated based on the
+      // current evaluation date, and the term structure and its
+      // observers will be notified when the evaluation date
+      // changes. In the last case, the referenceDate() method must
+      // be overridden in derived classes so that it fetches and
+      // return the appropriate date.
+       
 
-        // properties
-        public virtual Calendar calendar() { return calendar_; }
-        public virtual int settlementDays() { return settlementDays_; }
-        //! the latest time for which the curve can return values
-        public virtual double maxTime() { return timeFromReference(maxDate()); }
-        //! the latest date for which the curve can return values. should be overridden later
-        public virtual Date maxDate() { throw new NotSupportedException(); }
-        //! the date at which discount = 1.0 and/or variance = 0.0
-        public virtual Date referenceDate()
-        {
-            if (!updated_)
-            {
-                Date today = Settings.evaluationDate();
-                referenceDate_ = calendar_.advance(today, settlementDays_, TimeUnit.Days);
-                updated_ = true;
-            }
-            return referenceDate_;
-        }
+      //! default constructor
+      /*! \warning term structures initialized by means of this
+                   constructor must manage their own reference date
+                   by overriding the referenceDate() method.
+        */
+        
+      public TermStructure(DayCounter dc = null)
+      {
+         moving_ = false;
+         updated_ = true;
+         settlementDays_ = null;
+         dayCounter_ = dc;
+      }
+        
+      //! initialize with a fixed reference date
+      public TermStructure(Date referenceDate,Calendar calendar = null,DayCounter dc = null)
+      {
+         moving_ = false;
+         updated_ = true;
+         calendar_ = calendar;
+         referenceDate_ = referenceDate;
+         settlementDays_= null;
+         dayCounter_ = dc;
+      }
+        
+      //! calculate the reference date based on the global evaluation date
+      public TermStructure(int settlementDays, Calendar cal, DayCounter dc = null)
+      {
+         moving_ = true;
+         updated_ = false;
+         calendar_ = cal;
+         settlementDays_ = settlementDays;
+         dayCounter_ = dc;
 
-        /* Constructors
-           There are three ways in which a term structure can keep track of its reference date:
-            * the first is that such date is fixed;
-            * the second is that it is determined by advancing the current date of a given number of business days;
-            * the third is that it is based on the reference date of some other structure.
+         Settings.registerWith(update);
+      }
+      
 
-         * In the first case, the constructor taking a date is to be used;
-            * the default implementation of referenceDate() will then return such date.
-         * In the second case, the constructor taking a number of days and a calendar is to be used;
-            * referenceDate() will return a date calculated based on the current evaluation date,
-            * and the term structure and its observers will be notified when the evaluation date changes.
-         * In the last case, the referenceDate() method must be overridden in derived classes
-            * so that it fetches and return the appropriate date.  */
+      #endregion
 
-        // default constructor
-        // term structures initialized by means of this constructor must manage their own reference date 
-        // by overriding the referenceDate() method.
-        public TermStructure() : this(new DayCounter()) { }
-        public TermStructure(DayCounter dc)
-        {
-            moving_ = false;
-            updated_ = true;
-            settlementDays_ = default(int);
-            dayCounter_ = dc;
-        }
+      #region Dates and Time
 
-        // initialize with a fixed reference date
-        public TermStructure(Date referenceDate) : this(referenceDate, new Calendar(), new DayCounter()) { }
-        public TermStructure(Date referenceDate, Calendar calendar, DayCounter dc)
-            : this(dc)
-        {
-            calendar_ = calendar;
-            referenceDate_ = referenceDate;
-        }
-
-        public TermStructure(int settlementDays, Calendar cal) : this(settlementDays, cal, new DayCounter()) { }
-        public TermStructure(int settlementDays, Calendar cal, DayCounter dc)
-        {
-            moving_ = true;
-            calendar_ = cal;
-            updated_ = false;
-            settlementDays_ = settlementDays;
-            dayCounter_ = dc;
-
-            // observe evaluationDate
-            Settings.registerWith(update);
-
-            // verify immediately if calendar and settlementDays are ok
+      //! the day counter used for date/time conversion
+      public virtual DayCounter dayCounter() {return dayCounter_;}
+      //! date/time conversion
+      public double timeFromReference( Date date) { return dayCounter().yearFraction(referenceDate(), date);}
+      //! the latest date for which the curve can return values
+      public virtual Date maxDate() { throw new NotSupportedException(); }
+      //! the latest time for which the curve can return values
+      public virtual double maxTime() {return timeFromReference(maxDate());}
+      //! the date at which discount = 1.0 and/or variance = 0.0
+      public virtual Date referenceDate()
+      {
+         if (!updated_) 
+         {
             Date today = Settings.evaluationDate();
-            referenceDate_ = calendar_.advance(today, settlementDays_, TimeUnit.Days);
-        }
+            referenceDate_ = calendar().advance(today, settlementDays(), TimeUnit.Days);
+            updated_ = true;
+         }
+         return referenceDate_;
+      }
+      //! the calendar used for reference and/or option date calculation
+      public virtual Calendar calendar() {return calendar_;}
+      //! the settlementDays used for reference date calculation
+      public virtual int settlementDays() 
+      {
+         Utils.QL_REQUIRE(settlementDays_!=null, "settlement days not provided for this instance");
+         return settlementDays_.Value;
+      }
+        
+      #endregion
 
-        //! date/time conversion
-        public double timeFromReference(Date d) { return dayCounter().yearFraction(referenceDate(), d); }
+      #region observable & observer interface
 
-        //! date-range check
-        protected virtual void checkRange(Date d, bool extrapolate)
-        {
-            if (!(d >= referenceDate()))
-                throw new ApplicationException("date (" + d + ") before reference date (" + referenceDate() + ")");
+      // observer interface
+      public override void update()
+      {
+         if (moving_)
+               updated_ = false;
 
-            if (!(extrapolate || allowsExtrapolation() || d <= maxDate()))
-                throw new ApplicationException("date (" + d + ") is past max curve date (" + maxDate() + ")");
-        }
-        //! time-range check
-        protected void checkRange(double t, bool extrapolate)
-        {
-            if (t < 0) throw new ArgumentException("negative time (" + t + ") is given");
+         // recheck. this is in order to notify observers in the base method of LazyObject
+         calculated_ = true;
+         base.update();
+         // otherwise the following code would be required
+         //if (notifyObservers != null)
+         //    notifyObservers();
+         // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
+      }
+      #endregion
 
-            if (!(extrapolate || allowsExtrapolation() || t <= maxTime() || Utils.close_enough(t, maxTime())))
-                throw new ArgumentException("time (" + t + ") is past max curve time (" + maxTime() + ")");
-        }
+      //! date-range check
+      protected virtual void checkRange(Date d, bool extrapolate)
+      {
+         Utils.QL_REQUIRE(d >= referenceDate(),
+                   "date (" + d + ") before reference date (" +
+                   referenceDate() + ")");
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(),
+                    "date (" + d + ") is past max curve date ("
+                             + maxDate() + ")");
+      }
 
-        #region observable & observer interface
-        // observable interface
-        // recheck, this is kind of wrong because of the lazyobject from which this one inherits though it should not
-        //public delegate void Callback();
-        //public event Callback notifyObservers;
+      //! time-range check
+      protected void checkRange(double t, bool extrapolate)
+      {
+         Utils.QL_REQUIRE(t >= 0.0,
+                  "negative time (" + t + ") given");
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation()
+                    || t <= maxTime() || Utils.close_enough(t, maxTime()),
+                    "time (" + t + ") is past max curve time ("
+                             + maxTime() + ")");
+      }
 
-        // observer interface
-        public override void update()
-        {
-            if (moving_)
-                updated_ = false;
+      protected  bool moving_;
+      protected  bool updated_;
 
-            // recheck. this is in order to notify observers in the base method of LazyObject
-            calculated_ = true;
-            base.update();
-            // otherwise the following code would be required
-            //if (notifyObservers != null)
-            //    notifyObservers();
-            // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
-        }
-        #endregion
-    }
+       
+      private  Calendar calendar_;
+      private  Date referenceDate_;
+      private  int? settlementDays_;
+      private  DayCounter dayCounter_;
+   }
+
+    ////! Basic term-structure functionality
+    //public class TermStructure : Extrapolator, IObservable, IObserver
+    //{
+    //    // fields
+    //    private Date referenceDate_;
+    //    private bool updated_;
+    //    private int settlementDays_;
+    //    private DayCounter dayCounter_;
+    //    public virtual DayCounter dayCounter() { return dayCounter_; }
+
+    //    protected bool moving_;
+    //    protected Calendar calendar_;
+
+    //    // properties
+    //    public virtual Calendar calendar() { return calendar_; }
+    //    public virtual int settlementDays() { return settlementDays_; }
+    //    //! the latest time for which the curve can return values
+    //    public virtual double maxTime() { return timeFromReference(maxDate()); }
+    //    //! the latest date for which the curve can return values. should be overridden later
+    //    public virtual Date maxDate() { throw new NotSupportedException(); }
+    //    //! the date at which discount = 1.0 and/or variance = 0.0
+    //    public virtual Date referenceDate()
+    //    {
+    //        if (!updated_)
+    //        {
+    //            Date today = Settings.evaluationDate();
+    //            referenceDate_ = calendar_.advance(today, settlementDays_, TimeUnit.Days);
+    //            updated_ = true;
+    //        }
+    //        return referenceDate_;
+    //    }
+
+    //    /* Constructors
+    //       There are three ways in which a term structure can keep track of its reference date:
+    //        * the first is that such date is fixed;
+    //        * the second is that it is determined by advancing the current date of a given number of business days;
+    //        * the third is that it is based on the reference date of some other structure.
+
+    //     * In the first case, the constructor taking a date is to be used;
+    //        * the default implementation of referenceDate() will then return such date.
+    //     * In the second case, the constructor taking a number of days and a calendar is to be used;
+    //        * referenceDate() will return a date calculated based on the current evaluation date,
+    //        * and the term structure and its observers will be notified when the evaluation date changes.
+    //     * In the last case, the referenceDate() method must be overridden in derived classes
+    //        * so that it fetches and return the appropriate date.  */
+
+    //    // default constructor
+    //    // term structures initialized by means of this constructor must manage their own reference date 
+    //    // by overriding the referenceDate() method.
+    //    public TermStructure() : this(new DayCounter()) { }
+    //    public TermStructure(DayCounter dc)
+    //    {
+    //        moving_ = false;
+    //        updated_ = true;
+    //        settlementDays_ = default(int);
+    //        dayCounter_ = dc;
+    //    }
+
+    //    // initialize with a fixed reference date
+    //    public TermStructure(Date referenceDate) : this(referenceDate, new Calendar(), new DayCounter()) { }
+    //    public TermStructure(Date referenceDate, Calendar calendar, DayCounter dc)
+    //        : this(dc)
+    //    {
+    //        calendar_ = calendar;
+    //        referenceDate_ = referenceDate;
+    //    }
+
+    //    public TermStructure(int settlementDays, Calendar cal) : this(settlementDays, cal, new DayCounter()) { }
+    //    public TermStructure(int settlementDays, Calendar cal, DayCounter dc)
+    //    {
+    //        moving_ = true;
+    //        calendar_ = cal;
+    //        updated_ = false;
+    //        settlementDays_ = settlementDays;
+    //        dayCounter_ = dc;
+
+    //        // observe evaluationDate
+    //        Settings.registerWith(update);
+
+    //        // verify immediately if calendar and settlementDays are ok
+    //        Date today = Settings.evaluationDate();
+    //        referenceDate_ = calendar_.advance(today, settlementDays_, TimeUnit.Days);
+    //    }
+
+    //    //! date/time conversion
+    //    public double timeFromReference(Date d) { return dayCounter().yearFraction(referenceDate(), d); }
+
+    //    //! date-range check
+    //    protected virtual void checkRange(Date d, bool extrapolate)
+    //    {
+    //        if (!(d >= referenceDate()))
+    //            throw new ApplicationException("date (" + d + ") before reference date (" + referenceDate() + ")");
+
+    //        if (!(extrapolate || allowsExtrapolation() || d <= maxDate()))
+    //            throw new ApplicationException("date (" + d + ") is past max curve date (" + maxDate() + ")");
+    //    }
+    //    //! time-range check
+    //    protected void checkRange(double t, bool extrapolate)
+    //    {
+    //        if (t < 0) throw new ArgumentException("negative time (" + t + ") is given");
+
+    //        if (!(extrapolate || allowsExtrapolation() || t <= maxTime() || Utils.close_enough(t, maxTime())))
+    //            throw new ArgumentException("time (" + t + ") is past max curve time (" + maxTime() + ")");
+    //    }
+
+    //    #region observable & observer interface
+    //    // observable interface
+    //    // recheck, this is kind of wrong because of the lazyobject from which this one inherits though it should not
+    //    //public delegate void Callback();
+    //    //public event Callback notifyObservers;
+
+    //    // observer interface
+    //    public override void update()
+    //    {
+    //        if (moving_)
+    //            updated_ = false;
+
+    //        // recheck. this is in order to notify observers in the base method of LazyObject
+    //        calculated_ = true;
+    //        base.update();
+    //        // otherwise the following code would be required
+    //        //if (notifyObservers != null)
+    //        //    notifyObservers();
+    //        // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
+    //    }
+    //    #endregion
+    //}
 }

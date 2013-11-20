@@ -21,57 +21,119 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
-    //! Volatility term structure
-    /*! This abstract class defines the interface of concrete volatility structures which will be derived from this one. */
-    public class VolatilityTermStructure : TermStructure {
-        //! the business day convention used in tenor to date conversion
-        private BusinessDayConvention bdc_;
-        public virtual BusinessDayConvention businessDayConvention() { return bdc_; }
+namespace QLNet 
+{
+   //! Volatility term structure
+   /*! This abstract class defines the interface of concrete
+       volatility structures which will be derived from this one.
 
-
-        // parameterless ctor is required for Handles
-        public VolatilityTermStructure() { }
-
-        //! default constructor
-        /*! \warning term structures initialized by means of this constructor must manage their own reference date
-                     by overriding the referenceDate() method. */
-        // public VolatilityTermStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
-        public VolatilityTermStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(dc) {
-            bdc_ = bdc;
-            calendar_ = cal;
-        }
-
-        //! initialize with a fixed reference date
-        // public VolatilityTermStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter())
-        public VolatilityTermStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(referenceDate, cal, dc) {
-            bdc_ = bdc;
-        }
-            
-        //! calculate the reference date based on the global evaluation date
-        // public VolatilityTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
-        public VolatilityTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(settlementDays, cal, dc) {
-            bdc_ = bdc;
-        }
-
-        // swaption style
-        public Date optionDateFromTenor(Period p) {
-            return calendar().advance(referenceDate(), p, businessDayConvention());
-        }
-
-        //! the minimum strike for which the term structure can return vols
-        public virtual double minStrike() { throw new NotSupportedException(); }
-        //! the maximum strike for which the term structure can return vols
-        public virtual double maxStrike() { throw new NotSupportedException(); }
+   */
+   public class VolatilityTermStructure : TermStructure 
+   {
+      #region Constructors
       
-        //! strike-range check
-        protected void checkStrike(double strike, bool extrapolate) {
-            if (!(extrapolate || allowsExtrapolation() || (strike >= minStrike() && strike <= maxStrike())))
-                throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["
-                                               + minStrike() + "," + maxStrike() + "]");
-        }
+      /*! \warning term structures initialized by means of this
+                   constructor must manage their own reference date
+                   by overriding the referenceDate() method.
+      */
+      public VolatilityTermStructure(BusinessDayConvention bdc, DayCounter dc = null)
+         :base(dc)
+      {
+         bdc_ = bdc;
+      }
+      //! initialize with a fixed reference date
+      public VolatilityTermStructure(Date referenceDate,Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
+         :base(referenceDate, cal, dc)
+      {
+         bdc_ = bdc;
+      }
+      //! calculate the reference date based on the global evaluation date
+      public VolatilityTermStructure(int settlementDays,Calendar cal, BusinessDayConvention bdc, DayCounter dc =null)
+         :base(settlementDays, cal, dc)
+      {
+         bdc_ = bdc;
+      }
+
+      #endregion
+
+      //! the business day convention used in tenor to date conversion
+      public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
+
+      //! period/date conversion
+      public Date optionDateFromTenor(Period p)
+      {
+         // swaption style
+         return calendar().advance(referenceDate(), p, businessDayConvention());
+      }
+
+      //! the minimum strike for which the term structure can return vols
+      public virtual double minStrike() { throw new NotSupportedException(); }
+
+      //! the maximum strike for which the term structure can return vols
+      public virtual double maxStrike() { throw new NotSupportedException(); }
+      
+      //! strike-range check
+      protected void checkStrike(double k, bool extrapolate)
+      {
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
+                  (k >= minStrike() && k <= maxStrike()),
+                  "strike (" + k + ") is outside the curve domain ["
+                  + minStrike() + "," + maxStrike() + "]");
+      }
+
+      private BusinessDayConvention bdc_;
+
     }
+    ////! Volatility term structure
+    ///*! This abstract class defines the interface of concrete volatility structures which will be derived from this one. */
+    //public class VolatilityTermStructure : TermStructure {
+    //    //! the business day convention used in tenor to date conversion
+    //    private BusinessDayConvention bdc_;
+    //    public virtual BusinessDayConvention businessDayConvention() { return bdc_; }
+
+
+    //    // parameterless ctor is required for Handles
+    //    public VolatilityTermStructure() { }
+
+    //    //! default constructor
+    //    /*! \warning term structures initialized by means of this constructor must manage their own reference date
+    //                 by overriding the referenceDate() method. */
+    //    // public VolatilityTermStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
+    //    public VolatilityTermStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc)
+    //        : base(dc) {
+    //        bdc_ = bdc;
+    //        calendar_ = cal;
+    //    }
+
+    //    //! initialize with a fixed reference date
+    //    // public VolatilityTermStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter())
+    //    public VolatilityTermStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
+    //        : base(referenceDate, cal, dc) {
+    //        bdc_ = bdc;
+    //    }
+            
+    //    //! calculate the reference date based on the global evaluation date
+    //    // public VolatilityTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
+    //    public VolatilityTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
+    //        : base(settlementDays, cal, dc) {
+    //        bdc_ = bdc;
+    //    }
+
+    //    // swaption style
+    //    public Date optionDateFromTenor(Period p) {
+    //        return calendar().advance(referenceDate(), p, businessDayConvention());
+    //    }
+
+    //    //! the minimum strike for which the term structure can return vols
+    //    public virtual double minStrike() { throw new NotSupportedException(); }
+    //    //! the maximum strike for which the term structure can return vols
+    //    public virtual double maxStrike() { throw new NotSupportedException(); }
+      
+    //    //! strike-range check
+    //    protected void checkStrike(double strike, bool extrapolate) {
+    //        if (!(extrapolate || allowsExtrapolation() || (strike >= minStrike() && strike <= maxStrike())))
+    //            throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["
+    //                                           + minStrike() + "," + maxStrike() + "]");
+    //    }
+    //}
 }

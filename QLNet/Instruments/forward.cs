@@ -127,10 +127,7 @@ namespace QLNet {
 
 			double tenor = dayCounter.yearFraction(settlementDate,maturityDate_) ;
 			double compoundingFactor = forwardValue/ (underlyingSpotValue-spotIncome(incomeDiscountCurve_)) ;
-			return InterestRate.impliedRate(compoundingFactor,
-											tenor,
-											dayCounter,
-											compoundingConvention);
+			return InterestRate.impliedRate(compoundingFactor,dayCounter,compoundingConvention,Frequency.Annual,tenor);
 		}
 
 		protected override void performCalculations() {

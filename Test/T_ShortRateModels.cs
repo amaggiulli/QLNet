@@ -173,9 +173,7 @@ namespace TestSuite
                    new InterpolatedDiscountCurve<LogLinear>(
                        dates.ToList<Date>(),
                        discounts.ToList<double>(),
-                       new Actual365Fixed(),
-                       new Calendar(),
-                       Interpolator )
+                       new Actual365Fixed(),new Calendar(), null, null , Interpolator)
             );
 
             HullWhite model = new HullWhite(termStructure);
