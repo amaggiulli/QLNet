@@ -1,4 +1,23 @@
-﻿using System;
+﻿/*
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+
+ This file is part of QLNet Project http://qlnet.sourceforge.net/
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is  
+ available online at <http://qlnet.sourceforge.net/License.html>.
+  
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+ 
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +53,6 @@ namespace QLNet
 
       #region Bond interface
 
-      //@{
       //! accrued amount at a given date
       /*! The default bond settlement is used if no date is given. */
       public override double accruedAmount(Date d = null)
@@ -143,17 +161,17 @@ namespace QLNet
         }
 
       }
-      //! \name Inspectors
-      //@{
+      #region Inspectors
+      
       public int size() { return n_;}
       public List<BTP> btps() {return btps_;}
       public List<Handle<Quote>> cleanPriceQuotes() { return quotes_;}
       public List<double> outstandings() { return outstandings_;}
       public List<double> weights()  { return weights_;}
       public double outstanding()  { return outstanding_;}
-      //@}
-      //! \name Observer interface
-      //@{
+
+      #endregion
+
       #region Observer & observable
       public event Callback notifyObserversEvent;
       public void registerWith(Callback handler) { notifyObserversEvent += handler; }
@@ -170,7 +188,6 @@ namespace QLNet
       // observer interface
       public void update() { notifyObservers(); }
       #endregion
-      //@}
 
       
       private   List<BTP> btps_;
@@ -179,7 +196,7 @@ namespace QLNet
       private   double outstanding_;
       private   int n_;
       private   List<double> weights_;
-    };
+    }
 
    public class RendistatoCalculator : LazyObject 
    {
@@ -210,8 +227,9 @@ namespace QLNet
                                              .withDiscountingTermStructure(discountCurve_);
          }
       }
-      //! \name Calculations
-      //@{
+      
+      #region Calculations
+      
       public double yield()
       {
          double inner_product = 0;
@@ -251,9 +269,10 @@ namespace QLNet
          calculate();
          return swapBondDurations_;
       }
-      //@}
-      //! \name Equivalent Swap proxy
-      //@{
+      #endregion
+
+      #region Equivalent Swap proxy
+      
       public VanillaSwap equivalentSwap()
       {
          calculate();
@@ -283,10 +302,11 @@ namespace QLNet
       {
          return yield() - equivalentSwapRate();
       }
-      //@}
       
-      //! \name LazyObject interface
-      //@{
+      #endregion
+
+      #region LazyObject interface
+      
       protected override void performCalculations()
       {
          List<BTP> btps = basket_.btps();
@@ -368,8 +388,9 @@ namespace QLNet
 
         return;
       }
-      //@}
       
+      #endregion
+
       private RendistatoBasket basket_;
       private Euribor euriborIndex_;
       private Handle<YieldTermStructure> discountCurve_;
