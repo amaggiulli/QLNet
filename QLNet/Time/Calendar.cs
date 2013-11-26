@@ -403,7 +403,19 @@ namespace QLNet
         //@{
         public static bool operator ==(Calendar c1, Calendar c2)
         {
-            return (c1.empty() && c2.empty())
+           // If both are null, or both are same instance, return true.
+           if (System.Object.ReferenceEquals(c1, c2))
+           {
+              return true;
+           }
+
+           // If one is null, but not both, return false.
+           if (((object)c1 == null) || ((object)c2 == null))
+           {
+              return false;
+           }
+           
+           return (c1.empty() && c2.empty())
            || (!c1.empty() && !c2.empty() && c1.name() == c2.name());
         }
 
