@@ -157,6 +157,7 @@
     <Compile Include="Instruments\Bonds\AmortizingFixedRateBond.cs" />
     <Compile Include="Instruments\Bonds\AmortizingFloatingRateBond.cs" />
     <Compile Include="Instruments\Bonds\BondFactory.cs" />
+    <Compile Include="Instruments\Bonds\BTP.cs" />
     <Compile Include="Instruments\Bonds\CallableBond.cs" />
     <Compile Include="Instruments\Bonds\CmsRateBond.cs" />
     <Compile Include="Instruments\Bonds\ConvertibleBond.cs" />
