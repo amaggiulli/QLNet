@@ -302,15 +302,7 @@ namespace QLNet
             public WesternImpl() { }
             public WesternImpl(Calendar c) : base(c) { }
 
-            public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
-            /// <summary>
-            /// Expressed relative to first day of year
-            /// </summary>
-            /// <param name="y"></param>
-            /// <returns></returns>
-            public int easterMonday(int y)
-            {
-                int[] EasterMonday = {
+            int[] EasterMonday = {
 		                  98,  90, 103,  95, 114, 106,  91, 111, 102,   // 1901-1909
 		             87, 107,  99,  83, 103,  95, 115,  99,  91, 111,   // 1910-1919
 		             96,  87, 107,  92, 112, 103,  95, 108, 100,  91,   // 1920-1929
@@ -342,6 +334,15 @@ namespace QLNet
 		            108,  92, 112, 104,  89, 108, 100,  85, 105,  96,   // 2180-2189
 		            116, 101,  93, 112,  97,  89, 109, 100,  85, 105    // 2190-2199
 		        };
+
+            public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
+            /// <summary>
+            /// Expressed relative to first day of year
+            /// </summary>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public int easterMonday(int y)
+            {
                 return EasterMonday[y - 1901];
             }
         }
@@ -355,15 +356,7 @@ namespace QLNet
             public OrthodoxImpl() { }
             public OrthodoxImpl(Calendar c) : base(c) { }
 
-            public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
-            /// <summary>
-            /// expressed relative to first day of year
-            /// </summary>
-            /// <param name="y"></param>
-            /// <returns></returns>
-            public int easterMonday(int y)
-            {
-                int[] EasterMonday = {
+            int[] EasterMonday = {
 		                 105, 118, 110, 102, 121, 106, 126, 118, 102,   // 1901-1909
 		            122, 114,  99, 118, 110,  95, 115, 106, 126, 111,   // 1910-1919
 		            103, 122, 107,  99, 119, 110, 123, 115, 107, 126,   // 1920-1929
@@ -395,6 +388,15 @@ namespace QLNet
 		            108,  99, 119, 104, 124, 115, 100, 120, 112, 103,   // 2180-2189
 		            116, 108, 128, 119, 104, 124, 116, 100, 120, 112    // 2190-2199
 		        };
+
+            public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
+            /// <summary>
+            /// expressed relative to first day of year
+            /// </summary>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public int easterMonday(int y)
+            {
                 return EasterMonday[y - 1901];
             }
         }
