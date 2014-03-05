@@ -35,7 +35,7 @@ namespace QLNet {
         // required for generics
         public FDAmericanEngine() { }
 
-        public FDAmericanEngine(GeneralizedBlackScholesProcess process, int timeSteps , int gridPoints , 
+        public FDAmericanEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100  , int gridPoints = 100 , 
 			  bool timeDependent = false) 
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
