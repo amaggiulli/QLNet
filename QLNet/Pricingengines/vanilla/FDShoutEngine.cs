@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -33,13 +34,13 @@ namespace QLNet {
         // required for generics
         public FDShoutEngine() { }
 
-        public FDShoutEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints)
-            : this(process, timeSteps, gridPoints, false) { }
-        public FDShoutEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+        public FDShoutEngine(GeneralizedBlackScholesProcess process, int timeSteps , int gridPoints , 
+			  bool timeDependent = false)
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
-        public IFDEngine factory(GeneralizedBlackScholesProcess process) {
-            return new FDShoutEngine(process, 100, 100, false);
+		  public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100 )
+		  {
+			  return new FDShoutEngine(process, timeSteps, gridPoints);
         }
     }
 }

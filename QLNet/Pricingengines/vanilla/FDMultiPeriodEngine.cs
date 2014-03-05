@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -24,7 +25,7 @@ using System.Text;
 namespace QLNet {
     public class FDMultiPeriodEngine : FDConditionEngineTemplate {
         protected List<Event> events_ = new List<Event>();
-        protected List<double> stoppingTimes_;
+        protected List<double> stoppingTimes_ = new List<double>();
         protected int timeStepPerPeriod_;
         protected FiniteDifferenceModel<CrankNicolson<TridiagonalOperator>> model_;
 
@@ -33,14 +34,16 @@ namespace QLNet {
 
         //protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process,
         //     int gridPoints = 100, int timeSteps = 100, bool timeDependent = false)    
-        protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process, int gridPoints, int timeSteps, bool timeDependent)    
-            : base(process, gridPoints, timeSteps, timeDependent) {
+        protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process, int timeSteps,  int gridPoints, bool timeDependent)
+			  : base(process, timeSteps, gridPoints, timeDependent)
+		  {
             timeStepPerPeriod_ = timeSteps;
         }
 
         protected virtual void executeIntermediateStep(int step) { throw new NotSupportedException(); }
 
-        protected void initializeStepConditionImpl() {
+
+        protected override void initializeStepCondition() {
             stepCondition_ = new NullCondition<Vector>();
         }
 

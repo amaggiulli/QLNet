@@ -390,15 +390,18 @@
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />
     <Compile Include="Pricingengines\Swap\treeswapengine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
     <Compile Include="Pricingengines\vanilla\binomialengine.cs" />
     <Compile Include="Pricingengines\vanilla\bjerksundstenslandengine.cs" />
     <Compile Include="Pricingengines\vanilla\discretizedvanillaoption.cs" />
     <Compile Include="Pricingengines\vanilla\FDAmericanEngine.cs" />
-    <Compile Include="Pricingengines\vanilla\fdbermudanengine.cs" />
-    <Compile Include="Pricingengines\vanilla\fdconditions.cs" />
-    <Compile Include="Pricingengines\vanilla\fddividendengine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDBermudanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDConditions.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendAmericanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDMultiPeriodEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDShoutEngine.cs" />
@@ -547,6 +550,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

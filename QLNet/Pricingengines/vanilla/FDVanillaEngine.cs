@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -156,7 +157,7 @@ namespace QLNet {
     // this is the interface to allow generic use of FDAmericanEngine and FDShoutEngine
     // those engines are shortcuts to FDEngineAdapter
     public interface IFDEngine : IPricingEngine {
-        IFDEngine factory(GeneralizedBlackScholesProcess process);
+        IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100);
     }
 
     public class FDEngineAdapter<Base, Engine> : FDVanillaEngine, IGenericEngine

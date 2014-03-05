@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -63,8 +64,7 @@ namespace QLNet {
               from earliestDate and not earlier
     */
     public class AmericanExercise : EarlyExercise {
-        public AmericanExercise(Date earliestDate, Date latestDate) : this(earliestDate, latestDate, false) { }
-        public AmericanExercise(Date earliestDate, Date latestDate, bool payoffAtExpiry)
+        public AmericanExercise(Date earliestDate, Date latestDate, bool payoffAtExpiry = false)
             : base(Type.American, payoffAtExpiry) {
 
             if (!(earliestDate <= latestDate))
@@ -74,7 +74,7 @@ namespace QLNet {
             dates_[1] = latestDate;
         }
 
-        public AmericanExercise(Date latest, bool payoffAtExpiry) : base(Type.American, payoffAtExpiry) {
+        public AmericanExercise(Date latest, bool payoffAtExpiry = false) : base(Type.American, payoffAtExpiry) {
             dates_ = new InitializedList<Date>(2);
             dates_[0] = Date.minDate();
             dates_[1] = latest;
