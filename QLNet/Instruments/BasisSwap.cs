@@ -45,8 +45,8 @@ namespace QLNet
       private BusinessDayConvention paymentConvention_;
 
       // results
-      private double? fairSpread1_;
-      private double? fairSpread2_;
+      //private double? fairSpread1_;
+      //private double? fairSpread2_;
 
 
       // constructor

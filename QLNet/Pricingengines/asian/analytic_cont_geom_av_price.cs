@@ -118,7 +118,7 @@ namespace QLNet
             try{
                 results_.theta = black.theta(spot, t_v);
             }
-            catch (System.Exception e/*Error*/){
+            catch (System.Exception /*Error*/){
                 results_.theta = double.NaN; //Null<Real>();
             }
         }

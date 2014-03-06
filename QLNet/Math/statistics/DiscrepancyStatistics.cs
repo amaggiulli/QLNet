@@ -44,9 +44,9 @@ namespace QLNet
 
         public void add<Sequence>(Sequence sample) { add(sample, 1); }
 
-        public void add(List<double> begin) { add(begin, 1); }
+        public override void add(List<double> begin) { add(begin, 1); }
 
-        public void add(List<double> begin, double weight){
+        public override void add(List<double> begin, double weight){
             base.add(begin, weight);
             int k, m, N;
             N = samples();
@@ -95,7 +95,7 @@ namespace QLNet
         void reset() { reset(0); }
 
 
-        public void reset(int dimension){
+        public override void reset(int dimension){
             if (dimension == 0)           // if no size given,
                 dimension = dimension_;   // keep the current one
             if (!(dimension != 1))

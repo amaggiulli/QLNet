@@ -1,4 +1,5 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -24,25 +25,26 @@ using System.Text;
 
 namespace QLNet {
     //! %Mexican calendars
-    /*! Holidays for the Mexican stock exchange
-        (data from <http://www.bmv.com.mx/>):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st</li>
-        <li>Constitution Day, February 5th</li>
-        <li>Birthday of Benito Juarez, March 21st</li>
-        <li>Holy Thursday</li>
-        <li>Good Friday</li>
-        <li>Labour Day, May 1st</li>
-        <li>National Day, September 16th</li>
-        <li>Our Lady of Guadalupe, December 12th</li>
-        <li>Christmas, December 25th</li>
-        </ul>
+   /*! Holidays for the Mexican stock exchange
+       (data from <http://www.bmv.com.mx/>):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st</li>
+       <li>Constitution Day, first Monday in February (February 5th before 2006)</li>
+       <li>Birthday of Benito Juarez, third Monday in February (March 21st before 2006)</li>
+       <li>Holy Thursday</li>
+       <li>Good Friday</li>
+       <li>Labour Day, May 1st</li>
+       <li>National Day, September 16th</li>
+       <li>Revolution Day, third Monday in November (November 20th before 2006)</li> 
+       <li>Our Lady of Guadalupe, December 12th</li>
+       <li>Christmas, December 25th</li>
+       </ul>
 
-        \ingroup calendars
-    */
-    public class Mexico : Calendar {
+       \ingroup calendars
+   */
+   public class Mexico : Calendar {
         public Mexico() : base(Impl.Singleton) { }
 
         class Impl : Calendar.WesternImpl {
@@ -60,9 +62,11 @@ namespace QLNet {
                     // New Year's Day
                     || (d == 1 && m == Month.January)
                     // Constitution Day
-                    || (d == 5 && m == Month.February)
+                    || (y <= 2005 && d == 5 && m == Month.February)
+                    || (y >= 2006 && d <= 7 && w == DayOfWeek.Monday && m == Month.February) 
                     // Birthday of Benito Juarez
-                    || (d == 21 && m == Month.March)
+                    || (y <= 2005 && d == 21 && m == Month.March)
+                    || (y >= 2006 && (d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.March) 
                     // Holy Thursday
                     || (dd == em-4)
                     // Good Friday
@@ -71,6 +75,9 @@ namespace QLNet {
                     || (d == 1 && m == Month.May)
                     // National Day
                     || (d == 16 && m == Month.September)
+                    // Revolution Day 
+                    || (y <= 2005 && d == 20 && m == Month.November)
+                    || (y >= 2006 && (d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.November) 
                     // Our Lady of Guadalupe
                     || (d == 12 && m == Month.December)
                     // Christmas

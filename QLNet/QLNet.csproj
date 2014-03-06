@@ -142,6 +142,9 @@
     <Compile Include="Indexes\swap\JpyLiborSwap.cs" />
     <Compile Include="Indexes\swap\UsdLiborSwap.cs" />
     <Compile Include="Instruments\AsianOption.cs" />
+    <Compile Include="Instruments\AssetSwap.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Instruments\AverageType.cs" />
     <Compile Include="Instruments\BarrierOption.cs" />
     <Compile Include="Instruments\BarrierType.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Instruments\Bonds\AmortizingFixedRateBond.cs" />
     <Compile Include="Instruments\Bonds\AmortizingFloatingRateBond.cs" />
     <Compile Include="Instruments\Bonds\BondFactory.cs" />
+    <Compile Include="Instruments\Bonds\BTP.cs" />
     <Compile Include="Instruments\Bonds\CallableBond.cs" />
     <Compile Include="Instruments\Bonds\CmsRateBond.cs" />
     <Compile Include="Instruments\Bonds\ConvertibleBond.cs" />
@@ -216,6 +220,7 @@
     <Compile Include="Math\Distributions\poissondistribution.cs" />
     <Compile Include="Math\factorial.cs" />
     <Compile Include="Math\integrals\gaussianorthogonalpolynomial.cs" />
+    <Compile Include="Math\integrals\GaussianQuadratures.cs" />
     <Compile Include="Math\integrals\Integral.cs" />
     <Compile Include="Math\integrals\Kronrodintegral.cs" />
     <Compile Include="Math\integrals\Segmentintegral.cs" />
@@ -233,6 +238,7 @@
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />
     <Compile Include="Math\Interpolations\sabrinterpolation.cs" />
+    <Compile Include="Math\Interpolations\TqrEigenDecomposition.cs" />
     <Compile Include="Math\linearleastsquaresregression.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\matrixutilities\choleskydecomposition.cs" />
@@ -363,6 +369,7 @@
     <Compile Include="Pricingengines\blackformula.cs" />
     <Compile Include="Pricingengines\Blackscholescalculator.cs" />
     <Compile Include="Pricingengines\Bond\BlackCallableBondEngine.cs" />
+    <Compile Include="Pricingengines\Bond\BondFunctions.cs" />
     <Compile Include="Pricingengines\Bond\Discountingbondengine.cs" />
     <Compile Include="Pricingengines\Bond\TreeCallableBondEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\analyticcapfloorengine.cs" />
@@ -383,15 +390,18 @@
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />
     <Compile Include="Pricingengines\Swap\treeswapengine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
     <Compile Include="Pricingengines\vanilla\binomialengine.cs" />
     <Compile Include="Pricingengines\vanilla\bjerksundstenslandengine.cs" />
     <Compile Include="Pricingengines\vanilla\discretizedvanillaoption.cs" />
     <Compile Include="Pricingengines\vanilla\FDAmericanEngine.cs" />
-    <Compile Include="Pricingengines\vanilla\fdbermudanengine.cs" />
-    <Compile Include="Pricingengines\vanilla\fdconditions.cs" />
-    <Compile Include="Pricingengines\vanilla\fddividendengine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDBermudanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDConditions.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendAmericanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FDDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDMultiPeriodEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDShoutEngine.cs" />
@@ -419,6 +429,9 @@
     <Compile Include="StochasticProcess.cs" />
     <Compile Include="Termstructures\Bootstraperror.cs" />
     <Compile Include="Termstructures\Bootstraphelper.cs" />
+    <Compile Include="Termstructures\Credit\FlatHazardRate.cs" />
+    <Compile Include="Termstructures\Credit\HazardRateStructure.cs" />
+    <Compile Include="Termstructures\Credit\ProbabilityTraits.cs" />
     <Compile Include="Termstructures\DefaultProbabilityTermStructure.cs" />
     <Compile Include="Termstructures\InflationTermStructure.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />
@@ -537,6 +550,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

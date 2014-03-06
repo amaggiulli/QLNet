@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -25,46 +25,45 @@ using System.Text;
 
 namespace QLNet {
     //! South Korean calendars
-    /*! Public holidays:
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st</li>
-        <li>Independence Day, March 1st</li>
-        <li>Arbour Day, April 5th (until 2005)</li>
-        <li>Labour Day, May 1st</li>
-        <li>Children's Day, May 5th</li>
-        <li>Memorial Day, June 6th</li>
-        <li>Constitution Day, July 17th (until 2007)</li>
-        <li>Liberation Day, August 15th</li>
-        <li>National Fondation Day, October 3th</li>
-        <li>Christmas Day, December 25th</li>
-        </ul>
+   /*! Public holidays:
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st</li>
+       <li>Independence Day, March 1st</li>
+       <li>Arbour Day, April 5th (until 2005)</li>
+       <li>Labour Day, May 1st</li>
+       <li>Children's Day, May 5th</li>
+       <li>Memorial Day, June 6th</li>
+       <li>Constitution Day, July 17th (until 2007)</li>
+       <li>Liberation Day, August 15th</li>
+       <li>National Fondation Day, October 3th</li>
+       <li>Christmas Day, December 25th</li>
+       </ul>
 
-        Other holidays for which no rule is given
-        (data available for 2004-2013 only:)
-        <ul>
-        <li>Lunar New Year, the last day of the previous lunar year,
-            January 1st, 2nd in lunar calendar</li>
-        <li>Election Days</li>
-        <li>National Assemblies</li>
-        <li>Presidency</li>
-        <li>Regional Election Days</li>
-        <li>Buddha's birthday, April 8th in lunar calendar</li>
-        <li>Harvest Moon Day, August 14th, 15th, 16th in lunar calendar</li>
-        </ul>
+       Other holidays for which no rule is given
+       (data available for 2004-2013 only:)
+       <ul>
+       <li>Lunar New Year, the last day of the previous lunar year</li> 
+       <li>Election Days</li>
+       <li>National Assemblies</li>
+       <li>Presidency</li>
+       <li>Regional Election Days</li>
+       <li>Buddha's birthday</li>
+       <li>Harvest Moon Day</li>
+       </ul>
 
-        Holidays for the Korea exchange
-        (data from <http://www.krx.co.kr> or
-        <http://www.dooriworld.com/daishin/holiday/holiday.html>):
-        <ul>
-        <li>Public holidays as listed above</li>
-        <li>Year-end closing</li>
-        </ul>
+       Holidays for the Korea exchange
+       (data from <http://www.krx.co.kr> or
+       <http://www.dooriworld.com/daishin/holiday/holiday.html>):
+       <ul>
+       <li>Public holidays as listed above</li>
+       <li>Year-end closing</li>
+       </ul>
 
-        \ingroup calendars
-    */
-    public class SouthKorea : Calendar {
+       \ingroup calendars
+   */
+   public class SouthKorea : Calendar {
         public enum Market { Settlement,  //!< Public holidays
                       KRX          //!< Korea exchange
         }
@@ -163,6 +162,8 @@ namespace QLNet {
                     || ((d == 12 || d == 13) && m == Month.September && y == 2011)
                     || (d == 1 && m == Month.October && y == 2012)
                     || ((d == 18 || d == 19 || d == 20) && m == Month.September && y == 2013)
+                    // Hangul Proclamation of Korea
+                    || (d == 9 && m == Month.October && y == 2013) 
                     )
                     return false;
 

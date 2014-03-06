@@ -45,7 +45,7 @@ namespace QLNet {
 
 
         //! BootstrapHelper interface
-        Handle<Quote> quote() { return quote_; }
+        public Handle<Quote> quote() { return quote_; }
         public double quoteError() { return quote_.link.value() - impliedQuote(); }
         public double quoteValue() { return quote_.link.value(); }
         public bool quoteIsValid() { return quote_.link.isValid(); }

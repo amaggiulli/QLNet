@@ -1,7 +1,7 @@
 /*
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -37,7 +37,7 @@ namespace QLNet {
         </ul>
 
         Other holidays for which no rule is given
-        (data available for 2002-2011 only:)
+        (data available for 2002-2013 only:)
         <ul>
         <li>Chinese Lunar New Year</li>
         <li>Tomb Sweeping Day</li>
@@ -208,7 +208,46 @@ namespace QLNet {
  	  	                 )
  	  	                 return false;
  	  	         }
-                return true;
+        
+               if (y == 2012) {
+                  if (// Spring Festival
+                      (d >= 23 && d <= 27 && m == Month.January)
+                      // Peace Memorial Day
+                      || (d == 27 && m == Month.February)
+                      // Children's Day
+                      // Tomb Sweeping Day
+                      || (d == 4 && m == Month.April)
+                      // Labour Day
+                      || (d == 1 && m == Month.May)
+                      // Dragon Boat Festival
+                      || (d == 23 && m == Month.June)
+                      // Mid-Autumn Festival
+                      || (d == 30 && m == Month.September)
+                      // Memorial Day:
+                      // Founding of the Republic of China
+                      || (d == 31 && m == Month.December)
+                     )
+                     return false;
+               }
+
+              if (y == 2013) {
+                 if (// Spring Festival
+                      (d >= 10 && d <= 15 && m == Month.February)
+                      // Children's Day
+                      || (d == 4 && m == Month.April)
+                      // Tomb Sweeping Day
+                      || (d == 5 && m == Month.April)
+                      // Labour Day
+                      || (d == 1 && m == Month.May)
+                      // Dragon Boat Festival
+                      || (d == 12 && m == Month.June)
+                      // Mid-Autumn Festival
+                      || (d >= 19 && d <= 20 && m == Month.September)
+                    )
+                    return false;
+              } 
+              
+              return true;
             }
         };
 

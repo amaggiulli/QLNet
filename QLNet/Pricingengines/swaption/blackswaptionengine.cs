@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -104,7 +105,7 @@ namespace QLNet
                   DayCounter dayCount = firstCoupon.dayCounter();
                   double fixedLegCashBPS =
                       CashFlows.bps(fixedLeg,
-                                     new InterestRate(atmForward, dayCount,QLNet.Compounding.Compounded),
+                                     new InterestRate(atmForward, dayCount,QLNet.Compounding.Compounded,Frequency.Annual),false,
                                      termStructure_.link.referenceDate()) ;
                   annuity = Math.Abs(fixedLegCashBPS/basisPoint);
                   break;

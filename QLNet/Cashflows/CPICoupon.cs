@@ -179,7 +179,7 @@ namespace QLNet
       public virtual double baseFixing() {return baseFixing_;}
 
       //! you may not have a valid date
-      public virtual Date baseDate() {throw new ApplicationException();}
+      public override Date baseDate() {throw new ApplicationException();}
 
       //! do you want linear/constant/as-index interpolation of future data?
       public virtual InterpolationType interpolation() { return interpolation_; }
@@ -187,7 +187,7 @@ namespace QLNet
       public virtual Frequency frequency() { return frequency_; }
 
       //! redefined to use baseFixing() and interpolation
-      public virtual double amount()
+      public override double amount()
       { 
          double I0 = baseFixing();
          double I1;

@@ -38,14 +38,14 @@ namespace QLNet
         private Date exerciseDate_;
         private Exercise exercise_;
 
-        private double  strike_;
+        private double?  strike_;
 
         IPricingEngine engine_;
 
 
         public MakeSwaption(SwapIndex swapIndex,
                             Period optionTenor,
-                            double strike)
+                            double? strike = null)
         {
             swapIndex_ = swapIndex;
             delivery_ = Settlement.Type.Physical;
@@ -95,18 +95,21 @@ namespace QLNet
                 exercise_ = new EuropeanExercise(exerciseDate_);
             }
 
-            double usedStrike = strike_;
-            if (strike_ == null) {
-                // ATM on the forecasting curve
+            double usedStrike;
+            if (strike_ == null)
+            {
+               // ATM on the forecasting curve
                if (!swapIndex_.forwardingTermStructure().empty())
-                    throw new ArgumentException(
-                           "no forecasting term structure set to "+swapIndex_.name());
-                VanillaSwap temp =
-                    swapIndex_.underlyingSwap(fixingDate_);
-                temp.setPricingEngine(new DiscountingSwapEngine(
-                                            swapIndex_.forwardingTermStructure()));
-                usedStrike = temp.fairRate();
+                  throw new ArgumentException(
+                         "no forecasting term structure set to " + swapIndex_.name());
+               VanillaSwap temp =
+                   swapIndex_.underlyingSwap(fixingDate_);
+               temp.setPricingEngine(new DiscountingSwapEngine(
+                                           swapIndex_.forwardingTermStructure()));
+               usedStrike = temp.fairRate();
             }
+            else
+               usedStrike = strike_.Value;
 
             BusinessDayConvention bdc = swapIndex_.fixedLegConvention();
             underlyingSwap_ =new MakeVanillaSwap(   swapIndex_.tenor(),

@@ -129,16 +129,10 @@ namespace QLNet {
 
 
             #region Interface
-            public int size(int i) { return base.size(i); }
 
             public double underlying(int i, int index)
             {throw new NotImplementedException();}
 
-            public int descendant(int i, int index, int branch)
-            {return base.descendant(i,index,branch)  ;}
-
-            public double probability(int i, int index, int branch)
-            { return base.probability(i, index, branch); }
             #endregion
        
         }

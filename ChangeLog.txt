@@ -1,0 +1,159 @@
+commit 1ab2e71de4384e1a431dbcaa0226ec216320dc9f
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 5 Mar 2014 18:54:43 +0100
+
+    Enable new Pricing Engines
+
+commit c717f91876d97d0b4dbad2e3cf2573b510ce89d2
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 5 Mar 2014 17:55:46 +0100
+
+    New vanilla pricing engines :AnalyticDividendEuropeanEngine,FDDividendAmericanEngine,FDDividendEuropeanEngine ...with tests.
+
+commit 40586b45c6629b3009435a71b906adbd307755b2
+Merge: b468bb4 1dafb00
+Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
+Date:   Mon, 2 Dec 2013 03:29:18 -0800
+
+    Merge pull request #4 from qusma/Ver-1.3.0.0
+    
+    Moved Easter Monday offsets to a field, greatly improving performance of the easterMonday() functions.
+    Thanks qusma.
+
+commit 1dafb003cc494738a830f2825723c581f8578f89
+Author: qusma <qusmablog@gmail.com>
+Date:   Mon, 2 Dec 2013 01:43:14 +0200
+
+    Moved Easter Monday offsets to a field, greatly improving performance of the easterMonday() functions.
+
+commit b468bb41a285d60e4190e8e2e283f212d360050e
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Fri, 29 Nov 2013 17:19:11 +0100
+
+    ZeroCouponInflationSwap update.
+
+commit 3cf271c1f576aa1c2953eec4f95cf9c54b8b7e0b
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Tue, 26 Nov 2013 16:44:37 +0100
+
+    formatting
+
+commit 3c8ee280a214b3066859dfacbcd7f3949372223d
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Tue, 26 Nov 2013 16:38:51 +0100
+
+    New instruments : Italian BTP (Buoni Poliennali del Tesoro), Italian CCTEU (Certificato di credito del tesoro)
+
+commit 35e1d42bd3b243d4be7100f59f9e71ad1fcfff20
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Tue, 26 Nov 2013 16:35:36 +0100
+
+    Fix Calendar comparison bug
+
+commit d9b263287280c9c10c5b57b152bb45f06ef54bbf
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 20 Nov 2013 17:55:22 +0100
+
+    old code removed
+
+commit a76410c70fe25d0119dd122ff5e6b35020b55cb2
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 20 Nov 2013 16:43:00 +0100
+
+    Termstructure update, start credit implementation, various fixes
+
+commit d67e5938d5d74684c277c9454d92ab48a653e85e
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 6 Nov 2013 11:39:42 +0100
+
+    Update some base class : Event , CashFlow , Settings
+
+commit fa47b02aaa93d9acd44e5b0edff0be5a401baaa3
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Tue, 5 Nov 2013 14:17:28 +0100
+
+    Remove IndexHistoryCleaner from T_AssetSwap tests ( it make fail tests when run all together )
+
+commit 466967174cb3ac05b7287337e24f6bc424698b9a
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Mon, 4 Nov 2013 15:45:51 +0100
+
+    New Instrument : AssetSwap ( with tests )
+
+commit fdf772f12997ae71bd0004a3281f1dacd32fa789
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 31 Oct 2013 14:18:57 +0100
+
+    Swap Update + cleanup commented code
+
+commit 81a0a11c2444eb78800acfeba259c9beee213c66
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 31 Oct 2013 12:36:38 +0100
+
+    Bond Update
+
+commit d2950f7fe69916f9b9c84021ce1503326fd03866
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Wed, 30 Oct 2013 17:21:12 +0100
+
+    Cashflows functions update
+
+commit 884a155a1338ced42c7cd22103048dcdbb2905a4
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Fri, 30 Aug 2013 14:37:37 +0200
+
+    Fix compilation Warnings
+
+commit 64cdeca5b0d465d1c9a198abe218ea500a5b5b96
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Fri, 30 Aug 2013 11:30:30 +0200
+
+    Fix compilation Warnings ( Observer interface )
+
+commit 55071b5b1fa4d8dd36c82a2900af3ac340ada996
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Fri, 30 Aug 2013 11:14:11 +0200
+
+    Fix compilation Warnings
+
+commit 811b627162da5a4a38c9e9f1ba4467e2c47efff3
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 29 Aug 2013 16:15:44 +0200
+
+    Fix compilation Warnings
+
+commit 2a497c4f06405566c0e18215dd60dcb707603428
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 29 Aug 2013 14:52:40 +0200
+
+    Fix compilation Warnings
+
+commit 60afe4f5c5457075e46f8b72450be987adda2ca9
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 29 Aug 2013 14:49:55 +0200
+
+    Add Akima Interpolation
+
+commit c661fbfa8255711fbd299058b7b56c646f0a1a29
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Thu, 29 Aug 2013 14:46:41 +0200
+
+    Fix several compiler warnings
+
+commit 9bcde34582d95dc4787069a49e903bf8fde3b3ff
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Sun, 25 Aug 2013 19:07:07 +0200
+
+    Update holidays for 2013.
+
+commit 63bc1992dfc5d5c8b53fb16dc10df100be1102c1
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Sun, 25 Aug 2013 19:06:19 +0200
+
+    Update Version info
+
+commit 063fdcabc6c8cf85a56497567f8598c9a93ce3f7
+Author: a.maggiulli <a.maggiulli@gmail.com>
+Date:   Sun, 25 Aug 2013 17:58:03 +0200
+
+    Update QLNet information.

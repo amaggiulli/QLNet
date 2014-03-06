@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -238,7 +238,9 @@ namespace QLNet
 
       public double atmRate(YieldTermStructure discountCurve) 
       {
-         return CashFlows.atmRate(floatingLeg_, discountCurve);
+         bool includeSettlementDateFlows = false;
+         Date settlementDate = discountCurve.referenceDate();
+         return CashFlows.atmRate(floatingLeg_, discountCurve, includeSettlementDateFlows, settlementDate);
       }
 
       public double impliedVolatility(

@@ -188,7 +188,7 @@ namespace QLNet {
             parameter used for term-structure fitting and \f$ x_t \f$ is the
             state variable following an Ornstein-Uhlenbeck process.
         */
-        public class Dynamics : ShortRateDynamics {
+        public new class Dynamics : ShortRateDynamics {
           
             public Dynamics(Parameter fitting,double a,double sigma)
             : base(new OrnsteinUhlenbeckProcess(a, sigma)){
@@ -215,7 +215,7 @@ namespace QLNet {
         */
         public class FittingParameter : TermStructureFittingParameter {
            
-            private class Impl : Parameter.Impl {
+            private new class Impl : Parameter.Impl {
                 private Handle<YieldTermStructure> termStructure_;
                 private double a_, sigma_;
                 
@@ -248,18 +248,6 @@ namespace QLNet {
 
         public Handle<YieldTermStructure> termStructure_ { get; set; }
         
-        public event Callback notifyObserversEvent;
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-
-        public void notifyObservers(){
-            Callback handler = notifyObserversEvent;
-            if (handler != null)
-            {
-                handler();
-            }
-        }
-
         #endregion
     
     }

@@ -34,7 +34,8 @@ namespace QLNet
 
    public class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
    {
-      public YoYOptionletVolatilitySurface() { }
+      public YoYOptionletVolatilitySurface()
+      : base (BusinessDayConvention.Following,null) {}
 
       //! \name Constructor
       //! calculate the reference date based on the global evaluation date
@@ -215,9 +216,9 @@ namespace QLNet
       //! \name Limits
       //@{
       //! the minimum strike for which the term structure can return vols
-      public virtual double minStrike() { return  0 ;}
+      public override double minStrike() { return  0 ;}
       //! the maximum strike for which the term structure can return vols
-      public virtual double maxStrike() { return 0; }
+      public override double maxStrike() { return 0; }
       //@}
       
       // acts as zero time value for boostrapping

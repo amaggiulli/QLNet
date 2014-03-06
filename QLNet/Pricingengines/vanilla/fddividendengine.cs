@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -27,17 +28,29 @@ namespace QLNet {
               sophisticated to distinguish between fixed dividends and fractional dividends
     */
     public abstract class FDDividendEngineBase : FDMultiPeriodEngine {
+		 // required for generics
+		 public FDDividendEngineBase() { }
+
         //public FDDividendEngineBase(GeneralizedBlackScholesProcess process,
         //    Size timeSteps = 100, Size gridPoints = 100, bool timeDependent = false)
         public FDDividendEngineBase(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
+
+		  public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
+													 int timeSteps, int gridPoints, bool timeDependent)
+		  {
+			  return factory2(process, timeSteps, gridPoints, timeDependent);
+		  }
+
+		  public abstract FDVanillaEngine factory2(GeneralizedBlackScholesProcess process,
+													 int timeSteps, int gridPoints, bool timeDependent);
 
         public override void setupArguments(IPricingEngineArguments a) {
             DividendVanillaOption.Arguments args = a as DividendVanillaOption.Arguments;
             if (args == null) throw new ApplicationException("incorrect argument type");
             List<Event> events = new List<Event>();
             foreach (Event e in args.cashFlow)
-                events_.Add(e);
+                events.Add(e);
             base.setupArguments(a, events);
         }
 
@@ -70,9 +83,16 @@ namespace QLNet {
        with the analytic version.
     */
     public class FDDividendEngineMerton73 : FDDividendEngineBase {
+		 // required for generics
+		 public FDDividendEngineMerton73() { }
+
         public FDDividendEngineMerton73(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
-        
+
+		  public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+		  {
+			  throw new NotImplementedException();
+		  }
         // The value of the x axis is the NPV of the underlying minus the
         // value of the paid dividends.
 
@@ -107,7 +127,9 @@ namespace QLNet {
             initializeStepCondition();
             stepCondition_.applyTo(prices_.values(), getDividendTime(step));
         }
-    }
+
+		 
+	 }
 
 
     //! Finite-differences engine for dividend options using shifted dividends
@@ -121,7 +143,12 @@ namespace QLNet {
     public class FDDividendEngineShiftScale : FDDividendEngineBase {
         public FDDividendEngineShiftScale(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
-      
+
+		  public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+		  {
+			  throw new NotImplementedException();
+		  }
+
         protected override void setGridLimits() {
             double underlying = process_.stateVariable().link.value();
             for (int i=0; i<events_.Count; i++) {
@@ -164,5 +191,22 @@ namespace QLNet {
                 return x + dividend.amount(x);
             }
         }
+    }
+
+	// Use Merton73 engine as default.
+   public class FDDividendEngine : FDDividendEngineMerton73 
+	{
+
+		public FDDividendEngine()
+		{}
+
+      public FDDividendEngine( GeneralizedBlackScholesProcess process, int timeSteps = 100,int gridPoints = 100,
+                               bool timeDependent = false) : base(process, timeSteps,gridPoints, timeDependent) 
+		{}
+
+		public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+		{
+			return new FDDividendEngine(process, timeSteps, gridPoints, timeDependent);
+		}
     }
 }

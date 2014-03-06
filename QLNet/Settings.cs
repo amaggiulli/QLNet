@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- * 
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ 
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -31,7 +32,13 @@ namespace QLNet {
         private static Date evaluationDate_ = null;
 
         [ThreadStatic]
+        private static bool includeReferenceDateEvents_ = false;
+
+        [ThreadStatic]
         private static bool enforcesTodaysHistoricFixings_ = false;
+
+        [ThreadStatic]
+        private static bool? includeTodaysCashFlows_;
 
         public static Date evaluationDate() 
         {
@@ -40,14 +47,27 @@ namespace QLNet {
             return evaluationDate_; 
         }
 
+
         public static void setEvaluationDate(Date d) {
             evaluationDate_ = d;
             notifyObservers();
         }
 
-        public static bool enforcesTodaysHistoricFixings {
-            get { return enforcesTodaysHistoricFixings_; }
-            set { enforcesTodaysHistoricFixings_ = value; }
+        public static bool enforcesTodaysHistoricFixings
+        {
+           get { return enforcesTodaysHistoricFixings_; }
+           set { enforcesTodaysHistoricFixings_ = value; }
+        }
+
+        public static bool includeReferenceDateEvents {
+            get { return includeReferenceDateEvents_; }
+            set { includeReferenceDateEvents_ = value; }
+        }
+
+        public static bool? includeTodaysCashFlows
+        {
+           get { return includeTodaysCashFlows_; }
+            set { includeTodaysCashFlows_ = value; }
         }
 
         ////////////////////////////////////////////////////
@@ -68,16 +88,22 @@ namespace QLNet {
     public class SavedSettings {
         private Date evaluationDate_;
         private bool enforcesTodaysHistoricFixings_;
+        private bool includeReferenceDateEvents_;
+        private bool? includeTodaysCashFlows_;
 
         public SavedSettings() {
             evaluationDate_ = Settings.evaluationDate();
             enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
+            includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
+            includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
         }
 
         ~SavedSettings() {
             if (evaluationDate_ != Settings.evaluationDate())
                 Settings.setEvaluationDate(evaluationDate_);
             Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
+            Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
+            Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
         }
     }
 }

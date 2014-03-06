@@ -31,7 +31,8 @@ namespace QLNet
     */
     public class CPIVolatilitySurface : VolatilityTermStructure
     {
-        public CPIVolatilitySurface() { }
+        public CPIVolatilitySurface()
+          : base(BusinessDayConvention.Following, null) { }
 
         /*! calculates the reference date based on the global
             evaluation date.
@@ -202,41 +203,42 @@ namespace QLNet
         //! \name Limits
         //@{
         //! the minimum strike for which the term structure can return vols
-        public virtual double minStrike() { return 0; }
+        public override double minStrike() { throw new NotSupportedException(); }
         //! the maximum strike for which the term structure can return vols
-        public virtual double maxStrike() { return 0; }
+        public override double maxStrike() { throw new NotSupportedException(); }
         //@}
 
         protected virtual void checkRange(Date d, double strike, bool extrapolate)
         {
-            if (d < baseDate())
-                throw new ApplicationException("date (" + d + ") is before base date");
-            if(!extrapolate && !allowsExtrapolation() && d > maxDate())
-                throw new ApplicationException("date (" + d + ") is past max curve date (" + maxDate() + ")");
-            if(!extrapolate && !allowsExtrapolation() &&
-                       (strike < minStrike() || strike > maxStrike()))
-                throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["+ minStrike() + "," + maxStrike()+ "]] at date = "+ d);
+           Utils.QL_REQUIRE(d >= baseDate(),
+                 "date (" + d + ") is before base date");
+           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(),
+                      "date (" + d + ") is past max curve date ("
+                      + maxDate() + ")");
+           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
+                      (strike >= minStrike() && strike <= maxStrike()),
+                      "strike (" + strike + ") is outside the curve domain ["
+                      + minStrike() + "," + maxStrike() + "]] at date = " + d);
         }
 
         protected virtual void checkRange(double t, double strike, bool extrapolate)
         {
-            if(t < timeFromReference(baseDate()))
-                throw new ApplicationException("time (" + t + ") is before base date");
-
-            if(!extrapolate && !allowsExtrapolation() && t > maxTime())
-                throw new ApplicationException("time (" + t + ") is past max curve time (" + maxTime() + ")");
-
-            if(!extrapolate && !allowsExtrapolation() &&
-                       (strike < minStrike() || strike > maxStrike()))
-                throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["
-                       + minStrike() + "," + maxStrike() + "] at time = " + t);
+           Utils.QL_REQUIRE(t >= timeFromReference(baseDate()),
+                  "time (" + t + ") is before base date");
+           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || t <= maxTime(),
+                      "time (" + t + ") is past max curve time ("
+                      + maxTime() + ")");
+           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
+                      (strike >= minStrike() && strike <= maxStrike()),
+                      "strike (" + strike + ") is outside the curve domain ["
+                      + minStrike() + "," + maxStrike() + "] at time = " + t);
         }
 
         /*! Implements the actual volatility surface calculation in
             derived classes e.g. bilinear interpolation.  N.B. does
             not derive the surface.
         */
-        protected virtual double volatilityImpl(double length, double strike) { return 0; }
+        protected virtual double volatilityImpl(double length, double strike) { throw new NotSupportedException(); }
 
         protected double? baseLevel_;
         // so you do not need an index

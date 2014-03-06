@@ -59,7 +59,7 @@ namespace QLNet
         return times;
       }
 
-      protected  void preAdjustValuesImpl()
+      protected  override void preAdjustValuesImpl()
       {
          for (int i=0; i<startTimes_.Count; i++) {
             if (isOnTime(startTimes_[i])) {
@@ -95,7 +95,7 @@ namespace QLNet
          }
       }
 
-      protected  void postAdjustValuesImpl()
+      protected  override void postAdjustValuesImpl()
       {
            for (int i=0; i<endTimes_.Count; i++) {
                 if (isOnTime(endTimes_[i])) {

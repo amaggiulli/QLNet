@@ -28,11 +28,8 @@ namespace QLNet {
         protected double extraTermInBermudan;
 
         // constructor
-        //public FDBermudanEngine(GeneralizedBlackScholesProcess process,
-        //     int timeSteps = 100, int gridPoints = 100, bool timeDependent = false)
-        public FDBermudanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints)
-            : this(process, timeSteps, gridPoints, false) { }
-        public FDBermudanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+        public FDBermudanEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100, 
+			  bool timeDependent = false)
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
         public void calculate() {

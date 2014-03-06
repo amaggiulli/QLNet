@@ -53,12 +53,14 @@ namespace QLNet
       public Schedule fixedSchedule() { return fixedSchedule_; }
 
       private DayCounter fixedDayCount_;
+      public DayCounter fixedDayCount() { return fixedDayCount_; }
 
       private Schedule floatingSchedule_;
       public Schedule floatingSchedule() { return floatingSchedule_; }
 
       private IborIndex iborIndex_;
       private DayCounter floatingDayCount_;
+      public DayCounter floatingDayCount() { return floatingDayCount_; }
       private BusinessDayConvention paymentConvention_;
 
       // results

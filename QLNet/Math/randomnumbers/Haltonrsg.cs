@@ -56,13 +56,10 @@ namespace QLNet
         private List<double>  randomShift_;
 
         public HaltonRsg(int dimensionality,
-                         ulong seed ,
-                         bool randomStart,
-                         bool randomShift)
+                         ulong seed = 0,
+                         bool randomStart = true,
+                         bool randomShift = false)
         {
-            if(seed ==null) seed = 0;
-            if(randomStart ==null) randomStart = true;
-            if(randomShift ==null) randomShift = false;
             dimensionality_=dimensionality;
             sequenceCounter_ = 0;
             sequence_ = new Sample<List<double>>(new InitializedList<double>(dimensionality), 1.0);

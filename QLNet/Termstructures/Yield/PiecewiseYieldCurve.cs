@@ -78,19 +78,6 @@ namespace QLNet {
 
         protected override double discountImpl(double t) {
             calculate();
-
-            if (jumps_.Count != 0) {
-                double jumpEffect = 1.0;
-                for (int i = 0; i < nJumps_ && jumpTimes_[i] < t; ++i) {
-                    if (!(jumps_[i].link.isValid()))
-                        throw new ApplicationException("invalid " + (i + 1) + " jump quote");
-                    double thisJump = jumps_[i].link.value();
-                    if (!(thisJump > 0.0 && thisJump <= 1.0))
-                        throw new ApplicationException("invalid " + (i + 1) + " jump value: " + thisJump);
-                    jumpEffect *= thisJump;
-                }
-                return jumpEffect * traits_.discountImpl(interpolation_, t);
-            }
             return traits_.discountImpl(interpolation_, t);
         }
         protected double zeroYieldImpl(double t) { return traits_.zeroYieldImpl(interpolation_, t); }
@@ -108,20 +95,16 @@ namespace QLNet {
 
         public List<RateHelper> instruments_;
 
-        protected List<Handle<Quote>> jumps_;
-        protected List<Date> jumpDates_;
-        protected List<double> jumpTimes_;
-        protected int nJumps_;
-
-        protected Date latestReference_;
-
         protected IBootStrap bootstrap_;
         #endregion
 
 
         // two constructors to forward down the ctor chain
-        public PiecewiseYieldCurve(Date referenceDate, Calendar cal, DayCounter dc) : base(referenceDate, cal, dc) { }
-        public PiecewiseYieldCurve(int settlementDays, Calendar cal, DayCounter dc) : base(settlementDays, cal, dc) { }
+        public PiecewiseYieldCurve(Date referenceDate, Calendar cal, DayCounter dc, 
+           List<Handle<Quote>> jumps = null, List<Date> jumpDates = null) : base(referenceDate, cal, dc,jumps,jumpDates) { }
+        public PiecewiseYieldCurve(int settlementDays, Calendar cal, DayCounter dc,
+           List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
+           : base(settlementDays, cal, dc,jumps,jumpDates) { }
     }
 
 
@@ -149,22 +132,14 @@ namespace QLNet {
         public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
                                    DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates,
                                    double accuracy, Interpolator i, BootStrap bootstrap)
-            : base(referenceDate, new Calendar(), dayCounter) {
+            : base(referenceDate, new Calendar(), dayCounter,jumps,jumpDates) {
 
             instruments_ = instruments;
-
-            jumps_ = jumps;
-            jumpDates_ = jumpDates;
-            jumpTimes_ = new InitializedList<double>(jumpDates.Count);
-            nJumps_ = jumps_.Count;
 
             accuracy_ = accuracy;
             interpolator_ = i;
             bootstrap_ = bootstrap;
             traits_ = new Traits();
-
-            setJumps();
-            jumps.ForEach(x => x.registerWith(update));
 
             bootstrap_.setup(this);
         }
@@ -184,21 +159,12 @@ namespace QLNet {
         public PiecewiseYieldCurve(int settlementDays, Calendar calendar, List<RateHelper> instruments,
                                    DayCounter dayCounter,  List<Handle<Quote>> jumps, List<Date> jumpDates, double accuracy,
                                    Interpolator i, BootStrap bootstrap)
-            : base(settlementDays, calendar, dayCounter) {
+            : base(settlementDays, calendar, dayCounter,jumps,jumpDates) {
             instruments_ = instruments;
-
-            jumps_ = jumps;
-            jumpDates_ = jumpDates;
-            jumpTimes_ = new InitializedList<double>(jumpDates.Count);
-            nJumps_ = jumps_.Count;
-
             accuracy_ = accuracy;
             interpolator_ = i;
             bootstrap_ = bootstrap;
             traits_ = new Traits();
-
-            setJumps();
-            jumps.ForEach(x => x.registerWith(update));
 
             bootstrap_.setup(this);
         } 
@@ -209,36 +175,6 @@ namespace QLNet {
         public override void update() {
             base.update();
             // LazyObject::update();        // we do it in the TermStructure 
-            if (referenceDate() != latestReference_)
-                setJumps();
-        }
-
-        private void setJumps() {
-            Date refDate = referenceDate();
-
-            if (jumpDates_.Count != 0 && jumps_.Count != 0) { // turn of year dates
-                jumpDates_ = new InitializedList<Date>(nJumps_);
-                jumpDates_.ForEach((i, d) => jumpDates_[i] = new Date(31, Month.December, refDate.Year + i));
-
-                jumpTimes_ = new InitializedList<double>(nJumps_);
-            } else { // fixed dats
-                if (!(jumpDates_.Count == nJumps_))
-                    throw new ApplicationException("mismatch between number of jumps (" + nJumps_ +
-                           ") and jump dates (" + jumpDates_.Count + ")");
-            }
-            for (int i=0; i<nJumps_; ++i)
-                jumpTimes_[i] = timeFromReference(jumpDates_[i]);
-            latestReference_ = refDate;
-        }
-
-        public List<Date> jumpDates() {
-            calculate();
-            return jumpDates_;
-        }
-
-        public List<double> jumpTimes() {
-            calculate();
-            return jumpTimes_;
         }
 
         protected override void performCalculations() {

@@ -249,7 +249,7 @@ namespace QLNet {
         public event Callback notifyObserversEvent;
 
         // this method is required for calling from derived classes
-        protected void notifyObservers() {
+        public void notifyObservers() {
             Callback handler = notifyObserversEvent;
             if (handler != null) {
                 handler();

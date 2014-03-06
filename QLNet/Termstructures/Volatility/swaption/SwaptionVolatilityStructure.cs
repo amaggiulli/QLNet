@@ -21,297 +21,232 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
+namespace QLNet 
+{
+   //! %Swaption-volatility structure
+   /*! This abstract class defines the interface of concrete swaption
+      volatility structures which will be derived from this one.
+   */
+   public class SwaptionVolatilityStructure : VolatilityTermStructure 
+   {
+      #region Constructors
+      /*! \warning term structures initialized by means of this
+                   constructor must manage their own reference date
+                   by overriding the referenceDate() method.
+      */
+      public SwaptionVolatilityStructure()
+         : base(BusinessDayConvention.Following, null) { }
 
-	//! %Swaption-volatility structure
-//    ! This abstract class defines the interface of concrete swaption
-//        volatility structures which will be derived from this one.
-//    
-	public class SwaptionVolatilityStructure : VolatilityTermStructure
-	{
-//        ! \name Constructors
-//            See the TermStructure documentation for issues regarding
-//            constructors.
-//        
-		//@{
-		//! default constructor
-//        ! \warning term structures initialized by means of this
-//                     constructor must manage their own reference date
-//                     by overriding the referenceDate() method.
-//        
-        // parameterless ctor is required for Handles
-        public SwaptionVolatilityStructure() { }
+      public SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
+         : base(bdc, dc) {}
+      
+      //! initialize with a fixed reference date
+      public SwaptionVolatilityStructure(Date referenceDate,Calendar calendar,BusinessDayConvention bdc,DayCounter dc = null)
+         : base(referenceDate, calendar, bdc, dc) {}
+      
+      //! calculate the reference date based on the global evaluation date
+      public SwaptionVolatilityStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+         : base(settlementDays, cal, bdc, dc) {}
+      
+      #endregion
 
-		public SwaptionVolatilityStructure(Calendar cal, BusinessDayConvention bdc) : this(cal, bdc, new DayCounter())
-		{
-		}
-		public SwaptionVolatilityStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc) : base(cal, bdc, dc)
-		{
-		}
-		//! initialize with a fixed reference date
-		public SwaptionVolatilityStructure(Date referenceDate, Calendar calendar, BusinessDayConvention bdc) : this(referenceDate, calendar, bdc, new DayCounter())
-		{
-		}
-		public SwaptionVolatilityStructure(Date referenceDate, Calendar calendar, BusinessDayConvention bdc, DayCounter dc) : base(referenceDate, calendar, bdc, dc)
-		{
-		}
-		//! calculate the reference date based on the global evaluation date
-		public SwaptionVolatilityStructure(int settlementDays, Calendar calendar, BusinessDayConvention bdc) : this(settlementDays, calendar, bdc, new DayCounter())
-		{
-		}
-		public SwaptionVolatilityStructure(int settlementDays, Calendar calendar, BusinessDayConvention bdc, DayCounter dc) : base(settlementDays, calendar, bdc, dc)
-		{
-		}
-		//! \name Volatility, variance and smile
-		//@{
-		//! returns the volatility for a given option tenor and swap tenor
 
-		// inline definitions
-	
-		// 1. methods with Period-denominated exercise convert Period to Date and then
-		//    use the equivalent Date-denominated exercise methods
-		public double volatility(Period optionTenor, Period swapTenor, double strike)
-		{
-			return volatility(optionTenor, swapTenor, strike, false);
-		}
-		public double volatility(Period optionTenor, Period swapTenor, double strike, bool extrapolate)
-		{
-			Date optionDate = optionDateFromTenor(optionTenor);
-			return volatility(optionDate, swapTenor, strike, extrapolate);
-		}
-		//! returns the volatility for a given option date and swap tenor
+      #region Volatility, variance and smile
 
-		// 3. relying on xxxImpl methods
-		public double volatility(Date optionDate, Period swapTenor, double strike)
-		{
-            return volatility(optionDate, swapTenor, strike, false);
-		}
-		public double volatility(Date optionDate, Period swapTenor, double strike, bool extrapolate)
-		{
-			checkSwapTenor(swapTenor, extrapolate);
-			checkRange(optionDate, extrapolate);
-			checkStrike(strike, extrapolate);
-			return volatilityImpl(optionDate, swapTenor, strike);
-		}
-		//! returns the volatility for a given option time and swap tenor
-		public double volatility(double optionTime, Period swapTenor, double strike)
-		{
-            return volatility(optionTime, swapTenor, strike, false);
-		}
-		public double volatility(double optionTime, Period swapTenor, double strike, bool extrapolate)
-		{
-			checkSwapTenor(swapTenor, extrapolate);
-			checkRange(optionTime, extrapolate);
-			checkStrike(strike, extrapolate);
-			double length = swapLength(swapTenor);
-			return volatilityImpl(optionTime, length, strike);
-		}
-		//! returns the volatility for a given option tenor and swap length
-		public double volatility(Period optionTenor, double swapLength, double strike)
-		{
-            return volatility(optionTenor, swapLength, strike, false);
-		}
-		public double volatility(Period optionTenor, double swapLength, double strike, bool extrapolate)
-		{
-			Date optionDate = optionDateFromTenor(optionTenor);
-			return volatility(optionDate, swapLength, strike, extrapolate);
-		}
-		//! returns the volatility for a given option date and swap length
-		public double volatility(Date optionDate, double swapLength, double strike)
-		{
-            return volatility(optionDate, swapLength, strike, false);
-		}
-		public double volatility(Date optionDate, double swapLength, double strike, bool extrapolate)
-		{
-			checkSwapTenor(swapLength, extrapolate);
-			checkRange(optionDate, extrapolate);
-			checkStrike(strike, extrapolate);
-			double optionTime = timeFromReference(optionDate);
-			return volatilityImpl(optionTime, swapLength, strike);
-		}
-		//! returns the volatility for a given option time and swap length
-		public double volatility(double optionTime, double swapLength, double strike)
-		{
-            return volatility(optionTime, swapLength, strike, false);
-		}
-		public double volatility(double optionTime, double swapLength, double strike, bool extrapolate)
-		{
-			checkSwapTenor(swapLength, extrapolate);
-			checkRange(optionTime, extrapolate);
-			checkStrike(strike, extrapolate);
-			return volatilityImpl(optionTime, swapLength, strike);
-		}
+      //! returns the volatility for a given option tenor and swap tenor
+      public double volatility(Period optionTenor, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return volatility(optionDate, swapTenor, strike, extrapolate);
+      }
+      
+      //! returns the volatility for a given option date and swap tenor
+      public double volatility(Date optionDate, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         checkSwapTenor(swapTenor, extrapolate);
+         checkRange(optionDate, extrapolate);
+         checkStrike(strike, extrapolate);
+         return volatilityImpl(optionDate, swapTenor, strike);
+      }
 
-		//! returns the Black variance for a given option tenor and swap tenor
-		public double blackVariance(Period optionTenor, Period swapTenor, double strike)
-		{
-            return blackVariance(optionTenor, swapTenor, strike, false);
-		}
-		public double blackVariance(Period optionTenor, Period swapTenor, double strike, bool extrapolate)
-		{
-			Date optionDate = optionDateFromTenor(optionTenor);
-			return blackVariance(optionDate, swapTenor, strike, extrapolate);
-		}
-		//! returns the Black variance for a given option date and swap tenor
+      //! returns the volatility for a given option time and swap tenor
+      public double volatility(double optionTime, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         checkSwapTenor(swapTenor, extrapolate);
+         checkRange(optionTime, extrapolate);
+         checkStrike(strike, extrapolate);
+         double length = swapLength(swapTenor);
+         return volatilityImpl(optionTime, length, strike);
+      }
 
-		// 2. blackVariance methods rely on volatility methods
-		public double blackVariance(Date optionDate, Period swapTenor, double strike)
-		{
-            return blackVariance(optionDate, swapTenor, strike, false);
-		}
-		public double blackVariance(Date optionDate, Period swapTenor, double strike, bool extrapolate)
-		{
-			double v = volatility(optionDate, swapTenor, strike, extrapolate);
-			double optionTime = timeFromReference(optionDate);
-			return v *v *optionTime;
-		}
-		//! returns the Black variance for a given option time and swap tenor
-		public double blackVariance(double optionTime, Period swapTenor, double strike)
-		{
-            return blackVariance(optionTime, swapTenor, strike, false);
-		}
-		public double blackVariance(double optionTime, Period swapTenor, double strike, bool extrapolate)
-		{
-			double v = volatility(optionTime, swapTenor, strike, extrapolate);
-			return v *v *optionTime;
-		}
-		//! returns the Black variance for a given option tenor and swap length
-		public double blackVariance(Period optionTenor, double swapLength, double strike)
-		{
-            return blackVariance(optionTenor, swapLength, strike, false);
-		}
-		public double blackVariance(Period optionTenor, double swapLength, double strike, bool extrapolate)
-		{
-			Date optionDate = optionDateFromTenor(optionTenor);
-			return blackVariance(optionDate, swapLength, strike, extrapolate);
-		}
-		//! returns the Black variance for a given option date and swap length
-		public double blackVariance(Date optionDate, double swapLength, double strike)
-		{
-            return blackVariance(optionDate, swapLength, strike, false);
-		}
-		public double blackVariance(Date optionDate, double swapLength, double strike, bool extrapolate)
-		{
-			double v = volatility(optionDate, swapLength, strike, extrapolate);
-			double optionTime = timeFromReference(optionDate);
-			return v *v *optionTime;
-		}
-		//! returns the Black variance for a given option time and swap length
-		public double blackVariance(double optionTime, double swapLength, double strike)
-		{
-            return blackVariance(optionTime, swapLength, strike, false);
-		}
-		public double blackVariance(double optionTime, double swapLength, double strike, bool extrapolate)
-		{
-			double v = volatility(optionTime, swapLength, strike, extrapolate);
-			return v *v *optionTime;
-		}
+      //! returns the volatility for a given option tenor and swap length
+      public double volatility(Period optionTenor, double swapLength, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return volatility(optionDate, swapLength, strike, extrapolate);
+      }
 
-		//! returns the smile for a given option tenor and swap tenor
-		public SmileSection smileSection(Period optionTenor, Period swapTenor)
-		{
-            return smileSection(optionTenor, swapTenor, false);
-		}
-		public SmileSection smileSection(Period optionTenor, Period swapTenor, bool extrapolate)
-		{
-			Date optionDate = optionDateFromTenor(optionTenor);
-			return smileSection(optionDate, swapTenor, extrapolate);
-		}
-		//! returns the smile for a given option date and swap tenor
-		public SmileSection smileSection(Date optionDate, Period swapTenor)
-		{
-            return smileSection(optionDate, swapTenor, false);
-		}
-		public SmileSection smileSection(Date optionDate, Period swapTenor, bool extrapolate)
-		{
-			checkSwapTenor(swapTenor, extrapolate);
-			checkRange(optionDate, extrapolate);
-			return smileSectionImpl(optionDate, swapTenor);
-		}
+      //! returns the volatility for a given option date and swap length
+      public double volatility(Date optionDate, double swapLength, double strike, bool extrapolate = false)
+      {
+         checkSwapTenor(swapLength, extrapolate);
+         checkRange(optionDate, extrapolate);
+         checkStrike(strike, extrapolate);
+         double optionTime = timeFromReference(optionDate);
+         return volatilityImpl(optionTime, swapLength, strike);
+      }
 
-		public SmileSection smileSection(double optionTime, double swapLength)
-		{
-            return smileSection(optionTime, swapLength, false);
-		}
-		public SmileSection smileSection(double optionTime, double swapLength, bool extrapolate)
-		{
-			checkSwapTenor(swapLength, extrapolate);
-			checkRange(optionTime, extrapolate);
-			return smileSectionImpl(optionTime, swapLength);
-		}
-		//@}
-		//! \name Limits
-		//@{
-		//! the largest length for which the term structure can return vols
-//		public abstract Period maxSwapTenor();
-        public virtual Period maxSwapTenor() { throw new NotSupportedException(); }
+      //! returns the volatility for a given option time and swap length
+      public double volatility(double optionTime, double swapLength, double strike, bool extrapolate = false)
+      {
+         checkSwapTenor(swapLength, extrapolate);
+         checkRange(optionTime, extrapolate);
+         checkStrike(strike, extrapolate);
+         return volatilityImpl(optionTime, swapLength, strike);
+      }
 
-		//! the largest swapLength for which the term structure can return vols
-		public double maxSwapLength()
-		{
-			return swapLength(maxSwapTenor());
-		}
-		//@}
-		//! implements the conversion between swap tenor and swap (time) length
-		public double swapLength(Period p)
-		{
-			if (!(p.length()>0))
-                throw new ApplicationException("non-positive swap tenor (" + p + ") given");
+      //! returns the Black variance for a given option tenor and swap tenor
+      public double blackVariance(Period optionTenor, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return blackVariance(optionDate, swapTenor, strike, extrapolate);
+      }
 
-	//         while using the reference date is arbitrary it is coherent between
-	//           different swaption structures defined on the same reference date.
-	//        
-			Date start = referenceDate();
-			Date end = start + p;
-			return swapLength(start, end);
-		}
-		//! implements the conversion between swap dates and swap (time) length
-//C++ TO C# CONVERTER WARNING: 'const' methods are not available in C#:
-//ORIGINAL LINE: double swapLength(const Date& start, Date& end)
-		public double swapLength(Date start, Date end)
-		{
-			if (!(end>start))
-                throw new ApplicationException("swap end date (" + end + ") must be greater than start (" + start + ")");
+      //! returns the Black variance for a given option date and swap tenor
+      public double blackVariance(Date optionDate, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         double v = volatility(optionDate, swapTenor, strike, extrapolate);
+         double optionTime = timeFromReference(optionDate);
+         return v * v * optionTime;
+      }
 
-			double result = (end-start)/365.25 *24.0; // half a month unit
-            Rounding roundingPrecision = new Rounding(0);
-            result = roundingPrecision.Round(result);
-			result /= 24.0; // year unit
-			return result;
-		}
+      //! returns the Black variance for a given option time and swap tenor
+      public double blackVariance(double optionTime, Period swapTenor, double strike, bool extrapolate = false)
+      {
+         double v = volatility(optionTime, swapTenor, strike, extrapolate);
+         return v * v * optionTime;
+      }
 
-		// 4. default implementation of Date-based xxxImpl methods
-		//    relying on the equivalent double-based methods
-		protected SmileSection smileSectionImpl(Date optionDate, Period swapT)
-		{
-			return smileSectionImpl(timeFromReference(optionDate), swapLength(swapT));
-		}
+      //! returns the Black variance for a given option tenor and swap length
+      public double blackVariance(Period optionTenor, double swapLength, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return blackVariance(optionDate, swapLength, strike, extrapolate);
+      }
 
-        protected virtual SmileSection smileSectionImpl(double optionTime, double swapLength) { throw new NotSupportedException(); }
+      //! returns the Black variance for a given option date and swap length
+      public double blackVariance(Date optionDate, double swapLength, double strike, bool extrapolate = false)
+      {
+         double v = volatility(optionDate, swapLength, strike, extrapolate);
+         double optionTime = timeFromReference(optionDate);
+         return v * v * optionTime;
+      }
 
-		protected double volatilityImpl(Date optionDate, Period swapTenor, double strike)
-		{
-			return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor), strike);
-		}
+      //! returns the Black variance for a given option time and swap length
+      public double blackVariance(double optionTime, double swapLength, double strike, bool extrapolate = false)
+      {
+         double v = volatility(optionTime, swapLength, strike, extrapolate);
+         return v * v * optionTime;
+      }
 
-        protected virtual double volatilityImpl(double optionTime, double swapLength, double strike) { throw new NotSupportedException(); }
+      //! returns the smile for a given option tenor and swap tenor
+      public SmileSection smileSection(Period optionTenor, Period swapTenor, bool extr = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return smileSection(optionDate, swapTenor, extrapolate);
+      }
 
-		protected void checkSwapTenor(Period swapTenor, bool extrapolate)
-		{
-			if (!(swapTenor.length() > 0))
-                throw new ApplicationException("non-positive swap tenor (" + swapTenor + ") given");
+      //! returns the smile for a given option date and swap tenor
+      public SmileSection smileSection(Date optionDate, Period swapTenor, bool extr = false)
+      {
+         checkSwapTenor(swapTenor, extrapolate);
+         checkRange(optionDate, extrapolate);
+         return smileSectionImpl(optionDate, swapTenor);
+      }
 
-			if (!(extrapolate || allowsExtrapolation() || swapTenor <= maxSwapTenor()))
-                throw new ApplicationException("swap tenor (" + swapTenor + ") is past max tenor (" + maxSwapTenor() + ")");
-		}
-		protected void checkSwapTenor(double swapLength, bool extrapolate)
-		{
-			if (!(swapLength > 0.0))
-                throw new ApplicationException("non-positive swap length (" + swapLength + ") given");
+      //! returns the smile for a given option time and swap tenor
+      //public SmileSection smileSection(double optionTime, Period swapTenor, bool extr = false);
 
-			if (!(extrapolate || allowsExtrapolation() || swapLength <= maxSwapLength()))
-                throw new ApplicationException("swap tenor (" + swapLength + ") is past max tenor (" + maxSwapLength() + ")");
-		}
-	}
+      //! returns the smile for a given option tenor and swap length
+      //public SmileSection smileSection(Period optionTenor, double swapLength, bool extr = false);
 
+
+      //! returns the smile for a given option date and swap length
+      //public SmileSection smileSection( Date optionDate, double swapLength, bool extr = false) ;
+
+      //! returns the smile for a given option time and swap length
+      public SmileSection smileSection(double optionTime, double swapLength, bool extr = false)
+      {
+         checkSwapTenor(swapLength, extrapolate);
+         checkRange(optionTime, extrapolate);
+         return smileSectionImpl(optionTime, swapLength);
+      }
+      
+      #endregion
+
+      #region Limits
+
+      //! the largest length for which the term structure can return vols
+      public virtual  Period maxSwapTenor()  { throw new NotSupportedException(); }
+
+      //! the largest swapLength for which the term structure can return vols
+      public double maxSwapLength() { return swapLength(maxSwapTenor()); }
+
+      #endregion
+
+      //! implements the conversion between swap tenor and swap (time) length
+      public double swapLength(Period swapTenor)
+      {
+         Utils.QL_REQUIRE(swapTenor.length() > 0, "non-positive swap tenor (" + swapTenor + ") given");
+         switch (swapTenor.units())
+         {
+            case TimeUnit.Months:
+               return swapTenor.length() / 12.0;
+            case TimeUnit.Years:
+               return swapTenor.length();
+            default:
+               Utils.QL_FAIL("invalid Time Unit (" + swapTenor.units() + ") for swap length");
+               return 0;
+         }
+      }
+
+      //! implements the conversion between swap dates and swap (time) length
+      public double swapLength(Date start, Date end)
+      {
+         Utils.QL_REQUIRE(end > start, "swap end date (" + end + ") must be greater than start (" + start + ")");
+         double result = (end - start) / 365.25 * 12.0; // month unit
+         result = new ClosestRounding(0).Round(result);
+         result /= 12.0; // year unit
+         return result;
+      }
+
+      protected virtual SmileSection smileSectionImpl(Date optionDate, Period swapTenor)
+      {
+         return smileSectionImpl(timeFromReference(optionDate), swapLength(swapTenor));
+      }
+
+      protected virtual SmileSection smileSectionImpl(double optionTime, double swapLength)   { throw new NotSupportedException(); }
+
+      protected virtual double volatilityImpl(Date optionDate, Period swapTenor, double strike)
+      {
+         return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor),  strike);
+      }
+
+      protected virtual double volatilityImpl(double optionTime, double swapLength, double strike) { throw new NotSupportedException(); }
+
+      protected void checkSwapTenor(Period swapTenor, bool extrapolate)
+      {
+         Utils.QL_REQUIRE(swapTenor.length() > 0, "non-positive swap tenor ("  + swapTenor + ") given");
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || swapTenor <= maxSwapTenor(),
+                    "swap tenor (" + swapTenor + ") is past max tenor (" + maxSwapTenor() + ")");
+      }
+
+      protected void checkSwapTenor(double swapLength, bool extrapolate)
+      {
+         Utils.QL_REQUIRE(swapLength > 0.0, "non-positive swap length (" + swapLength + ") given");
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||  swapLength <= maxSwapLength(),
+                    "swap tenor (" + swapLength + ") is past max tenor ("  + maxSwapLength() + ")");
+      }
+
+    }
 }

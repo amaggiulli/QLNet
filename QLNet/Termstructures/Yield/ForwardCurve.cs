@@ -61,8 +61,8 @@ namespace QLNet {
         #endregion
 
 
-        public InterpolatedForwardCurve(List<Date> dates, List<double> yields, DayCounter dayCounter, Interpolator interpolator)
-            : base(dates.First(), new Calendar(), dayCounter) {
+        public InterpolatedForwardCurve(List<Date> dates, List<double> yields, DayCounter dayCounter, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null , Interpolator interpolator = default(Interpolator))
+            : base(dates.First(), new Calendar(), dayCounter,jumps,jumpDates) {
 
             times_ = new List<double>();
             dates_ = dates;

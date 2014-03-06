@@ -30,22 +30,13 @@ namespace QLNet
           \test calculations are tested by checking results against
                 cached values.
       */
-      public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule, 
-                           List<double> coupons,DayCounter accrualDayCounter)
-            : this(settlementDays, faceAmount, schedule, coupons, accrualDayCounter, 
-                   BusinessDayConvention.Following, 100, null, new Calendar()) { }
-
-      public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule,
-                           List<double> coupons, DayCounter accrualDayCounter, 
-                           BusinessDayConvention paymentConvention,double redemption, Date issueDate)
-         : this(settlementDays, faceAmount, schedule, coupons, accrualDayCounter,
-                paymentConvention, redemption, issueDate, new Calendar()) { }
+ 
 
       //! simple annual compounding coupon rates      
       public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule,List<double> coupons, 
-                           DayCounter accrualDayCounter, BusinessDayConvention paymentConvention,
-                           double redemption, Date issueDate,Calendar paymentCalendar)
-         : base(settlementDays, paymentCalendar == new Calendar() ? schedule.calendar() : paymentCalendar, 
+                           DayCounter accrualDayCounter, BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                           double redemption = 100, Date issueDate = null,Calendar paymentCalendar = null)
+         : base(settlementDays, paymentCalendar == null ? schedule.calendar() : paymentCalendar, 
                 issueDate) 
       {
          frequency_ = schedule.tenor().frequency();
@@ -77,15 +68,15 @@ namespace QLNet
                            Period tenor,
                            List<double> coupons,
                            DayCounter accrualDayCounter,
-                           BusinessDayConvention accrualConvention,
-                           BusinessDayConvention paymentConvention,
-                           double redemption,
-                           Date issueDate,
-                           Date stubDate,
-                           DateGeneration.Rule rule,
-                           bool endOfMonth,
-                           Calendar paymentCalendar)
-         : base(settlementDays, paymentCalendar == new Calendar() ? calendar : paymentCalendar, 
+                           BusinessDayConvention accrualConvention = BusinessDayConvention.Following,
+                           BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                           double redemption = 100,
+                           Date issueDate = null,
+                           Date stubDate = null,
+                           DateGeneration.Rule rule = DateGeneration.Rule.Backward,
+                           bool endOfMonth = false,
+                           Calendar paymentCalendar = null)
+         : base(settlementDays, paymentCalendar == null ? calendar : paymentCalendar, 
                 issueDate) 
       {
 
@@ -141,26 +132,16 @@ namespace QLNet
             throw new ApplicationException("multiple redemptions created");
       }
 
-      //! generic compounding and frequency InterestRate coupons 
       public FixedRateBond(int settlementDays,
                            double faceAmount,
                            Schedule schedule,
                            List<InterestRate> coupons,
-                           BusinessDayConvention paymentConvention,
-                           double redemption,
-                           Date issueDate)
-         : this(settlementDays, faceAmount, schedule, coupons, paymentConvention, redemption, issueDate, new Calendar()) { }
+                           BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                           double redemption = 100,
+                           Date issueDate = null,
+                           Calendar paymentCalendar = null)
 
-      public FixedRateBond(int settlementDays,
-                           double faceAmount,
-                           Schedule schedule,
-                           List<InterestRate> coupons,
-                           BusinessDayConvention paymentConvention,
-                           double redemption,
-                           Date issueDate,
-                           Calendar paymentCalendar)
-
-         : base(settlementDays,paymentCalendar == new Calendar() ? schedule.calendar() : paymentCalendar,
+         : base(settlementDays,paymentCalendar == null ? schedule.calendar() : paymentCalendar,
                 issueDate)
       {
       

@@ -384,7 +384,7 @@ namespace TestSuite
          double marketYield3 = 0.02997;
 
          Date settlementDate = new Date(30, Month.November, 2004);
-         double cachedPrice3 = 99.764874;
+         double cachedPrice3 = 99.764759;
 
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq, settlementDate);
          if (Math.Abs(price - cachedPrice3) > tolerance)

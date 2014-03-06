@@ -94,7 +94,7 @@ namespace QLNet
                        *volaModel_.integratedVariance(j, i, t, x);
                 //verifier la methode integratedVariance, qui bdoit etre implémenté
                 }
-                catch (System.Exception  Error) {
+                catch (System.Exception) {
                 // okay proceed with the
                 // slow numerical integration routine
                 }

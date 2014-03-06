@@ -21,172 +21,258 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
+namespace QLNet 
+{
+   //! Default probability term structure
+   /*! This abstract class defines the interface of concrete
+      credit structures which will be derived from this one.
 
-	//! probability
-	//! \ingroup types 
+      \ingroup defaultprobabilitytermstructures
+   */
+   public  class DefaultProbabilityTermStructure : TermStructure 
+   {
+      #region Constructors
 
+      public DefaultProbabilityTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
+         :base(dc)
+      {
+         if ( jumps != null )
+            jumps_ = jumps;
+         else
+            jumps_ = new List<Handle<Quote>>();
 
-	//! default probability term structure
-	public class DefaultProbabilityTermStructure : TermStructure
-	{
-//        ! \name Constructors
-//            See the TermStructure documentation for issues regarding
-//            constructors.
-//        
-		//@{
-		//! default constructor
-//        ! \warning term structures initialized by means of this
-//                     constructor must manage their own reference date
-//                     by overriding the referenceDate() method.
-//        
-		public DefaultProbabilityTermStructure() : this(new DayCounter())
-		{
-		}
-		public DefaultProbabilityTermStructure(DayCounter dc) : base(dc)
-		{
-		}
-		//! initialize with a fixed reference date
-		public DefaultProbabilityTermStructure(Date referenceDate, Calendar cal) : this(referenceDate, cal, new DayCounter())
-		{
-		}
-		public DefaultProbabilityTermStructure(Date referenceDate) : this(referenceDate, new Calendar(), new DayCounter())
-		{
-		}
-		public DefaultProbabilityTermStructure(Date referenceDate, Calendar cal, DayCounter dc) : base(referenceDate, cal, dc)
-		{
-		}
-		//! calculate the reference date based on the global evaluation date
-		public DefaultProbabilityTermStructure(int settlementDays, Calendar cal) : this(settlementDays, cal, new DayCounter())
-		{
-		}
-		public DefaultProbabilityTermStructure(int settlementDays, Calendar cal, DayCounter dc) : base(settlementDays, cal, dc)
-		{
-		}
-		//@}
-		//! \name Default probability
-		//@{
-		//! probability of default between today and a given date
-		public double defaultProbability(Date d)
-		{
-            return defaultProbability(d, false);
-		}
-		public double defaultProbability(Date d, bool extrapolate)
-		{
-			return 1.0 - survivalProbability(d, extrapolate);
-		}
-		//! probability of default between today (t = 0) and a given time
-		public double defaultProbability(double t)
-		{
-            return defaultProbability(t, false);
-		}
-		public double defaultProbability(double t, bool extrapolate)
-		{
-			return 1.0 - survivalProbability(t, extrapolate);
-		}
-		//! probability of default between two given dates
-		public double defaultProbability(Date d1, Date d2)
-		{
-            return defaultProbability(d1, d2, false);
-		}
-		public double defaultProbability(Date d1, Date d2, bool extrapolate)
-		{
-			if (!(d1 <= d2))
-                throw new ApplicationException("initial date (" + d1 + ") " + "later than final date (" + d2 + ")");
+         if ( jumpDates != null )
+            jumpDates_ = jumpDates;
+         else
+            jumpDates_ = new List<Date>();
 
-			double p1 = defaultProbability(d1, extrapolate);
-			double p2 = defaultProbability(d2, extrapolate);
-			return p2 - p1;
-		}
-		//! probability of default between two given times
-		public double defaultProbability(double t1, double t2)
-		{
-            return defaultProbability(t1, t2, false);
-		}
-		public double defaultProbability(double t1, double t2, bool extrapolate)
-		{
-			if (!(t1 <= t2))
-                throw new ApplicationException("initial time (" + t1 + ") " + "later than final time (" + t2 + ")");
+         jumpTimes_ = new List<double>(jumpDates_.Count);
+         nJumps_ = jumps_.Count;
+         setJumps();
+         for (int i=0; i<nJumps_; ++i)
+            jumps_[i].registerWith(update);
+      }
+           
+      public DefaultProbabilityTermStructure(Date referenceDate,Calendar cal = null,DayCounter dc = null,
+            List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
+         :base(referenceDate, cal, dc)
+      {
+         if ( jumps != null )
+            jumps_ = jumps;
+         else
+            jumps_ = new List<Handle<Quote>>();
 
-			double p1 = defaultProbability(t1, extrapolate);
-			double p2 = defaultProbability(t2, extrapolate);
-			return p2 - p1;
-		}
-		//@}
-		//! \name Survival probability
-		//@{
-		//! probability of survival between today and a given date
-		public double survivalProbability(Date d)
-		{
-			return survivalProbability(d, false);
-		}
-		public double survivalProbability(Date d, bool extrapolate)
-		{
-			checkRange(d, extrapolate);
-			return survivalProbabilityImpl(timeFromReference(d));
-		}
-		//! probability of default between today (t = 0) and a given time
-		public double survivalProbability(double t)
-		{
-            return survivalProbability(t, false);
-		}
-		public double survivalProbability(double t, bool extrapolate)
-		{
-			checkRange(t, extrapolate);
-			return survivalProbabilityImpl(t);
-		}
-		//@}
-		//! \name Default density
-		//@{
-		//! default density at a given date
-		public double defaultDensity(Date d)
-		{
-            return defaultDensity(d, false);
-		}
-		public double defaultDensity(Date d, bool extrapolate)
-		{
-			checkRange(d, extrapolate);
-			return defaultDensityImpl(timeFromReference(d));
-		}
-		//! default density at a given time
-		public double defaultDensity(double t)
-		{
-            return defaultDensity(t, false);
-		}
-		public double defaultDensity(double t, bool extrapolate)
-		{
-			checkRange(t, extrapolate);
-			return defaultDensityImpl(t);
-		}
-		//@}
-		//! \name Hazard rate
-		//@{
-		//! hazard rate at a given date
-		public double hazardRate(Date d)
-		{
-            return hazardRate(d, false);
-		}
-		public double hazardRate(Date d, bool extrapolate)
-		{
-			checkRange(d, extrapolate);
-			return hazardRateImpl(timeFromReference(d));
-		}
-		//! hazard rate at a given time
-		public double hazardRate(double t)
-		{
-            return hazardRate(t, false);
-		}
-		public double hazardRate(double t, bool extrapolate)
-		{
-			checkRange(t, extrapolate);
-			return hazardRateImpl(t);
-		}
-		//@}
-		//! probability of survival between today (t = 0) and a given time
-        protected virtual double survivalProbabilityImpl(double NamelessParameter) { throw new NotSupportedException(); }
-		//! instantaneous default density at a given time
-        protected virtual double defaultDensityImpl(double NamelessParameter) { throw new NotSupportedException(); }
-        //! instantaneous hazard rate at a given time
-        protected virtual double hazardRateImpl(double NamelessParameter) { throw new NotSupportedException(); }
+         if ( jumpDates != null )
+            jumpDates_ = jumpDates;
+         else
+            jumpDates_ = new List<Date>();
+
+         jumpTimes_ = new List<double>(jumpDates_.Count);
+         nJumps_ = jumps_.Count;
+         setJumps();
+         for (int i=0; i<nJumps_; ++i)
+            jumps_[i].registerWith(update);
+      }
+        
+      public DefaultProbabilityTermStructure(int settlementDays,Calendar cal,DayCounter dc = null,
+            List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
+          : base(settlementDays, cal, dc)
+      {
+         if ( jumps != null )
+            jumps_ = jumps;
+         else
+            jumps_ = new List<Handle<Quote>>();
+
+         if ( jumpDates != null )
+            jumpDates_ = jumpDates;
+         else
+            jumpDates_ = new List<Date>();
+
+         jumpTimes_ = new List<double>(jumpDates_.Count);
+         nJumps_ = jumps_.Count;
+         setJumps();
+         for (int i=0; i<nJumps_; ++i)
+            jumps_[i].registerWith(update);
+      }
+
+      #endregion
+
+      #region Survival probabilities
+
+      //      These methods return the survival probability from the reference
+      //      date until a given date or time.  In the latter case, the time
+      //      is calculated as a fraction of year from the reference date.
+      public double survivalProbability(Date d, bool extrapolate = false) 
+      {
+         return survivalProbability(timeFromReference(d), extrapolate);
+      }
+
+      /*! The same day-counting rule used by the term structure
+          should be used for calculating the passed time t.
+      */
+      public double survivalProbability(double t, bool extrapolate = false)
+      {
+         checkRange(t, extrapolate);
+
+        if (!jumps_.empty()) {
+            double jumpEffect = 1.0;
+            for (int i=0; i<nJumps_ && jumpTimes_[i]<t; ++i) {
+                Utils.QL_REQUIRE(jumps_[i].link.isValid(),  "invalid " + (i+1) + " jump quote");
+                double thisJump = jumps_[i].link.value();
+                Utils.QL_REQUIRE(thisJump > 0.0 && thisJump <= 1.0, "invalid " + (i+1) + " jump value: " + thisJump);
+                jumpEffect *= thisJump;
+            }
+            return jumpEffect * survivalProbabilityImpl(t);
+        }
+
+        return survivalProbabilityImpl(t);
+      }
+
+      #endregion
+
+      #region Default probabilities
+
+      //    These methods return the default probability from the reference
+      //    date until a given date or time.  In the latter case, the time
+      //    is calculated as a fraction of year from the reference date.
+      public double defaultProbability(Date d, bool extrapolate = false) 
+      {
+         return 1.0 - survivalProbability(d, extrapolate);
+      }
+
+      /*! The same day-counting rule used by the term structure
+          should be used for calculating the passed time t.
+      */
+      public double defaultProbability(double t,bool extrapolate = false)
+      {
+          return 1.0 - survivalProbability(t, extrapolate);
+      }
+
+      //! probability of default between two given dates
+      public double defaultProbability(Date d1,Date d2, bool extrapolate = false)
+      {
+         Utils.QL_REQUIRE(d1 <= d2,   "initial date (" + d1 + ") later than final date (" + d2 + ")");
+         double p1 = d1 < referenceDate() ? 0.0 : defaultProbability(d1,extrapolate), p2 = defaultProbability(d2,extrapolate);
+         return p2 - p1;
+      }
+      //! probability of default between two given times
+      public double defaultProbability(double t1, double t2, bool extrapo = false)
+      {
+         Utils.QL_REQUIRE(t1 <= t2, "initial time (" + t1 + ") later than final time (" + t2 + ")");
+         double p1 = t1 < 0.0 ? 0.0 : defaultProbability(t1,extrapolate),  p2 = defaultProbability(t2,extrapolate);
+         return p2 - p1;
+      }
+
+      #endregion
+
+      #region Default densities
+
+      //    These methods return the default density at a given date or time.
+      //    In the latter case, the time is calculated as a fraction of year
+      //    from the reference date.
+
+      public double defaultDensity(Date d, bool extrapolate = false)
+      {
+         return defaultDensity(timeFromReference(d), extrapolate);
+      }
+
+      public double defaultDensity(double t, bool extrapolate = false)
+      {
+         checkRange(t, extrapolate);
+         return defaultDensityImpl(t);
+      }
+
+      #endregion
+
+      #region Hazard rates
+
+      //    These methods returns the hazard rate at a given date or time.
+      //    In the latter case, the time is calculated as a fraction of year
+      //    from the reference date.
+      //    
+      //    Hazard rates are defined with annual frequency and continuous
+      //    compounding.
+
+      public double hazardRate(Date d,  bool extrapolate = false)
+      {
+         return hazardRate(timeFromReference(d), extrapolate);
+      }
+
+      public double hazardRate(double t, bool extrapolate = false)
+      {
+         double S = survivalProbability(t, extrapolate);
+         return S == 0.0 ? 0.0 : defaultDensity(t, extrapolate)/S;
+      }
+
+      #endregion
+
+      #region Jump inspectors
+      
+      public List<Date> jumpDates() { return this.jumpDates_;}
+      public List<double> jumpTimes() {return this.jumpTimes_;}
+
+      #endregion
+
+      #region Observer interface
+      
+      public override void update()
+      {
+         base.update();
+         if (referenceDate() != latestReference_)
+            setJumps();
+      }
+
+      #endregion
+
+      
+      #region Calculations
+      
+      // These methods must be implemented in derived classes to
+      // perform the actual calculations. When they are called,
+      // range check has already been performed; therefore, they
+      // must assume that extrapolation is required.
+
+      //! survival probability calculation
+      protected virtual double survivalProbabilityImpl(double t) 
+      {throw new NotImplementedException("DefaultProbabilityTermStructure.survivalProbabilityImpl");}
+      
+      //! default density calculation
+      protected virtual double defaultDensityImpl(double t)  
+      {throw new NotImplementedException("DefaultProbabilityTermStructure.defaultDensityImpl");}
+      
+      #endregion
+
+      
+      // methods
+      private void setJumps()
+      {
+         if (jumpDates_.empty() && !jumps_.empty()) 
+         { 
+            // turn of year dates
+            jumpDates_.Clear();
+            jumpTimes_.Clear();
+            int y = referenceDate().year();
+            for (int i=0; i<nJumps_; ++i)
+                jumpDates_.Add(new Date(31, Month.December, y+i));
+            
+         } 
+         else 
+         { 
+            // fixed dats
+            Utils.QL_REQUIRE(jumpDates_.Count ==nJumps_,
+                       "mismatch between number of jumps (" + nJumps_ +
+                       ") and jump dates (" + jumpDates_.Count + ")");
+        }
+        for (int i=0; i<nJumps_; ++i)
+            jumpTimes_.Add(timeFromReference(jumpDates_[i]));
+        
+         latestReference_ = base.referenceDate();
+      }
+      // data members
+      private List<Handle<Quote> > jumps_;
+      private List<Date> jumpDates_;
+      private List<double> jumpTimes_;
+      private int nJumps_;
+      private Date latestReference_;
     }
 }

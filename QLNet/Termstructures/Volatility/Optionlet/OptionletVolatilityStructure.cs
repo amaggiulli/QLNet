@@ -21,127 +21,123 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
-    //! Optionlet (caplet/floorlet) volatility structure
-    /*! This class defines the interface of concrete structures which will be derived from this one. */
-    public class OptionletVolatilityStructure : VolatilityTermStructure {
+namespace QLNet 
+{
+   //! Optionlet (caplet/floorlet) volatility structure
+   /*! This class is purely abstract and defines the interface of
+      concrete structures which will be derived from this one.
+   */
+   public class OptionletVolatilityStructure : VolatilityTermStructure 
+   {
+      #region Constructors
+      //! default constructor
+      /*! \warning term structures initialized by means of this
+                   constructor must manage their own reference date
+                   by overriding the referenceDate() method.
+      */
+      public OptionletVolatilityStructure()
+         : base(BusinessDayConvention.Following, null) { }
 
-        #region ctors
-        //! default constructor
-        /*! \warning term structures initialized by means of this constructor must manage their own reference date
-                     by overriding the referenceDate() method. */
-        // public OptionletVolatilityStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
-        public OptionletVolatilityStructure(Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(cal, bdc, dc) { }
+      public OptionletVolatilityStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
+         DayCounter dc = null)
+         : base(bdc, dc) {}
 
-        //! initialize with a fixed reference date
-        // public OptionletVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
-        public OptionletVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(referenceDate, cal, bdc, dc) { }
+      //! initialize with a fixed reference date
+      public OptionletVolatilityStructure(Date referenceDate,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+         : base(referenceDate, cal, bdc, dc) {}
+      
+      //! calculate the reference date based on the global evaluation date
+      public OptionletVolatilityStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+         : base(settlementDays, cal, bdc, dc) {}
+      
+      #endregion
 
-        //! calculate the reference date based on the global evaluation date
-        // public OptionletVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = DayCounter());
-        public OptionletVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc)
-            : base(settlementDays, cal, bdc, dc) { }
+      #region Volatility and Variance
 
-        // this one should not be here. it is a work-around
-        public OptionletVolatilityStructure() : base(null, BusinessDayConvention.Following, null) { } 
-        #endregion
+      //! returns the volatility for a given option tenor and strike rate
+      public double volatility(Period optionTenor, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return volatility(optionDate, strike, extrapolate);
+      }
+      
+      //! returns the volatility for a given option date and strike rate
+      public double volatility(Date optionDate, double strike, bool extrapolate = false)
+      {
+         checkRange(optionDate, extrapolate);
+         checkStrike(strike, extrapolate);
+         return volatilityImpl(optionDate, strike);
+      }
+      
+      //! returns the volatility for a given option time and strike rate
+      public double volatility(double optionTime, double strike, bool extrapolate = false)
+      {
+         checkRange(optionTime, extrapolate);
+         checkStrike(strike, extrapolate);
+         return volatilityImpl(optionTime, strike);
+      }
 
-        public override double minStrike() { throw new NotImplementedException(); }
-        public override double maxStrike() { throw new NotImplementedException(); }
-        public override Date maxDate() { throw new NotImplementedException(); }
+      //! returns the Black variance for a given option tenor and strike rate
+      public double blackVariance(Period optionTenor, double strike, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return blackVariance(optionDate, strike, extrapolate);
+      }
 
+      //! returns the Black variance for a given option date and strike rate
+      public double blackVariance(Date optionDate, double strike, bool extrapolate = false)
+      {
+         double v = volatility(optionDate, strike, extrapolate);
+         double t = timeFromReference(optionDate);
+         return v*v*t;
+      }
 
-        //! \name Volatility and Variance
-        
-        // 1. Period-based methods convert Period to Date and then use the equivalent Date-based methods
-        
-        //! returns the volatility for a given option tenor and strike rate
-        // public double volatility(Period optionTenor, Rate strike, bool extrapolate = false) {
-        public double volatility(Period optionTenor, double strike, bool extrapolate) {
-            Date optionDate = optionDateFromTenor(optionTenor);
-            return volatility(optionDate, strike, extrapolate);
-        }
+      //! returns the Black variance for a given option time and strike rate
+      public double blackVariance(double optionTime,  double strike,  bool extrapolate = false)
+      {
+         double v = volatility(optionTime, strike, extrapolate);
+         return v*v*optionTime;
+      }
 
-        //! returns the Black variance for a given option tenor and strike rate
-        // public double blackVariance(Period optionTenor, Rate strike, bool extrapolate = false) {
-        public double blackVariance(Period optionTenor, double strike, bool extrapolate) {
-            Date optionDate = optionDateFromTenor(optionTenor);
-            return blackVariance(optionDate, strike, extrapolate);
-        }
+      //! returns the smile for a given option tenor
+      public SmileSection smileSection( Period optionTenor, bool extr = false)
+      {
+         Date optionDate = optionDateFromTenor(optionTenor);
+         return smileSection(optionDate, extrapolate);
+      }
 
-        //! returns the smile for a given option tenor
-        // public SmileSection smileSection(Period optionTenor, bool extrapolate = false) {
-        public SmileSection smileSection(Period optionTenor, bool extrapolate) {
-            Date optionDate = optionDateFromTenor(optionTenor);
-            return smileSection(optionDate, extrapolate);
-        }
+      //! returns the smile for a given option date
+      public SmileSection smileSection(Date optionDate,bool extr = false)
+      {
+         checkRange(optionDate, extrapolate);
+         return smileSectionImpl(optionDate);
+      }
 
-     
-        // 2. blackVariance methods rely on volatility methods
+      //! returns the smile for a given option time
+      public SmileSection smileSection(double optionTime,  bool extr = false)
+      {
+         checkRange(optionTime, extrapolate);
+         return smileSectionImpl(optionTime);
+      }
+      
+      #endregion
+      
+      protected virtual SmileSection smileSectionImpl(Date optionDate)
+      {
+          return smileSectionImpl(timeFromReference(optionDate));
+      }
 
-        //! returns the Black variance for a given option date and strike rate
-        public double blackVariance(Date optionDate, double strike) { return blackVariance(optionDate, strike, false); }
-        public double blackVariance(Date optionDate, double strike, bool extrapolate) {
-            double v = volatility(optionDate, strike, extrapolate);
-            double t = timeFromReference(optionDate);
-            return v*v*t;
-        }
+      //! implements the actual smile calculation in derived classes
+      protected virtual SmileSection smileSectionImpl(double optionTime)  { throw new NotImplementedException(); }
 
-        //! returns the Black variance for a given option time and strike rate
-        // public double blackVariance(Time optionTime, Rate strike, bool extrapolate = false);
-        public double blackVariance(double optionTime, double strike, bool extrapolate) {
-            double v = volatility(optionTime, strike, extrapolate);
-            return v * v * optionTime;
-        }
+      protected double volatilityImpl(Date optionDate, double strike)
+      {
+         return volatilityImpl(timeFromReference(optionDate), strike);
+      }
 
-
-        // 3. relying on xxxImpl methods
-
-        //! returns the volatility for a given option date and strike rate
-        // public double volatility(Date optionDate, Rate strike, bool extrapolate = false);
-        public double volatility(Date optionDate, double strike, bool extrapolate) {
-            checkRange(optionDate, extrapolate);
-            checkStrike(strike, extrapolate);
-            return volatilityImpl(optionDate, strike);
-        }
-
-        //! returns the volatility for a given option time and strike rate
-        // public double volatility(double optionTime, double strike, bool extrapolate = false);
-        public double volatility(double optionTime, double strike, bool extrapolate){
-            checkRange(optionTime, extrapolate);
-            checkStrike(strike, extrapolate);
-            return volatilityImpl(optionTime, strike);
-        }
-
-        //! returns the smile for a given option date
-        public SmileSection smileSection(Date optionDate, bool extrapolate) {
-            checkRange(optionDate, extrapolate);
-            return smileSectionImpl(optionDate);
-        }
-
-        //! returns the smile for a given option time
-        public SmileSection smileSection(double optionTime, bool extrapolate) {
-            checkRange(optionTime, extrapolate);
-            return smileSectionImpl(optionTime);
-        }
-
-
-        // 4. default implementation of Date-based xxxImpl methods relying on the equivalent Time-based methods
-
-        protected virtual SmileSection smileSectionImpl(Date optionDate) {
-            return smileSectionImpl(timeFromReference(optionDate));
-        }
-        //! implements the actual smile calculation in derived classes
-        protected virtual SmileSection smileSectionImpl(double optionTime) { throw new NotImplementedException(); }
-
-        protected virtual double volatilityImpl(Date optionDate, double strike) {
-            return volatilityImpl(timeFromReference(optionDate), strike);
-        }
-
-        //! implements the actual volatility calculation in derived classes
-        protected virtual double volatilityImpl(double optionTime, double strike) { throw new NotImplementedException(); }
-
-    }
+      //! implements the actual volatility calculation in derived classes
+      protected virtual double volatilityImpl(double optionTime, double strike) { throw new NotImplementedException(); }
+   
+   }
+   
 }

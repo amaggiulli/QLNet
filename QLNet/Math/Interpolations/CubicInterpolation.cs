@@ -271,7 +271,6 @@ namespace QLNet {
                     switch (da_) {
                         case CubicInterpolation.DerivativeApprox.FourthOrder:
                             throw new NotImplementedException("FourthOrder not implemented yet");
-                            break;
                         case CubicInterpolation.DerivativeApprox.Parabolic:
                             // intermediate points
                             for (int i = 1; i < size_ - 1; ++i) {
@@ -280,7 +279,6 @@ namespace QLNet {
                             // end points
                             tmp[0] = ((2.0 * dx[0] + dx[1]) * S[0] - dx[0] * S[1]) / (dx[0] + dx[1]);
                             tmp[size_ - 1] = ((2.0 * dx[size_ - 2] + dx[size_ - 3]) * S[size_ - 2] - dx[size_ - 2] * S[size_ - 3]) / (dx[size_ - 2] + dx[size_ - 3]);
-                            break;
                             break;
                         case CubicInterpolation.DerivativeApprox.FritschButland:
                             // intermediate points
@@ -294,11 +292,23 @@ namespace QLNet {
                             tmp[size_-1] = ((2.0*dx[size_-2]+dx[size_-3])*S[size_-2] - dx[size_-2]*S[size_-3]) / (dx[size_-2]+dx[size_-3]);
                             break;
                         case CubicInterpolation.DerivativeApprox.Akima:
-                            throw new NotImplementedException("Akima not implemented yet");
-                            // end points
-                            tmp[0] = ((2.0 * dx[0] + dx[1]) * S[0] - dx[0] * S[1]) / (dx[0] + dx[1]);
-                            tmp[size_ - 1] = ((2.0 * dx[size_ - 2] + dx[size_ - 3]) * S[size_ - 2] - dx[size_ - 2] * S[size_ - 3]) / (dx[size_ - 2] + dx[size_ - 3]);
-                            break;
+                           tmp[0] = (Math.Abs(S[1]-S[0])*2*S[0]*S[1]+Math.Abs(2*S[0]*S[1]-4*S[0]*S[0]*S[1])*S[0])/(Math.Abs(S[1]-S[0])+Math.Abs(2*S[0]*S[1]-4*S[0]*S[0]*S[1]));
+                           tmp[1] = (Math.Abs(S[2]-S[1])*S[0]+Math.Abs(S[0]-2*S[0]*S[1])*S[1])/(Math.Abs(S[2]-S[1])+Math.Abs(S[0]-2*S[0]*S[1]));
+                           for (int i=2; i<size_-2; ++i) {
+                              if ((S[i-2]==S[i-1]) && (S[i]!=S[i+1]))
+                                    tmp[i] = S[i-1];
+                              else if ((S[i-2]!=S[i-1]) && (S[i]==S[i+1]))
+                                    tmp[i] = S[i];
+                              else if (S[i]==S[i-1])
+                                    tmp[i] = S[i];
+                              else if ((S[i-2]==S[i-1]) && (S[i-1]!=S[i]) && (S[i]==S[i+1]))
+                                    tmp[i] = (S[i-1]+S[i])/2.0;
+                              else
+                                    tmp[i] = (Math.Abs(S[i+1]-S[i])*S[i-1]+Math.Abs(S[i-1]-S[i-2])*S[i])/(Math.Abs(S[i+1]-S[i])+Math.Abs(S[i-1]-S[i-2]));
+                           }
+                           tmp[size_-2] = (Math.Abs(2*S[size_-2]*S[size_-3]-S[size_-2])*S[size_-3]+Math.Abs(S[size_-3]-S[size_-4])*S[size_-2])/(Math.Abs(2*S[size_-2]*S[size_-3]-S[size_-2])+Math.Abs(S[size_-3]-S[size_-4]));
+                           tmp[size_-1] = (Math.Abs(4*S[size_-2]*S[size_-2]*S[size_-3]-2*S[size_-2]*S[size_-3])*S[size_-2]+Math.Abs(S[size_-2]-S[size_-3])*2*S[size_-2]*S[size_-3])/(Math.Abs(4*S[size_-2]*S[size_-2]*S[size_-3]-2*S[size_-2]*S[size_-3])+Math.Abs(S[size_-2]-S[size_-3]));
+                           break;
                         case CubicInterpolation.DerivativeApprox.Kruger:
                             // intermediate points
                             for (int i = 1; i < size_ - 1; ++i) {

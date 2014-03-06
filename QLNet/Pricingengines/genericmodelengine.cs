@@ -44,21 +44,6 @@ namespace QLNet
 
             protected ModelType model_;
             
-        #region Observer & Observable
-            // observable interface
-            public event Callback notifyObserversEvent;
-            public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-            public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-            protected void notifyObservers()
-            {
-                Callback handler = notifyObserversEvent;
-                if (handler != null)
-                {
-                    handler();
-                }
-            }
-            //Philippe 2010 to override in LatticeShortRateModelEngine
-            public virtual void update() { notifyObservers(); }
-            #endregion
+       
     }
     }

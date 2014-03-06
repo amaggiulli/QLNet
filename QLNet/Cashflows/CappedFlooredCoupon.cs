@@ -226,9 +226,9 @@ namespace QLNet
       }
 
       // Factory - for Leg generators
-      public virtual CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays, SwapIndex index, double gearing, double spread, double? cap, double? floor, Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
+      public override CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays, InterestRateIndex index, double gearing, double spread, double? cap, double? floor, Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
       {
-         return new CappedFlooredCmsCoupon(nominal, paymentDate, startDate, endDate, fixingDays, index, gearing, spread, cap, floor, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
+         return new CappedFlooredCmsCoupon(nominal, paymentDate, startDate, endDate, fixingDays, (SwapIndex)index, gearing, spread, cap, floor, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
       }
    }
 
