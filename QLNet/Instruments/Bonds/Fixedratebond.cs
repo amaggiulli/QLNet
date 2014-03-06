@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com) 
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -35,7 +35,11 @@ namespace QLNet
       //! simple annual compounding coupon rates      
       public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule,List<double> coupons, 
                            DayCounter accrualDayCounter, BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
-                           double redemption = 100, Date issueDate = null,Calendar paymentCalendar = null)
+                           double redemption = 100, Date issueDate = null,Calendar paymentCalendar = null,
+			                  Period exCouponPeriod = null,
+                           Calendar exCouponCalendar = null,
+									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                           bool exCouponEndOfMonth = false)
          : base(settlementDays, paymentCalendar == null ? schedule.calendar() : paymentCalendar, 
                 issueDate) 
       {
@@ -45,9 +49,13 @@ namespace QLNet
 
          cashflows_ = new FixedRateLeg(schedule)
             .withCouponRates(coupons, accrualDayCounter)
+				.withExCouponPeriod(exCouponPeriod,
+										  exCouponCalendar,
+										  exCouponConvention,
+										  exCouponEndOfMonth)
             .withPaymentCalendar(calendar_)
             .withNotionals(faceAmount)
-            .withPaymentAdjustment(paymentConvention);
+            .withPaymentAdjustment(paymentConvention); 
 
          addRedemptionsToCashflows(new List<double>() { redemption });
 
@@ -75,7 +83,11 @@ namespace QLNet
                            Date stubDate = null,
                            DateGeneration.Rule rule = DateGeneration.Rule.Backward,
                            bool endOfMonth = false,
-                           Calendar paymentCalendar = null)
+                           Calendar paymentCalendar = null,
+									Period exCouponPeriod = null,
+                           Calendar exCouponCalendar = null,
+									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                           bool exCouponEndOfMonth = false)
          : base(settlementDays, paymentCalendar == null ? calendar : paymentCalendar, 
                 issueDate) 
       {
@@ -118,6 +130,10 @@ namespace QLNet
             
          cashflows_ = new FixedRateLeg(schedule)
             .withCouponRates(coupons, accrualDayCounter)
+				.withExCouponPeriod(exCouponPeriod,
+										  exCouponCalendar,
+										  exCouponConvention,
+										  exCouponEndOfMonth)
             .withPaymentCalendar(calendar_)
             .withNotionals(faceAmount)
             .withPaymentAdjustment(paymentConvention);
@@ -139,7 +155,11 @@ namespace QLNet
                            BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
                            double redemption = 100,
                            Date issueDate = null,
-                           Calendar paymentCalendar = null)
+                           Calendar paymentCalendar = null,
+			                  Period exCouponPeriod = null,
+									Calendar exCouponCalendar = null,
+									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+									bool exCouponEndOfMonth = false)
 
          : base(settlementDays,paymentCalendar == null ? schedule.calendar() : paymentCalendar,
                 issueDate)
@@ -151,6 +171,10 @@ namespace QLNet
 
         cashflows_ = new FixedRateLeg(schedule)
                     .withCouponRates(coupons)
+						  .withExCouponPeriod(exCouponPeriod,
+										  exCouponCalendar,
+										  exCouponConvention,
+										  exCouponEndOfMonth)
                     .withPaymentCalendar(calendar_)
                     .withNotionals(faceAmount)
                     .withPaymentAdjustment(paymentConvention);
