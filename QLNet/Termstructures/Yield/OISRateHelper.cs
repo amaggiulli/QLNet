@@ -129,6 +129,6 @@ namespace QLNet
       }    
 
       protected OvernightIndexedSwap swap_;
-      protected RelinkableHandle<YieldTermStructure> termStructureHandle_;
+      protected RelinkableHandle<YieldTermStructure> termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
    }
 }
