@@ -285,6 +285,7 @@
     <Compile Include="Math\Solvers1d\FalsePosition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Math\Solvers1d\FiniteDifferenceNewtonSafe.cs" />
     <Compile Include="Math\Solvers1d\Newton.cs" />
     <Compile Include="Math\Solvers1d\Newtonsafe.cs" />
     <Compile Include="Math\Solvers1d\Ridder.cs">
