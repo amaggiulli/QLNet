@@ -620,6 +620,9 @@ namespace QLNet
     }
       public static int accruedDays(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
+			if ( settlementDate == null )
+				settlementDate = Settings.evaluationDate();
+
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
          Date paymentDate = cf.date();
@@ -634,6 +637,9 @@ namespace QLNet
       }
       public static double accruedAmount(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
+			if ( settlementDate == null )
+				settlementDate = Settings.evaluationDate();
+
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
          Date paymentDate = cf.date();
