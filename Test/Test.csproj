@@ -65,6 +65,7 @@
     <Compile Include="T_AsianOptions.cs" />
     <Compile Include="T_AssetSwap.cs" />
     <Compile Include="T_Bermudanswaption.cs" />
+    <Compile Include="T_BlackFormula.cs" />
     <Compile Include="T_CreditDefaultSwap.cs" />
     <Compile Include="T_DefaultProbabilityCurves.cs" />
     <Compile Include="T_DividendOption.cs" />
