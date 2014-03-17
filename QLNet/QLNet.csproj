@@ -170,6 +170,8 @@
     <Compile Include="Instruments\Bonds\Zerocouponbond.cs" />
     <Compile Include="Instruments\Callability.cs" />
     <Compile Include="Instruments\CapFloor.cs" />
+    <Compile Include="Instruments\Claim.cs" />
+    <Compile Include="Instruments\CreditDefaultSwap.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
     <Compile Include="Instruments\DividendVanillaOption.cs" />
     <Compile Include="Instruments\EuropeanOption.cs" />
@@ -283,6 +285,7 @@
     <Compile Include="Math\Solvers1d\FalsePosition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Math\Solvers1d\FiniteDifferenceNewtonSafe.cs" />
     <Compile Include="Math\Solvers1d\Newton.cs" />
     <Compile Include="Math\Solvers1d\Newtonsafe.cs" />
     <Compile Include="Math\Solvers1d\Ridder.cs">
@@ -375,6 +378,8 @@
     <Compile Include="Pricingengines\CapFloor\analyticcapfloorengine.cs" />
     <Compile Include="Pricingengines\CapFloor\BlackCapFloorEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\discretizedcapfloor.cs" />
+    <Compile Include="Pricingengines\credit\IntegralCdsEngine.cs" />
+    <Compile Include="Pricingengines\credit\MidPointCdsEngine.cs" />
     <Compile Include="Pricingengines\genericmodelengine.cs" />
     <Compile Include="Pricingengines\Greeks.cs" />
     <Compile Include="Pricingengines\latticeshortratemodelengine.cs" />
@@ -431,6 +436,7 @@
     <Compile Include="Termstructures\Bootstraphelper.cs" />
     <Compile Include="Termstructures\Credit\FlatHazardRate.cs" />
     <Compile Include="Termstructures\Credit\HazardRateStructure.cs" />
+    <Compile Include="Termstructures\Credit\InterpolatedHazardRateCurve.cs" />
     <Compile Include="Termstructures\Credit\ProbabilityTraits.cs" />
     <Compile Include="Termstructures\DefaultProbabilityTermStructure.cs" />
     <Compile Include="Termstructures\InflationTermStructure.cs" />
@@ -522,6 +528,7 @@
     <Compile Include="Time\DayCounter.cs" />
     <Compile Include="Time\DayCounters\Actual360.cs" />
     <Compile Include="Time\DayCounters\Actual365Fixed.cs" />
+    <Compile Include="Time\DayCounters\Actual365NoLeap.cs" />
     <Compile Include="Time\DayCounters\ActualActual.cs" />
     <Compile Include="Time\DayCounters\Business252.cs" />
     <Compile Include="Time\DayCounters\OneDayCounter.cs" />

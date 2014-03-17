@@ -97,6 +97,10 @@ namespace QLNet
                continue;
 
             double c = leg[i].amount();
+				if (leg[i].tradingExCoupon(settlementDate))
+				{
+					c = 0.0;
+				}
             Date couponDate = leg[i].date();
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
@@ -158,6 +162,10 @@ namespace QLNet
                continue;
 
             double c = leg[i].amount();
+				if (leg[i].tradingExCoupon(settlementDate))
+				{
+					c = 0.0;
+				}
             Date couponDate = leg[i].date();
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
@@ -279,7 +287,8 @@ namespace QLNet
             int lastSign = Math.Sign(-npv_), signChanges = 0;
             for (int i = 0; i < leg_.Count; ++i) 
             {
-               if (!leg_[i].hasOccurred(settlementDate_,includeSettlementDateFlows_)) 
+					if (!leg_[i].hasOccurred(settlementDate_, includeSettlementDateFlows_) &&
+						 !leg_[i].tradingExCoupon(settlementDate_)) 
                {
                   int thisSign = Math.Sign(leg_[i].amount());
                   if (lastSign * thisSign < 0) // sign change
@@ -611,6 +620,9 @@ namespace QLNet
     }
       public static int accruedDays(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
+			if ( settlementDate == null )
+				settlementDate = Settings.evaluationDate();
+
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
          Date paymentDate = cf.date();
@@ -625,6 +637,9 @@ namespace QLNet
       }
       public static double accruedAmount(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
+			if ( settlementDate == null )
+				settlementDate = Settings.evaluationDate();
+
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
          Date paymentDate = cf.date();
@@ -699,7 +714,8 @@ namespace QLNet
          BPSCalculator calc = new BPSCalculator(discountCurve);
          for (int i = 0; i < leg.Count; ++i)
          {
-            if (!leg[i].hasOccurred(settlementDate, includeSettlementDateFlows))
+				if (!leg[i].hasOccurred(settlementDate, includeSettlementDateFlows) &&
+					 !leg[i].tradingExCoupon(settlementDate))
                leg[i].accept(calc);
          }
          return basisPoint_ * calc.bps() / discountCurve.discount(npvDate);
@@ -720,7 +736,8 @@ namespace QLNet
          for (int i=0; i<leg.Count; ++i) 
          {
             CashFlow cf = leg[i];
-            if (!cf.hasOccurred(settlementDate, includeSettlementDateFlows)) 
+				if (!cf.hasOccurred(settlementDate, includeSettlementDateFlows) &&
+					 !cf.tradingExCoupon(settlementDate)) 
             {
                npv += cf.amount() * discountCurve.discount(cf.date());
                cf.accept(calc);
@@ -749,7 +766,8 @@ namespace QLNet
          for (int i=0; i<leg.Count; ++i) 
          {
             CashFlow cf = leg[i];
-            if (!cf.hasOccurred(settlementDate, includeSettlementDateFlows)) 
+				if (!cf.hasOccurred(settlementDate, includeSettlementDateFlows) &&
+					 !cf.tradingExCoupon(settlementDate)) 
             {
                npv += cf.amount() * discountCurve.discount(cf.date());
                cf.accept(calc);
@@ -802,6 +820,10 @@ namespace QLNet
 
             Date couponDate = leg[i].date();
             double amount = leg[i].amount();
+				if (leg[i].tradingExCoupon(settlementDate))
+				{
+					amount = 0.0;
+				}
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
             {
@@ -1018,6 +1040,10 @@ namespace QLNet
                continue;
             
             double c = leg[i].amount();
+				if (leg[i].tradingExCoupon(settlementDate))
+				{
+					c = 0.0;
+				}
             Date couponDate = leg[i].date();
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
