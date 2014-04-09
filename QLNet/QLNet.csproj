@@ -438,9 +438,12 @@
     <Compile Include="Termstructures\Credit\HazardRateStructure.cs" />
     <Compile Include="Termstructures\Credit\InterpolatedHazardRateCurve.cs" />
     <Compile Include="Termstructures\Credit\ProbabilityTraits.cs" />
+    <Compile Include="Termstructures\Curve.cs" />
     <Compile Include="Termstructures\DefaultProbabilityTermStructure.cs" />
     <Compile Include="Termstructures\InflationTermStructure.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />
+    <Compile Include="Termstructures\Inflation\InflationTraits.cs" />
+    <Compile Include="Termstructures\Inflation\PiecewiseZeroInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\Seasonality.cs" />
     <Compile Include="Termstructures\interpolatedcurve.cs" />
     <Compile Include="Termstructures\Iterativebootstrap.cs" />

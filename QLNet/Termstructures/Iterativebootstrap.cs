@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+ Copyright (C) 2008-2014  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
+ 
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -22,153 +23,225 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
-    public interface IBootStrap {
-        void setup(PiecewiseYieldCurve ts);
-        void calculate();
-    }
+namespace QLNet 
+{
+	public interface IBootStrap<T>
+	{
+		void setup( T ts );
+		void calculate();
+	}
 
-    //! Universal piecewise-term-structure boostrapper.
-    public class IterativeBootstrap : IBootStrap {
-        
-        private bool validCurve_ = false;
-        private PiecewiseYieldCurve ts_; // yes, it is a workaround
+	public class IterativeBootstrapForYield : IterativeBootstrap<PiecewiseYieldCurve, YieldTermStructure>
+	{
+		public IterativeBootstrapForYield()
+			: base()
+		{}
+	}
 
-        public void setup(PiecewiseYieldCurve ts) {
-            ts_ = ts;
+	public class IterativeBootstrapForInflation : IterativeBootstrap<PiecewiseZeroInflationCurve, ZeroInflationTermStructure>
+	{
+		public IterativeBootstrapForInflation()
+			: base()
+		{}
+	}
 
-            int n = ts_.instruments_.Count;
-            if (!(n+1 >= ts_.interpolator_.requiredPoints))
-                throw new ArgumentException("not enough instruments: " + n + " provided, " +
-                       (ts_.interpolator_.requiredPoints-1) + " required");
 
-            ts_.instruments_.ForEach(x => x.registerWith(ts_.update));
-        }
+	//! Universal piecewise-term-structure boostrapper.
+	public class IterativeBootstrap<T,U>:IBootStrap<T>
+		where T : Curve<U>, new()
+		where U : TermStructure
+	{
+		private bool validCurve_ = false;
+		private T ts_;
+		private int n_;
+		private Brent firstSolver_ = new Brent();
+		private FiniteDifferenceNewtonSafe solver_ = new FiniteDifferenceNewtonSafe();
+		private bool initialized_;
+		private int firstAliveHelper_, alive_;
+		private List<double> previousData_;
+		private List<BootstrapError<T, U>> errors_;
 
-        public void calculate() {
+		public IterativeBootstrap()
+		{
+			ts_ = new T();
+			initialized_ = false;
+			validCurve_ = false;
 
-            //prepare instruments
-            int n = ts_.instruments_.Count, i;
+		}
 
-            // ensure rate helpers are sorted
-            ts_.instruments_.Sort((x, y) => x.latestDate().CompareTo(y.latestDate()));
+		private void initialize()
+		{
+			// ensure helpers are sorted
+			ts_.instruments_.Sort( ( x, y ) => x.latestDate().CompareTo( y.latestDate() ) );
 
-            // check that there is no instruments with the same maturity
-            for (i = 1; i < n; ++i) {
-                Date m1 = ts_.instruments_[i - 1].latestDate(),
-                     m2 = ts_.instruments_[i].latestDate();
-                if (m1 == m2) throw new ArgumentException("two instruments have the same maturity (" + m1 + ")");
-            }
+			// skip expired helpers
+			Date firstDate = ts_.initialDate();
+			Utils.QL_REQUIRE( ts_.instruments_[n_ - 1].latestDate() > firstDate, "all instruments expired" );
+			firstAliveHelper_ = 0;
+			while ( ts_.instruments_[firstAliveHelper_].latestDate() <= firstDate )
+				++firstAliveHelper_;
+			alive_ = n_ - firstAliveHelper_;
+			Utils.QL_REQUIRE( alive_ >= ts_.interpolator_.requiredPoints - 1,
+						  "not enough alive instruments: " + alive_ +
+						  " provided, " + ( ts_.interpolator_.requiredPoints - 1 ) +
+						  " required" );
 
-            // check that there is no instruments with invalid quote
-            if ((i = ts_.instruments_.FindIndex(x => !x.quoteIsValid())) != -1)
-                throw new ArgumentException("instrument " + i + " (maturity: " + ts_.instruments_[i].latestDate() +
-                       ") has an invalid quote");
+			List<Date> dates = ts_.dates_ = new List<Date>();
+			List<double> times = ts_.times_ = new List<double>();
 
-            // setup instruments and register with them
-            ts_.instruments_.ForEach(x => x.setTermStructure(ts_));
+			errors_ = new List<BootstrapError<T, U>>( alive_ + 1 );
+			dates.Add( firstDate );
+			times.Add( ts_.timeFromReference( dates[0] ) );
+			for ( int i = 1, j = firstAliveHelper_; j < n_; ++i, ++j )
+			{
+				BootstrapHelper<U> helper = ts_.instruments_[j];
+				dates.Add( helper.latestDate() );
+				times.Add( ts_.timeFromReference( dates[i] ) );
+				// check for duplicated maturity
+				Utils.QL_REQUIRE( dates[i - 1] != dates[i], "more than one instrument with maturity " + dates[i] );
+				errors_.Add( new BootstrapError<T, U>( ts_, helper, i ) );
+			}
 
-            // calculate dates and times
-            ts_.dates_ = new InitializedList<Date>(n + 1);
-            ts_.times_ = new InitializedList<double>(n + 1);
-            ts_.dates_[0] = ts_.initialDate(ts_);
-            ts_.times_[0] = ts_.timeFromReference(ts_.dates_[0]);
-            for (i = 0; i < n; ++i) {
-                ts_.dates_[i + 1] = ts_.instruments_[i].latestDate();
-                ts_.times_[i + 1] = ts_.timeFromReference(ts_.dates_[i + 1]);
-            }
+			// set initial guess only if the current curve cannot be used as guess
+			if ( !validCurve_ || ts_.data_.Count != alive_ + 1 )
+			{
+				// ts_->data_[0] is the only relevant item,
+				// but reasonable numbers might be needed for the whole data vector
+				// because, e.g., of interpolation's early checks
+				ts_.data_ = new InitializedList<double>( alive_ + 1, ts_.initialValue() );
+				previousData_ = new List<double>( alive_ + 1 );
+			}
+			initialized_ = true;
 
-            // set initial guess only if the current curve cannot be used as guess
-            if (validCurve_) {
-                if (ts_.data_.Count != n + 1)
-                    throw new ArgumentException("dimension mismatch: expected " + n + 1 + ", actual " + ts_.data_.Count);
-            } else {
-                ts_.data_ = new InitializedList<double>(n + 1);
-                ts_.data_[0] = ts_.initialValue(ts_);
-                for (i=0; i<n; ++i)
-                    ts_.data_[i+1] = ts_.initialGuess();
-            }
+		}
 
-            Brent solver = new Brent();
-            int maxIterations = ts_.maxIterations();
+		public void setup(T ts) 
+		{
+         ts_ = ts;
 
-            for (int iteration=0; ; ++iteration) {
-                List<double> previousData = ts_.data();
-                // restart from the previous interpolation
-                if (validCurve_) {
-                    ts_.interpolation_ = ts_.interpolator_.interpolate(ts_.times_, ts_.times_.Count, ts_.data_);
-                }
-                for (i=1; i<n+1; ++i) {
-                    // calculate guess before extending interpolation to ensure that any extrapolation is performed
-                    // using the curve bootstrapped so far and no more
-                    RateHelper instrument = ts_.instruments_[i-1];
-                    double guess = 0;
-                    if (validCurve_ || iteration>0) {
-                        guess = ts_.data_[i];
-                    } else if (i==1) {
-                        guess = ts_.initialGuess();
-                    } else {
-                        // most traits extrapolate
-                        guess = ts_.guess(ts_, ts_.dates_[i]);
-                    }
+         n_ = ts_.instruments_.Count;
+			Utils.QL_REQUIRE( n_ > 0, "no bootstrap helpers given" );
 
-                    // bracket
-                    double min = ts_.minValueAfter(i, ts_.data_);
-                    double max = ts_.maxValueAfter(i, ts_.data_);
-                    if (guess <= min || guess >= max)
-                        guess = (min + max) / 2.0;
+         if (!(n_+1 >= ts_.interpolator_.requiredPoints))
+               throw new ArgumentException("not enough instruments: " + n_ + " provided, " +
+                     (ts_.interpolator_.requiredPoints-1) + " required");
 
-                    if (!validCurve_ && iteration == 0) {
-                        // extend interpolation a point at a time
-                        try {
-                            ts_.interpolation_ = ts_.interpolator_.interpolate(ts_.times_, i + 1, ts_.data_);
-                        } catch {
-                            if (!ts_.interpolator_.global)
-                                throw; // no chance to fix it in a later iteration
+         ts_.instruments_.ForEach(x => ts_.registerWith(x));
+      }
 
-                            // otherwise, if the target interpolation is not usable yet
-                           ts_.interpolation_ = new Linear().interpolate(ts_.times_, i + 1, ts_.data_);
-                        }
-                    }
+      public void calculate() 
+		{
+			// we might have to call initialize even if the curve is initialized
+			// and not moving, just because helpers might be date relative and change
+			// with evaluation date change.
+			// anyway it makes little sense to use date relative helpers with a
+			// non-moving curve if the evaluation date changes
+			if ( !initialized_ || ts_.moving_ )
+				initialize();
 
-                    // required because we just changed the data
-                    // is it really required?
-                    ts_.interpolation_.update();
+			// setup helpers
+			for ( int j = firstAliveHelper_; j < n_; ++j )
+			{
+				BootstrapHelper<U> helper = ts_.instruments_[j];
+				// check for valid quote
+				Utils.QL_REQUIRE( helper.quote().link.isValid(),
+							  ( j + 1 ) + " instrument (maturity: " +
+							  helper.latestDate() + ") has an invalid quote" );
+				// don't try this at home!
+				// This call creates helpers, and removes "const".
+				// There is a significant interaction with observability.
+				ts_.setTermStructure( ts_.instruments_[j] );
+			}
 
-                    try {
-                        var error = new BootstrapError(ts_, instrument, i);
-                        double r = solver.solve(error, ts_.accuracy_, guess, min, max);
-                        // redundant assignment (as it has been already performed by BootstrapError in solve procedure), but safe
-                        ts_.data_[i] = r;
-                    } catch (Exception e) {
-                        validCurve_ = false;
-                        throw new ArgumentException(" iteration: " + iteration + 1 +
-                                "could not bootstrap the " + i + " instrument, maturity " + ts_.dates_[i] +
-                                ": " + e.Message);
-                    }
-                }
+			List<double> times = ts_.times_;
+			List<double> data = ts_.data_;
+			double accuracy = ts_.accuracy_;
+			int maxIterations = ts_.maxIterations() - 1;
 
-                if (!ts_.interpolator_.global)
-                    break;      // no need for convergence loop
-                else if (!validCurve_ && iteration == 0) {
-                    // ensure the target interpolation is used
-                   ts_.interpolation_ = ts_.interpolator_.interpolate(ts_.times_, ts_.times_.Count, ts_.data_);
-                    // at least one more iteration is needed to check convergence
-                    continue;
-                }
+         for (int iteration = 0; ; ++iteration)
+         {
+            previousData_ = ts_.data_;
 
-                // exit conditions
-                double improvement = 0.0;
-                for (i=1; i<n+1; ++i)
-                    improvement = Math.Max(improvement, Math.Abs(ts_.data_[i]-previousData[i]));
-                if (improvement<=ts_.accuracy_)  // convergence reached
-                    break;
+            for (int i = 1; i <= alive_; ++i)
+            {
+               // pillar loop
 
-                if (!(iteration+1 < maxIterations))
-                    throw new ArgumentException("convergence not reached after " + iteration+1 + " iterations; last improvement " +
-                        improvement + ", required accuracy " + ts_.accuracy_);
-            }
-            validCurve_ = true;
-        }
-    }
+               bool validData = validCurve_ || iteration > 0;
+
+               // bracket root and calculate guess
+               double min = ts_.minValueAfter(i, ts_, validData, firstAliveHelper_);
+               double max = ts_.maxValueAfter(i, ts_, validData, firstAliveHelper_);
+               double guess =ts_.guess(i, ts_, validData, firstAliveHelper_);
+               // adjust guess if needed
+               if (guess >= max)
+                  guess = max - (max - min) / 5.0;
+               else if (guess <= min)
+                  guess = min + (max - min) / 5.0;
+                    
+               // extend interpolation if needed
+               if (!validData)
+               {
+                  try
+                  {
+							// extend interpolation a point at a time
+							// including the pillar to be boostrapped
+							ts_.interpolation_ = ts_.interpolator_.interpolate(ts_.times_, i + 1, ts_.data_);
+							//ts_.interpolation_ = ts_.interpolator_.interpolate(times, times.Count, data);
+                  }
+                  catch (Exception)
+                  {
+							if (!ts_.interpolator_.global)
+								throw; // no chance to fix it in a later iteration
+
+							// otherwise use Linear while the target
+							// interpolation is not usable yet
+							ts_.interpolation_ = new Linear().interpolate(ts_.times_, i + 1, ts_.data_);
+							//ts_.interpolation_ = new Linear().interpolate(times, times.Count, data);
+                  }
+                  ts_.interpolation_.update();
+               }
+
+               try
+               {
+                  var error = new BootstrapError<T, U>(ts_, ts_.instruments_[i - 1], i);
+                  if (validData)
+                        ts_.data_[i] = solver_.solve(error, accuracy, guess, min, max);
+                  else
+                        ts_.data_[i] = firstSolver_.solve(error, accuracy, guess, min, max);
+
+               }
+               catch (Exception e)
+               {
+                  validCurve_ = false;
+                  Utils.QL_FAIL((iteration+1) + " iteration: failed " +
+                           "at " + (i) + " alive instrument, "+
+                           "maturity " + ts_.instruments_[i - 1].latestDate() +
+                           ", reference date " + ts_.dates_[0] +
+                           ": " + e.Message);
+               }
+
+				}
+				
+				if ( !ts_.interpolator_.global )
+					break;     // no need for convergence loop
+				else if ( iteration == 0 )
+					continue; // at least one more iteration to convergence check
+
+				// exit condition
+				double change = Math.Abs( data[1] - previousData_[1] );
+				for ( int i = 2; i <= alive_; ++i )
+					change = Math.Max( change, Math.Abs( data[i] - previousData_[i] ) );
+				if ( change <= accuracy )  // convergence reached
+					break;
+
+				Utils.QL_REQUIRE( iteration < maxIterations,
+							  "convergence not reached after " + iteration +
+							  " iterations; last improvement " + change +
+							  ", required accuracy " + accuracy );
+			}
+			validCurve_ = true;
+
+		}
+	}
+
 }
