@@ -75,11 +75,15 @@ namespace QLNet {
          // first save the properties
          fullInterface_ = true;
          tenor_ = tenor;
-         calendar_ = calendar;
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
          endOfMonth_ = endOfMonth;
+
+         if (calendar == null)
+             calendar_ = new NullCalendar();
+         else
+             calendar_ = calendar;
 
          if ( firstDate == effectiveDate )
             firstDate_ = null;
@@ -649,6 +653,13 @@ namespace QLNet {
            if ((object)tenor_ == null)
               throw new ApplicationException("tenor/frequency not provided");
 
+           // if no calendar was set...
+           if (calendar_ == null)
+           {
+               // ...we use a null one.
+               calendar_ = new NullCalendar();
+           }
+
            // set dynamic defaults:
            BusinessDayConvention convention;
            // if a convention was set, we use it.
@@ -680,14 +691,6 @@ namespace QLNet {
            {
               // Unadjusted as per ISDA specification
               terminationDateConvention = convention;
-           }
-
-           Calendar calendar = calendar_;
-           // if no calendar was set...
-           if (calendar.empty())
-           {
-              // ...we use a null one.
-              calendar = new NullCalendar();
            }
 
             return new Schedule(effectiveDate_, terminationDate_, tenor_, calendar_,
