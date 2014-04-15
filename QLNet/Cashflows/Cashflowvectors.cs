@@ -268,7 +268,7 @@ namespace QLNet {
                                                       List<int> fixingDays_,
                                                       Period observationLag_)
          {
-            int n = schedule_.Count;
+            int n = schedule_.Count -1 ;
 
             if (notionals_.empty())
                throw new ApplicationException("no notional given");
@@ -276,19 +276,19 @@ namespace QLNet {
             if (notionals_.Count > n)
                throw new ApplicationException("too many nominals (" + notionals_.Count +
                                               "), only " + n + " required");
-            if (gearings_.Count > n)
+				if ( gearings_ != null && gearings_.Count > n )
                throw new ApplicationException("too many gearings (" + gearings_.Count +
                                               "), only " + n + " required");
 
-            if (spreads_.Count > n)
+				if ( spreads_ != null && spreads_.Count > n )
                throw new ApplicationException("too many spreads (" + spreads_.Count +
                                               "), only " + n + " required");
 
-            if (caps_.Count > n)
+				if ( caps_ != null && caps_.Count > n )
                throw new ApplicationException("too many caps (" + caps_.Count +
                                               "), only " + n + " required");
 
-            if (floors_.Count > n)
+				if ( floors_ != null && floors_.Count > n )
                throw new ApplicationException("too many floors (" + floors_.Count +
                                               "), only " + n + " required");
 
@@ -298,7 +298,7 @@ namespace QLNet {
             Calendar calendar = paymentCalendar_;
 
             Date refStart, start, refEnd, end;
-            Date lastPaymentDate = calendar.adjust(schedule_.date(n), paymentAdjustment_);
+            //Date lastPaymentDate = calendar.adjust(schedule_.date(n), paymentAdjustment_);
 
             for (int i = 0; i < n; ++i)
             {

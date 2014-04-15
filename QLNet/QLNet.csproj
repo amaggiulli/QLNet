@@ -195,6 +195,7 @@
     <Compile Include="Instruments\Swaption.cs" />
     <Compile Include="Instruments\VanillaOption.cs" />
     <Compile Include="Instruments\VanillaSwap.cs" />
+    <Compile Include="Instruments\YearOnYearInflationSwap.cs" />
     <Compile Include="Instruments\ZeroCouponInflationSwap.cs" />
     <Compile Include="InterestRate.cs" />
     <Compile Include="legacy\libormarketmodels\lfmcovarparam.cs" />
@@ -443,6 +444,7 @@
     <Compile Include="Termstructures\InflationTermStructure.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />
     <Compile Include="Termstructures\Inflation\InflationTraits.cs" />
+    <Compile Include="Termstructures\Inflation\PiecewiseYoYInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\PiecewiseZeroInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\Seasonality.cs" />
     <Compile Include="Termstructures\interpolatedcurve.cs" />

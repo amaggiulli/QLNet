@@ -124,12 +124,12 @@ namespace QLNet
 
 	}
 
-	public class YoYInflationTraits : ITraits<InflationTermStructure>
+	public class YoYInflationTraits : ITraits<YoYInflationTermStructure>
 	{
 		const double avgInflation = 0.02;
 		const double maxInflation = 0.5;
 
-		public Date initialDate( InflationTermStructure t )
+		public Date initialDate( YoYInflationTermStructure t )
 		{
 			if ( t.indexIsInterpolated() )
 			{
@@ -142,7 +142,7 @@ namespace QLNet
 			}
 		}
 
-		public double initialValue( InflationTermStructure t )
+		public double initialValue( YoYInflationTermStructure t )
 		{
 			return t.baseRate();
 		}
@@ -195,32 +195,33 @@ namespace QLNet
 		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 
-		double ITraits<InflationTermStructure>.initialGuess()
+		double ITraits<YoYInflationTermStructure>.initialGuess()
 		{
 			throw new NotImplementedException();
 		}
 
-		double ITraits<InflationTermStructure>.guess( InflationTermStructure c, Date d )
+		double ITraits<YoYInflationTermStructure>.guess( YoYInflationTermStructure c, Date d )
 		{
 			throw new NotImplementedException();
 		}
 
-		double ITraits<InflationTermStructure>.minValueAfter( int s, List<double> l )
+		double ITraits<YoYInflationTermStructure>.minValueAfter( int s, List<double> l )
 		{
 			throw new NotImplementedException();
 		}
 
-		double ITraits<InflationTermStructure>.maxValueAfter( int i, List<double> data )
+		double ITraits<YoYInflationTermStructure>.maxValueAfter( int i, List<double> data )
 		{
 			throw new NotImplementedException();
 		}
 
-		void ITraits<InflationTermStructure>.updateGuess( List<double> data, double discount, int i )
+		void ITraits<YoYInflationTermStructure>.updateGuess( List<double> data, double discount, int i )
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
+			data[i] = discount;
 		}
 
-		bool ITraits<InflationTermStructure>.dummyInitialValue()
+		bool ITraits<YoYInflationTermStructure>.dummyInitialValue()
 		{
 			throw new NotImplementedException();
 		}

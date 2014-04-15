@@ -364,34 +364,14 @@ namespace QLNet {
        //@{
        public YoYInflationTermStructure(DayCounter dayCounter,
                                         double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(dayCounter, baseYoYRate, lag, frequency, indexIsInterpolated, yieldTS, new Seasonality()) { }
-
-       public YoYInflationTermStructure(DayCounter dayCounter,
-                                        double baseYoYRate,
                                         Period observationLag,
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(baseYoYRate, observationLag, frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality) { }
 
-
-       public YoYInflationTermStructure(Date referenceDate,
-                                        Calendar calendar,
-                                        DayCounter dayCounter,
-                                        double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(referenceDate, calendar, dayCounter, baseYoYRate, lag, frequency,
-                indexIsInterpolated, yieldTS, new Seasonality()) { }
-
        public YoYInflationTermStructure(Date referenceDate,
                                         Calendar calendar,
                                         DayCounter dayCounter,
@@ -400,23 +380,11 @@ namespace QLNet {
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(referenceDate, baseYoYRate, observationLag, frequency, indexIsInterpolated,
                               yTS, calendar, dayCounter, seasonality) { }
 
-
-       public YoYInflationTermStructure(int settlementDays,
-                                        Calendar calendar,
-                                        DayCounter dayCounter,
-                                        double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(settlementDays, calendar, dayCounter, baseYoYRate, lag, frequency,
-                indexIsInterpolated, yieldTS, new Seasonality()) { }
-
-       public YoYInflationTermStructure(int settlementDays,
+		 public YoYInflationTermStructure(int settlementDays,
                                         Calendar calendar,
                                         DayCounter dayCounter,
                                         double baseYoYRate,
@@ -424,7 +392,7 @@ namespace QLNet {
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(settlementDays, calendar, baseYoYRate, observationLag,
                               frequency, indexIsInterpolated,
                               yTS, dayCounter, seasonality) { }
@@ -503,45 +471,5 @@ namespace QLNet {
 
     }
 
-    //  //! \name Constructors
-    //  //@{
-    //  public YoYInflationTermStructure(DayCounter dayCounter, Period lag, Frequency frequency, double baseYoYRate, 
-    //                                   Handle<YieldTermStructure> yTS)
-    //      : base(lag, frequency, baseYoYRate, yTS, dayCounter) {
-    //  }
-
-    //    public YoYInflationTermStructure(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag, 
-    //                                     Frequency frequency, double baseYoYRate, Handle<YieldTermStructure> yTS)
-    //        : base(referenceDate, lag, frequency, baseYoYRate, yTS, calendar, dayCounter) {
-    //    }
-
-    //    public YoYInflationTermStructure(int settlementDays, Calendar calendar, DayCounter dayCounter, Period lag, 
-    //                                     Frequency frequency, double baseYoYRate, Handle<YieldTermStructure> yTS)
-    //        : base(settlementDays, calendar, lag, frequency, baseYoYRate, yTS, dayCounter) {
-    //    }
-    //    //@}
-
-    //    //! \name Inspectors
-    //    //@{
-    //    //! year-on-year inflation rate
-    //    //! \note this is not the year-on-year swap (YYIIS) rate. 
-    //    public double yoyRate(Date d) {
-    //        return yoyRate(d, false);
-    //    }
-    //    public double yoyRate(Date d, bool extrapolate) {
-    //        base.checkRange(d, extrapolate);
-    //        return yoyRateImpl(timeFromReference(d));
-    //    }
-    //    public double yoyRate(double t) {
-    //        return yoyRate(t, false);
-    //    }
-    //    public double yoyRate(double t, bool extrapolate) {
-    //        base.checkRange(t, extrapolate);
-    //        return yoyRateImpl(t);
-    //    }
-    //    //@}
-    //    //! to be defined in derived classes
-    //    protected abstract double yoyRateImpl(double time);
-    //}
 
 }

@@ -87,7 +87,7 @@ namespace QLNet
    {
       public YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
       {
-         if (capletVol == null)
+         if ((object)capletVol == null)
             capletVol = new Handle<YoYOptionletVolatilitySurface>();
 
          capletVol_ = capletVol;

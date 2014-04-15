@@ -190,7 +190,7 @@ namespace TestSuite
 				// this caused an access violation in version 1.0
 				coupon.amount();
 			} 
-			catch (Exception e) 
+			catch (Exception ) 
 			{
 				// ok; proper exception thrown
 			}

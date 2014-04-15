@@ -45,6 +45,13 @@ namespace QLNet
 		{}
 	}
 
+	public class IterativeBootstrapForYoYInflation : IterativeBootstrap<PiecewiseYoYInflationCurve, YoYInflationTermStructure>
+	{
+		public IterativeBootstrapForYoYInflation()
+			: base()
+		{ }
+	}
+
 
 	//! Universal piecewise-term-structure boostrapper.
 	public class IterativeBootstrap<T,U>:IBootStrap<T>

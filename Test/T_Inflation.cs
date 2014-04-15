@@ -67,7 +67,25 @@ namespace TestSuite
          }
          return instruments;
       }
-      [TestMethod()]
+		private List<BootstrapHelper<YoYInflationTermStructure>> makeHelpers( Datum[] iiData, int N,
+														YoYInflationIndex ii, Period observationLag,
+														Calendar calendar,
+														BusinessDayConvention bdc,
+														DayCounter dc )
+		{
+			List<BootstrapHelper<YoYInflationTermStructure>> instruments = new List<BootstrapHelper<YoYInflationTermStructure>>();
+			for ( int i = 0; i < N; i++ )
+			{
+				Date maturity = iiData[i].date;
+				Handle<Quote> quote = new Handle<Quote>( new SimpleQuote( iiData[i].rate / 100.0 ) );
+				BootstrapHelper<YoYInflationTermStructure> anInstrument = new YearOnYearInflationSwapHelper( quote, observationLag, maturity,
+							 calendar, bdc, dc, ii );
+				instruments.Add( anInstrument );
+			}
+			return instruments;
+		}
+
+		[TestMethod()]
       public void testZeroIndex()
       {
          // Testing zero inflation indices...
@@ -760,6 +778,163 @@ namespace TestSuite
 				}
 			}
 		}
+
+		[TestMethod()]
+		public void testYYTermStructure() 
+		{
+			// Testing year-on-year inflation term structure...
+
+			SavedSettings backup = new SavedSettings();
+			//IndexHistoryCleaner cleaner;
+
+			// try the YY UK
+			Calendar calendar = new UnitedKingdom();
+			BusinessDayConvention bdc = BusinessDayConvention.ModifiedFollowing;
+			Date evaluationDate = new Date(13, Month.August, 2007);
+			evaluationDate = calendar.adjust(evaluationDate);
+			Settings.setEvaluationDate(evaluationDate);
+
+
+			// fixing data
+			Date from = new Date(1, Month.January, 2005);
+			Date to = new Date(13, Month.August, 2007);
+			Schedule rpiSchedule = new MakeSchedule().from(from).to(to)
+			.withTenor(new Period(1,TimeUnit.Months))
+			.withCalendar(new UnitedKingdom())
+			.withConvention(BusinessDayConvention.ModifiedFollowing).value();
+			double[] fixData = { 189.9, 189.9, 189.6, 190.5, 191.6, 192.0,
+				192.2, 192.2, 192.6, 193.1, 193.3, 193.6,
+				194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
+				198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
+				202.7, 201.6, 203.1, 204.4, 205.4, 206.2,
+				207.3 };
+
+			RelinkableHandle<YoYInflationTermStructure> hy = new RelinkableHandle<YoYInflationTermStructure>();
+			bool interp = false;
+			YYUKRPIr iir = new YYUKRPIr(interp, hy);
+			for (int i=0; i<fixData.Length; i++) 
+			{
+				iir.addFixing(rpiSchedule[i], fixData[i]);
+			}
+
+			YieldTermStructure nominalTS = nominalTermStructure();
+
+			// now build the YoY inflation curve
+			Datum[] yyData = {
+				new Datum( new Date(13, Month.August, 2008), 2.95 ),
+				new Datum( new Date(13, Month.August, 2009), 2.95 ),
+				new Datum( new Date(13, Month.August, 2010), 2.93 ),
+				new Datum( new Date(15, Month.August, 2011), 2.955 ),
+				new Datum( new Date(13, Month.August, 2012), 2.945 ),
+				new Datum( new Date(13, Month.August, 2013), 2.985 ),
+				new Datum( new Date(13, Month.August, 2014), 3.01 ),
+				new Datum( new Date(13, Month.August, 2015), 3.035 ),
+				new Datum( new Date(13, Month.August, 2016), 3.055 ),  // note that
+				new Datum( new Date(13, Month.August, 2017), 3.075 ),  // some dates will be on
+				new Datum( new Date(13, Month.August, 2019), 3.105 ),  // holidays but the payment
+				new Datum( new Date(15, Month.August, 2022), 3.135 ),  // calendar will roll them
+				new Datum( new Date(13, Month.August, 2027), 3.155 ),
+				new Datum( new Date(13, Month.August, 2032), 3.145 ),
+				new Datum( new Date(13, Month.August, 2037), 3.145 )
+			};
+
+			Period observationLag = new Period(2,TimeUnit.Months);
+			DayCounter dc = new Thirty360();
+
+			// now build the helpers ...
+			List<BootstrapHelper<YoYInflationTermStructure>> helpers =
+			makeHelpers (yyData, yyData.Length, iir,observationLag, calendar, bdc, dc);
+
+			double baseYYRate = yyData[0].rate/100.0;
+			PiecewiseYoYInflationCurve<Linear> pYYTS = new PiecewiseYoYInflationCurve<Linear>(
+							evaluationDate, calendar, dc, observationLag,
+							iir.frequency(),iir.interpolated(), baseYYRate,
+							new Handle<YieldTermStructure>(nominalTS), helpers);
+			pYYTS.recalculate();
+
+			// validation
+			// yoy swaps should reprice to zero
+			// yy rates should not equal yySwap rates
+			double eps = 0.000001;
+			// usual swap engine
+			Handle<YieldTermStructure> hTS = new Handle<YieldTermStructure>(nominalTS);
+			IPricingEngine sppe = new DiscountingSwapEngine(hTS);
+
+			// make sure that the index has the latest yoy term structure
+			hy.linkTo(pYYTS);
+
+			for (int j = 1; j < yyData.Length; j++) 
+			{
+
+				from = nominalTS.referenceDate();
+				to = yyData[j].date;
+				Schedule yoySchedule = new MakeSchedule().from(from).to(to)
+				.withConvention(BusinessDayConvention.Unadjusted) // fixed leg gets calendar from
+				.withCalendar(calendar)     // schedule
+				.withTenor(new Period(1,TimeUnit.Years)).value(); // .back
+
+				YearOnYearInflationSwap yyS2 = new YearOnYearInflationSwap(
+					YearOnYearInflationSwap.Type.Payer,
+					1000000.0,
+					yoySchedule,//fixed schedule, but same as yoy
+					yyData[j].rate/100.0,
+					dc,
+					yoySchedule,
+					iir,
+					observationLag,
+					0.0,        //spread on index
+					dc,
+					new UnitedKingdom());
+
+				yyS2.setPricingEngine(sppe);
+
+
+
+				Assert.IsTrue(Math.Abs(yyS2.NPV())<eps,"fresh yoy swap NPV!=0 from TS "
+							+"swap quote for pt " + j
+							+ ", is " + yyData[j].rate/100.0
+							+" vs YoY rate "+ pYYTS.yoyRate(yyData[j].date-observationLag)
+							+" at quote date "+(yyData[j].date-observationLag)
+							+", NPV of a fresh yoy swap is " + yyS2.NPV()
+							+"\n      fair rate " + yyS2.fairRate()
+							+" payment "+yyS2.paymentConvention());
+			}
+
+			int jj=3;
+			for (int k = 0; k < 14; k++) 
+			{
+				from = nominalTS.referenceDate() - new Period(k,TimeUnit.Months);
+				to = yyData[jj].date - new Period(k,TimeUnit.Months);
+				Schedule yoySchedule = new MakeSchedule().from(from).to(to)
+				.withConvention(BusinessDayConvention.Unadjusted) // fixed leg gets calendar from
+				.withCalendar(calendar)     // schedule
+				.withTenor(new Period(1,TimeUnit.Years))
+				.value(); //backwards()
+
+				YearOnYearInflationSwap yyS3 = new YearOnYearInflationSwap(
+					YearOnYearInflationSwap.Type.Payer,
+					1000000.0,
+					yoySchedule,//fixed schedule, but same as yoy
+					yyData[jj].rate/100.0,
+					dc,
+					yoySchedule,
+					iir,
+					observationLag,
+					0.0,        //spread on index
+					dc,
+					new UnitedKingdom());
+
+				yyS3.setPricingEngine(sppe);
+
+				Assert.IsTrue(Math.Abs(yyS3.NPV())< 20000.0,
+											"unexpected size of aged YoY swap, aged "
+											+ k +" months: YY aged NPV = " + yyS3.NPV()
+											+", legs "+ yyS3.legNPV(0) + " and " + yyS3.legNPV(1)
+											);
+			}
+			// remove circular refernce
+			hy.linkTo( new YoYInflationTermStructure());
+	}
 
 
    }
