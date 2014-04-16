@@ -61,21 +61,18 @@ namespace QLNet {
          dates_ = dates;
       }
 
-      public Schedule( Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
-                       BusinessDayConvention convention, BusinessDayConvention terminationDateConvention,
-                       DateGeneration.Rule rule, bool endOfMonth )
-         : this(effectiveDate, terminationDate, tenor, calendar, convention, terminationDateConvention, rule, endOfMonth, null, null) 
-      { }
-
 
       public Schedule( Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
                        BusinessDayConvention convention, BusinessDayConvention terminationDateConvention,
-                       DateGeneration.Rule rule, bool endOfMonth, Date firstDate, Date nextToLastDate)
+                       DateGeneration.Rule rule, bool endOfMonth, Date firstDate = null, Date nextToLastDate = null)
       {
          // first save the properties
          fullInterface_ = true;
          tenor_ = tenor;
-         calendar_ = calendar;
+			if ( calendar == null )
+				calendar_ = new NullCalendar();
+			else
+				calendar_ = calendar;
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
@@ -649,7 +646,14 @@ namespace QLNet {
            if ((object)tenor_ == null)
               throw new ApplicationException("tenor/frequency not provided");
 
-           // set dynamic defaults:
+			  // if no calendar was set...
+           if (calendar_ == null)
+           {
+               // ...we use a null one.
+               calendar_ = new NullCalendar();
+           }
+
+			  // set dynamic defaults:
            BusinessDayConvention convention;
            // if a convention was set, we use it.
            if (convention_ != null )
@@ -680,14 +684,6 @@ namespace QLNet {
            {
               // Unadjusted as per ISDA specification
               terminationDateConvention = convention;
-           }
-
-           Calendar calendar = calendar_;
-           // if no calendar was set...
-           if (calendar.empty())
-           {
-              // ...we use a null one.
-              calendar = new NullCalendar();
            }
 
             return new Schedule(effectiveDate_, terminationDate_, tenor_, calendar_,
