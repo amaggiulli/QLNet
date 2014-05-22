@@ -81,6 +81,7 @@ namespace QLNet
       public BusinessDayConvention fixedLegConvention() { return fixedLegConvention_; }
       public IborIndex iborIndex() { return iborIndex_; }
       public Handle<YieldTermStructure> forwardingTermStructure() { return iborIndex_.forwardingTermStructure();}
+		public Handle<YieldTermStructure> discountingTermStructure() { return discount_; }
       public bool exogenousDiscount() { return exogenousDiscount_; }
       // \warning Relinking the term structure underlying the index will not have effect on the returned swap.
       // recheck
@@ -136,6 +137,45 @@ namespace QLNet
                        dayCounter(),
                        iborIndex_.clone(forwarding));
       }
+		//! returns a copy of itself linked to a different curves
+		public virtual SwapIndex clone( Handle<YieldTermStructure> forwarding, Handle<YieldTermStructure> discounting )
+		{
+				return new SwapIndex( familyName(),
+							  tenor(),
+							  fixingDays(),
+							  currency(),
+							  fixingCalendar(),
+							  fixedLegTenor(),
+							  fixedLegConvention(),
+							  dayCounter(),
+							  iborIndex_.clone( forwarding ),
+							  discounting );
+		}
+		//! returns a copy of itself linked to a different tenor
+		public virtual SwapIndex clone( Period tenor )
+		{
+			if ( exogenousDiscount_ )
+				return new SwapIndex( familyName(),
+							  tenor,
+							  fixingDays(),
+							  currency(),
+							  fixingCalendar(),
+							  fixedLegTenor(),
+							  fixedLegConvention(),
+							  dayCounter(),
+							  iborIndex(),
+							  discountingTermStructure() );
+			else
+				return new SwapIndex( familyName(),
+							  tenor,
+							  fixingDays(),
+							  currency(),
+							  fixingCalendar(),
+							  fixedLegTenor(),
+							  fixedLegConvention(),
+							  dayCounter(),
+							  iborIndex() );
+		}
       // @}
       protected override double forecastFixing(Date fixingDate)
       {

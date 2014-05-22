@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -23,101 +24,121 @@ using System.Text;
 
 namespace QLNet
 {
-    public class CapHelper :  CalibrationHelper {
-        
-        private Cap cap_;
+	public class CapHelper : CalibrationHelper
+	{
+		public CapHelper( Period length,
+						  Handle<Quote> volatility,
+						  IborIndex index,
+						  // data for ATM swap-rate calculation
+						  Frequency fixedLegFrequency,
+						  DayCounter fixedLegDayCounter,
+						  bool includeFirstSwaplet,
+						  Handle<YieldTermStructure> termStructure,
+						  CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError)
+			: base( volatility, termStructure, errorType )
+		{
+			length_ = length;
+			index_ = index; 
+			fixedLegFrequency_ = fixedLegFrequency;
+			fixedLegDayCounter_ = fixedLegDayCounter;
+			includeFirstSwaplet_ = includeFirstSwaplet;
 
-        public  CapHelper(Period length,
-                      Handle<Quote> volatility,
-                      IborIndex index,
-                      // data for ATM swap-rate calculation
-                      Frequency fixedLegFrequency,
-                      DayCounter fixedLegDayCounter,
-                      bool includeFirstSwaplet,
-                      Handle<YieldTermStructure> termStructure,
-                      bool calibrateVolatility /*= false*/)
-            : base(volatility, termStructure, calibrateVolatility)
-        {        
-            Period indexTenor = index.tenor();
-            double fixedRate = 0.04; // dummy value
-            Date startDate, maturity;
-            if (includeFirstSwaplet) {
-                startDate = termStructure.link.referenceDate();
-                maturity = termStructure.link.referenceDate() + length;
-            } else {
-                startDate = termStructure.link.referenceDate() + indexTenor;
-                maturity = termStructure.link.referenceDate() + length;
-            }
-            IborIndex dummyIndex=new
-                IborIndex("dummy",
-                          indexTenor,
-                          index.fixingDays(),
-                          index.currency(),
-                          index.fixingCalendar(),
-                          index.businessDayConvention(),
-                          index.endOfMonth(),
-                          termStructure.link.dayCounter(),
-                          termStructure);
+			index_.registerWith(update);
+		}
 
-            List<double> nominals = new InitializedList<double>(1,1.0);
+		public override void addTimesTo( List<double> times )
+		{
+			calculate();
+			CapFloor.Arguments args = new CapFloor.Arguments();
+			cap_.setupArguments( args );
+			List<double> capTimes = new DiscretizedCapFloor( args,
+											termStructure_.link.referenceDate(),
+											termStructure_.link.dayCounter() ).mandatoryTimes();
+			for ( int i = 0; i < capTimes.Count; i++ )
+				times.Insert( times.Count, capTimes[i] );
+			
+		}
 
-            Schedule floatSchedule=new Schedule(startDate, maturity,
-                                   index.tenor(), index.fixingCalendar(),
-                                   index.businessDayConvention(),
-                                   index.businessDayConvention(),
-                                   DateGeneration.Rule.Forward, false);
-            List<CashFlow> floatingLeg;
-            IborLeg iborLeg = (IborLeg) new IborLeg(floatSchedule, index)
-                                            .withFixingDays(0)
-                                            .withNotionals(nominals)
-                                            .withPaymentAdjustment(index.businessDayConvention());
-            floatingLeg = iborLeg.value();
-            Schedule fixedSchedule=new Schedule(startDate, maturity, new Period(fixedLegFrequency),
-                                   index.fixingCalendar(),
-                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                   DateGeneration.Rule.Forward, false);
-            List<CashFlow> fixedLeg = new FixedRateLeg(fixedSchedule)
-                .withCouponRates(fixedRate, fixedLegDayCounter)
-                .withNotionals(nominals)
-                .withPaymentAdjustment(index.businessDayConvention());
+		public override double modelValue()
+		{
+			calculate();
+			cap_.setPricingEngine( engine_ );
+			return cap_.NPV();
+		}
 
-            Swap swap = new Swap(floatingLeg, fixedLeg);
-            swap.setPricingEngine(new DiscountingSwapEngine(termStructure));
-            double bp = 1.0e-4;
-            double fairRate = fixedRate - (double)(swap.NPV()/(swap.legBPS(1) / bp));
-            List<double> exerciceRate = new InitializedList<double>(1,fairRate);
-            cap_ = new Cap(floatingLeg, exerciceRate);
-            marketValue_ = blackPrice(volatility_.link.value());
-        }
+		public override double blackPrice( double sigma )
+		{
+			calculate();
+			Quote vol = new SimpleQuote( sigma );
+			IPricingEngine black = new BlackCapFloorEngine( termStructure_,
+																		  new Handle<Quote>( vol ) );
+			cap_.setPricingEngine( black );
+			double value = cap_.NPV();
+			//cap_.unregisterWith( update );
+			cap_.setPricingEngine( engine_ );
+			return value;
+		}
 
-        public override void addTimesTo(List<double> times)
-        {        
-            CapFloor.Arguments args=new CapFloor.Arguments();
-            cap_.setupArguments(args);
-            List<double> capTimes =
-            new DiscretizedCapFloor(args,
-                                termStructure_.link.referenceDate(),
-                                termStructure_.link.dayCounter()).mandatoryTimes();
-            for (int i = 0; i < capTimes.Count; i++)
-                times.Insert(times.Count, capTimes[i]);  
-        }
+		protected override void performCalculations()
+		{
+			Period indexTenor = index_.tenor();
+			double fixedRate = 0.04; // dummy value
+			Date startDate, maturity;
+			if ( includeFirstSwaplet_ )
+			{
+				startDate = termStructure_.link.referenceDate();
+				maturity = termStructure_.link.referenceDate() + length_;
+			}
+			else
+			{
+				startDate = termStructure_.link.referenceDate() + indexTenor;
+				maturity = termStructure_.link.referenceDate() + length_;
+			}
+			IborIndex dummyIndex = new IborIndex( "dummy",
+							 indexTenor,
+							 index_.fixingDays(),
+							 index_.currency(),
+							 index_.fixingCalendar(),
+							 index_.businessDayConvention(),
+							 index_.endOfMonth(),
+							 termStructure_.link.dayCounter(),
+							 termStructure_ );
 
-        public override double modelValue()
-        {
-            cap_.setPricingEngine(engine_);
-            return cap_.NPV();
-        }
+			InitializedList<double> nominals = new InitializedList<double>( 1, 1.0 );
 
-        public override double blackPrice(double sigma)
-        {       
-            Quote vol=new SimpleQuote(sigma);
-            IPricingEngine black= new BlackCapFloorEngine(termStructure_,
-                                                           new Handle<Quote>(vol));
-            cap_.setPricingEngine(black);
-            double value = cap_.NPV();
-            cap_.unregisterWith(update);  
-            cap_.setPricingEngine(engine_);
-            return value;
-        }
-    }
+			Schedule floatSchedule = new Schedule( startDate, maturity,
+										  index_.tenor(), index_.fixingCalendar(),
+										  index_.businessDayConvention(),
+										  index_.businessDayConvention(),
+										  DateGeneration.Rule.Forward, false );
+			List<CashFlow> floatingLeg = new IborLeg( floatSchedule, index_ )
+				 .withFixingDays( 0 )
+				 .withNotionals( nominals )
+				 .withPaymentAdjustment( index_.businessDayConvention() );
+
+			Schedule fixedSchedule = new Schedule( startDate, maturity, new Period( fixedLegFrequency_ ),
+										  index_.fixingCalendar(),
+										  BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+										  DateGeneration.Rule.Forward, false );
+			List<CashFlow> fixedLeg = new FixedRateLeg( fixedSchedule )
+				 .withCouponRates( fixedRate, fixedLegDayCounter_ )
+				 .withNotionals( nominals )
+				 .withPaymentAdjustment( index_.businessDayConvention() );
+
+			Swap swap = new Swap( floatingLeg, fixedLeg );
+			swap.setPricingEngine( new DiscountingSwapEngine( termStructure_, false ) );
+			double fairRate = fixedRate - (double)(swap.NPV() / ( swap.legBPS( 1 ) / 1.0e-4 ));
+			cap_ = new Cap( floatingLeg, new InitializedList<double>( 1, fairRate ) );
+
+			base.performCalculations();
+
+		}
+
+		private Cap cap_;
+		private Period length_;
+		private IborIndex index_;
+		private Frequency fixedLegFrequency_;
+		private DayCounter fixedLegDayCounter_;
+		private bool includeFirstSwaplet_;
+	}
 }

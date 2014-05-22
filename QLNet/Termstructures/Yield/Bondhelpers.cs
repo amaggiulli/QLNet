@@ -85,10 +85,14 @@ namespace QLNet {
         //                   Date issueDate = null);
         public FixedRateBondHelper(Handle<Quote> cleanPrice, int settlementDays, double faceAmount, Schedule schedule,
                                    List<double> coupons, DayCounter dayCounter, BusinessDayConvention paymentConvention,
-                                   double redemption, Date issueDate)
+                                   double redemption, Date issueDate, Calendar paymentCalendar = null,
+			                       Period exCouponPeriod = null, Calendar exCouponCalendar = null,
+                                   BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false)
             : base(cleanPrice, new FixedRateBond(settlementDays, faceAmount, schedule,
                                                  coupons, dayCounter, paymentConvention,
-                                                 redemption, issueDate)) {
+                                                 redemption, issueDate, paymentCalendar, 
+                                                 exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth))
+        {
 
             fixedRateBond_ = bond_ as FixedRateBond;
         }
