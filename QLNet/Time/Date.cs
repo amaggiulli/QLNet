@@ -125,6 +125,9 @@ namespace QLNet {
         public string ToLongDateString() { return date.ToLongDateString(); }
         public string ToShortDateString() { return date.ToShortDateString(); }
         public override string ToString() { return this.ToShortDateString(); }
+        public string ToString(IFormatProvider provider) { return date.ToString(provider); }
+        public string ToString(string format) { return date.ToString(format); }
+        public string ToString(string format, IFormatProvider provider) { return date.ToString(format, provider); }
         public override bool Equals(object o) { return (this == (Date)o); }
         public override int GetHashCode() { return 0; }
 
