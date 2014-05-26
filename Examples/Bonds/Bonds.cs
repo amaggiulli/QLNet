@@ -443,7 +443,6 @@ namespace Bonds {
 
             Console.WriteLine("{0,18}{1,10}{2,10}{3,10}", "", "ZC", "Fixed", "Floating");
 
-            string separator = " | ";
             int width = widths[0]
                                  + widths[1]
                                           + widths[2]
@@ -475,13 +474,13 @@ namespace Bonds {
 
             Console.WriteLine("Previous coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                                 "N/A",
-                                fixedRateBond.previousCoupon(),
-                                floatingRateBond.previousCoupon());
+                                fixedRateBond.previousCouponRate(),
+                                floatingRateBond.previousCouponRate());
 
             Console.WriteLine("Next coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                               "N/A",
-                              fixedRateBond.nextCoupon(),
-                              floatingRateBond.nextCoupon());
+                              fixedRateBond.nextCouponRate(),
+                              floatingRateBond.nextCouponRate());
 
             Console.WriteLine("Yield".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                               zeroCouponBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
