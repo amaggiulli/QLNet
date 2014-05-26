@@ -95,26 +95,9 @@ namespace QLNet {
                                      Period observationLag,
                                      Frequency frequency,
                                      bool indexIsInterpolated,
-                                     Handle<YieldTermStructure> yTS)
-          :this(baseRate,observationLag,frequency,indexIsInterpolated,yTS,
-                new DayCounter(),new Seasonality()){}
-
-      public InflationTermStructure(double baseRate,
-                                     Period observationLag,
-                                     Frequency frequency,
-                                     bool indexIsInterpolated,
                                      Handle<YieldTermStructure> yTS,
-                                     DayCounter dayCounter)
-          :this(baseRate,observationLag,frequency,indexIsInterpolated,yTS,
-                dayCounter,new Seasonality()){}
-
-      public InflationTermStructure(double baseRate,
-                                     Period observationLag,
-                                     Frequency frequency,
-                                     bool indexIsInterpolated,
-                                     Handle<YieldTermStructure> yTS,
-                                     DayCounter dayCounter,
-                                     Seasonality seasonality)
+                                     DayCounter dayCounter = null,
+                                     Seasonality seasonality = null)
          :base(dayCounter)
       {
          nominalTermStructure_ = yTS;
@@ -131,40 +114,10 @@ namespace QLNet {
                                  Period observationLag,
                                  Frequency frequency,
                                  bool indexIsInterpolated,
-                                 Handle<YieldTermStructure> yTS)
-      :this(referenceDate,baseRate,observationLag,frequency,indexIsInterpolated,
-            yTS,new Calendar(),new DayCounter(),new Seasonality()) {}
-
-   public InflationTermStructure(Date referenceDate,
-                                 double baseRate,
-                                 Period observationLag,
-                                 Frequency frequency,
-                                 bool indexIsInterpolated,
-                                 Handle<YieldTermStructure> yTS,
-                                 Calendar calendar)
-      :this(referenceDate,baseRate,observationLag,frequency,indexIsInterpolated,
-            yTS,calendar,new DayCounter(),new Seasonality()) {}
-
-   public InflationTermStructure(Date referenceDate,
-                                 double baseRate,
-                                 Period observationLag,
-                                 Frequency frequency,
-                                 bool indexIsInterpolated,
                                  Handle<YieldTermStructure> yTS,
                                  Calendar calendar,
-                                 DayCounter dayCounter)
-      :this(referenceDate,baseRate,observationLag,frequency,indexIsInterpolated,
-            yTS,calendar,dayCounter,new Seasonality()) {}
-
-   public InflationTermStructure(Date referenceDate,
-                                 double baseRate,
-                                 Period observationLag,
-                                 Frequency frequency,
-                                 bool indexIsInterpolated,
-                                 Handle<YieldTermStructure> yTS,
-                                 Calendar calendar,
-                                 DayCounter dayCounter,
-                                 Seasonality seasonality)
+                                 DayCounter dayCounter = null,
+                                 Seasonality seasonality = null)
       : base(referenceDate, calendar, dayCounter)
    {
       nominalTermStructure_ = yTS;
@@ -177,35 +130,14 @@ namespace QLNet {
    }
 
    public InflationTermStructure(int settlementDays,
-                                 Calendar calendar,
-                                 double baseRate,
-                                 Period observationLag,
-                                 Frequency frequency,
-                                 bool indexIsInterpolated,
-                                 Handle<YieldTermStructure> yTS)
-      :this(settlementDays,calendar,baseRate,observationLag,frequency,
-            indexIsInterpolated,yTS,new DayCounter(),new Seasonality()) {}
-
-   public InflationTermStructure(int settlementDays,
-                                 Calendar calendar,
-                                 double baseRate,
-                                 Period observationLag,
-                                 Frequency frequency,
-                                 bool indexIsInterpolated,
-                                 Handle<YieldTermStructure> yTS,
-                                 DayCounter dayCounter)
-      :this(settlementDays,calendar,baseRate,observationLag,frequency,
-            indexIsInterpolated,yTS,dayCounter,new Seasonality()) {}
-
-   public InflationTermStructure(int settlementDays,
                               Calendar calendar,
                               double baseRate,
                               Period observationLag,
                               Frequency frequency,
                               bool indexIsInterpolated,
                               Handle<YieldTermStructure> yTS,
-                              DayCounter dayCounter,
-                              Seasonality seasonality)
+                              DayCounter dayCounter = null,
+                              Seasonality seasonality = null)
       : base(settlementDays, calendar, dayCounter)
    {
       nominalTermStructure_ = yTS;
@@ -247,12 +179,11 @@ namespace QLNet {
       /*! Calling setSeasonality with no arguments means unsetting
           as the default is used to choose unsetting.
       */
-      public void setSeasonality() {setSeasonality(new Seasonality());}
-      public void setSeasonality(Seasonality seasonality)
+      public void setSeasonality(Seasonality seasonality = null)
       {
          // always reset, whether with null or new pointer
          seasonality_ = seasonality;
-         if (seasonality_ == null) 
+         if (seasonality_ != null) 
          {
             if (!seasonality_.isConsistent(this))
                throw new ApplicationException("Seasonality inconsistent with " +
@@ -304,37 +235,15 @@ namespace QLNet {
        //@{
        public ZeroInflationTermStructure(DayCounter dayCounter,
                                          double baseZeroRate,
-                                         Period lag,
-                                         Frequency frequency,
-                                         bool indexIsInterpolated,
-                                         Handle<YieldTermStructure> yTS)
-          :this(dayCounter,baseZeroRate,lag,frequency,indexIsInterpolated,yTS,
-                new Seasonality()) {}
-
-
-       public ZeroInflationTermStructure(DayCounter dayCounter,
-                                         double baseZeroRate,
                                          Period observationLag,
                                          Frequency frequency,
                                          bool indexIsInterpolated,
                                          Handle<YieldTermStructure> yTS,
-                                         Seasonality seasonality)
+                                         Seasonality seasonality = null)
           :base(baseZeroRate, observationLag, frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality)
        {}
-
-
-       public ZeroInflationTermStructure(Date referenceDate,
-                                         Calendar calendar,
-                                         DayCounter dayCounter,
-                                         double baseZeroRate,
-                                         Period lag,
-                                         Frequency frequency,
-                                         bool indexIsInterpolated,
-                                         Handle<YieldTermStructure> yTS)
-          :this(referenceDate,calendar,dayCounter,baseZeroRate,lag,frequency,
-                indexIsInterpolated,yTS,new Seasonality())  {}
-
+      
        public ZeroInflationTermStructure(Date referenceDate,
                                           Calendar calendar,
                                           DayCounter dayCounter,
@@ -343,22 +252,9 @@ namespace QLNet {
                                           Frequency frequency,
                                           bool indexIsInterpolated,
                                           Handle<YieldTermStructure> yTS,
-                                          Seasonality seasonality)
+                                          Seasonality seasonality = null)
            : base(referenceDate, baseZeroRate, observationLag, frequency, indexIsInterpolated,
                   yTS, calendar, dayCounter, seasonality) {}
-
-
-
-       public ZeroInflationTermStructure(int settlementDays,
-                                         Calendar calendar,
-                                         DayCounter dayCounter,
-                                         double baseZeroRate,
-                                         Period lag,
-                                         Frequency frequency,
-                                         bool indexIsInterpolated,
-                                         Handle<YieldTermStructure> yTS)
-          : this(settlementDays, calendar, dayCounter, baseZeroRate, lag, frequency,
-                indexIsInterpolated, yTS, new Seasonality()) { }
 
        public ZeroInflationTermStructure(int settlementDays,
                                          Calendar calendar,
@@ -368,7 +264,7 @@ namespace QLNet {
                                          Frequency frequency,
                                          bool indexIsInterpolated,
                                          Handle<YieldTermStructure> yTS,
-                                         Seasonality seasonality)
+                                         Seasonality seasonality = null)
           :base(settlementDays, calendar, baseZeroRate, observationLag, frequency, 
                 indexIsInterpolated, yTS, dayCounter, seasonality) { }
        //@}
@@ -468,34 +364,14 @@ namespace QLNet {
        //@{
        public YoYInflationTermStructure(DayCounter dayCounter,
                                         double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(dayCounter, baseYoYRate, lag, frequency, indexIsInterpolated, yieldTS, new Seasonality()) { }
-
-       public YoYInflationTermStructure(DayCounter dayCounter,
-                                        double baseYoYRate,
                                         Period observationLag,
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(baseYoYRate, observationLag, frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality) { }
 
-
-       public YoYInflationTermStructure(Date referenceDate,
-                                        Calendar calendar,
-                                        DayCounter dayCounter,
-                                        double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(referenceDate, calendar, dayCounter, baseYoYRate, lag, frequency,
-                indexIsInterpolated, yieldTS, new Seasonality()) { }
-
        public YoYInflationTermStructure(Date referenceDate,
                                         Calendar calendar,
                                         DayCounter dayCounter,
@@ -504,23 +380,11 @@ namespace QLNet {
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(referenceDate, baseYoYRate, observationLag, frequency, indexIsInterpolated,
                               yTS, calendar, dayCounter, seasonality) { }
 
-
-       public YoYInflationTermStructure(int settlementDays,
-                                        Calendar calendar,
-                                        DayCounter dayCounter,
-                                        double baseYoYRate,
-                                        Period lag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        Handle<YieldTermStructure> yieldTS)
-          : this(settlementDays, calendar, dayCounter, baseYoYRate, lag, frequency,
-                indexIsInterpolated, yieldTS, new Seasonality()) { }
-
-       public YoYInflationTermStructure(int settlementDays,
+		 public YoYInflationTermStructure(int settlementDays,
                                         Calendar calendar,
                                         DayCounter dayCounter,
                                         double baseYoYRate,
@@ -528,7 +392,7 @@ namespace QLNet {
                                         Frequency frequency,
                                         bool indexIsInterpolated,
                                         Handle<YieldTermStructure> yTS,
-                                        Seasonality seasonality)
+                                        Seasonality seasonality = null)
           : base(settlementDays, calendar, baseYoYRate, observationLag,
                               frequency, indexIsInterpolated,
                               yTS, dayCounter, seasonality) { }
@@ -607,45 +471,5 @@ namespace QLNet {
 
     }
 
-    //  //! \name Constructors
-    //  //@{
-    //  public YoYInflationTermStructure(DayCounter dayCounter, Period lag, Frequency frequency, double baseYoYRate, 
-    //                                   Handle<YieldTermStructure> yTS)
-    //      : base(lag, frequency, baseYoYRate, yTS, dayCounter) {
-    //  }
-
-    //    public YoYInflationTermStructure(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag, 
-    //                                     Frequency frequency, double baseYoYRate, Handle<YieldTermStructure> yTS)
-    //        : base(referenceDate, lag, frequency, baseYoYRate, yTS, calendar, dayCounter) {
-    //    }
-
-    //    public YoYInflationTermStructure(int settlementDays, Calendar calendar, DayCounter dayCounter, Period lag, 
-    //                                     Frequency frequency, double baseYoYRate, Handle<YieldTermStructure> yTS)
-    //        : base(settlementDays, calendar, lag, frequency, baseYoYRate, yTS, dayCounter) {
-    //    }
-    //    //@}
-
-    //    //! \name Inspectors
-    //    //@{
-    //    //! year-on-year inflation rate
-    //    //! \note this is not the year-on-year swap (YYIIS) rate. 
-    //    public double yoyRate(Date d) {
-    //        return yoyRate(d, false);
-    //    }
-    //    public double yoyRate(Date d, bool extrapolate) {
-    //        base.checkRange(d, extrapolate);
-    //        return yoyRateImpl(timeFromReference(d));
-    //    }
-    //    public double yoyRate(double t) {
-    //        return yoyRate(t, false);
-    //    }
-    //    public double yoyRate(double t, bool extrapolate) {
-    //        base.checkRange(t, extrapolate);
-    //        return yoyRateImpl(t);
-    //    }
-    //    //@}
-    //    //! to be defined in derived classes
-    //    protected abstract double yoyRateImpl(double time);
-    //}
 
 }

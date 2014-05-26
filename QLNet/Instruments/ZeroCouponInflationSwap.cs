@@ -267,7 +267,7 @@ namespace QLNet
        }
     }
 
-    public class Engine : GenericEngine<Arguments, ZeroCouponInflationSwap.Results> {};
+	 public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { };
 
    }
 }

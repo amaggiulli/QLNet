@@ -316,7 +316,7 @@ namespace QLNet
       }
 
       //! %Results from simple swap calculation
-      new class Results : Swap.Results
+      public new class Results : Swap.Results
       {
          public double? fairRate, fairSpread;
          public override void reset()
