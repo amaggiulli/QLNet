@@ -65,12 +65,18 @@ namespace QLNet {
         public Object Clone() { return this.MemberwiseClone(); }
 
         public static bool operator ==(Vector to, Vector from) {
-            if (from.Count != to.Count) return false;
 
-            for (int i = 0; i < from.Count; i++)
-                if (from[i] != to[i]) return false;
+			  if ( System.Object.ReferenceEquals( to, from ) ) return true;
+			  else if ( (object)to == null || (object)from == null ) return false;
+			  else
+			  {
+				  if ( from.Count != to.Count ) return false;
 
-            return true;
+				  for ( int i = 0; i < from.Count; i++ )
+					  if ( from[i] != to[i] ) return false;
+
+				  return true;
+			  }
         }
         public static bool operator !=(Vector to, Vector from) { return (!(to == from)); }
         public override bool Equals(object o) { return (this == (Vector)o); }
