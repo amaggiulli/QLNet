@@ -141,7 +141,7 @@ namespace QLNet
         
          for(int i=0; i<seasonalityFactors.Count; i++) 
          {
-            seasonalityFactors_[i] = seasonalityFactors[i];
+            seasonalityFactors_.Add(seasonalityFactors[i]);
          }
 
          seasonalityBaseDate_ = seasonalityBaseDate;

@@ -70,7 +70,7 @@ namespace QLNet {
     //! Backward-flat interpolation factory and traits
     public class BackwardFlat : IInterpolationFactory {
         public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin) {
-            return new LinearInterpolation(xBegin, size, yBegin);
+			  return new BackwardFlatInterpolation( xBegin, size, yBegin );
         }
         public bool global { get { return false; } }
         public int requiredPoints { get { return 2; } }

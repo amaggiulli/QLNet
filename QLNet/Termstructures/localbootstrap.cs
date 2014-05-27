@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2014  Edem Dawui (edawui@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -22,19 +23,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
+namespace QLNet 
+{
+	public class LocalBootstrapForYield : LocalBootstrap<PiecewiseYieldCurve, YieldTermStructure>
+	{
+		public LocalBootstrapForYield()
+			: base()
+		{}
+	}
+
     // penalty function class for solving using a multi-dimensional solver
-    public class PenaltyFunction<Curve> : CostFunction where Curve : PiecewiseYieldCurve {
+	public class PenaltyFunction<T, U> : CostFunction
+		where T : Curve<U>, new()
+		where U : TermStructure
+	{
         //typedef typename Curve::traits_type Traits;
         //typedef typename Traits::helper helper;
         //typedef typename std::vector< boost::shared_ptr<helper> >::const_iterator helper_iterator;
 
-        private Curve curve_;
+        private T curve_;
         private int initialIndex_;
         private int localisation_, start_, end_;
-        private List<RateHelper> rateHelpers_;
+		  private List<BootstrapHelper<U>> rateHelpers_;
 
-        public PenaltyFunction(Curve curve, int initialIndex, List<RateHelper> rateHelpers, int start, int end)
+		  public PenaltyFunction( T curve, int initialIndex, List<BootstrapHelper<U>> rateHelpers, int start, int end )
         {
             curve_ = curve;
             initialIndex_ = initialIndex;
@@ -82,12 +94,15 @@ namespace QLNet {
         whilst using a smoother interpolation method. Particularly
         good for the convex-monotone spline method.
     */
-    public class LocalBootstrap : IBootStrap {
+    public class LocalBootstrap <T,U>:IBootStrap<T>
+        where T : Curve<U>, new()
+        where U : TermStructure
+	 {
         //typedef typename Curve::traits_type Traits;
         //typedef typename Curve::interpolator_type Interpolator;
       
         private bool validCurve_;
-        private PiecewiseYieldCurve ts_; // yes, it is a workaround
+        private T ts_; // yes, it is a workaround
         int localisation_;
         bool forcePositive_;
         
@@ -98,7 +113,7 @@ namespace QLNet {
             forcePositive_ = forcePositive;
         }
 
-        public void setup(PiecewiseYieldCurve ts) {
+        public void setup(T ts) {
             ts_ = ts;
 
             int n = ts_.instruments_.Count;
@@ -109,7 +124,8 @@ namespace QLNet {
             if (!(n > localisation_))
                 throw new ApplicationException("not enough instruments: " + n + " provided, " + localisation_ + " required.");
 
-            ts_.instruments_.ForEach(i => i.registerWith(ts_.update));
+            //ts_.instruments_.ForEach(i => i.registerWith(ts_.update));
+				ts_.instruments_.ForEach( x => ts_.registerWith( x ) ); 
         }
 
         public void calculate() {
@@ -133,7 +149,7 @@ namespace QLNet {
                        ") has an invalid quote");
 
             // setup instruments and register with them
-            ts_.instruments_.ForEach(j => j.setTermStructure(ts_));
+				ts_.instruments_.ForEach( j => ts_.setTermStructure( j ) );
 
             // set initial guess only if the current curve cannot be used as guess
             if (validCurve_) {
@@ -141,13 +157,13 @@ namespace QLNet {
                     throw new ArgumentException("dimension mismatch: expected " + nInsts + 1 + ", actual " + ts_.data_.Count);
             } else {
                 ts_.data_ = new InitializedList<double>(nInsts + 1);
-                ts_.data_[0] = ts_.initialValue(ts_);
+                ts_.data_[0] = ts_.initialValue();
             }
 
             // calculate dates and times
             ts_.dates_ = new InitializedList<Date>(nInsts + 1);
             ts_.times_ = new InitializedList<double>(nInsts + 1);
-            ts_.dates_[0] = ts_.initialDate(ts_);
+            ts_.dates_[0] = ts_.initialDate();
             ts_.times_[0] = ts_.timeFromReference(ts_.dates_[0]);
             for (i = 0; i < nInsts; ++i) {
                 ts_.dates_[i + 1] = ts_.instruments_[i].latestDate();
@@ -184,14 +200,14 @@ namespace QLNet {
                                                 localisation_, ts_.interpolation_ as ConvexMonotoneInterpolation, nInsts + 1);
 
                 if (iInst >= localisation_) {
-                    startArray[localisation_-dataAdjust] = ts_.guess(ts_, ts_.dates_[iInst]);
+						 startArray[localisation_ - dataAdjust] = ts_.guess( iInst, ts_, false, 0 );
                 } else {
                     startArray[localisation_-dataAdjust] = ts_.data_[0];
                 }
 
-                var currentCost = new PenaltyFunction<PiecewiseYieldCurve>(ts_, initialDataPt, ts_.instruments_, 
-                                                                            iInst - localisation_ + 1, iInst + 1);
-                Problem toSolve = new Problem(currentCost, solverConstraint, startArray);
+					 var currentCost = new PenaltyFunction<T, U>( ts_, initialDataPt, ts_.instruments_,
+																									 iInst - localisation_ + 1, iInst + 1 );
+					 Problem toSolve = new Problem( currentCost, solverConstraint, startArray );
                 EndCriteria.Type endType = solver.minimize(toSolve, endCriteria);
 
                 // check the end criteria

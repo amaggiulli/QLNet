@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -251,7 +252,7 @@ namespace TestSuite
                 Handle<Quote> capVol = new Handle<Quote>(new SimpleQuote(capVols[i-2]));
 
                 CalibrationHelper caphelper = new CapHelper(maturity, capVol, index,Frequency.Annual,
-                                  index.dayCounter(), true, termStructure, true);
+                                  index.dayCounter(), true, termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError);
 
                 caphelper.setPricingEngine(new AnalyticCapFloorEngine(model, termStructure));
 
@@ -268,7 +269,7 @@ namespace TestSuite
                             new SwaptionHelper(maturity, len, swaptionVol, index,
                                                index.tenor(), dayCounter,
                                                index.dayCounter(),
-                                               termStructure, true);
+															  termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError );
 
                         swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
 

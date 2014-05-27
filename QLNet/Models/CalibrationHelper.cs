@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -21,105 +22,124 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet {
-    //! liquid market instrument used during calibration
-    public abstract class CalibrationHelper : IObserver, IObservable {
-        protected double marketValue_;
-        public double marketValue() { return marketValue_; }
+namespace QLNet
+{
+	//! liquid market instrument used during calibration
+	public abstract class CalibrationHelper : LazyObject
+	{
+		public enum CalibrationErrorType
+		{
+			RelativePriceError, PriceError, ImpliedVolError
+		}
 
-        protected Handle<Quote> volatility_;
-        protected Handle<YieldTermStructure> termStructure_;
-        protected IPricingEngine engine_;
+		public CalibrationHelper( Handle<Quote> volatility, 
+			Handle<YieldTermStructure> termStructure,
+			CalibrationErrorType calibrationErrorType = CalibrationErrorType.RelativePriceError )
+		{
+			volatility_ = volatility;
+			termStructure_ = termStructure;
+			calibrationErrorType_ = calibrationErrorType;
 
-        private bool calibrateVolatility_;
+			volatility_.registerWith( update );
+			termStructure_.registerWith( update );
+		}
 
-        //public CalibrationHelper(Handle<Quote> volatility, Handle<YieldTermStructure> termStructure,
-        //                  bool calibrateVolatility = false)
-        public CalibrationHelper(Handle<Quote> volatility, Handle<YieldTermStructure> termStructure, bool calibrateVolatility) {
-            volatility_ = volatility;
-            termStructure_ = termStructure;
-            calibrateVolatility_ = calibrateVolatility;
+		protected override void performCalculations() 
+		{
+			marketValue_ = blackPrice(volatility_.link.value());
+      }
 
-            volatility_.registerWith(update);
-            termStructure_.registerWith(update);
-        }
+		//! returns the volatility Handle
+		public Handle<Quote> volatility() { return volatility_; }
 
-        //! returns the price of the instrument according to the model
-        public abstract double modelValue();
+		//! returns the actual price of the instrument (from volatility)
+      public double marketValue() { calculate(); return marketValue_; }
 
-        //! returns the error resulting from the model valuation
-        public virtual double calibrationError() {
-            if (calibrateVolatility_) {
-                double lowerPrice = blackPrice(0.001);
-                double upperPrice = blackPrice(10);
-                double modelPrice = modelValue();
+		//! returns the price of the instrument according to the model
+		public abstract double modelValue();
 
-                double implied;
-                if (modelPrice <= lowerPrice)
-                    implied = 0.001;
-                else
-                    if (modelPrice >= upperPrice)
-                        implied = 10.0;
-                    else
-                        implied = this.impliedVolatility(modelPrice, 1e-12, 5000, 0.001, 10);
+		//! returns the error resulting from the model valuation
+		public virtual double calibrationError()
+		{
+			double error = 0 ;
 
-                return implied - volatility_.link.value();
-            }
-            else {
-                return Math.Abs(marketValue() - modelValue())/marketValue();
-            }
-        }
+			switch ( calibrationErrorType_ )
+			{
+				case CalibrationErrorType.RelativePriceError:
+					error = Math.Abs( marketValue() - modelValue() ) / marketValue();
+					break;
+				case CalibrationErrorType.PriceError:
+					error = marketValue() - modelValue();
+					break;
+				case CalibrationErrorType.ImpliedVolError:
+					{
+						double lowerPrice = blackPrice( 0.001 );
+						double upperPrice = blackPrice( 10 );
+						double modelPrice = modelValue();
 
-        public abstract void addTimesTo(List<double> times);
+						double implied;
+						if ( modelPrice <= lowerPrice )
+							implied = 0.001;
+						else
+							if ( modelPrice >= upperPrice )
+								implied = 10.0;
+							else
+								implied = this.impliedVolatility( modelPrice, 1e-12, 5000, 0.001, 10 );
+						error = implied - volatility_.link.value();
+					}
+					break;
+				default:
+					Utils.QL_FAIL( "unknown Calibration Error Type" );
+					break;
+			}
 
-        //! Black volatility implied by the model
-        public double impliedVolatility(double targetValue, double accuracy, int maxEvaluations, double minVol, double maxVol) {
+			return error;
 
-            ImpliedVolatilityHelper f = new ImpliedVolatilityHelper(this, targetValue);
-            Brent solver = new Brent();
-            solver.setMaxEvaluations(maxEvaluations);
-            return solver.solve(f,accuracy,volatility_.link.value(), minVol, maxVol);
-        }
+		}
 
-        //! Black price given a volatility
-        public abstract double blackPrice(double volatility);
+		public abstract void addTimesTo( List<double> times );
 
-        public void setPricingEngine(IPricingEngine engine) {
-            engine_ = engine;
-        }
+		//! Black volatility implied by the model
+		public double impliedVolatility( double targetValue, 
+			double accuracy, int maxEvaluations, double minVol, double maxVol )
+		{
+
+			ImpliedVolatilityHelper f = new ImpliedVolatilityHelper( this, targetValue );
+			Brent solver = new Brent();
+			solver.setMaxEvaluations( maxEvaluations );
+			return solver.solve( f, accuracy, volatility_.link.value(), minVol, maxVol );
+		}
+
+		//! Black price given a volatility
+		public abstract double blackPrice( double volatility );
+
+		public void setPricingEngine( IPricingEngine engine ) {engine_ = engine;}
 
 
-        #region Observer & Observable
-        public event Callback notifyObserversEvent;
+		protected double marketValue_;
+		protected Handle<Quote> volatility_;
+		protected Handle<YieldTermStructure> termStructure_;
+		protected IPricingEngine engine_;
 
-        // this method is required for calling from derived classes
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
-        }
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
 
-        public void update() {
-            marketValue_ = blackPrice(volatility_.link.value());
-            notifyObservers();
-        } 
-	    #endregion
+		private CalibrationErrorType calibrationErrorType_;
 
-        private class ImpliedVolatilityHelper : ISolver1d {
-            private CalibrationHelper helper_;
-            private double value_;
+		private class ImpliedVolatilityHelper : ISolver1d
+		{
+			private CalibrationHelper helper_;
+			private double value_;
 
-            public ImpliedVolatilityHelper(CalibrationHelper helper, double value) {
-                helper_ = helper;
-                value_ = value;
-            }
+			public ImpliedVolatilityHelper( CalibrationHelper helper, double value )
+			{
+				helper_ = helper;
+				value_ = value;
+			}
 
-            public override double value(double x) {
-                return value_ - helper_.blackPrice(x);
-            }
-        }
-    }
+			public override double value( double x )
+			{
+				return value_ - helper_.blackPrice( x );
+			}
+		}
+	
+	}
 }
