@@ -64,8 +64,8 @@ namespace QLNet
              .withFixedRates(fixedRate)
              .withNotionals(faceAmount)
              .withPaymentAdjustment(paymentConvention);
-            
-            
+
+            calculateNotionalsFromCashflows();
 
             cpiIndex_.registerWith(update);
 
