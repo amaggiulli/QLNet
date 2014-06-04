@@ -280,14 +280,9 @@ namespace QLNet
                      price = clean price. Use here because callability is
                      always applied before coupon in the tree engine.
                   */
-                  arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount() +
-                                                  this.accrued(putCallSchedule_[i].date()));
+                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] += this.accrued(putCallSchedule_[i].date());
                }
-               else
-                  arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
-
             }
-
          }
       }
       //! accrued interest used internally, where includeToday = false

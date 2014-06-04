@@ -100,7 +100,6 @@ namespace QLNet {
                                                  redemption, issueDate, paymentCalendar, 
                                                  exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth), useCleanPrice)
         {
-
             fixedRateBond_ = bond_ as FixedRateBond;
         }
     }

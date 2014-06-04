@@ -55,10 +55,12 @@ namespace QLNet {
         
         #region operator overload
         public static bool operator ==(Handle<T> here, Handle<T> there) {
-            return here.Equals(there);
+			  if ( System.Object.ReferenceEquals( here, there ) ) return true; 
+			  else if ( (object)here == null || (object)there == null ) return false;
+			  else return here.Equals(there);
         }
         public static bool operator !=(Handle<T> here, Handle<T> there) {
-            return !here.Equals(there);
+			  return !( here == there );
         }
         public override bool Equals(object o) {
             return this.link_ == ((Handle<T>)o).link_;

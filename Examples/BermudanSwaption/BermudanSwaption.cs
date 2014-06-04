@@ -149,7 +149,7 @@ namespace BermudanSwaption
                                    indexSixMonths.tenor(),
                                    indexSixMonths.dayCounter(),
                                    indexSixMonths.dayCounter(),
-                                   rhTermStructure, false));
+                                   rhTermStructure));
                 swaptions.Last().addTimesTo(times);
             }
 

@@ -54,17 +54,19 @@ namespace QLNet
 
       public static bool operator ==(Region r1, Region r2) 
       {
-        return r1.name() == r2.name();
+			if ( System.Object.ReferenceEquals( r1, r2 ) )  return true; 
+			else if ( (object)r1 == null || (object)r2 == null ) return false;
+			else return r1.Equals( r2 );  
       }
 
       public static bool operator !=(Region r1, Region r2)
       {
-         return !(r1.name() == r2.name());
+         return !(r1 == r2);
       }
 
       public override bool Equals(object o)
       {
-         return true;
+			return this.name() == ( (Region)o ).name();
       }
 
       public override int GetHashCode()
