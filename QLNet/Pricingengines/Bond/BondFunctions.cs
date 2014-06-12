@@ -267,6 +267,15 @@ namespace QLNet
 
       #region Yield (a.k.a. Internal Rate of Return, i.e. IRR) functions
 
+      public static double cleanPrice(Bond bond, InterestRate yield, Date settlementDate = null)
+      {
+        return dirtyPrice(bond, yield, settlementDate) - bond.accruedAmount(settlementDate);
+      }
+      public static double cleanPrice(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
+                                Date settlementDate = null)
+      {
+         return cleanPrice(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
+      }
       public static double dirtyPrice(Bond bond, InterestRate yield, Date settlementDate = null)
       {
           if (settlementDate == null)
@@ -280,14 +289,10 @@ namespace QLNet
                               100.0 / bond.notional(settlementDate);
           return dirtyPrice;
       }
-      public static double cleanPrice(Bond bond, InterestRate yield, Date settlementDate = null)
-      {
-        return dirtyPrice(bond, yield, settlementDate) - bond.accruedAmount(settlementDate);
-      }
-      public static double cleanPrice(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
+      public static double dirtyPrice(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                 Date settlementDate = null)
       {
-         return cleanPrice(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
+          return dirtyPrice(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       public static double bps(Bond bond, InterestRate yield, Date settlementDate = null)
       {
