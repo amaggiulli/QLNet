@@ -444,6 +444,7 @@
     <Compile Include="Termstructures\InflationTermStructure.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />
     <Compile Include="Termstructures\Inflation\InflationTraits.cs" />
+    <Compile Include="Termstructures\Inflation\InterpolatedZeroInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\PiecewiseYoYInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\PiecewiseZeroInflationCurve.cs" />
     <Compile Include="Termstructures\Inflation\Seasonality.cs" />
