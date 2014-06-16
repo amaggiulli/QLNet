@@ -132,6 +132,7 @@
     <Compile Include="Indexes\Inflation\FRHICP.cs" />
     <Compile Include="Indexes\Inflation\UKRPI.cs" />
     <Compile Include="Indexes\Inflation\USCPI.cs" />
+    <Compile Include="Indexes\Inflation\ZACPI.cs" />
     <Compile Include="Indexes\InterestRateIndex.cs" />
     <Compile Include="Indexes\Region.cs" />
     <Compile Include="Indexes\Swapindex.cs" />
