@@ -103,4 +103,24 @@ namespace QLNet {
             fixedRateBond_ = bond_ as FixedRateBond;
         }
     }
+
+
+    public class CPIBondHelper : BondHelper
+    {
+        protected CPIBond cpiBond_;
+        public CPIBond cpiBond() { return cpiBond_; }
+
+        public CPIBondHelper(Handle<Quote> price, int settlementDays, double faceAmount, bool growthOnly, double baseCPI, 
+                                   Period observationLag, ZeroInflationIndex cpiIndex, InterpolationType observationInterpolation, 
+                                   Schedule schedule, List<double> fixedRate, DayCounter dayCounter, BusinessDayConvention paymentConvention,
+                                   double redemption, Date issueDate, Calendar paymentCalendar = null,
+                                   Period exCouponPeriod = null, Calendar exCouponCalendar = null,
+                                   BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false,
+                                   bool useCleanPrice = true)
+            : base(price, new CPIBond(settlementDays, faceAmount, growthOnly, baseCPI, observationLag, cpiIndex, observationInterpolation, schedule,
+                                      fixedRate, dayCounter, paymentConvention, issueDate), useCleanPrice)
+        {
+            cpiBond_ = bond_ as CPIBond;
+        }
+    }
 }
