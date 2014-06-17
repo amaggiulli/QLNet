@@ -165,14 +165,12 @@ namespace QLNet
                                 Frequency frequency,
                                 Period availabilityLag,
                                 Currency currency,
-                                Handle<ZeroInflationTermStructure> ts,
-                                bool useForecastWhenAvailable = false)
+                                Handle<ZeroInflationTermStructure> ts)
          : base(familyName, region, revised, interpolated,
                      frequency, availabilityLag, currency)
       {
          zeroInflation_ = ts;
          zeroInflation_.registerWith (update);
-         useForecastWhenAvailable_ = useForecastWhenAvailable;
       }
 
         /*! \warning the forecastTodaysFixing parameter (required by
@@ -291,7 +289,6 @@ namespace QLNet
         }
 
         private Handle<ZeroInflationTermStructure> zeroInflation_;
-        private bool useForecastWhenAvailable_;
     };
     
    //! Base class for year-on-year inflation indices.
