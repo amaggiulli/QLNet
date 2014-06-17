@@ -29,6 +29,7 @@ namespace QLNet {
     */
     public class BondHelper : RelativeDateRateHelper {
         protected Bond bond_;
+        protected bool useCleanPrice_;
         public Bond bond() { return bond_; }
 
         // need to init this because it is used before the handle has any link, i.e. setTermStructure will be used after ctor
@@ -41,14 +42,16 @@ namespace QLNet {
                      the bond after creating the helper, so that the
                      helper has sole ownership of it.
         */
-        public BondHelper(Handle<Quote> cleanPrice, Bond bond) : base(cleanPrice) {
+        public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice = true) : base(price) {
             bond_ = bond;
 
             latestDate_ = bond_.maturityDate();
             initializeDates();
 
             IPricingEngine bondEngine = new DiscountingBondEngine(termStructureHandle_);
-            bond_.setPricingEngine(bondEngine);        
+            bond_.setPricingEngine(bondEngine);
+
+            useCleanPrice_ = useCleanPrice;
         }
 
 
@@ -64,7 +67,10 @@ namespace QLNet {
                 throw new ApplicationException("term structure not set");
             // we didn't register as observers - force calculation
             bond_.recalculate();
-            return bond_.cleanPrice();
+            if (useCleanPrice_)
+                return bond_.cleanPrice();
+            else
+                return bond_.dirtyPrice();
         }
 
         protected override void initializeDates() {
@@ -83,17 +89,17 @@ namespace QLNet {
         //                   BusinessDayConvention paymentConv = Following,
         //                   double redemption = 100.0,
         //                   Date issueDate = null);
-        public FixedRateBondHelper(Handle<Quote> cleanPrice, int settlementDays, double faceAmount, Schedule schedule,
+        public FixedRateBondHelper(Handle<Quote> price, int settlementDays, double faceAmount, Schedule schedule,
                                    List<double> coupons, DayCounter dayCounter, BusinessDayConvention paymentConvention,
                                    double redemption, Date issueDate, Calendar paymentCalendar = null,
-											  Period exCouponPeriod = null, Calendar exCouponCalendar = null,
-											  BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, 
-			                          bool exCouponEndOfMonth = false )
-            : base(cleanPrice, new FixedRateBond(settlementDays, faceAmount, schedule,
+			                       Period exCouponPeriod = null, Calendar exCouponCalendar = null,
+                                   BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false,
+                                   bool useCleanPrice = true)
+            : base(price, new FixedRateBond(settlementDays, faceAmount, schedule,
                                                  coupons, dayCounter, paymentConvention,
-                                                 redemption, issueDate, paymentCalendar,
-																 exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth)) {
-
+                                                 redemption, issueDate, paymentCalendar, 
+                                                 exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth), useCleanPrice)
+        {
             fixedRateBond_ = bond_ as FixedRateBond;
         }
     }
