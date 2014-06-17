@@ -156,7 +156,7 @@ namespace QLNet
                                 Period availabilityLag,
                                 Currency currency)
          :this(familyName,region,revised,interpolated,frequency,availabilityLag,
-               currency,new Handle<ZeroInflationTermStructure>()){}
+               currency,new Handle<ZeroInflationTermStructure>(), false){}
 
       public ZeroInflationIndex(string familyName,
                                 Region region,
@@ -165,63 +165,43 @@ namespace QLNet
                                 Frequency frequency,
                                 Period availabilityLag,
                                 Currency currency,
-                                Handle<ZeroInflationTermStructure> ts )
+                                Handle<ZeroInflationTermStructure> ts,
+                                bool useForecastWhenAvailable = false)
          : base(familyName, region, revised, interpolated,
                      frequency, availabilityLag, currency)
       {
          zeroInflation_ = ts;
          zeroInflation_.registerWith (update);
+         useForecastWhenAvailable_ = useForecastWhenAvailable;
       }
 
         /*! \warning the forecastTodaysFixing parameter (required by
                      the Index interface) is currently ignored.
         */
-        public override double fixing(Date fixingDate)
-        {
-           return fixing(fixingDate,false);
-        }
         public override double fixing(Date aFixingDate, bool forecastTodaysFixing)
         {
-           // Stored fixings are always non-interpolated.
-           // If an interpolated fixing is required then
-           // the availability lag + one inflation period
-           // must have passsed to use historical fixings
-           // (because you need the next one to interpolate).
-           // The interpolation is calculated (linearly) on demand.
-
-           Date today = Settings.evaluationDate();
-           Date todayMinusLag = today - availabilityLag_;
-
-           KeyValuePair<Date,Date> lim = Utils.inflationPeriod(todayMinusLag, frequency_);
-           Date historicalFixingKnown = lim.Key-1;
-           Date fixingDateNeeded = aFixingDate;
-           if (interpolated_) 
-           { 
-              // need the next one too
-              fixingDateNeeded = fixingDateNeeded + new Period(frequency_);
-           }
-
-           if (fixingDateNeeded <= historicalFixingKnown) 
+           if (!needsForecast(aFixingDate)) 
            {
-              double? pastFixing = IndexManager.instance().getHistory(name()).value()[aFixingDate];
-              if ( pastFixing == null )
+              if (!IndexManager.instance().getHistory(name()).value().ContainsKey(aFixingDate))
                  throw new ApplicationException("Missing " + name() + " fixing for " + aFixingDate);
 
-               double theFixing = pastFixing.Value;
+               double pastFixing = IndexManager.instance().getHistory(name()).value()[aFixingDate];
+               double theFixing = pastFixing;
 
                if (interpolated_) 
                {
                   // fixings stored flat & for every day
                   Date fixingDate2 = aFixingDate + new Period(frequency_);
-                  double? pastFixing2 = IndexManager.instance().getHistory(name()).value()[fixingDate2];
-                  if ( pastFixing2 == null )
-                     throw new ApplicationException("Missing " + name() + " fixing for " + fixingDate2);
+                  if (!IndexManager.instance().getHistory(name()).value().ContainsKey(fixingDate2))
+                      throw new ApplicationException("Missing " + name() + " fixing for " + fixingDate2);
+
+                  double pastFixing2 = IndexManager.instance().getHistory(name()).value()[fixingDate2];
 
                   // now linearly interpolate
                   KeyValuePair<Date,Date> lim2 = Utils.inflationPeriod(aFixingDate, frequency_);
                   double daysInPeriod = lim2.Value+1 - lim2.Key;
-                  theFixing = pastFixing.Value
-                       + (pastFixing2.Value -pastFixing.Value)*(aFixingDate-lim2.Key)/daysInPeriod;
+                  theFixing = pastFixing
+                       + (pastFixing2 -pastFixing)*(aFixingDate-lim2.Key)/daysInPeriod;
                }
                return theFixing;
            } 
@@ -230,6 +210,44 @@ namespace QLNet
               return forecastFixing(aFixingDate);
            }
         }
+
+        bool needsForecast(Date fixingDate)
+        {
+            // Stored fixings are always non-interpolated.
+            // If an interpolated fixing is required then
+            // the availability lag + one inflation period
+            // must have passed to use historical fixings
+            // (because you need the next one to interpolate).
+            // The interpolation is calculated (linearly) on demand.
+
+            Date today = Settings.evaluationDate();
+            Date todayMinusLag = today - availabilityLag_;
+
+            Date historicalFixingKnown = Utils.inflationPeriod(todayMinusLag, frequency_).Key - 1;
+            Date latestNeededDate = fixingDate;
+
+            if (interpolated_) { // might need the next one too
+                KeyValuePair<Date, Date> p = Utils.inflationPeriod(fixingDate, frequency_);
+                if (fixingDate > p.Key)
+                    latestNeededDate = latestNeededDate + new Period(frequency_);
+            }
+
+            if (latestNeededDate <= historicalFixingKnown) {
+                // the fixing date is well before the availability lag, so
+                // we know that fixings were provided.
+                return false;
+            } else if (latestNeededDate > today) {
+                // the fixing can't be available, no matter what's in the
+                // time series
+                return true;
+            } else {
+                // we're not sure, but the fixing might be there so we
+                // check.  Todo: check which fixings are not possible, to
+                // avoid using fixings in the future
+                return !IndexManager.instance().getHistory(name()).value().ContainsKey(latestNeededDate);
+            }
+        }
+
 
         public Handle<ZeroInflationTermStructure> zeroInflationTermStructure() {return zeroInflation_;}
 
@@ -246,7 +264,8 @@ namespace QLNet
         {
            // the term structure is relative to the fixing value at the base date.
            Date baseDate = zeroInflation_.link.baseDate();
-           double baseFixing = fixing(baseDate);
+           Utils.QL_REQUIRE(!needsForecast(baseDate), name() + " index fixing at base date is not available");
+           double baseFixing = fixing(baseDate, false);
            Date effectiveFixingDate;
            if (interpolated()) 
            {
@@ -272,6 +291,7 @@ namespace QLNet
         }
 
         private Handle<ZeroInflationTermStructure> zeroInflation_;
+        private bool useForecastWhenAvailable_;
     };
     
    //! Base class for year-on-year inflation indices.
