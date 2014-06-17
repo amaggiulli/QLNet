@@ -265,7 +265,7 @@ namespace QLNet
          if (notionals_.empty())
             throw new ApplicationException("no notional given");
 
-         int n = schedule_.Count;
+         int n = schedule_.Count - 1;
          Calendar calendar = schedule_.calendar();
          List<CashFlow> leg = new List<CashFlow>(n + 1);
 
