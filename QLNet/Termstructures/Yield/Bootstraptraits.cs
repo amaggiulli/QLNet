@@ -121,8 +121,8 @@ namespace QLNet
 			//return 3.0;
 
 #if QL_NEGATIVE_RATES
-                    double dt = c.times()[i] - c.times()[i-1];
-            return c.data()[i-1] *System>.Exp(maxRate * dt);
+            double dt = c.times()[i] - c.times()[i-1];
+            return c.data()[i-1] * Math.Exp(maxRate * dt);
 #else
 			// discounts cannot increase
 			return c.data()[i - 1];
@@ -213,7 +213,7 @@ namespace QLNet
                 
             // no constraints.
             // We choose as min a value very unlikely to be exceeded.
-            return -detail::maxRate;
+            return -maxRate;
 #else
 			return Const.QL_Epsilon;
 #endif
