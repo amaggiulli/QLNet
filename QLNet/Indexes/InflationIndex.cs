@@ -156,7 +156,7 @@ namespace QLNet
                                 Period availabilityLag,
                                 Currency currency)
          :this(familyName,region,revised,interpolated,frequency,availabilityLag,
-               currency,new Handle<ZeroInflationTermStructure>(), false){}
+               currency,new Handle<ZeroInflationTermStructure>()){}
 
       public ZeroInflationIndex(string familyName,
                                 Region region,
