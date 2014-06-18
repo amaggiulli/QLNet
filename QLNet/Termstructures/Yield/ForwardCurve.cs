@@ -72,8 +72,8 @@ namespace QLNet {
             if (!(dates_.Count > 1)) throw new ApplicationException("too few dates");
             if (data_.Count != dates_.Count) throw new ApplicationException("dates/yields count mismatch");
 
-            times_ = new List<double>(dates_.Count);
-            times_.Add(0.0);
+            times_ = new InitializedList<double>(dates_.Count);
+            times_[0] = 0.0;
             for (int i = 1; i < dates_.Count; i++) {
                 if (!(dates_[i] > dates_[i - 1]))
                     throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
