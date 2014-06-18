@@ -78,7 +78,7 @@ namespace QLNet {
                 if (!(dates_[i] > dates_[i - 1]))
                     throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
 
-                #if !defined(QL_NEGATIVE_RATES)
+                #if !QL_NEGATIVE_RATES
                 Utils.QL_REQUIRE(this.data_[i] >= 0.0, "negative forward");
                 #endif
 
