@@ -329,7 +329,7 @@ namespace QLNet
                                           paymentDayCounter_,
                                           Utils.Get(fixedRates_, i, 0.0),
                                           Utils.Get(spreads_, i, 0.0),
-                                          refStart, refEnd);
+                                          refStart, refEnd, exCouponDate);
 
                      // in this case you can set a pricer
                      // straight away because it only provides computation - not data
