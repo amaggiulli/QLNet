@@ -284,7 +284,7 @@ namespace QLNet
                refEnd = end = schedule_.date(i + 1);
                Date paymentDate = paymentCalendar_.adjust(end, paymentAdjustment_);
 
-               Date exCouponDate;
+               Date exCouponDate = null;
                if (exCouponPeriod_ != null)
                {
                   exCouponDate = exCouponCalendar_.advance(paymentDate,
