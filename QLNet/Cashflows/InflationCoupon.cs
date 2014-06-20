@@ -43,9 +43,10 @@ namespace QLNet
                              InflationIndex index,
                              Period observationLag,
                              DayCounter dayCounter,
-                             Date refPeriodStart,
-                             Date refPeriodEnd)
-         : base(nominal, paymentDate, startDate, endDate, refPeriodStart, refPeriodEnd)  // ref period is before lag
+                             Date refPeriodStart = null,
+                             Date refPeriodEnd = null,
+                             Date exCouponDate = null)
+         : base(nominal, paymentDate, startDate, endDate, refPeriodStart, refPeriodEnd, exCouponDate)  // ref period is before lag
       {
          index_ = index;
          observationLag_ = observationLag;

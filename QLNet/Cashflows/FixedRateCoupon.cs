@@ -160,7 +160,7 @@ namespace QLNet
          return this;
       }
 
-		public FixedRateLeg withExCouponPeriod(Period period,Calendar cal,BusinessDayConvention convention,bool endOfMonth)
+		public FixedRateLeg withExCouponPeriod(Period period,Calendar cal,BusinessDayConvention convention,bool endOfMonth = false)
 		{
 			exCouponPeriod_ = period;
 			exCouponCalendar_ = cal;
