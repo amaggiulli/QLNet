@@ -269,21 +269,30 @@ namespace QLNet
 
       public static double cleanPrice(Bond bond, InterestRate yield, Date settlementDate = null)
       {
-         if (settlementDate == null)
-            settlementDate = bond.settlementDate();
-
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
-                   "non tradable at " + settlementDate +
-                   " (maturity being " + bond.maturityDate() + ")");
-
-         double dirtyPrice = CashFlows.npv(bond.cashflows(), yield, false, settlementDate) *
-                             100.0 / bond.notional(settlementDate);
-         return dirtyPrice - bond.accruedAmount(settlementDate);
+        return dirtyPrice(bond, yield, settlementDate) - bond.accruedAmount(settlementDate);
       }
       public static double cleanPrice(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                 Date settlementDate = null)
       {
          return cleanPrice(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
+      }
+      public static double dirtyPrice(Bond bond, InterestRate yield, Date settlementDate = null)
+      {
+          if (settlementDate == null)
+              settlementDate = bond.settlementDate();
+
+          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+                    "non tradable at " + settlementDate +
+                    " (maturity being " + bond.maturityDate() + ")");
+
+          double dirtyPrice = CashFlows.npv(bond.cashflows(), yield, false, settlementDate) *
+                              100.0 / bond.notional(settlementDate);
+          return dirtyPrice;
+      }
+      public static double dirtyPrice(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
+                                Date settlementDate = null)
+      {
+          return dirtyPrice(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       public static double bps(Bond bond, InterestRate yield, Date settlementDate = null)
       {
