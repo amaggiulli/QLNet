@@ -104,7 +104,6 @@ namespace QLNet {
         }
     }
 
-
     public class CPIBondHelper : BondHelper
     {
         protected CPIBond cpiBond_;
