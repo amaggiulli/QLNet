@@ -117,7 +117,8 @@ namespace QLNet {
                                    BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false,
                                    bool useCleanPrice = true)
             : base(price, new CPIBond(settlementDays, faceAmount, growthOnly, baseCPI, observationLag, cpiIndex, observationInterpolation, schedule,
-                                      fixedRate, dayCounter, paymentConvention, issueDate), useCleanPrice)
+                                      fixedRate, dayCounter, paymentConvention, issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar,
+                                      exCouponConvention, exCouponEndOfMonth), useCleanPrice)
         {
             cpiBond_ = bond_ as CPIBond;
         }
