@@ -108,8 +108,10 @@ namespace QLNet
                         double fixedRate, // aka gearing
                         double spread = 0.0,
                         Date refPeriodStart = null,
-                        Date refPeriodEnd = null)
-         :base(paymentDate, nominal, startDate, endDate, fixingDays, index, observationLag, dayCounter, refPeriodStart, refPeriodEnd)
+                        Date refPeriodEnd = null,
+                        Date exCouponDate = null)
+         :base(paymentDate, nominal, startDate, endDate, fixingDays, index, 
+               observationLag, dayCounter, refPeriodStart, refPeriodEnd, exCouponDate)
       {
 
          baseCPI_ = baseCPI;
@@ -254,6 +256,7 @@ namespace QLNet
          observationLag_ = observationLag;
          paymentDayCounter_ = new Thirty360();
          paymentAdjustment_ = BusinessDayConvention.ModifiedFollowing;
+         paymentCalendar_ = schedule.calendar();
          fixingDays_ = new List<int>() { 0 };
          observationInterpolation_ = InterpolationType.AsIndex;
          subtractInflationNominal_ = true;
@@ -266,7 +269,6 @@ namespace QLNet
             throw new ApplicationException("no notional given");
 
          int n = schedule_.Count - 1;
-         Calendar calendar = schedule_.calendar();
          List<CashFlow> leg = new List<CashFlow>(n + 1);
 
          if (n > 0)
@@ -275,13 +277,22 @@ namespace QLNet
                throw new ApplicationException("no fixedRates or spreads given");
 
             Date refStart, start, refEnd, end;
-            Date lastPaymentDate = calendar.adjust(schedule_.date(n), paymentAdjustment_);
 
             for (int i = 0; i < n; ++i)
             {
                refStart = start = schedule_.date(i);
                refEnd = end = schedule_.date(i + 1);
-               Date paymentDate = calendar.adjust(end, paymentAdjustment_);
+               Date paymentDate = paymentCalendar_.adjust(end, paymentAdjustment_);
+
+               Date exCouponDate = null;
+               if (exCouponPeriod_ != null)
+               {
+                  exCouponDate = exCouponCalendar_.advance(paymentDate,
+                                                           -exCouponPeriod_,
+                                                           exCouponAdjustment_,
+                                                           exCouponEndOfMonth_);
+               }
+
                if (i == 0 && !schedule_.isRegular(i + 1))
                {
                   BusinessDayConvention bdc = schedule_.businessDayConvention();
@@ -298,7 +309,7 @@ namespace QLNet
                   leg.Add(new FixedRateCoupon(Utils.Get(notionals_, i, 0.0),
                                               paymentDate,
                                               Utils.effectiveFixedRate(spreads_, caps_, floors_, i),
-                                              paymentDayCounter_, start, end, refStart, refEnd));
+                                              paymentDayCounter_, start, end, refStart, refEnd, exCouponDate));
                }
                else
                {
@@ -318,7 +329,7 @@ namespace QLNet
                                           paymentDayCounter_,
                                           Utils.Get(fixedRates_, i, 0.0),
                                           Utils.Get(spreads_, i, 0.0),
-                                          refStart, refEnd);
+                                          refStart, refEnd, exCouponDate);
 
                      // in this case you can set a pricer
                      // straight away because it only provides computation - not data
@@ -337,7 +348,7 @@ namespace QLNet
          }
 
          // in CPI legs you always have a notional flow of some sort
-         Date pDate = calendar.adjust(schedule_.date(n), paymentAdjustment_);
+         Date pDate = paymentCalendar_.adjust(schedule_.date(n), paymentAdjustment_);
          Date fixingDate = pDate - observationLag_;
          CashFlow xnl = new CPICashFlow
                            (Utils.Get(notionals_, n, 0.0), index_,

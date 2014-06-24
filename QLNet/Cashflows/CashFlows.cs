@@ -690,7 +690,7 @@ namespace QLNet
          double totalNPV = 0.0;
          for (int i=0; i<leg.Count; ++i) 
          {
-            if (!leg[i].hasOccurred(settlementDate, includeSettlementDateFlows))
+            if (!leg[i].hasOccurred(settlementDate, includeSettlementDateFlows) && !leg[i].tradingExCoupon(settlementDate))
                totalNPV += leg[i].amount() * discountCurve.discount(leg[i].date());
          }
 
