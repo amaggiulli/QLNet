@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2014  Edem Dawui (edawui@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -20,20 +21,24 @@
 
 namespace QLNet {
     //! bootstrap error
-    public class BootstrapError : ISolver1d {
+	public class BootstrapError<T, U> : ISolver1d
+		where T : Curve<U>
+		where U : TermStructure
+	{
 
-        private PiecewiseYieldCurve curve_;
-        private RateHelper helper_;
+        private T curve_;
+		  private BootstrapHelper<U> helper_;
         private int segment_;
 
-        public BootstrapError(PiecewiseYieldCurve curve, RateHelper helper, int segment)
+		  public BootstrapError( T curve, BootstrapHelper<U> helper, int segment )
         {
             curve_ = curve;
             helper_ = helper;
             segment_ = segment; 
         }
 
-        public override double value(double guess) {
+        public override double value(double guess) 
+		  {
             curve_.updateGuess(curve_.data(), guess, segment_);
             curve_.interpolation_.update();
             return helper_.quoteError();

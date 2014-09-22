@@ -42,8 +42,13 @@ namespace QLNet
                 List<double> fixedRate,
                 DayCounter accrualDayCounter,
                 BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing,
-                Date issueDate = null)
-            :base(settlementDays, schedule.calendar(), issueDate)
+                Date issueDate = null,
+                Calendar paymentCalendar = null,
+                Period exCouponPeriod = null,
+                Calendar exCouponCalendar = null,
+					 BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                bool exCouponEndOfMonth = false)                
+            :base(settlementDays, paymentCalendar == null ? schedule.calendar() : paymentCalendar, issueDate)
         {
             frequency_ = schedule.tenor().frequency();
             dayCounter_ = accrualDayCounter;
@@ -62,10 +67,16 @@ namespace QLNet
              .withObservationInterpolation(observationInterpolation_)
              .withPaymentDayCounter(accrualDayCounter)
              .withFixedRates(fixedRate)
+             .withPaymentCalendar(calendar_)
+             .withExCouponPeriod(exCouponPeriod,
+                                exCouponCalendar,
+                                exCouponConvention,
+                                exCouponEndOfMonth)
              .withNotionals(faceAmount)
              .withPaymentAdjustment(paymentConvention);
             
-            
+
+            calculateNotionalsFromCashflows();
 
             cpiIndex_.registerWith(update);
 

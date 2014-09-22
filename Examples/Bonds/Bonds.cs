@@ -443,7 +443,6 @@ namespace Bonds {
 
             Console.WriteLine("{0,18}{1,10}{2,10}{3,10}", "", "ZC", "Fixed", "Floating");
 
-            string separator = " | ";
             int width = widths[0]
                                  + widths[1]
                                           + widths[2]

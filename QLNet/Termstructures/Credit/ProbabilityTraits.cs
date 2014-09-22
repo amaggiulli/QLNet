@@ -5,7 +5,7 @@ using System.Text;
 
 namespace QLNet
 {
-   public class SurvivalProbability : BootstrapTraits
+	public class SurvivalProbability : ITraits<YieldTermStructure>
    {
       const double avgRate = 0.05;
       public Date initialDate(YieldTermStructure c) { return c.referenceDate(); }   // start of curve data
@@ -35,6 +35,16 @@ namespace QLNet
       public double discountImpl(Interpolation i, double t) { return i.value(t, true); }
       public double zeroYieldImpl(Interpolation i, double t) { throw new NotSupportedException(); }
       public double forwardImpl(Interpolation i, double t) { throw new NotSupportedException(); }
+		
+      public double guess(int i, InterpolatedCurve c, bool validData, int f)
+      { throw new NotSupportedException(); }
+
+      public double minValueAfter(int i, InterpolatedCurve c, bool validData, int f)
+      {throw new NotSupportedException(); }
+
+      public double maxValueAfter(int i, InterpolatedCurve c, bool validData, int f)
+      {throw new NotSupportedException(); }
+  
    }
 
 }

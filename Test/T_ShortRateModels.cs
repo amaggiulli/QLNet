@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
@@ -43,86 +44,84 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
-        public void testCachedHullWhite() {
-            //("Testing Hull-White calibration against cached values...");
+      [TestMethod()]
+      public void testCachedHullWhite() {
+         //("Testing Hull-White calibration against cached values...");
 
-            Date today=new Date(15, Month.February, 2002);
-            Date settlement=new Date(19, Month.February, 2002);
-            Settings.setEvaluationDate(today);
-            Handle<YieldTermStructure> termStructure= 
-            new Handle<YieldTermStructure>(Utilities.flatRate(settlement, 0.04875825, new Actual365Fixed()));
-            //termStructure.link
-            HullWhite model=new HullWhite(termStructure);
+         Date today=new Date(15, Month.February, 2002);
+         Date settlement=new Date(19, Month.February, 2002);
+         Settings.setEvaluationDate(today);
+         Handle<YieldTermStructure> termStructure= 
+         new Handle<YieldTermStructure>(Utilities.flatRate(settlement, 0.04875825, new Actual365Fixed()));
+         //termStructure.link
+         HullWhite model=new HullWhite(termStructure);
 
-             CalibrationData[] data = { new CalibrationData( 1, 5, 0.1148 ),
-                                        new CalibrationData( 2, 4, 0.1108 ),
-                                        new CalibrationData( 3, 3, 0.1070 ),
-                                        new CalibrationData( 4, 2, 0.1021 ),
-                                        new CalibrationData( 5, 1, 0.1000 )};
-            IborIndex index = new Euribor6M(termStructure);
+         CalibrationData[] data = { new CalibrationData( 1, 5, 0.1148 ),
+                                    new CalibrationData( 2, 4, 0.1108 ),
+                                    new CalibrationData( 3, 3, 0.1070 ),
+                                    new CalibrationData( 4, 2, 0.1021 ),
+                                    new CalibrationData( 5, 1, 0.1000 )};
+         IborIndex index = new Euribor6M(termStructure);
 
-            IPricingEngine engine = new JamshidianSwaptionEngine(model);
+         IPricingEngine engine = new JamshidianSwaptionEngine(model);
 
-            List<CalibrationHelper> swaptions = new List<CalibrationHelper>();
-            for (int i=0; i<data.Length; i++) {
-                Quote vol = new SimpleQuote(data[i].volatility);
-                CalibrationHelper helper =
-                                     new SwaptionHelper(new Period(data[i].start,TimeUnit.Years),
-                                                        new Period(data[i].length, TimeUnit.Years),
-                                                        new Handle<Quote>(vol),
-                                                        index,
-                                                        new Period(1, TimeUnit.Years), 
-                                                        new Thirty360(),
-                                                        new Actual360(), 
-                                                        termStructure,
-                                                        false);
-                helper.setPricingEngine(engine);
-                swaptions.Add(helper);
-            }
+         List<CalibrationHelper> swaptions = new List<CalibrationHelper>();
+         for (int i=0; i<data.Length; i++) {
+               Quote vol = new SimpleQuote(data[i].volatility);
+               CalibrationHelper helper =
+                                    new SwaptionHelper(new Period(data[i].start,TimeUnit.Years),
+                                                      new Period(data[i].length, TimeUnit.Years),
+                                                      new Handle<Quote>(vol),
+                                                      index,
+                                                      new Period(1, TimeUnit.Years), 
+                                                      new Thirty360(),
+                                                      new Actual360(), 
+                                                      termStructure);
+               helper.setPricingEngine(engine);
+               swaptions.Add(helper);
+         }
 
-            // Set up the optimization problem
-            // Real simplexLambda = 0.1;
-            // Simplex optimizationMethod(simplexLambda);
-            LevenbergMarquardt optimizationMethod = new LevenbergMarquardt(1.0e-8,1.0e-8,1.0e-8);
-            EndCriteria endCriteria = new EndCriteria(10000, 100, 1e-6, 1e-8, 1e-8);
+         // Set up the optimization problem
+         // Real simplexLambda = 0.1;
+         // Simplex optimizationMethod(simplexLambda);
+         LevenbergMarquardt optimizationMethod = new LevenbergMarquardt(1.0e-8,1.0e-8,1.0e-8);
+         EndCriteria endCriteria = new EndCriteria(10000, 100, 1e-6, 1e-8, 1e-8);
 
-            //Optimize
-            model.calibrate(swaptions, optimizationMethod, endCriteria, new Constraint(),new List<double>());
-            EndCriteria.Type ecType = model.endCriteria();
+         //Optimize
+         model.calibrate(swaptions, optimizationMethod, endCriteria, new Constraint(),new List<double>());
+         EndCriteria.Type ecType = model.endCriteria();
 
-            // Check and print out results
-            #if QL_USE_INDEXED_COUPON
-            double cachedA = 0.0488199, cachedSigma = 0.00593579;
-            #else
-            double cachedA = 0.0488565, cachedSigma = 0.00593662;
-            #endif
-            double tolerance = 1.120e-5;
-            //double tolerance = 1.0e-6;
-            Vector xMinCalculated = model.parameters();
-            double yMinCalculated = model.value(xMinCalculated, swaptions);
-            Vector xMinExpected = new Vector(2);
-            xMinExpected[0]= cachedA;
-            xMinExpected[1]= cachedSigma;
-            double yMinExpected = model.value(xMinExpected, swaptions);
-            if (Math.Abs(xMinCalculated[0]-cachedA) > tolerance
-                || Math.Abs(xMinCalculated[1]-cachedSigma) > tolerance) {
-                Assert.Fail ("Failed to reproduce cached calibration results:\n"
-                            + "calculated: a = " + xMinCalculated[0] + ", "
-                            + "sigma = " + xMinCalculated[1] + ", "
-                            + "f(a) = " + yMinCalculated + ",\n"
-                            + "expected:   a = " + xMinExpected[0] + ", "
-                            + "sigma = " + xMinExpected[1] + ", "
-                            + "f(a) = " + yMinExpected + ",\n"
-                            + "difference: a = " + (xMinCalculated[0]-xMinExpected[0]) + ", "
-                            + "sigma = " + (xMinCalculated[1]-xMinExpected[1]) + ", "
-                            + "f(a) = " + (yMinCalculated - yMinExpected) + ",\n"
-                            + "end criteria = " + ecType );
-            }
-        }
+         // Check and print out results
+         #if QL_USE_INDEXED_COUPON
+         double cachedA = 0.0488199, cachedSigma = 0.00593579;
+         #else
+         double cachedA = 0.0488565, cachedSigma = 0.00593662;
+         #endif
+         double tolerance = 1.120e-5;
+         //double tolerance = 1.0e-6;
+         Vector xMinCalculated = model.parameters();
+         double yMinCalculated = model.value(xMinCalculated, swaptions);
+         Vector xMinExpected = new Vector(2);
+         xMinExpected[0]= cachedA;
+         xMinExpected[1]= cachedSigma;
+         double yMinExpected = model.value(xMinExpected, swaptions);
+         if (Math.Abs(xMinCalculated[0]-cachedA) > tolerance
+               || Math.Abs(xMinCalculated[1]-cachedSigma) > tolerance) {
+               Assert.Fail ("Failed to reproduce cached calibration results:\n"
+                           + "calculated: a = " + xMinCalculated[0] + ", "
+                           + "sigma = " + xMinCalculated[1] + ", "
+                           + "f(a) = " + yMinCalculated + ",\n"
+                           + "expected:   a = " + xMinExpected[0] + ", "
+                           + "sigma = " + xMinExpected[1] + ", "
+                           + "f(a) = " + yMinExpected + ",\n"
+                           + "difference: a = " + (xMinCalculated[0]-xMinExpected[0]) + ", "
+                           + "sigma = " + (xMinCalculated[1]-xMinExpected[1]) + ", "
+                           + "f(a) = " + (yMinCalculated - yMinExpected) + ",\n"
+                           + "end criteria = " + ecType );
+         }
+      }
 
-
-        [TestMethod()]
+		  [TestMethod()]
         public void testSwaps() {
             //BOOST_MESSAGE("Testing Hull-White swap pricing against known values...");
 
