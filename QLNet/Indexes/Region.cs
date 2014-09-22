@@ -122,10 +122,20 @@ namespace QLNet
    {
       public USRegion()
       {
-         Data UKdata = new Data("USA","US");
-         data_ = UKdata;
+			Data USdata = new Data( "USA", "US" );
+			data_ = USdata;
       }
    }
 
+	//! South Africa as geographical/economic region
+   public class ZARegion : Region
+  {
+     public ZARegion()
+     {
+        Data ZAdata = new Data("South Africa", "ZA");
+       data_ = ZAdata;
+     
+	  }
+}
 
 }
