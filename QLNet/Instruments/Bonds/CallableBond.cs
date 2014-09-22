@@ -271,7 +271,7 @@ namespace QLNet
             if (!putCallSchedule_[i].hasOccurred(settlement, false))
             {
                arguments.callabilityDates.Add(putCallSchedule_[i].date());
-               arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
+               //arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
 
                if (putCallSchedule_[i].price().type() == Callability.Price.Type.Clean)
                {
