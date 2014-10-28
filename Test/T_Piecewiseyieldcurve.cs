@@ -261,11 +261,17 @@ namespace TestSuite {
         [TestMethod()]
         public void testLogLinearZeroConsistency() {
             // "Testing consistency of piecewise-log-linear zero-yield curve...");
-
+			  
+			  // if rates can be negative it makes no sense to interpolate loglinearly
+			  if ( Utils.is_QL_NEGATIVE_RATES() )
+				return;
+			  else
+			  {
             CommonVars vars = new CommonVars();
-
+	
 				testCurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
 				testBMACurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
+			  }
         }
 
         [TestMethod()]

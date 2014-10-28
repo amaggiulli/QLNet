@@ -85,6 +85,14 @@ namespace QLNet
           throw new ApplicationException(message);
        }
 
+		 public static bool is_QL_NEGATIVE_RATES()
+		 {
+			 #if QL_NEGATIVE_RATES
+				return true;
+			 #else
+			    return false;
+		    #endif
+		 }
     }
 
     // this is a redefined collection class to emulate array-type behaviour at initialisation

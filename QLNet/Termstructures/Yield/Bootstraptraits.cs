@@ -53,7 +53,7 @@ namespace QLNet
 
 	public class Discount : ITraits<YieldTermStructure>
 	{
-		const double maxRate = 3;
+		const double maxRate = 1;
 		const double avgRate = 0.05;
 		public Date initialDate( YieldTermStructure c ) { return c.referenceDate(); }   // start of curve data
 		public double initialValue( YieldTermStructure c ) { return 1; }    // value at reference date
