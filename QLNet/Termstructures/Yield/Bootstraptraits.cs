@@ -105,9 +105,7 @@ namespace QLNet
 			if ( validData )
 			{
 				#if QL_NEGATIVE_RATES
-					// no constraints.
-					// We choose as min a value very unlikely to be exceeded.
-					return -3.0;
+					return c.data().Min() / 2.0;
 				#else
 					return c.data().Last() / 2.0;
 				#endif
