@@ -243,7 +243,7 @@ namespace QLNet
 
         payoff is: spread + fixedRate x index
     */
-   public class CPILeg : Cashflows.CPILegBase
+   public class CPILeg : CPILegBase
    {
       public CPILeg(Schedule schedule,
                     ZeroInflationIndex index,

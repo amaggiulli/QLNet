@@ -130,7 +130,7 @@ namespace QLNet
    }
 
    //! helper class building a sequence of capped/floored ibor-rate coupons
-   public class IborLeg : Cashflows.FloatingLegBase
+   public class IborLeg : FloatingLegBase
    {
       // constructor
       public IborLeg(Schedule schedule, IborIndex index)

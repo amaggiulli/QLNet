@@ -71,7 +71,7 @@ namespace QLNet
 
    //! Helper class building a sequence of capped/floored yoy inflation coupons
    //! payoff is: spread + gearing x index
-   public class yoyInflationLeg : Cashflows.yoyInflationLegBase
+   public class yoyInflationLeg : yoyInflationLegBase
    {
       public yoyInflationLeg(Schedule schedule,Calendar cal,
                              YoYInflationIndex index,

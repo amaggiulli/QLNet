@@ -148,7 +148,7 @@ namespace QLNet {
     }
 
     //! helper class building a sequence of average BMA coupons
-    public class AverageBMALeg : Cashflows.RateLegBase {
+    public class AverageBMALeg : RateLegBase {
         private BMAIndex index_;
         private List<double> gearings_;
         private List<double> spreads_;

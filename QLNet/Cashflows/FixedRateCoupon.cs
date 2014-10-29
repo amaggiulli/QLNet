@@ -79,7 +79,7 @@ namespace QLNet
    }
 
    //! helper class building a sequence of fixed rate coupons
-   public class FixedRateLeg : Cashflows.RateLegBase 
+   public class FixedRateLeg : RateLegBase 
    {
       // properties
       private List<InterestRate> couponRates_ = new List<InterestRate>();

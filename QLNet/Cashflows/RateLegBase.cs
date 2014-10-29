@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet.Cashflows {
+namespace QLNet {
     public abstract class RateLegBase {
         protected Schedule schedule_;
         protected List<double> notionals_;

@@ -202,7 +202,7 @@ namespace QLNet
    }
 
     //! helper class building a sequence of overnight coupons
-   public class OvernightLeg : Cashflows.RateLegBase
+   public class OvernightLeg : RateLegBase
     {
        public OvernightLeg(Schedule schedule,OvernightIndex overnightIndex)
        {

@@ -80,7 +80,7 @@ namespace QLNet {
 
 
     //! helper class building a sequence of capped/floored cms-rate coupons
-    public class CmsLeg : Cashflows.FloatingLegBase {
+    public class CmsLeg : FloatingLegBase {
         public CmsLeg(Schedule schedule, SwapIndex swapIndex) {
             schedule_ = schedule;
             index_ = swapIndex;
