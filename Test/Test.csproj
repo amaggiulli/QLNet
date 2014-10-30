@@ -71,6 +71,7 @@
     <Compile Include="T_DefaultProbabilityCurves.cs" />
     <Compile Include="T_DividendOption.cs" />
     <Compile Include="T_Inflation.cs" />
+    <Compile Include="T_InflationCapFloorTest.cs" />
     <Compile Include="T_LinearLeastSquaresRegression.cs" />
     <Compile Include="T_Matrices.cs" />
     <Compile Include="T_Mclongstaffschwartzengine.cs" />

@@ -180,6 +180,7 @@
     <Compile Include="Instruments\forward.cs" />
     <Compile Include="Instruments\forwardrateagreement.cs" />
     <Compile Include="Instruments\ImpliedVolatility.cs" />
+    <Compile Include="Instruments\InflationCapFloor.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\Loan.cs" />
     <Compile Include="Instruments\MakeBasisSwap.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="Pricingengines\credit\MidPointCdsEngine.cs" />
     <Compile Include="Pricingengines\genericmodelengine.cs" />
     <Compile Include="Pricingengines\Greeks.cs" />
+    <Compile Include="Pricingengines\inflation\InflationCapFloorEngines.cs" />
     <Compile Include="Pricingengines\latticeshortratemodelengine.cs" />
     <Compile Include="Pricingengines\Loan\DiscountingLoanEngine.cs" />
     <Compile Include="Pricingengines\mclongstaffschwartzengine.cs" />
