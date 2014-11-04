@@ -122,12 +122,11 @@ namespace QLNet
          {
             if (underlying_ != null) 
             {
-               if (underlying_.pricer()!= null )
-                  throw new ApplicationException("pricer not set"); 
+               Utils.QL_REQUIRE( underlying_.pricer() != null, "pricer not set" );
             } 
             else 
             {
-               throw new ApplicationException("pricer not set"); 
+               Utils.QL_REQUIRE( pricer_ != null, "pricer not set" );
             }
         }
 
