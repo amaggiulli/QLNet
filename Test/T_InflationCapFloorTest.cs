@@ -145,7 +145,7 @@ namespace TestSuite
 										BusinessDayConvention.Unadjusted,
 										BusinessDayConvention.Unadjusted,// ref periods & acc periods
 										DateGeneration.Rule.Forward, false);
-				return new yoyInflationLeg(schedule, calendar, ii, observationLag)
+            return new yoyInflationLeg( schedule, calendar, ii, observationLag )
 				.withPaymentDayCounter(dc)
 				.withNotionals(nominals)
 				.withPaymentAdjustment(convention);
