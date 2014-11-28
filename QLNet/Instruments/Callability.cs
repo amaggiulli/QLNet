@@ -45,7 +45,7 @@ namespace QLNet
           
          public double amount() 
          {
-            Utils.QL_REQUIRE(amount_ != null, "no amount given");
+            Utils.QL_REQUIRE( amount_ != null, () => "no amount given" );
             return amount_.Value;
          }
          
@@ -66,7 +66,7 @@ namespace QLNet
       }
       public Price price() 
       {
-         Utils.QL_REQUIRE(price_ != null, "no price given");
+         Utils.QL_REQUIRE( price_ != null, () => "no price given" );
          return price_;
       }
       public Type type() { return type_; }

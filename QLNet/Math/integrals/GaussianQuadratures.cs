@@ -247,15 +247,15 @@ namespace QLNet
       
       public double value (Func<double,double> f) 
       {
-          Utils.QL_REQUIRE(w_!=null, "Null weights" );
-          Utils.QL_REQUIRE(x_ != null, "Null abscissas");
+         Utils.QL_REQUIRE( w_ != null, () => "Null weights" );
+         Utils.QL_REQUIRE( x_ != null, () => "Null abscissas" );
           int startIdx;
           double val;
 
           int isOrderOdd = order_ & 1;
 
           if (isOrderOdd > 0) {
-             Utils.QL_REQUIRE((n_ > 0), "assume at least 1 point in quadrature");
+             Utils.QL_REQUIRE( ( n_ > 0 ), () => "assume at least 1 point in quadrature" );
             val = w_[0]*f(x_[0]);
             startIdx=1;
           } else {

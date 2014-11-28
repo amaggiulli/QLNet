@@ -46,7 +46,7 @@ namespace QLNet
 
       public virtual void setCapletVolatility(Handle<CPIVolatilitySurface> capletVol)
       {
-         Utils.QL_REQUIRE(!capletVol.empty(),"empty capletVol handle");
+         Utils.QL_REQUIRE( !capletVol.empty(), () => "empty capletVol handle" );
          capletVol_ = capletVol;
          capletVol_.registerWith(update);
       }
@@ -131,7 +131,7 @@ namespace QLNet
          else 
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
-            Utils.QL_REQUIRE(!capletVolatility().empty(), "missing optionlet volatility");
+            Utils.QL_REQUIRE( !capletVolatility().empty(), () => "missing optionlet volatility" );
             double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate, effStrike));
             double fixing = optionletPriceImp(optionType,
                                               effStrike,

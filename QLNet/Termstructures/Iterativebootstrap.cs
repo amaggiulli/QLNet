@@ -83,12 +83,12 @@ namespace QLNet
 
 			// skip expired helpers
 			Date firstDate = ts_.initialDate();
-			Utils.QL_REQUIRE( ts_.instruments_[n_ - 1].latestDate() > firstDate, "all instruments expired" );
+         Utils.QL_REQUIRE( ts_.instruments_[n_ - 1].latestDate() > firstDate, () => "all instruments expired" );
 			firstAliveHelper_ = 0;
 			while ( ts_.instruments_[firstAliveHelper_].latestDate() <= firstDate )
 				++firstAliveHelper_;
 			alive_ = n_ - firstAliveHelper_;
-			Utils.QL_REQUIRE( alive_ >= ts_.interpolator_.requiredPoints - 1,
+         Utils.QL_REQUIRE( alive_ >= ts_.interpolator_.requiredPoints - 1, () =>
 						  "not enough alive instruments: " + alive_ +
 						  " provided, " + ( ts_.interpolator_.requiredPoints - 1 ) +
 						  " required" );
@@ -105,7 +105,7 @@ namespace QLNet
 				dates.Add( helper.latestDate() );
 				times.Add( ts_.timeFromReference( dates[i] ) );
 				// check for duplicated maturity
-				Utils.QL_REQUIRE( dates[i - 1] != dates[i], "more than one instrument with maturity " + dates[i] );
+            Utils.QL_REQUIRE( dates[i - 1] != dates[i], () => "more than one instrument with maturity " + dates[i] );
 				errors_.Add( new BootstrapError<T, U>( ts_, helper, i ) );
 			}
 
@@ -127,7 +127,7 @@ namespace QLNet
          ts_ = ts;
 
          n_ = ts_.instruments_.Count;
-			Utils.QL_REQUIRE( n_ > 0, "no bootstrap helpers given" );
+         Utils.QL_REQUIRE( n_ > 0, () => "no bootstrap helpers given" );
 
          if (!(n_+1 >= ts_.interpolator_.requiredPoints))
                throw new ArgumentException("not enough instruments: " + n_ + " provided, " +
@@ -151,7 +151,7 @@ namespace QLNet
 			{
 				BootstrapHelper<U> helper = ts_.instruments_[j];
 				// check for valid quote
-				Utils.QL_REQUIRE( helper.quote().link.isValid(),
+            Utils.QL_REQUIRE( helper.quote().link.isValid(), () =>
 							  ( j + 1 ) + " instrument (maturity: " +
 							  helper.latestDate() + ") has an invalid quote" );
 				// don't try this at home!
@@ -241,7 +241,7 @@ namespace QLNet
 				if ( change <= accuracy )  // convergence reached
 					break;
 
-				Utils.QL_REQUIRE( iteration < maxIterations,
+            Utils.QL_REQUIRE( iteration < maxIterations, () =>
 							  "convergence not reached after " + iteration +
 							  " iterations; last improvement " + change +
 							  ", required accuracy " + accuracy );

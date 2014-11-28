@@ -118,7 +118,7 @@ namespace QLNet
          fixedRate_ = fixedRate;
          spread_ = spread;
          observationInterpolation_ = observationInterpolation;
-         Utils.QL_REQUIRE(Math.Abs(baseCPI_) > 1e-16, "|baseCPI_| < 1e-16, future divide-by-zero problem");
+         Utils.QL_REQUIRE( Math.Abs( baseCPI_ ) > 1e-16, () => "|baseCPI_| < 1e-16, future divide-by-zero problem" );
       }
 
       //! \name Inspectors

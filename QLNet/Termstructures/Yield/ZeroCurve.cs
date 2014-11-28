@@ -81,7 +81,7 @@ namespace QLNet {
                     throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
 
                 #if !QL_NEGATIVE_RATES
-                Utils.QL_REQUIRE(data_[i] >= 0.0, "negative yield");
+                Utils.QL_REQUIRE( data_[i] >= 0.0, () => "negative yield" );
                 #endif
                 times_.Add(dayCounter.yearFraction(dates_[0], dates_[i]));
 

@@ -54,7 +54,7 @@ namespace QLNet
             cashflows_.Sort();
             if (issueDate_ != null)
             {
-               Utils.QL_REQUIRE(issueDate_ < cashflows_[0].date(),
+               Utils.QL_REQUIRE( issueDate_ < cashflows_[0].date(), () =>
                            "issue date (" + issueDate_ +
                            ") must be earlier than first payment date (" +
                            cashflows_[0].date() + ")");
@@ -92,7 +92,7 @@ namespace QLNet
 
             if (issueDate_ != null)
             {
-               Utils.QL_REQUIRE(issueDate_ < cashflows_[0].date(),
+               Utils.QL_REQUIRE( issueDate_ < cashflows_[0].date(), () =>
                           "issue date (" + issueDate_ +
                           ") must be earlier than first payment date (" +
                           cashflows_[0].date() + ")");
@@ -166,7 +166,7 @@ namespace QLNet
       // returns the redemption, if only one is defined 
       public CashFlow redemption()
       {
-         Utils.QL_REQUIRE(redemptions_.Count == 1, "multiple redemption cash flows given");
+         Utils.QL_REQUIRE( redemptions_.Count == 1, () => "multiple redemption cash flows given" );
          return redemptions_.Last();
       }
       public Date startDate() { return BondFunctions.startDate(this);}
@@ -217,7 +217,7 @@ namespace QLNet
       public double settlementValue()
       {
          calculate();
-         Utils.QL_REQUIRE(settlementValue_ != null, "settlement value not provided");
+         Utils.QL_REQUIRE( settlementValue_ != null, () => "settlement value not provided" );
          return settlementValue_.Value;
       }
 
@@ -328,7 +328,7 @@ namespace QLNet
       public override void setupArguments(IPricingEngineArguments args)
       {
          Bond.Arguments arguments = args as Bond.Arguments;
-         Utils.QL_REQUIRE(arguments != null, "wrong argument type");
+         Utils.QL_REQUIRE( arguments != null, () => "wrong argument type" );
 
          arguments.settlementDate = settlementDate();
          arguments.cashflows = cashflows_;
@@ -340,7 +340,7 @@ namespace QLNet
          base.fetchResults(r);
 
          Bond.Results results = r as Bond.Results;
-         Utils.QL_REQUIRE(results != null, "wrong result type");
+         Utils.QL_REQUIRE( results != null, () => "wrong result type" );
 
          settlementValue_ = results.settlementValue;
       }
@@ -447,7 +447,7 @@ namespace QLNet
             else if (!Utils.close(notional, notionals_.Last())) 
             {
                 // ...or if it has changed.
-                Utils.QL_REQUIRE(notional < notionals_.Last(), "increasing coupon notionals");
+               Utils.QL_REQUIRE( notional < notionals_.Last(), () => "increasing coupon notionals" );
                 notionals_.Add(coupon.nominal());
                 // in this case, we also add the last valid date for
                 // the previous one...
@@ -463,7 +463,7 @@ namespace QLNet
             }
         
          }
-         Utils.QL_REQUIRE(!notionals_.empty(), "no coupons provided");
+         Utils.QL_REQUIRE( !notionals_.empty(), () => "no coupons provided" );
          notionals_.Add(0.0);
          notionalSchedule_.Add(lastPaymentDate);
       }
@@ -502,10 +502,10 @@ namespace QLNet
 
          public virtual void validate()
          {
-            Utils.QL_REQUIRE(settlementDate != null, "no settlement date provided");
-            Utils.QL_REQUIRE(!cashflows.empty(), "no cash flow provided");
+            Utils.QL_REQUIRE( settlementDate != null, () => "no settlement date provided" );
+            Utils.QL_REQUIRE( !cashflows.empty(), () => "no cash flow provided" );
             for (int i = 0; i < cashflows.Count; ++i)
-               Utils.QL_REQUIRE(cashflows[i] != null, "null cash flow provided");
+               Utils.QL_REQUIRE( cashflows[i] != null, () => "null cash flow provided" );
          }
       }
    }

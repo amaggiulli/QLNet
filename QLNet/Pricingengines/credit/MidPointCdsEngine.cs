@@ -43,8 +43,8 @@ namespace QLNet
 
 		public override void calculate()
 		{
-			Utils.QL_REQUIRE(!discountCurve_.empty(), "no discount term structure set");
-			Utils.QL_REQUIRE(!probability_.empty(),   "no probability term structure set");
+         Utils.QL_REQUIRE( !discountCurve_.empty(), () => "no discount term structure set" );
+         Utils.QL_REQUIRE( !probability_.empty(), () => "no probability term structure set" );
 
 			Date today = Settings.evaluationDate();
 			Date settlementDate = discountCurve_.link.referenceDate();

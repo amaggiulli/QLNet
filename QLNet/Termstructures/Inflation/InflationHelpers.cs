@@ -174,7 +174,7 @@ namespace QLNet
         if (yii_.interpolated()) 
 		  {
             Period pShift = new Period(yii_.frequency());
-            Utils.QL_REQUIRE(swapObsLag_ - pShift > yii_.availabilityLag(),
+            Utils.QL_REQUIRE( swapObsLag_ - pShift > yii_.availabilityLag(), () =>
                        "inconsistency between swap observation of index "
                        + swapObsLag_ +
                        " index availability " + yii_.availabilityLag() +

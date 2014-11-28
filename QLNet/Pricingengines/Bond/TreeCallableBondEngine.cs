@@ -54,7 +54,7 @@ namespace QLNet
       //@}
       public override void calculate()
       {
-         Utils.QL_REQUIRE(model_ != null , "no model specified");
+         Utils.QL_REQUIRE( model_ != null, () => "no model specified" );
 
         Date referenceDate;
         DayCounter dayCounter;

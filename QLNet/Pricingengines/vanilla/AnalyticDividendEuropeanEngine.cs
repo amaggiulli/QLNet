@@ -39,10 +39,10 @@ namespace QLNet
 
 		public override void calculate()
 		{
-			Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European, "not an European option");
+         Utils.QL_REQUIRE( arguments_.exercise.type() == Exercise.Type.European, () => "not an European option" );
 
 			StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
-			Utils.QL_REQUIRE(payoff != null , "non-striked payoff given");
+         Utils.QL_REQUIRE( payoff != null, () => "non-striked payoff given" );
 
 			Date settlementDate = process_.riskFreeRate().link.referenceDate();
 			double riskless = 0.0;
@@ -53,7 +53,7 @@ namespace QLNet
 							process_.riskFreeRate().link.discount(arguments_.cashFlow[i].date());
 
 			double spot = process_.stateVariable().link.value() - riskless;
-			Utils.QL_REQUIRE(spot > 0.0,"negative or null underlying after subtracting dividends");
+         Utils.QL_REQUIRE( spot > 0.0, () => "negative or null underlying after subtracting dividends" );
 
 			double dividendDiscount = process_.dividendYield().link.discount(arguments_.exercise.lastDate());
 			double riskFreeDiscount = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate());

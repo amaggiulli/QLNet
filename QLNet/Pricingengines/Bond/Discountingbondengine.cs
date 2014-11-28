@@ -38,7 +38,7 @@ namespace QLNet
 
       public override void calculate() 
       {
-         Utils.QL_REQUIRE(!discountCurve_.empty(), "discounting term structure handle is empty");
+         Utils.QL_REQUIRE( !discountCurve_.empty(), () => "discounting term structure handle is empty" );
 
          results_.valuationDate = discountCurve_.link.referenceDate();
          bool includeRefDateFlows =

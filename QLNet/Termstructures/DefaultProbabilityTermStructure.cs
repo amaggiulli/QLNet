@@ -119,9 +119,9 @@ namespace QLNet
         if (!jumps_.empty()) {
             double jumpEffect = 1.0;
             for (int i=0; i<nJumps_ && jumpTimes_[i]<t; ++i) {
-                Utils.QL_REQUIRE(jumps_[i].link.isValid(),  "invalid " + (i+1) + " jump quote");
+               Utils.QL_REQUIRE( jumps_[i].link.isValid(), () => "invalid " + ( i + 1 ) + " jump quote" );
                 double thisJump = jumps_[i].link.value();
-                Utils.QL_REQUIRE(thisJump > 0.0 && thisJump <= 1.0, "invalid " + (i+1) + " jump value: " + thisJump);
+                Utils.QL_REQUIRE( thisJump > 0.0 && thisJump <= 1.0, () => "invalid " + ( i + 1 ) + " jump value: " + thisJump );
                 jumpEffect *= thisJump;
             }
             return jumpEffect * survivalProbabilityImpl(t);
@@ -153,14 +153,14 @@ namespace QLNet
       //! probability of default between two given dates
       public double defaultProbability(Date d1,Date d2, bool extrapolate = false)
       {
-         Utils.QL_REQUIRE(d1 <= d2,   "initial date (" + d1 + ") later than final date (" + d2 + ")");
+         Utils.QL_REQUIRE( d1 <= d2, () => "initial date (" + d1 + ") later than final date (" + d2 + ")" );
          double p1 = d1 < referenceDate() ? 0.0 : defaultProbability(d1,extrapolate), p2 = defaultProbability(d2,extrapolate);
          return p2 - p1;
       }
       //! probability of default between two given times
       public double defaultProbability(double t1, double t2, bool extrapo = false)
       {
-         Utils.QL_REQUIRE(t1 <= t2, "initial time (" + t1 + ") later than final time (" + t2 + ")");
+         Utils.QL_REQUIRE( t1 <= t2, () => "initial time (" + t1 + ") later than final time (" + t2 + ")" );
          double p1 = t1 < 0.0 ? 0.0 : defaultProbability(t1,extrapolate),  p2 = defaultProbability(t2,extrapolate);
          return p2 - p1;
       }
@@ -261,7 +261,7 @@ namespace QLNet
          else 
          { 
             // fixed dats
-            Utils.QL_REQUIRE(jumpDates_.Count ==nJumps_,
+            Utils.QL_REQUIRE( jumpDates_.Count == nJumps_, () =>
                        "mismatch between number of jumps (" + nJumps_ +
                        ") and jump dates (" + jumpDates_.Count + ")");
         }

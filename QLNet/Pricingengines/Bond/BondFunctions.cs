@@ -123,7 +123,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -134,7 +134,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -145,7 +145,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -156,7 +156,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -167,7 +167,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -178,7 +178,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -189,7 +189,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -200,7 +200,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -211,7 +211,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -227,7 +227,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " settlementDate date (maturity being " +
                    bond.maturityDate() + ")");
@@ -241,7 +241,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -252,7 +252,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -281,7 +281,7 @@ namespace QLNet
           if (settlementDate == null)
               settlementDate = bond.settlementDate();
 
-          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+          Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                     "non tradable at " + settlementDate +
                     " (maturity being " + bond.maturityDate() + ")");
 
@@ -299,7 +299,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -317,7 +317,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -335,7 +335,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -351,7 +351,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -367,7 +367,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -384,7 +384,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -406,7 +406,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 
@@ -421,7 +421,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate),
+         Utils.QL_REQUIRE( BondFunctions.isTradable( bond, settlementDate ), () =>
                    "non tradable at " + settlementDate +
                    " (maturity being " + bond.maturityDate() + ")");
 

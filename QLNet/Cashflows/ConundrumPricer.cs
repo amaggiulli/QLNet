@@ -544,7 +544,7 @@ namespace QLNet {
 
         public override void initialize(FloatingRateCoupon coupon) {
             coupon_ = coupon as CmsCoupon;
-            Utils.QL_REQUIRE(coupon_!= null, "CMS coupon needed");
+            Utils.QL_REQUIRE( coupon_ != null, () => "CMS coupon needed" );
             gearing_ = coupon_.gearing();
             spread_ = coupon_.spread();
 

@@ -81,7 +81,7 @@ namespace QLNet
 			claim_ = claim;
 			protectionStart_ = protectionStart == null ? schedule[0] :  protectionStart;
 
-			Utils.QL_REQUIRE(protectionStart_ <= schedule[0], "protection can not start after accrual");
+         Utils.QL_REQUIRE( protectionStart_ <= schedule[0], () => "protection can not start after accrual" );
 			leg_ = new FixedRateLeg(schedule)
             .withCouponRates(spread, dayCounter)
 				.withNotionals(notional)
@@ -137,7 +137,7 @@ namespace QLNet
 			claim_ = claim;
 			protectionStart_ = protectionStart == null ? schedule[0] :  protectionStart;
 
-			Utils.QL_REQUIRE(protectionStart_ <= schedule[0], "protection can not start after accrual");
+         Utils.QL_REQUIRE( protectionStart_ <= schedule[0], () => "protection can not start after accrual" );
 			leg_ = new FixedRateLeg(schedule)
             .withCouponRates(runningSpread, dayCounter)
             .withNotionals(notional)
@@ -145,7 +145,7 @@ namespace QLNet
         
 			Date d = upfrontDate == null ? schedule[0] : upfrontDate;
 			upfrontPayment_ = new SimpleCashFlow(notional*upfront, d);
-			Utils.QL_REQUIRE(upfrontPayment_.date() >= protectionStart_, "upfront can not be due before contract start");
+         Utils.QL_REQUIRE( upfrontPayment_.date() >= protectionStart_, () => "upfront can not be due before contract start" );
 
         if (claim_ == null)
             claim_ = new FaceValueClaim();
@@ -165,7 +165,7 @@ namespace QLNet
 		public override void setupArguments(IPricingEngineArguments args)
 		{
 			CreditDefaultSwap.Arguments arguments = args as CreditDefaultSwap.Arguments;
-			Utils.QL_REQUIRE(arguments != null, "wrong argument type");
+         Utils.QL_REQUIRE( arguments != null, () => "wrong argument type" );
 
 			arguments.side = side_;
 			arguments.notional = notional_;
@@ -183,7 +183,7 @@ namespace QLNet
 		{
 			base.fetchResults(r);
          CreditDefaultSwap.Results results = r as CreditDefaultSwap.Results;
-			Utils.QL_REQUIRE(results != null, "wrong result type");
+         Utils.QL_REQUIRE( results != null, () => "wrong result type" );
 
 			fairSpread_ = results.fairSpread;
 			fairUpfront_ = results.fairUpfront;
@@ -217,7 +217,7 @@ namespace QLNet
 		public double fairUpfront()
 		{
 			calculate();
-			Utils.QL_REQUIRE(fairUpfront_ != null,  "fair upfront not available");
+         Utils.QL_REQUIRE( fairUpfront_ != null, () => "fair upfront not available" );
 			return fairUpfront_.Value;
 		}
       /*! Returns the running spread that, given the quoted recovery
@@ -229,7 +229,7 @@ namespace QLNet
 		public double fairSpread()
 		{
 			calculate();
-			Utils.QL_REQUIRE(fairSpread_ != null,  "fair spread not available");
+         Utils.QL_REQUIRE( fairSpread_ != null, () => "fair spread not available" );
 			return fairSpread_.Value;
 		}
       /*! Returns the variation of the fixed-leg value given a
@@ -238,35 +238,35 @@ namespace QLNet
 		public double couponLegBPS()
 		{
 			calculate();
-			Utils.QL_REQUIRE(couponLegBPS_ != null, "coupon-leg BPS not available");
+         Utils.QL_REQUIRE( couponLegBPS_ != null, () => "coupon-leg BPS not available" );
 			return couponLegBPS_.Value;
 		}
 
 		public double upfrontBPS()
 		{
 			calculate();
-			Utils.QL_REQUIRE(upfrontBPS_ != null,  "upfront BPS not available");
+         Utils.QL_REQUIRE( upfrontBPS_ != null, () => "upfront BPS not available" );
 			return upfrontBPS_.Value;
 		}
 
 		public double couponLegNPV()
 		{
 			calculate();
-			Utils.QL_REQUIRE(couponLegNPV_ != null, "coupon-leg NPV not available");
+         Utils.QL_REQUIRE( couponLegNPV_ != null, () => "coupon-leg NPV not available" );
 			return couponLegNPV_.Value;
 		}
 
 		public double defaultLegNPV()
 		{
 			calculate();
-			Utils.QL_REQUIRE(defaultLegNPV_ != null,  "default-leg NPV not available");
+         Utils.QL_REQUIRE( defaultLegNPV_ != null, () => "default-leg NPV not available" );
 			return defaultLegNPV_.Value;
 		}
 
 		public double upfrontNPV()
 		{
 			calculate();
-			Utils.QL_REQUIRE(upfrontNPV_ != null,  "upfront NPV not available");
+         Utils.QL_REQUIRE( upfrontNPV_ != null, () => "upfront NPV not available" );
 			return upfrontNPV_.Value;
 		}
 
@@ -432,14 +432,14 @@ namespace QLNet
 			public Date protectionStart;
 			public void validate()
 			{
-				Utils.QL_REQUIRE(side != (Protection.Side)(-1), "side not set");
-				Utils.QL_REQUIRE(notional != null, "notional not set");
-				Utils.QL_REQUIRE(notional != 0.0, "null notional set");
-				Utils.QL_REQUIRE(spread != null, "spread not set");
-				Utils.QL_REQUIRE(!leg.empty(), "coupons not set");
-				Utils.QL_REQUIRE(upfrontPayment!=null, "upfront payment not set");
-				Utils.QL_REQUIRE(claim!=null, "claim not set");
-				Utils.QL_REQUIRE(protectionStart != null, "protection start date not set");
+            Utils.QL_REQUIRE( side != (Protection.Side)( -1 ), () => "side not set" );
+            Utils.QL_REQUIRE( notional != null, () => "notional not set" );
+            Utils.QL_REQUIRE( notional != 0.0, () => "null notional set" );
+            Utils.QL_REQUIRE( spread != null, () => "spread not set" );
+            Utils.QL_REQUIRE( !leg.empty(), () => "coupons not set" );
+            Utils.QL_REQUIRE( upfrontPayment != null, () => "upfront payment not set" );
+            Utils.QL_REQUIRE( claim != null, () => "claim not set" );
+            Utils.QL_REQUIRE( protectionStart != null, () => "protection start date not set" );
 			}
 		}
 

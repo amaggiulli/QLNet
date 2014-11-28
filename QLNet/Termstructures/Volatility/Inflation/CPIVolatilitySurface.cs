@@ -210,26 +210,26 @@ namespace QLNet
 
         protected virtual void checkRange(Date d, double strike, bool extrapolate)
         {
-           Utils.QL_REQUIRE(d >= baseDate(),
+           Utils.QL_REQUIRE( d >= baseDate(), () =>
                  "date (" + d + ") is before base date");
-           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(),
+           Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || d <= maxDate(), () =>
                       "date (" + d + ") is past max curve date ("
                       + maxDate() + ")");
            Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                      (strike >= minStrike() && strike <= maxStrike()),
+                      ( strike >= minStrike() && strike <= maxStrike() ), () =>
                       "strike (" + strike + ") is outside the curve domain ["
                       + minStrike() + "," + maxStrike() + "]] at date = " + d);
         }
 
         protected virtual void checkRange(double t, double strike, bool extrapolate)
         {
-           Utils.QL_REQUIRE(t >= timeFromReference(baseDate()),
+           Utils.QL_REQUIRE( t >= timeFromReference( baseDate() ), () =>
                   "time (" + t + ") is before base date");
-           Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || t <= maxTime(),
+           Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || t <= maxTime(), () =>
                       "time (" + t + ") is past max curve time ("
                       + maxTime() + ")");
            Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                      (strike >= minStrike() && strike <= maxStrike()),
+                      ( strike >= minStrike() && strike <= maxStrike() ), () =>
                       "strike (" + strike + ") is outside the curve domain ["
                       + minStrike() + "," + maxStrike() + "] at time = " + t);
         }

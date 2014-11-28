@@ -59,14 +59,14 @@ namespace QLNet
 
 			if (type_ ==  CapFloorType.Cap || type_ == CapFloorType.Collar) 
 			{
-            Utils.QL_REQUIRE(!capRates_.empty(), "no cap rates given");
+            Utils.QL_REQUIRE( !capRates_.empty(), () => "no cap rates given" );
             //capRates_.reserve(yoyLeg_.size());
             while (capRates_.Count < yoyLeg_.Count)
                 capRates_.Add(capRates_.Last());
         }
         if (type_ == CapFloorType.Floor || type_ == CapFloorType.Collar) 
 		  {
-            Utils.QL_REQUIRE(!floorRates_.empty(), "no floor rates given");
+           Utils.QL_REQUIRE( !floorRates_.empty(), () => "no floor rates given" );
             //floorRates_.reserve(yoyLeg_.size());
             while (floorRates_.Count < yoyLeg_.Count)
                 floorRates_.Add(floorRates_.Last());
@@ -84,7 +84,7 @@ namespace QLNet
 			type_ = type;
 			yoyLeg_ = yoyLeg;
 
-			Utils.QL_REQUIRE(!strikes.empty(), "no strikes given");
+         Utils.QL_REQUIRE( !strikes.empty(), () => "no strikes given" );
 			if (type_ == CapFloorType.Cap) 
 			{
             capRates_ = strikes;
@@ -120,7 +120,7 @@ namespace QLNet
 		public override void setupArguments(IPricingEngineArguments args)
 		{
 			YoYInflationCapFloor.Arguments arguments = args as YoYInflationCapFloor.Arguments;
-			Utils.QL_REQUIRE(arguments != null, "wrong argument type");
+         Utils.QL_REQUIRE( arguments != null, () => "wrong argument type" );
 
 			int n = yoyLeg_.Count;
 
@@ -139,7 +139,7 @@ namespace QLNet
 			for (int i=0; i<n; ++i) 
 			{
 				YoYInflationCoupon coupon = yoyLeg_[i] as YoYInflationCoupon;
-            Utils.QL_REQUIRE(coupon != null, "non-YoYInflationCoupon given");
+            Utils.QL_REQUIRE( coupon != null, () => "non-YoYInflationCoupon given" );
             arguments.startDates.Add(coupon.accrualStartDate());
             arguments.fixingDates.Add(coupon.fixingDate());
             arguments.payDates.Add(coupon.date());
@@ -183,7 +183,7 @@ namespace QLNet
 		//! Returns the n-th optionlet as a cap/floor with only one cash flow.
 		public YoYInflationCapFloor optionlet( int i)
 		{
-			Utils.QL_REQUIRE(i < yoyLeg().Count, " optionlet does not exist, only " + yoyLeg().Count);
+         Utils.QL_REQUIRE( i < yoyLeg().Count, () => " optionlet does not exist, only " + yoyLeg().Count );
 			List<CashFlow> cf = new List<CashFlow>();
 			cf.Add(yoyLeg()[i]);
 
@@ -242,33 +242,33 @@ namespace QLNet
 			public List<double> nominals;
 			public void validate()
 			{
-				Utils.QL_REQUIRE(payDates.Count == startDates.Count,
+            Utils.QL_REQUIRE( payDates.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of pay dates ("
                    + payDates.Count + ")");
-				Utils.QL_REQUIRE(accrualTimes.Count == startDates.Count,
+            Utils.QL_REQUIRE( accrualTimes.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of accrual times ("
                    + accrualTimes.Count + ")");
 				Utils.QL_REQUIRE(type == CapFloorType.Floor ||
-                   capRates.Count == startDates.Count,
+                   capRates.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of cap rates ("
                    + capRates.Count + ")");
 				Utils.QL_REQUIRE(type == CapFloorType.Cap ||
-                   floorRates.Count == startDates.Count,
+                   floorRates.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of floor rates ("
                    + floorRates.Count + ")");
-				Utils.QL_REQUIRE(gearings.Count == startDates.Count,
+            Utils.QL_REQUIRE( gearings.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of gearings ("
                    + gearings.Count + ")");
-				Utils.QL_REQUIRE(spreads.Count == startDates.Count,
+            Utils.QL_REQUIRE( spreads.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of spreads ("
                    + spreads.Count + ")");
-				Utils.QL_REQUIRE(nominals.Count == startDates.Count,
+            Utils.QL_REQUIRE( nominals.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count
                    + ") different from that of nominals ("
                    + nominals.Count + ")");

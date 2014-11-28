@@ -129,9 +129,9 @@ namespace QLNet
         {
             if (jumpTimes_[i]>0 && jumpTimes_[i]<t) 
             {
-                Utils.QL_REQUIRE(jumps_[i].link.isValid(),"invalid " + (i+1) + " jump quote");
+               Utils.QL_REQUIRE( jumps_[i].link.isValid(), () => "invalid " + ( i + 1 ) + " jump quote" );
                 double thisJump = jumps_[i].link.value();
-                Utils.QL_REQUIRE(thisJump>0.0 && thisJump<=1.0, "invalid " + (i+1) + " jump value: " + thisJump);
+                Utils.QL_REQUIRE( thisJump > 0.0 && thisJump <= 1.0, () => "invalid " + ( i + 1 ) + " jump value: " + thisJump );
                 jumpEffect *= thisJump;
             }
          }
@@ -201,7 +201,7 @@ namespace QLNet
             // but the difference should not matter for very small times
             return InterestRate.impliedRate(compound, dayCounter, comp, freq, dt);
          }
-         Utils.QL_REQUIRE(d1 < d2,  d1 + " later than " + d2);
+         Utils.QL_REQUIRE( d1 < d2, () => d1 + " later than " + d2 );
          double compound1 = discount(d1, extrapolate)/discount(d2, extrapolate);
          return InterestRate.impliedRate(compound1, dayCounter, comp, freq, d1, d2);
       }
@@ -233,7 +233,7 @@ namespace QLNet
          } 
          else 
          {
-            Utils.QL_REQUIRE(t2>t1, "t2 (" + t2 + ") < t1 (" + t2 + ")");
+            Utils.QL_REQUIRE( t2 > t1, () => "t2 (" + t2 + ") < t1 (" + t2 + ")" );
             compound = discount(t1, extrapolate)/discount(t2, extrapolate);
          }
          return InterestRate.impliedRate(compound, dayCounter(), comp, freq, t2-t1);
@@ -293,7 +293,7 @@ namespace QLNet
          else 
          { 
             // fixed dats
-            Utils.QL_REQUIRE(jumpDates_.Count ==nJumps_,
+            Utils.QL_REQUIRE( jumpDates_.Count == nJumps_, () =>
                        "mismatch between number of jumps (" + nJumps_ +
                        ") and jump dates (" + jumpDates_.Count + ")");
         }

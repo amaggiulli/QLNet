@@ -102,7 +102,7 @@ namespace QLNet
       public double blackForwardVol(Date date1,Date date2, double strike,bool extrapolate = false)
       {
          // (redundant) date-based checks
-         Utils.QL_REQUIRE(date1 <= date2, date1 + " later than " + date2);
+         Utils.QL_REQUIRE( date1 <= date2, () => date1 + " later than " + date2 );
          checkRange(date2, extrapolate);
 
          // using the time implementation
@@ -114,7 +114,7 @@ namespace QLNet
       //! forward (at-the-money) volatility
       public double blackForwardVol(double time1, double time2, double strike, bool extrapolate = false)
       {
-         Utils.QL_REQUIRE(time1 <= time2, time1 + " later than " + time2);
+         Utils.QL_REQUIRE( time1 <= time2, () => time1 + " later than " + time2 );
          checkRange(time2, extrapolate);
          checkStrike(strike, extrapolate);
          if (time2==time1) 
@@ -130,7 +130,7 @@ namespace QLNet
                double epsilon = Math.Min(1.0e-5, time1);
                double var1 = blackVarianceImpl(time1-epsilon, strike);
                double var2 = blackVarianceImpl(time1+epsilon, strike);
-               Utils.QL_REQUIRE(var2>=var1,  "variances must be non-decreasing");
+               Utils.QL_REQUIRE( var2 >= var1, () => "variances must be non-decreasing" );
                return Math.Sqrt((var2-var1)/(2*epsilon));
             }
          } 
@@ -138,7 +138,7 @@ namespace QLNet
          {
             double var1 = blackVarianceImpl(time1, strike);
             double var2 = blackVarianceImpl(time2, strike);
-            Utils.QL_REQUIRE(var2 >= var1, "variances must be non-decreasing");
+            Utils.QL_REQUIRE( var2 >= var1, () => "variances must be non-decreasing" );
             return Math.Sqrt((var2-var1)/(time2-time1));
          }
       }
@@ -147,7 +147,7 @@ namespace QLNet
       public double blackForwardVariance(Date date1, Date date2,  double strike,bool extrapolate = false)
       {
          // (redundant) date-based checks
-         Utils.QL_REQUIRE(date1 <= date2,  date1 + " later than " + date2);
+         Utils.QL_REQUIRE( date1 <= date2, () => date1 + " later than " + date2 );
          checkRange(date2, extrapolate);
 
          // using the time implementation
@@ -159,12 +159,12 @@ namespace QLNet
       //! forward (at-the-money) variance
       public double blackForwardVariance(double time1, double time2,  double strike, bool extrapolate = false)
       {
-         Utils.QL_REQUIRE(time1 <= time2, time1 + " later than " + time2);
+         Utils.QL_REQUIRE( time1 <= time2, () => time1 + " later than " + time2 );
         checkRange(time2, extrapolate);
         checkStrike(strike, extrapolate);
         double v1 = blackVarianceImpl(time1, strike);
         double v2 = blackVarianceImpl(time2, strike);
-        Utils.QL_REQUIRE(v2 >= v1,  "variances must be non-decreasing");
+        Utils.QL_REQUIRE( v2 >= v1, () => "variances must be non-decreasing" );
         return v2-v1;
       }
       

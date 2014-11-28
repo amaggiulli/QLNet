@@ -65,7 +65,7 @@ namespace QLNet
          
          int n = diag.size();
 
-         Utils.QL_REQUIRE(n == sub.size()+1, "Wrong dimensions");
+         Utils.QL_REQUIRE( n == sub.size() + 1, () => "Wrong dimensions" );
 
          Vector e = new Vector(sub);
 

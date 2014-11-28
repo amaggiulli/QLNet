@@ -79,7 +79,7 @@ namespace QLNet {
                     throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
 
                 #if !QL_NEGATIVE_RATES
-                Utils.QL_REQUIRE(this.data_[i] >= 0.0, "negative forward");
+                Utils.QL_REQUIRE( this.data_[i] >= 0.0, () => "negative forward" );
                 #endif
 
                 times_[i] = dayCounter.yearFraction(dates_[0], dates_[i]);

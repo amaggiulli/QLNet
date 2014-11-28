@@ -201,7 +201,7 @@ namespace QLNet
 		{
 			double SQRT_QL_EPSILON = Math.Sqrt( Const.QL_Epsilon);
 
-			Utils.QL_REQUIRE(tte>0.0,  "tte (" + tte + ") must be positive");
+         Utils.QL_REQUIRE( tte > 0.0, () => "tte (" + tte + ") must be positive" );
 
          double forwardPremium = bachelierPrice/discount;
 		   
@@ -216,8 +216,8 @@ namespace QLNet
          }
 		   
          double nu = (forward - strike) / straddlePremium;
-         Utils.QL_REQUIRE(nu<=1.0,  "nu (" + nu + ") must be <= 1.0");
-         Utils.QL_REQUIRE(nu>=-1.0, "nu (" + nu + ") must be >= -1.0");
+         Utils.QL_REQUIRE( nu <= 1.0, () => "nu (" + nu + ") must be <= 1.0" );
+         Utils.QL_REQUIRE( nu >= -1.0, () => "nu (" + nu + ") must be >= -1.0" );
 		   
          nu = Math.Max(-1.0 + Const.QL_Epsilon, Math.Min(nu,1.0 - Const.QL_Epsilon));
 		   
@@ -256,7 +256,7 @@ namespace QLNet
         const double  B8          = -2.067719486400926e+2;
         const double  B9          = 1.174240599306013e+1;
 
-        Utils.QL_REQUIRE(eta>=0.0, "eta (" + eta + ") must be non-negative");
+        Utils.QL_REQUIRE( eta >= 0.0, () => "eta (" + eta + ") must be non-negative" );
 
         double num = A0 + eta * (A1 + eta * (A2 + eta * (A3 + eta * (A4 + eta
                     * (A5 + eta * (A6 + eta * A7))))));

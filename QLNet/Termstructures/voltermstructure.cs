@@ -76,7 +76,7 @@ namespace QLNet
       protected void checkStrike(double k, bool extrapolate)
       {
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                  (k >= minStrike() && k <= maxStrike()),
+                  ( k >= minStrike() && k <= maxStrike() ), () =>
                   "strike (" + k + ") is outside the curve domain ["
                   + minStrike() + "," + maxStrike() + "]");
       }

@@ -139,7 +139,7 @@ namespace QLNet
       public virtual KeyValuePair<double, double> convertDates(Date optionDate, Period bondTenor)
       {
          Date end = optionDate + bondTenor;
-         Utils.QL_REQUIRE(end>optionDate,
+         Utils.QL_REQUIRE( end > optionDate, () =>
                    "negative bond tenor (" + bondTenor + ") given");
         double optionTime = timeFromReference(optionDate);
         double timeLength = dayCounter().yearFraction(optionDate, end);
@@ -170,14 +170,14 @@ namespace QLNet
       protected void checkRange(double optionTime, double bondLength, double k, bool extrapolate)
       {
          base.checkRange(optionTime, extrapolate);
-         Utils.QL_REQUIRE(bondLength >= 0.0,
+         Utils.QL_REQUIRE( bondLength >= 0.0, () =>
                    "negative bondLength (" + bondLength + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   bondLength <= maxBondLength(),
+                   bondLength <= maxBondLength(), () =>
                    "bondLength (" + bondLength + ") is past max curve bondLength ("
                    + maxBondLength() + ")");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   (k >= minStrike() && k <= maxStrike()),
+                   ( k >= minStrike() && k <= maxStrike() ), () =>
                    "strike (" + k + ") is outside the curve domain ["
                    + minStrike() + "," + maxStrike()+ "]");
       }
@@ -185,14 +185,14 @@ namespace QLNet
       {
          base.checkRange(timeFromReference(optionDate),
                                   extrapolate);
-         Utils.QL_REQUIRE(bondTenor.length() > 0,
+         Utils.QL_REQUIRE( bondTenor.length() > 0, () =>
                    "negative bond tenor (" + bondTenor + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   bondTenor <= maxBondTenor(),
+                   bondTenor <= maxBondTenor(), () =>
                    "bond tenor (" + bondTenor + ") is past max tenor ("
                    + maxBondTenor() + ")");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   (k >= minStrike() && k <= maxStrike()),
+                   ( k >= minStrike() && k <= maxStrike() ), () =>
                    "strike (" + k + ") is outside the curve domain ["
                    + minStrike() + "," + maxStrike()+ "]");
       }

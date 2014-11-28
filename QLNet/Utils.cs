@@ -75,10 +75,10 @@ namespace QLNet
             }
         }
         
-       public static void QL_REQUIRE(bool condition, string message)
+       public static void QL_REQUIRE( bool condition, Func<string> message )
        {
-           if (!condition)
-              throw new ApplicationException(message);
+          if ( !condition )
+            throw new ApplicationException( message.Invoke() );
        }
        public static void QL_FAIL(string message)
        {

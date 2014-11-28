@@ -61,11 +61,11 @@ namespace QLNet
       public override void calculate()
       {
          // validate args for Black engine
-         Utils.QL_REQUIRE(arguments_.putCallSchedule.Count == 1, "Must have exactly one call/put date to use Black Engine");
+         Utils.QL_REQUIRE( arguments_.putCallSchedule.Count == 1, () => "Must have exactly one call/put date to use Black Engine" );
 
          Date settle = arguments_.settlementDate;
          Date exerciseDate = arguments_.callabilityDates[0];
-         Utils.QL_REQUIRE(exerciseDate >= settle, "must have exercise Date >= settlement Date");
+         Utils.QL_REQUIRE( exerciseDate >= settle, () => "must have exercise Date >= settlement Date" );
 
          List<CashFlow> fixedLeg = arguments_.cashflows;
 

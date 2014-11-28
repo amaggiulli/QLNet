@@ -34,13 +34,13 @@ namespace QLNet
 		{
 			dates_ = dates;
 
-			Utils.QL_REQUIRE( dates_.Count > 1, "too few dates: " + dates_.Count );
+         Utils.QL_REQUIRE( dates_.Count > 1, () => "too few dates: " + dates_.Count );
 
 			// check that the data starts from the beginning,
 			// i.e. referenceDate - lag, at least must be in the relevant
 			// period
 			KeyValuePair<Date, Date> lim = Utils.inflationPeriod( yTS.link.referenceDate() - this.observationLag(), frequency );
-			Utils.QL_REQUIRE( lim.Key <= dates_[0] && dates_[0] <= lim.Value,
+         Utils.QL_REQUIRE( lim.Key <= dates_[0] && dates_[0] <= lim.Value, () =>
 						"first data date is not in base period, date: " + dates_[0]
 						+ " not within [" + lim.Key + "," + lim.Value + "]" );
 
@@ -57,7 +57,7 @@ namespace QLNet
 
 
 
-			Utils.QL_REQUIRE( this.data_.Count == dates_.Count,
+         Utils.QL_REQUIRE( this.data_.Count == dates_.Count, () =>
 						"indices/dates count mismatch: "
 						+ this.data_.Count + " vs " + dates_.Count );
 
@@ -65,14 +65,14 @@ namespace QLNet
 			this.times_.Add( timeFromReference( dates_[0] ) );
 			for ( int i = 1; i < dates_.Count; i++ )
 			{
-				Utils.QL_REQUIRE( dates_[i] > dates_[i - 1], "dates not sorted" );
+            Utils.QL_REQUIRE( dates_[i] > dates_[i - 1], () => "dates not sorted" );
 
 				// but must be greater than -1
-				Utils.QL_REQUIRE( this.data_[i] > -1.0, "zero inflation data < -100 %" );
+            Utils.QL_REQUIRE( this.data_[i] > -1.0, () => "zero inflation data < -100 %" );
 
 				// this can be negative
 				this.times_[i] = timeFromReference( dates_[i] );
-				Utils.QL_REQUIRE( !Utils.close( this.times_[i], this.times_[i - 1] ),
+            Utils.QL_REQUIRE( !Utils.close( this.times_[i], this.times_[i - 1] ), () =>
 							"two dates correspond to the same time under this curve's day count convention" );
 			}
 

@@ -43,7 +43,7 @@ namespace QLNet
       // Instrument interface
       public override void calculate() 
       {
-         Utils.QL_REQUIRE(!discountCurve_.empty(), "discounting term structure handle is empty");
+         Utils.QL_REQUIRE( !discountCurve_.empty(), () => "discounting term structure handle is empty" );
 
          results_.value = results_.cash = 0;
          results_.errorEstimate = null;
@@ -57,7 +57,7 @@ namespace QLNet
          } 
          else 
          {
-            Utils.QL_REQUIRE(settlementDate>=refDate,
+            Utils.QL_REQUIRE( settlementDate >= refDate, () =>
                        "settlement date (" + settlementDate + ") before " +
                        "discount curve reference date (" + refDate + ")");
          }
@@ -69,7 +69,7 @@ namespace QLNet
          } 
          else 
          {
-            Utils.QL_REQUIRE(npvDate_>=refDate,
+            Utils.QL_REQUIRE( npvDate_ >= refDate, () =>
                        "npv date (" + npvDate_  + ") before "+
                        "discount curve reference date (" + refDate + ")");
          }

@@ -182,7 +182,7 @@ namespace QLNet {
         public abstract double drift(double t, double x);
         public override Vector drift(double t, Vector x) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x.size() == 1, "1-D array required");
+            QL_REQUIRE(x.size() == 1, () => "1-D array required");
             #endif
             Vector a = new Vector(1, drift(t, x[0]));
             return a;
@@ -194,7 +194,7 @@ namespace QLNet {
         public abstract double diffusion(double t, double x);
         public override Matrix diffusion(double t, Vector x) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x.size() == 1, "1-D array required");
+            QL_REQUIRE(x.size() == 1, () => "1-D array required");
             #endif
             Matrix m = new Matrix(1, 1, diffusion(t, x[0]));
             return m;
@@ -212,7 +212,7 @@ namespace QLNet {
         }
         public override Vector expectation(double t0, Vector x0, double dt) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x0.size() == 1, "1-D array required");
+            QL_REQUIRE(x0.size() == 1, () => "1-D array required");
             #endif
             Vector a = new Vector(1, expectation(t0, x0[0], dt));
             return a;
@@ -230,7 +230,7 @@ namespace QLNet {
         }
         public override Matrix stdDeviation(double t0, Vector x0, double dt) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x0.size() == 1, "1-D array required");
+            QL_REQUIRE(x0.size() == 1, () => "1-D array required");
             #endif
             Matrix m = new Matrix(1, 1, stdDeviation(t0, x0[0], dt));
             return m;
@@ -248,7 +248,7 @@ namespace QLNet {
         }
         public virtual Matrix variance(double t0, Vector x0, double dt) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x0.size() == 1, "1-D array required");
+            QL_REQUIRE(x0.size() == 1, () => "1-D array required");
             #endif
             Matrix m = new Matrix(1, 1, variance(t0, x0[0], dt));
             return m;
@@ -268,8 +268,8 @@ namespace QLNet {
         }
         public virtual Vector evolve(double t0, ref Vector x0, double dt, ref Vector dw) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x0.size() == 1, "1-D array required");
-            QL_REQUIRE(dw.size() == 1, "1-D array required");
+            QL_REQUIRE(x0.size() == 1, () => "1-D array required");
+            QL_REQUIRE(dw.size() == 1, () => "1-D array required");
             #endif
             Vector a = new Vector(1, evolve(t0, x0[0], dt, dw[0]));
             return a;
@@ -281,8 +281,8 @@ namespace QLNet {
         public virtual double apply(double x0, double dx) { return x0 + dx; }
         public virtual Vector apply(ref Vector x0, ref Vector dx) {
             #if QL_EXTRA_SAFETY_CHECKS
-            QL_REQUIRE(x0.size() == 1, "1-D array required");
-            QL_REQUIRE(dx.size() == 1, "1-D array required");
+            QL_REQUIRE(x0.size() == 1, () => "1-D array required");
+            QL_REQUIRE(dx.size() == 1, () => "1-D array required");
             #endif
             Vector a = new Vector(1, apply(x0[0], dx[0]));
             return a;

@@ -89,14 +89,14 @@ namespace QLNet {
             nextToLastDate_ = nextToLastDate;
 
          // sanity checks
-         Utils.QL_REQUIRE(terminationDate != null, "null termination date");
+          Utils.QL_REQUIRE( terminationDate != null, () => "null termination date" );
          
          // in many cases (e.g. non-expired bonds) the effective date is not
          // really necessary. In these cases a decent placeholder is enough
          if ( effectiveDate == null && firstDate == null && rule== DateGeneration.Rule.Backward) 
          {
             Date evalDate = Settings.evaluationDate();
-            Utils.QL_REQUIRE(evalDate < terminationDate, "null effective date");
+            Utils.QL_REQUIRE( evalDate < terminationDate, () => "null effective date" );
             int y;
             if (nextToLastDate != null) 
             {
@@ -110,12 +110,12 @@ namespace QLNet {
             }
          } 
          else
-            Utils.QL_REQUIRE(effectiveDate != null, "null effective date");
+            Utils.QL_REQUIRE( effectiveDate != null, () => "null effective date" );
 
          if (tenor_.length() == 0)
             rule_ = DateGeneration.Rule.Zero;
-         else  
-            Utils.QL_REQUIRE(tenor.length()>0, "non positive tenor (" + tenor + ") not allowed");
+         else
+            Utils.QL_REQUIRE( tenor.length() > 0, () => "non positive tenor (" + tenor + ") not allowed" );
 
          if (firstDate_ != null)
          {
@@ -124,13 +124,13 @@ namespace QLNet {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
                   Utils.QL_REQUIRE(firstDate_ > effectiveDate &&
-                                   firstDate_ < terminationDate,
+                                   firstDate_ < terminationDate, () =>
                                    "first date (" + firstDate_ + ") out of effective-termination date range [" +
                                    effectiveDate + ", " + terminationDate + ")");
                   // we should ensure that the above condition is still verified after adjustment
                   break;
                case DateGeneration.Rule.ThirdWednesday:
-                  Utils.QL_REQUIRE(IMM.isIMMdate(firstDate_, false),"first date (" + firstDate_ + ") is not an IMM date");
+                  Utils.QL_REQUIRE( IMM.isIMMdate( firstDate_, false ), () => "first date (" + firstDate_ + ") is not an IMM date" );
                   break;
                case DateGeneration.Rule.Zero:
                case DateGeneration.Rule.Twentieth:
@@ -151,13 +151,13 @@ namespace QLNet {
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
-                  Utils.QL_REQUIRE(nextToLastDate_ > effectiveDate && nextToLastDate_ < terminationDate,
+                  Utils.QL_REQUIRE( nextToLastDate_ > effectiveDate && nextToLastDate_ < terminationDate, () =>
                                    "next to last date (" + nextToLastDate_ + ") out of effective-termination date range (" +
                                    effectiveDate + ", " + terminationDate + "]");
                   // we should ensure that the above condition is still verified after adjustment
                   break;
                case DateGeneration.Rule.ThirdWednesday:
-                  Utils.QL_REQUIRE(IMM.isIMMdate(nextToLastDate_, false), "next-to-last date (" + nextToLastDate_ +
+                  Utils.QL_REQUIRE( IMM.isIMMdate( nextToLastDate_, false ), () => "next-to-last date (" + nextToLastDate_ +
                                     ") is not an IMM date");                  
                   break;
                case DateGeneration.Rule.Zero:
@@ -243,7 +243,7 @@ namespace QLNet {
             case DateGeneration.Rule.ThirdWednesday:
             case DateGeneration.Rule.OldCDS:
             case DateGeneration.Rule.CDS:
-               Utils.QL_REQUIRE(!endOfMonth,"endOfMonth convention incompatible with " + rule_ + " date generation rule");
+               Utils.QL_REQUIRE( !endOfMonth, () => "endOfMonth convention incompatible with " + rule_ + " date generation rule" );
                goto case DateGeneration.Rule.Forward;			// fall through
 
             case DateGeneration.Rule.Forward:
@@ -429,8 +429,8 @@ namespace QLNet {
       public List<Date> dates() { return dates_; }
       public bool isRegular(int i)
       {
-         Utils.QL_REQUIRE(fullInterface_, "full interface not available");
-         Utils.QL_REQUIRE(i <= isRegular_.Count() && i > 0,"index (" + i + ") must be in [1, " + isRegular_.Count() + "]");
+         Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" );
+         Utils.QL_REQUIRE( i <= isRegular_.Count() && i > 0, () => "index (" + i + ") must be in [1, " + isRegular_.Count() + "]" );
          return isRegular_[i - 1];
       }
       //@}
@@ -441,11 +441,11 @@ namespace QLNet {
       public Calendar calendar() { return calendar_; }
       public Date startDate() { return dates_.First(); }
       public Date endDate() { return dates_.Last(); }
-      public Period tenor() { Utils.QL_REQUIRE(fullInterface_, "full interface not available"); return tenor_; }
+      public Period tenor() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return tenor_; }
       public BusinessDayConvention businessDayConvention() { return convention_; }
-      public BusinessDayConvention terminationDateBusinessDayConvention() { Utils.QL_REQUIRE(fullInterface_, "full interface not available"); return terminationDateConvention_; } 
-      public DateGeneration.Rule rule() { Utils.QL_REQUIRE(fullInterface_, "full interface not available"); return rule_; } 
-      public bool endOfMonth() { Utils.QL_REQUIRE(fullInterface_, "full interface not available"); return endOfMonth_; }
+      public BusinessDayConvention terminationDateBusinessDayConvention() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return terminationDateConvention_; }
+      public DateGeneration.Rule rule() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return rule_; }
+      public bool endOfMonth() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return endOfMonth_; }
       //@}
 
       //@{
@@ -454,7 +454,7 @@ namespace QLNet {
       {
          Schedule result = (Schedule)this.MemberwiseClone();
 
-         Utils.QL_REQUIRE(truncationDate > result.dates_[0],
+         Utils.QL_REQUIRE( truncationDate > result.dates_[0], () =>
                    "truncation date " + truncationDate +
                    " must be later than schedule first date " +
                    result.dates_[0]);

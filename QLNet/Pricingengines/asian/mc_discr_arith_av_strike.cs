@@ -142,15 +142,15 @@ namespace QLNet {
 
        public MakeMCDiscreteArithmeticASEngine<RNG, S> withSamples(int samples)
        {
-         Utils.QL_REQUIRE(tolerance_ == null,"tolerance already set");
+          Utils.QL_REQUIRE( tolerance_ == null, () => "tolerance already set" );
          samples_ = samples;
          return this;
        }
 
         public MakeMCDiscreteArithmeticASEngine<RNG, S> withTolerance(double tolerance)
         {
-            
-           Utils.QL_REQUIRE(samples_ == null,"number of samples already set");
+
+           Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
             if ((new RNG().allowsErrorEstimate == 0))
                 throw new ApplicationException("chosen random generator policy " +
                                                "does not allow an error estimate");

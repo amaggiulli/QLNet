@@ -55,13 +55,13 @@ namespace QLNet
          public List<Date> callabilityDates;
          public override void validate()
          {
-            Utils.QL_REQUIRE(settlementDate != null,"null settlement date");
+            Utils.QL_REQUIRE( settlementDate != null, () => "null settlement date" );
             
             //Utils.QL_REQUIRE(redemption != null, "null redemption");
-            Utils.QL_REQUIRE(redemption >= 0.0, "positive redemption required: " + redemption + " not allowed");
+            Utils.QL_REQUIRE( redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed" );
 
-            Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count, "different number of callability dates and prices");
-            Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, "different number of coupon dates and amounts");
+            Utils.QL_REQUIRE( callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices" );
+            Utils.QL_REQUIRE( couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts" );
          }
     }
       //! results for a callable bond calculation
@@ -95,7 +95,7 @@ namespace QLNet
                                        double maxVol) 
       {
          calculate();
-         Utils.QL_REQUIRE(!isExpired(), "instrument expired");
+         Utils.QL_REQUIRE( !isExpired(), () => "instrument expired" );
          double guess = 0.5*(minVol + maxVol);
          blackDiscountCurve_.linkTo(discountCurve, false);
          ImpliedVolHelper f = new ImpliedVolHelper(this,targetValue);
@@ -131,7 +131,7 @@ namespace QLNet
                 finalOptionDate=Date.Max(finalOptionDate,
                                          putCallSchedule_[i].date());
             }
-            Utils.QL_REQUIRE(finalOptionDate <= maturityDate_ , "Bond cannot mature before last call/put date");
+            Utils.QL_REQUIRE( finalOptionDate <= maturityDate_, () => "Bond cannot mature before last call/put date" );
         }
 
         // derived classes must set cashflows_ and frequency_
@@ -155,7 +155,7 @@ namespace QLNet
             vol_ = new SimpleQuote(0.0);
             bond.blackVolQuote_.linkTo(vol_);
 
-            Utils.QL_REQUIRE(bond.blackEngine_ != null , "Must set blackEngine_ to use impliedVolatility");
+            Utils.QL_REQUIRE( bond.blackEngine_ != null, () => "Must set blackEngine_ to use impliedVolatility" );
 
            engine_ = bond.blackEngine_;
            bond.setupArguments(engine_.getArguments());
@@ -231,7 +231,7 @@ namespace QLNet
          base.setupArguments(args);
          CallableBond.Arguments arguments = args as CallableBond.Arguments;
 
-         Utils.QL_REQUIRE(arguments != null, "no arguments given");
+         Utils.QL_REQUIRE( arguments != null, () => "no arguments given" );
 
          Date settlement = arguments.settlementDate;
 

@@ -104,26 +104,26 @@ namespace QLNet
 		public virtual double fixedLegNPV()
 		{
 			calculate();
-			Utils.QL_REQUIRE( legNPV_[0] != null, "result not available" );
+         Utils.QL_REQUIRE( legNPV_[0] != null, () => "result not available" );
 			return legNPV_[0].Value;
 		}
 		public virtual double fairRate()
 		{
 			calculate();
-			Utils.QL_REQUIRE( fairRate_ != null, "result not available" );
+         Utils.QL_REQUIRE( fairRate_ != null, () => "result not available" );
 			return fairRate_.Value;
 		}
 
 		public virtual double yoyLegNPV()
 		{
 			calculate();
-			Utils.QL_REQUIRE( legNPV_[1] != null, "result not available" );
+         Utils.QL_REQUIRE( legNPV_[1] != null, () => "result not available" );
 			return legNPV_[1].Value;
 		}
 		public virtual double fairSpread()
 		{
 			calculate();
-			Utils.QL_REQUIRE( fairSpread_ != null, "result not available" );
+         Utils.QL_REQUIRE( fairSpread_ != null, () => "result not available" );
 			return fairSpread_.Value;
 		}
       // inspectors
@@ -284,20 +284,20 @@ namespace QLNet
 			public override void validate()
 			{
 				base.validate();
-				Utils.QL_REQUIRE(nominal != null, "nominal null or not set");
-				Utils.QL_REQUIRE(fixedResetDates.Count == fixedPayDates.Count,
+            Utils.QL_REQUIRE( nominal != null, () => "nominal null or not set" );
+            Utils.QL_REQUIRE( fixedResetDates.Count == fixedPayDates.Count, () =>
                    "number of fixed start dates different from number of fixed payment dates");
-				Utils.QL_REQUIRE(fixedPayDates.Count == fixedCoupons.Count,
+            Utils.QL_REQUIRE( fixedPayDates.Count == fixedCoupons.Count, () =>
                    "number of fixed payment dates different from number of fixed coupon amounts");
-				Utils.QL_REQUIRE(yoyResetDates.Count == yoyPayDates.Count,
+            Utils.QL_REQUIRE( yoyResetDates.Count == yoyPayDates.Count, () =>
                    "number of yoy start dates different from number of yoy payment dates");
-				Utils.QL_REQUIRE(yoyFixingDates.Count == yoyPayDates.Count,
+            Utils.QL_REQUIRE( yoyFixingDates.Count == yoyPayDates.Count, () =>
                    "number of yoy fixing dates different from number of yoy payment dates");
-				Utils.QL_REQUIRE(yoyAccrualTimes.Count == yoyPayDates.Count,
+            Utils.QL_REQUIRE( yoyAccrualTimes.Count == yoyPayDates.Count, () =>
                    "number of yoy accrual Times different from number of yoy payment dates");
-				Utils.QL_REQUIRE(yoySpreads.Count == yoyPayDates.Count,
+            Utils.QL_REQUIRE( yoySpreads.Count == yoyPayDates.Count, () =>
                    "number of yoy spreads different from number of yoy payment dates");
-				Utils.QL_REQUIRE(yoyPayDates.Count == yoyCoupons.Count,
+            Utils.QL_REQUIRE( yoyPayDates.Count == yoyCoupons.Count, () =>
                    "number of yoy payment dates different from number of yoy coupon amounts");
 			}
 		}

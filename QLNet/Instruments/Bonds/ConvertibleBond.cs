@@ -69,21 +69,21 @@ namespace QLNet
             {
                base.validate();
 
-               Utils.QL_REQUIRE(conversionRatio != null, "null conversion ratio");
-               Utils.QL_REQUIRE(conversionRatio > 0.0, "positive conversion ratio required: " + conversionRatio + " not allowed");
+               Utils.QL_REQUIRE( conversionRatio != null, () => "null conversion ratio" );
+               Utils.QL_REQUIRE( conversionRatio > 0.0, () => "positive conversion ratio required: " + conversionRatio + " not allowed" );
 
-               Utils.QL_REQUIRE(redemption != null, "null redemption");
-               Utils.QL_REQUIRE(redemption >= 0.0, "positive redemption required: " + redemption + " not allowed");
+               Utils.QL_REQUIRE( redemption != null, () => "null redemption" );
+               Utils.QL_REQUIRE( redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed" );
 
-               Utils.QL_REQUIRE(settlementDate != null, "null settlement date");
+               Utils.QL_REQUIRE( settlementDate != null, () => "null settlement date" );
 
-               Utils.QL_REQUIRE(settlementDays !=null, "null settlement days");
+               Utils.QL_REQUIRE( settlementDays != null, () => "null settlement days" );
 
-               Utils.QL_REQUIRE(callabilityDates.Count == callabilityTypes.Count, "different number of callability dates and types");
-               Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count,  "different number of callability dates and prices");
-               Utils.QL_REQUIRE(callabilityDates.Count == callabilityTriggers.Count, "different number of callability dates and triggers");
+               Utils.QL_REQUIRE( callabilityDates.Count == callabilityTypes.Count, () => "different number of callability dates and types" );
+               Utils.QL_REQUIRE( callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices" );
+               Utils.QL_REQUIRE( callabilityDates.Count == callabilityTriggers.Count, () => "different number of callability dates and triggers" );
 
-               Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, "different number of coupon dates and amounts");
+               Utils.QL_REQUIRE( couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts" );
             }
          
          }
@@ -121,7 +121,7 @@ namespace QLNet
            base.setupArguments(args);
 
            ConvertibleBond.option.arguments moreArgs = args as ConvertibleBond.option.arguments;
-           Utils.QL_REQUIRE(moreArgs != null, "wrong argument type");
+           Utils.QL_REQUIRE( moreArgs != null, () => "wrong argument type" );
 
            moreArgs.conversionRatio = conversionRatio_;
 
@@ -225,7 +225,7 @@ namespace QLNet
 
          if (!callability.empty()) 
          {
-            Utils.QL_REQUIRE(callability.Last().date() <= maturityDate_,
+            Utils.QL_REQUIRE( callability.Last().date() <= maturityDate_, () =>
                               "last callability date (" 
                               + callability.Last().date()
                               + ") later than maturity ("
@@ -309,7 +309,7 @@ namespace QLNet
 
         addRedemptionsToCashflows(new List<double>(){redemption});
 
-        Utils.QL_REQUIRE(redemptions_.Count == 1, "multiple redemptions created");
+        Utils.QL_REQUIRE( redemptions_.Count == 1, () => "multiple redemptions created" );
 
         option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_, dayCounter, schedule,
                              issueDate, settlementDays, redemption);
@@ -350,7 +350,7 @@ namespace QLNet
 
         addRedemptionsToCashflows(new List<double>{redemption});
 
-        Utils.QL_REQUIRE(redemptions_.Count == 1, "multiple redemptions created");
+        Utils.QL_REQUIRE( redemptions_.Count == 1, () => "multiple redemptions created" );
 
         option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_, dayCounter, schedule,
                              issueDate, settlementDays, redemption);

@@ -95,7 +95,7 @@ namespace QLNet
          if (infIndex_.interpolated()) 
          {
             Period pShift = new Period(infIndex_.frequency());
-            Utils.QL_REQUIRE(observationLag_ - pShift > infIndex_.availabilityLag(),
+            Utils.QL_REQUIRE( observationLag_ - pShift > infIndex_.availabilityLag(), () =>
                        "inconsistency between swap observation of index " + observationLag_ +
                        " index availability " + infIndex_.availabilityLag() +
                        " interpolated index period " + pShift +
@@ -104,7 +104,7 @@ namespace QLNet
          } 
          else 
          {
-            Utils.QL_REQUIRE(infIndex_.availabilityLag() < observationLag_,
+            Utils.QL_REQUIRE( infIndex_.availabilityLag() < observationLag_, () =>
                        "index tries to observe inflation fixings that do not yet exist: "
                        + " availability lag " + infIndex_.availabilityLag()
                        + " versus obs lag = " + observationLag_);
@@ -207,13 +207,13 @@ namespace QLNet
       public double fixedLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[0] != null, "result not available");
+         Utils.QL_REQUIRE( legNPV_[0] != null, () => "result not available" );
          return legNPV_[0].Value;
       }
       public double inflationLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[1] != null, "result not available");
+         Utils.QL_REQUIRE( legNPV_[1] != null, () => "result not available" );
          return legNPV_[1].Value;
       }
       public double fairRate()
@@ -224,7 +224,7 @@ namespace QLNet
          // _knowing_ the time from base to obs (etc).
 
          IndexedCashFlow icf = legs_[1][0] as IndexedCashFlow;
-         Utils.QL_REQUIRE(icf != null,"failed to downcast to IndexedCashFlow in ::fairRate()");
+         Utils.QL_REQUIRE( icf != null, () => "failed to downcast to IndexedCashFlow in ::fairRate()" );
 
          // +1 because the IndexedCashFlow has growthOnly=true
          double growth = icf.amount() / icf.notional() + 1.0;

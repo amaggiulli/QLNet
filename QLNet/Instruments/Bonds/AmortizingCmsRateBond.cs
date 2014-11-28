@@ -63,7 +63,7 @@ namespace QLNet
 
          addRedemptionsToCashflows();
 
-         Utils.QL_REQUIRE(!cashflows().empty(), "bond with no cashflows!");
+         Utils.QL_REQUIRE( !cashflows().empty(), () => "bond with no cashflows!" );
 
          index.registerWith(update);
         

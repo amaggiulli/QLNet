@@ -112,7 +112,7 @@ namespace QLNet
       //! the settlementDays used for reference date calculation
       public virtual int settlementDays() 
       {
-         Utils.QL_REQUIRE(settlementDays_!=null, "settlement days not provided for this instance");
+         Utils.QL_REQUIRE( settlementDays_ != null, () => "settlement days not provided for this instance" );
          return settlementDays_.Value;
       }
         
@@ -139,10 +139,10 @@ namespace QLNet
       //! date-range check
       protected virtual void checkRange(Date d, bool extrapolate)
       {
-         Utils.QL_REQUIRE(d >= referenceDate(),
+         Utils.QL_REQUIRE( d >= referenceDate(), () =>
                    "date (" + d + ") before reference date (" +
                    referenceDate() + ")");
-         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(),
+         Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || d <= maxDate(), () =>
                     "date (" + d + ") is past max curve date ("
                              + maxDate() + ")");
       }
@@ -150,10 +150,10 @@ namespace QLNet
       //! time-range check
       protected void checkRange(double t, bool extrapolate)
       {
-         Utils.QL_REQUIRE(t >= 0.0,
+         Utils.QL_REQUIRE( t >= 0.0, () =>
                   "negative time (" + t + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation()
-                    || t <= maxTime() || Utils.close_enough(t, maxTime()),
+                    || t <= maxTime() || Utils.close_enough( t, maxTime() ), () =>
                     "time (" + t + ") is past max curve time ("
                              + maxTime() + ")");
       }

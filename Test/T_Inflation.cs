@@ -315,7 +315,7 @@ namespace TestSuite
 			Date fixDate = new Date( 1, Month.August, 2014 );
 			Date payDate = new UnitedKingdom().adjust( fixDate + new Period( 3, TimeUnit.Months ), BusinessDayConvention.ModifiedFollowing );
 			Index ind = ii as Index;
-			Utils.QL_REQUIRE( ind != null, "dynamic_pointer_cast to Index from InflationIndex failed" );
+         Utils.QL_REQUIRE( ind != null, () => "dynamic_pointer_cast to Index from InflationIndex failed" );
 
 			double notional = 1000000.0;//1m
 			IndexedCashFlow iicf = new IndexedCashFlow( notional, ind, baseDate, fixDate, payDate );
@@ -331,7 +331,7 @@ namespace TestSuite
 			// first make one ...
 
 			ZeroInflationIndex zii = ii as ZeroInflationIndex;
-			Utils.QL_REQUIRE( zii != null, "dynamic_pointer_cast to ZeroInflationIndex from UKRPI failed" );
+         Utils.QL_REQUIRE( zii != null, () => "dynamic_pointer_cast to ZeroInflationIndex from UKRPI failed" );
 			ZeroCouponInflationSwap nzcis =
 				new ZeroCouponInflationSwap( ZeroCouponInflationSwap.Type.Payer,
 													 1000000.0,
@@ -404,7 +404,7 @@ namespace TestSuite
          };
 
 			hz.link.setSeasonality( seasonality_1 );
-			Utils.QL_REQUIRE( hz.link.hasSeasonality(), "[44] incorrectly believes NO seasonality correction" );
+         Utils.QL_REQUIRE( hz.link.hasSeasonality(), () => "[44] incorrectly believes NO seasonality correction" );
 
 			double[] seasonalityFixing_1 = {
             ii.fixing(new Date(14,Month.January  ,2013),true),
@@ -477,9 +477,9 @@ namespace TestSuite
 
 			//Testing Unset function
 			//
-			Utils.QL_REQUIRE( hz.link.hasSeasonality(), "[4] incorrectly believes NO seasonality correction" );
+         Utils.QL_REQUIRE( hz.link.hasSeasonality(), () => "[4] incorrectly believes NO seasonality correction" );
 			hz.link.setSeasonality();
-			Utils.QL_REQUIRE( !hz.link.hasSeasonality(), "[5] incorrectly believes HAS seasonality correction" );
+         Utils.QL_REQUIRE( !hz.link.hasSeasonality(), () => "[5] incorrectly believes HAS seasonality correction" );
 
 			double[] seasonalityFixing_unset = {
             ii.fixing(new Date(14,Month.January  ,2013),true),
@@ -589,7 +589,7 @@ namespace TestSuite
 			// Test zero coupon swap
 
 			ZeroInflationIndex ziiyes = iiyes as ZeroInflationIndex;
-			Utils.QL_REQUIRE( ziiyes != null, "dynamic_pointer_cast to ZeroInflationIndex from UKRPI-I failed" );
+         Utils.QL_REQUIRE( ziiyes != null, () => "dynamic_pointer_cast to ZeroInflationIndex from UKRPI-I failed" );
 			ZeroCouponInflationSwap nzcisyes = new ZeroCouponInflationSwap( ZeroCouponInflationSwap.Type.Payer,
 															  1000000.0,
 															  evaluationDate,

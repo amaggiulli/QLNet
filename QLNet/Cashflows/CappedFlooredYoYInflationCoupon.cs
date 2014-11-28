@@ -122,11 +122,11 @@ namespace QLNet
          {
             if (underlying_ != null) 
             {
-               Utils.QL_REQUIRE( underlying_.pricer() != null, "pricer not set" );
+               Utils.QL_REQUIRE( underlying_.pricer() != null, () => "pricer not set" );
             } 
             else 
             {
-               Utils.QL_REQUIRE( pricer_ != null, "pricer not set" );
+               Utils.QL_REQUIRE( pricer_ != null, () => "pricer not set" );
             }
         }
 

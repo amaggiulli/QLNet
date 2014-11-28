@@ -54,7 +54,7 @@ namespace QLNet
                {
                   Utils.QL_REQUIRE(nominal == cp.nominal() &&
                                    accrualPeriod == cp.accrualPeriod() &&
-                                   dc == cp.dayCounter(),
+                                   dc == cp.dayCounter(), () =>
                                    "cannot aggregate two different coupons on "
                                    + paymentDate);
                }
@@ -68,8 +68,8 @@ namespace QLNet
                result += cp.rate();
             }
          }
-           
-         Utils.QL_REQUIRE(firstCouponFound, "no coupon paid at cashflow date " + paymentDate);
+
+         Utils.QL_REQUIRE( firstCouponFound, () => "no coupon paid at cashflow date " + paymentDate );
          return result;
         }
       public static double simpleDuration(Leg leg,InterestRate y, bool includeSettlementDateFlows,
@@ -224,7 +224,7 @@ namespace QLNet
       public static double macaulayDuration(Leg leg,InterestRate y, bool includeSettlementDateFlows,
                                             Date settlementDate, Date npvDate) 
       {
-         Utils.QL_REQUIRE(y.compounding() == Compounding.Compounded, "compounded rate required");
+         Utils.QL_REQUIRE( y.compounding() == Compounding.Compounded, () => "compounded rate required" );
 
          return (1.0+y.rate()/(int)y.frequency()) *
                modifiedDuration(leg, y, includeSettlementDateFlows, settlementDate, npvDate);
@@ -298,7 +298,7 @@ namespace QLNet
                         lastSign = thisSign;
                }
             }
-            Utils.QL_REQUIRE(signChanges > 0,
+            Utils.QL_REQUIRE( signChanges > 0, () =>
                      "the given cash flows cannot result in the given market " +
                      "price due to their sign");
          }
@@ -387,7 +387,7 @@ namespace QLNet
       #region Date functions
       public static Date startDate(Leg leg)
       {
-         Utils.QL_REQUIRE(!leg.empty(), "empty leg");
+         Utils.QL_REQUIRE( !leg.empty(), () => "empty leg" );
          Date d = Date.maxDate();
          for (int i=0; i<leg.Count; ++i) 
          {
@@ -401,7 +401,7 @@ namespace QLNet
       }
       public static Date maturityDate(Leg leg)
       {
-         Utils.QL_REQUIRE(!leg.empty(), "empty leg");
+         Utils.QL_REQUIRE( !leg.empty(), () => "empty leg" );
          Date d = Date.minDate();
          for (int i = 0; i < leg.Count; ++i)
          {
@@ -786,7 +786,7 @@ namespace QLNet
             return 0.0;
 
          double bps = calc.bps();
-         Utils.QL_REQUIRE(bps!=0.0, "null bps: impossible atm rate");
+         Utils.QL_REQUIRE( bps != 0.0, () => "null bps: impossible atm rate" );
 
          return targetNpv.Value/bps;
     }

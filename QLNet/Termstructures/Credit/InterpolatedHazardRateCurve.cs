@@ -124,18 +124,18 @@ namespace QLNet
 
 		private void initialize()
 		{
-			Utils.QL_REQUIRE(dates_.Count >=  interpolator_.requiredPoints, "not enough input dates given");
-			Utils.QL_REQUIRE(this.data_.Count == dates_.Count, "dates/data count mismatch");
+         Utils.QL_REQUIRE( dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given" );
+         Utils.QL_REQUIRE( this.data_.Count == dates_.Count, () => "dates/data count mismatch" );
 
         //this.times_ = new List<double>(dates_.Count);
         this.times_.Add(0.0);
         for (int i=1; i<dates_.Count; ++i) 
 		  {
-            Utils.QL_REQUIRE(dates_[i] > dates_[i-1], "invalid date (" + dates_[i] + ", vs " + dates_[i-1] + ")");
+           Utils.QL_REQUIRE( dates_[i] > dates_[i - 1], () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")" );
 				this.times_.Add( dayCounter().yearFraction( dates_[0], dates_[i] ) );
-            Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i-1]), "two dates correspond to the same time "+
+            Utils.QL_REQUIRE( !Utils.close( this.times_[i], this.times_[i - 1] ), () => "two dates correspond to the same time " +
                                                                              "under this curve's day count convention");
-            Utils.QL_REQUIRE(this.data_[i] >= 0.0, "negative hazard rate");
+            Utils.QL_REQUIRE( this.data_[i] >= 0.0, () => "negative hazard rate" );
         }
 
 		  setupInterpolation();

@@ -123,14 +123,14 @@ namespace QLNet
          outstandings_ = outstandings;
          quotes_ = cleanPriceQuotes;
 
-         Utils.QL_REQUIRE(!btps_.empty(), "empty RendistatoCalculator Basket");
+         Utils.QL_REQUIRE( !btps_.empty(), () => "empty RendistatoCalculator Basket" );
          int k = btps_.Count;
 
-         Utils.QL_REQUIRE(outstandings_.Count==k,
+         Utils.QL_REQUIRE( outstandings_.Count == k, () =>
                    "mismatch between number of BTPs (" + k +
                    ") and number of outstandings (" +
                    outstandings_.Count + ")");
-         Utils.QL_REQUIRE(quotes_.Count==k,
+         Utils.QL_REQUIRE( quotes_.Count == k, () =>
                    "mismatch between number of BTPs (" + k +
                    ") and number of clean prices quotes (" +
                    quotes_.Count + ")");
@@ -138,7 +138,7 @@ namespace QLNet
          // require non-negative outstanding
          for (int i=0; i<k; ++i) 
          {
-            Utils.QL_REQUIRE(outstandings[i]>=0,
+            Utils.QL_REQUIRE( outstandings[i] >= 0, () =>
                        "negative outstanding for " + i +
                        " bond, maturity " + btps[i].maturityDate());
             // add check for prices ??
@@ -146,7 +146,7 @@ namespace QLNet
 
          // TODO: filter out expired bonds, zero outstanding bond, etc
 
-         Utils.QL_REQUIRE(!btps_.empty(), "invalid bonds only in RendistatoCalculator Basket");
+         Utils.QL_REQUIRE( !btps_.empty(), () => "invalid bonds only in RendistatoCalculator Basket" );
          n_ = btps_.Count;
 
          outstanding_ = 0.0;

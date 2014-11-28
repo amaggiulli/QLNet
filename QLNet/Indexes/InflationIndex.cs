@@ -262,7 +262,7 @@ namespace QLNet
         {
            // the term structure is relative to the fixing value at the base date.
            Date baseDate = zeroInflation_.link.baseDate();
-           Utils.QL_REQUIRE(!needsForecast(baseDate), name() + " index fixing at base date is not available");
+           Utils.QL_REQUIRE( !needsForecast( baseDate ), () => name() + " index fixing at base date is not available" );
            double baseFixing = fixing(baseDate, false);
            Date effectiveFixingDate;
            if (interpolated()) 
