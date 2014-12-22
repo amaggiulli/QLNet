@@ -27,809 +27,809 @@ using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
-   public class T_Bonds
-   {
-      class CommonVars
-      {
-         // common data
-         public Calendar calendar;
-         public Date today;
-         public double faceAmount;
+    [TestClass()]
+    public class T_Bonds
+    {
+        class CommonVars
+        {
+            // common data
+            public Calendar calendar;
+            public Date today;
+            public double faceAmount;
 
-         // todo
-         // cleanup
-         // SavedSettings backup;
+            // todo
+            // cleanup
+            // SavedSettings backup;
 
-         // setup
-         public CommonVars()
-         {
-            calendar = new TARGET();
-            today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
-            faceAmount = 1000000.0;
-         }
-      }
+            // setup
+            public CommonVars()
+            {
+                calendar = new TARGET();
+                today = calendar.adjust(Date.Today);
+                Settings.setEvaluationDate(today);
+                faceAmount = 1000000.0;
+            }
+        }
 
-      [TestMethod()]
-      public void testYield()
-      {
+        [TestMethod()]
+        public void testYield()
+        {
 
-         //"Testing consistency of bond price/yield calculation...");
+            //"Testing consistency of bond price/yield calculation...");
 
-         CommonVars vars = new CommonVars();
+            CommonVars vars = new CommonVars();
 
-         double tolerance = 1.0e-7;
-         int maxEvaluations = 100;
+            double tolerance = 1.0e-7;
+            int maxEvaluations = 100;
 
-         int[] issueMonths = new int[] { -24, -18, -12, -6, 0, 6, 12, 18, 24 };
-         int[] lengths = new int[] { 3, 5, 10, 15, 20 };
-         int settlementDays = 3;
-         double[] coupons = new double[] { 0.02, 0.05, 0.08 };
-         Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
-         DayCounter bondDayCount = new Thirty360();
-         BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
-         BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
-         double redemption = 100.0;
+            int[] issueMonths = new int[] { -24, -18, -12, -6, 0, 6, 12, 18, 24 };
+            int[] lengths = new int[] { 3, 5, 10, 15, 20 };
+            int settlementDays = 3;
+            double[] coupons = new double[] { 0.02, 0.05, 0.08 };
+            Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
+            DayCounter bondDayCount = new Thirty360();
+            BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
+            BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
+            double redemption = 100.0;
 
-         double[] yields = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
-         Compounding[] compounding = new Compounding[] { Compounding.Compounded, Compounding.Continuous };
+            double[] yields = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
+            Compounding[] compounding = new Compounding[] { Compounding.Compounded, Compounding.Continuous };
 
-         for (int i = 0; i < issueMonths.Length; i++)
-         {
+            for (int i = 0; i < issueMonths.Length; i++)
+            {
+                for (int j = 0; j < lengths.Length; j++)
+                {
+                    for (int k = 0; k < coupons.Length; k++)
+                    {
+                        for (int l = 0; l < frequencies.Length; l++)
+                        {
+                            for (int n = 0; n < compounding.Length; n++)
+                            {
+
+                                Date dated = vars.calendar.advance(vars.today, issueMonths[i], TimeUnit.Months);
+                                Date issue = dated;
+                                Date maturity = vars.calendar.advance(issue, lengths[j], TimeUnit.Years);
+
+                                Schedule sch = new Schedule(dated, maturity, new Period(frequencies[l]), vars.calendar,
+                                                            accrualConvention, accrualConvention, DateGeneration.Rule.Backward, false);
+
+                                FixedRateBond bond = new FixedRateBond(settlementDays, vars.faceAmount, sch,
+                                                                       new List<double>() { coupons[k] },
+                                                                       bondDayCount, paymentConvention,
+                                                                       redemption, issue);
+
+                                for (int m = 0; m < yields.Length; m++)
+                                {
+
+                                    double price = bond.cleanPrice(yields[m], bondDayCount, compounding[n], frequencies[l]);
+                                    double calculated = bond.yield(price, bondDayCount, compounding[n], frequencies[l], null,
+                                                                   tolerance, maxEvaluations);
+
+                                    if (Math.Abs(yields[m] - calculated) > tolerance)
+                                    {
+                                        // the difference might not matter
+                                        double price2 = bond.cleanPrice(calculated, bondDayCount, compounding[n], frequencies[l]);
+                                        if (Math.Abs(price - price2) / price > tolerance)
+                                        {
+                                            Assert.Fail("yield recalculation failed:\n"
+                                                + "    issue:     " + issue + "\n"
+                                                + "    maturity:  " + maturity + "\n"
+                                                + "    coupon:    " + coupons[k] + "\n"
+                                                + "    frequency: " + frequencies[l] + "\n\n"
+                                                + "    yield:  " + yields[m] + " "
+                                                + (compounding[n] == Compounding.Compounded ? "compounded" : "continuous") + "\n"
+                                                + "    price:  " + price + "\n"
+                                                + "    yield': " + calculated + "\n"
+                                                + "    price': " + price2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [TestMethod()]
+        public void testTheoretical()
+        {
+            // "Testing theoretical bond price/yield calculation...");
+
+            CommonVars vars = new CommonVars();
+
+            double tolerance = 1.0e-7;
+            int maxEvaluations = 100;
+
+            int[] lengths = new int[] { 3, 5, 10, 15, 20 };
+            int settlementDays = 3;
+            double[] coupons = new double[] { 0.02, 0.05, 0.08 };
+            Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
+            DayCounter bondDayCount = new Actual360();
+            BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
+            BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
+            double redemption = 100.0;
+
+            double[] yields = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
+
             for (int j = 0; j < lengths.Length; j++)
             {
-               for (int k = 0; k < coupons.Length; k++)
-               {
-                  for (int l = 0; l < frequencies.Length; l++)
-                  {
-                     for (int n = 0; n < compounding.Length; n++)
-                     {
+                for (int k = 0; k < coupons.Length; k++)
+                {
+                    for (int l = 0; l < frequencies.Length; l++)
+                    {
 
-                        Date dated = vars.calendar.advance(vars.today, issueMonths[i], TimeUnit.Months);
+                        Date dated = vars.today;
                         Date issue = dated;
                         Date maturity = vars.calendar.advance(issue, lengths[j], TimeUnit.Years);
+
+                        SimpleQuote rate = new SimpleQuote(0.0);
+                        var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(vars.today, rate, bondDayCount));
 
                         Schedule sch = new Schedule(dated, maturity, new Period(frequencies[l]), vars.calendar,
                                                     accrualConvention, accrualConvention, DateGeneration.Rule.Backward, false);
 
-                        FixedRateBond bond = new FixedRateBond(settlementDays, vars.faceAmount, sch,
-                                                               new List<double>() { coupons[k] },
-                                                               bondDayCount, paymentConvention,
-                                                               redemption, issue);
+                        FixedRateBond bond = new FixedRateBond(settlementDays, vars.faceAmount, sch, new List<double>() { coupons[k] },
+                                                               bondDayCount, paymentConvention, redemption, issue);
+
+                        IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+                        bond.setPricingEngine(bondEngine);
 
                         for (int m = 0; m < yields.Length; m++)
                         {
 
-                           double price = bond.cleanPrice(yields[m], bondDayCount, compounding[n], frequencies[l]);
-                           double calculated = bond.yield(price, bondDayCount, compounding[n], frequencies[l], null,
-                                                          tolerance, maxEvaluations);
+                            rate.setValue(yields[m]);
 
-                           if (Math.Abs(yields[m] - calculated) > tolerance)
-                           {
-                              // the difference might not matter
-                              double price2 = bond.cleanPrice(calculated, bondDayCount, compounding[n], frequencies[l]);
-                              if (Math.Abs(price - price2) / price > tolerance)
-                              {
-                                 Assert.Fail("yield recalculation failed:\n"
-                                     + "    issue:     " + issue + "\n"
-                                     + "    maturity:  " + maturity + "\n"
-                                     + "    coupon:    " + coupons[k] + "\n"
-                                     + "    frequency: " + frequencies[l] + "\n\n"
-                                     + "    yield:  " + yields[m] + " "
-                                     + (compounding[n] == Compounding.Compounded ? "compounded" : "continuous") + "\n"
-                                     + "    price:  " + price + "\n"
-                                     + "    yield': " + calculated + "\n"
-                                     + "    price': " + price2);
-                              }
-                           }
+                            double price = bond.cleanPrice(yields[m], bondDayCount, Compounding.Continuous, frequencies[l]);
+                            double calculatedPrice = bond.cleanPrice();
+
+                            if (Math.Abs(price - calculatedPrice) > tolerance)
+                            {
+                                Assert.Fail("price calculation failed:"
+                                    + "\n    issue:     " + issue
+                                    + "\n    maturity:  " + maturity
+                                    + "\n    coupon:    " + coupons[k]
+                                    + "\n    frequency: " + frequencies[l] + "\n"
+                                    + "\n    yield:     " + yields[m]
+                                    + "\n    expected:    " + price
+                                    + "\n    calculated': " + calculatedPrice
+                                    + "\n    error':      " + (price - calculatedPrice));
+                            }
+
+                            double calculatedYield = bond.yield(bondDayCount, Compounding.Continuous, frequencies[l],
+                                                     tolerance, maxEvaluations);
+                            if (Math.Abs(yields[m] - calculatedYield) > tolerance)
+                            {
+                                Assert.Fail("yield calculation failed:"
+                                    + "\n    issue:     " + issue
+                                    + "\n    maturity:  " + maturity
+                                    + "\n    coupon:    " + coupons[k]
+                                    + "\n    frequency: " + frequencies[l] + "\n"
+                                    + "\n    yield:  " + yields[m]
+                                    + "\n    price:  " + price
+                                    + "\n    yield': " + calculatedYield);
+                            }
                         }
-                     }
-                  }
-               }
+                    }
+                }
             }
-         }
-      }
-      [TestMethod()]
-      public void testTheoretical()
-      {
-         // "Testing theoretical bond price/yield calculation...");
+        }
+        [TestMethod()]
+        public void testCached()
+        {
+            // ("Testing bond price/yield calculation against cached values...");
 
-         CommonVars vars = new CommonVars();
+            CommonVars vars = new CommonVars();
 
-         double tolerance = 1.0e-7;
-         int maxEvaluations = 100;
+            // with implicit settlement calculation:
+            Date today = new Date(22, Month.November, 2004);
+            Settings.setEvaluationDate(today);
 
-         int[] lengths = new int[] { 3, 5, 10, 15, 20 };
-         int settlementDays = 3;
-         double[] coupons = new double[] { 0.02, 0.05, 0.08 };
-         Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
-         DayCounter bondDayCount = new Actual360();
-         BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
-         BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
-         double redemption = 100.0;
+            Calendar bondCalendar = new NullCalendar();
+            DayCounter bondDayCount = new ActualActual(ActualActual.Convention.ISMA);
+            int settlementDays = 1;
 
-         double[] yields = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, new SimpleQuote(0.03), new Actual360()));
 
-         for (int j = 0; j < lengths.Length; j++)
-         {
-            for (int k = 0; k < coupons.Length; k++)
+            // actual market values from the evaluation date
+            Frequency freq = Frequency.Semiannual;
+            Schedule sch1 = new Schedule(new Date(31, Month.October, 2004), new Date(31, Month.October, 2006), new Period(freq),
+                                         bondCalendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                         DateGeneration.Rule.Backward, false);
+
+            FixedRateBond bond1 = new FixedRateBond(settlementDays, vars.faceAmount, sch1, new List<double>() { 0.025 },
+                                    bondDayCount, BusinessDayConvention.ModifiedFollowing, 100.0, new Date(1, Month.November, 2004));
+
+            IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+            bond1.setPricingEngine(bondEngine);
+
+            double marketPrice1 = 99.203125;
+            double marketYield1 = 0.02925;
+
+            Schedule sch2 = new Schedule(new Date(15, Month.November, 2004), new Date(15, Month.November, 2009), new Period(freq),
+                                         bondCalendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                         DateGeneration.Rule.Backward, false);
+
+            FixedRateBond bond2 = new FixedRateBond(settlementDays, vars.faceAmount, sch2, new List<double>() { 0.035 },
+                                         bondDayCount, BusinessDayConvention.ModifiedFollowing,
+                                         100.0, new Date(15, Month.November, 2004));
+
+            bond2.setPricingEngine(bondEngine);
+
+            double marketPrice2 = 99.6875;
+            double marketYield2 = 0.03569;
+
+            // calculated values
+            double cachedPrice1a = 99.204505, cachedPrice2a = 99.687192;
+            double cachedPrice1b = 98.943393, cachedPrice2b = 101.986794;
+            double cachedYield1a = 0.029257, cachedYield2a = 0.035689;
+            double cachedYield1b = 0.029045, cachedYield2b = 0.035375;
+            double cachedYield1c = 0.030423, cachedYield2c = 0.030432;
+
+            // check
+            double tolerance = 1.0e-6;
+            double price, yield;
+
+            price = bond1.cleanPrice(marketYield1, bondDayCount, Compounding.Compounded, freq);
+            if (Math.Abs(price - cachedPrice1a) > tolerance)
             {
-               for (int l = 0; l < frequencies.Length; l++)
-               {
-
-                  Date dated = vars.today;
-                  Date issue = dated;
-                  Date maturity = vars.calendar.advance(issue, lengths[j], TimeUnit.Years);
-
-                  SimpleQuote rate = new SimpleQuote(0.0);
-                  var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(vars.today, rate, bondDayCount));
-
-                  Schedule sch = new Schedule(dated, maturity, new Period(frequencies[l]), vars.calendar,
-                                              accrualConvention, accrualConvention, DateGeneration.Rule.Backward, false);
-
-                  FixedRateBond bond = new FixedRateBond(settlementDays, vars.faceAmount, sch, new List<double>() { coupons[k] },
-                                                         bondDayCount, paymentConvention, redemption, issue);
-
-                  IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-                  bond.setPricingEngine(bondEngine);
-
-                  for (int m = 0; m < yields.Length; m++)
-                  {
-
-                     rate.setValue(yields[m]);
-
-                     double price = bond.cleanPrice(yields[m], bondDayCount, Compounding.Continuous, frequencies[l]);
-                     double calculatedPrice = bond.cleanPrice();
-
-                     if (Math.Abs(price - calculatedPrice) > tolerance)
-                     {
-                        Assert.Fail("price calculation failed:"
-                            + "\n    issue:     " + issue
-                            + "\n    maturity:  " + maturity
-                            + "\n    coupon:    " + coupons[k]
-                            + "\n    frequency: " + frequencies[l] + "\n"
-                            + "\n    yield:     " + yields[m]
-                            + "\n    expected:    " + price
-                            + "\n    calculated': " + calculatedPrice
-                            + "\n    error':      " + (price - calculatedPrice));
-                     }
-
-                     double calculatedYield = bond.yield(bondDayCount, Compounding.Continuous, frequencies[l],
-                                              tolerance, maxEvaluations);
-                     if (Math.Abs(yields[m] - calculatedYield) > tolerance)
-                     {
-                        Assert.Fail("yield calculation failed:"
-                            + "\n    issue:     " + issue
-                            + "\n    maturity:  " + maturity
-                            + "\n    coupon:    " + coupons[k]
-                            + "\n    frequency: " + frequencies[l] + "\n"
-                            + "\n    yield:  " + yields[m]
-                            + "\n    price:  " + price
-                            + "\n    yield': " + calculatedYield);
-                     }
-                  }
-               }
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price
+                           + "\n    expected:   " + cachedPrice1a
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (price - cachedPrice1a));
             }
-         }
-      }
-      [TestMethod()]
-      public void testCached()
-      {
-         // ("Testing bond price/yield calculation against cached values...");
-
-         CommonVars vars = new CommonVars();
-
-         // with implicit settlement calculation:
-         Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
-
-         Calendar bondCalendar = new NullCalendar();
-         DayCounter bondDayCount = new ActualActual(ActualActual.Convention.ISMA);
-         int settlementDays = 1;
-
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, new SimpleQuote(0.03), new Actual360()));
-
-         // actual market values from the evaluation date
-         Frequency freq = Frequency.Semiannual;
-         Schedule sch1 = new Schedule(new Date(31, Month.October, 2004), new Date(31, Month.October, 2006), new Period(freq),
-                                      bondCalendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                      DateGeneration.Rule.Backward, false);
-
-         FixedRateBond bond1 = new FixedRateBond(settlementDays, vars.faceAmount, sch1, new List<double>() { 0.025 },
-                                 bondDayCount, BusinessDayConvention.ModifiedFollowing, 100.0, new Date(1, Month.November, 2004));
-
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-         bond1.setPricingEngine(bondEngine);
-
-         double marketPrice1 = 99.203125;
-         double marketYield1 = 0.02925;
-
-         Schedule sch2 = new Schedule(new Date(15, Month.November, 2004), new Date(15, Month.November, 2009), new Period(freq),
-                                      bondCalendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                      DateGeneration.Rule.Backward, false);
-
-         FixedRateBond bond2 = new FixedRateBond(settlementDays, vars.faceAmount, sch2, new List<double>() { 0.035 },
-                                      bondDayCount, BusinessDayConvention.ModifiedFollowing,
-                                      100.0, new Date(15, Month.November, 2004));
-
-         bond2.setPricingEngine(bondEngine);
-
-         double marketPrice2 = 99.6875;
-         double marketYield2 = 0.03569;
-
-         // calculated values
-         double cachedPrice1a = 99.204505, cachedPrice2a = 99.687192;
-         double cachedPrice1b = 98.943393, cachedPrice2b = 101.986794;
-         double cachedYield1a = 0.029257, cachedYield2a = 0.035689;
-         double cachedYield1b = 0.029045, cachedYield2b = 0.035375;
-         double cachedYield1c = 0.030423, cachedYield2c = 0.030432;
-
-         // check
-         double tolerance = 1.0e-6;
-         double price, yield;
-
-         price = bond1.cleanPrice(marketYield1, bondDayCount, Compounding.Compounded, freq);
-         if (Math.Abs(price - cachedPrice1a) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price
-                       + "\n    expected:   " + cachedPrice1a
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (price - cachedPrice1a));
-         }
-
-         price = bond1.cleanPrice();
-         if (Math.Abs(price - cachedPrice1b) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price
-                       + "\n    expected:   " + cachedPrice1b
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (price - cachedPrice1b));
-         }
-
-         yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Compounded, freq);
-         if (Math.Abs(yield - cachedYield1a) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached compounded yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield1a
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield1a));
-         }
-
-         yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Continuous, freq);
-         if (Math.Abs(yield - cachedYield1b) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached continuous yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield1b
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield1b));
-         }
-
-         yield = bond1.yield(bondDayCount, Compounding.Continuous, freq);
-         if (Math.Abs(yield - cachedYield1c) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached continuous yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield1c
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield1c));
-         }
-
-
-         price = bond2.cleanPrice(marketYield2, bondDayCount, Compounding.Compounded, freq);
-         if (Math.Abs(price - cachedPrice2a) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price
-                       + "\n    expected:   " + cachedPrice2a
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (price - cachedPrice2a));
-         }
-
-         price = bond2.cleanPrice();
-         if (Math.Abs(price - cachedPrice2b) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price
-                       + "\n    expected:   " + cachedPrice2b
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (price - cachedPrice2b));
-         }
-
-         yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Compounded, freq);
-         if (Math.Abs(yield - cachedYield2a) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached compounded yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield2a
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield2a));
-         }
-
-         yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Continuous, freq);
-         if (Math.Abs(yield - cachedYield2b) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached continuous yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield2b
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield2b));
-         }
-
-         yield = bond2.yield(bondDayCount, Compounding.Continuous, freq);
-         if (Math.Abs(yield - cachedYield2c) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached continuous yield:"
-                       + "\n    calculated: " + yield
-                       + "\n    expected:   " + cachedYield2c
-                       + "\n    tolerance:  " + tolerance
-                       + "\n    error:      " + (yield - cachedYield2c));
-         }
-
-         // with explicit settlement date:
-         Schedule sch3 = new Schedule(new Date(30, Month.November, 2004), new Date(30, Month.November, 2006), new Period(freq),
-                                      new UnitedStates(UnitedStates.Market.GovernmentBond), BusinessDayConvention.Unadjusted,
-                                      BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
-
-         FixedRateBond bond3 = new FixedRateBond(settlementDays, vars.faceAmount, sch3, new List<double>() { 0.02875 },
-                             new ActualActual(ActualActual.Convention.ISMA),
-                             BusinessDayConvention.ModifiedFollowing, 100.0, new Date(30, Month.November, 2004));
-
-         bond3.setPricingEngine(bondEngine);
-
-         double marketYield3 = 0.02997;
-
-         Date settlementDate = new Date(30, Month.November, 2004);
-         double cachedPrice3 = 99.764759;
-
-         price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq, settlementDate);
-         if (Math.Abs(price - cachedPrice3) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price + ""
-                       + "\n    expected:   " + cachedPrice3 + ""
-                       + "\n    error:      " + (price - cachedPrice3));
-         }
-
-         // this should give the same result since the issue date is the
-         // earliest possible settlement date
-         Settings.setEvaluationDate(new Date(22, Month.November, 2004));
-
-         price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq);
-         if (Math.Abs(price - cachedPrice3) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:"
-                       + "\n    calculated: " + price + ""
-                       + "\n    expected:   " + cachedPrice3 + ""
-                       + "\n    error:      " + (price - cachedPrice3));
-         }
-      }
-      [TestMethod()]
-      public void testCachedZero()
-      {
-         Console.WriteLine("Testing zero-coupon bond prices against cached values...");
-
-         CommonVars vars = new CommonVars();
-
-         Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
-
-         int settlementDays = 1;
-
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
-
-         double tolerance = 1.0e-6;
-
-         // plain
-         ZeroCouponBond bond1 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
-                              vars.faceAmount, new Date(30, Month.November, 2008), BusinessDayConvention.ModifiedFollowing,
-                              100.0, new Date(30, Month.November, 2004));
-
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-         bond1.setPricingEngine(bondEngine);
-
-         double cachedPrice1 = 88.551726;
-
-         double price = bond1.cleanPrice();
-         if (Math.Abs(price - cachedPrice1) > tolerance)
-         {
-            Console.WriteLine("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice1 + "\n"
-                       + "    error:      " + (price - cachedPrice1));
-         }
-
-         ZeroCouponBond bond2 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
-                              vars.faceAmount, new Date(30, Month.November, 2007), BusinessDayConvention.ModifiedFollowing,
-                              100.0, new Date(30, Month.November, 2004));
-
-         bond2.setPricingEngine(bondEngine);
-
-         double cachedPrice2 = 91.278949;
-
-         price = bond2.cleanPrice();
-         if (Math.Abs(price - cachedPrice2) > tolerance)
-         {
-            Console.WriteLine("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice2 + "\n"
-                       + "    error:      " + (price - cachedPrice2));
-         }
-
-         ZeroCouponBond bond3 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
-                              vars.faceAmount, new Date(30, Month.November, 2006), BusinessDayConvention.ModifiedFollowing,
-                              100.0, new Date(30, Month.November, 2004));
-
-         bond3.setPricingEngine(bondEngine);
-
-         double cachedPrice3 = 94.098006;
-
-         price = bond3.cleanPrice();
-         if (Math.Abs(price - cachedPrice3) > tolerance)
-         {
-            Console.WriteLine("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice3 + "\n"
-                       + "    error:      " + (price - cachedPrice3));
-         }
-      }
-      [TestMethod()]
-      public void testCachedFixed()
-      {
-         // "Testing fixed-coupon bond prices against cached values...");
-
-         CommonVars vars = new CommonVars();
-
-         Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
-
-         int settlementDays = 1;
-
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
-
-         double tolerance = 1.0e-6;
-
-         // plain
-         Schedule sch = new Schedule(new Date(30, Month.November, 2004),
-                      new Date(30, Month.November, 2008), new Period(Frequency.Semiannual),
-                      new UnitedStates(UnitedStates.Market.GovernmentBond),
-                      BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
-
-         FixedRateBond bond1 = new FixedRateBond(settlementDays, vars.faceAmount, sch, new List<double>() { 0.02875 },
-                             new ActualActual(ActualActual.Convention.ISMA), BusinessDayConvention.ModifiedFollowing,
-                             100.0, new Date(30, Month.November, 2004));
-
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-         bond1.setPricingEngine(bondEngine);
-
-         double cachedPrice1 = 99.298100;
-
-         double price = bond1.cleanPrice();
-         if (Math.Abs(price - cachedPrice1) > tolerance)
-         {
-            Console.WriteLine("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice1 + "\n"
-                       + "    error:      " + (price - cachedPrice1));
-         }
-
-         // varying coupons
-         InitializedList<double> couponRates = new InitializedList<double>(4);
-         couponRates[0] = 0.02875;
-         couponRates[1] = 0.03;
-         couponRates[2] = 0.03125;
-         couponRates[3] = 0.0325;
-
-         FixedRateBond bond2 = new FixedRateBond(settlementDays, vars.faceAmount, sch, couponRates,
-                               new ActualActual(ActualActual.Convention.ISMA),
-                               BusinessDayConvention.ModifiedFollowing,
-                               100.0, new Date(30, Month.November, 2004));
-
-         bond2.setPricingEngine(bondEngine);
-
-         double cachedPrice2 = 100.334149;
-
-         price = bond2.cleanPrice();
-         if (Math.Abs(price - cachedPrice2) > tolerance)
-         {
-            Console.WriteLine("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice2 + "\n"
-                       + "    error:      " + (price - cachedPrice2));
-         }
-
-         // stub date
-         Schedule sch3 = new Schedule(new Date(30, Month.November, 2004),
-                       new Date(30, Month.March, 2009), new Period(Frequency.Semiannual),
-                       new UnitedStates(UnitedStates.Market.GovernmentBond),
-                       BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
-                       null, new Date(30, Month.November, 2008));
-
-         FixedRateBond bond3 = new FixedRateBond(settlementDays, vars.faceAmount, sch3,
-                               couponRates, new ActualActual(ActualActual.Convention.ISMA),
-                               BusinessDayConvention.ModifiedFollowing,
-                               100.0, new Date(30, Month.November, 2004));
-
-         bond3.setPricingEngine(bondEngine);
-
-         double cachedPrice3 = 100.382794;
-
-         price = bond3.cleanPrice();
-         if (Math.Abs(price - cachedPrice3) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice3 + "\n"
-                       + "    error:      " + (price - cachedPrice3));
-         }
-      }
-      [TestMethod()]
-      public void testCachedFloating()
-      {
-         // "Testing floating-rate bond prices against cached values...");
-
-         CommonVars vars = new CommonVars();
-
-         Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
-
-         int settlementDays = 1;
-
-         var riskFreeRate = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.025, new Actual360()));
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
-
-         IborIndex index = new USDLibor(new Period(6, TimeUnit.Months), riskFreeRate);
-         int fixingDays = 1;
-
-         double tolerance = 1.0e-6;
-
-         IborCouponPricer pricer = new BlackIborCouponPricer(new Handle<OptionletVolatilityStructure>());
-
-         // plain
-         Schedule sch = new Schedule(new Date(30, Month.November, 2004), new Date(30, Month.November, 2008),
-                                     new Period(Frequency.Semiannual), new UnitedStates(UnitedStates.Market.GovernmentBond),
-                                     BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
-                                     DateGeneration.Rule.Backward, false);
-
-         FloatingRateBond bond1 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
-                                index, new ActualActual(ActualActual.Convention.ISMA),
-                                BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                new List<double>(), new List<double>(),
-                                new List<double>(), new List<double>(),
-                                false,
+
+            price = bond1.cleanPrice();
+            if (Math.Abs(price - cachedPrice1b) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price
+                           + "\n    expected:   " + cachedPrice1b
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (price - cachedPrice1b));
+            }
+
+            yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Compounded, freq);
+            if (Math.Abs(yield - cachedYield1a) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached compounded yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield1a
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield1a));
+            }
+
+            yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Continuous, freq);
+            if (Math.Abs(yield - cachedYield1b) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached continuous yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield1b
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield1b));
+            }
+
+            yield = bond1.yield(bondDayCount, Compounding.Continuous, freq);
+            if (Math.Abs(yield - cachedYield1c) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached continuous yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield1c
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield1c));
+            }
+
+
+            price = bond2.cleanPrice(marketYield2, bondDayCount, Compounding.Compounded, freq);
+            if (Math.Abs(price - cachedPrice2a) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price
+                           + "\n    expected:   " + cachedPrice2a
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (price - cachedPrice2a));
+            }
+
+            price = bond2.cleanPrice();
+            if (Math.Abs(price - cachedPrice2b) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price
+                           + "\n    expected:   " + cachedPrice2b
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (price - cachedPrice2b));
+            }
+
+            yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Compounded, freq);
+            if (Math.Abs(yield - cachedYield2a) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached compounded yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield2a
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield2a));
+            }
+
+            yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Continuous, freq);
+            if (Math.Abs(yield - cachedYield2b) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached continuous yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield2b
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield2b));
+            }
+
+            yield = bond2.yield(bondDayCount, Compounding.Continuous, freq);
+            if (Math.Abs(yield - cachedYield2c) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached continuous yield:"
+                           + "\n    calculated: " + yield
+                           + "\n    expected:   " + cachedYield2c
+                           + "\n    tolerance:  " + tolerance
+                           + "\n    error:      " + (yield - cachedYield2c));
+            }
+
+            // with explicit settlement date:
+            Schedule sch3 = new Schedule(new Date(30, Month.November, 2004), new Date(30, Month.November, 2006), new Period(freq),
+                                         new UnitedStates(UnitedStates.Market.GovernmentBond), BusinessDayConvention.Unadjusted,
+                                         BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
+
+            FixedRateBond bond3 = new FixedRateBond(settlementDays, vars.faceAmount, sch3, new List<double>() { 0.02875 },
+                                new ActualActual(ActualActual.Convention.ISMA),
+                                BusinessDayConvention.ModifiedFollowing, 100.0, new Date(30, Month.November, 2004));
+
+            bond3.setPricingEngine(bondEngine);
+
+            double marketYield3 = 0.02997;
+
+            Date settlementDate = new Date(30, Month.November, 2004);
+            double cachedPrice3 = 99.764759;
+
+            price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq, settlementDate);
+            if (Math.Abs(price - cachedPrice3) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price + ""
+                           + "\n    expected:   " + cachedPrice3 + ""
+                           + "\n    error:      " + (price - cachedPrice3));
+            }
+
+            // this should give the same result since the issue date is the
+            // earliest possible settlement date
+            Settings.setEvaluationDate(new Date(22, Month.November, 2004));
+
+            price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq);
+            if (Math.Abs(price - cachedPrice3) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:"
+                           + "\n    calculated: " + price + ""
+                           + "\n    expected:   " + cachedPrice3 + ""
+                           + "\n    error:      " + (price - cachedPrice3));
+            }
+        }
+        [TestMethod()]
+        public void testCachedZero()
+        {
+            Console.WriteLine("Testing zero-coupon bond prices against cached values...");
+
+            CommonVars vars = new CommonVars();
+
+            Date today = new Date(22, Month.November, 2004);
+            Settings.setEvaluationDate(today);
+
+            int settlementDays = 1;
+
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
+
+            double tolerance = 1.0e-6;
+
+            // plain
+            ZeroCouponBond bond1 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
+                                 vars.faceAmount, new Date(30, Month.November, 2008), BusinessDayConvention.ModifiedFollowing,
+                                 100.0, new Date(30, Month.November, 2004));
+
+            IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+            bond1.setPricingEngine(bondEngine);
+
+            double cachedPrice1 = 88.551726;
+
+            double price = bond1.cleanPrice();
+            if (Math.Abs(price - cachedPrice1) > tolerance)
+            {
+                Console.WriteLine("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice1 + "\n"
+                           + "    error:      " + (price - cachedPrice1));
+            }
+
+            ZeroCouponBond bond2 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
+                                 vars.faceAmount, new Date(30, Month.November, 2007), BusinessDayConvention.ModifiedFollowing,
+                                 100.0, new Date(30, Month.November, 2004));
+
+            bond2.setPricingEngine(bondEngine);
+
+            double cachedPrice2 = 91.278949;
+
+            price = bond2.cleanPrice();
+            if (Math.Abs(price - cachedPrice2) > tolerance)
+            {
+                Console.WriteLine("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice2 + "\n"
+                           + "    error:      " + (price - cachedPrice2));
+            }
+
+            ZeroCouponBond bond3 = new ZeroCouponBond(settlementDays, new UnitedStates(UnitedStates.Market.GovernmentBond),
+                                 vars.faceAmount, new Date(30, Month.November, 2006), BusinessDayConvention.ModifiedFollowing,
+                                 100.0, new Date(30, Month.November, 2004));
+
+            bond3.setPricingEngine(bondEngine);
+
+            double cachedPrice3 = 94.098006;
+
+            price = bond3.cleanPrice();
+            if (Math.Abs(price - cachedPrice3) > tolerance)
+            {
+                Console.WriteLine("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice3 + "\n"
+                           + "    error:      " + (price - cachedPrice3));
+            }
+        }
+        [TestMethod()]
+        public void testCachedFixed()
+        {
+            // "Testing fixed-coupon bond prices against cached values...");
+
+            CommonVars vars = new CommonVars();
+
+            Date today = new Date(22, Month.November, 2004);
+            Settings.setEvaluationDate(today);
+
+            int settlementDays = 1;
+
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
+
+            double tolerance = 1.0e-6;
+
+            // plain
+            Schedule sch = new Schedule(new Date(30, Month.November, 2004),
+                         new Date(30, Month.November, 2008), new Period(Frequency.Semiannual),
+                         new UnitedStates(UnitedStates.Market.GovernmentBond),
+                         BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
+
+            FixedRateBond bond1 = new FixedRateBond(settlementDays, vars.faceAmount, sch, new List<double>() { 0.02875 },
+                                new ActualActual(ActualActual.Convention.ISMA), BusinessDayConvention.ModifiedFollowing,
                                 100.0, new Date(30, Month.November, 2004));
 
-         IPricingEngine bondEngine = new DiscountingBondEngine(riskFreeRate);
-         bond1.setPricingEngine(bondEngine);
+            IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+            bond1.setPricingEngine(bondEngine);
 
-         Utils.setCouponPricer(bond1.cashflows(), pricer);
+            double cachedPrice1 = 99.298100;
+
+            double price = bond1.cleanPrice();
+            if (Math.Abs(price - cachedPrice1) > tolerance)
+            {
+                Console.WriteLine("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice1 + "\n"
+                           + "    error:      " + (price - cachedPrice1));
+            }
+
+            // varying coupons
+            InitializedList<double> couponRates = new InitializedList<double>(4);
+            couponRates[0] = 0.02875;
+            couponRates[1] = 0.03;
+            couponRates[2] = 0.03125;
+            couponRates[3] = 0.0325;
+
+            FixedRateBond bond2 = new FixedRateBond(settlementDays, vars.faceAmount, sch, couponRates,
+                                  new ActualActual(ActualActual.Convention.ISMA),
+                                  BusinessDayConvention.ModifiedFollowing,
+                                  100.0, new Date(30, Month.November, 2004));
+
+            bond2.setPricingEngine(bondEngine);
+
+            double cachedPrice2 = 100.334149;
+
+            price = bond2.cleanPrice();
+            if (Math.Abs(price - cachedPrice2) > tolerance)
+            {
+                Console.WriteLine("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice2 + "\n"
+                           + "    error:      " + (price - cachedPrice2));
+            }
+
+            // stub date
+            Schedule sch3 = new Schedule(new Date(30, Month.November, 2004),
+                          new Date(30, Month.March, 2009), new Period(Frequency.Semiannual),
+                          new UnitedStates(UnitedStates.Market.GovernmentBond),
+                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
+                          null, new Date(30, Month.November, 2008));
+
+            FixedRateBond bond3 = new FixedRateBond(settlementDays, vars.faceAmount, sch3,
+                                  couponRates, new ActualActual(ActualActual.Convention.ISMA),
+                                  BusinessDayConvention.ModifiedFollowing,
+                                  100.0, new Date(30, Month.November, 2004));
+
+            bond3.setPricingEngine(bondEngine);
+
+            double cachedPrice3 = 100.382794;
+
+            price = bond3.cleanPrice();
+            if (Math.Abs(price - cachedPrice3) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice3 + "\n"
+                           + "    error:      " + (price - cachedPrice3));
+            }
+        }
+        [TestMethod()]
+        public void testCachedFloating()
+        {
+            // "Testing floating-rate bond prices against cached values...");
+
+            CommonVars vars = new CommonVars();
+
+            Date today = new Date(22, Month.November, 2004);
+            Settings.setEvaluationDate(today);
+
+            int settlementDays = 1;
+
+            var riskFreeRate = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.025, new Actual360()));
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.03, new Actual360()));
+
+            IborIndex index = new USDLibor(new Period(6, TimeUnit.Months), riskFreeRate);
+            int fixingDays = 1;
+
+            double tolerance = 1.0e-6;
+
+            IborCouponPricer pricer = new BlackIborCouponPricer(new Handle<OptionletVolatilityStructure>());
+
+            // plain
+            Schedule sch = new Schedule(new Date(30, Month.November, 2004), new Date(30, Month.November, 2008),
+                                        new Period(Frequency.Semiannual), new UnitedStates(UnitedStates.Market.GovernmentBond),
+                                        BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
+                                        DateGeneration.Rule.Backward, false);
+
+            FloatingRateBond bond1 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
+                                   index, new ActualActual(ActualActual.Convention.ISMA),
+                                   BusinessDayConvention.ModifiedFollowing, fixingDays,
+                                   new List<double>(), new List<double>(),
+                                   new List<double>(), new List<double>(),
+                                   false,
+                                   100.0, new Date(30, Month.November, 2004));
+
+            IPricingEngine bondEngine = new DiscountingBondEngine(riskFreeRate);
+            bond1.setPricingEngine(bondEngine);
+
+            Utils.setCouponPricer(bond1.cashflows(), pricer);
 
 #if QL_USE_INDEXED_COUPON
             double cachedPrice1 = 99.874645;
 #else
-         double cachedPrice1 = 99.874646;
+            double cachedPrice1 = 99.874646;
 #endif
 
 
-         double price = bond1.cleanPrice();
-         if (Math.Abs(price - cachedPrice1) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice1 + "\n"
-                       + "    error:      " + (price - cachedPrice1));
-         }
+            double price = bond1.cleanPrice();
+            if (Math.Abs(price - cachedPrice1) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice1 + "\n"
+                           + "    error:      " + (price - cachedPrice1));
+            }
 
-         // different risk-free and discount curve
-         FloatingRateBond bond2 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
-                                index, new ActualActual(ActualActual.Convention.ISMA),
-                                BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                new List<double>(), new List<double>(),
-                                new List<double>(), new List<double>(),
-                                false,
-                                100.0, new Date(30, Month.November, 2004));
+            // different risk-free and discount curve
+            FloatingRateBond bond2 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
+                                   index, new ActualActual(ActualActual.Convention.ISMA),
+                                   BusinessDayConvention.ModifiedFollowing, fixingDays,
+                                   new List<double>(), new List<double>(),
+                                   new List<double>(), new List<double>(),
+                                   false,
+                                   100.0, new Date(30, Month.November, 2004));
 
-         IPricingEngine bondEngine2 = new DiscountingBondEngine(discountCurve);
-         bond2.setPricingEngine(bondEngine2);
+            IPricingEngine bondEngine2 = new DiscountingBondEngine(discountCurve);
+            bond2.setPricingEngine(bondEngine2);
 
-         Utils.setCouponPricer(bond2.cashflows(), pricer);
+            Utils.setCouponPricer(bond2.cashflows(), pricer);
 
 #if QL_USE_INDEXED_COUPON
             double cachedPrice2 = 97.955904;
 #else
-         double cachedPrice2 = 97.955904;
+            double cachedPrice2 = 97.955904;
 #endif
 
-         price = bond2.cleanPrice();
-         if (Math.Abs(price - cachedPrice2) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice2 + "\n"
-                       + "    error:      " + (price - cachedPrice2));
-         }
+            price = bond2.cleanPrice();
+            if (Math.Abs(price - cachedPrice2) > tolerance)
+            {
+                Assert.Fail("failed to reproduce cached price:\n"
+                           + "    calculated: " + price + "\n"
+                           + "    expected:   " + cachedPrice2 + "\n"
+                           + "    error:      " + (price - cachedPrice2));
+            }
 
-         // varying spread
-         InitializedList<double> spreads = new InitializedList<double>(4);
-         spreads[0] = 0.001;
-         spreads[1] = 0.0012;
-         spreads[2] = 0.0014;
-         spreads[3] = 0.0016;
+            // varying spread
+            InitializedList<double> spreads = new InitializedList<double>(4);
+            spreads[0] = 0.001;
+            spreads[1] = 0.0012;
+            spreads[2] = 0.0014;
+            spreads[3] = 0.0016;
 
-         FloatingRateBond bond3 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
-                                index, new ActualActual(ActualActual.Convention.ISMA),
-                                BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                new List<double>(), spreads,
-                                new List<double>(), new List<double>(),
-                                false,
-                                100.0, new Date(30, Month.November, 2004));
+            FloatingRateBond bond3 = new FloatingRateBond(settlementDays, vars.faceAmount, sch,
+                                   index, new ActualActual(ActualActual.Convention.ISMA),
+                                   BusinessDayConvention.ModifiedFollowing, fixingDays,
+                                   new List<double>(), spreads,
+                                   new List<double>(), new List<double>(),
+                                   false,
+                                   100.0, new Date(30, Month.November, 2004));
 
-         bond3.setPricingEngine(bondEngine2);
+            bond3.setPricingEngine(bondEngine2);
 
-         Utils.setCouponPricer(bond3.cashflows(), pricer);
+            Utils.setCouponPricer(bond3.cashflows(), pricer);
 
 #if QL_USE_INDEXED_COUPON
             double cachedPrice3 = 98.495458;
 #else
-         double cachedPrice3 = 98.495459;
+            double cachedPrice3 = 98.495459;
 #endif
 
-         price = bond3.cleanPrice();
-         if (Math.Abs(price - cachedPrice3) > tolerance)
-         {
-            Assert.Fail("failed to reproduce cached price:\n"
-                       + "    calculated: " + price + "\n"
-                       + "    expected:   " + cachedPrice3 + "\n"
-                       + "    error:      " + (price - cachedPrice3));
-         }
-      }
-      [TestMethod()]
-      public void testBrazilianCached()
-      {
-         //("Testing Brazilian public bond prices against cached values...");
-
-         CommonVars vars = new CommonVars();
-
-         double faceAmount = 1000.0;
-         double redemption = 100.0;
-         Date issueDate = new Date(1,Month.January,2007);
-
-         Date today = new Date(6, Month.June, 2007);
-         Settings.setEvaluationDate(today);
-
-         // NTN-F maturity dates
-         InitializedList<Date> maturityDates = new InitializedList<Date>(6);
-         maturityDates[0] = new Date(1, Month.January, 2008);
-         maturityDates[1] = new Date(1, Month.January, 2010);
-         maturityDates[2] = new Date(1, Month.July, 2010);
-         maturityDates[3] = new Date(1, Month.January, 2012);
-         maturityDates[4] = new Date(1, Month.January, 2014);
-         maturityDates[5] = new Date(1, Month.January, 2017);
-
-         // NTN-F yields
-         InitializedList<double> yields = new InitializedList<double>(6);
-         yields[0] = 0.114614;
-         yields[1] = 0.105726;
-         yields[2] = 0.105328;
-         yields[3] = 0.104283;
-         yields[4] = 0.103218;
-         yields[5] = 0.102948;
-
-         // NTN-F prices
-         InitializedList<double> prices = new InitializedList<double>(6);
-         prices[0] = 1034.63031372;
-         prices[1] = 1030.09919487;
-         prices[2] = 1029.98307160;
-         prices[3] = 1028.13585068;
-         prices[4] = 1028.33383817;
-         prices[5] = 1026.19716497;
-
-         int settlementDays = 1;
-         vars.faceAmount = 1000.0;
-
-         // The tolerance is high because Andima truncate yields
-         double tolerance = 1.0e-4;
-
-         InitializedList<InterestRate> couponRates = new InitializedList<InterestRate>(1);
-         couponRates[0] = new InterestRate(0.1, new Thirty360(), Compounding.Compounded, Frequency.Annual);
-
-         for (int bondIndex = 0; bondIndex < maturityDates.Count; bondIndex++)
-         {
-
-            // plain
-            InterestRate yield = new InterestRate(yields[bondIndex], new Business252(new Brazil()),
-                                                  Compounding.Compounded, Frequency.Annual);
-
-            Schedule schedule = new Schedule(new Date(1, Month.January, 2007),
-                              maturityDates[bondIndex], new Period(Frequency.Semiannual),
-                              new Brazil(Brazil.Market.Settlement),
-                              BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                              DateGeneration.Rule.Backward, false);
-
-
-            FixedRateBond bond = new FixedRateBond(settlementDays,
-                                                   faceAmount,
-                                                   schedule,
-                                                   couponRates,
-                                                   BusinessDayConvention.Following,
-                                                   redemption,
-                                                   issueDate);
-
-            double cachedPrice = prices[bondIndex];
-
-            double price = vars.faceAmount * (bond.cleanPrice(yield.rate(),
-                                                         yield.dayCounter(),
-                                                         yield.compounding(),
-                                                         yield.frequency(),
-                                                         today) + bond.accruedAmount(today)) / 100;
-            if (Math.Abs(price - cachedPrice) > tolerance)
+            price = bond3.cleanPrice();
+            if (Math.Abs(price - cachedPrice3) > tolerance)
             {
-               Assert.Fail("failed to reproduce cached price:\n"
+                Assert.Fail("failed to reproduce cached price:\n"
                            + "    calculated: " + price + "\n"
-                           + "    expected:   " + cachedPrice + "\n"
-                           + "    error:      " + (price - cachedPrice) + "\n"
-                           );
+                           + "    expected:   " + cachedPrice3 + "\n"
+                           + "    error:      " + (price - cachedPrice3));
             }
-         }
-      }
+        }
+        [TestMethod()]
+        public void testBrazilianCached()
+        {
+            //("Testing Brazilian public bond prices against cached values...");
 
-      [TestMethod()]
-      public void testAmortizingFixedBond()
-      {
-         Date startDate = new Date(2, 1, 2007);
-         Settings.setEvaluationDate(startDate);
+            CommonVars vars = new CommonVars();
 
-         Period bondLength = new Period(12, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
-         Frequency payFrequency = Frequency.Monthly;
-         double amount = 400000000;
-         double rate = 0.06;
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360()));
+            double faceAmount = 1000.0;
+            double redemption = 100.0;
+            Date issueDate = new Date(1, Month.January, 2007);
 
-         AmortizingFixedRateBond bond = BondFactory.makeAmortizingFixedBond(startDate, bondLength, dCounter, payFrequency, amount, rate);
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-         bond.setPricingEngine(bondEngine);
+            Date today = new Date(6, Month.June, 2007);
+            Settings.setEvaluationDate(today);
 
-         // cached values
-         int totCashflow = 24;
-         int totNotionals = 13;
-         double PVDifference = 13118862.59;
-         double[] notionals = {400000000,367573428,334984723,302233075,269317669,236237685,202992302,169580691,136002023,
+            // NTN-F maturity dates
+            InitializedList<Date> maturityDates = new InitializedList<Date>(6);
+            maturityDates[0] = new Date(1, Month.January, 2008);
+            maturityDates[1] = new Date(1, Month.January, 2010);
+            maturityDates[2] = new Date(1, Month.July, 2010);
+            maturityDates[3] = new Date(1, Month.January, 2012);
+            maturityDates[4] = new Date(1, Month.January, 2014);
+            maturityDates[5] = new Date(1, Month.January, 2017);
+
+            // NTN-F yields
+            InitializedList<double> yields = new InitializedList<double>(6);
+            yields[0] = 0.114614;
+            yields[1] = 0.105726;
+            yields[2] = 0.105328;
+            yields[3] = 0.104283;
+            yields[4] = 0.103218;
+            yields[5] = 0.102948;
+
+            // NTN-F prices
+            InitializedList<double> prices = new InitializedList<double>(6);
+            prices[0] = 1034.63031372;
+            prices[1] = 1030.09919487;
+            prices[2] = 1029.98307160;
+            prices[3] = 1028.13585068;
+            prices[4] = 1028.33383817;
+            prices[5] = 1026.19716497;
+
+            int settlementDays = 1;
+            vars.faceAmount = 1000.0;
+
+            // The tolerance is high because Andima truncate yields
+            double tolerance = 1.0e-4;
+
+            InitializedList<InterestRate> couponRates = new InitializedList<InterestRate>(1);
+            couponRates[0] = new InterestRate(0.1, new Thirty360(), Compounding.Compounded, Frequency.Annual);
+
+            for (int bondIndex = 0; bondIndex < maturityDates.Count; bondIndex++)
+            {
+
+                // plain
+                InterestRate yield = new InterestRate(yields[bondIndex], new Business252(new Brazil()),
+                                                      Compounding.Compounded, Frequency.Annual);
+
+                Schedule schedule = new Schedule(new Date(1, Month.January, 2007),
+                                  maturityDates[bondIndex], new Period(Frequency.Semiannual),
+                                  new Brazil(Brazil.Market.Settlement),
+                                  BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                  DateGeneration.Rule.Backward, false);
+
+
+                FixedRateBond bond = new FixedRateBond(settlementDays,
+                                                       faceAmount,
+                                                       schedule,
+                                                       couponRates,
+                                                       BusinessDayConvention.Following,
+                                                       redemption,
+                                                       issueDate);
+
+                double cachedPrice = prices[bondIndex];
+
+                double price = vars.faceAmount * (bond.cleanPrice(yield.rate(),
+                                                             yield.dayCounter(),
+                                                             yield.compounding(),
+                                                             yield.frequency(),
+                                                             today) + bond.accruedAmount(today)) / 100;
+                if (Math.Abs(price - cachedPrice) > tolerance)
+                {
+                    Assert.Fail("failed to reproduce cached price:\n"
+                                + "    calculated: " + price + "\n"
+                                + "    expected:   " + cachedPrice + "\n"
+                                + "    error:      " + (price - cachedPrice) + "\n"
+                                );
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void testAmortizingFixedBond()
+        {
+            Date startDate = new Date(2, 1, 2007);
+            Settings.setEvaluationDate(startDate);
+
+            Period bondLength = new Period(12, TimeUnit.Months);
+            DayCounter dCounter = new Thirty360();
+            Frequency payFrequency = Frequency.Monthly;
+            double amount = 400000000;
+            double rate = 0.06;
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360()));
+
+            AmortizingFixedRateBond bond = BondFactory.makeAmortizingFixedBond(startDate, bondLength, dCounter, payFrequency, amount, rate);
+            IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+            bond.setPricingEngine(bondEngine);
+
+            // cached values
+            int totCashflow = 24;
+            int totNotionals = 13;
+            double PVDifference = 13118862.59;
+            double[] notionals = {400000000,367573428,334984723,302233075,269317669,236237685,202992302,169580691,136002023,
                                102255461,68340166,34255295,0 };
 
-         // test total cashflow count 
-         Assert.AreEqual(bond.cashflows().Count, totCashflow, "Cashflow size different");
+            // test total cashflow count 
+            Assert.AreEqual(bond.cashflows().Count, totCashflow, "Cashflow size different");
 
-         // test notional cashflow count
-         Assert.AreEqual(bond.notionals().Count, totNotionals, "Notionals size different");
+            // test notional cashflow count
+            Assert.AreEqual(bond.notionals().Count, totNotionals, "Notionals size different");
 
-         // test notional amortization values
-         for (int i = 0; i < totNotionals; i++)
-         {
-            Assert.AreEqual(bond.notionals()[i], notionals[i], 1, "Notionals " + i + "is different");
-         }
+            // test notional amortization values
+            for (int i = 0; i < totNotionals; i++)
+            {
+                Assert.AreEqual(bond.notionals()[i], notionals[i], 1, "Notionals " + i + "is different");
+            }
 
-         // test PV difference
-         double cash = bond.CASH();
-         Assert.AreEqual(cash - amount, PVDifference, 0.1, "PV Difference wrong");
+            // test PV difference
+            double cash = bond.CASH();
+            Assert.AreEqual(cash - amount, PVDifference, 0.1, "PV Difference wrong");
 
-      }
+        }
 
-      
-      [TestMethod()]
-      public void testMBSFixedBondCached()
-      {
-         // Test MBS Bond against cached values
-         // from Fabozzi MBS Products Structuring and Analytical Techniques
-         // Second Edition - WILEY ISBN 978-1-118-00469-2
-         // pag 58,61,63
 
-         #region Cached Values
-         double[] OutstandingBalance = {400000000,399396651,398724866,397984841,397176808,396301034,395357823,394347512,393270474,
+        [TestMethod()]
+        public void testMBSFixedBondCached()
+        {
+            // Test MBS Bond against cached values
+            // from Fabozzi MBS Products Structuring and Analytical Techniques
+            // Second Edition - WILEY ISBN 978-1-118-00469-2
+            // pag 58,61,63
+
+            #region Cached Values
+            double[] OutstandingBalance = {400000000,399396651,398724866,397984841,397176808,396301034,395357823,394347512,393270474,
                                         392127117,390917882,389643247,388303720,386899847,385432204,383901402,382308084,380652925,
                                         378936631,377159941,375323622,373428474,371475324,369465030,367398478,365276580,363100276,
                                         360870534,358588346,356317966,354059336,351812393,349577078,347353331,345141093,342940305,
@@ -869,7 +869,7 @@ namespace TestSuite
                                         10806096 ,10345743 ,9887826  ,9432332  ,8979249  ,8528565  ,8080267  ,7634342  ,7190780  ,
                                         6749566  ,6310691  ,5874140  ,5439903  ,5007967  ,4578321  ,4150953  ,3725851  ,3303003  ,
                                         2882398  ,2464024  ,2047870  ,1633925  ,1222176  ,812614   ,405225   };
-         double[] Prepayments = { 200350,266975,333463,399780,465892,531764,597362,662652,727600,792172,856336,920057,983303,
+            double[] Prepayments = { 200350,266975,333463,399780,465892,531764,597362,662652,727600,792172,856336,920057,983303,
                                   1046041,1108239,1169864,1230887,1291274,1350996,1410023,1468325,1525872,1582637,1638590,1693706,1747956,
                                   1801315,1853758,1842021,1830345,1818729,1807174,1795678,1784241,1772864,1761546,1750286,1739085,1727941,
                                   1716855,1705827,1694856,1683941,1673083,1662281,1651536,1640845,1630210,1619631,1609106,1598635,1588219,
@@ -895,7 +895,7 @@ namespace TestSuite
                                   103561,100930,98312,95707,93117,90540,87977,85428,82891,80369,77859,75363,72880,70410,67954,65510,
                                   63079,60661,58256,55863,53483,51116,48761,46419,44089,41772,39466,37173,34893,32624,30367,28122,
                                   25889,23668,21459,19261,17075,14901,12738,10587,8447,6318,4201,2095,0};
-         double[] NetInterest = { 1833333,1830568,1827489,1824097,1820394,1816380,1812057,1807426,1802490,1797249,1791707,1785865,
+            double[] NetInterest = { 1833333,1830568,1827489,1824097,1820394,1816380,1812057,1807426,1802490,1797249,1791707,1785865,
                                   1779725,1773291,1766564,1759548,1752245,1744659,1736793,1728650,1720233,1711547,1702595,1693381,
                                   1683910,1674184,1664210,1653990,1643530,1633124,1622772,1612473,1602228,1592036,1581897,1571810,
                                   1561775,1551792,1541861,1531981,1522153,1512375,1502648,1492971,1483345,1473768,1464241,1454763,
@@ -922,7 +922,7 @@ namespace TestSuite
                                   78000,75740,73491,71254,69030,66816,64615,62425,60247,58081,55925,53782,51649,49528,47418,45319,
                                   43232,41155,39089,37035,34991,32958,30936,28924,26923,24933,22953,20984,19025,17077,15139,13211,
                                   11293,9386,7489,5602,3724,1857};
-         double[] ScheduledPrincipal = { 402998,404810,406562,408253,409882,411447,412949,414386,415758,417063,418300,419470,420571,
+            double[] ScheduledPrincipal = { 402998,404810,406562,408253,409882,411447,412949,414386,415758,417063,418300,419470,420571,
                                          421602,422563,423454,424273,425020,425694,426296,426824,427278,427657,427962,428192,428347,
                                          428427,428430,428358,428286,428213,428141,428069,427997,427924,427852,427780,427708,427636,
                                          427564,427491,427419,427347,427275,427203,427131,427059,426987,426915,426843,426771,426699,
@@ -950,159 +950,250 @@ namespace TestSuite
                                          407419,407350,407282,407213,407144,407076,407007,406938,406870,406801,406732,406664,406595,
                                          406526,406458,406389,406321,406252,406184,406115,406047,405978,405910,405841,405773,405704,
                                          405636,405567,405499,405430,405362,405294,405225};
-         #endregion
+            #endregion
 
-         Date startDate = new Date(1, 2, 2007);
-         Settings.setEvaluationDate(startDate);
+            Date startDate = new Date(1, 2, 2007);
+            Settings.setEvaluationDate(startDate);
 
-         Period bondLength = new Period(358, TimeUnit.Months);
-         Period originalLenght = new Period(360, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
-         Frequency payFrequency = Frequency.Monthly;
-         double amount = 400000000;
-         double WACrate = 0.06;
-         double PassThroughRate = 0.055;
-         PSACurve psa100 = new PSACurve(startDate);
+            Period bondLength = new Period(358, TimeUnit.Months);
+            Period originalLenght = new Period(360, TimeUnit.Months);
+            DayCounter dCounter = new Thirty360();
+            Frequency payFrequency = Frequency.Monthly;
+            double amount = 400000000;
+            double WACrate = 0.06;
+            double PassThroughRate = 0.055;
+            PSACurve psa100 = new PSACurve(startDate);
 
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360()));
+            var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360()));
 
-         // 400 Million Pass-Through with a 5.5% Pass-through Rate, a WAC of 6.0%, and a WAM of 358 Months,
-         // Assuming 100% PSA
-         MBSFixedRateBond bond = BondFactory.makeMBSFixedBond(startDate,
-                                                               bondLength,
-                                                               originalLenght,
-                                                               dCounter,
-                                                               payFrequency,
-                                                               amount,
-                                                               WACrate,
-                                                               PassThroughRate,
-                                                               psa100);
+            // 400 Million Pass-Through with a 5.5% Pass-through Rate, a WAC of 6.0%, and a WAM of 358 Months,
+            // Assuming 100% PSA
+            MBSFixedRateBond bond = BondFactory.makeMBSFixedBond(startDate,
+                                                                  bondLength,
+                                                                  originalLenght,
+                                                                  dCounter,
+                                                                  payFrequency,
+                                                                  amount,
+                                                                  WACrate,
+                                                                  PassThroughRate,
+                                                                  psa100);
 
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
-         bond.setPricingEngine(bondEngine);
+            IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
+            bond.setPricingEngine(bondEngine);
 
-         // Calculate Monthly Expecting Cashflow
-         List<CashFlow> cf = bond.expectedCashflows();
+            // Calculate Monthly Expecting Cashflow
+            List<CashFlow> cf = bond.expectedCashflows();
 
-         // Outstanding Balance
-         int i = 0;
-         foreach (CashFlow c in cf)
-         {
-            if (c is QLNet.FixedRateCoupon)
+            // Outstanding Balance
+            int i = 0;
+            foreach (CashFlow c in cf)
             {
-               FixedRateCoupon frc = c as FixedRateCoupon;
-               Assert.AreEqual(OutstandingBalance[i], frc.nominal(), 1, "Outstanding Balance " + i++ + "is different");
+                if (c is QLNet.FixedRateCoupon)
+                {
+                    FixedRateCoupon frc = c as FixedRateCoupon;
+                    Assert.AreEqual(OutstandingBalance[i], frc.nominal(), 1, "Outstanding Balance " + i++ + "is different");
+                }
             }
-         }
 
-         // Prepayments
-         i = 0;
-         foreach (CashFlow c in cf)
-         {
-            if (c is QLNet.VoluntaryPrepay)
+            // Prepayments
+            i = 0;
+            foreach (CashFlow c in cf)
             {
-               Assert.AreEqual(Prepayments[i], c.amount(), 1, "Prepayments " + i++ + "is different");
+                if (c is QLNet.VoluntaryPrepay)
+                {
+                    Assert.AreEqual(Prepayments[i], c.amount(), 1, "Prepayments " + i++ + "is different");
+                }
             }
-         }
 
-         // Net Interest
-         i = 0;
-         foreach (CashFlow c in cf)
-         {
-            if (c is QLNet.FixedRateCoupon)
+            // Net Interest
+            i = 0;
+            foreach (CashFlow c in cf)
             {
-               FixedRateCoupon frc = c as FixedRateCoupon;
-               Assert.AreEqual(NetInterest[i], frc.amount(), 1, "Net Interest " + i++ + "is different");
+                if (c is QLNet.FixedRateCoupon)
+                {
+                    FixedRateCoupon frc = c as FixedRateCoupon;
+                    Assert.AreEqual(NetInterest[i], frc.amount(), 1, "Net Interest " + i++ + "is different");
+                }
             }
-         }
 
-         // Scheduled Principal
-         i = 0;
-         foreach (CashFlow c in cf)
-         {
-            if (c is QLNet.AmortizingPayment)
+            // Scheduled Principal
+            i = 0;
+            foreach (CashFlow c in cf)
             {
-               Assert.AreEqual(ScheduledPrincipal[i], c.amount(), 1, "Scheduled Principal " + i++ + "is different");
+                if (c is QLNet.AmortizingPayment)
+                {
+                    Assert.AreEqual(ScheduledPrincipal[i], c.amount(), 1, "Scheduled Principal " + i++ + "is different");
+                }
             }
-         }
 
-         // Monthly Yield
-         Assert.AreEqual(0.00458333333333381, bond.MonthlyYield(), 0.000000001, "MonthlyYield is different");
+            // Monthly Yield
+            Assert.AreEqual(0.00458333333333381, bond.MonthlyYield(), 0.000000001, "MonthlyYield is different");
 
-         // Bond Equivalent Yield
-         Assert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
-      }
+            // Bond Equivalent Yield
+            Assert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
+        }
 
-      [TestMethod()]
-      public void testAmortizingBond1()
-      {
-         // Input Values
-         double faceValue = 40000;
-         double marketValue = 43412;
-         double couponRate = 0.06;
-         Date issueDate = new Date(1, Month.January, 2001);
-         Date maturirtyDate = new Date(1, Month.January, 2005);
-         Date tradeDate = new Date(1, Month.January, 2004);
-         Frequency paymentFrequency = Frequency.Semiannual;
-         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+        [TestMethod()]
+        public void testAmortizingBond1()
+        {
+            // Input Values
+            double faceValue = 40000;
+            double marketValue = 43412;
+            double couponRate = 0.06;
+            Date issueDate = new Date(1, Month.January, 2001);
+            Date maturirtyDate = new Date(1, Month.January, 2005);
+            Date tradeDate = new Date(1, Month.January, 2004);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
 
-         // Build Bond
-         AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
-            issueDate, maturirtyDate, tradeDate, paymentFrequency, dc, AmortizingMethod.EffectiveInterestRate);
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturirtyDate, tradeDate, paymentFrequency, dc, AmortizingMethod.EffectiveInterestRate);
 
-         // Amortizing Yield ( Effective Rate )
-         double y1 = bond.Yield() ;
-         Assert.AreEqual(-0.0236402, y1, 0.001, "Amortizing Yield is different");
+            // Amortizing Yield ( Effective Rate )
+            double y1 = bond.Yield();
+            Assert.AreEqual(-0.0236402, y1, 0.001, "Amortizing Yield is different");
 
-         // Amortized Cost at Date
-         double Amort1 = bond.AmortizationValue(new Date(31, Month.August, 2004));
-         Assert.AreEqual(41126.01, Amort1, 100, "Amortized Cost at 08/31/2004 is different");
+            // Amortized Cost at Date
+            double Amort1 = bond.AmortizationValue(new Date(31, Month.August, 2004));
+            Assert.AreEqual(41126.01, Amort1, 100, "Amortized Cost at 08/31/2004 is different");
 
-         double Amort2 = bond.AmortizationValue(new Date(30, Month.September, 2004));
-         Assert.AreEqual(40842.83, Amort2, 100, "Amortized Cost at 09/30/2004 is different");
-
-
-      }
-
-      [TestMethod()]
-      public void testAmortizingBond2()
-      {
-         // Par – 500,000
-         // Cost – 471,444
-         // Coupon Rate - .0520
-         // Issue Date – March 15 1999
-         // Maturity Date – May 15 2028
-         // Trade Date – December 31 2007
-         // Payment Frequency - Semi-Annual; May/Nov
-         // Day Count Method - 30/360
-
-         // Input Values
-         double faceValue = 500000;
-         double marketValue = 471444;
-         double couponRate = 0.0520;
-         Date issueDate = new Date(15, Month.March, 1999);
-         Date maturirtyDate = new Date(15, Month.May, 2028);
-         Date tradeDate = new Date(31, Month.December, 2007);
-         Frequency paymentFrequency = Frequency.Semiannual;
-         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
-
-         // Build Bond
-         AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
-            issueDate, maturirtyDate, tradeDate, paymentFrequency, dc, AmortizingMethod.EffectiveInterestRate);
-
-         // Amortizing Yield ( Effective Rate )
-         double y1 = bond.Yield();
-         Assert.AreEqual(0.0575649, y1, 0.001, "Amortizing Yield is different");
-
-         // Amortized Cost at Date
-         double Amort1 = bond.AmortizationValue(new Date(30, Month.November, 2012));
-         Assert.AreEqual(475698.12, Amort1, 100, "Amortized Cost at 11/30/2012 is different");
-
-         double Amort2 = bond.AmortizationValue(new Date(30, Month.December, 2012));
-         Assert.AreEqual(475779.55, Amort1, 100, "Amortized Cost at 12/30/2012 is different");
+            double Amort2 = bond.AmortizationValue(new Date(30, Month.September, 2004));
+            Assert.AreEqual(40842.83, Amort2, 100, "Amortized Cost at 09/30/2004 is different");
 
 
-      }
+        }
 
-   }
+        [TestMethod()]
+        public void testAmortizingBond2()
+        {
+            // Par – 500,000
+            // Cost – 471,444
+            // Coupon Rate - .052
+            // Issue Date – March 15 1999
+            // Maturity Date – May 15 2028
+            // Trade Date – December 31 2007
+            // Payment Frequency - Semi-Annual; May/Nov
+            // Day Count Method - 30/360
+
+            // Input Values
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturirtyDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(31, Month.December, 2007);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturirtyDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            // Amortizing Yield ( Effective Rate )
+            double y1 = bond.Yield();
+            Assert.AreEqual(0.0575649, y1, 0.001, "Amortizing Yield is different");
+
+            // Amortized Cost at Date
+            double Amort1 = bond.AmortizationValue(new Date(30, Month.November, 2012));
+            Assert.AreEqual(475698.12, Amort1, 100, "Amortized Cost at 11/30/2012 is different");
+
+            double Amort2 = bond.AmortizationValue(new Date(30, Month.December, 2012));
+            Assert.AreEqual(475779.55, Amort1, 100, "Amortized Cost at 12/30/2012 is different");
+        }
+
+        [TestMethod]
+        public void testPremiumAmortizingBondAmortizedCostMaturirtyDate()
+        {
+            // premium bond amortization value should never be blow par of the bond. 
+            // the amortization value of the bond on maturity date should be the par value 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+            
+            double amortizationValue = bond.AmortizationValue(new Date(15, Month.May, 2028));
+            Assert.AreEqual(55000, amortizationValue, "Amortized Cost on maturity should equal par"); 
+        }
+
+        [TestMethod]
+        public void testPremiumAmortizingBondAmortizedCostPurchaseDate()
+        {
+            // Premium bond amortization value should never be below par of the bond. 
+            // the amortization value of the bond on purchase date should be the purchase price 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(1, Month.March, 1999));
+            Assert.AreEqual(60000, amortizationValue, "Amortized Cost on purchase date");
+        }
+
+        [TestMethod]
+        public void testDiscountAmortizingBondAmortizedCostMaturirtyDate()
+        {
+            // discount bond amortization value should never be above par of the bond. 
+            // the amortization value of the bond on maturity date should be the par value 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(15, Month.May, 2028));
+            Assert.AreEqual(55000, amortizationValue, "Amortized Cost on maturity should equal par");
+        }
+
+        [TestMethod]
+        public void testDiscountAmortizingBondAmortizedCostPurchaseDate()
+        {
+            // Discount bond amortization value should never be above par of the bond. 
+            // the amortization value of the bond on purchase date should be the purchase price 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(1, Month.March, 1999));
+            Assert.AreEqual(60000, amortizationValue, "Amortized Cost on purchase date");
+        }
+
+
+    }
 }
