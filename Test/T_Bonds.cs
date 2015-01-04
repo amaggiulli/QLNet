@@ -1104,5 +1104,98 @@ namespace TestSuite
 
       }
 
-   }
+        [TestMethod]
+        public void testPremiumAmortizingBondAmortizedCostMaturirtyDate()
+        {
+            // premium bond amortization value should never be blow par of the bond. 
+            // the amortization value of the bond on maturity date should be the par value 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(15, Month.May, 2028));
+            Assert.AreEqual(55000, amortizationValue, "Amortized Cost on maturity should equal par");
+        }
+
+        [TestMethod]
+        public void testPremiumAmortizingBondAmortizedCostPurchaseDate()
+        {
+            // Premium bond amortization value should never be below par of the bond. 
+            // the amortization value of the bond on purchase date should be the purchase price 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(1, Month.March, 1999));
+            Assert.AreEqual(60000, amortizationValue, "Amortized Cost on purchase date");
+        }
+
+        [TestMethod]
+        public void testDiscountAmortizingBondAmortizedCostMaturirtyDate()
+        {
+            // discount bond amortization value should never be above par of the bond. 
+            // the amortization value of the bond on maturity date should be the par value 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(15, Month.May, 2028));
+            Assert.AreEqual(55000, amortizationValue, "Amortized Cost on maturity should equal par");
+        }
+
+        [TestMethod]
+        public void testDiscountAmortizingBondAmortizedCostPurchaseDate()
+        {
+            // Discount bond amortization value should never be above par of the bond. 
+            // the amortization value of the bond on purchase date should be the purchase price 
+
+            double faceValue = 55000;
+            double marketValue = 60000;
+            double couponRate = 0.05;
+            Date issueDate = new Date(15, Month.March, 1999);
+            Date maturityDate = new Date(15, Month.May, 2028);
+            Date tradeDate = new Date(1, Month.March, 1999);
+            Frequency paymentFrequency = Frequency.Semiannual;
+            DayCounter dayCount = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+            // Build Bond
+            AmortizingBond bond = BondFactory.makeAmortizingBond(faceValue, marketValue, couponRate,
+               issueDate, maturityDate, tradeDate, paymentFrequency, dayCount, AmortizingMethod.EffectiveInterestRate);
+
+            double amortizationValue = bond.AmortizationValue(new Date(1, Month.March, 1999));
+            Assert.AreEqual(60000, amortizationValue, "Amortized Cost on purchase date");
+        }
+
+
+    }
 }
