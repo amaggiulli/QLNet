@@ -65,42 +65,151 @@ namespace QLNet
       }
       #endregion
 
-
-      //public InterpolatedDiscountCurve(List<Date> dates, List<double> discounts, DayCounter dayCounter,
-      //                                 Calendar cal = Calendar(), Interpolator interpolator = Interpolator())
-      public InterpolatedZeroCurve(List<Date> dates, List<double> yields, DayCounter dayCounter, Interpolator interpolator)
-         : base(dates.First(), new Calendar(), dayCounter)
+      public InterpolatedZeroCurve(DayCounter dayCounter,
+                                   List<Handle<Quote>> jumps,
+                                   List<Date> jumpDates,
+                                   Interpolator interpolator)
+         : base(dayCounter, jumps, jumpDates)
       {
+         interpolator_ = interpolator;
+      }
 
+      public InterpolatedZeroCurve(Date referenceDate,
+                                   DayCounter dayCounter,
+                                   List<Handle<Quote>> jumps,
+                                   List<Date> jumpDates,
+                                   Interpolator interpolator)
+         : base(referenceDate, null, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+      public InterpolatedZeroCurve(int settlementDays,
+                                   Calendar calendar,
+                                   DayCounter dayCounter,
+                                   List<Handle<Quote>> jumps,
+                                   List<Date> jumpDates,
+                                   Interpolator interpolator)
+         : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+
+      public InterpolatedZeroCurve(List<Date> dates,
+                                   List<double> yields,
+                                   DayCounter dayCounter,
+                                   Calendar calendar = null,
+                                   List<Handle<Quote>> jumps = null,
+                                   List<Date> jumpDates = null,
+                                   Interpolator interpolator = default(Interpolator),
+                                   Compounding compounding = Compounding.Continuous,
+                                   Frequency frequency = Frequency.Annual)
+         : base(dates[0], calendar, dayCounter, jumps, jumpDates)
+      {
          times_ = new List<double>();
          dates_ = dates;
          data_ = yields;
          interpolator_ = interpolator;
+         initialize(compounding, frequency);
+      }
 
-         if (!(dates_.Count > 1)) throw new ApplicationException("too few dates");
-         if (data_.Count != dates_.Count) throw new ApplicationException("dates/yields count mismatch");
+
+      public InterpolatedZeroCurve(List<Date> dates,
+                                   List<double> yields,
+                                   DayCounter dayCounter,
+                                   Calendar calendar,
+                                   Interpolator interpolator,
+                                   Compounding compounding = Compounding.Continuous,
+                                   Frequency frequency = Frequency.Annual)
+         : base(dates[0], calendar, dayCounter)
+      {
+         times_ = new List<double>();
+         dates_ = dates;
+         data_ = yields;
+         interpolator_ = interpolator;
+         initialize(compounding, frequency);
+      }
+
+
+      public InterpolatedZeroCurve(List<Date> dates,
+                                   List<double> yields,
+                                   DayCounter dayCounter,
+                                   Interpolator interpolator,
+                                   Compounding compounding = Compounding.Continuous,
+                                   Frequency frequency = Frequency.Annual)
+         : base(dates[0], null, dayCounter)
+      {
+         times_ = new List<double>();
+         dates_ = dates;
+         data_ = yields;
+         interpolator_ = interpolator;
+         initialize(compounding, frequency);
+      }
+
+      private void initialize(Compounding compounding, Frequency frequency)
+      {
+         Utils.QL_REQUIRE(dates_.Count > interpolator_.requiredPoints, () => "not enough input dates given");
+         Utils.QL_REQUIRE(data_.Count == dates_.Count, () => "dates/yields count mismatch");
 
          times_ = new List<double>(dates_.Count);
          times_.Add(0.0);
+
+         if (compounding != Compounding.Continuous)
+         {
+            // We also have to convert the first rate.
+            // The first time is 0.0, so we can't use it.
+            // We fall back to about one day.
+            double dt = 1.0 / 365;
+            InterestRate r = new InterestRate(data_[0], dayCounter(), compounding, frequency);
+            data_[0] = r.equivalentRate(Compounding.Continuous, Frequency.NoFrequency, dt).value();
+#if !QL_NEGATIVE_RATES
+            Utils.QL_REQUIRE(data_[0] > 0.0, "non-positive yield");
+#endif
+         }
+
          for (int i = 1; i < dates_.Count; i++)
          {
-            if (!(dates_[i] > dates_[i - 1]))
-               throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            Utils.QL_REQUIRE(dates_[i] > dates_[i - 1], () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            times_.Add(dayCounter().yearFraction(dates_[0], dates_[i]));
+            Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]), () =>
+                       "two dates correspond to the same time " +
+                       "under this curve's day count convention");
+
+            // adjusting zero rates to match continuous compounding
+            if (compounding != Compounding.Continuous)
+            {
+               InterestRate r = new InterestRate(data_[i], dayCounter(), compounding, frequency);
+               data_[i] = r.equivalentRate(Compounding.Continuous, Frequency.NoFrequency, times_[i]).value();
+            }
 
 #if !QL_NEGATIVE_RATES
-                Utils.QL_REQUIRE( data_[i] >= 0.0, () => "negative yield" );
+            Utils.QL_REQUIRE(data_[i] > 0.0, () => "non-positive yield");
+            // positive yields are not enough to ensure non-negative fwd rates
+            // so here's a stronger requirement
+            Utils.QL_REQUIRE(data_[i] * times_[i] - data_[i - 1] * times_[i - 1] >= 0.0,
+                () => "negative forward rate implied by the zero yield " + data_[i] + " at " + dates_[i] +
+                " (t=" + times_[i] + ") after the zero yield " +
+                data_[i - 1] + " at " + dates_[i - 1] +
+                " (t=" + times_[i - 1] + ")");
 #endif
-            times_.Add(dayCounter.yearFraction(dates_[0], dates_[i]));
 
-            if (Utils.close(times_[i], times_[i - 1]))
-               throw new ApplicationException("two dates correspond to the same time " +
-                                              "under this curve's day count convention");
          }
 
          setupInterpolation();
          interpolation_.update();
       }
 
-      protected override double zeroYieldImpl(double t) { return interpolation_.value(t, true); }
+      protected override double zeroYieldImpl(double t)
+      {
+         if (t <= times_.Last())
+            return this.interpolation_.value(t, true);
+
+         // flat fwd extrapolation
+         double tMax = times_.Last();
+         double zMax = data_.Last();
+         double instFwdMax = zMax + tMax * this.interpolation_.derivative(tMax);
+         return (zMax * tMax + instFwdMax * (t - tMax)) / t;
+      }
    }
 }
