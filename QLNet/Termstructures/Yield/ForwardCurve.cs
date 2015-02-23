@@ -92,7 +92,7 @@ namespace QLNet
                                       List<Handle<Quote>> jumps = null,
                                       List<Date> jumpDates = null,
                                       Interpolator interpolator = default(Interpolator))
-      : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
+         : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
          interpolator_ = interpolator;
       }
@@ -166,7 +166,7 @@ namespace QLNet
          times_[0] = 0.0;
          for (int i = 1; i < dates_.Count; i++)
          {
-            Utils.QL_REQUIRE(dates_[i] > dates_[i-1],
+            Utils.QL_REQUIRE(dates_[i] > dates_[i - 1],
                () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
             times_[i] = dayCounter().yearFraction(dates_[0], dates_[i]);
             Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]),
