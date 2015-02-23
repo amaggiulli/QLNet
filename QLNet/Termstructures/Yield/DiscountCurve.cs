@@ -68,43 +68,124 @@ namespace QLNet
       #endregion
 
 
-      //public InterpolatedDiscountCurve(List<Date> dates, List<double> discounts, DayCounter dayCounter,
-      //                                 Calendar cal = Calendar(), Interpolator interpolator = Interpolator())
-      public InterpolatedDiscountCurve(List<Date> dates, List<double> discounts, DayCounter dayCounter,
-       Calendar cal = null, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null,
-         Interpolator interpolator = default(Interpolator))
-         : base(dates.First(), cal, dayCounter, jumps, jumpDates)
+      public InterpolatedDiscountCurve(DayCounter dayCounter,
+                                       List<Handle<Quote>> jumps = null,
+                                       List<Date> jumpDates = null,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(dayCounter, jumps, jumpDates)
       {
+         interpolator_ = interpolator;
+      }
 
+      public InterpolatedDiscountCurve(Date referenceDate,
+                                       DayCounter dayCounter,
+                                       List<Handle<Quote>> jumps = null,
+                                       List<Date> jumpDates = null,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(referenceDate, null, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+      public InterpolatedDiscountCurve(int settlementDays,
+                                       Calendar calendar,
+                                       DayCounter dayCounter,
+                                       List<Handle<Quote>> jumps = null,
+                                       List<Date> jumpDates = null,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+      public InterpolatedDiscountCurve(List<Date> dates,
+                                       List<double> discounts,
+                                       DayCounter dayCounter,
+                                       Calendar calendar = null,
+                                       List<Handle<Quote>> jumps = null,
+                                       List<Date> jumpDates = null,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(dates[0], calendar, dayCounter, jumps, jumpDates)
+      {
          times_ = new List<double>();
+         dates_ = dates;
          data_ = discounts;
          interpolator_ = interpolator;
-         dates_ = dates;
+         initialize();
+      }
 
-         if (dates_.empty()) throw new ApplicationException("no input dates given");
-         if (data_.empty()) throw new ApplicationException("no input discount factors given");
-         if (data_.Count != dates_.Count) throw new ApplicationException("dates/discount factors count mismatch");
-         if (data_[0] != 1.0) throw new ApplicationException("the first discount must be == 1.0 " +
-                                                             "to flag the corrsponding date as settlement date");
+      public InterpolatedDiscountCurve(List<Date> dates,
+                                       List<double> discounts,
+                                       DayCounter dayCounter,
+                                       Calendar calendar = null,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(dates[0], calendar, dayCounter)
+      {
+         times_ = new List<double>();
+         dates_ = dates;
+         data_ = discounts;
+         interpolator_ = interpolator;
+         initialize();
+      }
+
+      public InterpolatedDiscountCurve(List<Date> dates,
+                                       List<double> discounts,
+                                       DayCounter dayCounter,
+                                       Interpolator interpolator = default(Interpolator))
+         : base(dates[0], null, dayCounter)
+      {
+         times_ = new List<double>();
+         dates_ = dates;
+         data_ = discounts;
+         interpolator_ = interpolator; initialize();
+      }
+
+      private void initialize()
+      {
+         Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,
+            () => "not enough input dates givesn");
+         Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
+            () => "dates/data count mismatch");
+         Utils.QL_REQUIRE(this.data_[0] == 1.0, () => "the first discount must be == 1.0 " +
+                                                      "to flag the corrsponding date as settlement date");
 
          times_ = new InitializedList<double>(dates_.Count - 1);
          times_.Add(0.0);
          for (int i = 1; i < dates_.Count; i++)
          {
-            if (!(dates_[i] > dates_[i - 1]))
-               throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
-            if (!(data_[i] > 0.0)) throw new ApplicationException("negative discount");
-            times_[i] = dayCounter.yearFraction(dates_[0], dates_[i]);
-            if (Utils.close(times_[i], times_[i - 1]))
-               throw new ApplicationException("two dates correspond to the same time " +
-                                              "under this curve's day count convention");
+            Utils.QL_REQUIRE(dates_[i] > dates_[i - 1],
+               () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            times_[i] = dayCounter().yearFraction(dates_[0], dates_[i]);
+            Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]),
+               () => "two dates correspond to the same time " +
+                     "under this curve's day count convention");
+            Utils.QL_REQUIRE(this.data_[i] > 0.0, () => "negative discount");
+
+#if !QL_NEGATIVE_RATES
+            Utils.QL_REQUIRE(this.data_[i] <= this.data_[i-1],
+               () => "negative forward rate implied by the discount " +
+                     this.data_[i] + " at " + dates_[i] +
+                     " (t=" + this.times_[i] + ") after the discount " +
+                     this.data_[i-1] + " at " + dates_[i-1] +
+                     " (t=" + this.times_[i-1] + ")");
+#endif
+
          }
 
          setupInterpolation();
          interpolation_.update();
       }
 
+      protected override double discountImpl(double t)
+      {
+         if (t <= this.times_.Last())
+            return interpolation_.value(t, true);
 
-      protected override double discountImpl(double t) { return interpolation_.value(t, true); }
+         // flat fwd extrapolation
+         double tMax = this.times_.Last();
+         double dMax = this.data_.Last();
+         double instFwdMax = -this.interpolation_.derivative(tMax) / dMax;
+         return dMax * Math.Exp(-instFwdMax * (t - tMax));
+      }
    }
 }

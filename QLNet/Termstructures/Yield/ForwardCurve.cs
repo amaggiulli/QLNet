@@ -65,35 +65,117 @@ namespace QLNet
       }
       #endregion
 
-
-      public InterpolatedForwardCurve(List<Date> dates, List<double> yields, DayCounter dayCounter, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null, Interpolator interpolator = default(Interpolator))
-         : base(dates.First(), new Calendar(), dayCounter, jumps, jumpDates)
+      public InterpolatedForwardCurve(DayCounter dayCounter,
+                                      List<Handle<Quote>> jumps = null,
+                                      List<Date> jumpDates = null,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dayCounter, jumps, jumpDates)
       {
+         interpolator_ = interpolator;
+      }
 
+
+      public InterpolatedForwardCurve(Date referenceDate,
+                                      DayCounter dayCounter,
+                                      List<Handle<Quote>> jumps = null,
+                                      List<Date> jumpDates = null,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(referenceDate, null, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+
+      public InterpolatedForwardCurve(int settlementDays,
+                                      Calendar calendar,
+                                      DayCounter dayCounter,
+                                      List<Handle<Quote>> jumps = null,
+                                      List<Date> jumpDates = null,
+                                      Interpolator interpolator = default(Interpolator))
+      : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
+      {
+         interpolator_ = interpolator;
+      }
+
+      public InterpolatedForwardCurve(List<Date> dates,
+                                      List<double> forwards,
+                                      DayCounter dayCounter,
+                                      Calendar calendar = null,
+                                      List<Handle<Quote>> jumps = null,
+                                      List<Date> jumpDates = null,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dates[0], calendar, dayCounter, jumps, jumpDates)
+      {
+         times_ = new List<double>();
+         data_ = forwards;
+         interpolator_ = interpolator;
+         dates_ = dates;
+         initialize();
+      }
+
+      public InterpolatedForwardCurve(List<Date> dates,
+                                      List<double> forwards,
+                                      DayCounter dayCounter,
+                                      Calendar calendar = null,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dates[0], calendar, dayCounter)
+      {
+         times_ = new List<double>();
+         data_ = forwards;
+         interpolator_ = interpolator;
+         dates_ = dates;
+         initialize();
+      }
+
+      public InterpolatedForwardCurve(List<Date> dates,
+                                      List<double> forwards,
+                                      DayCounter dayCounter,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dates[0], null, dayCounter)
+      {
+         times_ = new List<double>();
+         data_ = forwards;
+         interpolator_ = interpolator;
+         dates_ = dates;
+         initialize();
+      }
+
+      public InterpolatedForwardCurve(List<Date> dates,
+                                      List<double> yields,
+                                      DayCounter dayCounter,
+                                      List<Handle<Quote>> jumps = null,
+                                      List<Date> jumpDates = null,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dates[0], new Calendar(), dayCounter, jumps, jumpDates)
+      {
          times_ = new List<double>();
          dates_ = dates;
          data_ = yields;
          interpolator_ = interpolator;
+         initialize();
+      }
 
-         if (!(dates_.Count > 1)) throw new ApplicationException("too few dates");
-         if (data_.Count != dates_.Count) throw new ApplicationException("dates/yields count mismatch");
+      private void initialize()
+      {
+         Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,
+            () => "not enough input dates givesn");
+         Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
+            () => "dates/data count mismatch");
 
          times_ = new InitializedList<double>(dates_.Count);
          times_[0] = 0.0;
          for (int i = 1; i < dates_.Count; i++)
          {
-            if (!(dates_[i] > dates_[i - 1]))
-               throw new ApplicationException("invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            Utils.QL_REQUIRE(dates_[i] > dates_[i-1],
+               () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            times_[i] = dayCounter().yearFraction(dates_[0], dates_[i]);
+            Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]),
+               () => "two dates correspond to the same time " +
+                     "under this curve's day count convention");
 
 #if !QL_NEGATIVE_RATES
-                Utils.QL_REQUIRE( this.data_[i] >= 0.0, () => "negative forward" );
+            Utils.QL_REQUIRE(this.data_[i] >= 0.0, () => "negative forward" );
 #endif
-
-            times_[i] = dayCounter.yearFraction(dates_[0], dates_[i]);
-
-            if (Utils.close(times_[i], times_[i - 1]))
-               throw new ApplicationException("two dates correspond to the same time " +
-                                              "under this curve's day count convention");
          }
 
          setupInterpolation();
@@ -101,13 +183,31 @@ namespace QLNet
       }
 
 
-      protected override double forwardImpl(double t) { return interpolation_.value(t, true); }
+      protected override double forwardImpl(double t)
+      {
+         if (t <= this.times_.Last())
+            return this.interpolation_.value(t, true);
+
+         // flat fwd extrapolation
+         return this.data_.Last(); ;
+      }
       protected override double zeroYieldImpl(double t)
       {
          if (t == 0.0)
             return forwardImpl(0.0);
+
+         double integral;
+         if (t <= this.times_.Last())
+         {
+            integral = this.interpolation_.primitive(t, true);
+         }
          else
-            return interpolation_.primitive(t, true) / t;
+         {
+            integral = this.interpolation_.primitive(this.times_.Last(), true)
+               + this.data_.Last() * (t - this.times_.Last());
+         }
+
+         return integral / t;
       }
    }
 }
