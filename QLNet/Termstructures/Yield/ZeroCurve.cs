@@ -66,9 +66,9 @@ namespace QLNet
       #endregion
 
       public InterpolatedZeroCurve(DayCounter dayCounter,
-                                   List<Handle<Quote>> jumps,
-                                   List<Date> jumpDates,
-                                   Interpolator interpolator)
+                                   List<Handle<Quote>> jumps = null,
+                                   List<Date> jumpDates = null,
+                                   Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
          interpolator_ = interpolator;
@@ -76,9 +76,9 @@ namespace QLNet
 
       public InterpolatedZeroCurve(Date referenceDate,
                                    DayCounter dayCounter,
-                                   List<Handle<Quote>> jumps,
-                                   List<Date> jumpDates,
-                                   Interpolator interpolator)
+                                   List<Handle<Quote>> jumps = null,
+                                   List<Date> jumpDates = null,
+                                   Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
          interpolator_ = interpolator;
@@ -87,9 +87,9 @@ namespace QLNet
       public InterpolatedZeroCurve(int settlementDays,
                                    Calendar calendar,
                                    DayCounter dayCounter,
-                                   List<Handle<Quote>> jumps,
-                                   List<Date> jumpDates,
-                                   Interpolator interpolator)
+                                   List<Handle<Quote>> jumps = null,
+                                   List<Date> jumpDates = null,
+                                   Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
          interpolator_ = interpolator;
@@ -118,8 +118,8 @@ namespace QLNet
       public InterpolatedZeroCurve(List<Date> dates,
                                    List<double> yields,
                                    DayCounter dayCounter,
-                                   Calendar calendar,
-                                   Interpolator interpolator,
+                                   Calendar calendar = null,
+                                   Interpolator interpolator = default(Interpolator),
                                    Compounding compounding = Compounding.Continuous,
                                    Frequency frequency = Frequency.Annual)
          : base(dates[0], calendar, dayCounter)
@@ -135,7 +135,7 @@ namespace QLNet
       public InterpolatedZeroCurve(List<Date> dates,
                                    List<double> yields,
                                    DayCounter dayCounter,
-                                   Interpolator interpolator,
+                                   Interpolator interpolator = default(Interpolator),
                                    Compounding compounding = Compounding.Continuous,
                                    Frequency frequency = Frequency.Annual)
          : base(dates[0], null, dayCounter)
