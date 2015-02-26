@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Andrea Maggiulli
-  
+
  This file is part of QLNet Project http://qlnet.sourceforge.net/
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
@@ -383,8 +384,8 @@ namespace TestSuite {
 
             //SavedSettings backup;
 
-            Dictionary<string, double> calculated = new Dictionary<string,double>(), 
-                expected = new Dictionary<string,double>(), 
+            Dictionary<string, double> calculated = new Dictionary<string,double>(),
+                expected = new Dictionary<string,double>(),
                 tolerance = new Dictionary<string,double>();
 
             tolerance.Add("delta", 7.0e-4);
@@ -522,6 +523,38 @@ namespace TestSuite {
                    + "    calculated " + greekName + ": " + calculated + "\n"
                    + "    error:            " + error + "\n"
                    + "    tolerance:        " + tolerance);
+        }
+
+        [TestMethod()]
+        public void testFdImpliedVol()
+        {
+            var settlementDate = new Date(26, 2, 2015);
+            Settings.setEvaluationDate(settlementDate);
+
+            var calendar = new TARGET();
+            var dayCounter = new Actual365Fixed();
+
+            const double volatility = 0.5;
+            var underlyingQuote = new Handle<Quote>(new SimpleQuote(3227));
+            var flatTermStructure = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0.05, dayCounter));
+            var flatDividendYield = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0, dayCounter));
+            var flatVolatility = new Handle<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, volatility, dayCounter));
+            var process = new BlackScholesMertonProcess(underlyingQuote, flatDividendYield, flatTermStructure, flatVolatility);
+            var exercise = new AmericanExercise(new Date(1, 12, 2015));
+            var pricingEngine = new FDDividendAmericanEngine(process);
+            var payoff = new PlainVanillaPayoff(Option.Type.Put, 3200);
+            var dividendDates = new[] { new Date(1, 3, 2015) };
+            var dividendAmounts = new[] {10d};
+            var option = new DividendVanillaOption(payoff, exercise, dividendDates.ToList(), dividendAmounts.ToList());
+            option.setPricingEngine(pricingEngine);
+
+            var npv = option.NPV();
+            var impliedVol = option.impliedVolatility(npv, process);
+
+            const double tolerance = 3.0e-3;
+
+            if (Math.Abs(impliedVol - volatility) > tolerance)
+                Assert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
         }
    }
 }

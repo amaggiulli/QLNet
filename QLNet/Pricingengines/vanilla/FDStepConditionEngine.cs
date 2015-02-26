@@ -108,7 +108,7 @@ namespace QLNet {
             results.gamma = prices_.secondDerivativeAtCenter()
                 - controlPrices_.secondDerivativeAtCenter()
                 + black.gamma(spot);
-            results.additionalResults.Add("priceCurve", prices_);
+            results.additionalResults["priceCurve"] = prices_;
         } 
     }
 }
