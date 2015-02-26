@@ -66,7 +66,7 @@ namespace QLNet {
                                                      results_.value.GetValueOrDefault(),
                                                      results_.delta.GetValueOrDefault(),
                                                      results_.gamma.GetValueOrDefault());
-            results_.additionalResults.Add("priceCurve", prices_);
+            results_.additionalResults["priceCurve"] = prices_;
         }
 
         #region IGenericEngine copy-cat
