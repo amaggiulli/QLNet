@@ -24,6 +24,7 @@ using System.Text;
 namespace QLNet
 {
    public class InterpolatedZeroInflationCurve<Interpolator> : ZeroInflationTermStructure, InterpolatedCurve
+       where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
                                             Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
@@ -32,7 +33,10 @@ namespace QLNet
          : base(referenceDate, calendar, dayCounter, rates[0],
                                  lag, frequency, indexIsInterpolated, yTS)
       {
+         times_ = new List<double>();
          dates_ = dates;
+         data_ = rates;
+         interpolator_ = interpolator ?? new Interpolator();
 
          Utils.QL_REQUIRE(dates_.Count > 1, () => "too few dates: " + dates_.Count);
 
@@ -61,8 +65,8 @@ namespace QLNet
                   "indices/dates count mismatch: "
                   + this.data_.Count + " vs " + dates_.Count);
 
-         this.times_ = new List<double>(dates_.Count);
-         this.times_.Add(timeFromReference(dates_[0]));
+         this.times_ = new InitializedList<double>(dates_.Count);
+         this.times_[0] = timeFromReference(dates_[0]);
          for (int i = 1; i < dates_.Count; i++)
          {
             Utils.QL_REQUIRE(dates_[i] > dates_[i - 1], () => "dates not sorted");
@@ -73,13 +77,12 @@ namespace QLNet
             // this can be negative
             this.times_[i] = timeFromReference(dates_[i]);
             Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]), () =>
-                     "two dates correspond to the same time under this curve's day count convention");
+               "two dates correspond to the same time " +
+               "under this curve's day count convention");
          }
 
          this.interpolation_ = this.interpolator_.interpolate(times_, times_.Count, data_);
          this.interpolation_.update();
-
-
       }
 
       #region InterpolatedCurve
