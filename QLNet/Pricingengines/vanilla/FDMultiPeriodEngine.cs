@@ -166,7 +166,7 @@ namespace QLNet {
             results.value = prices_.valueAtCenter();
             results.delta = prices_.firstDerivativeAtCenter();
             results.gamma = prices_.secondDerivativeAtCenter();
-            results.additionalResults.Add("priceCurve", prices_);
+            results.additionalResults["priceCurve"] = prices_;
         }
     }
 }
