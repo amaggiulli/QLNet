@@ -26,7 +26,7 @@ namespace QLNet
    //! Term structure based on interpolation of discount factors
    /*! \ingroup yieldtermstructures */
    public class InterpolatedDiscountCurve<Interpolator> : YieldTermStructure, InterpolatedCurve
-       where Interpolator : IInterpolationFactory, new()
+       where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve
@@ -74,7 +74,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
 
       public InterpolatedDiscountCurve(Date referenceDate,
@@ -84,7 +84,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
 
       public InterpolatedDiscountCurve(int settlementDays,
@@ -95,7 +95,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
 
       public InterpolatedDiscountCurve(List<Date> dates,
@@ -110,15 +110,15 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = discounts;
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
          initialize();
       }
 
       public InterpolatedDiscountCurve(List<Date> dates,
                                        List<double> discounts,
                                        DayCounter dayCounter,
-                                       Calendar calendar = null,
-                                       Interpolator interpolator = default(Interpolator))
+                                       Calendar calendar,
+                                       Interpolator interpolator)
          : base(dates[0], calendar, dayCounter)
       {
          times_ = new List<double>();
@@ -131,13 +131,29 @@ namespace QLNet
       public InterpolatedDiscountCurve(List<Date> dates,
                                        List<double> discounts,
                                        DayCounter dayCounter,
-                                       Interpolator interpolator = default(Interpolator))
+                                       Interpolator interpolator)
          : base(dates[0], null, dayCounter)
       {
          times_ = new List<double>();
          dates_ = dates;
          data_ = discounts;
-         interpolator_ = interpolator; initialize();
+         interpolator_ = interpolator;
+         initialize();
+      }
+
+      public InterpolatedDiscountCurve(List<Date> dates,
+                                      List<double> discounts,
+                                      DayCounter dayCounter,
+                                      List<Handle<Quote>> jumps,
+                                      List<Date> jumpDates,
+                                      Interpolator interpolator = default(Interpolator))
+         : base(dates[0], null, dayCounter, jumps, jumpDates)
+      {
+         times_ = new List<double>();
+         dates_ = dates;
+         data_ = discounts;
+         interpolator_ = interpolator ?? new Interpolator();
+         initialize();
       }
 
       private void initialize()

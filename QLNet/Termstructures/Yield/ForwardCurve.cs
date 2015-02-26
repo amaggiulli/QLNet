@@ -24,7 +24,7 @@ using System.Text;
 namespace QLNet
 {
    public class InterpolatedForwardCurve<Interpolator> : ForwardRateStructure, InterpolatedCurve
-       where Interpolator : IInterpolationFactory, new()
+       where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve
@@ -71,9 +71,8 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
-
 
       public InterpolatedForwardCurve(Date referenceDate,
                                       DayCounter dayCounter,
@@ -82,9 +81,8 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
-
 
       public InterpolatedForwardCurve(int settlementDays,
                                       Calendar calendar,
@@ -94,7 +92,7 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
       }
 
       public InterpolatedForwardCurve(List<Date> dates,
@@ -108,7 +106,7 @@ namespace QLNet
       {
          times_ = new List<double>();
          data_ = forwards;
-         interpolator_ = interpolator;
+         interpolator_ = interpolator ?? new Interpolator();
          dates_ = dates;
          initialize();
       }
@@ -116,8 +114,8 @@ namespace QLNet
       public InterpolatedForwardCurve(List<Date> dates,
                                       List<double> forwards,
                                       DayCounter dayCounter,
-                                      Calendar calendar = null,
-                                      Interpolator interpolator = default(Interpolator))
+                                      Calendar calendar,
+                                      Interpolator interpolator)
          : base(dates[0], calendar, dayCounter)
       {
          times_ = new List<double>();
@@ -130,7 +128,7 @@ namespace QLNet
       public InterpolatedForwardCurve(List<Date> dates,
                                       List<double> forwards,
                                       DayCounter dayCounter,
-                                      Interpolator interpolator = default(Interpolator))
+                                      Interpolator interpolator)
          : base(dates[0], null, dayCounter)
       {
          times_ = new List<double>();
@@ -141,17 +139,17 @@ namespace QLNet
       }
 
       public InterpolatedForwardCurve(List<Date> dates,
-                                      List<double> yields,
+                                      List<double> forwards,
                                       DayCounter dayCounter,
-                                      List<Handle<Quote>> jumps = null,
-                                      List<Date> jumpDates = null,
+                                      List<Handle<Quote>> jumps,
+                                      List<Date> jumpDates,
                                       Interpolator interpolator = default(Interpolator))
-         : base(dates[0], new Calendar(), dayCounter, jumps, jumpDates)
+         : base(dates[0], null, dayCounter, jumps, jumpDates)
       {
          times_ = new List<double>();
          dates_ = dates;
-         data_ = yields;
-         interpolator_ = interpolator;
+         data_ = forwards;
+         interpolator_ = interpolator ?? new Interpolator();
          initialize();
       }
 
