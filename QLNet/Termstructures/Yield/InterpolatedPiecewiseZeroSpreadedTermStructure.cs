@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+ Copyright (C) 2015 Francois Botha
+
+ This file is part of QLNet Project http://qlnet.sourceforge.net/
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is
+ available online at <http://qlnet.sourceforge.net/License.html>.
+
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,13 +43,15 @@ namespace QLNet
          frequency_ = frequency;
          dc_ = dc ?? new DayCounter();
          factory_ = factory ?? new Interpolator();
+
          Utils.QL_REQUIRE(!spreads_.empty(), () => "no spreads given");
          Utils.QL_REQUIRE(spreads_.Count == dates_.Count, () => "spread and date vector have different sizes");
-         //registerWith(originalCurve_);
+
          originalCurve_.registerWith(update);
+
          for (int i = 0; i < spreads_.Count; i++)
             spreads_[i].registerWith(update);
-         //registerWith(spreads_[i]);
+
          if (!originalCurve_.empty())
             updateInterpolation();
       }
@@ -49,11 +69,8 @@ namespace QLNet
 
       public override DayCounter dayCounter() { return originalCurve_.link.dayCounter(); }
       public override Calendar calendar() { return originalCurve_.link.calendar(); }
-
       public override int settlementDays() { return originalCurve_.link.settlementDays(); }
-
       public override Date referenceDate() { return originalCurve_.link.referenceDate(); }
-
       public override Date maxDate() { return originalCurve_.link.maxDate() < dates_.Last() ? originalCurve_.link.maxDate() : dates_.Last(); }
 
       protected override double zeroYieldImpl(double t)
