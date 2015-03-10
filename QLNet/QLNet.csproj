@@ -488,6 +488,7 @@
     <Compile Include="Termstructures\Yield\ForwardSpreadedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\ForwardStructure.cs" />
     <Compile Include="Termstructures\Yield\ImpliedTermStructure.cs" />
+    <Compile Include="Termstructures\Yield\InterpolatedPiecewiseZeroSpreadedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\OISRateHelper.cs" />
     <Compile Include="Termstructures\Yield\PiecewiseYieldCurve.cs" />
     <Compile Include="Termstructures\Yield\Ratehelpers.cs" />
