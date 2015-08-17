@@ -161,7 +161,7 @@ namespace QLNet
             InterestRate r = new InterestRate(data_[0], dayCounter(), compounding, frequency);
             data_[0] = r.equivalentRate(Compounding.Continuous, Frequency.NoFrequency, dt).value();
 #if !QL_NEGATIVE_RATES
-            Utils.QL_REQUIRE(data_[0] > 0.0, "non-positive yield");
+            Utils.QL_REQUIRE( data_[0] > 0.0, () => "non-positive yield" );
 #endif
          }
 
