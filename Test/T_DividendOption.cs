@@ -321,7 +321,6 @@ namespace TestSuite
 		// Reference pg. 253 - Hull - Options, Futures, and Other Derivatives 5th ed
 		// Exercise 12.8
 		// Doesn't quite work.  Need to deal with date conventions
-		[TestMethod()]
 		void testEuropeanKnownValue() 
 		{
 

@@ -200,7 +200,7 @@ namespace TestSuite
                             + "\n    expected:   " + expected);
         }
     
-        [TestMethod()]
+        [TestCategory("LongRun"), TestMethod()]
         public void testCalibration()
         {
             //("Testing calibration of a Libor forward model...");
@@ -300,7 +300,7 @@ namespace TestSuite
                             + "\n    expected : smaller than  " + tolerance);
         }
 
-        [TestMethod()]
+        [TestCategory("LongRun"),TestMethod()]
         public void testSwaptionPricing() 
         {
             //"Testing forward swap and swaption pricing...");

@@ -197,7 +197,7 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
+        [TestCategory("LongRun") , TestMethod()]
         public void testMonteCarloCapletPricing() 
         {
             //"Testing caplet LMM Monte-Carlo caplet pricing..."
