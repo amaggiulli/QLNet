@@ -81,8 +81,8 @@ namespace TestSuite
             return new CapletVarianceCurve(todaysDate, dates,
                                            capletVols,new Actual360());
         }
-        
-        [TestMethod()]
+
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testSimpleCovarianceModels() 
         {
             //"Testing simple covariance models...";
@@ -155,7 +155,7 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testCapletPricing() 
         {
             //"Testing caplet pricing...";

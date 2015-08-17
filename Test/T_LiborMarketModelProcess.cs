@@ -101,8 +101,8 @@ namespace TestSuite
 
             return process;
         }
-        
-        [TestMethod()]
+
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testInitialisation() 
         {
             //"Testing caplet LMM process initialisation..."
@@ -146,8 +146,8 @@ namespace TestSuite
 
             }
         }
-        
-        [TestMethod()]
+
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testLambdaBootstrapping() 
         {
             //"Testing caplet LMM lambda bootstrapping..."
