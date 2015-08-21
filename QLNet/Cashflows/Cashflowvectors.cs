@@ -92,7 +92,7 @@ namespace QLNet {
                     if (Utils.noOption(caps, floors, i)) {
                         leg.Add(new FloatingCouponType().factory(Utils.Get(nominals, i),
                             paymentDate, start, end,
-                            Utils.Get(fixingDays, i, 2),
+                            Utils.Get( fixingDays, i, index.fixingDays() ),
                             index,
                             Utils.Get(gearings, i, 1),
                             Utils.Get(spreads, i),
@@ -101,7 +101,7 @@ namespace QLNet {
                     } else {
                         leg.Add(new CappedFlooredCouponType().factory(Utils.Get(nominals, i),
                             paymentDate, start, end,
-                            Utils.Get(fixingDays, i, 2),
+                            Utils.Get( fixingDays, i, index.fixingDays() ),
                             index,
                             Utils.Get(gearings, i, 1),
                             Utils.Get(spreads, i),
