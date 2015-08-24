@@ -295,7 +295,20 @@ namespace QLNet {
                       || (d == 31 && m == Month.December)
                      )
                      return false;
-               } 
+               }
+              if (y == 2014) {
+                  if (// Lunar New Year
+                   ( ( d == 31 && m == Month.January ) || ( d <= 3 && m == Month.February ) )
+                   // Buddha's birthday
+                   || ( d == 6 && m == Month.May )
+                   // Tuen Ng festival
+                   || ( d == 2 && m == Month.June )
+                   // Mid-autumn festival
+                   || ( d == 9 && m == Month.September )
+                   // Chung Yeung festival
+                   || ( d == 2 && m == Month.October ) )
+                   return false;
+               }
                return true;
             }
         }
