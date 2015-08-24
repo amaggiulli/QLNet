@@ -121,6 +121,7 @@
     <Compile Include="Indexes\Ibor\Libor.cs" />
     <Compile Include="Indexes\Ibor\Nzdlibor.cs" />
     <Compile Include="Indexes\Ibor\Seklibor.cs" />
+    <Compile Include="Indexes\Ibor\Shibor.cs" />
     <Compile Include="Indexes\Ibor\Tibor.cs" />
     <Compile Include="Indexes\Ibor\Trylibor.cs" />
     <Compile Include="Indexes\Ibor\Usdlibor.cs" />
