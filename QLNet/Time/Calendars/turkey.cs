@@ -148,6 +148,16 @@ namespace QLNet {
                    || (m == Month.October && d == 28))
                       return false;
                 }
+                else if ( y == 2014 )
+                {
+                   // Ramadan
+                   if ( ( m == Month.July && d >= 27 && d <= 30 )
+                      // Kurban
+                       || ( m == Month.October && d >= 4 && d <= 7 )
+                      // additional holiday for Republic Day
+                       || ( m == Month.October && d == 29 ) )
+                      return false;
+                }
                 return true;
             }
         };

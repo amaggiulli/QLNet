@@ -245,6 +245,26 @@ namespace QLNet {
                       || (d >= 19 && d <= 20 && m == Month.September)
                     )
                     return false;
+              }
+
+              if ( y == 2014 )
+              {
+                 if (// Lunar New Year
+                     ( d >= 28 && d <= 30 && m == Month.January )
+                    // Spring Festival
+                     || ( ( d == 31 && m == Month.January ) || ( d <= 4 && m == Month.February ) )
+                    // Children's Day
+                     || ( d == 4 && m == Month.April )
+                    // Tomb Sweeping Day
+                     || ( d == 5 && m == Month.April )
+                    // Labour Day
+                     || ( d == 1 && m == Month.May )
+                    // Dragon Boat Festival
+                     || ( d == 2 && m == Month.June )
+                    // Mid-Autumn Festival
+                     || ( d == 8 && m == Month.September )
+                     )
+                    return false;
               } 
               
               return true;
