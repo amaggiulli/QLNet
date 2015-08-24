@@ -300,6 +300,32 @@ namespace QLNet {
                       || (d == 14 && m == Month.November)
                   )
                   return false;
+
+               if ( y == 2014 )
+               {
+                  if (// Mahashivratri
+                        ( d == 27 && m == Month.February )
+                     // Holi
+                        || ( d == 17 && m == Month.March )
+                     // Ram Navmi
+                        || ( d == 8 && m == Month.April )
+                     // Ramzan Id
+                        || ( d == 29 && m == Month.July )
+                     // Ganesh Chaturthi
+                        || ( d == 29 && m == Month.August )
+                     // Dasera
+                        || ( d == 3 && m == Month.October )
+                     // Bakri Id
+                        || ( d == 6 && m == Month.October )
+                     // Diwali - Balipratipada
+                        || ( d == 24 && m == Month.October )
+                     // Moharram
+                        || ( d == 4 && m == Month.November )
+                     // Gurunank Jayanti
+                        || ( d == 6 && m == Month.November )
+                        )
+                     return false;
+               }
                } 
                 return true;
             }
