@@ -532,6 +532,7 @@
     <Compile Include="Time\Calendars\taiwan.cs" />
     <Compile Include="Time\Calendars\TARGET.cs" />
     <Compile Include="Time\Calendars\turkey.cs" />
+    <Compile Include="Time\Calendars\Ukraine.cs" />
     <Compile Include="Time\Calendars\UnitedKingdom.cs" />
     <Compile Include="Time\Calendars\UnitedStates.cs" />
     <Compile Include="Time\Calendars\WeekendsOnly.cs" />
