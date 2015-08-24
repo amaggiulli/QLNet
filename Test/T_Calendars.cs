@@ -249,11 +249,15 @@ namespace TestSuite {
                             " calculated holidays");
 
             List<Date> histClose = new List<Date>();
+            histClose.Add(new Date(30, Month.October, 2012));  // Hurricane Sandy
+            histClose.Add(new Date(29, Month.October, 2012));  // Hurricane Sandy
             histClose.Add(new Date(11, Month.June, 2004));     // Reagan's funeral
             histClose.Add(new Date(14, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(13, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(12, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(11, Month.September, 2001));// September 11, 2001
+            histClose.Add(new Date(27, Month.April, 1994 ) );  // Nixon's funeral.
+            histClose.Add(new Date(27, Month.September,1985)); // Hurricane Gloria
             histClose.Add(new Date(14, Month.July, 1977));     // 1977 Blackout
             histClose.Add(new Date(25, Month.January, 1973));  // Johnson's funeral.
             histClose.Add(new Date(28, Month.December, 1972)); // Truman's funeral
@@ -261,6 +265,13 @@ namespace TestSuite {
             histClose.Add(new Date(31, Month.March, 1969));    // Eisenhower's funeral
             histClose.Add(new Date(10, Month.February, 1969)); // heavy snow
             histClose.Add(new Date(5, Month.July, 1968));      // Day after Independence Day
+            histClose.Add( new Date( 9, Month.April, 1968 ) );     // Mourning for MLK
+            histClose.Add( new Date( 24, Month.December, 1965 ) ); // Christmas Eve
+            histClose.Add( new Date( 25, Month.November, 1963 ) ); // Kennedy's funeral
+            histClose.Add( new Date( 29, Month.May, 1961 ) );      // Day before Decoration Day
+            histClose.Add( new Date( 26, Month.December, 1958 ) ); // Day after Christmas
+            histClose.Add( new Date( 24, Month.December, 1956 ) ); // Christmas Eve
+            histClose.Add( new Date( 24, Month.December, 1954 ) ); // Christmas Eve
             // June 12-Dec. 31, 1968
             // Four day week (closed on Wednesdays) - Paperwork Crisis
             histClose.Add(new Date(12, Month.Jun, 1968));
