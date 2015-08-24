@@ -113,20 +113,27 @@ namespace QLNet
         /// Adjusts a non-business day to the appropriate near business day  with respect 
         /// to the given convention.  
         /// </summary>
-        public Date adjust(Date d) { return adjust(d, BusinessDayConvention.Following); }
-        public Date adjust(Date d, BusinessDayConvention c)
+        public Date adjust( Date d, BusinessDayConvention c = BusinessDayConvention.Following )
         {
             if (d == null) throw new ArgumentException("null date");
             if (c == BusinessDayConvention.Unadjusted) return d;
 
             Date d1 = d;
-            if (c == BusinessDayConvention.Following || c == BusinessDayConvention.ModifiedFollowing)
+            if (c == BusinessDayConvention.Following || c == BusinessDayConvention.ModifiedFollowing ||
+                c == BusinessDayConvention.HalfMonthModifiedFollowing)
             {
                 while (isHoliday(d1)) d1++;
-                if (c == BusinessDayConvention.ModifiedFollowing)
+                if ( c == BusinessDayConvention.ModifiedFollowing || c == BusinessDayConvention.HalfMonthModifiedFollowing )
                 {
                     if (d1.Month != d.Month)
                         return adjust(d, BusinessDayConvention.Preceding);
+                    if ( c == BusinessDayConvention.HalfMonthModifiedFollowing )
+                    {
+                       if ( d.Day <= 15 && d1.Day > 15 )
+                       {
+                          return adjust( d, BusinessDayConvention.Preceding );
+                       }
+                    }
                 }
             }
             else if (c == BusinessDayConvention.Preceding || c == BusinessDayConvention.ModifiedPreceding)
@@ -145,9 +152,7 @@ namespace QLNet
         /// returns the result.
         /// </summary>
         /// <remarks>The input date is not modified</remarks>
-        public Date advance(Date d, int n, TimeUnit unit) { return advance(d, n, unit, BusinessDayConvention.Following, false); }
-        public Date advance(Date d, int n, TimeUnit unit, BusinessDayConvention c) { return advance(d, n, unit, c, false); }
-        public Date advance(Date d, int n, TimeUnit unit, BusinessDayConvention c, bool endOfMonth)
+        public Date advance( Date d, int n, TimeUnit unit, BusinessDayConvention c = BusinessDayConvention.Following, bool endOfMonth = false )
         {
             if (d == null) throw new ArgumentException("null date");
             if (n == 0)
@@ -195,9 +200,7 @@ namespace QLNet
         /// returns the result.
         /// </summary>
         /// <remarks>The input date is not modified.</remarks>
-        public Date advance(Date d, Period p) { return advance(d, p, BusinessDayConvention.Following, false); }
-        public Date advance(Date d, Period p, BusinessDayConvention c) { return advance(d, p, c, false); }
-        public Date advance(Date d, Period p, BusinessDayConvention c, bool endOfMonth)
+        public Date advance( Date d, Period p, BusinessDayConvention c = BusinessDayConvention.Following, bool endOfMonth = false)
         {
             return advance(d, p.length(), p.units(), c, endOfMonth);
         }
@@ -206,9 +209,7 @@ namespace QLNet
         /// Calculates the number of business days between two given
         /// dates and returns the result.
         /// </summary>
-        public int businessDaysBetween(Date from, Date to) { return businessDaysBetween(from, to, true, false); }
-        public int businessDaysBetween(Date from, Date to, bool includeFirst) { return businessDaysBetween(from, to, includeFirst, false); }
-        public int businessDaysBetween(Date from, Date to, bool includeFirst, bool includeLast)
+        public int businessDaysBetween(Date from, Date to, bool includeFirst = true, bool includeLast = false)
         {
             int wd = 0;
             if (from != to)
@@ -271,11 +272,7 @@ namespace QLNet
         /// <summary>
         /// Returns the holidays between two dates
         /// </summary>
-        public static List<Date> holidayList(Calendar calendar, Date from, Date to) {
-            return holidayList(calendar, from, to, false);
-        }
-
-        public static List<Date> holidayList(Calendar calendar, Date from, Date to, bool includeWeekEnds) {
+        public static List<Date> holidayList(Calendar calendar, Date from, Date to, bool includeWeekEnds = false) {
             if (to <= from)
             {
                 throw new Exception("'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
