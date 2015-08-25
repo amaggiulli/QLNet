@@ -546,6 +546,7 @@
     <Compile Include="Time\DayCounters\OneDayCounter.cs" />
     <Compile Include="Time\DayCounters\SimpleDayCounter.cs" />
     <Compile Include="Time\DayCounters\Thirty360.cs" />
+    <Compile Include="Time\ECB.cs" />
     <Compile Include="Time\Imm.cs" />
     <Compile Include="Time\Period.cs" />
     <Compile Include="Time\Schedule.cs" />

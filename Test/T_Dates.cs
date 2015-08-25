@@ -29,6 +29,58 @@ namespace TestSuite
    public class T_Dates
    {
       [TestMethod()]
+      public void testECBDates()
+      {
+         // Testing ECB dates
+
+         List<Date> knownDates = ECB.knownDates();
+         if (knownDates.empty())
+            Assert.Fail("Empty EBC date vector");
+
+         int n = ECB.nextDates(Date.minDate()).Count;
+    
+         if (n != knownDates.Count)
+            Assert.Fail("NextDates(minDate) returns "  + n +
+                   " instead of " + knownDates.Count + " dates");
+
+         Date previousEcbDate = Date.minDate(),
+         currentEcbDate, ecbDateMinusOne;
+         
+         for (int i=0; i<knownDates.Count; ++i) 
+         {
+
+            currentEcbDate = knownDates[i];
+         
+            if (!ECB.isECBdate(currentEcbDate))
+               Assert.Fail( currentEcbDate + " fails isECBdate check");
+
+            ecbDateMinusOne = currentEcbDate-1;
+            if (ECB.isECBdate(ecbDateMinusOne))
+               Assert.Fail(ecbDateMinusOne + " fails isECBdate check");
+
+            if (ECB.nextDate(ecbDateMinusOne)!=currentEcbDate)
+               Assert.Fail("Next EBC date following " + ecbDateMinusOne +
+                     " must be " + currentEcbDate);
+
+            if (ECB.nextDate(previousEcbDate)!=currentEcbDate)
+               Assert.Fail("Next EBC date following " + previousEcbDate +
+                     " must be " + currentEcbDate);
+
+            previousEcbDate = currentEcbDate;
+         }
+         
+         Date knownDate = knownDates.First();
+         ECB.removeDate(knownDate);
+         if (ECB.isECBdate(knownDate))
+            Assert.Fail("Unable to remove an EBC date");
+    
+         ECB.addDate(knownDate);
+         if (!ECB.isECBdate(knownDate))
+            Assert.Fail("Unable to add an EBC date");
+
+      }
+
+      [TestMethod()]
       public void testIMMDates()
       {
          // ("Testing IMM dates...");
