@@ -115,6 +115,7 @@
     <Compile Include="Indexes\Ibor\Eonia.cs" />
     <Compile Include="Indexes\Ibor\Euribor.cs" />
     <Compile Include="Indexes\Ibor\Eurlibor.cs" />
+    <Compile Include="Indexes\Ibor\FedFunds.cs" />
     <Compile Include="Indexes\Ibor\Gbplibor.cs" />
     <Compile Include="Indexes\Ibor\Jibar.cs" />
     <Compile Include="Indexes\Ibor\Jpylibor.cs" />
