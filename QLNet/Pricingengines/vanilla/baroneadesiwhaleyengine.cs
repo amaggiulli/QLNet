@@ -76,8 +76,11 @@ namespace QLNet {
             double d1 = (Math.Log(forwardSi/payoff.strike()) + 0.5*variance) /
                 Math.Sqrt(variance);
             CumulativeNormalDistribution cumNormalDist = new CumulativeNormalDistribution();
-            double K = (riskFreeDiscount!=1.0 ? -2.0*Math.Log(riskFreeDiscount)/
-                (variance*(1.0-riskFreeDiscount)) : 0.0);
+            double K = ( !Utils.close( riskFreeDiscount, 1.0, 1000 ) )
+                 ? -2.0 * Math.Log( riskFreeDiscount )
+                    / ( variance * ( 1.0 - riskFreeDiscount ) )
+                  : 2.0 / variance;
+
             double temp = Utils.blackFormula(payoff.optionType(), payoff.strike(),
                     forwardSi, Math.Sqrt(variance))*riskFreeDiscount;
             switch (payoff.optionType()) {
@@ -186,8 +189,10 @@ namespace QLNet {
                 double d1 = (Math.Log(forwardSk/payoff.strike()) + 0.5*variance)
                     /Math.Sqrt(variance);
                 double n = 2.0*Math.Log(dividendDiscount/riskFreeDiscount)/variance;
-                double K = -2.0*Math.Log(riskFreeDiscount)/
-                    (variance*(1.0-riskFreeDiscount));
+                double K = ( !Utils.close( riskFreeDiscount, 1.0, 1000 ) )
+                     ? -2.0 * Math.Log( riskFreeDiscount )
+                        / ( variance * ( 1.0 - riskFreeDiscount ) )
+                      : 2.0 / variance;
                 double Q, a;
                 switch (payoff.optionType()) {
                     case Option.Type.Call:

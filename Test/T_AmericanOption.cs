@@ -180,7 +180,8 @@ namespace TestSuite {
                 new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.25,  3.3226) ,
                 new AmericanOptionData(Option.Type.Put,  100.00,  90.00, 0.10, 0.10, 0.50, 0.35, 14.6945) ,
                 new AmericanOptionData(Option.Type.Put,  100.00, 100.00, 0.10, 0.10, 0.50, 0.35,  9.5104) ,
-                new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.35,  5.8823)};
+                new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.35,  5.8823),
+                new AmericanOptionData(Option.Type.Put,  100.00, 100.00, 0.00, 0.00, 0.50, 0.15,  4.22949)};
 
             Date today = Date.Today;
             DayCounter dc = new Actual360();
