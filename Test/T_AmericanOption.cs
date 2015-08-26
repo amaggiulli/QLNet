@@ -236,7 +236,18 @@ namespace TestSuite {
                 // from "Option pricing formulas", Haug, McGraw-Hill 1998, pag 27
               new AmericanOptionData(Option.Type.Call,  40.00,  42.00, 0.08, 0.04, 0.75, 0.35,  5.2704),
                 // from "Option pricing formulas", Haug, McGraw-Hill 1998, VBA code
-              new AmericanOptionData(Option.Type.Put,   40.00,  36.00, 0.00, 0.06, 1.00, 0.20,  4.4531)
+              new AmericanOptionData(Option.Type.Put,   40.00,  36.00, 0.00, 0.06, 1.00, 0.20,  4.4531),
+                // ATM option with very small volatility, reference value taken from R
+              new AmericanOptionData( Option.Type.Call, 100, 100, 0.05, 0.05, 1.0, 0.0021, 0.08032314 ),
+                // ATM option with very small volatility,
+                // reference value taken from Barone-Adesi and Whaley Approximation
+              new AmericanOptionData( Option.Type.Call, 100, 100, 0.05, 0.05, 1.0, 0.0001, 0.003860656 ),
+              new AmericanOptionData( Option.Type.Call, 100, 99.99, 0.05, 0.05, 1.0, 0.0001, 0.00081 ),
+                // ITM option with a very small volatility
+              new AmericanOptionData( Option.Type.Call, 100, 110, 0.05, 0.05, 1.0, 0.0001, 10.0 ),
+              new AmericanOptionData( Option.Type.Put, 110, 100, 0.05, 0.05, 1.0, 0.0001, 10.0 ),
+                // ATM option with a very large volatility
+              new AmericanOptionData( Option.Type.Put, 100, 110, 0.05, 0.05, 1.0, 10, 94.89543 )
             };
 
             Date today = Date.Today;
@@ -250,7 +261,7 @@ namespace TestSuite {
             SimpleQuote vol = new SimpleQuote(0.0);
             BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-            double tolerance = 3.0e-3;
+            double tolerance = 5.0e-5;
 
             for (int i=0; i<values.Length; i++) {
 
