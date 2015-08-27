@@ -385,9 +385,9 @@ namespace QLNet
             cashflows_.Add(payment);
             redemptions_.Add(payment);
          }
-         // stable_sort now moves the redemptions to the right places
+         // stable_sort now moves the AmortizingPayment and Redemptions to the right places
          // while ensuring that they follow coupons with the same date.
-         cashflows_.Sort();
+         cashflows_ = cashflows_.OrderBy( x => x.date() ).ToList();
       }
 
       /*! This method can be called by derived classes in order to
