@@ -1104,5 +1104,68 @@ namespace TestSuite
 
       }
 
+      [TestMethod()]
+      public void testAmortizingFixedRateBond() 
+      {
+	      // Testing amortizing fixed rate bond
+
+         /*
+         * Following data is generated from Excel using function pmt with Nper = 360, PV = 100.0 
+         */
+
+         double[] rates = {0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12};
+         double[] amounts = {0.277777778, 0.321639520, 0.369619473, 0.421604034,
+		                       0.477415295, 0.536821623, 0.599550525, 
+		                       0.665302495, 0.733764574, 0.804622617,
+		                       0.877571570, 0.952323396, 1.028612597};
+
+         Frequency freq = Frequency.Monthly;
+
+         Date refDate = Date.Today;
+
+         double tolerance = 1.0e-6;
+
+         for(int i=0; i<rates.Length; ++i) 
+         {
+	         AmortizingFixedRateBond myBond = new AmortizingFixedRateBond(0, 
+               new NullCalendar(), 100.0, refDate, new Period(30, TimeUnit.Years), freq, rates[i], new ActualActual(ActualActual.Convention.ISMA));
+
+	         List<CashFlow> cashflows = myBond.cashflows();
+
+	         List<double> notionals = myBond.notionals();
+
+	         for(int k=0; k < cashflows.Count / 2; ++k) 
+            {
+		         double coupon = cashflows[2*k].amount();
+		         double principal = cashflows[2*k+1].amount();
+		         double totalAmount = coupon + principal;
+
+		         // Check the amount is same as pmt returned
+
+		         double error = Math.Abs(totalAmount-amounts[i]);
+		         if (error > tolerance) {
+			         Assert.Fail(" Rate: " + rates[i] +
+						         " " + k + "th cash flow " +
+						         " Failed!" +
+						         " Expected Amount: " + amounts[i] +
+						         " Calculated Amount: " + totalAmount);
+		         }
+
+		         // Check the coupon result
+		         double expectedCoupon = notionals[k] * rates[i] / (int)freq;
+		         error = Math.Abs(coupon- expectedCoupon);
+
+		         if(error > tolerance) {
+			         Assert.Fail( " Rate: " + rates[i] +
+				                   " " + k + "th cash flow " +
+				                   " Failed!" +
+				                   " Expected Coupon: " + expectedCoupon +
+				                   " Calculated Coupon: " + coupon);
+		         }
+
+		}
+	}
+}
+
    }
 }
