@@ -60,6 +60,6 @@ namespace QLNet {
          403291461126605635584000000.0,       10888869450418352160768000000.0
         };
 
-        static int tabulated = firstFactorials.Length;
+        static int tabulated = firstFactorials.Length - 1;
     }
 }
