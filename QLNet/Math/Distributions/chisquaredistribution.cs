@@ -60,8 +60,8 @@ namespace QLNet {
         double f_x_2n = df_ - x;
 
         double t = 0.0;
-        if (f2 * Const.QL_Epsilon > 0.125 &&
-            Math.Abs(x2-f2) < Math.Sqrt(Const.QL_Epsilon)*f2) {
+        if (f2 * Const.QL_EPSILON > 0.125 &&
+            Math.Abs(x2-f2) < Math.Sqrt(Const.QL_EPSILON)*f2) {
             t = Math.Exp((1 - t) *
                          (2 - t / (f2 + 1))) / Math.Sqrt(2.0 * Const.M_PI * (f2 + 1.0));
         }

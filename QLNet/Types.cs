@@ -26,7 +26,7 @@ namespace QLNet {
     }
 
     public struct Const {
-        public const double QL_Epsilon = 2.2204460492503131e-016;
+        public const double QL_EPSILON = 2.2204460492503131e-016;
 
         public const double M_SQRT_2 = 0.7071067811865475244008443621048490392848359376887;
         public const double M_1_SQRTPI = 0.564189583547756286948;

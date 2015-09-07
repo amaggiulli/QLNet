@@ -97,8 +97,8 @@ namespace QLNet
             i = Math.Max(Math.Min(i, accrualStartTimes.Count - 1), 0);
             
             if  (!(i<process_.size()
-                && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_Epsilon
-                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_Epsilon))
+                && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_EPSILON
+                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON))
                 throw new ApplicationException("irregular fixings are not (yet) supported"); 
 
             double tenor     = accrualEndTimes[i] - accrualStartTimes[i];

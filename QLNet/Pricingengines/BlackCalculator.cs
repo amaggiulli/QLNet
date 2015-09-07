@@ -51,7 +51,7 @@ namespace QLNet {
             if (!(discount>0.0))
                 throw new ApplicationException("positive discount required: " + discount + " not allowed");
 
-            if (stdDev_>=Const.QL_Epsilon) {
+            if (stdDev_>=Const.QL_EPSILON) {
                 if (strike_==0.0) {
                     n_d1_ = 0.0;
                     n_d2_ = 0.0;
@@ -149,9 +149,9 @@ namespace QLNet {
         public double elasticityForward() {
             double val = value();
             double del = deltaForward();
-            if (val > Const.QL_Epsilon)
+            if (val > Const.QL_EPSILON)
                 return del/val*forward_;
-            else if (Math.Abs(del)<Const.QL_Epsilon)
+            else if (Math.Abs(del)<Const.QL_EPSILON)
                 return 0.0;
             else if (del>0.0)
                 return double.MaxValue;
@@ -164,9 +164,9 @@ namespace QLNet {
         public virtual double elasticity(double spot) {
             double val = value();
             double del = delta(spot);
-            if (val>Const.QL_Epsilon)
+            if (val>Const.QL_EPSILON)
                 return del/val*spot;
-            else if (Math.Abs(del) < Const.QL_Epsilon)
+            else if (Math.Abs(del) < Const.QL_EPSILON)
                 return 0.0;
             else if (del>0.0)
                 return double.MaxValue;

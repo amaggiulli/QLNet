@@ -147,7 +147,7 @@ namespace QLNet
             double Nx_1, nx_1;
             CumulativeNormalDistribution CND = new CumulativeNormalDistribution();
             NormalDistribution ND = new NormalDistribution();
-            if (sigG > Const.QL_Epsilon) {
+            if (sigG > Const.QL_EPSILON) {
                 double x_1  = (muG-Math.Log(payoff.strike())+variance)/sigG;
                 Nx_1 = CND.value(x_1);
                 nx_1 = ND.value( x_1);

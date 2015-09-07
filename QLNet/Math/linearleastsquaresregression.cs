@@ -69,7 +69,7 @@ namespace QLNet {
             Matrix V = svd.V();
             Matrix U = svd.U();
             Vector w = svd.singularValues();
-            double threshold = n*Const.QL_Epsilon;
+            double threshold = n*Const.QL_EPSILON;
 
             for (i=0; i<m; ++i) {
                 if (w[i] > threshold) {

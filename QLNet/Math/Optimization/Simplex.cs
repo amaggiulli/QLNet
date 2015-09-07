@@ -140,13 +140,13 @@ namespace QLNet
                 {
                     factor = 2.0;
                     extrapolate(ref P, iHighest, ref factor);
-                } else if (Math.Abs(factor) > Const.QL_Epsilon) {
+                } else if (Math.Abs(factor) > Const.QL_EPSILON) {
                     if (vTry >= values_[iNextHighest])
                     {
                         double vSave = values_[iHighest];
                         factor = 0.5;
                         vTry = extrapolate(ref P, iHighest, ref factor);
-                        if (vTry >= vSave && Math.Abs(factor) > Const.QL_Epsilon) {
+                        if (vTry >= vSave && Math.Abs(factor) > Const.QL_EPSILON) {
                             for (int i = 0; i <= n; i++)
                             {
                                 if (i != iLowest)
@@ -164,7 +164,7 @@ namespace QLNet
                     }
                 }
                 // If can't extrapolate given the constraints, exit
-                if (Math.Abs(factor) <= Const.QL_Epsilon) {
+                if (Math.Abs(factor) <= Const.QL_EPSILON) {
                     x_ = vertices_[iLowest];
                     double low = values_[iLowest];
                     P.setFunctionValue(low);
@@ -192,8 +192,8 @@ namespace QLNet
                 //                    pTry -= vertices_[iHighest] * factor2;
                 //#endif
                 factor *= 0.5;
-            } while (!P.constraint().test(pTry) && Math.Abs(factor) > Const.QL_Epsilon);
-            if (Math.Abs(factor) <= Const.QL_Epsilon) {
+            } while (!P.constraint().test(pTry) && Math.Abs(factor) > Const.QL_EPSILON);
+            if (Math.Abs(factor) <= Const.QL_EPSILON) {
         	    return values_[iHighest];
             }
             factor *= 2.0;

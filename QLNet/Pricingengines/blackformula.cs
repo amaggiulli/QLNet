@@ -199,7 +199,7 @@ namespace QLNet
 												 double bachelierPrice,
 												 double discount = 1.0 )
 		{
-			double SQRT_QL_EPSILON = Math.Sqrt( Const.QL_Epsilon);
+			double SQRT_QL_EPSILON = Math.Sqrt( Const.QL_EPSILON);
 
          Utils.QL_REQUIRE( tte > 0.0, () => "tte (" + tte + ") must be positive" );
 
@@ -219,7 +219,7 @@ namespace QLNet
          Utils.QL_REQUIRE( nu <= 1.0, () => "nu (" + nu + ") must be <= 1.0" );
          Utils.QL_REQUIRE( nu >= -1.0, () => "nu (" + nu + ") must be >= -1.0" );
 		   
-         nu = Math.Max(-1.0 + Const.QL_Epsilon, Math.Min(nu,1.0 - Const.QL_Epsilon));
+         nu = Math.Max(-1.0 + Const.QL_EPSILON, Math.Min(nu,1.0 - Const.QL_EPSILON));
 		   
          // nu / arctanh(nu) -> 1 as nu -> 0
 			double atanh = ( Math.Log( 1 + nu ) - Math.Log( 1 - nu ) ) / 2; // c# dont have atanh

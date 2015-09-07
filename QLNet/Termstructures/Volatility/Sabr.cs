@@ -51,7 +51,7 @@ namespace QLNet {
             // computations become precise enough if the square of z worth slightly more than the precision machine (hence the m)
             const double m = 10;
 
-            if (Math.Abs(z * z) > Const.QL_Epsilon * m)
+            if (Math.Abs(z * z) > Const.QL_EPSILON * m)
                 multiplier = z/xx;
             else {
                 alpha = (0.5-rho*rho)/(1.0-rho);

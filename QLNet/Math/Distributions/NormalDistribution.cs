@@ -104,7 +104,7 @@ namespace QLNet {
                     g *= y;
                     ++i;
                     a = Math.Abs(a);
-                } while (lasta > a && a >= Math.Abs(sum * Const.QL_Epsilon));
+                } while (lasta > a && a >= Math.Abs(sum * Const.QL_EPSILON));
                 result = -gaussian_.value(z) / z * sum;
             }
             return result;
@@ -221,7 +221,7 @@ namespace QLNet {
         *              erfc/erf(NaN) is NaN
         */
 
-        const double tiny =  Const.QL_Epsilon,
+        const double tiny =  Const.QL_EPSILON,
         one =  1.00000000000000000000e+00, /* 0x3FF00000, 0x00000000 */
         /* c = (float)0.84506291151 */
         erx =  8.45062911510467529297e-01, /* 0x3FEB0AC1, 0x60000000 */
@@ -404,7 +404,7 @@ namespace QLNet {
                 // try to recover if due to numerical error
                 if (Utils.close_enough(x, 1.0)) {
                     x = 1.0;
-                } else if (Math.Abs(x) < Const.QL_Epsilon) {
+                } else if (Math.Abs(x) < Const.QL_EPSILON) {
                     x = 0.0;
                 } else {
                 throw new ApplicationException("InverseCumulativeNormal(" + x + ") undefined: must be 0 < x < 1");

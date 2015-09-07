@@ -85,7 +85,7 @@ namespace QLNet {
             double n_d2;
             double cum_d1_;
             double cum_d2_;
-            if (variance_ >= Const.QL_Epsilon) {
+            if (variance_ >= Const.QL_EPSILON) {
                 if (discount_ == 0.0 && dividendDiscount_ == 0.0) {
                     mu_ = -0.5;
                     lambda_ = 0.5;

@@ -71,7 +71,7 @@ namespace QLNet {
             double discountT = discountBond(0.0, maturity, x0());
             double discountS = discountBond(0.0, bondMaturity, x0());
 
-            if (maturity < Const.QL_Epsilon)
+            if (maturity < Const.QL_EPSILON)
             {
                 switch (type){
                     case Option.Type.Call:

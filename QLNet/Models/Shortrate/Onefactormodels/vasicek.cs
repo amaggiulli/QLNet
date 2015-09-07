@@ -75,10 +75,10 @@ namespace QLNet {
                                         double bondMaturity) {
             double v;
             double _a = a();
-            if (Math.Abs(maturity) < Const.QL_Epsilon){
+            if (Math.Abs(maturity) < Const.QL_EPSILON){
                 v = 0.0;
             }
-            else if (_a < Math.Sqrt(Const.QL_Epsilon)){
+            else if (_a < Math.Sqrt(Const.QL_EPSILON)){
                 v = sigma()*B(maturity, bondMaturity)* Math.Sqrt(maturity);
             } else {
                 v = sigma()*B(maturity, bondMaturity)*
@@ -96,7 +96,7 @@ namespace QLNet {
 
         protected override double A(double t, double T){
             double _a = a();
-            if (_a < Math.Sqrt(Const.QL_Epsilon))
+            if (_a < Math.Sqrt(Const.QL_EPSILON))
             {
                 return 0.0;
             } else {
@@ -110,7 +110,7 @@ namespace QLNet {
 
         protected override double B(double t, double T){
             double _a = a();
-            if (_a < Math.Sqrt(Const.QL_Epsilon))
+            if (_a < Math.Sqrt(Const.QL_EPSILON))
                 return (T - t);
             else
                 return (1.0 - Math.Exp(-_a*(T - t)))/_a;
