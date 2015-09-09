@@ -1,18 +1,19 @@
 /*
  Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+ Copyright (C) 2015 Francois Botha (igitur@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,12 +25,12 @@ using System.Linq;
 
 namespace QLNet {
    //! Payment schedule
-   public class Schedule 
+   public class Schedule
    {
 
       #region Properties
 
-		private bool fullInterface_;
+      private bool fullInterface_;
       private Period tenor_;
       private Calendar calendar_;
       private BusinessDayConvention convention_, terminationDateConvention_;
@@ -62,17 +63,17 @@ namespace QLNet {
       }
 
 
-      public Schedule( Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
-                       BusinessDayConvention convention, BusinessDayConvention terminationDateConvention,
-                       DateGeneration.Rule rule, bool endOfMonth, Date firstDate = null, Date nextToLastDate = null)
+      public Schedule(Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
+                      BusinessDayConvention convention, BusinessDayConvention terminationDateConvention,
+                      DateGeneration.Rule rule, bool endOfMonth, Date firstDate = null, Date nextToLastDate = null)
       {
          // first save the properties
          fullInterface_ = true;
          tenor_ = tenor;
-			if ( calendar == null )
-				calendar_ = new NullCalendar();
-			else
-				calendar_ = calendar;
+         if ( calendar == null )
+            calendar_ = new NullCalendar();
+         else
+            calendar_ = calendar;
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
@@ -82,7 +83,7 @@ namespace QLNet {
             firstDate_ = null;
          else
             firstDate_ = firstDate;
-  
+
           if ( nextToLastDate == terminationDate )
             nextToLastDate_ = null;
          else
@@ -90,25 +91,25 @@ namespace QLNet {
 
          // sanity checks
           Utils.QL_REQUIRE( terminationDate != null, () => "null termination date" );
-         
+
          // in many cases (e.g. non-expired bonds) the effective date is not
          // really necessary. In these cases a decent placeholder is enough
-         if ( effectiveDate == null && firstDate == null && rule== DateGeneration.Rule.Backward) 
+         if ( effectiveDate == null && firstDate == null && rule== DateGeneration.Rule.Backward)
          {
             Date evalDate = Settings.evaluationDate();
             Utils.QL_REQUIRE( evalDate < terminationDate, () => "null effective date" );
             int y;
-            if (nextToLastDate != null) 
+            if (nextToLastDate != null)
             {
                 y = (nextToLastDate - evalDate)/366 + 1;
                 effectiveDate = nextToLastDate - new Period(y,TimeUnit.Years);
-            } 
-            else 
+            }
+            else
             {
                 y = (terminationDate - evalDate)/366 + 1;
                 effectiveDate = terminationDate - new Period(y,TimeUnit.Years);
             }
-         } 
+         }
          else
             Utils.QL_REQUIRE( effectiveDate != null, () => "null effective date" );
 
@@ -158,7 +159,7 @@ namespace QLNet {
                   break;
                case DateGeneration.Rule.ThirdWednesday:
                   Utils.QL_REQUIRE( IMM.isIMMdate( nextToLastDate_, false ), () => "next-to-last date (" + nextToLastDate_ +
-                                    ") is not an IMM date");                  
+                                    ") is not an IMM date");
                   break;
                case DateGeneration.Rule.Zero:
                case DateGeneration.Rule.Twentieth:
@@ -320,7 +321,7 @@ namespace QLNet {
                   }
                }
 
-               if (calendar_.adjust(dates_.Last(), terminationDateConvention_) != 
+               if (calendar_.adjust(dates_.Last(), terminationDateConvention_) !=
                    calendar_.adjust(terminationDate, terminationDateConvention_))
                {
                   if (rule_ == DateGeneration.Rule.Twentieth ||
@@ -389,7 +390,7 @@ namespace QLNet {
          {
             isRegular_[dates_.Count() - 2] = (dates_[dates_.Count() - 2] == dates_.Last());
             dates_[dates_.Count() - 2] = dates_.Last();
-            
+
             dates_.RemoveAt(dates_.Count - 1);
             isRegular_.RemoveAt(isRegular_.Count - 1);
          }
@@ -529,7 +530,7 @@ namespace QLNet {
 
       public int Count { get { return dates_.Count; } }
 
-	}
+   }
 
     //! helper class
     /*! This class provides a more comfortable interface to the argument list of Schedule's constructor. */
@@ -550,31 +551,31 @@ namespace QLNet {
            return this;
         }
 
-        public MakeSchedule to(Date terminationDate) 
+        public MakeSchedule to(Date terminationDate)
         {
            terminationDate_ = terminationDate;
            return this;
         }
 
-        public MakeSchedule withTenor(Period tenor) 
+        public MakeSchedule withTenor(Period tenor)
         {
            tenor_ = tenor;
            return this;
         }
 
-        public MakeSchedule withFrequency(Frequency frequency) 
+        public MakeSchedule withFrequency(Frequency frequency)
         {
            tenor_ = new Period(frequency);
            return this;
         }
 
-        public MakeSchedule withCalendar(Calendar calendar) 
+        public MakeSchedule withCalendar(Calendar calendar)
         {
            calendar_ = calendar;
            return this;
         }
 
-        public MakeSchedule withConvention(BusinessDayConvention conv) 
+        public MakeSchedule withConvention(BusinessDayConvention conv)
         {
            convention_ = conv;
            return this;
@@ -635,7 +636,7 @@ namespace QLNet {
         //    firstDate_ = nextToLastDate_ = null;
         //}
 
-        public Schedule value() 
+        public Schedule value()
         {
 
            // check for mandatory arguments
@@ -646,14 +647,14 @@ namespace QLNet {
            if ((object)tenor_ == null)
               throw new ApplicationException("tenor/frequency not provided");
 
-			  // if no calendar was set...
+           // if no calendar was set...
            if (calendar_ == null)
            {
                // ...we use a null one.
                calendar_ = new NullCalendar();
            }
 
-			  // set dynamic defaults:
+           // set dynamic defaults:
            BusinessDayConvention convention;
            // if a convention was set, we use it.
            if (convention_ != null )
