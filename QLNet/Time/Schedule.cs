@@ -183,7 +183,7 @@ namespace QLNet {
          // calendar needed for endOfMonth adjustment
          Calendar nullCalendar = new NullCalendar();
          int periods = 1;
-         Date seed = new Date() , exitDate;
+         Date seed = new Date() , exitDate = new Date();
          switch (rule_.Value)
          {
             case DateGeneration.Rule.Zero:
@@ -400,6 +400,17 @@ namespace QLNet {
             dates_.RemoveAt(dates_.Count - 1);
             isRegular_.RemoveAt(isRegular_.Count - 1);
          }
+
+         Utils.QL_REQUIRE(dates_.Count > 1,
+            () => "degenerate single date (" + dates_[0] + ") schedule" +
+                 "\n seed date: " + seed +
+                 "\n exit date: " + exitDate +
+                 "\n effective date: " + effectiveDate +
+                 "\n first date: " + firstDate +
+                 "\n next to last date: " + nextToLastDate +
+                 "\n termination date: " + terminationDate +
+                 "\n generation rule: " + rule_.Value +
+                 "\n end of month: " + endOfMonth_.Value);
       }
       #endregion
 
