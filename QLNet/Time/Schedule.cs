@@ -30,15 +30,15 @@ namespace QLNet {
 
       #region Properties
 
-      private bool fullInterface_;
       private Period tenor_;
       private Calendar calendar_;
-      private BusinessDayConvention convention_, terminationDateConvention_;
-      private DateGeneration.Rule rule_;
-      private bool endOfMonth_;
+      private BusinessDayConvention convention_;
+      private BusinessDayConvention? terminationDateConvention_;
+      private DateGeneration.Rule? rule_;
+      private bool? endOfMonth_;
       private Date firstDate_, nextToLastDate_;
       private List<Date> dates_ = new List<Date>();
-      private List<bool> isRegular_ = new List<bool>();
+      private IList<bool> isRegular_ = new List<bool>();
 
       #endregion
 
@@ -46,20 +46,27 @@ namespace QLNet {
 
       public Schedule() { }
 
-      public Schedule(List<Date> dates, Calendar calendar = null, BusinessDayConvention convention = BusinessDayConvention.Unadjusted)
+      public Schedule(List<Date> dates, Calendar calendar = null, BusinessDayConvention convention = BusinessDayConvention.Unadjusted,
+                      BusinessDayConvention? terminationDateConvention = null, Period tenor = null, DateGeneration.Rule? rule = null,
+                      bool? endOfMonth = null, IList<bool> isRegular = null)
       {
          if (calendar == null)
             calendar_ = new NullCalendar();
          else
             calendar_ = calendar;
 
-         fullInterface_ = false;
-         tenor_ = new Period();
+         tenor_ = tenor;
          convention_ = convention;
-         terminationDateConvention_ = convention;
-         rule_ = DateGeneration.Rule.Forward;
-         endOfMonth_ = false;
+         terminationDateConvention_ = terminationDateConvention;
+         rule_ = rule;
+         endOfMonth_ = endOfMonth;
          dates_ = dates;
+         isRegular_ = isRegular;
+
+
+         Utils.QL_REQUIRE(
+             isRegular_.Count == 0 || isRegular_.Count() == dates.Count() - 1,
+             () => string.Format("isRegular size ({0}) must be zero or equal to the number of dates minus 1 ({1})", isRegular_.Count, dates.Count - 1));
       }
 
 
@@ -68,7 +75,6 @@ namespace QLNet {
                       DateGeneration.Rule rule, bool endOfMonth, Date firstDate = null, Date nextToLastDate = null)
       {
          // first save the properties
-         fullInterface_ = true;
          tenor_ = tenor;
          if ( calendar == null )
             calendar_ = new NullCalendar();
@@ -120,7 +126,7 @@ namespace QLNet {
 
          if (firstDate_ != null)
          {
-            switch (rule_)
+            switch (rule_.Value)
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
@@ -138,17 +144,17 @@ namespace QLNet {
                case DateGeneration.Rule.TwentiethIMM:
                case DateGeneration.Rule.OldCDS:
                case DateGeneration.Rule.CDS:
-                  Utils.QL_FAIL("first date incompatible with " + rule_ + " date generation rule");
+                  Utils.QL_FAIL("first date incompatible with " + rule_.Value + " date generation rule");
                   break;
                default:
-                  Utils.QL_FAIL("unknown rule (" + rule_ + ")");
+                  Utils.QL_FAIL("unknown rule (" + rule_.Value + ")");
                   break;
             }
          }
 
          if (nextToLastDate_ != null)
          {
-            switch (rule_)
+            switch (rule_.Value)
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
@@ -166,10 +172,10 @@ namespace QLNet {
                case DateGeneration.Rule.TwentiethIMM:
                case DateGeneration.Rule.OldCDS:
                case DateGeneration.Rule.CDS:
-                  Utils.QL_FAIL("next to last date incompatible with " + rule_ + " date generation rule");
+                  Utils.QL_FAIL("next to last date incompatible with " + rule_.Value + " date generation rule");
                   break;
                default:
-                  Utils.QL_FAIL("unknown rule (" + rule_ + ")");
+                  Utils.QL_FAIL("unknown rule (" + rule_.Value + ")");
                   break;
             }
          }
@@ -178,7 +184,7 @@ namespace QLNet {
          Calendar nullCalendar = new NullCalendar();
          int periods = 1;
          Date seed = new Date() , exitDate;
-         switch (rule_)
+         switch (rule_.Value)
          {
             case DateGeneration.Rule.Zero:
                tenor_ = new Period(0, TimeUnit.Years);
@@ -194,7 +200,7 @@ namespace QLNet {
                if (nextToLastDate_ != null)
                {
                   dates_.Insert(0, nextToLastDate_);
-                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_);
+                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp != nextToLastDate_)
                      isRegular_.Insert(0, false);
                   else
@@ -207,7 +213,7 @@ namespace QLNet {
 
                while (true)
                {
-                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_);
+                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp < exitDate)
                   {
                      if (firstDate_ != null && (calendar_.adjust(dates_.First(), convention_) !=
@@ -244,11 +250,11 @@ namespace QLNet {
             case DateGeneration.Rule.ThirdWednesday:
             case DateGeneration.Rule.OldCDS:
             case DateGeneration.Rule.CDS:
-               Utils.QL_REQUIRE( !endOfMonth, () => "endOfMonth convention incompatible with " + rule_ + " date generation rule" );
+               Utils.QL_REQUIRE( !endOfMonth, () => "endOfMonth convention incompatible with " + rule_.Value + " date generation rule" );
                goto case DateGeneration.Rule.Forward;			// fall through
 
             case DateGeneration.Rule.Forward:
-               if (rule_ == DateGeneration.Rule.CDS)
+               if (rule_.Value == DateGeneration.Rule.CDS)
                {
                   dates_.Add(previousTwentieth(effectiveDate, DateGeneration.Rule.CDS));
                }
@@ -261,19 +267,19 @@ namespace QLNet {
                if (firstDate_ != null)
                {
                   dates_.Add(firstDate_);
-                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_);
+                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp != firstDate_)
                      isRegular_.Add(false);
                   else
                      isRegular_.Add(true);
                   seed = firstDate_;
                }
-               else if (rule_ == DateGeneration.Rule.Twentieth ||
-                        rule_ == DateGeneration.Rule.TwentiethIMM ||
-                        rule_ == DateGeneration.Rule.OldCDS ||
-                        rule_ == DateGeneration.Rule.CDS)
+               else if (rule_.Value == DateGeneration.Rule.Twentieth ||
+                        rule_.Value == DateGeneration.Rule.TwentiethIMM ||
+                        rule_.Value == DateGeneration.Rule.OldCDS ||
+                        rule_.Value == DateGeneration.Rule.CDS)
                {
-                  Date next20th = nextTwentieth(effectiveDate, rule_);
+                  Date next20th = nextTwentieth(effectiveDate, rule_.Value);
                   if (rule_ == DateGeneration.Rule.OldCDS)
                   {
                      // distance rule inforced in natural days
@@ -281,7 +287,7 @@ namespace QLNet {
                      if (next20th - effectiveDate < stubDays)
                      {
                         // +1 will skip this one and get the next
-                        next20th = nextTwentieth(next20th + 1, rule_);
+                        next20th = nextTwentieth(next20th + 1, rule_.Value);
                      }
                   }
                   if (next20th != effectiveDate)
@@ -297,7 +303,7 @@ namespace QLNet {
                   exitDate = nextToLastDate_;
                while (true)
                {
-                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_);
+                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp > exitDate)
                   {
                      if (nextToLastDate_ != null &&
@@ -321,15 +327,15 @@ namespace QLNet {
                   }
                }
 
-               if (calendar_.adjust(dates_.Last(), terminationDateConvention_) !=
-                   calendar_.adjust(terminationDate, terminationDateConvention_))
+               if (calendar_.adjust(dates_.Last(), terminationDateConvention_.Value) !=
+                   calendar_.adjust(terminationDate, terminationDateConvention_.Value))
                {
-                  if (rule_ == DateGeneration.Rule.Twentieth ||
-                      rule_ == DateGeneration.Rule.TwentiethIMM ||
-                      rule_ == DateGeneration.Rule.OldCDS ||
-                      rule_ == DateGeneration.Rule.CDS)
+                  if (rule_.Value == DateGeneration.Rule.Twentieth ||
+                      rule_.Value == DateGeneration.Rule.TwentiethIMM ||
+                      rule_.Value == DateGeneration.Rule.OldCDS ||
+                      rule_.Value == DateGeneration.Rule.CDS)
                   {
-                     dates_.Add(nextTwentieth(terminationDate, rule_));
+                     dates_.Add(nextTwentieth(terminationDate, rule_.Value));
                      isRegular_.Add(true);
                   }
                   else
@@ -341,7 +347,7 @@ namespace QLNet {
                break;
 
             default:
-               Utils.QL_FAIL("unknown rule (" + rule_ + ")");
+               Utils.QL_FAIL("unknown rule (" + rule_.Value + ")");
                break;
          }
 
@@ -376,12 +382,12 @@ namespace QLNet {
 
             // termination date is NOT adjusted as per ISDA specifications, unless otherwise specified in the
             // confirmation of the deal or unless we're creating a CDS schedule
-            if (terminationDateConvention_ != BusinessDayConvention.Unadjusted
-                || rule_ == DateGeneration.Rule.Twentieth
-                || rule_ == DateGeneration.Rule.TwentiethIMM
-                || rule_ == DateGeneration.Rule.OldCDS
-                || rule_ == DateGeneration.Rule.CDS)
-               dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_);
+            if (terminationDateConvention_.Value != BusinessDayConvention.Unadjusted
+                || rule_.Value == DateGeneration.Rule.Twentieth
+                || rule_.Value == DateGeneration.Rule.TwentiethIMM
+                || rule_.Value == DateGeneration.Rule.OldCDS
+                || rule_.Value == DateGeneration.Rule.CDS)
+               dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
          }
 
          // final safety check to remove duplicated last dates, if any
@@ -430,9 +436,15 @@ namespace QLNet {
       public List<Date> dates() { return dates_; }
       public bool isRegular(int i)
       {
-         Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" );
+         Utils.QL_REQUIRE(isRegular_.Count() > 0, () => "full interface (isRegular) not available");
          Utils.QL_REQUIRE( i <= isRegular_.Count() && i > 0, () => "index (" + i + ") must be in [1, " + isRegular_.Count() + "]" );
          return isRegular_[i - 1];
+      }
+
+      public IList<bool> isRegular()
+      {
+         Utils.QL_REQUIRE(isRegular_.Count() > 0, () => "full interface (isRegular) not available");
+         return isRegular_;
       }
       //@}
 
@@ -442,11 +454,25 @@ namespace QLNet {
       public Calendar calendar() { return calendar_; }
       public Date startDate() { return dates_.First(); }
       public Date endDate() { return dates_.Last(); }
-      public Period tenor() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return tenor_; }
-      public BusinessDayConvention businessDayConvention() { return convention_; }
-      public BusinessDayConvention terminationDateBusinessDayConvention() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return terminationDateConvention_; }
-      public DateGeneration.Rule rule() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return rule_; }
-      public bool endOfMonth() { Utils.QL_REQUIRE( fullInterface_, () => "full interface not available" ); return endOfMonth_; }
+      public Period tenor() {
+         Utils.QL_REQUIRE( tenor_ != null, () => "full interface (tenor) not available" );
+         return tenor_;
+      }
+      public BusinessDayConvention businessDayConvention() {
+         return convention_;
+      }
+      public BusinessDayConvention terminationDateBusinessDayConvention() {
+         Utils.QL_REQUIRE(terminationDateConvention_.HasValue, () => "full interface (termination date business day convention) not available" );
+         return terminationDateConvention_.Value;
+      }
+      public DateGeneration.Rule rule() {
+         Utils.QL_REQUIRE( rule_.HasValue, () => "full interface (rule) not available" );
+         return rule_.Value;
+      }
+      public bool endOfMonth() {
+         Utils.QL_REQUIRE( endOfMonth_.HasValue, () => "full interface (end of month) not available" );
+         return endOfMonth_.Value;
+      }
       //@}
 
       //@{
