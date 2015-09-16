@@ -250,7 +250,7 @@
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />
     <Compile Include="Math\Interpolations\sabrinterpolation.cs" />
-    <Compile Include="Math\Interpolations\TqrEigenDecomposition.cs" />
+    <Compile Include="Math\matrixutilities\TqrEigenDecomposition.cs" />
     <Compile Include="Math\linearleastsquaresregression.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\matrixutilities\choleskydecomposition.cs" />
