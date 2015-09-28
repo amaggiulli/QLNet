@@ -37,7 +37,7 @@ namespace QLNet {
             impl_ = impl;
         }
 
-        public double update(Vector p, Vector direction, double beta) {
+        public double update(ref Vector p, Vector direction, double beta) {
             double diff=beta;
             Vector newParams = p + diff * direction;
             bool valid = test(newParams);
