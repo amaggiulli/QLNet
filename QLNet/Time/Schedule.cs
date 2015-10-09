@@ -59,7 +59,7 @@ namespace QLNet {
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
-         endOfMonth_ = tenor < new Period(1, TimeUnit.Months) ? false : endOfMonth;
+         endOfMonth_ = (tenor != null && tenor < new Period(1, TimeUnit.Months)) ? false : endOfMonth;
          dates_ = dates;
          isRegular_ = isRegular;
 
@@ -83,7 +83,7 @@ namespace QLNet {
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
-         endOfMonth_ = tenor < new Period(1, TimeUnit.Months) ? false : endOfMonth;
+         endOfMonth_ = (tenor != null && tenor < new Period(1, TimeUnit.Months)) ? false : endOfMonth;
 
          if ( firstDate == effectiveDate )
             firstDate_ = null;
