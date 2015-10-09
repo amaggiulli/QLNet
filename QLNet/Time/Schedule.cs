@@ -119,6 +119,12 @@ namespace QLNet {
          else
             Utils.QL_REQUIRE( effectiveDate != null, () => "null effective date" );
 
+         Utils.QL_REQUIRE(effectiveDate < terminationDate, () =>
+            "effective date (" + effectiveDate +
+            ") later than or equal to termination date (" +
+            terminationDate + ")"
+         );
+
          if (tenor_.length() == 0)
             rule_ = DateGeneration.Rule.Zero;
          else
@@ -361,16 +367,28 @@ namespace QLNet {
             // adjust to end of month
             if (convention_ == BusinessDayConvention.Unadjusted)
             {
-               for (int i = 0; i < dates_.Count-1; ++i)
+               for (int i = 1; i < dates_.Count-1; ++i)
                   dates_[i] = Date.endOfMonth(dates_[i]);
             }
             else
             {
-               for (int i = 0; i < dates_.Count-1; ++i)
+               for (int i = 1; i < dates_.Count-1; ++i)
                   dates_[i] = calendar_.endOfMonth(dates_[i]);
             }
             if (terminationDateConvention_ != BusinessDayConvention.Unadjusted)
+            {
+               dates_[0] = calendar_.endOfMonth(dates_.First());
                dates_[dates_.Count - 1] = calendar_.endOfMonth(dates_.Last());
+            }
+            else
+            {
+               // the termination date is the first if going backwards,
+               // the last otherwise.
+               if (rule_ == DateGeneration.Rule.Backward)
+                  dates_[dates_.Count - 1] = Date.endOfMonth(dates_.Last());
+               else
+                  dates_[0] = Date.endOfMonth(dates_.First());
+            }
          }
          else
          {
@@ -390,7 +408,7 @@ namespace QLNet {
                dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
          }
 
-         // final safety check to remove duplicated last dates, if any
+         // final safety checks to remove duplicated last dates, if any
          // it can happen if EOM is applied to two near dates
          if (dates_.Count >= 2 &&  dates_[dates_.Count - 2] >= dates_.Last())
          {
@@ -399,6 +417,14 @@ namespace QLNet {
 
             dates_.RemoveAt(dates_.Count - 1);
             isRegular_.RemoveAt(isRegular_.Count - 1);
+         }
+
+         if (dates_.Count >= 2 && dates_[1] <= dates_.First())
+         {
+            isRegular_[1] = (dates_[1] == dates_.First());
+            dates_[1] = dates_.First();
+            dates_.RemoveAt(0);
+            isRegular_.RemoveAt(0);
          }
 
          Utils.QL_REQUIRE(dates_.Count > 1,
