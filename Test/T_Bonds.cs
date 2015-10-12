@@ -1178,7 +1178,7 @@ namespace TestSuite
       public void testBondFromScheduleWithDateVector()
       {
          // Testing South African R2048 bond price using Schedule constructor with Date vector
-         SavedSettings backup;
+         SavedSettings backup = new SavedSettings();
 
          //When pricing bond from Yield To Maturity, use NullCalendar()
          Calendar calendar = new NullCalendar();
