@@ -61,8 +61,11 @@ namespace QLNet {
          rule_ = rule;
          endOfMonth_ = (tenor != null && tenor < new Period(1, TimeUnit.Months)) ? false : endOfMonth;
          dates_ = dates;
-         isRegular_ = isRegular;
 
+         if (isRegular == null)
+            isRegular_ = new List<bool>();
+         else
+            isRegular_ = isRegular;
 
          Utils.QL_REQUIRE(
              isRegular_.Count == 0 || isRegular_.Count() == dates.Count() - 1,
