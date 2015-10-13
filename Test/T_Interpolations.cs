@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -567,106 +568,108 @@ namespace TestSuite
 
       }
 
-        //[TestMethod()]
-        //public void testMultiSpline() {
-        //    //("Testing N-dimensional cubic spline...");
+        
+      //[TestMethod()]
+      //public void testMultiSpline() 
+      //{
+      //   // Testing N-dimensional cubic spline...
 
-        //    List<int> dim = new List<int>() { 6, 5, 5, 6, 4 };
+      //   List<int> dim = new List<int>() { 6, 5, 5, 6, 4 };
 
-        //    List<double> args = new InitializedList<double>(5), 
-        //        offsets = new List<double>() { 1.005, 14.0, 33.005, 35.025, 19.025 };
+      //   List<double> args = new InitializedList<double>(5), 
+      //         offsets = new List<double>() { 1.005, 14.0, 33.005, 35.025, 19.025 };
 
-        //    double s = args[0] = offsets[0],
-        //         t = args[1] = offsets[1],
-        //         u = args[2] = offsets[2],
-        //         v = args[3] = offsets[3],
-        //         w = args[4] = offsets[4];
+      //   double s = args[0] = offsets[0],
+      //         t = args[1] = offsets[1],
+      //         u = args[2] = offsets[2],
+      //         v = args[3] = offsets[3],
+      //         w = args[4] = offsets[4];
 
-        //    int i, j, k, l, m;
+      //   int i, j, k, l, m;
 
-        //    SplineGrid grid = new SplineGrid(5);
+      //   SplineGrid grid = new SplineGrid(5);
 
-        //    double r = 0.15;
+      //   double r = 0.15;
 
-        //    for (i = 0; i < 5; ++i) {
-        //        double temp = offsets[i];
-        //        for (j = 0; j < dim[i]; temp += r, ++j)
-        //            grid[i].Add(temp);
-        //    }
+      //   for (i = 0; i < 5; ++i) {
+      //         double temp = offsets[i];
+      //         for (j = 0; j < dim[i]; temp += r, ++j)
+      //            grid[i].Add(temp);
+      //   }
 
-        //    r = 0.01;
+      //   r = 0.01;
 
-        //    MultiCubicSpline<5>::data_table y5(dim);
+      //   MultiCubicSpline<5>::data_table y5(dim);
 
-        //    for (i = 0; i < dim[0]; ++i)
-        //        for (j = 0; j < dim[1]; ++j)
-        //            for (k = 0; k < dim[2]; ++k)
-        //                for (l = 0; l < dim[3]; ++l)
-        //                    for (m = 0; m < dim[4]; ++m)
-        //                        y5[i][j][k][l][m] =
-        //                            multif(grid[0][i], grid[1][j], grid[2][k],
-        //                                   grid[3][l], grid[4][m]);
+      //   for (i = 0; i < dim[0]; ++i)
+      //         for (j = 0; j < dim[1]; ++j)
+      //            for (k = 0; k < dim[2]; ++k)
+      //               for (l = 0; l < dim[3]; ++l)
+      //                     for (m = 0; m < dim[4]; ++m)
+      //                        y5[i][j][k][l][m] =
+      //                           multif(grid[0][i], grid[1][j], grid[2][k],
+      //                                    grid[3][l], grid[4][m]);
 
-        //    MultiCubicSpline<5> cs(grid, y5);
-        //    /* it would fail with
-        //    for (i = 0; i < dim[0]; ++i)
-        //        for (j = 0; j < dim[1]; ++j)
-        //            for (k = 0; k < dim[2]; ++k)
-        //                for (l = 0; l < dim[3]; ++l)
-        //                    for (m = 0; m < dim[4]; ++m) {
-        //    */
-        //    for (i = 1; i < dim[0]-1; ++i)
-        //        for (j = 1; j < dim[1]-1; ++j)
-        //            for (k = 1; k < dim[2]-1; ++k)
-        //                for (l = 1; l < dim[3]-1; ++l)
-        //                    for (m = 1; m < dim[4]-1; ++m) {
-        //                        s = grid[0][i];
-        //                        t = grid[1][j];
-        //                        u = grid[2][k];
-        //                        v = grid[3][l];
-        //                        w = grid[4][m];
-        //                        double interpolated = cs(args);
-        //                        double expected = y5[i][j][k][l][m];
-        //                        double error = Math.Abs(interpolated-expected);
-        //                        double tolerance = 1e-16;
-        //                        if (error > tolerance) {
-        //                            Assert.Fail(
-        //                                "\n  At ("
-        //                                + s + "," + t + "," + u + ","
-        //                                            + v + "," + w + "):"
-        //                                + "\n    interpolated: " + interpolated
-        //                                + "\n    actual value: " + expected
-        //                                + "\n       error: " + error
-        //                                + "\n    tolerance: " + tolerance);
-        //                        }
-        //                    }
+      //   MultiCubicSpline<5> cs(grid, y5);
+      //   /* it would fail with
+      //   for (i = 0; i < dim[0]; ++i)
+      //         for (j = 0; j < dim[1]; ++j)
+      //            for (k = 0; k < dim[2]; ++k)
+      //               for (l = 0; l < dim[3]; ++l)
+      //                     for (m = 0; m < dim[4]; ++m) {
+      //   */
+      //   for (i = 1; i < dim[0]-1; ++i)
+      //         for (j = 1; j < dim[1]-1; ++j)
+      //            for (k = 1; k < dim[2]-1; ++k)
+      //               for (l = 1; l < dim[3]-1; ++l)
+      //                     for (m = 1; m < dim[4]-1; ++m) {
+      //                        s = grid[0][i];
+      //                        t = grid[1][j];
+      //                        u = grid[2][k];
+      //                        v = grid[3][l];
+      //                        w = grid[4][m];
+      //                        double interpolated = cs(args);
+      //                        double expected = y5[i][j][k][l][m];
+      //                        double error = Math.Abs(interpolated-expected);
+      //                        double tolerance = 1e-16;
+      //                        if (error > tolerance) {
+      //                           Assert.Fail(
+      //                                 "\n  At ("
+      //                                 + s + "," + t + "," + u + ","
+      //                                             + v + "," + w + "):"
+      //                                 + "\n    interpolated: " + interpolated
+      //                                 + "\n    actual value: " + expected
+      //                                 + "\n       error: " + error
+      //                                 + "\n    tolerance: " + tolerance);
+      //                        }
+      //                     }
 
 
-        //    ulong seed = 42;
-        //    SobolRsg rsg = new SobolRsg(5, seed);
+      //   ulong seed = 42;
+      //   SobolRsg rsg = new SobolRsg(5, seed);
 
-        //    double tolerance = 1.7e-4;
-        //    // actually tested up to 2^21-1=2097151 Sobol draws
-        //    for (i = 0; i < 1023; ++i) {
-        //        List<double> next = rsg.nextSequence().value;
-        //        s = grid[0].front() + next[0]*(grid[0].back()-grid[0].front());
-        //        t = grid[1].front() + next[1]*(grid[1].back()-grid[1].front());
-        //        u = grid[2].front() + next[2]*(grid[2].back()-grid[2].front());
-        //        v = grid[3].front() + next[3]*(grid[3].back()-grid[3].front());
-        //        w = grid[4].front() + next[4]*(grid[4].back()-grid[4].front());
-        //        double interpolated = cs(args), expected = multif(s, t, u, v, w);
-        //        double error = Math.Abs(interpolated-expected);
-        //        if (error > tolerance) {
-        //            Assert.Fail(
-        //                "\n  At ("
-        //                + s + "," + t + "," + u + "," + v + "," + w + "):"
-        //                + "\n    interpolated: " + interpolated
-        //                + "\n    actual value: " + expected
-        //                + "\n    error:        " + error
-        //                + "\n    tolerance:    " + tolerance);
-        //        }
-        //    }
-        //}
+      //   double tolerance = 1.7e-4;
+      //   // actually tested up to 2^21-1=2097151 Sobol draws
+      //   for (i = 0; i < 1023; ++i) {
+      //         List<double> next = rsg.nextSequence().value;
+      //         s = grid[0].front() + next[0]*(grid[0].back()-grid[0].front());
+      //         t = grid[1].front() + next[1]*(grid[1].back()-grid[1].front());
+      //         u = grid[2].front() + next[2]*(grid[2].back()-grid[2].front());
+      //         v = grid[3].front() + next[3]*(grid[3].back()-grid[3].front());
+      //         w = grid[4].front() + next[4]*(grid[4].back()-grid[4].front());
+      //         double interpolated = cs(args), expected = multif(s, t, u, v, w);
+      //         double error = Math.Abs(interpolated-expected);
+      //         if (error > tolerance) {
+      //            Assert.Fail(
+      //               "\n  At ("
+      //               + s + "," + t + "," + u + "," + v + "," + w + "):"
+      //               + "\n    interpolated: " + interpolated
+      //               + "\n    actual value: " + expected
+      //               + "\n    error:        " + error
+      //               + "\n    tolerance:    " + tolerance);
+      //         }
+      //   }
+      //}
 
       class NotThrown : ApplicationException { }
 
@@ -1083,6 +1086,133 @@ namespace TestSuite
                }
             }
          }
+      }
+
+      [TestMethod()]
+      public void testKernelInterpolation() 
+      {
+
+         // Testing kernel 1D interpolation
+
+         List<double> deltaGrid = new InitializedList<double>(5); // x-values, here delta in FX
+         deltaGrid[0]=0.10; deltaGrid[1]=0.25; deltaGrid[2]=0.50;
+         deltaGrid[3]=0.75; deltaGrid[4]=0.90;
+
+         List<double> yd1 = new InitializedList<double>( deltaGrid.Count ); // test y-values 1
+         yd1[0]=11.275; yd1[1]=11.125; yd1[2]=11.250;
+         yd1[3]=11.825; yd1[4]=12.625;
+
+         List<double> yd2 = new InitializedList<double>( deltaGrid.Count ); // test y-values 2
+         yd2[0]=16.025; yd2[1]=13.450; yd2[2]=11.350;
+         yd2[3]=10.150; yd2[4]=10.075;
+
+         List<double> yd3 = new InitializedList<double>( deltaGrid.Count ); // test y-values 3
+         yd3[0]=10.3000; yd3[1]=9.6375; yd3[2]=9.2000;
+         yd3[3]=9.1125; yd3[4]=9.4000;
+
+         List<List<double> > yd = new List<List<double>>();
+         yd.Add(yd1);
+         yd.Add(yd2);
+         yd.Add(yd3);
+
+         List<double> lambdaVec = new InitializedList<double>( 5 );
+         lambdaVec[0]=0.05; lambdaVec[1]=0.50; lambdaVec[2]=0.75;
+         lambdaVec[3]=1.65; lambdaVec[4]=2.55;
+
+         double tolerance = 2.0e-5;
+
+         double expectedVal;
+         double calcVal;
+
+         // Check that y-values at knots are exactly the feeded y-values,
+         // irrespective of kernel parameters
+         for (int i=0; i<lambdaVec.Count; ++i) 
+         {
+            GaussianKernel myKernel = new GaussianKernel(0,lambdaVec[i]);
+
+            for (int j=0; j<yd.Count; ++j) 
+            {
+               List<double> currY = yd[j];
+               KernelInterpolation f = new KernelInterpolation(deltaGrid, deltaGrid.Count,currY, myKernel);
+               f.update();
+
+               for (int dIt=0; dIt< deltaGrid.Count; ++dIt) 
+               {
+                  expectedVal=currY[dIt];
+                  calcVal=f.value(deltaGrid[dIt]);
+
+                  if (Math.Abs(expectedVal-calcVal)>tolerance) 
+                  {
+
+                     Assert.Fail("Kernel interpolation failed at x = "
+                                 + deltaGrid[dIt]
+                                 + "\n    interpolated value: " + calcVal
+                                 + "\n    expected value:     " + expectedVal
+                                 + "\n    error:              "
+                                 + Math.Abs(expectedVal-calcVal));
+               
+                  }
+               }
+            }
+         }
+
+         List<double> testDeltaGrid = new InitializedList<double>( deltaGrid.Count );
+         testDeltaGrid[0]=0.121; testDeltaGrid[1]=0.279; testDeltaGrid[2]=0.678;
+         testDeltaGrid[3]=0.790; testDeltaGrid[4]=0.980;
+
+         // Gaussian Kernel values for testDeltaGrid with a standard
+         // deviation of 2.05 (the value is arbitrary.)  Source: parrallel
+         // implementation in R, no literature sources found
+
+         List<double> ytd1 = new InitializedList<double>( testDeltaGrid.Count );
+         ytd1[0]=11.23847; ytd1[1]=11.12003; ytd1[2]=11.58932;
+         ytd1[3]=11.99168; ytd1[4]=13.29650;
+
+         List<double> ytd2 = new InitializedList<double>( testDeltaGrid.Count );
+         ytd2[0]=15.55922; ytd2[1]=13.11088; ytd2[2]=10.41615;
+         ytd2[3]=10.05153; ytd2[4]=10.50741;
+
+         List<double> ytd3 = new InitializedList<double>( testDeltaGrid.Count );
+         ytd3[0]= 10.17473; ytd3[1]= 9.557842; ytd3[2]= 9.09339;
+         ytd3[3]= 9.149687; ytd3[4]= 9.779971;
+
+         List<List<double> > ytd = new List<List<double>>();
+         ytd.Add(ytd1);
+         ytd.Add(ytd2);
+         ytd.Add(ytd3);
+
+         GaussianKernel myKernel2 = new GaussianKernel(0,2.05);
+
+         for (int j=0; j< ytd.Count; ++j) 
+         {
+            List<double> currY=yd[j];
+            List<double> currTY=ytd[j];
+
+            // Build interpolation according to original grid + y-values
+            KernelInterpolation f = new KernelInterpolation(deltaGrid, deltaGrid.Count,currY, myKernel2);
+            f.update();
+
+            // test values at test Grid
+            for (int dIt=0; dIt< testDeltaGrid.Count; ++dIt) 
+            {
+               expectedVal=currTY[dIt];
+               f.enableExtrapolation();// allow extrapolation
+
+               calcVal=f.value(testDeltaGrid[dIt]);
+               if (Math.Abs(expectedVal-calcVal)>tolerance) 
+               {
+
+                     Assert.Fail("Kernel interpolation failed at x = "
+                                 + deltaGrid[dIt]
+                                 + "\n    interpolated value: " + calcVal
+                                 + "\n    expected value:     " + expectedVal
+                                 + "\n    error:              "
+                                 + Math.Abs(expectedVal-calcVal));
+               }
+            }
+         
+         }
+   
       }
 
         #region Functions

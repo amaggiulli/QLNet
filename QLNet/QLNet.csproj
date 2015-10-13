@@ -246,11 +246,13 @@
     <Compile Include="Math\Interpolation.cs" />
     <Compile Include="Math\Interpolations\forwardflatinterpolation.cs" />
     <Compile Include="Math\Interpolations\interpolation2d.cs" />
+    <Compile Include="Math\Interpolations\KernelInterpolation.cs" />
     <Compile Include="Math\Interpolations\Linearinterpolation.cs" />
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />
     <Compile Include="Math\Interpolations\sabrinterpolation.cs" />
     <Compile Include="Math\Interpolations\XABRInterpolation.cs" />
+    <Compile Include="Math\KernelFunctions.cs" />
     <Compile Include="Math\matrixutilities\TqrEigenDecomposition.cs" />
     <Compile Include="Math\linearleastsquaresregression.cs" />
     <Compile Include="Math\Matrix.cs" />
