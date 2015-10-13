@@ -148,6 +148,13 @@ namespace QLNet {
             return result;
         }
 
+        public static Vector Abs( Vector v )
+        {
+           Vector result = new Vector( v.size() );
+           result.ForEach( ( i, x ) => result[i] = Math.Abs( v[i] ) );
+           return result;
+        }
+
         public void swap(int i1, int i2) {
             double t = this[i2];
             this[i2] = this[i1];

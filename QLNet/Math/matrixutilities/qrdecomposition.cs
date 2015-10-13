@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -42,7 +43,7 @@ namespace QLNet {
             See lmdiff.cpp for further details.
         */
         //public static List<int> qrDecomposition(Matrix A, Matrix q, Matrix r, bool pivot = true) {
-        public static List<int> qrDecomposition(Matrix M, Matrix q, Matrix r, bool pivot) {
+        public static List<int> qrDecomposition(Matrix M, ref Matrix q, ref Matrix r, bool pivot) {
             Matrix mT = Matrix.transpose(M);
             int m = M.rows();
             int n = M.columns();
@@ -57,14 +58,10 @@ namespace QLNet {
                 r = new Matrix(n, n);
 
             for (int i=0; i < n; ++i) {
-            //    std::fill(r.row_begin(i), r.row_begin(i)+i, 0.0);
                 r[i, i] = rdiag[i];
                 if (i < m) {
-            //        std::copy(mT.column_begin(i)+i+1, mT.column_end(i),
-            //                  r.row_begin(i)+i+1);
-                }
-                else {
-            //        std::fill(r.row_begin(i)+i+1, r.row_end(i), 0.0);
+                   for ( int j = i; j < mT.rows()-1; j++ )
+                      r[i, j + 1] = mT[j+1, i];
                 }
             }
 
@@ -72,35 +69,40 @@ namespace QLNet {
                 q = new Matrix(m, n);
 
             Vector w = new Vector(m);
-            //for (int k=0; k < m; ++k) {
-            //    std::fill(w.begin(), w.end(), 0.0);
-            //    w[k] = 1.0;
+            for (int k=0; k < m; ++k) 
+            {
+                w.Erase();
+                w[k] = 1.0;
 
-            //    for (int j=0; j < Math.Min(n, m); ++j) {
-            //        double t3 = mT[j,j];
-            //        if (t3 != 0.0) {
-            //            double t
-            //                = std::inner_product(mT.row_begin(j)+j, mT.row_end(j),
-            //                                     w.begin()+j, 0.0)/t3;
-            //            for (int i=j; i<m; ++i) {
-            //                w[i]-=mT[j,i]*t;
-            //            }
-            //        }
-            //        q[k,j] = w[j];
-            //    }
-            //    std::fill(q.row_begin(k) + Math.Min(n, m), q.row_end(k), 0.0);
-            //}
+                for (int j=0; j < Math.Min(n, m); ++j) 
+                {
+                    double t3 = mT[j,j];
+                    if (t3 != 0.0) 
+                    {
+                       double t = 0;
+                       for ( int kk = j ; kk < mT.columns(); kk++ )
+                          t += ( mT[j,kk] * w[kk] ) / t3 ; 
+
+                       for (int i=j; i<m; ++i) 
+                       {
+                          w[i]-=mT[j,i]*t;
+                       }
+                    }
+                    q[k,j] = w[j];
+                }
+            }
 
             List<int> ipvt = new InitializedList<int>(n);
-            //if (pivot) {
-            //    std::copy(lipvt.get(), lipvt.get()+n, ipvt.begin());
-            //}
-            //else {
-            //    for (int i=0; i < n; ++i)
-            //        ipvt[i] = i;
-            //}
+            if (pivot) {
+               for ( int i = 0; i < n; ++i )
+                  ipvt[i] = lipvt[i];
+            }
+            else {
+                for (int i=0; i < n; ++i)
+                    ipvt[i] = i;
+            }
 
-            return ipvt;
+           return ipvt;
         }
 
         //! QR Solve
@@ -121,39 +123,40 @@ namespace QLNet {
 
             See lmdiff.cpp for further details.
         */
-        //public Vector qrSolve(Matrix a, Vector b, bool pivot = true, Vector d = Array()) {
-        //public Vector qrSolve(Matrix a, Vector b, bool pivot, Vector d) {
-        //    int m = a.rows();
-        //    int n = a.columns();
+        public static Vector qrSolve( Matrix a, Vector b, bool pivot = true, Vector d = null )
+        {
+           int m = a.rows();
+           int n = a.columns();
+           if ( d == null ) d = new Vector();
+           Utils.QL_REQUIRE( b.Count == m, () => "dimensions of A and b don't match" );
+           Utils.QL_REQUIRE( d.Count == n || d.empty(), () => "dimensions of A and d don't match" );
 
-        //    QL_REQUIRE(b.size() == m, "dimensions of A and b don't match");
-        //    QL_REQUIRE(d.size() == n || d.empty(),
-        //               "dimensions of A and d don't match");
+           Matrix q = new Matrix( m, n ), r = new Matrix( n, n );
 
-        //    Matrix q(m, n), r(n, n);
+           List<int> lipvt = MatrixUtilities.qrDecomposition( a, ref q, ref r, pivot );
+           List<int> ipvt = new List<int>( n );
+           ipvt = lipvt;
 
-        //    std::vector<Size> lipvt = qrDecomposition(a, q, r, pivot);
-        //    boost::scoped_array<int> ipvt(new int[n]);
-        //    std::copy(lipvt.begin(), lipvt.end(), ipvt.get());
+           //std::copy(lipvt.begin(), lipvt.end(), ipvt.get());
 
-        //    Matrix aT = Matrix.transpose(a);
-        //    Matrix rT = Matrix.transpose(r);
+           Matrix aT = Matrix.transpose( a );
+           Matrix rT = Matrix.transpose( r );
 
-        //    boost::scoped_array<double> sdiag(new double[n]);
-        //    boost::scoped_array<double> wa(new double[n]);
+           Vector sdiag = new Vector( n );
+           Vector wa = new Vector( n );
 
-        //    Array ld(n, 0.0);
-        //    if (!d.empty()) {
-        //        std::copy(d.begin(), d.end(), ld.begin());
-        //    }
-        //    Array x(n);
-        //    Array qtb = transpose(q)*b;
+           Vector ld = new Vector( n, 0.0 );
+           if ( !d.empty() )
+           {
+              ld = d;
+              //std::copy(d.begin(), d.end(), ld.begin());
+           }
+           Vector x = new Vector( n );
+           Vector qtb = Matrix.transpose( q ) * b;
 
-        //    MINPACK.qrsolv(n, rT.begin(), n, ipvt.get(),
-        //                    ld.begin(), qtb.begin(),
-        //                    x.begin(), sdiag.get(), wa.get());
+           MINPACK.qrsolv( n, rT, n, ipvt, ld, qtb, x, sdiag, wa );
 
-        //    return x;
-        //}
+           return x;
+        }
     }
 }

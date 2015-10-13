@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -180,6 +181,19 @@ namespace QLNet {
             double t = this[i2, j2];
             this[i2, j2] = this[i1, j1];
             this[i1, j1] = t;
+        }
+
+        public override string ToString()
+        {
+           String to = string.Empty;
+           for (int i=0; i<this.rows(); i++) 
+           {
+              to += "| ";
+              for (int j=0; j<this.columns(); j++)
+                to += this[i,j] + " ";
+              to += "|" + Environment.NewLine;
+           }
+           return to;
         }
     }
 }
