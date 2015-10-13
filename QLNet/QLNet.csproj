@@ -247,6 +247,7 @@
     <Compile Include="Math\Interpolations\forwardflatinterpolation.cs" />
     <Compile Include="Math\Interpolations\interpolation2d.cs" />
     <Compile Include="Math\Interpolations\KernelInterpolation.cs" />
+    <Compile Include="Math\Interpolations\KernelInterpolation2D.cs" />
     <Compile Include="Math\Interpolations\Linearinterpolation.cs" />
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />

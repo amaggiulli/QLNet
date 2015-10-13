@@ -1214,6 +1214,125 @@ namespace TestSuite
          }
    
       }
+       
+      [TestMethod()]
+      public void testKernelInterpolation2D()
+      {
+         // No test values known from the literature.
+         // Testing for consistency of input output data
+         // at the nodes
+
+         // Testing kernel 2D interpolation...
+
+         double mean=0.0, var=0.18;
+         GaussianKernel myKernel = new GaussianKernel(mean,var);
+
+         List<double> xVec = new InitializedList<double>(10);
+         xVec[0] = 0.10; xVec[1] = 0.20; xVec[2] = 0.30; xVec[3] = 0.40;
+         xVec[4] = 0.50; xVec[5] = 0.60; xVec[6] = 0.70; xVec[7] = 0.80;
+         xVec[8] = 0.90; xVec[9] = 1.00;
+
+         List<double> yVec = new InitializedList<double>( 3 );
+         yVec[0] = 1.0; yVec[1] = 2.0; yVec[2] = 3.5;
+
+         Matrix M = new Matrix(xVec.Count,yVec.Count);
+
+         M[0,0]=0.25; M[1,0]=0.24; M[2,0]=0.23; M[3,0]=0.20; M[4,0]=0.19;
+         M[5,0]=0.20; M[6,0]=0.21; M[7,0]=0.22; M[8,0]=0.26; M[9,0]=0.29;
+                        
+         M[0,1]=0.27; M[1,1]=0.26; M[2,1]=0.25; M[3,1]=0.22; M[4,1]=0.21;
+         M[5,1]=0.22; M[6,1]=0.23; M[7,1]=0.24; M[8,1]=0.28; M[9,1]=0.31;
+                       
+         M[0,2]=0.21; M[1,2]=0.22; M[2,2]=0.27; M[3,2]=0.29; M[4,2]=0.24;
+         M[5,2]=0.28; M[6,2]=0.25; M[7,2]=0.22; M[8,2]=0.29; M[9,2]=0.30;
+
+         KernelInterpolation2D kernel2D = new KernelInterpolation2D(xVec,xVec.Count, yVec,yVec.Count,M,myKernel);
+
+         double calcVal,expectedVal;
+         double tolerance = 1.0e-10;
+
+         for(int i=0;i<M.rows();++i){
+            for(int j=0;j<M.columns();++j){
+
+               calcVal=kernel2D.value(xVec[i],yVec[j]);
+               expectedVal=M[i,j];
+
+               if(Math.Abs(expectedVal-calcVal)>tolerance){
+
+                     Assert.Fail("2D Kernel interpolation failed at x = " + xVec[i]
+                                 + ", y = " + yVec[j]
+                                 + "\n    interpolated value: " + calcVal
+                                 + "\n    expected value:     " + expectedVal
+                                 + "\n    error:              "
+                                 + Math.Abs(expectedVal-calcVal));
+               }
+            }
+         }
+
+         // alternative data set
+         List<double> xVec1 = new InitializedList<double>(4);
+         xVec1[0] = 80.0; xVec1[1] = 90.0; xVec1[2] = 100.0; xVec1[3] = 110.0;
+
+         List<double> yVec1 = new InitializedList<double>(8);
+         yVec1[0] = 0.5; yVec1[1] = 0.7; yVec1[2] = 1.0; yVec1[3] = 2.0;
+         yVec1[4] = 3.5; yVec1[5] = 4.5; yVec1[6] = 5.5; yVec1[7] = 6.5;
+
+         Matrix M1 = new Matrix(xVec1.Count,yVec1.Count);
+         M1[0,0]=10.25; M1[1,0]=12.24;M1[2,0]=14.23;M1[3,0]=17.20;
+         M1[0,1]=12.25; M1[1,1]=15.24;M1[2,1]=16.23;M1[3,1]=16.20;
+         M1[0,2]=12.25; M1[1,2]=13.24;M1[2,2]=13.23;M1[3,2]=17.20;
+         M1[0,3]=13.25; M1[1,3]=15.24;M1[2,3]=12.23;M1[3,3]=19.20;
+         M1[0,4]=14.25; M1[1,4]=16.24;M1[2,4]=13.23;M1[3,4]=12.20;
+         M1[0,5]=15.25; M1[1,5]=17.24;M1[2,5]=14.23;M1[3,5]=12.20;
+         M1[0,6]=16.25; M1[1,6]=13.24;M1[2,6]=15.23;M1[3,6]=10.20;
+         M1[0,7]=14.25; M1[1,7]=14.24;M1[2,7]=16.23;M1[3,7]=19.20;
+
+         // test with another kernel
+         KernelInterpolation2D kernel2DEp = new KernelInterpolation2D( xVec1, xVec1.Count, yVec1, yVec1.Count, M1, new epanechnikovKernel() );
+         for(int i=0;i<M1.rows();++i){
+            for(int j=0;j<M1.columns();++j){
+
+               calcVal=kernel2DEp.value(xVec1[i],yVec1[j]);
+               expectedVal=M1[i,j];
+
+               if(Math.Abs(expectedVal-calcVal)>tolerance){
+
+                     Assert.Fail("2D Epanechnkikov Kernel interpolation failed at x = " + xVec1[i]
+                                 + ", y = " + yVec1[j]
+                                 + "\n    interpolated value: " + calcVal
+                                 + "\n    expected value:     " + expectedVal
+                                 + "\n    error:              "
+                                 + Math.Abs(expectedVal-calcVal));
+               }
+            }
+         }
+
+         // test updating mechanism by changing initial variables
+         xVec1[0] = 60.0; xVec1[1] = 95.0; xVec1[2] = 105.0; xVec1[3] = 135.0;
+
+         yVec1[0] = 12.5; yVec1[1] = 13.7; yVec1[2] = 15.0; yVec1[3] = 19.0;
+         yVec1[4] = 26.5; yVec1[5] = 27.5; yVec1[6] = 29.2; yVec1[7] = 36.5;
+
+         kernel2DEp.update();
+
+         for(int i=0;i<M1.rows();++i){
+            for(int j=0;j<M1.columns();++j){
+
+               calcVal=kernel2DEp.value(xVec1[i],yVec1[j]);
+               expectedVal=M1[i,j];
+
+               if(Math.Abs(expectedVal-calcVal)>tolerance){
+
+                     Assert.Fail("2D Epanechnkikov Kernel updated interpolation failed at x = " + xVec1[i]
+                                 + ", y = " + yVec1[j]
+                                 + "\n    interpolated value: " + calcVal
+                                 + "\n    expected value:     " + expectedVal
+                                 + "\n    error:              "
+                                 + Math.Abs(expectedVal-calcVal));
+               }
+            }
+         }
+      }
 
         #region Functions
         List<double> xRange(double start, double finish, int points) {
@@ -1334,6 +1453,24 @@ namespace TestSuite
                              Math.Exp(Math.Sin(u) * Math.Sin(3 * v)) +
                              Math.Sinh(Math.Log(v * w)));
         }
+
+        // Note : a better solution will be an anonymous type casted to IKernelFunction
+        class epanechnikovKernel : IKernelFunction
+        {
+           public double value( double u )
+           {
+              if ( Math.Abs( u ) <= 1 )
+              {
+                 return ( 3.0 / 4.0 ) * ( 1 - u * u );
+              }
+              else
+              {
+                 return 0.0;
+              }
+           }
+        }
+
+
  	    #endregion    
     }
 }
