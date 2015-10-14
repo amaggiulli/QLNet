@@ -289,6 +289,7 @@
     <Compile Include="Math\randomnumbers\seedgenerator.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg2.cs" />
+    <Compile Include="Math\RichardsonExtrapolation.cs" />
     <Compile Include="Math\SampledCurve.cs" />
     <Compile Include="Math\Solver1d.cs" />
     <Compile Include="Math\Rounding.cs" />

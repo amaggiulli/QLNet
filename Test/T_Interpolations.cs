@@ -1410,6 +1410,56 @@ namespace TestSuite
          if (Math.Abs(old_result-new_result) < 0.5) 
             Assert.Fail("Failed to update bicubic spline");
 }
+      
+      [TestMethod()]
+      public void testRichardsonExtrapolation() 
+      {
+         // Testing Richardson extrapolation...
+
+         /* example taken from
+         * http://www.ipvs.uni-stuttgart.de/abteilungen/bv/lehre/
+         *      lehrveranstaltungen/vorlesungen/WS0910/
+         *      NSG_termine/dateien/Richardson.pdf
+         */
+
+         double stepSize = 0.1;
+         double orderOfConvergence = 1.0;
+
+         RichardsonExtrapolation.function f = delegate( double h )
+         {
+            return Math.Pow( 1.0 + h, 1 / h );
+         };
+
+         RichardsonExtrapolation extrap = new RichardsonExtrapolation(f, stepSize, orderOfConvergence);
+
+         double tol = 0.00002;
+         double expected = 2.71285;
+
+         double scalingFactor = 2.0;
+         double calculated = extrap.value(scalingFactor);
+
+         if (Math.Abs(expected-calculated) > tol) {
+            Assert.Fail("failed to reproduce Richardson extrapolation");
+         }
+
+         calculated = extrap.value();
+         if (Math.Abs(expected-calculated) > tol) {
+            Assert.Fail("failed to reproduce Richardson extrapolation");
+         }
+
+         expected = 2.721376;
+         const double scalingFactor2 = 4.0;
+         calculated = extrap.value(scalingFactor2, scalingFactor);
+
+         if (Math.Abs(expected-calculated) > tol) {
+            Assert.Fail("failed to reproduce Richardson extrapolation");
+         }
+}
+
+      
+      
+      
+      
       #region Functions
         List<double> xRange(double start, double finish, int points) {
             List<double> x = new InitializedList<double>(points);
