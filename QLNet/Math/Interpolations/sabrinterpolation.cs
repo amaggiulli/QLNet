@@ -125,10 +125,10 @@ namespace QLNet
                                List<double> yBegin,  // y = volatilities
                                double t,             // option expiry
                                double forward,
-                               double alpha,
-                               double beta,
-                               double nu,
-                               double rho,
+                               double? alpha,
+                               double? beta,
+                               double? nu,
+                               double? rho,
                                bool alphaIsFixed,
                                bool betaIsFixed,
                                bool nuIsFixed,

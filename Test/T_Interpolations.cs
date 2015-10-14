@@ -1457,9 +1457,33 @@ namespace TestSuite
 }
 
       
-      
-      
-      
+      [TestMethod()]
+      public void testSabrSingleCases() 
+      {
+         // Testing Sabr calibration single cases...
+
+         List<double> strikes = new List<double>(){ 0.01, 0.01125, 0.0125, 0.01375, 0.0150};
+         List<double> vols = new List<double>(){0.1667, 0.2020, 0.2785, 0.3279, 0.3727};
+        
+
+         double tte = 0.3833;
+         double forward = 0.011025;
+
+         SABRInterpolation s0 = new SABRInterpolation(strikes, strikes.Count, vols, tte, forward,
+                              null, 0.25, null, null,
+                              false, true, false, false);
+         s0.update();
+
+         if (s0.maxError() > 0.01 || s0.rmsError() > 0.01) 
+         {
+            Assert.Fail("Sabr case #1 failed with max error ("
+                           + s0.maxError() + ") and rms error (" + s0.rmsError()
+                           + "), both should be < 0.01");
+         
+         }
+      }
+
+
       #region Functions
         List<double> xRange(double start, double finish, int points) {
             List<double> x = new InitializedList<double>(points);
