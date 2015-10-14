@@ -1334,7 +1334,55 @@ namespace TestSuite
          }
       }
 
-        #region Functions
+      [TestMethod()]
+      public void testBicubicDerivatives() 
+      {
+         // Testing bicubic spline derivatives...
+
+         List<double> x = new InitializedList<double>(100), y = new InitializedList<double>(100);
+         for (int i=0; i < 100; ++i) 
+         {
+            x[i] = y[i] = i/20.0;
+         }
+
+         Matrix f = new Matrix(100, 100);
+         for (int i=0; i < 100; ++i)
+            for (int j=0; j < 100; ++j)
+               f[i,j] = y[i]/10*Math.Sin(x[j])+Math.Cos(y[i]);
+
+         double tol=0.005;
+         BicubicSpline spline = new BicubicSpline(x, x.Count, y, y.Count, f);
+
+         for (int i=5; i < 95; i+=10) 
+         {
+            for (int j=5; j < 95; j+=10) 
+            {
+               double f_x  = spline.derivativeX(x[j],y[i]);
+               double f_xx = spline.secondDerivativeX(x[j],y[i]);
+               double f_y  = spline.derivativeY(x[j],y[i]);
+               double f_yy = spline.secondDerivativeY(x[j],y[i]);
+               double f_xy = spline.derivativeXY(x[j],y[i]);
+
+               if (Math.Abs(f_x - y[i]/10*Math.Cos(x[j])) > tol) {
+                   Assert.Fail("Failed to reproduce f_x");
+               }
+               if (Math.Abs(f_xx + y[i]/10*Math.Sin(x[j])) > tol) {
+                   Assert.Fail("Failed to reproduce f_xx");
+               }
+               if (Math.Abs(f_y - (Math.Sin(x[j])/10-Math.Sin(y[i]))) > tol) {
+                   Assert.Fail("Failed to reproduce f_y");
+               }
+               if (Math.Abs(f_yy + Math.Cos(y[i])) > tol) {
+                   Assert.Fail("Failed to reproduce f_yy");
+               }
+               if (Math.Abs(f_xy - Math.Cos(x[j])/10) > tol) {
+                   Assert.Fail("Failed to reproduce f_xy");
+               }
+         }
+      }
+   }
+        
+      #region Functions
         List<double> xRange(double start, double finish, int points) {
             List<double> x = new InitializedList<double>(points);
             double dx = (finish - start) / (points - 1);
@@ -1472,5 +1520,6 @@ namespace TestSuite
 
 
  	    #endregion    
-    }
+    
+   }
 }

@@ -239,6 +239,7 @@
     <Compile Include="Math\integrals\simpsonintegral.cs" />
     <Compile Include="Math\integrals\trapezoidintegral.cs" />
     <Compile Include="Math\Interpolations\backwardflatinterpolation.cs" />
+    <Compile Include="Math\Interpolations\BicubicSplineInterpolation.cs" />
     <Compile Include="Math\Interpolations\bilinearinterpolation.cs" />
     <Compile Include="Math\Interpolations\convexmonotoneinterpolation.cs" />
     <Compile Include="Math\Interpolations\CubicInterpolation.cs" />
