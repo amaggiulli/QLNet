@@ -1381,7 +1381,35 @@ namespace TestSuite
          }
       }
    }
-        
+      
+      [TestMethod()]
+      public void testBicubicUpdate() 
+      {
+         // Testing that bicubic splines actually update...
+         int N=6;
+         List<double> x = new InitializedList<double>(N), y = new InitializedList<double>(N);
+         for (int i=0; i < N; ++i) 
+         {
+            x[i] = y[i] = i*0.2;
+         }
+
+         Matrix f = new Matrix(N, N);
+         for (int i=0; i < N; ++i)
+            for (int j=0; j < N; ++j)
+               f[i,j] = x[j]*(x[j] + y[i]);
+
+         BicubicSpline spline = new BicubicSpline(x, x.Count , y, y.Count, f);
+
+         double old_result = spline.value(x[2]+0.1, y[4]);
+
+         // modify input matrix and update.
+         f[4,3] += 1.0;
+         spline.update();
+
+         double new_result = spline.value(x[2]+0.1, y[4]);
+         if (Math.Abs(old_result-new_result) < 0.5) 
+            Assert.Fail("Failed to update bicubic spline");
+}
       #region Functions
         List<double> xRange(double start, double finish, int points) {
             List<double> x = new InitializedList<double>(points);
