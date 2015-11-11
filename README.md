@@ -10,11 +10,11 @@ QLNet contains also new developments on the bond market like MBS , Amortized Cos
 [![Release](https://img.shields.io/github/release/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/releases/latest)
 [![NuGet](https://img.shields.io/nuget/dt/qlnet.svg)](http://nuget.org/packages/qlnet)
 [![Stars](https://img.shields.io/github/stars/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/stargazers)
+[![Coverity](https://scan.coverity.com/projects/7000/badge.svg)](https://scan.coverity.com/projects/amaggiulli-qlnet)
 
 How source code is organized
 =====
-We have recently changed the policy for commit changes . 
-Now all development and fixes are on master , tag are created when we build a major release and publish on NUGET.
+Stable version is on master , next development version is on branches.
 
 Contributing
 =====
@@ -22,11 +22,6 @@ Contributing
 QLNEt just switch to github to improve collaboration and contributions.
 You can contribute making pull requests but also joining developers team.
 
-Upcoming Developments
-=====
-
-Conversion in C# of the latest Quantlib version.
-CMO Bonds.
 
 
  
