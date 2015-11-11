@@ -81,8 +81,8 @@ namespace TestSuite
             return new CapletVarianceCurve(todaysDate, dates,
                                            capletVols,new Actual360());
         }
-        
-        [TestMethod()]
+
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testSimpleCovarianceModels() 
         {
             //"Testing simple covariance models...";
@@ -155,7 +155,7 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
+        [TestCategory( "LongRun" ), TestMethod()]
         public void testCapletPricing() 
         {
             //"Testing caplet pricing...";
@@ -200,7 +200,7 @@ namespace TestSuite
                             + "\n    expected:   " + expected);
         }
     
-        [TestMethod()]
+        [TestCategory("LongRun"), TestMethod()]
         public void testCalibration()
         {
             //("Testing calibration of a Libor forward model...");
@@ -300,7 +300,7 @@ namespace TestSuite
                             + "\n    expected : smaller than  " + tolerance);
         }
 
-        [TestMethod()]
+        [TestCategory("LongRun"),TestMethod()]
         public void testSwaptionPricing() 
         {
             //"Testing forward swap and swaption pricing...");
