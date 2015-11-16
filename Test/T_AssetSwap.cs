@@ -3644,7 +3644,7 @@ namespace TestSuite
                                     zeroCpnSpecializedBondAssetSwap2.fairCleanPrice();
          double error15 = Math.Abs(zeroCpnBondAssetSwapPrice2
                                  -zeroCpnSpecializedBondAssetSwapPrice2);
-         if (error8>tolerance) {
+         if (error15>tolerance) {
             Assert.Fail("wrong clean price for zerocpn bond:"
                         + "\n  generic zero cpn bond's clean price: "
                         + zeroCpnBondAssetSwapPrice2

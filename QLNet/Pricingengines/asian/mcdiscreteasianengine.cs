@@ -62,7 +62,7 @@ namespace QLNet
              int requiredSamples,
              double requiredTolerance,
              int maxSamples,
-             ulong seed) : base(controlVariate,antitheticVariate)
+             ulong seed) : base(antitheticVariate, controlVariate)
         {      
             process_=process;
             maxTimeStepsPerYear_ = maxTimeStepsPerYear;
