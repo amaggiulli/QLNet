@@ -83,7 +83,7 @@ namespace QLNet
          maturityDate_ = maturityDate;
          issueDate_ = issueDate;
 
-         if (cashflows.Count != 0)
+         if (cashflows_.Count != 0)
          {
             cashflows_.Sort(0, cashflows_.Count - 1, null);
 
