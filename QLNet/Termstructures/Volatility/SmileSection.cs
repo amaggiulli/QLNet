@@ -38,11 +38,8 @@ namespace QLNet {
         public double exerciseTime() { return exerciseTime_; }
 
         #region ctors
-		public SmileSection() {}
 
-        // public SmileSection(Date d, DayCounter dc = DayCounter(), Date referenceDate = Date())
-        public SmileSection(Date d, DayCounter dc) : this(d, dc, null) { }
-        public SmileSection(Date d, DayCounter dc, Date referenceDate) {
+        public SmileSection(Date d, DayCounter dc = null, Date referenceDate = null) {
             exerciseDate_ = d;
             dc_ = dc;
 
@@ -57,8 +54,7 @@ namespace QLNet {
             initializeExerciseTime();
         }
 
-        public SmileSection(double exerciseTime) : this(exerciseTime, new DayCounter()) { }
-        public SmileSection(double exerciseTime, DayCounter dc) {
+        public SmileSection(double exerciseTime, DayCounter dc = null) {
             isFloating_ = false;
             dc_ = dc;
             exerciseTime_ = exerciseTime;
@@ -138,9 +134,8 @@ namespace QLNet {
             Utils.validateSabrParameters(alpha_, beta_, nu_, rho_);
         }
 
-        // public SabrSmileSection(Date d, double forward, List<double> sabrParameters, DayCounter dc = Actual365Fixed());
-        public SabrSmileSection(Date d, double forward, List<double> sabrParams, DayCounter dc)
-            : base(d, dc) {
+        public SabrSmileSection( Date d, double forward, List<double> sabrParams, DayCounter dc = null )
+            : base(d, dc == null ? new Actual365Fixed() : dc) {
             forward_ = forward;
 
             alpha_ = sabrParams[0];
