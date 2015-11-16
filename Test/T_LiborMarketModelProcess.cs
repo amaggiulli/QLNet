@@ -179,8 +179,8 @@ namespace TestSuite
 
             for (int t=0; t<grid.size(); ++t) {
                 //verifier la presence du null
-                Matrix diff = param.integratedCovariance(grid[t],null)
-                            - param.integratedCovariance(grid[t], null);
+                Matrix diff = param.integratedCovariance(grid[t])
+                            - param.integratedCovariance(grid[t]);
 
                 for (int i=0; i<diff.rows(); ++i) 
                 {

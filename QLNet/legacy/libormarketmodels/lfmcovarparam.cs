@@ -69,22 +69,14 @@ namespace QLNet
             return result;
         }
 
-        public virtual Matrix integratedCovariance(double t){
-            return integratedCovariance(t, null); 
-        }
 
-        public virtual Matrix integratedCovariance(double t, Vector x) {
+        public virtual Matrix integratedCovariance(double t, Vector x = null) {
             // this implementation is not intended for production.
             // because it is too slow and too inefficient.
             // This method is useful for testing and R&D.
             // Please overload the method within derived classes.
             
-            //QL_REQUIRE(x.empty(), "can not handle given x here");
-            try {
-                if (!(x.empty()))
-                    throw new ApplicationException("can not handle given x here");
-            }
-            catch { } //x is empty or null
+            Utils.QL_REQUIRE(x == null ,()=> "can not handle given x here");
             
             Matrix tmp= new Matrix(size_, size_,0.0);
 

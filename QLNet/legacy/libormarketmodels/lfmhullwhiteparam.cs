@@ -127,11 +127,8 @@ namespace QLNet
            return tmp;
         }
 
-        public override Matrix integratedCovariance(double t){
-            return integratedCovariance(t, null);
-        }
 
-        public override Matrix integratedCovariance(double t, Vector x) {
+        public override Matrix integratedCovariance(double t, Vector x = null) {
             Matrix tmp=new Matrix(size_, size_, 0.0);
             int last = fixingTimes_.BinarySearch(t);
             if (last < 0)
