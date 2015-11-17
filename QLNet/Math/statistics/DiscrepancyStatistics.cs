@@ -114,6 +114,7 @@ namespace QLNet
         public double discrepancy()
         {
             int N = samples();
+            if ( N == 0 ) return 0; 
             /*
             Size i;
             Real r_ik, r_jk, cdiscr = adiscr = 0.0, temp = 1.0;
