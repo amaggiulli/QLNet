@@ -1,159 +1,82 @@
-commit 1ab2e71de4384e1a431dbcaa0226ec216320dc9f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 5 Mar 2014 18:54:43 +0100
+Commits on Aug 20, 2015
+	@amaggiulli 	amaggiulli 	Update version 	0f35442
+	@amaggiulli 	amaggiulli 	Update version 	bc6f14f
+Commits on Aug 21, 2015
+	@amaggiulli 	amaggiulli 	Merge pull request #53 from amaggiulli/master …
 
-    Enable new Pricing Engines
+Fix Vanilla Swap Pricer - thanks OfirMarom 	dc3892e
+Commits on Aug 24, 2015
+	@amaggiulli 	amaggiulli 	Merge pull request #56 from amaggiulli/master …
 
-commit c717f91876d97d0b4dbad2e3cf2573b510ce89d2
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 5 Mar 2014 17:55:46 +0100
-
-    New vanilla pricing engines :AnalyticDividendEuropeanEngine,FDDividendAmericanEngine,FDDividendEuropeanEngine ...with tests.
-
-commit 40586b45c6629b3009435a71b906adbd307755b2
-Merge: b468bb4 1dafb00
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Mon, 2 Dec 2013 03:29:18 -0800
-
-    Merge pull request #4 from qusma/Ver-1.3.0.0
-    
-    Moved Easter Monday offsets to a field, greatly improving performance of the easterMonday() functions.
-    Thanks qusma.
-
-commit 1dafb003cc494738a830f2825723c581f8578f89
-Author: qusma <qusmablog@gmail.com>
-Date:   Mon, 2 Dec 2013 01:43:14 +0200
-
-    Moved Easter Monday offsets to a field, greatly improving performance of the easterMonday() functions.
-
-commit b468bb41a285d60e4190e8e2e283f212d360050e
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Fri, 29 Nov 2013 17:19:11 +0100
-
-    ZeroCouponInflationSwap update.
-
-commit 3cf271c1f576aa1c2953eec4f95cf9c54b8b7e0b
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Tue, 26 Nov 2013 16:44:37 +0100
-
-    formatting
-
-commit 3c8ee280a214b3066859dfacbcd7f3949372223d
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Tue, 26 Nov 2013 16:38:51 +0100
-
-    New instruments : Italian BTP (Buoni Poliennali del Tesoro), Italian CCTEU (Certificato di credito del tesoro)
-
-commit 35e1d42bd3b243d4be7100f59f9e71ad1fcfff20
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Tue, 26 Nov 2013 16:35:36 +0100
-
-    Fix Calendar comparison bug
-
-commit d9b263287280c9c10c5b57b152bb45f06ef54bbf
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 20 Nov 2013 17:55:22 +0100
-
-    old code removed
-
-commit a76410c70fe25d0119dd122ff5e6b35020b55cb2
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 20 Nov 2013 16:43:00 +0100
-
-    Termstructure update, start credit implementation, various fixes
-
-commit d67e5938d5d74684c277c9454d92ab48a653e85e
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 6 Nov 2013 11:39:42 +0100
-
-    Update some base class : Event , CashFlow , Settings
-
-commit fa47b02aaa93d9acd44e5b0edff0be5a401baaa3
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Tue, 5 Nov 2013 14:17:28 +0100
-
-    Remove IndexHistoryCleaner from T_AssetSwap tests ( it make fail tests when run all together )
-
-commit 466967174cb3ac05b7287337e24f6bc424698b9a
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Mon, 4 Nov 2013 15:45:51 +0100
-
-    New Instrument : AssetSwap ( with tests )
-
-commit fdf772f12997ae71bd0004a3281f1dacd32fa789
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 31 Oct 2013 14:18:57 +0100
-
-    Swap Update + cleanup commented code
-
-commit 81a0a11c2444eb78800acfeba259c9beee213c66
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 31 Oct 2013 12:36:38 +0100
-
-    Bond Update
-
-commit d2950f7fe69916f9b9c84021ce1503326fd03866
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Wed, 30 Oct 2013 17:21:12 +0100
-
-    Cashflows functions update
-
-commit 884a155a1338ced42c7cd22103048dcdbb2905a4
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Fri, 30 Aug 2013 14:37:37 +0200
-
-    Fix compilation Warnings
-
-commit 64cdeca5b0d465d1c9a198abe218ea500a5b5b96
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Fri, 30 Aug 2013 11:30:30 +0200
-
-    Fix compilation Warnings ( Observer interface )
-
-commit 55071b5b1fa4d8dd36c82a2900af3ac340ada996
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Fri, 30 Aug 2013 11:14:11 +0200
-
-    Fix compilation Warnings
-
-commit 811b627162da5a4a38c9e9f1ba4467e2c47efff3
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 29 Aug 2013 16:15:44 +0200
-
-    Fix compilation Warnings
-
-commit 2a497c4f06405566c0e18215dd60dcb707603428
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 29 Aug 2013 14:52:40 +0200
-
-    Fix compilation Warnings
-
-commit 60afe4f5c5457075e46f8b72450be987adda2ca9
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 29 Aug 2013 14:49:55 +0200
-
-    Add Akima Interpolation
-
-commit c661fbfa8255711fbd299058b7b56c646f0a1a29
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Thu, 29 Aug 2013 14:46:41 +0200
-
-    Fix several compiler warnings
-
-commit 9bcde34582d95dc4787069a49e903bf8fde3b3ff
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Sun, 25 Aug 2013 19:07:07 +0200
-
-    Update holidays for 2013.
-
-commit 63bc1992dfc5d5c8b53fb16dc10df100be1102c1
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Sun, 25 Aug 2013 19:06:19 +0200
-
-    Update Version info
-
-commit 063fdcabc6c8cf85a56497567f8598c9a93ce3f7
-Author: a.maggiulli <a.maggiulli@gmail.com>
-Date:   Sun, 25 Aug 2013 17:58:03 +0200
-
-    Update QLNet information.
+Merge fix on branch 1.5 	e78dc6f
+	@amaggiulli 	amaggiulli 	Update Asia Currencies 	5495847
+	@amaggiulli 	amaggiulli 	Add Shibor Index 	a2af90a
+	@amaggiulli 	amaggiulli 	Added China Inter-Bank calendar 	65b75e6
+	@amaggiulli 	amaggiulli 	Added half-month modified following convention 	4482e3b
+	@amaggiulli 	amaggiulli 	Added a few more historical closings for NYSE. 	bed2e9f
+	@amaggiulli 	amaggiulli 	Updated the Hong Kong calendar for 2014-2015. 	3222f8b
+	@amaggiulli 	amaggiulli 	Updated India calendar for 2014. 	710231d
+	@amaggiulli 	amaggiulli 	Updated Indonesia calendar for 2014. 	12588f0
+	@amaggiulli 	amaggiulli 	Updated Singapore calendar for 2014. 	15eb039
+	@amaggiulli 	amaggiulli 	Updated SouthKorea calendar for 2014. 	701dbd5
+	@amaggiulli 	amaggiulli 	Updated Taiwan,Turkey calendars for 2014. 	e7681bd
+	@amaggiulli 	amaggiulli 	Added Ukraine calendar 	f33ea96
+Commits on Aug 25, 2015
+	@amaggiulli 	amaggiulli 	Added ECB reserve maintenance dates with tests. 	ef0b0bc
+	@amaggiulli 	amaggiulli 	Add FedFunds index. 	940bf03
+	@amaggiulli 	amaggiulli 	Added Sonia (Sterling Overnight Index Average) index. 	8449a21
+Commits on Aug 26, 2015
+	@amaggiulli 	amaggiulli 	Fix Barone-Adesi and Whaley approximation for r=0.0 	3807747
+	@amaggiulli 	amaggiulli 	fixed behavior of the Bjerksund Stensland engine for very small … 	d0ec0dd
+Commits on Aug 27, 2015
+	@amaggiulli 	amaggiulli 	Bond : added cashflow lists Stable Sort 	56464f9
+Commits on Aug 30, 2015
+	@amaggiulli 	amaggiulli 	AmortizingFixedRateBond minor fix and a new test. 	934024e
+Commits on Sep 04, 2015
+	@amaggiulli 	amaggiulli 	Fix Factorial bug - tabulated length 	814096d
+Commits on Sep 07, 2015
+	@amaggiulli 	amaggiulli 	QL_EPSILON refactoring to upper case. 	986e967
+	@amaggiulli 	amaggiulli 	Added modified Bessel functions with Tests. 	9a77fa9
+	@amaggiulli 	amaggiulli 	Update QLNet project URL. 	10ed135
+Commits on Sep 09, 2015
+	@igitur 	igitur 	Fix indentation of Schedule.cs 	c0e7d68
+	@igitur 	igitur 	Extend schedule constructor in line with QuantLib 	4620d41
+	@igitur 	igitur 	avoided degenerate schedules; ignored EndOfMonth for tenor below 1M 	1cef439
+	@igitur 	igitur 	Add degenerate schedule check 	046cfa8
+Commits on Sep 16, 2015
+	@amaggiulli 	amaggiulli 	Move class TqrEigenDecomposition to right folder 	8089d5c
+	@amaggiulli 	amaggiulli 	Move class TqrEigenDecomposition to right folder 	a824265
+Commits on Sep 28, 2015
+	@amaggiulli 	amaggiulli 	Added SABRInterpolation with tests ( also fix a bug in Constraint.cs ) 	6b3dd1e
+Commits on Oct 09, 2015
+	@igitur 	igitur 	Check for null 	ccc91df
+	@igitur 	igitur 	Reformat file 	10e2662
+	@igitur 	igitur 	Merge pull request #57 from igitur/extend-schedule-constructor … 	e379aa3
+	@igitur 	igitur 	Add new Schedule tests 	e3a6f1c
+	@igitur 	igitur 	Port fix of lballabio/quantlib@054efcb 	f465920
+Commits on Oct 12, 2015
+	@igitur 	igitur 	Fix default isRegular value 	9a9050b
+	@igitur 	igitur 	Merge pull request #58 from igitur/add_schedule_tests … 	67af2bd
+	@igitur 	igitur 	Reformat file 	a61727b
+	@igitur 	igitur 	Add bond test for South African R2048 which requires Schedule from cu… … 	e3a44b2
+	@igitur 	igitur 	Merge pull request #59 from igitur/add-R2048-ZA-bond-test … 	ff887fa
+	@amaggiulli 	amaggiulli 	Fix compilation warning 	e39048d
+Commits on Oct 13, 2015
+	@amaggiulli 	amaggiulli 	Fix MatrixUtilities ( qrDecomposition , qrSolve ) with tests. 	33b452d
+	@amaggiulli 	amaggiulli 	Added Kernel Interpolation with tests 	c608668
+	@amaggiulli 	amaggiulli 	Added KernelInterpolation2D with test. 	1839ad4
+Commits on Oct 14, 2015
+	@amaggiulli 	amaggiulli 	Added BicubicSpline Interpolation with test. 	34d645c
+	@amaggiulli 	amaggiulli 	Test Bicubic splines update. 	7913b16
+	@amaggiulli 	amaggiulli 	Added Richardson Extrapolation with test. 	351f115
+	@amaggiulli 	amaggiulli 	test sabr single cases 	48797ef
+Commits on Nov 16, 2015
+	@amaggiulli 	amaggiulli 	Fixed MCDiscreteAveragingAsianEngine ctor , fixed testSpecializedBond… … 	154f733
+	@amaggiulli 	amaggiulli 	Fixed Bond ctor wrong check. 	cea55f2
+	@amaggiulli 	amaggiulli 	Fixed SmileSection,SabrSmileSection,FlatSmileSection, ctor's 	22fe490
+	@amaggiulli 	amaggiulli 	Cleanup LfmHullWhiteParameterization integratedCovariance function. 	02cec14
+Commits on Nov 17, 2015
+	@amaggiulli 	amaggiulli 	Fixed india calendar bug ( cov 33751 ). 	b925e56
+	@amaggiulli 	amaggiulli 	Fixed dead code in SouthKorea Calendar( cov 32789 ) d0922da
+	@amaggiulli 	amaggiulli 	Fix Bond ctor ( cov 32792 ) 	92bc4c9
+	@amaggiulli 	amaggiulli 	Avoid possible division by zero ( cov 32791 ) 	846a25a
