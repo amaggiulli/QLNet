@@ -3,7 +3,7 @@
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -64,7 +64,7 @@ namespace QLNet
 		public double minValueAfter( int s, List<double> l )
 		{
 			// replace with Epsilon
-			return Const.QL_Epsilon;
+			return Const.QL_EPSILON;
 		}
 		public double maxValueAfter( int i, List<double> data )
 		{
@@ -154,7 +154,7 @@ namespace QLNet
             // We choose as min a value very unlikely to be exceeded.
             return -3.0;
 #else
-			return Const.QL_Epsilon;
+			return Const.QL_EPSILON;
 #endif
 		}
 		public double maxValueAfter( int i, List<double> data )
@@ -213,7 +213,7 @@ namespace QLNet
             // We choose as min a value very unlikely to be exceeded.
             return -maxRate;
 #else
-			return Const.QL_Epsilon;
+			return Const.QL_EPSILON;
 #endif
 
 
@@ -254,7 +254,7 @@ namespace QLNet
 			return c.forwardRate( d, d, c.dayCounter(), Compounding.Continuous, Frequency.Annual, true ).rate();
 		}
 		// possible constraints based on previous values
-		public double minValueAfter( int v, List<double> l ) { return Const.QL_Epsilon; }
+		public double minValueAfter( int v, List<double> l ) { return Const.QL_EPSILON; }
 		public double maxValueAfter( int v, List<double> l )
 		{
 			// no constraints.
@@ -319,7 +319,7 @@ namespace QLNet
             // We choose as min a value very unlikely to be exceeded.
             return -maxRate;
 #else
-			return Const.QL_Epsilon;
+			return Const.QL_EPSILON;
 #endif
 		}
 

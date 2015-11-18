@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -69,7 +69,7 @@ namespace QLNet {
             Matrix V = svd.V();
             Matrix U = svd.U();
             Vector w = svd.singularValues();
-            double threshold = n*Const.QL_Epsilon;
+            double threshold = n*Const.QL_EPSILON;
 
             for (i=0; i<m; ++i) {
                 if (w[i] > threshold) {

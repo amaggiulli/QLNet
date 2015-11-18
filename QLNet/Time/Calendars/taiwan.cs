@@ -3,7 +3,7 @@
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -244,6 +244,26 @@ namespace QLNet {
                       // Mid-Autumn Festival
                       || (d >= 19 && d <= 20 && m == Month.September)
                     )
+                    return false;
+              }
+
+              if ( y == 2014 )
+              {
+                 if (// Lunar New Year
+                     ( d >= 28 && d <= 30 && m == Month.January )
+                    // Spring Festival
+                     || ( ( d == 31 && m == Month.January ) || ( d <= 4 && m == Month.February ) )
+                    // Children's Day
+                     || ( d == 4 && m == Month.April )
+                    // Tomb Sweeping Day
+                     || ( d == 5 && m == Month.April )
+                    // Labour Day
+                     || ( d == 1 && m == Month.May )
+                    // Dragon Boat Festival
+                     || ( d == 2 && m == Month.June )
+                    // Mid-Autumn Festival
+                     || ( d == 8 && m == Month.September )
+                     )
                     return false;
               } 
               

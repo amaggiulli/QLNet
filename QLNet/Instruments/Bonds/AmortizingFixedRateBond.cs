@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -74,6 +74,11 @@ namespace QLNet
          frequency_ = sinkingFrequency;
          dayCounter_ = accrualDayCounter;
 
+         Utils.QL_REQUIRE( bondTenor.length() > 0,() =>
+                  "bond tenor must be positive. "
+                  + bondTenor + " is not allowed." );
+
+         maturityDate_ = startDate + bondTenor;
          maturityDate_ = startDate + bondTenor;
          schedule_ = sinkingSchedule(startDate, bondTenor, sinkingFrequency, calendar);
          cashflows_ = new FixedRateLeg(schedule_)
@@ -108,8 +113,8 @@ namespace QLNet
       {
             Period freqPeriod = new Period(sinkingFrequency);
             int nPeriods = 0;
-            if(!isSubPeriod(freqPeriod, maturityTenor, out nPeriods))
-               throw new  ApplicationException("Bond frequency is incompatible with the maturity tenor");
+            Utils.QL_REQUIRE(isSubPeriod(freqPeriod, maturityTenor, out nPeriods),() =>
+                       "Bond frequency is incompatible with the maturity tenor");
 
             List<double> notionals = new InitializedList<double>(nPeriods+1);
             notionals[0] = initialNotional;
@@ -119,13 +124,20 @@ namespace QLNet
             for(int i = 0; i < (int)nPeriods-1; ++i) 
             {
                 compoundedInterest *= (1.0 + coupon);
-                double currentNotional =
-                    initialNotional*(compoundedInterest - (compoundedInterest-1.0)/(1.0 - 1.0/totalValue));
+                double currentNotional = 0.0;
+                if(coupon < 1.0e-12) {
+                    currentNotional =
+                       initialNotional*(1.0 - (i+1.0)/nPeriods);
+                }
+                else {
+                    currentNotional =
+                       initialNotional*(compoundedInterest - (compoundedInterest-1.0)/(1.0 - 1.0/totalValue));
+                }
                 notionals[i+1] = currentNotional;
             }
             notionals[notionals.Count-1] = 0.0;
             return notionals;
-        }
+   }
 
       protected bool isSubPeriod(Period subPeriod,Period superPeriod,out int numSubPeriods)
       {

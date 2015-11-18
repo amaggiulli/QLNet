@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -76,8 +76,11 @@ namespace QLNet {
             double d1 = (Math.Log(forwardSi/payoff.strike()) + 0.5*variance) /
                 Math.Sqrt(variance);
             CumulativeNormalDistribution cumNormalDist = new CumulativeNormalDistribution();
-            double K = (riskFreeDiscount!=1.0 ? -2.0*Math.Log(riskFreeDiscount)/
-                (variance*(1.0-riskFreeDiscount)) : 0.0);
+            double K = ( !Utils.close( riskFreeDiscount, 1.0, 1000 ) )
+                 ? -2.0 * Math.Log( riskFreeDiscount )
+                    / ( variance * ( 1.0 - riskFreeDiscount ) )
+                  : 2.0 / variance;
+
             double temp = Utils.blackFormula(payoff.optionType(), payoff.strike(),
                     forwardSi, Math.Sqrt(variance))*riskFreeDiscount;
             switch (payoff.optionType()) {
@@ -186,8 +189,10 @@ namespace QLNet {
                 double d1 = (Math.Log(forwardSk/payoff.strike()) + 0.5*variance)
                     /Math.Sqrt(variance);
                 double n = 2.0*Math.Log(dividendDiscount/riskFreeDiscount)/variance;
-                double K = -2.0*Math.Log(riskFreeDiscount)/
-                    (variance*(1.0-riskFreeDiscount));
+                double K = ( !Utils.close( riskFreeDiscount, 1.0, 1000 ) )
+                     ? -2.0 * Math.Log( riskFreeDiscount )
+                        / ( variance * ( 1.0 - riskFreeDiscount ) )
+                      : 2.0 / variance;
                 double Q, a;
                 switch (payoff.optionType()) {
                     case Option.Type.Call:

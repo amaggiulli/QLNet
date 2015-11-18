@@ -17,7 +17,7 @@ namespace QLNet
       public double minValueAfter(int s, List<double> l)
       {
          // replace with Epsilon
-         return Const.QL_Epsilon;
+         return Const.QL_EPSILON;
       }
       public double maxValueAfter(int i, List<double> data)
       {

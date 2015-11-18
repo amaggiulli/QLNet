@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -60,6 +60,6 @@ namespace QLNet {
          403291461126605635584000000.0,       10888869450418352160768000000.0
         };
 
-        static int tabulated = firstFactorials.Length;
+        static int tabulated = firstFactorials.Length - 1;
     }
 }

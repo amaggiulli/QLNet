@@ -1,12 +1,13 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available online at <https://github.com/amaggiulli/qlnetLicense.html>.
   
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -209,41 +210,118 @@ namespace TestSuite {
             }
         }
 
-        //[TestMethod()]
-        public void testQRDecomposition() {
+        [TestMethod()]
+        public void testQRDecomposition() 
+        {
 
-            //BOOST_MESSAGE("Testing QR decomposition...");
+         // Testing QR decomposition...
 
-            setup();
+         setup();
 
-            double tol = 1.0e-12;
-            Matrix[] testMatrices = { M1, M2, I,
-                                      M3, Matrix.transpose(M3), M4, Matrix.transpose(M4), M5 };
+         double tol = 1.0e-12;
+         Matrix[] testMatrices = { M1, M2, I,
+                                    M3, Matrix.transpose(M3), M4, Matrix.transpose(M4), M5 };
 
-            for (int j = 0; j < testMatrices.Length; j++) {
-                Matrix Q = new Matrix(), R = new Matrix();
-                bool pivot = true;
-                Matrix A = testMatrices[j];
-                List<int> ipvt = MatrixUtilities.qrDecomposition(A, Q, R, pivot);
+         for (int j = 0; j < testMatrices.Length; j++) {
+               Matrix Q = new Matrix(), R = new Matrix();
+               bool pivot = true;
+               Matrix A = testMatrices[j];
+               List<int> ipvt = MatrixUtilities.qrDecomposition(A, ref Q, ref R, pivot);
 
-                Matrix P = new Matrix(A.columns(), A.columns(), 0.0);
+               Matrix P = new Matrix(A.columns(), A.columns(), 0.0);
 
-                // reverse column pivoting
-                for (int i=0; i < P.columns(); ++i) {
-                    P[ipvt[i],i] = 1.0;
-                }
+               // reverse column pivoting
+               for (int i=0; i < P.columns(); ++i) {
+                  P[ipvt[i],i] = 1.0;
+               }
 
-                if (norm(Q*R - A*P) > tol)
-                    Assert.Fail("Q*R does not match matrix A*P (norm = "
-                               + norm(Q*R-A*P) + ")");
+               if (norm(Q*R - A*P) > tol)
+                  Assert.Fail("Q*R does not match matrix A*P (norm = "
+                              + norm(Q*R-A*P) + ")");
 
-                pivot = false;
-                MatrixUtilities.qrDecomposition(A, Q, R, pivot);
+               pivot = false;
+               MatrixUtilities.qrDecomposition(A, ref Q, ref R, pivot);
 
-                if (norm(Q*R - A) > tol)
-                    Assert.Fail("Q*R does not match matrix A (norm = "
-                               + norm(Q*R-A) + ")");
-            }
+               if (norm(Q*R - A) > tol)
+                  Assert.Fail("Q*R does not match matrix A (norm = "
+                              + norm(Q*R-A) + ")");
+    
+         }
         }
+
+        [TestMethod()]
+        public void testQRSolve()
+        {
+           // Testing QR solve...
+           setup();
+
+           double tol = 1.0e-12;
+           MersenneTwisterUniformRng rng = new MersenneTwisterUniformRng( 1234 );
+           Matrix bigM = new Matrix( 50, 100, 0.0 );
+           for ( int i = 0; i < Math.Min( bigM.rows(), bigM.columns() ); ++i )
+           {
+              bigM[i, i] = i + 1.0;
+           }
+           Matrix[] testMatrices = { M1, M2, M3, Matrix.transpose(M3),
+                                    M4, Matrix.transpose(M4), M5, I, M7, bigM, Matrix.transpose(bigM) };
+
+           for ( int j = 0; j < testMatrices.Length; j++ )
+           {
+              Matrix A = testMatrices[j];
+              Vector b = new Vector( A.rows() );
+
+              for ( int k = 0; k < 10; ++k )
+              {
+                 for ( int i = 0; i < b.Count; ++i )
+                 {
+                    b[i] = rng.next().value;
+                 }
+                 Vector x = MatrixUtilities.qrSolve( A, b, true );
+
+                 if ( A.columns() >= A.rows() )
+                 {
+                    if ( norm( A * x - b ) > tol )
+                       Assert.Fail( "A*x does not match vector b (norm = "
+                                  + norm( A * x - b ) + ")" );
+                 }
+                 else
+                 {
+                    // use the SVD to calculate the reference values
+                    int n = A.columns();
+                    Vector xr = new Vector( n, 0.0 );
+
+                    SVD svd = new SVD( A );
+                    Matrix V = svd.V();
+                    Matrix U = svd.U();
+                    Vector w = svd.singularValues();
+                    double threshold = n * Const.QL_EPSILON;
+
+                    for ( int i = 0; i < n; ++i )
+                    {
+                       if ( w[i] > threshold )
+                       {
+                          double u = 0;
+                          int zero = 0;
+                          for ( int kk = 0; kk < U.rows(); kk++ )
+                             u += ( U[kk, i] * b[zero++] ) / w[i];
+
+                          for ( int jj = 0; jj < n; ++jj )
+                          {
+                             xr[jj] += u * V[jj, i];
+                          }
+                       }
+                    }
+
+                    if ( norm( xr - x ) > tol )
+                    {
+                       Assert.Fail( "least square solution does not match (norm = "
+                                  + norm( x - xr ) + ")" );
+
+                    }
+                 }
+              }
+           }
+        }
+
     }
 }

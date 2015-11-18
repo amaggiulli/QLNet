@@ -3,7 +3,7 @@
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -146,6 +146,16 @@ namespace QLNet {
                    || (m == Month.October && d >= 14 && d <= 18)
                    // additional holiday for Republic Day
                    || (m == Month.October && d == 28))
+                      return false;
+                }
+                else if ( y == 2014 )
+                {
+                   // Ramadan
+                   if ( ( m == Month.July && d >= 27 && d <= 30 )
+                      // Kurban
+                       || ( m == Month.October && d >= 4 && d <= 7 )
+                      // additional holiday for Republic Day
+                       || ( m == Month.October && d == 29 ) )
                       return false;
                 }
                 return true;

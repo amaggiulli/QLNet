@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -52,7 +52,7 @@ namespace QLNet {
                     fxMax_ = fxMin_;
                 }
                 // Convergence check
-                xAcc1 = 2.0 * Const.QL_Epsilon * Math.Abs(root_) + 0.5 * xAccuracy;
+                xAcc1 = 2.0 * Const.QL_EPSILON * Math.Abs(root_) + 0.5 * xAccuracy;
                 xMid = (xMax_ - root_) / 2.0;
                 if (Math.Abs(xMid) <= xAcc1 || froot == 0.0)
                     return root_;

@@ -2,12 +2,12 @@
  Copyright (C) 2008 Andrea Maggiulli
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available online at <https://github.com/amaggiulli/qlnetLicense.html>.
   
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -249,11 +249,15 @@ namespace TestSuite {
                             " calculated holidays");
 
             List<Date> histClose = new List<Date>();
+            histClose.Add(new Date(30, Month.October, 2012));  // Hurricane Sandy
+            histClose.Add(new Date(29, Month.October, 2012));  // Hurricane Sandy
             histClose.Add(new Date(11, Month.June, 2004));     // Reagan's funeral
             histClose.Add(new Date(14, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(13, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(12, Month.September, 2001));// September 11, 2001
             histClose.Add(new Date(11, Month.September, 2001));// September 11, 2001
+            histClose.Add(new Date(27, Month.April, 1994 ) );  // Nixon's funeral.
+            histClose.Add(new Date(27, Month.September,1985)); // Hurricane Gloria
             histClose.Add(new Date(14, Month.July, 1977));     // 1977 Blackout
             histClose.Add(new Date(25, Month.January, 1973));  // Johnson's funeral.
             histClose.Add(new Date(28, Month.December, 1972)); // Truman's funeral
@@ -261,6 +265,13 @@ namespace TestSuite {
             histClose.Add(new Date(31, Month.March, 1969));    // Eisenhower's funeral
             histClose.Add(new Date(10, Month.February, 1969)); // heavy snow
             histClose.Add(new Date(5, Month.July, 1968));      // Day after Independence Day
+            histClose.Add( new Date( 9, Month.April, 1968 ) );     // Mourning for MLK
+            histClose.Add( new Date( 24, Month.December, 1965 ) ); // Christmas Eve
+            histClose.Add( new Date( 25, Month.November, 1963 ) ); // Kennedy's funeral
+            histClose.Add( new Date( 29, Month.May, 1961 ) );      // Day before Decoration Day
+            histClose.Add( new Date( 26, Month.December, 1958 ) ); // Day after Christmas
+            histClose.Add( new Date( 24, Month.December, 1956 ) ); // Christmas Eve
+            histClose.Add( new Date( 24, Month.December, 1954 ) ); // Christmas Eve
             // June 12-Dec. 31, 1968
             // Four day week (closed on Wednesdays) - Paperwork Crisis
             histClose.Add(new Date(12, Month.Jun, 1968));

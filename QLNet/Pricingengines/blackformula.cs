@@ -2,7 +2,7 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com) 
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -199,7 +199,7 @@ namespace QLNet
 												 double bachelierPrice,
 												 double discount = 1.0 )
 		{
-			double SQRT_QL_EPSILON = Math.Sqrt( Const.QL_Epsilon);
+			double SQRT_QL_EPSILON = Math.Sqrt( Const.QL_EPSILON);
 
          Utils.QL_REQUIRE( tte > 0.0, () => "tte (" + tte + ") must be positive" );
 
@@ -219,7 +219,7 @@ namespace QLNet
          Utils.QL_REQUIRE( nu <= 1.0, () => "nu (" + nu + ") must be <= 1.0" );
          Utils.QL_REQUIRE( nu >= -1.0, () => "nu (" + nu + ") must be >= -1.0" );
 		   
-         nu = Math.Max(-1.0 + Const.QL_Epsilon, Math.Min(nu,1.0 - Const.QL_Epsilon));
+         nu = Math.Max(-1.0 + Const.QL_EPSILON, Math.Min(nu,1.0 - Const.QL_EPSILON));
 		   
          // nu / arctanh(nu) -> 1 as nu -> 0
 			double atanh = ( Math.Log( 1 + nu ) - Math.Log( 1 - nu ) ) / 2; // c# dont have atanh

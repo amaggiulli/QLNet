@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -97,8 +97,8 @@ namespace QLNet
             i = Math.Max(Math.Min(i, accrualStartTimes.Count - 1), 0);
             
             if  (!(i<process_.size()
-                && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_Epsilon
-                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_Epsilon))
+                && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_EPSILON
+                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON))
                 throw new ApplicationException("irregular fixings are not (yet) supported"); 
 
             double tenor     = accrualEndTimes[i] - accrualStartTimes[i];

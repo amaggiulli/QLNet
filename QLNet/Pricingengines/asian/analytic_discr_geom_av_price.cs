@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -147,7 +147,7 @@ namespace QLNet
             double Nx_1, nx_1;
             CumulativeNormalDistribution CND = new CumulativeNormalDistribution();
             NormalDistribution ND = new NormalDistribution();
-            if (sigG > Const.QL_Epsilon) {
+            if (sigG > Const.QL_EPSILON) {
                 double x_1  = (muG-Math.Log(payoff.strike())+variance)/sigG;
                 Nx_1 = CND.value(x_1);
                 nx_1 = ND.value( x_1);

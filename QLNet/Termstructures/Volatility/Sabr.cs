@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -51,7 +51,7 @@ namespace QLNet {
             // computations become precise enough if the square of z worth slightly more than the precision machine (hence the m)
             const double m = 10;
 
-            if (Math.Abs(z * z) > Const.QL_Epsilon * m)
+            if (Math.Abs(z * z) > Const.QL_EPSILON * m)
                 multiplier = z/xx;
             else {
                 alpha = (0.5-rho*rho)/(1.0-rho);

@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -39,8 +39,8 @@ namespace QLNet {
             double qam = a-1.0;
             double c = 1.0;
             double d = 1.0-qab*x/qap;
-            if (Math.Abs(d) < Const.QL_Epsilon)
-                d = Const.QL_Epsilon;
+            if (Math.Abs(d) < Const.QL_EPSILON)
+                d = Const.QL_EPSILON;
             d = 1.0/d;
             double result = d;
 
@@ -49,16 +49,16 @@ namespace QLNet {
                 m2=2*m;
                 aa=m*(b-m)*x/((qam+m2)*(a+m2));
                 d=1.0+aa*d;
-                if (Math.Abs(d) < Const.QL_Epsilon) d=Const.QL_Epsilon;
+                if (Math.Abs(d) < Const.QL_EPSILON) d=Const.QL_EPSILON;
                 c=1.0+aa/c;
-                if (Math.Abs(c) < Const.QL_Epsilon) c=Const.QL_Epsilon;
+                if (Math.Abs(c) < Const.QL_EPSILON) c=Const.QL_EPSILON;
                 d=1.0/d;
                 result *= d*c;
                 aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
                 d=1.0+aa*d;
-                if (Math.Abs(d) < Const.QL_Epsilon) d=Const.QL_Epsilon;
+                if (Math.Abs(d) < Const.QL_EPSILON) d=Const.QL_EPSILON;
                 c=1.0+aa/c;
-                if (Math.Abs(c) < Const.QL_Epsilon) c=Const.QL_Epsilon;
+                if (Math.Abs(c) < Const.QL_EPSILON) c=Const.QL_EPSILON;
                 d=1.0/d;
                 del=d*c;
                 result *= del;

@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -696,7 +696,7 @@ namespace TestSuite
 
          double faceAmount = 1000.0;
          double redemption = 100.0;
-         Date issueDate = new Date(1,Month.January,2007);
+         Date issueDate = new Date(1, Month.January, 2007);
 
          Date today = new Date(6, Month.June, 2007);
          Settings.setEvaluationDate(today);
@@ -801,7 +801,7 @@ namespace TestSuite
          double[] notionals = {400000000,367573428,334984723,302233075,269317669,236237685,202992302,169580691,136002023,
                                102255461,68340166,34255295,0 };
 
-         // test total cashflow count 
+         // test total cashflow count
          Assert.AreEqual(bond.cashflows().Count, totCashflow, "Cashflow size different");
 
          // test notional cashflow count
@@ -819,7 +819,7 @@ namespace TestSuite
 
       }
 
-      
+
       [TestMethod()]
       public void testMBSFixedBondCached()
       {
@@ -1051,7 +1051,7 @@ namespace TestSuite
             issueDate, maturirtyDate, tradeDate, paymentFrequency, dc, AmortizingMethod.EffectiveInterestRate);
 
          // Amortizing Yield ( Effective Rate )
-         double y1 = bond.Yield() ;
+         double y1 = bond.Yield();
          Assert.AreEqual(-0.0236402, y1, 0.001, "Amortizing Yield is different");
 
          // Amortized Cost at Date
@@ -1104,5 +1104,151 @@ namespace TestSuite
 
       }
 
+      [TestMethod()]
+      public void testAmortizingFixedRateBond()
+      {
+         // Testing amortizing fixed rate bond
+
+         /*
+         * Following data is generated from Excel using function pmt with Nper = 360, PV = 100.0
+         */
+
+         double[] rates = { 0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12 };
+         double[] amounts = {0.277777778, 0.321639520, 0.369619473, 0.421604034,
+                             0.477415295, 0.536821623, 0.599550525,
+                             0.665302495, 0.733764574, 0.804622617,
+                             0.877571570, 0.952323396, 1.028612597};
+
+         Frequency freq = Frequency.Monthly;
+
+         Date refDate = Date.Today;
+
+         double tolerance = 1.0e-6;
+
+         for (int i = 0; i < rates.Length; ++i)
+         {
+            AmortizingFixedRateBond myBond = new AmortizingFixedRateBond(0,
+               new NullCalendar(), 100.0, refDate, new Period(30, TimeUnit.Years), freq, rates[i], new ActualActual(ActualActual.Convention.ISMA));
+
+            List<CashFlow> cashflows = myBond.cashflows();
+
+            List<double> notionals = myBond.notionals();
+
+            for (int k = 0; k < cashflows.Count / 2; ++k)
+            {
+               double coupon = cashflows[2 * k].amount();
+               double principal = cashflows[2 * k + 1].amount();
+               double totalAmount = coupon + principal;
+
+               // Check the amount is same as pmt returned
+
+               double error = Math.Abs(totalAmount - amounts[i]);
+               if (error > tolerance)
+               {
+                  Assert.Fail(" Rate: " + rates[i] +
+                           " " + k + "th cash flow " +
+                           " Failed!" +
+                           " Expected Amount: " + amounts[i] +
+                           " Calculated Amount: " + totalAmount);
+               }
+
+               // Check the coupon result
+               double expectedCoupon = notionals[k] * rates[i] / (int)freq;
+               error = Math.Abs(coupon - expectedCoupon);
+
+               if (error > tolerance)
+               {
+                  Assert.Fail(" Rate: " + rates[i] +
+                               " " + k + "th cash flow " +
+                               " Failed!" +
+                               " Expected Coupon: " + expectedCoupon +
+                               " Calculated Coupon: " + coupon);
+               }
+
+            }
+         }
+      }
+
+      /// <summary>
+      /// Test calculation of South African R2048 bond
+      /// This requires the use of the Schedule to be constructed
+      /// with a custom date vector
+      /// </summary>
+      [TestMethod()]
+      public void testBondFromScheduleWithDateVector()
+      {
+         // Testing South African R2048 bond price using Schedule constructor with Date vector
+         SavedSettings backup = new SavedSettings();
+
+         //When pricing bond from Yield To Maturity, use NullCalendar()
+         Calendar calendar = new NullCalendar();
+
+         int settlementDays = 3;
+
+         Date issueDate = new Date(29, Month.June, 2012);
+         Date today = new Date(7, Month.September, 2015);
+         Date evaluationDate = calendar.adjust(today);
+         Date settlementDate = calendar.advance(evaluationDate, new Period(settlementDays, TimeUnit.Days));
+         Settings.setEvaluationDate(evaluationDate);
+
+         // For the schedule to generate correctly for Feb-28's, make maturity date on Feb 29
+         Date maturityDate = new Date(29, Month.February, 2048);
+
+         double coupon = 0.0875;
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new ActualActual(ActualActual.Convention.Bond);
+
+         // Yield as quoted in market
+         InterestRate yield = new InterestRate(0.09185, dc, comp, freq);
+
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(10, TimeUnit.Days);
+
+         // Generate coupon dates for 31 Aug and end of Feb each year
+         // For leap years, this will generate 29 Feb, but the bond
+         // actually pays coupons on 28 Feb, regardsless of whether
+         // it is a leap year or not.
+         Schedule schedule = new Schedule(issueDate, maturityDate, tenor,
+            new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+            DateGeneration.Rule.Backward, true);
+
+         // Adjust the 29 Feb's to 28 Feb
+         List<Date> dates = new List<Date>();
+         for (int i = 0; i < schedule.Count; ++i)
+         {
+            Date d = schedule.date(i);
+            if (d.Month == 2 && d.Day == 29)
+               dates.Add(new Date(28, Month.February, d.Year));
+            else
+               dates.Add(d);
+         }
+
+         schedule = new Schedule(dates,
+                                 schedule.calendar(),
+                                 schedule.businessDayConvention(),
+                                 schedule.terminationDateBusinessDayConvention(),
+                                 schedule.tenor(),
+                                 schedule.rule(),
+                                 schedule.endOfMonth(),
+                                 schedule.isRegular());
+
+         FixedRateBond bond = new FixedRateBond(
+             0,
+             100.0,
+             schedule,
+             new List<double>() { coupon },
+             dc, BusinessDayConvention.Following, 100.0,
+             issueDate, calendar,
+             exCouponPeriod, calendar, BusinessDayConvention.Unadjusted, false);
+
+         double calculatedPrice = BondFunctions.dirtyPrice(bond, yield, settlementDate);
+         double expectedPrice = 95.75706;
+         double tolerance = 1e-5;
+         if (Math.Abs(calculatedPrice - expectedPrice) > tolerance)
+         {
+            Assert.Fail(string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}", expectedPrice, calculatedPrice));
+         }
+      }
    }
 }

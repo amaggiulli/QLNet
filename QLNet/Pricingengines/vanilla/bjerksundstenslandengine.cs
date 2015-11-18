@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -108,8 +108,9 @@ namespace QLNet {
             double lambda = (-rT + gamma * bT + 0.5 * gamma * (gamma - 1.0) * variance);
             double d = -(Math.Log(S / H) + (bT + (gamma - 0.5) * variance) ) / Math.Sqrt(variance);
             double kappa = 2.0 * bT / variance + (2.0 * gamma - 1.0);
-            return Math.Exp(lambda) * Math.Pow(S, gamma) * (cumNormalDist.value(d) - Math.Pow((I / S), kappa) *
-                cumNormalDist.value(d - 2.0 * Math.Log(I/S) / Math.Sqrt(variance)));
+            return Math.Exp(lambda) * (cumNormalDist.value(d)
+                   - Math.Pow((I / S), kappa) *
+                   cumNormalDist.value(d - 2.0 * Math.Log(I/S) / Math.Sqrt(variance)));
         }
 
 
@@ -133,10 +134,10 @@ namespace QLNet {
             } else {
                 // investigate what happen to alpha for dD->0.0
                 double alpha = (I - X) * Math.Pow(I, (-beta));
-                return alpha * Math.Pow(S, beta)
-                    - alpha * phi(S, beta, I, I, rT, bT, variance)
-                    +         phi(S,  1.0, I, I, rT, bT, variance)
-                    -         phi(S,  1.0, X, I, rT, bT, variance)
+                return (I - X) * Math.Pow(S/I, beta)
+                        *(1 - phi(S, beta, I, I, rT, bT, variance))
+                    +    S *  phi(S,  1.0, I, I, rT, bT, variance)
+                    -    S *  phi(S,  1.0, X, I, rT, bT, variance)
                     -    X *  phi(S,  0.0, I, I, rT, bT, variance)
                     +    X *  phi(S,  0.0, X, I, rT, bT, variance);
             }

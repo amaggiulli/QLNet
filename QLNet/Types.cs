@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -26,9 +26,11 @@ namespace QLNet {
     }
 
     public struct Const {
-        public const double QL_Epsilon = 2.2204460492503131e-016;
+        public const double QL_EPSILON = 2.2204460492503131e-016;
 
-        public const double M_SQRT_2 = 0.7071067811865475244008443621048490392848359376887;
+        public const double M_SQRT2    = 1.41421356237309504880;
+        public const double M_SQRT_2   = 0.7071067811865475244008443621048490392848359376887;
+        public const double M_SQRTPI   = 1.77245385090551602792981;
         public const double M_1_SQRTPI = 0.564189583547756286948;
 
         public const double M_LN2 = 0.693147180559945309417;
@@ -101,7 +103,13 @@ namespace QLNet {
                                  to a different month, in which case
                                  choose the first business day after
                                  the holiday. */
-        Unadjusted          /*!< Do not adjust. */
+        Unadjusted,          /*!< Do not adjust. */
+        HalfMonthModifiedFollowing   /*!< Choose the first business day after
+                                          the given holiday unless that day
+                                          crosses the mid-month (15th) or the
+                                          end of month, in which case choose
+                                          the first business day before the
+                                          holiday. */
     };
 
     //! Units used to describe time periods

@@ -15,7 +15,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -58,6 +61,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -115,12 +119,15 @@
     <Compile Include="Indexes\Ibor\Eonia.cs" />
     <Compile Include="Indexes\Ibor\Euribor.cs" />
     <Compile Include="Indexes\Ibor\Eurlibor.cs" />
+    <Compile Include="Indexes\Ibor\FedFunds.cs" />
     <Compile Include="Indexes\Ibor\Gbplibor.cs" />
     <Compile Include="Indexes\Ibor\Jibar.cs" />
     <Compile Include="Indexes\Ibor\Jpylibor.cs" />
     <Compile Include="Indexes\Ibor\Libor.cs" />
     <Compile Include="Indexes\Ibor\Nzdlibor.cs" />
     <Compile Include="Indexes\Ibor\Seklibor.cs" />
+    <Compile Include="Indexes\Ibor\Shibor.cs" />
+    <Compile Include="Indexes\Ibor\Sonia.cs" />
     <Compile Include="Indexes\Ibor\Tibor.cs" />
     <Compile Include="Indexes\Ibor\Trylibor.cs" />
     <Compile Include="Indexes\Ibor\Usdlibor.cs" />
@@ -232,6 +239,7 @@
     <Compile Include="Math\integrals\simpsonintegral.cs" />
     <Compile Include="Math\integrals\trapezoidintegral.cs" />
     <Compile Include="Math\Interpolations\backwardflatinterpolation.cs" />
+    <Compile Include="Math\Interpolations\BicubicSplineInterpolation.cs" />
     <Compile Include="Math\Interpolations\bilinearinterpolation.cs" />
     <Compile Include="Math\Interpolations\convexmonotoneinterpolation.cs" />
     <Compile Include="Math\Interpolations\CubicInterpolation.cs" />
@@ -239,11 +247,15 @@
     <Compile Include="Math\Interpolation.cs" />
     <Compile Include="Math\Interpolations\forwardflatinterpolation.cs" />
     <Compile Include="Math\Interpolations\interpolation2d.cs" />
+    <Compile Include="Math\Interpolations\KernelInterpolation.cs" />
+    <Compile Include="Math\Interpolations\KernelInterpolation2D.cs" />
     <Compile Include="Math\Interpolations\Linearinterpolation.cs" />
     <Compile Include="Math\Interpolations\Loginterpolation.cs" />
     <Compile Include="Math\Interpolations\multicubicspline.cs" />
     <Compile Include="Math\Interpolations\sabrinterpolation.cs" />
-    <Compile Include="Math\Interpolations\TqrEigenDecomposition.cs" />
+    <Compile Include="Math\Interpolations\XABRInterpolation.cs" />
+    <Compile Include="Math\KernelFunctions.cs" />
+    <Compile Include="Math\matrixutilities\TqrEigenDecomposition.cs" />
     <Compile Include="Math\linearleastsquaresregression.cs" />
     <Compile Include="Math\Matrix.cs" />
     <Compile Include="Math\matrixutilities\choleskydecomposition.cs" />
@@ -251,6 +263,7 @@
     <Compile Include="Math\matrixutilities\qrdecomposition.cs" />
     <Compile Include="Math\matrixutilities\svd.cs" />
     <Compile Include="Math\matrixutilities\symmetricschurdecomposition.cs" />
+    <Compile Include="Math\ModifiedBessel.cs" />
     <Compile Include="Math\Optimization\ArmijoLineSearch.cs" />
     <Compile Include="Math\Optimization\ConjugateGradient.cs" />
     <Compile Include="Math\Optimization\Constraint.cs" />
@@ -276,6 +289,7 @@
     <Compile Include="Math\randomnumbers\seedgenerator.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg2.cs" />
+    <Compile Include="Math\RichardsonExtrapolation.cs" />
     <Compile Include="Math\SampledCurve.cs" />
     <Compile Include="Math\Solver1d.cs" />
     <Compile Include="Math\Rounding.cs" />
@@ -531,6 +545,7 @@
     <Compile Include="Time\Calendars\taiwan.cs" />
     <Compile Include="Time\Calendars\TARGET.cs" />
     <Compile Include="Time\Calendars\turkey.cs" />
+    <Compile Include="Time\Calendars\Ukraine.cs" />
     <Compile Include="Time\Calendars\UnitedKingdom.cs" />
     <Compile Include="Time\Calendars\UnitedStates.cs" />
     <Compile Include="Time\Calendars\WeekendsOnly.cs" />
@@ -544,6 +559,7 @@
     <Compile Include="Time\DayCounters\OneDayCounter.cs" />
     <Compile Include="Time\DayCounters\SimpleDayCounter.cs" />
     <Compile Include="Time\DayCounters\Thirty360.cs" />
+    <Compile Include="Time\ECB.cs" />
     <Compile Include="Time\Imm.cs" />
     <Compile Include="Time\Period.cs" />
     <Compile Include="Time\Schedule.cs" />

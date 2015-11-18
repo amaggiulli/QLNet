@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -28,6 +28,58 @@ namespace TestSuite
    [TestClass()]
    public class T_Dates
    {
+      [TestMethod()]
+      public void testECBDates()
+      {
+         // Testing ECB dates
+
+         List<Date> knownDates = ECB.knownDates();
+         if (knownDates.empty())
+            Assert.Fail("Empty EBC date vector");
+
+         int n = ECB.nextDates(Date.minDate()).Count;
+    
+         if (n != knownDates.Count)
+            Assert.Fail("NextDates(minDate) returns "  + n +
+                   " instead of " + knownDates.Count + " dates");
+
+         Date previousEcbDate = Date.minDate(),
+         currentEcbDate, ecbDateMinusOne;
+         
+         for (int i=0; i<knownDates.Count; ++i) 
+         {
+
+            currentEcbDate = knownDates[i];
+         
+            if (!ECB.isECBdate(currentEcbDate))
+               Assert.Fail( currentEcbDate + " fails isECBdate check");
+
+            ecbDateMinusOne = currentEcbDate-1;
+            if (ECB.isECBdate(ecbDateMinusOne))
+               Assert.Fail(ecbDateMinusOne + " fails isECBdate check");
+
+            if (ECB.nextDate(ecbDateMinusOne)!=currentEcbDate)
+               Assert.Fail("Next EBC date following " + ecbDateMinusOne +
+                     " must be " + currentEcbDate);
+
+            if (ECB.nextDate(previousEcbDate)!=currentEcbDate)
+               Assert.Fail("Next EBC date following " + previousEcbDate +
+                     " must be " + currentEcbDate);
+
+            previousEcbDate = currentEcbDate;
+         }
+         
+         Date knownDate = knownDates.First();
+         ECB.removeDate(knownDate);
+         if (ECB.isECBdate(knownDate))
+            Assert.Fail("Unable to remove an EBC date");
+    
+         ECB.addDate(knownDate);
+         if (!ECB.isECBdate(knownDate))
+            Assert.Fail("Unable to add an EBC date");
+
+      }
+
       [TestMethod()]
       public void testIMMDates()
       {

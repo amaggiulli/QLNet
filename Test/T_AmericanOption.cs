@@ -2,12 +2,12 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Andrea Maggiulli
 
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available online at <https://github.com/amaggiulli/qlnetLicense.html>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -180,7 +180,8 @@ namespace TestSuite {
                 new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.25,  3.3226) ,
                 new AmericanOptionData(Option.Type.Put,  100.00,  90.00, 0.10, 0.10, 0.50, 0.35, 14.6945) ,
                 new AmericanOptionData(Option.Type.Put,  100.00, 100.00, 0.10, 0.10, 0.50, 0.35,  9.5104) ,
-                new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.35,  5.8823)};
+                new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.35,  5.8823),
+                new AmericanOptionData(Option.Type.Put,  100.00, 100.00, 0.00, 0.00, 0.50, 0.15,  4.22949)};
 
             Date today = Date.Today;
             DayCounter dc = new Actual360();
@@ -235,7 +236,18 @@ namespace TestSuite {
                 // from "Option pricing formulas", Haug, McGraw-Hill 1998, pag 27
               new AmericanOptionData(Option.Type.Call,  40.00,  42.00, 0.08, 0.04, 0.75, 0.35,  5.2704),
                 // from "Option pricing formulas", Haug, McGraw-Hill 1998, VBA code
-              new AmericanOptionData(Option.Type.Put,   40.00,  36.00, 0.00, 0.06, 1.00, 0.20,  4.4531)
+              new AmericanOptionData(Option.Type.Put,   40.00,  36.00, 0.00, 0.06, 1.00, 0.20,  4.4531),
+                // ATM option with very small volatility, reference value taken from R
+              new AmericanOptionData( Option.Type.Call, 100, 100, 0.05, 0.05, 1.0, 0.0021, 0.08032314 ),
+                // ATM option with very small volatility,
+                // reference value taken from Barone-Adesi and Whaley Approximation
+              new AmericanOptionData( Option.Type.Call, 100, 100, 0.05, 0.05, 1.0, 0.0001, 0.003860656 ),
+              new AmericanOptionData( Option.Type.Call, 100, 99.99, 0.05, 0.05, 1.0, 0.0001, 0.00081 ),
+                // ITM option with a very small volatility
+              new AmericanOptionData( Option.Type.Call, 100, 110, 0.05, 0.05, 1.0, 0.0001, 10.0 ),
+              new AmericanOptionData( Option.Type.Put, 110, 100, 0.05, 0.05, 1.0, 0.0001, 10.0 ),
+                // ATM option with a very large volatility
+              new AmericanOptionData( Option.Type.Put, 100, 110, 0.05, 0.05, 1.0, 10, 94.89543 )
             };
 
             Date today = Date.Today;
@@ -249,7 +261,7 @@ namespace TestSuite {
             SimpleQuote vol = new SimpleQuote(0.0);
             BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-            double tolerance = 3.0e-3;
+            double tolerance = 5.0e-5;
 
             for (int i=0; i<values.Length; i++) {
 

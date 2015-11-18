@@ -3,7 +3,7 @@
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -295,7 +295,20 @@ namespace QLNet {
                       || (d == 31 && m == Month.December)
                      )
                      return false;
-               } 
+               }
+              if (y == 2014) {
+                  if (// Lunar New Year
+                   ( ( d == 31 && m == Month.January ) || ( d <= 3 && m == Month.February ) )
+                   // Buddha's birthday
+                   || ( d == 6 && m == Month.May )
+                   // Tuen Ng festival
+                   || ( d == 2 && m == Month.June )
+                   // Mid-autumn festival
+                   || ( d == 9 && m == Month.September )
+                   // Chung Yeung festival
+                   || ( d == 2 && m == Month.October ) )
+                   return false;
+               }
                return true;
             }
         }

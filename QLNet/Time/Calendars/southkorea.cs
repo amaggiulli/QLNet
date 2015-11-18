@@ -3,7 +3,7 @@
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -132,6 +132,7 @@ namespace QLNet {
                     || ((d == 2 || d == 3 || d == 4) && m == Month.February && y == 2011)
                     || ((d == 23 || d == 24) && m == Month.January && y == 2012)
                     || (d == 11 && m == Month.February && y == 2013)
+                    || ( ( d == 30 || d == 31 ) && m == Month.January && y == 2014 )
                     // Election Days
                     || (d == 15 && m == Month.April && y == 2004)    // National Assembly
                     || (d == 31 && m == Month.May && y == 2006)      // Regional election
@@ -140,10 +141,11 @@ namespace QLNet {
                     || (d == 2 && m == Month.June && y == 2010)     // Local election
                     || (d == 11 && m == Month.April && y == 2012)    // National Assembly
                     || (d == 19 && m == Month.December && y == 2012) // Presidency
+                    || ( d == 4 && m == Month.June && y == 2014 )      // Local election
                     // Buddha's birthday
                     || (d == 26 && m == Month.May && y == 2004)
                     || (d == 15 && m == Month.May && y == 2005)
-                    || (d == 5 && m == Month.May && y == 2006)
+                    // || (d == 5 && m == Month.May && y == 2006) dead code , 5 May always holiday ( Children's Day)
                     || (d == 24 && m == Month.May && y == 2007)
                     || (d == 12 && m == Month.May && y == 2008)
                     || (d == 2 && m == Month.May && y == 2009)
@@ -151,6 +153,7 @@ namespace QLNet {
                     || (d == 10 && m == Month.May && y == 2011)
                     || (d == 28 && m == Month.May && y == 2012)
                     || (d == 17 && m == Month.May && y == 2013)
+                    || ( d == 6 && m == Month.May && y == 2014 )
                     // Harvest Moon Day
                     || ((d == 27 || d == 28 || d == 29) && m == Month.September && y == 2004)
                     || ((d == 17 || d == 18 || d == 19) && m == Month.September && y == 2005)
@@ -162,8 +165,10 @@ namespace QLNet {
                     || ((d == 12 || d == 13) && m == Month.September && y == 2011)
                     || (d == 1 && m == Month.October && y == 2012)
                     || ((d == 18 || d == 19 || d == 20) && m == Month.September && y == 2013)
+                    || ( ( d == 8 || d == 9 || d == 10 ) && m == Month.September && y == 2014 )
                     // Hangul Proclamation of Korea
-                    || (d == 9 && m == Month.October && y == 2013) 
+                    || (d == 9 && m == Month.October && y == 2013)
+                    || ( d == 9 && m == Month.October && y == 2014 )
                     )
                     return false;
 

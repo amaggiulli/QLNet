@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -55,13 +55,13 @@ namespace QLNet {
                     double an = -1.0*n*(n-a_);
                     b += 2.0;
                     d = an*d + b;
-                    if (Math.Abs(d) < Const.QL_Epsilon) d = Const.QL_Epsilon;
+                    if (Math.Abs(d) < Const.QL_EPSILON) d = Const.QL_EPSILON;
                     c = b + an/c;
-                    if (Math.Abs(c) < Const.QL_Epsilon) c = Const.QL_Epsilon;
+                    if (Math.Abs(c) < Const.QL_EPSILON) c = Const.QL_EPSILON;
                     d = 1.0/d;
                     double del = d*c;
                     h *= del;
-                    if (Math.Abs(del - 1.0)<Const.QL_Epsilon)
+                    if (Math.Abs(del - 1.0)<Const.QL_EPSILON)
                         return h*Math.Exp(-x + a_*Math.Log(x) - gln);
                 }
             }
@@ -82,28 +82,51 @@ namespace QLNet {
         \test the correctness of the returned value is tested by
               checking it against known good results.
     */
-    public static class GammaFunction {
-        const double c1_ = 76.18009172947146;
-        const double c2_ = -86.50532032941677;
-        const double c3_ = 24.01409824083091;
-        const double c4_ = -1.231739572450155;
-        const double c5_ = 0.1208650973866179e-2;
-        const double c6_ = -0.5395239384953e-5;
+    public static class GammaFunction
+    {
+       const double c1_ = 76.18009172947146;
+       const double c2_ = -86.50532032941677;
+       const double c3_ = 24.01409824083091;
+       const double c4_ = -1.231739572450155;
+       const double c5_ = 0.1208650973866179e-2;
+       const double c6_ = -0.5395239384953e-5;
 
-        public static double logValue(double x) {
-            if (!(x>0.0)) throw new ApplicationException("positive argument required");
+       public static double logValue( double x )
+       {
+          if ( !( x > 0.0 ) ) throw new ApplicationException( "positive argument required" );
 
-            double temp = x + 5.5;
-            temp -= (x + 0.5)*Math.Log(temp);
-            double ser=1.000000000190015;
-            ser += c1_/(x + 1.0);
-            ser += c2_/(x + 2.0);
-            ser += c3_/(x + 3.0);
-            ser += c4_/(x + 4.0);
-            ser += c5_/(x + 5.0);
-            ser += c6_/(x + 6.0);
+          double temp = x + 5.5;
+          temp -= ( x + 0.5 ) * Math.Log( temp );
+          double ser = 1.000000000190015;
+          ser += c1_ / ( x + 1.0 );
+          ser += c2_ / ( x + 2.0 );
+          ser += c3_ / ( x + 3.0 );
+          ser += c4_ / ( x + 4.0 );
+          ser += c5_ / ( x + 5.0 );
+          ser += c6_ / ( x + 6.0 );
 
-            return -temp + Math.Log(2.5066282746310005 * ser / x);
-        }
+          return -temp + Math.Log( 2.5066282746310005 * ser / x );
+       }
+
+       public static double value( double x )
+       {
+          if ( x >= 1.0 )
+          {
+             return Math.Exp( logValue( x ) );
+          }
+          else
+          {
+             if ( x > -20.0 )
+             {
+                // \Gamma(x) = \frac{\Gamma(x+1)}{x}
+                return value( x + 1.0 ) / x;
+             }
+             else
+             {
+                // \Gamma(-x) = -\frac{\pi}{\Gamma(x)\sin(\pi x) x}
+                return -Const.M_PI / ( value( -x ) * x * Math.Sin( Const.M_PI * x ) );
+             }
+          }
+       }
     }
 }

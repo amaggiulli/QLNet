@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -105,7 +105,7 @@ namespace QLNet {
             double n_d2;
             double cum_d1_;
             double cum_d2_;
-            if (variance_ >= Const.QL_Epsilon) {
+            if (variance_ >= Const.QL_EPSILON) {
                 D1_ = log_H_S_ / stdDev_ + mu_ * stdDev_;
                 D2_ = D1_ - 2.0 * mu_ * stdDev_;
                 CumulativeNormalDistribution f = new CumulativeNormalDistribution();

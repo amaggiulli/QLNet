@@ -2,7 +2,7 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Andrea Maggiulli
 
- * This file is part of QLNet Project http://qlnet.sourceforge.net/
+ * This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -34,7 +34,7 @@ namespace QLNet {
             \f$ n \f$ equals 42 if not given.  */
         public static bool close(double x, double y) { return close(x, y, 42); }
         public static bool close(double x, double y, int n) {
-            double diff = System.Math.Abs(x - y), tolerance = n * Const.QL_Epsilon;
+            double diff = System.Math.Abs(x - y), tolerance = n * Const.QL_EPSILON;
             return diff <= tolerance * System.Math.Abs(x) && diff <= tolerance * System.Math.Abs(y);
         }
 
@@ -47,7 +47,7 @@ namespace QLNet {
         }
 
         public static bool close_enough(double x, double y, int n) {
-            double diff = Math.Abs(x-y), tolerance = n*Const.QL_Epsilon;
+            double diff = Math.Abs(x-y), tolerance = n*Const.QL_EPSILON;
             return diff <= tolerance*Math.Abs(x) || diff <= tolerance*Math.Abs(y);
         }
 

@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -114,6 +114,7 @@ namespace QLNet
         public double discrepancy()
         {
             int N = samples();
+            if ( N == 0 ) return 0; 
             /*
             Size i;
             Real r_ik, r_jk, cdiscr = adiscr = 0.0, temp = 1.0;

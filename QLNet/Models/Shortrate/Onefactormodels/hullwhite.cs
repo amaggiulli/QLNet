@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -102,7 +102,7 @@ namespace QLNet {
                                                 double bondMaturity){
             double _a = a();
             double v;
-            if (_a < Math.Sqrt(Const.QL_Epsilon))
+            if (_a < Math.Sqrt(Const.QL_EPSILON))
             {
                 v = sigma() * B(maturity, bondMaturity) * Math.Sqrt(maturity);
             } else {
@@ -229,7 +229,7 @@ namespace QLNet {
                 public override double value(Vector v, double t) {
                     double forwardRate =
                         termStructure_.link.forwardRate(t, t, Compounding.Continuous, Frequency.NoFrequency).rate();
-                    double temp = a_ < Math.Sqrt(Const.QL_Epsilon) ?
+                    double temp = a_ < Math.Sqrt(Const.QL_EPSILON) ?
                                 sigma_*t :
                                 sigma_*(1.0 - Math.Exp(-a_*t))/a_;
                     return (forwardRate + 0.5*temp*temp);

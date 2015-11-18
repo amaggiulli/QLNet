@@ -3,7 +3,7 @@
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
   
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -281,25 +281,52 @@ namespace QLNet {
                      return false;
                }
 
-               if (y == 2013) {
+               if ( y == 2013 )
+               {
                   if (// Holi
-                      (d == 27 && m == Month.March)
-                      // Ram Navmi
-                      || (d == 19 && m == Month.April)
-                      // Mahavir Jayanti
-                      || (d == 24 && m == Month.April)
-                      // Ramzan Id
-                      || (d == 9 && m == Month.August)
-                      // Ganesh Chaturthi
-                      || (d == 9 && m == Month.September)
-                      // Bakri Id
-                      || (d == 16 && m == Month.October)
-                      // Diwali - Balipratipada
-                      || (d == 4 && m == Month.November)
-                      // Moharram
-                      || (d == 14 && m == Month.November)
+                      ( d == 27 && m == Month.March )
+                     // Ram Navmi
+                      || ( d == 19 && m == Month.April )
+                     // Mahavir Jayanti
+                      || ( d == 24 && m == Month.April )
+                     // Ramzan Id
+                      || ( d == 9 && m == Month.August )
+                     // Ganesh Chaturthi
+                      || ( d == 9 && m == Month.September )
+                     // Bakri Id
+                      || ( d == 16 && m == Month.October )
+                     // Diwali - Balipratipada
+                      || ( d == 4 && m == Month.November )
+                     // Moharram
+                      || ( d == 14 && m == Month.November )
                   )
-                  return false;
+                     return false;
+               }
+
+               if ( y == 2014 )
+               {
+                  if (// Mahashivratri
+                        ( d == 27 && m == Month.February )
+                     // Holi
+                        || ( d == 17 && m == Month.March )
+                     // Ram Navmi
+                        || ( d == 8 && m == Month.April )
+                     // Ramzan Id
+                        || ( d == 29 && m == Month.July )
+                     // Ganesh Chaturthi
+                        || ( d == 29 && m == Month.August )
+                     // Dasera
+                        || ( d == 3 && m == Month.October )
+                     // Bakri Id
+                        || ( d == 6 && m == Month.October )
+                     // Diwali - Balipratipada
+                        || ( d == 24 && m == Month.October )
+                     // Moharram
+                        || ( d == 4 && m == Month.November )
+                     // Gurunank Jayanti
+                        || ( d == 6 && m == Month.November )
+                        )
+                     return false;
                } 
                 return true;
             }
