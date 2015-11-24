@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="T_BusinessDayConvention.cs" />
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_PiecewiseZeroSpreadedTermStructure.cs" />
     <Compile Include="T_AsianOptions.cs" />

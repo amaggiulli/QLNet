@@ -104,12 +104,17 @@ namespace QLNet {
                                  choose the first business day after
                                  the holiday. */
         Unadjusted,          /*!< Do not adjust. */
-        HalfMonthModifiedFollowing   /*!< Choose the first business day after
+        HalfMonthModifiedFollowing,   /*!< Choose the first business day after
                                           the given holiday unless that day
                                           crosses the mid-month (15th) or the
                                           end of month, in which case choose
                                           the first business day before the
                                           holiday. */
+        Nearest                      /*!< Choose the nearest business day 
+                                          to the given holiday. If both the
+                                          preceding and following business
+                                          days are equally far away, default
+                                          to following business day. */
     };
 
     //! Units used to describe time periods

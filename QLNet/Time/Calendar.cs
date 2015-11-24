@@ -143,6 +143,19 @@ namespace QLNet
                 if (c == BusinessDayConvention.ModifiedPreceding && d1.Month != d.Month)
                     return adjust(d, BusinessDayConvention.Following);
             }
+            else if ( c == BusinessDayConvention.Nearest )
+            {
+               Date d2 = d;
+               while ( isHoliday( d1 ) && isHoliday( d2 ) )
+               {
+                  d1++;
+                  d2--;
+               }
+               if ( isHoliday( d1 ) )
+                  return d2;
+               else
+                  return d1;
+            }
             else throw Error.UnknownBusinessDayConvention(c);
             return d1;
         }
