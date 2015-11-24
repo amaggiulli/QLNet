@@ -124,7 +124,7 @@ namespace CallableBonds
 
          // output price/yield results for varying volatility parameter
 
-         double sigma = Const.QL_Epsilon; // core dumps if zero on Cygwin
+         double sigma = Const.QL_EPSILON; // core dumps if zero on Cygwin
 
          ShortRateModel hw0 = new HullWhite(termStructure,reversionParameter,sigma);
 
