@@ -2,18 +2,18 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2014  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QLNet 
+namespace QLNet
 {
 	public interface IBootStrap<T>
 	{
@@ -122,7 +122,7 @@ namespace QLNet
 
 		}
 
-		public void setup(T ts) 
+		public void setup(T ts)
 		{
          ts_ = ts;
 
@@ -136,7 +136,7 @@ namespace QLNet
          ts_.instruments_.ForEach(x => ts_.registerWith(x));
       }
 
-      public void calculate() 
+      public void calculate()
 		{
 			// we might have to call initialize even if the curve is initialized
 			// and not moving, just because helpers might be date relative and change
@@ -167,7 +167,7 @@ namespace QLNet
 
          for (int iteration = 0; ; ++iteration)
          {
-            previousData_ = ts_.data_;
+            previousData_ = new List<double>(ts_.data_);
 
             for (int i = 1; i <= alive_; ++i)
             {
@@ -184,7 +184,7 @@ namespace QLNet
                   guess = max - (max - min) / 5.0;
                else if (guess <= min)
                   guess = min + (max - min) / 5.0;
-                    
+
                // extend interpolation if needed
                if (!validData)
                {
@@ -228,7 +228,7 @@ namespace QLNet
                }
 
 				}
-				
+
 				if ( !ts_.interpolator_.global )
 					break;     // no need for convergence loop
 				else if ( iteration == 0 )
