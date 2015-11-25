@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project http://www.qlnet.org
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://trac2.assembla.com/QLNet/wiki/License>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -27,13 +27,13 @@ namespace CallableBonds
 {
    class CallableBonds
    {
-      
+
       static YieldTermStructure flatRate(Date today,
                                   double forward,
                                   DayCounter dc,
                                   Compounding compounding,
-                                  Frequency frequency) 
-   
+                                  Frequency frequency)
+
       {
          return new FlatForward(today, forward, dc, compounding, frequency);
          //FlatForward flatRate = new FlatForward(settlementDate, r.rate(), r.dayCounter(), r.compounding(), r.frequency());
@@ -81,7 +81,7 @@ namespace CallableBonds
          int numberOfCallDates = 24;
          Date callDate = new Date(15,Month.September,2006);
 
-         for (int i=0; i< numberOfCallDates; i++) 
+         for (int i=0; i< numberOfCallDates; i++)
          {
             Calendar nullCalendar = new NullCalendar();
 
@@ -124,7 +124,7 @@ namespace CallableBonds
 
          // output price/yield results for varying volatility parameter
 
-         double sigma = Const.QL_Epsilon; // core dumps if zero on Cygwin
+         double sigma = Const.QL_EPSILON; // core dumps if zero on Cygwin
 
          ShortRateModel hw0 = new HullWhite(termStructure,reversionParameter,sigma);
 
@@ -147,9 +147,9 @@ namespace CallableBonds
                                                                                 maxIterations));
          Console.WriteLine("Bloomberg price/yld (%) ");
          Console.WriteLine("96.50 / 5.47");
-             
+
          //
-         
+
          sigma = .01;
 
          Console.WriteLine("sigma/vol (%) = {0:0.00}", (100.0 * sigma));
@@ -216,7 +216,7 @@ namespace CallableBonds
 
          Console.WriteLine("Bloomberg price/yld (%) ");
          Console.WriteLine("87.16 / 7.83");
-         
+
          //
 
          sigma = .12;
