@@ -24,32 +24,55 @@ using System.Text;
 
 namespace QLNet
 {
-   public class PSACurve
-   {
+    public interface IPrepayModel
+    {
+        double getCPR(Date valDate);
+        double getSMM(Date valDate);
+    }
 
-      public PSACurve(Date startdate)
-         :this(startdate, 1 ) {}
+    public class ConstantCPR : IPrepayModel
+    {
+        public ConstantCPR(double cpr)
+        {
+            _cpr = cpr;
+        }
+        public double getCPR(Date valDate)
+        {
+            return _cpr;
+        }
+        public double getSMM(Date valDate)
+        {
+            return 1 - Math.Pow((1 - getCPR(valDate)), (1 / 12d));
+        }
+        private double _cpr;
+    }
 
-      public PSACurve(Date startdate, double multiplier)
-      {
-         _startDate = startdate;
-         _multi = multiplier;
-      }
+    public class PSACurve : IPrepayModel
+    {
 
-      public double getCPR(Date valDate)
-      {
-         Thirty360 dayCounter = new Thirty360();
-         int d = dayCounter.dayCount(_startDate,valDate)/30 + 1;
+        public PSACurve(Date startdate)
+            : this(startdate, 1) { }
 
-         return (d <= 30 ? 0.06 * (d / 30d) : 0.06) * _multi;
-      }
+        public PSACurve(Date startdate, double multiplier)
+        {
+            _startDate = startdate;
+            _multi = multiplier;
+        }
 
-      public double getSMM(Date valDate)
-      {
-         return 1 - Math.Pow((1 - getCPR(valDate)), (1 / 12d));
-      }
+        public double getCPR(Date valDate)
+        {
+            Thirty360 dayCounter = new Thirty360();
+            int d = dayCounter.dayCount(_startDate, valDate) / 30 + 1;
 
-      private Date _startDate;
-      private double _multi;
-   }
+            return (d <= 30 ? 0.06 * (d / 30d) : 0.06) * _multi;
+        }
+
+        public double getSMM(Date valDate)
+        {
+            return 1 - Math.Pow((1 - getCPR(valDate)), (1 / 12d));
+        }
+
+        private Date _startDate;
+        private double _multi;
+    }
 }
