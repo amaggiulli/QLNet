@@ -24,7 +24,7 @@ using System.Text;
 
 namespace QLNet
 {
-   public class PSACurve
+   public class PSACurve : IPrepayModel
    {
 
       public PSACurve(Date startdate)

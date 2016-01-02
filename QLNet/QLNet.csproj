@@ -168,11 +168,13 @@
     <Compile Include="Instruments\Bonds\BTP.cs" />
     <Compile Include="Instruments\Bonds\CallableBond.cs" />
     <Compile Include="Instruments\Bonds\CmsRateBond.cs" />
+    <Compile Include="Instruments\Bonds\ConstantCPR.cs" />
     <Compile Include="Instruments\Bonds\ConvertibleBond.cs" />
     <Compile Include="Instruments\Bonds\CPIBond.cs" />
     <Compile Include="Instruments\Bonds\DiscretizedCallableFixedRateBond.cs" />
     <Compile Include="Instruments\Bonds\Fixedratebond.cs" />
     <Compile Include="Instruments\Bonds\FloatingRateBond.cs" />
+    <Compile Include="Instruments\Bonds\IPrepayModel.cs" />
     <Compile Include="Instruments\Bonds\MBSFixedRateBond.cs" />
     <Compile Include="Instruments\Bonds\PSACurve.cs" />
     <Compile Include="Instruments\Bonds\Zerocouponbond.cs" />

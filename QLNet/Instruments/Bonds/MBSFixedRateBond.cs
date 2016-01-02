@@ -28,12 +28,12 @@ namespace QLNet
                                double WACRate,
                                double PassThroughRate,
                                DayCounter accrualDayCounter,
-                               PSACurve psaCurve,
+                               IPrepayModel prepayModel,
                                BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
                                Date issueDate = null)
          : base(settlementDays, calendar, faceAmount, startDate, bondTenor, sinkingFrequency, WACRate, accrualDayCounter, paymentConvention, issueDate)
       {
-         psaCurve_ = psaCurve;
+         prepayModel_ = prepayModel;
          originalLength_ = originalLength;
          remainingLength_ = bondTenor;
          WACRate_ = WACRate;
@@ -85,9 +85,9 @@ namespace QLNet
 
       public double SMM(Date d )
       {
-         if ( psaCurve_ != null )
+         if ( prepayModel_ != null )
          {
-            return psaCurve_.getSMM(d + (originalLength_ - remainingLength_));
+            return prepayModel_.getSMM( d + ( originalLength_ - remainingLength_ ) );
          }
          else
             return 0;
@@ -123,7 +123,7 @@ namespace QLNet
       public List<double> BondFactors() { if (bondFactors_ == null) calcBondFactor(); return bondFactors_; }
      
       protected List<double> bondFactors_;
-      protected PSACurve psaCurve_;
+      protected IPrepayModel prepayModel_;
       protected Period originalLength_, remainingLength_;
       protected double WACRate_;
       protected double PassThroughRate_;
