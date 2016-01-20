@@ -512,6 +512,7 @@
     <Compile Include="Termstructures\Yield\ZeroSpreadedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\Zeroyieldstructure.cs" />
     <Compile Include="timegrid.cs" />
+    <Compile Include="Time\ASX.cs" />
     <Compile Include="Time\Calendar.cs" />
     <Compile Include="Time\Calendars\argentina.cs" />
     <Compile Include="Time\Calendars\australia.cs" />
