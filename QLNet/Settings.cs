@@ -19,9 +19,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace QLNet {
     // we need only one instance of the class

@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 /*! \file mc_discr_arith_av_strike.hpp
     \brief Monte Carlo engine for discrete arithmetic average-strike Asian

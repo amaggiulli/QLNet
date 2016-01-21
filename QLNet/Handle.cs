@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Reflection;
 
 namespace QLNet {
     //! Shared handle to an observable

@@ -19,8 +19,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Single-asset vanilla option (no barriers) with discrete dividends

@@ -17,10 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 

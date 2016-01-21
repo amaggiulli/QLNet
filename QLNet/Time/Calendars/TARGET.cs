@@ -17,8 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using QLNet;
-using System.Runtime.InteropServices;
 
 namespace QLNet {
     //! %TARGET calendar

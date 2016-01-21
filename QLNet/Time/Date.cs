@@ -19,7 +19,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using QLNet;
 
 namespace QLNet {
     public class Date : IComparable {
