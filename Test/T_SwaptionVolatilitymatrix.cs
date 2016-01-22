@@ -67,7 +67,7 @@ namespace TestSuite
                 tenors.options[4] = new Period(10, TimeUnit.Years);
                 tenors.options[5] = new Period(30, TimeUnit.Years);
                 //tenors.swaps.resize(4);
-                tenors.swaps = new InitializedList<Period>(4); ;
+                tenors.swaps = new InitializedList<Period>(4); 
                 tenors.swaps[0] = new Period(1, TimeUnit.Years);
                 tenors.swaps[1] = new Period(5, TimeUnit.Years);
                 tenors.swaps[2] = new Period(10, TimeUnit.Years);
@@ -263,7 +263,7 @@ namespace TestSuite
                         Swaption swaption = new MakeSwaption(
                                                 swapIndex, atm.tenors.options[i])
                                                 .withPricingEngine(engine)
-                                                .value(); ;
+                                                .value();
                         
                         Date exerciseDate = swaption.exercise().dates().First();
                         if (exerciseDate!=vol.optionDates()[i])

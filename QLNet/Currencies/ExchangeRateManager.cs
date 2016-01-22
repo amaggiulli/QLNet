@@ -249,7 +249,6 @@ namespace QLNet
                         catch (Exception)
                         {
                             // otherwise, we just discard this rate.
-                            ;
                         }
                     }
                 }

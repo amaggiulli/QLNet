@@ -51,7 +51,7 @@ namespace QLNet
                 case Thirty360Convention.Italian:
                     return IT_Impl.Singleton;
                 default:
-                    throw new ArgumentException("Unknown 30/360 convention: " + c); ;
+                    throw new ArgumentException("Unknown 30/360 convention: " + c); 
             }
         }
 

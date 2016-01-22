@@ -131,7 +131,7 @@ namespace QLNet {
                     calendar_ = NERC.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

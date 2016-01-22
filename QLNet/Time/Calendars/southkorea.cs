@@ -79,7 +79,7 @@ namespace QLNet {
                     calendar_ = KRX.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

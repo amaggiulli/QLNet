@@ -49,7 +49,7 @@ namespace QLNet
             if (model_ == null)
                 throw new ArgumentException("null model");
 
-            Date referenceDate = new Date(); ;
+            Date referenceDate = new Date(); 
             DayCounter dayCounter = new DayCounter();
             try{
                 TermStructureConsistentModel tsmodel = (TermStructureConsistentModel)model_;

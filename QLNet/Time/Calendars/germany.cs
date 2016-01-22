@@ -137,7 +137,7 @@ namespace QLNet {
                     calendar_ = Euwax.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

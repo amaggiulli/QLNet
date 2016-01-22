@@ -67,7 +67,7 @@ namespace QLNet
                calendar_ = ExchangeImpl.Singleton;
                break;
             default:
-               throw new ArgumentException("Unknown market: " + m); ;
+               throw new ArgumentException("Unknown market: " + m); 
          }
       }
 

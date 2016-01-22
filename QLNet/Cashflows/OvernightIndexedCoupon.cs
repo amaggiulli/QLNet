@@ -78,12 +78,12 @@ namespace QLNet
                } 
                else 
                {
-                  ;   // fall through and forecast
+                  // fall through and forecast
                }
             } 
             catch (Exception) 
             {
-               ;       // fall through and forecast
+               // fall through and forecast
             }
          }
          

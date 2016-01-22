@@ -185,7 +185,7 @@ namespace QLNet
             return this.interpolation_.value(t, true);
 
          // flat fwd extrapolation
-         return this.data_.Last(); ;
+         return this.data_.Last();
       }
       protected override double zeroYieldImpl(double t)
       {

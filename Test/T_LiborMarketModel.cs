@@ -34,7 +34,7 @@ namespace TestSuite
         {
             DayCounter dayCounter = new Actual360();
 
-            RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>(); ;
+            RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>(); 
             IborIndex index = new Euribor6M(termStructure);
 
             Date todaysDate =
