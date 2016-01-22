@@ -31,23 +31,14 @@ namespace QLNet
 
 	public class IterativeBootstrapForYield : IterativeBootstrap<PiecewiseYieldCurve, YieldTermStructure>
 	{
-		public IterativeBootstrapForYield()
-			: base()
-		{}
 	}
 
 	public class IterativeBootstrapForInflation : IterativeBootstrap<PiecewiseZeroInflationCurve, ZeroInflationTermStructure>
 	{
-		public IterativeBootstrapForInflation()
-			: base()
-		{}
 	}
 
 	public class IterativeBootstrapForYoYInflation : IterativeBootstrap<PiecewiseYoYInflationCurve, YoYInflationTermStructure>
 	{
-		public IterativeBootstrapForYoYInflation()
-			: base()
-		{ }
 	}
 
 

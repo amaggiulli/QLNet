@@ -221,11 +221,7 @@ namespace QLNet
 		//! %Arguments for YoY Inflation cap/floor calculation
 		public class Arguments : IPricingEngineArguments 
 		{
-			public Arguments()  
-			{
-				//type = YoYInflationCapFloor::Type(-1))
-			}
-			public CapFloorType type;
+		   public CapFloorType type;
 			public YoYInflationIndex index;
 			public Period observationLag;
 			public List<Date> startDates;

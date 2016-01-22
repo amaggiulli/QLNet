@@ -49,9 +49,7 @@ namespace QLNet {
 
         // here implementation does not follow a singleton pattern
         class Impl : Calendar.WesternImpl {
-            public Impl() { }
-
-            public override bool isWeekend(DayOfWeek w) { return (weekend_.Contains(w)); }
+           public override bool isWeekend(DayOfWeek w) { return (weekend_.Contains(w)); }
             public override bool isBusinessDay(Date date) { return !isWeekend(date.DayOfWeek); }
             public void addWeekend(DayOfWeek w) { weekend_.Add(w); }
 

@@ -25,11 +25,7 @@ using System.Linq;
 namespace QLNet 
 {
 	public class LocalBootstrapForYield : LocalBootstrap<PiecewiseYieldCurve, YieldTermStructure>
-	{
-		public LocalBootstrapForYield()
-			: base()
-		{}
-	}
+	{}
 
     // penalty function class for solving using a multi-dimensional solver
 	public class PenaltyFunction<T, U> : CostFunction

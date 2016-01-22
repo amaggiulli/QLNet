@@ -281,10 +281,6 @@ namespace QLNet
 
       public class Arguments : IPricingEngineArguments
       {
-         public Arguments() 
-         {
-           //type = -1;
-         }
          public CapFloorType type;
          public List<Date> startDates;
          public List<Date> fixingDates;

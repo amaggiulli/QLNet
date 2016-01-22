@@ -45,9 +45,7 @@ namespace QLNet
     {
         protected Impl impl_;
 
-        public Interpolation2D() {}
-
-        public double xMin(){return impl_.xMin();}
+       public double xMin(){return impl_.xMin();}
 
         public double xMax(){return impl_.xMax();}
 

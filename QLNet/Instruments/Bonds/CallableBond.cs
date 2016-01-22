@@ -38,7 +38,6 @@ namespace QLNet
    {
       public new class Arguments : Bond.Arguments 
       {
-         public Arguments() {}
          public List<Date> couponDates;
          public List<double> couponAmounts;
          //! redemption = face amount * redemption / 100.

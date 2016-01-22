@@ -85,9 +85,8 @@ namespace QLNet {
 
         class Settlement : Calendar {
             public static readonly Settlement Singleton = new Settlement();
-            public Settlement() { }
-          
-            public override string name() { return "South-Korean settlement"; }
+
+           public override string name() { return "South-Korean settlement"; }
             public override bool isWeekend(DayOfWeek w) {
                 return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday;
             }
@@ -176,9 +175,8 @@ namespace QLNet {
 
         class KRX : Settlement {
             new public static readonly KRX Singleton = new KRX();
-            public KRX() { }
 
-            public override string name() { return "South-Korea exchange"; }
+           public override string name() { return "South-Korea exchange"; }
             public override bool isBusinessDay(Date date)  {
                 // public holidays
                 if ( !base.isBusinessDay(date) )

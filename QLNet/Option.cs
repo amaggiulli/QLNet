@@ -51,9 +51,7 @@ namespace QLNet {
             public Payoff payoff;
             public Exercise exercise;
 
-            public Arguments() { }
-
-            public virtual void validate() {
+           public virtual void validate() {
                 if (payoff == null) throw new ApplicationException("no payoff given");
                 if (exercise == null) throw new ApplicationException("no exercise given");
             }

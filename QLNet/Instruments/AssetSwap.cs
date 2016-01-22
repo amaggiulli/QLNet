@@ -464,7 +464,6 @@ namespace QLNet
       //! %Arguments for asset swap calculation
       public new class Arguments : Swap.Arguments
       {
-         public Arguments() {}
          public List<Date> fixedResetDates;
          public List<Date> fixedPayDates;
          public List<double> fixedCoupons;
