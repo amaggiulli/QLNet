@@ -24,6 +24,6 @@ namespace QLNet
       //! %Sonia (Sterling Overnight Index Average) rate.
       public Sonia(Handle<YieldTermStructure> h = null)
           :base("Sonia", 0, new GBPCurrency(), new UnitedKingdom(UnitedKingdom.Market.Exchange),
-                new Actual365Fixed(), h == null ? new Handle<YieldTermStructure>():h) {}
+                new Actual365Fixed(), h ?? new Handle<YieldTermStructure>()) {}
    }
 }

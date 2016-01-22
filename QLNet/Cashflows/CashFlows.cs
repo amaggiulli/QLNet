@@ -434,7 +434,7 @@ namespace QLNet
       {
          if (leg.empty()) return null;
 
-         Date d = (settlementDate == null ? Settings.evaluationDate() : settlementDate);
+         Date d = (settlementDate ?? Settings.evaluationDate());
          return  leg.LastOrDefault(x => x.hasOccurred(d, includeSettlementDateFlows));
       }
       //! the first cashflow paying after the given date
@@ -442,7 +442,7 @@ namespace QLNet
       {
          if (leg.empty()) return null;
 
-         Date d = (settlementDate == null ? Settings.evaluationDate() : settlementDate);
+         Date d = (settlementDate ?? Settings.evaluationDate());
 
          // the first coupon paying after d is the one we're after
          return leg.FirstOrDefault(x => !x.hasOccurred(d, includeSettlementDateFlows));

@@ -67,7 +67,7 @@ namespace QLNet
 			if (ecd == null)
 				return false;
 
-        Date ref_ = refDate != null ? refDate : Settings.evaluationDate();
+        Date ref_ = refDate ?? Settings.evaluationDate();
 
         return ecd <= ref_;
 		}

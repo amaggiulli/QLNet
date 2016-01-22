@@ -48,7 +48,7 @@ namespace QLNet
          : base(nominal, paymentDate, startDate, endDate, refPeriodStart, refPeriodEnd)
       {
          index_ = index;
-         dayCounter_ = dayCounter == null ? new DayCounter() : dayCounter ;
+         dayCounter_ = dayCounter ?? new DayCounter() ;
          fixingDays_ = fixingDays == default(int) ? index.fixingDays() : fixingDays;
          gearing_ = gearing;
          spread_ = spread;

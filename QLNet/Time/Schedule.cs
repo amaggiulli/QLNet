@@ -603,7 +603,7 @@ namespace QLNet {
         private Calendar calendar_;
         private Date effectiveDate_, terminationDate_;
         private Period tenor_;
-        private Nullable<BusinessDayConvention> convention_, terminationDateConvention_;
+        private BusinessDayConvention? convention_, terminationDateConvention_;
         private DateGeneration.Rule rule_;
         private bool endOfMonth_;
         private Date firstDate_, nextToLastDate_;

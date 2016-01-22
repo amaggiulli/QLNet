@@ -133,7 +133,7 @@ namespace QLNet {
         }
 
         public SabrSmileSection( Date d, double forward, List<double> sabrParams, DayCounter dc = null )
-            : base(d, dc == null ? new Actual365Fixed() : dc) {
+            : base(d, dc ?? new Actual365Fixed()) {
             forward_ = forward;
 
             alpha_ = sabrParams[0];

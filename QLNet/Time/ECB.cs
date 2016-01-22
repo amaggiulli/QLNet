@@ -108,9 +108,7 @@ namespace QLNet
         //Year y = boost::lexical_cast<Year>(code.substr(3, 2));
 
         int y = int.Parse(code.Substring(3, 2));
-        Date referenceDate = (refDate != null ?
-                              refDate :
-                              new Date(Settings.evaluationDate()));
+        Date referenceDate = (refDate ?? new Date(Settings.evaluationDate()));
         int referenceYear = (referenceDate.year() % 100);
         y += referenceDate.year() - referenceYear;
         if (y<Date.minDate().year())
@@ -187,9 +185,7 @@ namespace QLNet
       //! next maintenance period start date following the given date
       public static Date nextDate( Date date = null )
       {
-         Date d = (date == null ?
-                  Settings.evaluationDate() :
-                  date);
+         Date d = (date ?? Settings.evaluationDate());
 
          int i = knownDates().FindIndex( x => x > d );
 
@@ -207,9 +203,7 @@ namespace QLNet
       //! next maintenance period start dates following the given date
       public static List<Date> nextDates( Date date = null )
       {
-         Date d = (date == null ?
-                  Settings.evaluationDate() :
-                  date);
+         Date d = (date ?? Settings.evaluationDate());
 
         int i = knownDates(). FindIndex(x => x > d );
 

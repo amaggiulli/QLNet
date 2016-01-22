@@ -45,21 +45,21 @@ namespace QLNet
                   by overriding the referenceDate() method.
       */
       public CallableBondVolatilityStructure(DayCounter dc = null, BusinessDayConvention bdc = BusinessDayConvention.Following)
-         : base(dc == null ? new DayCounter() : dc)
+         : base(dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }
       //! initialize with a fixed reference date
       public CallableBondVolatilityStructure( Date referenceDate, Calendar calendar = null, DayCounter dc = null,
                                               BusinessDayConvention bdc = BusinessDayConvention.Following)
-         : base(referenceDate, calendar == null ? new Calendar() : calendar, dc == null ? new DayCounter() : dc)
+         : base(referenceDate, calendar ?? new Calendar(), dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }
       //! calculate the reference date based on the global evaluation date
       public CallableBondVolatilityStructure(int settlementDays, Calendar calendar, DayCounter dc = null,
                                               BusinessDayConvention bdc = BusinessDayConvention.Following)
-         : base(settlementDays, calendar, dc == null ? new DayCounter() : dc)
+         : base(settlementDays, calendar, dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }

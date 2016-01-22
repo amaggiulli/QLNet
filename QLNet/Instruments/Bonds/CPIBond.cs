@@ -44,7 +44,7 @@ namespace QLNet
                 Calendar exCouponCalendar = null,
 					 BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                 bool exCouponEndOfMonth = false)                
-            :base(settlementDays, paymentCalendar == null ? schedule.calendar() : paymentCalendar, issueDate)
+            :base(settlementDays, paymentCalendar ?? schedule.calendar(), issueDate)
         {
             frequency_ = schedule.tenor().frequency();
             dayCounter_ = accrualDayCounter;

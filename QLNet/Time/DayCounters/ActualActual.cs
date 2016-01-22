@@ -68,8 +68,8 @@ namespace QLNet
                 if (d1 > d2) return -yearFraction(d2, d1, d3, d4);
 
                 // when the reference period is not specified, try taking it equal to (d1,d2)
-                Date refPeriodStart = (d3 != null ? d3 : d1);
-                Date refPeriodEnd = (d4 != null ? d4 : d2);
+                Date refPeriodStart = (d3 ?? d1);
+                Date refPeriodEnd = (d4 ?? d2);
 
                 if (!(refPeriodEnd > refPeriodStart && refPeriodEnd > d1))
                     throw new ArgumentException("Invalid reference period: date 1: " + d1 + ", date 2: " + d2 +

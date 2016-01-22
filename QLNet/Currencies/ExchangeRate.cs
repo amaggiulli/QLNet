@@ -30,7 +30,7 @@ namespace QLNet {
    public class ExchangeRate {
       private Currency source_;
       private Currency target_;
-      private Nullable<double> rate_;
+      private double? rate_;
       private Type type_;
       private KeyValuePair<ExchangeRate, ExchangeRate> rateChain_;
 
