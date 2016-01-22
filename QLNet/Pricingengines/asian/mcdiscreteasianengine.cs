@@ -85,9 +85,9 @@ namespace QLNet
         protected override TimeGrid timeGrid() {
             Date referenceDate = process_.riskFreeRate().link.referenceDate();
             DayCounter voldc = process_.blackVolatility().link.dayCounter() ;
-            List<double> fixingTimes = new  InitializedList<double>(arguments_.fixingDates.Count());
+            List<double> fixingTimes = new  InitializedList<double>(arguments_.fixingDates.Count);
             
-            for (int i=0; i<arguments_.fixingDates.Count(); i++) {
+            for (int i=0; i<arguments_.fixingDates.Count; i++) {
                 if (arguments_.fixingDates[i]>=referenceDate) {
                     double t = voldc.yearFraction(referenceDate,
                         arguments_.fixingDates[i]);
@@ -95,7 +95,7 @@ namespace QLNet
                 }
             }
             // handle here maxStepsPerYear
-            return new TimeGrid(fixingTimes.Last(), fixingTimes.Count());
+            return new TimeGrid(fixingTimes.Last(), fixingTimes.Count);
         }
 
         protected override PathGenerator<IRNG> pathGenerator() {

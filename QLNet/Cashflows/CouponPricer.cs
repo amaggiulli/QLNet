@@ -151,8 +151,7 @@ namespace QLNet {
                 return Math.Max(a - b, 0.0) * coupon_.accrualPeriod() * discount_;
             } else {
                 // not yet determined, use Black model
-                if (!(!capletVolatility().empty()))
-                    throw new ApplicationException("missing optionlet volatility");
+               Utils.QL_REQUIRE( !capletVolatility().empty(),()=> "missing optionlet volatility" );
 
 
                 double stdDev = Math.Sqrt(capletVolatility().link.blackVariance(fixingDate, effStrike));
@@ -171,8 +170,7 @@ namespace QLNet {
                 adjustement = 0.0;
             } else {
                 // see Hull, 4th ed., page 550
-                if (!(!capletVolatility().empty()))
-                    throw new ApplicationException("missing optionlet volatility");
+                Utils.QL_REQUIRE( !capletVolatility().empty(),()=> "missing optionlet volatility" );
 
                 Date d1 = coupon_.fixingDate();
                 Date referenceDate = capletVolatility().link.referenceDate();

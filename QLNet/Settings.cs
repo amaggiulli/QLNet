@@ -26,13 +26,13 @@ namespace QLNet {
     public static class Settings {
 
         [ThreadStatic]
-        private static Date evaluationDate_ = null;
+        private static Date evaluationDate_;
 
         [ThreadStatic]
-        private static bool includeReferenceDateEvents_ = false;
+        private static bool includeReferenceDateEvents_;
 
         [ThreadStatic]
-        private static bool enforcesTodaysHistoricFixings_ = false;
+        private static bool enforcesTodaysHistoricFixings_;
 
         [ThreadStatic]
         private static bool? includeTodaysCashFlows_;

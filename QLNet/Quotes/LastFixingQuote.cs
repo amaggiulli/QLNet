@@ -42,7 +42,7 @@ namespace QLNet
 
       public override bool isValid()
       {
-        return index_.timeSeries().value().Count() > 0;
+        return index_.timeSeries().value().Count > 0;
       }
 
       public Date referenceDate()  

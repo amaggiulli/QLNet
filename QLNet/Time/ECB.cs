@@ -51,7 +51,7 @@ namespace QLNet
          
          if (knownDateSet.empty()) 
          {
-            for ( int i = 0; i < knownDatesArray.Count(); ++i )
+            for ( int i = 0; i < knownDatesArray.Length; ++i )
             {
                 knownDateSet.Add(new Date(knownDatesArray[i]));
             }

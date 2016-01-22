@@ -34,7 +34,7 @@ namespace QLNet
         public LiborForwardModel(LiborForwardModelProcess process,
                           LmVolatilityModel volaModel,
                           LmCorrelationModel corrModel)
-            : base(volaModel.parameters().Count() + corrModel.parameters().Count()) {
+            : base(volaModel.parameters().Count + corrModel.parameters().Count) {
 
             f_ = new InitializedList<double>(process.size());
             accrualPeriod_ = new InitializedList<double>(process.size());

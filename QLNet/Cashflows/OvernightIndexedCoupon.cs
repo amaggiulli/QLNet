@@ -41,7 +41,7 @@ namespace QLNet
          List<Date> fixingDates = coupon_.fixingDates();
          List<double> dt = coupon_.dt();
 
-         int n = dt.Count();
+         int n = dt.Count;
          int i = 0;
 
          double compoundFactor = 1.0;
@@ -156,7 +156,7 @@ namespace QLNet
             throw new ArgumentException("degenerate schedule");
 
          // fixing dates
-         n_ = valueDates_.Count()-1;
+         n_ = valueDates_.Count-1;
          if (overnightIndex.fixingDays()==0) 
          {
             fixingDates_ = new List<Date>(valueDates_);

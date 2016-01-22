@@ -366,7 +366,7 @@ namespace QLNet
             T_ = start;
             t_ = payTimes;
             rate_ = fixedRate;
-            size_ = t_.Count();
+            size_ = t_.Count;
 
             A_  = new Vector(size_);
             Ba_ = new Vector(size_);

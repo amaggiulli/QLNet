@@ -82,9 +82,9 @@ namespace QLNet
             DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
             DayCounter divdc = process_.dividendYield().link.dayCounter();
             DayCounter voldc = process_.blackVolatility().link.dayCounter();
-            List<double> fixingTimes = new InitializedList<double>(arguments_.fixingDates.Count());
+            List<double> fixingTimes = new InitializedList<double>(arguments_.fixingDates.Count);
             int i;
-            for (i=0; i<arguments_.fixingDates.Count(); i++) {
+            for (i=0; i<arguments_.fixingDates.Count; i++) {
                 if (arguments_.fixingDates[i]>=referenceDate) {
                     double t = voldc.yearFraction(referenceDate,
                         arguments_.fixingDates[i]);
@@ -92,7 +92,7 @@ namespace QLNet
                 }
             }
 
-            int remainingFixings = fixingTimes.Count();
+            int remainingFixings = fixingTimes.Count;
             int numberOfFixings = pastFixings + remainingFixings;
             double N = numberOfFixings;
 

@@ -43,11 +43,13 @@ namespace QLNet {
         }
 
         //! marks the passed day as part of the weekend
-        public void addWeekend(DayOfWeek w) {
-            (calendar_ as Impl).addWeekend(w);
+        public void addWeekend(DayOfWeek w)
+        {
+           Impl impl = calendar_ as Impl;
+           if (impl != null) impl.addWeekend(w);
         }
 
-        // here implementation does not follow a singleton pattern
+       // here implementation does not follow a singleton pattern
         class Impl : Calendar.WesternImpl {
            public override bool isWeekend(DayOfWeek w) { return (weekend_.Contains(w)); }
             public override bool isBusinessDay(Date date) { return !isWeekend(date.DayOfWeek); }
