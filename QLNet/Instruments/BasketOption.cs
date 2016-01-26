@@ -95,6 +95,17 @@ namespace QLNet {
 		private Vector weights_;
 	}
 
+   public class SpreadBasketPayoff : BasketPayoff 
+   {
+      public SpreadBasketPayoff(Payoff p)
+        : base(p) {}
+      public override double accumulate (Vector a) 
+      {
+         Utils.QL_REQUIRE(a.size() == 2, ()=> "payoff is only defined for two underlyings");
+         return a[0]-a[1];
+        
+      }
+    }
 
 	//! Basket option on a number of assets
 	//! \ingroup instruments 
