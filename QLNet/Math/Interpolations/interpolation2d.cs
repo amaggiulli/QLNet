@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,26 +23,23 @@ using System.Text;
 
 namespace QLNet
 {
-    //! base class for 2-D interpolations.
-    /*! Classes derived from this class will provide interpolated
-        values from two sequences of length \f$ N \f$ and \f$ M \f$,
-        representing the discretized values of the \f$ x \f$ and \f$ y
-        \f$ variables, and a \f$ N \times M \f$ matrix representing
-        the tabulated function values.
-    */
+   //! base class for 2-D interpolations.
+   /*! Classes derived from this class will provide interpolated
+       values from two sequences of length \f$ N \f$ and \f$ M \f$,
+       representing the discretized values of the \f$ x \f$ and \f$ y
+       \f$ variables, and a \f$ N \times M \f$ matrix representing
+       the tabulated function values.
+   */
 
-    // Interpolation factory
-    /*public interface IInterpolationFactory2D
-    {
-        Interpolation2D interpolate( List<double> xBegin, int xSize,
-                                     List<double> yBegin, int ySize,
-                                     Matrix zData){
-            bool global { get; }
-            int requiredPoints { get; }
-        }
-    }*/
+   // Interpolation factory
+   public interface IInterpolationFactory2D
+   {
+      Interpolation2D interpolate(List<double> xBegin, int xSize,
+                                  List<double> yBegin, int ySize,
+                                  Matrix zData);
+   }
 
-    public abstract class Interpolation2D : Extrapolator/*, IValue */
+   public abstract class Interpolation2D : Extrapolator/*, IValue */
     {
         protected Impl impl_;
 
@@ -61,30 +58,30 @@ namespace QLNet
         public double yMax() {return impl_.yMax();}
 
         public List<double> yValues() {return impl_.yValues();}
-        
+
         public int locateY(double y) {return impl_.locateY(y);}
-        
+
         public Matrix zData() {return impl_.zData();}
 
         public bool isInRange(double x, double y){return impl_.isInRange(x,y);}
-        
+
         public override void update(){impl_.calculate();}
 
         // main method to derive an interpolated point
         public double value(double x, double y) { return value(x, y, false); }
-        
+
         public double value(double x, double y, bool allowExtrapolation){
             checkRange(x, y, allowExtrapolation);
             return impl_.value(x, y);
         }
-  
+
         protected  void checkRange(double x, double y, bool extrapolate) {
             if (!(extrapolate || allowsExtrapolation() || impl_.isInRange(x,y)))
                 throw new ArgumentException("interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
                                                +  "] X [" + x +  impl_.yMin() + ", " + impl_.yMax()
                                                + "]: extrapolation at (" +x+", "+y+ " not allowed");
         }
-       
+
         //! abstract base class for 2-D interpolation implementations
         protected interface Impl //: IValue
         {
@@ -150,11 +147,11 @@ namespace QLNet
                double y1 = yMin(), y2 = yMax();
                return (y >= y1 && y <= y2) || Utils.close(y, y1) || Utils.close(y, y2);
            }
-        
+
            public int locateX(double x) {
                int result = xBegin_.BinarySearch(x);
                if (result < 0)
-                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy 
+                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy
                    // without violating the sequence's ordering
                    // if BinarySearch does not find value the value, the index of the next larger item is returned
                    result = ~result - 1;
@@ -177,7 +174,7 @@ namespace QLNet
                    return std::upper_bound(yBegin_,yEnd_-1,y)-yBegin_-1;*/
                int result = yBegin_.BinarySearch(y);
                if (result < 0)
-                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy 
+                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy
                    // without violating the sequence's ordering
                    // if BinarySearch does not find value the value, the index of the next larger item is returned
                    result = ~result - 1;
@@ -186,10 +183,10 @@ namespace QLNet
                result = Math.Max(Math.Min(result, ySize_ - 2), 0);
                return result;
            }
-           
+
            public abstract double value(double x, double y);
            public abstract void calculate();
 
-       }   
+       }
     }
 }
