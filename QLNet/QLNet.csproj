@@ -477,6 +477,7 @@
     <Compile Include="Termstructures\TermStructure.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondConstantVolatility.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondVolatilityStructure.cs" />
+    <Compile Include="Termstructures\Volatility\equityfx\BlackVarianceSurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\CPIVolatilitySurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\yoyinflationoptionletvolatilitystructure.cs" />
     <Compile Include="Termstructures\Volatility\Optionlet\capletvariancecurve.cs" />
