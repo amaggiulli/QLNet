@@ -165,9 +165,9 @@ namespace QLNet
             }
 
             double i = new I().value();
-            return 1.0 / Math.Sqrt( 2 * M_PI * x ) *
+            return 1.0 / Math.Sqrt( 2 * Const.M_PI * x ) *
                ( new T().weight1LargeX( x ) * s1 +
-               i * Math.Exp( i * nu * M_PI ) * new T().weight2LargeX( x ) * s2 );
+               i * Math.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
          }
       }
 
@@ -209,9 +209,9 @@ namespace QLNet
             }
 
             Complex i = new I().value();
-            return 1.0 / Complex.Sqrt( 2 * M_PI * x ) *
+            return 1.0 / Complex.Sqrt( 2 * Const.M_PI * x ) *
                 ( new T().weight1LargeX( x ) * s1 +
-                 i * Complex.Exp( i * nu * M_PI ) * new T().weight2LargeX( x ) * s2 );
+                 i * Complex.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
          }
       }
 
