@@ -36,9 +36,9 @@ namespace QLNet
 
       #region Constructors
 
-      public YieldTermStructure()
-         : this(dc: null,jumps: null,jumpDates: null)
-      {}
+      //public YieldTermStructure()
+      //   : this(dc: null,jumps: null,jumpDates: null)
+      //{}
 
       public YieldTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(dc)

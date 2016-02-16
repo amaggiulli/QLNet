@@ -192,9 +192,9 @@ namespace QLNet
 			: base( settlementDays, calendar, dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS ) { }
 
 
-		public PiecewiseYoYInflationCurve()
-			: base()
-		{ }
+      public PiecewiseYoYInflationCurve()
+         : base()
+      { }
 	}
 
 

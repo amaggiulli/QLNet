@@ -23,11 +23,11 @@ namespace QLNet {
     /*! All copies of an instance of this class refer to the same observable by means of a relinkable smart pointer. When such
         pointer is relinked to another observable, the change will be propagated to all the copies.
         <tt>registerAsObserver</tt> is not needed since C# does automatic garbage collection */
-    public class Handle<T> where T : IObservable, new() {
+    public class Handle<T> where T : IObservable {
         protected Link link_;
 
-        public Handle() : this(new T()) { }
-        public Handle(T h) : this(h, true) { }
+        public Handle() : this(default (T)) { }
+        public Handle(T h = default (T)) : this(h, true) { }
         public Handle(T h, bool registerAsObserver) {
             link_ = new Link(h, registerAsObserver);
         }
@@ -81,8 +81,8 @@ namespace QLNet {
             }
 
             public void linkTo(T h, bool registerAsObserver) {
-                if (!h.Equals(h_) || (isObserver_ != registerAsObserver)) {
-
+               if ( h != null && ( !h.Equals( h_ ) || ( isObserver_ != registerAsObserver ) ) )
+               {
                     if (h_ != null && isObserver_) {
                         h_.unregisterWith(update);
                     }
@@ -120,9 +120,9 @@ namespace QLNet {
     //! Relinkable handle to an observable
     /*! An instance of this class can be relinked so that it points to another observable. The change will be propagated to all
         handles that were created as copies of such instance. */
-    public class RelinkableHandle<T> : Handle<T>  where T : IObservable, new() {
-        public RelinkableHandle() : base(new T(), true) { }
-        public RelinkableHandle(T h) : base(h, true) { }
+    public class RelinkableHandle<T> : Handle<T>  where T : IObservable {
+        public RelinkableHandle() : base(default (T), true) { }
+        public RelinkableHandle(T h = default(T)) : base(h, true) { }
         public RelinkableHandle(T h, bool registerAsObserver) : base(h, registerAsObserver) { }
         public void linkTo(T h) { linkTo(h, true); }
         public void linkTo(T h, bool registerAsObserver) {

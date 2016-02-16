@@ -166,7 +166,9 @@ namespace QLNet
                                      double baseZeroRate,
                                      Handle<YieldTermStructure> yTS,
                                      Interpolator interpolator = default(Interpolator))
+         : base( referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS )
       {
+         interpolator_ = interpolator ?? new Interpolator();
       }
 
    }

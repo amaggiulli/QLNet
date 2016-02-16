@@ -31,8 +31,8 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      public SwaptionVolatilityStructure()
-         : base(BusinessDayConvention.Following, null) { }
+      //public SwaptionVolatilityStructure()
+      //   : base(BusinessDayConvention.Following, null) { }
 
       public SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(bdc, dc) {}

@@ -33,11 +33,11 @@ namespace QLNet
          See the TermStructure documentation for issues regarding
          constructors.
       */
-      public CallableBondVolatilityStructure()
-         : base(new DayCounter())
-      {
-         bdc_ = BusinessDayConvention.Following;
-      }
+      //public CallableBondVolatilityStructure()
+      //   : base(new DayCounter())
+      //{
+      //   bdc_ = BusinessDayConvention.Following;
+      //}
       //@{
       //! default constructor
       /*! \warning term structures initialized by means of this
