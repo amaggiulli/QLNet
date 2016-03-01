@@ -12,9 +12,9 @@ QLNet contains also new developments on the bond market like MBS , Amortized Cos
 [![Stars](https://img.shields.io/github/stars/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/stargazers)
 [![Coverity](https://scan.coverity.com/projects/7000/badge.svg)](https://scan.coverity.com/projects/amaggiulli-qlnet)
 
-Git Flow
-=====
-QLNet use git flow workflow.
+## Developments workflow 
+
+###### QLNet use git flow workflow.
 
 Instead of a single master branch, this workflow uses two branches to record the history of the project. 
 The master branch stores the official release history, and the develop branch serves as an integration branch for features.
