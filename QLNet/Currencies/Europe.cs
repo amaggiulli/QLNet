@@ -163,7 +163,6 @@ namespace QLNet
     /// Norwegian krone
     /// The ISO three-letter code is NOK; the numeric code is 578.
     /// It is divided in 100 шre.
-    /// </summary>
     public class NOKCurrency : Currency
     {
         public NOKCurrency() : base("Norwegian krone", "NOK", 578, "NKr", "", 100, new Rounding(), "%3% %1$.2f") { }
@@ -172,7 +171,6 @@ namespace QLNet
     /// Polish zloty
     /// The ISO three-letter code is PLN; the numeric code is 985.
     /// It is divided in 100 groszy.
-    /// </summary>
     public class PLNCurrency : Currency
     {
         public PLNCurrency() : base("Polish zloty", "PLN", 985, "zl", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -181,7 +179,6 @@ namespace QLNet
     /// Romanian leu
     /// The ISO three-letter code was ROL; the numeric code was 642.
     /// It was divided in 100 bani.
-    /// </summary>
     public class ROLCurrency : Currency
     {
         public ROLCurrency() : base("Romanian leu", "ROL", 642, "L", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -190,7 +187,6 @@ namespace QLNet
     /// Romanian new leu
     /// The ISO three-letter code is RON; the numeric code is 946.
     /// It is divided in 100 bani.
-    /// </summary>
     public class RONCurrency : Currency
     {
         public RONCurrency() : base("Romanian new leu", "RON", 946, "L", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -210,7 +206,6 @@ namespace QLNet
     /// Swedish krona
     /// The ISO three-letter code is SEK; the numeric code is 752.
     /// It is divided in 100 цre.
-    /// </summary>
     public class SEKCurrency : Currency
     {
         public SEKCurrency() : base("Swedish krona", "SEK", 752, "kr", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -219,7 +214,6 @@ namespace QLNet
     /// Slovenian tolar
     /// The ISO three-letter code is SIT; the numeric code is 705.
     /// It is divided in 100 stotinov.
-    /// </summary>
     public class SITCurrency : Currency
     {
         public SITCurrency() : base("Slovenian tolar", "SIT", 705, "SlT", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -228,7 +222,6 @@ namespace QLNet
     /// Slovak koruna
     /// The ISO three-letter code is SKK; the numeric code is 703.
     /// It is divided in 100 halierov.
-    /// </summary>
     public class SKKCurrency : Currency
     {
         public SKKCurrency() : base("Slovak koruna", "SKK", 703, "Sk", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -238,7 +231,6 @@ namespace QLNet
     /// The ISO three-letter code was TRL; the numeric code was 792.
     /// It was divided in 100 kurus.
     /// Obsoleted by the new Turkish lira since 2005.
-    /// </summary>
     public class TRLCurrency : Currency
     {
         public TRLCurrency() : base("Turkish lira", "TRL", 792, "TL", "", 100, new Rounding(), "%1$.0f %3%") { }
@@ -247,7 +239,6 @@ namespace QLNet
     /// New Turkish lira
     /// The ISO three-letter code is TRY; the numeric code is 949.
     ///  It is divided in 100 new kurus.
-    /// </summary>
     public class TRYCurrency : Currency
     {
         public TRYCurrency() : base("New Turkish lira", "TRY", 949, "YTL", "", 100, new Rounding(), "%1$.2f %3%") { }
@@ -259,7 +250,6 @@ namespace QLNet
     /// The ISO three-letter code was ATS; the numeric code was 40.
     /// It was divided in 100 groschen.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class ATSCurrency : Currency
     {
         public ATSCurrency() : base("Austrian shilling", "ATS", 40, "", "", 100, new Rounding(), "%2% %1$.2f", new EURCurrency()) { }
@@ -269,7 +259,6 @@ namespace QLNet
     /// The ISO three-letter code was BEF; the numeric code was 56.
     /// It had no subdivisions.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class BEFCurrency : Currency
     {
         public BEFCurrency() : base("Belgian franc", "BEF", 56, "", "", 1, new Rounding(), "%2% %1$.0f", new EURCurrency()) { }
@@ -279,7 +268,6 @@ namespace QLNet
     /// The ISO three-letter code was DEM; the numeric code was 276.
     /// It was divided into 100 pfennig.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class DEMCurrency : Currency
     {
         public DEMCurrency() : base("Deutsche mark", "DEM", 276, "DM", "", 100, new Rounding(), "%1$.2f %3%", new EURCurrency()) { }
@@ -289,7 +277,6 @@ namespace QLNet
     /// The ISO three-letter code was ESP; the numeric code was 724.
     /// It was divided in 100 centimos.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class ESPCurrency : Currency
     {
         public ESPCurrency() : base("Spanish peseta", "ESP", 724, "Pta", "", 100, new Rounding(), "%1$.0f %3%", new EURCurrency()) { }
@@ -299,7 +286,6 @@ namespace QLNet
     /// The ISO three-letter code was FIM; the numeric code was 246.
     /// It was divided in 100 penniд.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class FIMCurrency : Currency
     {
         public FIMCurrency() : base("Finnish markka", "FIM", 246, "mk", "", 100, new Rounding(), "%1$.2f %3%", new EURCurrency()) { }
@@ -309,7 +295,6 @@ namespace QLNet
     /// The ISO three-letter code was FRF; the numeric code was 250.
     /// It was divided in 100 centimes.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class FRFCurrency : Currency
     {
         public FRFCurrency() : base("French franc", "FRF", 250, "", "", 100, new Rounding(), "%1$.2f %2%", new EURCurrency()) { }
@@ -319,7 +304,6 @@ namespace QLNet
     /// The ISO three-letter code was GRD; the numeric code was 300.
     /// It was divided in 100 lepta.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class GRDCurrency : Currency
     {
         public GRDCurrency() : base("Greek drachma", "GRD", 300, "", "", 100, new Rounding(), "%1$.2f %2%", new EURCurrency()) { }
@@ -329,7 +313,6 @@ namespace QLNet
     /// The ISO three-letter code was IEP; the numeric code was 372.
     /// It was divided in 100 pence.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class IEPCurrency : Currency
     {
         public IEPCurrency() : base("Irish punt", "IEP", 372, "", "", 100, new Rounding(), "%2% %1$.2f", new EURCurrency()) { }
@@ -339,7 +322,6 @@ namespace QLNet
     /// The ISO three-letter code was ITL; the numeric code was 380.
     /// It had no subdivisions.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class ITLCurrency : Currency
     {
         public ITLCurrency() : base("Italian lira", "ITL", 380, "L", "", 1, new Rounding(), "%3% %1$.0f", new EURCurrency()) { }
@@ -349,7 +331,6 @@ namespace QLNet
     /// The ISO three-letter code was LUF; the numeric code was 442.
     /// It was divided in 100 centimes.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class LUFCurrency : Currency
     {
         public LUFCurrency() : base("Luxembourg franc", "LUF", 442, "F", "", 100, new Rounding(), "%1$.0f %3%", new EURCurrency()) { }
@@ -359,7 +340,6 @@ namespace QLNet
     /// The ISO three-letter code was NLG; the numeric code was 528.
     /// It was divided in 100 cents.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class NLGCurrency : Currency
     {
         public NLGCurrency() : base("Dutch guilder", "NLG", 528, "f", "", 100, new Rounding(), "%3% %1$.2f", new EURCurrency()) { }
@@ -369,7 +349,6 @@ namespace QLNet
     /// The ISO three-letter code was PTE; the numeric code was 620.
     /// It was divided in 100 centavos.
     /// Obsoleted by the Euro since 1999.
-    /// </summary>
     public class PTECurrency : Currency
     {
         public PTECurrency() : base("Portuguese escudo", "PTE", 620, "Esc", "", 100, new Rounding(), "%1$.0f %3%", new EURCurrency()) { }
