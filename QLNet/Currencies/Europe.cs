@@ -196,6 +196,17 @@ namespace QLNet
         public RONCurrency() : base("Romanian new leu", "RON", 946, "L", "", 100, new Rounding(), "%1$.2f %3%") { }
     }
 
+    //! Russian ruble
+    /*! The ISO three-letter code is RUB; the numeric code is 643.
+        It is divided in 100 kopeyki.
+
+        \ingroup currencies
+    */
+    public class RUBCurrency : Currency 
+    {
+       public RUBCurrency():base("Russian ruble","RUB", 643,"", "", 100,new Rounding(),"%1$.2f %2%") { }
+    }
+
     /// Swedish krona
     /// The ISO three-letter code is SEK; the numeric code is 752.
     /// It is divided in 100 цre.
