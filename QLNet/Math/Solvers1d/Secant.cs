@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -49,8 +50,8 @@ namespace QLNet {
                 fl = froot;
                 root_ += dx;
                 froot = f.value(root_);
-                evaluationNumber_++;
-                if (Math.Abs(dx) < xAccuracy || froot == 0.0)
+                ++evaluationNumber_;
+                if (Math.Abs(dx) < xAccuracy || Utils.close(froot , 0.0))
                     return root_;
             }
 

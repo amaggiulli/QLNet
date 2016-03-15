@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -52,14 +53,14 @@ namespace QLNet {
                 // Convergence check
                 xAcc1 = 2.0 * Const.QL_EPSILON * Math.Abs(root_) + 0.5 * xAccuracy;
                 xMid = (xMax_ - root_) / 2.0;
-                if (Math.Abs(xMid) <= xAcc1 || froot == 0.0)
+                if (Math.Abs(xMid) <= xAcc1 || Utils.close(froot , 0.0))
                     return root_;
                 if (Math.Abs(e) >= xAcc1 &&
                     Math.Abs(fxMin_) > Math.Abs(froot)) {
 
                     // Attempt inverse quadratic interpolation
                     s = froot / fxMin_;
-                    if (xMin_ == xMax_) {
+                    if (Utils.close(xMin_, xMax_)) {
                         p = 2.0 * xMid * s;
                         q = 1.0 - s;
                     } else {

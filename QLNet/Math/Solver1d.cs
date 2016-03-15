@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -67,7 +68,7 @@ namespace QLNet {
             fxMax_ = f.value(root_);
 
             // monotonically crescent bias, as in optionValue(volatility)
-            if (fxMax_ == 0.0)
+            if (Utils.close(fxMax_,0.0))
                 return root_;
             else if (fxMax_ > 0.0) {
                 xMin_ = enforceBounds_(root_ - step);
@@ -83,8 +84,8 @@ namespace QLNet {
             evaluationNumber_ = 2;
             while (evaluationNumber_ <= maxEvaluations_) {
                 if (fxMin_ * fxMax_ <= 0.0) {
-                    if (fxMin_ == 0.0) return xMin_;
-                    if (fxMax_ == 0.0) return xMax_;
+                    if (Utils.close(fxMin_ , 0.0)) return xMin_;
+                    if (Utils.close(fxMax_ , 0.0)) return xMax_;
                     root_ = (xMax_ + xMin_) / 2.0;
                     return solveImpl(f, accuracy);
                 }
@@ -139,10 +140,10 @@ namespace QLNet {
                 throw new ArgumentException("xMax_ (" + xMax_ + ") > enforced hi bound (" + upperBound_ + ")");
 
             fxMin_ = f.value(xMin_);
-            if (fxMin_ == 0.0) return xMin_;
+            if (Utils.close(fxMin_ , 0.0)) return xMin_;
 
             fxMax_ = f.value(xMax_);
-            if (fxMax_ == 0.0) return xMax_;
+            if (Utils.close(fxMax_ , 0.0)) return xMax_;
 
             evaluationNumber_ = 2;
 

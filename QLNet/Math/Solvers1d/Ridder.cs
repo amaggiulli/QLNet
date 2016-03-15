@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -43,9 +44,9 @@ namespace QLNet {
                 xMid = 0.5*(xMin_ + xMax_);
                 // First of two function evaluations per iteraton
                 fxMid = f.value(xMid);
-                evaluationNumber_++;
+                ++evaluationNumber_;
                 s = Math.Sqrt(fxMid*fxMid - fxMin_*fxMax_);
-                if (s == 0.0)
+                if (Utils.close(s , 0.0))
                     return root_;
                 // Updating formula
                 nextRoot = xMid + (xMid - xMin_) *
@@ -56,8 +57,8 @@ namespace QLNet {
                 root_ = nextRoot;
                 // Second of two function evaluations per iteration
                 froot = f.value(root_);
-                evaluationNumber_++;
-                if (froot == 0.0)
+                ++evaluationNumber_;
+                if (Utils.close(froot , 0.0))
                     return root_;
 
                 // Bookkeeping to keep the root bracketed on next iteration

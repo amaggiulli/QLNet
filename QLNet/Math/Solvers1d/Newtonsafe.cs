@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -52,7 +53,7 @@ namespace QLNet {
             dfroot = f.derivative(root_);
             if (dfroot == default(double))
                 throw new ArgumentException("Newton requires function's derivative");
-            evaluationNumber_++;
+            ++evaluationNumber_;
 
             while (evaluationNumber_<=maxEvaluations_) {
                 // Bisect if (out of range || not decreasing fast enough)
