@@ -193,6 +193,7 @@
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\Loan.cs" />
     <Compile Include="Instruments\MakeBasisSwap.cs" />
+    <Compile Include="Instruments\MakeCapFloor.cs" />
     <Compile Include="Instruments\MakeLoans.cs" />
     <Compile Include="Instruments\MakeOIS.cs" />
     <Compile Include="Instruments\Makeswaption.cs" />
@@ -399,6 +400,7 @@
     <Compile Include="Pricingengines\Bond\Discountingbondengine.cs" />
     <Compile Include="Pricingengines\Bond\TreeCallableBondEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\analyticcapfloorengine.cs" />
+    <Compile Include="Pricingengines\CapFloor\BachelierCapFloorEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\BlackCapFloorEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\discretizedcapfloor.cs" />
     <Compile Include="Pricingengines\credit\IntegralCdsEngine.cs" />
@@ -477,10 +479,20 @@
     <Compile Include="Termstructures\TermStructure.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondConstantVolatility.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondVolatilityStructure.cs" />
+    <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />
+    <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolSurface.cs" />
     <Compile Include="Termstructures\Volatility\equityfx\BlackVarianceSurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\CPIVolatilitySurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\yoyinflationoptionletvolatilitystructure.cs" />
+    <Compile Include="Termstructures\Volatility\InterpolatedSmileSection.cs" />
     <Compile Include="Termstructures\Volatility\Optionlet\capletvariancecurve.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\OptionletStripper.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\OptionletStripper1.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\OptionletStripper2.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\SpreadedOptionletVolatility.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\StrippedOptionletAdapter.cs" />
+    <Compile Include="Termstructures\Volatility\Optionlet\StrippedOptionletBase.cs" />
+    <Compile Include="Termstructures\Volatility\SpreadedSmileSection.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionconstantvol.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionvoldiscrete.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionvolmatrix.cs" />

@@ -226,8 +226,8 @@ namespace TestSuite
          SimpleQuote vol2 = new SimpleQuote(0.0);
          BlackVolTermStructure volTS2 = Utilities.flatVol(today, vol2, dc);
 
-         double mcRelativeErrorTolerance = 0.01;
-         double fdRelativeErrorTolerance = 0.01;
+         //double mcRelativeErrorTolerance = 0.01;
+         //double fdRelativeErrorTolerance = 0.01;
 
          for (int i=0; i<values.Length; i++) 
          {
