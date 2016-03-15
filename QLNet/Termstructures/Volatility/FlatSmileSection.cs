@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -21,10 +22,10 @@ namespace QLNet {
     public class FlatSmileSection : SmileSection {
         private double vol_;
         private double? atmLevel_;
-        public override double atmLevel() 
+        public override double? atmLevel() 
         {
            Utils.QL_REQUIRE( atmLevel_.HasValue, () => "FlatSmileSection.atmLevel is null" );
-           return atmLevel_.Value; 
+           return atmLevel_;
         }
 
         public FlatSmileSection(Date d, double vol, DayCounter dc, Date referenceDate = null, double? atmLevel = null)
