@@ -51,6 +51,17 @@ namespace QLNet
       public HKDCurrency() : base( "Hong Kong dollar", "HKD", 344, "HK$", "", 100, new Rounding(), "%3% %1$.2f" ) { }
    }
 
+   //! Indonesian Rupiah
+    /*! The ISO three-letter code is IDR; the numeric code is 360.
+        It is divided in 100 sen.
+
+        \ingroup currencies
+   */
+   public class IDRCurrency : Currency 
+   {
+      public IDRCurrency():base("Indonesian Rupiah", "IDR", 360,"Rp", "", 100,new Rounding(),"%3% %1$.2f") { }
+   }
+
    //! Israeli shekel
    /*! The ISO three-letter code is ILS; the numeric code is 376.
       It is divided in 100 agorot.
@@ -129,6 +140,17 @@ namespace QLNet
       public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414,"KD", "", 1000,new Rounding(),"%3% %1$.3f"){}
    }
 
+   //! Malaysian Ringgit
+    /*! The ISO three-letter code is MYR; the numeric code is 458.
+        It is divided in 100 sen.
+
+        \ingroup currencies
+   */
+   public class MYRCurrency : Currency 
+   {
+      public MYRCurrency() : base("Malaysian Ringgit","MYR", 458,"RM", "", 100,new Rounding(),"%3% %1$.2f"){}
+   }
+
    //! Nepal rupee
    /*! The ISO three-letter code is NPR; the numeric code is 524.
       It is divided in 100 paise.
@@ -193,5 +215,16 @@ namespace QLNet
    public class TWDCurrency : Currency 
    {
       public TWDCurrency() : base( "Taiwan dollar", "TWD", 901, "NT$", "", 100, new Rounding(), "%3% %1$.2f" ) { }
+   }
+
+   //! Vietnamese Dong
+   /*! The ISO three-letter code is VND; the numeric code is 704.
+       It was divided in 100 xu.
+
+       \ingroup currencies
+   */
+   public class VNDCurrency : Currency 
+   {
+      public VNDCurrency() : base("Vietnamese Dong", "VND", 704,"", "", 100,new Rounding(),"%1$.0f %3%") {}
    }
 }
