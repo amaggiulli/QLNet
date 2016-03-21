@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -16,165 +17,224 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
+namespace QLNet
+{
+   //! Analytic formula for American exercise payoff at-expiry options
+   //! \todo calculate greeks 
+   public class AmericanPayoffAtExpiry
+   {
+      public AmericanPayoffAtExpiry( double spot, double discount, double dividendDiscount, double variance,
+                                     StrikedTypePayoff payoff, bool knock_in = true )
+      {
+         spot_ = spot;
+         discount_ = discount;
+         dividendDiscount_ = dividendDiscount;
+         variance_ = variance;
+         knock_in_ = knock_in;
 
-    //! Analytic formula for American exercise payoff at-expiry options
-    //! \todo calculate greeks 
-    public class AmericanPayoffAtExpiry {
-        private double spot_;
-        private double discount_;
-        private double dividendDiscount_;
-        private double variance_;
+         Utils.QL_REQUIRE( spot_ > 0.0,()=> "positive spot value required" );
+         Utils.QL_REQUIRE( discount_ > 0.0, () => "positive discount required" );
+         Utils.QL_REQUIRE( dividendDiscount_ > 0.0, () => "positive dividend discount required" );
+         Utils.QL_REQUIRE( variance_ >= 0.0, () => "negative variance not allowed" );
 
-        private double forward_;
-        private double stdDev_;
+         stdDev_ = Math.Sqrt( variance_ );
+         Option.Type type = payoff.optionType();
+         strike_ = payoff.strike();
+         forward_ = spot_ * dividendDiscount_ / discount_;
 
-        private double strike_;
-        private double K_;
-        //private double DKDstrike_;
+         mu_ = Math.Log( dividendDiscount_ / discount_ ) / variance_ - 0.5;
 
-        private double mu_;
-        private double log_H_S_;
+         // binary cash-or-nothing payoff?
+         CashOrNothingPayoff coo = payoff as CashOrNothingPayoff;
+         if ( coo != null )
+         {
+            K_ = coo.cashPayoff();
+         }
 
-        private double D1_;
-        private double D2_;
-
-        private double alpha_;
-        private double beta_;
-        private double DalphaDd1_;
-        private double DbetaDd2_;
-
-        private bool inTheMoney_;
-        private double Y_;
-        //private double DYDstrike_;
-        private double X_;
-        //private double DXDstrike_;
-
-        public AmericanPayoffAtExpiry(double spot, double discount, double dividendDiscount, double variance, StrikedTypePayoff payoff) {
-            spot_ = spot;
-            discount_ = discount;
-            dividendDiscount_ = dividendDiscount;
-            variance_ = variance;
-
-            if (!(spot_ > 0.0))
-                throw new ApplicationException("positive spot_ value required");
-
-            forward_ = spot_ * dividendDiscount_ / discount_;
-
-            if (!(discount_ > 0.0))
-                throw new ApplicationException("positive discount required");
-
-            if (!(dividendDiscount_ > 0.0))
-                throw new ApplicationException("positive dividend discount_ required");
-
-            if (!(variance_ >= 0.0))
-                throw new ApplicationException("negative variance_ not allowed");
-
-            stdDev_ = Math.Sqrt(variance_);
-
-            Option.Type type = payoff.optionType();
-            strike_ = payoff.strike();
+         // binary asset-or-nothing payoff?
+         AssetOrNothingPayoff aoo = payoff as AssetOrNothingPayoff;
+         if ( aoo != null )
+         {
+            K_ = forward_;
+            mu_ += 1.0;
+         }
 
 
-            mu_ = Math.Log(dividendDiscount_ / discount_) / variance_ - 0.5;
+         log_H_S_ = Math.Log( strike_ / spot_ );
+         double log_S_H_ = Math.Log(spot_/strike_);
 
-            // binary cash-or-nothing payoff?
-            CashOrNothingPayoff coo = payoff as CashOrNothingPayoff;
-            if (coo != null) {
-                K_ = coo.cashPayoff();
-                //DKDstrike_ = 0.0;
-            }
-
-            // binary asset-or-nothing payoff?
-            AssetOrNothingPayoff aoo = payoff as AssetOrNothingPayoff;
-            if (aoo != null) {
-                K_ = forward_;
-                //DKDstrike_ = 0.0;
-                mu_ += 1.0;
-            }
-
-
-            log_H_S_ = Math.Log(strike_ / spot_);
-
-            double n_d1;
-            double n_d2;
-            double cum_d1_;
-            double cum_d2_;
-            if (variance_ >= Const.QL_EPSILON) {
-                D1_ = log_H_S_ / stdDev_ + mu_ * stdDev_;
-                D2_ = D1_ - 2.0 * mu_ * stdDev_;
-                CumulativeNormalDistribution f = new CumulativeNormalDistribution();
-                cum_d1_ = f.value(D1_);
-                cum_d2_ = f.value(D2_);
-                n_d1 = f.derivative(D1_);
-                n_d2 = f.derivative(D2_);
-            } else {
-                if (log_H_S_ > 0) {
-                    cum_d1_ = 1.0;
-                    cum_d2_ = 1.0;
-                } else {
-                    cum_d1_ = 0.0;
-                    cum_d2_ = 0.0;
-                }
-                n_d1 = 0.0;
-                n_d2 = 0.0;
-            }
-
-
-            switch (type) {
-                // up-and-in cash-(at-hit)-or-nothing option
-                // a.k.a. american call with cash-or-nothing payoff
-                case Option.Type.Call:
-                    if (strike_ > spot_) {
-                        alpha_ = 1.0 - cum_d2_; // N(-d2)
-                        DalphaDd1_ = -n_d2; // -n( d2)
-                        beta_ = 1.0 - cum_d1_; // N(-d1)
-                        DbetaDd2_ = -n_d1; // -n( d1)
-                    } else {
-                        alpha_ = 0.5;
-                        DalphaDd1_ = 0.0;
-                        beta_ = 0.5;
-                        DbetaDd2_ = 0.0;
-                    }
-                    break;
-                // down-and-in cash-(at-hit)-or-nothing option
-                // a.k.a. american put with cash-or-nothing payoff
-                case Option.Type.Put:
-                    if (strike_ < spot_) {
-                        alpha_ = cum_d2_; // N(d2)
-                        DalphaDd1_ = n_d2; // n(d2)
-                        beta_ = cum_d1_; // N(d1)
-                        DbetaDd2_ = n_d1; // n(d1)
-                    } else {
-                        alpha_ = 0.5;
-                        DalphaDd1_ = 0.0;
-                        beta_ = 0.5;
-                        DbetaDd2_ = 0.0;
-                    }
-                    break;
-                default:
-                    throw new ApplicationException("invalid option type");
-            }
+         double eta = 0.0;
+         double phi = 0.0;
+                 
+         switch (type) 
+         {
+            case Option.Type.Call:
+               if (knock_in_) 
+               {
+                  // up-and-in cash-(at-expiry)-or-nothing option
+                  // a.k.a. american call with cash-or-nothing payoff
+                  eta = -1.0;
+                  phi =  1.0;
+               } 
+               else 
+               {
+                  // up-and-out cash-(at-expiry)-or-nothing option
+				      eta = -1.0;
+				      phi = -1.0;
+               }
+               break;
+            case Option.Type.Put:
+               if (knock_in_) 
+               {
+                  // down-and-in cash-(at-expiry)-or-nothing option
+                  // a.k.a. american put with cash-or-nothing payoff
+                  eta =  1.0;
+                  phi = -1.0;
+               } 
+               else 
+               {
+                  // down-and-out cash-(at-expiry)-or-nothing option
+				      eta =  1.0;
+				      phi =  1.0;
+               }
+               break;
+            default:
+               Utils.QL_FAIL("invalid option type");
+               break;
+         }
 
 
-            inTheMoney_ = (type == Option.Type.Call && strike_ < spot_) || (type == Option.Type.Put && strike_ > spot_);
-            if (inTheMoney_) {
-                Y_ = 1.0;
-                X_ = 1.0;
-                //DYDstrike_ = 0.0;
-                //DXDstrike_ = 0.0;
-            } else {
-                Y_ = 1.0;
-                X_ = Math.Pow((double)(strike_ / spot_), (double)(2.0 * mu_));
-                //            DXDstrike_ = ......;
-            }
+         if ( variance_ >= Const.QL_EPSILON )
+         {
+            D1_ = phi * ( log_S_H_ / stdDev_ + mu_ * stdDev_ );
+            D2_ = eta * ( log_H_S_ / stdDev_ + mu_ * stdDev_ );
+            CumulativeNormalDistribution f = new CumulativeNormalDistribution();
+            cum_d1_ = f.value( D1_ );
+            cum_d2_ = f.value( D2_ );
+            n_d1_ = f.derivative( D1_ );
+            n_d2_ = f.derivative( D2_ );
+         }
+         else
+         {
+            if ( log_S_H_ * phi > 0 )
+               cum_d1_ = 1.0;
+            else
+               cum_d1_ = 0.0;
 
-        }
+            if ( log_H_S_ * eta > 0 )
+               cum_d2_ = 1.0;
+            else
+               cum_d2_ = 0.0;
 
-        public double value() {
-            return discount_ * K_ * (Y_ * alpha_ + X_ * beta_);
-        }
-    }
+            n_d1_ = 0.0;
+            n_d2_ = 0.0;
+         }
+        
+         switch (type) 
+         {
+            case Option.Type.Call:
+               if (strike_<=spot_) 
+               {
+                  if (knock_in_) 
+                  {
+                     // up-and-in cash-(at-expiry)-or-nothing option
+                     // a.k.a. american call with cash-or-nothing payoff
+                     cum_d1_     = 0.5;
+                     cum_d2_     = 0.5;
+                  } 
+                  else 
+                  {
+                     // up-and-out cash-(at-expiry)-or-nothing option
+                     // already knocked out
+                     cum_d1_     = 0.0;
+                     cum_d2_     = 0.0;
+                  }
+                  n_d1_       = 0.0;
+                  n_d2_       = 0.0;
+               }
+               break;
+            case Option.Type.Put:
+   				if (strike_>=spot_) 
+               {
+                  if (knock_in_) 
+                  {
+					      // down-and-in cash-(at-expiry)-or-nothing option
+					      // a.k.a. american put with cash-or-nothing payoff
+                     cum_d1_ = 0.5;
+                     cum_d2_ = 0.5;
+                  } 
+                  else 
+                  {
+					      // down-and-out cash-(at-expiry)-or-nothing option
+                     // already knocked out
+                     cum_d1_ = 0.0;
+                     cum_d2_ = 0.0;
+                  }
+                  n_d1_       = 0.0;
+                  n_d2_       = 0.0;
+               }
+               break;
+            default:
+               Utils.QL_FAIL("invalid option type");
+               break;
+         }
+
+
+         inTheMoney_ = ( type == Option.Type.Call && strike_ < spot_ ) || 
+                       ( type == Option.Type.Put && strike_ > spot_ );
+         if ( inTheMoney_ )
+         {
+            X_ = 1.0;
+            Y_ = 1.0;
+         }
+         else
+         {
+            X_ = 1.0;
+            if (cum_d2_ == 0.0)
+                Y_ = 0.0; // check needed on some extreme cases
+            else
+                Y_ = Math.Pow((strike_/spot_),(2.0*mu_));
+         }
+         if ( !knock_in_ )
+            Y_ *= -1.0; 
+      }
+
+      public double value()
+      {
+         return discount_ * K_ * ( X_ * cum_d1_ + Y_ * cum_d2_ );
+      }
+
+
+      private double spot_;
+      private double discount_;
+      private double dividendDiscount_;
+      private double variance_;
+
+      private double forward_;
+      private double stdDev_;
+
+      private double strike_;
+      private double K_;
+      //private double DKDstrike_;
+
+      private double mu_;
+      private double log_H_S_;
+
+      private double D1_;
+      private double D2_;
+
+      private double cum_d1_;
+      private double cum_d2_;
+      private double n_d1_;
+      private double n_d2_;
+
+      private bool inTheMoney_;
+      private double Y_;
+      private double X_;
+      bool knock_in_;
+
+   }
 }
