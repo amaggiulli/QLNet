@@ -44,6 +44,7 @@ namespace TestSuite {
         enum OptimizationMethodType {
             simplex,
             levenbergMarquardt,
+            levenbergMarquardt2,
             conjugateGradient,
             steepestDescent
         }
@@ -142,6 +143,7 @@ namespace TestSuite {
             OptimizationMethodType[] optimizationMethodTypes = {
                 OptimizationMethodType.simplex, 
                 OptimizationMethodType.levenbergMarquardt, 
+                OptimizationMethodType.levenbergMarquardt2, 
                 OptimizationMethodType.conjugateGradient/*, steepestDescent*/};
 
             double simplexLambda = 0.1;                   // characteristic search length for simplex
@@ -171,6 +173,8 @@ namespace TestSuite {
                     return new Simplex(simplexLambda);
                 case OptimizationMethodType.levenbergMarquardt:
                     return new LevenbergMarquardt(levenbergMarquardtEpsfcn, levenbergMarquardtXtol, levenbergMarquardtGtol);
+                case OptimizationMethodType.levenbergMarquardt2:
+                    return new LevenbergMarquardt( levenbergMarquardtEpsfcn, levenbergMarquardtXtol, levenbergMarquardtGtol,true );
                 case OptimizationMethodType.conjugateGradient:
                     return new ConjugateGradient();
                 case OptimizationMethodType.steepestDescent:
@@ -206,6 +210,8 @@ namespace TestSuite {
                     return "Simplex";
                 case OptimizationMethodType.levenbergMarquardt:
                     return "Levenberg Marquardt";
+                case OptimizationMethodType.levenbergMarquardt2:
+                    return "Levenberg Marquardt (cost function's jacbobian)";
                 case OptimizationMethodType.conjugateGradient:
                     return "Conjugate Gradient";
                 case OptimizationMethodType.steepestDescent:

@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -257,7 +258,7 @@ namespace QLNet {
         *
         *     subprograms called
         *
-        *   user-supplied ...... fcn
+        *   user-supplied ...... fcn, jacFcn
         *
         *   minpack-supplied ... dpmpar,enorm,fdjac2,lmpar,qrfac
         *
@@ -272,7 +273,8 @@ namespace QLNet {
                                  int nprint, ref int info, ref int nfev, ref Matrix fjac,
                                  int ldfjac, ref List<int> ipvt, ref Vector qtf,
                                  Vector wa1, Vector wa2, Vector wa3, Vector wa4,
-                                 Func<int, int, Vector, int, Vector> fcn) {
+                                 Func<int, int, Vector, int, Vector> fcn,
+                                 Func<int, int, Vector, int, Matrix> jacFcn ) {
 
             int i, iflag, ij, jj, iter, j, l;
             double actred, delta = 0, dirder, fnorm, fnorm1, gnorm;
@@ -330,7 +332,10 @@ namespace QLNet {
             *    calculate the jacobian matrix.
             */
             iflag = 2;
-            fdjac2(m, n, x, fvec, fjac, ldfjac, iflag, epsfcn, ref wa4, fcn);
+            if ( jacFcn != null ) // use user supplied jacobian calculation
+               jacFcn( m, n, x, iflag );
+            else
+               fdjac2( m, n, x, fvec, fjac, ldfjac, iflag, epsfcn, ref wa4, fcn );
             nfev += n;
             if (iflag < 0)
                 goto L300;

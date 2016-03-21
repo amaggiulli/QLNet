@@ -227,7 +227,7 @@
     <Compile Include="legacy\libormarketmodels\lmvolmodel.cs" />
     <Compile Include="Math\beta.cs" />
     <Compile Include="Math\Comparison.cs" />
-    <Compile Include="Math\CostFunction.cs" />
+    <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />
     <Compile Include="Math\Distributions\BivariateNormalDistribution.cs" />
     <Compile Include="Math\Distributions\chisquaredistribution.cs" />
