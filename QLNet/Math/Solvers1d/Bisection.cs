@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -17,9 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     public class Bisection : Solver1D {
@@ -49,7 +47,7 @@ namespace QLNet {
                 evaluationNumber_++;
                 if (fMid <= 0.0)
                     root_ = xMid;
-                if (Math.Abs(dx) < xAccuracy || fMid == 0.0) {
+                if (Math.Abs(dx) < xAccuracy || Utils.close(fMid , 0.0)) {
                     return root_;
                 }
             }

@@ -18,9 +18,7 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -44,7 +42,7 @@ namespace QLNet
 
       public override bool isValid()
       {
-        return index_.timeSeries().value().Count() > 0;
+        return index_.timeSeries().value().Count > 0;
       }
 
       public Date referenceDate()  

@@ -20,8 +20,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace QLNet {
     //! %Indonesian calendars
@@ -74,7 +72,7 @@ namespace QLNet {
                    calendar_ = BEJ.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

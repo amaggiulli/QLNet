@@ -19,9 +19,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace QLNet {
     // we need only one instance of the class
@@ -29,13 +26,13 @@ namespace QLNet {
     public static class Settings {
 
         [ThreadStatic]
-        private static Date evaluationDate_ = null;
+        private static Date evaluationDate_;
 
         [ThreadStatic]
-        private static bool includeReferenceDateEvents_ = false;
+        private static bool includeReferenceDateEvents_;
 
         [ThreadStatic]
-        private static bool enforcesTodaysHistoricFixings_ = false;
+        private static bool enforcesTodaysHistoricFixings_;
 
         [ThreadStatic]
         private static bool? includeTodaysCashFlows_;

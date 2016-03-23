@@ -1,7 +1,23 @@
-﻿using System;
+﻿/*
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
+  
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is  
+ available online at <http://qlnet.sourceforge.net/License.html>.
+  
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+ 
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -11,39 +27,37 @@ namespace QLNet
    /// </summary>
    public class BlackCapFloorEngine : CapFloorEngine
    {
-      private  Handle<YieldTermStructure> termStructure_;
-      private Handle<OptionletVolatilityStructure> volatility_;
+      private  Handle<YieldTermStructure> discountCurve_;
+      private Handle<OptionletVolatilityStructure> vol_;
+      private double displacement_;
 
-      public BlackCapFloorEngine(Handle<YieldTermStructure> termStructure, double vol)
-         : this(termStructure, vol, new Actual365Fixed()) { }
-      public BlackCapFloorEngine(Handle<YieldTermStructure> termStructure,
-                                 double vol, DayCounter dc )
+      public BlackCapFloorEngine( Handle<YieldTermStructure> discountCurve,double vol,
+                                  DayCounter dc =null,double displacement = 0.0)
       {
-         termStructure_ = termStructure;
-         volatility_ = new Handle<OptionletVolatilityStructure>(new ConstantOptionletVolatility(0, new NullCalendar(), BusinessDayConvention.Following, vol, dc));
-         termStructure_.registerWith(update );// registerWith(termStructure_);
+         discountCurve_ = discountCurve;
+         vol_ = new Handle<OptionletVolatilityStructure>(new ConstantOptionletVolatility(0, new NullCalendar(), BusinessDayConvention.Following, vol, dc??new Actual365Fixed()));
+         displacement_ = displacement;
+         discountCurve_.registerWith(update );// registerWith(termStructure_);
       }
-
-      public BlackCapFloorEngine(Handle<YieldTermStructure> termStructure, Handle<Quote> vol)
-         : this(termStructure, vol, new Actual365Fixed()) { }
-
-      public BlackCapFloorEngine(Handle<YieldTermStructure> termStructure,
-                                 Handle<Quote> vol, DayCounter dc)
+      public BlackCapFloorEngine( Handle<YieldTermStructure> discountCurve,Handle<Quote> vol,
+                                  DayCounter dc = null,double displacement = 0.0)
       {
-         termStructure_ = termStructure;
-         volatility_ = new Handle<OptionletVolatilityStructure> (new ConstantOptionletVolatility(
-                             0, new NullCalendar(), BusinessDayConvention.Following, vol, dc));
-         termStructure_.registerWith(update);
-         volatility_.registerWith(update);
+         discountCurve_ = discountCurve;
+         vol_ = new Handle<OptionletVolatilityStructure>( new ConstantOptionletVolatility(
+                              0, new NullCalendar(), BusinessDayConvention.Following, vol, dc ?? new Actual365Fixed() ) );
+         displacement_ = displacement;
+         discountCurve_.registerWith( update );
+         vol_.registerWith( update );
+  
       }
-
-      public BlackCapFloorEngine(Handle<YieldTermStructure> discountCurve,
-                                 Handle<OptionletVolatilityStructure> vol)
+      public BlackCapFloorEngine( Handle<YieldTermStructure> discountCurve,Handle<OptionletVolatilityStructure> vol,
+                                  double displacement = 0.0)
       {
-         termStructure_ = discountCurve;
-         volatility_ = vol;
-         termStructure_.registerWith(update);
-         volatility_.registerWith(update);
+         discountCurve_ = discountCurve;
+         vol_ = vol;
+         displacement_ = displacement;
+         discountCurve_.registerWith( update );
+         vol_.registerWith( update );
       }
 
       public override void calculate() 
@@ -55,8 +69,8 @@ namespace QLNet
          List<double> vegas = new InitializedList<double>(optionlets);
          List<double> stdDevs = new InitializedList<double>(optionlets);
          CapFloorType type = arguments_.type;
-         Date today = volatility_.link.referenceDate();
-         Date settlement = termStructure_.link.referenceDate();
+         Date today = vol_.link.referenceDate();
+         Date settlement = discountCurve_.link.referenceDate();
 
          for (int i=0; i<optionlets; ++i) 
          {
@@ -66,7 +80,7 @@ namespace QLNet
                // discard expired caplets
                double d = arguments_.nominals[i] *
                           arguments_.gearings[i] *
-                          termStructure_.link.discount(paymentDate) *
+                          discountCurve_.link.discount(paymentDate) *
                           arguments_.accrualTimes[i];
 
                double? forward = arguments_.forwards[i];
@@ -74,32 +88,32 @@ namespace QLNet
                Date fixingDate = arguments_.fixingDates[i];
                double sqrtTime = 0.0;
                if (fixingDate > today)
-                  sqrtTime = Math.Sqrt( volatility_.link.timeFromReference(fixingDate));
+                  sqrtTime = Math.Sqrt( vol_.link.timeFromReference( fixingDate ) );
 
                if (type == CapFloorType.Cap || type == CapFloorType.Collar) 
                {
                   double? strike = arguments_.capRates[i];
                   if (sqrtTime>0.0) 
                   {
-                     stdDevs[i] = Math.Sqrt(volatility_.link.blackVariance(fixingDate, strike.Value));
-                     vegas[i] = Utils.blackFormulaStdDevDerivative(strike.Value, forward.Value, stdDevs[i], d) * sqrtTime;
+                     stdDevs[i] = Math.Sqrt( vol_.link.blackVariance( fixingDate, strike.Value ) );
+                     vegas[i] = Utils.blackFormulaStdDevDerivative( strike.Value, forward.Value, stdDevs[i], d, displacement_ ) * sqrtTime;
                   }
                   // include caplets with past fixing date
                   values[i] = Utils.blackFormula(Option.Type.Call, strike.Value,
-                                             forward.Value, stdDevs[i], d);
+                                             forward.Value, stdDevs[i], d, displacement_ );
                }
-                if (type == CapFloorType.Floor || type == CapFloorType.Collar) 
-                {
+               if (type == CapFloorType.Floor || type == CapFloorType.Collar)
+               {
                   double? strike = arguments_.floorRates[i];
                   double floorletVega = 0.0;
                     
                   if (sqrtTime>0.0) 
                   {
-                     stdDevs[i] = Math.Sqrt(volatility_.link.blackVariance(fixingDate, strike.Value));
-                     floorletVega = Utils.blackFormulaStdDevDerivative(strike.Value, forward.Value, stdDevs[i], d) * sqrtTime;
+                     stdDevs[i] = Math.Sqrt( vol_.link.blackVariance( fixingDate, strike.Value ) );
+                     floorletVega = Utils.blackFormulaStdDevDerivative( strike.Value, forward.Value, stdDevs[i], d, displacement_ ) * sqrtTime;
                   }
                   double floorlet = Utils.blackFormula(Option.Type.Put, strike.Value,
-                                                 forward.Value, stdDevs[i], d);
+                                                 forward.Value, stdDevs[i], d, displacement_ );
                   if (type == CapFloorType.Floor) 
                   {
                      values[i] = floorlet;
@@ -125,5 +139,9 @@ namespace QLNet
         if (type != CapFloorType.Collar)
             results_.additionalResults["optionletsStdDev"] = stdDevs;
     }
+
+      public Handle<YieldTermStructure> termStructure() { return discountCurve_; }
+      public Handle<OptionletVolatilityStructure> volatility() { return vol_; }
+      public double displacement() { return displacement_; }
    }
 }

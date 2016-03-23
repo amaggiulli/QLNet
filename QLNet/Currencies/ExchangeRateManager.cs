@@ -21,8 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace QLNet
 {
@@ -33,7 +31,7 @@ namespace QLNet
    public class ExchangeRateManager 
    {
       [ThreadStatic]
-      private static ExchangeRateManager instance_ = null;
+      private static ExchangeRateManager instance_;
       public static ExchangeRateManager Instance
       {
           get
@@ -239,7 +237,7 @@ namespace QLNet
                 {
                     // ...and which carries information for the requested date.
                     ExchangeRate head = fetch(source,other,date);
-                    if (((Nullable<double>)head.rate).HasValue)
+                    if (((double?)head.rate).HasValue)
                     {
                         // if we can get to the target from here...
                         try
@@ -251,7 +249,6 @@ namespace QLNet
                         catch (Exception)
                         {
                             // otherwise, we just discard this rate.
-                            ;
                         }
                     }
                 }

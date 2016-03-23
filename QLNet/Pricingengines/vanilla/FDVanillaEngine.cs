@@ -19,8 +19,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Finite-differences pricing engine for BSM one asset options
@@ -32,7 +30,6 @@ namespace QLNet {
         protected GeneralizedBlackScholesProcess process_;
         protected int timeSteps_, gridPoints_;
         protected bool timeDependent_;
-        protected double requiredGridValue_;
         protected Date exerciseDate_;
         protected Payoff payoff_;
         protected TridiagonalOperator finiteDifferenceOperator_;
@@ -77,6 +74,7 @@ namespace QLNet {
 
         protected void setGridLimits(double center, double t) {
             if (!(center > 0.0)) throw new ApplicationException("negative or null underlying given");
+            Utils.QL_REQUIRE( t > 0.0,()=> "negative or zero residual time" );
             center_ = center;
             int newGridPoints = safeGridPoints(gridPoints_, t);
             if (newGridPoints > intrinsicValues_.size()) {
@@ -148,7 +146,6 @@ namespace QLNet {
 
             exerciseDate_ = args.exercise.lastDate();
             payoff_ = args.payoff;
-            requiredGridValue_ = ((StrikedTypePayoff)payoff_).strike();
         }
         public virtual void calculate(IPricingEngineResults r) { throw new NotSupportedException(); }
     }

@@ -20,8 +20,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! 1-D array used in linear algebra.

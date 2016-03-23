@@ -16,10 +16,9 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -79,7 +78,7 @@ namespace QLNet
 			settlesAccrual_ =settlesAccrual;
 			paysAtDefaultTime_ = paysAtDefaultTime;
 			claim_ = claim;
-			protectionStart_ = protectionStart == null ? schedule[0] :  protectionStart;
+			protectionStart_ = protectionStart ?? schedule[0];
 
          Utils.QL_REQUIRE( protectionStart_ <= schedule[0], () => "protection can not start after accrual" );
 			leg_ = new FixedRateLeg(schedule)
@@ -135,7 +134,7 @@ namespace QLNet
 			settlesAccrual_ =settlesAccrual;
 			paysAtDefaultTime_ = paysAtDefaultTime;
 			claim_ = claim;
-			protectionStart_ = protectionStart == null ? schedule[0] :  protectionStart;
+			protectionStart_ = protectionStart ?? schedule[0];
 
          Utils.QL_REQUIRE( protectionStart_ <= schedule[0], () => "protection can not start after accrual" );
 			leg_ = new FixedRateLeg(schedule)
@@ -143,7 +142,7 @@ namespace QLNet
             .withNotionals(notional)
             .withPaymentAdjustment(convention);
         
-			Date d = upfrontDate == null ? schedule[0] : upfrontDate;
+			Date d = upfrontDate ?? schedule[0];
 			upfrontPayment_ = new SimpleCashFlow(notional*upfront, d);
          Utils.QL_REQUIRE( upfrontPayment_.date() >= protectionStart_, () => "upfront can not be due before contract start" );
 

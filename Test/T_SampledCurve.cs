@@ -17,13 +17,10 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
-namespace Test2008
+namespace TestSuite
 {
    [TestClass()]
    public class T_SampledCurve

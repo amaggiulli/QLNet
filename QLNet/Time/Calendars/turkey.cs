@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -20,7 +20,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 
 namespace QLNet {
     //! Turkish calendar

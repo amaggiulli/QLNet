@@ -18,8 +18,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Finite-differences pricing engine for American-style vanilla options

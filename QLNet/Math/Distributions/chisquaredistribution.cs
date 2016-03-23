@@ -18,9 +18,7 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 /*! \file chisquaredistribution.hpp
     \brief Chi-square (central and non-central) distributions

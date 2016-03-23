@@ -17,17 +17,12 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace QLNet
 {
    public class FedFunds : OvernightIndex
    {
        public FedFunds(Handle<YieldTermStructure> h = null)
           :base("FedFunds", 0, new USDCurrency(), new UnitedStates(UnitedStates.Market.Settlement),
-                new Actual360(), h == null ? new Handle<YieldTermStructure>() : h) {}
+                new Actual360(), h ?? new Handle<YieldTermStructure>()) {}
    }
 }

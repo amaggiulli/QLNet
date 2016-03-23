@@ -18,7 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -37,9 +36,9 @@ namespace QLNet
 
       #region Constructors
 
-      public YieldTermStructure()
-         : this(dc: null,jumps: null,jumpDates: null)
-      {}
+      //public YieldTermStructure()
+      //   : this(dc: null,jumps: null,jumpDates: null)
+      //{}
 
       public YieldTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(dc)

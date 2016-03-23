@@ -19,8 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -34,12 +32,12 @@ namespace QLNet
    {
       public CCTEU(Date maturityDate,double spread,Handle<YieldTermStructure> fwdCurve = null,
                    Date startDate = null,Date issueDate = null)
-         :base(3, 100.0,
+         :base(2, 100.0,
                        new Schedule(startDate,
                                 maturityDate, new Period(6,TimeUnit.Months),
                                 new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                 DateGeneration.Rule.Backward, true),
-                       new Euribor6M(fwdCurve != null ? fwdCurve : new Handle<YieldTermStructure>() ),
+                       new Euribor6M(fwdCurve ?? new Handle<YieldTermStructure>() ),
                        new Actual360(),
                        BusinessDayConvention.Following,
                        new Euribor6M().fixingDays(),
@@ -72,7 +70,7 @@ namespace QLNet
    public class BTP : FixedRateBond 
    {
       public BTP(Date maturityDate,double fixedRate,Date startDate = null,Date issueDate = null)
-         :base(3, 100.0,new Schedule(startDate,
+         :base(2, 100.0,new Schedule(startDate,
                              maturityDate, new Period(6,TimeUnit.Months),
                              new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                              DateGeneration.Rule.Backward, true),
@@ -84,7 +82,7 @@ namespace QLNet
           As of today the only remaining one is IT123456789012
           that will redeem 99.999 on xx-may-2037 */
       public BTP(Date maturityDate, double fixedRate, double redemption,Date startDate = null,Date issueDate = null)
-      :base(3, 100.0, new Schedule(startDate,
+      :base(2, 100.0, new Schedule(startDate,
                              maturityDate, new Period(6,TimeUnit.Months),
                              new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                              DateGeneration.Rule.Backward, true),
@@ -334,7 +332,7 @@ namespace QLNet
          //                              basket_->weights().end(),
          //                              durations_.begin(), 0.0);
 
-         int settlDays = 3;
+         int settlDays = 2;
          DayCounter fixedDayCount = swaps_[0].fixedDayCount();
          equivalentSwapIndex_ = nSwaps_-1;
          swapRates_[0]= swaps_[0].fairRate();

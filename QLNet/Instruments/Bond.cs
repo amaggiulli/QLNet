@@ -17,7 +17,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -170,12 +170,12 @@ namespace QLNet
          return redemptions_.Last();
       }
       public Date startDate() { return BondFunctions.startDate(this);}
-      public Date maturityDate() { return (maturityDate_ != null) ? maturityDate_ : BondFunctions.maturityDate(this); }
+      public Date maturityDate() { return maturityDate_ ?? BondFunctions.maturityDate(this); }
       public Date issueDate() { return issueDate_; }
       public bool isTradable(Date d = null)  { return BondFunctions.isTradable(this, d); }
       public Date settlementDate(Date date = null)
       {
-         Date d = (date == null ? Settings.evaluationDate() : date);
+         Date d = (date ?? Settings.evaluationDate());
 
          // usually, the settlement is at T+n...
          Date settlement = calendar_.advance(d, settlementDays_, TimeUnit.Days);

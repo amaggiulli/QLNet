@@ -19,7 +19,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,7 +67,7 @@ namespace QLNet {
             isRegular_ = isRegular;
 
          Utils.QL_REQUIRE(
-             isRegular_.Count == 0 || isRegular_.Count() == dates.Count() - 1,
+             isRegular_.Count == 0 || isRegular_.Count == dates.Count - 1,
              () => string.Format("isRegular size ({0}) must be zero or equal to the number of dates minus 1 ({1})", isRegular_.Count, dates.Count - 1));
       }
 
@@ -415,8 +414,8 @@ namespace QLNet {
          // it can happen if EOM is applied to two near dates
          if (dates_.Count >= 2 &&  dates_[dates_.Count - 2] >= dates_.Last())
          {
-            isRegular_[dates_.Count() - 2] = (dates_[dates_.Count() - 2] == dates_.Last());
-            dates_[dates_.Count() - 2] = dates_.Last();
+            isRegular_[dates_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
+            dates_[dates_.Count - 2] = dates_.Last();
 
             dates_.RemoveAt(dates_.Count - 1);
             isRegular_.RemoveAt(isRegular_.Count - 1);
@@ -445,7 +444,7 @@ namespace QLNet {
 
       //! \name Date access
       //@{
-      int size() { return dates_.Count(); }
+      int size() { return dates_.Count; }
       public Date this[int i]
       {
          get
@@ -476,14 +475,14 @@ namespace QLNet {
       public List<Date> dates() { return dates_; }
       public bool isRegular(int i)
       {
-         Utils.QL_REQUIRE(isRegular_.Count() > 0, () => "full interface (isRegular) not available");
-         Utils.QL_REQUIRE( i <= isRegular_.Count() && i > 0, () => "index (" + i + ") must be in [1, " + isRegular_.Count() + "]" );
+         Utils.QL_REQUIRE(isRegular_.Count > 0, () => "full interface (isRegular) not available");
+         Utils.QL_REQUIRE( i <= isRegular_.Count && i > 0, () => "index (" + i + ") must be in [1, " + isRegular_.Count + "]" );
          return isRegular_[i - 1];
       }
 
       public IList<bool> isRegular()
       {
-         Utils.QL_REQUIRE(isRegular_.Count() > 0, () => "full interface (isRegular) not available");
+         Utils.QL_REQUIRE(isRegular_.Count > 0, () => "full interface (isRegular) not available");
          return isRegular_;
       }
       //@}
@@ -604,7 +603,7 @@ namespace QLNet {
         private Calendar calendar_;
         private Date effectiveDate_, terminationDate_;
         private Period tenor_;
-        private Nullable<BusinessDayConvention> convention_, terminationDateConvention_;
+        private BusinessDayConvention? convention_, terminationDateConvention_;
         private DateGeneration.Rule rule_;
         private bool endOfMonth_;
         private Date firstDate_, nextToLastDate_;

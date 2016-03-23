@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
 	//! %Barrier option on a single asset.
@@ -104,27 +101,10 @@ namespace QLNet {
         //        ! \warning see VanillaOption for notes on implied-volatility
         //                     calculation.
         //        
-		public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process, double accuracy, int maxEvaluations, double minVol)
+      public double impliedVolatility( double targetValue, GeneralizedBlackScholesProcess process, double accuracy = 1.0e-4,
+         int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
 		{
-			return impliedVolatility(targetValue, process, accuracy, maxEvaluations, minVol, 4.0);
-		}
-		public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process, double accuracy, int maxEvaluations)
-		{
-			return impliedVolatility(targetValue, process, accuracy, maxEvaluations, 1.0e-7, 4.0);
-		}
-		public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process, double accuracy)
-		{
-			return impliedVolatility(targetValue, process, accuracy, 100, 1.0e-7, 4.0);
-		}
-		public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process)
-		{
-			return impliedVolatility(targetValue, process, 1.0e-4, 100, 1.0e-7, 4.0);
-		}
-
-		public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process, double accuracy, int maxEvaluations, double minVol, double maxVol)
-		{
-			if (!(!isExpired()))
-                throw new ApplicationException("option expired");
+         Utils.QL_REQUIRE( !isExpired(), ()=> "option expired" );
 	
 			SimpleQuote volQuote = new SimpleQuote();
 	

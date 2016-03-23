@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  * This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -18,9 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     public static partial class Utils {
@@ -33,9 +30,21 @@ namespace QLNet {
             where \f$ \varepsilon \f$ is \f$ n \f$ times the machine accuracy;
             \f$ n \f$ equals 42 if not given.  */
         public static bool close(double x, double y) { return close(x, y, 42); }
-        public static bool close(double x, double y, int n) {
-            double diff = System.Math.Abs(x - y), tolerance = n * Const.QL_EPSILON;
-            return diff <= tolerance * System.Math.Abs(x) && diff <= tolerance * System.Math.Abs(y);
+        public static bool close(double x, double y, int n) 
+        {
+           if (x == y)
+              return true;
+
+           double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
+
+           if (x * y == 0.0) // x or y = 0.0
+              return diff < (tolerance * tolerance);
+
+           return diff <= tolerance*Math.Abs(x) &&
+                  diff <= tolerance*Math.Abs(y);
+
+            //double diff = System.Math.Abs(x - y), tolerance = n * Const.QL_EPSILON;
+            //return diff <= tolerance * System.Math.Abs(x) && diff <= tolerance * System.Math.Abs(y);
         }
 
         public static bool close(Money m1, Money m2) {
@@ -47,8 +56,17 @@ namespace QLNet {
         }
 
         public static bool close_enough(double x, double y, int n) {
-            double diff = Math.Abs(x-y), tolerance = n*Const.QL_EPSILON;
-            return diff <= tolerance*Math.Abs(x) || diff <= tolerance*Math.Abs(y);
+           // Deals with +infinity and -infinity representations etc.
+           if (x == y)
+              return true;
+
+           double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
+
+           if (x * y == 0.0) // x or y = 0.0
+             return diff < (tolerance * tolerance);
+
+          return diff <= tolerance*Math.Abs(x) ||
+                 diff <= tolerance*Math.Abs(y);
         }
 
         public static bool close(Money m1, Money m2, int n) {

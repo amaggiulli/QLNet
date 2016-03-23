@@ -1,7 +1,24 @@
-﻿using System;
+﻿/*
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
+  
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is  
+ available online at <http://qlnet.sourceforge.net/License.html>.
+  
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+ 
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -28,13 +45,13 @@ namespace QLNet
             , 41654, 41682, 41710, 41738, 41773, 41801, 41829, 41864, 41892, 41920, 41955, 41983 // 2014
             // http://www.ecb.europa.eu/press/pr/date/2014/html/pr140717_1.en.html
             , 42032, 42074, 42116, 42165, 42207, 42256, 42305, 42347// 2015
-            , 42395, 42445 //2016
+            , 42395, 42445, 42487, 42529 //2016
 
          };
          
          if (knownDateSet.empty()) 
          {
-            for ( int i = 0; i < knownDatesArray.Count(); ++i )
+            for ( int i = 0; i < knownDatesArray.Length; ++i )
             {
                 knownDateSet.Add(new Date(knownDatesArray[i]));
             }
@@ -91,9 +108,7 @@ namespace QLNet
         //Year y = boost::lexical_cast<Year>(code.substr(3, 2));
 
         int y = int.Parse(code.Substring(3, 2));
-        Date referenceDate = (refDate != null ?
-                              refDate :
-                              new Date(Settings.evaluationDate()));
+        Date referenceDate = (refDate ?? new Date(Settings.evaluationDate()));
         int referenceYear = (referenceDate.year() % 100);
         y += referenceDate.year() - referenceYear;
         if (y<Date.minDate().year())
@@ -170,9 +185,7 @@ namespace QLNet
       //! next maintenance period start date following the given date
       public static Date nextDate( Date date = null )
       {
-         Date d = (date == null ?
-                  Settings.evaluationDate() :
-                  date);
+         Date d = (date ?? Settings.evaluationDate());
 
          int i = knownDates().FindIndex( x => x > d );
 
@@ -190,9 +203,7 @@ namespace QLNet
       //! next maintenance period start dates following the given date
       public static List<Date> nextDates( Date date = null )
       {
-         Date d = (date == null ?
-                  Settings.evaluationDate() :
-                  date);
+         Date d = (date ?? Settings.evaluationDate());
 
         int i = knownDates(). FindIndex(x => x > d );
 

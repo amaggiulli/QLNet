@@ -20,8 +20,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet 
 {
@@ -33,23 +31,14 @@ namespace QLNet
 
 	public class IterativeBootstrapForYield : IterativeBootstrap<PiecewiseYieldCurve, YieldTermStructure>
 	{
-		public IterativeBootstrapForYield()
-			: base()
-		{}
 	}
 
 	public class IterativeBootstrapForInflation : IterativeBootstrap<PiecewiseZeroInflationCurve, ZeroInflationTermStructure>
 	{
-		public IterativeBootstrapForInflation()
-			: base()
-		{}
 	}
 
 	public class IterativeBootstrapForYoYInflation : IterativeBootstrap<PiecewiseYoYInflationCurve, YoYInflationTermStructure>
 	{
-		public IterativeBootstrapForYoYInflation()
-			: base()
-		{ }
 	}
 
 
@@ -165,6 +154,9 @@ namespace QLNet
 			double accuracy = ts_.accuracy_;
 			int maxIterations = ts_.maxIterations() - 1;
 
+         // there might be a valid curve state to use as guess
+         bool validData = validCurve_;
+
          for (int iteration = 0; ; ++iteration)
          {
             previousData_ = ts_.data_;
@@ -172,8 +164,6 @@ namespace QLNet
             for (int i = 1; i <= alive_; ++i)
             {
                // pillar loop
-
-               bool validData = validCurve_ || iteration > 0;
 
                // bracket root and calculate guess
                double min = ts_.minValueAfter(i, ts_, validData, firstAliveHelper_);
@@ -219,7 +209,13 @@ namespace QLNet
                }
                catch (Exception e)
                {
-                  validCurve_ = false;
+                  // the previous curve state could have been a bad guess
+                  // let's restart without using it
+                  if ( validCurve_ )
+                  {
+                     validCurve_ = validData = false;
+                     continue;
+                  }
                   Utils.QL_FAIL((iteration+1) + " iteration: failed " +
                            "at " + (i) + " alive instrument, "+
                            "maturity " + ts_.instruments_[i - 1].latestDate() +
@@ -231,8 +227,6 @@ namespace QLNet
 				
 				if ( !ts_.interpolator_.global )
 					break;     // no need for convergence loop
-				else if ( iteration == 0 )
-					continue; // at least one more iteration to convergence check
 
 				// exit condition
 				double change = Math.Abs( data[1] - previousData_[1] );
@@ -245,6 +239,7 @@ namespace QLNet
 							  "convergence not reached after " + iteration +
 							  " iterations; last improvement " + change +
 							  ", required accuracy " + accuracy );
+            validData = true;
 			}
 			validCurve_ = true;
 

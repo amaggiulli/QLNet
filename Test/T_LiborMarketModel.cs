@@ -20,8 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
@@ -36,7 +34,7 @@ namespace TestSuite
         {
             DayCounter dayCounter = new Actual360();
 
-            RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>(); ;
+            RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>(); 
             IborIndex index = new Euribor6M(termStructure);
 
             Date todaysDate =

@@ -19,8 +19,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Single-asset vanilla option (no barriers) with discrete dividends
@@ -82,10 +80,8 @@ namespace QLNet {
         //! %Arguments for dividend vanilla option calculation
         new public class Arguments : OneAssetOption.Arguments {
             public List<Dividend> cashFlow;
-            
-            public Arguments() {}
-            
-            public override void validate() {
+
+           public override void validate() {
                 base.validate();
 
                 Date exerciseDate = exercise.lastDate();

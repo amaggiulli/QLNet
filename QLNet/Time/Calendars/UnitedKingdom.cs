@@ -89,7 +89,7 @@ namespace QLNet {
                     calendar_ = Metals.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

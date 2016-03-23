@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! United States calendars
@@ -134,7 +131,7 @@ namespace QLNet {
                     calendar_ = NERC.Singleton;
                     break;
                 default:
-                    throw new ArgumentException("Unknown market: " + m); ;
+                    throw new ArgumentException("Unknown market: " + m); 
             }
         }
 

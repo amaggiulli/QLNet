@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
@@ -251,6 +251,71 @@ namespace TestSuite
                           + "    serial number: " + i + "\n"
                           + "    cloned date:   " + s + "\n"
                           + "    serial number: " + serial);
+         }
+
+      }
+
+      [TestMethod()]
+      public void testASXDates()
+      {
+         //Testing ASX dates...");
+
+         String[] ASXcodes = {
+         "F0", "G0", "H0", "J0", "K0", "M0", "N0", "Q0", "U0", "V0", "X0", "Z0",
+         "F1", "G1", "H1", "J1", "K1", "M1", "N1", "Q1", "U1", "V1", "X1", "Z1",
+         "F2", "G2", "H2", "J2", "K2", "M2", "N2", "Q2", "U2", "V2", "X2", "Z2",
+         "F3", "G3", "H3", "J3", "K3", "M3", "N3", "Q3", "U3", "V3", "X3", "Z3",
+         "F4", "G4", "H4", "J4", "K4", "M4", "N4", "Q4", "U4", "V4", "X4", "Z4",
+         "F5", "G5", "H5", "J5", "K5", "M5", "N5", "Q5", "U5", "V5", "X5", "Z5",
+         "F6", "G6", "H6", "J6", "K6", "M6", "N6", "Q6", "U6", "V6", "X6", "Z6",
+         "F7", "G7", "H7", "J7", "K7", "M7", "N7", "Q7", "U7", "V7", "X7", "Z7",
+         "F8", "G8", "H8", "J8", "K8", "M8", "N8", "Q8", "U8", "V8", "X8", "Z8",
+         "F9", "G9", "H9", "J9", "K9", "M9", "N9", "Q9", "U9", "V9", "X9", "Z9" };
+
+         Date counter = Date.minDate();
+         // 10 years of futures must not exceed Date::maxDate
+         Date last = Date.maxDate() - new Period(121 , TimeUnit.Months);
+         Date asx;
+
+         while (counter <= last) 
+         {
+            asx = ASX.nextDate(counter, false);
+
+            // check that asx is greater than counter
+            if (asx <= counter)
+               Assert.Fail( asx.weekday() + " " + asx
+                            + " is not greater than "
+                            + counter.weekday() + " " + counter);
+
+            // check that asx is an ASX date
+            if (!ASX.isASXdate(asx, false))
+               Assert.Fail( asx.weekday() + " " + asx
+                            + " is not an ASX date (calculated from "
+                            + counter.weekday() + " " + counter + ")");
+
+            // check that asx is <= to the next ASX date in the main cycle
+            if (asx > ASX.nextDate(counter, true))
+               Assert.Fail( asx.weekday() + " " + asx
+                           + " is not less than or equal to the next future in the main cycle "
+                           + ASX.nextDate(counter, true));
+
+
+            // check that for every date ASXdate is the inverse of ASXcode
+            if (ASX.date(ASX.code(asx), counter) != asx)
+               Assert.Fail( ASX.code(asx)
+                            + " at calendar day " + counter
+                            + " is not the ASX code matching " + asx);
+
+            // check that for every date the 120 ASX codes refer to future dates
+            for (int i = 0; i<120; ++i) 
+            {
+               if (ASX.date(ASXcodes[i], counter)<counter)
+                  Assert.Fail( ASX.date(ASXcodes[i], counter)
+                               + " is wrong for " + ASXcodes[i]
+                               + " at reference date " + counter);
+            }
+
+            counter = counter + 1;
          }
 
       }

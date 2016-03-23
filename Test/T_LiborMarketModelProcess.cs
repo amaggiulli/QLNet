@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
@@ -42,7 +41,7 @@ namespace TestSuite
             rates.Add(0.01);
             rates.Add(0.08);
             Linear Interpolator=new Linear();
-            RelinkableHandle<YieldTermStructure> termStructure= new RelinkableHandle<YieldTermStructure>();;
+            RelinkableHandle<YieldTermStructure> termStructure= new RelinkableHandle<YieldTermStructure>();
             //termStructure.linkTo(new InterpolatedZeroCurve<Linear>(dates, rates, dayCounter, Interpolator));
 
             IborIndex index = new Euribor1Y(termStructure);
@@ -81,7 +80,7 @@ namespace TestSuite
 
         LiborForwardModelProcess makeProcess()
         {
-            Matrix volaComp=new Matrix();;
+            Matrix volaComp=new Matrix();
             return makeProcess(volaComp);
         }
         
@@ -110,7 +109,7 @@ namespace TestSuite
             //SavedSettings backup;
 
             DayCounter dayCounter = new Actual360();
-            RelinkableHandle<YieldTermStructure> termStructure= new RelinkableHandle<YieldTermStructure>();;
+            RelinkableHandle<YieldTermStructure> termStructure= new RelinkableHandle<YieldTermStructure>();
             termStructure.linkTo(Utilities.flatRate(Date.Today, 0.04, dayCounter));
 
             IborIndex index=new Euribor6M(termStructure);

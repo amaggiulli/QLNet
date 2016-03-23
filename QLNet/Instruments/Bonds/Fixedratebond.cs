@@ -40,7 +40,7 @@ namespace QLNet
                            Calendar exCouponCalendar = null,
 									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                            bool exCouponEndOfMonth = false)
-         : base(settlementDays, paymentCalendar == null ? schedule.calendar() : paymentCalendar, 
+         : base(settlementDays, paymentCalendar ?? schedule.calendar(), 
                 issueDate) 
       {
          frequency_ = schedule.tenor().frequency();
@@ -88,7 +88,7 @@ namespace QLNet
                            Calendar exCouponCalendar = null,
 									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                            bool exCouponEndOfMonth = false)
-         : base(settlementDays, paymentCalendar == null ? calendar : paymentCalendar, 
+         : base(settlementDays, paymentCalendar ?? calendar, 
                 issueDate) 
       {
 
@@ -161,7 +161,7 @@ namespace QLNet
 									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
 									bool exCouponEndOfMonth = false)
 
-         : base(settlementDays,paymentCalendar == null ? schedule.calendar() : paymentCalendar,
+         : base(settlementDays,paymentCalendar ?? schedule.calendar(),
                 issueDate)
       {
       

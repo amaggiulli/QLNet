@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace QLNet
 {
@@ -43,6 +42,7 @@ namespace QLNet
        <li>Ching Ming Festival</li>
        <li>Tuen Ng Festival</li>
        <li>Mid-Autumn Festival</li>
+       <li>70th anniversary of the victory of anti-Japaneses war</li>
        </ul>
 
        SSE data from <http://www.sse.com.cn/>
@@ -115,7 +115,7 @@ namespace QLNet
                 || ( y == 2007 && d >= 17 && d <= 25 && m == Month.February )
                 || ( y == 2008 && d >= 6 && d <= 12 && m == Month.February )
                 || ( y == 2009 && d >= 26 && d <= 30 && m == Month.January )
-                || ( y == 2010 && d >= 15 && d <= 19 && m == Month.January )
+                || ( y == 2010 && d >= 15 && d <= 19 && m == Month.February )
                 || ( y == 2011 && d >= 2 && d <= 8 && m == Month.February )
                 || ( y == 2012 && d >= 23 && d <= 28 && m == Month.January )
                 || ( y == 2013 && d >= 11 && d <= 15 && m == Month.February )
@@ -171,6 +171,8 @@ namespace QLNet
                 || ( y == 2013 && d >= 1 && d <= 7 && m == Month.October )
                 || ( y == 2014 && d >= 1 && d <= 7 && m == Month.October )
                 || ( y == 2015 && d >= 1 && d <= 7 && m == Month.October )
+               // 70th anniversary of the victory of anti-Japaneses war
+                || ( y == 2015 && d >= 3 && d <= 4 && m == Month.September )
                 )
                return false;
             return true;
@@ -276,6 +278,7 @@ namespace QLNet
             new Date(4,Month.January,2015),
             new Date(15,Month.February,2015),
             new Date(28,Month.February,2015),
+            new Date(6,Month.September,2015),
             new Date(10,Month.October,2015)
         };
 

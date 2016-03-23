@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -18,105 +19,182 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QLNet {
-    //! interest rate volatility smile section
-    /*! This abstract class provides volatility smile section interface */
-    public abstract class SmileSection : IObservable, IObserver {
-        private bool isFloating_;
-        private Date referenceDate_;
+namespace QLNet 
+{
+   //! interest rate volatility smile section
+   /*! This abstract class provides volatility smile section interface */
+   public abstract class SmileSection : LazyObject
+   {
+      public SmileSection( Date d, DayCounter dc = null, Date referenceDate = null,
+         VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0 )
+      {
+         exerciseDate_ = d;
+         dc_ = dc;
+         volatilityType_ = type;
+         shift_ = shift;
 
-        private DayCounter dc_;
-        public DayCounter dayCounter() { return dc_; }
+         isFloating_ = referenceDate == null;
+         if ( isFloating_ )
+         {
+            Settings.registerWith( update );
+            referenceDate_ = Settings.evaluationDate();
+         }
+         else
+            referenceDate_ = referenceDate;
+         initializeExerciseTime();
+      }
+      public SmileSection( double exerciseTime, DayCounter dc = null,
+         VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0 )
+      {
+         isFloating_ = false;
+         referenceDate_ = null;
+         dc_ = dc;
+         exerciseTime_ = exerciseTime;
+         volatilityType_ = type;
+         shift_ = shift;
 
-        private Date exerciseDate_;
-        public Date exerciseDate() { return exerciseDate_; }
+         Utils.QL_REQUIRE( exerciseTime_ >= 0.0, () => "expiry time must be positive: " + exerciseTime_ + " not allowed" );
+      }
+      public SmileSection() { }
 
-        private double exerciseTime_;
-        public double exerciseTime() { return exerciseTime_; }
 
-        #region ctors
-
-        public SmileSection(Date d, DayCounter dc = null, Date referenceDate = null) {
-            exerciseDate_ = d;
-            dc_ = dc;
-
-            isFloating_ = referenceDate == null;
-            
-            if (isFloating_) {
-                Settings.registerWith(update);
-                referenceDate_ = Settings.evaluationDate();
-            } else
-                referenceDate_ = referenceDate;
-
+      public override void update()
+      {
+         if ( isFloating_ )
+         {
+            referenceDate_ = Settings.evaluationDate();
             initializeExerciseTime();
-        }
+         }
+      }
+      public abstract double minStrike();
+      public abstract double maxStrike();
+      public double variance( double strike ) { return varianceImpl( strike ); }
+      public double volatility( double strike ) { return volatilityImpl( strike ); }
+      public abstract double? atmLevel();
+      public virtual Date exerciseDate() { return exerciseDate_; }
+      public virtual VolatilityType volatilityType() { return volatilityType_; }
+      public virtual double shift() { return shift_; }
+      public virtual Date referenceDate()
+      {
+         Utils.QL_REQUIRE( referenceDate_ != null, () => "referenceDate not available for this instance" );
+         return referenceDate_;
+      }
+      public virtual double exerciseTime() { return exerciseTime_; }
+      public virtual DayCounter dayCounter() { return dc_; }
+      public virtual double optionPrice( double strike, Option.Type type = Option.Type.Call, double discount = 1.0 )
+      {
+         double? atm = atmLevel();
+         Utils.QL_REQUIRE( atm != null, () => "smile section must provide atm level to compute option price" );
+         // if lognormal or shifted lognormal,
+         // for strike at -shift, return option price even if outside
+         // minstrike, maxstrike interval
+         if ( volatilityType() == VolatilityType.ShiftedLognormal )
+            return Utils.blackFormula( type, strike, atm.Value, Math.Abs( strike + shift() ) < Const.QL_EPSILON ?
+                            0.2 : Math.Sqrt( variance( strike ) ), discount, shift() );
+         else
+            return Utils.bachelierBlackFormula( type, strike, atm.Value, Math.Sqrt( variance( strike ) ), discount );
+      }
+      public virtual double digitalOptionPrice( double strike, Option.Type type = Option.Type.Call, double discount = 1.0,
+         double gap = 1.0e-5 )
+      {
+         double m = volatilityType() == VolatilityType.ShiftedLognormal ? -shift() : -double.MaxValue;
+         double kl = Math.Max( strike - gap / 2.0, m );
+         double kr = kl + gap;
+         return ( type == Option.Type.Call ? 1.0 : -1.0 ) *
+            ( optionPrice( kl, type, discount ) - optionPrice( kr, type, discount ) ) / gap;
+      }
+      public virtual double vega( double strike, double discount = 1.0 )
+      {
+         double? atm = atmLevel();
+         Utils.QL_REQUIRE( atm != null, () =>
+                    "smile section must provide atm level to compute option vega" );
+         if ( volatilityType() == VolatilityType.ShiftedLognormal )
+            return Utils.blackFormulaVolDerivative( strike, atmLevel().Value,
+                                             Math.Sqrt( variance( strike ) ),
+                                             exerciseTime(), discount, shift() ) * 0.01;
+         else
+            Utils.QL_FAIL( "vega for normal smilesection not yet implemented" );
 
-        public SmileSection(double exerciseTime, DayCounter dc = null) {
-            isFloating_ = false;
-            dc_ = dc;
-            exerciseTime_ = exerciseTime;
+         return 0;
 
-            if (!(exerciseTime_>=0.0))
-                throw new ApplicationException("expiry time must be positive: " + exerciseTime_ + " not allowed");
-        }
-    	#endregion
+      }
+      public virtual double density( double strike, double discount = 1.0, double gap = 1.0E-4 )
+      {
+         double m = volatilityType() == VolatilityType.ShiftedLognormal ? -shift() : -double.MaxValue;
+         double kl = Math.Max( strike - gap / 2.0, m );
+         double kr = kl + gap;
+         return ( digitalOptionPrice( kl, Option.Type.Call, discount, gap ) -
+                digitalOptionPrice( kr, Option.Type.Call, discount, gap ) ) / gap;
+      }
+      public double volatility( double strike, VolatilityType volatilityType, double shift = 0.0 )
+      {
 
-
-        public double variance(double strike) {
-            if (strike == default(double))
-                strike = atmLevel();
-            return varianceImpl(strike);
-        }
-
-        public double volatility(double strike) {
-            if (strike == default(double))
-                strike = atmLevel();
-            return volatilityImpl(strike);
-        }
-
-        public void initializeExerciseTime() {
-            if (!(exerciseDate_>=referenceDate_))
-                throw new ApplicationException("expiry date (" + exerciseDate_ + ") must be greater than reference date (" +
-                       referenceDate_ + ")");
-            exerciseTime_ = dc_.yearFraction(referenceDate_, exerciseDate_);
-        }
-
-        public abstract double minStrike();
-        public abstract double maxStrike();
-        public abstract double atmLevel();
-
-        protected virtual double varianceImpl(double strike) {
-            double v = volatilityImpl(strike);
-            return v * v * exerciseTime();
-        }
-        protected abstract double volatilityImpl(double k);
-
-
-        #region Observable & Observer
-        public event Callback notifyObserversEvent;
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
+         if ( volatilityType == volatilityType_ && Utils.close( shift, this.shift() ) )
+            return volatility( strike );
+         double? atm = atmLevel();
+         Utils.QL_REQUIRE( atm != null, () => "smile section must provide atm level to compute converted volatilties" );
+         Option.Type type = strike >= atm ? Option.Type.Call : Option.Type.Put;
+         double premium = optionPrice( strike, type );
+         double premiumAtm = optionPrice( atm.Value, type );
+         if ( volatilityType == VolatilityType.ShiftedLognormal )
+         {
+            try
+            {
+               return Utils.blackFormulaImpliedStdDev( type, strike, atm.Value, premium, 1.0, shift ) /
+                  Math.Sqrt( exerciseTime() );
             }
-        }
-
-        // observer
-        public virtual void update() {
-            if (isFloating_) {
-                referenceDate_ = Settings.evaluationDate();
-                initializeExerciseTime();
+            catch ( Exception )
+            {
+               return Utils.blackFormulaImpliedStdDevChambers( type, strike, atm.Value, premium, premiumAtm, 1.0, shift ) /
+                  Math.Sqrt( exerciseTime() );
             }
-            //LazyObject::update();
-        } 
-        #endregion
-    }
+         }
+         else
+         {
+            return Utils.bachelierBlackFormulaImpliedVol( type, strike, atm.Value, exerciseTime(), premium );
+         }
+      }
 
+      protected virtual void initializeExerciseTime()
+      {
+         Utils.QL_REQUIRE( exerciseDate_ >= referenceDate_, () =>
+                   "expiry date (" + exerciseDate_ +
+                   ") must be greater than reference date (" +
+                   referenceDate_ + ")" );
+         exerciseTime_ = dc_.yearFraction( referenceDate_, exerciseDate_ );
+      }
+      protected virtual double varianceImpl( double strike )
+      {
+         double v = volatilityImpl( strike );
+         return v * v * exerciseTime();
+      }
+      protected abstract double volatilityImpl( double strike );
+
+
+      private bool isFloating_;
+      private Date referenceDate_;
+      private Date exerciseDate_;
+      private DayCounter dc_;
+      private double exerciseTime_;
+      private VolatilityType volatilityType_;
+      private double shift_;
+
+      //#region Observable & Observer
+      //public event Callback notifyObserversEvent;
+      //public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
+      //public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
+      //protected void notifyObservers()
+      //{
+      //   Callback handler = notifyObserversEvent;
+      //   if ( handler != null )
+      //   {
+      //      handler();
+      //   }
+      //}
+
+      //#endregion
+   }
     public class SabrSmileSection : SmileSection {
         private double alpha_, beta_, nu_, rho_, forward_;
 
@@ -135,7 +213,7 @@ namespace QLNet {
         }
 
         public SabrSmileSection( Date d, double forward, List<double> sabrParams, DayCounter dc = null )
-            : base(d, dc == null ? new Actual365Fixed() : dc) {
+            : base(d, dc ?? new Actual365Fixed()) {
             forward_ = forward;
 
             alpha_ = sabrParams[0];
@@ -150,7 +228,7 @@ namespace QLNet {
 
         public override double minStrike () { return 0.0; }
         public override double maxStrike() { return double.MaxValue; }
-        public override double atmLevel() { return forward_; }
+        public override double? atmLevel() { return forward_; }
         
         protected override double varianceImpl(double strike) {
             double vol = Utils.unsafeSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);

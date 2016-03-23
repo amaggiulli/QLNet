@@ -17,9 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace QLNet {
     // factory to create exact versions of trees
@@ -120,7 +118,7 @@ namespace QLNet {
             : base(process, end, steps) {
 
             dx_ = process.stdDeviation(0.0, x0_, dt_);
-            pu_ = 0.5 + 0.5*driftPerStep_/dx_;;
+            pu_ = 0.5 + 0.5*driftPerStep_/dx_;
             pd_ = 1.0 - pu_;
 
             if (!(pu_<=1.0)) throw new ApplicationException("negative probability");
@@ -156,7 +154,7 @@ namespace QLNet {
             : base(process, end, steps) {
 
             dx_ = Math.Sqrt(process.variance(0.0, x0_, dt_)+ driftPerStep_*driftPerStep_);
-            pu_ = 0.5 + 0.5*driftPerStep_/dx_;;
+            pu_ = 0.5 + 0.5*driftPerStep_/dx_;
             pd_ = 1.0 - pu_;
 
             if (!(pu_<=1.0)) throw new ApplicationException("negative probability");

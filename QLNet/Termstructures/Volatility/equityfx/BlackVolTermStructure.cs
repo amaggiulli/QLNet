@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet 
 {
@@ -40,9 +37,9 @@ namespace QLNet
                      constructor must manage their own reference date
                      by overriding the referenceDate() method.
         */
-      public BlackVolTermStructure()
-         : base(BusinessDayConvention.Following, null)
-      { }
+      //public BlackVolTermStructure()
+      //   : base(BusinessDayConvention.Following, null)
+      //{ }
         
       public BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(bdc, dc)

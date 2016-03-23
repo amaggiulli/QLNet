@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -52,7 +49,7 @@ namespace QLNet
             if (model_ == null)
                 throw new ArgumentException("null model");
 
-            Date referenceDate = new Date(); ;
+            Date referenceDate = new Date(); 
             DayCounter dayCounter = new DayCounter();
             try{
                 TermStructureConsistentModel tsmodel = (TermStructureConsistentModel)model_;

@@ -1,5 +1,4 @@
-﻿using System;
-/*
+﻿/*
  Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -17,9 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace QLNet
 {

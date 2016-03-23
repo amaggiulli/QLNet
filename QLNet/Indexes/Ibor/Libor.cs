@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! base class for all BBA LIBOR indexes but the EUR, O/N, and S/N ones LIBOR fixed by BBA.

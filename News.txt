@@ -1,0 +1,83 @@
+QLNet 1.6 
+=========================
+
+QLNet 1.6 stable version.
+
+The most notable changes are included below.
+A detailed list of changes is available in ChangeLog.txt.
+
+DATE/TIME
+
++ Added Moscow Exchange calendar .
+
++ Added 70th anniversary of anti-Japanese day to Chinese calendar.
+
++ Fixed Chinese New Year date for 2010.
+
++ Added nearest-trading-day business day convention.
+
++ Prevented normalization of a 7-days period to a 1-week period, since
+  this doesn't apply to business days.
+
++ Allowed schedules built with a vector of dates to be used for coupon
+  generation, given that the required information was provided.
+
++ Added support for Australian Security Exchange (ASX) dates.
+
++ Added ECB dates for April and June 2016.
+
+INSTRUMENTS
+
++ Fix capfloor bug on ctor.
+
++ Extended digital American options to handle knock-off case.
+
++ Added Bachelier engine for caps/floors based on normal volatility.
+
++ Allowed non strike/type payoffs in finite-differences engine for
+  vanilla options.
+
++ Fixed settlement days of BTP bonds.
+
++ Added IPrepayModel interface, ConstantCPR class, and updated MBSFixedRateBond to use the interface rather than the PSACurve class.
+
+PRICING ENGINE 
+
++ Black Formula rewritten
+
++ Added StulzEngine and KirkEngine
+
+INDEXES
+
++ Fixed day-count convention for Fed Funds rate.
+
+TERM STRUCTURES
+
++ Fixed bug where a valid previous curve state could be a bad guess
+  for the next and lead to a bootstrap failure.
+
+VOLATILITY
+
++ BlackVarianceSurface implementation
+
+MATH
+
++ Fix close and close_enough comparison.
+
++ Better comparison between double numbers.
+
++ Allowed user-defined Jacobian in optimization.
+
+MISCELLANEA
+
++ Added IDR, MYR, RUB and VND currencies.
+
+CODE REFACTORING
+
++ Fix Handle ctor to avoid empty constructors.
+
++ Removed Count() with property access , removed ThreadStatic initialize
+
++ Replace ?: operator with ?? operator.
+
++ Removed all redundant using directive.

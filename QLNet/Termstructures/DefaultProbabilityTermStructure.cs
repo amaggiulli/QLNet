@@ -18,8 +18,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet 
 {
@@ -33,7 +31,7 @@ namespace QLNet
    {
       #region Constructors
 
-		public DefaultProbabilityTermStructure() {}
+      //public DefaultProbabilityTermStructure() {}
 
       public DefaultProbabilityTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(dc)

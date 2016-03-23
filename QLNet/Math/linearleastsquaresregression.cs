@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! general linear least squares regression
@@ -103,7 +102,7 @@ namespace QLNet {
 
         //! multi dimensional linear regression
         public LinearRegression(List<List<double>> x, List<double> y) {
-            reg_ = new LinearLeastSquaresRegression<List<double>>(x, y, linearFcts(x.Count));
+            reg_ = new LinearLeastSquaresRegression<List<double>>(x, y, linearFcts(x[0].Count));
         }
 
         //! returns paramters {a_0, a_1, ..., a_n}

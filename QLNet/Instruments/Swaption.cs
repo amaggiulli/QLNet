@@ -18,9 +18,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -186,7 +184,7 @@ namespace QLNet
          Handle<Quote> h = new Handle<Quote>(vol_);
          engine_ = (IPricingEngine)new BlackSwaptionEngine(discountCurve_, h);
          swaption.setupArguments(engine_.getArguments());
-         results_ = engine_.getResults() as Instrument.Results; ;
+         results_ = engine_.getResults() as Instrument.Results; 
       }
 
       public override double value(double x)

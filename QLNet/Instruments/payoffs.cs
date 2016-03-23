@@ -17,9 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Intermediate class for put/call payoffs
@@ -231,7 +228,7 @@ namespace QLNet {
         //! \name Payoff interface
         public override string name() { return "SuperShare";}
         public override string description() {
-            return base.description() + ", " + secondStrike() + " second strike" + ", " + cashPayoff() + " amount";;
+            return base.description() + ", " + secondStrike() + " second strike" + ", " + cashPayoff() + " amount";
         }
         public override double value(double price) {
             return (price>=strike_ && price<secondStrike_) ? cashPayoff_ : 0.0;

@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet {
     //! Black volatility curve modelled as variance curve
@@ -46,7 +45,7 @@ namespace QLNet {
         Interpolation varianceCurve_;
 
         // required for Handle
-        public BlackVarianceCurve() { }
+        //public BlackVarianceCurve() { }
 
         //public BlackVarianceCurve(Date referenceDate, List<Date> dates, List<double> blackVolCurve, DayCounter dayCounter,
         //                          bool forceMonotoneVariance = true);

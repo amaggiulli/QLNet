@@ -19,8 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -31,8 +29,8 @@ namespace QLNet
     */
     public class CPIVolatilitySurface : VolatilityTermStructure
     {
-        public CPIVolatilitySurface()
-          : base(BusinessDayConvention.Following, null) { }
+        //public CPIVolatilitySurface()
+        //  : base(BusinessDayConvention.Following, null) { }
 
         /*! calculates the reference date based on the global
             evaluation date.

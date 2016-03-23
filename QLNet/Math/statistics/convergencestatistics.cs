@@ -18,8 +18,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     public interface IConvergenceSteps {
@@ -28,7 +26,6 @@ namespace QLNet {
     }
 
     public class DoublingConvergenceSteps : IConvergenceSteps {
-        public DoublingConvergenceSteps() { }
 
         public int initialSamples() { return 1; }
         public int nextSamples(int current) { return 2 * current + 1; }

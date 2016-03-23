@@ -16,10 +16,8 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -187,7 +185,7 @@ namespace QLNet
             return this.interpolation_.value(t, true);
 
          // flat fwd extrapolation
-         return this.data_.Last(); ;
+         return this.data_.Last();
       }
       protected override double zeroYieldImpl(double t)
       {

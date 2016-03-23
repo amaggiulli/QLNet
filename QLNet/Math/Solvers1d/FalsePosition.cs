@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -17,9 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet {
     public class FalsePosition : Solver1D {
@@ -62,7 +60,7 @@ namespace QLNet {
                 }
                 dx = xh - xl;
                 // Convergence criterion
-                if (Math.Abs(del) < xAccuracy || froot == 0.0)  {
+                if (Math.Abs(del) < xAccuracy || Utils.close( froot , 0.0))  {
                     return root_;
                 }
             }
