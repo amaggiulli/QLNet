@@ -45,4 +45,8 @@ Maintenance or “hotfix” branches are used to quickly patch production releas
 As soon as the fix is complete, it will be merged into both master and develop , and master will be tagged with an updated version number.
 
 
- 
+## Acknowledgements
+
+Thanks to all Quantlib creators and contributors.
+Thanks to all QLNet contributors.
+Special thanks to JetBrains for their support of open source projects , QLNet make extensive use of Resharper.   
