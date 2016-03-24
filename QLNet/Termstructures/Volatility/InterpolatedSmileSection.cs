@@ -64,7 +64,8 @@ namespace QLNet
          // computations later on
          for (int i=0; i<stdDevs.Count; ++i)
             stdDevHandles_[i] = new Handle<Quote>(new SimpleQuote(stdDevs[i]));
-            atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
+
+         atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
          // check strikes!!!!!!!!!!!!!!!!!!!!
          interpolation_ = interpolator.interpolate(strikes_,strikes_.Count,vols_);
       }
