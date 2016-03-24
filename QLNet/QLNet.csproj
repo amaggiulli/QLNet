@@ -547,6 +547,7 @@
     <Compile Include="Time\Calendars\iceland.cs" />
     <Compile Include="Time\Calendars\india.cs" />
     <Compile Include="Time\Calendars\indonesia.cs" />
+    <Compile Include="Time\Calendars\Israel.cs" />
     <Compile Include="Time\Calendars\italy.cs" />
     <Compile Include="Time\Calendars\japan.cs" />
     <Compile Include="Time\Calendars\JointCalendar.cs" />
@@ -555,6 +556,7 @@
     <Compile Include="Time\Calendars\norway.cs" />
     <Compile Include="Time\Calendars\nullcalendar.cs" />
     <Compile Include="Time\Calendars\poland.cs" />
+    <Compile Include="Time\Calendars\Romania.cs" />
     <Compile Include="Time\Calendars\russia.cs" />
     <Compile Include="Time\Calendars\saudiarabia.cs" />
     <Compile Include="Time\Calendars\singapore.cs" />

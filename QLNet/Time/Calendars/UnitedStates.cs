@@ -20,93 +20,93 @@ using System;
 
 namespace QLNet {
     //! United States calendars
-    /*! Public holidays (see: http://www.opm.gov/fedhol/):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st (possibly moved to Monday if
-            actually on Sunday, or to Friday if on Saturday)</li>
-        <li>Martin Luther King's birthday, third Monday in January</li>
-        <li>Presidents' Day (a.k.a. Washington's birthday),
-            third Monday in February</li>
-        <li>Memorial Day, last Monday in May</li>
-        <li>Independence Day, July 4th (moved to Monday if Sunday or
-            Friday if Saturday)</li>
-        <li>Labor Day, first Monday in September</li>
-        <li>Columbus Day, second Monday in October</li>
-        <li>Veterans' Day, November 11th (moved to Monday if Sunday or
-            Friday if Saturday)</li>
-        <li>Thanksgiving Day, fourth Thursday in November</li>
-        <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-            if Saturday)</li>
-        </ul>
+   /*! Public holidays (see: http://www.opm.gov/fedhol/):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st (possibly moved to Monday if
+           actually on Sunday, or to Friday if on Saturday)</li>
+       <li>Martin Luther King's birthday, third Monday in January (since 1983)</li>
+       <li>Presidents' Day (a.k.a. Washington's birthday),
+           third Monday in February</li>
+       <li>Memorial Day, last Monday in May</li>
+       <li>Independence Day, July 4th (moved to Monday if Sunday or
+           Friday if Saturday)</li>
+       <li>Labor Day, first Monday in September</li>
+       <li>Columbus Day, second Monday in October</li>
+       <li>Veterans' Day, November 11th (moved to Monday if Sunday or
+           Friday if Saturday)</li>
+       <li>Thanksgiving Day, fourth Thursday in November</li>
+       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
+           if Saturday)</li>
+       </ul>
 
-        Holidays for the stock exchange (data from http://www.nyse.com):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st (possibly moved to Monday if
-            actually on Sunday)</li>
-        <li>Martin Luther King's birthday, third Monday in January (since
-            1998)</li>
-        <li>Presidents' Day (a.k.a. Washington's birthday),
-            third Monday in February</li>
-        <li>Good Friday</li>
-        <li>Memorial Day, last Monday in May</li>
-        <li>Independence Day, July 4th (moved to Monday if Sunday or
-            Friday if Saturday)</li>
-        <li>Labor Day, first Monday in September</li>
-        <li>Thanksgiving Day, fourth Thursday in November</li>
-        <li>Presidential election day, first Tuesday in November of election
-            years (until 1980)</li>
-        <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-            if Saturday)</li>
-        <li>Special historic closings (see
-            http://www.nyse.com/pdfs/closings.pdf)</li>
-        </ul>
+       Holidays for the stock exchange (data from http://www.nyse.com):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st (possibly moved to Monday if
+           actually on Sunday)</li>
+       <li>Martin Luther King's birthday, third Monday in January (since
+           1998)</li>
+       <li>Presidents' Day (a.k.a. Washington's birthday),
+           third Monday in February</li>
+       <li>Good Friday</li>
+       <li>Memorial Day, last Monday in May</li>
+       <li>Independence Day, July 4th (moved to Monday if Sunday or
+           Friday if Saturday)</li>
+       <li>Labor Day, first Monday in September</li>
+       <li>Thanksgiving Day, fourth Thursday in November</li>
+       <li>Presidential election day, first Tuesday in November of election
+           years (until 1980)</li>
+       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
+           if Saturday)</li>
+       <li>Special historic closings (see
+           http://www.nyse.com/pdfs/closings.pdf)</li>
+       </ul>
 
-        Holidays for the government bond market (data from
-        http://www.bondmarkets.com):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st (possibly moved to Monday if
-            actually on Sunday)</li>
-        <li>Martin Luther King's birthday, third Monday in January</li>
-        <li>Presidents' Day (a.k.a. Washington's birthday),
-            third Monday in February</li>
-        <li>Good Friday</li>
-        <li>Memorial Day, last Monday in May</li>
-        <li>Independence Day, July 4th (moved to Monday if Sunday or
-            Friday if Saturday)</li>
-        <li>Labor Day, first Monday in September</li>
-        <li>Columbus Day, second Monday in October</li>
-        <li>Veterans' Day, November 11th (moved to Monday if Sunday or
-            Friday if Saturday)</li>
-        <li>Thanksgiving Day, fourth Thursday in November</li>
-        <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-            if Saturday)</li>
-        </ul>
+       Holidays for the government bond market (data from
+       http://www.bondmarkets.com):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st (possibly moved to Monday if
+           actually on Sunday)</li>
+       <li>Martin Luther King's birthday, third Monday in January</li>
+       <li>Presidents' Day (a.k.a. Washington's birthday),
+           third Monday in February</li>
+       <li>Good Friday</li>
+       <li>Memorial Day, last Monday in May</li>
+       <li>Independence Day, July 4th (moved to Monday if Sunday or
+           Friday if Saturday)</li>
+       <li>Labor Day, first Monday in September</li>
+       <li>Columbus Day, second Monday in October</li>
+       <li>Veterans' Day, November 11th (moved to Monday if Sunday or
+           Friday if Saturday)</li>
+       <li>Thanksgiving Day, fourth Thursday in November</li>
+       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
+           if Saturday)</li>
+       </ul>
 
-        Holidays for the North American Energy Reliability Council
-        (data from http://www.nerc.com/~oc/offpeaks.html):
-        <ul>
-        <li>Saturdays</li>
-        <li>Sundays</li>
-        <li>New Year's Day, January 1st (possibly moved to Monday if
-            actually on Sunday)</li>
-        <li>Memorial Day, last Monday in May</li>
-        <li>Independence Day, July 4th (moved to Monday if Sunday)</li>
-        <li>Labor Day, first Monday in September</li>
-        <li>Thanksgiving Day, fourth Thursday in November</li>
-        <li>Christmas, December 25th (moved to Monday if Sunday)</li>
-        </ul>
+       Holidays for the North American Energy Reliability Council
+       (data from http://www.nerc.com/~oc/offpeaks.html):
+       <ul>
+       <li>Saturdays</li>
+       <li>Sundays</li>
+       <li>New Year's Day, January 1st (possibly moved to Monday if
+           actually on Sunday)</li>
+       <li>Memorial Day, last Monday in May</li>
+       <li>Independence Day, July 4th (moved to Monday if Sunday)</li>
+       <li>Labor Day, first Monday in September</li>
+       <li>Thanksgiving Day, fourth Thursday in November</li>
+       <li>Christmas, December 25th (moved to Monday if Sunday)</li>
+       </ul>
 
-        \test the correctness of the returned results is tested
-              against a list of known holidays.
-    */
+       \test the correctness of the returned results is tested
+             against a list of known holidays.
+   */
 
-    public class UnitedStates : Calendar {
+   public class UnitedStates : Calendar {
         //! US calendars
         public enum Market {
             Settlement,     //!< generic settlement calendar
@@ -144,13 +144,14 @@ namespace QLNet {
                 DayOfWeek w = date.DayOfWeek;
                 int d = date.Day;
                 Month m = (Month)date.Month;
+                int y = date.Year;
                 if (isWeekend(w)
                     // New Year's Day (possibly moved to Monday if on Sunday)
                     || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
                     // (or to Friday if on Saturday)
                     || (d == 31 && w == DayOfWeek.Friday && m == Month.December)
                     // Martin Luther King's birthday (third Monday in January)
-                    || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January)
+                    || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January && y >= 1983)
                     // Washington's birthday (third Monday in February)
                     || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.February)
                     // Memorial Day (last Monday in May)
@@ -277,7 +278,7 @@ namespace QLNet {
                     // New Year's Day (possibly moved to Monday if on Sunday)
                     || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
                     // Martin Luther King's birthday (third Monday in January)
-                    || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January)
+                    || ( ( d >= 15 && d <= 21 ) && w == DayOfWeek.Monday && m == Month.January && y >= 1983 )
                     // Washington's birthday (third Monday in February)
                     || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.February)
                     // Good Friday
