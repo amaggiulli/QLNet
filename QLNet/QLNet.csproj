@@ -547,6 +547,7 @@
     <Compile Include="Time\Calendars\iceland.cs" />
     <Compile Include="Time\Calendars\india.cs" />
     <Compile Include="Time\Calendars\indonesia.cs" />
+    <Compile Include="Time\Calendars\Israel.cs" />
     <Compile Include="Time\Calendars\italy.cs" />
     <Compile Include="Time\Calendars\japan.cs" />
     <Compile Include="Time\Calendars\JointCalendar.cs" />
