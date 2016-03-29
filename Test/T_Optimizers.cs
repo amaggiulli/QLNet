@@ -150,7 +150,9 @@ namespace TestSuite {
                 OptimizationMethodType.levenbergMarquardt2, 
                 OptimizationMethodType.conjugateGradient/*, steepestDescent*/,
                 OptimizationMethodType.conjugateGradient_goldstein,
-                OptimizationMethodType.steepestDescent_goldstein
+                OptimizationMethodType.steepestDescent_goldstein,
+                OptimizationMethodType.bfgs,
+                OptimizationMethodType.bfgs_goldstein
                                                                };
 
             double simplexLambda = 0.1;                   // characteristic search length for simplex
@@ -186,14 +188,14 @@ namespace TestSuite {
                     return new ConjugateGradient();
                 case OptimizationMethodType.steepestDescent:
                     return new SteepestDescent();
-                //case OptimizationMethodType.bfgs:
-                //    return new BFGS();
+                case OptimizationMethodType.bfgs:
+                    return new BFGS();
                 case OptimizationMethodType.conjugateGradient_goldstein:
                     return new ConjugateGradient(new GoldsteinLineSearch());
                 case OptimizationMethodType.steepestDescent_goldstein:
                     return new SteepestDescent(new GoldsteinLineSearch());
-                //case OptimizationMethodType.bfgs_goldstein:
-                //    return new BFGS(new GoldsteinLineSearch());
+                case OptimizationMethodType.bfgs_goldstein:
+                    return new BFGS(new GoldsteinLineSearch());
                 default:
                     throw new ApplicationException("unknown OptimizationMethod type");
             }
