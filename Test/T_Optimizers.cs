@@ -46,7 +46,11 @@ namespace TestSuite {
             levenbergMarquardt,
             levenbergMarquardt2,
             conjugateGradient,
-            steepestDescent
+            conjugateGradient_goldstein,
+            steepestDescent,
+            steepestDescent_goldstein,
+            bfgs,
+            bfgs_goldstein
         }
 
         [TestMethod()]
@@ -144,7 +148,10 @@ namespace TestSuite {
                 OptimizationMethodType.simplex, 
                 OptimizationMethodType.levenbergMarquardt, 
                 OptimizationMethodType.levenbergMarquardt2, 
-                OptimizationMethodType.conjugateGradient/*, steepestDescent*/};
+                OptimizationMethodType.conjugateGradient/*, steepestDescent*/,
+                OptimizationMethodType.conjugateGradient_goldstein,
+                OptimizationMethodType.steepestDescent_goldstein
+                                                               };
 
             double simplexLambda = 0.1;                   // characteristic search length for simplex
             double levenbergMarquardtEpsfcn = 1.0e-8;     // parameters specific for Levenberg-Marquardt
@@ -179,6 +186,14 @@ namespace TestSuite {
                     return new ConjugateGradient();
                 case OptimizationMethodType.steepestDescent:
                     return new SteepestDescent();
+                //case OptimizationMethodType.bfgs:
+                //    return new BFGS();
+                case OptimizationMethodType.conjugateGradient_goldstein:
+                    return new ConjugateGradient(new GoldsteinLineSearch());
+                case OptimizationMethodType.steepestDescent_goldstein:
+                    return new SteepestDescent(new GoldsteinLineSearch());
+                //case OptimizationMethodType.bfgs_goldstein:
+                //    return new BFGS(new GoldsteinLineSearch());
                 default:
                     throw new ApplicationException("unknown OptimizationMethod type");
             }
@@ -216,6 +231,14 @@ namespace TestSuite {
                     return "Conjugate Gradient";
                 case OptimizationMethodType.steepestDescent:
                     return "Steepest Descent";
+                case OptimizationMethodType.bfgs:
+                    return "BFGS";
+                case OptimizationMethodType.conjugateGradient_goldstein:
+                    return "Conjugate Gradient (Goldstein line search)";
+                case OptimizationMethodType.steepestDescent_goldstein:
+                    return "Steepest Descent (Goldstein line search)";
+                case OptimizationMethodType.bfgs_goldstein:
+                    return "BFGS (Goldstein line search)";
                 default:
                     throw new ApplicationException("unknown OptimizationMethod type");
             }

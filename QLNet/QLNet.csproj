@@ -272,6 +272,7 @@
     <Compile Include="Math\Optimization\ConjugateGradient.cs" />
     <Compile Include="Math\Optimization\Constraint.cs" />
     <Compile Include="Math\Optimization\EndCriteria.cs" />
+    <Compile Include="Math\Optimization\GoldsteinLineSearch.cs" />
     <Compile Include="Math\Optimization\LeastSquareProblem.cs" />
     <Compile Include="Math\Optimization\levenbergmarquardt.cs" />
     <Compile Include="Math\Optimization\LineSearch.cs" />
