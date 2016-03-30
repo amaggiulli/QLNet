@@ -384,6 +384,7 @@
     <Compile Include="PricingEngine.cs" />
     <Compile Include="Pricingengines\Americanpayoffatexpiry.cs" />
     <Compile Include="Pricingengines\Americanpayoffathit.cs" />
+    <Compile Include="Pricingengines\asian\AnalyticDiscreteGeometricAverageStrikeAsianEngine.cs" />
     <Compile Include="Pricingengines\asian\analytic_cont_geom_av_price.cs" />
     <Compile Include="Pricingengines\asian\analytic_discr_geom_av_price.cs" />
     <Compile Include="Pricingengines\asian\mcdiscreteasianengine.cs" />

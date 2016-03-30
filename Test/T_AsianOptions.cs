@@ -369,6 +369,63 @@ namespace TestSuite
                            vol.value(), expected, calculated, tolerance );
          }
       }
+      
+      [TestMethod()]
+      public void testAnalyticDiscreteGeometricAverageStrike() 
+      {
+         // Testing analytic discrete geometric average-strike Asians
+
+         DayCounter dc = new Actual360();
+         Date today = Date.Today;
+
+         SimpleQuote spot  = new SimpleQuote(100.0);
+         SimpleQuote qRate = new SimpleQuote(0.03);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+         SimpleQuote rRate = new SimpleQuote(0.06);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol = new SimpleQuote(0.20);
+         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+
+         BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+            new Handle<YieldTermStructure>(qTS),
+            new Handle<YieldTermStructure>(rTS),
+            new Handle<BlackVolTermStructure>(volTS));
+
+         IPricingEngine engine = new AnalyticDiscreteGeometricAverageStrikeAsianEngine(stochProcess);
+
+         Average.Type averageType = Average.Type.Geometric;
+         double runningAccumulator = 1.0;
+         int pastFixings = 0;
+         int futureFixings = 10;
+         Option.Type type = Option.Type.Call;
+         double strike = 100.0;
+         StrikedTypePayoff payoff = new PlainVanillaPayoff(type, strike);
+
+         Date exerciseDate = today + 360;
+         Exercise exercise = new EuropeanExercise(exerciseDate);
+
+         List<Date> fixingDates = new InitializedList<Date>(futureFixings);
+         int dt = (int)(360/futureFixings+0.5);
+         fixingDates[0] = today + dt;
+         for (int j=1; j<futureFixings; j++)
+            fixingDates[j] = fixingDates[j-1] + dt;
+
+         DiscreteAveragingAsianOption option = new DiscreteAveragingAsianOption(averageType, runningAccumulator,
+            pastFixings, fixingDates, payoff, exercise);
+         option.setPricingEngine(engine);
+
+         double calculated = option.NPV();
+         double expected = 4.97109;
+         double tolerance = 1e-5;
+         if (Math.Abs(calculated-expected) > tolerance) 
+         {
+            REPORT_FAILURE("value", averageType, runningAccumulator, pastFixings,
+                           fixingDates, payoff, exercise, spot.value(),
+                           qRate.value(), rRate.value(), today,
+                           vol.value(), expected, calculated, tolerance);
+         }
+   
+      }
 
       //    public struct DiscreteAverageData
       //    {
