@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -116,7 +117,7 @@ namespace QLNet {
         {
         }
 
-        public DiscreteAveragingAsianOption(Average.Type averageType, double runningAccumulator, int pastFixings, List<Date> fixingDates, StrikedTypePayoff payoff, Exercise exercise)
+        public DiscreteAveragingAsianOption(Average.Type averageType, double? runningAccumulator, int? pastFixings, List<Date> fixingDates, StrikedTypePayoff payoff, Exercise exercise)
             : base(payoff, exercise)
 		{
 			averageType_ = averageType;
