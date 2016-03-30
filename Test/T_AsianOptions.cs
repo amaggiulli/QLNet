@@ -427,6 +427,248 @@ namespace TestSuite
    
       }
 
+      //[TestMethod()]
+      public void testMCDiscreteGeometricAveragePrice()
+      {
+         // Testing Monte Carlo discrete geometric average-price Asians
+         // data from "Implementing Derivatives Model",
+         // Clewlow, Strickland, p.118-123
+
+         DayCounter dc = new Actual360();
+         Date today = Date.Today;
+
+         SimpleQuote spot = new SimpleQuote( 100.0 );
+         SimpleQuote qRate = new SimpleQuote( 0.03 );
+         YieldTermStructure qTS = Utilities.flatRate( today, qRate, dc );
+         SimpleQuote rRate = new SimpleQuote( 0.06 );
+         YieldTermStructure rTS = Utilities.flatRate( today, rRate, dc );
+         SimpleQuote vol = new SimpleQuote( 0.20 );
+         BlackVolTermStructure volTS = Utilities.flatVol( today, vol, dc );
+
+         BlackScholesMertonProcess stochProcess =
+             new BlackScholesMertonProcess( new Handle<Quote>( spot ),
+                                            new Handle<YieldTermStructure>( qTS ),
+                                            new Handle<YieldTermStructure>( rTS ),
+                                            new Handle<BlackVolTermStructure>( volTS ) );
+
+         double tolerance = 4.0e-3;
+
+         IPricingEngine engine =
+         new MakeMCDiscreteGeometricAPEngine
+                                 <LowDiscrepancy, Statistics>( stochProcess )
+                                 .withStepsPerYear( 1 )
+                                 .withSamples( 8191 )
+                                 .value();
+
+         Average.Type averageType = Average.Type.Geometric;
+         double runningAccumulator = 1.0;
+         int pastFixings = 0;
+         int futureFixings = 10;
+         Option.Type type = Option.Type.Call;
+         double strike = 100.0;
+         StrikedTypePayoff payoff = new PlainVanillaPayoff( type, strike );
+
+         Date exerciseDate = today + 360;
+         Exercise exercise = new EuropeanExercise( exerciseDate );
+
+         List<Date> fixingDates = new InitializedList<Date>( futureFixings );
+         int dt = (int)( 360 / futureFixings + 0.5 );
+         fixingDates[0] = today + dt;
+         for ( int j = 1; j < futureFixings; j++ )
+            fixingDates[j] = fixingDates[j - 1] + dt;
+
+         DiscreteAveragingAsianOption option =
+             new DiscreteAveragingAsianOption( averageType, runningAccumulator,
+                                               pastFixings, fixingDates,
+                                               payoff, exercise );
+         option.setPricingEngine( engine );
+
+         double calculated = option.NPV();
+
+         IPricingEngine engine2 = new AnalyticDiscreteGeometricAveragePriceAsianEngine( stochProcess );
+         option.setPricingEngine( engine2 );
+         double expected = option.NPV();
+
+         if ( Math.Abs( calculated - expected ) > tolerance )
+         {
+            REPORT_FAILURE( "value", averageType, runningAccumulator, pastFixings,
+                           fixingDates, payoff, exercise, spot.value(),
+                           qRate.value(), rRate.value(), today,
+                           vol.value(), expected, calculated, tolerance );
+         }
+      }
+
+      [TestMethod()]
+      public void testAnalyticDiscreteGeometricAveragePriceGreeks()
+      {
+         // Testing discrete-averaging geometric Asian greeks
+
+         SavedSettings backup = new SavedSettings();
+
+         Dictionary<string, double> calculated, expected, tolerance;
+         calculated = new Dictionary<string, double>( 6 );
+         expected = new Dictionary<string, double>( 6 );
+         tolerance = new Dictionary<string, double>( 6 );
+         tolerance["delta"]  = 1.0e-5;
+         tolerance["gamma"]  = 1.0e-5;
+         tolerance["theta"]  = 1.0e-5;
+         tolerance["rho"]    = 1.0e-5;
+         tolerance["divRho"] = 1.0e-5;
+         tolerance["vega"]   = 1.0e-5;
+
+         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+         double[] underlyings = { 100.0 };
+         double[] strikes = { 90.0, 100.0, 110.0 };
+         double[] qRates = { 0.04, 0.05, 0.06 };
+         double[] rRates = { 0.01, 0.05, 0.15 };
+         int[] lengths = { 1, 2 };
+         double[] vols = { 0.11, 0.50, 1.20 };
+
+         DayCounter dc = new Actual360();
+         Date today = Date.Today;
+         Settings.setEvaluationDate( today );
+
+         SimpleQuote spot = new SimpleQuote( 0.0 );
+         SimpleQuote qRate = new SimpleQuote( 0.0 );
+         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>( Utilities.flatRate( qRate, dc ) );
+         SimpleQuote rRate = new SimpleQuote( 0.0 );
+         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>( Utilities.flatRate( rRate, dc ) );
+         SimpleQuote vol = new SimpleQuote( 0.0 );
+         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>( Utilities.flatVol( vol, dc ) );
+
+         BlackScholesMertonProcess process = new BlackScholesMertonProcess( new Handle<Quote>( spot ), qTS, rTS, volTS );
+
+         for ( int i = 0; i < types.Length; i++ )
+         {
+            for ( int j = 0; j < strikes.Length; j++ )
+            {
+               for ( int k = 0; k < lengths.Length; k++ )
+               {
+                  EuropeanExercise maturity = new EuropeanExercise(today + new Period( lengths[k], TimeUnit.Years ) );
+
+                  PlainVanillaPayoff payoff = new PlainVanillaPayoff( types[i], strikes[j] );
+
+                  double runningAverage = 120;
+                  int pastFixings = 1;
+
+                  List<Date> fixingDates = new List<Date>();
+                  for ( Date d = today + new Period( 3, TimeUnit.Months );
+                            d <= maturity.lastDate();
+                            d += new Period( 3, TimeUnit.Months ) )
+                     fixingDates.Add( d );
+
+
+                  IPricingEngine engine = new AnalyticDiscreteGeometricAveragePriceAsianEngine( process );
+
+                  DiscreteAveragingAsianOption option = new DiscreteAveragingAsianOption( Average.Type.Geometric,
+                     runningAverage, pastFixings,fixingDates, payoff, maturity );
+
+                  option.setPricingEngine( engine );
+
+                  for ( int l = 0; l < underlyings.Length; l++ )
+                  {
+                     for ( int m = 0; m < qRates.Length; m++ )
+                     {
+                        for ( int n = 0; n < rRates.Length; n++ )
+                        {
+                           for ( int p = 0; p < vols.Length; p++ )
+                           {
+
+                              double u = underlyings[l];
+                              double q = qRates[m],
+                                     r = rRates[n];
+                              double v = vols[p];
+                              spot.setValue( u );
+                              qRate.setValue( q );
+                              rRate.setValue( r );
+                              vol.setValue( v );
+
+                              double value = option.NPV();
+                              calculated["delta"] = option.delta();
+                              calculated["gamma"] = option.gamma();
+                              calculated["theta"] = option.theta();
+                              calculated["rho"] = option.rho();
+                              calculated["divRho"] = option.dividendRho();
+                              calculated["vega"] = option.vega();
+
+                              if ( value > spot.value() * 1.0e-5 )
+                              {
+                                 // perturb spot and get delta and gamma
+                                 double du = u * 1.0e-4;
+                                 spot.setValue( u + du );
+                                 double value_p = option.NPV(),
+                                        delta_p = option.delta();
+                                 spot.setValue( u - du );
+                                 double value_m = option.NPV(),
+                                        delta_m = option.delta();
+                                 spot.setValue( u );
+                                 expected["delta"] = ( value_p - value_m ) / ( 2 * du );
+                                 expected["gamma"] = ( delta_p - delta_m ) / ( 2 * du );
+
+                                 // perturb rates and get rho and dividend rho
+                                 double dr = r * 1.0e-4;
+                                 rRate.setValue( r + dr );
+                                 value_p = option.NPV();
+                                 rRate.setValue( r - dr );
+                                 value_m = option.NPV();
+                                 rRate.setValue( r );
+                                 expected["rho"] = ( value_p - value_m ) / ( 2 * dr );
+
+                                 double dq = q * 1.0e-4;
+                                 qRate.setValue( q + dq );
+                                 value_p = option.NPV();
+                                 qRate.setValue( q - dq );
+                                 value_m = option.NPV();
+                                 qRate.setValue( q );
+                                 expected["divRho"] = ( value_p - value_m ) / ( 2 * dq );
+
+                                 // perturb volatility and get vega
+                                 double dv = v * 1.0e-4;
+                                 vol.setValue( v + dv );
+                                 value_p = option.NPV();
+                                 vol.setValue( v - dv );
+                                 value_m = option.NPV();
+                                 vol.setValue( v );
+                                 expected["vega"] = ( value_p - value_m ) / ( 2 * dv );
+
+                                 // perturb date and get theta
+                                 double dT = dc.yearFraction( today - 1, today + 1 );
+                                 Settings.setEvaluationDate( today - 1 );
+                                 value_m = option.NPV();
+                                 Settings.setEvaluationDate( today + 1 );
+                                 value_p = option.NPV();
+                                 Settings.setEvaluationDate( today );
+                                 expected["theta"] = ( value_p - value_m ) / dT;
+
+                                 // compare
+                                 foreach ( KeyValuePair<string, double> kvp in calculated )
+                                 {
+                                    string greek = kvp.Key;
+                                    double expct = expected[greek],
+                                           calcl = calculated[greek],
+                                           tol = tolerance[greek];
+                                    double error = Utilities.relativeError( expct, calcl, u );
+                                    if ( error > tol )
+                                    {
+                                       REPORT_FAILURE( greek, Average.Type.Geometric,
+                                                      runningAverage, pastFixings,
+                                                      new List<Date>(),
+                                                      payoff, maturity,
+                                                      u, q, r, today, v,
+                                                      expct, calcl, tol );
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+
       //    public struct DiscreteAverageData
       //    {
       //        public Option.Type type;
@@ -555,78 +797,6 @@ namespace TestSuite
       //    }
 
 
-
-      //    [TestMethod()]
-      //    public void testMCDiscreteGeometricAveragePrice() {
-
-      //    //BOOST_MESSAGE("Testing Monte Carlo discrete geometric average-price Asians...");
-
-      //    // data from "Implementing Derivatives Model",
-      //    // Clewlow, Strickland, p.118-123
-
-      //    DayCounter dc = new Actual360();
-      //    Date today = Date.Today;
-
-      //    SimpleQuote spot = new SimpleQuote(100.0);
-      //    SimpleQuote qRate = new SimpleQuote(0.03);
-      //    YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
-      //    SimpleQuote rRate = new SimpleQuote(0.06);
-      //    YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
-      //    SimpleQuote vol  = new SimpleQuote(0.20);
-      //    BlackVolTermStructure volTS =Utilities.flatVol(today, vol, dc);
-
-      //    BlackScholesMertonProcess stochProcess = 
-      //        new BlackScholesMertonProcess(new Handle<Quote>(spot),
-      //                                    new Handle<YieldTermStructure>(qTS),
-      //                                    new Handle<YieldTermStructure>(rTS),
-      //                                    new Handle<BlackVolTermStructure>(volTS));
-
-      //    double tolerance = 4.0e-3;
-
-      //    IPricingEngine engine =
-      //    new MakeMCDiscreteGeometricAPEngine
-      //                            <LowDiscrepancy,Statistics>(stochProcess)
-      //                            .withStepsPerYear(1)
-      //                            .withSamples(8191)
-      //                            .value(); 
-
-      //    Average.Type averageType = Average.Type.Geometric;
-      //    double runningAccumulator = 1.0;
-      //    int pastFixings = 0;
-      //    int futureFixings = 10;
-      //    Option.Type type = Option.Type.Call;
-      //    double strike = 100.0;
-      //    StrikedTypePayoff payoff = new PlainVanillaPayoff(type, strike); 
-
-      //    Date exerciseDate = today + 360;
-      //    Exercise exercise = new EuropeanExercise(exerciseDate);
-
-      //    List<Date> fixingDates = new InitializedList<Date>(futureFixings);
-      //    int dt = (int)(360/futureFixings+0.5);
-      //    fixingDates[0] = today + dt;
-      //    for (int j=1; j<futureFixings; j++)
-      //        fixingDates[j] = fixingDates[j-1] + dt;
-
-      //    DiscreteAveragingAsianOption  option =
-      //        new DiscreteAveragingAsianOption(averageType, runningAccumulator,
-      //                                        pastFixings, fixingDates,
-      //                                        payoff, exercise);
-      //    option.setPricingEngine(engine);
-
-      //    double calculated = option.NPV();
-
-      //    IPricingEngine engine2 =
-      //          new AnalyticDiscreteGeometricAveragePriceAsianEngine(stochProcess);
-      //    option.setPricingEngine(engine2);
-      //    double expected = option.NPV();
-
-      //    if (Math.Abs(calculated-expected) > tolerance) {
-      //        REPORT_FAILURE("value", averageType, runningAccumulator, pastFixings,
-      //                       fixingDates, payoff, exercise, spot.value(),
-      //                       qRate.value(), rRate.value(), today,
-      //                       vol.value(), expected, calculated, tolerance);
-      //    }
-      //}
 
       //    [TestMethod()]
       //    public void testMCDiscreteArithmeticAveragePrice() {
@@ -884,175 +1054,6 @@ namespace TestSuite
       //        }
       //    }
 
-      //    [TestMethod()]
-      //    public void testAnalyticDiscreteGeometricAveragePriceGreeks() {
-
-      //         //BOOST_MESSAGE("Testing discrete-averaging geometric Asian greeks...");
-
-      //         //SavedSettings backup;
-
-      //         Dictionary<string,double> calculated, expected, tolerance;
-      //         calculated = new Dictionary<string, double>(6);
-      //         expected = new Dictionary<string, double>(6);
-      //         tolerance = new Dictionary<string, double>(6);
-      //         tolerance["delta"]  = 1.0e-5;
-      //         tolerance["gamma"]  = 1.0e-5;
-      //         tolerance["theta"]  = 1.0e-5;
-      //         tolerance["rho"]    = 1.0e-5;
-      //         tolerance["divRho"] = 1.0e-5;
-      //         tolerance["vega"]   = 1.0e-5;
-
-      //         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
-      //         double[] underlyings = { 100.0 };
-      //         double[] strikes = { 90.0, 100.0, 110.0 };
-      //         double[] qRates = { 0.04, 0.05, 0.06 };
-      //         double[] rRates = { 0.01, 0.05, 0.15 };
-      //         int[] lengths = { 1, 2 };
-      //         double[] vols = { 0.11, 0.50, 1.20 };
-
-      //         DayCounter dc = new Actual360();
-      //         Date today = Date.Today;
-      //         Settings.setEvaluationDate(today);
-
-      //         SimpleQuote spot = new SimpleQuote(0.0);
-      //         SimpleQuote qRate = new SimpleQuote(0.0);
-      //         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>
-      //                                                (Utilities.flatRate(qRate, dc));
-      //         SimpleQuote rRate = new SimpleQuote(0.0);
-      //         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>
-      //                                                (Utilities.flatRate(rRate, dc));
-      //         SimpleQuote vol = new SimpleQuote(0.0);
-      //         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>
-      //                                                (Utilities.flatVol(vol, dc));
-
-      //         BlackScholesMertonProcess process = 
-      //              new BlackScholesMertonProcess(new Handle<Quote>(spot), qTS, rTS, volTS);
-
-      //         for (int i=0; i<types.Length ; i++) {
-      //           for (int j=0; j<strikes.Length ; j++) {
-      //             for (int k=0; k<lengths.Length ; k++) {
-
-      //                 EuropeanExercise maturity =
-      //                                   new EuropeanExercise(
-      //                                       today + new Period(lengths[k],TimeUnit.Years));
-
-      //                 PlainVanillaPayoff payoff =
-      //                                     new PlainVanillaPayoff(types[i], strikes[j]);
-
-      //                 double runningAverage = 120;
-      //                 int pastFixings = 1;
-
-      //                 List<Date> fixingDates = new List<Date>();
-      //                 for (Date d = today + new Period(3, TimeUnit.Months);
-      //                           d <= maturity.lastDate();
-      //                           d += new Period(3, TimeUnit.Months))
-      //                     fixingDates.Add(d);
-
-
-      //                 IPricingEngine engine = 
-      //                    new AnalyticDiscreteGeometricAveragePriceAsianEngine(process);
-
-      //                 DiscreteAveragingAsianOption option = 
-      //                     new DiscreteAveragingAsianOption(Average.Type.Geometric,
-      //                                                     runningAverage, pastFixings,
-      //                                                     fixingDates, payoff, maturity);
-      //                 option.setPricingEngine(engine);
-
-      //                 for (int l=0; l<underlyings.Length ; l++) {
-      //                   for (int m=0; m<qRates.Length ; m++) {
-      //                     for (int n=0; n<rRates.Length ; n++) {
-      //                       for (int p=0; p<vols.Length ; p++) {
-
-      //                           double u = underlyings[l];
-      //                           double q = qRates[m],
-      //                                r = rRates[n];
-      //                           double v = vols[p];
-      //                           spot.setValue(u);
-      //                           qRate.setValue(q);
-      //                           rRate.setValue(r);
-      //                           vol.setValue(v);
-
-      //                           double value = option.NPV();
-      //                           calculated["delta"]  = option.delta();
-      //                           calculated["gamma"]  = option.gamma();
-      //                           calculated["theta"]  = option.theta();
-      //                           calculated["rho"]    = option.rho();
-      //                           calculated["divRho"] = option.dividendRho();
-      //                           calculated["vega"]   = option.vega();
-
-      //                           if (value > spot.value()*1.0e-5) {
-      //                               // perturb spot and get delta and gamma
-      //                               double du = u*1.0e-4;
-      //                               spot.setValue(u+du);
-      //                               double value_p = option.NPV(),
-      //                                    delta_p = option.delta();
-      //                               spot.setValue(u-du);
-      //                               double value_m = option.NPV(),
-      //                                    delta_m = option.delta();
-      //                               spot.setValue(u);
-      //                               expected["delta"] = (value_p - value_m)/(2*du);
-      //                               expected["gamma"] = (delta_p - delta_m)/(2*du);
-
-      //                               // perturb rates and get rho and dividend rho
-      //                               double dr = r*1.0e-4;
-      //                               rRate.setValue(r+dr);
-      //                               value_p = option.NPV();
-      //                               rRate.setValue(r-dr);
-      //                               value_m = option.NPV();
-      //                               rRate.setValue(r);
-      //                               expected["rho"] = (value_p - value_m)/(2*dr);
-
-      //                               double dq = q*1.0e-4;
-      //                               qRate.setValue(q+dq);
-      //                               value_p = option.NPV();
-      //                               qRate.setValue(q-dq);
-      //                               value_m = option.NPV();
-      //                               qRate.setValue(q);
-      //                               expected["divRho"] = (value_p - value_m)/(2*dq);
-
-      //                               // perturb volatility and get vega
-      //                               double dv = v*1.0e-4;
-      //                               vol.setValue(v+dv);
-      //                               value_p = option.NPV();
-      //                               vol.setValue(v-dv);
-      //                               value_m = option.NPV();
-      //                               vol.setValue(v);
-      //                               expected["vega"] = (value_p - value_m)/(2*dv);
-
-      //                               // perturb date and get theta
-      //                               double dT = dc.yearFraction(today-1, today+1);
-      //                               Settings.setEvaluationDate(today-1);
-      //                               value_m = option.NPV();
-      //                               Settings.setEvaluationDate(today+1);
-      //                               value_p = option.NPV();
-      //                               Settings.setEvaluationDate(today);
-      //                               expected["theta"] = (value_p - value_m)/dT;
-
-      //                               // compare
-      //                               foreach (KeyValuePair<string, double> kvp in calculated){
-      //                                   string greek = kvp.Key;
-      //                                   double expct = expected[greek],
-      //                                        calcl = calculated[greek],
-      //                                        tol   = tolerance [greek];
-      //                                   double error =Utilities.relativeError(expct,calcl,u);
-      //                                   if (error>tol) {
-      //                                       REPORT_FAILURE(greek, Average.Type.Geometric,
-      //                                                      runningAverage, pastFixings,
-      //                                                      new List<Date>(),
-      //                                                      payoff, maturity,
-      //                                                      u, q, r, today, v,
-      //                                                      expct, calcl, tol);
-      //                                   }
-      //                               }
-      //                           }
-      //                       }
-      //                     }
-      //                   }
-      //                 }
-      //             }
-      //           }
-      //         }
-      //     }
 
       //    [TestMethod()]
       //    public void testPastFixings() {
