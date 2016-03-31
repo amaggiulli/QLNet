@@ -39,14 +39,14 @@ namespace QLNet
 
       \ingroup asianengines
    */
-   public class AnalyticDiscreteGeometricAveragePriceAsianEngine : DiscreteAveragingAsianOption.Engine 
+   public class AnalyticDiscreteGeometricAveragePriceAsianEngine : DiscreteAveragingAsianOption.Engine
    {
       private GeneralizedBlackScholesProcess process_;
 
-      public AnalyticDiscreteGeometricAveragePriceAsianEngine(GeneralizedBlackScholesProcess process)
+      public AnalyticDiscreteGeometricAveragePriceAsianEngine( GeneralizedBlackScholesProcess process )
       {
          process_ = process;
-         process_.registerWith(update);
+         process_.registerWith( update );
       }
 
       public override void calculate()
@@ -56,13 +56,13 @@ namespace QLNet
                QL_REQUIRE(arguments_.averageType == Average::Geometric,
                         "not a geometric average option");
          */
-         Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European,()=> "not an European Option");
+         Utils.QL_REQUIRE( arguments_.exercise.type() == Exercise.Type.European, () => "not an European Option" );
 
          double runningLog;
          int pastFixings;
          if ( arguments_.averageType == Average.Type.Geometric )
          {
-            Utils.QL_REQUIRE( arguments_.runningAccumulator > 0.0,()=>
+            Utils.QL_REQUIRE( arguments_.runningAccumulator > 0.0, () =>
                        "positive running product required: " + arguments_.runningAccumulator + " not allowed" );
 
             runningLog = Math.Log( arguments_.runningAccumulator.GetValueOrDefault() );
@@ -75,7 +75,7 @@ namespace QLNet
          }
 
          PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
-         Utils.QL_REQUIRE( payoff != null,()=> "non-plain payoff given" );
+         Utils.QL_REQUIRE( payoff != null, () => "non-plain payoff given" );
 
          Date referenceDate = process_.riskFreeRate().link.referenceDate();
          DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
@@ -87,7 +87,7 @@ namespace QLNet
          {
             if ( arguments_.fixingDates[i] >= referenceDate )
             {
-               double t = voldc.yearFraction( referenceDate,arguments_.fixingDates[i] );
+               double t = voldc.yearFraction( referenceDate, arguments_.fixingDates[i] );
                fixingTimes.Add( t );
             }
          }
@@ -104,7 +104,7 @@ namespace QLNet
          double timeSum = 0;
          fixingTimes.ForEach( ( ii, vv ) => timeSum += fixingTimes[ii] );
 
-         double vola = process_.blackVolatility().link.blackVol(arguments_.exercise.lastDate(),payoff.strike() );
+         double vola = process_.blackVolatility().link.blackVol( arguments_.exercise.lastDate(), payoff.strike() );
          double temp = 0.0;
          for ( i = pastFixings + 1; i < numberOfFixings; i++ )
             temp += fixingTimes[i - pastFixings - 1] * ( N - i );
@@ -121,15 +121,15 @@ namespace QLNet
          double nu = riskFreeRate - dividendRate - 0.5 * vola * vola;
 
          double s = process_.stateVariable().link.value();
-         Utils.QL_REQUIRE( s > 0.0,()=> "positive underlying value required" );
+         Utils.QL_REQUIRE( s > 0.0, () => "positive underlying value required" );
 
          int M = ( pastFixings == 0 ? 1 : pastFixings );
          double muG = pastWeight * runningLog / M + futureWeight * Math.Log( s ) + nu * timeSum / N;
          double forwardPrice = Math.Exp( muG + variance / 2.0 );
 
-         double riskFreeDiscount = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate() );
+         double riskFreeDiscount = process_.riskFreeRate().link.discount( arguments_.exercise.lastDate() );
 
-         BlackCalculator black = new BlackCalculator( payoff, forwardPrice, Math.Sqrt( variance ),riskFreeDiscount );
+         BlackCalculator black = new BlackCalculator( payoff, forwardPrice, Math.Sqrt( variance ), riskFreeDiscount );
 
          results_.value = black.value();
          results_.delta = futureWeight * black.delta( forwardPrice ) * forwardPrice / s;
