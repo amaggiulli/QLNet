@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,20 +20,20 @@
 
 namespace QLNet
 {
-    //! Business/252 day count convention
-    public class Business252 : DayCounter
-    {
-        private Calendar calendar_;
+   //! Business/252 day count convention
+   public class Business252 : DayCounter
+   {
+      public Business252(Calendar c = null)
+      {
+         calendar_ = c ?? new Brazil();
+         dayCounter_ = this;
+      }
 
-        // public Business252(Calendar c = Brazil())
-        public Business252(Calendar c)
-        {
-            calendar_ = c;
-            dayCounter_ = this;
-        }
+      public override string name() { return "Business/252(" + calendar_.name() + ")"; }
+      public override int dayCount(Date d1, Date d2) { return calendar_.businessDaysBetween(d1, d2); }
+      public override double yearFraction(Date d1, Date d2, Date d3, Date d4) { return dayCount(d1, d2) / 252.0; }
 
-        public override string name() { return "Business/252(" + calendar_.name() + ")"; }
-        public override int dayCount(Date d1, Date d2) { return calendar_.businessDaysBetween(d1, d2); }
-        public override double yearFraction(Date d1, Date d2, Date d3, Date d4) { return dayCount(d1, d2) / 252.0; }
-    }
+      private Calendar calendar_;
+
+   }
 }
