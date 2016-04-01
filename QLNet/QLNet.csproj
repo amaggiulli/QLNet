@@ -285,6 +285,8 @@
     <Compile Include="Math\Optimization\ProjectedCostFunction.cs" />
     <Compile Include="Math\Optimization\Simplex.cs" />
     <Compile Include="Math\Optimization\SteepestDescent.cs" />
+    <Compile Include="Math\PascalTriangle.cs" />
+    <Compile Include="Math\PolynomialFunction.cs" />
     <Compile Include="Math\PrimeNumbers.cs" />
     <Compile Include="Math\randomnumbers\Haltonrsg.cs" />
     <Compile Include="Math\randomnumbers\inversecumulativerng.cs" />
