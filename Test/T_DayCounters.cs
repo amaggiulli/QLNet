@@ -420,5 +420,33 @@ namespace TestSuite
             }
          }
       }
+
+      [TestMethod()]
+      public void testIntraday() 
+      {
+         // Testing intraday behavior of day counter
+
+         Date d1 = new Date(12, Month.February, 2015);
+         Date d2 = new Date(14, Month.February, 2015, 12, 34, 17, 1);
+
+         double tol = 100*Const.QL_EPSILON;
+
+         DayCounter[] dayCounters = { new ActualActual(), new Actual365Fixed(), new Actual360() };
+
+         for (int i=0; i < dayCounters.Length; ++i) 
+         {
+            DayCounter dc = dayCounters[i];
+
+            double expected = ((12*60 + 34)*60 + 17 + 0.001)
+                                 * dc.yearFraction(d1, d1+1)/86400
+                                 + dc.yearFraction(d1, d1+2);
+
+            Assert.IsTrue( Math.Abs(dc.yearFraction(d1, d2) - expected) < tol,
+                           "can not reproduce result for day counter " + dc.name());
+
+            Assert.IsTrue( Math.Abs(dc.yearFraction(d2, d1) + expected) < tol,
+                           "can not reproduce result for day counter " + dc.name());
+         }
+      }
    }
 }
