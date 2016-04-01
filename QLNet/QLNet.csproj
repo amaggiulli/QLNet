@@ -225,6 +225,7 @@
     <Compile Include="legacy\libormarketmodels\lmlinexpcorrmodel.cs" />
     <Compile Include="legacy\libormarketmodels\lmlinexpvolmodel.cs" />
     <Compile Include="legacy\libormarketmodels\lmvolmodel.cs" />
+    <Compile Include="Math\AbcdMathFunction.cs" />
     <Compile Include="Math\beta.cs" />
     <Compile Include="Math\Comparison.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
@@ -481,6 +482,8 @@
     <Compile Include="Termstructures\Iterativebootstrap.cs" />
     <Compile Include="Termstructures\localbootstrap.cs" />
     <Compile Include="Termstructures\TermStructure.cs" />
+    <Compile Include="Termstructures\Volatility\AbcdCalibration.cs" />
+    <Compile Include="Termstructures\Volatility\AbcdFunction.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondConstantVolatility.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondVolatilityStructure.cs" />
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />

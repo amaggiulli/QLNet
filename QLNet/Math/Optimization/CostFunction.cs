@@ -86,4 +86,10 @@ namespace QLNet
       //! Default epsilon for finite difference method :
       public virtual double finiteDifferenceEpsilon() { return 1e-8; }
    }
+
+   public interface IParametersTransformation 
+   {
+      Vector direct(Vector x) ;
+      Vector inverse(Vector x);
+   }
 }
