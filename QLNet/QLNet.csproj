@@ -188,6 +188,7 @@
     <Compile Include="Instruments\fixedratebondforward.cs" />
     <Compile Include="Instruments\forward.cs" />
     <Compile Include="Instruments\forwardrateagreement.cs" />
+    <Compile Include="Instruments\Futures.cs" />
     <Compile Include="Instruments\ImpliedVolatility.cs" />
     <Compile Include="Instruments\InflationCapFloor.cs" />
     <Compile Include="Instruments\Instrument.cs" />

@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,6 +20,17 @@
 using System;
 
 namespace QLNet {
+   public struct Pillar
+   {
+       //! Enumeration for pillar determination alternatives
+       /*! These alternatives specify the determination of the pillar date. */
+       public enum Choice
+       {
+          MaturityDate,     //! instruments maturity date
+          LastRelevantDate, //! last date relevant for instrument pricing
+          CustomDate        //! custom choice
+       }
+    }
     // Base helper class for bootstrapping
     /* This class provides an abstraction for the instruments used to bootstrap a term structure.
        It is advised that a bootstrap helper for an instrument contains an instance of the actual instrument 
@@ -29,6 +40,7 @@ namespace QLNet {
         protected Handle<Quote> quote_;
         protected TS termStructure_;
         protected Date earliestDate_, latestDate_;
+        protected Date maturityDate_, latestRelevantDate_, pillarDate_;
 
         public BootstrapHelper() { } // required for generics
 
@@ -67,11 +79,44 @@ namespace QLNet {
         // earliest relevant date
         // The earliest date at which discounts are needed by the helper in order to provide a quote.
         public virtual Date earliestDate() { return earliestDate_; }
+        
+        //! instrument's maturity date
+        public virtual Date maturityDate()
+        {
+           if ( maturityDate_ == null )
+              return latestRelevantDate();
+           return maturityDate_;   
+        }
+
+        //! latest relevant date
+        /*! The latest date at which data are needed by the helper
+            in order to provide a quote. It does not necessarily
+            equal the maturity of the underlying instrument.
+        */
+        public virtual Date latestRelevantDate() 
+        {
+           if (latestRelevantDate_ == null)
+            return latestDate();
+           return latestRelevantDate_;
+        }
+        
+        //! pillar date
+        public virtual Date pillarDate()
+        {
+           if ( pillarDate_ == null )
+              return latestDate();
+           return pillarDate_;
+        }
 
         // latest relevant date
         /* The latest date at which discounts are needed by the helper in order to provide a quote.
          * It does not necessarily equal the maturity of the underlying instrument. */
-        public virtual Date latestDate() { return latestDate_; }
+        public virtual Date latestDate()
+        {
+           if ( latestDate_ == null )
+              return pillarDate_;
+           return latestDate_;
+        }
 
 
         #region observer interface
