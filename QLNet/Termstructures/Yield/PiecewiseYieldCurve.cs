@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2014  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -64,7 +64,15 @@ namespace QLNet {
       public List<Date> dates_ { get; set; }
       public List<Date> dates() { calculate(); return dates_; }
       // here we do not refer to the base curve as in QL because our base curve is YieldTermStructure and not Traits::base_curve
-      public override Date maxDate() { calculate(); return dates_.Last(); }
+      public Date maxDate_ { get; set; }
+      public override Date maxDate()
+      {
+         calculate();
+         if ( maxDate_ != null )
+            return maxDate_;
+
+         return dates_.Last();
+      }
 
       public List<double> data_ { get; set; }
       public List<double> data() { calculate(); return data_; }
