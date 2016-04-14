@@ -155,7 +155,14 @@ namespace QLNet
 
       public List<Date> dates_ { get; set; }
       public List<Date> dates() { return dates_; }
-      public Date maxDate() { return dates_.Last(); }
+      public Date maxDate_ { get; set; }
+      public Date maxDate()
+      {
+         if ( maxDate_ != null )
+            return maxDate_;
+
+         return dates_.Last();
+      }
 
       public List<double> data_ { get; set; }
       public List<double> discounts() { return this.data_; }
