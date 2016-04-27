@@ -39,7 +39,7 @@ namespace QLNet {
 
         public override double value(double guess) 
 		  {
-            curve_.updateGuess(curve_.data(), guess, segment_);
+            curve_.updateGuess(curve_.data_, guess, segment_);
             curve_.interpolation_.update();
             return helper_.quoteError();
         }
