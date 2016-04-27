@@ -67,7 +67,7 @@ namespace QLNet
 		private void initialize()
 		{
 			// ensure helpers are sorted
-			ts_.instruments_.Sort( ( x, y ) => x.latestDate().CompareTo( y.latestDate() ) );
+			ts_.instruments_.Sort( ( x, y ) => x.pillarDate().CompareTo( y.pillarDate() ) );
 
 			// skip expired helpers
 			Date firstDate = ts_.initialDate();
@@ -80,19 +80,32 @@ namespace QLNet
 						  "not enough alive instruments: " + alive_ +
 						  " provided, " + ( ts_.interpolator_.requiredPoints - 1 ) +
 						  " required" );
+         
+         
+         if ( ts_.dates_ == null )
+         {
+            ts_.dates_ = new InitializedList<Date>( alive_ + 1 );
+            ts_.times_ = new InitializedList<double>( alive_ + 1 );
+         }
+         else if ( ts_.dates_.Count != alive_ + 1 )
+         {
+            ts_.dates_.Resize( alive_ + 1 );
+            ts_.times_.Resize( alive_ + 1 );
+         }
 
-			List<Date> dates = ts_.dates_ = new List<Date>();
-			List<double> times = ts_.times_ = new List<double>();
+         List<Date> dates = ts_.dates_;
+         List<double> times = ts_.times_;
+         
 
 			errors_ = new List<BootstrapError<T, U>>( alive_ + 1 );
-			dates.Add( firstDate );
-			times.Add( ts_.timeFromReference( dates[0] ) );
+			dates[0] = firstDate ;
+			times[0] = ( ts_.timeFromReference( dates[0] ) );
          Date latestRelevantDate, maxDate = firstDate;
 			for ( int i = 1, j = firstAliveHelper_; j < n_; ++i, ++j )
 			{
 				BootstrapHelper<U> helper = ts_.instruments_[j];
-            dates.Add( helper.pillarDate() );
-				times.Add( ts_.timeFromReference( dates[i] ) );
+            dates[i] = ( helper.pillarDate() );
+				times[i] = ( ts_.timeFromReference( dates[i] ) );
 				// check for duplicated maturity
             Utils.QL_REQUIRE( dates[i - 1] != dates[i], () => "more than one instrument with maturity " + dates[i] );
             latestRelevantDate = helper.latestRelevantDate();
@@ -166,10 +179,10 @@ namespace QLNet
 				// This call creates helpers, and removes "const".
 				// There is a significant interaction with observability.
 				ts_.setTermStructure( ts_.instruments_[j] );
-			}
+			} 
 
 			List<double> times = ts_.times_;
-			List<double> data = ts_.data_;
+            List<double> data = ts_.data_;
 			double accuracy = ts_.accuracy_;
 			int maxIterations = ts_.maxIterations() - 1;
 
