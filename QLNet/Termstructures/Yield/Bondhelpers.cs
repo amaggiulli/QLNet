@@ -21,105 +21,129 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QLNet {
-    //! fixed-coupon bond helper
-    /*! \warning This class assumes that the reference date
-                 does not change between calls of setTermStructure().
-    */
-    public class BondHelper : RelativeDateRateHelper {
-        protected Bond bond_;
-        protected bool useCleanPrice_;
-        public Bond bond() { return bond_; }
+namespace QLNet
+{
+   //! Bond helper for curve bootstrap
+   /*! \warning This class assumes that the reference date
+                does not change between calls of setTermStructure().
+   */
+   public class BondHelper : RateHelper
+   {
+      /*! \warning Setting a pricing engine to the passed bond from
+                   external code will cause the bootstrap to fail or
+                   to give wrong results. It is advised to discard
+                   the bond after creating the helper, so that the
+                   helper has sole ownership of it.
+      */
+      public BondHelper( Handle<Quote> price, Bond bond, bool useCleanPrice = true )
+         : base( price )
+      {
+         bond_ = bond;
 
-        // need to init this because it is used before the handle has any link, i.e. setTermStructure will be used after ctor
-        RelinkableHandle<YieldTermStructure> termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
+         // the bond's last cashflow date, which can be later than
+         // bond's maturity date because of adjustment
+         latestDate_ = bond_.cashflows().Last().date();
+         earliestDate_ = bond_.nextCashFlowDate();
+         
+         termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
+         bond_.setPricingEngine(new DiscountingBondEngine(termStructureHandle_));
 
-
-        /*! \warning Setting a pricing engine to the passed bond from
-                     external code will cause the bootstrap to fail or
-                     to give wrong results. It is advised to discard
-                     the bond after creating the helper, so that the
-                     helper has sole ownership of it.
-        */
-        public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice = true) : base(price) {
-            bond_ = bond;
-
-            latestDate_ = bond_.maturityDate();
-            initializeDates();
-
-            IPricingEngine bondEngine = new DiscountingBondEngine(termStructureHandle_);
-            bond_.setPricingEngine(bondEngine);
-
-            useCleanPrice_ = useCleanPrice;
-        }
+         useCleanPrice_ = useCleanPrice;
+      }
 
 
-        //! \name BootstrapHelper interface
-        public override void setTermStructure(YieldTermStructure t) {
-            // do not set the relinkable handle as an observer - force recalculation when needed
-            termStructureHandle_.linkTo(t, false);
-            base.setTermStructure(t);
-        }
+      //! \name RateHelper interface
+      public override void setTermStructure( YieldTermStructure t )
+      {
+         // do not set the relinkable handle as an observer - force recalculation when needed
+         termStructureHandle_.linkTo( t, false );
+         base.setTermStructure( t );
+      }
 
-        public override double impliedQuote() {
-            if (termStructure_ == null)
-                throw new ApplicationException("term structure not set");
-            // we didn't register as observers - force calculation
-            bond_.recalculate();
-            if (useCleanPrice_)
-                return bond_.cleanPrice();
-            else
-                return bond_.dirtyPrice();
-        }
+      public override double impliedQuote()
+      {
+         Utils.QL_REQUIRE( termStructure_ != null,()=> "term structure not set" );
+         // we didn't register as observers - force calculation
+         bond_.recalculate();
+         if ( useCleanPrice_ )
+            return bond_.cleanPrice();
+         else
+            return bond_.dirtyPrice();
+      }
 
-        protected override void initializeDates() {
-           latestDate_ = bond_.cashflows().Last().date();
-           earliestDate_ = bond_.nextCashFlowDate();
-        }
-    }
+      public Bond bond() { return bond_; }
+      public bool useCleanPrice() { return useCleanPrice_; }
 
+      protected Bond bond_;
+      protected RelinkableHandle<YieldTermStructure> termStructureHandle_;
+      protected bool useCleanPrice_;
 
-    public class FixedRateBondHelper : BondHelper {
-        protected FixedRateBond fixedRateBond_;
-        public FixedRateBond fixedRateBond() { return fixedRateBond_; }
+   }
 
-        //public FixedRateBondHelper(Quote cleanPrice, int settlementDays, double faceAmount, Schedule schedule,
-        //                   List<double> coupons, DayCounter dayCounter,
-        //                   BusinessDayConvention paymentConv = Following,
-        //                   double redemption = 100.0,
-        //                   Date issueDate = null);
-        public FixedRateBondHelper(Handle<Quote> price, int settlementDays, double faceAmount, Schedule schedule,
-                                   List<double> coupons, DayCounter dayCounter, BusinessDayConvention paymentConvention,
-                                   double redemption, Date issueDate, Calendar paymentCalendar = null,
-			                       Period exCouponPeriod = null, Calendar exCouponCalendar = null,
-                                   BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false,
-                                   bool useCleanPrice = true)
-            : base(price, new FixedRateBond(settlementDays, faceAmount, schedule,
-                                                 coupons, dayCounter, paymentConvention,
-                                                 redemption, issueDate, paymentCalendar, 
-                                                 exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth), useCleanPrice)
-        {
-            fixedRateBond_ = bond_ as FixedRateBond;
-        }
-    }
+   //! Fixed-coupon bond helper for curve bootstrap
+   public class FixedRateBondHelper : BondHelper
+   {
+      public FixedRateBondHelper( Handle<Quote> price, 
+                                  int settlementDays, 
+                                  double faceAmount, 
+                                  Schedule schedule,
+                                  List<double> coupons, 
+                                  DayCounter dayCounter, 
+                                  BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                                  double redemption = 100, 
+                                  Date issueDate = null, 
+                                  Calendar paymentCalendar = null,
+                                  Period exCouponPeriod = null, 
+                                  Calendar exCouponCalendar = null,
+                                  BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, 
+                                  bool exCouponEndOfMonth = false,
+                                  bool useCleanPrice = true )
+         : base( price, new FixedRateBond( settlementDays, faceAmount, schedule,
+                                           coupons, dayCounter, paymentConvention,
+                                           redemption, issueDate, paymentCalendar,
+                                           exCouponPeriod, exCouponCalendar, 
+                                           exCouponConvention, exCouponEndOfMonth ), useCleanPrice )
+      {
+         fixedRateBond_ = bond_ as FixedRateBond;
+      }
 
-    public class CPIBondHelper : BondHelper
-    {
-        protected CPIBond cpiBond_;
-        public CPIBond cpiBond() { return cpiBond_; }
+      public FixedRateBond fixedRateBond() { return fixedRateBond_; }
+      protected FixedRateBond fixedRateBond_;
+   }
 
-        public CPIBondHelper(Handle<Quote> price, int settlementDays, double faceAmount, bool growthOnly, double baseCPI, 
-                                   Period observationLag, ZeroInflationIndex cpiIndex, InterpolationType observationInterpolation, 
-                                   Schedule schedule, List<double> fixedRate, DayCounter dayCounter, BusinessDayConvention paymentConvention,
-                                   double redemption, Date issueDate, Calendar paymentCalendar = null,
-                                   Period exCouponPeriod = null, Calendar exCouponCalendar = null,
-                                   BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, bool exCouponEndOfMonth = false,
-                                   bool useCleanPrice = true)
-            : base(price, new CPIBond(settlementDays, faceAmount, growthOnly, baseCPI, observationLag, cpiIndex, observationInterpolation, schedule,
-                                      fixedRate, dayCounter, paymentConvention, issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar,
-                                      exCouponConvention, exCouponEndOfMonth), useCleanPrice)
-        {
-            cpiBond_ = bond_ as CPIBond;
-        }
-    }
+   //! CPI bond helper for curve bootstrap
+   public class CPIBondHelper : BondHelper
+   {
+      public CPIBondHelper( Handle<Quote> price, 
+                            int settlementDays, 
+                            double faceAmount, 
+                            bool growthOnly, 
+                            double baseCPI,
+                            Period observationLag, 
+                            ZeroInflationIndex cpiIndex, 
+                            InterpolationType observationInterpolation,
+                            Schedule schedule, 
+                            List<double> fixedRate,
+                            DayCounter accrualDayCounter, 
+                            BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                            Date issueDate = null, 
+                            Calendar paymentCalendar = null,
+                            Period exCouponPeriod = null, 
+                            Calendar exCouponCalendar = null,
+                            BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted, 
+                            bool exCouponEndOfMonth = false,
+                            bool useCleanPrice = true )
+         : base( price, new CPIBond( settlementDays, faceAmount, growthOnly, baseCPI, 
+                                     observationLag, cpiIndex, observationInterpolation,
+                                     schedule, fixedRate, accrualDayCounter, paymentConvention, 
+                                     issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar,
+                                     exCouponConvention, exCouponEndOfMonth ), useCleanPrice )
+      {
+         cpiBond_ = bond_ as CPIBond;
+      }
+
+      public CPIBond cpiBond() { return cpiBond_; }
+      protected CPIBond cpiBond_;
+
+   }
 }
