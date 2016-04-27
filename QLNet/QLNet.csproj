@@ -106,6 +106,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Exercise.cs" />
+    <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="grid.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="Index.cs" />
@@ -227,7 +228,9 @@
     <Compile Include="legacy\libormarketmodels\lmlinexpvolmodel.cs" />
     <Compile Include="legacy\libormarketmodels\lmvolmodel.cs" />
     <Compile Include="Math\AbcdMathFunction.cs" />
+    <Compile Include="Math\BernsteinPolynomial.cs" />
     <Compile Include="Math\beta.cs" />
+    <Compile Include="Math\BSpline.cs" />
     <Compile Include="Math\Comparison.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
@@ -526,12 +529,14 @@
     <Compile Include="Termstructures\Yield\Bondhelpers.cs" />
     <Compile Include="Termstructures\Yield\Bootstraptraits.cs" />
     <Compile Include="Termstructures\Yield\DiscountCurve.cs" />
+    <Compile Include="Termstructures\Yield\FittedBondDiscountCurve.cs" />
     <Compile Include="Termstructures\Yield\Flatforward.cs" />
     <Compile Include="Termstructures\Yield\ForwardCurve.cs" />
     <Compile Include="Termstructures\Yield\ForwardSpreadedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\ForwardStructure.cs" />
     <Compile Include="Termstructures\Yield\ImpliedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\InterpolatedPiecewiseZeroSpreadedTermStructure.cs" />
+    <Compile Include="Termstructures\Yield\NonLinearFittingMethods.cs" />
     <Compile Include="Termstructures\Yield\OISRateHelper.cs" />
     <Compile Include="Termstructures\Yield\PiecewiseYieldCurve.cs" />
     <Compile Include="Termstructures\Yield\Ratehelpers.cs" />
