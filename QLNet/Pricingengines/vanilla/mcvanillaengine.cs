@@ -24,7 +24,7 @@ namespace QLNet {
     public abstract class MCVanillaEngine<MC, RNG, S> : MCVanillaEngine<MC, RNG, S, VanillaOption>
             where RNG : IRSG, new()
             where S : IGeneralStatistics, new() {
-        protected MCVanillaEngine(StochasticProcess process, int timeSteps, int timeStepsPerYear, bool brownianBridge,
+        protected MCVanillaEngine(StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
                                   bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
                                   int maxSamples, ulong seed)
             : base(process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate, requiredSamples,
@@ -39,14 +39,14 @@ namespace QLNet {
         //typedef typename McSimulation<MC,RNG,S>::result_type result_type;
 
         protected StochasticProcess process_;
-        protected int timeSteps_, timeStepsPerYear_;
+        protected int? timeSteps_, timeStepsPerYear_;
         protected int requiredSamples_, maxSamples_;
         protected double requiredTolerance_;
         protected bool brownianBridge_;
         protected ulong seed_;
 
 
-        protected MCVanillaEngine(StochasticProcess process, int timeSteps, int timeStepsPerYear, bool brownianBridge,
+        protected MCVanillaEngine(StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
                                   bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
                                   int maxSamples, ulong seed) : base(antitheticVariate, controlVariate) {
             process_ = process;
@@ -58,14 +58,14 @@ namespace QLNet {
             brownianBridge_ = brownianBridge;
             seed_ = seed;
 
-            if (!(timeSteps != 0 || timeStepsPerYear != 0))
-                throw new ApplicationException("no time steps provided");
-            if (!(timeSteps == 0 || timeStepsPerYear == 0))
-                throw new ApplicationException("both time steps and time steps per year were provided");
-            if (!(timeSteps != 0))
-                throw new ApplicationException("timeSteps must be positive, " + timeSteps + " not allowed");
-            //if (!(timeStepsPerYear != 0))
-            //    throw new ApplicationException("timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed");
+            Utils.QL_REQUIRE( timeSteps != null || timeStepsPerYear != null,()=> "no time steps provided" );
+            Utils.QL_REQUIRE( timeSteps == null || timeStepsPerYear == null,()=>
+                       "both time steps and time steps per year were provided" );
+            if ( timeSteps != null)
+               Utils.QL_REQUIRE( timeSteps > 0, () => "timeSteps must be positive, " + timeSteps + " not allowed" );
+            if ( timeStepsPerYear  != null) 
+               Utils.QL_REQUIRE( timeStepsPerYear > 0 , () => 
+               "timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed" );
 
             process_.registerWith(update);
         }
@@ -82,8 +82,8 @@ namespace QLNet {
         protected override TimeGrid timeGrid() {
             Date lastExerciseDate = arguments_.exercise.lastDate();
             double t = process_.time(lastExerciseDate);
-            if (timeSteps_ != 0) {
-                return new TimeGrid(t, timeSteps_);
+            if (timeSteps_ != null) {
+                return new TimeGrid(t, timeSteps_.Value);
             } else if (timeStepsPerYear_ != 0) {
                 int steps = (int)(timeStepsPerYear_*t);
                 return new TimeGrid(t, Math.Max(steps, 1));
@@ -92,11 +92,15 @@ namespace QLNet {
             }
         }
 
-        protected override PathGenerator<IRNG> pathGenerator() {
+        protected override IPathGenerator<IRNG> pathGenerator() {
             int dimensions = process_.factors();
             TimeGrid grid = timeGrid();
             IRNG generator = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
-            return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
+            if ( typeof( MC ) == typeof( SingleVariate ) )
+               return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
+            else
+               return new MultiPathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
+
         }
 
         protected override double controlVariateValue() {

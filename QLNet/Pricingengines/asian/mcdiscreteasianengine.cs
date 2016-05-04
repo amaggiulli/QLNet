@@ -98,7 +98,7 @@ namespace QLNet
             return new TimeGrid(fixingTimes.Last(), fixingTimes.Count);
         }
 
-        protected override PathGenerator<IRNG> pathGenerator() {
+        protected override IPathGenerator<IRNG> pathGenerator() {
 
             TimeGrid grid = this.timeGrid();
             IRNG gen = (IRNG)new  RNG().make_sequence_generator(grid.size()-1,seed_);
