@@ -117,11 +117,19 @@ namespace QLNet {
         */
         //public void calibrate(List<CalibrationHelper> instruments, OptimizationMethod method, EndCriteria endCriteria,
         //           Constraint constraint = new Constraint(), List<double> weights = new List<double>()) {
-        public void calibrate(List<CalibrationHelper> instruments, OptimizationMethod method, EndCriteria endCriteria,
-                   Constraint additionalConstraint, List<double> weights) {
-
-            if (!(weights.Count == 0 || weights.Count == instruments.Count))
-                throw new ApplicationException("mismatch between number of instruments and weights");
+        public void calibrate(List<CalibrationHelper> instruments, 
+                              OptimizationMethod method, 
+                              EndCriteria endCriteria,
+                              Constraint additionalConstraint = null, 
+                              List<double> weights = null,
+                              List<bool> fixParameters = null) 
+        {
+           if ( weights == null ) weights = new List<double>();
+           if ( additionalConstraint == null ) additionalConstraint = new Constraint();
+           Utils.QL_REQUIRE( weights.empty() || weights.Count == instruments.Count,()=>
+               "mismatch between number of instruments (" +
+               instruments.Count + ") and weights(" +
+               weights.Count + ")" );
 
             Constraint c;
             if (additionalConstraint.empty())
@@ -129,22 +137,37 @@ namespace QLNet {
             else
                 c = new CompositeConstraint(constraint_,additionalConstraint);
             List<double> w = weights.Count == 0 ? new InitializedList<double>(instruments.Count, 1.0): weights;
-            CalibrationFunction f = new CalibrationFunction(this, instruments, w);
 
-            Problem prob = new Problem(f, c, parameters());
+            Vector prms = parameters();
+            List<bool> all = new InitializedList<bool>(prms.size(), false);
+            Projection proj = new Projection(prms,fixParameters ?? all);
+            CalibrationFunction f = new CalibrationFunction(this,instruments,w,proj);
+            ProjectedConstraint pc = new ProjectedConstraint(c,proj);
+            Problem prob = new Problem(f, pc, proj.project(prms));
             shortRateEndCriteria_ = method.minimize(prob, endCriteria);
             Vector result = new Vector(prob.currentValue());
-            setParams(result);
-            // recheck
+            setParams(proj.include(result));
             Vector shortRateProblemValues_ = prob.values(result);
 
             notifyObservers();
+
+            //CalibrationFunction f = new CalibrationFunction(this, instruments, w);
+
+            //Problem prob = new Problem(f, c, parameters());
+            //shortRateEndCriteria_ = method.minimize(prob, endCriteria);
+            //Vector result = new Vector(prob.currentValue());
+            //setParams(result);
+            //// recheck
+            //Vector shortRateProblemValues_ = prob.values(result);
+
+            //notifyObservers();
         }
 
-        public double value(Vector p, List<CalibrationHelper> instruments) {
+        public double value(Vector parameters, List<CalibrationHelper> instruments) {
             List<double> w = new InitializedList<double>(instruments.Count, 1.0);
-            CalibrationFunction f = new CalibrationFunction(this, instruments, w);
-            return f.value(p);
+            Projection p = new Projection(parameters);
+            CalibrationFunction f = new CalibrationFunction(this, instruments, w, p);
+            return f.value(parameters);
         }
 
         //! Returns array of arguments on which calibration is done
@@ -201,45 +224,102 @@ namespace QLNet {
                     }
                     return true;
                 }
+
+               public Vector upperBound(Vector parameters)
+               {
+                  int k = 0, k2 = 0;
+                  int totalSize = 0;
+                  for (int i = 0; i < arguments_.Count; i++) 
+                  {
+                     totalSize += arguments_[i].size();
+                  }
+                
+                  Vector result = new Vector(totalSize);
+                  for (int i = 0; i < arguments_.Count; i++) 
+                  {
+                     int size = arguments_[i].size();
+                     Vector partialParams = new Vector(size);
+                     for (int j = 0; j < size; j++, k++)
+                        partialParams[j] = parameters[k];
+                     Vector tmpBound = arguments_[i].constraint().upperBound(partialParams);
+                     for (int j = 0; j < size; j++, k2++)
+                        result[k2] = tmpBound[j];
+                  }
+                  return result;
+               }
+
+               public Vector lowerBound(Vector parameters)
+               {
+                  int k = 0, k2 = 0;
+                  int totalSize = 0;
+                  for (int i = 0; i < arguments_.Count; i++) 
+                  {
+                     totalSize += arguments_[i].size();
+                  }
+                  Vector result = new Vector(totalSize);
+                  for (int i = 0; i < arguments_.Count; i++) 
+                  {
+                     int size = arguments_[i].size();
+                     Vector partialParams=new Vector(size);
+                     for (int j = 0; j < size; j++, k++)
+                        partialParams[j] = parameters[k];
+                     Vector tmpBound = arguments_[i].constraint().lowerBound(partialParams);
+                     for (int j = 0; j < size; j++, k2++)
+                        result[k2] = tmpBound[j];
+                  }
+                  return result;
+               }
             }
         }
 
         //! Calibration cost function class
-        private class CalibrationFunction : CostFunction  {
-            private CalibratedModel model_;
-            private List<CalibrationHelper> instruments_;
-            List<double> weights_;
+        private class CalibrationFunction : CostFunction
+        {
+           public CalibrationFunction( CalibratedModel model, 
+                                       List<CalibrationHelper> instruments, 
+                                       List<double> weights,
+                                       Projection projection)
+           {
+              // recheck
+              model_ = model;
+              instruments_ = instruments;
+              weights_ = weights;
+              projection_ = projection;
+           }
 
-            public CalibrationFunction(CalibratedModel model, List<CalibrationHelper> instruments, List<double> weights) {
-                // recheck
-                model_ = model;
-                instruments_ = instruments;
-                weights_ = weights;
-            }
+           public override double value( Vector p )
+           {
+              model_.setParams( projection_.include(p) );
 
-            public override double value(Vector p) {
-                model_.setParams(p);
+              double value = 0.0;
+              for ( int i = 0; i < instruments_.Count; i++ )
+              {
+                 double diff = instruments_[i].calibrationError();
+                 value += diff * diff * weights_[i];
+              }
 
-                double value = 0.0;
-                for (int i=0; i<instruments_.Count; i++) {
-                    double diff = instruments_[i].calibrationError();
-                    value += diff*diff*weights_[i];
-                }
+              return Math.Sqrt( value );
+           }
 
-                return Math.Sqrt(value);
-            }
+           public override Vector values( Vector p )
+           {
+              model_.setParams( projection_.include(p) );
 
-            public override Vector values(Vector p) {
-                model_.setParams(p);
+              Vector values = new Vector( instruments_.Count );
+              for ( int i = 0; i < instruments_.Count; i++ )
+              {
+                 values[i] = instruments_[i].calibrationError() * Math.Sqrt( weights_[i] );
+              }
+              return values;
+           }
 
-                Vector values = new Vector(instruments_.Count);
-                for (int i=0; i<instruments_.Count; i++) {
-                    values[i] = instruments_[i].calibrationError() *Math.Sqrt(weights_[i]);
-                }
-                return values;
-            }
+           public override double finiteDifferenceEpsilon() { return 1e-6; }
 
-            public override double finiteDifferenceEpsilon() { return 1e-6; }
+           private CalibratedModel model_;
+           private List<CalibrationHelper> instruments_;
+           private List<double> weights_;
+           private Projection projection_;
+
         }
 
 
@@ -247,20 +327,23 @@ namespace QLNet {
         public event Callback notifyObserversEvent;
 
         // this method is required for calling from derived classes
-        public void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        public void notifyObservers()
+        {
+           Callback handler = notifyObserversEvent;
+           if ( handler != null )
+           {
+              handler();
+           }
         }
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+        public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
+        public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
 
-        public void update() {
-            generateArguments();
-            notifyObservers();
-        } 
-	    #endregion
+        public void update()
+        {
+           generateArguments();
+           notifyObservers();
+        }
+        #endregion
     }
 
     //! Abstract short-rate model class
