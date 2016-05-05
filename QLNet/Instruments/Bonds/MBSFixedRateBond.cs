@@ -55,6 +55,7 @@ namespace QLNet
          WACRate_ = WACRate;
          PassThroughRate_ = PassThroughRate;
          dCounter_ = accrualDayCounter;
+         base.cashflows_ = expectedCashflows();
 
       }
 
