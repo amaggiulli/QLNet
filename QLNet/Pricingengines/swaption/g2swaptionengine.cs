@@ -57,12 +57,12 @@ namespace QLNet
             // floating leg (which is not taken into account by the
             // model)
             VanillaSwap swap = arguments_.swap;
-            swap.setPricingEngine(new DiscountingSwapEngine(model_.termStructure()));
+            swap.setPricingEngine(new DiscountingSwapEngine(model_.link.termStructure()));
             double correction = swap.spread *
                 Math.Abs(swap.floatingLegBPS() / swap.fixedLegBPS());
             double fixedRate = swap.fixedRate - correction;
 
-            results_.value =  model_.swaption(arguments_, fixedRate,
+            results_.value =  model_.link.swaption(arguments_, fixedRate,
                                                range_, intervals_);
         }
  

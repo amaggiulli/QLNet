@@ -80,7 +80,7 @@ namespace QLNet
         DayCounter dayCounter;
 
         ITermStructureConsistentModel tsmodel =
-            (ITermStructureConsistentModel)base.model_;
+            (ITermStructureConsistentModel)base.model_.link;
         try {
             if (tsmodel!=null) {
                 referenceDate = tsmodel.termStructure().link.referenceDate();
@@ -103,7 +103,7 @@ namespace QLNet
         } else {
             List<double> times = swaption.mandatoryTimes();
             TimeGrid timeGrid = new TimeGrid(times, timeSteps_);
-            lattice = model_.tree(timeGrid);
+            lattice = model_.link.tree(timeGrid);
         }
 
         List<double> stoppingTimes = new InitializedList<double>(arguments_.exercise.dates().Count);
