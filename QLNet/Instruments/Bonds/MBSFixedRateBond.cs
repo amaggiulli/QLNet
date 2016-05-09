@@ -55,7 +55,7 @@ namespace QLNet
          WACRate_ = WACRate;
          PassThroughRate_ = PassThroughRate;
          dCounter_ = accrualDayCounter;
-
+         cashflows_ = expectedCashflows();
       }
 
       //public List<CashFlow> interestCashflows()
