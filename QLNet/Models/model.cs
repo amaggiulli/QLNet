@@ -257,7 +257,7 @@ namespace QLNet {
 
         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
+        public void notifyObservers()
         {
            eventSource.Raise();
         }
