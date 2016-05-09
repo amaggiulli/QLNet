@@ -387,6 +387,7 @@
     <Compile Include="Patterns\observablevalue.cs" />
     <Compile Include="Patterns\Observer.cs" />
     <Compile Include="Patterns\Visitor.cs" />
+    <Compile Include="Patterns\WeakEventSource.cs" />
     <Compile Include="payoff.cs" />
     <Compile Include="PricingEngine.cs" />
     <Compile Include="Pricingengines\Americanpayoffatexpiry.cs" />

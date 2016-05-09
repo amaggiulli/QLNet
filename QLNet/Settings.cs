@@ -69,15 +69,18 @@ namespace QLNet {
 
         ////////////////////////////////////////////////////
         // Observable interface
-        private static event Callback notifyObserversEvent;
+        private static readonly WeakEventSource eventSource = new WeakEventSource();
+        public static event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
+        }
 
         public static void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public static void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        private static void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        private static void notifyObservers()
+        {
+           eventSource.Raise();
         }
     }
 
