@@ -96,9 +96,7 @@ namespace QLNet
          results_.value = price;
       }
 
-      public int numberOfEvaluations() { return evaluations_;}
 
-      private int evaluations_;
       private HestonExpansionFormula formula_;
    }
 
