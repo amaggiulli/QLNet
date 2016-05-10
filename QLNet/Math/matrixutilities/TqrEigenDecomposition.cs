@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -65,9 +65,14 @@ namespace QLNet
 
          Utils.QL_REQUIRE( n == sub.size() + 1, () => "Wrong dimensions" );
 
-         Vector e = new Vector(sub);
-
+         Vector e = new Vector(n,0.0);
          int i;
+         for ( i = 1; i < e.Count; ++i )
+         {
+            e[i] = sub[i-1];
+         }
+
+
          for (i=0; i < ev_.rows(); ++i) 
          {
             ev_[i,i] = 1.0;
@@ -156,8 +161,8 @@ namespace QLNet
 
         // sort (eigenvalues, eigenvectors),
         // code taken from symmetricSchureDecomposition.cpp
-        List<KeyValuePair<double, List<double> > > temp = new List<KeyValuePair<double,List<double>>>(n);
-        List<double> eigenVector = new List<double>(ev_.rows());
+        List<KeyValuePair<double, List<double> > > temp = new  InitializedList<KeyValuePair<double,List<double>>>(n);
+        List<double> eigenVector = new InitializedList<double>(ev_.rows());
         for (i=0; i<n; i++) 
         {
             if (ev_.rows() > 0)
@@ -167,8 +172,7 @@ namespace QLNet
             temp[i] = new KeyValuePair<double,List<double>>(d_[i], eigenVector);
         }
        
-        //std::sort(temp.begin(), temp.end(), std::greater<std::pair<Real, std::vector<Real> > >());
-        temp.Sort();
+        temp.Sort( KeyValuePairCompare );
 
         // first element is positive
         for (i=0; i<n; i++) {
@@ -181,6 +185,11 @@ namespace QLNet
             }
         }
 
+      }
+
+      static int KeyValuePairCompare( KeyValuePair<double, List<double>> a, KeyValuePair<double, List<double>> b )
+      {
+         return a.Key.CompareTo( b.Key );
       }
 
       public Vector eigenvalues()   { return d_; }

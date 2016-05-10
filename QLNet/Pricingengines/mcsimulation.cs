@@ -134,7 +134,7 @@ namespace QLNet {
 
 
         protected abstract PathPricer<IPath> pathPricer();
-        protected abstract PathGenerator<IRNG> pathGenerator();
+        protected abstract IPathGenerator<IRNG> pathGenerator();
         protected abstract TimeGrid timeGrid();
         protected virtual PathPricer<IPath> controlPathPricer() { return null; }
         protected virtual PathGenerator<IRNG> controlPathGenerator() { return null; }

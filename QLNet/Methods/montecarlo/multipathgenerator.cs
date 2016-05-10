@@ -33,19 +33,19 @@ namespace QLNet {
 
         \test the generated paths are checked against cached results
     */
-    public class MultiPathGenerator<GSG> where GSG : IRNG {
+    public class MultiPathGenerator<GSG> :IPathGenerator<GSG> where GSG : IRNG {
         // typedef Sample<MultiPath> sample_type;
         
         private bool brownianBridge_;
         private StochasticProcess process_;
         private GSG generator_;
-        private Sample<MultiPath> next_;
+        private Sample<IPath> next_;
 
         public MultiPathGenerator(StochasticProcess process, TimeGrid times, GSG generator, bool brownianBridge) {
             brownianBridge_ = brownianBridge;
             process_ = process;
             generator_ = generator;
-            next_ = new Sample<MultiPath>(new MultiPath(process.size(), times), 1.0);
+            next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
 
             if (generator_.dimension() != process.factors()*(times.size()-1))
                 throw new ApplicationException("dimension (" + generator_.dimension()
@@ -57,9 +57,9 @@ namespace QLNet {
                 throw new ApplicationException("no times given");
         }
 
-        public Sample<MultiPath> next() { return next(false); }
-        public Sample<MultiPath> antithetic() { return next(true); }
-        private Sample<MultiPath> next(bool antithetic) {
+        public Sample<IPath> next() { return next(false); }
+        public Sample<IPath> antithetic() { return next(true); }
+        private Sample<IPath> next(bool antithetic) {
             if (brownianBridge_) {
                 throw new ApplicationException("Brownian bridge not supported");
             } else {
@@ -71,7 +71,7 @@ namespace QLNet {
                 int m = process_.size();
                 int n = process_.factors();
 
-                MultiPath path = next_.value;
+                MultiPath path = (MultiPath)next_.value;
 
                 Vector asset = process_.initialValues();
                 for (int j=0; j<m; j++)

@@ -52,8 +52,10 @@ namespace TestSuite
             for (i=0; i<100; i++)
                 generator.next();
 
-            Sample<Path> sample = generator.next();
-            double calculated = sample.value.back();
+            Sample<IPath> sample = generator.next();
+            Path value = sample.value as Path;
+            Utils.QL_REQUIRE(value != null ,()=> "Invalid Path");
+            double calculated = value.back();
             double error = Math.Abs(calculated-expected);
             double tolerance = 2.0e-8;
             if (error > tolerance) 
@@ -69,7 +71,9 @@ namespace TestSuite
             }
 
             sample = generator.antithetic();
-            calculated = sample.value.back();
+            value = sample.value as Path;
+            Utils.QL_REQUIRE( value != null, () => "Invalid Path" );
+            calculated = value.back();
             error = Math.Abs(calculated-antithetic);
             tolerance = 2.0e-7;
             if (error > tolerance) 
@@ -109,12 +113,14 @@ namespace TestSuite
             for (i=0; i<100; i++)
                 generator.next();
 
-            Sample<MultiPath> sample = generator.next();
+            Sample<IPath> sample = generator.next();
+            MultiPath value = sample.value as MultiPath;
+            Utils.QL_REQUIRE( value != null, () => "Invalid Path" );
             Vector calculated = new Vector(assets);
             double error, tolerance = 2.0e-7;
             
             for (int j=0; j<assets; j++)
-                calculated[j] = sample.value[j].back() ;
+                calculated[j] =value[j].back() ;
             
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-expected[j]);
@@ -130,8 +136,10 @@ namespace TestSuite
             }
 
             sample = generator.antithetic();
+            value = sample.value as MultiPath;
+            Utils.QL_REQUIRE( value != null, () => "Invalid Path" );
             for (int j=0; j<assets; j++)
-                calculated[j] = sample.value[j].back();
+                calculated[j] = value[j].back();
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-antithetic[j]);
                 if (error > tolerance) {

@@ -123,12 +123,16 @@ namespace QLNet {
             return pathPricer_;
         }
 
-        protected override PathGenerator<IRNG> pathGenerator() {
+        protected override IPathGenerator<IRNG> pathGenerator() {
             int dimensions = process_.factors();
             TimeGrid grid = timeGrid();
             IRNG generator = (IRNG)new RNG().make_sequence_generator(dimensions*(grid.size()-1),seed_);
-            return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
-        }
+            if ( typeof( MC ) == typeof( SingleVariate ) )
+               return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
+            else
+               return new MultiPathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
+
+            }
 
         protected abstract LongstaffSchwartzPathPricer<IPath> lsmPathPricer();
 

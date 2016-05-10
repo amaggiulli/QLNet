@@ -410,13 +410,14 @@ namespace TestSuite
                         GeneralStatistics stat = new GeneralStatistics();
 
                         for (int n=0; n<nrTrails; ++n) {
-                            Sample<MultiPath> path = (n%2!=0) ? generator.antithetic()
+                           Sample<IPath> path = ( n % 2 != 0 ) ? generator.antithetic()
                                                      : generator.next();
-                            
+                           MultiPath value = path.value as MultiPath;
+                           Utils.QL_REQUIRE( value != null, () => "Invalid Path" );
                             //Sample<MultiPath> path = generator.next();
                             List<double> rates_ = new InitializedList<double>(size);
                             for (int k=0; k<process.size(); ++k) {
-                                rates_[k] = path.value[k][location[i]];
+                                rates_[k] = value[k][location[i]];
                             }
                             List<double> dis = process.discountBond(rates_);
 
