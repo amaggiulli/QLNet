@@ -232,6 +232,7 @@
     <Compile Include="Math\beta.cs" />
     <Compile Include="Math\BSpline.cs" />
     <Compile Include="Math\Comparison.cs" />
+    <Compile Include="Math\integrals\GaussLobattoIntegral.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />
@@ -286,7 +287,9 @@
     <Compile Include="Math\Optimization\lmdif.cs" />
     <Compile Include="Math\Optimization\method.cs" />
     <Compile Include="Math\Optimization\problem.cs" />
+    <Compile Include="Math\Optimization\ProjectedConstraint.cs" />
     <Compile Include="Math\Optimization\ProjectedCostFunction.cs" />
+    <Compile Include="Math\Optimization\Projection.cs" />
     <Compile Include="Math\Optimization\Simplex.cs" />
     <Compile Include="Math\Optimization\SteepestDescent.cs" />
     <Compile Include="Math\PascalTriangle.cs" />
@@ -367,6 +370,9 @@
     <Compile Include="Methods\montecarlo\pathpricer.cs" />
     <Compile Include="Methods\montecarlo\sample.cs" />
     <Compile Include="Models\CalibrationHelper.cs" />
+    <Compile Include="Models\Equity\HestonModel.cs" />
+    <Compile Include="Models\Equity\HestonModelHelper.cs" />
+    <Compile Include="Models\Equity\PiecewiseTimeDependentHestonModel.cs" />
     <Compile Include="Models\model.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -434,6 +440,8 @@
     <Compile Include="Pricingengines\vanilla\AnalyticDigitalAmericanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticHestonEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticPTDHestonEngine.cs" />
     <Compile Include="Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
     <Compile Include="Pricingengines\vanilla\binomialengine.cs" />
     <Compile Include="Pricingengines\vanilla\bjerksundstenslandengine.cs" />
@@ -445,19 +453,23 @@
     <Compile Include="Pricingengines\vanilla\FDDividendEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDEuropeanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\FdHestonVanillaEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDMultiPeriodEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDShoutEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDStepConditionEngine.cs" />
     <Compile Include="Pricingengines\vanilla\FDVanillaEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\HestonExpansionEngine.cs" />
     <Compile Include="Pricingengines\vanilla\Integralengine.cs" />
     <Compile Include="Pricingengines\vanilla\Juquadraticengine.cs" />
     <Compile Include="Pricingengines\vanilla\mcamericanengine.cs" />
     <Compile Include="Pricingengines\vanilla\mceuropeanengine.cs" />
+    <Compile Include="Pricingengines\vanilla\MCEuropeanHestonEngine.cs" />
     <Compile Include="Pricingengines\vanilla\mcvanillaengine.cs" />
     <Compile Include="processes\BlackScholesProcess.cs" />
     <Compile Include="processes\Defaultable.cs" />
     <Compile Include="processes\EulerDiscretization.cs" />
     <Compile Include="processes\GeometricBrownianMotionProcess.cs" />
+    <Compile Include="processes\HestonProcess.cs" />
     <Compile Include="processes\Ornsteinuhlenbeckprocess.cs" />
     <Compile Include="processes\Squarerootprocess.cs" />
     <Compile Include="processes\stochasticprocessarray.cs" />

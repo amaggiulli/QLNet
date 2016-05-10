@@ -128,8 +128,8 @@ namespace QLNet
          }
          private List<double> times_;
       }
-      public PiecewiseConstantParameter( List<double> times )
-         : base( times.Count + 1, new PiecewiseConstantParameter.Impl( times ), new NoConstraint() )
+      public PiecewiseConstantParameter( List<double> times, Constraint constraint = null) 
+         : base( times.Count + 1, new PiecewiseConstantParameter.Impl( times ), constraint ?? new NoConstraint() )
       {
       }
    }
