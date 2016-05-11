@@ -128,8 +128,8 @@ namespace QLNet
 
          public bool IsMatch(Callback handler)
          {
-            return ReferenceEquals(handler.Target, _weakTarget?.Target)
-                && handler.Method.Equals(_method);
+            return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
+                                                  && handler.Method.Equals(_method));
          }
       }
    }
