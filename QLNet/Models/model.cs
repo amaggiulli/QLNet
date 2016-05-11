@@ -31,16 +31,19 @@ namespace QLNet {
         public abstract double discountBond(double now, double maturity, Vector factors);
         public abstract double discountBondOption(Option.Type type, double strike, double maturity, double bondMaturity);
 
-        public event Callback notifyObserversEvent;
-        // this method is required for calling from derived classes
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        private readonly WeakEventSource eventSource = new WeakEventSource();
+        public event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
         }
+
         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+        protected void notifyObservers()
+        {
+           eventSource.Raise();
+        }
     }
 
     //Affince Model Interface used for multihritage in 
@@ -68,18 +71,19 @@ namespace QLNet {
         }
         private Handle<YieldTermStructure> termStructure_;
 
-        public event Callback notifyObserversEvent;
-        // this method is required for calling from derived classes
-        protected void notifyObservers()
+        private readonly WeakEventSource eventSource = new WeakEventSource();
+        public event Callback notifyObserversEvent
         {
-            Callback handler = notifyObserversEvent;
-            if (handler != null)
-            {
-                handler();
-            }
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
         }
+
         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+        protected void notifyObservers()
+        {
+           eventSource.Raise();
+        }
     }
 
     //ITermStructureConsistentModel used ins shortratemodel blackkarasinski.cs/hullwhite.cs
@@ -324,19 +328,19 @@ namespace QLNet {
 
 
         #region Observer & Observable
-        public event Callback notifyObserversEvent;
+        private readonly WeakEventSource eventSource = new WeakEventSource();
+        public event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
+        }
 
-        // this method is required for calling from derived classes
+        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
+        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
         public void notifyObservers()
         {
-           Callback handler = notifyObserversEvent;
-           if ( handler != null )
-           {
-              handler();
-           }
+           eventSource.Raise();
         }
-        public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
-        public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
 
         public void update()
         {
