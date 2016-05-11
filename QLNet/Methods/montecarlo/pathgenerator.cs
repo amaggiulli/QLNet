@@ -28,7 +28,7 @@ namespace QLNet {
 
         \test the generated paths are checked against cached results
     */
-    public class PathGenerator<GSG> where GSG : IRNG {
+    public class PathGenerator<GSG> : IPathGenerator<GSG> where GSG : IRNG {
         // typedef Sample<Path> sample_type;
 
         private bool brownianBridge_;
@@ -36,7 +36,7 @@ namespace QLNet {
         private int dimension_;
         private TimeGrid timeGrid_;
         private StochasticProcess1D process_;
-        private Sample<Path> next_;
+        private Sample<IPath> next_;
         private List<double> temp_;
         private BrownianBridge bb_;
 
@@ -47,7 +47,7 @@ namespace QLNet {
             dimension_ = generator_.dimension();
             timeGrid_ = new TimeGrid(length, timeSteps);
             process_ = process as StochasticProcess1D;
-            next_ = new Sample<Path>(new Path(timeGrid_),1.0);
+            next_ = new Sample<IPath>(new Path(timeGrid_),1.0);
             temp_ = new InitializedList<double>(dimension_);
             bb_ = new BrownianBridge(timeGrid_);
             if (dimension_ != timeSteps) 
@@ -61,7 +61,7 @@ namespace QLNet {
             dimension_ = generator_.dimension();
             timeGrid_ = timeGrid;
             process_ = process as StochasticProcess1D;
-            next_ = new Sample<Path>(new Path(timeGrid_),1.0);
+            next_ = new Sample<IPath>(new Path(timeGrid_),1.0);
             temp_ = new InitializedList<double>(dimension_);
             bb_ = new BrownianBridge(timeGrid_);
 
@@ -70,9 +70,9 @@ namespace QLNet {
                        + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
         }
 
-        public Sample<Path> next() { return next(false); }
-        public Sample<Path> antithetic() { return next(true); }
-        private Sample<Path> next(bool antithetic) {
+        public Sample<IPath> next() { return next(false); }
+        public Sample<IPath> antithetic() { return next(true); }
+        private Sample<IPath> next(bool antithetic) {
             // typedef typename GSG::sample_type sequence_type;
             Sample<List<double>> sequence_ =
                 antithetic ? generator_.lastSequence()
@@ -86,7 +86,7 @@ namespace QLNet {
 
             next_.weight = sequence_.weight;
 
-            Path path = next_.value;
+            Path path = (Path)next_.value;
             path.setFront(process_.x0());
 
             for (int i=1; i<path.length(); i++) {

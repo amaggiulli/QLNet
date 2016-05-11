@@ -46,7 +46,7 @@ namespace QLNet {
         // path_generator_type = InverseCumulativeRsg<RandomSequenceGenerator<MersenneTwisterUniformRng>, InverseCumulativeNormal>
         // sample_type = Sample<List<double>>
 
-        private PathGenerator<IRNG> pathGenerator_;
+        private IPathGenerator<IRNG> pathGenerator_;
         private PathPricer<IPath> pathPricer_;
         private S sampleAccumulator_;
         private bool isAntitheticVariate_;
@@ -61,10 +61,10 @@ namespace QLNet {
         //          IPathPricer<Path> cvPathPricer = boost::shared_ptr<path_pricer_type>(),
         //          result_type cvOptionValue = result_type(),
         //          PathGenerator<IRNG> cvPathGenerator = path_generator_type()) {
-        public MonteCarloModel(PathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer, S sampleAccumulator,
+        public MonteCarloModel(IPathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer, S sampleAccumulator,
                   bool antitheticVariate)
             : this(pathGenerator, pathPricer, sampleAccumulator, antitheticVariate, null, 0, null) { }
-        public MonteCarloModel(PathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer, S sampleAccumulator,
+        public MonteCarloModel(IPathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer, S sampleAccumulator,
                                bool antitheticVariate, PathPricer<IPath> cvPathPricer, double cvOptionValue,
                                PathGenerator<IRNG> cvPathGenerator) {
             pathGenerator_ = pathGenerator;
@@ -84,14 +84,14 @@ namespace QLNet {
         public void addSamples(int samples) {
             for(int j = 1; j <= samples; j++) {
 
-                Sample<Path> path = pathGenerator_.next();
+                Sample<IPath> path = pathGenerator_.next();
                 double price = pathPricer_.value(path.value);
 
                 if (isControlVariate_) {
                     if (cvPathGenerator_ == null) {
                         price += cvOptionValue_ - cvPathPricer_.value(path.value);
                     } else {
-                        Sample<Path> cvPath = cvPathGenerator_.next();
+                        Sample<IPath> cvPath = cvPathGenerator_.next();
                         price += cvOptionValue_ - cvPathPricer_.value(cvPath.value);
                     }
                 }
@@ -103,7 +103,7 @@ namespace QLNet {
                         if (cvPathGenerator_ == null)
                             price2 += cvOptionValue_ - cvPathPricer_.value(path.value);
                         else {
-                            Sample<Path> cvPath = cvPathGenerator_.antithetic();
+                            Sample<IPath> cvPath = cvPathGenerator_.antithetic();
                             price2 += cvOptionValue_ - cvPathPricer_.value(cvPath.value);
                         }
                     }

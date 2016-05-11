@@ -25,6 +25,18 @@ namespace QLNet {
 
         \note the path includes the initial asset value as its first point.
     */
+
+    public interface IPath : ICloneable
+    {
+       int length();
+    }
+
+    public interface IPathGenerator<GSG>
+    {
+       Sample<IPath> next();
+       Sample<IPath> antithetic();
+    }
+
     public class Path : ICloneable, IPath {
         private TimeGrid timeGrid_;
         private Vector values_;

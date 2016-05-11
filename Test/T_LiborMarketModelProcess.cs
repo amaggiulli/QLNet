@@ -256,14 +256,18 @@ namespace TestSuite
             List<GeneralStatistics> stat2 = new InitializedList<GeneralStatistics>(process2.size());
             List<GeneralStatistics> stat3 = new InitializedList<GeneralStatistics>(process2.size() - 1);
             for (int i=0; i<nrTrails; ++i) {
-                Sample<MultiPath> path1 = generator1.next();
-                Sample<MultiPath> path2 = generator2.next();
+                Sample<IPath> path1 = generator1.next();
+                Sample<IPath> path2 = generator2.next();
+                MultiPath value1 = path1.value as MultiPath;
+                Utils.QL_REQUIRE( value1 != null, () => "Invalid Path" );
+                MultiPath value2 = path2.value as MultiPath;
+                Utils.QL_REQUIRE( value2 != null, () => "Invalid Path" );
 
                 List<double> rates1=new InitializedList<double>(len);
                 List<double> rates2 = new InitializedList<double>(len);
                 for (int j=0; j<process1.size(); ++j) {
-                    rates1[j] = path1.value[j][location[j]];
-                    rates2[j] = path2.value[j][location[j]];
+                    rates1[j] = value1[j][location[j]];
+                    rates2[j] = value2[j][location[j]];
                 }
 
                 List<double> dis1 = process1.discountBond(rates1);

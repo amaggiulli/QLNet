@@ -20,10 +20,7 @@ using System;
 using System.Collections.Generic;
 
 namespace QLNet {
-    public interface IPath : ICloneable {
-        int length();
-    }
-
+    
     //! base class for early exercise path pricers
     /*! Returns the value of an option on a given path and given time.
     */

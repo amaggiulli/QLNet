@@ -77,9 +77,9 @@ namespace QLNet
             return sum;
         }
 
-        int order()  { return x_.size(); }
-        Vector weights() { return w_; }
-        Vector x()       { return x_; }
+      public int order() { return x_.size(); }
+      public Vector weights() { return w_; }
+      public Vector x() { return x_; }
         
       
       private Vector x_, w_;

@@ -273,7 +273,7 @@ public static class KronrodintegralArrays
 		  }
           protected override double integrate(Func<double, double> f, double a, double b)
 		  {
-			  return integrateRecursively(f, a, b, absoluteAccuracy());
+			  return integrateRecursively(f, a, b, absoluteAccuracy().GetValueOrDefault());
 		  }
 		  private double integrateRecursively(Func<double, double> f, double a, double b, double tolerance)
 		  {
