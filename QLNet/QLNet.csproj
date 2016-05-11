@@ -437,10 +437,12 @@
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />
     <Compile Include="Pricingengines\Swap\treeswapengine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticBSMHullWhiteEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticDigitalAmericanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticHestonEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticHestonHullWhiteEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticPTDHestonEngine.cs" />
     <Compile Include="Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
     <Compile Include="Pricingengines\vanilla\binomialengine.cs" />
