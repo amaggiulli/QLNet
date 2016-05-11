@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -18,58 +19,65 @@
 */
 using System;
 
-namespace QLNet {
-    //! Vanilla option (no discrete dividends, no barriers) on a single asset
-    public class VanillaOption : OneAssetOption {
-        public VanillaOption(StrikedTypePayoff payoff, Exercise exercise) : base(payoff, exercise) {}
+namespace QLNet
+{
+   //! Vanilla option (no discrete dividends, no barriers) on a single asset
+   public class VanillaOption : OneAssetOption
+   {
+      public VanillaOption( StrikedTypePayoff payoff, Exercise exercise ) 
+         : base( payoff, exercise ) {}
 
-        /*! \warning currently, this method returns the Black-Scholes
-                 implied volatility using analytic formulas for
-                 European options and a finite-difference method
-                 for American and Bermudan options. It will give
-                 unconsistent results if the pricing was performed
-                 with any other methods (such as jump-diffusion
-                 models.)
+      /*! \warning currently, this method returns the Black-Scholes
+               implied volatility using analytic formulas for
+               European options and a finite-difference method
+               for American and Bermudan options. It will give
+               unconsistent results if the pricing was performed
+               with any other methods (such as jump-diffusion
+               models.)
 
-        \warning options with a gamma that changes sign (e.g.,
-                 binary options) have values that are <b>not</b>
-                 monotonic in the volatility. In these cases, the
-                 calculation can fail and the result (if any) is
-                 almost meaningless.  Another possible source of
-                 failure is to have a target value that is not
-                 attainable with any volatility, e.g., a target
-                 value lower than the intrinsic value in the case
-                 of American options.
-        */
-        //public double impliedVolatility(double price, GeneralizedBlackScholesProcess process,
-        //       double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0) {
-        public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process,
-                                        double accuracy, int maxEvaluations, double minVol, double maxVol) {
+      \warning options with a gamma that changes sign (e.g.,
+               binary options) have values that are <b>not</b>
+               monotonic in the volatility. In these cases, the
+               calculation can fail and the result (if any) is
+               almost meaningless.  Another possible source of
+               failure is to have a target value that is not
+               attainable with any volatility, e.g., a target
+               value lower than the intrinsic value in the case
+               of American options.
+      */
+      public double impliedVolatility( double targetValue, 
+                                       GeneralizedBlackScholesProcess process,
+                                       double accuracy = 1.0e-4, 
+                                       int maxEvaluations = 100, 
+                                       double minVol = 1.0e-7, 
+                                       double maxVol = 4.0)
+      {
 
-            if(isExpired()) throw new ApplicationException("option expired");
+         Utils.QL_REQUIRE( !isExpired(),()=> "option expired" );
 
-            SimpleQuote volQuote = new SimpleQuote();
+         SimpleQuote volQuote = new SimpleQuote();
 
-            GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
+         GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone( process, volQuote );
 
-            // engines are built-in for the time being
-            IPricingEngine engine;
-            switch (exercise_.type()) {
-                case Exercise.Type.European:
-                    engine = new AnalyticEuropeanEngine(newProcess);
-                    break;
-                case Exercise.Type.American:
-                    engine = new FDAmericanEngine(newProcess);
-						  break;
-                case Exercise.Type.Bermudan:
-                    engine = new FDBermudanEngine(newProcess);
-						  break;
-                default:
-                    throw new ArgumentException("unknown exercise type");
-            }
+         // engines are built-in for the time being
+         IPricingEngine engine;
+         switch (exercise_.type())
+         {
+            case Exercise.Type.European:
+               engine = new AnalyticEuropeanEngine( newProcess );
+               break;
+            case Exercise.Type.American:
+               engine = new FDAmericanEngine( newProcess );
+               break;
+            case Exercise.Type.Bermudan:
+               engine = new FDBermudanEngine( newProcess );
+               break;
+            default:
+               throw new ArgumentException( "unknown exercise type" );
+         }
 
-            return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
-                                                     maxEvaluations, minVol, maxVol);
-        }
-    }
+         return ImpliedVolatilityHelper.calculate( this, engine, volQuote, targetValue, accuracy,
+                                                  maxEvaluations, minVol, maxVol );
+      }
+   }
 }
