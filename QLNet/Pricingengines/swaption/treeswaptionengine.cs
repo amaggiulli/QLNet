@@ -102,7 +102,7 @@ namespace QLNet
             lattice = lattice_;
         } else {
             List<double> times = swaption.mandatoryTimes();
-            TimeGrid timeGrid = new TimeGrid(times, timeSteps_);
+            TimeGrid timeGrid = new TimeGrid( times, times.Count, timeSteps_ );
             lattice = model_.link.tree(timeGrid);
         }
 

@@ -84,7 +84,7 @@ namespace QLNet
             if (lattice_!=null) {
                 lattice = lattice_;
             } else {
-                TimeGrid timeGrid = new TimeGrid(times, timeSteps_);
+               TimeGrid timeGrid = new TimeGrid( times, times.Count, timeSteps_ );
                 lattice = model_.link.tree(timeGrid);
             }
 

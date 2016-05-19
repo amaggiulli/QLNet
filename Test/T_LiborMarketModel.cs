@@ -336,7 +336,7 @@ namespace TestSuite
             // set-up a small Monte-Carlo simulation to price swations
             List<double> tmp = process.fixingTimes();
            
-            TimeGrid grid=new TimeGrid(tmp ,steps);
+            TimeGrid grid=new TimeGrid(tmp ,tmp.Count, steps);
 
             List<int> location=new List<int>();
             for (int i=0; i < tmp.Count; ++i) {

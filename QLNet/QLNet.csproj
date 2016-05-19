@@ -303,6 +303,7 @@
     <Compile Include="Math\randomnumbers\randomsequencegenerator.cs" />
     <Compile Include="Math\randomnumbers\rngtraits.cs" />
     <Compile Include="Math\randomnumbers\seedgenerator.cs" />
+    <Compile Include="Math\randomnumbers\SobolBrownianBridgeRsg.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg.cs" />
     <Compile Include="Math\randomnumbers\sobolrsg2.cs" />
     <Compile Include="Math\RichardsonExtrapolation.cs" />
@@ -373,6 +374,8 @@
     <Compile Include="Models\Equity\HestonModel.cs" />
     <Compile Include="Models\Equity\HestonModelHelper.cs" />
     <Compile Include="Models\Equity\PiecewiseTimeDependentHestonModel.cs" />
+    <Compile Include="Models\MarketModels\BrownianGenerator.cs" />
+    <Compile Include="Models\MarketModels\BrownianGenerators\SobolBrownianGenerator.cs" />
     <Compile Include="Models\model.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -438,10 +441,13 @@
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />
     <Compile Include="Pricingengines\Swap\treeswapengine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticBSMHullWhiteEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticDigitalAmericanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticH1HWEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticHestonEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\AnalyticHestonHullWhiteEngine.cs" />
     <Compile Include="Pricingengines\vanilla\AnalyticPTDHestonEngine.cs" />
     <Compile Include="Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
     <Compile Include="Pricingengines\vanilla\binomialengine.cs" />
@@ -465,12 +471,16 @@
     <Compile Include="Pricingengines\vanilla\mcamericanengine.cs" />
     <Compile Include="Pricingengines\vanilla\mceuropeanengine.cs" />
     <Compile Include="Pricingengines\vanilla\MCEuropeanHestonEngine.cs" />
+    <Compile Include="Pricingengines\vanilla\MCHestonHullWhiteEngine.cs" />
     <Compile Include="Pricingengines\vanilla\mcvanillaengine.cs" />
     <Compile Include="processes\BlackScholesProcess.cs" />
     <Compile Include="processes\Defaultable.cs" />
     <Compile Include="processes\EulerDiscretization.cs" />
+    <Compile Include="processes\ForwardMeasureProcess.cs" />
     <Compile Include="processes\GeometricBrownianMotionProcess.cs" />
     <Compile Include="processes\HestonProcess.cs" />
+    <Compile Include="processes\HullWhiteProcess.cs" />
+    <Compile Include="processes\HybridHestonHullWhiteProcess.cs" />
     <Compile Include="processes\Ornsteinuhlenbeckprocess.cs" />
     <Compile Include="processes\Squarerootprocess.cs" />
     <Compile Include="processes\stochasticprocessarray.cs" />

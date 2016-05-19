@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -18,136 +19,146 @@
 */
 using System;
 
-namespace QLNet {
-    //! Pricing engine for vanilla options using Monte Carlo simulation
-    /*! \ingroup vanillaengines */
-    public abstract class MCVanillaEngine<MC, RNG, S> : MCVanillaEngine<MC, RNG, S, VanillaOption>
-            where RNG : IRSG, new()
-            where S : IGeneralStatistics, new() {
-        protected MCVanillaEngine(StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
-                                  bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
-                                  int maxSamples, ulong seed)
-            : base(process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate, requiredSamples,
-                   requiredTolerance, maxSamples, seed) { }
-    }
+namespace QLNet
+{
+   //! Pricing engine for vanilla options using Monte Carlo simulation
+   /*! \ingroup vanillaengines */
+   public abstract class MCVanillaEngine<MC, RNG, S> : MCVanillaEngine<MC, RNG, S, VanillaOption>
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
+   {
+      protected MCVanillaEngine( StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
+                                bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
+                                int maxSamples, ulong seed )
+         : base( process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate, requiredSamples,
+                requiredTolerance, maxSamples, seed ) { }
+   }
 
-    public abstract class MCVanillaEngine<MC, RNG, S, Inst> : McSimulation<MC, RNG, S>, IGenericEngine
-            where RNG : IRSG, new() where S : IGeneralStatistics, new() {
-        //typedef typename McSimulation<MC,RNG,S>::path_generator_type path_generator_type;
-        //typedef typename McSimulation<MC,RNG,S>::path_pricer_type path_pricer_type;
-        //typedef typename McSimulation<MC,RNG,S>::stats_type stats_type;
-        //typedef typename McSimulation<MC,RNG,S>::result_type result_type;
-
-        protected StochasticProcess process_;
-        protected int? timeSteps_, timeStepsPerYear_;
-        protected int requiredSamples_, maxSamples_;
-        protected double requiredTolerance_;
-        protected bool brownianBridge_;
-        protected ulong seed_;
-
-
-        protected MCVanillaEngine(StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
-                                  bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
-                                  int maxSamples, ulong seed) : base(antitheticVariate, controlVariate) {
-            process_ = process;
-            timeSteps_ = timeSteps;
-            timeStepsPerYear_ = timeStepsPerYear;
-            requiredSamples_ = requiredSamples;
-            maxSamples_ = maxSamples;
-            requiredTolerance_ = requiredTolerance;
-            brownianBridge_ = brownianBridge;
-            seed_ = seed;
-
-            Utils.QL_REQUIRE( timeSteps != null || timeStepsPerYear != null,()=> "no time steps provided" );
-            Utils.QL_REQUIRE( timeSteps == null || timeStepsPerYear == null,()=>
-                       "both time steps and time steps per year were provided" );
-            if ( timeSteps != null)
-               Utils.QL_REQUIRE( timeSteps > 0, () => "timeSteps must be positive, " + timeSteps + " not allowed" );
-            if ( timeStepsPerYear  != null) 
-               Utils.QL_REQUIRE( timeStepsPerYear > 0 , () => 
-               "timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed" );
-
-            process_.registerWith(update);
-        }
+   public abstract class MCVanillaEngine<MC, RNG, S, Inst> : McSimulation<MC, RNG, S>, IGenericEngine
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
+   {
+      protected StochasticProcess process_;
+      protected int? timeSteps_, timeStepsPerYear_;
+      protected int requiredSamples_, maxSamples_;
+      protected double requiredTolerance_;
+      protected bool brownianBridge_;
+      protected ulong seed_;
 
 
-        public void calculate() {
-            base.calculate(requiredTolerance_, requiredSamples_, maxSamples_);
-            results_.value = mcModel_.sampleAccumulator().mean();
-            if (new RNG().allowsErrorEstimate != 0)
-                results_.errorEstimate = mcModel_.sampleAccumulator().errorEstimate();
-        }
+      protected MCVanillaEngine( StochasticProcess process, int? timeSteps, int? timeStepsPerYear, bool brownianBridge,
+                                bool antitheticVariate, bool controlVariate, int requiredSamples, double requiredTolerance,
+                                int maxSamples, ulong seed )
+         : base( antitheticVariate, controlVariate )
+      {
+         process_ = process;
+         timeSteps_ = timeSteps;
+         timeStepsPerYear_ = timeStepsPerYear;
+         requiredSamples_ = requiredSamples;
+         maxSamples_ = maxSamples;
+         requiredTolerance_ = requiredTolerance;
+         brownianBridge_ = brownianBridge;
+         seed_ = seed;
 
-        // McSimulation implementation
-        protected override TimeGrid timeGrid() {
-            Date lastExerciseDate = arguments_.exercise.lastDate();
-            double t = process_.time(lastExerciseDate);
-            if (timeSteps_ != null) {
-                return new TimeGrid(t, timeSteps_.Value);
-            } else if (timeStepsPerYear_ != 0) {
-                int steps = (int)(timeStepsPerYear_*t);
-                return new TimeGrid(t, Math.Max(steps, 1));
-            } else {
-                throw new ApplicationException("time steps not specified");
-            }
-        }
+         Utils.QL_REQUIRE( timeSteps != null || timeStepsPerYear != null, () => "no time steps provided" );
+         Utils.QL_REQUIRE( timeSteps == null || timeStepsPerYear == null, () =>
+                    "both time steps and time steps per year were provided" );
+         if ( timeSteps != null )
+            Utils.QL_REQUIRE( timeSteps > 0, () => "timeSteps must be positive, " + timeSteps + " not allowed" );
+         if ( timeStepsPerYear != null )
+            Utils.QL_REQUIRE( timeStepsPerYear > 0, () =>
+            "timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed" );
 
-        protected override IPathGenerator<IRNG> pathGenerator() {
-            int dimensions = process_.factors();
-            TimeGrid grid = timeGrid();
-            IRNG generator = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
-            if ( typeof( MC ) == typeof( SingleVariate ) )
-               return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
-            else
-               return new MultiPathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
+         process_.registerWith( update );
+      }
 
-        }
 
-        protected override double controlVariateValue() {
-            IPricingEngine controlPE = controlPricingEngine();
-            if (controlPE == null)
-                throw new ApplicationException("engine does not provide control variation pricing engine");
+      public virtual void calculate()
+      {
+         base.calculate( requiredTolerance_, requiredSamples_, maxSamples_ );
+         results_.value = mcModel_.sampleAccumulator().mean();
+         if ( new RNG().allowsErrorEstimate != 0 )
+            results_.errorEstimate = mcModel_.sampleAccumulator().errorEstimate();
+      }
 
-            OneAssetOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
-            if (controlArguments == null)
-                throw new ApplicationException("engine is using inconsistent arguments");
+      // McSimulation implementation
+      protected override TimeGrid timeGrid()
+      {
+         Date lastExerciseDate = arguments_.exercise.lastDate();
+         double t = process_.time( lastExerciseDate );
+         if ( timeSteps_ != null )
+         {
+            return new TimeGrid( t, timeSteps_.Value );
+         }
+         else if ( timeStepsPerYear_ != 0 )
+         {
+            int steps = (int)( timeStepsPerYear_ * t );
+            return new TimeGrid( t, Math.Max( steps, 1 ) );
+         }
+         else
+         {
+            throw new ApplicationException( "time steps not specified" );
+         }
+      }
 
-            controlArguments = arguments_;
-            controlPE.calculate();
+      protected override IPathGenerator<IRNG> pathGenerator()
+      {
+         int dimensions = process_.factors();
+         TimeGrid grid = timeGrid();
+         IRNG generator = (IRNG)new RNG().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
+         if ( typeof( MC ) == typeof( SingleVariate ) )
+            return new PathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
+         else
+            return new MultiPathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
 
-            OneAssetOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
-            if (controlResults == null)
-                throw new ApplicationException("engine returns an inconsistent result type");
+      }
 
-            return controlResults.value.GetValueOrDefault();
-        }
+      protected override double controlVariateValue()
+      {
+         AnalyticHestonHullWhiteEngine controlPE = controlPricingEngine() as AnalyticHestonHullWhiteEngine;
+         if ( controlPE == null )
+            throw new ApplicationException( "engine does not provide control variation pricing engine" );
 
-        #region PricingEngine
-        protected OneAssetOption.Arguments arguments_ = new OneAssetOption.Arguments();
-        protected OneAssetOption.Results results_ = new OneAssetOption.Results();
+         OneAssetOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
+         if ( controlArguments == null )
+            throw new ApplicationException( "engine is using inconsistent arguments" );
 
-        public IPricingEngineArguments getArguments() { return arguments_; }
-        public IPricingEngineResults getResults() { return results_; }
-        public void reset() { results_.reset(); }
+         controlPE.setupArguments( arguments_ );
+         controlPE.calculate();
 
-        #region Observer & Observable
-        // observable interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
+         OneAssetOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
+         if ( controlResults == null )
+            throw new ApplicationException( "engine returns an inconsistent result type" );
 
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
+         return controlResults.value.GetValueOrDefault();
+      }
 
-        public void update() { notifyObservers(); }
-        #endregion 
-        #endregion
-    }
+      #region PricingEngine
+      protected OneAssetOption.Arguments arguments_ = new OneAssetOption.Arguments();
+      protected OneAssetOption.Results results_ = new OneAssetOption.Results();
+
+      public IPricingEngineArguments getArguments() { return arguments_; }
+      public IPricingEngineResults getResults() { return results_; }
+      public void reset() { results_.reset(); }
+
+      #region Observer & Observable
+      // observable interface
+      private readonly WeakEventSource eventSource = new WeakEventSource();
+      public event Callback notifyObserversEvent
+      {
+         add { eventSource.Subscribe( value ); }
+         remove { eventSource.Unsubscribe( value ); }
+      }
+
+      public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
+      public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
+      protected void notifyObservers()
+      {
+         eventSource.Raise();
+      }
+
+      public void update() { notifyObservers(); }
+      #endregion
+      #endregion
+   }
 }

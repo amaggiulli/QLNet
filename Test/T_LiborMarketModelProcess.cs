@@ -231,7 +231,7 @@ namespace TestSuite
             LiborForwardModelProcess process2 = makeProcess(volaComp);
 
             List<double> tmp = process1.fixingTimes();
-            TimeGrid grid=new TimeGrid(tmp ,12);
+            TimeGrid grid=new TimeGrid(tmp ,tmp.Count, 12);
 
             List<int> location=new List<int>();
             for (int i=0; i < tmp.Count; ++i) {
