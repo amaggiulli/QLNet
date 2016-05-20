@@ -119,18 +119,8 @@ namespace TestSuite {
             public List<Schedule> schedules;
             public YieldTermStructure termStructure;
 
-            // cleanup
-            // SavedSettings backup = new SavedSettings();
-            // IndexHistoryCleaner cleaner;
-
             // setup
             public CommonVars() {
-
-                //cleaner = new IndexHistoryCleaner();
-                ////GC.Collect();
-                //// force garbage collection
-                //// garbage collection in .NET is rather weird and we do need when we run several tests in a row
-                //GC.Collect();
 
                 // data
                 calendar = new TARGET();
@@ -222,7 +212,24 @@ namespace TestSuite {
             }
         }
 
-        //[TestMethod()]
+        #region Initialize&Cleanup
+        private SavedSettings backup;
+        private IndexHistoryCleaner cleaner;
+        [TestInitialize]
+        public void testInitialize()
+        {
+           backup = new SavedSettings();
+           cleaner = new IndexHistoryCleaner();
+        }
+        [TestCleanup]
+        public void testCleanup()
+        {
+           backup.Dispose();
+           cleaner.Dispose();
+        }
+        #endregion
+
+        [TestMethod()]
         public void testLogCubicDiscountConsistency() {
             // "Testing consistency of piecewise-log-cubic discount curve...");
 

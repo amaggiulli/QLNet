@@ -28,6 +28,20 @@ namespace TestSuite
    [TestClass()]
    public class T_TermStructures
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       public class CommonVars
       {
          #region Values
@@ -60,9 +74,6 @@ namespace TestSuite
          public int settlementDays;
          public YieldTermStructure termStructure;
          public YieldTermStructure dummyTermStructure;
-
-         // cleanup
-         // SavedSettings backup;
 
          // setup
          public CommonVars()
@@ -98,8 +109,7 @@ namespace TestSuite
       [TestMethod()]
       public void testReferenceChange()
       {
-         // ("Testing term structure against evaluation date change...");
-
+         // Testing term structure against evaluation date change
          CommonVars vars = new CommonVars();
 
          SimpleQuote flatRate = new SimpleQuote();
@@ -131,8 +141,7 @@ namespace TestSuite
       [TestMethod()]
       public void testImplied()
       {
-         // ("Testing consistency of implied term structure...");
-
+         // Testing consistency of implied term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -153,8 +162,7 @@ namespace TestSuite
       [TestMethod()]
       public void testImpliedObs()
       {
-         // ("Testing observability of implied term structure...");
-
+         // Testing observability of implied term structure
          CommonVars vars = new CommonVars();
 
          Date today = Settings.evaluationDate();
@@ -172,7 +180,7 @@ namespace TestSuite
       [TestMethod()]
       public void testFSpreaded()
       {
-         //("Testing consistency of forward-spreaded term structure...");
+         // Testing consistency of forward-spreaded term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -196,8 +204,7 @@ namespace TestSuite
       [TestMethod()]
       public void testFSpreadedObs()
       {
-         // ("Testing observability of forward-spreaded term structure...");
-
+         // Testing observability of forward-spreaded term structure
          CommonVars vars = new CommonVars();
 
          SimpleQuote me = new SimpleQuote(0.01);
@@ -218,8 +225,7 @@ namespace TestSuite
       [TestMethod()]
       public void testZSpreaded()
       {
-         // ("Testing consistency of zero-spreaded term structure...");
-
+         // Testing consistency of zero-spreaded term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -239,8 +245,7 @@ namespace TestSuite
       [TestMethod()]
       public void testZSpreadedObs()
       {
-         // ("Testing observability of zero-spreaded term structure...");
-
+         // Testing observability of zero-spreaded term structure
          CommonVars vars = new CommonVars();
 
          SimpleQuote me = new SimpleQuote(0.01);
@@ -257,17 +262,6 @@ namespace TestSuite
          me.setValue(0.005);
          if (!flag.isUp())
             Console.WriteLine("Observer was not notified of spread change");
-      }
-
-      public void suite()
-      {
-         testReferenceChange();
-         testImplied();
-         testImpliedObs();
-         testFSpreaded();
-         testFSpreadedObs();
-         testZSpreaded();
-         testZSpreadedObs();
       }
    }
 }

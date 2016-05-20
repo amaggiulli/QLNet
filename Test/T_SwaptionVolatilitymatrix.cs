@@ -28,6 +28,20 @@ namespace TestSuite
     [TestClass()]
     public class T_SwaptionVolatilityMatrix
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         public class SwaptionTenors 
         {
             public List<Period> options;
@@ -100,9 +114,6 @@ namespace TestSuite
             public AtmVolatility atm;
             public RelinkableHandle<YieldTermStructure> termStructure;
             public RelinkableHandle<SwaptionVolatilityStructure> atmVolMatrix;
-
-            // cleanup
-            //SavedSettings backup;
 
             // setup
             public CommonVars() 
@@ -311,9 +322,7 @@ namespace TestSuite
         [TestMethod()]
         public void testSwaptionVolMatrixCoherence()
         {
-
-            //"Testing swaption volatility matrix...");
-
+            // Testing swaption volatility matrix
             CommonVars vars = new CommonVars();
 
             SwaptionVolatilityMatrix vol;
@@ -369,8 +378,7 @@ namespace TestSuite
         [TestMethod()]
         public void testSwaptionVolMatrixObservability()
         {
-            //"Testing swaption volatility matrix observability...");
-
+            // Testing swaption volatility matrix observability
             CommonVars vars=new CommonVars();
 
             SwaptionVolatilityMatrix vol;
@@ -425,14 +433,6 @@ namespace TestSuite
                 //                         const std::vector<Period>& swapTenors,
                 //                         const Matrix& volatilities,
                 //                         const DayCounter& dayCounter);
-        }
-
-        public void suite()
-        {
-            //"Swaption Volatility Matrix tests"
-            testSwaptionVolMatrixCoherence();
-            testSwaptionVolMatrixObservability();
-
         }
     }
 

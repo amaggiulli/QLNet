@@ -27,6 +27,20 @@ namespace TestSuite
     [TestClass()]
     public class T_Bermudanswaption
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         public class CommonVars
         {
             // global data
@@ -44,9 +58,6 @@ namespace TestSuite
             public int settlementDays;
 
             public RelinkableHandle<YieldTermStructure> termStructure;
-
-            // cleanup
-            public SavedSettings backup;
 
             // setup
             public CommonVars()

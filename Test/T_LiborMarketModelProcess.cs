@@ -28,6 +28,19 @@ namespace TestSuite
     [TestClass()]
     public class T_LiborMarketModelProcess
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
 
         int len = 10;
 
@@ -104,10 +117,7 @@ namespace TestSuite
         [TestCategory( "LongRun" ), TestMethod()]
         public void testInitialisation() 
         {
-            //"Testing caplet LMM process initialisation..."
-
-            //SavedSettings backup;
-
+            // Testing caplet LMM process initialisation
             DayCounter dayCounter = new Actual360();
             RelinkableHandle<YieldTermStructure> termStructure= new RelinkableHandle<YieldTermStructure>();
             termStructure.linkTo(Utilities.flatRate(Date.Today, 0.04, dayCounter));
@@ -149,10 +159,7 @@ namespace TestSuite
         [TestCategory( "LongRun" ), TestMethod()]
         public void testLambdaBootstrapping() 
         {
-            //"Testing caplet LMM lambda bootstrapping..."
-
-            //SavedSettings backup;
-
+            // Testing caplet LMM lambda bootstrapping
             double tolerance = 1e-10;
             double[] lambdaExpected = {14.3010297550, 19.3821411939, 15.9816590141,
                                           15.9953118303, 14.0570815635, 13.5687599894,
@@ -199,9 +206,7 @@ namespace TestSuite
         [TestCategory("LongRun") , TestMethod()]
         public void testMonteCarloCapletPricing() 
         {
-            //"Testing caplet LMM Monte-Carlo caplet pricing..."
-
-            //SavedSettings backup;
+            // Testing caplet LMM Monte-Carlo caplet pricing
 
             /* factor loadings are taken from Hull & White article
                plus extra normalisation to get orthogonal eigenvectors
@@ -340,13 +345,6 @@ namespace TestSuite
                     }
                 }
             }
-        }
-     
-        public void T_LiborMarketModelProcess_suite()
-        {
-            testInitialisation();
-            testLambdaBootstrapping();
-            testMonteCarloCapletPricing();
         }
     }
 

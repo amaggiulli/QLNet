@@ -26,6 +26,20 @@ namespace TestSuite
     [TestClass()]
     public class T_Swaption
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         public Period[] exercises = new Period[] { new Period(1, TimeUnit.Years),
                                             new Period(2, TimeUnit.Years),
                                             new Period(3, TimeUnit.Years),
@@ -58,9 +72,6 @@ namespace TestSuite
             public IborIndex index;
             public int settlementDays;
             public RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>();
-
-            // cleanup
-            // SavedSettings backup;
 
             // utilities
             public Swaption makeSwaption(VanillaSwap swap,Date exercise,double volatility,Settlement.Type settlementType)
@@ -112,8 +123,7 @@ namespace TestSuite
         [TestMethod()]
         public void testStrikeDependency()
         {
-            //("Testing swaption dependency on strike......");
-
+            // Testing swaption dependency on strike
             CommonVars vars = new CommonVars();
             double[] strikes = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
 
@@ -208,8 +218,7 @@ namespace TestSuite
         [TestMethod()]
         public void testSpreadDependency() 
         {
-            //"Testing swaption dependency on spread...";
-
+            // Testing swaption dependency on spread
             CommonVars vars = new CommonVars();
 
             double[] spreads = { -0.002, -0.001, 0.0, 0.001, 0.002 };
@@ -290,8 +299,7 @@ namespace TestSuite
         [TestMethod()]
         public void testSpreadTreatment() 
         {
-            //"Testing swaption treatment of spread...";
-
+            // Testing swaption treatment of spread
             CommonVars vars = new CommonVars();
 
             double[] spreads = { -0.002, -0.001, 0.0, 0.001, 0.002 };
@@ -355,8 +363,7 @@ namespace TestSuite
         [TestMethod()]
         public void testCachedValue() 
         {
-            //"Testing swaption value against cached value...");
-
+            // Testing swaption value against cached value
             CommonVars vars = new CommonVars();
 
             vars.today = new Date(13, 3, 2002);
@@ -389,8 +396,7 @@ namespace TestSuite
         [TestMethod()]
         public void testVega() 
         {
-            //"Testing swaption vega...";
-
+            // Testing swaption vega
             CommonVars vars = new CommonVars();
 
             Settlement.Type[] types = { Settlement.Type.Physical, Settlement.Type.Cash };
@@ -458,8 +464,7 @@ namespace TestSuite
         [TestMethod()]
         public void testImpliedVolatility()
         {
-            //"Testing implied volatility for swaptions...";
-
+            // Testing implied volatility for swaptions
             CommonVars vars=new CommonVars();
 
             int maxEvaluations = 100;
@@ -549,16 +554,6 @@ namespace TestSuite
                     }
                 }
             }
-        }
-        
-        public void T_Swaption_suite()
-        {
-            testStrikeDependency();
-            testSpreadDependency();
-            testSpreadTreatment();
-            testCachedValue();
-            testVega();
-            testImpliedVolatility();
         }
     }
 }

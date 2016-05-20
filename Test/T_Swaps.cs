@@ -27,6 +27,20 @@ namespace TestSuite
    [TestClass()]
    public class T_Swaps
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       class CommonVars
       {
          // global data
@@ -40,9 +54,6 @@ namespace TestSuite
          public IborIndex index;
          public int settlementDays;
          public RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>();
-
-         // cleanup
-         // SavedSettings backup;
 
          // utilities
          public VanillaSwap makeSwap(int length, double fixedRate, double floatingSpread)
@@ -83,7 +94,7 @@ namespace TestSuite
       [TestMethod()]
       public void testFairRate()
       {
-         //("Testing vanilla-swap calculation of fair fixed rate...");
+         // Testing vanilla-swap calculation of fair fixed rate
 
          CommonVars vars = new CommonVars();
 
@@ -111,8 +122,7 @@ namespace TestSuite
       [TestMethod()]
       public void testFairSpread()
       {
-         //("Testing vanilla-swap calculation of fair floating spread...");
-
+         // Testing vanilla-swap calculation of fair floating spread
          CommonVars vars = new CommonVars();
 
          int[] lengths = new int[] { 1, 2, 5, 10, 20 };
@@ -139,8 +149,7 @@ namespace TestSuite
       [TestMethod()]
       public void testRateDependency()
       {
-         //("Testing vanilla-swap dependency on fixed rate...");
-
+         // Testing vanilla-swap dependency on fixed rate
          CommonVars vars = new CommonVars();
 
          int[] lengths = new int[] { 1, 2, 5, 10, 20 };
@@ -178,8 +187,7 @@ namespace TestSuite
       [TestMethod()]
       public void testSpreadDependency()
       {
-         //("Testing vanilla-swap dependency on floating spread...");
-
+         // Testing vanilla-swap dependency on floating spread
          CommonVars vars = new CommonVars();
 
          int[] lengths = new int[] { 1, 2, 5, 10, 20 };
@@ -217,8 +225,7 @@ namespace TestSuite
       [TestMethod()]
       public void testInArrears()
       {
-         //("Testing in-arrears swap calculation...");
-
+         // Testing in-arrears swap calculation
          CommonVars vars = new CommonVars();
 
          /* See Hull, 4th ed., page 550
@@ -276,8 +283,7 @@ namespace TestSuite
       [TestMethod()]
       public void testCachedValue()
       {
-         //("Testing vanilla-swap calculation against cached value...");
-
+         // Testing vanilla-swap calculation against cached value
          CommonVars vars = new CommonVars();
 
          vars.today = new Date(17, Month.June, 2002);
@@ -297,7 +303,6 @@ namespace TestSuite
                         + "    calculated: " + swap.NPV() + "\n"
                         + "    expected:   " + cachedNPV);
       }
-
       [TestMethod()]
       public void testFixing()
       {
@@ -348,15 +353,6 @@ namespace TestSuite
          }
       }
 
-      public void suite()
-      {
-         testFairRate();
-         testFairSpread();
-         testRateDependency();
-         testSpreadDependency();
-         testInArrears();
-         testCachedValue();
-      }
    }
 
 }

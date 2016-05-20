@@ -24,12 +24,24 @@ namespace TestSuite
    [TestClass()]
    public class T_HybridHestonHullWhiteProcess
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       [TestMethod()]
       public void testBsmHullWhiteEngine()
       {
          // Testing European option pricing for a BSM process with one-factor Hull-White model
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual365Fixed();
 
          Date today = Date.Today;
@@ -122,7 +134,6 @@ namespace TestSuite
       public void testCompareBsmHWandHestonHW() 
       {
          // Comparing European option pricing for a BSM process with one-factor Hull-White model
-         SavedSettings backup = new SavedSettings();
          DayCounter dc = new Actual365Fixed();
          Date today = Date.Today;
          Settings.setEvaluationDate(today);
@@ -209,7 +220,6 @@ namespace TestSuite
       public void testZeroBondPricing() 
       {
          // Testing Monte-Carlo zero bond pricing
-         SavedSettings backup = new SavedSettings();
 
          DayCounter dc = new Actual360();
          Date today = Date.Today;
@@ -329,9 +339,6 @@ namespace TestSuite
       public void testMcVanillaPricing() 
       {
         // Testing Monte-Carlo vanilla option pricing
-
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
@@ -420,9 +427,6 @@ namespace TestSuite
       public void testMcPureHestonPricing() 
       {
          // Testing Monte-Carlo Heston option pricing
-
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
@@ -503,9 +507,6 @@ namespace TestSuite
       public void testAnalyticHestonHullWhitePricing() 
       {
          // Testing analytic Heston Hull-White option pricing
-
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
@@ -585,8 +586,6 @@ namespace TestSuite
       public void testCallableEquityPricing() 
       {
          // Testing the pricing of a callable equity product
-
-         SavedSettings backup = new SavedSettings();
 
          /*
           For the definition of the example product see
@@ -700,8 +699,6 @@ namespace TestSuite
       public void testDiscretizationError() 
       {
          // Testing the discretization error of the Heston Hull-White process
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
@@ -786,7 +783,6 @@ namespace TestSuite
       [TestMethod()]
       public void testH1HWPricingEngine() 
       {
-         SavedSettings backup = new SavedSettings();
          /*
           * Example taken from Lech Aleksander Grzelak,
           * Equity and Foreign Exchange Hybrid Models for Pricing Long-Maturity

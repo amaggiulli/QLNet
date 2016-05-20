@@ -26,6 +26,19 @@ namespace TestSuite
 	[TestClass()]
 	public class T_InflationCapFloorTest
 	{
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
 
 		class CommonVars 
 		{
@@ -46,10 +59,6 @@ namespace TestSuite
 			public RelinkableHandle<YieldTermStructure> nominalTS = new RelinkableHandle<YieldTermStructure>();
 			public YoYInflationTermStructure yoyTS;
 			public RelinkableHandle<YoYInflationTermStructure> hy = new RelinkableHandle<YoYInflationTermStructure>();
-
-			// cleanup
-
-			SavedSettings backup = new SavedSettings();
 
 			// setup
 			public CommonVars() 

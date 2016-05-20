@@ -27,6 +27,20 @@ namespace TestSuite
     [TestClass()]
     public class T_Pathgenerator
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         public void testSingle(StochasticProcess1D process,
                         string tag, 
                         bool brownianBridge,
@@ -156,12 +170,9 @@ namespace TestSuite
         }
 
         [TestCategory( "LongRun" ), TestMethod()]
-        public void testPathGenerator() {
-
-            //"Testing 1-D path generation against cached values...");
-
-            //SavedSettings backup;
-
+        public void testPathGenerator() 
+        {
+            // Testing 1-D path generation against cached values
             Settings.setEvaluationDate(new Date(26,4,2005));
 
             Handle<Quote> x0=new Handle<Quote> (new SimpleQuote(100.0));
@@ -191,11 +202,7 @@ namespace TestSuite
         [TestCategory( "LongRun" ), TestMethod()]
         public void testMultiPathGenerator()
         {
-
-            //("Testing n-D path generation against cached values...");
-
-            //SavedSettings backup;
-
+            // Testing n-D path generation against cached values
             Settings.setEvaluationDate(new Date(26,4,2005));
 
             Handle<Quote> x0=new Handle<Quote> (new SimpleQuote(100.0));

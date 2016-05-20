@@ -24,7 +24,23 @@ using QLNet;
 
 namespace TestSuite {
     [TestClass()]
-    public class T_CapFloor {
+    public class T_CapFloor 
+    {
+       
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         class CommonVars {
             // common data
             public Date settlement;
