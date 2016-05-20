@@ -1,6 +1,6 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
- * 
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -31,11 +31,13 @@ namespace QLNet
       private double? fixedRate_;
       private Period forwardStart_;
 
-      private int fixingDays_;
+      private int settlementDays_;
       private Date effectiveDate_, terminationDate_;
+      private Calendar calendar_;
+
       private Frequency paymentFrequency_;
       DateGeneration.Rule rule_;
-      private bool endOfMonth_;
+      private bool endOfMonth_, isDefaultEOM_;
 
       private OvernightIndexedSwap.Type type_;
       private double nominal_;
@@ -45,34 +47,28 @@ namespace QLNet
 
       private IPricingEngine engine_;
 
-      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex,
-                     double? fixedRate) : this(swapTenor,overnightIndex,fixedRate,new Period (0,TimeUnit.Days))
-      {}
-
-      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex) 
-         : this(swapTenor, overnightIndex, null, new Period(0, TimeUnit.Days))
-      {}
-
-      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex,
-                     double? fixedRate, Period fwdStart)
+      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex,double? fixedRate = null , Period fwdStart = null )
       {
          swapTenor_=swapTenor;
          overnightIndex_ = overnightIndex;
          fixedRate_= fixedRate;
-         forwardStart_= fwdStart;
-         fixingDays_ = 2;
+         forwardStart_= fwdStart?? new Period(0,TimeUnit.Days);
+         settlementDays_ = 2;
+         calendar_ = overnightIndex.fixingCalendar();
          paymentFrequency_ = Frequency.Annual;
          rule_ = DateGeneration.Rule.Backward;
-         endOfMonth_ = (new Period(1,TimeUnit.Months)<=swapTenor && swapTenor<=new Period(2,TimeUnit.Years) ? true : false);
+         // any value here for endOfMonth_ would not be actually used
+         isDefaultEOM_ = true;
+         //endOfMonth_ = (new Period(1,TimeUnit.Months)<=swapTenor && swapTenor<=new Period(2,TimeUnit.Years) ? true : false);
          type_ = OvernightIndexedSwap.Type.Payer;
          nominal_ = 1.0;
          overnightSpread_ = 0.0;
          fixedDayCount_ = overnightIndex.dayCounter();
-         engine_ = new DiscountingSwapEngine(overnightIndex_.forwardingTermStructure());
+         //engine_ = new DiscountingSwapEngine(overnightIndex_.forwardingTermStructure());
 
       }
 
-      public MakeOIS receiveFixed(bool flag) 
+      public MakeOIS receiveFixed(bool flag = true) 
       {
         type_ = flag ? OvernightIndexedSwap.Type.Receiver : OvernightIndexedSwap.Type.Payer ;
         return this;
@@ -84,10 +80,10 @@ namespace QLNet
          return this;
       }
 
-      public MakeOIS withSettlementDays(int fixingDays) 
+      public MakeOIS withSettlementDays( int settlementDays ) 
       {
-         fixingDays_ = fixingDays;
-         effectiveDate_ = null; // new Date();
+         settlementDays_ = settlementDays;
+         effectiveDate_ = null; 
          return this;
       }
 
@@ -135,7 +131,7 @@ namespace QLNet
       public MakeOIS withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure)
       {
 
-         engine_ = (IPricingEngine) new DiscountingSwapEngine(discountingTermStructure);
+         engine_ = (IPricingEngine) new DiscountingSwapEngine(discountingTermStructure,false);
 
          return this;
       }
@@ -146,85 +142,105 @@ namespace QLNet
          return this;
       }
 
-      public MakeOIS withEndOfMonth(bool flag) 
+      public MakeOIS withEndOfMonth(bool flag = true) 
       {
          endOfMonth_ = flag;
+         isDefaultEOM_ = false;
          return this;
       }
 
+      public MakeOIS withPricingEngine( IPricingEngine engine )
+      {
+         engine_ = engine;
+         return this;
+      }
+      
       // OIswap creator
       public static implicit operator OvernightIndexedSwap(MakeOIS o) { return o.value(); }
 
       public OvernightIndexedSwap value()
       {
-         Calendar calendar = overnightIndex_.fixingCalendar();
          Date startDate;
 
-         if (effectiveDate_ != null)
+         if ( effectiveDate_ != null )
             startDate = effectiveDate_;
          else
          {
-            Date referenceDate = Settings.evaluationDate();
-            Date spotDate = calendar.advance(referenceDate,
-                                             new Period(fixingDays_,TimeUnit.Days));
-            startDate = spotDate+forwardStart_;
-         }
-
-         Date endDate;
-         if (terminationDate_ != null)
-            endDate = terminationDate_;
-         else
-         {
-            if (endOfMonth_)
-            {
-               endDate = calendar.advance(startDate, swapTenor_,
-                                          BusinessDayConvention.ModifiedFollowing,
-                                          endOfMonth_);
-            }
+            Date refDate = Settings.evaluationDate();
+            // if the evaluation date is not a business day
+            // then move to the next business day
+            refDate = calendar_.adjust( refDate );
+            Date spotDate = calendar_.advance( refDate, new Period( settlementDays_, TimeUnit.Days ) );
+            startDate = spotDate + forwardStart_;
+            if ( forwardStart_.length() < 0 )
+               startDate = calendar_.adjust( startDate, BusinessDayConvention.Preceding );
             else
-            {
-               endDate = startDate + swapTenor_;
-            }
-
+               startDate = calendar_.adjust( startDate, BusinessDayConvention.Following );
          }
 
-        Schedule schedule = new Schedule(startDate, endDate,
-                          new Period(paymentFrequency_),
-                          calendar,
+         // OIS end of month default
+         bool usedEndOfMonth =
+             isDefaultEOM_ ? calendar_.isEndOfMonth( startDate ) : endOfMonth_;
+
+         Date endDate = terminationDate_;
+         if ( endDate == null )
+            if ( usedEndOfMonth )
+               endDate = calendar_.advance( startDate,
+                                           swapTenor_,
+                                           BusinessDayConvention.ModifiedFollowing,
+                                           usedEndOfMonth );
+            else
+               endDate = startDate + swapTenor_;
+
+
+
+         Schedule schedule = new Schedule( startDate, endDate,
+                          new Period( paymentFrequency_ ),
+                          calendar_,
                           BusinessDayConvention.ModifiedFollowing,
                           BusinessDayConvention.ModifiedFollowing,
                           rule_,
-                          endOfMonth_);
+                          usedEndOfMonth );
 
-        double? usedFixedRate = fixedRate_;
-        if (fixedRate_ == null) 
-        {
-           if (overnightIndex_.forwardingTermStructure().empty())
-           {
-              throw new ApplicationException("null term structure set to this instance of " 
-                                             + overnightIndex_.name());
-           }
+         double? usedFixedRate = fixedRate_;
+         if ( fixedRate_ == null )
+         {
+            OvernightIndexedSwap temp = new OvernightIndexedSwap( type_, nominal_,
+                                            schedule,
+                                            0.0, // fixed rate
+                                            fixedDayCount_,
+                                            overnightIndex_, overnightSpread_ );
+            if ( engine_ == null )
+            {
+               Handle<YieldTermStructure> disc = overnightIndex_.forwardingTermStructure();
+               Utils.QL_REQUIRE( !disc.empty(), () => "null term structure set to this instance of " +
+                  overnightIndex_.name() );
+               bool includeSettlementDateFlows = false;
+               IPricingEngine engine = new DiscountingSwapEngine( disc, includeSettlementDateFlows );
+               temp.setPricingEngine( engine );
+            }
+            else
+               temp.setPricingEngine( engine_ );
 
-           OvernightIndexedSwap temp = new OvernightIndexedSwap(type_, nominal_,
-                                           schedule,
-                                           0.0, // fixed rate
-                                           fixedDayCount_,
-                                           overnightIndex_, overnightSpread_);
-
-            // ATM on the forecasting curve
-            //bool includeSettlementDateFlows = false;
-            temp.setPricingEngine(new DiscountingSwapEngine(
-                                   overnightIndex_.forwardingTermStructure()));
             usedFixedRate = temp.fairRate();
-        }
+         }
 
-        OvernightIndexedSwap ois = new OvernightIndexedSwap(type_, nominal_,
-                                 schedule,
-                                 usedFixedRate.Value, fixedDayCount_,
-                                 overnightIndex_, overnightSpread_);
+         OvernightIndexedSwap ois = new OvernightIndexedSwap( type_, nominal_,
+                                  schedule,
+                                  usedFixedRate.Value, fixedDayCount_,
+                                  overnightIndex_, overnightSpread_ );
 
-        ois.setPricingEngine(engine_);
-        return ois;
+         if ( engine_ == null )
+         {
+            Handle<YieldTermStructure> disc = overnightIndex_.forwardingTermStructure();
+            bool includeSettlementDateFlows = false;
+            IPricingEngine engine = new DiscountingSwapEngine( disc, includeSettlementDateFlows );
+            ois.setPricingEngine( engine );
+         }
+         else
+            ois.setPricingEngine( engine_ );
+
+         return ois;
       }
    }
 }

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
   
@@ -40,7 +40,7 @@ namespace QLNet {
        </ul>
 
        Other holidays for which no rule is given
-       (data available for 2004-2013 only:)
+       (data available for 2004-2032 only:)
        <ul>
        <li>Lunar New Year, the last day of the previous lunar year</li> 
        <li>Election Days</li>
@@ -130,6 +130,26 @@ namespace QLNet {
                     || ((d == 23 || d == 24) && m == Month.January && y == 2012)
                     || (d == 11 && m == Month.February && y == 2013)
                     || ( ( d == 30 || d == 31 ) && m == Month.January && y == 2014 )
+                    || ( ( d == 18 || d == 19 || d == 20 ) && m == Month.February && y == 2015 )
+                    || ( ( d == 7 || d == 8 || d == 9 ) && m == Month.February && y == 2016 )
+                    || ( ( d == 27 || d == 28 || d == 29 ) && m == Month.January && y == 2017 )
+                    || ( ( d == 15 || d == 16 || d == 17 ) && m == Month.February && y == 2018 )
+                    || ( ( d == 4 || d == 5 || d == 6 ) && m == Month.February && y == 2019 )
+                    || ( ( d == 24 || d == 25 || d == 26 ) && m == Month.January && y == 2020 )
+                    || ( ( d == 11 || d == 12 || d == 13 ) && m == Month.February && y == 2021 )
+                    || ( ( ( d == 31 && m == Month.January ) || ( ( d == 1 || d == 2 )
+                                                      && m == Month.February ) ) && y == 2022 )
+                    || ( ( d == 21 || d == 22 || d == 23 ) && m == Month.January && y == 2023 )
+                    || ( ( d == 9 || d == 10 || d == 11 ) && m == Month.February && y == 2024 )
+                    || ( ( d == 28 || d == 29 || d == 30 ) && m == Month.January && y == 2025 )
+                    || ( ( d == 28 || d == 29 || d == 30 ) && m == Month.January && y == 2025 )
+                    || ( ( d == 16 || d == 17 || d == 18 ) && m == Month.February && y == 2026 )
+                    || ( ( d == 5 || d == 6 || d == 7 ) && m == Month.February && y == 2027 )
+                    || ( ( d == 25 || d == 26 || d == 27 ) && m == Month.January && y == 2028 )
+                    || ( ( d == 12 || d == 13 || d == 14 ) && m == Month.February && y == 2029 )
+                    || ( ( d == 2 || d == 3 || d == 4 ) && m == Month.February && y == 2030 )
+                    || ( ( d == 22 || d == 23 || d == 24 ) && m == Month.January && y == 2031 )
+                    || ( ( d == 10 || d == 11 || d == 12 ) && m == Month.February && y == 2032 )
                     // Election Days
                     || (d == 15 && m == Month.April && y == 2004)    // National Assembly
                     || (d == 31 && m == Month.May && y == 2006)      // Regional election
@@ -139,6 +159,7 @@ namespace QLNet {
                     || (d == 11 && m == Month.April && y == 2012)    // National Assembly
                     || (d == 19 && m == Month.December && y == 2012) // Presidency
                     || ( d == 4 && m == Month.June && y == 2014 )      // Local election
+                     || ( d == 13 && m == Month.April && y == 2016 ) // National Assembly
                     // Buddha's birthday
                     || (d == 26 && m == Month.May && y == 2004)
                     || (d == 15 && m == Month.May && y == 2005)
@@ -150,7 +171,27 @@ namespace QLNet {
                     || (d == 10 && m == Month.May && y == 2011)
                     || (d == 28 && m == Month.May && y == 2012)
                     || (d == 17 && m == Month.May && y == 2013)
-                    || ( d == 6 && m == Month.May && y == 2014 )
+                    || ( d == 6 && m == Month.May && y == 2014)
+                    || ( d == 25 && m == Month.May && y == 2015 )
+                    || ( d == 14 && m == Month.May && y == 2016 )
+                    || ( d == 3 && m == Month.May && y == 2017 )
+                    || ( d == 22 && m == Month.May && y == 2018 )
+                    || ( d == 12 && m == Month.May && y == 2019 )
+                    || ( d == 30 && m == Month.April && y == 2020 )
+                    || ( d == 19 && m == Month.May && y == 2021 )
+                    || ( d == 8 && m == Month.May && y == 2022 )
+                    || ( d == 26 && m == Month.May && y == 2023 )
+                    || ( d == 15 && m == Month.May && y == 2024 )
+                    || ( d == 5 && m == Month.May && y == 2025 )
+                    || ( d == 24 && m == Month.May && y == 2026 )
+                    || ( d == 13 && m == Month.May && y == 2027 )
+                    || ( d == 2 && m == Month.May && y == 2028 )
+                    || ( d == 20 && m == Month.May && y == 2029 )
+                    || ( d == 9 && m == Month.May && y == 2030 )
+                    || ( d == 28 && m == Month.May && y == 2031 )
+                    || ( d == 16 && m == Month.May && y == 2032 )
+                    // Special holiday: 70 years from Independence Day
+                    || ( d == 14 && m == Month.August && y == 2015 )
                     // Harvest Moon Day
                     || ((d == 27 || d == 28 || d == 29) && m == Month.September && y == 2004)
                     || ((d == 17 || d == 18 || d == 19) && m == Month.September && y == 2005)
@@ -163,9 +204,28 @@ namespace QLNet {
                     || (d == 1 && m == Month.October && y == 2012)
                     || ((d == 18 || d == 19 || d == 20) && m == Month.September && y == 2013)
                     || ( ( d == 8 || d == 9 || d == 10 ) && m == Month.September && y == 2014 )
+                    || ( ( d == 28 || d == 29 ) && m == Month.September && y == 2015 )
+                    || ( ( d == 14 || d == 15 || d == 16 ) && m == Month.September && y == 2016 )
+                    || ( ( d == 3 || d == 4 || d == 5 ) && m == Month.October && y == 2017 )
+                    || ( ( d == 23 || d == 24 || d == 25 ) && m == Month.September && y == 2018 )
+                    || ( ( d == 12 || d == 13 || d == 14 ) && m == Month.September && y == 2019 )
+                    || ( ( ( d == 30 && m == Month.September ) || ( ( d == 1 || d == 2 )
+                                                        && m == Month.October ) ) && y == 2020 )
+                    || ( ( d == 20 || d == 21 || d == 22 ) && m == Month.September && y == 2021 )
+                    || ( ( d == 9 || d == 10 || d == 11 ) && m == Month.September && y == 2022 )
+                    || ( ( d == 28 || d == 29 || d == 30 ) && m == Month.September && y == 2023 )
+                    || ( ( d == 16 || d == 17 || d == 18 ) && m == Month.September && y == 2024 )
+                    || ( ( d == 5 || d == 6 || d == 7 ) && m == Month.October && y == 2025 )
+                    || ( ( d == 24 || d == 25 || d == 26 ) && m == Month.September && y == 2026 )
+                    || ( ( d == 14 || d == 15 || d == 16 ) && m == Month.September && y == 2027 )
+                    || ( ( d == 2 || d == 3 || d == 4 ) && m == Month.October && y == 2028 )
+                    || ( ( d == 21 || d == 22 || d == 23 ) && m == Month.September && y == 2029 )
+                    || ( ( d == 11 || d == 12 || d == 13 ) && m == Month.September && y == 2030 )
+                    || ( ( ( d == 30 && m == Month.September ) || ( ( d == 1 || d == 2 )
+                                                        && m == Month.October ) ) && y == 2031 )
+                    || ( ( d == 18 || d == 19 || d == 20 ) && m == Month.September && y == 2032 )
                     // Hangul Proclamation of Korea
-                    || (d == 9 && m == Month.October && y == 2013)
-                    || ( d == 9 && m == Month.October && y == 2014 )
+                    || (d == 9 && m == Month.October && y >= 2013)
                     )
                     return false;
 
@@ -174,7 +234,7 @@ namespace QLNet {
         }
 
         class KRX : Settlement {
-            new public static readonly KRX Singleton = new KRX();
+            public new static readonly KRX Singleton = new KRX();
 
            public override string name() { return "South-Korea exchange"; }
             public override bool isBusinessDay(Date date)  {
@@ -183,26 +243,18 @@ namespace QLNet {
                     return false;
 
                 int d = date.Day;
+                DayOfWeek w = date.DayOfWeek;
                 Month m = (Month)date.Month;
-                int y = date.Year;
 
-                if (// Year-end closing
-                       (d == 31 && m == Month.December && y == 2004)
-                    || (d == 30 && m == Month.December && y == 2005)
-                    || (d == 29 && m == Month.December && y == 2006)
-                    || (d == 31 && m == Month.December && y == 2007)
-                    || (d == 31 && m == Month.December && y == 2008)
-                    || (d == 31 && m == Month.December && y == 2009)
-                    || (d == 31 && m == Month.December && y == 2010)
-                    || (d == 30 && m == Month.December && y == 2011)
-                    || (d == 31 && m == Month.December && y == 2012)
-                    || (d == 31 && m == Month.December && y == 2013)
-                    )
-                    return false;
+               if ( // Year-end closing
+                  ((((d == 29 || d == 30) && w == DayOfWeek.Friday) || d == 31)
+                   && m == Month.December)
+                  )
+                  return false;
 
-                return true;
+               return true;
             }
-        };
+        }
     }
 }
 

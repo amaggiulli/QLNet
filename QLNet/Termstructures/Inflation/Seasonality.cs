@@ -314,4 +314,68 @@ namespace QLNet
          return (rate + 1) * f - 1;
       }
    }
+
+   public class KerkhofSeasonality : MultiplicativePriceSeasonality 
+   {
+      public KerkhofSeasonality(Date seasonalityBaseDate,List<double> seasonalityFactors)
+        : base(seasonalityBaseDate,Frequency.Monthly,seasonalityFactors) 
+      {}
+
+      public override double seasonalityFactor(Date to)
+      {
+         int dir = 1;
+         Date from = seasonalityBaseDate();
+         int fromMonth = from.month();
+         int toMonth = to.month();
+
+         Period factorPeriod = new Period(frequency());
+
+         if (toMonth < fromMonth)
+         {
+            int dummy = fromMonth;
+            fromMonth = toMonth;
+            toMonth = dummy;
+            dir = 0; // We calculate invers Factor in loop
+         }
+
+         Utils.QL_REQUIRE(seasonalityFactors().Count == 12 &&
+                          factorPeriod.units() == TimeUnit.Months,()=>
+                          "12 monthly seasonal factors needed for Kerkhof Seasonality:" +
+                          " got " + seasonalityFactors().Count);
+
+         double seasonalCorrection = 1.0;
+         for (int i = fromMonth ; i<toMonth; i++)
+         {
+            seasonalCorrection *= seasonalityFactors()[i];
+         }
+
+         if (dir == 0) // invers Factor required
+         {
+            seasonalCorrection = 1/seasonalCorrection;
+         }
+
+         return seasonalCorrection;
+      
+      }
+      
+      protected override double seasonalityCorrection(double rate,Date atDate,DayCounter dc,Date curveBaseDate,bool isZeroRate)
+      {
+         double indexFactor = this.seasonalityFactor(atDate);
+
+         // Getting seasonality correction
+         double f = 0;
+         if (isZeroRate) 
+         {
+            KeyValuePair<Date,Date> lim = Utils.inflationPeriod(curveBaseDate, Frequency.Monthly);
+            double timeFromCurveBase = dc.yearFraction(lim.Key, atDate);
+            f = Math.Pow(indexFactor, 1/timeFromCurveBase);
+         }
+         else 
+         {
+            Utils.QL_FAIL("Seasonal Kerkhof model is not defined on YoY rates");
+         }
+
+         return (rate + 1)*f - 1;
+      }
+   }
 }

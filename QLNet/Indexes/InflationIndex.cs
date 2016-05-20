@@ -178,28 +178,31 @@ namespace QLNet
         {
            if (!needsForecast(aFixingDate)) 
            {
-              if (!IndexManager.instance().getHistory(name()).value().ContainsKey(aFixingDate))
-                 throw new ApplicationException("Missing " + name() + " fixing for " + aFixingDate);
+              KeyValuePair<Date,Date> lim = Utils.inflationPeriod(aFixingDate, frequency_);
+                 Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).value().ContainsKey( lim.Key ), () => 
+                    "Missing " + name() + " fixing for " + lim.Key );
 
-               double pastFixing = IndexManager.instance().getHistory(name()).value()[aFixingDate];
-               double theFixing = pastFixing;
-
-               if (interpolated_) 
-               {
-                  // fixings stored flat & for every day
-                  Date fixingDate2 = aFixingDate + new Period(frequency_);
-                  if (!IndexManager.instance().getHistory(name()).value().ContainsKey(fixingDate2))
-                      throw new ApplicationException("Missing " + name() + " fixing for " + fixingDate2);
-
-                  double pastFixing2 = IndexManager.instance().getHistory(name()).value()[fixingDate2];
-
-                  // now linearly interpolate
-                  KeyValuePair<Date,Date> lim2 = Utils.inflationPeriod(aFixingDate, frequency_);
-                  double daysInPeriod = lim2.Value+1 - lim2.Key;
-                  theFixing = pastFixing
-                       + (pastFixing2 -pastFixing)*(aFixingDate-lim2.Key)/daysInPeriod;
-               }
-               return theFixing;
+              double pastFixing = IndexManager.instance().getHistory(name()).value()[lim.Key];
+              double theFixing = pastFixing;
+              if (interpolated_) 
+              {
+                 // fixings stored on first day of every period
+                 if (aFixingDate == lim.Key) 
+                 {
+                    // we don't actually need the next fixing
+                    theFixing = pastFixing;
+                 } 
+                 else
+                 {
+                    Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).value().ContainsKey( lim.Value+1 ),()=>
+                       "Missing " + name() + " fixing for " + (lim.Value+1));
+                    double pastFixing2 = IndexManager.instance().getHistory(name()).value()[lim.Value+1]; 
+                    // now linearly interpolate
+                    double daysInPeriod = lim.Value+1 - lim.Key;
+                    theFixing = pastFixing + (pastFixing2-pastFixing)*(aFixingDate-lim.Key)/daysInPeriod;
+                 }
+              }
+              return theFixing;
            } 
            else 
            {

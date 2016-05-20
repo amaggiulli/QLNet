@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -41,5 +42,16 @@ namespace QLNet {
         Interpolation interpolation_ { get; set; }
         IInterpolationFactory interpolator_ { get; set; }
         void setupInterpolation();
+        // Usually, the maximum date is the one corresponding to the
+        // last node. However, it might happen that a bit of
+        // extrapolation is used by construction; for instance, when a
+        // curve is bootstrapped and the last relevant date for an
+        // instrument is after the corresponding pillar.
+        // We provide here a slot to store this information, so that
+        // it's available to all derived classes (we should have
+        // probably done the same with the dates_ vector, but moving
+        // it here might not be entirely backwards-compatible).
+        Date maxDate_{ get; set; }
+
     }
 }

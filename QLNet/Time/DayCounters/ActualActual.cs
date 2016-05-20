@@ -97,7 +97,7 @@ namespace QLNet
                         // here refPeriodStart is the last (maybe notional) payment date.
                         // refPeriodStart <= d1 <= d2 <= refPeriodEnd
                         // [maybe the equality should be enforced, since	refPeriodStart < d1 <= d2 < refPeriodEnd	could give wrong results] ???
-                        return period * dayCount(d1, d2) / dayCount(refPeriodStart, refPeriodEnd);
+                       return period * Date.daysBetween( d1, d2 ) / Date.daysBetween( refPeriodStart, refPeriodEnd );
                     }
                     else
                     {
@@ -169,8 +169,8 @@ namespace QLNet
                        dib2 = (Date.IsLeapYear(y2) ? 366 : 365);
 
                 double sum = y2 - y1 - 1;
-                sum += dayCount(d1, new Date(1, Month.January, y1 + 1)) / dib1;
-                sum += dayCount(new Date(1, Month.January, y2), d2) / dib2;
+                sum += Date.daysBetween( d1, new Date( 1, Month.January, y1 + 1 ) ) / dib1;
+                sum += Date.daysBetween( new Date( 1, Month.January, y2 ), d2 ) / dib2;
                 return sum;
             }
         };
@@ -218,7 +218,7 @@ namespace QLNet
                         den += 1;
                 }
 
-                return sum + dayCount(d1, newD2) / den;
+                return sum + Date.daysBetween( d1, newD2 ) / den;
             }
         };
 

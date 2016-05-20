@@ -22,16 +22,17 @@ using System;
 namespace QLNet {
 
     public abstract class Integrator {
-        private double absoluteAccuracy_;
+        private double? absoluteAccuracy_;
         private double absoluteError_;
         private int maxEvaluations_;
         private int evaluations_;
 
-        public Integrator(double absoluteAccuracy, int maxEvaluations) {
+        public Integrator(double? absoluteAccuracy, int maxEvaluations) {
             absoluteAccuracy_ = absoluteAccuracy;
             maxEvaluations_ = maxEvaluations;
-            if (!(absoluteAccuracy > ((Double.Epsilon))))
-                throw new ApplicationException("required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + Double.Epsilon);
+            if ( absoluteAccuracy != null)
+               if (!(absoluteAccuracy > ((Double.Epsilon))))
+                   throw new ApplicationException("required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + Double.Epsilon);
         }
 
         public double value(Func<double, double> f, double a, double b) {
@@ -56,7 +57,7 @@ namespace QLNet {
 
         //! \name Inspectors
         //@{
-        public double absoluteAccuracy() {
+        public double? absoluteAccuracy() {
             return absoluteAccuracy_;
         }
         public int maxEvaluations() {

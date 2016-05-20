@@ -77,8 +77,8 @@ namespace QLNet
         else 
         {
             List<double> times = callableBond.mandatoryTimes();
-            TimeGrid timeGrid = new TimeGrid(times, timeSteps_);
-            lattice = model_.tree(timeGrid);
+            TimeGrid timeGrid = new TimeGrid( times, times.Count, timeSteps_ );
+            lattice = model_.link.tree(timeGrid);
         }
 
         double redemptionTime = dayCounter.yearFraction(referenceDate, arguments_.redemptionDate);

@@ -1,83 +1,79 @@
-QLNet 1.6 
+QLNet 1.7 
 =========================
 
-QLNet 1.6 stable version.
+QLNet 1.7 stable version.
 
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
-DATE/TIME
-
-+ Added Moscow Exchange calendar .
-
-+ Added 70th anniversary of anti-Japanese day to Chinese calendar.
-
-+ Fixed Chinese New Year date for 2010.
-
-+ Added nearest-trading-day business day convention.
-
-+ Prevented normalization of a 7-days period to a 1-week period, since
-  this doesn't apply to business days.
-
-+ Allowed schedules built with a vector of dates to be used for coupon
-  generation, given that the required information was provided.
-
-+ Added support for Australian Security Exchange (ASX) dates.
-
-+ Added ECB dates for April and June 2016.
-
-INSTRUMENTS
-
-+ Fix capfloor bug on ctor.
-
-+ Extended digital American options to handle knock-off case.
-
-+ Added Bachelier engine for caps/floors based on normal volatility.
-
-+ Allowed non strike/type payoffs in finite-differences engine for
-  vanilla options.
-
-+ Fixed settlement days of BTP bonds.
-
-+ Added IPrepayModel interface, ConstantCPR class, and updated MBSFixedRateBond to use the interface rather than the PSACurve class.
-
-PRICING ENGINE 
-
-+ Black Formula rewritten
-
-+ Added StulzEngine and KirkEngine
-
-INDEXES
-
-+ Fixed day-count convention for Fed Funds rate.
-
 TERM STRUCTURES
 
-+ Fixed bug where a valid previous curve state could be a bad guess
-  for the next and lead to a bootstrap failure.
++ Added FittedBondDiscountCurve with example project.
+
+INTEREST RATES
+
++ Added rate helper to bootstrap on cross-currency swaps . 
+  The curve to be bootstrapped can be the one for either of the two currencies.
+
++ Added the possibility for bootstrap helpers to define their pillar
+  date in different ways . For each helper, the date of the corresponding 
+  node can be defined as the maturity date of the corresponding instrument, 
+  as the latest date used on the term structure to price the instrument, 
+  or as a custom date. Currently, the feature is enabled for FRAs and swaps.
+
++ Added the possibility to pass weight when fitting a bond discount
+  curve. Also, it is now possible to fit a spread over an existing
+  term structure.
+
+INFLATION
+
++ Added Kerkhof seasonality model.
+
++ Retrieve inflation fixings from the first day of the month . 
+  This avoids the need to store them for each day of the corresponding month.
 
 VOLATILITY
 
-+ BlackVarianceSurface implementation
++ Improve consistency between caplet stripping and pricing.
+
+MODELS
+
++ Added Heston model.
+
+SETTINGS
+
++ Make SavedSettings disposable and update tests accordingly.
+  Now the full test suite can be launched from Visual Studio IDE 
+  without errors ( false negative ) . 
+
+DATE/TIME
+
++ Added Romanian and Israelian calendars.
+
++ Added ECB reserve maintenance periods for 2016.
+
++ Updated South Korean calendar until the end of 2032.
+
++ Added new Mountain Day holiday for Japan.
+
++ Remove MLK day from list of US holidays before 1983.
+
++ Added Christmas Eve to BOVESPA holidays.
+
++ Added intraday component to dates. Date specifications now include hours, 
+  minutes, seconds and milliseconds. Day counters are aware of the added data 
+  and include them in results.
 
 MATH
 
-+ Fix close and close_enough comparison.
++ Added polynomial and abcd functions.
 
-+ Better comparison between double numbers.
++ Added Pascal triangle coefficients.
 
-+ Allowed user-defined Jacobian in optimization.
++ Added Goldstein line-search method.
 
-MISCELLANEA
+PATTERNS
 
-+ Added IDR, MYR, RUB and VND currencies.
++ Use WeakEventSource in Observer/Observable pattern to avoid memory leaks. 
 
-CODE REFACTORING
 
-+ Fix Handle ctor to avoid empty constructors.
-
-+ Removed Count() with property access , removed ThreadStatic initialize
-
-+ Replace ?: operator with ?? operator.
-
-+ Removed all redundant using directive.

@@ -36,7 +36,7 @@ namespace QLNet
             public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
             public override double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
             {
-                return dayCount(d1, d2) / 365.0;
+               return Date.daysBetween( d1, d2 ) / 365.0;
             }
 
         }

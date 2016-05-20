@@ -123,12 +123,16 @@ namespace QLNet {
             return pathPricer_;
         }
 
-        protected override PathGenerator<IRNG> pathGenerator() {
+        protected override IPathGenerator<IRNG> pathGenerator() {
             int dimensions = process_.factors();
             TimeGrid grid = timeGrid();
             IRNG generator = (IRNG)new RNG().make_sequence_generator(dimensions*(grid.size()-1),seed_);
-            return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
-        }
+            if ( typeof( MC ) == typeof( SingleVariate ) )
+               return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
+            else
+               return new MultiPathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
+
+            }
 
         protected abstract LongstaffSchwartzPathPricer<IPath> lsmPathPricer();
 
@@ -142,14 +146,18 @@ namespace QLNet {
 
         #region Observer & Observable
         // observable interface
-        public event Callback notifyObserversEvent;
+        private readonly WeakEventSource eventSource = new WeakEventSource();
+        public event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
+        }
+
         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        protected void notifyObservers()
+        {
+           eventSource.Raise();
         }
 
         public void update() { notifyObservers(); }

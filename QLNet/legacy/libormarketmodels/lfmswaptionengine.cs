@@ -53,7 +53,7 @@ namespace QLNet
             double fairRate = swap.fairRate() - correction;
 
             SwaptionVolatilityMatrix volatility =
-                model_.getSwaptionVolatilityMatrix();
+                model_.link.getSwaptionVolatilityMatrix();
 
             Date referenceDate = volatility.referenceDate();
             DayCounter dayCounter = volatility.dayCounter();

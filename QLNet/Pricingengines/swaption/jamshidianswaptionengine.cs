@@ -101,7 +101,7 @@ namespace QLNet
             DayCounter dayCounter;
 
             ITermStructureConsistentModel tsmodel =
-                (ITermStructureConsistentModel)base.model_;
+                (ITermStructureConsistentModel)base.model_.link;
             try
             {
                 if (tsmodel != null)
@@ -156,10 +156,10 @@ namespace QLNet
                 double fixedPayTime =
                     dayCounter.yearFraction(referenceDate,
                                             arguments_.fixedPayDates[i]);
-                double strike = model_.discountBond(maturity,
+                double strike = model_.link.discountBond(maturity,
                                                    fixedPayTime,
                                                    rStar);
-                double dboValue = model_.discountBondOption(
+                double dboValue = model_.link.discountBondOption(
                                                    w, strike, maturity,
                                                    fixedPayTime);
                 value += amounts[i] * dboValue;

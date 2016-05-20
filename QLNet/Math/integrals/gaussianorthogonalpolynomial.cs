@@ -130,7 +130,7 @@ namespace QLNet {
                     num  = 2*beta_;
                     denom= 2*(2.0*i+alpha_+beta_+1);
 
-                    if(denom != 0)
+                    if(denom == 0)
                         throw new ApplicationException("can't compute a_k for jacobi integration\n");
                 }
             }
@@ -150,7 +150,7 @@ namespace QLNet {
                     num  = 4.0*i*(i+beta_)* (2.0*i+2*alpha_+beta_);
                     denom= 2.0*(2.0*i+alpha_+beta_);
                     denom*=denom-1;
-                    if(denom != 0)
+                    if(denom == 0)
                         throw new ApplicationException("can't compute b_k for jacobi integration\n");
                 }
             }

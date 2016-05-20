@@ -64,7 +64,8 @@ namespace QLNet
          // computations later on
          for (int i=0; i<stdDevs.Count; ++i)
             stdDevHandles_[i] = new Handle<Quote>(new SimpleQuote(stdDevs[i]));
-            atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
+
+         atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
          // check strikes!!!!!!!!!!!!!!!!!!!!
          interpolation_ = interpolator.interpolate(strikes_,strikes_.Count,vols_);
       }
@@ -154,7 +155,14 @@ namespace QLNet
 
       public List<Date> dates_ { get; set; }
       public List<Date> dates() { return dates_; }
-      public Date maxDate() { return dates_.Last(); }
+      public Date maxDate_ { get; set; }
+      public Date maxDate()
+      {
+         if ( maxDate_ != null )
+            return maxDate_;
+
+         return dates_.Last();
+      }
 
       public List<double> data_ { get; set; }
       public List<double> discounts() { return this.data_; }

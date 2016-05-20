@@ -50,7 +50,7 @@ namespace QLNet{
             timeGrid_ = new TimeGrid(timeGrid.Last(),timeGrid.size()-1 /*timeGrid.dt(1) - timeGrid.dt(0)*/);
             timeGrid_=timeGrid;
             timeSteps_=0;
-            lattice_=this.model_.tree(timeGrid);
+            lattice_=this.model_.link.tree(timeGrid);
             //model_.registerWith(update); 
         }
 
@@ -73,7 +73,7 @@ namespace QLNet{
         public override void update()
         {
             if (!timeGrid_.empty())
-                lattice_ = this.model_.tree(timeGrid_);
+                lattice_ = this.model_.link.tree(timeGrid_);
             notifyObservers();
         }
         #endregion

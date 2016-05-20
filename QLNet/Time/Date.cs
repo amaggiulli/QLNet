@@ -30,9 +30,11 @@ namespace QLNet {
         public Date(int serialNumber) {			
             date = (new DateTime(1899, 12, 31)).AddDays(serialNumber - 1);
         }
-        public Date(int d, Month m, int y) : this(d, (int)m, y) { }
+        public Date(int d, Month m, int y, int h = 0, int mi = 0, int s = 0 , int ms = 0) : this(d, (int)m, y, h, mi, s, ms) { }
         public Date(int d, int m, int y) :		//! More traditional constructor.
             this(new DateTime(y, m, d)) { }
+        public Date( int d, int m, int y, int h = 0 , int mi = 0, int s = 0 , int ms = 0 ) :		//! More traditional constructor.
+           this( new DateTime( y, m, d, h, mi, s , ms ) ) { }
         public Date(DateTime d) {				//! System DateTime constructor
             date = d;
         }
@@ -46,7 +48,14 @@ namespace QLNet {
         public int DayOfYear { get { return date.DayOfYear; } }
         public int weekday() { return (int)date.DayOfWeek + 1; }       // QL compatible definition
         public DayOfWeek DayOfWeek { get { return date.DayOfWeek; } }
-
+        public int hours { get { return date.Hour; } }
+        public int minutes { get { return date.Minute; } }
+        public int seconds { get { return date.Second; } }
+        public int milliseconds { get { return date.Millisecond; } }
+       
+        public double fractionOfSecond { get { return (double)date.Millisecond/1000; } }
+        public double fractionOfDay()  { return date.TimeOfDay.TotalSeconds/86400.0;}
+ 
         // static properties
         public static Date minDate() { return new Date(1, 1, 1901); }
         public static Date maxDate() { return new Date(31, 12, 2199); }
@@ -56,7 +65,11 @@ namespace QLNet {
 
         public static Date endOfMonth(Date d) { return (d - d.Day + DaysInMonth(d.Year, d.Month)); }
         public static bool isEndOfMonth(Date d) { return (d.Day == DaysInMonth(d.Year, d.Month)); }
-        
+        public static double daysBetween(Date d1, Date d2) 
+        {
+           double days = d2 - d1;
+           return days + d2.fractionOfDay() - d1.fractionOfDay();
+        }
         //! next given weekday following or equal to the given date
         public static Date nextWeekday(Date d, DayOfWeek dayOfWeek) {
             int wd = dayOfWeek - d.DayOfWeek;

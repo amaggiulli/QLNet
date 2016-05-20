@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLNet", "QLNet\QLNet.csproj", "{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2EF8B45B-940A-4B77-8776-E8CE0036961E}"
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swap", "Examples\Swap\Swap.csproj", "{49B855BB-E828-48DF-90BC-A14D1233F746}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallableBonds", "Examples\CallableBonds\CallableBonds.csproj", "{956C8A84-DBB8-4CB9-BBE4-57D67741C676}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FittedBondCurve", "Examples\FittedBondCurve\FittedBondCurve.csproj", "{81459545-A095-4977-8C52-2C4BBC50558F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,16 @@ Global
 		{956C8A84-DBB8-4CB9-BBE4-57D67741C676}.Release|Mixed Platforms.Build.0 = Release|x86
 		{956C8A84-DBB8-4CB9-BBE4-57D67741C676}.Release|x86.ActiveCfg = Release|x86
 		{956C8A84-DBB8-4CB9-BBE4-57D67741C676}.Release|x86.Build.0 = Release|x86
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{81459545-A095-4977-8C52-2C4BBC50558F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

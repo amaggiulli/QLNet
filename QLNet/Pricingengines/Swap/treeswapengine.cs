@@ -62,7 +62,7 @@ namespace QLNet
             DayCounter dayCounter;
 
             ITermStructureConsistentModel tsmodel =
-                (ITermStructureConsistentModel)base.model_;
+                (ITermStructureConsistentModel)base.model_.link;
             try {
                 if (tsmodel!=null) {
                     referenceDate = tsmodel.termStructure().link.referenceDate();
@@ -84,8 +84,8 @@ namespace QLNet
             if (lattice_!=null) {
                 lattice = lattice_;
             } else {
-                TimeGrid timeGrid = new TimeGrid(times, timeSteps_);
-                lattice = model_.tree(timeGrid);
+               TimeGrid timeGrid = new TimeGrid( times, times.Count, timeSteps_ );
+                lattice = model_.link.tree(timeGrid);
             }
 
             swap.initialize(lattice, times.Last());

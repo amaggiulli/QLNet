@@ -62,15 +62,18 @@ namespace QLNet {
 
 
         // Subjects, i.e. observables, should define interface internally like follows.
-        public event Callback notifyObserversEvent;
-        // this method is required for calling from derived classes
-        protected void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        private readonly WeakEventSource eventSource = new WeakEventSource();
+        public event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
         }
+
         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+        protected void notifyObservers()
+        {
+           eventSource.Raise();
+        }
     }
 }

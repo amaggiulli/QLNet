@@ -69,38 +69,44 @@ namespace QLNet {
 
         ////////////////////////////////////////////////////
         // Observable interface
-        private static event Callback notifyObserversEvent;
+        private static readonly WeakEventSource eventSource = new WeakEventSource();
+        public static event Callback notifyObserversEvent
+        {
+           add { eventSource.Subscribe(value); }
+           remove { eventSource.Unsubscribe(value); }
+        }
 
         public static void registerWith(Callback handler) { notifyObserversEvent += handler; }
         public static void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        private static void notifyObservers() {
-            Callback handler = notifyObserversEvent;
-            if (handler != null) {
-                handler();
-            }
+        private static void notifyObservers()
+        {
+           eventSource.Raise();
         }
     }
 
-    // helper class to temporarily and safely change the settings
-    public class SavedSettings {
-        private Date evaluationDate_;
-        private bool enforcesTodaysHistoricFixings_;
-        private bool includeReferenceDateEvents_;
-        private bool? includeTodaysCashFlows_;
+   // helper class to temporarily and safely change the settings
+   public class SavedSettings : IDisposable
+   {
+      private Date evaluationDate_;
+      private bool enforcesTodaysHistoricFixings_;
+      private bool includeReferenceDateEvents_;
+      private bool? includeTodaysCashFlows_;
 
-        public SavedSettings() {
-            evaluationDate_ = Settings.evaluationDate();
-            enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
-            includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
-            includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
-        }
+      public SavedSettings()
+      {
+         evaluationDate_ = Settings.evaluationDate();
+         enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
+         includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
+         includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
+      }
 
-        ~SavedSettings() {
-            if (evaluationDate_ != Settings.evaluationDate())
-                Settings.setEvaluationDate(evaluationDate_);
-            Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
-            Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
-            Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
-        }
-    }
+      public void Dispose()
+      {
+         if (evaluationDate_ != Settings.evaluationDate())
+            Settings.setEvaluationDate(evaluationDate_);
+         Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
+         Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
+         Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
+      }
+   }
 }

@@ -319,5 +319,34 @@ namespace TestSuite
          }
 
       }
+
+      [TestMethod()]
+      public void testIntraday() 
+      {
+         // Testing intraday information of dates
+
+         Date d1 = new Date(12, Month.February, 2015, 10, 45, 12, 234);
+
+         Assert.IsTrue(d1.year() == 2015, "failed to reproduce year");
+         Assert.IsTrue(d1.month() == (int)Month.February, "failed to reproduce month");
+         Assert.IsTrue(d1.Day == 12, "failed to reproduce day");
+         Assert.IsTrue(d1.hours == 10, "failed to reproduce hour of day");
+         Assert.IsTrue(d1.minutes == 45,"failed to reproduce minute of hour");
+         Assert.IsTrue(d1.seconds == 12,"failed to reproduce second of minute");
+         Assert.IsTrue(d1.milliseconds == 234, "failed to reproduce number of milliseconds" );
+
+         Assert.IsTrue(d1.fractionOfSecond == 0.234,"failed to reproduce fraction of second");
+
+
+         Date d2 = new Date(28, Month.February, 2015, 4, 52, 57, 999);
+         Assert.IsTrue(d2.year() == 2015, "failed to reproduce year");
+         Assert.IsTrue(d2.month() == (int)Month.February, "failed to reproduce month");
+         Assert.IsTrue(d2.Day == 28, "failed to reproduce day");
+         Assert.IsTrue(d2.hours == 4, "failed to reproduce hour of day");
+         Assert.IsTrue(d2.minutes == 52,"failed to reproduce minute of hour");
+         Assert.IsTrue(d2.seconds == 57,"failed to reproduce second of minute");
+         Assert.IsTrue( d2.milliseconds == 999, "failed to reproduce number of milliseconds" );
+      }
+
    }
 }

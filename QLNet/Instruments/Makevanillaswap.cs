@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -25,7 +26,7 @@ namespace QLNet {
         private Period forwardStart_, swapTenor_;
         private IborIndex iborIndex_;
         private double? fixedRate_;
-
+        private int settlementDays_;
         private Date effectiveDate_, terminationDate_;
         private Calendar fixedCalendar_, floatCalendar_;
 
@@ -43,22 +44,18 @@ namespace QLNet {
 
         IPricingEngine engine_;
 
-
-        public MakeVanillaSwap(Period swapTenor, IborIndex index) :
-            this(swapTenor, index, null, new Period(0, TimeUnit.Days)) { }
-        public MakeVanillaSwap(Period swapTenor, IborIndex index, double? fixedRate) :
-            this(swapTenor, index, fixedRate, new Period(0, TimeUnit.Days)) { }
-        public MakeVanillaSwap(Period swapTenor, IborIndex index, double? fixedRate, Period forwardStart) {
+        public MakeVanillaSwap(Period swapTenor, IborIndex index, double? fixedRate = null, Period forwardStart = null) 
+        {
             swapTenor_ = swapTenor;
             iborIndex_ = index;
             fixedRate_ = fixedRate;
-            forwardStart_ = forwardStart;
-            effectiveDate_ = null;
+            forwardStart_ = forwardStart?? new Period(0,TimeUnit.Days);
+            settlementDays_ = iborIndex_.fixingDays();
             fixedCalendar_ = floatCalendar_ = index.fixingCalendar();
             
             type_ = VanillaSwap.Type.Payer;
             nominal_ = 1.0;
-            fixedTenor_ = new Period(1, TimeUnit.Years);
+            //fixedTenor_ = new Period(1, TimeUnit.Years);
             floatTenor_ = index.tenor();
             fixedConvention_ = fixedTerminationDateConvention_ = BusinessDayConvention.ModifiedFollowing;
             floatConvention_ = floatTerminationDateConvention_ = index.businessDayConvention();
@@ -66,14 +63,13 @@ namespace QLNet {
             fixedEndOfMonth_ = floatEndOfMonth_ = false;
             fixedFirstDate_ = fixedNextToLastDate_ = floatFirstDate_ = floatNextToLastDate_ = null;
             floatSpread_ = 0.0;
-            fixedDayCount_ = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+            //fixedDayCount_ = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
             floatDayCount_ = index.dayCounter();
 
-            engine_ = new DiscountingSwapEngine(index.forwardingTermStructure());
+            //engine_ = new DiscountingSwapEngine(index.forwardingTermStructure());
         }
 
-        public MakeVanillaSwap receiveFixed() { return receiveFixed(true); }
-        public MakeVanillaSwap receiveFixed(bool flag) {
+        public MakeVanillaSwap receiveFixed(bool flag = true) {
             type_ = flag ? VanillaSwap.Type.Receiver : VanillaSwap.Type.Payer;
             return this;
         }
@@ -85,6 +81,13 @@ namespace QLNet {
             nominal_ = n;
             return this;
         }
+        public MakeVanillaSwap withSettlementDays( int settlementDays )
+        {
+           settlementDays_ = settlementDays;
+           effectiveDate_ = null;
+           return this;
+        }
+
         public MakeVanillaSwap withEffectiveDate(Date effectiveDate) {
             effectiveDate_ = effectiveDate;
             return this;
@@ -92,6 +95,7 @@ namespace QLNet {
 
         public MakeVanillaSwap withTerminationDate(Date terminationDate) {
             terminationDate_ = terminationDate;
+            swapTenor_ = null;
             return this;
         }
 
@@ -102,10 +106,15 @@ namespace QLNet {
         }
 
         public MakeVanillaSwap withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure) {
-            engine_ = new DiscountingSwapEngine(discountingTermStructure);
+            engine_ = new DiscountingSwapEngine(discountingTermStructure,false);
             return this;
         }
 
+        public MakeVanillaSwap withPricingEngine(IPricingEngine engine) 
+        {
+           engine_ = engine;
+           return this;
+        }
         public MakeVanillaSwap withFixedLegTenor(Period t) {
             fixedTenor_ = t;
             return this;
@@ -126,8 +135,8 @@ namespace QLNet {
             fixedRule_ = r;
             return this;
         }
-        public MakeVanillaSwap withFixedLegEndOfMonth() { return withFixedLegEndOfMonth(true); }
-        public MakeVanillaSwap withFixedLegEndOfMonth(bool flag) {
+
+        public MakeVanillaSwap withFixedLegEndOfMonth(bool flag = true ) {
             fixedEndOfMonth_ = flag;
             return this;
         }
@@ -164,8 +173,8 @@ namespace QLNet {
             floatRule_ = r;
             return this;
         }
-        public MakeVanillaSwap withFloatingLegEndOfMonth() { return withFloatingLegEndOfMonth(true); }
-        public MakeVanillaSwap withFloatingLegEndOfMonth(bool flag) {
+
+        public MakeVanillaSwap withFloatingLegEndOfMonth(bool flag = true) {
             floatEndOfMonth_ = flag;
             return this;
         }
@@ -195,21 +204,54 @@ namespace QLNet {
             if (effectiveDate_ != null)
                 startDate = effectiveDate_;
             else {
-                int fixingDays = iborIndex_.fixingDays();
-                Date referenceDate = Settings.evaluationDate();
-                Date spotDate = floatCalendar_.advance(referenceDate, new Period(fixingDays, TimeUnit.Days));
+                //int fixingDays = iborIndex_.fixingDays();
+                Date refDate = Settings.evaluationDate();
+                // if the evaluation date is not a business day
+                // then move to the next business day
+                refDate = floatCalendar_.adjust( refDate );
+                Date spotDate = floatCalendar_.advance( refDate, new Period( settlementDays_, TimeUnit.Days ) );
                 startDate = spotDate + forwardStart_;
+                if ( forwardStart_.length() < 0 )
+                   startDate = floatCalendar_.adjust( startDate,BusinessDayConvention.Preceding);
+                else
+                   startDate = floatCalendar_.adjust( startDate,BusinessDayConvention.Following );
             }
 
-            Date endDate;
-            if (terminationDate_ != null)
-                endDate = terminationDate_;
-            else
-                endDate = startDate + swapTenor_;
+           Date endDate = terminationDate_;
+           if ( endDate == null )
+              if ( floatEndOfMonth_ )
+                 endDate = floatCalendar_.advance( startDate,
+                                                  swapTenor_,
+                                                  BusinessDayConvention.ModifiedFollowing,
+                                                  floatEndOfMonth_ );
+              else
+                 endDate = startDate + swapTenor_;
 
+           Currency curr = iborIndex_.currency();
+           Period fixedTenor = null ;
+           if (fixedTenor_ != null)
+              fixedTenor = fixedTenor_;
+           else 
+           {
+              if ((curr == new EURCurrency()) ||
+                  (curr == new USDCurrency()) ||
+                  (curr == new CHFCurrency()) ||
+                  (curr == new SEKCurrency()) ||
+                  (curr == new GBPCurrency() && swapTenor_ <= new Period( 1 , TimeUnit.Years)))
+                  fixedTenor = new Period(1, TimeUnit.Years);
+              else if ((curr == new GBPCurrency() && swapTenor_ > new Period(1 , TimeUnit.Years) ||
+                       (curr == new JPYCurrency()) ||
+                       (curr == new AUDCurrency() && swapTenor_ >= new Period(4 , TimeUnit.Years))))
+                  fixedTenor = new Period(6, TimeUnit.Months);
+              else if ((curr == new HKDCurrency() ||
+                     (curr == new AUDCurrency() && swapTenor_ < new Period(4 , TimeUnit.Years))))
+                  fixedTenor = new Period(3, TimeUnit.Months);
+              else
+                Utils.QL_FAIL("unknown fixed leg default tenor for " + curr);
+           }
 
             Schedule fixedSchedule = new Schedule(startDate, endDate,
-                                   fixedTenor_, fixedCalendar_,
+                                   fixedTenor, fixedCalendar_,
                                    fixedConvention_, fixedTerminationDateConvention_,
                                    fixedRule_, fixedEndOfMonth_,
                                    fixedFirstDate_, fixedNextToLastDate_);
@@ -220,20 +262,57 @@ namespace QLNet {
                                    floatRule_, floatEndOfMonth_,
                                    floatFirstDate_, floatNextToLastDate_);
 
-            double? usedFixedRate = fixedRate_;
-            if (fixedRate_ == null) {       // calculate a fair fixed rate if no fixed rate is provided
-               if (iborIndex_.forwardingTermStructure().empty())
-                    throw new ArgumentException("no forecasting term structure set to " + iborIndex_.name());
-                VanillaSwap temp = new VanillaSwap(type_, nominal_, fixedSchedule, 0.0, fixedDayCount_,
-                                                   floatSchedule, iborIndex_, floatSpread_, floatDayCount_);
-                temp.setPricingEngine(new DiscountingSwapEngine(iborIndex_.forwardingTermStructure()));
-                usedFixedRate = temp.fairRate();
+            DayCounter fixedDayCount = null;
+            if (fixedDayCount_ != null)
+               fixedDayCount = fixedDayCount_;
+            else 
+            {
+               if (curr == new USDCurrency())
+                  fixedDayCount = new Actual360();
+               else if (curr == new EURCurrency() || curr == new CHFCurrency() || curr == new SEKCurrency())
+                  fixedDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+               else if (curr == new GBPCurrency() || curr == new JPYCurrency() || curr == new AUDCurrency() || 
+                        curr == new HKDCurrency())
+                  fixedDayCount = new Actual365Fixed();
+               else
+                  Utils.QL_FAIL("unknown fixed leg day counter for " + curr);
             }
 
-            VanillaSwap swap = new VanillaSwap(type_, nominal_, fixedSchedule, usedFixedRate.Value, fixedDayCount_,
+            double? usedFixedRate = fixedRate_;
+            if (fixedRate_ == null) 
+            {       
+                VanillaSwap temp = new VanillaSwap(type_, nominal_, fixedSchedule, 0.0, fixedDayCount,
+                                                   floatSchedule, iborIndex_, floatSpread_, floatDayCount_);
+
+                if (engine_ == null) 
+                {
+                   Handle<YieldTermStructure> disc = iborIndex_.forwardingTermStructure();
+                   Utils.QL_REQUIRE(!disc.empty(),()=> 
+                           "null term structure set to this instance of " + iborIndex_.name());
+                   bool includeSettlementDateFlows = false;
+                   IPricingEngine engine = new DiscountingSwapEngine(disc, includeSettlementDateFlows);
+                   temp.setPricingEngine(engine);
+                } 
+                else
+                   temp.setPricingEngine(engine_);
+
+                usedFixedRate = temp.fairRate();            
+            }
+
+            VanillaSwap swap = new VanillaSwap(type_, nominal_, fixedSchedule, usedFixedRate.Value, fixedDayCount,
                                                floatSchedule, iborIndex_, floatSpread_, floatDayCount_);
-            swap.setPricingEngine(engine_);
-            return swap;
+
+           if (engine_ == null) 
+           {
+               Handle<YieldTermStructure> disc = iborIndex_.forwardingTermStructure();
+               bool includeSettlementDateFlows = false;
+               IPricingEngine engine = new DiscountingSwapEngine(disc, includeSettlementDateFlows);
+               swap.setPricingEngine(engine);
+           } 
+           else
+               swap.setPricingEngine(engine_);            
+           
+           return swap;
         }
     }
 }
