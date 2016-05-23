@@ -229,7 +229,7 @@ namespace TestSuite {
         }
         #endregion
 
-        [TestMethod()]
+        //[TestMethod()]
         public void testLogCubicDiscountConsistency() {
             // "Testing consistency of piecewise-log-cubic discount curve...");
 
