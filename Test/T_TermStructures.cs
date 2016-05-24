@@ -132,7 +132,7 @@ namespace TestSuite
          for (int i = 0; i < days.Length; i++)
          {
             if (!Utils.close(expected[i], calculated[i]))
-               Console.WriteLine("\n  Discount at " + days[i] + " days:\n"
+               Assert.Fail("\n  Discount at " + days[i] + " days:\n"
                            + "    before date change: " + expected[i] + "\n"
                            + "    after date change:  " + calculated[i]);
          }
@@ -154,7 +154,7 @@ namespace TestSuite
          double discount = vars.termStructure.discount(testDate);
          double impliedDiscount = implied.discount(testDate);
          if (Math.Abs(discount - baseDiscount * impliedDiscount) > tolerance)
-            Console.WriteLine("unable to reproduce discount from implied curve\n"
+            Assert.Fail("unable to reproduce discount from implied curve\n"
                 + "    calculated: " + baseDiscount * impliedDiscount + "\n"
                 + "    expected:   " + discount);
       }
@@ -174,7 +174,7 @@ namespace TestSuite
          implied.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
       }
 
       [TestMethod()]
@@ -195,7 +195,7 @@ namespace TestSuite
          double spreadedForward = spreaded.forwardRate(testDate, testDate, sprdc, Compounding.Continuous,
                                                          Frequency.NoFrequency).rate();
          if (Math.Abs(forward - (spreadedForward - me.value())) > tolerance)
-            Console.WriteLine("unable to reproduce forward from spreaded curve\n"
+            Assert.Fail("unable to reproduce forward from spreaded curve\n"
                 + "    calculated: "
                 + (spreadedForward - me.value()) + "\n"
                 + "    expected:   " + forward);
@@ -215,11 +215,11 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of spread change");
+            Assert.Fail("Observer was not notified of spread change");
       }
 
       [TestMethod()]
@@ -237,9 +237,9 @@ namespace TestSuite
          double zero = vars.termStructure.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          double spreadedZero = spreaded.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          if (Math.Abs(zero - (spreadedZero - me.value())) > tolerance)
-            Console.WriteLine("unable to reproduce zero yield from spreaded curve\n"
-                + "    calculated: " + (spreadedZero - me.value()) + "\n"
-                + "    expected:   " + zero);
+            Assert.Fail("unable to reproduce zero yield from spreaded curve\n"
+                        + "    calculated: " + (spreadedZero - me.value()) + "\n"
+                        + "    expected:   " + zero);
       }
 
       [TestMethod()]
@@ -257,11 +257,11 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of spread change");
+            Assert.Fail("Observer was not notified of spread change");
       }
    }
 }
