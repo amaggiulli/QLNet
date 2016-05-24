@@ -17,23 +17,21 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-	//! %DKK %LIBOR rate
-//    ! Danish Krona LIBOR fixed by BBA.
-//
-//        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-//    
-	public class DKKLibor : Libor
-	{
-        public DKKLibor(Period tenor)
-            : base("DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), new Handle<YieldTermStructure>())
-		{
-		}
-        public DKKLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), h)
-        {
-        }
-    }
+   //! %DKK %LIBOR rate
+   /*! Danish Krona LIBOR discontinued as of 2013.
+   */
+   public class DKKLibor : Libor
+   {
+      public DKKLibor( Period tenor )
+         : base( "DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
+
+      public DKKLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), h )
+      {}
+   }
 
 }
