@@ -349,7 +349,6 @@ namespace TestSuite
          catch ( Exception ex )
          {
             Assert.Fail( ex.Message );
-            Console.WriteLine( ex );
          }
       }
 

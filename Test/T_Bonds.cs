@@ -419,7 +419,7 @@ namespace TestSuite
       [TestMethod()]
       public void testCachedZero()
       {
-         Console.WriteLine("Testing zero-coupon bond prices against cached values...");
+         // Testing zero-coupon bond prices against cached values
 
          CommonVars vars = new CommonVars();
 
@@ -445,7 +445,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice1 + "\n"
                        + "    error:      " + (price - cachedPrice1));
@@ -462,7 +462,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice2 + "\n"
                        + "    error:      " + (price - cachedPrice2));
@@ -479,7 +479,7 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice3 + "\n"
                        + "    error:      " + (price - cachedPrice3));
@@ -519,7 +519,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice1 + "\n"
                        + "    error:      " + (price - cachedPrice1));
@@ -544,7 +544,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice2 + "\n"
                        + "    error:      " + (price - cachedPrice2));
