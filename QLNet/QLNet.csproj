@@ -110,8 +110,8 @@
     <Compile Include="grid.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="Index.cs" />
-    <Compile Include="Indexes\bmaindex.cs" />
-    <Compile Include="Indexes\IBORIndex.cs" />
+    <Compile Include="Indexes\BMAIndex.cs" />
+    <Compile Include="Indexes\IborIndex.cs" />
     <Compile Include="Indexes\Ibor\Audlibor.cs" />
     <Compile Include="Indexes\Ibor\Cadlibor.cs" />
     <Compile Include="Indexes\Ibor\Cdor.cs" />
