@@ -32,7 +32,7 @@ namespace QLNet {
         //typedef typename S::value_type value_type;
 
         #region wrap-up Stat
-        protected Stat impl_ = new Stat();
+        protected Stat impl_ = New<Stat>.Instance();
 
         public int samples() { return impl_.samples(); }
         public double mean() { return impl_.mean(); }

@@ -2,18 +2,18 @@
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -88,7 +88,7 @@ namespace QLNet {
                                                 start, end, refStart, refEnd));
                 } else {
                     if (Utils.noOption(caps, floors, i)) {
-                        leg.Add(new FloatingCouponType().factory(Utils.Get(nominals, i),
+                        leg.Add(New<FloatingCouponType>.Instance().factory(Utils.Get(nominals, i),
                             paymentDate, start, end,
                             Utils.Get( fixingDays, i, index.fixingDays() ),
                             index,
@@ -97,7 +97,7 @@ namespace QLNet {
                             refStart, refEnd, paymentDayCounter,
                             isInArrears));
                     } else {
-                        leg.Add(new CappedFlooredCouponType().factory(Utils.Get(nominals, i),
+                        leg.Add(New<CappedFlooredCouponType>.Instance().factory(Utils.Get(nominals, i),
                             paymentDate, start, end,
                             Utils.Get( fixingDays, i, index.fixingDays() ),
                             index,
@@ -178,7 +178,7 @@ namespace QLNet {
                                         start, end, refStart, refEnd));
 
                 } else { // floating digital coupon
-                    FloatingCouponType underlying = new FloatingCouponType().factory(
+                    FloatingCouponType underlying = New<FloatingCouponType>.Instance().factory(
                        Utils.Get(nominals, i, 1.0),
                        paymentDate, start, end,
                        Utils.Get(fixingDays, i, index.fixingDays()),
@@ -188,7 +188,7 @@ namespace QLNet {
                        refStart, refEnd,
                        paymentDayCounter, isInArrears) as FloatingCouponType;
 
-                    DigitalCouponType digitalCoupon = new DigitalCouponType().factory(
+                    DigitalCouponType digitalCoupon = New<DigitalCouponType>.Instance().factory(
                      underlying,
                      Utils.toNullable(Utils.Get(callStrikes, i, Double.MinValue)),
                      callPosition,
@@ -206,17 +206,17 @@ namespace QLNet {
             return leg;
         }
 
-        
+
          public static List<CashFlow> OvernightLeg(List<double> nominals,
                                                    Schedule schedule,
                                                    BusinessDayConvention paymentAdjustment,
                                                    OvernightIndex overnightIndex,
                                                    List<double> gearings,
                                                    List<double> spreads,
-                                                   DayCounter paymentDayCounter      
+                                                   DayCounter paymentDayCounter
                                                   )
-        
-       
+
+
          {
             if (nominals.Count == 0) throw new ArgumentException("no nominal given");
 
@@ -229,7 +229,7 @@ namespace QLNet {
             Date paymentDate;
 
             int n = schedule.Count;
-            for (int i=0; i<n-1; ++i) 
+            for (int i=0; i<n-1; ++i)
             {
                refStart = start = schedule.date(i);
                refEnd   =   end = schedule.date(i+1);
@@ -253,14 +253,14 @@ namespace QLNet {
            return leg;
         }
 
-         public static List<CashFlow> yoyInflationLeg(List<double> notionals_, 
-                                                      Schedule schedule_, 
-                                                      BusinessDayConvention paymentAdjustment_, 
-                                                      YoYInflationIndex index_, 
-                                                      List<double> gearings_, 
-                                                      List<double> spreads_, 
+         public static List<CashFlow> yoyInflationLeg(List<double> notionals_,
+                                                      Schedule schedule_,
+                                                      BusinessDayConvention paymentAdjustment_,
+                                                      YoYInflationIndex index_,
+                                                      List<double> gearings_,
+                                                      List<double> spreads_,
                                                       DayCounter paymentDayCounter_,
-                                                      List<double> caps_, 
+                                                      List<double> caps_,
                                                       List<double> floors_ ,
                                                       Calendar paymentCalendar_,
                                                       List<int> fixingDays_,

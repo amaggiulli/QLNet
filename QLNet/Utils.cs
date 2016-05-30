@@ -1,17 +1,17 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QLNet 
+namespace QLNet
 {
     // here are extensions to IList to accomodate some QL functionality as well as have useful things for .net
     public static partial class Utils {
@@ -73,7 +73,7 @@ namespace QLNet
                 if ((n >>= 1) == 0) return y < 0 ? 1 / retval : retval;
             }
         }
-        
+
        public static void QL_REQUIRE( bool condition, Func<string> message )
        {
           if ( !condition )
@@ -100,7 +100,7 @@ namespace QLNet
         public InitializedList() : base() { }
         public InitializedList(int size) : base(size) {
             for (int i = 0; i < this.Capacity; i++)
-                this.Add(default(T) == null ? new T() : default(T));
+                this.Add(default(T) == null ? New<T>.Instance() : default(T));
         }
         public InitializedList(int size, T value) : base(size) {
             for (int i = 0; i < this.Capacity; i++)
@@ -110,7 +110,7 @@ namespace QLNet
         // erases the contents without changing the size
         public void Erase() {
             for (int i = 0; i < this.Count; i++)
-                this[i] = default(T);       // do we need to use "new T()" instead of default(T) when T is class?
+                this[i] = default(T);       // do we need to use "New<T>.Instance()" instead of default(T) when T is class?
         }
     }
 }

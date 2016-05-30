@@ -61,7 +61,7 @@ namespace QLNet {
         //public RandomSequenceGenerator(int dimensionality, long seed = 0) {
         public RandomSequenceGenerator(int dimensionality, ulong seed) {
             dimensionality_ = dimensionality;
-            rng_ = (RNG)new RNG().factory(seed);
+            rng_ = (RNG)New<RNG>.Instance().factory(seed);
             sequence_ = new Sample<List<double>>(new InitializedList<double>(dimensionality), 1.0);
             int32Sequence_ = new InitializedList<ulong>(dimensionality);
         }

@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -101,18 +101,18 @@ namespace QLNet
          return modifiedBesselFunction_k_impl<doubleUnweighted, doubleValue>( nu, x );
       }
 
-      public static Complex modifiedBesselFunction_k(double nu, Complex z) 
+      public static Complex modifiedBesselFunction_k(double nu, Complex z)
       {
          return modifiedBesselFunction_k_impl<complexUnweighted, complexValue>( nu, z );
       }
 
-      public static double modifiedBesselFunction_i_exponentiallyWeighted(double nu, double x) 
+      public static double modifiedBesselFunction_i_exponentiallyWeighted(double nu, double x)
       {
          Utils.QL_REQUIRE(x >= 0.0, ()=>"negative argument requires complex version of modifiedBesselFunction");
          return modifiedBesselFunction_i_impl<doubleExponentiallyWeighted, doubleValue>( nu, x );
       }
 
-      public static Complex modifiedBesselFunction_i_exponentiallyWeighted(double nu, Complex z) 
+      public static Complex modifiedBesselFunction_i_exponentiallyWeighted(double nu, Complex z)
       {
          return modifiedBesselFunction_i_impl<complexExponentiallyWeighted, complexValue>( nu, z );
       }
@@ -122,7 +122,7 @@ namespace QLNet
          return modifiedBesselFunction_k_impl<doubleExponentiallyWeighted, doubleValue>( nu, x );
       }
 
-      public static Complex modifiedBesselFunction_k_exponentiallyWeighted(double nu, Complex z) 
+      public static Complex modifiedBesselFunction_k_exponentiallyWeighted(double nu, Complex z)
       {
          return modifiedBesselFunction_k_impl<complexExponentiallyWeighted, complexValue>( nu, z );
       }
@@ -143,7 +143,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE( ++k < 1000, () => "max iterations exceeded" );
             }
-            return sum * new T().weightSmallX( x );
+            return sum * New<T>.Instance().weightSmallX( x );
          }
          else
          {
@@ -164,10 +164,10 @@ namespace QLNet
                s1 += sign * a_k;
             }
 
-            double i = new I().value();
+            double i = New<I>.Instance().value();
             return 1.0 / Math.Sqrt( 2 * Const.M_PI * x ) *
-               ( new T().weight1LargeX( x ) * s1 +
-               i * Math.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
+               ( New<T>.Instance().weight1LargeX( x ) * s1 +
+               i * Math.Exp( i * nu * Const.M_PI ) * New<T>.Instance().weight2LargeX( x ) * s2 );
          }
       }
 
@@ -187,7 +187,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE( ++k < 1000, () => "max iterations exceeded" );
             }
-            return sum * new T().weightSmallX( x );
+            return sum * New<T>.Instance().weightSmallX( x );
          }
          else
          {
@@ -208,10 +208,10 @@ namespace QLNet
                s1 += sign * a_k;
             }
 
-            Complex i = new I().value();
+            Complex i = New<I>.Instance().value();
             return 1.0 / Complex.Sqrt( 2 * Const.M_PI * x ) *
-                ( new T().weight1LargeX( x ) * s1 +
-                 i * Complex.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
+                ( New<T>.Instance().weight1LargeX( x ) * s1 +
+                 i * Complex.Exp( i * nu * Const.M_PI ) * New<T>.Instance().weight2LargeX( x ) * s2 );
          }
       }
 

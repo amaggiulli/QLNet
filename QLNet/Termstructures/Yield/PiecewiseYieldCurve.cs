@@ -174,14 +174,14 @@ namespace QLNet {
       #region Constructors
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments, DayCounter dayCounter)
          : this(referenceDate, instruments, dayCounter, new List<Handle<Quote>>(), new List<Date>(), 
-                  1.0e-12, new Interpolator(), new BootStrap()) { }
+                  1.0e-12, New<Interpolator>.Instance(), new BootStrap()) { }
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates)
-         : this(referenceDate, instruments, dayCounter, jumps, jumpDates, 1.0e-12, new Interpolator(), new BootStrap()) { }
+         : this(referenceDate, instruments, dayCounter, jumps, jumpDates, 1.0e-12, New<Interpolator>.Instance(), new BootStrap()) { }
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps,
                                  List<Date> jumpDates, double accuracy)
-         : this(referenceDate, instruments, dayCounter, jumps, jumpDates, accuracy, new Interpolator(), new BootStrap()) { }
+         : this(referenceDate, instruments, dayCounter, jumps, jumpDates, accuracy, New<Interpolator>.Instance(), new BootStrap()) { }
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps,
                                  List<Date> jumpDates, double accuracy, Interpolator i)
@@ -196,7 +196,7 @@ namespace QLNet {
          accuracy_ = accuracy;
          interpolator_ = i;
          bootstrap_ = bootstrap;
-         _traits_ = new Traits();
+         _traits_ = New<Traits>.Instance();
 
          bootstrap_.setup(this);
       }
@@ -212,7 +212,7 @@ namespace QLNet {
       public PiecewiseYieldCurve(int settlementDays, Calendar calendar, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates, double accuracy)
          : this(settlementDays, calendar, instruments, dayCounter, jumps, jumpDates, accuracy, 
-                  new Interpolator(), new BootStrap()) { }
+                  New<Interpolator>.Instance(), new BootStrap()) { }
       public PiecewiseYieldCurve(int settlementDays, Calendar calendar, List<RateHelper> instruments,
                                  DayCounter dayCounter,  List<Handle<Quote>> jumps, List<Date> jumpDates, double accuracy,
                                  Interpolator i, BootStrap bootstrap)
@@ -221,7 +221,7 @@ namespace QLNet {
          accuracy_ = accuracy;
          interpolator_ = i;
          bootstrap_ = bootstrap;
-         _traits_ = new Traits();
+         _traits_ = New<Traits>.Instance();
 
          bootstrap_.setup(this);
       } 

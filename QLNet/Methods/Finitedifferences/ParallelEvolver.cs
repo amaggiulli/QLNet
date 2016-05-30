@@ -51,7 +51,7 @@ namespace QLNet {
         public ParallelEvolver(List<IOperator> L, BoundaryConditionSet bcs) {
             evolvers_ = new List<IMixedScheme>(L.Count);
             for (int i = 0; i < L.Count; i++) {
-                evolvers_.Add(new Evolver().factory(L[i], bcs[i]));
+                evolvers_.Add(New<Evolver>.Instance().factory(L[i], bcs[i]));
             }
         }
 
