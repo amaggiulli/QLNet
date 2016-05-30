@@ -81,7 +81,7 @@ namespace QLNet
       protected bool endOfMonth_;
 
 
-      private double forecastFixing(Date d1,Date d2, double t)
+      public double forecastFixing(Date d1,Date d2, double t)
       {
          Utils.QL_REQUIRE( !termStructure_.empty(),()=> "null term structure set to this instance of " + name() );
          double disc1 = termStructure_.link.discount( d1 );

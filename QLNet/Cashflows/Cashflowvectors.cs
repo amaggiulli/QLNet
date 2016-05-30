@@ -81,8 +81,7 @@ namespace QLNet {
                     refEnd = calendar.adjust(start + schedule.tenor(), schedule.businessDayConvention());
 
                 if (Utils.Get(gearings, i, 1) == 0) {                               // fixed coupon
-                    leg.Add(new FixedRateCoupon(Utils.Get(nominals, i),
-                                                paymentDate,
+                   leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( nominals, i ),
                                                 Utils.effectiveFixedRate(spreads, caps, floors, i),
                                                 paymentDayCounter,
                                                 start, end, refStart, refEnd));
@@ -171,8 +170,7 @@ namespace QLNet {
                 }
                 if (Utils.Get(gearings, i, 1.0) == 0.0) { // fixed coupon
                     leg.Add(new
-                        FixedRateCoupon(Utils.Get(nominals, i, 1.0),
-                                        paymentDate,
+                        FixedRateCoupon( paymentDate,Utils.Get( nominals, i, 1.0 ),
                                         Utils.Get(spreads, i, 1.0),
                                         paymentDayCounter,
                                         start, end, refStart, refEnd));
@@ -316,8 +314,7 @@ namespace QLNet {
                if (Utils.Get(gearings_, i, 1.0) == 0.0)
                {
                   // fixed coupon
-                  leg.Add(new FixedRateCoupon(Utils.Get(notionals_, i, 1.0),
-                                              paymentDate,
+                  leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( notionals_, i, 1.0 ),
                                               Utils.effectiveFixedRate(spreads_, caps_,
                                                                          floors_, i),
                                               paymentDayCounter_,

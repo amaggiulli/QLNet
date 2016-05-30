@@ -119,6 +119,9 @@ namespace QLNet
       
       #endregion
       
+      public virtual double displacement() {return 0.0;}
+      public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
+
       protected virtual SmileSection smileSectionImpl(Date optionDate)
       {
           return smileSectionImpl(timeFromReference(optionDate));
@@ -135,6 +138,7 @@ namespace QLNet
       //! implements the actual volatility calculation in derived classes
       protected virtual double volatilityImpl(double optionTime, double strike) { throw new NotImplementedException(); }
    
+
    }
    
 }

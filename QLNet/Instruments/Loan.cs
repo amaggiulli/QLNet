@@ -299,7 +299,7 @@ namespace QLNet
          {
             FixedRateCoupon c = (FixedRateCoupon)fixedLeg[i];
             n = i > 0 ? notionals_.Last() : c.nominal();
-            notionals_.Add ( n /(1+(c.rate()* c.dayCounter().yearFraction(c.refPeriodStart, c.refPeriodEnd))));
+            notionals_.Add ( n /(1+(c.rate()* c.dayCounter().yearFraction(c.referencePeriodStart, c.referencePeriodEnd))));
          }
 
          // New Leg

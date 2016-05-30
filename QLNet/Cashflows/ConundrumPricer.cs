@@ -540,7 +540,11 @@ namespace QLNet {
             if (meanReversion_.link != null)
                 meanReversion_.registerWith(update);
         }
-
+        
+       protected virtual double optionletPrice(Option.Type optionType,double strike)
+       {
+          throw new NotImplementedException();
+       }
         public override void initialize(FloatingRateCoupon coupon) {
             coupon_ = coupon as CmsCoupon;
             Utils.QL_REQUIRE( coupon_ != null, () => "CMS coupon needed" );
