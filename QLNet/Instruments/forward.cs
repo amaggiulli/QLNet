@@ -86,11 +86,7 @@ namespace QLNet {
 		}
 
 		public override bool isExpired() {
-			#if QL_TODAYS_PAYMENTS
-			    return maturityDate_ < settlementDate();
-			#else
-				return maturityDate_ <= settlementDate();
-			#endif
+			 return new simple_event(maturityDate_).hasOccurred(settlementDate());
 		}
 
 

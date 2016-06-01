@@ -28,7 +28,7 @@ namespace QLNet {
 
         public OneAssetOption(Payoff payoff, Exercise exercise) : base(payoff, exercise) {}
 
-        public override bool isExpired() { return exercise_.lastDate() < Settings.evaluationDate(); }
+        public override bool isExpired() { return new simple_event(exercise_.lastDate()).hasOccurred(); }
 
         public double delta() {
             calculate();
