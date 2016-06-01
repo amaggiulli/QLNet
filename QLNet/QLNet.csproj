@@ -438,6 +438,7 @@
     <Compile Include="Pricingengines\swaption\g2swaptionengine.cs" />
     <Compile Include="Pricingengines\swaption\jamshidianswaptionengine.cs" />
     <Compile Include="Pricingengines\swaption\treeswaptionengine.cs" />
+    <Compile Include="Pricingengines\Swap\CounterpartyAdjSwapEngine.cs" />
     <Compile Include="Pricingengines\Swap\DiscountingBasisSwapEngine.cs" />
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />
@@ -567,6 +568,7 @@
     <Compile Include="Termstructures\Yield\ZeroCurve.cs" />
     <Compile Include="Termstructures\Yield\ZeroSpreadedTermStructure.cs" />
     <Compile Include="Termstructures\Yield\Zeroyieldstructure.cs" />
+    <Compile Include="TestCurve.cs" />
     <Compile Include="timegrid.cs" />
     <Compile Include="Time\ASX.cs" />
     <Compile Include="Time\Calendar.cs" />
