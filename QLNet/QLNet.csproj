@@ -66,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cashflow.cs" />
-    <Compile Include="Cashflows\averagebmacoupon.cs" />
+    <Compile Include="Cashflows\AverageBMACoupon.cs" />
     <Compile Include="Cashflows\CappedFlooredCoupon.cs" />
     <Compile Include="Cashflows\CappedFlooredYoYInflationCoupon.cs" />
     <Compile Include="Cashflows\CashFlows.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Cashflows\OvernightIndexedCoupon.cs" />
     <Compile Include="Cashflows\Principal.cs" />
     <Compile Include="Cashflows\PrincipalLegBase.cs" />
+    <Compile Include="Cashflows\RangeAccrual.cs" />
     <Compile Include="Cashflows\RateLegBase.cs" />
     <Compile Include="Cashflows\Replication.cs" />
     <Compile Include="Cashflows\SimpleCashFlow.cs" />
@@ -110,8 +111,8 @@
     <Compile Include="grid.cs" />
     <Compile Include="Handle.cs" />
     <Compile Include="Index.cs" />
-    <Compile Include="Indexes\bmaindex.cs" />
-    <Compile Include="Indexes\IBORIndex.cs" />
+    <Compile Include="Indexes\BMAIndex.cs" />
+    <Compile Include="Indexes\IborIndex.cs" />
     <Compile Include="Indexes\Ibor\Audlibor.cs" />
     <Compile Include="Indexes\Ibor\Cadlibor.cs" />
     <Compile Include="Indexes\Ibor\Cdor.cs" />
@@ -437,6 +438,7 @@
     <Compile Include="Pricingengines\swaption\g2swaptionengine.cs" />
     <Compile Include="Pricingengines\swaption\jamshidianswaptionengine.cs" />
     <Compile Include="Pricingengines\swaption\treeswaptionengine.cs" />
+    <Compile Include="Pricingengines\Swap\CounterpartyAdjSwapEngine.cs" />
     <Compile Include="Pricingengines\Swap\DiscountingBasisSwapEngine.cs" />
     <Compile Include="Pricingengines\Swap\Discountingswapengine.cs" />
     <Compile Include="Pricingengines\Swap\discretizedswap.cs" />

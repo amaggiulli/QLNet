@@ -105,8 +105,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
             {
-               refStartDate = coupon.refPeriodStart;
-               refEndDate = coupon.refPeriodEnd;
+               refStartDate = coupon.referencePeriodStart;
+               refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -170,8 +170,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
             {
-               refStartDate = coupon.refPeriodStart;
-               refEndDate = coupon.refPeriodEnd;
+               refStartDate = coupon.referencePeriodStart;
+               refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -555,7 +555,7 @@ namespace QLNet
          {
             Coupon cp = x as Coupon;
             if (cp != null)
-               return cp.refPeriodStart;
+               return cp.referencePeriodStart;
          }
          return null;
       }
@@ -569,7 +569,7 @@ namespace QLNet
          {
             Coupon cp = x as Coupon;
             if (cp != null)
-               return cp.refPeriodEnd;
+               return cp.referencePeriodEnd;
          }
          return null;
       }
@@ -827,8 +827,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
             {
-                refStartDate = coupon.refPeriodStart;
-                refEndDate = coupon.refPeriodEnd;
+                refStartDate = coupon.referencePeriodStart;
+                refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -1048,8 +1048,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
             {
-                refStartDate = coupon.refPeriodStart;
-                refEndDate = coupon.refPeriodEnd;
+                refStartDate = coupon.referencePeriodStart;
+                refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {

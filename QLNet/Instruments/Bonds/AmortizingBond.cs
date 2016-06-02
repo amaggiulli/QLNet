@@ -101,8 +101,8 @@ namespace QLNet
             FixedRateCoupon r,r2;
             if (i > 1)
             {
-               r = new FixedRateCoupon(currentNominal, actualDate, rate, prevDate, actualDate, prevDate, actualDate);
-               r2 = new FixedRateCoupon(currentNominal, actualDate, rate2, prevDate, actualDate, prevDate, actualDate, null,_originalPayment);
+               r = new FixedRateCoupon( actualDate, currentNominal, rate, prevDate, actualDate, prevDate, actualDate );
+               r2 = new FixedRateCoupon( actualDate, currentNominal, rate2, prevDate, actualDate, prevDate, actualDate, null, _originalPayment );
             }
 
             else
@@ -111,8 +111,8 @@ namespace QLNet
                Period p1 = new Period(_payFrequency);
                Date testDate = nullCalendar.advance(actualDate, -1 * p1);
 
-               r = new FixedRateCoupon(currentNominal, actualDate, rate, testDate, actualDate, prevDate, actualDate);
-               r2 = new FixedRateCoupon(currentNominal, actualDate, rate2, testDate, actualDate, prevDate, actualDate, null,_originalPayment);
+               r = new FixedRateCoupon( actualDate, currentNominal, rate, testDate, actualDate, prevDate, actualDate );
+               r2 = new FixedRateCoupon( actualDate, currentNominal, rate2, testDate, actualDate, prevDate, actualDate, null, _originalPayment );
             }
 
             double amort = Math.Round(Math.Abs(_originalPayment - r.amount()),2);
@@ -161,12 +161,12 @@ namespace QLNet
 
             // Base Interest
             InterestRate r1 = new InterestRate(_couponRate,_dCounter,Compounding.Simple,_payFrequency);
-            FixedRateCoupon c1 = new FixedRateCoupon(_faceValue,d,r1,lastDate,d);
+            FixedRateCoupon c1 = new FixedRateCoupon( d, _faceValue,r1, lastDate, d );
             double baseInterest = c1.amount();
 
             // 
             InterestRate r2 = new InterestRate(_yield,_dCounter,Compounding.Simple,_payFrequency);
-            FixedRateCoupon c2 = new FixedRateCoupon(_marketValue,d,r2,lastDate,d);
+            FixedRateCoupon c2 = new FixedRateCoupon( d, _marketValue,r2, lastDate, d );
             double yieldInterest = c2.amount();
 
             totAmortized += Math.Abs(baseInterest - yieldInterest);

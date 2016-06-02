@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)  
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)  
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -25,79 +25,93 @@ namespace QLNet
    //  still abstract and provides derived classes with methods for accrual period calculations.
    public abstract class Coupon : CashFlow 
    {
-      protected double nominal_;
-      protected double? amount_ = null;
-		protected Date paymentDate_, accrualStartDate_, accrualEndDate_, refPeriodStart_, refPeriodEnd_, exCouponDate_;
-
-      // access to properties
-		public override Date exCouponDate() { return exCouponDate_; }
-      public double nominal() { return nominal_; }
-      public override Date date() { return paymentDate_; }
-      public Date accrualStartDate() { return accrualStartDate_; }
-      public Date accrualEndDate() { return accrualEndDate_; }
-      public Date refPeriodStart { get { return refPeriodStart_; } }
-      public Date refPeriodEnd { get { return refPeriodEnd_; } }
-
-      // virtual get methods to be defined in derived classes
-      public abstract double rate();                   //! accrued rate
-      public abstract DayCounter dayCounter();         //! day counter for accrual calculation
-      public abstract double accruedAmount(Date d);         //! accrued amount at the given date
-      //public virtual FloatingRateCouponPricer pricer() { return null; }
-
-
       // Constructors
       public Coupon() { }       // default constructor
       // coupon does not adjust the payment date which must already be a business day
-      public Coupon(double nominal, Date paymentDate, Date accrualStartDate, Date accrualEndDate, 
-                    Date refPeriodStart = null, Date refPeriodEnd = null, Date exCouponDate = null, double? amount = null) 
+      public Coupon( Date paymentDate, 
+                     double nominal,  
+                     Date accrualStartDate, 
+                     Date accrualEndDate,
+                     Date refPeriodStart = null, 
+                     Date refPeriodEnd = null, 
+                     Date exCouponDate = null )
       {
-         nominal_ = nominal;
-         amount_ = amount;
          paymentDate_ = paymentDate;
+         nominal_ = nominal;
          accrualStartDate_ = accrualStartDate;
          accrualEndDate_ = accrualEndDate;
          refPeriodStart_ = refPeriodStart;
          refPeriodEnd_ = refPeriodEnd;
-			exCouponDate_ = exCouponDate;
+         exCouponDate_ = exCouponDate;
+         accrualPeriod_ = null;
 
-         if (refPeriodStart_ == null) refPeriodStart_ = accrualStartDate_;
-         if (refPeriodEnd_ == null) refPeriodEnd_ = accrualEndDate_;
+         if ( refPeriodStart_ == null ) refPeriodStart_ = accrualStartDate_;
+         if ( refPeriodEnd_ == null ) refPeriodEnd_ = accrualEndDate_;
       }
 
+      // Event interface
+      public override Date date() { return paymentDate_; }
 
+      // CashFlow interface
+      public override Date exCouponDate() { return exCouponDate_; }
+
+      // Inspectors
+      public double nominal() { return nominal_; }
+      //! start of the accrual period
+      public Date accrualStartDate() { return accrualStartDate_; }
+      //! end of the accrual period
+      public Date accrualEndDate() { return accrualEndDate_; }
+      //! start date of the reference period
+      public Date referencePeriodStart { get { return refPeriodStart_; } }
+      //! end date of the reference period
+      public Date referencePeriodEnd { get { return refPeriodEnd_; } }
       //! accrual period as fraction of year
-      public double accrualPeriod() 
+      public double accrualPeriod()
       {
-         return dayCounter().yearFraction(accrualStartDate_, accrualEndDate_, refPeriodStart_, refPeriodEnd_);
+         if ( accrualPeriod_ == null )
+            accrualPeriod_ = dayCounter().yearFraction( accrualStartDate_, 
+               accrualEndDate_, refPeriodStart_, refPeriodEnd_ );
+         return accrualPeriod_.Value;
       }
-
       //! accrual period in days
-      public int accrualDays() 
-      { 
-         return dayCounter().dayCount(accrualStartDate_, accrualEndDate_); 
-      }
-
-
-      //! accrued period as fraction of year at the given date
-      public double accruedPeriod(Date d) 
+      public int accrualDays()
       {
-        if (d <= accrualStartDate_ || d > paymentDate_) 
-           return 0.0;
-        else 
-           return dayCounter().yearFraction(accrualStartDate_,
-                                             Date.Min(d, accrualEndDate_),
-                                             refPeriodStart_,
-                                             refPeriodEnd_);
+         return dayCounter().dayCount( accrualStartDate_, accrualEndDate_ );
+      }
+      //! accrued rate
+      public abstract double rate();
+      //! day counter for accrual calculation
+      public abstract DayCounter dayCounter();
+      //! accrued period as fraction of year at the given date   
+      public double accruedPeriod( Date d )
+      {
+         if ( d <= accrualStartDate_ || d > paymentDate_ )
+            return 0.0;
+         else
+            return dayCounter().yearFraction( accrualStartDate_,
+                                              Date.Min( d, accrualEndDate_ ),
+                                              refPeriodStart_,
+                                              refPeriodEnd_ );
 
       }
       //! accrued days at the given date
-      public int accruedDays(Date d) 
+      public int accruedDays( Date d )
       {
-         if (d <= accrualStartDate_ || d > paymentDate_) 
+         if ( d <= accrualStartDate_ || d > paymentDate_ )
             return 0;
-         else 
-            return dayCounter().dayCount(accrualStartDate_,Date.Min(d, accrualEndDate_));
+         else
+            return dayCounter().dayCount( accrualStartDate_, Date.Min( d, accrualEndDate_ ) );
       }
+      //! accrued amount at the given date
+      public abstract double accruedAmount( Date d );         
 
+      protected double nominal_;
+      protected Date paymentDate_;
+      protected Date accrualStartDate_;
+      protected Date accrualEndDate_;
+      protected Date refPeriodStart_;
+      protected Date refPeriodEnd_;
+      protected Date exCouponDate_;
+      protected double? accrualPeriod_;
    }
 }

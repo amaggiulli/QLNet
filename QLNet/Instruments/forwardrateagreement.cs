@@ -110,11 +110,7 @@ namespace QLNet {
 
         /*! A FRA expires/settles on the valueDate */
         public override bool isExpired() {
-            #if QL_TODAYS_PAYMENTS
-                return valueDate_ < settlementDate();
-            #else
-                return valueDate_ <= settlementDate();
-            #endif
+            return new simple_event(valueDate_).hasOccurred(settlementDate());
         }
 
         /*!  Income is zero for a FRA */

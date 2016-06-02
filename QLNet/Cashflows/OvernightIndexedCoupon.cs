@@ -117,8 +117,7 @@ namespace QLNet
          { throw new ApplicationException("floorletPrice not available"); }
       public override double floorletRate(double d) 
          { throw new ApplicationException("floorletRate not available"); }
-      protected override double optionletPrice(Option.Type t, double d)
-      { throw new ApplicationException("optionletPrice not available"); }
+
 
    }
 
@@ -135,7 +134,7 @@ namespace QLNet
                Date refPeriodStart = null,
                Date refPeriodEnd = null,
                DayCounter dayCounter = null)
-         : base(nominal, paymentDate,startDate, endDate,
+         : base( paymentDate, nominal, startDate, endDate,
                          overnightIndex.fixingDays(), overnightIndex,
                          gearing, spread,
                          refPeriodStart, refPeriodEnd,

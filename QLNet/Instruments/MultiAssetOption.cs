@@ -44,7 +44,7 @@ namespace QLNet {
 
 		public override bool isExpired()
 		{
-			return exercise_.lastDate() < Settings.evaluationDate();
+			return new simple_event(exercise_.lastDate()).hasOccurred();
 		}
 		//@}
 		//! \name greeks
