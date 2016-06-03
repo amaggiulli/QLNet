@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -27,7 +28,7 @@ namespace QLNet
 
       Volatilities are assumed to be expressed on an annual basis.
    */
-   public class BlackVolTermStructure : VolatilityTermStructure 
+   public abstract class BlackVolTermStructure : VolatilityTermStructure 
    {
       private const double dT = 1.0/365.0;       
 
@@ -189,14 +190,14 @@ namespace QLNet
       //   assume that extrapolation is required.
 
       //! Black variance calculation
-      protected virtual double blackVarianceImpl(double t, double strike) { throw new NotSupportedException(); }
+      protected abstract double blackVarianceImpl(double t, double strike);
       
       //! Black volatility calculation
-      protected virtual double blackVolImpl(double t, double strike) { throw new NotSupportedException(); }
-      
+      protected abstract double blackVolImpl(double t, double strike);
+
       #endregion
 
-    }
+   }
 
     //! Black-volatility term structure
     /*! This abstract class acts as an adapter to BlackVolTermStructure
@@ -206,7 +207,7 @@ namespace QLNet
         Volatility are assumed to be expressed on an annual basis.
     */
     
-   public class BlackVolatilityTermStructure : BlackVolTermStructure 
+   public abstract class BlackVolatilityTermStructure : BlackVolTermStructure 
    {
       #region Constructors
 
@@ -260,7 +261,7 @@ namespace QLNet
        Volatility are assumed to be expressed on an annual basis.
    */
    
-   public class BlackVarianceTermStructure : BlackVolTermStructure 
+   public abstract class BlackVarianceTermStructure : BlackVolTermStructure 
    {
       #region Constructors
       //! default constructor

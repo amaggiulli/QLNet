@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -637,7 +637,7 @@ namespace TestSuite
                         "  Diff: " + error );
          }
          // remove circular refernce
-         vars.hy.linkTo(new YoYInflationTermStructure());
+         vars.hy.linkTo(null);
    }
 
       [TestMethod()]
@@ -744,7 +744,7 @@ namespace TestSuite
          
          }
          // remove circular refernce
-         vars.hy.linkTo(new YoYInflationTermStructure());
+         vars.hy.linkTo(null);
       }
    }
 }

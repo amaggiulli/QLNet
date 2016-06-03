@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -24,7 +25,7 @@ namespace QLNet
    /*! This abstract class defines the interface of concrete swaption
       volatility structures which will be derived from this one.
    */
-   public class SwaptionVolatilityStructure : VolatilityTermStructure 
+   public abstract class SwaptionVolatilityStructure : VolatilityTermStructure 
    {
       #region Constructors
       /*! \warning term structures initialized by means of this
@@ -184,7 +185,7 @@ namespace QLNet
       #region Limits
 
       //! the largest length for which the term structure can return vols
-      public virtual  Period maxSwapTenor()  { throw new NotSupportedException(); }
+      public abstract Period maxSwapTenor();
 
       //! the largest swapLength for which the term structure can return vols
       public double maxSwapLength() { return swapLength(maxSwapTenor()); }
@@ -222,14 +223,14 @@ namespace QLNet
          return smileSectionImpl(timeFromReference(optionDate), swapLength(swapTenor));
       }
 
-      protected virtual SmileSection smileSectionImpl(double optionTime, double swapLength)   { throw new NotSupportedException(); }
+      protected abstract SmileSection smileSectionImpl(double optionTime, double swapLength);
 
       protected virtual double volatilityImpl(Date optionDate, Period swapTenor, double strike)
       {
          return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor),  strike);
       }
 
-      protected virtual double volatilityImpl(double optionTime, double swapLength, double strike) { throw new NotSupportedException(); }
+      protected abstract double volatilityImpl(double optionTime, double swapLength, double strike);
 
       protected void checkSwapTenor(Period swapTenor, bool extrapolate)
       {
