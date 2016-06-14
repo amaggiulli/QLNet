@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -361,7 +361,7 @@ namespace TestSuite
 				}
 			} // pricer loop
 			// remove circular refernce
-			vars.hy.linkTo(new YoYInflationTermStructure());
+			vars.hy.linkTo(null);
 		}
 
 		// Test inflation cap/floor parity, i.e. that cap-floor = swap, note that this
@@ -439,7 +439,7 @@ namespace TestSuite
 				  }
 			 }
 			 // remove circular refernce
-			 vars.hy.linkTo(new YoYInflationTermStructure());
+			 vars.hy.linkTo(null);
 		}
 
 		
@@ -503,7 +503,7 @@ namespace TestSuite
 									+" diff was "+(Math.Abs(floor.NPV()-cachedFloorNPVbac)));
 
 			// remove circular refernce
-			vars.hy.linkTo(new YoYInflationTermStructure());
+			vars.hy.linkTo(null);
 	}
 	
 	}

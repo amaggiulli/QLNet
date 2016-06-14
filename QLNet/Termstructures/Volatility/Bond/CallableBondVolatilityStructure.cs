@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com) 
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com) 
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -27,7 +27,7 @@ namespace QLNet
        concrete callable-bond volatility structures which will be
        derived from this one.
    */
-   public class CallableBondVolatilityStructure : TermStructure
+   public abstract class CallableBondVolatilityStructure : TermStructure
    {
       /*! \name Constructors
          See the TermStructure documentation for issues regarding
@@ -122,16 +122,16 @@ namespace QLNet
       //! \name Limits
       //@{
       //! the largest length for which the term structure can return vols
-      public virtual Period maxBondTenor() {throw new ApplicationException("maxBondTenor need implementation");}
+      public abstract Period maxBondTenor();
       //! the largest bondLength for which the term structure can return vols
       public virtual double maxBondLength()
       {
          return timeFromReference(referenceDate() + maxBondTenor());
       }
       //! the minimum strike for which the term structure can return vols
-      public virtual double minStrike() { throw new ApplicationException("minStrike need implementation"); }
+      public abstract double minStrike();
       //! the maximum strike for which the term structure can return vols
-      public virtual double maxStrike() { throw new ApplicationException("maxStrike need implementation"); }
+      public abstract double maxStrike();
       //@}
       //! implements the conversion between dates and times
       public virtual KeyValuePair<double, double> convertDates(Date optionDate, Period bondTenor)
@@ -154,12 +154,10 @@ namespace QLNet
       }
 
       //! return smile section
-      protected virtual SmileSection smileSectionImpl( double optionTime, double bondLength)
-      { throw new ApplicationException("smileSectionImpl need implementation"); }
+      protected abstract SmileSection smileSectionImpl(double optionTime, double bondLength);
 
       //! implements the actual volatility calculation in derived classes
-      protected virtual double volatilityImpl(double optionTime, double bondLength, double strike)
-      { throw new ApplicationException("volatilityImpl need implementation"); }
+      protected abstract double volatilityImpl(double optionTime, double bondLength, double strike);
       protected virtual double volatilityImpl(Date optionDate, Period bondTenor, double strike) 
       {
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);
