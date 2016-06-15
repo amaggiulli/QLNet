@@ -353,4 +353,15 @@ namespace QLNet
     {
         public PTECurrency() : base("Portuguese escudo", "PTE", 620, "Esc", "", 100, new Rounding(), "%1$.0f %3%", new EURCurrency()) { }
     }
+
+   //! Ukrainian hryvnia
+      /*! The ISO three-letter code is UAH; the numeric code is 980.
+         It is divided in 100 kopiykas.
+
+         \ingroup currencies    
+      */
+    public class UAHCurrency : Currency
+    {
+       public UAHCurrency() : base( "Ukrainian hryvnia", "UAH", 980, "hrn", "", 100, new Rounding(), "%1$.2f %3%" ) { }
+    }
 }
