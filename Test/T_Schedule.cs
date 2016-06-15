@@ -133,8 +133,37 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-
       [TestMethod()]
+      public void testDatesSameAsEndDateWithEomAdjustment()
+      {
+         // Testing that next-to-last date same as end date is removed...
+
+         Schedule s = new MakeSchedule().from(new Date(28, Month.March, 2013))
+                                        .to(new Date(31, Month.March, 2015))
+                                        .withCalendar(new TARGET())
+                                        .withTenor(new Period(1, TimeUnit.Years))
+                                        .withConvention(BusinessDayConvention.Unadjusted)
+                                        .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+                                        .forwards()
+                                        .endOfMonth()
+                                        .value();
+
+         List<Date> expected = new List<Date>(3);
+         expected.Add(new Date(31, Month.March, 2013));
+         expected.Add(new Date(31, Month.March, 2014));
+         // March 31st 2015, coming from the EOM adjustment of March 28th,
+         // should be discarded as the same as the end date.
+         expected.Add(new Date(31, Month.March, 2015));
+
+         check_dates(s, expected);
+
+         // also, the last period should be regular.
+         if (!s.isRegular(2))
+            Assert.Fail("last period should be regular");
+      }
+
+
+   [TestMethod()]
       public void testForwardDatesWithEomAdjustment()
       {
          // Testing that the last date is not adjusted for EOM when termination date convention is unadjusted
