@@ -234,6 +234,10 @@
     <Compile Include="Math\BSpline.cs" />
     <Compile Include="Math\Comparison.cs" />
     <Compile Include="Math\integrals\GaussLobattoIntegral.cs" />
+    <Compile Include="Math\Interpolations\Abcdinterpolation.cs" />
+    <Compile Include="Math\Interpolations\BackwardflatLinearInterpolation.cs" />
+    <Compile Include="Math\Interpolations\FlatExtrapolator2D.cs" />
+    <Compile Include="Math\Interpolations\MixedInterpolation.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />
