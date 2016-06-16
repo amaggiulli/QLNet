@@ -112,12 +112,12 @@ namespace QLNet
          protected int size_;
 
          // this method should be used for initialisation
-         public templateImpl( List<double> xBegin, int size, List<double> yBegin )
+         public templateImpl( List<double> xBegin, int size, List<double> yBegin, int requiredPoints = 2 )
          {
             xBegin_ = xBegin;
             yBegin_ = yBegin;
             size_ = size;
-            if ( size < 2 )
+            if ( size < requiredPoints )
                throw new ArgumentException( "not enough points to interpolate: at least 2 required, "
                                            + size + " provided" );
          }
