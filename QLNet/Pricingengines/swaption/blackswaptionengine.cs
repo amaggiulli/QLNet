@@ -110,7 +110,7 @@ namespace QLNet
                   break;
               }
               default:
-                throw new ApplicationException("unknown settlement type");
+                throw new Exception("unknown settlement type");
             }
             results_.additionalResults["annuity"] = annuity;
 

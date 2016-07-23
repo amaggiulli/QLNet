@@ -148,7 +148,7 @@ namespace QLNet
         }
 
         //! returns whether the instrument is still tradable.
-        public virtual bool isExpired() { throw new NotSupportedException(); }   
+        public virtual bool isExpired() { throw new Exception(); }   
 
 
         public class Results : IPricingEngineResults

@@ -175,7 +175,7 @@ namespace QLNet
                  return EndCriteria.Type.StationaryFunctionValue;
               }
            } while ( end == false );
-           throw new ApplicationException( "optimization failed: unexpected behaviour" );
+           throw new Exception( "optimization failed: unexpected behaviour" );
         }
 
         private double extrapolate(ref Problem P, int iHighest, ref double factor)

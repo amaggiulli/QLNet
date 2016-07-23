@@ -46,6 +46,8 @@ namespace QLNet {
 
         public MakeVanillaSwap(Period swapTenor, IborIndex index, double? fixedRate = null, Period forwardStart = null) 
         {
+            if (index == null) throw new ArgumentNullException(nameof(index));
+            
             swapTenor_ = swapTenor;
             iborIndex_ = index;
             fixedRate_ = fixedRate;

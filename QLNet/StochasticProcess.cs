@@ -133,7 +133,7 @@ namespace QLNet {
                   which raises an exception.
         */
         public virtual double time(Date d) {
-            throw new NotSupportedException("date/time conversion not supported");
+            throw new Exception("date/time conversion not supported");
         }
 
 

@@ -29,17 +29,17 @@ namespace QLNet
       public CoefficientHolder(int n)
       {
          n_ = n ;
-         primitiveConst_ = new Array<double>(n - 1);
-         a_ = new Array<double>(n - 1);
-         b_ = new Array<double>(n - 1);
-         c_ = new Array<double>(n - 1);
-         monotonicityAdjustments_ = new Array<bool>(n); 
+         primitiveConst_ = new double[n - 1];
+         a_ = new double[n - 1];
+         b_ = new double[n - 1];
+         c_ = new double[n - 1];
+         monotonicityAdjustments_ = new bool[n]; 
       }
       
       public virtual void Dispose() {}
       public int n_;
-      public Array<double> primitiveConst_, a_, b_, c_;
-      public Array<bool> monotonicityAdjustments_;
+      public double[] primitiveConst_, a_, b_, c_;
+      public bool[] monotonicityAdjustments_;
    };
 
    public class CubicSplineInterpolationImpl : Interpolation.templateImpl
@@ -75,9 +75,9 @@ namespace QLNet
       {
          TridiagonalOperator L = new TridiagonalOperator(cH_.n_);
 
-         Array<double> tmp = new Array<double>(cH_.n_);
-         var dx = new Array<double>(cH_.n_ - 1);
-         var S = new Array<double>(cH_.n_ - 1);
+         double[] tmp = new double[cH_.n_];
+         var dx = new double[cH_.n_ - 1];
+         var S = new double[cH_.n_ - 1];
 
          int i=0;
          dx[i] = this.xBegin_[i+1] - this.xBegin_[i];
@@ -113,9 +113,9 @@ namespace QLNet
             case CubicSplineInterpolation.BoundaryCondition.Periodic:
             case CubicSplineInterpolation.BoundaryCondition.Lagrange:
               // ignoring end condition value
-              throw new ApplicationException("this end condition is not implemented yet");
+              throw new Exception("this end condition is not implemented yet");
             default:
-              throw new ApplicationException("unknown end condition");
+              throw new Exception("unknown end condition");
          }
 
          // right condition
@@ -139,15 +139,15 @@ namespace QLNet
             case CubicSplineInterpolation.BoundaryCondition.Periodic:
             case CubicSplineInterpolation.BoundaryCondition.Lagrange:
               // ignoring end condition value
-              throw new ApplicationException("this end condition is not implemented yet");
+              throw new Exception("this end condition is not implemented yet");
             default:
-              throw new ApplicationException("unknown end condition");
+              throw new Exception("unknown end condition");
          }
 
          // solve the system
-         tmp = L.solveFor(tmp);
+         tmp = L.solveFor(new Vector(tmp.ToList())).ToArray();
 
-         for (int j = 0; i < cH_.monotonicityAdjustments_.Count; j++ )
+         for (int j = 0; i < cH_.monotonicityAdjustments_.Count(); j++ )
             cH_.monotonicityAdjustments_[j] = false;
 
          if (constrained_) 

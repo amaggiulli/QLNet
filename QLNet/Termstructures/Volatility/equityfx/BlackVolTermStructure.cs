@@ -189,10 +189,10 @@ namespace QLNet
       //   assume that extrapolation is required.
 
       //! Black variance calculation
-      protected virtual double blackVarianceImpl(double t, double strike) { throw new NotSupportedException(); }
+      protected virtual double blackVarianceImpl(double t, double strike) { throw new Exception(); }
       
       //! Black volatility calculation
-      protected virtual double blackVolImpl(double t, double strike) { throw new NotSupportedException(); }
+      protected virtual double blackVolImpl(double t, double strike) { throw new Exception(); }
       
       #endregion
 

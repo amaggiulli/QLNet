@@ -99,7 +99,7 @@ namespace QLNet {
         /*! \pre percentile must be in range (0%-100%) extremes excluded */
         public double gaussianPercentile(double percentile)  {
             if (!(percentile > 0.0 && percentile < 1.0))
-                throw new ApplicationException("percentile (" + percentile + ") must be in (0.0, 1.0)");
+                throw new Exception("percentile (" + percentile + ") must be in (0.0, 1.0)");
 
             InverseCumulativeNormal gInverse = new InverseCumulativeNormal(mean(), standardDeviation());
             return gInverse.value(percentile);
@@ -109,7 +109,7 @@ namespace QLNet {
         //! gaussian-assumption Potential-Upside at a given percentile
         public double gaussianPotentialUpside(double percentile) {
             if (!(percentile<1.0 && percentile>=0.9))
-                throw new ApplicationException("percentile (" + percentile + ") out of range [0.9, 1)");
+                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
 
             double result = gaussianPercentile(percentile);
             // potential upside must be a gain, i.e., floored at 0.0
@@ -119,7 +119,7 @@ namespace QLNet {
         //! gaussian-assumption Value-At-Risk at a given percentile
         public double gaussianValueAtRisk(double percentile) {
             if (!(percentile<1.0 && percentile>=0.9))
-                throw new ApplicationException("percentile (" + percentile + ") out of range [0.9, 1)");
+                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
 
             double result = gaussianPercentile(1.0-percentile);
             // VAR must be a loss
@@ -144,7 +144,7 @@ namespace QLNet {
         */
         public double gaussianExpectedShortfall(double percentile) {
             if (!(percentile<1.0 && percentile>=0.9))
-                throw new ApplicationException("percentile (" + percentile + ") out of range [0.9, 1)");
+                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
 
             double m = this.mean();
             double std = this.standardDeviation();
@@ -192,23 +192,23 @@ namespace QLNet {
         }
 
         #region IGeneralStatistics
-        public int samples() { throw new NotSupportedException(); }
-        public double min() { throw new NotSupportedException(); }
-        public double max() { throw new NotSupportedException(); }
-        public double variance() { throw new NotSupportedException(); }
-        public double skewness() { throw new NotSupportedException(); }
-        public double kurtosis() { throw new NotSupportedException(); }
-        public double percentile(double percent) { throw new NotSupportedException(); }
-        public double weightSum() { throw new NotSupportedException(); }
-        public double errorEstimate() { throw new NotSupportedException(); }
+        public int samples() { throw new Exception(); }
+        public double min() { throw new Exception(); }
+        public double max() { throw new Exception(); }
+        public double variance() { throw new Exception(); }
+        public double skewness() { throw new Exception(); }
+        public double kurtosis() { throw new Exception(); }
+        public double percentile(double percent) { throw new Exception(); }
+        public double weightSum() { throw new Exception(); }
+        public double errorEstimate() { throw new Exception(); }
 
-        public void reset() { throw new NotSupportedException(); }
-        public void add(double value, double weight) { throw new NotSupportedException(); }
-        public void addSequence(List<double> data, List<double> weight) { throw new NotSupportedException(); }
+        public void reset() { throw new Exception(); }
+        public void add(double value, double weight) { throw new Exception(); }
+        public void addSequence(List<double> data, List<double> weight) { throw new Exception(); }
 
         public KeyValuePair<double, int> expectationValue(Func<KeyValuePair<double, double>, double> f,
                                                           Func<KeyValuePair<double, double>, bool> inRange) {
-            throw new NotSupportedException();
+            throw new Exception();
         }
         #endregion
     }

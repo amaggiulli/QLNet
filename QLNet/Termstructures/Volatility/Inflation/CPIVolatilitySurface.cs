@@ -193,7 +193,7 @@ namespace QLNet
         public virtual double? baseLevel() 
         {
             if(baseLevel_ == null )
-                throw new ApplicationException("Base volatility, for baseDate(), not set.");
+                throw new Exception("Base volatility, for baseDate(), not set.");
             return baseLevel_;
         }
         //@}
@@ -201,9 +201,9 @@ namespace QLNet
         //! \name Limits
         //@{
         //! the minimum strike for which the term structure can return vols
-        public override double minStrike() { throw new NotSupportedException(); }
+        public override double minStrike() { throw new Exception(); }
         //! the maximum strike for which the term structure can return vols
-        public override double maxStrike() { throw new NotSupportedException(); }
+        public override double maxStrike() { throw new Exception(); }
         //@}
 
         protected virtual void checkRange(Date d, double strike, bool extrapolate)
@@ -236,7 +236,7 @@ namespace QLNet
             derived classes e.g. bilinear interpolation.  N.B. does
             not derive the surface.
         */
-        protected virtual double volatilityImpl(double length, double strike) { throw new NotSupportedException(); }
+        protected virtual double volatilityImpl(double length, double strike) { throw new Exception(); }
 
         protected double? baseLevel_;
         // so you do not need an index

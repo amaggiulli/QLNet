@@ -58,7 +58,7 @@ namespace QLNet {
         public double quoteError() { return quote_.link.value() - impliedQuote(); }
         public double quoteValue() { return quote_.link.value(); }
         public bool quoteIsValid() { return quote_.link.isValid(); }
-        public virtual double impliedQuote() { throw new NotSupportedException(); }
+        public virtual double impliedQuote() { throw new Exception(); }
 
 
         //! sets the term structure to be used for pricing

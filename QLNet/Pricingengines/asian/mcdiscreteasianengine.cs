@@ -109,7 +109,7 @@ namespace QLNet
         protected override double controlVariateValue() {
             IPricingEngine controlPE = this.controlPricingEngine(); 
             if(controlPE==null)
-                throw new ApplicationException( "engine does not provide " +
+                throw new Exception( "engine does not provide " +
                                                 "control variation pricing engine");
 
             DiscreteAveragingAsianOption.Arguments controlArguments =

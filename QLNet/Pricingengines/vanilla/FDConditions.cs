@@ -26,7 +26,7 @@ namespace QLNet {
         protected SampledCurve prices_;
         protected virtual void initializeStepCondition() {
             if (stepConditionImpl_ == null)
-                throw new NotSupportedException();
+                throw new Exception();
             else
                 stepCondition_ = stepConditionImpl_();
         }

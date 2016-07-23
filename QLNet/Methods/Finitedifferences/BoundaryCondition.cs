@@ -28,21 +28,21 @@ namespace QLNet {
         /*! This method modifies an operator \f$ L \f$ before it is
             applied to an array \f$ u \f$ so that \f$ v = Lu \f$ will
             satisfy the given condition. */
-        public virtual void applyBeforeApplying(IOperator o) { throw new NotSupportedException(); }
+        public virtual void applyBeforeApplying(IOperator o) { throw new Exception(); }
 
         /*! This method modifies an array \f$ u \f$ so that it satisfies the given condition. */
-        public virtual void applyAfterApplying(Vector v) { throw new NotSupportedException(); }
+        public virtual void applyAfterApplying(Vector v) { throw new Exception(); }
 
         /*! This method modifies an operator \f$ L \f$ before the linear
             system \f$ Lu' = u \f$ is solved so that \f$ u' \f$ will
             satisfy the given condition. */
-        public virtual void applyBeforeSolving(IOperator o, Vector v) { throw new NotSupportedException(); }
+        public virtual void applyBeforeSolving(IOperator o, Vector v) { throw new Exception(); }
 
         /*! This method modifies an array \f$ u \f$ so that it satisfies the given condition. */
-        public virtual void applyAfterSolving(Vector v) { throw new NotSupportedException(); }
+        public virtual void applyAfterSolving(Vector v) { throw new Exception(); }
 
         /*! This method sets the current time for time-dependent boundary conditions. */
-        public virtual void setTime(double t) { throw new NotSupportedException(); }
+        public virtual void setTime(double t) { throw new Exception(); }
     }
 
 

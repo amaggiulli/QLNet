@@ -223,7 +223,7 @@ namespace QLNet
       public virtual double baseLevel() 
       {
          if (baseLevel_ == null)
-            throw new ApplicationException("Base volatility, for baseDate(), not set.");
+            throw new Exception("Base volatility, for baseDate(), not set.");
          return baseLevel_.Value;
       }
 
@@ -232,31 +232,31 @@ namespace QLNet
       {
 
          if ( d < baseDate() )
-            throw new ApplicationException ("date (" + d + ") is before base date");
+            throw new Exception ("date (" + d + ") is before base date");
 
          if ( !extrapolate && !allowsExtrapolation() && d > maxDate())
-            throw new ApplicationException ("date (" + d + ") is past max curve date ("
+            throw new Exception("date (" + d + ") is past max curve date ("
                                          + maxDate() + ")");
 
 
          if ( !extrapolate && !allowsExtrapolation() && 
               ( strike < minStrike() || strike > maxStrike()))
-            throw new ApplicationException ("strike (" + strike + ") is outside the curve domain ["
+            throw new Exception("strike (" + strike + ") is outside the curve domain ["
                 + minStrike() + "," + maxStrike()+ "]] at date = " + d);
       }
     
       protected virtual void checkRange(double t, double strike,bool extrapolate) 
       {
          if ( t < timeFromReference(baseDate()) )
-            throw new ApplicationException("time (" + t + ") is before base date");
+            throw new Exception("time (" + t + ") is before base date");
 
          if ( !extrapolate && !allowsExtrapolation() && t > maxTime() )
-            throw new ApplicationException("time (" + t + ") is past max curve time ("
+            throw new Exception("time (" + t + ") is past max curve time ("
                                            + maxTime() + ")");
 
          if ( !extrapolate && !allowsExtrapolation() && 
               (strike < minStrike() || strike > maxStrike()))
-            throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["
+            throw new Exception("strike (" + strike + ") is outside the curve domain ["
                    + minStrike() + "," + maxStrike()+ "] at time = " + t);
     
       }

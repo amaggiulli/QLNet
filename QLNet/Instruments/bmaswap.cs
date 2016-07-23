@@ -78,7 +78,7 @@ namespace QLNet {
                     payer_[1] = +1.0;
                     break;
                 default:
-                    throw new ApplicationException("Unknown BMA-swap type");
+                    throw new Exception("Unknown BMA-swap type");
             }
         }
 
@@ -89,14 +89,14 @@ namespace QLNet {
         public double liborLegBPS() {
             calculate();
             if (legBPS_[0] == null)
-                throw new ApplicationException("result not available");
+                throw new Exception("result not available");
             return legBPS_[0].GetValueOrDefault();
         }
 
         public double liborLegNPV() {
             calculate();
             if (legNPV_[0] == null)
-                throw new ApplicationException("result not available");
+                throw new Exception("result not available");
             return legNPV_[0].GetValueOrDefault();
         }
 
@@ -106,7 +106,7 @@ namespace QLNet {
             double spreadNPV = (liborSpread_/basisPoint)*liborLegBPS();
             double pureLiborNPV = liborLegNPV() - spreadNPV;
             if (pureLiborNPV == 0.0)
-                throw new ApplicationException("result not available (null libor NPV)");
+                throw new Exception("result not available (null libor NPV)");
             return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
         }
 
@@ -118,14 +118,14 @@ namespace QLNet {
         public double bmaLegBPS() {
             calculate();
             if (legBPS_[1] == null)
-                throw new ApplicationException("result not available");
+                throw new Exception("result not available");
             return legBPS_[1].GetValueOrDefault();
         }
         
         public double bmaLegNPV() {
             calculate();
             if (legNPV_[1] == null)
-                throw new ApplicationException("result not available");
+                throw new Exception("result not available");
             return legNPV_[1].GetValueOrDefault();
         }
     }

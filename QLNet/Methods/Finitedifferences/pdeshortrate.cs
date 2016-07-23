@@ -43,7 +43,7 @@ namespace QLNet {
         }
 
         public override PdeSecondOrderParabolic factory(GeneralizedBlackScholesProcess process) {
-            throw new NotSupportedException();
+            throw new Exception();
             //return new PdeShortRate(process);
         }
     }

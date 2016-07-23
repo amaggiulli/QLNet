@@ -55,7 +55,7 @@ namespace QLNet {
 
     public class TreeLattice<T> : Lattice where T : IGenericLattice{
         // this should be overriden in the dering class
-        protected virtual T impl() { throw new NotSupportedException(); }
+        protected virtual T impl() { throw new Exception(); }
 
         private int n_;
         private int statePricesLimit_;
@@ -65,7 +65,7 @@ namespace QLNet {
 
         public TreeLattice(TimeGrid timeGrid, int n) : base(timeGrid) {
             n_ = n;
-            if (!(n>0)) throw new ApplicationException("there is no zeronomial lattice!");
+            if (!(n>0)) throw new Exception("there is no zeronomial lattice!");
             statePrices_ = new InitializedList<Vector>(1, new Vector(1, 1.0));
             statePricesLimit_ = 0;
         }
@@ -88,7 +88,7 @@ namespace QLNet {
 
             if (Utils.close(from,to)) return;
 
-            if (!(from > to)) throw new ApplicationException("cannot roll the asset back to" + to
+            if (!(from > to)) throw new Exception("cannot roll the asset back to" + to
                        + " (it is already at t = " + from + ")");
 
             int iFrom = t_.index(from);

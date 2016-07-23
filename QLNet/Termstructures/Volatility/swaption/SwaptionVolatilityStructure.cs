@@ -184,7 +184,7 @@ namespace QLNet
       #region Limits
 
       //! the largest length for which the term structure can return vols
-      public virtual  Period maxSwapTenor()  { throw new NotSupportedException(); }
+      public virtual  Period maxSwapTenor()  { throw new Exception(); }
 
       //! the largest swapLength for which the term structure can return vols
       public double maxSwapLength() { return swapLength(maxSwapTenor()); }
@@ -222,14 +222,14 @@ namespace QLNet
          return smileSectionImpl(timeFromReference(optionDate), swapLength(swapTenor));
       }
 
-      protected virtual SmileSection smileSectionImpl(double optionTime, double swapLength)   { throw new NotSupportedException(); }
+      protected virtual SmileSection smileSectionImpl(double optionTime, double swapLength)   { throw new Exception(); }
 
       protected virtual double volatilityImpl(Date optionDate, Period swapTenor, double strike)
       {
          return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor),  strike);
       }
 
-      protected virtual double volatilityImpl(double optionTime, double swapLength, double strike) { throw new NotSupportedException(); }
+      protected virtual double volatilityImpl(double optionTime, double swapLength, double strike) { throw new Exception(); }
 
       protected void checkSwapTenor(Period swapTenor, bool extrapolate)
       {

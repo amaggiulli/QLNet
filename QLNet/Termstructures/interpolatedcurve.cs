@@ -26,7 +26,7 @@ namespace QLNet {
         inheritance from this class to obtain the relevant data
         members and implement correct copy behavior.
     */
-    public interface InterpolatedCurve : ICloneable {
+    public interface InterpolatedCurve {
         List<double> times_ { get; set; }
         List<double> times();
 

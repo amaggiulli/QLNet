@@ -369,22 +369,22 @@ namespace QLNet
                 double? limFirstFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Key];
                 if( limFirstFix == null)
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + lim.Key );
                 double? limSecondFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Value+1];
                 if ( limSecondFix == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + lim.Value+1 );
                 double? limBefFirstFix =
                 IndexManager.instance().getHistory(name()).value()[limBef.Key];
                 if ( limBefFirstFix == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + limBef.Key );
                 double? limBefSecondFix =
                 IndexManager.instance().getHistory(name()).value()[limBef.Value+1];
                 if ( limBefSecondFix == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + limBef.Value+1 );
 
                 double linearNow = limFirstFix.Value + (limSecondFix.Value-limFirstFix.Value)*dl/dp;
@@ -400,13 +400,13 @@ namespace QLNet
                double? pastFixing =
                     IndexManager.instance().getHistory(name()).value()[fixingDate];
                if ( pastFixing == null )
-                  throw new ApplicationException("Missing " + name() + " fixing for "
+                  throw new Exception("Missing " + name() + " fixing for "
                                                  + fixingDate);
                 Date previousDate = fixingDate - new Period(1,TimeUnit.Years);
                 double? previousFixing =
                 IndexManager.instance().getHistory(name()).value()[previousDate];
                 if( previousFixing == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + previousDate );
 
                 return pastFixing.Value/previousFixing.Value - 1.0;
@@ -424,12 +424,12 @@ namespace QLNet
                 double? limFirstFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Key];
                 if ( limFirstFix == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + lim.Key );
                 double? limSecondFix =
                 IndexManager.instance().getHistory(name()).value()[lim.Value+1];
                 if ( limSecondFix == null )
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + lim.Value+1 );
                 double linearNow = limFirstFix.Value + (limSecondFix.Value-limFirstFix.Value)*dl/dp;
 
@@ -443,7 +443,7 @@ namespace QLNet
                 double? pastFixing =
                     IndexManager.instance().getHistory(name()).value()[fixingDate];
                 if ( pastFixing == null ) 
-                   throw new ApplicationException("Missing " + name() + " fixing for "
+                   throw new Exception("Missing " + name() + " fixing for "
                                                   + fixingDate);
                 return pastFixing.Value;
 

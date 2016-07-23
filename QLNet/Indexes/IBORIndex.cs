@@ -47,6 +47,7 @@ namespace QLNet {
                      Calendar fixingCalendar, BusinessDayConvention convention, bool endOfMonth,
                      DayCounter dayCounter, Handle<YieldTermStructure> h) :
             base(familyName, tenor, settlementDays, currency, fixingCalendar, dayCounter) {
+            if (h == null) throw new ArgumentNullException(nameof(h));
             convention_ = convention;
             termStructure_ = h;
             endOfMonth_ = endOfMonth;

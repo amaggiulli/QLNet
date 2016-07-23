@@ -48,7 +48,7 @@ namespace QLNet {
                 adjI = newAdjI;
                 i++;
             } while (i < maxEvaluations());
-        throw new ApplicationException("max number of iterations reached");
+        throw new Exception("max number of iterations reached");
         }
     }
 }

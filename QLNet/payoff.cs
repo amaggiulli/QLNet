@@ -35,7 +35,7 @@ namespace QLNet {
             if (v != null)
                 v.visit(this);
             else
-                throw new ApplicationException("not an event visitor");
+                throw new Exception("not an event visitor");
         }
 	}
 }

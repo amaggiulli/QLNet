@@ -32,7 +32,7 @@ namespace QLNet
 
       public SimpleCashFlow(double amount, Date date)
       {
-         if (date == null) throw new ApplicationException("null date SimpleCashFlow");
+         if (date == null) throw new Exception("null date SimpleCashFlow");
          amount_ = amount;
          date_ = date;
       }

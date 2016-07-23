@@ -92,7 +92,7 @@ namespace QLNet
       //! date/time conversion
       public double timeFromReference( Date date) { return dayCounter().yearFraction(referenceDate(), date);}
       //! the latest date for which the curve can return values
-      public virtual Date maxDate() { throw new NotSupportedException(); }
+      public virtual Date maxDate() { throw new Exception(); }
       //! the latest time for which the curve can return values
       public virtual double maxTime() {return timeFromReference(maxDate());}
       //! the date at which discount = 1.0 and/or variance = 0.0

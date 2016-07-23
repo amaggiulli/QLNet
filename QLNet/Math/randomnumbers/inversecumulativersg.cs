@@ -75,7 +75,7 @@ namespace QLNet {
         public Sample<List<double>> lastSequence() { return x_; }
         public int dimension() { return dimension_; }
 
-        public IRNG factory(int dimensionality, ulong seed) { throw new NotSupportedException(); } 
+        public IRNG factory(int dimensionality, ulong seed) { throw new Exception(); } 
         #endregion
     }
 }

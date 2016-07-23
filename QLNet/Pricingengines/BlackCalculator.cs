@@ -40,13 +40,13 @@ namespace QLNet {
             variance_ = stdDev*stdDev;
 
             if (!(forward>0.0))
-                throw new ApplicationException("positive forward value required: " + forward + " not allowed");
+                throw new Exception("positive forward value required: " + forward + " not allowed");
 
             if (!(stdDev>=0.0))
-                throw new ApplicationException("non-negative standard deviation required: " + stdDev + " not allowed");
+                throw new Exception("non-negative standard deviation required: " + stdDev + " not allowed");
 
             if (!(discount>0.0))
-                throw new ApplicationException("positive discount required: " + discount + " not allowed");
+                throw new Exception("positive discount required: " + discount + " not allowed");
 
             if (stdDev_>=Const.QL_EPSILON) {
                 if (strike_==0.0) {
@@ -128,7 +128,7 @@ namespace QLNet {
         /*! Sensitivity to change in the underlying spot price. */
         public virtual double delta(double spot) {
             if (!(spot > 0.0))
-                throw new ApplicationException("positive spot value required: " + spot + " not allowed");
+                throw new Exception("positive spot value required: " + spot + " not allowed");
 
             double DforwardDs = forward_ / spot;
 
@@ -193,7 +193,7 @@ namespace QLNet {
         public virtual double gamma(double spot) {
 
             if (!(spot > 0.0))
-                throw new ApplicationException("positive spot value required: " + spot + " not allowed");
+                throw new Exception("positive spot value required: " + spot + " not allowed");
 
             double DforwardDs = forward_ / spot;
 
@@ -215,7 +215,7 @@ namespace QLNet {
 
             if (maturity==0.0) return 0.0;
             if (!(maturity>0.0))
-                throw new ApplicationException("non negative maturity required: " + maturity + " not allowed");
+                throw new Exception("non negative maturity required: " + maturity + " not allowed");
             //vol = stdDev_ / std::sqrt(maturity);
             //rate = -std::log(discount_)/maturity;
             //dividendRate = -std::log(forward_ / spot * discount_)/maturity;
@@ -235,7 +235,7 @@ namespace QLNet {
         /*! Sensitivity to volatility. */
         public double vega(double maturity) {
             if (!(maturity>=0.0))
-                throw new ApplicationException("negative maturity not allowed");
+                throw new Exception("negative maturity not allowed");
 
             double temp = Math.Log(strike_/forward_)/variance_;
             // actually DalphaDsigma / SQRT(T)
@@ -251,7 +251,7 @@ namespace QLNet {
         /*! Sensitivity to discounting rate. */
         public double rho(double maturity) {
             if (!(maturity >= 0.0))
-                throw new ApplicationException("negative maturity not allowed");
+                throw new Exception("negative maturity not allowed");
 
             // actually DalphaDr / T
             double DalphaDr = DalphaDd1_ / stdDev_;
@@ -264,7 +264,7 @@ namespace QLNet {
         /*! Sensitivity to dividend/growth rate. */
         public double dividendRho(double maturity) {
             if (!(maturity >= 0.0))
-                throw new ApplicationException("negative maturity not allowed");
+                throw new Exception("negative maturity not allowed");
 
             // actually DalphaDq / T
             double DalphaDq = -DalphaDd1_ / stdDev_;
@@ -320,14 +320,14 @@ namespace QLNet {
 
             public void visit(object o) {
                 Type[] types = new Type[] { o.GetType() };
-                MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
+                MethodInfo methodInfo = this.GetType().GetTypeInfo().GetMethod("visit", types);
                 if (methodInfo != null) {
                     methodInfo.Invoke(this, new object[] { o });
                 }
             }
 
             public void visit(Payoff p) {
-                throw new NotSupportedException("unsupported payoff type: " + p.name());
+                throw new Exception("unsupported payoff type: " + p.name());
             }
 
             public void visit(PlainVanillaPayoff p) { }

@@ -79,13 +79,13 @@ namespace QLNet {
             nCalibrationSamples_ = nCalibrationSamples == 0 ? 2048 : nCalibrationSamples;
 
             if (!(timeSteps != 0 || timeStepsPerYear != 0))
-                throw new ApplicationException("no time steps provided");
+                throw new Exception("no time steps provided");
             if (!(timeSteps == 0 || timeStepsPerYear == 0))
-                throw new ApplicationException("both time steps and time steps per year were provided");
+                throw new Exception("both time steps and time steps per year were provided");
             if (!(timeSteps != 0))
-                throw new ApplicationException("timeSteps must be positive, " + timeSteps + " not allowed");
+                throw new Exception("timeSteps must be positive, " + timeSteps + " not allowed");
             //if (!(timeStepsPerYear != 0))
-            //    throw new ApplicationException("timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed");
+            //    throw new Exception("timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed");
 
             process_.registerWith(update);
         }
@@ -113,13 +113,13 @@ namespace QLNet {
                 int steps = (int)(timeStepsPerYear_*t);
                 return new TimeGrid(t, Math.Max(steps, 1));
             } else {
-                throw new ApplicationException("time steps not specified");
+                throw new Exception("time steps not specified");
             }
         }
 
         protected override PathPricer<IPath> pathPricer() {
             if (pathPricer_ == null) 
-                throw new ApplicationException("path pricer unknown");
+                throw new Exception("path pricer unknown");
             return pathPricer_;
         }
 

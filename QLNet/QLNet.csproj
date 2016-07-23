@@ -233,6 +233,7 @@
     <Compile Include="Math\BSpline.cs" />
     <Compile Include="Math\Comparison.cs" />
     <Compile Include="Math\integrals\GaussLobattoIntegral.cs" />
+    <Compile Include="Math\Interpolations\CubicSplineInterpolation.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />

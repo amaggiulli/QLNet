@@ -67,7 +67,7 @@ namespace QLNet {
             : base(Type.American, payoffAtExpiry) {
 
             if (!(earliestDate <= latestDate))
-                throw new ApplicationException("earliest > latest exercise date");
+                throw new Exception("earliest > latest exercise date");
             dates_ = new InitializedList<Date>(2);
             dates_[0] = earliestDate;
             dates_[1] = latestDate;
@@ -88,7 +88,7 @@ namespace QLNet {
             : base(Type.Bermudan, payoffAtExpiry) {
             
             if (dates.Count == 0)
-                throw new ApplicationException("no exercise date given");
+                throw new Exception("no exercise date given");
 
             dates_ = dates;
             dates_.Sort();

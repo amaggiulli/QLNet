@@ -96,7 +96,7 @@ namespace QLNet
             // forecast: 0) forecasting curve
             Handle<YieldTermStructure> termStructure = iborIndex_.forwardingTermStructure();
             if (termStructure.empty())
-               throw new ApplicationException("null term structure set to this instance of " +
+               throw new Exception("null term structure set to this instance of " +
                                               index_.name());
             // forecast: 1) startDiscount
             Date fixingValueDate = index_.fixingCalendar().advance(fixingDate, index_.fixingDays(), TimeUnit.Days);
@@ -108,7 +108,7 @@ namespace QLNet
             // forecast: 3) spanningTime
             double spanningTime = index_.dayCounter().yearFraction(fixingValueDate, nextFixingValueDate);
             if (!(spanningTime > 0.0))
-               throw new ApplicationException("cannot calculate forward rate between " +
+               throw new Exception("cannot calculate forward rate between " +
                       fixingValueDate + " and " + nextFixingValueDate +
                       ": non positive time using " + index_.dayCounter().name());
             // forecast: 4) implied fixing

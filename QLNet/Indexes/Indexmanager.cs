@@ -73,6 +73,7 @@ namespace QLNet {
 
         // checks whether index exists and adds it otherwise; for interal use only
         private void checkExists(string name) {
+            if (name == null) throw new ArgumentNullException(nameof(name));
             if (!data_.ContainsKey(name))
                 data_.Add(name, new ObservableValue<TimeSeries<double>>());
         }

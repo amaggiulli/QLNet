@@ -90,11 +90,11 @@ namespace QLNet
 			return 5;
 		}
 
-		public double discountImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+		public double discountImpl( Interpolation i, double t ) { throw new Exception(); }
 
-		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+		public double zeroYieldImpl( Interpolation i, double t ) { throw new Exception(); }
 
-		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+		public double forwardImpl( Interpolation i, double t ) { throw new Exception(); }
 
 		double ITraits<ZeroInflationTermStructure>.initialGuess()
 		{
@@ -190,9 +190,9 @@ namespace QLNet
 			return 40;
 		}
 
-		public double discountImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+		public double discountImpl( Interpolation i, double t ) { throw new Exception(); }
+		public double zeroYieldImpl( Interpolation i, double t ) { throw new Exception(); }
+		public double forwardImpl( Interpolation i, double t ) { throw new Exception(); }
 
 		double ITraits<YoYInflationTermStructure>.initialGuess()
 		{

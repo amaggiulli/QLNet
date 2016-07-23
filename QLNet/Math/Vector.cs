@@ -29,7 +29,7 @@ namespace QLNet {
 
         \test construction of arrays is checked in a number of cases
     */
-    public class Vector : InitializedList<double>, ICloneable {
+    public class Vector : InitializedList<double> {
         //! \name Constructors, and assignment
         //! creates the array with the given dimension
         public Vector() : this(0) { }
@@ -103,7 +103,7 @@ namespace QLNet {
 
         internal static Vector operVector(Vector v1, Vector v2, Func<double, double, double> func) {
             if (v1.Count != v2.Count)
-                throw new ApplicationException("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+                throw new Exception("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
             Vector temp = new Vector(v1.Count);
             for (int i = 0; i < v1.Count; i++)
@@ -119,7 +119,7 @@ namespace QLNet {
 
         public static double operator *(Vector v1, Vector v2) {
             if (v1.Count != v2.Count)
-                throw new ApplicationException("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+                throw new Exception("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
             double result = 0;
             for (int i = 0; i < v1.Count; i++)

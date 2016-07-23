@@ -63,7 +63,7 @@ namespace QLNet {
                         result += "JoinBusinessDays(";
                         break;
                     default:
-                        throw new ApplicationException("unknown joint calendar rule");
+                        throw new Exception("unknown joint calendar rule");
                 }
                 result += calendars_.First().name();
                 for(int i = 1; i < calendars_.Count; i++)
@@ -83,7 +83,7 @@ namespace QLNet {
                             if (c.isWeekend(w)) return false;
                         return true;
                     default:
-                        throw new ApplicationException("unknown joint calendar rule");
+                        throw new Exception("unknown joint calendar rule");
                 }
             }
 
@@ -100,7 +100,7 @@ namespace QLNet {
                                 return true;
                         return false;
                     default:
-                        throw new ApplicationException("unknown joint calendar rule");
+                        throw new Exception("unknown joint calendar rule");
                 }
             }
         }

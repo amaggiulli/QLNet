@@ -100,7 +100,7 @@ namespace QLNet {
 
         public override void initialize(FloatingRateCoupon coupon) {
             coupon_ = coupon as IborCoupon;
-            if (coupon_ == null) throw new ApplicationException("Libor coupon required");
+            if (coupon_ == null) throw new ArgumentNullException(nameof(coupon), "Libor coupon required");
             gearing_ = coupon_.gearing();
             spread_ = coupon_.spread();
             Date paymentDate = coupon_.date();
@@ -238,7 +238,7 @@ namespace QLNet {
 
         public void visit(object o) {
             Type[] types = new Type[] { o.GetType() };
-            MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
+            MethodInfo methodInfo = this.GetType().GetTypeInfo().GetMethod("visit", types);
             if (methodInfo != null) {
                 methodInfo.Invoke(this, new object[] { o });
             }
@@ -253,50 +253,50 @@ namespace QLNet {
         public void visit(IborCoupon c) {
             IborCouponPricer pricer = pricer_ as IborCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with Ibor coupon");
+                throw new Exception("pricer not compatible with Ibor coupon");
             c.setPricer(pricer);
         }
         public void visit(CappedFlooredIborCoupon c) {
             IborCouponPricer pricer = pricer_ as IborCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with Ibor coupon");
+                throw new Exception("pricer not compatible with Ibor coupon");
             c.setPricer(pricer);
         }
         public void visit(DigitalIborCoupon c) {
             IborCouponPricer pricer = pricer_ as IborCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with Ibor coupon");
+                throw new Exception("pricer not compatible with Ibor coupon");
             c.setPricer(pricer);
         }
         public void visit(CmsCoupon c) {
             CmsCouponPricer pricer = pricer_ as CmsCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with CMS coupon");
+                throw new Exception("pricer not compatible with CMS coupon");
             c.setPricer(pricer);
         }
         public void visit(CappedFlooredCoupon c)
         {
            CmsCouponPricer pricer = pricer_ as CmsCouponPricer;
            if (pricer == null)
-              throw new ApplicationException("pricer not compatible with CMS coupon");
+              throw new Exception("pricer not compatible with CMS coupon");
            c.setPricer(pricer);
         }
         public void visit(CappedFlooredCmsCoupon c) {
             CmsCouponPricer pricer = pricer_ as CmsCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with CMS coupon");
+                throw new Exception("pricer not compatible with CMS coupon");
             c.setPricer(pricer);
         }
         public void visit(DigitalCmsCoupon c) {
             CmsCouponPricer pricer = pricer_ as CmsCouponPricer;
             if (pricer == null)
-                throw new ApplicationException("pricer not compatible with CMS coupon");
+                throw new Exception("pricer not compatible with CMS coupon");
             c.setPricer(pricer);
         }
         //public void visit(RangeAccrualFloatersCoupon c)
         //{
         //    if (!(pricer_ is RangeAccrualPricer))
-        //        throw new ApplicationException("pricer not compatible with range-accrual coupon");
+        //        throw new Exception("pricer not compatible with range-accrual coupon");
         //    c.setPricer(pricer_ as RangeAccrualPricer);
         //}
     }
@@ -313,11 +313,11 @@ namespace QLNet {
             throw new NotImplementedException();
             //int nCashFlows = leg.Count;
             //if (!(nCashFlows > 0))
-            //    throw new ApplicationException("no cashflows");
+            //    throw new Exception("no cashflows");
 
             //int nPricers = pricers.Count;
             //if (!(nCashFlows >= nPricers))
-            //    throw new ApplicationException("mismatch between leg size (" + nCashFlows + ") and number of pricers (" + nPricers + ")");
+            //    throw new Exception("mismatch between leg size (" + nCashFlows + ") and number of pricers (" + nPricers + ")");
 
             //for (int i = 0; i < nCashFlows; ++i)
             //{
