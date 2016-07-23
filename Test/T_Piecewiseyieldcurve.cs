@@ -19,11 +19,11 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
     public class T_PiecewiseyieldCurve {
         public class CommonVars {
             #region Values
@@ -222,7 +222,7 @@ namespace TestSuite {
             }
         }
 
-        //[TestMethod()]
+        //[Fact]
         public void testLogCubicDiscountConsistency() {
             // "Testing consistency of piecewise-log-cubic discount curve...");
 
@@ -238,7 +238,7 @@ namespace TestSuite {
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLogLinearDiscountConsistency() {
             // "Testing consistency of piecewise-log-linear discount curve...");
 
@@ -248,7 +248,7 @@ namespace TestSuite {
 				testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLinearDiscountConsistency() {
             // "Testing consistency of piecewise-linear discount curve..."
 
@@ -258,7 +258,7 @@ namespace TestSuite {
 				testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLogLinearZeroConsistency() {
             // "Testing consistency of piecewise-log-linear zero-yield curve...");
 			  
@@ -274,7 +274,7 @@ namespace TestSuite {
 			  }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLinearZeroConsistency() {
             // "Testing consistency of piecewise-linear zero-yield curve...");
 
@@ -284,7 +284,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
         }
 
-        [TestMethod()]
+        [Fact]
         public void testSplineZeroConsistency() {
 
             //"Testing consistency of piecewise-cubic zero-yield curve...");
@@ -303,7 +303,7 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLinearForwardConsistency() {
             // "Testing consistency of piecewise-linear forward-rate curve...");
 
@@ -313,7 +313,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFlatForwardConsistency() {
 
             //"Testing consistency of piecewise-flat forward-rate curve...");
@@ -324,7 +324,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, BackwardFlat, IterativeBootstrapForYield>( vars );
         }
 
-        //[TestMethod()]
+        //[Fact]
         public void testSplineForwardConsistency() {
 
             //"Testing consistency of piecewise-cubic forward-rate curve...");
@@ -343,7 +343,7 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-        [TestMethod()]
+        [Fact]
         public void testConvexMonotoneForwardConsistency() {
             //"Testing consistency of convex monotone forward-rate curve...");
 
@@ -353,7 +353,7 @@ namespace TestSuite {
             testBMACurveConsistency<ForwardRate,ConvexMonotone,IterativeBootstrapForYield>(vars);
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLocalBootstrapConsistency() {
             //"Testing consistency of local-bootstrap algorithm...");
 
@@ -362,7 +362,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-9 );
         }
 
-        [TestMethod()]
+        [Fact]
         public void testObservability() {
             // "Testing observability of piecewise yield curve...");
 
@@ -379,20 +379,20 @@ namespace TestSuite {
                 f.lower();
                 vars.rates[i].setValue(vars.rates[i].value() * 1.01);
                 if (!f.isUp())
-                    Assert.Fail("Observer was not notified of underlying rate change");
+                    Assert.True(false,"Observer was not notified of underlying rate change");
                 double discount_new = vars.termStructure.discount(testTime, true);
                 if (discount_new == discount)
-                    Assert.Fail("rate change did not trigger recalculation");
+                    Assert.True(false,"rate change did not trigger recalculation");
                 vars.rates[i].setValue(vars.rates[i].value() / 1.01);
             }
 
             f.lower();
             Settings.setEvaluationDate(vars.calendar.advance(vars.today, 15, TimeUnit.Days));
             if (!f.isUp())
-                Assert.Fail("Observer was not notified of date change");
+                Assert.True(false,"Observer was not notified of date change");
         }
 
-        [TestMethod()]
+        [Fact]
         public void testLiborFixing() {
 
             // "Testing use of today's LIBOR fixings in swap curve...");
@@ -430,7 +430,7 @@ namespace TestSuite {
                      estimatedRate = swap.fairRate();
                 double tolerance = 1.0e-9;
                 if (Math.Abs(expectedRate-estimatedRate) > tolerance) {
-                    Assert.Fail("before LIBOR fixing:\n"
+                    Assert.True(false,"before LIBOR fixing:\n"
                                 + vars.swapData[i].n + " year(s) swap:\n"
                                 + "    estimated rate: "
                                 + (estimatedRate) + "\n"
@@ -446,7 +446,7 @@ namespace TestSuite {
             index.addFixing(vars.today, 0.0425);
 
             if (!f.isUp())
-                Assert.Fail("Observer was not notified of rate fixing");
+                Assert.True(false,"Observer was not notified of rate fixing");
 
             for (int i=0; i<vars.swaps; i++) {
                 Period tenor = new Period(vars.swapData[i].n, vars.swapData[i].units);
@@ -463,7 +463,7 @@ namespace TestSuite {
                      estimatedRate = swap.fairRate();
                 double tolerance = 1.0e-9;
                 if (Math.Abs(expectedRate-estimatedRate) > tolerance) {
-                    Assert.Fail("after LIBOR fixing:\n"
+                    Assert.True(false,"after LIBOR fixing:\n"
                                 + vars.swapData[i].n + " year(s) swap:\n"
                                 + "    estimated rate: "
                                 + (estimatedRate) + "\n"
@@ -473,7 +473,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testForwardRateDayCounter() {
 
             CommonVars vars = new CommonVars();
@@ -486,14 +486,14 @@ namespace TestSuite {
             InterestRate ir = vars.termStructure.forwardRate(vars.settlement, vars.settlement + 30, d1, Compounding.Simple);
 
             if (ir.dayCounter().name() != d1.name())
-                Assert.Fail("PiecewiseYieldCurve forwardRate dayCounter error" +
+                Assert.True(false,"PiecewiseYieldCurve forwardRate dayCounter error" +
                             " Actual daycounter : " + vars.termStructure.dayCounter().name() +
                             " Expetced DayCounter : " + d1.name());
 
 
         }
 
-        [TestMethod()]
+        [Fact]
         public void testJpyLibor() {
             //"Testing bootstrap over JPY LIBOR swaps...");
 
@@ -554,7 +554,7 @@ namespace TestSuite {
                 double tolerance = 1.0e-9;
 
                 if (error > tolerance) {
-                    Assert.Fail(vars.swapData[i].n + " year(s) swap:\n"
+                    Assert.True(false,vars.swapData[i].n + " year(s) swap:\n"
                                 + "\n estimated rate: " + (estimatedRate)
                                 + "\n expected rate:  " + (expectedRate)
                                 + "\n error:          " + (error)
@@ -563,7 +563,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testDiscountCopy() {
             //BOOST_MESSAGE("Testing copying of discount curve...");
 
@@ -571,7 +571,7 @@ namespace TestSuite {
             testCurveCopy<Discount, LogLinear>(vars);
         }
 
-        [TestMethod()]
+        [Fact]
         public void testForwardCopy() {
             //BOOST_MESSAGE("Testing copying of forward-rate curve...");
 
@@ -579,7 +579,7 @@ namespace TestSuite {
             testCurveCopy<ForwardRate, BackwardFlat>(vars);
         }
 
-        [TestMethod()]
+        [Fact]
         public void testZeroCopy() {
             //BOOST_MESSAGE("Testing copying of zero-rate curve...");
 
@@ -820,7 +820,7 @@ namespace TestSuite {
             var r1 = curve.zeroRate(t, Compounding.Continuous).value();
             var r2 = copiedCurve.zeroRate(t, Compounding.Continuous).value();
             if (!Utils.close(r1, r2)) {
-                Assert.Fail("failed to link original and copied curve");
+                Assert.True(false,"failed to link original and copied curve");
             }
 
             for (int i=0; i<vars.rates.Count; ++i) {
@@ -832,10 +832,10 @@ namespace TestSuite {
             double r3 = curve.zeroRate(t, Compounding.Continuous).value();
             double r4 = copiedCurve.zeroRate(t, Compounding.Continuous).value();
             if (Utils.close(r1, r3)) {
-                Assert.Fail("failed to modify original curve");
+                Assert.True(false,"failed to modify original curve");
             }
             if (!Utils.close(r2,r4)) {
-                Assert.Fail("failed to break link between original and copied curve");
+                Assert.True(false,"failed to break link between original and copied curve");
             }
         }
    }

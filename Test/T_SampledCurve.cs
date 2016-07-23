@@ -17,12 +17,12 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_SampledCurve
    {
 
@@ -31,7 +31,7 @@ namespace TestSuite
          public double value(double x) { return x * x; }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testConstruction()
       {
          //("Testing sampled curve construction...");
@@ -42,30 +42,30 @@ namespace TestSuite
          double expected = 100.0;
          if (Math.Abs(curve.value(0) - expected) > 1e-5)
          {
-            Assert.Fail("function sampling failed");
+            Assert.True(false,"function sampling failed");
          }
 
          curve.setValue(0, 2.0);
          if (Math.Abs(curve.value(0) - 2.0) > 1e-5)
          {
-            Assert.Fail("curve value setting failed");
+            Assert.True(false,"curve value setting failed");
          }
 
          Vector value = curve.values();
          value[1] = 3.0;
          if (Math.Abs(curve.value(1) - 3.0) > 1e-5)
          {
-            Assert.Fail("curve value grid failed");
+            Assert.True(false,"curve value grid failed");
          }
 
          curve.shiftGrid(10.0);
          if (Math.Abs(curve.gridValue(0) - 0.0) > 1e-5)
          {
-            Assert.Fail("sample curve shift grid failed");
+            Assert.True(false,"sample curve shift grid failed");
          }
          if (Math.Abs(curve.value(0) - 2.0) > 1e-5)
          {
-            Assert.Fail("sample curve shift grid - value failed");
+            Assert.True(false,"sample curve shift grid - value failed");
          }
 
          curve.sample(f2.value);
@@ -78,7 +78,7 @@ namespace TestSuite
             double exp = f2.value(grid);
             if (Math.Abs(v - exp) > tolerance)
             {
-               Assert.Fail("sample curve regriding failed" +
+               Assert.True(false,"sample curve regriding failed" +
                            "\n    at " + (i + 1) + " point " + "(x = " + grid + ")" +
                            "\n    grid value: " + v +
                            "\n    expected:   " + exp);

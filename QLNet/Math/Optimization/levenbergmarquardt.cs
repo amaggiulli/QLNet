@@ -109,17 +109,17 @@ namespace QLNet
                                   fcn, j);
          info_ = info;
          // check requirements & endCriteria evaluation
-         if ( info == 0 ) throw new ApplicationException( "MINPACK: improper input parameters" );
-         //if(info == 6) throw new ApplicationException("MINPACK: ftol is too small. no further " +
+         if ( info == 0 ) throw new Exception( "MINPACK: improper input parameters" );
+         //if(info == 6) throw new Exception("MINPACK: ftol is too small. no further " +
          //                                             "reduction in the sum of squares is possible.");
 
          if ( info != 6 ) ecType = EndCriteria.Type.StationaryFunctionValue;
          //QL_REQUIRE(info != 5, "MINPACK: number of calls to fcn has reached or exceeded maxfev.");
          endCriteria.checkMaxIterations( nfev, ref ecType );
-         if ( info == 7 ) throw new ApplicationException( "MINPACK: xtol is too small. no further " +
+         if ( info == 7 ) throw new Exception( "MINPACK: xtol is too small. no further " +
                                            "improvement in the approximate " +
                                            "solution x is possible." );
-         if ( info == 8 ) throw new ApplicationException( "MINPACK: gtol is too small. fvec is " +
+         if ( info == 8 ) throw new Exception( "MINPACK: gtol is too small. fvec is " +
                                            "orthogonal to the columns of the " +
                                            "jacobian to machine precision." );
          // set problem

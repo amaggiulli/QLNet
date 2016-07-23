@@ -18,15 +18,15 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_RNGTraits
    {
-      [TestMethod()]
+      [Fact]
       public void testGaussian()
       {
          //("Testing Gaussian pseudo-random number generation...");
@@ -42,12 +42,12 @@ namespace TestSuite
          double stored = 4.09916;
          double tolerance = 1.0e-5;
          if (Math.Abs(sum - stored) > tolerance)
-            Assert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false,"the sum of the samples does not match the stored value\n"
                        + "    calculated: " + sum + "\n"
                        + "    expected:   " + stored);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDefaultPoisson()
       {
 
@@ -63,12 +63,12 @@ namespace TestSuite
 
          double stored = 108.0;
          if (!Utils.close(sum, stored))
-            Assert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false,"the sum of the samples does not match the stored value\n"
                        + "    calculated: " + sum + "\n"
                        + "    expected:   " + stored);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCustomPoisson()
       {
 
@@ -84,7 +84,7 @@ namespace TestSuite
 
          double stored = 409.0;
          if (!Utils.close(sum, stored))
-            Assert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false,"the sum of the samples does not match the stored value\n"
                        + "    calculated: " + sum + "\n"
                        + "    expected:   " + stored);
       }

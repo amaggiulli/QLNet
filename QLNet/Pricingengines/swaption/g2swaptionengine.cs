@@ -51,7 +51,7 @@ namespace QLNet
 
         public override void calculate() {
             if(!(arguments_.settlementType == Settlement.Type.Physical))
-                       throw new ApplicationException("cash-settled swaptions not priced with G2 engine");
+                       throw new Exception("cash-settled swaptions not priced with G2 engine");
 
             // adjust the fixed rate of the swap for the spread on the
             // floating leg (which is not taken into account by the

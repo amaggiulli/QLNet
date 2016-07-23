@@ -126,15 +126,15 @@ namespace QLNet {
                                     double sigma,
                                     double a){
         if(!(futuresPrice>=0.0))
-            throw new ApplicationException("negative futures price (" + futuresPrice + ") not allowed");
+            throw new Exception("negative futures price (" + futuresPrice + ") not allowed");
         if(!(t>=0.0))
-            throw new ApplicationException("negative t (" + t + ") not allowed");
+            throw new Exception("negative t (" + t + ") not allowed");
         if(!(T>=t))
-            throw new ApplicationException("T (" + T + ") must not be less than t (" + t + ")");
+            throw new Exception("T (" + T + ") must not be less than t (" + t + ")");
         if(!(sigma>=0.0))
-            throw new ApplicationException("negative sigma (" + sigma + ") not allowed");
+            throw new Exception("negative sigma (" + sigma + ") not allowed");
         if(!(a>=0.0))
-            throw new ApplicationException("negative a (" + a + ") not allowed");
+            throw new Exception("negative a (" + a + ") not allowed");
 
         double deltaT = (T-t);
         double tempDeltaT = (1.0-Math.Exp(-a*deltaT)) / a;

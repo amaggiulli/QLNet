@@ -77,11 +77,11 @@ namespace QLNet
        public static void QL_REQUIRE( bool condition, Func<string> message )
        {
           if ( !condition )
-            throw new ApplicationException( message.Invoke() );
+            throw new Exception( message.Invoke() );
        }
        public static void QL_FAIL(string message)
        {
-          throw new ApplicationException(message);
+          throw new Exception(message);
        }
 
 		 public static bool is_QL_NEGATIVE_RATES()

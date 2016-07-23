@@ -60,9 +60,9 @@ namespace QLNet
              addRedemptionsToCashflows(new List<double>() { redemption });
 
              if (cashflows().Count == 0)
-                throw new ApplicationException("bond with no cashflows!");
+                throw new Exception("bond with no cashflows!");
              if (redemptions_.Count != 1)
-                throw new ApplicationException("multiple redemptions created");
+                throw new Exception("multiple redemptions created");
 
              index.registerWith(update);
 

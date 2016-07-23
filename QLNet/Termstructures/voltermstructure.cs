@@ -64,10 +64,10 @@ namespace QLNet
       }
 
       //! the minimum strike for which the term structure can return vols
-      public virtual double minStrike() { throw new NotSupportedException(); }
+      public virtual double minStrike() { throw new Exception(); }
 
       //! the maximum strike for which the term structure can return vols
-      public virtual double maxStrike() { throw new NotSupportedException(); }
+      public virtual double maxStrike() { throw new Exception(); }
       
       //! strike-range check
       protected void checkStrike(double k, bool extrapolate)

@@ -72,6 +72,6 @@ namespace QLNet
       #endregion
       
       //! implements the actual volatility calculation in derived classes
-      protected virtual double volatilityImpl(double length,  double strike) { throw new NotSupportedException(); }
+      protected virtual double volatilityImpl(double length,  double strike) { throw new Exception(); }
     }
 }

@@ -57,13 +57,13 @@ namespace QLNet {
             maxDate_ = dates.Last();
 
             if (!(dates.Count == blackVolCurve.Count))
-                throw new ApplicationException("mismatch between date vector and black vol vector");
+                throw new Exception("mismatch between date vector and black vol vector");
 
             // cannot have dates[0]==referenceDate, since the
             // value of the vol at dates[0] would be lost
             // (variance at referenceDate must be zero)
             if (!(dates[0]>referenceDate))
-                throw new ApplicationException("cannot have dates[0] <= referenceDate");
+                throw new Exception("cannot have dates[0] <= referenceDate");
 
             variances_ = new InitializedList<double>(dates.Count+1);
             times_ = new InitializedList<double>(dates.Count + 1);
@@ -73,10 +73,10 @@ namespace QLNet {
                 times_[j] = timeFromReference(dates[j-1]);
 
                 if (!(times_[j]>times_[j-1]))
-                    throw new ApplicationException("dates must be sorted unique!");
+                    throw new Exception("dates must be sorted unique!");
                 variances_[j] = times_[j] * blackVolCurve[j-1]*blackVolCurve[j-1];
                 if (!(variances_[j]>=variances_[j-1] || !forceMonotoneVariance))
-                    throw new ApplicationException("variance must be non-decreasing");
+                    throw new Exception("variance must be non-decreasing");
             }
 
             // default: linear interpolation

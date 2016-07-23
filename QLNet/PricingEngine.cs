@@ -49,7 +49,7 @@ namespace QLNet {
         public IPricingEngineResults getResults() { return results_; }
         public void reset() { results_.reset(); }
 
-        public virtual void calculate() { throw new NotSupportedException(); }
+        public virtual void calculate() { throw new Exception(); }
 
         #region Observer & Observable
         // observable interface

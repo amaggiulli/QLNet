@@ -29,12 +29,12 @@ namespace QLNet {
         public InverseCumulativePoisson() : this(1) { }
         public InverseCumulativePoisson(double lambda) {
             lambda_ = lambda;
-            if (!(lambda_ > 0.0)) throw new ApplicationException("lambda must be positive");
+            if (!(lambda_ > 0.0)) throw new Exception("lambda must be positive");
         }
 
         public double value(double x) {
             if (!(x >= 0.0 && x <= 1.0)) 
-                throw new ApplicationException("Inverse cumulative Poisson distribution is only defined on the interval [0,1]");
+                throw new Exception("Inverse cumulative Poisson distribution is only defined on the interval [0,1]");
 
             if (x == 1.0)
                 return double.MaxValue;

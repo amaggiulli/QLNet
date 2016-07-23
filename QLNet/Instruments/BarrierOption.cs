@@ -50,14 +50,14 @@ namespace QLNet {
                     case Barrier.Type.UpOut:
 					break;
 				  default:
-                    throw new ApplicationException("unknown type");
+                    throw new Exception("unknown type");
 				}
 		
 				if (!(barrier != null))
-                    throw new ApplicationException("no barrier given");
+                    throw new Exception("no barrier given");
 
                 if (!(rebate != null))
-                    throw new ApplicationException("no rebate given");
+                    throw new Exception("no rebate given");
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace QLNet {
                     case Barrier.Type.UpOut:
 					return underlying > arguments_.barrier;
 				  default:
-                    throw new ApplicationException("unknown type");
+                    throw new Exception("unknown type");
 				}
 			}
 		}
@@ -92,7 +92,7 @@ namespace QLNet {
 	
 			BarrierOption.Arguments moreArgs = args as BarrierOption.Arguments;
 			if (!(moreArgs != null))
-                throw new ApplicationException("wrong argument type");
+                throw new Exception("wrong argument type");
 
 			moreArgs.barrierType = barrierType_;
 			moreArgs.barrier = barrier_;
@@ -119,9 +119,9 @@ namespace QLNet {
 				break;
               case Exercise.Type.American:
               case Exercise.Type.Bermudan:
-                throw new ApplicationException("Engine not available for non-European barrier option");
+                throw new Exception("Engine not available for non-European barrier option");
 			  default:
-                throw new ApplicationException("unknown exercise type");
+                throw new Exception("unknown exercise type");
 			}
 	
 			return ImpliedVolatilityHelper.calculate( this, engine, volQuote, targetValue, accuracy, maxEvaluations, minVol, maxVol);

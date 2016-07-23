@@ -18,12 +18,12 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_OvernightIndexedSwap
    {
       public struct Datum
@@ -206,7 +206,7 @@ namespace TestSuite
       }
 
 
-      [TestMethod()]
+      [Fact]
       public void testFairRate()
       {
          // Testing Eonia-swap calculation of fair fixed rate...
@@ -227,7 +227,7 @@ namespace TestSuite
                if (Math.Abs(swap.NPV()) > 1.0e-10)
                {
 
-                  Assert.Fail("recalculating with implied rate:\n"
+                  Assert.True(false,"recalculating with implied rate:\n"
                             + "    length: " + lengths[i] + " \n"
                             + "    floating spread: "
                             + (spreads[j]) + "\n"
@@ -238,7 +238,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFairSpread() 
       {
 
@@ -262,7 +262,7 @@ namespace TestSuite
 
                if (Math.Abs(swap.NPV()) > 1.0e-10) 
                {
-                   Assert.Fail("Recalculating with implied spread:" +
+                   Assert.True(false,"Recalculating with implied spread:" +
                                "\n     length: " + lengths[i] +
                                "\n fixed rate: " + rates[j] +
                                "\nfair spread: " + fairSpread +
@@ -272,7 +272,7 @@ namespace TestSuite
          }
       }
       
-      [TestMethod()]
+      [Fact]
       public void testCachedValue() 
       {
          // Testing Eonia-swap calculation against cached value...
@@ -288,13 +288,13 @@ namespace TestSuite
          double tolerance = 1.0e-11;
     
          if (Math.Abs(swap.NPV()-cachedNPV) > tolerance)
-            Assert.Fail("\nfailed to reproduce cached swap value:" +
+            Assert.True(false,"\nfailed to reproduce cached swap value:" +
                         "\ncalculated: " + swap.NPV() +
                         "\n  expected: " + cachedNPV +
                         "\n tolerance:" + tolerance);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testBootstrap() 
       {
          // Testing Eonia-swap curve building...
@@ -402,7 +402,7 @@ namespace TestSuite
             double? calculated = 100.0 * swap.fairRate();
 
             if (Math.Abs(expected-calculated.Value) > tolerance)
-               Assert.Fail("curve inconsistency:\n"
+               Assert.True(false,"curve inconsistency:\n"
                            + "    swap length:     " + term + "\n"
                            + "    quoted rate:     " + expected + "\n"
                            + "    calculated rate: " + calculated);

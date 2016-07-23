@@ -361,7 +361,7 @@ namespace QLNet
          public void visit(object o) 
          {
                Type[] types = new Type[] { o.GetType() };
-               MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
+               MethodInfo methodInfo = this.GetType().GetTypeInfo().GetMethod("visit", types);
                if (methodInfo != null) {
                   methodInfo.Invoke(this, new object[] { o });
                }

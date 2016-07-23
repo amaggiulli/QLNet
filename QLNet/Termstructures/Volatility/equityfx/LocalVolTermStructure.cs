@@ -78,7 +78,7 @@ namespace QLNet
       */
       
       //! local vol calculation
-      protected virtual double localVolImpl(double t, double strike) { throw new NotSupportedException(); }
+      protected virtual double localVolImpl(double t, double strike) { throw new Exception(); }
 
       #endregion
     }

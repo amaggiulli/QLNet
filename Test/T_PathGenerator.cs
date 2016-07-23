@@ -19,12 +19,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
     public class T_Pathgenerator
     {
         public void testSingle(StochasticProcess1D process,
@@ -60,7 +60,7 @@ namespace TestSuite
             double tolerance = 2.0e-8;
             if (error > tolerance) 
             {
-                Assert.Fail("using " + tag + " process "
+                Assert.True(false,"using " + tag + " process "
                             + (brownianBridge ? "with " : "without ")
                             + "brownian bridge:\n"
                             //+ std::setprecision(13)
@@ -78,7 +78,7 @@ namespace TestSuite
             tolerance = 2.0e-7;
             if (error > tolerance) 
             {
-                Assert.Fail("using " + tag + " process "
+                Assert.True(false,"using " + tag + " process "
                         + (brownianBridge ? "with " : "without ")
                         + "brownian bridge:\n"
                         + "antithetic sample:\n"
@@ -125,7 +125,7 @@ namespace TestSuite
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-expected[j]);
                 if (error > tolerance) {
-                    Assert.Fail("using " + tag + " process "
+                    Assert.True(false,"using " + tag + " process "
                                 + "(" + j+1 + " asset:)\n"
                                 //+ std::setprecision(13)
                                 + "    calculated: " + calculated[j] + "\n"
@@ -143,7 +143,7 @@ namespace TestSuite
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-antithetic[j]);
                 if (error > tolerance) {
-                    Assert.Fail("using " + tag + " process "
+                    Assert.True(false,"using " + tag + " process "
                                 + "(" + j+1 + " asset:)\n"
                                 + "antithetic sample:\n"
                                 //+ std::setprecision(13)
@@ -155,7 +155,7 @@ namespace TestSuite
             }
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testPathGenerator() {
 
             //"Testing 1-D path generation against cached values...");
@@ -188,7 +188,7 @@ namespace TestSuite
                        "square-root", false, 1.70608664108, 6.024200546031);
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testMultiPathGenerator()
         {
 

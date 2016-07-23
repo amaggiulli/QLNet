@@ -79,7 +79,7 @@ namespace QLNet
       //! \name Dividend interface
       public override double amount()
       {
-         if (nominal_ == null) throw new ApplicationException("no nominal given");
+         if (nominal_ == null) throw new Exception("no nominal given");
          return rate_ * nominal_.GetValueOrDefault();
       }
 
@@ -96,7 +96,7 @@ namespace QLNet
       {
 
          if (dividendDates.Count != dividends.Count)
-            throw new ApplicationException("size mismatch between dividend dates and amounts");
+            throw new Exception("size mismatch between dividend dates and amounts");
 
          List<Dividend> items = new List<Dividend>(dividendDates.Count);
          for (int i = 0; i < dividendDates.Count; i++)

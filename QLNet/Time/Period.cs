@@ -178,12 +178,12 @@ namespace QLNet {
                    case TimeUnit.Weeks:
                    case TimeUnit.Days:
                       if ( p1.length() != 0 )
-                         throw new ApplicationException(
+                         throw new Exception(
                                "impossible addition between " + p1 +
                                " and " + p2);
                       break;
                    default:
-                      throw new ApplicationException("unknown time unit (" 
+                      throw new Exception("unknown time unit (" 
                             + p2.units() + ")");
                 }
                 break;
@@ -197,12 +197,12 @@ namespace QLNet {
                   case TimeUnit.Weeks:
                   case TimeUnit.Days:
                     if (p1.length() != 0)
-                       throw new ApplicationException(
+                       throw new Exception(
                              "impossible addition between " + p1 +
                              " and " + p2);
                     break;
                   default:
-                    throw new ApplicationException("unknown time unit ("
+                    throw new Exception("unknown time unit ("
                           + p2.units() + ")");
                 }
                 break;
@@ -217,12 +217,12 @@ namespace QLNet {
                   case TimeUnit.Years:
                   case TimeUnit.Months:
                     if (p1.length() != 0)
-                       throw new ApplicationException(
+                       throw new Exception(
                              "impossible addition between " + p1 +
                              " and " + p2);
                     break;
                   default:
-                    throw new ApplicationException("unknown time unit ("
+                    throw new Exception("unknown time unit ("
                           + p2.units() + ")");
                 }
                 break;
@@ -236,18 +236,18 @@ namespace QLNet {
                   case TimeUnit.Years:
                   case TimeUnit.Months:
                     if (p1.length() != 0)
-                       throw new ApplicationException(
+                       throw new Exception(
                              "impossible addition between " + p1 +
                              " and " + p2);
                     break;
                   default:
-                    throw new ApplicationException("unknown time unit ("
+                    throw new Exception("unknown time unit ("
                           + p2.units() + ")");
                 }
                 break;
 
               default:
-                throw new ApplicationException("unknown time unit (" + units_ + ")");
+                throw new Exception("unknown time unit (" + units_ + ")");
              }
           }
           return new Period(length_,units_);
@@ -348,7 +348,7 @@ namespace QLNet {
                 case TimeUnit.Years:
                     return result + n + "Y";
                 default:
-                    throw new ApplicationException("unknown time unit (" + units() + ")");
+                    throw new Exception("unknown time unit (" + units() + ")");
             }
         }
     }

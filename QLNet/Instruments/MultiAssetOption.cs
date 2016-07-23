@@ -53,42 +53,42 @@ namespace QLNet {
 		{
 			calculate();
 			if (delta_ == null)
-                throw new ApplicationException("delta not provided");
+                throw new Exception("delta not provided");
             return delta_.GetValueOrDefault();
 		}
 		public double gamma()
 		{
 			calculate();
             if (gamma_ == null)
-                throw new ApplicationException("gamma not provided");
+                throw new Exception("gamma not provided");
             return gamma_.GetValueOrDefault();
 		}
 		public double theta()
 		{
 			calculate();
             if (theta_ == null)
-                throw new ApplicationException("theta not provided");
+                throw new Exception("theta not provided");
             return theta_.GetValueOrDefault();
 		}
 		public double vega()
 		{
 			calculate();
             if (vega_ == null)
-                throw new ApplicationException("vega not provided");
+                throw new Exception("vega not provided");
             return vega_.GetValueOrDefault();
 		}
 		public double rho()
 		{
 			calculate();
             if (rho_ == null)
-                throw new ApplicationException("rho not provided");
+                throw new Exception("rho not provided");
             return rho_.GetValueOrDefault();
 		}
 		public double dividendRho()
 		{
 			calculate();
             if (dividendRho_ == null)
-                throw new ApplicationException("dividend rho not provided");
+                throw new Exception("dividend rho not provided");
             return dividendRho_.GetValueOrDefault();
 		}
 
@@ -96,7 +96,7 @@ namespace QLNet {
 		{
 			MultiAssetOption.Arguments arguments = args as MultiAssetOption.Arguments;
 			if (arguments == null)
-                throw new ApplicationException("wrong argument type");
+                throw new Exception("wrong argument type");
 	
 			arguments.payoff = payoff_;
 			arguments.exercise = exercise_;
@@ -108,7 +108,7 @@ namespace QLNet {
 
             Results results = r as Results;
             if (results == null)
-                throw new ApplicationException("no greeks returned from pricing engine");
+                throw new Exception("no greeks returned from pricing engine");
 
 			delta_ = results.delta;
 			gamma_ = results.gamma;

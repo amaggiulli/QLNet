@@ -193,12 +193,12 @@ namespace QLNet {
             int p = 0;
             for (int i = 0; i < arguments_.Count; ++i) {
                 for (int j=0; j<arguments_[i].size(); ++j) {
-                    if (p==parameters.Count) throw new ApplicationException("parameter array too small");
+                    if (p==parameters.Count) throw new Exception("parameter array too small");
                     arguments_[i].setParam(j, parameters[p++]);
                 }
             }
 
-            if (p!=parameters.Count) throw new ApplicationException("parameter array too big!");
+            if (p!=parameters.Count) throw new Exception("parameter array too big!");
             update();
         }
 

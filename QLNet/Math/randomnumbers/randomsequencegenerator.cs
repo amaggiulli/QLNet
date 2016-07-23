@@ -55,7 +55,7 @@ namespace QLNet {
             sequence_ = new Sample<List<double>>(ls, 1.0);
             int32Sequence_ = new InitializedList<ulong>(dimensionality);
 
-            if (!(dimensionality>0)) throw new ApplicationException("dimensionality must be greater than 0");
+            if (!(dimensionality>0)) throw new Exception("dimensionality must be greater than 0");
         }
 
         //public RandomSequenceGenerator(int dimensionality, long seed = 0) {

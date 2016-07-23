@@ -100,7 +100,7 @@ namespace QLNet
             //QL_REQUIRE(x.empty(), "can not handle given x here");
             try {
                 if (x.empty() == false)
-                    throw new ApplicationException("can not handle given x here");
+                    throw new Exception("can not handle given x here");
             }
             catch { //OK x empty
             }

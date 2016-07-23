@@ -17,15 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Money
    {
-      [TestMethod()]
+      [Fact]
       public void testNone()
       {
          Currency EUR = new EURCurrency();
@@ -41,10 +41,10 @@ namespace TestSuite
          Money expected = new Money(x, EUR);
 
          if (calculated != expected)
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            Assert.True(false,"Wrong result: expected: " + expected + " calculated: " + calculated);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testBaseCurrency()
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();
@@ -73,11 +73,11 @@ namespace TestSuite
 
          if (calculated != expected)
          {
-            Assert.Fail("Wrong result: expected: " + expected + "calculated: " + calculated);
+            Assert.True(false,"Wrong result: expected: " + expected + "calculated: " + calculated);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAutomated() 
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();
@@ -105,7 +105,7 @@ namespace TestSuite
 
          if (calculated != expected) 
          {
-            Assert.Fail("Wrong result: " + "expected: " + expected + " calculated: " + calculated);
+            Assert.True(false,"Wrong result: " + "expected: " + expected + " calculated: " + calculated);
          }
       }
 

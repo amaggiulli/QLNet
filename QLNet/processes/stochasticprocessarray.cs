@@ -31,9 +31,9 @@ namespace QLNet {
             sqrtCorrelation_ = MatrixUtilitites.pseudoSqrt(correlation, MatrixUtilitites.SalvagingAlgorithm.Spectral);
 
             if (processes.Count == 0)
-                throw new ApplicationException("no processes given");
+                throw new Exception("no processes given");
             if(correlation.rows() != processes.Count)
-                throw new ApplicationException("mismatch between number of processes and size of correlation matrix");
+                throw new Exception("mismatch between number of processes and size of correlation matrix");
             for (int i=0; i<processes_.Count; i++)
                 processes_[i].registerWith(update);
         }

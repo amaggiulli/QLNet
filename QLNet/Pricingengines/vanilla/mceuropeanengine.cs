@@ -39,11 +39,11 @@ namespace QLNet {
         protected override PathPricer<IPath> pathPricer() {
             PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
             if (payoff == null)
-                throw new ApplicationException("non-plain payoff given");
+                throw new Exception("non-plain payoff given");
 
             GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
             if (process == null)
-                throw new ApplicationException("Black-Scholes process required");
+                throw new Exception("Black-Scholes process required");
 
             return new EuropeanPathPricer(payoff.optionType(), payoff.strike(),
                                           process.riskFreeRate().link.discount(timeGrid().Last()));
@@ -85,15 +85,15 @@ namespace QLNet {
         }
         public MakeMCEuropeanEngine<RNG, S> withSamples(int samples) {
             if(tolerance_ != 0)
-                throw new ApplicationException("tolerance already set");
+                throw new Exception("tolerance already set");
             samples_ = samples;
             return this;
         }
         public MakeMCEuropeanEngine<RNG, S> withAbsoluteTolerance(double tolerance) {
             if(samples_ != 0)
-                throw new ApplicationException("number of samples already set");
+                throw new Exception("number of samples already set");
             if (new RNG().allowsErrorEstimate == 0)
-                throw new ApplicationException("chosen random generator policy does not allow an error estimate");
+                throw new Exception("chosen random generator policy does not allow an error estimate");
             tolerance_ = tolerance;
             return this;
         }
@@ -114,9 +114,9 @@ namespace QLNet {
         // conversion to pricing engine
         public IPricingEngine value() {
             if (steps_ == 0 && stepsPerYear_ == 0)
-                throw new ApplicationException("number of steps not given");
+                throw new Exception("number of steps not given");
             if (!(steps_ == 0 || stepsPerYear_ == 0))
-                throw new ApplicationException("number of steps overspecified");
+                throw new Exception("number of steps overspecified");
             return new MCEuropeanEngine<RNG,S>(process_, steps_, stepsPerYear_, brownianBridge_, antithetic_,
                                                samples_, tolerance_, maxSamples_, seed_);
         }
@@ -131,12 +131,12 @@ namespace QLNet {
             payoff_ = new PlainVanillaPayoff(type, strike);
             discount_ = discount;
             if (!(strike>=0.0))
-                throw new ApplicationException("strike less than zero not allowed");
+                throw new Exception("strike less than zero not allowed");
         }
 
         public double value(IPath path) {
             if (!(path.length() > 0))
-                throw new ApplicationException("the path cannot be empty");
+                throw new Exception("the path cannot be empty");
             return payoff_.value((path as Path).back()) * discount_;
         }
     }

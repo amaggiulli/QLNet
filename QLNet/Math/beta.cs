@@ -62,7 +62,7 @@ namespace QLNet {
                 if (Math.Abs(del-1.0) < accuracy)
                     return result;
             }
-            throw new ApplicationException("a or b too big, or maxIteration too small in betacf");
+            throw new Exception("a or b too big, or maxIteration too small in betacf");
         }
 
         /*! Incomplete Beta function
@@ -76,8 +76,8 @@ namespace QLNet {
         }
         public static double incompleteBetaFunction(double a, double b, double x, double accuracy, int maxIteration) {
 
-            if (!(a > 0.0)) throw new ApplicationException("a must be greater than zero");
-            if (!(b > 0.0)) throw new ApplicationException("b must be greater than zero");
+            if (!(a > 0.0)) throw new Exception("a must be greater than zero");
+            if (!(b > 0.0)) throw new Exception("b must be greater than zero");
 
 
             if (x == 0.0)
@@ -85,7 +85,7 @@ namespace QLNet {
             else if (x == 1.0)
                 return 1.0;
             else
-                if (!(x>0.0 && x<1.0)) throw new ApplicationException("x must be in [0,1]");
+                if (!(x>0.0 && x<1.0)) throw new Exception("x must be in [0,1]");
 
             double result = Math.Exp(GammaFunction.logValue(a+b) -
                 GammaFunction.logValue(a) - GammaFunction.logValue(b) +

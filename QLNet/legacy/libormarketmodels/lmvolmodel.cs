@@ -50,10 +50,10 @@ namespace QLNet
         }
 
         public virtual double integratedVariance(int i, int j, double u, Vector x){
-                throw new NotSupportedException("integratedVariance() method is not supported");
+                throw new Exception("integratedVariance() method is not supported");
         }
         public virtual double integratedVariance(int i, int j, double u) {
-            throw new NotSupportedException("integratedVariance() method is not supported");
+            throw new Exception("integratedVariance() method is not supported");
         }
 
         public List<Parameter> parameters()  {

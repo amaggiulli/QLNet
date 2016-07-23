@@ -18,12 +18,12 @@
 */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Solvers
    {
       class Foo : ISolver1d
@@ -41,7 +41,7 @@ namespace TestSuite
             double root = solver.solve(new Foo(), accuracy[i], 1.5, 0.1);
             if (Math.Abs(root - expected) > accuracy[i])
             {
-               Assert.Fail(name + " solver:\n"
+               Assert.True(false,name + " solver:\n"
                           + "    expected:   " + expected + "\n"
                           + "    calculated: " + root + "\n"
                           + "    accuracy:   " + accuracy[i]);
@@ -49,7 +49,7 @@ namespace TestSuite
             root = solver.solve(new Foo(), accuracy[i], 1.5, 0.0, 1.0);
             if (Math.Abs(root - expected) > accuracy[i])
             {
-               Assert.Fail(name + " solver (bracketed):\n"
+               Assert.True(false,name + " solver (bracketed):\n"
                           + "    expected:   " + expected + "\n"
                           + "    calculated: " + root + "\n"
                           + "    accuracy:   " + accuracy[i]);
@@ -57,32 +57,32 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testBrent()
       {
          test(new Brent(), "Brent");
       }
-      [TestMethod()]
+      [Fact]
       public void testNewton()
       {
          test(new Newton(), "Newton");
       }
-      [TestMethod()]
+      [Fact]
       public void testFalsePosition()
       {
          test(new FalsePosition(), "FalsePosition");
       }
-      [TestMethod()]
+      [Fact]
       public void testBisection()
       {
          test(new Bisection(), "Bisection");
       }
-      [TestMethod()]
+      [Fact]
       public void testRidder()
       {
          test(new Ridder(), "Ridder");
       }
-      [TestMethod()]
+      [Fact]
       public void testSecant()
       {
          test(new Secant(), "Secant");

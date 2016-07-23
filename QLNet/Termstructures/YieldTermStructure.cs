@@ -272,7 +272,7 @@ namespace QLNet
       //    must assume that extrapolation is required.
 
       //! discount factor calculation
-      protected virtual double discountImpl(double d) { throw new NotSupportedException(); }
+      protected virtual double discountImpl(double d) { throw new Exception(); }
       
       #endregion
       

@@ -81,7 +81,7 @@ namespace QLNet
          params_[0] = value;
 
          if ( !( testParams( params_ ) ) )
-            throw new ApplicationException( ": invalid value" );
+            throw new Exception( ": invalid value" );
       }
 
    }
@@ -179,7 +179,7 @@ namespace QLNet
             //int nIndex = times_.FindIndex( delegate(double val) { return val == locVal; });
             int nIndex = times_.FindIndex( val => val == t );
             if ( nIndex == -1 )
-               throw new ApplicationException( "fitting parameter not set!" );
+               throw new Exception( "fitting parameter not set!" );
 
             return values_[nIndex];
          }

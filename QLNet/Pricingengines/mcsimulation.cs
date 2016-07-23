@@ -57,7 +57,7 @@ namespace QLNet
          while ( maxError( error ) > tolerance )
          {
             if ( !( sampleNumber < maxSamples ) )
-               throw new ApplicationException( "max number of samples (" + maxSamples
+               throw new Exception( "max number of samples (" + maxSamples
                       + ") reached, while error (" + error
                       + ") is still above tolerance (" + tolerance + ")" );
 
@@ -82,7 +82,7 @@ namespace QLNet
          int sampleNumber = mcModel_.sampleAccumulator().samples();
 
          if ( !( samples >= sampleNumber ) )
-            throw new ApplicationException( "number of already simulated samples (" + sampleNumber
+            throw new Exception( "number of already simulated samples (" + sampleNumber
                    + ") greater than requested samples (" + samples + ")" );
 
          mcModel_.addSamples( samples - sampleNumber );
@@ -101,7 +101,7 @@ namespace QLNet
       {
 
          if ( !( requiredTolerance != 0 || requiredSamples != 0 ) )
-            throw new ApplicationException( "neither tolerance nor number of samples set" );
+            throw new Exception( "neither tolerance nor number of samples set" );
 
          //! Initialize the one-factor Monte Carlo
          if ( this.controlVariate_ )
@@ -109,11 +109,11 @@ namespace QLNet
 
             double controlVariateValue = this.controlVariateValue();
             if ( controlVariateValue == 0 )
-               throw new ApplicationException( "engine does not provide control-variation price" );
+               throw new Exception( "engine does not provide control-variation price" );
 
             PathPricer<IPath> controlPP = this.controlPathPricer();
             if ( controlPP == null )
-               throw new ApplicationException( "engine does not provide control-variation path pricer" );
+               throw new Exception( "engine does not provide control-variation path pricer" );
 
             IPathGenerator<IRNG> controlPG = this.controlPathGenerator();
 

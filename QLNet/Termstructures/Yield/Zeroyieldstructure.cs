@@ -57,7 +57,7 @@ namespace QLNet
       // must assume that extrapolation is required.
 
       //! zero-yield calculation
-      protected virtual double zeroYieldImpl(double t) { throw new NotSupportedException(); }
+      protected virtual double zeroYieldImpl(double t) { throw new Exception(); }
    
       #endregion
 

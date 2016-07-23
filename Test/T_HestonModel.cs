@@ -15,12 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_HestonModel
    {
       struct CalibrationMarketData
@@ -109,7 +109,7 @@ namespace TestSuite
          return marketData;
     }
 
-      [TestMethod()]
+      [Fact]
       public void testBlackCalibration()
       {
          // Testing Heston model calibration using a flat volatility surface
@@ -182,7 +182,7 @@ namespace TestSuite
 
                if (model.sigma() > tolerance)
                {
-                  Assert.Fail("Failed to reproduce expected sigma"
+                  Assert.True(false,"Failed to reproduce expected sigma"
                               + "\n    calculated: " + model.sigma()
                               + "\n    expected:   " + 0.0
                               + "\n    tolerance:  " + tolerance);
@@ -190,14 +190,14 @@ namespace TestSuite
 
                if (Math.Abs(model.kappa() *(model.theta()-volatility*volatility)) > tolerance)
                {
-                  Assert.Fail("Failed to reproduce expected theta"
+                  Assert.True(false,"Failed to reproduce expected theta"
                               + "\n    calculated: " + model.theta()
                               + "\n    expected:   " + volatility*volatility);
                }
 
                if (Math.Abs(model.v0()-volatility*volatility) > tolerance)
                {
-                  Assert.Fail("Failed to reproduce expected v0"
+                  Assert.True(false,"Failed to reproduce expected v0"
                               + "\n    calculated: " + model.v0()
                               + "\n    expected:   " + volatility*volatility);
                }
@@ -205,7 +205,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDAXCalibration()
       {
          // Testing Heston model calibration using DAX volatility data
@@ -250,14 +250,14 @@ namespace TestSuite
             double expected = 177.2; //see article by A. Sepp.
             if (Math.Abs(sse - expected) > 1.0)
             {
-               Assert.Fail("Failed to reproduce calibration error"
+               Assert.True(false,"Failed to reproduce calibration error"
                           + "\n    calculated: " + sse
                           + "\n    expected:   " + expected);
             }
          }
       }
 
-      //[TestMethod()]
+      //[Fact]
       public void testAnalyticVsBlack()
       {
          // Testing analytic Heston engine against Black formula
@@ -302,7 +302,7 @@ namespace TestSuite
          //double tolerance = 2.0e-7;
          //if (error > tolerance)
          //{
-         //   Assert.Fail("failed to reproduce Black price with AnalyticHestonEngine"
+         //   Assert.True(false,"failed to reproduce Black price with AnalyticHestonEngine"
          //              + "\n    calculated: " + calculated
          //              + "\n    expected:   " + expected
          //              + "\n    error:      " + error);
@@ -316,7 +316,7 @@ namespace TestSuite
          //tolerance = 1.0e-3;
          //if (error > tolerance)
          //{
-         //   Assert.Fail("failed to reproduce Black price with FdHestonVanillaEngine"
+         //   Assert.True(false,"failed to reproduce Black price with FdHestonVanillaEngine"
          //              +"\n    calculated: " + calculated
          //              +"\n    expected:   " + expected
          //              +"\n    error:      " + error);
@@ -324,7 +324,7 @@ namespace TestSuite
          //}
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticVsCached()
       {
          // Testing analytic Heston engine against cached values
@@ -363,7 +363,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated1 - expected1) > tolerance)
             {
-               Assert.Fail("Failed to reproduce cached analytic price"
+               Assert.True(false,"Failed to reproduce cached analytic price"
                            + "\n    calculated: " + calculated1
                            + "\n    expected:   " + expected1);
             }
@@ -409,7 +409,7 @@ namespace TestSuite
 
                if (Math.Abs(interpolated - expected2[i]) > 100*tolerance)
                {
-                  Assert.Fail("Failed to reproduce cached analytic prices:"
+                  Assert.True(false,"Failed to reproduce cached analytic prices:"
                               + "\n    calculated: " + interpolated
                               + "\n    expected:   " + expected2[i]);
                }
@@ -417,7 +417,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testMcVsCached()
       {
          // Testing Monte Carlo Heston engine against cached values
@@ -456,7 +456,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated - expected) > 2.34*errorEstimate)
             {
-               Assert.Fail("Failed to reproduce cached price"
+               Assert.True(false,"Failed to reproduce cached price"
                            + "\n    calculated: " + calculated
                            + "\n    expected:   " + expected
                            + " +/- " + errorEstimate);
@@ -464,14 +464,14 @@ namespace TestSuite
 
             if (errorEstimate > tolerance)
             {
-               Assert.Fail("failed to reproduce error estimate"
+               Assert.True(false,"failed to reproduce error estimate"
                            + "\n    calculated: " + errorEstimate
                            + "\n    expected:   " + tolerance);
             }
          }
       }
 
-      //[TestMethod()]
+      //[Fact]
       public void testFdBarrierVsCached()
       {
       //  // Testing FD barrier Heston engine against cached values
@@ -503,7 +503,7 @@ namespace TestSuite
       //   double error = Math.Abs(calculated - expected);
       //   if (error > 1.0e-3)
       //   {
-      //      Assert.Fail("failed to reproduce cached price with FD Barrier engine"
+      //      Assert.True(false,"failed to reproduce cached price with FD Barrier engine"
       //                 + "\n    calculated: " + calculated
       //                 + "\n    expected:   " + expected
       //                 + "\n    error:      " +  error);
@@ -517,7 +517,7 @@ namespace TestSuite
       //   error = Math.Abs(calculated - expected);
       //   if (error > 1.0e-3)
       //   {
-      //      Assert.Fail("failed to reproduce cached price with FD Barrier engine"
+      //      Assert.True(false,"failed to reproduce cached price with FD Barrier engine"
       //                 + "\n    calculated: " + calculated
       //                 + "\n    expected:   " + expected
       //                 + "\n    error:      " + error);
@@ -525,7 +525,7 @@ namespace TestSuite
       //}
       }
 
-      //[TestMethod()]
+      //[Fact]
       public void testFdVanillaVsCached()
       {
       //   // Testing FD vanilla Heston engine against cached values
@@ -561,7 +561,7 @@ namespace TestSuite
 
       //   if (error > tolerance)
       //   {
-      //      Assert.Fail("failed to reproduce cached price with FD engine"
+      //      Assert.True(false,"failed to reproduce cached price with FD engine"
       //                 + "\n    calculated: " + calculated
       //                 + "\n    expected:   " + expected
       //                 + "\n    error:      " +  error);
@@ -601,7 +601,7 @@ namespace TestSuite
 
       //   if (error > tolerance)
       //   {
-      //      Assert.Fail("failed to reproduce discrete dividend price with FD engine"
+      //      Assert.True(false,"failed to reproduce discrete dividend price with FD engine"
       //                 + "\n    calculated: " + calculated
       //                 + "\n    expected:   " + expected
       //                 + "\n    error:      " +  error);
@@ -630,7 +630,7 @@ namespace TestSuite
 
       //   if (error > tolerance)
       //   {
-      //      Assert.Fail("failed to reproduce american option price with FD engine"
+      //      Assert.True(false,"failed to reproduce american option price with FD engine"
       //                 + "\n    calculated: " + calculated
       //                 + "\n    expected:   " + expected
       //                 + "\n    error:      " + error);
@@ -638,7 +638,7 @@ namespace TestSuite
       //}
       }
 
-      // [TestMethod()]
+      // [Fact]
       public void testKahlJaeckelCase()
       {
          //// Testing MC and FD Heston engines for the Kahl-Jaeckel example
@@ -701,7 +701,7 @@ namespace TestSuite
 
          //   if (Math.Abs(calculated - expected) > 2.34*errorEstimate)
          //   {
-         //      Assert.Fail("Failed to reproduce cached price with MC engine"
+         //      Assert.True(false,"Failed to reproduce cached price with MC engine"
          //                  + "\n    discretization: " + descriptions[i].name
          //                  + "\n    expected:       " + expected
          //                  + "\n    calculated:     " + calculated
@@ -710,7 +710,7 @@ namespace TestSuite
 
          //   if (errorEstimate > tolerance)
          //   {
-         //      Assert.Fail("failed to reproduce error estimate with MC engine"
+         //      Assert.True(false,"failed to reproduce error estimate with MC engine"
          //                  + "\n    discretization: " + descriptions[i].name
          //                  + "\n    calculated    : " + errorEstimate
          //                  + "\n    expected      :   " + tolerance);
@@ -726,7 +726,7 @@ namespace TestSuite
          //double calculated = option.NPV();
          //if (Math.Abs(calculated - expected) > tolerance)
          //{
-         //   Assert.Fail("Failed to reproduce cached price with MC engine"
+         //   Assert.True(false,"Failed to reproduce cached price with MC engine"
          //               + "\n    discretization: BroadieKayaExactSchemeLobatto"
          //               + "\n    calculated:     " + calculated
          //               + "\n    expected:       " + expected
@@ -740,7 +740,7 @@ namespace TestSuite
          //double error = Math.Abs(calculated - expected);
          //if (error > 5.0e-2)
          //{
-         //   Assert.Fail("failed to reproduce cached price with FD engine"
+         //   Assert.True(false,"failed to reproduce cached price with FD engine"
          //              + "\n    calculated: " + calculated
          //              + "\n    expected:   " + expected
          //              + "\n    error:      " + error);
@@ -761,7 +761,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDifferentIntegrals()
       {
          // Testing different numerical Heston integration algorithms
@@ -856,7 +856,7 @@ namespace TestSuite
                double tr = tol[count++];
                if (maxDiff > tr)
                {
-                  Assert.Fail("Failed to reproduce Heston pricing values within given tolerance"
+                  Assert.True(false,"Failed to reproduce Heston pricing values within given tolerance"
                   + "\n    maxDifference: " + maxDiff
                   + "\n    tolerance:     " + tr);
                }
@@ -864,7 +864,7 @@ namespace TestSuite
          }
       }
 
-      // [TestMethod()]
+      // [Fact]
       public void testMultipleStrikesEngine()
       {
          //// Testing multiple-strikes FD Heston engine...");
@@ -920,28 +920,28 @@ namespace TestSuite
 
          //   if (Math.Abs(npvCalculated - npvExpected)/npvExpected > relTol)
          //   {
-         //      Assert.Fail("failed to reproduce price with FD multi strike engine"
+         //      Assert.True(false,"failed to reproduce price with FD multi strike engine"
          //                 + "\n    calculated: " + npvCalculated
          //                 + "\n    expected:   " + npvExpected
          //                 + "\n    error:      " + relTol);
          //   }
          //   if (Math.Abs(deltaCalculated - deltaExpected)/deltaExpected > relTol)
          //   {
-         //      Assert.Fail("failed to reproduce delta with FD multi strike engine"
+         //      Assert.True(false,"failed to reproduce delta with FD multi strike engine"
          //                 + "\n    calculated: " + deltaCalculated
          //                 + "\n    expected:   " + deltaExpected
          //                 + "\n    error:      " + relTol);
          //   }
          //   if (Math.Abs(gammaCalculated - gammaExpected)/gammaExpected > relTol)
          //   {
-         //      Assert.Fail("failed to reproduce gamma with FD multi strike engine"
+         //      Assert.True(false,"failed to reproduce gamma with FD multi strike engine"
          //                 + "\n    calculated: " + gammaCalculated
          //                 + "\n    expected:   " + gammaExpected
          //                 + "\n    error:      " + relTol);
          //   }
          //   if (Math.Abs(thetaCalculated - thetaExpected)/thetaExpected > relTol)
          //   {
-         //      Assert.Fail( "failed to reproduce theta with FD multi strike engine"
+         //      Assert.True(false, "failed to reproduce theta with FD multi strike engine"
          //                 + "\n    calculated: " + thetaCalculated
          //                 + "\n    expected:   " + thetaExpected
          //                 + "\n    error:      " +  relTol);
@@ -950,7 +950,7 @@ namespace TestSuite
          //}
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticPiecewiseTimeDependent()
       {
          // Testing analytic piecewise time dependent Heston prices
@@ -1005,14 +1005,14 @@ namespace TestSuite
 
             if (Math.Abs(calculated - expected) > 1e-12)
             {
-               Assert.Fail("failed to reproduce heston prices "
+               Assert.True(false,"failed to reproduce heston prices "
                            + "\n    calculated: " + calculated
                            + "\n    expected:   " + expected);
             }
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDAXCalibrationOfTimeDependentModel()
       {
          // Testing time-dependent Heston model calibration
@@ -1068,14 +1068,14 @@ namespace TestSuite
             double expected = 74.4;
             if (Math.Abs(sse - expected) > 1.0)
             {
-               Assert.Fail("Failed to reproduce calibration error"
+               Assert.True(false,"Failed to reproduce calibration error"
                            + "\n    calculated: " + sse
                            + "\n    expected:   " + expected);
             }
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAlanLewisReferencePrices()
       {
          // Testing Alan Lewis reference prices
@@ -1156,7 +1156,7 @@ namespace TestSuite
 
                      if (relError > tol)
                      {
-                        Assert.Fail("failed to reproduce Alan Lewis Reference prices "
+                        Assert.True(false,"failed to reproduce Alan Lewis Reference prices "
                                  + "\n    strike     : " + strike
                                  + "\n    option type: " + type
                                  + "\n    engine type: " + k
@@ -1168,7 +1168,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testExpansionOnAlanLewisReference()
       {
         // Testing expansion on Alan Lewis reference prices
@@ -1243,7 +1243,7 @@ namespace TestSuite
 
                      if (relError > tol[k])
                      {
-                        Assert.Fail( "failed to reproduce Alan Lewis Reference prices "
+                        Assert.True(false, "failed to reproduce Alan Lewis Reference prices "
                                    + "\n    strike     : " + strike
                                    + "\n    option type: " + type
                                    + "\n    engine type: " + k
@@ -1255,7 +1255,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testExpansionOnFordeReference()
       {
          // Testing expansion on Forde reference prices
@@ -1357,7 +1357,7 @@ namespace TestSuite
                      double refTol = strike == forward ? tolAtm[k][j] : tol[k][j];
                      if (relError > refTol)
                      {
-                        Assert.Fail( "failed to reproduce Forde reference vols "
+                        Assert.True(false, "failed to reproduce Forde reference vols "
                                   + "\n    strike        : " + strike
                                   + "\n    expansion type: " + k
                                   + "\n    rel. error    : " + relError);

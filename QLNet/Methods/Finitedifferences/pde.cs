@@ -57,7 +57,7 @@ namespace QLNet {
         public override double drift(double x, double y) { return drift_; }
         public override double discount(double x, double y) { return discount_; }
         public override PdeSecondOrderParabolic factory(GeneralizedBlackScholesProcess process) {
-            throw new NotSupportedException();
+            throw new Exception();
         }
     }
 

@@ -52,7 +52,7 @@ namespace QLNet
                calendar_ = Impl.Singleton;
                break;
             default:
-               throw new ApplicationException( "unknown market" );
+               throw new Exception( "unknown market" );
          }
       }
 

@@ -20,12 +20,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
     public class T_LiborMarketModelProcess
     {
 
@@ -101,7 +101,7 @@ namespace TestSuite
             return process;
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testInitialisation() 
         {
             //"Testing caplet LMM process initialisation..."
@@ -139,14 +139,14 @@ namespace TestSuite
                     int ii     = process.nextIndexReset(fixings[i]);
 
                     if ((ileft != i) || (iright != i+1) || (ii != i+1)) {
-                        Assert.Fail("Failed to next index resets");
+                        Assert.True(false,"Failed to next index resets");
                     }
                 }
 
             }
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testLambdaBootstrapping() 
         {
             //"Testing caplet LMM lambda bootstrapping..."
@@ -166,7 +166,7 @@ namespace TestSuite
                 double expected   = lambdaExpected[i]/100;
 
                 if (Math.Abs(calculated - expected) > tolerance)
-                    Assert.Fail("Failed to reproduce expected lambda values"
+                    Assert.True(false,"Failed to reproduce expected lambda values"
                                 + "\n    calculated: " + calculated
                                 + "\n    expected:   " + expected);
             }
@@ -187,7 +187,7 @@ namespace TestSuite
                     {
                         if (Math.Abs(diff[i,j]) > tolerance) 
                         {
-                             Assert.Fail("Failed to reproduce integrated covariance"
+                             Assert.True(false,"Failed to reproduce integrated covariance"
                                           + "\n    calculated: " + diff[i,j]
                                           + "\n    expected:   " + 0);
                         }
@@ -196,7 +196,7 @@ namespace TestSuite
             }
         }
 
-        [TestCategory("LongRun") , TestMethod()]
+        [Trait("Category","LongRun") , Fact]
         public void testMonteCarloCapletPricing() 
         {
             //"Testing caplet LMM Monte-Carlo caplet pricing..."
@@ -309,7 +309,7 @@ namespace TestSuite
                 double expected    = capletNpv[k];
 
                 if (Math.Abs(calculated1 - expected) > tolerance1) {
-                    Assert.Fail("Failed to reproduce expected caplet NPV"
+                    Assert.True(false,"Failed to reproduce expected caplet NPV"
                                 + "\n    calculated: " + calculated1
                                 + "\n    error int:  " + tolerance1
                                 + "\n    expected:   " + expected);
@@ -319,7 +319,7 @@ namespace TestSuite
                 double tolerance2  = stat2[k].errorEstimate();
 
                 if (Math.Abs(calculated2 - expected) > tolerance2) {
-                    Assert.Fail("Failed to reproduce expected caplet NPV"
+                    Assert.True(false,"Failed to reproduce expected caplet NPV"
                                 + "\n    calculated: " + calculated2
                                 + "\n    error int:  " + tolerance2
                                 + "\n    expected:   " + expected);
@@ -333,7 +333,7 @@ namespace TestSuite
                     double refError = 1e-5; // 1e-5. error bars of the reference values
 
                     if (Math.Abs(calculated3 - expected) > tolerance3 + refError) {
-                        Assert.Fail("Failed to reproduce expected caplet NPV"
+                        Assert.True(false,"Failed to reproduce expected caplet NPV"
                                     + "\n    calculated: " + calculated3
                                     + "\n    error int:  " + tolerance3 + refError
                                     + "\n    expected:   " + expected);

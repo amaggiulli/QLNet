@@ -71,7 +71,7 @@ namespace QLNet {
                 new Handle<YieldTermStructure>()) {
             target_ = new TARGET();
             if (!(this.tenor().units() != TimeUnit.Days))
-                throw new ApplicationException("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
+                throw new Exception("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
         }
 
         public EURLibor(Period tenor, Handle<YieldTermStructure> h)
@@ -80,7 +80,7 @@ namespace QLNet {
                 Utils.eurliborConvention(tenor), Utils.eurliborEOM(tenor), new Actual360(), h) {
             target_ = new TARGET();
             if (!(this.tenor().units() != TimeUnit.Days))
-                throw new ApplicationException("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
+                throw new Exception("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
         }
 
         //        ! \name Date calculations
@@ -91,7 +91,7 @@ namespace QLNet {
         public override Date valueDate(Date fixingDate) {
 
             if (!(isValidFixingDate(fixingDate)))
-                throw new ApplicationException("Fixing date " + fixingDate + " is not valid");
+                throw new Exception("Fixing date " + fixingDate + " is not valid");
 
             // http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412 :
             // In the case of EUR the Value Date shall be two TARGET

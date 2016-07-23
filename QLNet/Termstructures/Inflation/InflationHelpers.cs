@@ -68,7 +68,7 @@ namespace QLNet
          {
             Period pShift = new Period(zii_.frequency());
             if ( (swapObsLag_ - pShift) <= zii_.availabilityLag())
-               throw new ApplicationException(
+               throw new Exception(
                      "inconsistency between swap observation of index "
                      + swapObsLag_ +
                      " index availability " + zii_.availabilityLag() +

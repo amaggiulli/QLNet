@@ -135,9 +135,9 @@ namespace QLNet {
         public static bool operator >(Date d1, Date d2) { return (d1.date > d2.date); }
         public static bool operator >=(Date d1, Date d2) { return (d1.date >= d2.date); }
 
-        public string ToLongDateString() { return date.ToLongDateString(); }
-        public string ToShortDateString() { return date.ToShortDateString(); }
-        public override string ToString() { return this.ToShortDateString(); }
+        public string ToLongDateString() { return date.ToString("D"); }
+        public string ToShortDateString() { return date.ToString("d"); }
+        public override string ToString() { return this.ToString("d"); }
 		  public string ToString(IFormatProvider provider) { return date.ToString(provider); }
         public string ToString(string format) { return date.ToString(format); }
         public string ToString(string format, IFormatProvider provider) { return date.ToString(format, provider); }

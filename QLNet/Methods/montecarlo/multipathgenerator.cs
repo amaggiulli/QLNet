@@ -48,20 +48,20 @@ namespace QLNet {
             next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
 
             if (generator_.dimension() != process.factors()*(times.size()-1))
-                throw new ApplicationException("dimension (" + generator_.dimension()
+                throw new Exception("dimension (" + generator_.dimension()
                        + ") is not equal to ("
                        + process.factors() + " * " + (times.size()-1)
                        + ") the number of factors "
                        + "times the number of time steps");
             if (!(times.size() > 1))
-                throw new ApplicationException("no times given");
+                throw new Exception("no times given");
         }
 
         public Sample<IPath> next() { return next(false); }
         public Sample<IPath> antithetic() { return next(true); }
         private Sample<IPath> next(bool antithetic) {
             if (brownianBridge_) {
-                throw new ApplicationException("Brownian bridge not supported");
+                throw new Exception("Brownian bridge not supported");
             } else {
                 // typedef typename GSG::sample_type sequence_type;
                 Sample<List<double>> sequence_ =

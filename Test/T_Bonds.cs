@@ -20,12 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Bonds
    {
       class CommonVars
@@ -49,7 +49,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testYield()
       {
 
@@ -109,7 +109,7 @@ namespace TestSuite
                               double price2 = bond.cleanPrice(calculated, bondDayCount, compounding[n], frequencies[l]);
                               if (Math.Abs(price - price2) / price > tolerance)
                               {
-                                 Assert.Fail("yield recalculation failed:\n"
+                                 Assert.True(false,"yield recalculation failed:\n"
                                      + "    issue:     " + issue + "\n"
                                      + "    maturity:  " + maturity + "\n"
                                      + "    coupon:    " + coupons[k] + "\n"
@@ -128,7 +128,7 @@ namespace TestSuite
             }
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testTheoretical()
       {
          // "Testing theoretical bond price/yield calculation...");
@@ -182,7 +182,7 @@ namespace TestSuite
 
                      if (Math.Abs(price - calculatedPrice) > tolerance)
                      {
-                        Assert.Fail("price calculation failed:"
+                        Assert.True(false,"price calculation failed:"
                             + "\n    issue:     " + issue
                             + "\n    maturity:  " + maturity
                             + "\n    coupon:    " + coupons[k]
@@ -197,7 +197,7 @@ namespace TestSuite
                                               tolerance, maxEvaluations);
                      if (Math.Abs(yields[m] - calculatedYield) > tolerance)
                      {
-                        Assert.Fail("yield calculation failed:"
+                        Assert.True(false,"yield calculation failed:"
                             + "\n    issue:     " + issue
                             + "\n    maturity:  " + maturity
                             + "\n    coupon:    " + coupons[k]
@@ -211,7 +211,7 @@ namespace TestSuite
             }
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testCached()
       {
          // ("Testing bond price/yield calculation against cached values...");
@@ -270,7 +270,7 @@ namespace TestSuite
          price = bond1.cleanPrice(marketYield1, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice1a) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price
                        + "\n    expected:   " + cachedPrice1a
                        + "\n    tolerance:  " + tolerance
@@ -280,7 +280,7 @@ namespace TestSuite
          price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1b) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price
                        + "\n    expected:   " + cachedPrice1b
                        + "\n    tolerance:  " + tolerance
@@ -290,7 +290,7 @@ namespace TestSuite
          yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(yield - cachedYield1a) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached compounded yield:"
+            Assert.True(false,"failed to reproduce cached compounded yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield1a
                        + "\n    tolerance:  " + tolerance
@@ -300,7 +300,7 @@ namespace TestSuite
          yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield1b) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false,"failed to reproduce cached continuous yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield1b
                        + "\n    tolerance:  " + tolerance
@@ -310,7 +310,7 @@ namespace TestSuite
          yield = bond1.yield(bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield1c) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false,"failed to reproduce cached continuous yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield1c
                        + "\n    tolerance:  " + tolerance
@@ -321,7 +321,7 @@ namespace TestSuite
          price = bond2.cleanPrice(marketYield2, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice2a) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price
                        + "\n    expected:   " + cachedPrice2a
                        + "\n    tolerance:  " + tolerance
@@ -331,7 +331,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2b) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price
                        + "\n    expected:   " + cachedPrice2b
                        + "\n    tolerance:  " + tolerance
@@ -341,7 +341,7 @@ namespace TestSuite
          yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(yield - cachedYield2a) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached compounded yield:"
+            Assert.True(false,"failed to reproduce cached compounded yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield2a
                        + "\n    tolerance:  " + tolerance
@@ -351,7 +351,7 @@ namespace TestSuite
          yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield2b) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false,"failed to reproduce cached continuous yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield2b
                        + "\n    tolerance:  " + tolerance
@@ -361,7 +361,7 @@ namespace TestSuite
          yield = bond2.yield(bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield2c) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false,"failed to reproduce cached continuous yield:"
                        + "\n    calculated: " + yield
                        + "\n    expected:   " + cachedYield2c
                        + "\n    tolerance:  " + tolerance
@@ -387,7 +387,7 @@ namespace TestSuite
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq, settlementDate);
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price + ""
                        + "\n    expected:   " + cachedPrice3 + ""
                        + "\n    error:      " + (price - cachedPrice3));
@@ -400,13 +400,13 @@ namespace TestSuite
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:"
+            Assert.True(false,"failed to reproduce cached price:"
                        + "\n    calculated: " + price + ""
                        + "\n    expected:   " + cachedPrice3 + ""
                        + "\n    error:      " + (price - cachedPrice3));
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testCachedZero()
       {
          Console.WriteLine("Testing zero-coupon bond prices against cached values...");
@@ -475,7 +475,7 @@ namespace TestSuite
                        + "    error:      " + (price - cachedPrice3));
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testCachedFixed()
       {
          // "Testing fixed-coupon bond prices against cached values...");
@@ -559,13 +559,13 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false,"failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice3 + "\n"
                        + "    error:      " + (price - cachedPrice3));
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testCachedFloating()
       {
          // "Testing floating-rate bond prices against cached values...");
@@ -616,7 +616,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false,"failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice1 + "\n"
                        + "    error:      " + (price - cachedPrice1));
@@ -645,7 +645,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false,"failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice2 + "\n"
                        + "    error:      " + (price - cachedPrice2));
@@ -679,13 +679,13 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Assert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false,"failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice3 + "\n"
                        + "    error:      " + (price - cachedPrice3));
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testBrazilianCached()
       {
          //("Testing Brazilian public bond prices against cached values...");
@@ -766,7 +766,7 @@ namespace TestSuite
                                                          today) + bond.accruedAmount(today)) / 100;
             if (Math.Abs(price - cachedPrice) > tolerance)
             {
-               Assert.Fail("failed to reproduce cached price:\n"
+               Assert.True(false,"failed to reproduce cached price:\n"
                            + "    calculated: " + price + "\n"
                            + "    expected:   " + cachedPrice + "\n"
                            + "    error:      " + (price - cachedPrice) + "\n"
@@ -775,7 +775,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAmortizingFixedBond()
       {
          Date startDate = new Date(2, 1, 2007);
@@ -800,25 +800,25 @@ namespace TestSuite
                                102255461,68340166,34255295,0 };
 
          // test total cashflow count
-         Assert.AreEqual(bond.cashflows().Count, totCashflow, "Cashflow size different");
+         Assert.Equal(bond.cashflows().Count, totCashflow);//, "Cashflow size different");
 
          // test notional cashflow count
-         Assert.AreEqual(bond.notionals().Count, totNotionals, "Notionals size different");
+         Assert.Equal(bond.notionals().Count, totNotionals);//, "Notionals size different");
 
          // test notional amortization values
          for (int i = 0; i < totNotionals; i++)
          {
-            Assert.AreEqual(bond.notionals()[i], notionals[i], 1, "Notionals " + i + "is different");
+            Assert.Equal(bond.notionals()[i], notionals[i], 1);//, "Notionals " + i + "is different");
          }
 
          // test PV difference
          double cash = bond.CASH();
-         Assert.AreEqual(cash - amount, PVDifference, 0.1, "PV Difference wrong");
+         Assert.True(Math.Abs((cash - amount) - PVDifference) <= 0.1, "PV Difference wrong");
 
       }
 
 
-      [TestMethod()]
+      [Fact]
       public void testMBSFixedBondCached()
       {
          // Test MBS Bond against cached values
@@ -989,7 +989,7 @@ namespace TestSuite
             if (c is QLNet.FixedRateCoupon)
             {
                FixedRateCoupon frc = c as FixedRateCoupon;
-               Assert.AreEqual(OutstandingBalance[i], frc.nominal(), 1, "Outstanding Balance " + i++ + "is different");
+               Assert.Equal(OutstandingBalance[i], frc.nominal(), 1);//, "Outstanding Balance " + i++ + "is different");
             }
          }
 
@@ -999,7 +999,7 @@ namespace TestSuite
          {
             if (c is QLNet.VoluntaryPrepay)
             {
-               Assert.AreEqual(Prepayments[i], c.amount(), 1, "Prepayments " + i++ + "is different");
+               Assert.Equal(Prepayments[i], c.amount(), 1);//, "Prepayments " + i++ + "is different");
             }
          }
 
@@ -1010,7 +1010,7 @@ namespace TestSuite
             if (c is QLNet.FixedRateCoupon)
             {
                FixedRateCoupon frc = c as FixedRateCoupon;
-               Assert.AreEqual(NetInterest[i], frc.amount(), 1, "Net Interest " + i++ + "is different");
+               Assert.Equal(NetInterest[i], frc.amount(), 1);//, "Net Interest " + i++ + "is different");
             }
          }
 
@@ -1020,18 +1020,18 @@ namespace TestSuite
          {
             if (c is QLNet.AmortizingPayment)
             {
-               Assert.AreEqual(ScheduledPrincipal[i], c.amount(), 1, "Scheduled Principal " + i++ + "is different");
+               Assert.Equal(ScheduledPrincipal[i], c.amount(), 1);//, "Scheduled Principal " + i++ + "is different");
             }
          }
 
          // Monthly Yield
-         Assert.AreEqual(0.00458333333333381, bond.MonthlyYield(), 0.000000001, "MonthlyYield is different");
+         Assert.True(Math.Abs(0.00458333333333381 - bond.MonthlyYield()) <= 0.000000001, "MonthlyYield is different");
 
          // Bond Equivalent Yield
-         Assert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
+         Assert.True(Math.Abs(0.0556 - bond.BondEquivalentYield()) <= 0.0001, " Bond Equivalent Yield is different");
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAmortizingBond1()
       {
          // Input Values
@@ -1050,19 +1050,19 @@ namespace TestSuite
 
          // Amortizing Yield ( Effective Rate )
          double y1 = bond.Yield();
-         Assert.AreEqual(-0.0236402, y1, 0.001, "Amortizing Yield is different");
+         Assert.True(Math.Abs(-0.0236402 - y1) <= 0.001, "Amortizing Yield is different");
 
          // Amortized Cost at Date
          double Amort1 = bond.AmortizationValue(new Date(31, Month.August, 2004));
-         Assert.AreEqual(41126.01, Amort1, 100, "Amortized Cost at 08/31/2004 is different");
+         Assert.True(Math.Abs(41126.01 - Amort1) <= 100, "Amortized Cost at 08/31/2004 is different");
 
          double Amort2 = bond.AmortizationValue(new Date(30, Month.September, 2004));
-         Assert.AreEqual(40842.83, Amort2, 100, "Amortized Cost at 09/30/2004 is different");
+         Assert.True(Math.Abs(40842.83 - Amort2) <= 100, "Amortized Cost at 09/30/2004 is different");
 
 
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAmortizingBond2()
       {
          // Par – 500,000
@@ -1090,19 +1090,19 @@ namespace TestSuite
 
          // Amortizing Yield ( Effective Rate )
          double y1 = bond.Yield();
-         Assert.AreEqual(0.0575649, y1, 0.001, "Amortizing Yield is different");
+         Assert.True(Math.Abs(0.0575649 - y1) <= 0.001, "Amortizing Yield is different");
 
          // Amortized Cost at Date
          double Amort1 = bond.AmortizationValue(new Date(30, Month.November, 2012));
-         Assert.AreEqual(475698.12, Amort1, 100, "Amortized Cost at 11/30/2012 is different");
+         Assert.True(Math.Abs(475698.12 - Amort1) <= 100, "Amortized Cost at 11/30/2012 is different");
 
          double Amort2 = bond.AmortizationValue(new Date(30, Month.December, 2012));
-         Assert.AreEqual(475779.55, Amort1, 100, "Amortized Cost at 12/30/2012 is different");
+         Assert.True(Math.Abs(475779.55 - Amort1) <= 100, "Amortized Cost at 12/30/2012 is different");
 
 
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAmortizingFixedRateBond()
       {
          // Testing amortizing fixed rate bond
@@ -1143,7 +1143,7 @@ namespace TestSuite
                double error = Math.Abs(totalAmount - amounts[i]);
                if (error > tolerance)
                {
-                  Assert.Fail(" Rate: " + rates[i] +
+                  Assert.True(false," Rate: " + rates[i] +
                            " " + k + "th cash flow " +
                            " Failed!" +
                            " Expected Amount: " + amounts[i] +
@@ -1156,7 +1156,7 @@ namespace TestSuite
 
                if (error > tolerance)
                {
-                  Assert.Fail(" Rate: " + rates[i] +
+                  Assert.True(false," Rate: " + rates[i] +
                                " " + k + "th cash flow " +
                                " Failed!" +
                                " Expected Coupon: " + expectedCoupon +
@@ -1172,7 +1172,7 @@ namespace TestSuite
       /// This requires the use of the Schedule to be constructed
       /// with a custom date vector
       /// </summary>
-      [TestMethod()]
+      [Fact]
       public void testBondFromScheduleWithDateVector()
       {
          // Testing South African R2048 bond price using Schedule constructor with Date vector
@@ -1245,7 +1245,7 @@ namespace TestSuite
             double tolerance = 1e-5;
             if (Math.Abs(calculatedPrice - expectedPrice) > tolerance)
             {
-               Assert.Fail(string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}", expectedPrice, calculatedPrice));
+               Assert.True(false,string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}", expectedPrice, calculatedPrice));
             }
          }
       }

@@ -53,7 +53,7 @@ namespace QLNet {
         //@{
         //! not applicable here; use fixingDates() instead
         public override Date fixingDate() {
-            throw new ApplicationException("no single fixing date for average-BMA coupon");
+            throw new Exception("no single fixing date for average-BMA coupon");
         }
 
         //! fixing dates of the rates to be averaged
@@ -61,14 +61,14 @@ namespace QLNet {
 
         //! not applicable here; use indexFixings() instead
         public override double indexFixing() {
-            throw new ApplicationException("no single fixing date for average-BMA coupon");
+            throw new Exception("no single fixing date for average-BMA coupon");
         }
 
         //! fixings of the underlying index to be averaged
         public List<double> indexFixings() { return fixingSchedule_.dates().Select(d => index_.fixing(d)).ToList(); }
 
         public override double convexityAdjustment() {
-            throw new ApplicationException("not defined for average-BMA coupon");
+            throw new Exception("not defined for average-BMA coupon");
         }
     }
 
@@ -78,7 +78,7 @@ namespace QLNet {
         public override void initialize(FloatingRateCoupon coupon) {
             coupon_ = coupon as AverageBMACoupon;
             if (coupon_ == null)
-                throw new ApplicationException("wrong coupon type");
+                throw new ArgumentNullException(nameof(coupon), "wrong coupon type");
         }
 
         public override double swapletRate() {
@@ -91,11 +91,11 @@ namespace QLNet {
                  d1 = startDate,
                  d2 = startDate;
 
-            if (!(fixingDates.Count > 0)) throw new ApplicationException("fixing date list empty");
+            if (!(fixingDates.Count > 0)) throw new Exception("fixing date list empty");
             if (!(index.valueDate(fixingDates.First()) <= startDate))
-                throw new ApplicationException("first fixing date valid after period start");
+                throw new Exception("first fixing date valid after period start");
             if (!(index.valueDate(fixingDates.Last()) >= endDate))
-                throw new ApplicationException("last fixing date valid before period end");
+                throw new Exception("last fixing date valid before period end");
 
             double avgBMA = 0.0;
             int days = 0;
@@ -118,31 +118,31 @@ namespace QLNet {
             avgBMA /= (endDate - startDate);
 
             if (!(days == endDate - startDate))
-                throw new ApplicationException("averaging days " + days + " differ from " +
+                throw new Exception("averaging days " + days + " differ from " +
                       "interest days " + (endDate - startDate));
 
             return coupon_.gearing()*avgBMA + coupon_.spread();
         }
 
         public override double swapletPrice() {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
         public override double capletPrice(double d) {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
         public override double capletRate(double d) {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
         public override double floorletPrice(double d) {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
         public override double floorletRate(double d) {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
 
         // recheck
         protected override double optionletPrice(Option.Type t, double d) {
-            throw new ApplicationException("not available");
+            throw new NotImplementedException("not available");
         }
     }
 
@@ -181,7 +181,7 @@ namespace QLNet {
 
         public override List<CashFlow> value() {
             if (notionals_.Count == 0)
-                throw new ApplicationException("no notional given");
+                throw new Exception("no notional given");
 
             List<CashFlow> cashflows = new List<CashFlow>();
 

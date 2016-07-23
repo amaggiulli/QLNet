@@ -20,12 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
     public class T_LiborMarketModel
     {
 
@@ -80,7 +80,7 @@ namespace TestSuite
                                            capletVols,new Actual360());
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testSimpleCovarianceModels() 
         {
             //"Testing simple covariance models...";
@@ -99,7 +99,7 @@ namespace TestSuite
             for (i=0; i<size; ++i) {
                 for (int j=0; j<size; ++j) {
                     if (Math.Abs(recon[i,j]) > tolerance)
-                        Assert.Fail("Failed to reproduce correlation matrix"
+                        Assert.True(false,"Failed to reproduce correlation matrix"
                                     + "\n    calculated: " + recon[i,j]
                                     + "\n    expected:   " + 0);
                 }
@@ -130,7 +130,7 @@ namespace TestSuite
                 for (int k=0; k<size; ++k) {
                     for (int j=0; j<size; ++j) {
                         if (Math.Abs(recon[k,j]) > tolerance)
-                            Assert.Fail("Failed to reproduce correlation matrix"
+                            Assert.True(false,"Failed to reproduce correlation matrix"
                                         + "\n    calculated: " + recon[k,j]
                                         + "\n    expected:   " + 0);
                     }
@@ -146,14 +146,14 @@ namespace TestSuite
                     }
 
                     if (Math.Abs(expected - volatility[k]) > tolerance)
-                        Assert.Fail("Failed to reproduce volatities"
+                        Assert.True(false,"Failed to reproduce volatities"
                                     + "\n    calculated: " + volatility[k]
                                     + "\n    expected:   " + expected);
                 }
             }
         }
 
-        [TestCategory( "LongRun" ), TestMethod()]
+        [Trait("Category", "LongRun" ), Fact]
         public void testCapletPricing() 
         {
             //"Testing caplet pricing...";
@@ -193,12 +193,12 @@ namespace TestSuite
             double calculated = cap1.NPV();
 
             if (Math.Abs(expected - calculated) > tolerance)
-                Assert.Fail("Failed to reproduce npv"
+                Assert.True(false,"Failed to reproduce npv"
                             + "\n    calculated: " + calculated
                             + "\n    expected:   " + expected);
         }
     
-        [TestCategory("LongRun"), TestMethod()]
+        [Trait("Category","LongRun"), Fact]
         public void testCalibration()
         {
             //("Testing calibration of a Libor forward model...");
@@ -293,12 +293,12 @@ namespace TestSuite
             }
 
             if (Math.Sqrt(calculated) > tolerance)
-                Assert.Fail("Failed to calibrate libor forward model"
+                Assert.True(false,"Failed to calibrate libor forward model"
                             + "\n    calculated diff: " + Math.Sqrt(calculated)
                             + "\n    expected : smaller than  " + tolerance);
         }
 
-        [TestCategory("LongRun"),TestMethod()]
+        [Trait("Category","LongRun"),Fact]
         public void testSwaptionPricing() 
         {
             //"Testing forward swap and swaption pricing...");
@@ -386,7 +386,7 @@ namespace TestSuite
                     double calculated = liborModel.S_0(i-1,i+j-1);
 
                     if (Math.Abs(expected - calculated) > tolerance)
-                        Assert.Fail("Failed to reproduce fair forward swap rate"
+                        Assert.True(false,"Failed to reproduce fair forward swap rate"
                                     + "\n    calculated: " + calculated
                                     + "\n    expected:   " + expected);
 
@@ -432,7 +432,7 @@ namespace TestSuite
 
                         if (Math.Abs(swaption.NPV() - stat.mean())
                             > stat.errorEstimate()*2.35)
-                            Assert.Fail("Failed to reproduce swaption npv"
+                            Assert.True(false,"Failed to reproduce swaption npv"
                                         + "\n    calculated: " + stat.mean()
                                         + "\n    expected:   " + swaption.NPV());
                     }

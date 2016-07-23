@@ -122,16 +122,16 @@ namespace QLNet
       //! \name Limits
       //@{
       //! the largest length for which the term structure can return vols
-      public virtual Period maxBondTenor() {throw new ApplicationException("maxBondTenor need implementation");}
+      public virtual Period maxBondTenor() {throw new Exception("maxBondTenor need implementation");}
       //! the largest bondLength for which the term structure can return vols
       public virtual double maxBondLength()
       {
          return timeFromReference(referenceDate() + maxBondTenor());
       }
       //! the minimum strike for which the term structure can return vols
-      public virtual double minStrike() { throw new ApplicationException("minStrike need implementation"); }
+      public virtual double minStrike() { throw new Exception("minStrike need implementation"); }
       //! the maximum strike for which the term structure can return vols
-      public virtual double maxStrike() { throw new ApplicationException("maxStrike need implementation"); }
+      public virtual double maxStrike() { throw new Exception("maxStrike need implementation"); }
       //@}
       //! implements the conversion between dates and times
       public virtual KeyValuePair<double, double> convertDates(Date optionDate, Period bondTenor)
@@ -155,11 +155,11 @@ namespace QLNet
 
       //! return smile section
       protected virtual SmileSection smileSectionImpl( double optionTime, double bondLength)
-      { throw new ApplicationException("smileSectionImpl need implementation"); }
+      { throw new Exception("smileSectionImpl need implementation"); }
 
       //! implements the actual volatility calculation in derived classes
       protected virtual double volatilityImpl(double optionTime, double bondLength, double strike)
-      { throw new ApplicationException("volatilityImpl need implementation"); }
+      { throw new Exception("volatilityImpl need implementation"); }
       protected virtual double volatilityImpl(Date optionDate, Period bondTenor, double strike) 
       {
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);

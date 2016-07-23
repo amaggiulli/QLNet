@@ -59,14 +59,14 @@ namespace QLNet
 
         public virtual int dayCount(Date d1, Date d2)
         {
-            if (empty()) throw Error.MissingImplementation();
+            if (empty()) throw new NotImplementedException();
             return dayCounter_.dayCount(d1, d2);
         }
 
         public double yearFraction(Date d1, Date d2) { return yearFraction(d1, d2, d1, d2); }
         public virtual double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
         {
-            if (empty()) throw Error.MissingImplementation();
+            if (empty()) throw new NotImplementedException();
             return dayCounter_.yearFraction(d1, d2, refPeriodStart, refPeriodEnd);
         }
 

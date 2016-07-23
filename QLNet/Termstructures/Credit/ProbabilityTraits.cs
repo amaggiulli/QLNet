@@ -49,17 +49,17 @@ namespace QLNet
       public int maxIterations() { return 50; }   // upper bound for convergence loop
 
       public double discountImpl(Interpolation i, double t) { return i.value(t, true); }
-      public double zeroYieldImpl(Interpolation i, double t) { throw new NotSupportedException(); }
-      public double forwardImpl(Interpolation i, double t) { throw new NotSupportedException(); }
+      public double zeroYieldImpl(Interpolation i, double t) { throw new Exception(); }
+      public double forwardImpl(Interpolation i, double t) { throw new Exception(); }
 		
       public double guess(int i, InterpolatedCurve c, bool validData, int f)
-      { throw new NotSupportedException(); }
+      { throw new Exception(); }
 
       public double minValueAfter(int i, InterpolatedCurve c, bool validData, int f)
-      {throw new NotSupportedException(); }
+      {throw new Exception(); }
 
       public double maxValueAfter(int i, InterpolatedCurve c, bool validData, int f)
-      {throw new NotSupportedException(); }
+      {throw new Exception(); }
   
    }
 

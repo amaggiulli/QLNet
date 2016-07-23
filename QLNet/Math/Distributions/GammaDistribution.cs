@@ -24,7 +24,7 @@ namespace QLNet {
 
         public GammaDistribution(double a) {
             a_ = a;
-            if (!(a>0.0)) throw new ApplicationException("invalid parameter for gamma distribution");
+            if (!(a>0.0)) throw new Exception("invalid parameter for gamma distribution");
         }
         
         public double value(double x) {
@@ -62,7 +62,7 @@ namespace QLNet {
                         return h*Math.Exp(-x + a_*Math.Log(x) - gln);
                 }
             }
-            throw new ApplicationException("too few iterations");
+            throw new Exception("too few iterations");
         }
     }
 
@@ -90,7 +90,7 @@ namespace QLNet {
 
        public static double logValue( double x )
        {
-          if ( !( x > 0.0 ) ) throw new ApplicationException( "positive argument required" );
+          if ( !( x > 0.0 ) ) throw new Exception( "positive argument required" );
 
           double temp = x + 5.5;
           temp -= ( x + 0.5 ) * Math.Log( temp );

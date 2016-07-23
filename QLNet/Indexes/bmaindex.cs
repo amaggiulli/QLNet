@@ -75,7 +75,7 @@ namespace QLNet {
 
         protected override double forecastFixing(Date fixingDate) {
             if (termStructure_.empty())
-               throw new ApplicationException("null term structure set to this instance of " + name());
+               throw new Exception("null term structure set to this instance of " + name());
             Date start = fixingCalendar_.advance(fixingDate,1,TimeUnit.Days);
             Date end = maturityDate(start);
             return termStructure_.link.forwardRate(start, end, dayCounter_, Compounding.Simple).rate();

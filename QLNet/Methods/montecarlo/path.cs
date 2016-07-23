@@ -26,9 +26,10 @@ namespace QLNet {
         \note the path includes the initial asset value as its first point.
     */
 
-    public interface IPath : ICloneable
+    public interface IPath
     {
-       int length();
+        int length();
+        object Clone();
     }
 
     public interface IPathGenerator<GSG>
@@ -37,7 +38,7 @@ namespace QLNet {
        Sample<IPath> antithetic();
     }
 
-    public class Path : ICloneable, IPath {
+    public class Path : IPath {
         private TimeGrid timeGrid_;
         private Vector values_;
 
@@ -52,7 +53,7 @@ namespace QLNet {
                 values_ = new Vector(timeGrid_.size());
 
             if (values_.size() != timeGrid_.size())
-                throw new ApplicationException("different number of times and asset values");
+                throw new Exception("different number of times and asset values");
         }
 
         //! \name inspectors

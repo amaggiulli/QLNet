@@ -59,13 +59,13 @@ namespace QLNet {
         protected override LongstaffSchwartzPathPricer<IPath> lsmPathPricer() {
             GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
             if (process == null)
-                throw new ApplicationException("generalized Black-Scholes process required");
+                throw new Exception("generalized Black-Scholes process required");
 
             EarlyExercise exercise = arguments_.exercise as EarlyExercise;
             if (exercise == null)
-                throw new ApplicationException("wrong exercise given");
+                throw new Exception("wrong exercise given");
             if(exercise.payoffAtExpiry())
-                throw new ApplicationException("payoff at expiry not handled");
+                throw new Exception("payoff at expiry not handled");
 
             AmericanPathPricer earlyExercisePathPricer = new AmericanPathPricer(arguments_.payoff, polynomOrder_, polynomType_);
 
@@ -76,7 +76,7 @@ namespace QLNet {
             IPricingEngine controlPE = controlPricingEngine();
 
             if (controlPE == null)
-                throw new ApplicationException("engine does not provide control variation pricing engine");
+                throw new Exception("engine does not provide control variation pricing engine");
 
             VanillaOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
             controlArguments = arguments_;
@@ -92,7 +92,7 @@ namespace QLNet {
         protected override IPricingEngine controlPricingEngine() {
             GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
             if (process == null)
-                throw new ApplicationException("generalized Black-Scholes process required");
+                throw new Exception("generalized Black-Scholes process required");
 
             return new AnalyticEuropeanEngine(process);
         }
@@ -100,11 +100,11 @@ namespace QLNet {
         protected override PathPricer<IPath> controlPathPricer() {
             StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
             if(payoff == null)
-                throw new ApplicationException("StrikedTypePayoff needed for control variate");
+                throw new Exception("StrikedTypePayoff needed for control variate");
 
             GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
             if (process == null)
-                throw new ApplicationException("generalized Black-Scholes process required");
+                throw new Exception("generalized Black-Scholes process required");
 
             return new EuropeanPathPricer(payoff.optionType(), payoff.strike(),
                                           process.riskFreeRate().link.discount(timeGrid().Last()));
@@ -127,7 +127,7 @@ namespace QLNet {
                   || polynomType == LsmBasisSystem.PolynomType.Hermite
                   || polynomType == LsmBasisSystem.PolynomType.Hyperbolic
                   || polynomType == LsmBasisSystem.PolynomType.Chebyshev2th))
-                throw new ApplicationException("insufficient polynom type");
+                throw new Exception("insufficient polynom type");
 
             // the payoff gives an additional value
             v_.Add(this.payoff);
@@ -193,16 +193,16 @@ namespace QLNet {
         }
         public MakeMCAmericanEngine<RNG, S> withSamples(int samples) {
             if (tolerance_ != 0)
-                throw new ApplicationException("tolerance already set");
+                throw new Exception("tolerance already set");
             samples_ = samples;
             return this;
         }
         public MakeMCAmericanEngine<RNG, S> withAbsoluteTolerance(double tolerance) {
             if (samples_ != 0)
-                throw new ApplicationException("number of samples already set");
+                throw new Exception("number of samples already set");
 
             if (new RNG().allowsErrorEstimate == 0)
-                throw new ApplicationException("chosen random generator policy does not allow an error estimate");
+                throw new Exception("chosen random generator policy does not allow an error estimate");
             tolerance_ = tolerance;
             return this;
         }
@@ -240,9 +240,9 @@ namespace QLNet {
         // conversion to pricing engine
         public IPricingEngine value() {
             if (!(steps_ != 0 || stepsPerYear_ != 0))
-                throw new ApplicationException("number of steps not given");
+                throw new Exception("number of steps not given");
             if (!(steps_ == 0 || stepsPerYear_ == 0))
-                throw new ApplicationException("number of steps overspecified");
+                throw new Exception("number of steps overspecified");
             return new MCAmericanEngine<RNG, S>(process_, steps_, stepsPerYear_, antithetic_, controlVariate_, samples_, tolerance_,
                                                 maxSamples_, seed_, polynomOrder_, polynomType_, calibrationSamples_);
         }

@@ -106,9 +106,9 @@ namespace QLNet
 
 
 		// these are dummy methods (for the sake of ITraits and should not be called directly
-		public double discountImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+		public double discountImpl( Interpolation i, double t ) { throw new Exception(); }
+		public double zeroYieldImpl( Interpolation i, double t ) { throw new Exception(); }
+		public double forwardImpl( Interpolation i, double t ) { throw new Exception(); }
 
 
 		# region new fields: Curve

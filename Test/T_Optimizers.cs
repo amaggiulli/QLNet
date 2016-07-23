@@ -19,11 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
     public class T_Optimizers {
         List<CostFunction> costFunctions_ = new List<CostFunction>();
         List<Constraint> constraints_ = new List<Constraint>();
@@ -53,7 +53,7 @@ namespace TestSuite {
             bfgs_goldstein
         }
 
-        [TestMethod()]
+        [Fact]
         public void OptimizersTest() {
             //("Testing optimizers...");
 
@@ -84,7 +84,7 @@ namespace TestSuite {
                         if (endCriteriaResult==EndCriteria.Type.None ||
                             endCriteriaResult==EndCriteria.Type.MaxIterations ||
                             endCriteriaResult==EndCriteria.Type.Unknown)
-                            Assert.Fail("function evaluations: " + problem.functionEvaluation()  +
+                            Assert.True(false,"function evaluations: " + problem.functionEvaluation()  +
                                       " gradient evaluations: " + problem.gradientEvaluation() +
                                       " x expected:           " + xMinExpected_[i] +
                                       " x calculated:         " + xMinCalculated +
@@ -100,7 +100,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void nestedOptimizationTest() {
             //("Testing nested optimizations...");
             OptimizationBasedCostFunction optimizationBasedCostFunction = new OptimizationBasedCostFunction();
@@ -197,7 +197,7 @@ namespace TestSuite {
                 case OptimizationMethodType.bfgs_goldstein:
                     return new BFGS(new GoldsteinLineSearch());
                 default:
-                    throw new ApplicationException("unknown OptimizationMethod type");
+                    throw new Exception("unknown OptimizationMethod type");
             }
         }      
 
@@ -242,7 +242,7 @@ namespace TestSuite {
                 case OptimizationMethodType.bfgs_goldstein:
                     return "BFGS (Goldstein line search)";
                 default:
-                    throw new ApplicationException("unknown OptimizationMethod type");
+                    throw new Exception("unknown OptimizationMethod type");
             }
         }
     }
@@ -257,7 +257,7 @@ namespace TestSuite {
         }
 
         public override double value(Vector x) {
-            if(x.size()!=1) throw new ApplicationException("independent variable must be 1 dimensional");
+            if(x.size()!=1) throw new Exception("independent variable must be 1 dimensional");
             double y = 0;
             for (int i=0; i<=polynomialDegree_; ++i)
                 y += coefficients_[i]*Utils.Pow(x[0],i);
@@ -265,7 +265,7 @@ namespace TestSuite {
         }
 
         public override Vector values(Vector x) {
-            if(x.size()!=1) throw new ApplicationException("independent variable must be 1 dimensional");
+            if(x.size()!=1) throw new Exception("independent variable must be 1 dimensional");
             Vector y = new Vector(1);
             y[0] = value(x);
             return y;

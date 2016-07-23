@@ -104,24 +104,24 @@ namespace QLNet
 
 
          if (!(replication.gap() > 0.0))
-            throw new ApplicationException("Non positive epsilon not allowed");
+            throw new Exception("Non positive epsilon not allowed");
 
          if (putStrike == null)
             if (!(putDigitalPayoff == null))
-               throw new ApplicationException("Put Cash rate non allowed if put strike is null");
+               throw new ArgumentNullException(nameof(putStrike), "Put Cash rate non allowed if put strike is null");
 
          if (callStrike == null)
             if (!(callDigitalPayoff == null))
-               throw new ApplicationException("Call Cash rate non allowed if call strike is null");
+               throw new ArgumentNullException(nameof(callStrike), "Call Cash rate non allowed if call strike is null");
          if (callStrike != null)
          {
             if (!(callStrike >= 0.0))
-               throw new ApplicationException("negative call strike not allowed");
+               throw new Exception("negative call strike not allowed");
 
             hasCallStrike_ = true;
             callStrike_ = callStrike.GetValueOrDefault();
             if (!(callStrike_ >= replication.gap() / 2.0))
-               throw new ApplicationException("call strike < eps/2");
+               throw new Exception("call strike < eps/2");
 
             switch (callPosition)
             {
@@ -132,7 +132,7 @@ namespace QLNet
                   callCsi_ = -1.0;
                   break;
                default:
-                  throw new ApplicationException("unsupported position type");
+                  throw new ArgumentOutOfRangeException(nameof(callPosition), "unsupported position type");
             }
             if (callDigitalPayoff != null)
             {
@@ -143,7 +143,7 @@ namespace QLNet
          if (putStrike != null)
          {
             if (!(putStrike >= 0.0))
-               throw new ApplicationException("negative put strike not allowed");
+               throw new Exception("negative put strike not allowed");
 
             hasPutStrike_ = true;
             putStrike_ = putStrike.GetValueOrDefault();
@@ -156,7 +156,7 @@ namespace QLNet
                   putCsi_ = -1.0;
                   break;
                default:
-                  throw new ApplicationException("unsupported position type");
+                  throw new ArgumentOutOfRangeException(nameof(putPosition), "unsupported position type");
             }
             if (putDigitalPayoff != null)
             {
@@ -184,7 +184,7 @@ namespace QLNet
                         callRightEps_ = 0.0;
                         break;
                      default:
-                        throw new ApplicationException("unsupported position type");
+                        throw new ArgumentOutOfRangeException(nameof(callPosition), "unsupported position type");
                   }
                }
                if (hasPutStrike_)
@@ -200,7 +200,7 @@ namespace QLNet
                         putRightEps_ = replication.gap();
                         break;
                      default:
-                        throw new ApplicationException("unsupported position type");
+                        throw new ArgumentOutOfRangeException(nameof(putPosition), "unsupported position type");
                   }
                }
                break;
@@ -218,7 +218,7 @@ namespace QLNet
                         callRightEps_ = replication.gap();
                         break;
                      default:
-                        throw new ApplicationException("unsupported position type");
+                        throw new ArgumentOutOfRangeException(nameof(callPosition), "unsupported position type");
                   }
                }
                if (hasPutStrike_)
@@ -234,12 +234,12 @@ namespace QLNet
                         putRightEps_ = 0.0;
                         break;
                      default:
-                        throw new ApplicationException("unsupported position type");
+                        throw new ArgumentOutOfRangeException(nameof(putPosition), "unsupported position type");
                   }
                }
                break;
             default:
-               throw new ApplicationException("unsupported position type");
+               throw new ArgumentOutOfRangeException(nameof(replication), "unsupported position type");
          }
 
          underlying.registerWith(update);
@@ -252,7 +252,7 @@ namespace QLNet
       {
 
          if (underlying_.pricer() == null)
-            throw new ApplicationException("pricer not set");
+            throw new Exception("pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
          Date today = Settings.evaluationDate();
@@ -289,7 +289,7 @@ namespace QLNet
          if (hasCall())
             return callStrike_;
          else
-            throw new ApplicationException("callStrike has not been set");
+            throw new Exception("callStrike has not been set");
          // return null;
       }
       public double putStrike()
@@ -297,7 +297,7 @@ namespace QLNet
          if (hasPut())
             return putStrike_;
          else
-            throw new ApplicationException("putStrike has not been set");
+            throw new Exception("putStrike has not been set");
          // return null;
       }
       public double callDigitalPayoff()
@@ -305,7 +305,7 @@ namespace QLNet
          if (isCallCashOrNothing_)
             return callDigitalPayoff_;
          else
-            throw new ApplicationException("callDigitalPayoff has not been set");
+            throw new Exception("callDigitalPayoff has not been set");
          // return null;
       }
       public double putDigitalPayoff()
@@ -313,7 +313,7 @@ namespace QLNet
          if (isPutCashOrNothing_)
             return putDigitalPayoff_;
          else
-            throw new ApplicationException("putDigitalPayoff has not been set");
+            throw new Exception("putDigitalPayoff has not been set");
          // return null;
       }
       public bool hasPut()

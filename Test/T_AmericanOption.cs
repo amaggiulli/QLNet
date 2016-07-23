@@ -21,7 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
@@ -55,7 +56,6 @@ namespace TestSuite {
       }
    }
 
-    [TestClass()]
     public class T_AmericanOption {
 
             /* The data below are from
@@ -131,7 +131,7 @@ namespace TestSuite {
             new AmericanOptionData( Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177 )
         };
 
-        [TestMethod()]
+        [Fact]
         public void testBaroneAdesiWhaleyValues() {
             // ("Testing Barone-Adesi and Whaley approximation for American options...");
 
@@ -226,7 +226,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testBjerksundStenslandValues() {
             // ("Testing Bjerksund and Stensland approximation for American options...");
 
@@ -293,7 +293,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testJuValues() {
 
             // ("Testing Ju approximation for American options...");
@@ -342,7 +342,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFdValues() {
 
             //("Testing finite-difference engine for American options...");
@@ -506,13 +506,13 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFdAmericanGreeks() {
             //("Testing finite-differences American option greeks...");
             testFdGreeks<FDAmericanEngine>();
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFdShoutGreeks() {
             // ("Testing finite-differences shout option greeks...");
             testFdGreeks<FDShoutEngine>();
@@ -520,7 +520,7 @@ namespace TestSuite {
 
         void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
         Date today, double v, double expected, double calculated, double error, double tolerance) {
-            Assert.Fail(exercise + " "
+            Assert.True(false,exercise + " "
                    + payoff.optionType() + " option with "
                    + payoff + " payoff:\n"
                    + "    spot value:       " + s + "\n"
@@ -536,7 +536,7 @@ namespace TestSuite {
                    + "    tolerance:        " + tolerance);
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFdImpliedVol()
         {
             var settlementDate = new Date(26, 2, 2015);
@@ -565,7 +565,7 @@ namespace TestSuite {
             const double tolerance = 3.0e-3;
 
             if (Math.Abs(impliedVol - volatility) > tolerance)
-                Assert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
+                Assert.True(false,string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
         }
    }
 }

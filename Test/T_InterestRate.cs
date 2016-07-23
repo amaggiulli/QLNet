@@ -18,12 +18,12 @@
 */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_InterestRate
    {
       public struct InterestRateData
@@ -52,7 +52,7 @@ namespace TestSuite
       };
 
 
-      [TestMethod()]
+      [Fact]
       public void testConversions()
       {
          InterestRateData[] cases = {
@@ -120,7 +120,7 @@ namespace TestSuite
             disc = ir.discountFactor(d1, d2);
             error = Math.Abs(disc - 1.0 / compoundf);
             if (error > 1e-15)
-               Assert.Fail(ir + "  1.0/compound_factor: " + 1.0 / compoundf);
+               Assert.True(false,ir + "  1.0/compound_factor: " + 1.0 / compoundf);
 
             // check that the equivalent InterestRate with *same* daycounter,
             // compounding, and frequency is the *same* InterestRate
@@ -128,13 +128,13 @@ namespace TestSuite
             ir2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(), d1, d2);
             error = Math.Abs(ir.rate() - ir2.rate());
             if (error > 1e-15)
-               Assert.Fail("original interest rate: " + ir + " equivalent interest rate: " + ir2 + " rate error: " + error);
+               Assert.True(false,"original interest rate: " + ir + " equivalent interest rate: " + ir2 + " rate error: " + error);
             if (ir.dayCounter() != ir2.dayCounter())
-               Assert.Fail("day counter error original interest rate: " + ir + " equivalent interest rate: " + ir2);
+               Assert.True(false,"day counter error original interest rate: " + ir + " equivalent interest rate: " + ir2);
             if (ir.compounding() != ir2.compounding())
-               Assert.Fail("compounding error original interest rate: " + ir + " equivalent interest rate: " + ir2);
+               Assert.True(false,"compounding error original interest rate: " + ir + " equivalent interest rate: " + ir2);
             if (ir.frequency() != ir2.frequency())
-               Assert.Fail("frequency error original interest rate: " + ir + " equivalent interest rate: " + ir2);
+               Assert.True(false,"frequency error original interest rate: " + ir + " equivalent interest rate: " + ir2);
 
             // check that the equivalent rate with *same* daycounter,
             // compounding, and frequency is the *same* rate
@@ -142,7 +142,7 @@ namespace TestSuite
             r2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(),d1, d2).value();
             error = Math.Abs(ir.rate() - r2);
             if (error > 1e-15)
-               Assert.Fail("original rate: " + ir + " equivalent rate: " + r2 + " error: " + error);
+               Assert.True(false,"original rate: " + ir + " equivalent rate: " + r2 + " error: " + error);
 
             // check that the equivalent InterestRate with *different*
             // compounding, and frequency is the *expected* InterestRate
@@ -152,13 +152,13 @@ namespace TestSuite
             r3 = roundingPrecision.Round(ir3.rate());
             error = Math.Abs(r3 - expectedIR.rate());
             if (error > 1.0e-17)
-               Assert.Fail("original interest rate: " + ir + " calculated equivalent interest rate: " + ir3 + " truncated equivalent rate: " + r3 + " expected equivalent interest rate: " + expectedIR + " rate error: " + error);
+               Assert.True(false,"original interest rate: " + ir + " calculated equivalent interest rate: " + ir3 + " truncated equivalent rate: " + r3 + " expected equivalent interest rate: " + expectedIR + " rate error: " + error);
             if (ir3.dayCounter() != expectedIR.dayCounter())
-               Assert.Fail("day counter error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
+               Assert.True(false,"day counter error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
             if (ir3.compounding() != expectedIR.compounding())
-               Assert.Fail("compounding error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
+               Assert.True(false,"compounding error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
             if (ir3.frequency() != expectedIR.frequency())
-               Assert.Fail("frequency error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
+               Assert.True(false,"frequency error original interest rate: " + ir3 + " equivalent interest rate: " + expectedIR);
 
             // check that the equivalent rate with *different*
             // compounding, and frequency is the *expected* rate
@@ -167,7 +167,7 @@ namespace TestSuite
             r3 = roundingPrecision.Round(r3);
             error = Math.Abs(r3 - cases[i].expected);
             if (error > 1.0e-17)
-               Assert.Fail("calculated equivalent rate: " + r3 + " expected equivalent rate: " + cases[i].expected + " error: " + error);
+               Assert.True(false,"calculated equivalent rate: " + r3 + " expected equivalent rate: " + cases[i].expected + " error: " + error);
 
          }
 

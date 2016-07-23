@@ -20,12 +20,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_TermStructures
    {
       public class CommonVars
@@ -95,7 +95,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testReferenceChange()
       {
          // ("Testing term structure against evaluation date change...");
@@ -128,7 +128,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testImplied()
       {
          // ("Testing consistency of implied term structure...");
@@ -150,7 +150,7 @@ namespace TestSuite
                 + "    expected:   " + discount);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testImpliedObs()
       {
          // ("Testing observability of implied term structure...");
@@ -169,7 +169,7 @@ namespace TestSuite
             Console.WriteLine("Observer was not notified of term structure change");
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFSpreaded()
       {
          //("Testing consistency of forward-spreaded term structure...");
@@ -193,7 +193,7 @@ namespace TestSuite
                 + "    expected:   " + forward);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFSpreadedObs()
       {
          // ("Testing observability of forward-spreaded term structure...");
@@ -215,7 +215,7 @@ namespace TestSuite
             Console.WriteLine("Observer was not notified of spread change");
       }
 
-      [TestMethod()]
+      [Fact]
       public void testZSpreaded()
       {
          // ("Testing consistency of zero-spreaded term structure...");
@@ -236,7 +236,7 @@ namespace TestSuite
                 + "    expected:   " + zero);
       }
 
-      [TestMethod()]
+      [Fact]
       public void testZSpreadedObs()
       {
          // ("Testing observability of zero-spreaded term structure...");

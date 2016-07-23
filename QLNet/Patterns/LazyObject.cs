@@ -118,7 +118,7 @@ namespace QLNet
          * in order to calculate the desired results. */
         protected virtual void performCalculations()
         {
-            throw new NotSupportedException();
+            throw new Exception();
         }
         #endregion
     }

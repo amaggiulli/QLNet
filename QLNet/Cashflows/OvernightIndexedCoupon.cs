@@ -31,7 +31,7 @@ namespace QLNet
       {
          coupon_ = coupon as OvernightIndexedCoupon;
          if (coupon_ == null)
-            throw new ApplicationException("wrong coupon type");
+            throw new ArgumentNullException(nameof(coupon), "wrong coupon type");
       }
             
       public override double swapletRate()
@@ -55,7 +55,7 @@ namespace QLNet
                index.name()).value()[fixingDates[i]];
 
             if (pastFixing == default(double) )
-               throw new ApplicationException("Missing " + index.name() + " fixing for " 
+               throw new Exception("Missing " + index.name() + " fixing for " 
                                               + fixingDates[i].ToString());
 
             compoundFactor *= (1.0 + pastFixing*dt[i]);
@@ -108,17 +108,17 @@ namespace QLNet
       }
 
       public override double swapletPrice() 
-         { throw new ApplicationException("swapletPrice not available");  }
+         { throw new Exception("swapletPrice not available");  }
       public override double capletPrice(double d) 
-         { throw new ApplicationException("capletPrice not available"); }
+         { throw new Exception("capletPrice not available"); }
       public override double capletRate(double d) 
-         { throw new ApplicationException("capletRate not available"); }
+         { throw new Exception("capletRate not available"); }
       public override double floorletPrice(double d) 
-         { throw new ApplicationException("floorletPrice not available"); }
+         { throw new Exception("floorletPrice not available"); }
       public override double floorletRate(double d) 
-         { throw new ApplicationException("floorletRate not available"); }
+         { throw new Exception("floorletRate not available"); }
       protected override double optionletPrice(Option.Type t, double d)
-      { throw new ApplicationException("optionletPrice not available"); }
+      { throw new Exception("optionletPrice not available"); }
 
    }
 

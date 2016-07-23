@@ -101,7 +101,7 @@ namespace QLNet
       public virtual void setCapletVolatility(Handle<YoYOptionletVolatilitySurface> capletVol)
       {
          if ( capletVol.empty() )
-            throw new ApplicationException("empty capletVol handle");
+            throw new Exception("empty capletVol handle");
 
         capletVol_ = capletVol;
         capletVol_.registerWith(update);
@@ -192,7 +192,7 @@ namespace QLNet
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
             if ( capletVolatility().empty() )
-               throw new ApplicationException ("missing optionlet volatility");
+               throw new Exception("missing optionlet volatility");
 
             double stdDev =
             Math.Sqrt(capletVolatility().link.totalVariance(fixingDate,effStrike));
@@ -211,7 +211,7 @@ namespace QLNet
       protected virtual double optionletPriceImp(Option.Type t, double strike,
                                        double forward, double stdDev)
       {
-         throw new ApplicationException("you must implement this to get a vol-dependent price");
+         throw new NotImplementedException("you must implement this to get a vol-dependent price");
       }
 
       protected virtual double adjustedFixing()

@@ -17,15 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Instruments
    {
-      [TestMethod()]
+      [Fact]
       public void testObservable()
       {
          //.("Testing observability of instruments...");
@@ -41,25 +41,25 @@ namespace TestSuite
          s.NPV();
          me1.setValue(3.14);
          if (!f.isUp())
-            Assert.Fail("Observer was not notified of instrument change");
+            Assert.True(false,"Observer was not notified of instrument change");
 
          s.NPV();
          f.lower();
          SimpleQuote me2 = new SimpleQuote(0.0);
          h.linkTo(me2);
          if (!f.isUp())
-            Assert.Fail("Observer was not notified of instrument change");
+            Assert.True(false,"Observer was not notified of instrument change");
 
          f.lower();
          s.freeze();
          s.NPV();
          me2.setValue(2.71);
          if (f.isUp())
-            Assert.Fail("Observer was notified of frozen instrument change");
+            Assert.True(false,"Observer was notified of frozen instrument change");
          s.NPV();
          s.unfreeze();
          if (!f.isUp())
-            Assert.Fail("Observer was not notified of instrument change");
+            Assert.True(false,"Observer was not notified of instrument change");
       }
 
       public void suite()

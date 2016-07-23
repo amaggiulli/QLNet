@@ -48,11 +48,11 @@ namespace QLNet {
         protected override PathPricer<IPath> pathPricer(){
             PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
             if (payoff == null)
-                throw new ApplicationException("non-plain payoff given");
+                throw new Exception("non-plain payoff given");
 
             EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
             if (exercise == null)
-                throw new ApplicationException("wrong exercise given");
+                throw new Exception("wrong exercise given");
 
             return (PathPricer<IPath>)new ArithmeticASOPathPricer(
                     payoff.optionType(),
@@ -92,7 +92,7 @@ namespace QLNet {
         public double value(Path path){
             int n = path.length();
             if(!(n > 1))
-                throw new ApplicationException("the path cannot be empty");
+                throw new Exception("the path cannot be empty");
             double averageStrike=runningSum_;
             if (path.timeGrid().mandatoryTimes()[0]==0.0) {
                 //averageStrike =
@@ -149,7 +149,7 @@ namespace QLNet {
 
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
             if ((new RNG().allowsErrorEstimate == 0))
-                throw new ApplicationException("chosen random generator policy " +
+                throw new Exception("chosen random generator policy " +
                                                "does not allow an error estimate");
             tolerance_ = tolerance;
             return this;

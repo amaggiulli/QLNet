@@ -18,18 +18,18 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
     /// <summary>
     /// Summary description for LinearLeastSquaresRegression
     /// </summary>
-    [TestClass]
     public class T_LinearLeastSquaresRegression {
         const double tolerance = 0.025;
 
-        [TestMethod]
+        [Fact]
         public void testRegression() {
             //("Testing linear least-squares regression...");
 
@@ -69,12 +69,12 @@ namespace TestSuite {
 
                 for (i=0; i<v.Count; ++i) {
                     if (m.standardErrors()[i] > tolerance) {
-                        Assert.Fail("Failed to reproduce linear regression coef."
+                        Assert.True(false,"Failed to reproduce linear regression coef."
                                     + "\n    error:     " + m.standardErrors()[i]
                                     + "\n    tolerance: " + tolerance);
                     }
                     if (Math.Abs(m.coefficients()[i]-a[i]) > 3*m.error()[i]) {
-                        Assert.Fail("Failed to reproduce linear regression coef."
+                        Assert.True(false,"Failed to reproduce linear regression coef."
                                     + "\n    calculated: " + m.coefficients()[i]
                                     + "\n    error:      " + m.standardErrors()[i]
                                     + "\n    expected:   " + a[i]);
@@ -90,7 +90,7 @@ namespace TestSuite {
                                     m.standardErrors()[3]};
                 for (i = 0; i < v.Count; ++i) {
                     if (Math.Abs(ma[i] - a[i]) > 3 * err[i]) {
-                        Assert.Fail("Failed to reproduce linear regression coef."
+                        Assert.True(false,"Failed to reproduce linear regression coef."
                                     + "\n    calculated: " + ma[i]
                                     + "\n    error:      " + err[i]
                                     + "\n    expected:   " + a[i]);
@@ -100,7 +100,7 @@ namespace TestSuite {
 
         }
 
-        [TestMethod]
+        [Fact]
         public void test1dLinearRegression() {
 
             //BOOST_MESSAGE("Testing 1d simple linear least-squares regression...");
@@ -130,14 +130,14 @@ namespace TestSuite {
 
             for (int i = 0; i < 2; ++i) {
                 if (Math.Abs(m.standardErrors()[i] - errorsExpected[i]) > tol) {
-                    Assert.Fail("Failed to reproduce linear regression standard errors"
+                    Assert.True(false,"Failed to reproduce linear regression standard errors"
                                 + "\n    calculated: " + m.standardErrors()[i]
                                 + "\n    expected:   " + errorsExpected[i]
                                 + "\n    tolerance:  " + tol);
                 }
 
                 if (Math.Abs(m.coefficients()[i] - coeffExpected[i]) > tol) {
-                    Assert.Fail("Failed to reproduce linear regression coef."
+                    Assert.True(false,"Failed to reproduce linear regression coef."
                                 + "\n    calculated: " + m.coefficients()[i]
                                 + "\n    expected:   " + coeffExpected[i]
                                 + "\n    tolerance:  " + tol);
@@ -145,7 +145,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testMultiDimRegression() {
 
             //BOOST_MESSAGE("Testing linear least-squares regression...");
@@ -188,13 +188,13 @@ namespace TestSuite {
             
             for (int i=0; i < v.Count; ++i) {
                 if (m.standardErrors()[i] > tolerance) {
-                    Assert.Fail("Failed to reproduce linear regression coef."
+                    Assert.True(false,"Failed to reproduce linear regression coef."
                                 + "\n    error:     " + m.standardErrors()[i]
                                 + "\n    tolerance: " + tolerance);
                 }
                 
                 if (Math.Abs(m.coefficients()[i]-coeff[i]) > 3*tolerance) {
-                    Assert.Fail("Failed to reproduce linear regression coef."
+                    Assert.True(false,"Failed to reproduce linear regression coef."
                                 + "\n    calculated: " + m.coefficients()[i]
                                 + "\n    error:      " + m.standardErrors()[i]
                                 + "\n    expected:   " + coeff[i]);
