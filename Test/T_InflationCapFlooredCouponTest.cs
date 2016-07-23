@@ -18,12 +18,12 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-	[TestClass()]
 	public class T_InflationCapFlooredCouponTest
 	{
 		class CommonVars
@@ -202,7 +202,7 @@ namespace TestSuite
                     pricer = new BachelierYoYInflationCouponPricer(vol);
                     break;
                 default:
-                    Assert.Fail("unknown coupon pricer request: which = "+which
+                    Assert.True(false,"unknown coupon pricer request: which = "+which
                                +"should be 0=Black,1=DD,2=Bachelier");
                     break;
             }
@@ -264,7 +264,7 @@ namespace TestSuite
                     return new YoYInflationBachelierCapFloorEngine(iir, vol);
                     //break;
                 default:
-                    Assert.Fail("unknown engine request: which = "+which
+                    Assert.True(false,"unknown engine request: which = "+which
                                +"should be 0=Black,1=DD,2=Bachelier");
                     break;
             }
@@ -319,7 +319,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDecomposition() 
       {
          // Testing collared coupon against its decomposition...
@@ -382,7 +382,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla-npvCap));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Capped Leg: gearing=1, spread=0%, strike=" + capstrike*100 +
+            Assert.True(false,"\nYoY Capped Leg: gearing=1, spread=0%, strike=" + capstrike*100 +
                         "%\n" +
                         "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
                         "  Floating Leg NPV - Cap NPV: " + (npvVanilla - npvCap) + "\n" +
@@ -408,7 +408,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg-(npvVanilla + npvFloor));
          if (error>tolerance) 
          {
-            Assert.Fail("YoY Floored Leg: gearing=1, spread=0%, strike=" + floorstrike *100 +
+            Assert.True(false,"YoY Floored Leg: gearing=1, spread=0%, strike=" + floorstrike *100 +
                         "%\n" +
                         "  Floored Floating Leg NPV: " + npvFlooredLeg + "\n" +
                         "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor) + "\n" +
@@ -434,7 +434,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg -(npvVanilla - npvCollar));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Collared Leg: gearing=1, spread=0%, strike=" +
+            Assert.True(false,"\nYoY Collared Leg: gearing=1, spread=0%, strike=" +
                         floorstrike*100 + "% and " + capstrike*100 + "%\n" +
                         "  Collared Floating Leg NPV: " + npvCollaredLeg + "\n" +
                         "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar) + "\n" +
@@ -467,7 +467,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla-npvCap));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Capped Leg: gearing=" + gearing_p + ", " +
+            Assert.True(false,"\nYoY Capped Leg: gearing=" + gearing_p + ", " +
                         "spread= " + spread_p *100 +
                         "%, strike=" + capstrike*100  + "%, " +
                         "effective strike= " + (capstrike-spread_p)/gearing_p*100 +
@@ -492,7 +492,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla+ gearing_n*npvFloor));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Capped Leg: gearing=" + gearing_n + ", " +
+            Assert.True(false,"\nYoY Capped Leg: gearing=" + gearing_n + ", " +
                         "spread= " + spread_n *100 +
                         "%, strike=" + capstrike*100  + "%, " +
                         "effective strike= " + ((capstrike-spread_n)/gearing_n*100) +
@@ -530,7 +530,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg - (npvVanilla+npvFloor));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Floored Leg: gearing=" + gearing_p + ", "
+            Assert.True(false,"\nYoY Floored Leg: gearing=" + gearing_p + ", "
                         + "spread= " + spread_p *100+ "%, strike=" + floorstrike *100 + "%, "
                         + "effective strike= " + (floorstrike-spread_p)/gearing_p*100
                         + "%\n" +
@@ -553,7 +553,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg - (npvVanilla - gearing_n*npvCap));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Capped Leg: gearing=" + gearing_n + ", " +
+            Assert.True(false,"\nYoY Capped Leg: gearing=" + gearing_n + ", " +
                         "spread= " + spread_n *100 +
                         "%, strike=" + floorstrike*100  + "%, " +
                         "effective strike= " + (floorstrike-spread_n)/gearing_n*100 +
@@ -585,7 +585,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg - (npvVanilla - npvCollar));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Collared Leg: gearing=" + gearing_p + ", "
+            Assert.True(false,"\nYoY Collared Leg: gearing=" + gearing_p + ", "
                         + "spread= " + spread_p*100 + "%, strike="
                         + floorstrike*100 + "% and " + capstrike*100
                         + "%, "
@@ -613,7 +613,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg - (npvVanilla - gearing_n*npvCollar));
          if (error>tolerance) 
          {
-            Assert.Fail("\nYoY Collared Leg: gearing=" + gearing_n + ", "
+            Assert.True(false,"\nYoY Collared Leg: gearing=" + gearing_n + ", "
                         + "spread= " + spread_n*100 + "%, strike="
                         + floorstrike*100 + "% and " + capstrike*100
                         + "%, "
@@ -630,7 +630,7 @@ namespace TestSuite
          vars.hy.linkTo(new YoYInflationTermStructure());
    }
 
-      [TestMethod()]
+      [Fact]
       public void testInstrumentEquality() 
       {
 
@@ -704,7 +704,7 @@ namespace TestSuite
                         double capped = CashFlows.npv(leg2,vars.nominalTS,false);
                         if ( Math.Abs(capped - (swap.NPV() - cap.NPV())) > 1.0e-6) 
                         {
-                           Assert.Fail(
+                           Assert.True(false,
                                        "capped coupon != swap(0) - cap:\n"
                                        + "    length:      " + lengths[i] + " years\n"
                                        + "    volatility:  " + vols[k] + "\n"
@@ -719,7 +719,7 @@ namespace TestSuite
                         double floored = CashFlows.npv(leg3,vars.nominalTS,false);
                         if ( Math.Abs(floored - (swap.NPV() + floor.NPV())) > 1.0e-6) 
                         {
-                           Assert.Fail(
+                           Assert.True(false,
                                        "floored coupon != swap(0) + floor :\n"
                                        + "    length:      " + lengths[i] + " years\n"
                                        + "    volatility:  " + vols[k] + "\n"

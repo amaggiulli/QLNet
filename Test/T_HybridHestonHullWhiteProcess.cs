@@ -16,15 +16,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_HybridHestonHullWhiteProcess
    {
-      [TestMethod()]
+      [Fact]
       public void testBsmHullWhiteEngine()
       {
          // Testing European option pricing for a BSM process with one-factor Hull-White model
@@ -81,44 +81,44 @@ namespace TestSuite
 
             if (Math.Abs(impliedVol - expectedVol[i]) > tol)
             {
-               Assert.Fail("Failed to reproduce implied volatility"
+               Assert.True(false,"Failed to reproduce implied volatility"
                           + "\n    calculated: " + impliedVol
                           + "\n    expected  : " + expectedVol[i]);
             }
             if (Math.Abs((comp.NPV() - npv)/npv) > tol)
             {
-               Assert.Fail("Failed to reproduce NPV"
+               Assert.True(false,"Failed to reproduce NPV"
                           + "\n    calculated: " + npv
                           + "\n    expected  : " + comp.NPV());
             }
             if (Math.Abs(comp.delta() - option.delta()) > tol)
             {
-               Assert.Fail("Failed to reproduce NPV"
+               Assert.True(false,"Failed to reproduce NPV"
                           + "\n    calculated: " + npv
                           + "\n    expected  : " + comp.NPV());
             }
             if (Math.Abs((comp.gamma() - option.gamma())/npv) > tol)
             {
-               Assert.Fail("Failed to reproduce NPV"
+               Assert.True(false,"Failed to reproduce NPV"
                           + "\n    calculated: " + npv
                           + "\n    expected  : " + comp.NPV());
             }
             if (Math.Abs((comp.theta() - option.theta())/npv) > tol)
             {
-               Assert.Fail("Failed to reproduce NPV"
+               Assert.True(false,"Failed to reproduce NPV"
                           + "\n    calculated: " + npv
                           + "\n    expected  : " + comp.NPV());
             }
             if (Math.Abs((comp.vega() - option.vega())/npv) > tol)
             {
-               Assert.Fail("Failed to reproduce NPV"
+               Assert.True(false,"Failed to reproduce NPV"
                           + "\n    calculated: " + npv
                           + "\n    expected  : " + comp.NPV());
             }
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCompareBsmHWandHestonHW() 
       {
          // Comparing European option pricing for a BSM process with one-factor Hull-White model
@@ -192,7 +192,7 @@ namespace TestSuite
                   if (Math.Abs(calculated - expected) > calculated*tol &&
                       Math.Abs(calculated - expected) > tol)
                   {
-                     Assert.Fail("Failed to reproduce npvs"
+                     Assert.True(false,"Failed to reproduce npvs"
                                  + "\n    calculated: " + calculated
                                  + "\n    expected  : " + expected
                                  + "\n    strike    : " + strike[j]
@@ -205,7 +205,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testZeroBondPricing() 
       {
          // Testing Monte-Carlo zero bond pricing
@@ -303,7 +303,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated - expected) > 0.03)
             {
-               Assert.Fail("Failed to reproduce expected zero bond prices"
+               Assert.True(false,"Failed to reproduce expected zero bond prices"
                            + "\n   t:          " + t
                            + "\n   calculated: " + calculated
                            + "\n   expected:   " + expected);
@@ -316,7 +316,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated - expected) > 0.0035)
             {
-               Assert.Fail("Failed to reproduce expected zero bond option prices"
+               Assert.True(false,"Failed to reproduce expected zero bond option prices"
                            + "\n   t:          " + t
                            + "\n   T:          " + T
                            + "\n   calculated: " + calculated
@@ -325,7 +325,7 @@ namespace TestSuite
          }
       }
    
-      [TestMethod()]
+      [Fact]
       public void testMcVanillaPricing() 
       {
         // Testing Monte-Carlo vanilla option pricing
@@ -405,7 +405,7 @@ namespace TestSuite
                if ((corr[i] != 0.0 && Math.Abs(calculated - expected) > 3*error)
                    || (corr[i] == 0.0 && Math.Abs(calculated - expected) > 1e-4))
                {
-                  Assert.Fail("Failed to reproduce BSM-HW vanilla prices"
+                  Assert.True(false,"Failed to reproduce BSM-HW vanilla prices"
                               + "\n   corr:       " + corr[i]
                               + "\n   strike:     " + strike[j]
                               + "\n   calculated: " + calculated
@@ -416,7 +416,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testMcPureHestonPricing() 
       {
          // Testing Monte-Carlo Heston option pricing
@@ -488,7 +488,7 @@ namespace TestSuite
                if (Math.Abs(calculated - expected) > 3*error
                    && Math.Abs(calculated - expected) > tol)
                {
-                  Assert.Fail("Failed to reproduce pure heston vanilla prices"
+                  Assert.True(false,"Failed to reproduce pure heston vanilla prices"
                               + "\n   corr:       " + corr[i]
                               + "\n   strike:     " + strike[j]
                               + "\n   calculated: " + calculated
@@ -499,7 +499,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticHestonHullWhitePricing() 
       {
          // Testing analytic Heston Hull-White option pricing
@@ -571,7 +571,7 @@ namespace TestSuite
                if (Math.Abs(calculated - expected) > 3*error
                    && Math.Abs(calculated - expected) > tol)
                {
-                  Assert.Fail("Failed to reproduce hw heston vanilla prices"
+                  Assert.True(false,"Failed to reproduce hw heston vanilla prices"
                               + "\n   strike:     " + strike[j]
                               + "\n   calculated: " + calculated
                               + "\n   error:      " + error
@@ -581,7 +581,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCallableEquityPricing() 
       {
          // Testing the pricing of a callable equity product
@@ -689,14 +689,14 @@ namespace TestSuite
 
          if (Math.Abs(expected - calculated) > 3*error)
          {
-            Assert.Fail("Failed to reproduce auto-callable equity structure price"
+            Assert.True(false,"Failed to reproduce auto-callable equity structure price"
                         + "\n   calculated: " + calculated
                         + "\n   error:      " + error
                         + "\n   expected:   " + expected);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDiscretizationError() 
       {
          // Testing the discretization error of the Heston Hull-White process
@@ -772,7 +772,7 @@ namespace TestSuite
                if ((Math.Abs(calculated - expected) > 3*error
                     && Math.Abs(calculated - expected) > 1e-5))
                {
-                  Assert.Fail("Failed to reproduce discretization error"
+                  Assert.True(false,"Failed to reproduce discretization error"
                               + "\n   corr:       " + corr[i]
                               + "\n   strike:     " + strike[j]
                               + "\n   calculated: " + calculated
@@ -783,7 +783,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testH1HWPricingEngine() 
       {
          SavedSettings backup = new SavedSettings();
@@ -847,7 +847,7 @@ namespace TestSuite
 
                if (Math.Abs(expected[j][i] - impliedH1HW) > tol)
                {
-                  Assert.Fail("Failed to reproduce H1HW implied volatility"
+                  Assert.True(false,"Failed to reproduce H1HW implied volatility"
                               + "\n   expected       : " + expected[j][i]
                               + "\n   calculated     : " + impliedH1HW
                               + "\n   tol            : " + tol

@@ -17,15 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_DefaultProbabilityCurves
    {
-      [TestMethod()]
+      [Fact]
       public void testDefaultProbability() 
       {
          // Testing default-probability structure...
@@ -57,7 +57,7 @@ namespace TestSuite
             double pBetween = pEnd - pStart;
 
             if (Math.Abs(pBetween - pBetweenComputed) > tolerance)
-               Assert.Fail( "Failed to reproduce probability(d1, d2) "
+               Assert.True(false, "Failed to reproduce probability(d1, d2) "
                             + "for default probability structure\n"
                             + "    calculated probability: " + pBetweenComputed + "\n"
                             + "    expected probability:   " + pBetween);
@@ -68,7 +68,7 @@ namespace TestSuite
                flatHazardRate.defaultProbability(endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               Assert.Fail( "single-time probability and single-date probability do not match\n"
+               Assert.True(false, "single-time probability and single-date probability do not match\n"
                            + "    time probability: " + timeProbability + "\n"
                            + "    date probability: " + dateProbability);
 
@@ -77,14 +77,14 @@ namespace TestSuite
             dateProbability = flatHazardRate.defaultProbability(startDate, endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               Assert.Fail( "double-time probability and double-date probability do not match\n"
+               Assert.True(false, "double-time probability and double-date probability do not match\n"
                             + "    time probability: " + timeProbability + "\n"
                             + "    date probability: " + dateProbability);
       
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFlatHazardRate() 
       {
 
@@ -111,13 +111,13 @@ namespace TestSuite
             double computedProbability = flatHazardRate.defaultProbability(t);
 
             if (Math.Abs(probability - computedProbability) > tolerance)
-               Assert.Fail( "Failed to reproduce probability for flat hazard rate\n"
+               Assert.True(false, "Failed to reproduce probability for flat hazard rate\n"
                             + "    calculated probability: " + computedProbability + "\n"
                             + "    expected probability:   " + probability);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFlatHazardConsistency() 
       {
          // Testing piecewise-flat hazard-rate consistency...

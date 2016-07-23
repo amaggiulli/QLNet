@@ -19,11 +19,11 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
     public class T_Matrices {
 
         int N;
@@ -87,7 +87,7 @@ namespace TestSuite {
             M7[0,1] = 0.3; M7[0,2] = 0.2; M7[2,1] = 1.2;
         }
 
-        [TestMethod()]
+        [Fact]
         public void testEigenvectors() {
             //("Testing eigenvalues and eigenvectors calculation...");
 
@@ -111,10 +111,10 @@ namespace TestSuite {
                     Vector a = M * v;
                     Vector b = eigenValues[i] * v;
                     if (norm(a-b) > 1.0e-15)
-                        Assert.Fail("Eigenvector definition not satisfied");
+                        Assert.True(false,"Eigenvector definition not satisfied");
                     // check decreasing ordering
                     if (eigenValues[i] >= minHolder) {
-                        Assert.Fail("Eigenvalues not ordered: " + eigenValues);
+                        Assert.True(false,"Eigenvalues not ordered: " + eigenValues);
                     } else
                         minHolder = eigenValues[i];
                 }
@@ -122,11 +122,11 @@ namespace TestSuite {
                 // check normalization
                 Matrix m = eigenVectors * Matrix.transpose(eigenVectors);
                 if (norm(m-I) > 1.0e-15)
-                    Assert.Fail("Eigenvector not normalized");
+                    Assert.True(false,"Eigenvector not normalized");
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testSqrt() {
 
             //BOOST_MESSAGE("Testing matricial square root...");
@@ -138,7 +138,7 @@ namespace TestSuite {
             double error = norm(temp - M1);
             double tolerance = 1.0e-12;
             if (error>tolerance) {
-                Assert.Fail("Matrix square root calculation failed\n"
+                Assert.True(false,"Matrix square root calculation failed\n"
                            + "original matrix:\n" + M1
                            + "pseudoSqrt:\n" + m
                            + "pseudoSqrt*pseudoSqrt:\n" + temp
@@ -147,7 +147,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testHighamSqrt() {
             //BOOST_MESSAGE("Testing Higham matricial square root...");
 
@@ -158,7 +158,7 @@ namespace TestSuite {
             double error = norm(ansSqrt - tempSqrt);
             double tolerance = 1.0e-4;
             if (error>tolerance) {
-                Assert.Fail("Higham matrix correction failed\n"
+                Assert.True(false,"Higham matrix correction failed\n"
                            + "original matrix:\n" + M5
                            + "pseudoSqrt:\n" + tempSqrt
                            + "should be:\n" + ansSqrt
@@ -167,7 +167,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testSVD() {
 
             //BOOST_MESSAGE("Testing singular value decomposition...");
@@ -192,25 +192,25 @@ namespace TestSuite {
 
                 for (int i=0; i < S.rows(); i++) {
                     if (S[i,i] != s[i])
-                        Assert.Fail("S not consistent with s");
+                        Assert.True(false,"S not consistent with s");
                 }
 
                 // tests
                 Matrix U_Utranspose = Matrix.transpose(U)*U;
                 if (norm(U_Utranspose-I) > tol)
-                    Assert.Fail("U not orthogonal (norm of U^T*U-I = " + norm(U_Utranspose-I) + ")");
+                    Assert.True(false,"U not orthogonal (norm of U^T*U-I = " + norm(U_Utranspose-I) + ")");
 
                 Matrix V_Vtranspose = Matrix.transpose(V) * V;
                 if (norm(V_Vtranspose-I) > tol)
-                    Assert.Fail("V not orthogonal (norm of V^T*V-I = " + norm(V_Vtranspose-I) + ")");
+                    Assert.True(false,"V not orthogonal (norm of V^T*V-I = " + norm(V_Vtranspose-I) + ")");
 
                 Matrix A_reconstructed = U * S * Matrix.transpose(V);
                 if (norm(A_reconstructed-A) > tol)
-                    Assert.Fail("Product does not recover A: (norm of U*S*V^T-A = " + norm(A_reconstructed-A) + ")");
+                    Assert.True(false,"Product does not recover A: (norm of U*S*V^T-A = " + norm(A_reconstructed-A) + ")");
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testQRDecomposition() 
         {
 
@@ -236,20 +236,20 @@ namespace TestSuite {
                }
 
                if (norm(Q*R - A*P) > tol)
-                  Assert.Fail("Q*R does not match matrix A*P (norm = "
+                  Assert.True(false,"Q*R does not match matrix A*P (norm = "
                               + norm(Q*R-A*P) + ")");
 
                pivot = false;
                MatrixUtilities.qrDecomposition(A, ref Q, ref R, pivot);
 
                if (norm(Q*R - A) > tol)
-                  Assert.Fail("Q*R does not match matrix A (norm = "
+                  Assert.True(false,"Q*R does not match matrix A (norm = "
                               + norm(Q*R-A) + ")");
     
          }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testQRSolve()
         {
            // Testing QR solve...
@@ -281,7 +281,7 @@ namespace TestSuite {
                  if ( A.columns() >= A.rows() )
                  {
                     if ( norm( A * x - b ) > tol )
-                       Assert.Fail( "A*x does not match vector b (norm = "
+                       Assert.True(false, "A*x does not match vector b (norm = "
                                   + norm( A * x - b ) + ")" );
                  }
                  else
@@ -314,7 +314,7 @@ namespace TestSuite {
 
                     if ( norm( xr - x ) > tol )
                     {
-                       Assert.Fail( "least square solution does not match (norm = "
+                       Assert.True(false, "least square solution does not match (norm = "
                                   + norm( x - xr ) + ")" );
 
                     }

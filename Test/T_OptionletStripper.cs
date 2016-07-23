@@ -15,12 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_OptionletStripper
    {
       class CommonVars
@@ -218,7 +218,7 @@ namespace TestSuite
       }
       }
       
-      [TestMethod()]
+      [Fact]
       public void testFlatTermVolatilityStripping1() 
       {
          // Testing forward/forward vol stripping from flat term vol 
@@ -261,7 +261,7 @@ namespace TestSuite
 
                double error = Math.Abs(priceFromStrippedVolatility - priceFromConstantVolatility);
                if (error>vars.tolerance)
-                Assert.Fail("\noption tenor:       " + vars.optionTenors[tenorIndex] +
+                Assert.True(false,"\noption tenor:       " + vars.optionTenors[tenorIndex] +
                             "\nstrike:             " + vars.strikes[strikeIndex] +
                             "\nstripped vol price: " + priceFromStrippedVolatility +
                             "\nconstant vol price: " + priceFromConstantVolatility +
@@ -271,7 +271,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testTermVolatilityStripping1() 
       {
 
@@ -315,7 +315,7 @@ namespace TestSuite
 
                double error = Math.Abs(priceFromStrippedVolatility - priceFromConstantVolatility);
                if (error>vars.tolerance)
-                  Assert.Fail("\noption tenor:       " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false,"\noption tenor:       " + vars.optionTenors[tenorIndex] +
                               "\nstrike:             " + vars.strikes[strikeIndex] +
                               "\nstripped vol price: " + priceFromStrippedVolatility +
                               "\nconstant vol price: " + priceFromConstantVolatility +
@@ -325,7 +325,7 @@ namespace TestSuite
     }
 }
 
-      [TestMethod()]
+      [Fact]
       public void testFlatTermVolatilityStripping2() 
       {
          // Testing forward/forward vol stripping from flat term vol 
@@ -373,7 +373,7 @@ namespace TestSuite
 
                double error = Math.Abs(strippedVol1-strippedVol2);
                if (error>vars.tolerance)
-                  Assert.Fail("\noption tenor:  " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false,"\noption tenor:  " + vars.optionTenors[tenorIndex] +
                               "\nstrike:        " + vars.strikes[strikeIndex] +
                               "\nstripped vol1: " + strippedVol1 +
                               "\nstripped vol2: " + strippedVol2 +
@@ -385,7 +385,7 @@ namespace TestSuite
 
 }
 
-      [TestMethod()]
+      [Fact]
       public void testTermVolatilityStripping2() 
       {
          // Testing forward/forward vol stripping from non-flat term vol "
@@ -424,7 +424,7 @@ namespace TestSuite
 
                double error = Math.Abs(strippedVol1-strippedVol2);
                if (error>vars.tolerance)
-               Assert.Fail("\noption tenor:  " + vars.optionTenors[tenorIndex] +
+               Assert.True(false,"\noption tenor:  " + vars.optionTenors[tenorIndex] +
                            "\nstrike:        " + (vars.strikes[strikeIndex]) +
                            "\nstripped vol1: " + (strippedVol1) +
                            "\nstripped vol2: " + (strippedVol2) +

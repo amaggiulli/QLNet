@@ -18,13 +18,13 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_BasketOption
    {
       public enum BasketType { MinBasket, MaxBasket, SpreadBasket };
@@ -96,7 +96,7 @@ namespace TestSuite
                               double s1, double s2, double q1, double q2, double r, Date today, double v1, double v2, double rho, 
                               double expected, double calculated, double error, double tolerance) 
       {
-         Assert.Fail( Utilities.exerciseTypeToString(exercise) + " " 
+         Assert.True(false, Utilities.exerciseTypeToString(exercise) + " " 
                       + payoff.optionType() + " option on " 
                       + basketTypeToString(basketType) 
                       + " with " + Utilities.payoffTypeToString(payoff) + " payoff:\n" 
@@ -118,7 +118,7 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+      [Fact]
       public void testEuroTwoValues() 
       {
          // Testing two-asset European basket options...

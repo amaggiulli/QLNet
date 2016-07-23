@@ -17,7 +17,8 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,6 @@ namespace TestSuite
    // zero inflation tests, index, termstructure, and swaps
    //===========================================================================================
 
-   [TestClass()]
    public class T_Inflation
    {
       private YieldTermStructure nominalTermStructure()
@@ -85,7 +85,7 @@ namespace TestSuite
          return instruments;
       }
 
-      [TestMethod()]
+      [Fact]
       public void testZeroIndex()
       {
          // Testing zero inflation indices...
@@ -97,7 +97,7 @@ namespace TestSuite
              || !euhicp.interpolated()
              || euhicp.availabilityLag() != new Period(1, TimeUnit.Months))
          {
-            Assert.Fail("wrong EU HICP data ("
+            Assert.True(false,"wrong EU HICP data ("
                         + euhicp.name() + ", "
                         + euhicp.frequency() + ", "
                         + euhicp.revised() + ", "
@@ -112,7 +112,7 @@ namespace TestSuite
              || ukrpi.interpolated()
              || ukrpi.availabilityLag() != new Period(1, TimeUnit.Months))
          {
-            Assert.Fail("wrong UK RPI data ("
+            Assert.True(false,"wrong UK RPI data ("
                         + ukrpi.name() + ", "
                         + ukrpi.frequency() + ", "
                         + ukrpi.revised() + ", "
@@ -168,7 +168,7 @@ namespace TestSuite
                if (d < Utils.inflationPeriod(todayMinusLag, iir.frequency()).Key)
                {
                   if (Math.Abs(iir.fixing(d) - fixData[i]) > eps)
-                     Assert.Fail("Fixings not constant within a period: "
+                     Assert.True(false,"Fixings not constant within a period: "
                                  + iir.fixing(d)
                                  + ", should be " + fixData[i]);
                }
@@ -176,7 +176,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testZeroTermStructure()
       {
          // Testing zero inflation term structure...
@@ -256,7 +256,7 @@ namespace TestSuite
             bool forceLinearInterpolation = false;
             for (int i = 0; i < zcData.Length; i++)
             {
-               Assert.IsTrue(Math.Abs(zcData[i].rate / 100.0
+               Assert.True(Math.Abs(zcData[i].rate / 100.0
                - pZITS.zeroRate(zcData[i].date, observationLag, forceLinearInterpolation)) < eps,
                "ZITS zeroRate != instrument "
                + pZITS.zeroRate(zcData[i].date, observationLag, forceLinearInterpolation)
@@ -264,7 +264,7 @@ namespace TestSuite
                + " interpolation: " + ii.interpolated()
                + " forceLinearInterpolation " + forceLinearInterpolation);
 
-               Assert.IsTrue(Math.Abs(helpers[i].impliedQuote()
+               Assert.True(Math.Abs(helpers[i].impliedQuote()
                - zcData[i].rate / 100.0) < eps,
                "ZITS implied quote != instrument "
                + helpers[i].impliedQuote()
@@ -295,7 +295,7 @@ namespace TestSuite
                if (t <= 0)
                   calc = ii.fixing(d, false); // still historical
                if (Math.Abs(calc - ii.fixing(d, true)) / 10000.0 > eps)
-                  Assert.Fail("ZC index does not forecast correctly for date " + d
+                  Assert.True(false,"ZC index does not forecast correctly for date " + d
                            + " from base date " + bd
                            + " with fixing " + bf
                            + ", correct:  " + calc
@@ -317,7 +317,7 @@ namespace TestSuite
             IndexedCashFlow iicf = new IndexedCashFlow(notional, ind, baseDate, fixDate, payDate);
             double correctIndexed = ii.fixing(iicf.fixingDate()) / ii.fixing(iicf.baseDate());
             double calculatedIndexed = iicf.amount() / iicf.notional();
-            Assert.IsTrue(Math.Abs(correctIndexed - calculatedIndexed) < eps,
+            Assert.True(Math.Abs(correctIndexed - calculatedIndexed) < eps,
                              "IndexedCashFlow indexing wrong: " + calculatedIndexed + " vs correct = "
                              + correctIndexed);
 
@@ -343,7 +343,7 @@ namespace TestSuite
             nzcis.setPricingEngine(sppe);
 
             // ... and price it, should be zero
-            Assert.IsTrue(Math.Abs(nzcis.NPV()) < 0.00001, "ZCIS does not reprice to zero "
+            Assert.True(Math.Abs(nzcis.NPV()) < 0.00001, "ZCIS does not reprice to zero "
                           + nzcis.NPV()
                           + evaluationDate + " to " + zcData[6].date + " becoming " + nzcis.maturityDate()
                           + " rate " + zcData[6].rate
@@ -420,7 +420,7 @@ namespace TestSuite
             {
                if (Math.Abs(fixing[i] - seasonalityFixing_1[i]) > eps)
                {
-                  Assert.Fail("Seasonality doesn't work correctly when seasonality factors are set = 1");
+                  Assert.True(false,"Seasonality doesn't work correctly when seasonality factors are set = 1");
                }
             }
 
@@ -464,7 +464,7 @@ namespace TestSuite
             {
                if (Math.Abs(expectedFixing[i] - seasonalityFixing_real[i]) > 0.01)
                {
-                  Assert.Fail("Seasonality doesn't work correctly when considering seasonality factors != 1 "
+                  Assert.True(false,"Seasonality doesn't work correctly when considering seasonality factors != 1 "
                               + expectedFixing[i] + " vs " + seasonalityFixing_real[i]);
                }
             }
@@ -494,7 +494,7 @@ namespace TestSuite
             {
                if (Math.Abs(seasonalityFixing_unset[i] - seasonalityFixing_1[i]) > eps)
                {
-                  Assert.Fail("UnsetSeasonality doesn't work correctly "
+                  Assert.True(false,"UnsetSeasonality doesn't work correctly "
                               + seasonalityFixing_unset[i] + " vs " + seasonalityFixing_1[i]);
                }
             }
@@ -531,7 +531,7 @@ namespace TestSuite
             forceLinearInterpolation = false;   // still
             for (int i = 0; i < zcData.Length; i++)
             {
-               Assert.IsTrue(Math.Abs(zcData[i].rate / 100.0
+               Assert.True(Math.Abs(zcData[i].rate / 100.0
                            - pZITSyes.zeroRate(zcData[i].date, observationLagyes, forceLinearInterpolation)) < eps,
                            "ZITS INTERPOLATED zeroRate != instrument "
                            + pZITSyes.zeroRate(zcData[i].date, observationLagyes, forceLinearInterpolation)
@@ -539,7 +539,7 @@ namespace TestSuite
                            + " vs " + zcData[i].rate / 100.0
                            + " interpolation: " + iiyes.interpolated()
                            + " forceLinearInterpolation " + forceLinearInterpolation);
-               Assert.IsTrue(Math.Abs(helpersyes[i].impliedQuote()
+               Assert.True(Math.Abs(helpersyes[i].impliedQuote()
                               - zcData[i].rate / 100.0) < eps,
                            "ZITS INTERPOLATED implied quote != instrument "
                            + helpersyes[i].impliedQuote()
@@ -567,7 +567,7 @@ namespace TestSuite
                double calc = bf * Math.Pow(1 + z, t);
                if (t <= 0) calc = iiyes.fixing(d); // still historical
                if (Math.Abs(calc - iiyes.fixing(d)) > eps)
-                  Assert.Fail("ZC INTERPOLATED index does not forecast correctly for date " + d
+                  Assert.True(false,"ZC INTERPOLATED index does not forecast correctly for date " + d
                               + " from base date " + bd
                               + " with fixing " + bf
                               + ", correct:  " + calc
@@ -593,7 +593,7 @@ namespace TestSuite
             nzcisyes.setPricingEngine(sppe);
 
             // ... and price it, should be zero
-            Assert.IsTrue(Math.Abs(nzcisyes.NPV()) < 0.00001, "ZCIS-I does not reprice to zero "
+            Assert.True(Math.Abs(nzcisyes.NPV()) < 0.00001, "ZCIS-I does not reprice to zero "
                               + nzcisyes.NPV()
                               + evaluationDate + " to " + zcData[6].date + " becoming " + nzcisyes.maturityDate()
                               + " rate " + zcData[6].rate
@@ -610,7 +610,7 @@ namespace TestSuite
       //===========================================================================================
       // year on year tests, index, termstructure, and swaps
       //===========================================================================================
-      [TestMethod()]
+      [Fact]
       public void testYYIndex()
       {
          // Testing year-on-year inflation indices
@@ -627,7 +627,7 @@ namespace TestSuite
                || yyeuhicp.ratio()
                || yyeuhicp.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               Assert.Fail("wrong year-on-year EU HICP data ("
+               Assert.True(false,"wrong year-on-year EU HICP data ("
                         + yyeuhicp.name() + ", "
                         + yyeuhicp.frequency() + ", "
                         + yyeuhicp.revised() + ", "
@@ -644,7 +644,7 @@ namespace TestSuite
                || !yyeuhicpr.ratio()
                || yyeuhicpr.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               Assert.Fail("wrong year-on-year EU HICPr data ("
+               Assert.True(false,"wrong year-on-year EU HICPr data ("
                            + yyeuhicpr.name() + ", "
                            + yyeuhicpr.frequency() + ", "
                            + yyeuhicpr.revised() + ", "
@@ -661,7 +661,7 @@ namespace TestSuite
                || yyukrpi.ratio()
                || yyukrpi.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               Assert.Fail("wrong year-on-year UK RPI data ("
+               Assert.True(false,"wrong year-on-year UK RPI data ("
                            + yyukrpi.name() + ", "
                            + yyukrpi.frequency() + ", "
                            + yyukrpi.revised() + ", "
@@ -678,7 +678,7 @@ namespace TestSuite
                || !yyukrpir.ratio()
                || yyukrpir.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               Assert.Fail("wrong year-on-year UK RPIr data ("
+               Assert.True(false,"wrong year-on-year UK RPIr data ("
                            + yyukrpir.name() + ", "
                            + yyukrpir.frequency() + ", "
                            + yyukrpir.revised() + ", "
@@ -737,7 +737,7 @@ namespace TestSuite
                   {
                      double expected = fixData[i] / fixData[i - 12] - 1.0;
                      double calculated = iir.fixing(d);
-                     Assert.IsTrue(Math.Abs(calculated - expected) < eps,
+                     Assert.True(Math.Abs(calculated - expected) < eps,
                                        "Non-interpolated fixings not constant within a period: "
                                        + calculated
                                        + ", should be "
@@ -754,7 +754,7 @@ namespace TestSuite
                      double linearBef = fixData[i - 12] + (fixData[i + 1 - 12] - fixData[i - 12]) * dlBef / dpBef;
                      double expectedYES = linearNow / linearBef - 1.0;
                      double calculatedYES = iirYES.fixing(d);
-                     Assert.IsTrue(Math.Abs(expectedYES - calculatedYES) < eps,
+                     Assert.True(Math.Abs(expectedYES - calculatedYES) < eps,
                                        "Error in interpolated fixings: expect " + expectedYES
                                        + " see " + calculatedYES
                                        + " flat " + calculated
@@ -771,7 +771,7 @@ namespace TestSuite
       }
 
 
-      [TestMethod()]
+      [Fact]
       public void testYYTermStructure()
       {
          // Testing year-on-year inflation term structure...
@@ -879,7 +879,7 @@ namespace TestSuite
 
                yyS2.setPricingEngine(sppe);
 
-               Assert.IsTrue(Math.Abs(yyS2.NPV()) < eps, "fresh yoy swap NPV!=0 from TS "
+               Assert.True(Math.Abs(yyS2.NPV()) < eps, "fresh yoy swap NPV!=0 from TS "
                         + "swap quote for pt " + j
                         + ", is " + yyData[j].rate / 100.0
                         + " vs YoY rate " + pYYTS.yoyRate(yyData[j].date - observationLag)
@@ -915,7 +915,7 @@ namespace TestSuite
 
                yyS3.setPricingEngine(sppe);
 
-               Assert.IsTrue(Math.Abs(yyS3.NPV()) < 20000.0,
+               Assert.True(Math.Abs(yyS3.NPV()) < 20000.0,
                                     "unexpected size of aged YoY swap, aged "
                                     + k + " months: YY aged NPV = " + yyS3.NPV()
                                     + ", legs " + yyS3.legNPV(0) + " and " + yyS3.legNPV(1)

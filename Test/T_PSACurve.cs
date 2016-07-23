@@ -16,15 +16,16 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_PSACurve
    {
-      [TestMethod()]
+      [Fact]
       public void testCashedValues()
       {
 
@@ -47,9 +48,9 @@ namespace TestSuite
          for (int i = 0; i < schedule.Count; i++)
          {
             if ( i <= 29 )
-               Assert.AreEqual(listCPR[i], psa100.getCPR(schedule[i])*100,0.001);
+               Assert.True(Math.Abs(listCPR[i] - psa100.getCPR(schedule[i])*100) <= 0.001);
             else
-               Assert.AreEqual(6.0000, psa100.getCPR(schedule[i])*100);
+               Assert.Equal(6.0000, psa100.getCPR(schedule[i])*100);
          }
 
 

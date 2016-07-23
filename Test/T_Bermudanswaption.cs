@@ -19,12 +19,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
     public class T_Bermudanswaption
     {
         public class CommonVars
@@ -98,7 +98,7 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testCachedValues() {
 
             //("Testing Bermudan swaption against cached values...");
@@ -145,21 +145,21 @@ namespace TestSuite
             Swaption swaption = new Swaption(itmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-itmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached in-the-money swaption value:\n"
+                Assert.True(false,"failed to reproduce cached in-the-money swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + itmValue);
             
             swaption = new Swaption(atmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-atmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached at-the-money swaption value:\n"
+                Assert.True(false,"failed to reproduce cached at-the-money swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + atmValue);
             
             swaption = new Swaption(otmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-otmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached out-of-the-money "
+                Assert.True(false,"failed to reproduce cached out-of-the-money "
                             + "swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + otmValue);
@@ -177,21 +177,21 @@ namespace TestSuite
             swaption = new Swaption(itmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-itmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached in-the-money swaption value:\n"
+                Assert.True(false,"failed to reproduce cached in-the-money swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + itmValue);
             
             swaption = new Swaption(atmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-atmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached at-the-money swaption value:\n"
+                Assert.True(false,"failed to reproduce cached at-the-money swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + atmValue);
             
             swaption = new Swaption(otmSwap, exercise);
             swaption.setPricingEngine(engine);
             if (Math.Abs(swaption.NPV()-otmValue) > tolerance)
-                Assert.Fail("failed to reproduce cached out-of-the-money "
+                Assert.True(false,"failed to reproduce cached out-of-the-money "
                             + "swaption value:\n"
                             + "calculated: " + swaption.NPV() + "\n"
                             + "expected:   " + otmValue);

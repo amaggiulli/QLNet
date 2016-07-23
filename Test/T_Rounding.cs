@@ -17,12 +17,12 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Rounding
    {
       public struct TestCase
@@ -71,7 +71,7 @@ namespace TestSuite
            new TestCase(7.89428221, 2, 7.89, 7.90, 7.89, 7.89, 7.89 ) 
         };
 
-      [TestMethod()]
+      [Fact]
       public void testClosest()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -81,10 +81,10 @@ namespace TestSuite
             double calculated = closest.Round(testData[i].x);
             double expected = testData[i].closest;
             if (!Utils.close(calculated, expected, 1))
-               Assert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false,"Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
-      [TestMethod()]
+      [Fact]
       public void testUp()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -94,11 +94,11 @@ namespace TestSuite
             double calculated = up.Round(testData[i].x);
             double expected = testData[i].up;
             if (!Utils.close(calculated, expected, 1))
-               Assert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false,"Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testDown()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -108,11 +108,11 @@ namespace TestSuite
             double calculated = down.Round(testData[i].x);
             double expected = testData[i].down;
             if (!Utils.close(calculated, expected, 1))
-               Assert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false,"Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFloor()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -122,11 +122,11 @@ namespace TestSuite
             double calculated = floor.Round(testData[i].x);
             double expected = testData[i].floor;
             if (!Utils.close(calculated, expected, 1))
-               Assert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false,"Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCeiling()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -136,7 +136,7 @@ namespace TestSuite
             double calculated = ceiling.Round(testData[i].x);
             double expected = testData[i].ceiling;
             if (!Utils.close(calculated, expected, 1))
-               Assert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false,"Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 

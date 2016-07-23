@@ -16,12 +16,12 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_DigitalOption
    {
       struct DigitalOptionData
@@ -56,7 +56,7 @@ namespace TestSuite
                            Date today, double v, double expected, double calculated, double error, double tolerance,
                            bool knockin )
       {
-         Assert.Fail( exercise + " "
+         Assert.True(false, exercise + " "
                 + payoff.optionType() + " option with "
                 + payoff + " payoff:\n"
                 + "    spot value:       " + s + "\n"
@@ -74,7 +74,7 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCashOrNothingEuropeanValues()
       {
          // Testing European cash-or-nothing digital option
@@ -130,7 +130,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAssetOrNothingEuropeanValues()
       {
 
@@ -186,7 +186,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testGapEuropeanValues()
       {
          // Testing European gap digital option
@@ -241,7 +241,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCashAtHitOrNothingAmericanValues()
       {
          // Testing American cash-(at-hit)-or-nothing digital option
@@ -307,7 +307,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAssetAtHitOrNothingAmericanValues()
       {
          // Testing American asset-(at-hit)-or-nothing "digital option
@@ -371,7 +371,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCashAtExpiryOrNothingAmericanValues()
       {
          // Testing American cash-(at-expiry)-or-nothing digital option
@@ -438,7 +438,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAssetAtExpiryOrNothingAmericanValues()
       {
 
@@ -511,7 +511,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testCashAtHitOrNothingAmericanGreeks()
       {
 
@@ -650,7 +650,7 @@ namespace TestSuite
          }
       }
 
-      //[TestMethod()]
+      //[Fact]
       //public void testMCCashAtHit()
       //{
 

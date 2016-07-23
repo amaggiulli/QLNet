@@ -17,16 +17,16 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 using System.Numerics;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Functions
    {
-      [TestMethod()]
+      [Fact]
       public void testFactorial() 
       {
          // Testing factorial numbers
@@ -34,14 +34,14 @@ namespace TestSuite
          double expected = 1.0;
          double calculated = Factorial.get(0);
          if (calculated!=expected)
-            Assert.Fail("Factorial(0) = " + calculated);
+            Assert.True(false,"Factorial(0) = " + calculated);
 
          for (uint i=1; i<171; ++i) 
          {
             expected *= i;
             calculated = Factorial.get(i);
             if (Math.Abs(calculated-expected)/expected > 1.0e-9)
-               Assert.Fail("Factorial(" + i + ")" +
+               Assert.True(false,"Factorial(" + i + ")" +
                            "\n calculated: " + calculated +
                            "\n   expected: " + expected +
                            "\n rel. error: " +
@@ -49,7 +49,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testGammaFunction() 
       {
          // Testing Gamma function
@@ -57,7 +57,7 @@ namespace TestSuite
          double expected = 0.0;
          double calculated = GammaFunction.logValue(1);
          if (Math.Abs(calculated) > 1.0e-15)
-            Assert.Fail("GammaFunction(1)\n"
+            Assert.True(false,"GammaFunction(1)\n"
                         + "    calculated: " + calculated + "\n"
                         + "    expected:   " + expected);
 
@@ -66,7 +66,7 @@ namespace TestSuite
             expected  += Math.Log(i);
             calculated = GammaFunction.logValue((i+1));
             if (Math.Abs(calculated-expected)/expected > 1.0e-9)
-               Assert.Fail("GammaFunction(" + i + ")\n"
+               Assert.True(false,"GammaFunction(" + i + ")\n"
                            + "    calculated: " + calculated + "\n"
                            + "    expected:   " + expected + "\n"
                            + "    rel. error: "
@@ -74,7 +74,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testGammaValues() 
       {
          // Testing Gamma values
@@ -102,7 +102,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated - expected) > tol) 
             {
-               Assert.Fail("GammaFunction(" + x + ")\n"
+               Assert.True(false,"GammaFunction(" + x + ")\n"
                            + "    calculated: " + calculated + "\n"
                            + "    expected:   " + expected + "\n"
                            + "    rel. error: "
@@ -112,7 +112,7 @@ namespace TestSuite
          }
       }
   
-      [TestMethod()]
+      [Fact]
       public void testModifiedBesselFunctions() 
       {
          // Testing modified Bessel function of first and second kind
@@ -144,7 +144,7 @@ namespace TestSuite
             double calculated_k = Utils.modifiedBesselFunction_k(nu, x);
 
             if (Math.Abs(expected_i - calculated_i) > tol_i) {
-               Assert.Fail("failed to reproduce modified Bessel "
+               Assert.True(false,"failed to reproduce modified Bessel "
                            + "function of first kind"
                            + "\n order     : " + nu
                            + "\n argument  : " + x
@@ -152,7 +152,7 @@ namespace TestSuite
                            + "\n expected  : " + expected_i);
             }
             if (Math.Abs(expected_k - calculated_k) > tol_k) {
-               Assert.Fail("failed to reproduce modified Bessel "
+               Assert.True(false,"failed to reproduce modified Bessel "
                            + "function of second kind"
                            + "\n order     : " + nu
                            + "\n argument  : " + x
@@ -196,7 +196,7 @@ namespace TestSuite
 
             if (Complex.Abs(expected_i - calculated_i) > tol_i) 
             {
-               Assert.Fail("failed to reproduce modified Bessel "
+               Assert.True(false,"failed to reproduce modified Bessel "
                            + "function of first kind"
                            + "\n order     : " + nu
                            + "\n argument  : " + z
@@ -207,7 +207,7 @@ namespace TestSuite
             if (   Complex.Abs(expected_k) > 1e-4 // do not check small values
                && Complex.Abs(expected_k - calculated_k) > tol_k) 
             {
-               Assert.Fail("failed to reproduce modified Bessel "
+               Assert.True(false,"failed to reproduce modified Bessel "
                            + "function of second kind"
                            + "\n order     : " + nu
                            + "\n argument  : " + z
@@ -218,7 +218,7 @@ namespace TestSuite
          }
          }
 
-      [TestMethod()]
+      [Fact]
       public void testWeightedModifiedBesselFunctions() 
       {
          // Testing weighted modified Bessel functions
@@ -234,14 +234,14 @@ namespace TestSuite
                double wk = Const.M_PI_2 * (Utils.modifiedBesselFunction_i(-nu,x)*Math.Exp(-x)-
                                     Utils.modifiedBesselFunction_i(nu,x)*Math.Exp(-x)) / Math.Sin(Const.M_PI*nu);
                if (Math.Abs((vi - wi) / (Math.Max(Math.Exp(x), 1.0) * vi)) > 1E3 * Const.QL_EPSILON)
-                     Assert.Fail("failed to verify exponentially weighted"
+                     Assert.True(false,"failed to verify exponentially weighted"
                                  + "modified Bessel function of first kind"
                                  + "\n order      : " + nu + "\n argument   : "
                                  + x + "\n calcuated  : " + vi
                                  + "\n expecetd   : " + wi);
 
                if (Math.Abs((vk - wk) / (Math.Max(Math.Exp(x), 1.0) * vk)) > 1E3 * Const.QL_EPSILON)
-                     Assert.Fail("failed to verify exponentially weighted"
+                     Assert.True(false,"failed to verify exponentially weighted"
                                  + "modified Bessel function of second kind"
                                  + "\n order      : " + nu + "\n argument   : "
                                  + x + "\n calcuated  : " + vk
@@ -266,14 +266,14 @@ namespace TestSuite
                                                Utils.modifiedBesselFunction_i(nu, z) * Complex.Exp(-z)) /
                                Math.Sin(Const.M_PI * nu);
                   if (Complex.Abs((vi - wi) / vi) > 1E3 * Const.QL_EPSILON)
-                     Assert.Fail("failed to verify exponentially weighted"
+                     Assert.True(false,"failed to verify exponentially weighted"
                                  + "modified Bessel function of first kind"
                                  + "\n order      : " + nu
                                  + "\n argument   : " + z +
                                  "\n calcuated: "
                                  + vi + "\n expecetd   : " + wi);
                   if (Complex.Abs((vk - wk) / vk) > 1E3 * Const.QL_EPSILON)
-                     Assert.Fail("failed to verify exponentially weighted"
+                     Assert.True(false,"failed to verify exponentially weighted"
                                  + "modified Bessel function of second kind"
                                  + "\n order      : " + nu
                                  + "\n argument   : " + z +

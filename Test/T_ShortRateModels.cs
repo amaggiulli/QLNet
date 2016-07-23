@@ -21,12 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
     public class T_ShortRateModels
     {
 
@@ -43,7 +43,7 @@ namespace TestSuite
             }
         }
 
-      [TestMethod()]
+      [Fact]
       public void testCachedHullWhite() {
          //("Testing Hull-White calibration against cached values...");
 
@@ -106,7 +106,7 @@ namespace TestSuite
          double yMinExpected = model.value(xMinExpected, swaptions);
          if (Math.Abs(xMinCalculated[0]-cachedA) > tolerance
                || Math.Abs(xMinCalculated[1]-cachedSigma) > tolerance) {
-               Assert.Fail ("Failed to reproduce cached calibration results:\n"
+               Assert.True (false,"Failed to reproduce cached calibration results:\n"
                            + "calculated: a = " + xMinCalculated[0] + ", "
                            + "sigma = " + xMinCalculated[1] + ", "
                            + "f(a) = " + yMinCalculated + ",\n"
@@ -120,7 +120,7 @@ namespace TestSuite
          }
       }
 
-		  [TestMethod()]
+		  [Fact]
         public void testSwaps() {
             //BOOST_MESSAGE("Testing Hull-White swap pricing against known values...");
 
@@ -222,7 +222,7 @@ namespace TestSuite
 
                         double error = Math.Abs((expected-calculated)/expected);
                         if (error > tolerance) {
-                            Assert.Fail("Failed to reproduce swap NPV:"
+                            Assert.True(false,"Failed to reproduce swap NPV:"
                                         //+ QL_FIXED << std::setprecision(9)
                                         + "\n    calculated: " + calculated
                                         + "\n    expected:   " + expected
@@ -234,7 +234,7 @@ namespace TestSuite
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testFuturesConvexityBias()
         {
             //BOOST_MESSAGE("Testing Hull-White futures convexity bias...");
@@ -257,7 +257,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-                Assert.Fail("Failed to reproduce convexity bias:"
+                Assert.True(false,"Failed to reproduce convexity bias:"
                             + "\ncalculated: " + calculatedForward
                             + "\n  expected: " + expectedForward
                     //+ QL_SCIENTIFIC

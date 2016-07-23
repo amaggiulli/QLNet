@@ -21,24 +21,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_Loan
    {
-      [TestMethod()]
+      /*[Fact]
       public void testFairRate()
       {
          Calendar calendar = new TARGET();
 
          Date settlementDate = new Date(10, Month.Mar, 2010);
 
-         /*********************
-         * LOAN TO BE PRICED *
-         **********************/
+         // *********************
+         // * LOAN TO BE PRICED *
+         // *********************
 
          // constant nominal 1,000,000 Euro
          double nominal = 1000000.0;
@@ -64,6 +64,6 @@ namespace TestSuite
                                      principalSchedule, principalLegConvention);
 
 
-      }
+      }*/
    }
 }

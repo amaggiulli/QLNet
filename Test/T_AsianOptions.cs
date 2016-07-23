@@ -21,12 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_AsianOptions
    {
       public void REPORT_FAILURE( string greekName, Average.Type averageType,
@@ -36,7 +36,7 @@ namespace TestSuite
                                   Date today, double v, double expected,
                                   double calculated, double tolerance )
       {
-         Assert.Fail( exercise + " "
+         Assert.True(false, exercise + " "
          + exercise
          + " Asian option with "
          + averageType + " and "
@@ -73,7 +73,7 @@ namespace TestSuite
          return String.Empty;
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticContinuousGeometricAveragePrice()
       {
          // Testing analytic continuous geometric average-price Asians
@@ -152,7 +152,7 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticContinuousGeometricAveragePriceGreeks()
       {
          // Testing analytic continuous geometric average-price Asian greeks
@@ -313,7 +313,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticDiscreteGeometricAveragePrice()
       {
          // Testing analytic discrete geometric average-price Asians
@@ -372,7 +372,7 @@ namespace TestSuite
          }
       }
       
-      [TestMethod()]
+      [Fact]
       public void testAnalyticDiscreteGeometricAverageStrike() 
       {
          // Testing analytic discrete geometric average-strike Asians
@@ -429,7 +429,7 @@ namespace TestSuite
    
       }
 
-      //[TestMethod()]
+      //[Fact]
       public void testMCDiscreteGeometricAveragePrice()
       {
          // Testing Monte Carlo discrete geometric average-price Asians
@@ -500,7 +500,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testAnalyticDiscreteGeometricAveragePriceGreeks()
       {
          // Testing discrete-averaging geometric Asian greeks
@@ -714,7 +714,7 @@ namespace TestSuite
 
 
 
-      //    [TestMethod()]
+      //    [Fact]
       //    public void testAnalyticContinuousGeometricAveragePrice()
       //    {
 
@@ -801,7 +801,7 @@ namespace TestSuite
 
 
 
-      //    [TestMethod()]
+      //    [Fact]
       //    public void testMCDiscreteArithmeticAveragePrice() {
 
       //        //BOOST_MESSAGE("Testing Monte Carlo discrete arithmetic average-price Asians...");
@@ -919,7 +919,7 @@ namespace TestSuite
       //        }
       //    }
 
-      //    [TestMethod()]
+      //    [Fact]
       //    public void testMCDiscreteArithmeticAverageStrike() {
 
       //        //BOOST_MESSAGE("Testing Monte Carlo discrete arithmetic average-strike Asians...");
@@ -1058,7 +1058,7 @@ namespace TestSuite
       //    }
 
 
-      //    [TestMethod()]
+      //    [Fact]
       //    public void testPastFixings() {
 
       //        //BOOST_MESSAGE("Testing use of past fixings in Asian options...");
@@ -1120,7 +1120,7 @@ namespace TestSuite
       //        double price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            Assert.Fail(
+      //            Assert.True(false,
       //                 "past fixings had no effect on arithmetic average-price option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1138,7 +1138,7 @@ namespace TestSuite
       //        price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            Assert.Fail(
+      //            Assert.True(false,
       //                 "past fixings had no effect on arithmetic average-strike option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1170,7 +1170,7 @@ namespace TestSuite
       //        double price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            Assert.Fail(
+      //            Assert.True(false,
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);
@@ -1189,7 +1189,7 @@ namespace TestSuite
       //        price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            Assert.Fail(
+      //            Assert.True(false,
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);

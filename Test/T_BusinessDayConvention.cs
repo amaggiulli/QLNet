@@ -16,12 +16,12 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_BusinessDayConvention
    {
       struct SingleCase 
@@ -48,7 +48,7 @@ namespace TestSuite
          public Date result;
       }
 
-      [TestMethod()]
+      [Fact]
       public void testConventions() 
       {
          // Testing business day conventions...
@@ -111,7 +111,7 @@ namespace TestSuite
               Calendar calendar = new Calendar(testCases[i].calendar);
               Date result = calendar.advance( testCases[i].start, testCases[i].period, testCases[i].convention, testCases[i].endOfMonth);
 
-              Assert.IsTrue( result == testCases[i].result,
+              Assert.True( result == testCases[i].result,
                             "\ncase " + i + ":\n" //<< j << " ("<< desc << "): "
                             + "start date: " + testCases[i].start + "\n"
                             + "calendar: " + calendar + "\n"

@@ -17,15 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-	[TestClass()]
 	public class T_BlackFormula
 	{
-		[TestMethod()]
+		[Fact]
 		public void testBachelierImpliedVol()
 		{
 			// Testing Bachelier implied vol...
@@ -46,7 +46,7 @@ namespace TestSuite
 
 				if (Math.Abs(bpvol-impliedBpVol)>1.0e-12)
 				{
-					Assert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol );
+					Assert.True(false,"Failed, expected " + bpvol + " realised " + impliedBpVol );
 				}
 			}
 			return;

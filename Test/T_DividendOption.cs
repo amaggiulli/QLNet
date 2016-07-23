@@ -17,21 +17,21 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_DividendOption
    {
       public void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                  double r, Date today, double v, double expected, double calculated, double error,
                                  double tolerance)
       {
-         Assert.Fail(exercise + " "
+         Assert.True(false,exercise + " "
                 + payoff.optionType() + " option with "
                 + payoff + " payoff:\n"
                 + "    spot value:       " + s + "\n"
@@ -206,14 +206,14 @@ namespace TestSuite
             double value = option.NPV();
 
             if (Math.Abs(refValue - value) > tolerance)
-               Assert.Fail("NPV changed by null dividend :\n"
+               Assert.True(false,"NPV changed by null dividend :\n"
                            + "    previous value: " + value + "\n"
                            + "    current value:  " + refValue + "\n"
                            + "    change:         " + (value - refValue));
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testEuropeanValues()
       {
          // Testing dividend European option values with no dividends...
@@ -378,7 +378,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testEuropeanStartLimit()
       {
          // Testing dividend European option with a dividend on today's date...
@@ -474,7 +474,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testEuropeanGreeks()
       {
          // Testing dividend European option greeks...
@@ -630,7 +630,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFdEuropeanValues()
       {
          // Testing finite-difference dividend European option values...
@@ -736,7 +736,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFdEuropeanGreeks()
       {
          // Testing finite-differences dividend European option greeks...
@@ -755,7 +755,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFdAmericanGreeks()
       {
          // Testing finite-differences dividend American option greeks...
@@ -774,7 +774,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFdEuropeanDegenerate()
       {
          // Testing degenerate finite-differences dividend European option...
@@ -790,7 +790,7 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+      [Fact]
       public void testFdAmericanDegenerate()
       {
          // Testing degenerate finite-differences dividend American option...

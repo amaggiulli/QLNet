@@ -19,11 +19,11 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
     public class T_CapFloor {
         class CommonVars {
             // common data
@@ -112,7 +112,7 @@ namespace TestSuite {
 
         }
 
-        [TestMethod()]
+        [Fact]
         public void testVega() {
             CommonVars vars = new CommonVars();
 
@@ -145,7 +145,7 @@ namespace TestSuite {
                                 double discrepancy = Math.Abs(numericalVega - analyticalVega);
                                 discrepancy /= numericalVega;
                                 if (discrepancy > tolerance)
-                                    Assert.Fail(
+                                    Assert.True(false,
                                         "failed to compute cap/floor vega:" +
                                         "\n   lengths:     " + new Period(lengths[j], TimeUnit.Years) +
                                         "\n   strike:      " + strikes[k] +
@@ -162,7 +162,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testStrikeDependency() {
 
             CommonVars vars = new CommonVars();
@@ -190,7 +190,7 @@ namespace TestSuite {
                     // and check that they go the right way
                     for (int k = 0; k < cap_values.Count - 1; k++) {
                         if (cap_values[k] < cap_values[k + 1])
-                            Assert.Fail(
+                            Assert.True(false,
                               "NPV is increasing with the strike in a cap: \n"
                               + "    length:     " + lengths[i] + " years\n"
                               + "    volatility: " + vols[j] + "\n"
@@ -203,7 +203,7 @@ namespace TestSuite {
                     // same for floors
                     for (int k = 0; k < floor_values.Count - 1; k++) {
                         if (floor_values[k] > floor_values[k + 1])
-                            Assert.Fail(
+                            Assert.True(false,
                               "NPV is decreasing with the strike in a floor: \n"
                               + "    length:     " + lengths[i] + " years\n"
                               + "    volatility: " + vols[j] + "\n"
@@ -216,7 +216,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testConsistency() {
             CommonVars vars = new CommonVars();
 
@@ -242,7 +242,7 @@ namespace TestSuite {
                             collar.setPricingEngine(vars.makeEngine(vols[l]));
 
                             if (Math.Abs((cap.NPV() - floor.NPV()) - collar.NPV()) > 1e-10) {
-                                Assert.Fail(
+                                Assert.True(false,
                                   "inconsistency between cap, floor and collar:\n"
                                   + "    length:       " + lengths[i] + " years\n"
                                   + "    volatility:   " + vols[l] + "\n"
@@ -258,7 +258,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testParity() {
             CommonVars vars = new CommonVars();
 
@@ -287,7 +287,7 @@ namespace TestSuite {
                         swap.setPricingEngine((IPricingEngine)new DiscountingSwapEngine(vars.termStructure));
                         // FLOATING_POINT_EXCEPTION
                         if (Math.Abs((cap.NPV() - floor.NPV()) - swap.NPV()) > 1.0e-10) {
-                            Assert.Fail(
+                            Assert.True(false,
                                 "put/call parity violated:\n"
                                 + "    length:      " + lengths[i] + " years\n"
                                 + "    volatility:  " + vols[k] + "\n"
@@ -301,7 +301,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testATMRate() {
             CommonVars vars = new CommonVars();
 
@@ -328,7 +328,7 @@ namespace TestSuite {
                         double floorATMRate = floor.atmRate(vars.termStructure);
 
                         if (!checkAbsError(floorATMRate, capATMRate, 1.0e-10))
-                            Assert.Fail(
+                            Assert.True(false,
                               "Cap ATM Rate and floor ATM Rate should be equal :\n"
                               + "   length:        " + lengths[i] + " years\n"
                               + "   volatility:    " + vols[k] + "\n"
@@ -346,7 +346,7 @@ namespace TestSuite {
                                                new DiscountingSwapEngine(vars.termStructure)));
                         double swapNPV = swap.NPV();
                         if (!checkAbsError(swapNPV, 0, 1.0e-10))
-                            Assert.Fail(
+                            Assert.True(false,
                               "the NPV of a Swap struck at ATM rate "
                               + "should be equal to 0:\n"
                               + "   length:        " + lengths[i] + " years\n"
@@ -359,7 +359,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testImpliedVolatility() {
             CommonVars vars = new CommonVars();
 
@@ -407,7 +407,7 @@ namespace TestSuite {
                                     }
 
                                     // otherwise, report error
-                                    Assert.Fail("implied vol failure: " + typeToString(types[i]) +
+                                    Assert.True(false,"implied vol failure: " + typeToString(types[i]) +
                                         "  strike:     " + strikes[j] +
                                         "  risk-free:  " + r +
                                         "  length:     " + lengths[k] + "Y" +
@@ -418,7 +418,7 @@ namespace TestSuite {
                                     capfloor.setPricingEngine(vars.makeEngine(implVol));
                                     double value2 = capfloor.NPV();
                                     if (Math.Abs(value - value2) > tolerance) {
-                                        Assert.Fail(
+                                        Assert.True(false,
                                             typeToString(types[i]) + ":"
                                             + "    strike:           "
                                             + strikes[j] + "\n"
@@ -442,7 +442,7 @@ namespace TestSuite {
             }
         }
 
-        [TestMethod()]
+        [Fact]
         public void testCachedValue() {
             CommonVars vars = new CommonVars();
 
@@ -465,13 +465,13 @@ namespace TestSuite {
 
             // test Black cap price against cached value
             if (Math.Abs(cap.NPV() - cachedCapNPV) > 1.0e-11)
-                Assert.Fail("failed to reproduce cached cap value:\n"
+                Assert.True(false,"failed to reproduce cached cap value:\n"
                             + "    calculated: " + cap.NPV() + "\n"
                             + "    expected:   " + cachedCapNPV);
 
             // test Black floor price against cached value
             if (Math.Abs(floor.NPV() - cachedFloorNPV) > 1.0e-11)
-                Assert.Fail("failed to reproduce cached floor value:\n"
+                Assert.True(false,"failed to reproduce cached floor value:\n"
                             + "    calculated: " + floor.NPV() + "\n"
                             + "    expected:   " + cachedFloorNPV);
         }

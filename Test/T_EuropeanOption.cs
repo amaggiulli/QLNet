@@ -18,12 +18,12 @@
 */
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
+using Xunit.Extensions;
 using QLNet;
 
 namespace TestSuite
 {
-   [TestClass()]
    public class T_EuropeanOption
    {
 
@@ -37,7 +37,7 @@ namespace TestSuite
       };
 
 
-      [TestMethod()]
+      [Fact]
       public void testJRBinomialEngines()
       {
          //("Testing JR binomial European engines against analytic results...");
@@ -54,7 +54,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testCRRBinomialEngines()
       {
 
@@ -72,7 +72,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testEQPBinomialEngines()
       {
 
@@ -90,7 +90,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testTGEOBinomialEngines()
       {
 
@@ -108,7 +108,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testTIANBinomialEngines()
       {
 
@@ -126,7 +126,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testLRBinomialEngines()
       {
 
@@ -144,7 +144,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+      [Fact]
       public void testJOSHIBinomialEngines()
       {
 
@@ -164,7 +164,7 @@ namespace TestSuite
       }
 
 
-      [TestMethod()]
+      [Fact]
       public void testFdEngines()
       {
 
@@ -358,7 +358,7 @@ namespace TestSuite
       void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
               Date today, double v, double expected, double calculated, double error, double tolerance)
       {
-         Assert.Fail(exercise + " "
+         Assert.True(false,exercise + " "
                 + payoff.optionType() + " option with "
                 + payoff + " payoff:\n"
                 + "    spot value:       " + s + "\n"
