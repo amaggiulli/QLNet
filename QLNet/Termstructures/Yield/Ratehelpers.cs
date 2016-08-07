@@ -35,6 +35,8 @@ namespace QLNet
                                 Futures.Type type= Futures.Type.IMM)
          : base( price )
       {
+         convAdj_ = convAdj ?? new Handle<Quote>();
+         
          switch (type) 
          {
             case QLNet.Futures.Type.IMM:
