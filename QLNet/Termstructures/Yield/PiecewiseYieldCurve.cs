@@ -143,6 +143,7 @@ namespace QLNet {
 				//todo edem 
 				List<BootstrapHelper<YieldTermStructure>> instruments = new List<BootstrapHelper<YieldTermStructure>>();
 				_instruments_.ForEach( x => instruments.Add( x ) );
+				instruments.Sort( ( x, y ) => x.pillarDate().CompareTo( y.pillarDate() ) );
 				return instruments;
 			}
 		}
