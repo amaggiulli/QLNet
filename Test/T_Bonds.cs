@@ -28,16 +28,26 @@ namespace TestSuite
    [TestClass()]
    public class T_Bonds
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       class CommonVars
       {
          // common data
          public Calendar calendar;
          public Date today;
          public double faceAmount;
-
-         // todo
-         // cleanup
-         // SavedSettings backup;
 
          // setup
          public CommonVars()
@@ -409,7 +419,7 @@ namespace TestSuite
       [TestMethod()]
       public void testCachedZero()
       {
-         Console.WriteLine("Testing zero-coupon bond prices against cached values...");
+         // Testing zero-coupon bond prices against cached values
 
          CommonVars vars = new CommonVars();
 
@@ -435,7 +445,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice1 + "\n"
                        + "    error:      " + (price - cachedPrice1));
@@ -452,7 +462,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice2 + "\n"
                        + "    error:      " + (price - cachedPrice2));
@@ -469,7 +479,7 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice3 + "\n"
                        + "    error:      " + (price - cachedPrice3));
@@ -509,7 +519,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice1 + "\n"
                        + "    error:      " + (price - cachedPrice1));
@@ -534,7 +544,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            Console.WriteLine("failed to reproduce cached price:\n"
+            Assert.Fail("failed to reproduce cached price:\n"
                        + "    calculated: " + price + "\n"
                        + "    expected:   " + cachedPrice2 + "\n"
                        + "    error:      " + (price - cachedPrice2));
@@ -1176,78 +1186,73 @@ namespace TestSuite
       public void testBondFromScheduleWithDateVector()
       {
          // Testing South African R2048 bond price using Schedule constructor with Date vector
-         using (SavedSettings backup = new SavedSettings())
+
+         //When pricing bond from Yield To Maturity, use NullCalendar()
+         Calendar calendar = new NullCalendar();
+
+         int settlementDays = 3;
+
+         Date issueDate = new Date(29, Month.June, 2012);
+         Date today = new Date(7, Month.September, 2015);
+         Date evaluationDate = calendar.adjust(today);
+         Date settlementDate = calendar.advance(evaluationDate, new Period(settlementDays, TimeUnit.Days));
+         Settings.setEvaluationDate(evaluationDate);
+
+         // For the schedule to generate correctly for Feb-28's, make maturity date on Feb 29
+         Date maturityDate = new Date(29, Month.February, 2048);
+
+         double coupon = 0.0875;
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new ActualActual(ActualActual.Convention.Bond);
+
+         // Yield as quoted in market
+         InterestRate yield = new InterestRate(0.09185, dc, comp, freq);
+
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(10, TimeUnit.Days);
+
+         // Generate coupon dates for 31 Aug and end of Feb each year
+         // For leap years, this will generate 29 Feb, but the bond
+         // actually pays coupons on 28 Feb, regardsless of whether
+         // it is a leap year or not.
+         Schedule schedule = new Schedule(issueDate, maturityDate, tenor,
+            new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+            DateGeneration.Rule.Backward, true);
+
+         // Adjust the 29 Feb's to 28 Feb
+         List<Date> dates = new List<Date>();
+         for (int i = 0; i < schedule.Count; ++i)
          {
-            //When pricing bond from Yield To Maturity, use NullCalendar()
-            Calendar calendar = new NullCalendar();
+            Date d = schedule.date(i);
+            if (d.Month == 2 && d.Day == 29)
+               dates.Add(new Date(28, Month.February, d.Year));
+            else
+               dates.Add(d);
+         }
 
-            int settlementDays = 3;
+         schedule = new Schedule(dates,
+            schedule.calendar(),
+            schedule.businessDayConvention(),
+            schedule.terminationDateBusinessDayConvention(),
+            schedule.tenor(),
+            schedule.rule(),
+            schedule.endOfMonth(),
+            schedule.isRegular());
 
-            Date issueDate = new Date(29, Month.June, 2012);
-            Date today = new Date(7, Month.September, 2015);
-            Date evaluationDate = calendar.adjust(today);
-            Date settlementDate = calendar.advance(evaluationDate, new Period(settlementDays, TimeUnit.Days));
-            Settings.setEvaluationDate(evaluationDate);
+         FixedRateBond bond = new FixedRateBond(0,100.0,schedule,new List<double>() {coupon},dc, 
+            BusinessDayConvention.Following, 100.0,issueDate, calendar,exCouponPeriod, calendar, 
+            BusinessDayConvention.Unadjusted, false);
 
-            // For the schedule to generate correctly for Feb-28's, make maturity date on Feb 29
-            Date maturityDate = new Date(29, Month.February, 2048);
-
-            double coupon = 0.0875;
-            Compounding comp = Compounding.Compounded;
-            Frequency freq = Frequency.Semiannual;
-            DayCounter dc = new ActualActual(ActualActual.Convention.Bond);
-
-            // Yield as quoted in market
-            InterestRate yield = new InterestRate(0.09185, dc, comp, freq);
-
-            Period tenor = new Period(6, TimeUnit.Months);
-            Period exCouponPeriod = new Period(10, TimeUnit.Days);
-
-            // Generate coupon dates for 31 Aug and end of Feb each year
-            // For leap years, this will generate 29 Feb, but the bond
-            // actually pays coupons on 28 Feb, regardsless of whether
-            // it is a leap year or not.
-            Schedule schedule = new Schedule(issueDate, maturityDate, tenor,
-               new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-               DateGeneration.Rule.Backward, true);
-
-            // Adjust the 29 Feb's to 28 Feb
-            List<Date> dates = new List<Date>();
-            for (int i = 0; i < schedule.Count; ++i)
-            {
-               Date d = schedule.date(i);
-               if (d.Month == 2 && d.Day == 29)
-                  dates.Add(new Date(28, Month.February, d.Year));
-               else
-                  dates.Add(d);
-            }
-
-            schedule = new Schedule(dates,
-                                    schedule.calendar(),
-                                    schedule.businessDayConvention(),
-                                    schedule.terminationDateBusinessDayConvention(),
-                                    schedule.tenor(),
-                                    schedule.rule(),
-                                    schedule.endOfMonth(),
-                                    schedule.isRegular());
-
-            FixedRateBond bond = new FixedRateBond(
-                0,
-                100.0,
-                schedule,
-                new List<double>() { coupon },
-                dc, BusinessDayConvention.Following, 100.0,
-                issueDate, calendar,
-                exCouponPeriod, calendar, BusinessDayConvention.Unadjusted, false);
-
-            double calculatedPrice = BondFunctions.dirtyPrice(bond, yield, settlementDate);
-            double expectedPrice = 95.75706;
-            double tolerance = 1e-5;
-            if (Math.Abs(calculatedPrice - expectedPrice) > tolerance)
-            {
-               Assert.Fail(string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}", expectedPrice, calculatedPrice));
-            }
+         double calculatedPrice = BondFunctions.dirtyPrice(bond, yield, settlementDate);
+         double expectedPrice = 95.75706;
+         double tolerance = 1e-5;
+         if (Math.Abs(calculatedPrice - expectedPrice) > tolerance)
+         {
+            Assert.Fail(string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}",
+               expectedPrice, calculatedPrice));
          }
       }
    }
+   
 }

@@ -191,7 +191,7 @@ namespace QLNet
 
          for (int iteration = 0; ; ++iteration)
          {
-            previousData_ = ts_.data_;
+            previousData_ = new List<double>(ts_.data_);
 
             for (int i = 1; i <= alive_; ++i)
             {

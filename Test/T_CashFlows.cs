@@ -198,7 +198,7 @@ namespace TestSuite
             Date endDate = new Date(20, Month.December, 2013);
             double spread = 0.0115;
             IborCouponPricer pricer = new BlackIborCouponPricer(vol);
-            FloatingRateCoupon coupon = new FloatingRateCoupon(100, payDate, startDate, endDate, 2,
+            FloatingRateCoupon coupon = new FloatingRateCoupon( payDate, 100, startDate, endDate, 2,
                                        index3m, 1.0, spread / 100);
             coupon.setPricer(pricer);
 

@@ -147,8 +147,9 @@ namespace TestSuite {
        }
     }
 
-    // this cleans up index-fixing histories when destroyed
-    public class IndexHistoryCleaner {
-        ~IndexHistoryCleaner() { IndexManager.instance().clearHistories(); }
+    // this cleans up index-fixing histories when disposed
+    public class IndexHistoryCleaner : IDisposable
+    {
+       public void Dispose() { IndexManager.instance().clearHistories(); }
     };
 }

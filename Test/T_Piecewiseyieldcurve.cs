@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -119,18 +119,8 @@ namespace TestSuite {
             public List<Schedule> schedules;
             public YieldTermStructure termStructure;
 
-            // cleanup
-            // SavedSettings backup = new SavedSettings();
-            // IndexHistoryCleaner cleaner;
-
             // setup
             public CommonVars() {
-
-                //cleaner = new IndexHistoryCleaner();
-                ////GC.Collect();
-                //// force garbage collection
-                //// garbage collection in .NET is rather weird and we do need when we run several tests in a row
-                //GC.Collect();
 
                 // data
                 calendar = new TARGET();
@@ -222,6 +212,23 @@ namespace TestSuite {
             }
         }
 
+        #region Initialize&Cleanup
+        private SavedSettings backup;
+        private IndexHistoryCleaner cleaner;
+        [TestInitialize]
+        public void testInitialize()
+        {
+           backup = new SavedSettings();
+           cleaner = new IndexHistoryCleaner();
+        }
+        [TestCleanup]
+        public void testCleanup()
+        {
+           backup.Dispose();
+           cleaner.Dispose();
+        }
+        #endregion
+
         //[TestMethod()]
         public void testLogCubicDiscountConsistency() {
             // "Testing consistency of piecewise-log-cubic discount curve...");
@@ -261,14 +268,14 @@ namespace TestSuite {
         [TestMethod()]
         public void testLogLinearZeroConsistency() {
             // "Testing consistency of piecewise-log-linear zero-yield curve...");
-			  
+
 			  // if rates can be negative it makes no sense to interpolate loglinearly
 			  if ( Utils.is_QL_NEGATIVE_RATES() )
 				return;
 			  else
 			  {
             CommonVars vars = new CommonVars();
-	
+
 				testCurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
 				testBMACurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
 			  }
@@ -613,13 +620,12 @@ namespace TestSuite {
                 Euribor index = new Euribor(new Period(vars.depositData[i].n, vars.depositData[i].units), curveHandle);
                 double expectedRate = vars.depositData[i].rate / 100,
                        estimatedRate = index.fixing(vars.today);
-                if (Math.Abs(expectedRate - estimatedRate) > tolerance) {
-                    Console.WriteLine(vars.depositData[i].n + " "
-                           + (vars.depositData[i].units == TimeUnit.Weeks ? "week(s)" : "month(s)")
-                           + " deposit:"
-                           + "\n    estimated rate: " + estimatedRate
-                           + "\n    expected rate:  " + expectedRate);
-                }
+                Assert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
+                   vars.depositData[i].n + " "
+                   + (vars.depositData[i].units == TimeUnit.Weeks ? "week(s)" : "month(s)")
+                   + " deposit:"
+                   + "\n    estimated rate: " + estimatedRate
+                   + "\n    expected rate:  " + expectedRate);
             }
 
             // check swaps
@@ -637,13 +643,12 @@ namespace TestSuite {
                 double expectedRate = vars.swapData[i].rate / 100,
                      estimatedRate = swap.fairRate();
                 double error = Math.Abs(expectedRate - estimatedRate);
-                if (error > tolerance) {
-                    Console.WriteLine(vars.swapData[i].n + " year(s) swap:\n"
-                        + "\n estimated rate: " + estimatedRate
-                        + "\n expected rate:  " + expectedRate
-                        + "\n error:          " + error
-                        + "\n tolerance:      " + tolerance);
-                }
+                Assert.IsTrue(error < tolerance,
+                  vars.swapData[i].n + " year(s) swap:\n"
+                  + "\n estimated rate: " + estimatedRate
+                  + "\n expected rate:  " + expectedRate
+                  + "\n error:          " + error
+                  + "\n tolerance:      " + tolerance);
             }
 
             // check bonds
@@ -666,11 +671,10 @@ namespace TestSuite {
 
                 double expectedPrice = vars.bondData[i].price,
                        estimatedPrice = bond.cleanPrice();
-                if (Math.Abs(expectedPrice - estimatedPrice) > tolerance) {
-                    Console.WriteLine(i + 1 + " bond failure:" +
-                                "\n  estimated price: " + estimatedPrice +
-                                "\n  expected price:  " + expectedPrice);
-                }
+                Assert.IsTrue(Math.Abs(expectedPrice - estimatedPrice) < tolerance,
+                   i + 1 + " bond failure:" +
+                   "\n  estimated price: " + estimatedPrice +
+                   "\n  expected price:  " + expectedPrice);
             }
 
             // check FRA
@@ -693,11 +697,10 @@ namespace TestSuite {
                                                                     100.0, euribor3m, curveHandle);
                 double expectedRate = vars.fraData[i].rate / 100,
                        estimatedRate = fra.forwardRate().rate();
-                if (Math.Abs(expectedRate - estimatedRate) > tolerance) {
-                    Console.WriteLine(i + 1 + " FRA failure:" +
-                                "\n  estimated rate: " + estimatedRate +
-                                "\n  expected rate:  " + expectedRate);
-                }
+                Assert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
+                   i + 1 + " FRA failure:" +
+                   "\n  estimated rate: " + estimatedRate +
+                   "\n  expected rate:  " + expectedRate);
             }
         }
 
@@ -773,7 +776,7 @@ namespace TestSuite {
                                .endOfMonth(libor3m.endOfMonth())
                                .backwards()
                                .value();
-                  
+
                 BMASwap swap = new BMASwap(BMASwap.Type.Payer, 100.0, liborSchedule, 0.75, 0.0,
                                            libor3m, libor3m.dayCounter(), bmaSchedule, bma, vars.bmaDayCounter);
                 swap.setPricingEngine(new DiscountingSwapEngine(libor3m.forwardingTermStructure()));
@@ -781,13 +784,12 @@ namespace TestSuite {
                 double expectedFraction = vars.bmaData[i].rate / 100,
                      estimatedFraction = swap.fairLiborFraction();
                 double error = Math.Abs(expectedFraction - estimatedFraction);
-                if (error > tolerance) {
-                    Console.WriteLine(vars.bmaData[i].n + " year(s) BMA swap:\n"
-                                + "\n estimated libor fraction: " + estimatedFraction
-                                + "\n expected libor fraction:  " + expectedFraction
-                                + "\n error:          " + error
-                                + "\n tolerance:      " + tolerance);
-                }
+                Assert.IsTrue(error < tolerance,
+                   vars.bmaData[i].n + " year(s) BMA swap:\n"
+                   + "\n estimated libor fraction: " + estimatedFraction
+                   + "\n expected libor fraction:  " + expectedFraction
+                   + "\n error:          " + error
+                   + "\n tolerance:      " + tolerance);
             }
 
             // this is a workaround for grabage collection

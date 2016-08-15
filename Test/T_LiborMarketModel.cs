@@ -28,6 +28,19 @@ namespace TestSuite
     [TestClass()]
     public class T_LiborMarketModel
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
 
         IborIndex makeIndex(List<Date> dates,
                             List<double> rates)
@@ -83,10 +96,7 @@ namespace TestSuite
         [TestCategory( "LongRun" ), TestMethod()]
         public void testSimpleCovarianceModels() 
         {
-            //"Testing simple covariance models...";
-
-            //SavedSettings backup;
-
+            // Testing simple covariance models
             const int size = 10;
             const double tolerance = 1e-14;
             int i;
@@ -156,10 +166,7 @@ namespace TestSuite
         [TestCategory( "LongRun" ), TestMethod()]
         public void testCapletPricing() 
         {
-            //"Testing caplet pricing...";
-
-            //SavedSettings backup;
-
+            // Testing caplet pricing
             const int size = 10;
             #if QL_USE_INDEXED_COUPON
             const double tolerance = 1e-5;
@@ -201,10 +208,7 @@ namespace TestSuite
         [TestCategory("LongRun"), TestMethod()]
         public void testCalibration()
         {
-            //("Testing calibration of a Libor forward model...");
-
-            //SavedSettings backup;
-
+            // Testing calibration of a Libor forward model
             const int size = 14;
             const double tolerance = 8e-3;
 
@@ -301,10 +305,7 @@ namespace TestSuite
         [TestCategory("LongRun"),TestMethod()]
         public void testSwaptionPricing() 
         {
-            //"Testing forward swap and swaption pricing...");
-
-            //SavedSettings backup;
-
+            // Testing forward swap and swaption pricing
             const int size  = 10;
             const int steps = 8*size;
             #if QL_USE_INDEXED_COUPON

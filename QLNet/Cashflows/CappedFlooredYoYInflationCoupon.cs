@@ -71,8 +71,8 @@ namespace QLNet
                underlying.dayCounter(),
                underlying.gearing(),
                underlying.spread(),
-               underlying.refPeriodStart,
-               underlying.refPeriodEnd)
+               underlying.referencePeriodStart,
+               underlying.referencePeriodEnd)
    
       {
          underlying_ = underlying;

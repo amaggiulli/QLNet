@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -36,7 +37,7 @@ namespace QLNet
       public virtual bool hasOccurred(Date d = null, bool? includeRefDate = null)
       {
          Date refDate = d ?? Settings.evaluationDate();
-         bool includeRefDateEvent =includeRefDate != null  ? includeRefDate.Value :  Settings.includeReferenceDateEvents;
+         bool includeRefDateEvent = includeRefDate ?? Settings.includeReferenceDateEvents;
          if (includeRefDateEvent)
             return date() < refDate;
          else
@@ -73,5 +74,19 @@ namespace QLNet
       }
 
       #endregion
+   }
+
+   // used to create an Event instance.
+   // to be replaced with specific events as soon as we find out which.
+   public class simple_event : Event 
+   {
+      public simple_event(Date date)
+      {
+         date_ = date;
+      }
+      public override Date date() { return date_; }
+          
+      private Date date_;
+   
    }
 }

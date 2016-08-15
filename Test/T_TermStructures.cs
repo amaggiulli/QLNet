@@ -28,6 +28,20 @@ namespace TestSuite
    [TestClass()]
    public class T_TermStructures
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       public class CommonVars
       {
          #region Values
@@ -60,9 +74,6 @@ namespace TestSuite
          public int settlementDays;
          public YieldTermStructure termStructure;
          public YieldTermStructure dummyTermStructure;
-
-         // cleanup
-         // SavedSettings backup;
 
          // setup
          public CommonVars()
@@ -98,8 +109,7 @@ namespace TestSuite
       [TestMethod()]
       public void testReferenceChange()
       {
-         // ("Testing term structure against evaluation date change...");
-
+         // Testing term structure against evaluation date change
          CommonVars vars = new CommonVars();
 
          SimpleQuote flatRate = new SimpleQuote();
@@ -122,7 +132,7 @@ namespace TestSuite
          for (int i = 0; i < days.Length; i++)
          {
             if (!Utils.close(expected[i], calculated[i]))
-               Console.WriteLine("\n  Discount at " + days[i] + " days:\n"
+               Assert.Fail("\n  Discount at " + days[i] + " days:\n"
                            + "    before date change: " + expected[i] + "\n"
                            + "    after date change:  " + calculated[i]);
          }
@@ -131,8 +141,7 @@ namespace TestSuite
       [TestMethod()]
       public void testImplied()
       {
-         // ("Testing consistency of implied term structure...");
-
+         // Testing consistency of implied term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -145,7 +154,7 @@ namespace TestSuite
          double discount = vars.termStructure.discount(testDate);
          double impliedDiscount = implied.discount(testDate);
          if (Math.Abs(discount - baseDiscount * impliedDiscount) > tolerance)
-            Console.WriteLine("unable to reproduce discount from implied curve\n"
+            Assert.Fail("unable to reproduce discount from implied curve\n"
                 + "    calculated: " + baseDiscount * impliedDiscount + "\n"
                 + "    expected:   " + discount);
       }
@@ -153,8 +162,7 @@ namespace TestSuite
       [TestMethod()]
       public void testImpliedObs()
       {
-         // ("Testing observability of implied term structure...");
-
+         // Testing observability of implied term structure
          CommonVars vars = new CommonVars();
 
          Date today = Settings.evaluationDate();
@@ -166,13 +174,13 @@ namespace TestSuite
          implied.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
       }
 
       [TestMethod()]
       public void testFSpreaded()
       {
-         //("Testing consistency of forward-spreaded term structure...");
+         // Testing consistency of forward-spreaded term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -187,7 +195,7 @@ namespace TestSuite
          double spreadedForward = spreaded.forwardRate(testDate, testDate, sprdc, Compounding.Continuous,
                                                          Frequency.NoFrequency).rate();
          if (Math.Abs(forward - (spreadedForward - me.value())) > tolerance)
-            Console.WriteLine("unable to reproduce forward from spreaded curve\n"
+            Assert.Fail("unable to reproduce forward from spreaded curve\n"
                 + "    calculated: "
                 + (spreadedForward - me.value()) + "\n"
                 + "    expected:   " + forward);
@@ -196,8 +204,7 @@ namespace TestSuite
       [TestMethod()]
       public void testFSpreadedObs()
       {
-         // ("Testing observability of forward-spreaded term structure...");
-
+         // Testing observability of forward-spreaded term structure
          CommonVars vars = new CommonVars();
 
          SimpleQuote me = new SimpleQuote(0.01);
@@ -208,18 +215,17 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of spread change");
+            Assert.Fail("Observer was not notified of spread change");
       }
 
       [TestMethod()]
       public void testZSpreaded()
       {
-         // ("Testing consistency of zero-spreaded term structure...");
-
+         // Testing consistency of zero-spreaded term structure
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
@@ -231,16 +237,15 @@ namespace TestSuite
          double zero = vars.termStructure.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          double spreadedZero = spreaded.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          if (Math.Abs(zero - (spreadedZero - me.value())) > tolerance)
-            Console.WriteLine("unable to reproduce zero yield from spreaded curve\n"
-                + "    calculated: " + (spreadedZero - me.value()) + "\n"
-                + "    expected:   " + zero);
+            Assert.Fail("unable to reproduce zero yield from spreaded curve\n"
+                        + "    calculated: " + (spreadedZero - me.value()) + "\n"
+                        + "    expected:   " + zero);
       }
 
       [TestMethod()]
       public void testZSpreadedObs()
       {
-         // ("Testing observability of zero-spreaded term structure...");
-
+         // Testing observability of zero-spreaded term structure
          CommonVars vars = new CommonVars();
 
          SimpleQuote me = new SimpleQuote(0.01);
@@ -252,22 +257,11 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of term structure change");
+            Assert.Fail("Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            Console.WriteLine("Observer was not notified of spread change");
-      }
-
-      public void suite()
-      {
-         testReferenceChange();
-         testImplied();
-         testImpliedObs();
-         testFSpreaded();
-         testFSpreadedObs();
-         testZSpreaded();
-         testZSpreadedObs();
+            Assert.Fail("Observer was not notified of spread change");
       }
    }
 }

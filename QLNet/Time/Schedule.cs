@@ -410,11 +410,13 @@ namespace QLNet {
                dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
          }
 
-         // final safety checks to remove duplicated last dates, if any
-         // it can happen if EOM is applied to two near dates
+         // Final safety checks to remove extra next-to-last date, if
+         // necessary.  It can happen to be equal or later than the end
+         // date due to EOM adjustments (see the Schedule test suite
+         // for an example).
          if (dates_.Count >= 2 &&  dates_[dates_.Count - 2] >= dates_.Last())
          {
-            isRegular_[dates_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
+            isRegular_[isRegular_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
             dates_[dates_.Count - 2] = dates_.Last();
 
             dates_.RemoveAt(dates_.Count - 1);

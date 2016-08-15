@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,7 +24,7 @@ namespace QLNet {
     /*! Cubic interpolation is fully defined when the ${f_i}$ function values
         at points ${x_i}$ are supplemented with ${f_i}$ function derivative
         values.
-    
+
         Different type of first derivative approximations are implemented, both
         local and non-local. Local schemes (Fourth-order, Parabolic,
         Modified Parabolic, Fritsch-Butland, Akima, Kruger) use only $f$ values
@@ -39,17 +39,17 @@ namespace QLNet {
         values) the interpolating cubic remains monotonic. If the interpolating
         cubic is already monotonic, the Hyman filter leaves it unchanged
         preserving all its original features.
-        
+
         In the case of $C^2$ interpolants the Hyman filter ensures local
         monotonicity at the expense of the second derivative of the interpolant
         which will no longer be continuous in the points where the filter has
-        been applied. 
+        been applied.
 
         While some non-linear schemes (Modified Parabolic, Fritsch-Butland,
         Kruger) are guaranteed to be locally monotone in their original
         approximation, all other schemes must be filtered according to the
         Hyman criteria at the expense of their linearity.
-        
+
         See R. L. Dougherty, A. Edelman, and J. M. Hyman,
         "Nonnegativity-, Monotonicity-, or Convexity-Preserving CubicSpline and
         Quintic Hermite Interpolation"
@@ -101,7 +101,7 @@ namespace QLNet {
                 the first four data at the respective end
             */
             Lagrange
-        }; 
+        };
         #endregion
 
         // private CoefficientHolder coeffs_;
@@ -135,10 +135,10 @@ namespace QLNet {
         private CubicInterpolation.BoundaryCondition leftType_, rightType_;
         private double leftValue_, rightValue_;
 
-        public Cubic() : this(CubicInterpolation.DerivativeApprox.Kruger, false, 
+        public Cubic() : this(CubicInterpolation.DerivativeApprox.Kruger, false,
                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) { }
-        public Cubic(CubicInterpolation.DerivativeApprox da, bool monotonic, 
+        public Cubic(CubicInterpolation.DerivativeApprox da, bool monotonic,
                      CubicInterpolation.BoundaryCondition leftCondition, double leftConditionValue,
                      CubicInterpolation.BoundaryCondition rightCondition, double rightConditionValue) {
             da_ = da;
@@ -192,6 +192,13 @@ namespace QLNet {
             b_ = new InitializedList<double>(size - 1);
             c_ = new InitializedList<double>(size - 1);
             monotonicityAdjustments_ = new InitializedList<bool>(size);
+
+            if (leftType_ == CubicInterpolation.BoundaryCondition.Lagrange
+                    || rightType_ == CubicInterpolation.BoundaryCondition.Lagrange) {
+                    Utils.QL_REQUIRE(size >= 4, () =>
+                               "Lagrange boundary condition requires at least " +
+                               "4 points (" + size.ToString() + " are given)");
+                }
         }
 
         public override void update() {
@@ -228,9 +235,17 @@ namespace QLNet {
                         tmp[0] = 3.0*S[0] - leftValue_*dx[0]/2.0;
                         break;
                     case CubicInterpolation.BoundaryCondition.Periodic:
-                    case CubicInterpolation.BoundaryCondition.Lagrange:
                         // ignoring end condition value
                         throw new NotImplementedException("this end condition is not implemented yet");
+                    case CubicInterpolation.BoundaryCondition.Lagrange:
+                        L.setFirstRow(1.0, 0.0);
+                        tmp[0] = cubicInterpolatingPolynomialDerivative(
+                                            this.xBegin_[0], this.xBegin_[1],
+                                            this.xBegin_[2], this.xBegin_[3],
+                                            this.yBegin_[0], this.yBegin_[1],
+                                            this.yBegin_[2], this.yBegin_[3],
+                                            this.xBegin_[0]);
+                        break;
                     default:
                         throw new ArgumentException("unknown end condition");
                 }
@@ -253,9 +268,17 @@ namespace QLNet {
                         tmp[size_ - 1] = 3.0 * S[size_ - 2] + rightValue_ * dx[size_ - 2] / 2.0;
                         break;
                     case CubicInterpolation.BoundaryCondition.Periodic:
-                    case CubicInterpolation.BoundaryCondition.Lagrange:
                         // ignoring end condition value
                         throw new NotImplementedException("this end condition is not implemented yet");
+                    case CubicInterpolation.BoundaryCondition.Lagrange:
+                        L.setLastRow(0.0,1.0);
+                        tmp[size_ - 1] = cubicInterpolatingPolynomialDerivative(
+                                      this.xBegin_[size_ - 4], this.xBegin_[size_ - 3],
+                                      this.xBegin_[size_ - 2], this.xBegin_[size_ - 1],
+                                      this.yBegin_[size_ - 4], this.yBegin_[size_ - 3],
+                                      this.yBegin_[size_ - 2], this.yBegin_[size_ - 1],
+                                      this.xBegin_[size_ - 1]);
+                        break;
                     default:
                         throw new ArgumentException("unknown end condition");
                 }
@@ -442,5 +465,19 @@ namespace QLNet {
             double dx = x-xBegin_[j];
             return 2.0*b_[j] + 6.0*c_[j]*dx;
         }
+
+        private double cubicInterpolatingPolynomialDerivative(
+           double a, double b, double c, double d,
+           double u, double v, double w, double z, double x)
+        {
+           return (-((((a - c) * (b - c) * (c - x) * z - (a - d) * (b - d) * (d - x) * w) * (a - x + b - x)
+                      + ((a - c) * (b - c) * z - (a - d) * (b - d) * w) * (a - x) * (b - x)) * (a - b) +
+                     ((a - c) * (a - d) * v - (b - c) * (b - d) * u) * (c - d) * (c - x) * (d - x)
+                     + ((a - c) * (a - d) * (a - x) * v - (b - c) * (b - d) * (b - x) * u)
+                     * (c - x + d - x) * (c - d))) /
+               ((a - b) * (a - c) * (a - d) * (b - c) * (b - d) * (c - d));
+        }
+
+
     }
 }

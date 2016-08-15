@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -30,7 +30,7 @@ namespace QLNet
     with a (usually different) availability lag.
     */
 
-   public class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
+   public abstract class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
    {
       //public YoYOptionletVolatilitySurface()
       //: base (BusinessDayConvention.Following,null) {}
@@ -211,13 +211,6 @@ namespace QLNet
       }
       //@}
    
-      //! \name Limits
-      //@{
-      //! the minimum strike for which the term structure can return vols
-      public override double minStrike() { return  0 ;}
-      //! the maximum strike for which the term structure can return vols
-      public override double maxStrike() { return 0; }
-      //@}
       
       // acts as zero time value for boostrapping
       public virtual double baseLevel() 
@@ -265,7 +258,7 @@ namespace QLNet
       //! Implements the actual volatility surface calculation in
       //! derived classes e.g. bilinear interpolation.  N.B. does
       //! not derive the surface.
-      protected virtual double volatilityImpl(double length, double strike) { return 0; }
+      protected abstract double volatilityImpl(double length, double strike);
 
 
       // acts as zero time value for boostrapping

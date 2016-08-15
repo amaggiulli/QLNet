@@ -323,5 +323,7 @@ namespace QLNet
             fairRate = fairSpread = null;
          }
       }
+
+      public abstract class Engine : GenericEngine<VanillaSwap.Arguments, VanillaSwap.Results> { }
    }
 }

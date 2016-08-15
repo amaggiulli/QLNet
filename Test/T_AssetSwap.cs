@@ -26,6 +26,23 @@ namespace TestSuite
    [TestClass()]
    public class T_AssetSwap
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      private IndexHistoryCleaner cleaner;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+         cleaner = new IndexHistoryCleaner();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+         cleaner.Dispose();
+      }
+      #endregion
+
       class CommonVars
       {
          // common data
@@ -39,15 +56,9 @@ namespace TestSuite
          public Compounding compounding;
          public RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>(); 
 
-         // clean-up
-         public SavedSettings backup;
-         //public IndexHistoryCleaner indexCleaner;
-
          // initial setup
          public CommonVars() 
          {
-            backup = new SavedSettings();
-            //indexCleaner = new IndexHistoryCleaner();
             termStructure = new RelinkableHandle<YieldTermStructure>();
             int swapSettlementDays = 2;
             faceAmount = 100.0;

@@ -42,7 +42,7 @@ namespace QLNet
                              Date refPeriodStart = null,
                              Date refPeriodEnd = null,
                              Date exCouponDate = null)
-         : base(nominal, paymentDate, startDate, endDate, refPeriodStart, refPeriodEnd, exCouponDate)  // ref period is before lag
+         : base( paymentDate, nominal, startDate, endDate, refPeriodStart, refPeriodEnd, exCouponDate )  // ref period is before lag
       {
          index_ = index;
          observationLag_ = observationLag;

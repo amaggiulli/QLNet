@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -26,6 +26,19 @@ namespace TestSuite
 	[TestClass()]
 	public class T_InflationCapFloorTest
 	{
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
 
 		class CommonVars 
 		{
@@ -46,10 +59,6 @@ namespace TestSuite
 			public RelinkableHandle<YieldTermStructure> nominalTS = new RelinkableHandle<YieldTermStructure>();
 			public YoYInflationTermStructure yoyTS;
 			public RelinkableHandle<YoYInflationTermStructure> hy = new RelinkableHandle<YoYInflationTermStructure>();
-
-			// cleanup
-
-			SavedSettings backup = new SavedSettings();
 
 			// setup
 			public CommonVars() 
@@ -352,7 +361,7 @@ namespace TestSuite
 				}
 			} // pricer loop
 			// remove circular refernce
-			vars.hy.linkTo(new YoYInflationTermStructure());
+			vars.hy.linkTo(null);
 		}
 
 		// Test inflation cap/floor parity, i.e. that cap-floor = swap, note that this
@@ -430,7 +439,7 @@ namespace TestSuite
 				  }
 			 }
 			 // remove circular refernce
-			 vars.hy.linkTo(new YoYInflationTermStructure());
+			 vars.hy.linkTo(null);
 		}
 
 		
@@ -494,7 +503,7 @@ namespace TestSuite
 									+" diff was "+(Math.Abs(floor.NPV()-cachedFloorNPVbac)));
 
 			// remove circular refernce
-			vars.hy.linkTo(new YoYInflationTermStructure());
+			vars.hy.linkTo(null);
 	}
 	
 	}

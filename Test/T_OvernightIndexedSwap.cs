@@ -26,6 +26,20 @@ namespace TestSuite
    [TestClass()]
    public class T_OvernightIndexedSwap
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       public struct Datum
       {
          public int settlementDays;
@@ -166,9 +180,6 @@ namespace TestSuite
          public IborIndex swapIndex;
          public RelinkableHandle<YieldTermStructure> swapTermStructure = new RelinkableHandle<YieldTermStructure>();
 
-         // cleanup
-         public SavedSettings backup;
-
          // utilities
          public OvernightIndexedSwap makeSwap(Period length,
                                        double fixedRate,
@@ -241,7 +252,6 @@ namespace TestSuite
       [TestMethod()]
       public void testFairSpread() 
       {
-
          // Testing Eonia-swap calculation of fair floating spread...
          CommonVars vars = new CommonVars();
 

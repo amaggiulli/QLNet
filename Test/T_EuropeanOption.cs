@@ -26,6 +26,19 @@ namespace TestSuite
    [TestClass()]
    public class T_EuropeanOption
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
 
       enum EngineType
       {
@@ -40,10 +53,7 @@ namespace TestSuite
       [TestMethod()]
       public void testJRBinomialEngines()
       {
-         //("Testing JR binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing JR binomial European engines against analytic results
          EngineType engine = EngineType.JR;
          int steps = 251;
          int samples = 0;
@@ -57,11 +67,7 @@ namespace TestSuite
       [TestMethod()]
       public void testCRRBinomialEngines()
       {
-
-         //("Testing CRR binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing CRR binomial European engines against analytic results
          EngineType engine = EngineType.CRR;
          int steps = 501;
          int samples = 0;
@@ -75,11 +81,7 @@ namespace TestSuite
       [TestMethod()]
       public void testEQPBinomialEngines()
       {
-
-         //("Testing EQP binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing EQP binomial European engines against analytic results
          EngineType engine = EngineType.EQP;
          int steps = 501;
          int samples = 0;
@@ -93,11 +95,7 @@ namespace TestSuite
       [TestMethod()]
       public void testTGEOBinomialEngines()
       {
-
-         //("Testing TGEO binomial European engines " against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing TGEO binomial European engines " against analytic results
          EngineType engine = EngineType.TGEO;
          int steps = 251;
          int samples = 0;
@@ -111,11 +109,7 @@ namespace TestSuite
       [TestMethod()]
       public void testTIANBinomialEngines()
       {
-
-         //("Testing TIAN binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing TIAN binomial European engines against analytic results
          EngineType engine = EngineType.TIAN;
          int steps = 251;
          int samples = 0;
@@ -129,11 +123,7 @@ namespace TestSuite
       [TestMethod()]
       public void testLRBinomialEngines()
       {
-
-         //"Testing LR binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing LR binomial European engines against analytic results
          EngineType engine = EngineType.LR;
          int steps = 251;
          int samples = 0;
@@ -147,11 +137,7 @@ namespace TestSuite
       [TestMethod()]
       public void testJOSHIBinomialEngines()
       {
-
-         //("Testing Joshi binomial European engines against analytic results...");
-
-         //SavedSettings backup;
-
+         // Testing Joshi binomial European engines against analytic results
          EngineType engine = EngineType.JOSHI;
          int steps = 251;
          int samples = 0;
@@ -250,8 +236,7 @@ namespace TestSuite
          return option;
       }
 
-      //void testEngineConsistency(EngineType engine, int binomialSteps, int samples, Dictionary<string,double> tolerance,
-      //                           bool testGreeks = false) {
+
       void testEngineConsistency(EngineType engine, int binomialSteps, int samples, Dictionary<string, double> tolerance,
                                  bool testGreeks)
       {

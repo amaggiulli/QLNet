@@ -23,6 +23,20 @@ namespace TestSuite
    [TestClass()]
    public class T_OptionletStripper
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+      [TestInitialize]
+      public void testInitialize()
+      {
+         backup = new SavedSettings();
+      }
+      [TestCleanup]
+      public void testCleanup()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       class CommonVars
       {
          // global data
@@ -45,9 +59,6 @@ namespace TestSuite
 
          public double accuracy;
          public double tolerance;
-
-         // cleanup
-         public SavedSettings backup = new SavedSettings();
 
          public CommonVars()
          {
@@ -274,7 +285,6 @@ namespace TestSuite
       [TestMethod()]
       public void testTermVolatilityStripping1() 
       {
-
          // Testing forward/forward vol stripping from non-flat term 
          // vol surface using OptionletStripper1 class
 
@@ -434,8 +444,5 @@ namespace TestSuite
           }
         }
 }
-
-
-
    }
 }

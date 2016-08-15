@@ -27,14 +27,27 @@ namespace TestSuite {
     /// </summary>
     [TestClass]
     public class T_LinearLeastSquaresRegression {
+       
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       [TestInitialize]
+       public void testInitialize()
+       {
+          backup = new SavedSettings();
+       }
+       [TestCleanup]
+       public void testCleanup()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         const double tolerance = 0.025;
 
         [TestMethod]
-        public void testRegression() {
-            //("Testing linear least-squares regression...");
-
-            //SavedSettings backup;
-
+        public void testRegression() 
+        {
+            // Testing linear least-squares regression
             const int nr=100000;
             
             var rng = new InverseCumulativeRng<MersenneTwisterUniformRng,InverseCumulativeNormal>(
@@ -101,14 +114,12 @@ namespace TestSuite {
         }
 
         [TestMethod]
-        public void test1dLinearRegression() {
-
-            //BOOST_MESSAGE("Testing 1d simple linear least-squares regression...");
+        public void test1dLinearRegression() 
+        {
+            // Testing 1d simple linear least-squares regression
 
             /* Example taken from the QuantLib-User list, see posting
              * Multiple linear regression/weighted regression, Boris Skorodumov */
-
-            //SavedSettings backup;
 
             List<double> x = new InitializedList<double>(9),
                          y = new InitializedList<double>(9);
@@ -146,12 +157,9 @@ namespace TestSuite {
         }
 
         [TestMethod]
-        public void testMultiDimRegression() {
-
-            //BOOST_MESSAGE("Testing linear least-squares regression...");
-
-            //SavedSettings backup;
-
+        public void testMultiDimRegression() 
+        {
+            // Testing linear least-squares regression
             const int nr=100000;
             const int dims = 4;
             const double tolerance = 0.01;
