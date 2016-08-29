@@ -346,6 +346,11 @@ namespace TestSuite
          Assert.IsTrue(d2.minutes == 52,"failed to reproduce minute of hour");
          Assert.IsTrue(d2.seconds == 57,"failed to reproduce second of minute");
          Assert.IsTrue( d2.milliseconds == 999, "failed to reproduce number of milliseconds" );
+
+         // test daysBetween when d2 time part is earlier in the day than d1 time part.
+         d1 = new Date( new DateTime( 2016, 1, 1, 18, 0, 0 ) );
+         d2 = new Date( new DateTime( 2016, 1, 2, 0, 0, 0 ) );
+         Assert.IsTrue( Date.daysBetween(d1, d2) == 0.25, "failed daysBetween" );
       }
 
    }
