@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -56,20 +56,20 @@ namespace QLNet
          XABREndCriteria_ = EndCriteria.Type.None;
 
          Utils.QL_REQUIRE( t > 0.0, () => "expiry time must be positive: " + t + " not allowed" );
-         Utils.QL_REQUIRE( _params.Count == new Model().dimension(), () =>
+         Utils.QL_REQUIRE( _params.Count == New<Model>.Instance().dimension(), () =>
                    "wrong number of parameters (" + _params.Count
                                                   + "), should be "
-                                                  + new Model().dimension() );
-         Utils.QL_REQUIRE( paramIsFixed.Count == new Model().dimension(), () =>
+                                                  + New<Model>.Instance().dimension() );
+         Utils.QL_REQUIRE( paramIsFixed.Count == New<Model>.Instance().dimension(), () =>
                    "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be "
-                   + new Model().dimension() );
+                   + New<Model>.Instance().dimension() );
 
          for ( int i = 0; i < _params.Count; ++i )
          {
             if ( _params[i] != null )
                paramIsFixed_[i] = paramIsFixed[i];
          }
-         new Model().defaultValues( params_, paramIsFixed_, forward_, t_ );
+         New<Model>.Instance().defaultValues( params_, paramIsFixed_, forward_, t_ );
          updateModelInstance();
       }
 
@@ -77,8 +77,8 @@ namespace QLNet
       {
          // forward might have changed
          Utils.QL_REQUIRE( forward_ > 0.0, () => "forward must be positive: " + forward_ + " not allowed" );
-         modelInstance_ = new Model().instance( t_, forward_, params_ );
-         model_ = new Model();
+         modelInstance_ = New<Model>.Instance().instance( t_, forward_, params_ );
+         model_ = New<Model>.Instance();
       }
 
       /*! Expiry, Forward */
@@ -109,11 +109,11 @@ namespace QLNet
          : base( xBegin, size, yBegin )
       {
           // XABRCoeffHolder<Model>(t, forward, params, paramIsFixed),
-          endCriteria_ = endCriteria; 
+          endCriteria_ = endCriteria;
           optMethod_ = optMethod;
-          errorAccept_ = errorAccept; 
+          errorAccept_ = errorAccept;
           useMaxError_ = useMaxError;
-          maxGuesses_ = maxGuesses; 
+          maxGuesses_ = maxGuesses;
           forward_ = forward;
           vegaWeighted_ = vegaWeighted;
 
@@ -122,14 +122,14 @@ namespace QLNet
             optMethod_ = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
             // optMethod_ = boost::shared_ptr<OptimizationMethod>(new
             //    Simplex(0.01));
-         if (endCriteria_ == null) 
+         if (endCriteria_ == null)
          {
             endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
          }
          coeff_ = new XABRCoeffHolder<Model>( t, forward, _params, paramIsFixed );
          this.coeff_.weights_ = new InitializedList<double>( size, 1.0 / size );
       }
-      
+
       public override void update()
       {
          this.coeff_.updateModelInstance();
@@ -137,7 +137,7 @@ namespace QLNet
          // we should also check that y contains positive values only
 
          // we must update weights if it is vegaWeighted
-         if (vegaWeighted_) 
+         if (vegaWeighted_)
          {
             coeff_.weights_.Clear();
             double weightsSum = 0.0;
@@ -193,7 +193,7 @@ namespace QLNet
 
                 Vector inversedTransformatedGuess = new Vector(coeff_.model_.inverse(guess, coeff_.paramIsFixed_, coeff_.params_, forward_));
 
-                ProjectedCostFunction rainedXABRError = new ProjectedCostFunction(costFunction, inversedTransformatedGuess, 
+                ProjectedCostFunction rainedXABRError = new ProjectedCostFunction(costFunction, inversedTransformatedGuess,
                                                                                   coeff_.paramIsFixed_);
 
                 Vector projectedGuess = new Vector(rainedXABRError.project(inversedTransformatedGuess));
@@ -212,7 +212,7 @@ namespace QLNet
                 tmpInterpolationError = useMaxError_ ? interpolationMaxError()
                                                      : interpolationError();
 
-                if (tmpInterpolationError < bestError) 
+                if (tmpInterpolationError < bestError)
                 {
                     bestError = tmpInterpolationError;
                     bestParameters = result;
@@ -241,7 +241,7 @@ namespace QLNet
       public override double secondDerivative( double d ) { Utils.QL_FAIL( "XABR secondDerivative not implemented" ); return 0; }
 
       // calculate total squared weighted difference (L2 norm)
-      public double interpolationSquaredError()  
+      public double interpolationSquaredError()
       {
          double error, totalError = 0.0;
          for ( int i = 0; i < xBegin_.Count; i++ )
@@ -253,7 +253,7 @@ namespace QLNet
       }
 
       // calculate weighted differences
-      public Vector interpolationErrors( Vector v )  
+      public Vector interpolationErrors( Vector v )
       {
          Vector results = new Vector(xBegin_.Count);
 
@@ -265,14 +265,14 @@ namespace QLNet
 
     }
 
-      public double interpolationError()  
+      public double interpolationError()
       {
         int n = xBegin_.Count;
         double squaredError = interpolationSquaredError();
         return Math.Sqrt(n * squaredError / (n - 1));
     }
 
-      public double interpolationMaxError()  
+      public double interpolationMaxError()
       {
          double error, maxError = Double.MinValue;
 
@@ -292,7 +292,7 @@ namespace QLNet
 
          public override double value( Vector x )
          {
-            Vector y = new Model().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = New<Model>.Instance().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();
@@ -301,7 +301,7 @@ namespace QLNet
 
          public override Vector values( Vector x )
          {
-            Vector y = new Model().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = New<Model>.Instance().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();

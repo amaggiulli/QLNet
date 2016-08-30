@@ -91,7 +91,7 @@ namespace QLNet
       {
          base.calculate( requiredTolerance_, requiredSamples_, maxSamples_ );
          results_.value = mcModel_.sampleAccumulator().mean();
-         if ( new RNG().allowsErrorEstimate != 0 )
+         if ( New<RNG>.Instance().allowsErrorEstimate != 0 )
             results_.errorEstimate = mcModel_.sampleAccumulator().errorEstimate();
       }
 
@@ -120,7 +120,7 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = timeGrid();
-         IRNG generator = (IRNG)new RNG().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
+         IRNG generator = (IRNG)New<RNG>.Instance().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
          if ( typeof( MC ) == typeof( SingleVariate ) )
             return new PathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
          else

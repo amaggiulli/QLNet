@@ -395,6 +395,7 @@
     <Compile Include="Models\Shortrate\twofactormodel.cs" />
     <Compile Include="Models\Shortrate\Twofactorsmodels\g2.cs" />
     <Compile Include="Money.cs" />
+    <Compile Include="New.cs" />
     <Compile Include="numericalmethod.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Patterns\LazyObject.cs" />

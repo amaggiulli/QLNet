@@ -82,7 +82,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedDiscountCurve(Date referenceDate,
@@ -92,7 +92,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedDiscountCurve(int settlementDays,
@@ -103,7 +103,7 @@ namespace QLNet
                                        Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedDiscountCurve(List<Date> dates,
@@ -118,7 +118,7 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = discounts;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
          initialize();
       }
 
@@ -160,7 +160,7 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = discounts;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
          initialize();
       }
 

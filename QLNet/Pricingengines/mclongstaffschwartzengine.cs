@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -48,7 +48,7 @@ namespace QLNet
                                            ulong seed,
                                            int nCalibrationSamples ) :
          base( process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate,
-               requiredSamples, requiredTolerance, maxSamples, seed, nCalibrationSamples ) 
+               requiredSamples, requiredTolerance, maxSamples, seed, nCalibrationSamples )
       {}
    }
 
@@ -79,16 +79,16 @@ namespace QLNet
       protected LongstaffSchwartzPathPricer<IPath> pathPricer_;
 
 
-      protected MCLongstaffSchwartzEngine( StochasticProcess process, 
-                                           int? timeSteps, 
+      protected MCLongstaffSchwartzEngine( StochasticProcess process,
+                                           int? timeSteps,
                                            int? timeStepsPerYear,
-                                           bool brownianBridge, 
-                                           bool antitheticVariate, 
+                                           bool brownianBridge,
+                                           bool antitheticVariate,
                                            bool controlVariate,
-                                           int? requiredSamples, 
-                                           double? requiredTolerance, 
+                                           int? requiredSamples,
+                                           double? requiredTolerance,
                                            int? maxSamples,
-                                           ulong seed, 
+                                           ulong seed,
                                            int? nCalibrationSamples )
          : base( antitheticVariate, controlVariate )
       {
@@ -118,14 +118,14 @@ namespace QLNet
       public virtual void calculate()
       {
          pathPricer_ = lsmPathPricer();
-         mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer_, new S(), antitheticVariate_ );
+         mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer_, New<S>.Instance(), antitheticVariate_ );
 
          mcModel_.addSamples( nCalibrationSamples_ );
          pathPricer_.calibrate();
 
          base.calculate( requiredTolerance_, requiredSamples_, maxSamples_ );
          results_.value = mcModel_.sampleAccumulator().mean();
-         if ( new RNG().allowsErrorEstimate != 0 )
+         if ( New<RNG>.Instance().allowsErrorEstimate != 0 )
          {
             results_.errorEstimate = mcModel_.sampleAccumulator().errorEstimate();
          }
@@ -160,7 +160,7 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = timeGrid();
-         IRNG generator = (IRNG)new RNG().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
+         IRNG generator = (IRNG)New<RNG>.Instance().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
          if ( typeof( MC ) == typeof( SingleVariate ) )
             return new PathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
          else

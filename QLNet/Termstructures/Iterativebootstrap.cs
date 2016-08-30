@@ -2,18 +2,18 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QLNet 
+namespace QLNet
 {
 	public interface IBootStrap<T>
 	{
@@ -59,7 +59,7 @@ namespace QLNet
 
 		public IterativeBootstrap()
 		{
-			ts_ = new T();
+			ts_ = New<T>.Instance();
 			initialized_ = false;
 			validCurve_ = false;
 		}
@@ -80,8 +80,8 @@ namespace QLNet
 						  "not enough alive instruments: " + alive_ +
 						  " provided, " + ( ts_.interpolator_.requiredPoints - 1 ) +
 						  " required" );
-         
-         
+
+
          if ( ts_.dates_ == null )
          {
             ts_.dates_ = new InitializedList<Date>( alive_ + 1 );
@@ -95,7 +95,7 @@ namespace QLNet
 
          List<Date> dates = ts_.dates_;
          List<double> times = ts_.times_;
-         
+
 
 			errors_ = new List<BootstrapError<T, U>>( alive_ + 1 );
 			dates[0] = firstDate ;
@@ -141,7 +141,7 @@ namespace QLNet
 
 		}
 
-		public void setup(T ts) 
+		public void setup(T ts)
 		{
          ts_ = ts;
 
@@ -157,7 +157,7 @@ namespace QLNet
          loopRequired_ = ts_.interpolator_.global;
       }
 
-      public void calculate() 
+      public void calculate()
 		{
 			// we might have to call initialize even if the curve is initialized
 			// and not moving, just because helpers might be date relative and change
@@ -179,7 +179,7 @@ namespace QLNet
 				// This call creates helpers, and removes "const".
 				// There is a significant interaction with observability.
 				ts_.setTermStructure( ts_.instruments_[j] );
-			} 
+			}
 
 			List<double> times = ts_.times_;
             List<double> data = ts_.data_;
@@ -206,7 +206,7 @@ namespace QLNet
                   guess = max - (max - min) / 5.0;
                else if (guess <= min)
                   guess = min + (max - min) / 5.0;
-                    
+
                // extend interpolation if needed
                if (!validData)
                {

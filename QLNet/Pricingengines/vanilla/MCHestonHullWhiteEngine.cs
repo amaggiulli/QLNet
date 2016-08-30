@@ -157,7 +157,7 @@ namespace QLNet
       public MakeMCHestonHullWhiteEngine<RNG, S> withAbsoluteTolerance( double tolerance )
       {
          Utils.QL_REQUIRE(samples_ == null,()=> "number of samples already set");
-         Utils.QL_REQUIRE( new RNG().allowsErrorEstimate != 0, () => 
+         Utils.QL_REQUIRE( New<RNG>.Instance().allowsErrorEstimate != 0, () => 
             "chosen random generator policy does not allow an error estimate" );
          tolerance_ = tolerance;
          return this;

@@ -76,7 +76,7 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedForwardCurve(Date referenceDate,
@@ -86,7 +86,7 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedForwardCurve(int settlementDays,
@@ -97,7 +97,7 @@ namespace QLNet
                                       Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
       }
 
       public InterpolatedForwardCurve(List<Date> dates,
@@ -111,7 +111,7 @@ namespace QLNet
       {
          times_ = new List<double>();
          data_ = forwards;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
          dates_ = dates;
          initialize();
       }
@@ -154,7 +154,7 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = forwards;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? New<Interpolator>.Instance();
          initialize();
       }
 

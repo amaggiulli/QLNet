@@ -204,7 +204,7 @@ namespace QLNet
         public MakeMCDiscreteArithmeticAPEngine<RNG, S> withTolerance(double tolerance)
         {
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
-            if ((new RNG().allowsErrorEstimate == 0))
+            if ((New<RNG>.Instance().allowsErrorEstimate == 0))
                 throw new ApplicationException("chosen random generator policy " +
                                                "does not allow an error estimate");
             tolerance_ = tolerance;

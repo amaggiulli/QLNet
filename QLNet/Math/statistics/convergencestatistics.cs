@@ -74,7 +74,7 @@ namespace QLNet {
             reset();
         }
 
-        public ConvergenceStatistics() : this(new U()) { }
+        public ConvergenceStatistics() : this(New<U>.Instance()) { }
         public ConvergenceStatistics(U rule) {
             samplingRule_ = rule;
             reset();
@@ -107,7 +107,7 @@ namespace QLNet {
         }
 
         #region wrap-up Stat
-        protected T impl_ = new T();
+        protected T impl_ = New<T>.Instance();
 
         public int samples() { return impl_.samples(); }
         public double mean() { return impl_.mean(); }
