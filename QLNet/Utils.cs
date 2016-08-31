@@ -127,4 +127,11 @@ namespace QLNet
                 this[i] = default(T);       // do we need to use "new T()" instead of default(T) when T is class?
         }
     }
+
+    #if ! QL_DOTNET_FRAMEWORK
+    public interface ICloneable
+    {
+       object Clone();
+    }
+    #endif
 }

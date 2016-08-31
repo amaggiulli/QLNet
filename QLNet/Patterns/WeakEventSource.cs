@@ -109,7 +109,12 @@ namespace QLNet
          public WeakDelegate(Delegate handler)
          {
             _weakTarget = handler.Target != null ? new WeakReference(handler.Target) : null;
-            _method = handler.Method;
+            #if QL_DOTNET_FRAMEWORK
+               _method = handler.Method;
+            #else
+               _method = handler.GetMethodInfo();
+            #endif
+
             _openHandler = _openHandlerCache.GetOrAdd(_method, CreateOpenHandler);
          }
 
@@ -128,8 +133,14 @@ namespace QLNet
 
          public bool IsMatch(Callback handler)
          {
-            return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
-                                                  && handler.Method.Equals(_method));
+            #if QL_DOTNET_FRAMEWORK
+               return _weakTarget.Target != null && ( ReferenceEquals( handler.Target, _weakTarget.Target )
+                                                                    && handler.Method.Equals( _method ) );
+            #else
+               return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
+                                                                  && handler.GetMethodInfo().Equals(_method));
+            #endif
+
          }
       }
    }
