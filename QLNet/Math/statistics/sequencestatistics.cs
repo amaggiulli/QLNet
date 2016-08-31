@@ -104,7 +104,7 @@ namespace QLNet {
         private List<double> noArg(string method) {
             // do not check for null - in this case we throw anyways
             for (int i = 0; i < dimension_; i++) {
-                MethodInfo methodInfo = stats_[i].GetType().GetMethod(method);
+                MethodInfo methodInfo = Utils.GetMethodInfo( stats_[i], method );
                 results_[i] = (double)methodInfo.Invoke(stats_[i], new object[] { });
             }
             return results_;
@@ -113,7 +113,7 @@ namespace QLNet {
         private List<double> singleArg(double x, string method) {
             // do not check for null - in this case we throw anyways
             for (int i = 0; i < dimension_; i++) {
-                MethodInfo methodInfo = stats_[i].GetType().GetMethod(method);
+                MethodInfo methodInfo = Utils.GetMethodInfo( stats_[i], method );
                 results_[i] = (double)methodInfo.Invoke(stats_[i], new object[] { x });
             }
             return results_;

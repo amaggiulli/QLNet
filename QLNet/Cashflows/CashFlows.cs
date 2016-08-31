@@ -360,11 +360,12 @@ namespace QLNet
          // visitor classes should implement the generic visit method in the following form
          public void visit(object o) 
          {
-               Type[] types = new Type[] { o.GetType() };
-               MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
-               if (methodInfo != null) {
+            Type[] types = new Type[] { o.GetType() };
+            MethodInfo methodInfo = Utils.GetMethodInfo( this, "visit", types );
+
+            if (methodInfo != null) {
                   methodInfo.Invoke(this, new object[] { o });
-               }
+            }
          }
          public void visit(Coupon c) 
          {
