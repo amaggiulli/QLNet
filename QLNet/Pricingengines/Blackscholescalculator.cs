@@ -33,10 +33,10 @@ namespace QLNet {
 			growth_ = growth;
 
             if (!(spot_ >= 0.0))
-                throw new ApplicationException("positive spot value required: " + spot_ + " not allowed");
+                throw new Exception("positive spot value required: " + spot_ + " not allowed");
 
             if (!(growth_ >= 0.0))
-                throw new ApplicationException("positive growth value required: " + growth_ + " not allowed");
+                throw new Exception("positive growth value required: " + growth_ + " not allowed");
 		}
 
 		//! Sensitivity to change in the underlying spot price. 

@@ -74,13 +74,13 @@ namespace QLNet
       {
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
          if ( process == null )
-            throw new ApplicationException( "generalized Black-Scholes process required" );
+            throw new Exception( "generalized Black-Scholes process required" );
 
          EarlyExercise exercise = arguments_.exercise as EarlyExercise;
          if ( exercise == null )
-            throw new ApplicationException( "wrong exercise given" );
+            throw new Exception( "wrong exercise given" );
          if ( exercise.payoffAtExpiry() )
-            throw new ApplicationException( "payoff at expiry not handled" );
+            throw new Exception( "payoff at expiry not handled" );
 
          AmericanPathPricer earlyExercisePathPricer = new AmericanPathPricer( arguments_.payoff, polynomOrder_, polynomType_ );
 
@@ -92,7 +92,7 @@ namespace QLNet
          IPricingEngine controlPE = controlPricingEngine();
 
          if ( controlPE == null )
-            throw new ApplicationException( "engine does not provide control variation pricing engine" );
+            throw new Exception( "engine does not provide control variation pricing engine" );
 
          VanillaOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
          controlArguments = arguments_;
@@ -109,7 +109,7 @@ namespace QLNet
       {
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
          if ( process == null )
-            throw new ApplicationException( "generalized Black-Scholes process required" );
+            throw new Exception( "generalized Black-Scholes process required" );
 
          return new AnalyticEuropeanEngine( process );
       }
@@ -118,11 +118,11 @@ namespace QLNet
       {
          StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
          if ( payoff == null )
-            throw new ApplicationException( "StrikedTypePayoff needed for control variate" );
+            throw new Exception( "StrikedTypePayoff needed for control variate" );
 
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
          if ( process == null )
-            throw new ApplicationException( "generalized Black-Scholes process required" );
+            throw new Exception( "generalized Black-Scholes process required" );
 
          return new EuropeanPathPricer( payoff.optionType(), payoff.strike(),
                                        process.riskFreeRate().link.discount( timeGrid().Last() ) );
@@ -147,7 +147,7 @@ namespace QLNet
                || polynomType == LsmBasisSystem.PolynomType.Hermite
                || polynomType == LsmBasisSystem.PolynomType.Hyperbolic
                || polynomType == LsmBasisSystem.PolynomType.Chebyshev2th ) )
-            throw new ApplicationException( "insufficient polynom type" );
+            throw new Exception( "insufficient polynom type" );
 
          // the payoff gives an additional value
          v_.Add( this.payoff );

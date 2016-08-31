@@ -54,10 +54,10 @@ namespace QLNet {
         //! returns the covariance Matrix
         public Matrix covariance() {
             double sampleWeight = weightSum();
-            if (!(sampleWeight > 0.0)) throw new ApplicationException("sampleWeight=0, unsufficient");
+            if (!(sampleWeight > 0.0)) throw new Exception("sampleWeight=0, unsufficient");
 
             double sampleNumber = samples();
-            if (!(sampleNumber > 1.0)) throw new ApplicationException("sample number <=1, unsufficient");
+            if (!(sampleNumber > 1.0)) throw new Exception("sample number <=1, unsufficient");
 
             List<double> m = mean();
             double inv = 1.0/sampleWeight;
@@ -200,12 +200,12 @@ namespace QLNet {
             if (dimension_ == 0) {
                 // stat wasn't initialized yet
                 int dimension = begin.Count;
-                if(!(dimension>0)) throw new ApplicationException("sample error: end<=begin");
+                if(!(dimension>0)) throw new Exception("sample error: end<=begin");
                 reset(dimension);
             }
 
             if (begin.Count != dimension_) 
-                throw new ApplicationException("sample size mismatch: " + dimension_ +
+                throw new Exception("sample size mismatch: " + dimension_ +
                        " required, " + begin.Count + " provided");
 
             quadraticSum_ += weight * Matrix.outerProduct(begin, begin);

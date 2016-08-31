@@ -146,7 +146,7 @@ namespace QLNet
          }
          else
          {
-            throw new ApplicationException( "time steps not specified" );
+            throw new Exception( "time steps not specified" );
          }
       }
 

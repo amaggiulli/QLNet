@@ -98,7 +98,7 @@ namespace QLNet {
         public static Matrix operator /(Matrix m1, double value) { return operValue(ref m1, value, (x, y) => x / y); }
         private static Matrix operMatrix(ref Matrix m1, ref Matrix m2, Func<double, double, double> func) {
             if (!(m1.rows_ == m2.rows_ && m1.columns_ == m2.columns_))
-                throw new ApplicationException("operation on matrices with different sizes (" +
+                throw new Exception("operation on matrices with different sizes (" +
                        m2.rows_ + "x" + m2.columns_ + ", " + m1.rows_ + "x" + m1.columns_ + ")");
 
             Matrix result = new Matrix(m1.rows_, m1.columns_);
@@ -117,7 +117,7 @@ namespace QLNet {
 
         public static Vector operator *(Vector v, Matrix m) {
             if (!(v.Count == m.rows()))
-                throw new ApplicationException("vectors and matrices with different sizes ("
+                throw new Exception("vectors and matrices with different sizes ("
                        + v.Count + ", " + m.rows() + "x" + m.columns() + ") cannot be multiplied");
             Vector result = new Vector(m.columns());
             for (int i = 0; i < result.Count; i++)
@@ -127,7 +127,7 @@ namespace QLNet {
         /*! \relates Matrix */
         public static Vector operator *(Matrix m, Vector v) {
             if (!(v.Count == m.columns()))
-                throw new ApplicationException("vectors and matrices with different sizes ("
+                throw new Exception("vectors and matrices with different sizes ("
                        + v.Count + ", " + m.rows() + "x" + m.columns() + ") cannot be multiplied");
             Vector result = new Vector(m.rows());
             for (int i = 0; i < result.Count; i++)
@@ -137,7 +137,7 @@ namespace QLNet {
         /*! \relates Matrix */
         public static Matrix operator *(Matrix m1, Matrix m2) {
             if (!(m1.columns() == m2.rows()))
-                throw new ApplicationException("matrices with different sizes (" +
+                throw new Exception("matrices with different sizes (" +
                        m1.rows() + "x" + m1.columns() + ", " +
                        m2.rows() + "x" + m2.columns() + ") cannot be multiplied");
             Matrix result = new Matrix(m1.rows(), m2.columns());
@@ -159,10 +159,10 @@ namespace QLNet {
         public static Matrix outerProduct(List<double> v1begin, List<double> v2begin) {
 
             int size1 = v1begin.Count;
-            if (!(size1>0)) throw new ApplicationException("null first vector");
+            if (!(size1>0)) throw new Exception("null first vector");
 
             int size2 = v2begin.Count;
-            if(!(size2>0)) throw new ApplicationException("null second vector");
+            if(!(size2>0)) throw new Exception("null second vector");
 
             Matrix result = new Matrix(size1, size2);
 

@@ -193,7 +193,7 @@ namespace QLNet
         public virtual double? baseLevel() 
         {
             if(baseLevel_ == null )
-                throw new ApplicationException("Base volatility, for baseDate(), not set.");
+                throw new Exception("Base volatility, for baseDate(), not set.");
             return baseLevel_;
         }
         //@}

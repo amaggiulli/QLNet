@@ -25,7 +25,7 @@ namespace QLNet {
 		public static ArgumentException UnknownBusinessDayConvention(BusinessDayConvention c) {
 			return new ArgumentException("Unknown business-day convention: " + c); }
 
-		public static ApplicationException MissingImplementation() {
-			return new ApplicationException("No implementation provided"); }
+		public static Exception MissingImplementation() {
+			return new Exception("No implementation provided"); }
     }
 }

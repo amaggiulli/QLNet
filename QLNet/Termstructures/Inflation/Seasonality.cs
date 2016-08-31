@@ -192,12 +192,12 @@ namespace QLNet
             }
             else if (factorPeriod.units() == TimeUnit.Years) 
             {
-                throw new ApplicationException(
+                throw new Exception(
                    "seasonality period time unit is not allowed to be : " + factorPeriod.units());
             } 
             else 
             {
-                throw new ApplicationException("Unknown time unit: " + factorPeriod.units());
+                throw new Exception("Unknown time unit: " + factorPeriod.units());
             }
             // now adjust to the available number of factors, direction dependent
 
@@ -253,7 +253,7 @@ namespace QLNet
          {
             double factorAt = this.seasonalityFactor(curveBaseDate+new Period(i,TimeUnit.Years));
             if (Math.Abs(factorAt-factorBase)>=eps)
-               throw new ApplicationException("seasonality is inconsistent with inflation " +
+               throw new Exception("seasonality is inconsistent with inflation " +
                         "term structure, factors " + factorBase + " and later factor " 
                         + factorAt + ", " + i + " years later from inflation curve "
                         + " with base date at " + curveBaseDate);
@@ -276,13 +276,13 @@ namespace QLNet
             case Frequency.Weekly:
             case Frequency.Daily:
                if ((this.seasonalityFactors().Count % (int)this.frequency()) != 0)
-                  throw new ApplicationException(
+                  throw new Exception(
                            "For frequency " + this.frequency()
                            + " require multiple of " + ((int)this.frequency()) + " factors "
                            + this.seasonalityFactors().Count + " were given.");
             break;
             default:
-               throw new ApplicationException("bad frequency specified: " + this.frequency()
+               throw new Exception("bad frequency specified: " + this.frequency()
                         + ", only semi-annual through daily permitted.");
         }
 

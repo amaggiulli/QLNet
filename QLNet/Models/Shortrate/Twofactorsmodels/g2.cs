@@ -136,7 +136,7 @@ namespace QLNet
                                   Vector factors)
         {
             if (!(factors.size() > 1))
-                throw new ApplicationException("g2 model needs two factors to compute discount bond");
+                throw new Exception("g2 model needs two factors to compute discount bond");
             return discountBond(now, maturity, factors[0], factors[1]);
         }
 

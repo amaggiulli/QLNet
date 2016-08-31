@@ -197,7 +197,7 @@ namespace TestSuite {
                 case OptimizationMethodType.bfgs_goldstein:
                     return new BFGS(new GoldsteinLineSearch());
                 default:
-                    throw new ApplicationException("unknown OptimizationMethod type");
+                    throw new Exception("unknown OptimizationMethod type");
             }
         }      
 
@@ -242,7 +242,7 @@ namespace TestSuite {
                 case OptimizationMethodType.bfgs_goldstein:
                     return "BFGS (Goldstein line search)";
                 default:
-                    throw new ApplicationException("unknown OptimizationMethod type");
+                    throw new Exception("unknown OptimizationMethod type");
             }
         }
     }
@@ -257,7 +257,7 @@ namespace TestSuite {
         }
 
         public override double value(Vector x) {
-            if(x.size()!=1) throw new ApplicationException("independent variable must be 1 dimensional");
+            if(x.size()!=1) throw new Exception("independent variable must be 1 dimensional");
             double y = 0;
             for (int i=0; i<=polynomialDegree_; ++i)
                 y += coefficients_[i]*Utils.Pow(x[0],i);
@@ -265,7 +265,7 @@ namespace TestSuite {
         }
 
         public override Vector values(Vector x) {
-            if(x.size()!=1) throw new ApplicationException("independent variable must be 1 dimensional");
+            if(x.size()!=1) throw new Exception("independent variable must be 1 dimensional");
             Vector y = new Vector(1);
             y[0] = value(x);
             return y;

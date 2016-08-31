@@ -83,7 +83,7 @@ namespace QLNet
                 = process_.accrualEndTimes();
 
             if (!(accrualStartTimes.First() <= maturity && accrualStartTimes.Last() >= maturity))
-                throw new ApplicationException("capet maturity does not fit to the process"); 
+                throw new Exception("capet maturity does not fit to the process"); 
             
             int i = accrualStartTimes.BinarySearch(maturity);
             if (i < 0)
@@ -98,7 +98,7 @@ namespace QLNet
             if  (!(i<process_.size()
                 && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_EPSILON
                 && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON))
-                throw new ApplicationException("irregular fixings are not (yet) supported"); 
+                throw new Exception("irregular fixings are not (yet) supported"); 
 
             double tenor     = accrualEndTimes[i] - accrualStartTimes[i];
             double forward   = process_.initialValues()[i];
@@ -127,7 +127,7 @@ namespace QLNet
 {
             Vector omega = new Vector(beta + 1, 0.0);
             if(!(alpha<beta))
-                throw new ApplicationException("alpha needs to be smaller than beta");
+                throw new Exception("alpha needs to be smaller than beta");
 
             double s=0.0;
             for (int k=alpha+1; k<=beta; ++k) {

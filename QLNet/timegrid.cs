@@ -41,7 +41,7 @@ namespace QLNet {
             // We seem to assume that the grid begins at 0.
             // Let's enforce the assumption for the time being
             // (even though I'm not sure that I agree.)
-            if (!(end > 0.0)) throw new ApplicationException("negative times not allowed");
+            if (!(end > 0.0)) throw new Exception("negative times not allowed");
             double dt = end/steps;
             times_ = new List<double>(steps+1);
             for (int i=0; i<=steps; i++)
@@ -59,7 +59,7 @@ namespace QLNet {
            mandatoryTimes_ = times.GetRange( 0, offset );
            mandatoryTimes_.Sort();
 
-           if ( !( mandatoryTimes_[0] >= 0.0 ) ) throw new ApplicationException( "negative times not allowed" );
+           if ( !( mandatoryTimes_[0] >= 0.0 ) ) throw new Exception( "negative times not allowed" );
 
            for ( int i = 0; i < mandatoryTimes_.Count - 1; ++i )
            {
@@ -86,7 +86,7 @@ namespace QLNet {
             mandatoryTimes_ = times.GetRange( 0, offset );
             mandatoryTimes_.Sort();
 
-            if (!(mandatoryTimes_[0] >= 0.0)) throw new ApplicationException("negative times not allowed");
+            if (!(mandatoryTimes_[0] >= 0.0)) throw new Exception("negative times not allowed");
 
             for (int i = 0; i < mandatoryTimes_.Count - 1; ++i)
             {
@@ -151,10 +151,10 @@ namespace QLNet {
                 return i;
             } else {
                 if (t < times_.First()) {
-                    throw new ApplicationException("using inadequate time grid: all nodes are later than the required time t = "
+                    throw new Exception("using inadequate time grid: all nodes are later than the required time t = "
                             + t + " (earliest node is t1 = " + times_.First() + ")");
                 } else if (t > times_.Last()) {
-                    throw new ApplicationException("using inadequate time grid: all nodes are earlier than the required time t = "
+                    throw new Exception("using inadequate time grid: all nodes are earlier than the required time t = "
                             + t + " (latest node is t1 = " + times_.Last() + ")");
                 } else {
                     int j, k;
@@ -165,7 +165,7 @@ namespace QLNet {
                         j = i-1;
                         k = i;
                     }
-                    throw new ApplicationException("using inadequate time grid: the nodes closest to the required time t = "
+                    throw new Exception("using inadequate time grid: the nodes closest to the required time t = "
                             + t + " are t1 = " + times_[j] + " and t2 = " + times_[k]);
                 }
             }

@@ -670,7 +670,7 @@ namespace TestSuite
       //   }
       //}
 
-      class NotThrown : ApplicationException { }
+      class NotThrown : Exception { }
 
       [TestMethod()]
       public void testAsFunctor() {
@@ -693,7 +693,7 @@ namespace TestSuite
                y2 = x2.ConvertAll<double>(f.value);
                throw new NotThrown();
          } catch (NotThrown) {
-               throw new ApplicationException("failed to throw exception when trying to extrapolate");
+               throw new Exception("failed to throw exception when trying to extrapolate");
          } catch { }
 
          // case 2: enable extrapolation

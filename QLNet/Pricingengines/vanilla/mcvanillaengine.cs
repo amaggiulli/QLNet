@@ -132,18 +132,18 @@ namespace QLNet
       {
          AnalyticHestonHullWhiteEngine controlPE = controlPricingEngine() as AnalyticHestonHullWhiteEngine;
          if ( controlPE == null )
-            throw new ApplicationException( "engine does not provide control variation pricing engine" );
+            throw new Exception( "engine does not provide control variation pricing engine" );
 
          OneAssetOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
          if ( controlArguments == null )
-            throw new ApplicationException( "engine is using inconsistent arguments" );
+            throw new Exception( "engine is using inconsistent arguments" );
 
          controlPE.setupArguments( arguments_ );
          controlPE.calculate();
 
          OneAssetOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
          if ( controlResults == null )
-            throw new ApplicationException( "engine returns an inconsistent result type" );
+            throw new Exception( "engine returns an inconsistent result type" );
 
          return controlResults.value.GetValueOrDefault();
       }

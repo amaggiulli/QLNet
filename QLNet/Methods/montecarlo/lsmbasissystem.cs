@@ -71,7 +71,7 @@ namespace QLNet {
                         ret.Add((x) => new GaussChebyshev2ndPolynomial().weightedValue(i, x));
                         break;
                     default:
-                        throw new ApplicationException("unknown regression type");
+                        throw new Exception("unknown regression type");
                 }
             }
             return ret;

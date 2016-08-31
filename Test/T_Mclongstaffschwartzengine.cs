@@ -67,11 +67,11 @@ namespace TestSuite {
         //    protected override LongstaffSchwartzPathPricer<IPath> lsmPathPricer() {
         //        StochasticProcessArray processArray = process_ as StochasticProcessArray;
         //        if (processArray == null || processArray.size() == 0)
-        //            throw new ApplicationException("Stochastic process array required");
+        //            throw new Exception("Stochastic process array required");
 
         //        GeneralizedBlackScholesProcess process = processArray.process(0) as GeneralizedBlackScholesProcess;
         //        if (process == null)
-        //            throw new ApplicationException("generalized Black-Scholes proces required");
+        //            throw new Exception("generalized Black-Scholes proces required");
 
         //        AmericanMaxPathPricer earlyExercisePathPricer = new AmericanMaxPathPricer(arguments_.payoff);
 

@@ -47,7 +47,7 @@ namespace QLNet {
                     startMonth = endMonth = month;
                     break;
                 default:
-                    throw new ApplicationException("Frequency not handled: " + frequency);
+                    throw new Exception("Frequency not handled: " + frequency);
             }
 
             Date startDate = new Date(1, startMonth, year);
@@ -184,7 +184,7 @@ namespace QLNet {
          if (seasonality_ != null) 
          {
             if (!seasonality_.isConsistent(this))
-               throw new ApplicationException("Seasonality inconsistent with " +
+               throw new Exception("Seasonality inconsistent with " +
                                              "inflation term structure");
          }
          notifyObservers();
@@ -211,10 +211,10 @@ namespace QLNet {
       protected override void checkRange(Date d,bool extrapolate)
       {
          if (d < baseDate())
-            throw new ApplicationException("date (" + d + ") is before base date");
+            throw new Exception("date (" + d + ") is before base date");
 
          if (!extrapolate && allowsExtrapolation() && d > maxDate())
-            throw new ApplicationException("date (" + d + ") is past max curve date ("
+            throw new Exception("date (" + d + ") is past max curve date ("
                                             + maxDate() + ")");
       }
 
