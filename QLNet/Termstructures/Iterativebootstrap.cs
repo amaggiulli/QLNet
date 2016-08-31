@@ -152,7 +152,7 @@ namespace QLNet
                throw new ArgumentException("not enough instruments: " + n_ + " provided, " +
                      (ts_.interpolator_.requiredPoints-1) + " required");
 
-         ts_.instruments_.ForEach(x => ts_.registerWith(x));
+         ts_.instruments_.ForEach((i, x) => ts_.registerWith(x));
 
          loopRequired_ = ts_.interpolator_.global;
       }

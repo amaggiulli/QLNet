@@ -142,7 +142,7 @@ namespace QLNet
 
          for (int j=0; j<2; ++j) 
          {
-            legs_[j].ForEach(x => x.registerWith(update));
+            legs_[j].ForEach((i, x) => x.registerWith(update));
          }
 
          switch (type_) 

@@ -156,7 +156,7 @@ namespace QLNet
 			{
 				//todo edem 
 				List<BootstrapHelper<YoYInflationTermStructure>> instruments = new List<BootstrapHelper<YoYInflationTermStructure>>();
-				_instruments_.ForEach( x => instruments.Add( x ) );
+				_instruments_.ForEach((i, x) => instruments.Add( x ) );
 				return instruments;
 			}
 		}

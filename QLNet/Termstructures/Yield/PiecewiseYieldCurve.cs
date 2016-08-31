@@ -142,7 +142,7 @@ namespace QLNet {
 			{
 				//todo edem 
 				List<BootstrapHelper<YieldTermStructure>> instruments = new List<BootstrapHelper<YieldTermStructure>>();
-				_instruments_.ForEach( x => instruments.Add( x ) );
+				_instruments_.ForEach((i, x) => instruments.Add( x ) );
 				return instruments;
 			}
 		}
