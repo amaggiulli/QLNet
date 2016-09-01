@@ -19,12 +19,19 @@
 */
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
-    public class T_PiecewiseyieldCurve {
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
+   public class T_PiecewiseyieldCurve : IDisposable
+   {
         public class CommonVars {
             #region Values
             public struct Datum {
@@ -215,14 +222,25 @@ namespace TestSuite {
         #region Initialize&Cleanup
         private SavedSettings backup;
         private IndexHistoryCleaner cleaner;
+        #if QL_DOTNET_FRAMEWORK
         [TestInitialize]
         public void testInitialize()
         {
+        #else
+        public T_PiecewiseyieldCurve()
+        {
+        #endif
            backup = new SavedSettings();
            cleaner = new IndexHistoryCleaner();
         }
+        #if QL_DOTNET_FRAMEWORK
         [TestCleanup]
+        #endif
         public void testCleanup()
+        {
+           Dispose();
+        }
+        public void Dispose()
         {
            backup.Dispose();
            cleaner.Dispose();
@@ -245,7 +263,11 @@ namespace TestSuite {
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLogLinearDiscountConsistency() {
             // "Testing consistency of piecewise-log-linear discount curve...");
 
@@ -255,7 +277,11 @@ namespace TestSuite {
 				testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLinearDiscountConsistency() {
             // "Testing consistency of piecewise-linear discount curve..."
 
@@ -264,8 +290,11 @@ namespace TestSuite {
 				testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
 				testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
         }
-
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLogLinearZeroConsistency() {
             // "Testing consistency of piecewise-log-linear zero-yield curve...");
 
@@ -281,7 +310,11 @@ namespace TestSuite {
 			  }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLinearZeroConsistency() {
             // "Testing consistency of piecewise-linear zero-yield curve...");
 
@@ -291,7 +324,11 @@ namespace TestSuite {
 				testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testSplineZeroConsistency() {
 
             //"Testing consistency of piecewise-cubic zero-yield curve...");
@@ -310,7 +347,11 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLinearForwardConsistency() {
             // "Testing consistency of piecewise-linear forward-rate curve...");
 
@@ -320,7 +361,11 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFlatForwardConsistency() {
 
             //"Testing consistency of piecewise-flat forward-rate curve...");
@@ -350,7 +395,11 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testConvexMonotoneForwardConsistency() {
             //"Testing consistency of convex monotone forward-rate curve...");
 
@@ -360,7 +409,11 @@ namespace TestSuite {
             testBMACurveConsistency<ForwardRate,ConvexMonotone,IterativeBootstrapForYield>(vars);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLocalBootstrapConsistency() {
             //"Testing consistency of local-bootstrap algorithm...");
 
@@ -369,7 +422,11 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-9 );
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testObservability() {
             // "Testing observability of piecewise yield curve...");
 
@@ -386,20 +443,24 @@ namespace TestSuite {
                 f.lower();
                 vars.rates[i].setValue(vars.rates[i].value() * 1.01);
                 if (!f.isUp())
-                    Assert.Fail("Observer was not notified of underlying rate change");
+                    QAssert.Fail("Observer was not notified of underlying rate change");
                 double discount_new = vars.termStructure.discount(testTime, true);
                 if (discount_new == discount)
-                    Assert.Fail("rate change did not trigger recalculation");
+                    QAssert.Fail("rate change did not trigger recalculation");
                 vars.rates[i].setValue(vars.rates[i].value() / 1.01);
             }
 
             f.lower();
             Settings.setEvaluationDate(vars.calendar.advance(vars.today, 15, TimeUnit.Days));
             if (!f.isUp())
-                Assert.Fail("Observer was not notified of date change");
+                QAssert.Fail("Observer was not notified of date change");
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testLiborFixing() {
 
             // "Testing use of today's LIBOR fixings in swap curve...");
@@ -437,7 +498,7 @@ namespace TestSuite {
                      estimatedRate = swap.fairRate();
                 double tolerance = 1.0e-9;
                 if (Math.Abs(expectedRate-estimatedRate) > tolerance) {
-                    Assert.Fail("before LIBOR fixing:\n"
+                    QAssert.Fail("before LIBOR fixing:\n"
                                 + vars.swapData[i].n + " year(s) swap:\n"
                                 + "    estimated rate: "
                                 + (estimatedRate) + "\n"
@@ -453,7 +514,7 @@ namespace TestSuite {
             index.addFixing(vars.today, 0.0425);
 
             if (!f.isUp())
-                Assert.Fail("Observer was not notified of rate fixing");
+                QAssert.Fail("Observer was not notified of rate fixing");
 
             for (int i=0; i<vars.swaps; i++) {
                 Period tenor = new Period(vars.swapData[i].n, vars.swapData[i].units);
@@ -470,7 +531,7 @@ namespace TestSuite {
                      estimatedRate = swap.fairRate();
                 double tolerance = 1.0e-9;
                 if (Math.Abs(expectedRate-estimatedRate) > tolerance) {
-                    Assert.Fail("after LIBOR fixing:\n"
+                    QAssert.Fail("after LIBOR fixing:\n"
                                 + vars.swapData[i].n + " year(s) swap:\n"
                                 + "    estimated rate: "
                                 + (estimatedRate) + "\n"
@@ -480,7 +541,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testForwardRateDayCounter() {
 
             CommonVars vars = new CommonVars();
@@ -493,14 +558,18 @@ namespace TestSuite {
             InterestRate ir = vars.termStructure.forwardRate(vars.settlement, vars.settlement + 30, d1, Compounding.Simple);
 
             if (ir.dayCounter().name() != d1.name())
-                Assert.Fail("PiecewiseYieldCurve forwardRate dayCounter error" +
+                QAssert.Fail("PiecewiseYieldCurve forwardRate dayCounter error" +
                             " Actual daycounter : " + vars.termStructure.dayCounter().name() +
                             " Expetced DayCounter : " + d1.name());
 
 
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testJpyLibor() {
             //"Testing bootstrap over JPY LIBOR swaps...");
 
@@ -561,7 +630,7 @@ namespace TestSuite {
                 double tolerance = 1.0e-9;
 
                 if (error > tolerance) {
-                    Assert.Fail(vars.swapData[i].n + " year(s) swap:\n"
+                    QAssert.Fail(vars.swapData[i].n + " year(s) swap:\n"
                                 + "\n estimated rate: " + (estimatedRate)
                                 + "\n expected rate:  " + (expectedRate)
                                 + "\n error:          " + (error)
@@ -570,7 +639,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testDiscountCopy() {
             //BOOST_MESSAGE("Testing copying of discount curve...");
 
@@ -578,7 +651,11 @@ namespace TestSuite {
             testCurveCopy<Discount, LogLinear>(vars);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testForwardCopy() {
             //BOOST_MESSAGE("Testing copying of forward-rate curve...");
 
@@ -586,7 +663,11 @@ namespace TestSuite {
             testCurveCopy<ForwardRate, BackwardFlat>(vars);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testZeroCopy() {
             //BOOST_MESSAGE("Testing copying of zero-rate curve...");
 
@@ -620,7 +701,7 @@ namespace TestSuite {
                 Euribor index = new Euribor(new Period(vars.depositData[i].n, vars.depositData[i].units), curveHandle);
                 double expectedRate = vars.depositData[i].rate / 100,
                        estimatedRate = index.fixing(vars.today);
-                Assert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
+                QAssert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
                    vars.depositData[i].n + " "
                    + (vars.depositData[i].units == TimeUnit.Weeks ? "week(s)" : "month(s)")
                    + " deposit:"
@@ -643,7 +724,7 @@ namespace TestSuite {
                 double expectedRate = vars.swapData[i].rate / 100,
                      estimatedRate = swap.fairRate();
                 double error = Math.Abs(expectedRate - estimatedRate);
-                Assert.IsTrue(error < tolerance,
+                QAssert.IsTrue(error < tolerance,
                   vars.swapData[i].n + " year(s) swap:\n"
                   + "\n estimated rate: " + estimatedRate
                   + "\n expected rate:  " + expectedRate
@@ -671,7 +752,7 @@ namespace TestSuite {
 
                 double expectedPrice = vars.bondData[i].price,
                        estimatedPrice = bond.cleanPrice();
-                Assert.IsTrue(Math.Abs(expectedPrice - estimatedPrice) < tolerance,
+                QAssert.IsTrue(Math.Abs(expectedPrice - estimatedPrice) < tolerance,
                    i + 1 + " bond failure:" +
                    "\n  estimated price: " + estimatedPrice +
                    "\n  expected price:  " + expectedPrice);
@@ -697,7 +778,7 @@ namespace TestSuite {
                                                                     100.0, euribor3m, curveHandle);
                 double expectedRate = vars.fraData[i].rate / 100,
                        estimatedRate = fra.forwardRate().rate();
-                Assert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
+                QAssert.IsTrue(Math.Abs(expectedRate - estimatedRate) < tolerance,
                    i + 1 + " FRA failure:" +
                    "\n  estimated rate: " + estimatedRate +
                    "\n  expected rate:  " + expectedRate);
@@ -784,7 +865,7 @@ namespace TestSuite {
                 double expectedFraction = vars.bmaData[i].rate / 100,
                      estimatedFraction = swap.fairLiborFraction();
                 double error = Math.Abs(expectedFraction - estimatedFraction);
-                Assert.IsTrue(error < tolerance,
+                QAssert.IsTrue(error < tolerance,
                    vars.bmaData[i].n + " year(s) BMA swap:\n"
                    + "\n estimated libor fraction: " + estimatedFraction
                    + "\n expected libor fraction:  " + expectedFraction
@@ -822,7 +903,7 @@ namespace TestSuite {
             var r1 = curve.zeroRate(t, Compounding.Continuous).value();
             var r2 = copiedCurve.zeroRate(t, Compounding.Continuous).value();
             if (!Utils.close(r1, r2)) {
-                Assert.Fail("failed to link original and copied curve");
+                QAssert.Fail("failed to link original and copied curve");
             }
 
             for (int i=0; i<vars.rates.Count; ++i) {
@@ -834,10 +915,10 @@ namespace TestSuite {
             double r3 = curve.zeroRate(t, Compounding.Continuous).value();
             double r4 = copiedCurve.zeroRate(t, Compounding.Continuous).value();
             if (Utils.close(r1, r3)) {
-                Assert.Fail("failed to modify original curve");
+                QAssert.Fail("failed to modify original curve");
             }
             if (!Utils.close(r2,r4)) {
-                Assert.Fail("failed to break link between original and copied curve");
+                QAssert.Fail("failed to break link between original and copied curve");
             }
         }
    }

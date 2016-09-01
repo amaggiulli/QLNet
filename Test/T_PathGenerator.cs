@@ -19,23 +19,41 @@
 
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
-    public class T_Pathgenerator
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
+   public class T_Pathgenerator : IDisposable
     {
        #region Initialize&Cleanup
        private SavedSettings backup;
+       #if QL_DOTNET_FRAMEWORK
        [TestInitialize]
        public void testInitialize()
        {
+       #else
+       public T_Pathgenerator()
+       {
+       #endif
+
           backup = new SavedSettings();
        }
+       #if QL_DOTNET_FRAMEWORK
        [TestCleanup]
+       #endif
        public void testCleanup()
+       {
+          Dispose();
+       }
+       public void Dispose()
        {
           backup.Dispose();
        }
@@ -74,7 +92,7 @@ namespace TestSuite
             double tolerance = 2.0e-8;
             if (error > tolerance) 
             {
-                Assert.Fail("using " + tag + " process "
+                QAssert.Fail("using " + tag + " process "
                             + (brownianBridge ? "with " : "without ")
                             + "brownian bridge:\n"
                             //+ std::setprecision(13)
@@ -92,7 +110,7 @@ namespace TestSuite
             tolerance = 2.0e-7;
             if (error > tolerance) 
             {
-                Assert.Fail("using " + tag + " process "
+                QAssert.Fail("using " + tag + " process "
                         + (brownianBridge ? "with " : "without ")
                         + "brownian bridge:\n"
                         + "antithetic sample:\n"
@@ -139,7 +157,7 @@ namespace TestSuite
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-expected[j]);
                 if (error > tolerance) {
-                    Assert.Fail("using " + tag + " process "
+                    QAssert.Fail("using " + tag + " process "
                                 + "(" + j+1 + " asset:)\n"
                                 //+ std::setprecision(13)
                                 + "    calculated: " + calculated[j] + "\n"
@@ -157,7 +175,7 @@ namespace TestSuite
             for (int j=0; j<assets; j++) {
                 error = Math.Abs(calculated[j]-antithetic[j]);
                 if (error > tolerance) {
-                    Assert.Fail("using " + tag + " process "
+                    QAssert.Fail("using " + tag + " process "
                                 + "(" + j+1 + " asset:)\n"
                                 + "antithetic sample:\n"
                                 //+ std::setprecision(13)
@@ -169,7 +187,11 @@ namespace TestSuite
             }
         }
 
+        #if QL_DOTNET_FRAMEWORK
         [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testPathGenerator() 
         {
             // Testing 1-D path generation against cached values
@@ -199,7 +221,11 @@ namespace TestSuite
                        "square-root", false, 1.70608664108, 6.024200546031);
         }
 
+        #if QL_DOTNET_FRAMEWORK
         [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testMultiPathGenerator()
         {
             // Testing n-D path generation against cached values

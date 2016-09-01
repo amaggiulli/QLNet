@@ -21,7 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if QL_DOTNET_FRAMEWORK
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
@@ -54,8 +58,9 @@ namespace TestSuite {
          result = result_;
       }
    }
-
+    #if QL_DOTNET_FRAMEWORK
     [TestClass()]
+    #endif
     public class T_AmericanOption {
 
             /* The data below are from
@@ -130,8 +135,12 @@ namespace TestSuite {
             new AmericanOptionData( Option.Type.Call, 100.00,  110.00,  0.03,  0.07, 3.0,  0.3,  30.028 ),
             new AmericanOptionData( Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177 )
         };
-
+        
+#if QL_DOTNET_FRAMEWORK  
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testBaroneAdesiWhaleyValues() {
             // ("Testing Barone-Adesi and Whaley approximation for American options...");
 
@@ -226,7 +235,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testBjerksundStenslandValues() {
             // ("Testing Bjerksund and Stensland approximation for American options...");
 
@@ -293,7 +306,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testJuValues() {
 
             // ("Testing Ju approximation for American options...");
@@ -342,7 +359,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdValues() {
 
             //("Testing finite-difference engine for American options...");
@@ -518,13 +539,21 @@ namespace TestSuite {
            }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdAmericanGreeks() {
             //("Testing finite-differences American option greeks...");
             testFdGreeks<FDAmericanEngine>();
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdShoutGreeks() {
             // ("Testing finite-differences shout option greeks...");
             testFdGreeks<FDShoutEngine>();
@@ -532,7 +561,7 @@ namespace TestSuite {
 
         void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
         Date today, double v, double expected, double calculated, double error, double tolerance) {
-            Assert.Fail(exercise + " "
+            QAssert.Fail(exercise + " "
                    + payoff.optionType() + " option with "
                    + payoff + " payoff:\n"
                    + "    spot value:       " + s + "\n"
@@ -548,7 +577,11 @@ namespace TestSuite {
                    + "    tolerance:        " + tolerance);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdImpliedVol()
         {
             var settlementDate = new Date(26, 2, 2015);
@@ -577,7 +610,7 @@ namespace TestSuite {
             const double tolerance = 3.0e-3;
 
             if (Math.Abs(impliedVol - volatility) > tolerance)
-                Assert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
+                QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
         }
    }
 }

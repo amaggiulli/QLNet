@@ -19,11 +19,17 @@
 */
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
     public class T_Matrices {
 
         int N;
@@ -87,7 +93,11 @@ namespace TestSuite {
             M7[0,1] = 0.3; M7[0,2] = 0.2; M7[2,1] = 1.2;
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testEigenvectors() {
             //("Testing eigenvalues and eigenvectors calculation...");
 
@@ -111,10 +121,10 @@ namespace TestSuite {
                     Vector a = M * v;
                     Vector b = eigenValues[i] * v;
                     if (norm(a-b) > 1.0e-15)
-                        Assert.Fail("Eigenvector definition not satisfied");
+                        QAssert.Fail("Eigenvector definition not satisfied");
                     // check decreasing ordering
                     if (eigenValues[i] >= minHolder) {
-                        Assert.Fail("Eigenvalues not ordered: " + eigenValues);
+                        QAssert.Fail("Eigenvalues not ordered: " + eigenValues);
                     } else
                         minHolder = eigenValues[i];
                 }
@@ -122,11 +132,15 @@ namespace TestSuite {
                 // check normalization
                 Matrix m = eigenVectors * Matrix.transpose(eigenVectors);
                 if (norm(m-I) > 1.0e-15)
-                    Assert.Fail("Eigenvector not normalized");
+                    QAssert.Fail("Eigenvector not normalized");
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testSqrt() {
 
             //BOOST_MESSAGE("Testing matricial square root...");
@@ -138,7 +152,7 @@ namespace TestSuite {
             double error = norm(temp - M1);
             double tolerance = 1.0e-12;
             if (error>tolerance) {
-                Assert.Fail("Matrix square root calculation failed\n"
+                QAssert.Fail("Matrix square root calculation failed\n"
                            + "original matrix:\n" + M1
                            + "pseudoSqrt:\n" + m
                            + "pseudoSqrt*pseudoSqrt:\n" + temp
@@ -147,7 +161,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testHighamSqrt() {
             //BOOST_MESSAGE("Testing Higham matricial square root...");
 
@@ -158,7 +176,7 @@ namespace TestSuite {
             double error = norm(ansSqrt - tempSqrt);
             double tolerance = 1.0e-4;
             if (error>tolerance) {
-                Assert.Fail("Higham matrix correction failed\n"
+                QAssert.Fail("Higham matrix correction failed\n"
                            + "original matrix:\n" + M5
                            + "pseudoSqrt:\n" + tempSqrt
                            + "should be:\n" + ansSqrt
@@ -167,7 +185,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testSVD() {
 
             //BOOST_MESSAGE("Testing singular value decomposition...");
@@ -192,25 +214,29 @@ namespace TestSuite {
 
                 for (int i=0; i < S.rows(); i++) {
                     if (S[i,i] != s[i])
-                        Assert.Fail("S not consistent with s");
+                        QAssert.Fail("S not consistent with s");
                 }
 
                 // tests
                 Matrix U_Utranspose = Matrix.transpose(U)*U;
                 if (norm(U_Utranspose-I) > tol)
-                    Assert.Fail("U not orthogonal (norm of U^T*U-I = " + norm(U_Utranspose-I) + ")");
+                    QAssert.Fail("U not orthogonal (norm of U^T*U-I = " + norm(U_Utranspose-I) + ")");
 
                 Matrix V_Vtranspose = Matrix.transpose(V) * V;
                 if (norm(V_Vtranspose-I) > tol)
-                    Assert.Fail("V not orthogonal (norm of V^T*V-I = " + norm(V_Vtranspose-I) + ")");
+                    QAssert.Fail("V not orthogonal (norm of V^T*V-I = " + norm(V_Vtranspose-I) + ")");
 
                 Matrix A_reconstructed = U * S * Matrix.transpose(V);
                 if (norm(A_reconstructed-A) > tol)
-                    Assert.Fail("Product does not recover A: (norm of U*S*V^T-A = " + norm(A_reconstructed-A) + ")");
+                    QAssert.Fail("Product does not recover A: (norm of U*S*V^T-A = " + norm(A_reconstructed-A) + ")");
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testQRDecomposition() 
         {
 
@@ -236,20 +262,24 @@ namespace TestSuite {
                }
 
                if (norm(Q*R - A*P) > tol)
-                  Assert.Fail("Q*R does not match matrix A*P (norm = "
+                  QAssert.Fail("Q*R does not match matrix A*P (norm = "
                               + norm(Q*R-A*P) + ")");
 
                pivot = false;
                MatrixUtilities.qrDecomposition(A, ref Q, ref R, pivot);
 
                if (norm(Q*R - A) > tol)
-                  Assert.Fail("Q*R does not match matrix A (norm = "
+                  QAssert.Fail("Q*R does not match matrix A (norm = "
                               + norm(Q*R-A) + ")");
     
          }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testQRSolve()
         {
            // Testing QR solve...
@@ -281,7 +311,7 @@ namespace TestSuite {
                  if ( A.columns() >= A.rows() )
                  {
                     if ( norm( A * x - b ) > tol )
-                       Assert.Fail( "A*x does not match vector b (norm = "
+                       QAssert.Fail( "A*x does not match vector b (norm = "
                                   + norm( A * x - b ) + ")" );
                  }
                  else
@@ -314,7 +344,7 @@ namespace TestSuite {
 
                     if ( norm( xr - x ) > tol )
                     {
-                       Assert.Fail( "least square solution does not match (norm = "
+                       QAssert.Fail( "least square solution does not match (norm = "
                                   + norm( x - xr ) + ")" );
 
                     }

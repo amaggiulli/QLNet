@@ -19,7 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
@@ -29,10 +33,16 @@ namespace TestSuite
       public double downsideVariance() { return ((IncrementalStatistics)impl_).downsideVariance(); }
    }
 
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_RiskStats
    {
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void RiskStatisticsTest()
       {
          //    ("Testing risk measures...");
@@ -75,12 +85,12 @@ namespace TestSuite
                double tolerance;
 
                if (igs.samples() != N)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong number of samples\n"
                              + "    calculated: " + igs.samples() + "\n"
                              + "    expected:   " + N);
                if (s.samples() != N)
-                  Assert.Fail("RiskStatistics: wrong number of samples\n"
+                  QAssert.Fail("RiskStatistics: wrong number of samples\n"
                              + "    calculated: " + s.samples() + "\n"
                              + "    expected:   " + N);
 
@@ -90,14 +100,14 @@ namespace TestSuite
                expected = weights.Sum();
                calculated = igs.weightSum();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong sum of weights\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
                              + "    tolerance:  " + tolerance);
                calculated = s.weightSum();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong sum of weights\n"
+                  QAssert.Fail("RiskStatistics: wrong sum of weights\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
                              + "    tolerance:  " + tolerance);
@@ -108,14 +118,14 @@ namespace TestSuite
                expected = dataMin;
                calculated = igs.min();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong minimum value\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
                              + "    tolerance:  " + tolerance);
                calculated = s.min();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: "
+                  QAssert.Fail("RiskStatistics: "
                              + "wrong minimum value\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
@@ -126,14 +136,14 @@ namespace TestSuite
                expected = dataMax;
                calculated = igs.max();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong maximum value\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
                              + "    tolerance:  " + tolerance);
                calculated = s.max();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: "
+                  QAssert.Fail("RiskStatistics: "
                              + "wrong maximum value\n"
                              + "    calculated: " + calculated + "\n"
                              + "    expected:   " + expected + "\n"
@@ -146,7 +156,7 @@ namespace TestSuite
                                               Math.Abs(expected) * 1.0e-13);
                calculated = igs.mean();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong mean value"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -155,7 +165,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.mean();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong mean value"
+                  QAssert.Fail("RiskStatistics: wrong mean value"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -168,7 +178,7 @@ namespace TestSuite
                tolerance = expected * 1.0e-1;
                calculated = igs.variance();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong variance"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -177,7 +187,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.variance();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong variance"
+                  QAssert.Fail("RiskStatistics: wrong variance"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -190,7 +200,7 @@ namespace TestSuite
                tolerance = expected * 1.0e-1;
                calculated = igs.standardDeviation();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong standard deviation"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -199,7 +209,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.standardDeviation();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong standard deviation"
+                  QAssert.Fail("RiskStatistics: wrong standard deviation"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -214,7 +224,7 @@ namespace TestSuite
                tolerance = 1.0e-4;
                calculated = igs.skewness();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong skewness"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -223,7 +233,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.skewness();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong skewness"
+                  QAssert.Fail("RiskStatistics: wrong skewness"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -236,7 +246,7 @@ namespace TestSuite
                tolerance = 1.0e-1;
                calculated = igs.kurtosis();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong kurtosis"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -245,7 +255,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.kurtosis();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong kurtosis"
+                  QAssert.Fail("RiskStatistics: wrong kurtosis"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -259,7 +269,7 @@ namespace TestSuite
                                               Math.Abs(expected * 1.0e-3));
                calculated = igs.gaussianPercentile(0.5);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian percentile"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -268,7 +278,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianPercentile(0.5);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian percentile"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian percentile"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -276,7 +286,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.percentile(0.5);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong percentile"
+                  QAssert.Fail("RiskStatistics: wrong percentile"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -295,7 +305,7 @@ namespace TestSuite
                                               Math.Abs(expected * 1.0e-3));
                calculated = igs.gaussianPotentialUpside(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian potential upside"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -304,7 +314,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianPotentialUpside(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian potential upside"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian potential upside"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -312,7 +322,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.potentialUpside(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong potential upside"
+                  QAssert.Fail("RiskStatistics: wrong potential upside"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -326,7 +336,7 @@ namespace TestSuite
                expected = s.gaussianPotentialUpside(twoSigma);
                calculated = test.gaussianPotentialUpside(twoSigma);
                if (calculated != expected)
-                  Assert.Fail("GenericGaussianStatistics<StatsHolder> fails"
+                  QAssert.Fail("GenericGaussianStatistics<StatsHolder> fails"
                               + "\n  calculated: " + calculated
                               + "\n  expected: " + expected);
 
@@ -337,7 +347,7 @@ namespace TestSuite
                                               Math.Abs(expected * 1.0e-3));
                calculated = igs.gaussianValueAtRisk(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian value-at-risk"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -346,7 +356,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianValueAtRisk(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian value-at-risk"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian value-at-risk"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -354,7 +364,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.valueAtRisk(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong value-at-risk"
+                  QAssert.Fail("RiskStatistics: wrong value-at-risk"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -380,7 +390,7 @@ namespace TestSuite
                                             : Math.Abs(expected) * 1.0e-2);
                calculated = igs.gaussianExpectedShortfall(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian expected shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -389,7 +399,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianExpectedShortfall(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian expected shortfall"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian expected shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -397,7 +407,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.expectedShortfall(twoSigma);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong expected shortfall"
+                  QAssert.Fail("RiskStatistics: wrong expected shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -411,7 +421,7 @@ namespace TestSuite
                                               Math.Abs(expected * 1.0e-3));
                calculated = igs.gaussianShortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -420,7 +430,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianShortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian shortfall"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -428,7 +438,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.shortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong shortfall"
+                  QAssert.Fail("RiskStatistics: wrong shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -441,7 +451,7 @@ namespace TestSuite
                tolerance = expected * 1.0e-3;
                calculated = igs.gaussianAverageShortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian average shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -450,7 +460,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianAverageShortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong Gaussian average shortfall"
+                  QAssert.Fail("RiskStatistics: wrong Gaussian average shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -458,7 +468,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.averageShortfall(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: wrong average shortfall"
+                  QAssert.Fail("RiskStatistics: wrong average shortfall"
                              + " for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
                              + "    calculated: " + calculated + "\n"
@@ -471,7 +481,7 @@ namespace TestSuite
                tolerance = expected * 1.0e-1;
                calculated = igs.gaussianRegret(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian regret(" + averages[i] + ") "
                              + "for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -480,7 +490,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.gaussianRegret(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: "
+                  QAssert.Fail("RiskStatistics: "
                              + "wrong Gaussian regret(" + averages[i] + ") "
                              + "for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -489,7 +499,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = s.regret(averages[i]);
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("RiskStatistics: "
+                  QAssert.Fail("RiskStatistics: "
                              + "wrong regret(" + averages[i] + ") "
                              + "for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -504,7 +514,7 @@ namespace TestSuite
                                               Math.Abs(expected * 1.0e-3));
                calculated = igs.downsideVariance();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong downside variance"
                              + "for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -513,7 +523,7 @@ namespace TestSuite
                              + "    tolerance:  " + tolerance);
                calculated = igs.gaussianDownsideVariance();
                if (Math.Abs(calculated - expected) > tolerance)
-                  Assert.Fail("IncrementalGaussianStatistics: "
+                  QAssert.Fail("IncrementalGaussianStatistics: "
                              + "wrong Gaussian downside variance"
                              + "for N(" + averages[i] + ", "
                              + sigmas[j] + ")\n"
@@ -528,7 +538,7 @@ namespace TestSuite
                   tolerance = expected * 1.0e-3;
                   calculated = igs.downsideVariance();
                   if (Math.Abs(calculated - expected) > tolerance)
-                     Assert.Fail("IncrementalGaussianStatistics: "
+                     QAssert.Fail("IncrementalGaussianStatistics: "
                                 + "wrong downside variance"
                                 + "for N(" + averages[i] + ", "
                                 + sigmas[j] + ")\n"
@@ -537,7 +547,7 @@ namespace TestSuite
                                 + "    tolerance:  " + tolerance);
                   calculated = igs.gaussianDownsideVariance();
                   if (Math.Abs(calculated - expected) > tolerance)
-                     Assert.Fail("IncrementalGaussianStatistics: "
+                     QAssert.Fail("IncrementalGaussianStatistics: "
                                 + "wrong Gaussian downside variance"
                                 + "for N(" + averages[i] + ", "
                                 + sigmas[j] + ")\n"
@@ -546,7 +556,7 @@ namespace TestSuite
                                 + "    tolerance:  " + tolerance);
                   calculated = s.downsideVariance();
                   if (Math.Abs(calculated - expected) > tolerance)
-                     Assert.Fail("RiskStatistics: wrong downside variance"
+                     QAssert.Fail("RiskStatistics: wrong downside variance"
                                 + "for N(" + averages[i] + ", "
                                 + sigmas[j] + ")\n"
                                 + "    calculated: " + calculated + "\n"
@@ -554,7 +564,7 @@ namespace TestSuite
                                 + "    tolerance:  " + tolerance);
                   calculated = s.gaussianDownsideVariance();
                   if (Math.Abs(calculated - expected) > tolerance)
-                     Assert.Fail("RiskStatistics: wrong Gaussian downside variance"
+                     QAssert.Fail("RiskStatistics: wrong Gaussian downside variance"
                                 + "for N(" + averages[i] + ", "
                                 + sigmas[j] + ")\n"
                                 + "    calculated: " + calculated + "\n"

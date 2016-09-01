@@ -16,15 +16,25 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_ExchangeRate
    {
-      [TestMethod()]      
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif      
       public void testDirect() 
       {
 
@@ -42,7 +52,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-           Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+           QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          calculated = eur_usd.exchange(m2);
@@ -50,14 +60,18 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-           Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+           QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
       }
       
       /// <summary>
       /// Testing derived exchange rates
       /// </summary>
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testDerived() 
       {
 
@@ -78,7 +92,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          calculated = derived.exchange(m2);
@@ -86,14 +100,18 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
       }
 
       /// <summary>
       /// Testing lookup of direct exchange rates
       /// </summary>
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testDirectLookup() 
       {
          ExchangeRateManager rateManager = ExchangeRateManager.Instance;
@@ -117,7 +135,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          eur_usd = rateManager.lookup(EUR, USD,new Date(5,Month.August,2004),ExchangeRate.Type.Direct);
@@ -126,7 +144,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          ExchangeRate usd_eur = rateManager.lookup(USD, EUR,new Date(4,Month.August,2004),ExchangeRate.Type.Direct);
@@ -136,7 +154,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          usd_eur = rateManager.lookup(USD, EUR,new Date(5,Month.August,2004),ExchangeRate.Type.Direct);
@@ -146,14 +164,18 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected)) 
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
       }
 
       /// <summary>
       /// Testing lookup of triangulated exchange rates
       /// </summary>
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testTriangulatedLookup() 
       {
 
@@ -178,7 +200,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          itl_usd = rateManager.lookup(ITL, USD,new Date(5,Month.August,2004));
@@ -187,7 +209,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          ExchangeRate usd_itl = rateManager.lookup(USD, ITL, new Date(4, Month.August, 2004));
@@ -197,7 +219,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          usd_itl = rateManager.lookup(USD, ITL, new Date(5, Month.August, 2004));
@@ -207,14 +229,18 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
       }
 
       /// <summary>
       /// Testing lookup of derived exchange rates
       /// </summary>
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSmartLookup() 
       {
 
@@ -266,7 +292,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          usd_sek = rateManager.lookup(SEK, USD, new Date(5,Month.August,2004));
@@ -275,7 +301,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          // three-rate chain
@@ -286,7 +312,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          eur_sek = rateManager.lookup(SEK, EUR, new Date(5,Month.August,2004));
@@ -295,7 +321,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          // four-rate chain
@@ -306,7 +332,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          eur_jpy = rateManager.lookup(JPY, EUR, new Date(5,Month.August,2004));
@@ -315,7 +341,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          // five-rate chain
@@ -326,7 +352,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
 
          gbp_jpy = rateManager.lookup(JPY, GBP, new Date(5,Month.August,2004));
@@ -335,7 +361,7 @@ namespace TestSuite
 
          if (!Utils.close(calculated, expected))
          {
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
          }
       }
    }

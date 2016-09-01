@@ -19,11 +19,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
-    [TestClass()]
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
     public class T_Optimizers {
         List<CostFunction> costFunctions_ = new List<CostFunction>();
         List<Constraint> constraints_ = new List<Constraint>();
@@ -53,7 +59,11 @@ namespace TestSuite {
             bfgs_goldstein
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void OptimizersTest() {
             //("Testing optimizers...");
 
@@ -84,7 +94,7 @@ namespace TestSuite {
                         if (endCriteriaResult==EndCriteria.Type.None ||
                             endCriteriaResult==EndCriteria.Type.MaxIterations ||
                             endCriteriaResult==EndCriteria.Type.Unknown)
-                            Assert.Fail("function evaluations: " + problem.functionEvaluation()  +
+                            QAssert.Fail("function evaluations: " + problem.functionEvaluation()  +
                                       " gradient evaluations: " + problem.gradientEvaluation() +
                                       " x expected:           " + xMinExpected_[i] +
                                       " x calculated:         " + xMinCalculated +
@@ -100,7 +110,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void nestedOptimizationTest() {
             //("Testing nested optimizations...");
             OptimizationBasedCostFunction optimizationBasedCostFunction = new OptimizationBasedCostFunction();

@@ -18,27 +18,44 @@
 */
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+   #if QL_DOTNET_FRAMEWORK
    [TestClass()]
-   public class T_AssetSwap
+   #endif
+   public class T_AssetSwap : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
       private IndexHistoryCleaner cleaner;
+      #if QL_DOTNET_FRAMEWORK
       [TestInitialize]
       public void testInitialize()
       {
+      #else
+      public T_AssetSwap()
+      {
+      #endif
          backup = new SavedSettings();
          cleaner = new IndexHistoryCleaner();
       }
+      #if QL_DOTNET_FRAMEWORK
       [TestCleanup]
+      #endif
       public void testCleanup()
       {
-         backup.Dispose();
+         Dispose();
+      }
+      public void Dispose()
+      {
+ 	      backup.Dispose();
          cleaner.Dispose();
       }
       #endregion
@@ -90,7 +107,11 @@ namespace TestSuite
         }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testConsistency()
       {
 
@@ -137,7 +158,7 @@ namespace TestSuite
          assetSwap2.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap2.NPV()) > tolerance)
          {
-            Assert.Fail("npar asset swap fair clean price doesn't zero the NPV: " +
+            QAssert.Fail("npar asset swap fair clean price doesn't zero the NPV: " +
                         "\n  clean price:      " + bondPrice +
                         "\n  fair clean price: " + fairCleanPrice +
                         "\n  NPV:              " + assetSwap2.NPV() +
@@ -145,7 +166,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap2.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + fairCleanPrice +
                        "\n  fair clean price:  " + assetSwap2.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap2.NPV() +
@@ -153,7 +174,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap2.fairSpread() - vars.spread) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + vars.spread +
                        "\n  fair spread:  " + assetSwap2.fairSpread() +
                        "\n  NPV:          " + assetSwap2.NPV() +
@@ -166,7 +187,7 @@ namespace TestSuite
          assetSwap3.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap3.NPV()) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't zero the NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't zero the NPV: " +
                        "\n  spread:      " + vars.spread +
                        "\n  fair spread: " + fairSpread +
                        "\n  NPV:         " + assetSwap3.NPV() +
@@ -174,7 +195,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap3.fairCleanPrice() - bondPrice) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + bondPrice +
                        "\n  fair clean price:  " + assetSwap3.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap3.NPV() +
@@ -182,7 +203,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap3.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't equal input spread at  zero NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't equal input spread at  zero NPV: " +
                        "\n  input spread: " + fairSpread +
                        "\n  fair spread:  " + assetSwap3.fairSpread() +
                        "\n  NPV:          " + assetSwap3.NPV() +
@@ -196,14 +217,14 @@ namespace TestSuite
          // fair clean price and fair spread should not change
          if (Math.Abs(parAssetSwap.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price changed with NpvDate:" +
+            QAssert.Fail("\npar asset swap fair clean price changed with NpvDate:" +
                        "\n expected clean price: " + fairCleanPrice +
                        "\n fair clean price:     " + parAssetSwap.fairCleanPrice() +
                        "\n tolerance:            " + tolerance);
          }
          if (Math.Abs(parAssetSwap.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread changed with NpvDate:" +
+            QAssert.Fail("\npar asset swap fair spread changed with NpvDate:" +
                        "\n  expected spread: " + fairSpread +
                        "\n  fair spread:     " + parAssetSwap.fairSpread() +
                        "\n  tolerance:       " + tolerance);
@@ -214,7 +235,7 @@ namespace TestSuite
          assetSwap2.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap2.NPV()) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price doesn't zero the NPV: " +
+            QAssert.Fail("\npar asset swap fair clean price doesn't zero the NPV: " +
                        "\n  clean price:      " + bondPrice +
                        "\n  fair clean price: " + fairCleanPrice +
                        "\n  NPV:              " + assetSwap2.NPV() +
@@ -222,7 +243,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap2.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + fairCleanPrice +
                        "\n  fair clean price:  " + assetSwap2.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap2.NPV() +
@@ -230,7 +251,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap2.fairSpread() - vars.spread) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + vars.spread +
                        "\n  fair spread:  " + assetSwap2.fairSpread() +
                        "\n  NPV:          " + assetSwap2.NPV() +
@@ -242,7 +263,7 @@ namespace TestSuite
          assetSwap3.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap3.NPV()) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't zero the NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't zero the NPV: " +
                        "\n  spread:      " + vars.spread +
                        "\n  fair spread: " + fairSpread +
                        "\n  NPV:         " + assetSwap3.NPV() +
@@ -250,7 +271,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap3.fairCleanPrice() - bondPrice) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + bondPrice +
                        "\n  fair clean price:  " + assetSwap3.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap3.NPV() +
@@ -258,7 +279,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap3.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\npar asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + fairSpread +
                        "\n  fair spread:  " + assetSwap3.fairSpread() +
                        "\n  NPV:          " + assetSwap3.NPV() +
@@ -283,7 +304,7 @@ namespace TestSuite
          assetSwap4.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap4.NPV()) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't zero the NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't zero the NPV: " +
                        "\n  clean price:      " + bondPrice +
                        "\n  fair clean price: " + fairCleanPrice +
                        "\n  NPV:              " + assetSwap4.NPV() +
@@ -291,7 +312,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap4.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + fairCleanPrice +
                        "\n  fair clean price:  " + assetSwap4.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap4.NPV() +
@@ -299,7 +320,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap4.fairSpread() - vars.spread) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + vars.spread +
                        "\n  fair spread:  " + assetSwap4.fairSpread() +
                        "\n  NPV:          " + assetSwap4.NPV() +
@@ -311,7 +332,7 @@ namespace TestSuite
          assetSwap5.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap5.NPV()) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't zero the NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't zero the NPV: " +
                        "\n  spread:      " + vars.spread +
                        "\n  fair spread: " + fairSpread +
                        "\n  NPV:         " + assetSwap5.NPV() +
@@ -319,7 +340,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap5.fairCleanPrice() - bondPrice) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + bondPrice +
                        "\n  fair clean price:  " + assetSwap5.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap5.NPV() +
@@ -327,7 +348,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap5.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + fairSpread +
                        "\n  fair spread:  " + assetSwap5.fairSpread() +
                        "\n  NPV:          " + assetSwap5.NPV() +
@@ -341,14 +362,14 @@ namespace TestSuite
          // fair clean price and fair spread should not change
          if (Math.Abs(mktAssetSwap.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price changed with NpvDate:" +
+            QAssert.Fail("\nmarket asset swap fair clean price changed with NpvDate:" +
                        "\n  expected clean price: " + fairCleanPrice +
                        "\n  fair clean price:  " + mktAssetSwap.fairCleanPrice() +
                        "\n  tolerance:         " + tolerance);
          }
          if (Math.Abs(mktAssetSwap.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread changed with NpvDate:" +
+            QAssert.Fail("\nmarket asset swap fair spread changed with NpvDate:" +
                        "\n  expected spread: " + fairSpread +
                        "\n  fair spread:  " + mktAssetSwap.fairSpread() +
                        "\n  tolerance:    " + tolerance);
@@ -359,7 +380,7 @@ namespace TestSuite
          assetSwap4.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap4.NPV()) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't zero the NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't zero the NPV: " +
                        "\n  clean price:      " + bondPrice +
                        "\n  fair clean price: " + fairCleanPrice +
                        "\n  NPV:              " + assetSwap4.NPV() +
@@ -367,7 +388,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap4.fairCleanPrice() - fairCleanPrice) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + fairCleanPrice +
                        "\n  fair clean price:  " + assetSwap4.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap4.NPV() +
@@ -375,7 +396,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap4.fairSpread() - vars.spread) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + vars.spread +
                        "\n  fair spread:  " + assetSwap4.fairSpread() +
                        "\n  NPV:          " + assetSwap4.NPV() +
@@ -387,7 +408,7 @@ namespace TestSuite
          assetSwap5.setPricingEngine(swapEngine);
          if (Math.Abs(assetSwap5.NPV()) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't zero the NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't zero the NPV: " +
                        "\n  spread:      " + vars.spread +
                        "\n  fair spread: " + fairSpread +
                        "\n  NPV:         " + assetSwap5.NPV() +
@@ -395,7 +416,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap5.fairCleanPrice() - bondPrice) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair clean price doesn't equal input clean price at zero NPV: " +
                        "\n  input clean price: " + bondPrice +
                        "\n  fair clean price:  " + assetSwap5.fairCleanPrice() +
                        "\n  NPV:               " + assetSwap5.NPV() +
@@ -403,7 +424,7 @@ namespace TestSuite
          }
          if (Math.Abs(assetSwap5.fairSpread() - fairSpread) > tolerance)
          {
-            Assert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
+            QAssert.Fail("\nmarket asset swap fair spread doesn't equal input spread at zero NPV: " +
                        "\n  input spread: " + fairSpread +
                        "\n  fair spread:  " + assetSwap5.fairSpread() +
                        "\n  NPV:          " + assetSwap5.NPV() +
@@ -411,7 +432,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testImpliedValue() 
       {
          // Testing implied bond value against asset-swap fair price with null spread
@@ -452,7 +477,7 @@ namespace TestSuite
          double error1 = Math.Abs(fixedBondAssetSwapPrice1-fixedBondPrice1);
 
          if (error1>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for fixed bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for fixed bond:" +
                         "\n  bond's clean price:    " + fixedBondPrice1 +
                         "\n  asset swap fair price: " + fixedBondAssetSwapPrice1 +
                         "\n  error:                 " + error1 +
@@ -484,7 +509,7 @@ namespace TestSuite
          double error2 = Math.Abs(fixedBondAssetSwapPrice2-fixedBondPrice2);
 
          if (error2>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for fixed bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for fixed bond:" +
                         "\n  bond's clean price:    " + fixedBondPrice2 +
                         "\n  asset swap fair price: " + fixedBondAssetSwapPrice2 +
                         "\n  error:                 " + error2 +
@@ -523,7 +548,7 @@ namespace TestSuite
          double error3 = Math.Abs(floatingBondAssetSwapPrice1-floatingBondPrice1);
 
          if (error3>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for floater:" +
+            QAssert.Fail("wrong zero spread asset swap price for floater:" +
                         "\n  bond's clean price:    " + floatingBondPrice1 +
                         "\n  asset swap fair price: " + floatingBondAssetSwapPrice1 +
                         "\n  error:                 " + error3 +
@@ -557,7 +582,7 @@ namespace TestSuite
          double floatingCurrentCoupon= floatingBond2.nextCouponRate();
          double error4= Math.Abs(floatingCurrentCoupon-currentCoupon);
          if (error4>tolerance) {
-            Assert.Fail("wrong current coupon is returned for floater bond:" +
+            QAssert.Fail("wrong current coupon is returned for floater bond:" +
                         "\n  bond's calculated current coupon:      " +
                         currentCoupon +
                         "\n  current coupon asked to the bond: " +
@@ -574,7 +599,7 @@ namespace TestSuite
          double error5 = Math.Abs(floatingBondAssetSwapPrice2-floatingBondPrice2);
 
          if (error5>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for floater:" +
+            QAssert.Fail("wrong zero spread asset swap price for floater:" +
                         "\n  bond's clean price:    " + floatingBondPrice2 +
                         "\n  asset swap fair price: " + floatingBondAssetSwapPrice2 +
                         "\n  error:                 " + error5 +
@@ -612,7 +637,7 @@ namespace TestSuite
          double error6 = Math.Abs(cmsBondAssetSwapPrice1-cmsBondPrice1);
 
          if (error6>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for cms bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for cms bond:" +
                         "\n  bond's clean price:    " + cmsBondPrice1 +
                         "\n  asset swap fair price: " + cmsBondAssetSwapPrice1 +
                         "\n  error:                 " + error6 +
@@ -647,7 +672,7 @@ namespace TestSuite
          double error7 = Math.Abs(cmsBondAssetSwapPrice2-cmsBondPrice2);
 
          if (error7>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for cms bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for cms bond:" +
                         "\n  bond's clean price:    " + cmsBondPrice2 +
                         "\n  asset swap fair price: " + cmsBondAssetSwapPrice2 +
                         "\n  error:                 " + error7 +
@@ -672,7 +697,7 @@ namespace TestSuite
          double error8 = Math.Abs(cmsBondAssetSwapPrice1-cmsBondPrice1);
 
          if (error8>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for zero cpn bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for zero cpn bond:" +
                         "\n  bond's clean price:    " + zeroCpnBondPrice1 +
                         "\n  asset swap fair price: " + zeroCpnBondAssetSwapPrice1 +
                         "\n  error:                 " + error8 +
@@ -697,7 +722,7 @@ namespace TestSuite
          double error9 = Math.Abs(cmsBondAssetSwapPrice2-cmsBondPrice2);
 
          if (error9>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for zero cpn bond:" +
+            QAssert.Fail("wrong zero spread asset swap price for zero cpn bond:" +
                         "\n  bond's clean price:      " + zeroCpnBondPrice2 +
                         "\n  asset swap fair price:   " + zeroCpnBondAssetSwapPrice2 +
                         "\n  error:                   " + error9 +
@@ -706,7 +731,11 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testMarketASWSpread() 
       {
          // Testing relationship between market asset swap and par asset swap...
@@ -760,7 +789,7 @@ namespace TestSuite
          double error1 = Math.Abs(fixedBondMktAssetSwapSpread1- 100*fixedBondParAssetSwapSpread1/fixedBondMktFullPrice1);
 
          if (error1>tolerance) {
-            Assert.Fail("wrong asset swap spreads for fixed bond:" +
+            QAssert.Fail("wrong asset swap spreads for fixed bond:" +
                         "\n  market ASW spread: " + fixedBondMktAssetSwapSpread1 +
                         "\n  par ASW spread:    " + fixedBondParAssetSwapSpread1 +
                         "\n  error:             " + error1 +
@@ -804,7 +833,7 @@ namespace TestSuite
                      100*fixedBondParAssetSwapSpread2/fixedBondMktFullPrice2);
 
          if (error2>tolerance) {
-            Assert.Fail("wrong asset swap spreads for fixed bond:" +
+            QAssert.Fail("wrong asset swap spreads for fixed bond:" +
                         "\n  market ASW spread: " + fixedBondMktAssetSwapSpread2 +
                         "\n  par ASW spread:    " + fixedBondParAssetSwapSpread2 +
                         "\n  error:             " + error2 +
@@ -856,7 +885,7 @@ namespace TestSuite
                      100*floatingBondParAssetSwapSpread1/floatingBondMktFullPrice1);
 
          if (error3>tolerance) {
-            Assert.Fail("wrong asset swap spreads for floating bond:" +
+            QAssert.Fail("wrong asset swap spreads for floating bond:" +
                         "\n  market ASW spread: " + floatingBondMktAssetSwapSpread1 +
                         "\n  par ASW spread:    " + floatingBondParAssetSwapSpread1 +
                         "\n  error:             " + error3 +
@@ -907,7 +936,7 @@ namespace TestSuite
                      100*floatingBondParAssetSwapSpread2/floatingBondMktFullPrice2);
 
          if (error4>tolerance) {
-            Assert.Fail("wrong asset swap spreads for floating bond:" +
+            QAssert.Fail("wrong asset swap spreads for floating bond:" +
                         "\n  market ASW spread: " + floatingBondMktAssetSwapSpread2 +
                         "\n  par ASW spread:    " + floatingBondParAssetSwapSpread2 +
                         "\n  error:             " + error4 +
@@ -956,7 +985,7 @@ namespace TestSuite
                      100*cmsBondParAssetSwapSpread1/cmsBondMktFullPrice1);
 
          if (error5>tolerance) {
-            Assert.Fail("wrong asset swap spreads for cms bond:" +
+            QAssert.Fail("wrong asset swap spreads for cms bond:" +
                         "\n  market ASW spread: " + cmsBondMktAssetSwapSpread1 +
                         "\n  par ASW spread:    " + cmsBondParAssetSwapSpread1 +
                         "\n  error:             " + error5 +
@@ -1005,7 +1034,7 @@ namespace TestSuite
                      100*cmsBondParAssetSwapSpread2/cmsBondMktFullPrice2);
 
          if (error6>tolerance) {
-            Assert.Fail("wrong asset swap spreads for cms bond:" +
+            QAssert.Fail("wrong asset swap spreads for cms bond:" +
                         "\n  market ASW spread: " + cmsBondMktAssetSwapSpread2 +
                         "\n  par ASW spread:    " + cmsBondParAssetSwapSpread2 +
                         "\n  error:             " + error6 +
@@ -1044,7 +1073,7 @@ namespace TestSuite
                      100*zeroCpnBondParAssetSwapSpread1/zeroCpnBondMktFullPrice1);
 
          if (error7>tolerance) {
-            Assert.Fail("wrong asset swap spreads for zero cpn bond:" +
+            QAssert.Fail("wrong asset swap spreads for zero cpn bond:" +
                         "\n  market ASW spread: " + zeroCpnBondMktAssetSwapSpread1 +
                         "\n  par ASW spread:    " + zeroCpnBondParAssetSwapSpread1 +
                         "\n  error:             " + error7 +
@@ -1086,7 +1115,7 @@ namespace TestSuite
                      100*zeroCpnBondParAssetSwapSpread2/zeroCpnBondMktFullPrice2);
 
          if (error8>tolerance) {
-            Assert.Fail("wrong asset swap spreads for zero cpn bond:" +
+            QAssert.Fail("wrong asset swap spreads for zero cpn bond:" +
                         "\n  market ASW spread: " + zeroCpnBondMktAssetSwapSpread2 +
                         "\n  par ASW spread:    " + zeroCpnBondParAssetSwapSpread2 +
                         "\n  error:             " + error8 +
@@ -1094,7 +1123,11 @@ namespace TestSuite
          }
    }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testZSpread() 
       {
          // Testing clean and dirty price with null Z-spread against theoretical prices...
@@ -1130,7 +1163,7 @@ namespace TestSuite
          double tolerance = 1.0e-13;
          double error1 = Math.Abs(fixedBondImpliedValue1-fixedBondCleanPrice1);
          if (error1>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:" +
+            QAssert.Fail("wrong clean price for fixed bond:" +
                         "\n  market asset swap spread: " +
                         fixedBondImpliedValue1 +
                         "\n  par asset swap spread: " + fixedBondCleanPrice1 +
@@ -1161,7 +1194,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Annual, fixedBondSettlementDate2);
          double error3 = Math.Abs(fixedBondImpliedValue2-fixedBondCleanPrice2);
          if (error3>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:" +
+            QAssert.Fail("wrong clean price for fixed bond:" +
                         "\n  market asset swap spread: " +
                         fixedBondImpliedValue2 +
                         "\n  par asset swap spread: " + fixedBondCleanPrice2 +
@@ -1198,7 +1231,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Semiannual, fixedBondSettlementDate1);
          double error5 = Math.Abs(floatingBondImpliedValue1-floatingBondCleanPrice1);
          if (error5>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:" +
+            QAssert.Fail("wrong clean price for fixed bond:" +
                         "\n  market asset swap spread: " +
                         floatingBondImpliedValue1 +
                         "\n  par asset swap spread: " + floatingBondCleanPrice1 +
@@ -1234,7 +1267,7 @@ namespace TestSuite
             vars.spread, new Actual365Fixed(), vars.compounding, Frequency.Semiannual, fixedBondSettlementDate1);
          double error7 = Math.Abs(floatingBondImpliedValue2-floatingBondCleanPrice2);
          if (error7>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " +
                         floatingBondImpliedValue2
                         + "\n  par asset swap spread: " + floatingBondCleanPrice2
@@ -1270,7 +1303,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Annual, cmsBondSettlementDate1);
          double error9 = Math.Abs(cmsBondImpliedValue1-cmsBondCleanPrice1);
          if (error9>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " + cmsBondImpliedValue1
                         + "\n  par asset swap spread: " + cmsBondCleanPrice1
                         + "\n  error:                 " + error9
@@ -1305,7 +1338,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Annual, cmsBondSettlementDate2);
          double error11 = Math.Abs(cmsBondImpliedValue2-cmsBondCleanPrice2);
          if (error11>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " + cmsBondImpliedValue2
                         + "\n  par asset swap spread: " + cmsBondCleanPrice2
                         + "\n  error:                 " + error11
@@ -1330,7 +1363,7 @@ namespace TestSuite
                                  new Actual365Fixed(), vars.compounding, Frequency.Annual, zeroCpnBondSettlementDate1);
          double error13 = Math.Abs(zeroCpnBondImpliedValue1-zeroCpnBondCleanPrice1);
          if (error13>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  zero cpn implied value: " +
                         zeroCpnBondImpliedValue1
                         + "\n  zero cpn price: " + zeroCpnBondCleanPrice1
@@ -1356,7 +1389,7 @@ namespace TestSuite
                                  new Actual365Fixed(), vars.compounding, Frequency.Annual, zeroCpnBondSettlementDate2);
          double error15 = Math.Abs(zeroCpnBondImpliedValue2-zeroCpnBondCleanPrice2);
          if (error15>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  zero cpn implied value: " +
                         zeroCpnBondImpliedValue2
                         + "\n  zero cpn price: " + zeroCpnBondCleanPrice2
@@ -1365,7 +1398,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testGenericBondImplied() 
       {
 
@@ -1414,7 +1451,7 @@ namespace TestSuite
          double error1 = Math.Abs(fixedBondAssetSwapPrice1-fixedBondPrice1);
 
          if (error1>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for fixed bond:"
+            QAssert.Fail("wrong zero spread asset swap price for fixed bond:"
                         + "\n  bond's clean price:    " + fixedBondPrice1
                         + "\n  asset swap fair price: " + fixedBondAssetSwapPrice1
                         + "\n  error:                 " + error1
@@ -1451,7 +1488,7 @@ namespace TestSuite
          double error2 = Math.Abs(fixedBondAssetSwapPrice2-fixedBondPrice2);
 
          if (error2>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for fixed bond:"
+            QAssert.Fail("wrong zero spread asset swap price for fixed bond:"
                         + "\n  bond's clean price:    " + fixedBondPrice2
                         + "\n  asset swap fair price: " + fixedBondAssetSwapPrice2
                         + "\n  error:                 " + error2
@@ -1494,7 +1531,7 @@ namespace TestSuite
          double error3 = Math.Abs(floatingBondAssetSwapPrice1-floatingBondPrice1);
 
          if (error3>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for floater:"
+            QAssert.Fail("wrong zero spread asset swap price for floater:"
                         + "\n  bond's clean price:    " + floatingBondPrice1
                         + "\n  asset swap fair price: " +
                         floatingBondAssetSwapPrice1
@@ -1531,7 +1568,7 @@ namespace TestSuite
          double floatingCurrentCoupon= floatingBond2.nextCouponRate();
          double error4= Math.Abs(floatingCurrentCoupon-currentCoupon);
          if (error4>tolerance) {
-            Assert.Fail("wrong current coupon is returned for floater bond:"
+            QAssert.Fail("wrong current coupon is returned for floater bond:"
                         + "\n  bond's calculated current coupon:      " +
                         currentCoupon
                         + "\n  current coupon asked to the bond: " +
@@ -1552,7 +1589,7 @@ namespace TestSuite
          double error5 = Math.Abs(floatingBondAssetSwapPrice2-floatingBondPrice2);
 
          if (error5>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for floater:"
+            QAssert.Fail("wrong zero spread asset swap price for floater:"
                         + "\n  bond's clean price:    " + floatingBondPrice2
                         + "\n  asset swap fair price: " +
                         floatingBondAssetSwapPrice2
@@ -1596,7 +1633,7 @@ namespace TestSuite
          double error6 = Math.Abs(cmsBondAssetSwapPrice1-cmsBondPrice1);
 
          if (error6>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for cms bond:"
+            QAssert.Fail("wrong zero spread asset swap price for cms bond:"
                         + "\n  bond's clean price:    " + cmsBondPrice1
                         + "\n  asset swap fair price: " + cmsBondAssetSwapPrice1
                         + "\n  error:                 " + error6
@@ -1638,7 +1675,7 @@ namespace TestSuite
          double error7 = Math.Abs(cmsBondAssetSwapPrice2-cmsBondPrice2);
 
          if (error7>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for cms bond:"
+            QAssert.Fail("wrong zero spread asset swap price for cms bond:"
                         + "\n  bond's clean price:    " + cmsBondPrice2
                         + "\n  asset swap fair price: " + cmsBondAssetSwapPrice2
                         + "\n  error:                 " + error7
@@ -1667,7 +1704,7 @@ namespace TestSuite
          double error8 = Math.Abs(zeroCpnBondAssetSwapPrice1-zeroCpnBondPrice1);
 
          if (error8>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for zero cpn bond:"
+            QAssert.Fail("wrong zero spread asset swap price for zero cpn bond:"
                         + "\n  bond's clean price:    " + zeroCpnBondPrice1
                         + "\n  asset swap fair price: " + zeroCpnBondAssetSwapPrice1
                         + "\n  error:                 " + error8
@@ -1696,7 +1733,7 @@ namespace TestSuite
          double error9 = Math.Abs(cmsBondAssetSwapPrice2-cmsBondPrice2);
 
          if (error9>tolerance) {
-            Assert.Fail("wrong zero spread asset swap price for zero cpn bond:"
+            QAssert.Fail("wrong zero spread asset swap price for zero cpn bond:"
                         + "\n  bond's clean price:    " + zeroCpnBondPrice2
                         + "\n  asset swap fair price: " + zeroCpnBondAssetSwapPrice2
                         + "\n  error:                 " + error9
@@ -1704,7 +1741,11 @@ namespace TestSuite
          }
    }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testMASWWithGenericBond() 
       {
          // Testing market asset swap against par asset swap with generic bond...
@@ -1765,7 +1806,7 @@ namespace TestSuite
                      100*fixedBondParAssetSwapSpread1/fixedBondMktFullPrice1);
 
          if (error1>tolerance)
-            Assert.Fail("wrong asset swap spreads for fixed bond:" +
+            QAssert.Fail("wrong asset swap spreads for fixed bond:" +
                         "\n  market asset swap spread: " + fixedBondMktAssetSwapSpread1 +
                         "\n  par asset swap spread:    " + fixedBondParAssetSwapSpread1 +
                         "\n  error:                    " + error1 +
@@ -1812,7 +1853,7 @@ namespace TestSuite
                      100*fixedBondParAssetSwapSpread2/fixedBondMktFullPrice2);
 
          if (error2>tolerance)
-            Assert.Fail("wrong asset swap spreads for fixed bond:" +
+            QAssert.Fail("wrong asset swap spreads for fixed bond:" +
                         "\n  market asset swap spread: " + fixedBondMktAssetSwapSpread2 +
                         "\n  par asset swap spread:    " + fixedBondParAssetSwapSpread2 +
                         "\n  error:                    " + error2 +
@@ -1869,7 +1910,7 @@ namespace TestSuite
                      100*floatingBondParAssetSwapSpread1/floatingBondMktFullPrice1);
 
          if (error3>tolerance)
-            Assert.Fail("wrong asset swap spreads for floating bond:" +
+            QAssert.Fail("wrong asset swap spreads for floating bond:" +
                         "\n  market asset swap spread: " + floatingBondMktAssetSwapSpread1 +
                         "\n  par asset swap spread:    " + floatingBondParAssetSwapSpread1 +
                         "\n  error:                    " + error3 +
@@ -1927,7 +1968,7 @@ namespace TestSuite
                      100*floatingBondParAssetSwapSpread2/floatingBondMktFullPrice2);
 
          if (error4>tolerance)
-            Assert.Fail("wrong asset swap spreads for floating bond:" +
+            QAssert.Fail("wrong asset swap spreads for floating bond:" +
                         "\n  market asset swap spread: " + floatingBondMktAssetSwapSpread2 +
                         "\n  par asset swap spread:    " + floatingBondParAssetSwapSpread2 +
                         "\n  error:                    " + error4 +
@@ -1981,7 +2022,7 @@ namespace TestSuite
                      100*cmsBondParAssetSwapSpread1/cmsBondMktFullPrice1);
 
          if (error5>tolerance)
-            Assert.Fail("wrong asset swap spreads for cms bond:" +
+            QAssert.Fail("wrong asset swap spreads for cms bond:" +
                         "\n  market asset swap spread: " + cmsBondMktAssetSwapSpread1 +
                         "\n  par asset swap spread:    " + cmsBondParAssetSwapSpread1 +
                         "\n  error:                    " + error5 +
@@ -2034,7 +2075,7 @@ namespace TestSuite
                      100*cmsBondParAssetSwapSpread2/cmsBondMktFullPrice2);
 
          if (error6>tolerance)
-            Assert.Fail("wrong asset swap spreads for cms bond:" +
+            QAssert.Fail("wrong asset swap spreads for cms bond:" +
                         "\n  market asset swap spread: " + cmsBondMktAssetSwapSpread2 +
                         "\n  par asset swap spread:    " + cmsBondParAssetSwapSpread2 +
                         "\n  error:                    " + error6 +
@@ -2077,7 +2118,7 @@ namespace TestSuite
                      100*zeroCpnBondParAssetSwapSpread1/zeroCpnBondMktFullPrice1);
 
          if (error7>tolerance)
-            Assert.Fail("wrong asset swap spreads for zero cpn bond:" +
+            QAssert.Fail("wrong asset swap spreads for zero cpn bond:" +
                         "\n  market asset swap spread: " + zeroCpnBondMktAssetSwapSpread1 +
                         "\n  par asset swap spread:    " + zeroCpnBondParAssetSwapSpread1 +
                         "\n  error:                    " + error7 +
@@ -2121,14 +2162,18 @@ namespace TestSuite
                      100*zeroCpnBondParAssetSwapSpread2/zeroCpnBondMktFullPrice2);
 
          if (error8>tolerance)
-            Assert.Fail("wrong asset swap spreads for zero cpn bond:" +
+            QAssert.Fail("wrong asset swap spreads for zero cpn bond:" +
                         "\n  market asset swap spread: " + zeroCpnBondMktAssetSwapSpread2 +
                         "\n  par asset swap spread:    " + zeroCpnBondParAssetSwapSpread2 +
                         "\n  error:                    " + error8 +
                         "\n  tolerance:                " + tolerance);
    }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testZSpreadWithGenericBond() 
       {
          // Testing clean and dirty price with null Z-spread against theoretical prices...
@@ -2170,7 +2215,7 @@ namespace TestSuite
          double tolerance = 1.0e-13;
          double error1 = Math.Abs(fixedBondImpliedValue1-fixedBondCleanPrice1);
          if (error1>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: "
                         + fixedBondImpliedValue1
                         + "\n  par asset swap spread: " + fixedBondCleanPrice1
@@ -2206,7 +2251,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Annual, fixedBondSettlementDate2);
          double error3 = Math.Abs(fixedBondImpliedValue2-fixedBondCleanPrice2);
          if (error3>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: "
                         + fixedBondImpliedValue2
                         + "\n  par asset swap spread: " + fixedBondCleanPrice2
@@ -2247,7 +2292,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Semiannual, fixedBondSettlementDate1);
          double error5 = Math.Abs(floatingBondImpliedValue1-floatingBondCleanPrice1);
          if (error5>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " +
                         floatingBondImpliedValue1
                         + "\n  par asset swap spread: " + floatingBondCleanPrice1
@@ -2287,7 +2332,7 @@ namespace TestSuite
             new Actual365Fixed(), vars.compounding, Frequency.Semiannual,  fixedBondSettlementDate1);
          double error7 = Math.Abs(floatingBondImpliedValue2-floatingBondCleanPrice2);
          if (error7>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " +
                         floatingBondImpliedValue2
                         + "\n  par asset swap spread: " + floatingBondCleanPrice2
@@ -2329,7 +2374,7 @@ namespace TestSuite
             cmsBondSettlementDate1);
          double error9 = Math.Abs(cmsBondImpliedValue1-cmsBondCleanPrice1);
          if (error9>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " + cmsBondImpliedValue1
                         + "\n  par asset swap spread: " + cmsBondCleanPrice1
                         + "\n  error:                 " + error9
@@ -2369,7 +2414,7 @@ namespace TestSuite
             cmsBondSettlementDate2);
          double error11 = Math.Abs(cmsBondImpliedValue2-cmsBondCleanPrice2);
          if (error11>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  market asset swap spread: " + cmsBondImpliedValue2
                         + "\n  par asset swap spread: " + cmsBondCleanPrice2
                         + "\n  error:                 " + error11
@@ -2401,7 +2446,7 @@ namespace TestSuite
                                  zeroCpnBondSettlementDate1);
          double error13 = Math.Abs(zeroCpnBondImpliedValue1-zeroCpnBondCleanPrice1);
          if (error13>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  zero cpn implied value: " +
                         zeroCpnBondImpliedValue1
                         + "\n  zero cpn price: " + zeroCpnBondCleanPrice1
@@ -2434,7 +2479,7 @@ namespace TestSuite
                                  zeroCpnBondSettlementDate2);
          double error15 = Math.Abs(zeroCpnBondImpliedValue2-zeroCpnBondCleanPrice2);
          if (error15>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  zero cpn implied value: " +
                         zeroCpnBondImpliedValue2
                         + "\n  zero cpn price: " + zeroCpnBondCleanPrice2
@@ -2443,7 +2488,11 @@ namespace TestSuite
          }
    }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSpecializedBondVsGenericBond() 
       {
          // Testing clean and dirty prices for specialized bond against equivalent generic bond...
@@ -2487,7 +2536,7 @@ namespace TestSuite
          double tolerance = 1.0e-13;
          double error1 = Math.Abs(fixedBondTheoValue1-fixedSpecializedBondTheoValue1);
          if (error1>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  specialized fixed rate bond's theo clean price: "
                         + fixedBondTheoValue1
                         + "\n  generic equivalent bond's theo clean price: "
@@ -2500,7 +2549,7 @@ namespace TestSuite
                                        fixedSpecializedBond1.accruedAmount();
          double error2 = Math.Abs(fixedBondTheoDirty1-fixedSpecializedTheoDirty1);
          if (error2>tolerance) {
-            Assert.Fail("wrong dirty price for fixed bond:"
+            QAssert.Fail("wrong dirty price for fixed bond:"
                         + "\n  specialized fixed rate bond's theo dirty price: "
                         + fixedBondTheoDirty1
                         + "\n  generic equivalent bond's theo dirty price: "
@@ -2541,7 +2590,7 @@ namespace TestSuite
 
          double error3 = Math.Abs(fixedBondTheoValue2-fixedSpecializedBondTheoValue2);
          if (error3>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  specialized fixed rate bond's theo clean price: "
                         + fixedBondTheoValue2
                         + "\n  generic equivalent bond's theo clean price: "
@@ -2556,7 +2605,7 @@ namespace TestSuite
 
          double error4 = Math.Abs(fixedBondTheoDirty2-fixedSpecializedBondTheoDirty2);
          if (error4>tolerance) {
-            Assert.Fail("wrong dirty price for fixed bond:"
+            QAssert.Fail("wrong dirty price for fixed bond:"
                         + "\n  specialized fixed rate bond's dirty clean price: "
                         + fixedBondTheoDirty2
                         + "\n  generic equivalent bond's theo dirty price: "
@@ -2609,7 +2658,7 @@ namespace TestSuite
          double error5 = Math.Abs(floatingBondTheoValue1-
                                  floatingSpecializedBondTheoValue1);
          if (error5>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  generic fixed rate bond's theo clean price: "
                         + floatingBondTheoValue1
                         + "\n  equivalent specialized bond's theo clean price: "
@@ -2625,7 +2674,7 @@ namespace TestSuite
          double error6 = Math.Abs(floatingBondTheoDirty1-
                                  floatingSpecializedBondTheoDirty1);
          if (error6>tolerance) {
-            Assert.Fail("wrong dirty price for frn bond:"
+            QAssert.Fail("wrong dirty price for frn bond:"
                         + "\n  generic frn bond's dirty clean price: "
                         + floatingBondTheoDirty1
                         + "\n  equivalent specialized bond's theo dirty price: "
@@ -2682,7 +2731,7 @@ namespace TestSuite
          double error7 =
             Math.Abs(floatingBondTheoValue2-floatingSpecializedBondTheoValue2);
          if (error7>tolerance) {
-            Assert.Fail("wrong clean price for floater bond:"
+            QAssert.Fail("wrong clean price for floater bond:"
                         + "\n  generic floater bond's theo clean price: "
                         + floatingBondTheoValue2
                         + "\n  equivalent specialized bond's theo clean price: "
@@ -2698,7 +2747,7 @@ namespace TestSuite
          double error8 =
             Math.Abs(floatingBondTheoDirty2-floatingSpecializedTheoDirty2);
          if (error8>tolerance) {
-            Assert.Fail("wrong dirty price for floater bond:"
+            QAssert.Fail("wrong dirty price for floater bond:"
                         + "\n  generic floater bond's theo dirty price: "
                         + floatingBondTheoDirty2
                         + "\n  equivalent specialized  bond's theo dirty price: "
@@ -2748,7 +2797,7 @@ namespace TestSuite
          double cmsSpecializedBondTheoValue1 = cmsSpecializedBond1.cleanPrice();
          double error9 = Math.Abs(cmsBondTheoValue1-cmsSpecializedBondTheoValue1);
          if (error9>tolerance) {
-            Assert.Fail("wrong clean price for cms bond:"
+            QAssert.Fail("wrong clean price for cms bond:"
                         + "\n  generic cms bond's theo clean price: "
                         + cmsBondTheoValue1
                         +  "\n  equivalent specialized bond's theo clean price: "
@@ -2761,7 +2810,7 @@ namespace TestSuite
                                        cmsSpecializedBond1.accruedAmount();
          double error10 = Math.Abs(cmsBondTheoDirty1-cmsSpecializedBondTheoDirty1);
          if (error10>tolerance) {
-            Assert.Fail("wrong dirty price for cms bond:"
+            QAssert.Fail("wrong dirty price for cms bond:"
                         + "\n generic cms bond's theo dirty price: "
                         + cmsBondTheoDirty1
                         + "\n  specialized cms bond's theo dirty price: "
@@ -2809,7 +2858,7 @@ namespace TestSuite
 
          double error11 = Math.Abs(cmsBondTheoValue2-cmsSpecializedBondTheoValue2);
          if (error11>tolerance) {
-            Assert.Fail("wrong clean price for cms bond:"
+            QAssert.Fail("wrong clean price for cms bond:"
                         + "\n  generic cms bond's theo clean price: "
                         + cmsBondTheoValue2
                         + "\n  cms bond's theo clean price: "
@@ -2822,7 +2871,7 @@ namespace TestSuite
             cmsSpecializedBondTheoValue2+cmsSpecializedBond2.accruedAmount();
          double error12 = Math.Abs(cmsBondTheoDirty2-cmsSpecializedBondTheoDirty2);
          if (error12>tolerance) {
-            Assert.Fail("wrong dirty price for cms bond:"
+            QAssert.Fail("wrong dirty price for cms bond:"
                         + "\n  generic cms bond's dirty price: "
                         + cmsBondTheoDirty2
                         + "\n  specialized cms bond's theo dirty price: "
@@ -2857,7 +2906,7 @@ namespace TestSuite
          double error13 =
             Math.Abs(zeroCpnBondTheoValue1-zeroCpnSpecializedBondTheoValue1);
          if (error13>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  generic zero bond's clean price: "
                         + zeroCpnBondTheoValue1
                         + "\n  specialized zero bond's clean price: "
@@ -2873,7 +2922,7 @@ namespace TestSuite
          double error14 =
             Math.Abs(zeroCpnBondTheoDirty1-zeroCpnSpecializedBondTheoDirty1);
          if (error14>tolerance) {
-            Assert.Fail("wrong dirty price for zero bond:"
+            QAssert.Fail("wrong dirty price for zero bond:"
                         + "\n  generic zerocpn bond's dirty price: "
                         + zeroCpnBondTheoDirty1
                         + "\n  specialized zerocpn bond's clean price: "
@@ -2908,7 +2957,7 @@ namespace TestSuite
          double error15 =
             Math.Abs(zeroCpnBondTheoValue2 -zeroCpnSpecializedBondTheoValue2);
          if (error15>tolerance) {
-            Assert.Fail("wrong clean price for zero coupon bond:"
+            QAssert.Fail("wrong clean price for zero coupon bond:"
                         + "\n  generic zerocpn bond's clean price: "
                         + zeroCpnBondTheoValue2
                         + "\n  specialized zerocpn bond's clean price: "
@@ -2926,7 +2975,7 @@ namespace TestSuite
          double error16 =
             Math.Abs(zeroCpnBondTheoDirty2-zeroCpnSpecializedBondTheoDirty2);
          if (error16>tolerance) {
-            Assert.Fail("wrong dirty price for zero coupon bond:"
+            QAssert.Fail("wrong dirty price for zero coupon bond:"
                         + "\n  generic zerocpn bond's dirty price: "
                         + zeroCpnBondTheoDirty2
                         + "\n  specialized zerocpn bond's dirty price: "
@@ -2936,7 +2985,11 @@ namespace TestSuite
          }
    }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSpecializedBondVsGenericBondUsingAsw() 
       {
          // Testing asset-swap prices and spreads for specialized bond against equivalent generic bond...
@@ -3002,7 +3055,7 @@ namespace TestSuite
          double error1 =
             Math.Abs(fixedBondAssetSwapPrice1-fixedSpecializedBondAssetSwapPrice1);
          if (error1>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  generic  fixed rate bond's  clean price: "
                         + fixedBondAssetSwapPrice1
                         + "\n  equivalent specialized bond's clean price: "
@@ -3031,7 +3084,7 @@ namespace TestSuite
          double fixedSpecializedBondASWSpread1 = fixedSpecializedBondASW1.fairSpread();
          double error2 = Math.Abs(fixedBondASWSpread1-fixedSpecializedBondASWSpread1);
          if (error2>tolerance) {
-            Assert.Fail("wrong asw spread  for fixed bond:"
+            QAssert.Fail("wrong asw spread  for fixed bond:"
                         + "\n  generic  fixed rate bond's  asw spread: "
                         + fixedBondASWSpread1
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3091,7 +3144,7 @@ namespace TestSuite
 
          double error3 = Math.Abs(fixedBondAssetSwapPrice2-fixedSpecializedBondAssetSwapPrice2);
          if (error3>tolerance) {
-            Assert.Fail("wrong clean price for fixed bond:"
+            QAssert.Fail("wrong clean price for fixed bond:"
                         + "\n  generic  fixed rate bond's clean price: "
                         + fixedBondAssetSwapPrice2
                         + "\n  equivalent specialized  bond's clean price: "
@@ -3120,7 +3173,7 @@ namespace TestSuite
          double fixedSpecializedBondASWSpread2 = fixedSpecializedBondASW2.fairSpread();
          double error4 = Math.Abs(fixedBondASWSpread2-fixedSpecializedBondASWSpread2);
          if (error4>tolerance) {
-            Assert.Fail("wrong asw spread for fixed bond:"
+            QAssert.Fail("wrong asw spread for fixed bond:"
                         + "\n  generic  fixed rate bond's  asw spread: "
                         + fixedBondASWSpread2
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3192,7 +3245,7 @@ namespace TestSuite
          double error5 =
             Math.Abs(floatingBondAssetSwapPrice1-floatingSpecializedBondAssetSwapPrice1);
          if (error5>tolerance) {
-            Assert.Fail("wrong clean price for frnbond:"
+            QAssert.Fail("wrong clean price for frnbond:"
                         + "\n  generic frn rate bond's clean price: "
                         + floatingBondAssetSwapPrice1
                         + "\n  equivalent specialized  bond's price: "
@@ -3223,7 +3276,7 @@ namespace TestSuite
          double error6 =
             Math.Abs(floatingBondASWSpread1-floatingSpecializedBondASWSpread1);
          if (error6>tolerance) {
-            Assert.Fail("wrong asw spread for fixed bond:"
+            QAssert.Fail("wrong asw spread for fixed bond:"
                         + "\n  generic  frn rate bond's  asw spread: "
                         + floatingBondASWSpread1
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3295,7 +3348,7 @@ namespace TestSuite
          double error7 =
             Math.Abs(floatingBondAssetSwapPrice2-floatingSpecializedBondAssetSwapPrice2);
          if (error7>tolerance) {
-            Assert.Fail("wrong clean price for frnbond:"
+            QAssert.Fail("wrong clean price for frnbond:"
                         + "\n  generic frn rate bond's clean price: "
                         + floatingBondAssetSwapPrice2
                         + "\n  equivalent specialized frn  bond's price: "
@@ -3326,7 +3379,7 @@ namespace TestSuite
          double error8 =
             Math.Abs(floatingBondASWSpread2-floatingSpecializedBondASWSpread2);
          if (error8>tolerance) {
-            Assert.Fail("wrong asw spread for frn bond:"
+            QAssert.Fail("wrong asw spread for frn bond:"
                         + "\n  generic  frn rate bond's  asw spread: "
                         + floatingBondASWSpread2
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3393,7 +3446,7 @@ namespace TestSuite
          double error9 =
             Math.Abs(cmsBondAssetSwapPrice1-cmsSpecializedBondAssetSwapPrice1);
          if (error9>tolerance) {
-            Assert.Fail("wrong clean price for cmsbond:"
+            QAssert.Fail("wrong clean price for cmsbond:"
                         + "\n  generic bond's clean price: "
                         + cmsBondAssetSwapPrice1
                         + "\n  equivalent specialized cms rate bond's price: "
@@ -3421,7 +3474,7 @@ namespace TestSuite
          double cmsSpecializedBondASWSpread1 = cmsSpecializedBondASW1.fairSpread();
          double error10 = Math.Abs(cmsBondASWSpread1-cmsSpecializedBondASWSpread1);
          if (error10>tolerance) {
-            Assert.Fail("wrong asw spread for cm bond:"
+            QAssert.Fail("wrong asw spread for cm bond:"
                         + "\n  generic cms rate bond's  asw spread: "
                         + cmsBondASWSpread1
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3488,7 +3541,7 @@ namespace TestSuite
          double error11 =
             Math.Abs(cmsBondAssetSwapPrice2-cmsSpecializedBondAssetSwapPrice2);
          if (error11>tolerance) {
-            Assert.Fail("wrong clean price for cmsbond:"
+            QAssert.Fail("wrong clean price for cmsbond:"
                         + "\n  generic  bond's clean price: "
                         + cmsBondAssetSwapPrice2
                         + "\n  equivalent specialized cms rate bond's price: "
@@ -3516,7 +3569,7 @@ namespace TestSuite
          double cmsSpecializedBondASWSpread2 = cmsSpecializedBondASW2.fairSpread();
          double error12 = Math.Abs(cmsBondASWSpread2-cmsSpecializedBondASWSpread2);
          if (error12>tolerance) {
-            Assert.Fail("wrong asw spread for cm bond:"
+            QAssert.Fail("wrong asw spread for cm bond:"
                         + "\n  generic cms rate bond's  asw spread: "
                         + cmsBondASWSpread2
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3569,7 +3622,7 @@ namespace TestSuite
          double error13 =
             Math.Abs(zeroCpnBondAssetSwapPrice1-zeroCpnSpecializedBondAssetSwapPrice1);
          if (error13>tolerance) {
-            Assert.Fail("wrong clean price for zerocpn bond:"
+            QAssert.Fail("wrong clean price for zerocpn bond:"
                         + "\n  generic zero cpn bond's clean price: "
                         + zeroCpnBondAssetSwapPrice1
                         + "\n  specialized equivalent bond's price: "
@@ -3600,7 +3653,7 @@ namespace TestSuite
          double error14 =
             Math.Abs(zeroCpnBondASWSpread1-zeroCpnSpecializedBondASWSpread1);
          if (error14>tolerance) {
-            Assert.Fail("wrong asw spread for zeroCpn bond:"
+            QAssert.Fail("wrong asw spread for zeroCpn bond:"
                         + "\n  generic zeroCpn bond's  asw spread: "
                         + zeroCpnBondASWSpread1
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3654,7 +3707,7 @@ namespace TestSuite
          double error15 = Math.Abs(zeroCpnBondAssetSwapPrice2
                                  -zeroCpnSpecializedBondAssetSwapPrice2);
          if (error15>tolerance) {
-            Assert.Fail("wrong clean price for zerocpn bond:"
+            QAssert.Fail("wrong clean price for zerocpn bond:"
                         + "\n  generic zero cpn bond's clean price: "
                         + zeroCpnBondAssetSwapPrice2
                         + "\n  equivalent specialized bond's price: "
@@ -3685,7 +3738,7 @@ namespace TestSuite
          double error16 =
             Math.Abs(zeroCpnBondASWSpread2-zeroCpnSpecializedBondASWSpread2);
          if (error16>tolerance) {
-            Assert.Fail("wrong asw spread for zeroCpn bond:"
+            QAssert.Fail("wrong asw spread for zeroCpn bond:"
                         + "\n  generic zeroCpn bond's  asw spread: "
                         + zeroCpnBondASWSpread2
                         + "\n  equivalent specialized bond's asw spread: "
@@ -3696,5 +3749,7 @@ namespace TestSuite
    }
 
 
-   }
+   
+
+}
 }

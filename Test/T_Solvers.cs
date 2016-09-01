@@ -18,12 +18,18 @@
 */
 
 using System;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_Solvers
    {
       class Foo : ISolver1d
@@ -41,7 +47,7 @@ namespace TestSuite
             double root = solver.solve(new Foo(), accuracy[i], 1.5, 0.1);
             if (Math.Abs(root - expected) > accuracy[i])
             {
-               Assert.Fail(name + " solver:\n"
+               QAssert.Fail(name + " solver:\n"
                           + "    expected:   " + expected + "\n"
                           + "    calculated: " + root + "\n"
                           + "    accuracy:   " + accuracy[i]);
@@ -49,7 +55,7 @@ namespace TestSuite
             root = solver.solve(new Foo(), accuracy[i], 1.5, 0.0, 1.0);
             if (Math.Abs(root - expected) > accuracy[i])
             {
-               Assert.Fail(name + " solver (bracketed):\n"
+               QAssert.Fail(name + " solver (bracketed):\n"
                           + "    expected:   " + expected + "\n"
                           + "    calculated: " + root + "\n"
                           + "    accuracy:   " + accuracy[i]);
@@ -57,32 +63,56 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testBrent()
       {
          test(new Brent(), "Brent");
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testNewton()
       {
          test(new Newton(), "Newton");
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFalsePosition()
       {
          test(new FalsePosition(), "FalsePosition");
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testBisection()
       {
          test(new Bisection(), "Bisection");
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testRidder()
       {
          test(new Ridder(), "Ridder");
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSecant()
       {
          test(new Secant(), "Secant");

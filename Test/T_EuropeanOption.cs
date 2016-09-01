@@ -18,23 +18,40 @@
 */
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
-   public class T_EuropeanOption
+#endif
+   public class T_EuropeanOption : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
+      #if QL_DOTNET_FRAMEWORK
       [TestInitialize]
       public void testInitialize()
       {
+      #else
+      public T_EuropeanOption()
+      {
+      #endif
          backup = new SavedSettings();
       }
+      #if QL_DOTNET_FRAMEWORK
       [TestCleanup]
+      #endif
       public void testCleanup()
+      {
+        Dispose();
+      }
+      public void Dispose()
       {
          backup.Dispose();
       }
@@ -50,7 +67,11 @@ namespace TestSuite
       };
 
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testJRBinomialEngines()
       {
          // Testing JR binomial European engines against analytic results
@@ -64,7 +85,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCRRBinomialEngines()
       {
          // Testing CRR binomial European engines against analytic results
@@ -78,7 +103,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testEQPBinomialEngines()
       {
          // Testing EQP binomial European engines against analytic results
@@ -92,7 +121,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testTGEOBinomialEngines()
       {
          // Testing TGEO binomial European engines " against analytic results
@@ -106,7 +139,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testTIANBinomialEngines()
       {
          // Testing TIAN binomial European engines against analytic results
@@ -120,7 +157,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testLRBinomialEngines()
       {
          // Testing LR binomial European engines against analytic results
@@ -134,7 +175,11 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testJOSHIBinomialEngines()
       {
          // Testing Joshi binomial European engines against analytic results
@@ -150,7 +195,11 @@ namespace TestSuite
       }
 
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFdEngines()
       {
 
@@ -343,7 +392,7 @@ namespace TestSuite
       void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
               Date today, double v, double expected, double calculated, double error, double tolerance)
       {
-         Assert.Fail(exercise + " "
+         QAssert.Fail(exercise + " "
                 + payoff.optionType() + " option with "
                 + payoff + " payoff:\n"
                 + "    spot value:       " + s + "\n"

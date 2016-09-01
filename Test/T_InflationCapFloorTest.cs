@@ -18,23 +18,40 @@
 */
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-	[TestClass()]
-	public class T_InflationCapFloorTest
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
+   public class T_InflationCapFloorTest : IDisposable
 	{
       #region Initialize&Cleanup
       private SavedSettings backup;
+      #if QL_DOTNET_FRAMEWORK
       [TestInitialize]
       public void testInitialize()
       {
+      #else
+      public T_InflationCapFloorTest()
+      {
+      #endif
          backup = new SavedSettings();
       }
+      #if QL_DOTNET_FRAMEWORK
       [TestCleanup]
+      #endif
       public void testCleanup()
+      {
+         Dispose();
+      }
+      public void Dispose()
       {
          backup.Dispose();
       }
@@ -186,7 +203,7 @@ namespace TestSuite
 							return new YoYInflationBachelierCapFloorEngine(iir, vol);
 							//break;
 						default:
-							Assert.Fail("unknown engine request: which = "+which
+							QAssert.Fail("unknown engine request: which = "+which
 											+"should be 0=Black,1=DD,2=Bachelier");
 							break;
 				}
@@ -239,7 +256,11 @@ namespace TestSuite
 			}
 		}
 
-		[TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
 		public void testConsistency()
 		{
 			// Testing consistency between yoy inflation cap,floor and collar...
@@ -276,7 +297,7 @@ namespace TestSuite
 
 								if (Math.Abs((cap.NPV()-floor.NPV())-collar.NPV()) > 1e-6) 
 								{
-									Assert.Fail(
+									QAssert.Fail(
                                    "inconsistency between cap, floor and collar:\n"
                                    + "    length:       " + lengths[i] + " years\n"
                                    + "    volatility:   " +  "\n"
@@ -299,7 +320,7 @@ namespace TestSuite
 
 								if (Math.Abs(cap.NPV() - capletsNPV) > 1e-6) 
 								{
-									Assert.Fail(
+									QAssert.Fail(
                                     "sum of caplet NPVs does not equal cap NPV:\n"
                                     + "    length:       " + lengths[i] + " years\n"
                                     + "    volatility:   " +  "\n"
@@ -321,7 +342,7 @@ namespace TestSuite
 
 								if (Math.Abs(floor.NPV() - floorletsNPV) > 1e-6) 
 								{
-									Assert.Fail(
+									QAssert.Fail(
                                     "sum of floorlet NPVs does not equal floor NPV:\n"
                                     + "    length:       " + lengths[i] + " years\n"
                                     + "    volatility:   " +  "\n"
@@ -343,7 +364,7 @@ namespace TestSuite
 
 								if (Math.Abs(collar.NPV() - collarletsNPV) > 1e-6) 
 								{
-									Assert.Fail(
+									QAssert.Fail(
                                     "sum of collarlet NPVs does not equal floor NPV:\n"
                                     + "    length:       " + lengths[i] + " years\n"
                                     + "    volatility:   " + vols[l] + "\n"
@@ -371,7 +392,11 @@ namespace TestSuite
 		// (actually in arrears with a lag of a few months) thus the first optionlet
 		// is relevant.  Hence we can do a parity test without a special definition
 		// of the YoY cap/floor instrument.
-		[TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
 		public void testParity() 
 		{
 
@@ -425,7 +450,7 @@ namespace TestSuite
 
 								  // N.B. nominals are 10e6
 								  if (Math.Abs((cap.NPV()-floor.NPV()) - swap.NPV()) > 1.0e-6) {
-										Assert.Fail(
+										QAssert.Fail(
 												 "put/call parity violated:\n"
 												 + "    length:      " + lengths[i] + " years\n"
 												 + "    volatility:  " + vols[k] + "\n"
@@ -442,8 +467,12 @@ namespace TestSuite
 			 vars.hy.linkTo(null);
 		}
 
-		
-		[TestMethod()]
+
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
 		public void testCachedValue() 
 		{
 			// Testing Black yoy inflation cap/floor price  against cached values...
@@ -463,10 +492,10 @@ namespace TestSuite
 			double cachedCapNPVblack   = 219.452;
 			double cachedFloorNPVblack =  314.641;
 			// N.B. notionals are 10e6.
-			Assert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVblack)<0.02,"yoy cap cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVblack)<0.02,"yoy cap cached NPV wrong "
 									+cap.NPV()+" should be "+cachedCapNPVblack+" Black pricer"
 									+" diff was "+(Math.Abs(cap.NPV()-cachedCapNPVblack)));
-			Assert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVblack)<0.02,"yoy floor cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVblack)<0.02,"yoy floor cached NPV wrong "
 									+floor.NPV()+" should be "+cachedFloorNPVblack+" Black pricer"
 									+" diff was "+(Math.Abs(floor.NPV()-cachedFloorNPVblack)));
 
@@ -479,10 +508,10 @@ namespace TestSuite
 			double cachedCapNPVdd   = 9114.61;
 			double cachedFloorNPVdd =  9209.8;
 			// N.B. notionals are 10e6.
-			Assert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVdd)<0.22,"yoy cap cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVdd)<0.22,"yoy cap cached NPV wrong "
 									+cap.NPV()+" should be "+cachedCapNPVdd+" dd Black pricer"
 									+" diff was "+(Math.Abs(cap.NPV()-cachedCapNPVdd)));
-			Assert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVdd)<0.22,"yoy floor cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVdd)<0.22,"yoy floor cached NPV wrong "
 									+floor.NPV()+" should be "+cachedFloorNPVdd+" dd Black pricer"
 									+" diff was "+(Math.Abs(floor.NPV()-cachedFloorNPVdd)));
 
@@ -495,10 +524,10 @@ namespace TestSuite
 			double cachedCapNPVbac   = 8852.4;
 			double cachedFloorNPVbac =  8947.59;
 			// N.B. notionals are 10e6.
-			Assert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVbac)<0.22,"yoy cap cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(cap.NPV()-cachedCapNPVbac)<0.22,"yoy cap cached NPV wrong "
 									+cap.NPV()+" should be "+cachedCapNPVbac+" bac Black pricer"
 									+" diff was "+(Math.Abs(cap.NPV()-cachedCapNPVbac)));
-			Assert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVbac)<0.22,"yoy floor cached NPV wrong "
+			QAssert.IsTrue(Math.Abs(floor.NPV()-cachedFloorNPVbac)<0.22,"yoy floor cached NPV wrong "
 									+floor.NPV()+" should be "+cachedFloorNPVbac+" bac Black pricer"
 									+" diff was "+(Math.Abs(floor.NPV()-cachedFloorNPVbac)));
 

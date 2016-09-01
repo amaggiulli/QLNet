@@ -20,23 +20,40 @@
 
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
-    public class T_LiborMarketModel
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
+   public class T_LiborMarketModel : IDisposable
     {
        #region Initialize&Cleanup
        private SavedSettings backup;
+       #if QL_DOTNET_FRAMEWORK
        [TestInitialize]
        public void testInitialize()
        {
+       #else
+       public T_LiborMarketModel()
+       {
+       #endif
           backup = new SavedSettings();
        }
+       #if QL_DOTNET_FRAMEWORK
        [TestCleanup]
+       #endif
        public void testCleanup()
+       {
+          Dispose();
+       }
+       public void Dispose()
        {
           backup.Dispose();
        }
@@ -93,7 +110,11 @@ namespace TestSuite
                                            capletVols,new Actual360());
         }
 
+        #if QL_DOTNET_FRAMEWORK
         [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testSimpleCovarianceModels() 
         {
             // Testing simple covariance models
@@ -109,7 +130,7 @@ namespace TestSuite
             for (i=0; i<size; ++i) {
                 for (int j=0; j<size; ++j) {
                     if (Math.Abs(recon[i,j]) > tolerance)
-                        Assert.Fail("Failed to reproduce correlation matrix"
+                        QAssert.Fail("Failed to reproduce correlation matrix"
                                     + "\n    calculated: " + recon[i,j]
                                     + "\n    expected:   " + 0);
                 }
@@ -140,7 +161,7 @@ namespace TestSuite
                 for (int k=0; k<size; ++k) {
                     for (int j=0; j<size; ++j) {
                         if (Math.Abs(recon[k,j]) > tolerance)
-                            Assert.Fail("Failed to reproduce correlation matrix"
+                            QAssert.Fail("Failed to reproduce correlation matrix"
                                         + "\n    calculated: " + recon[k,j]
                                         + "\n    expected:   " + 0);
                     }
@@ -156,14 +177,18 @@ namespace TestSuite
                     }
 
                     if (Math.Abs(expected - volatility[k]) > tolerance)
-                        Assert.Fail("Failed to reproduce volatities"
+                        QAssert.Fail("Failed to reproduce volatities"
                                     + "\n    calculated: " + volatility[k]
                                     + "\n    expected:   " + expected);
                 }
             }
         }
 
+        #if QL_DOTNET_FRAMEWORK
         [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testCapletPricing() 
         {
             // Testing caplet pricing
@@ -200,12 +225,16 @@ namespace TestSuite
             double calculated = cap1.NPV();
 
             if (Math.Abs(expected - calculated) > tolerance)
-                Assert.Fail("Failed to reproduce npv"
+                QAssert.Fail("Failed to reproduce npv"
                             + "\n    calculated: " + calculated
                             + "\n    expected:   " + expected);
         }
     
-        [TestCategory("LongRun"), TestMethod()]
+        #if QL_DOTNET_FRAMEWORK
+        [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testCalibration()
         {
             // Testing calibration of a Libor forward model
@@ -297,12 +326,16 @@ namespace TestSuite
             }
 
             if (Math.Sqrt(calculated) > tolerance)
-                Assert.Fail("Failed to calibrate libor forward model"
+                QAssert.Fail("Failed to calibrate libor forward model"
                             + "\n    calculated diff: " + Math.Sqrt(calculated)
                             + "\n    expected : smaller than  " + tolerance);
         }
 
-        [TestCategory("LongRun"),TestMethod()]
+        #if QL_DOTNET_FRAMEWORK
+        [TestCategory( "LongRun" ), TestMethod()]
+        #else
+        [Fact(Skip = "LongRun")]
+        #endif
         public void testSwaptionPricing() 
         {
             // Testing forward swap and swaption pricing
@@ -387,7 +420,7 @@ namespace TestSuite
                     double calculated = liborModel.S_0(i-1,i+j-1);
 
                     if (Math.Abs(expected - calculated) > tolerance)
-                        Assert.Fail("Failed to reproduce fair forward swap rate"
+                        QAssert.Fail("Failed to reproduce fair forward swap rate"
                                     + "\n    calculated: " + calculated
                                     + "\n    expected:   " + expected);
 
@@ -433,7 +466,7 @@ namespace TestSuite
 
                         if (Math.Abs(swaption.NPV() - stat.mean())
                             > stat.errorEstimate()*2.35)
-                            Assert.Fail("Failed to reproduce swaption npv"
+                            QAssert.Fail("Failed to reproduce swaption npv"
                                         + "\n    calculated: " + stat.mean()
                                         + "\n    expected:   " + swaption.NPV());
                     }

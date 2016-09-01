@@ -20,6 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
@@ -152,4 +157,76 @@ namespace TestSuite {
     {
        public void Dispose() { IndexManager.instance().clearHistories(); }
     };
+
+   public static partial class QAssert
+   {
+      public static void Fail(string message)
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.Fail(message);
+         #else
+            Assert.True(false,message);
+         #endif
+      }
+
+      public static void AreEqual( double expected, double actual, double delta )
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.AreEqual( expected, actual, delta );
+         #else
+            Assert.True(Math.Abs(expected- actual) <= delta);
+         #endif
+      }
+
+      public static void AreEqual(double expected, double actual, double delta, string message)
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.AreEqual(expected, actual, delta, message);
+         #else
+            Assert.True(Math.Abs(expected- actual) <= delta,message);
+         #endif
+      }
+
+      public static void AreEqual<T>( T expected, T actual )
+      {
+         
+         #if QL_DOTNET_FRAMEWORK
+            Assert.AreEqual( expected, actual );
+         #else
+            Assert.Equal(expected, actual);
+         #endif
+      }
+
+      public static void AreEqual<T>( T expected, T actual, string message )
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.AreEqual( expected, actual, message );
+         #else
+            Assert.Equal(expected, actual);
+         #endif
+      }
+
+      public static void IsTrue( bool condition, string message )
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.IsTrue( condition, message);
+         #else
+            Assert.True( condition, message);
+         #endif
+      }
+
+      public static void IsFalse( bool condition, string message )
+      {
+         #if QL_DOTNET_FRAMEWORK
+            Assert.IsFalse( condition, message );
+         #else
+            Assert.False( condition, message);
+         #endif
+      }
+      //public static void IsTrue( bool condition, string message, params object[] parameters )
+      //{
+      //   QAssert.IsTrue( condition, message, parameters );
+      //}
+
+   }
 }

@@ -19,7 +19,11 @@
 
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
@@ -90,7 +94,7 @@ namespace TestSuite
                prefix = "Kuo3";
                break;
             default:
-               Assert.Fail("unknown direction integers");
+               QAssert.Fail("unknown direction integers");
                break;
          }
          return prefix + "Sobol sequences: ";
@@ -129,7 +133,9 @@ namespace TestSuite
    #endregion
 
 
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_LowDiscrepancySequences
    {
       public void testSeedGenerator()
@@ -138,7 +144,11 @@ namespace TestSuite
          SeedGenerator.instance().get();
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testPolynomialsModuloTwo()
       {
 
@@ -168,7 +178,7 @@ namespace TestSuite
                --n;
                if (j != jj[i])
                {
-                  Assert.Fail("Only " + j + " polynomials in degree " + i + 1
+                  QAssert.Fail("Only " + j + " polynomials in degree " + i + 1
                               + " instead of " + jj[i]);
                }
             }
@@ -178,7 +188,11 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSobol()
       {
 
@@ -198,7 +212,7 @@ namespace TestSuite
             point = rsg.nextSequence().value;
             if (point.Count != dimensionality)
             {
-               Assert.Fail("Sobol sequence generator returns " +
+               QAssert.Fail("Sobol sequence generator returns " +
                            " a sequence of wrong dimensionality: " + point.Count
                            + " instead of  " + dimensionality);
             }
@@ -226,7 +240,7 @@ namespace TestSuite
                double error = Math.Abs(mean[i] - 0.5);
                if (error > tolerance)
                {
-                  Assert.Fail(i + 1 + " dimension: "
+                  QAssert.Fail(i + 1 + " dimension: "
                      // + QL_FIXED
                               + "mean (" + mean[i]
                               + ") at the end of the " + j + 1
@@ -262,7 +276,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               Assert.Fail(i + 1 + " draw ("
+               QAssert.Fail(i + 1 + " draw ("
                   //+ QL_FIXED 
                            + point[0]
                            + ") in 1-D Sobol sequence is not in the "
@@ -289,7 +303,7 @@ namespace TestSuite
     for (i=0; i<points; i++) {
         point = rsg.nextSequence().value;
         if (point.size()!=dimensionality) {
-            Assert.Fail("Faure sequence generator returns "
+            QAssert.Fail("Faure sequence generator returns "
                         " a sequence of wrong dimensionality: " + point.size()
                         + " instead of  " + dimensionality);
         }
@@ -316,7 +330,7 @@ namespace TestSuite
         point = rsg.nextSequence().value;
         double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
                         + QL_FIXED + point[0]
                         + ") in 3-D Faure sequence should have been "
                         + vanderCorputSequenceModuloTwo[i]
@@ -349,7 +363,7 @@ namespace TestSuite
         point = rsg.nextSequence().value;
         double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
                         + QL_FIXED + point[0]
                         + ") in 3-D Faure sequence should have been "
                         + vanderCorputSequenceModuloTwo[i]
@@ -358,7 +372,7 @@ namespace TestSuite
         }
         error = std::fabs(point[1]-FaureDimensionTwoOfTwo[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
                         + QL_FIXED + point[1]
                         + ") in 3-D Faure sequence should have been "
                         + FaureDimensionTwoOfTwo[i]
@@ -396,7 +410,7 @@ namespace TestSuite
         point = rsg.nextSequence().value;
         double error = std::fabs(point[0]-FaureDimensionOneOfThree[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
                         + QL_FIXED + point[0]
                         + ") in 3-D Faure sequence should have been "
                         + FaureDimensionOneOfThree[i]
@@ -405,7 +419,7 @@ namespace TestSuite
         }
         error = std::fabs(point[1]-FaureDimensionTwoOfThree[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
                         + QL_FIXED + point[1]
                         + ") in 3-D Faure sequence should have been "
                         + FaureDimensionTwoOfThree[i]
@@ -414,7 +428,7 @@ namespace TestSuite
         }
         error = std::fabs(point[2]-FaureDimensionThreeOfThree[i]);
         if (error > tolerance) {
-            Assert.Fail(io::ordinal(i+1) + " draw, dimension 3 ("
+            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 3 ("
                         + QL_FIXED + point[2]
                         + ") in 3-D Faure sequence should have been "
                         + FaureDimensionThreeOfThree[i]
@@ -424,7 +438,11 @@ namespace TestSuite
     }
 }*/
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testHalton()
       {
 
@@ -442,7 +460,7 @@ namespace TestSuite
             point = rsg.nextSequence().value;
             if (point.Count != dimensionality)
             {
-               Assert.Fail("Halton sequence generator returns " +
+               QAssert.Fail("Halton sequence generator returns " +
                            " a sequence of wrong dimensionality: " + point.Count
                            + " instead of  " + dimensionality)
                   ;
@@ -477,7 +495,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               Assert.Fail(i + 1 + " draw ("
+               QAssert.Fail(i + 1 + " draw ("
                            + /*QL_FIXED*/ +point[0]
                            + ") in 1-D Halton sequence is not in the "
                            + "van der Corput sequence modulo two: "
@@ -509,7 +527,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               Assert.Fail("First component of " + i + 1
+               QAssert.Fail("First component of " + i + 1
                            + " draw (" + /*QL_FIXED*/ +point[0]
                            + ") in 2-D Halton sequence is not in the "
                            + "van der Corput sequence modulo two: "
@@ -521,7 +539,7 @@ namespace TestSuite
             error = Math.Abs(point[1] - vanderCorputSequenceModuloThree[i]);
             if (error > tolerance)
             {
-               Assert.Fail("Second component of " + i + 1
+               QAssert.Fail("Second component of " + i + 1
                            + " draw (" + /*QL_FIXED*/ +point[1]
                            + ") in 2-D Halton sequence is not in the "
                            + "van der Corput sequence modulo three: "
@@ -552,7 +570,7 @@ namespace TestSuite
             double error = Math.Abs(mean[0] - 0.5);
             if (error > tolerance)
             {
-               Assert.Fail("First dimension mean (" + /*QL_FIXED*/ +mean[0]
+               QAssert.Fail("First dimension mean (" + /*QL_FIXED*/ +mean[0]
                            + ") at the end of the " + j + 1
                            + " cycle in Halton sequence is not " + 0.5
                   //+ QL_SCIENTIFIC
@@ -577,7 +595,7 @@ namespace TestSuite
             double error = Math.Abs(mean[1] - 0.5);
             if (error > tolerance)
             {
-               Assert.Fail("Second dimension mean (" + /*QL_FIXED*/ +mean[1]
+               QAssert.Fail("Second dimension mean (" + /*QL_FIXED*/ +mean[1]
                            + ") at the end of the " + j + 1
                            + " cycle in Halton sequence is not " + 0.5
                   //+ QL_SCIENTIFIC
@@ -620,7 +638,7 @@ namespace TestSuite
 
                if (Math.Abs(discr - discrepancy[i][j - jMin]) > tolerance*discr)
                {
-                  Assert.Fail(generatorFactory.name()
+                  QAssert.Fail(generatorFactory.name()
                               + "discrepancy dimension " + dimensionality[i]
                               + " at " + points + " samples is "
                               + discr + " instead of "
@@ -827,7 +845,11 @@ namespace TestSuite
 
       #endregion
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSobolSkipping()
       {
 
@@ -868,7 +890,7 @@ namespace TestSuite
                      {
                         if (s1[n] != s2[n])
                         {
-                           Assert.Fail("Mismatch after skipping:"
+                           QAssert.Fail("Mismatch after skipping:"
                                        + "\n  size:     " + dimensionality[j]
                                        + "\n  integers: " + integers[i]
                                        + "\n  skipped:  " + skip[k]
