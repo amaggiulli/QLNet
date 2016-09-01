@@ -41,8 +41,8 @@ namespace QLNet
                                     Interpolator1 factory1 = default(Interpolator1),
                                     Interpolator2 factory2 = default(Interpolator2))
             : base(xBegin, xEnd, yBegin,
-              Math.Max(factory1 == null ? new Interpolator1().requiredPoints : factory1.requiredPoints,
-                       factory2 == null ? new Interpolator2().requiredPoints : factory2.requiredPoints))
+              Math.Max(factory1 == null ? (factory1 = new Interpolator1()).requiredPoints : factory1.requiredPoints,
+                       factory2 == null ? (factory2 = new Interpolator2()).requiredPoints : factory2.requiredPoints))
 
       {
          n_ = n;
