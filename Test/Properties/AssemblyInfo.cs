@@ -1,6 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
+#if ! QL_DOTNET_FRAMEWORK
+using Xunit;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+#endif
+
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // è necessario modificare i valori di questi attributi.
