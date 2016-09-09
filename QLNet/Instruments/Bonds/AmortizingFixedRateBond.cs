@@ -53,7 +53,7 @@ namespace QLNet
          addRedemptionsToCashflows();
 
          if ( cashflows().empty())
-            throw new ApplicationException("bond with no cashflows!");
+            throw new Exception("bond with no cashflows!");
       }
 
       public AmortizingFixedRateBond(
@@ -184,7 +184,7 @@ namespace QLNet
               case TimeUnit.Years:
                 return new KeyValuePair<int, int>(365 * p.length(), 366 * p.length());
               default:
-                throw new ApplicationException("unknown time unit (" + p.units() + ")");
+                throw new Exception("unknown time unit (" + p.units() + ")");
             }
         }
    }

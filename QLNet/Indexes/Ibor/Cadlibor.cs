@@ -17,41 +17,35 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-	//! %CAD LIBOR rate
-//    ! Canadian Dollar LIBOR fixed by BBA.
-//
-//        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-//
-//        \warning This is the rate fixed in London by BBA. Use CDOR if
-//                 you're interested in the Canadian fixing by IDA.
-//    
-	public class CADLibor : Libor
-	{
-        public CADLibor(Period tenor)
-            : base("CADLibor", tenor, 2, new CADCurrency(), new Canada(), new Actual360(), new Handle<YieldTermStructure>())
-		{
-		}
+   //! %CAD LIBOR rate
+   /*! Canadian Dollar LIBOR discontinued as of 2013.
+       \warning This is the rate fixed in London by BBA. Use CDOR if
+                you're interested in the Canadian fixing by IDA.
+   */
+   public class CADLibor : Libor
+   {
+      public CADLibor( Period tenor )
+         : base( "CADLibor", tenor, 2, new CADCurrency(), new Canada(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
 
-        public CADLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("CADLibor", tenor, 2, new CADCurrency(), new Canada(), new Actual360(), h)
-		{
-		}
-	}
+      public CADLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "CADLibor", tenor, 2, new CADCurrency(), new Canada(), new Actual360(), h )
+      {}
+   }
 
-	//! Overnight %CAD %Libor index
-	public class CADLiborON : DailyTenorLibor
-	{
-        public CADLiborON()
-            : base("CADLibor", 0, new CADCurrency(), new Canada(), new Actual360(), new Handle<YieldTermStructure>())
-		{
-		}
+   //! Overnight %CAD %Libor index
+   public class CADLiborON : DailyTenorLibor
+   {
+      public CADLiborON()
+         : base( "CADLibor", 0, new CADCurrency(), new Canada(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
 
-        public CADLiborON(Handle<YieldTermStructure> h)
-            : base("CADLibor", 0, new CADCurrency(), new Canada(), new Actual360(), h)
-		{
-		}
-	}
+      public CADLiborON( Handle<YieldTermStructure> h )
+         : base( "CADLibor", 0, new CADCurrency(), new Canada(), new Actual360(), h )
+      {}
+   }
 
 }

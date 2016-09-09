@@ -105,8 +105,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
             {
-               refStartDate = coupon.refPeriodStart;
-               refEndDate = coupon.refPeriodEnd;
+               refStartDate = coupon.referencePeriodStart;
+               refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -170,8 +170,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null) 
             {
-               refStartDate = coupon.refPeriodStart;
-               refEndDate = coupon.refPeriodEnd;
+               refStartDate = coupon.referencePeriodStart;
+               refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -360,11 +360,12 @@ namespace QLNet
          // visitor classes should implement the generic visit method in the following form
          public void visit(object o) 
          {
-               Type[] types = new Type[] { o.GetType() };
-               MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
-               if (methodInfo != null) {
+            Type[] types = new Type[] { o.GetType() };
+            MethodInfo methodInfo = Utils.GetMethodInfo( this, "visit", types );
+
+            if (methodInfo != null) {
                   methodInfo.Invoke(this, new object[] { o });
-               }
+            }
          }
          public void visit(Coupon c) 
          {
@@ -555,7 +556,7 @@ namespace QLNet
          {
             Coupon cp = x as Coupon;
             if (cp != null)
-               return cp.refPeriodStart;
+               return cp.referencePeriodStart;
          }
          return null;
       }
@@ -569,7 +570,7 @@ namespace QLNet
          {
             Coupon cp = x as Coupon;
             if (cp != null)
-               return cp.refPeriodEnd;
+               return cp.referencePeriodEnd;
          }
          return null;
       }
@@ -827,8 +828,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
             {
-                refStartDate = coupon.refPeriodStart;
-                refEndDate = coupon.refPeriodEnd;
+                refStartDate = coupon.referencePeriodStart;
+                refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {
@@ -1048,8 +1049,8 @@ namespace QLNet
             Coupon coupon = leg[i] as Coupon;
             if (coupon != null ) 
             {
-                refStartDate = coupon.refPeriodStart;
-                refEndDate = coupon.refPeriodEnd;
+                refStartDate = coupon.referencePeriodStart;
+                refEndDate = coupon.referencePeriodEnd;
             } 
             else 
             {

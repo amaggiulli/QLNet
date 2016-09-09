@@ -19,26 +19,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_Stats
    {
 
       double[] data = { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
       double[] weights = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testStatistics()
       {
          check<IncrementalStatistics>("IncrementalStatistics");
          check<RiskStatistics>("Statistics");
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSequenceStatistics()
       {
          //("Testing sequence statistics...");
@@ -47,7 +61,11 @@ namespace TestSuite
          checkSequence<RiskStatistics>("Statistics", 5);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testConvergenceStatistics()
       {
 
@@ -57,7 +75,11 @@ namespace TestSuite
          checkConvergence<RiskStatistics>("Statistics");
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testIncrementalStatistics() 
       {
          // Testing incremental statistics
@@ -74,7 +96,7 @@ namespace TestSuite
          }
 
          if ( stat.samples() != 500000 )
-            Assert.Fail( "stat.samples()  (" + stat.samples() + ") can not be reproduced against cached result (" + 500000 + ")" );
+            QAssert.Fail( "stat.samples()  (" + stat.samples() + ") can not be reproduced against cached result (" + 500000 + ")" );
 
          TEST_INC_STAT( stat.weightSum(), 2.5003623600676749e+05 );
          TEST_INC_STAT( stat.mean(), 4.9122325964293845e-01 );
@@ -106,14 +128,14 @@ namespace TestSuite
          //double tol = 1E-5;
 
          //if(Math.Abs( stat2.variance() - 1E-2 ) > tol)
-         //   Assert.Fail("variance (" + stat2.variance() + ") out of expected range " + 1E-2 + " +- " + tol);
+         //   QAssert.Fail("variance (" + stat2.variance() + ") out of expected range " + 1E-2 + " +- " + tol);
 
       }
 
       public void TEST_INC_STAT(double expr, double expected)
       {
          if (!Utils.close_enough(expr, expected))                                         
-            Assert.Fail(  " (" + expr + ") can not be reproduced against cached result ("+ expected + ")");
+            QAssert.Fail(  " (" + expr + ") can not be reproduced against cached result ("+ expected + ")");
          
       }                                 
       void check<S>(string name) where S : IGeneralStatistics, new()
@@ -127,28 +149,28 @@ namespace TestSuite
          double tolerance;
 
          if (s.samples() != data.Length)
-            Assert.Fail(name + ": wrong number of samples\n"
+            QAssert.Fail(name + ": wrong number of samples\n"
                        + "    calculated: " + s.samples() + "\n"
                        + "    expected:   " + data.Length);
 
          expected = weights.Sum();
          calculated = s.weightSum();
          if (calculated != expected)
-            Assert.Fail(name + ": wrong sum of weights\n"
+            QAssert.Fail(name + ": wrong sum of weights\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = data.Min();
          calculated = s.min();
          if (calculated != expected)
-            Assert.Fail(name + ": wrong minimum value\n"
+            QAssert.Fail(name + ": wrong minimum value\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = data.Max();
          calculated = s.max();
          if (calculated != expected)
-            Assert.Fail(name + ": wrong maximum value\n"
+            QAssert.Fail(name + ": wrong maximum value\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
@@ -156,35 +178,35 @@ namespace TestSuite
          tolerance = 1.0e-9;
          calculated = s.mean();
          if (Math.Abs(calculated - expected) > tolerance)
-            Assert.Fail(name + ": wrong mean value\n"
+            QAssert.Fail(name + ": wrong mean value\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = 2.23333333333;
          calculated = s.variance();
          if (Math.Abs(calculated - expected) > tolerance)
-            Assert.Fail(name + ": wrong variance\n"
+            QAssert.Fail(name + ": wrong variance\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = 1.4944341181;
          calculated = s.standardDeviation();
          if (Math.Abs(calculated - expected) > tolerance)
-            Assert.Fail(name + ": wrong standard deviation\n"
+            QAssert.Fail(name + ": wrong standard deviation\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = 0.359543071407;
          calculated = s.skewness();
          if (Math.Abs(calculated - expected) > tolerance)
-            Assert.Fail(name + ": wrong skewness\n"
+            QAssert.Fail(name + ": wrong skewness\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
 
          expected = -0.151799637209;
          calculated = s.kurtosis();
          if (Math.Abs(calculated - expected) > tolerance)
-            Assert.Fail(name + ": wrong kurtosis\n"
+            QAssert.Fail(name + ": wrong kurtosis\n"
                        + "    calculated: " + calculated + "\n"
                        + "    expected:   " + expected);
       }
@@ -204,14 +226,14 @@ namespace TestSuite
          double expected, tolerance;
 
          if (ss.samples() != data.Length)
-            Assert.Fail("SequenceStatistics<" + name + ">: "
+            QAssert.Fail("SequenceStatistics<" + name + ">: "
                        + "wrong number of samples\n"
                        + "    calculated: " + ss.samples() + "\n"
                        + "    expected:   " + data.Length);
 
          expected = weights.Sum();
          if (ss.weightSum() != expected)
-            Assert.Fail("SequenceStatistics<" + name + ">: "
+            QAssert.Fail("SequenceStatistics<" + name + ">: "
                        + "wrong sum of weights\n"
                        + "    calculated: " + ss.weightSum() + "\n"
                        + "    expected:   " + expected);
@@ -221,7 +243,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (calculated[i] != expected)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong minimum value\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -233,7 +255,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (calculated[i] != expected)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong maximun value\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -246,7 +268,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (Math.Abs(calculated[i] - expected) > tolerance)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong mean value\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -258,7 +280,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (Math.Abs(calculated[i] - expected) > tolerance)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong variance\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -270,7 +292,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (Math.Abs(calculated[i] - expected) > tolerance)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong standard deviation\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -282,7 +304,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (Math.Abs(calculated[i] - expected) > tolerance)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong skewness\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -294,7 +316,7 @@ namespace TestSuite
          for (i = 0; i < dimension; i++)
          {
             if (Math.Abs(calculated[i] - expected) > tolerance)
-               Assert.Fail("SequenceStatistics<" + name + ">: "
+               QAssert.Fail("SequenceStatistics<" + name + ">: "
                           + (i + 1) + " dimension: "
                           + "wrong kurtosis\n"
                           + "    calculated: " + calculated[i] + "\n"
@@ -319,7 +341,7 @@ namespace TestSuite
          const int expectedSize1 = 3;
          int calculatedSize = stats.convergenceTable().Count;
          if (calculatedSize != expectedSize1)
-            Assert.Fail("ConvergenceStatistics<" + name + ">: "
+            QAssert.Fail("ConvergenceStatistics<" + name + ">: "
                        + "\nwrong convergence-table size"
                        + "\n    calculated: " + calculatedSize
                        + "\n    expected:   " + expectedSize1);
@@ -328,14 +350,14 @@ namespace TestSuite
          const double tolerance = 1.0e-9;
          double calculatedValue = stats.convergenceTable().Last().Value;
          if (Math.Abs(calculatedValue - expectedValue1) > tolerance)
-            Assert.Fail("wrong last value in convergence table"
+            QAssert.Fail("wrong last value in convergence table"
                        + "\n    calculated: " + calculatedValue
                        + "\n    expected:   " + expectedValue1);
 
          const int expectedSampleSize1 = 7;
          int calculatedSamples = stats.convergenceTable().Last().Key;
          if (calculatedSamples != expectedSampleSize1)
-            Assert.Fail("wrong number of samples in convergence table"
+            QAssert.Fail("wrong number of samples in convergence table"
                        + "\n    calculated: " + calculatedSamples
                        + "\n    expected:   " + expectedSampleSize1);
 
@@ -348,21 +370,21 @@ namespace TestSuite
          const int expectedSize2 = 2;
          calculatedSize = stats.convergenceTable().Count;
          if (calculatedSize != expectedSize2)
-            Assert.Fail("wrong convergence-table size"
+            QAssert.Fail("wrong convergence-table size"
                        + "\n    calculated: " + calculatedSize
                        + "\n    expected:   " + expectedSize2);
 
          const double expectedValue2 = 2.0;
          calculatedValue = stats.convergenceTable().Last().Value;
          if (Math.Abs(calculatedValue - expectedValue2) > tolerance)
-            Assert.Fail("wrong last value in convergence table"
+            QAssert.Fail("wrong last value in convergence table"
                        + "\n    calculated: " + calculatedValue
                        + "\n    expected:   " + expectedValue2);
 
          const int expectedSampleSize2 = 3;
          calculatedSamples = stats.convergenceTable().Last().Key;
          if (calculatedSamples != expectedSampleSize2)
-            Assert.Fail("wrong number of samples in convergence table"
+            QAssert.Fail("wrong number of samples in convergence table"
                        + "\n    calculated: " + calculatedSamples
                        + "\n    expected:   " + expectedSampleSize2);
       }

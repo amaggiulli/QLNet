@@ -17,15 +17,25 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-	[TestClass()]
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
 	public class T_BlackFormula
 	{
-		[TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
 		public void testBachelierImpliedVol()
 		{
 			// Testing Bachelier implied vol...
@@ -46,7 +56,7 @@ namespace TestSuite
 
 				if (Math.Abs(bpvol-impliedBpVol)>1.0e-12)
 				{
-					Assert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol );
+					QAssert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol );
 				}
 			}
 			return;

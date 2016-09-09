@@ -18,13 +18,19 @@
 */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if QL_DOTNET_FRAMEWORK
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
 
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_Quotes
    {
       double add10(double x) { return x + 10; }
@@ -35,7 +41,11 @@ namespace TestSuite
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testObservable()
       {
          // Testing observability of quotes
@@ -47,10 +57,14 @@ namespace TestSuite
          me.setValue(3.14);
 
          if (!f.isUp())
-            Assert.Fail("Observer was not notified of quote change");
+            QAssert.Fail("Observer was not notified of quote change");
 
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testObservableHandle() 
       {
 
@@ -66,18 +80,22 @@ namespace TestSuite
          me1.setValue(3.14);
          
          if (!f.isUp())
-           Assert.Fail("Observer was not notified of quote change");
+           QAssert.Fail("Observer was not notified of quote change");
 
          f.lower();
          SimpleQuote me2 = new SimpleQuote(0.0);
          h.linkTo(me2);
 
          if (!f.isUp())
-           Assert.Fail("Observer was not notified of quote change");
+           QAssert.Fail("Observer was not notified of quote change");
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testDerived() 
       {
 
@@ -94,12 +112,16 @@ namespace TestSuite
            double x = derived.value(),
                   y = f[i](me.value());
            if (Math.Abs(x-y) > 1.0e-10)
-               Assert.Fail("derived quote yields " + x + "function result is " + y);
+               QAssert.Fail("derived quote yields " + x + "function result is " + y);
          }
       
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testComposite() 
       {
          // Testing composite quotes
@@ -117,7 +139,7 @@ namespace TestSuite
             double x = composite.value(),
                    y = f[i](me1.value(),me2.value());
             if (Math.Abs(x-y) > 1.0e-10)
-               Assert.Fail("composite quote yields " + x + "function result is " + y);
+               QAssert.Fail("composite quote yields " + x + "function result is " + y);
          }
       }
    

@@ -53,7 +53,7 @@ namespace QLNet {
             \f[ \langle x \rangle = \frac{\sum w_i x_i}{\sum w_i}. \f]
         */
         public double mean() {
-            if (!(sampleWeight_>0.0)) throw new ApplicationException("sampleWeight_=0, insufficient");
+            if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
             return sum_/sampleWeight_;
         }
 
@@ -62,15 +62,15 @@ namespace QLNet {
                 x-\langle x \rangle \right)^2 \right\rangle. \f]
         */
         public double variance() {
-            if (!(sampleWeight_>0.0)) throw new ApplicationException("sampleWeight_=0, insufficient");
-            if (!(sampleNumber_>1)) throw new ApplicationException("sample number <=1, insufficient");
+            if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
+            if (!(sampleNumber_>1)) throw new Exception("sample number <=1, insufficient");
 
             double m = mean();
             double v = quadraticSum_/sampleWeight_;
             v -= m*m;
             v *= sampleNumber_/(sampleNumber_-1.0);
 
-            if (!(v >= 0.0)) throw new ApplicationException("negative variance (" + v + ")");
+            if (!(v >= 0.0)) throw new Exception("negative variance (" + v + ")");
             return v;
         }
 
@@ -85,11 +85,11 @@ namespace QLNet {
         */
         public double downsideVariance() {
             if (downsideSampleWeight_==0.0) {
-                if (!(sampleWeight_>0.0)) throw new ApplicationException("sampleWeight_=0, insufficient");
+                if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
                 return 0.0;
             }
 
-            if (!(downsideSampleNumber_>1)) throw new ApplicationException("sample number below zero <=1, insufficient");
+            if (!(downsideSampleNumber_>1)) throw new Exception("sample number below zero <=1, insufficient");
             return (downsideSampleNumber_/(downsideSampleNumber_-1.0))*
                 (downsideQuadraticSum_ /downsideSampleWeight_);
         }
@@ -99,7 +99,7 @@ namespace QLNet {
          * square root of the ratio of the variance to the number of samples. */
         public double errorEstimate() {
             double var = variance();
-            if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+            if (!(samples() > 0)) throw new Exception("empty sample set");
             return Math.Sqrt(var/samples());
         }
 
@@ -109,7 +109,7 @@ namespace QLNet {
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double skewness() {
-            if (!(sampleNumber_>2)) throw new ApplicationException("sample number <=2, insufficient");
+            if (!(sampleNumber_>2)) throw new Exception("sample number <=2, insufficient");
 
             double s = standardDeviation();
             if (s==0.0) return 0.0;
@@ -131,7 +131,7 @@ namespace QLNet {
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double kurtosis() {
-            if (!(sampleNumber_>3)) throw new ApplicationException("sample number <=3, insufficient");
+            if (!(sampleNumber_>3)) throw new Exception("sample number <=3, insufficient");
 
             double m = mean();
             double v = variance();
@@ -156,13 +156,13 @@ namespace QLNet {
 
         /*! returns the minimum sample value */
         public double min() {
-            if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+            if (!(samples() > 0)) throw new Exception("empty sample set");
             return min_;
         }
 
         /*! returns the maximum sample value */
         public double max() {
-            if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+            if (!(samples() > 0)) throw new Exception("empty sample set");
             return max_;
         }
 
@@ -176,11 +176,11 @@ namespace QLNet {
         /*! \pre weight must be positive or null */
         public void add(double value) { add(value, 1); }
         public void add(double value, double weight) {
-            if (!(weight>=0.0)) throw new ApplicationException("negative weight (" + weight + ") not allowed");
+            if (!(weight>=0.0)) throw new Exception("negative weight (" + weight + ") not allowed");
 
             int oldSamples = sampleNumber_;
             sampleNumber_++;
-            if (!(sampleNumber_ > oldSamples)) throw new ApplicationException("maximum number of samples reached");
+            if (!(sampleNumber_ > oldSamples)) throw new Exception("maximum number of samples reached");
 
             sampleWeight_ += weight;
 

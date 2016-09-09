@@ -26,9 +26,9 @@ namespace QLNet
                                       int? timeStepsPerYear,
                                       bool antitheticVariate,
                                       bool controlVariate,
-                                      int requiredSamples,
-                                      double requiredTolerance,
-                                      int maxSamples,
+                                      int? requiredSamples,
+                                      double? requiredTolerance,
+                                      int? maxSamples,
                                       ulong seed)
          :base(process, timeSteps, timeStepsPerYear,false, antitheticVariate,controlVariate, requiredSamples,
                requiredTolerance, maxSamples, seed)
@@ -182,9 +182,9 @@ namespace QLNet
                                            stepsPerYear_,
                                            antithetic_,
                                            controlVariate_,
-                                           samples_.GetValueOrDefault(),
-                                           tolerance_.GetValueOrDefault(),
-                                           maxSamples_.GetValueOrDefault(),
+                                           samples_,
+                                           tolerance_,
+                                           maxSamples_,
                                            seed_);
       }
    

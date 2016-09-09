@@ -35,6 +35,7 @@ namespace QLNet
        <li>Victory Day, May 9th</li>
        <li>Constitution Day, June 28th</li>
        <li>Independence Day, August 24th</li>
+       <li>Defender's Day, October 14th (since 2015)</li>
        </ul>
        Holidays falling on a Saturday or Sunday are moved to the
        following Monday.
@@ -52,7 +53,7 @@ namespace QLNet
                calendar_ = Impl.Singleton;
                break;
             default:
-               throw new ApplicationException( "unknown market" );
+               throw new Exception( "unknown market" );
          }
       }
 
@@ -75,26 +76,28 @@ namespace QLNet
 
             if ( isWeekend( w )
                // New Year's Day (possibly moved to Monday)
-                || ( ( d == 1 || ( ( d == 2 || d == 3 ) && w == DayOfWeek.Monday ) )
-                    && m == Month.January )
+               || ( ( d == 1 || ( ( d == 2 || d == 3 ) && w == DayOfWeek.Monday ) )
+                   && m == Month.January )
                // Orthodox Christmas
-                || ( ( d == 7 || ( ( d == 8 || d == 9 ) && w == DayOfWeek.Monday ) )
-                    && m == Month.January )
+               || ( ( d == 7 || ( ( d == 8 || d == 9 ) && w == DayOfWeek.Monday ) )
+                   && m == Month.January )
                // Women's Day
-                || ( ( d == 8 || ( ( d == 9 || d == 10 ) && w == DayOfWeek.Monday ) )
-                    && m == Month.March )
+               || ( ( d == 8 || ( ( d == 9 || d == 10 ) && w == DayOfWeek.Monday ) )
+                   && m == Month.March )
                // Orthodox Easter Monday
-                || ( dd == em )
+               || ( dd == em )
                // Holy Trinity Day
-                || ( dd == em + 49 )
+               || ( dd == em + 49 )
                // Workers' Solidarity Days
-                || ( ( d == 1 || d == 2 || ( d == 3 && w == DayOfWeek.Monday ) ) && m == Month.May )
+               || ( ( d == 1 || d == 2 || ( d == 3 && w == DayOfWeek.Monday ) ) && m == Month.May )
                // Victory Day
-                || ( ( d == 9 || ( ( d == 10 || d == 11 ) && w == DayOfWeek.Monday ) ) && m == Month.May )
+               || ( ( d == 9 || ( ( d == 10 || d == 11 ) && w == DayOfWeek.Monday ) ) && m == Month.May )
                // Constitution Day
-                || ( d == 28 && m == Month.June )
+               || ( d == 28 && m == Month.June )
                // Independence Day
-                || ( d == 24 && m == Month.August ) )
+               || ( d == 24 && m == Month.August )
+               // Defender's Day (since 2015)
+               || ( d == 14 && m == Month.October && y >= 2015 ) )
                return false;
             return true;
          }

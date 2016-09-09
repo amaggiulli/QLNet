@@ -50,7 +50,7 @@ namespace QLNet
          get
          {
             if (empty())
-               throw new ApplicationException("empty Handle cannot be dereferenced");
+               throw new Exception("empty Handle cannot be dereferenced");
             return link_.currentLink();
          }
       }

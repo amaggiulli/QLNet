@@ -58,12 +58,12 @@ namespace QLNet {
                 return false;
 
             string str1 = "0123456789";
-            if (!str1.Contains(s[1]))
+            if (!str1.Contains(s[1].ToString()))
                 return false;
 
             if (mainCycle) str1 = "hmzuHMZU";
             else           str1 = "fghjkmnquvxzFGHJKMNQUVXZ";
-            if (!str1.Contains(s[0]))
+            if (!str1.Contains(s[0].ToString()))
                 return false;
 
             return true;

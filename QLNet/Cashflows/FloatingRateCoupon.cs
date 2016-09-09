@@ -33,8 +33,8 @@ namespace QLNet
       protected FloatingRateCouponPricer pricer_;
 
       // constructors
-      public FloatingRateCoupon(double nominal, 
-                                Date paymentDate, 
+      public FloatingRateCoupon(Date paymentDate, 
+                                double nominal, 
                                 Date startDate, 
                                 Date endDate, 
                                 int fixingDays, 
@@ -44,8 +44,8 @@ namespace QLNet
                                 Date refPeriodStart = null, 
                                 Date refPeriodEnd = null, 
                                 DayCounter dayCounter = null, 
-                                bool isInArrears = false) 
-         : base(nominal, paymentDate, startDate, endDate, refPeriodStart, refPeriodEnd)
+                                bool isInArrears = false)
+         : base( paymentDate, nominal, startDate, endDate, refPeriodStart, refPeriodEnd )
       {
          index_ = index;
          dayCounter_ = dayCounter ?? new DayCounter() ;
@@ -165,7 +165,7 @@ namespace QLNet
                      InterestRateIndex index, double gearing, double spread,
                      Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
       {
-         return new FloatingRateCoupon(nominal, paymentDate, startDate, endDate, fixingDays,
+         return new FloatingRateCoupon( paymentDate, nominal, startDate, endDate, fixingDays,
                     index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
       }
    }

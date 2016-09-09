@@ -20,14 +20,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-    [TestClass()]
-    public class T_SwaptionVolatilityMatrix
+#if QL_DOTNET_FRAMEWORK
+   [TestClass()]
+#endif
+   public class T_SwaptionVolatilityMatrix : IDisposable
     {
+       #region Initialize&Cleanup
+       private SavedSettings backup;
+       #if QL_DOTNET_FRAMEWORK
+       [TestInitialize]
+       public void testInitialize()
+       {
+       #else
+       public T_SwaptionVolatilityMatrix()
+       {
+       #endif
+          backup = new SavedSettings();
+       }
+       #if QL_DOTNET_FRAMEWORK
+       [TestCleanup]
+       #endif
+       public void testCleanup()
+       {
+          Dispose();
+       }
+       public void Dispose()
+       {
+          backup.Dispose();
+       }
+       #endregion
+
         public class SwaptionTenors 
         {
             public List<Period> options;
@@ -101,9 +132,6 @@ namespace TestSuite
             public RelinkableHandle<YieldTermStructure> termStructure;
             public RelinkableHandle<SwaptionVolatilityStructure> atmVolMatrix;
 
-            // cleanup
-            //SavedSettings backup;
-
             // setup
             public CommonVars() 
             {
@@ -142,10 +170,10 @@ namespace TestSuite
 
                 Settings.setEvaluationDate(referenceDate);
                 if (referenceDateFloating && (initialVol == newVol))
-                    Assert.Fail(description +
+                    QAssert.Fail(description +
                             " the volatility should change when the reference date is changed !");
                 if (!referenceDateFloating && (initialVol != newVol))
-                    Assert.Fail(description +
+                    QAssert.Fail(description +
                             " the volatility should not change when the reference date is changed !");
 
                 // test market data change...
@@ -161,7 +189,7 @@ namespace TestSuite
                     sq.setValue(initialVolatility);
 
                 if (initialVol == newVol)
-                    Assert.Fail(description + " the volatility should change when"+
+                    QAssert.Fail(description + " the volatility should change when"+
                                 " the market data is changed !");
             }
         }
@@ -174,7 +202,7 @@ namespace TestSuite
                     Date optionDate =
                         vol.optionDateFromTenor(atm.tenors.options[i]);
                     if (optionDate!=vol.optionDates()[i])
-                        Assert.Fail(
+                        QAssert.Fail(
                              "optionDateFromTenor failure for " +
                              description+ ":"+
                              "\n       option tenor: " + atm.tenors.options[i] +
@@ -182,7 +210,7 @@ namespace TestSuite
                              "\n  exp. option date : " + vol.optionDates()[i]);
                     double optionTime = vol.timeFromReference(optionDate);
                     if (optionTime!=vol.optionTimes()[i])
-                         Assert.Fail(
+                         QAssert.Fail(
                              "timeFromReference failure for " +
                              description + ":"+
                              "\n       option tenor: " +atm.tenors.options[i] +
@@ -199,7 +227,7 @@ namespace TestSuite
                     double swapLength = vol.swapLength(atm.tenors.swaps[j]);
                     
                     if (swapLength!=   atm.tenors.swaps[j].length())
-                        Assert.Fail("convertSwapTenor failure for " +
+                        QAssert.Fail("convertSwapTenor failure for " +
                                    description + ":"+
                                    "\n        swap tenor : " + atm.tenors.swaps[j] +
                                    "\n actual swap length: " + swapLength +
@@ -215,7 +243,7 @@ namespace TestSuite
                                                  atm.tenors.swaps[j], 0.05, true);
                         error = Math.Abs(expVol-actVol);
                         if (error>tolerance)
-                            Assert.Fail(
+                            QAssert.Fail(
                                   "recovery of atm vols failed for " +
                                   description + ":"+
                                   "\noption tenor = " + atm.tenors.options[i] +
@@ -231,7 +259,7 @@ namespace TestSuite
                                                  atm.tenors.swaps[j], 0.05, true);
                         error = Math.Abs(expVol-actVol);
                         if (error>tolerance)
-                            Assert.Fail(
+                            QAssert.Fail(
                                  "recovery of atm vols failed for " +
                                  description + ":"+
                                  "\noption tenor: " + atm.tenors.options[i] +
@@ -247,7 +275,7 @@ namespace TestSuite
                                                  0.05, true);
                         error = Math.Abs(expVol-actVol);
                         if (error>tolerance)
-                            Assert.Fail(
+                            QAssert.Fail(
                                  "recovery of atm vols failed for " +
                                  description + ":"+
                                  "\noption tenor: " + atm.tenors.options[i] +
@@ -267,7 +295,7 @@ namespace TestSuite
                         
                         Date exerciseDate = swaption.exercise().dates().First();
                         if (exerciseDate!=vol.optionDates()[i])
-                            Assert.Fail(
+                            QAssert.Fail(
                                  "optionDateFromTenor mismatch for " +
                                  description + ":"+
                                  "\n      option tenor: " + atm.tenors.options[i] +
@@ -278,7 +306,7 @@ namespace TestSuite
                         Date end = swaption.underlyingSwap().maturityDate();
                         double swapLength2 = vol.swapLength(start, end);
                         if (swapLength2!=swapLength)
-                            Assert.Fail(
+                            QAssert.Fail(
                                  "swapLength failure for " +
                                  description + ":"+
                                  "\n        swap tenor : " + atm.tenors.swaps[j] +
@@ -292,7 +320,7 @@ namespace TestSuite
                     // TO BE FIXED
                     //    double tolerance2 = 0.000001;
                     //    if (error > tolerance2 & i != 0)//NOK for i=0 -> to debug
-                    //        Assert.Fail(
+                    //        QAssert.Fail(
                     //             "recovery of atm vols through BlackSwaptionEngine failed for " +
                     //             description + ":"+
                     //             "\noption tenor: " + atm.tenors.options[i] +
@@ -308,12 +336,14 @@ namespace TestSuite
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testSwaptionVolMatrixCoherence()
         {
-
-            //"Testing swaption volatility matrix...");
-
+            // Testing swaption volatility matrix
             CommonVars vars = new CommonVars();
 
             SwaptionVolatilityMatrix vol;
@@ -366,11 +396,14 @@ namespace TestSuite
             vars.makeCoherenceTest(description, vol);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testSwaptionVolMatrixObservability()
         {
-            //"Testing swaption volatility matrix observability...");
-
+            // Testing swaption volatility matrix observability
             CommonVars vars=new CommonVars();
 
             SwaptionVolatilityMatrix vol;
@@ -425,14 +458,6 @@ namespace TestSuite
                 //                         const std::vector<Period>& swapTenors,
                 //                         const Matrix& volatilities,
                 //                         const DayCounter& dayCounter);
-        }
-
-        public void suite()
-        {
-            //"Swaption Volatility Matrix tests"
-            testSwaptionVolMatrixCoherence();
-            testSwaptionVolMatrixObservability();
-
         }
     }
 

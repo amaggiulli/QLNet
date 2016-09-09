@@ -21,7 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if QL_DOTNET_FRAMEWORK
+   using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite {
@@ -54,8 +58,9 @@ namespace TestSuite {
          result = result_;
       }
    }
-
+    #if QL_DOTNET_FRAMEWORK
     [TestClass()]
+    #endif
     public class T_AmericanOption {
 
             /* The data below are from
@@ -130,8 +135,12 @@ namespace TestSuite {
             new AmericanOptionData( Option.Type.Call, 100.00,  110.00,  0.03,  0.07, 3.0,  0.3,  30.028 ),
             new AmericanOptionData( Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177 )
         };
-
+        
+#if QL_DOTNET_FRAMEWORK  
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testBaroneAdesiWhaleyValues() {
             // ("Testing Barone-Adesi and Whaley approximation for American options...");
 
@@ -226,7 +235,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testBjerksundStenslandValues() {
             // ("Testing Bjerksund and Stensland approximation for American options...");
 
@@ -293,7 +306,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testJuValues() {
 
             // ("Testing Ju approximation for American options...");
@@ -342,7 +359,11 @@ namespace TestSuite {
             }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdValues() {
 
             //("Testing finite-difference engine for American options...");
@@ -391,128 +412,148 @@ namespace TestSuite {
             }
         }
 
-        public void testFdGreeks<Engine>() where Engine : IFDEngine, new() {
+        public void testFdGreeks<Engine>() where Engine : IFDEngine, new()
+        {
+           using ( SavedSettings backup = new SavedSettings() )
+           {
 
-            //SavedSettings backup;
+              Dictionary<string, double> calculated = new Dictionary<string, double>(),
+                  expected = new Dictionary<string, double>(),
+                  tolerance = new Dictionary<string, double>();
 
-            Dictionary<string, double> calculated = new Dictionary<string,double>(),
-                expected = new Dictionary<string,double>(),
-                tolerance = new Dictionary<string,double>();
+              tolerance.Add( "delta", 7.0e-4 );
+              tolerance.Add( "gamma", 2.0e-4 );
+              //tolerance["theta"]  = 1.0e-4;
 
-            tolerance.Add("delta", 7.0e-4);
-            tolerance.Add("gamma", 2.0e-4);
-            //tolerance["theta"]  = 1.0e-4;
+              Option.Type[] types = new Option.Type[] { Option.Type.Call, Option.Type.Put };
+              double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+              double[] underlyings = { 100.0 };
+              double[] qRates = { 0.04, 0.05, 0.06 };
+              double[] rRates = { 0.01, 0.05, 0.15 };
+              int[] years = { 1, 2 };
+              double[] vols = { 0.11, 0.50, 1.20 };
 
-            Option.Type[] types = new Option.Type[] { Option.Type.Call, Option.Type.Put };
-            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-            double[] underlyings = { 100.0 };
-            double[] qRates = { 0.04, 0.05, 0.06 };
-            double[] rRates = { 0.01, 0.05, 0.15 };
-            int[] years = { 1, 2 };
-            double[] vols = { 0.11, 0.50, 1.20 };
+              Date today = Date.Today;
+              Settings.setEvaluationDate( today );
 
-            Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+              DayCounter dc = new Actual360();
+              SimpleQuote spot = new SimpleQuote( 0.0 );
+              SimpleQuote qRate = new SimpleQuote( 0.0 );
+              YieldTermStructure qTS = Utilities.flatRate( today, qRate, dc );
 
-            DayCounter dc = new Actual360();
-            SimpleQuote spot = new SimpleQuote(0.0);
-            SimpleQuote qRate = new SimpleQuote(0.0);
-            YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+              SimpleQuote rRate = new SimpleQuote( 0.0 );
+              YieldTermStructure rTS = Utilities.flatRate( today, rRate, dc );
+              SimpleQuote vol = new SimpleQuote( 0.0 );
+              BlackVolTermStructure volTS = Utilities.flatVol( today, vol, dc );
 
-            SimpleQuote rRate = new SimpleQuote(0.0);
-            YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
-            SimpleQuote vol = new SimpleQuote(0.0);
-            BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+              for ( int i = 0; i < types.Length; i++ )
+              {
+                 for ( int j = 0; j < strikes.Length; j++ )
+                 {
+                    for ( int k = 0; k < years.Length; k++ )
+                    {
+                       Date exDate = today + new Period( years[k], TimeUnit.Years );
+                       Exercise exercise = new AmericanExercise( today, exDate );
+                       StrikedTypePayoff payoff = new PlainVanillaPayoff( types[i], strikes[j] );
+                       BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess( new Handle<Quote>( spot ),
+                                                     new Handle<YieldTermStructure>( qTS ),
+                                                     new Handle<YieldTermStructure>( rTS ),
+                                                     new Handle<BlackVolTermStructure>( volTS ) );
 
-            for (int i=0; i<types.Length; i++) {
-              for (int j=0; j<strikes.Length; j++) {
-                for (int k=0; k<years.Length; k++) {
-                    Date exDate = today + new Period(years[k], TimeUnit.Years);
-                    Exercise exercise = new AmericanExercise(today, exDate);
-                    StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
-                    BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                                  new Handle<YieldTermStructure>(qTS),
-                                                  new Handle<YieldTermStructure>(rTS),
-                                                  new Handle<BlackVolTermStructure>(volTS));
+                       IPricingEngine engine = new Engine().factory( stochProcess );
 
-                    IPricingEngine engine = new Engine().factory(stochProcess);
+                       VanillaOption option = new VanillaOption( payoff, exercise );
+                       option.setPricingEngine( engine );
 
-                    VanillaOption option = new VanillaOption(payoff, exercise);
-                    option.setPricingEngine(engine);
+                       for ( int l = 0; l < underlyings.Length; l++ )
+                       {
+                          for ( int m = 0; m < qRates.Length; m++ )
+                          {
+                             for ( int n = 0; n < rRates.Length; n++ )
+                             {
+                                for ( int p = 0; p < vols.Length; p++ )
+                                {
+                                   double u = underlyings[l];
+                                   double q = qRates[m],
+                                        r = rRates[n];
+                                   double v = vols[p];
+                                   spot.setValue( u );
+                                   qRate.setValue( q );
+                                   rRate.setValue( r );
+                                   vol.setValue( v );
 
-                    for (int l=0; l<underlyings.Length; l++) {
-                      for (int m=0; m<qRates.Length; m++) {
-                        for (int n=0; n<rRates.Length; n++) {
-                          for (int p=0; p<vols.Length; p++) {
-                            double u = underlyings[l];
-                            double q = qRates[m],
-                                 r = rRates[n];
-                            double v = vols[p];
-                            spot.setValue(u);
-                            qRate.setValue(q);
-                            rRate.setValue(r);
-                            vol.setValue(v);
+                                   double value = option.NPV();
+                                   calculated.Add( "delta", option.delta() );
+                                   calculated.Add( "gamma", option.gamma() );
+                                   //calculated["theta"]  = option.theta();
 
-                            double value = option.NPV();
-                            calculated.Add("delta", option.delta());
-                            calculated.Add("gamma", option.gamma());
-                            //calculated["theta"]  = option.theta();
+                                   if ( value > spot.value() * 1.0e-5 )
+                                   {
+                                      // perturb spot and get delta and gamma
+                                      double du = u * 1.0e-4;
+                                      spot.setValue( u + du );
+                                      double value_p = option.NPV(),
+                                           delta_p = option.delta();
+                                      spot.setValue( u - du );
+                                      double value_m = option.NPV(),
+                                           delta_m = option.delta();
+                                      spot.setValue( u );
+                                      expected.Add( "delta", ( value_p - value_m ) / ( 2 * du ) );
+                                      expected.Add( "gamma", ( delta_p - delta_m ) / ( 2 * du ) );
 
-                            if (value > spot.value()*1.0e-5) {
-                                // perturb spot and get delta and gamma
-                                double du = u*1.0e-4;
-                                spot.setValue(u+du);
-                                double value_p = option.NPV(),
-                                     delta_p = option.delta();
-                                spot.setValue(u-du);
-                                double value_m = option.NPV(),
-                                     delta_m = option.delta();
-                                spot.setValue(u);
-                                expected.Add("delta", (value_p - value_m)/(2*du));
-                                expected.Add("gamma", (delta_p - delta_m)/(2*du));
+                                      /*
+                                      // perturb date and get theta
+                                      Time dT = dc.yearFraction(today-1, today+1);
+                                      Settings::instance().setEvaluationDate(today-1);
+                                      value_m = option.NPV();
+                                      Settings::instance().setEvaluationDate(today+1);
+                                      value_p = option.NPV();
+                                      Settings::instance().setEvaluationDate(today);
+                                      expected["theta"] = (value_p - value_m)/dT;
+                                      */
 
-                                /*
-                                // perturb date and get theta
-                                Time dT = dc.yearFraction(today-1, today+1);
-                                Settings::instance().setEvaluationDate(today-1);
-                                value_m = option.NPV();
-                                Settings::instance().setEvaluationDate(today+1);
-                                value_p = option.NPV();
-                                Settings::instance().setEvaluationDate(today);
-                                expected["theta"] = (value_p - value_m)/dT;
-                                */
-
-                                // compare
-                                foreach (string greek in calculated.Keys) {
-                                    double expct = expected  [greek],
-                                        calcl = calculated[greek],
-                                        tol   = tolerance [greek];
-                                    double error = Utilities.relativeError(expct,calcl,u);
-                                    if (error>tol) {
-                                        REPORT_FAILURE(greek, payoff, exercise,
-                                                       u, q, r, today, v,
-                                                       expct, calcl, error, tol);
-                                    }
+                                      // compare
+                                      foreach ( string greek in calculated.Keys )
+                                      {
+                                         double expct = expected[greek],
+                                             calcl = calculated[greek],
+                                             tol = tolerance[greek];
+                                         double error = Utilities.relativeError( expct, calcl, u );
+                                         if ( error > tol )
+                                         {
+                                            REPORT_FAILURE( greek, payoff, exercise,
+                                                           u, q, r, today, v,
+                                                           expct, calcl, error, tol );
+                                         }
+                                      }
+                                   }
+                                   calculated.Clear();
+                                   expected.Clear();
                                 }
-                            }
-                            calculated.Clear();
-                            expected.Clear();
+                             }
                           }
-                        }
-                      }
+                       }
                     }
-                }
+                 }
               }
-            }
+           }
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdAmericanGreeks() {
             //("Testing finite-differences American option greeks...");
             testFdGreeks<FDAmericanEngine>();
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdShoutGreeks() {
             // ("Testing finite-differences shout option greeks...");
             testFdGreeks<FDShoutEngine>();
@@ -520,7 +561,7 @@ namespace TestSuite {
 
         void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
         Date today, double v, double expected, double calculated, double error, double tolerance) {
-            Assert.Fail(exercise + " "
+            QAssert.Fail(exercise + " "
                    + payoff.optionType() + " option with "
                    + payoff + " payoff:\n"
                    + "    spot value:       " + s + "\n"
@@ -536,7 +577,11 @@ namespace TestSuite {
                    + "    tolerance:        " + tolerance);
         }
 
+#if QL_DOTNET_FRAMEWORK
         [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testFdImpliedVol()
         {
             var settlementDate = new Date(26, 2, 2015);
@@ -565,7 +610,7 @@ namespace TestSuite {
             const double tolerance = 3.0e-3;
 
             if (Math.Abs(impliedVol - volatility) > tolerance)
-                Assert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
+                QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
         }
    }
 }

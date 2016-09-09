@@ -51,7 +51,7 @@ namespace QLNet {
             temp_ = new InitializedList<double>(dimension_);
             bb_ = new BrownianBridge(timeGrid_);
             if (dimension_ != timeSteps) 
-                throw new ApplicationException("sequence generator dimensionality (" + dimension_
+                throw new Exception("sequence generator dimensionality (" + dimension_
                        + ") != timeSteps (" + timeSteps + ")");
         }
 
@@ -66,7 +66,7 @@ namespace QLNet {
             bb_ = new BrownianBridge(timeGrid_);
 
             if (dimension_ != timeGrid_.size() - 1)
-                throw new ApplicationException("sequence generator dimensionality (" + dimension_
+                throw new Exception("sequence generator dimensionality (" + dimension_
                        + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
         }
 

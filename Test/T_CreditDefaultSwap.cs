@@ -17,17 +17,27 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_CreditDefaultSwap
    {
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCachedValue()
       {
          // Testing credit-default swap against cached values...
@@ -75,13 +85,13 @@ namespace TestSuite
             double tolerance = 1.0e-7;
 
             if (Math.Abs(calculatedNpv - npv) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce NPV with mid-point engine\n"
                   + "    calculated NPV: " + calculatedNpv + "\n"
                   + "    expected NPV:   " + npv);
 
             if (Math.Abs(calculatedFairRate - fairRate) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce fair rate with mid-point engine\n"
                   + "    calculated fair rate: " + calculatedFairRate + "\n"
                   + "    expected fair rate:   " + fairRate);
@@ -94,14 +104,14 @@ namespace TestSuite
             tolerance = 1.0e-5;
 
             if (Math.Abs(calculatedNpv - npv) > notional * tolerance * 10)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce NPV with integral engine "
                   + "(step = 1 day)\n"
                   + "    calculated NPV: " + calculatedNpv + "\n"
                   + "    expected NPV:   " + npv);
 
             if (Math.Abs(calculatedFairRate - fairRate) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce fair rate with integral engine "
                   + "(step = 1 day)\n"
                   + "    calculated fair rate: " + calculatedFairRate + "\n"
@@ -114,14 +124,14 @@ namespace TestSuite
             tolerance = 1.0e-5;
 
             if (Math.Abs(calculatedNpv - npv) > notional * tolerance * 10)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce NPV with integral engine "
                   + "(step = 1 week)\n"
                   + "    calculated NPV: " + calculatedNpv + "\n"
                   + "    expected NPV:   " + npv);
 
             if (Math.Abs(calculatedFairRate - fairRate) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce fair rate with integral engine "
                   + "(step = 1 week)\n"
                   + "    calculated fair rate: " + calculatedFairRate + "\n"
@@ -129,7 +139,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCachedMarketValue()
       {
          // Testing credit-default swap against cached market values...
@@ -252,19 +266,23 @@ namespace TestSuite
             double tolerance = 1e-9;
 
             if (Math.Abs(npv - calculatedNpv) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce the npv for the given credit-default swap\n"
                   + "    computed NPV:  " + calculatedNpv + "\n"
                   + "    Given NPV:     " + npv);
 
             if (Math.Abs(fairRate - calculatedFairRate) > tolerance)
-               Assert.Fail("Failed to reproduce the fair rate for the given credit-default swap\n"
+               QAssert.Fail("Failed to reproduce the fair rate for the given credit-default swap\n"
                   + "    computed fair rate:  " + calculatedFairRate + "\n"
                   + "    Given fair rate:     " + fairRate);
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testImpliedHazardRate()
       {
          // Testing implied hazard-rate for credit-default swaps...
@@ -328,7 +346,7 @@ namespace TestSuite
 
                if (flatRate < h1 || flatRate > h2)
                {
-                  Assert.Fail("implied hazard rate outside expected range\n"
+                  QAssert.Fail("implied hazard rate outside expected range\n"
                               + "    maturity: " + n + " years\n"
                               + "    expected minimum: " + h1 + "\n"
                               + "    expected maximum: " + h2 + "\n"
@@ -337,7 +355,7 @@ namespace TestSuite
 
                if (n > 6 && flatRate < latestRate)
                {
-                  Assert.Fail("implied hazard rate decreasing with swap maturity\n"
+                  QAssert.Fail("implied hazard rate decreasing with swap maturity\n"
                               + "    maturity: " + n + " years\n"
                               + "    previous rate: " + latestRate + "\n"
                               + "    implied rate:  " + flatRate);
@@ -356,7 +374,7 @@ namespace TestSuite
                double tolerance = 1.0;
                if (Math.Abs(NPV - NPV2) > tolerance)
                {
-                  Assert.Fail("failed to reproduce NPV with implied rate\n"
+                  QAssert.Fail("failed to reproduce NPV with implied rate\n"
                               + "    expected:   " + NPV + "\n"
                               + "    calculated: " + NPV2);
                }
@@ -364,7 +382,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFairSpread()
       {
          // Testing fair-spread calculation for credit-default swaps...
@@ -421,14 +443,18 @@ namespace TestSuite
             double tolerance = 1e-10;
 
             if (Math.Abs(fairNPV) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce null NPV with calculated fair spread\n"
                   + "    calculated spread: " + fairRate + "\n"
                   + "    calculated NPV:    " + fairNPV);
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFairUpfront()
       {
          // Testing fair-upfront calculation for credit-default swaps...
@@ -485,7 +511,7 @@ namespace TestSuite
             double tolerance = 1e-10;
 
             if (Math.Abs(fairNPV) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce null NPV with calculated fair upfront\n"
                   + "    calculated upfront: " + fairUpfront + "\n"
                   + "    calculated NPV:     " + fairNPV);
@@ -505,7 +531,7 @@ namespace TestSuite
             fairNPV = fairCds2.NPV();
 
             if (Math.Abs(fairNPV) > tolerance)
-               Assert.Fail(
+               QAssert.Fail(
                   "Failed to reproduce null NPV with calculated fair upfront\n"
                   + "    calculated upfront: " + fairUpfront + "\n"
                   + "    calculated NPV:     " + fairNPV);

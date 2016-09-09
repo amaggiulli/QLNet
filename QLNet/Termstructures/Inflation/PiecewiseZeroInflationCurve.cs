@@ -157,7 +157,7 @@ namespace QLNet
 			{
 				//todo edem 
 				List<BootstrapHelper<ZeroInflationTermStructure>> instruments = new List<BootstrapHelper<ZeroInflationTermStructure>>();
-				_instruments_.ForEach( x => instruments.Add( x ) );
+				_instruments_.ForEach((i, x) => instruments.Add( x ) );
 				return instruments;
 			}
 		}

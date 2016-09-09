@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "FittedBondCurve" )]
+[assembly: AssemblyTitle( "QLNet FittedBondCurve Example" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Microsoft" )]
-[assembly: AssemblyProduct( "FittedBondCurve" )]
-[assembly: AssemblyCopyright( "Copyright © Microsoft 2016" )]
+[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyProduct( "QLNet Examples" )]
+[assembly: AssemblyCopyright( "Copyright (c) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

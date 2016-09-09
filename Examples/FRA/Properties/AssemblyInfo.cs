@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
-[assembly: AssemblyTitle("FRA")]
+[assembly: AssemblyTitle( "QLNet FRA Example" )]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FRA")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyProduct( "QLNet Examples" )]
+[assembly: AssemblyCopyright( "Copyright (c) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

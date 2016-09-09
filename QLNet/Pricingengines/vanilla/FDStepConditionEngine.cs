@@ -87,7 +87,7 @@ namespace QLNet {
 
             StrikedTypePayoff striked_payoff = payoff_ as StrikedTypePayoff;
             if (striked_payoff == null)
-                throw new ApplicationException("non-striked payoff given");
+                throw new Exception("non-striked payoff given");
 
             double variance = process_.blackVolatility().link.blackVariance(exerciseDate_, striked_payoff.strike());
             double dividendDiscount = process_.dividendYield().link.discount(exerciseDate_);

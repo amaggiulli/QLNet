@@ -1,79 +1,42 @@
-QLNet 1.7 
+QLNet 1.8 
 =========================
 
-QLNet 1.7 stable version.
+QLNet 1.8 stable version.
 
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
-TERM STRUCTURES
+FRAMEWORK
 
-+ Added FittedBondDiscountCurve with example project.
++ Refactored code to be compatible with .NET Core , created VS 2015 solution QLNet_Core.sln
+  that build the .NET Core version.
+  
++ Refactored test project to work with Microsoft UnitTesting and Xunit.
 
 INTEREST RATES
 
-+ Added rate helper to bootstrap on cross-currency swaps . 
-  The curve to be bootstrapped can be the one for either of the two currencies.
++ Fixed links to documentation for LIBOR indexes.
 
-+ Added the possibility for bootstrap helpers to define their pillar
-  date in different ways . For each helper, the date of the corresponding 
-  node can be defined as the maturity date of the corresponding instrument, 
-  as the latest date used on the term structure to price the instrument, 
-  or as a custom date. Currently, the feature is enabled for FRAs and swaps.
+INSTRUMENTS
 
-+ Added the possibility to pass weight when fitting a bond discount
-  curve. Also, it is now possible to fit a spread over an existing
-  term structure.
++ Added basic CVA IRS pricing engine.
 
-INFLATION
+CURRENCIES
 
-+ Added Kerkhof seasonality model.
-
-+ Retrieve inflation fixings from the first day of the month . 
-  This avoids the need to store them for each day of the corresponding month.
-
-VOLATILITY
-
-+ Improve consistency between caplet stripping and pricing.
-
-MODELS
-
-+ Added Heston model.
-
-SETTINGS
-
-+ Make SavedSettings disposable and update tests accordingly.
-  Now the full test suite can be launched from Visual Studio IDE 
-  without errors ( false negative ) . 
++ Added Ukrainian hryvnia.
 
 DATE/TIME
 
-+ Added Romanian and Israelian calendars.
-
-+ Added ECB reserve maintenance periods for 2016.
-
-+ Updated South Korean calendar until the end of 2032.
-
-+ Added new Mountain Day holiday for Japan.
-
-+ Remove MLK day from list of US holidays before 1983.
-
-+ Added Christmas Eve to BOVESPA holidays.
-
-+ Added intraday component to dates. Date specifications now include hours, 
-  minutes, seconds and milliseconds. Day counters are aware of the added data 
-  and include them in results.
++ Added new Ukrainian holiday, Defender's Day.
 
 MATH
 
-+ Added polynomial and abcd functions.
++ Added mixed log interpolation.
++ Added FlatExtrapolator2D
++ Added BackwardflatLinear Interpolation.
++ Added AbcdInterpolation.
++ Implemented Lagrange boundary condition for cubic interpolation
 
-+ Added Pascal triangle coefficients.
+PRICING ENGINES
 
-+ Added Goldstein line-search method.
-
-PATTERNS
-
-+ Use WeakEventSource in Observer/Observable pattern to avoid memory leaks. 
-
-
++ Added CounterpartyAdjSwapEngine engine with example program.

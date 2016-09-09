@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Repo")]
+[assembly: AssemblyTitle( "QLNet Repo Example" )]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Repo")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyProduct( "QLNet Examples" )]
+[assembly: AssemblyCopyright( "Copyright (c) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

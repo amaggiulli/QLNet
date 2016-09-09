@@ -113,7 +113,7 @@ namespace QLNet
                payer_[1] = -1.0;
                break;
             default:
-               throw new ApplicationException("Unknown vanilla-swap type");
+               throw new Exception("Unknown vanilla-swap type");
          }
       }
 
@@ -323,5 +323,7 @@ namespace QLNet
             fairRate = fairSpread = null;
          }
       }
+
+      public abstract class Engine : GenericEngine<VanillaSwap.Arguments, VanillaSwap.Results> { }
    }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -30,7 +30,7 @@ namespace QLNet
     with a (usually different) availability lag.
     */
 
-   public class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
+   public abstract class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
    {
       //public YoYOptionletVolatilitySurface()
       //: base (BusinessDayConvention.Following,null) {}
@@ -211,19 +211,12 @@ namespace QLNet
       }
       //@}
    
-      //! \name Limits
-      //@{
-      //! the minimum strike for which the term structure can return vols
-      public override double minStrike() { return  0 ;}
-      //! the maximum strike for which the term structure can return vols
-      public override double maxStrike() { return 0; }
-      //@}
       
       // acts as zero time value for boostrapping
       public virtual double baseLevel() 
       {
          if (baseLevel_ == null)
-            throw new ApplicationException("Base volatility, for baseDate(), not set.");
+            throw new Exception("Base volatility, for baseDate(), not set.");
          return baseLevel_.Value;
       }
 
@@ -232,31 +225,31 @@ namespace QLNet
       {
 
          if ( d < baseDate() )
-            throw new ApplicationException ("date (" + d + ") is before base date");
+            throw new Exception ("date (" + d + ") is before base date");
 
          if ( !extrapolate && !allowsExtrapolation() && d > maxDate())
-            throw new ApplicationException ("date (" + d + ") is past max curve date ("
+            throw new Exception ("date (" + d + ") is past max curve date ("
                                          + maxDate() + ")");
 
 
          if ( !extrapolate && !allowsExtrapolation() && 
               ( strike < minStrike() || strike > maxStrike()))
-            throw new ApplicationException ("strike (" + strike + ") is outside the curve domain ["
+            throw new Exception ("strike (" + strike + ") is outside the curve domain ["
                 + minStrike() + "," + maxStrike()+ "]] at date = " + d);
       }
     
       protected virtual void checkRange(double t, double strike,bool extrapolate) 
       {
          if ( t < timeFromReference(baseDate()) )
-            throw new ApplicationException("time (" + t + ") is before base date");
+            throw new Exception("time (" + t + ") is before base date");
 
          if ( !extrapolate && !allowsExtrapolation() && t > maxTime() )
-            throw new ApplicationException("time (" + t + ") is past max curve time ("
+            throw new Exception("time (" + t + ") is past max curve time ("
                                            + maxTime() + ")");
 
          if ( !extrapolate && !allowsExtrapolation() && 
               (strike < minStrike() || strike > maxStrike()))
-            throw new ApplicationException("strike (" + strike + ") is outside the curve domain ["
+            throw new Exception("strike (" + strike + ") is outside the curve domain ["
                    + minStrike() + "," + maxStrike()+ "] at time = " + t);
     
       }
@@ -265,7 +258,7 @@ namespace QLNet
       //! Implements the actual volatility surface calculation in
       //! derived classes e.g. bilinear interpolation.  N.B. does
       //! not derive the surface.
-      protected virtual double volatilityImpl(double length, double strike) { return 0; }
+      protected abstract double volatilityImpl(double length, double strike);
 
 
       // acts as zero time value for boostrapping

@@ -20,12 +20,18 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_PiecewiseZeroSpreadedTermStructure
    {
       public class CommonVars
@@ -72,7 +78,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFlatInterpolationLeft()
       {
          // Testing flat interpolation before the first spreaded date...
@@ -103,12 +113,16 @@ namespace TestSuite
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() + spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail("unable to reproduce interpolated rate\n"
+            QAssert.Fail("unable to reproduce interpolated rate\n"
                         + "    calculated: " + interpolatedZeroRate + "\n"
                         + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFlatInterpolationRight()
       {
          // Testing flat interpolation after the last spreaded date...
@@ -140,12 +154,16 @@ namespace TestSuite
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() + spread2.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail("unable to reproduce interpolated rate\n"
+            QAssert.Fail("unable to reproduce interpolated rate\n"
                         + "    calculated: " + interpolatedZeroRate + "\n"
                         + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testLinearInterpolationMultipleSpreads()
       {
          // Testing linear interpolation with more than two spreaded dates...
@@ -183,14 +201,18 @@ namespace TestSuite
                              spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
 
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testLinearInterpolation()
       {
          // Testing linear interpolation between two dates...
@@ -227,13 +249,17 @@ namespace TestSuite
          double tolerance = 1e-9;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testForwardFlatInterpolation()
       {
          // Testing forward flat interpolation between two dates...
@@ -265,13 +291,17 @@ namespace TestSuite
                              spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testBackwardFlatInterpolation()
       {
          // Testing backward flat interpolation between two dates...
@@ -306,14 +336,18 @@ namespace TestSuite
                              spread2.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testDefaultInterpolation()
       {
          // Testing default interpolation between two dates...
@@ -345,13 +379,17 @@ namespace TestSuite
                              spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSetInterpolationFactory()
       {
          // Testing factory constructor with additional parameters...
@@ -396,13 +434,17 @@ namespace TestSuite
                              0.026065770863;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testMaxDate()
       {
          // Testing term structure max date...
@@ -429,13 +471,17 @@ namespace TestSuite
          Date expectedDate = vars.termStructure.maxDate() < spreadDates.Last() ? vars.termStructure.maxDate() : spreadDates.Last();
 
          if (maxDate != expectedDate)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce max date\n"
                 + "    calculated: " + maxDate + "\n"
                 + "    expected: " + expectedDate);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testQuoteChanging()
       {
          // Testing quote update...
@@ -466,7 +512,7 @@ namespace TestSuite
                              0.03;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);
@@ -478,7 +524,7 @@ namespace TestSuite
                         0.025;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
-            Assert.Fail(
+            QAssert.Fail(
                 "unable to reproduce interpolated rate\n"
                 + "    calculated: " + interpolatedZeroRate + "\n"
                 + "    expected: " + expectedRate);

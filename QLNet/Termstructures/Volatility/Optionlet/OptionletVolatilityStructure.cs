@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -24,7 +25,7 @@ namespace QLNet
    /*! This class is purely abstract and defines the interface of
       concrete structures which will be derived from this one.
    */
-   public class OptionletVolatilityStructure : VolatilityTermStructure 
+   public abstract class OptionletVolatilityStructure : VolatilityTermStructure 
    {
       #region Constructors
       //! default constructor
@@ -119,13 +120,16 @@ namespace QLNet
       
       #endregion
       
+      public virtual double displacement() {return 0.0;}
+      public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
+
       protected virtual SmileSection smileSectionImpl(Date optionDate)
       {
           return smileSectionImpl(timeFromReference(optionDate));
       }
 
       //! implements the actual smile calculation in derived classes
-      protected virtual SmileSection smileSectionImpl(double optionTime)  { throw new NotImplementedException(); }
+      protected abstract SmileSection smileSectionImpl(double optionTime);
 
       protected double volatilityImpl(Date optionDate, double strike)
       {
@@ -133,8 +137,9 @@ namespace QLNet
       }
 
       //! implements the actual volatility calculation in derived classes
-      protected virtual double volatilityImpl(double optionTime, double strike) { throw new NotImplementedException(); }
-   
+      protected abstract double volatilityImpl(double optionTime, double strike);
+
+
    }
    
 }

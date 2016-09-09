@@ -72,13 +72,13 @@ namespace QLNet {
 
         /*! returns the minimum sample value */
         public double min() {
-            if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+            if (!(samples() > 0)) throw new Exception("empty sample set");
             return samples_.Min<KeyValuePair<double,double>>(x => x.Key);
         }
 
         /*! returns the maximum sample value */
         public double max() {
-            if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+            if (!(samples() > 0)) throw new Exception("empty sample set");
             return samples_.Max<KeyValuePair<double, double>>(x => x.Key);
         }
         
@@ -86,7 +86,7 @@ namespace QLNet {
         //! adds a datum to the set, possibly with a weight
         public void add(double value) { add(value, 1); }
         public void add(double value, double weight) {
-            if (!(weight>=0.0)) throw new ApplicationException("negative weight not allowed");
+            if (!(weight>=0.0)) throw new Exception("negative weight not allowed");
             samples_.Add(new KeyValuePair<double,double>(value,weight));
             
             sorted_ = false;
@@ -122,7 +122,7 @@ namespace QLNet {
         public double mean() {
             if (mean_ == null) {
                 int N = samples();
-                if (!(samples() > 0)) throw new ApplicationException("empty sample set");
+                if (!(samples() > 0)) throw new Exception("empty sample set");
                 // eat our own dog food
                 mean_ = expectationValue(x => x.Key * x.Value, x => true).Key;
             }
@@ -139,7 +139,7 @@ namespace QLNet {
         public double variance()  {
             if (variance_ == null) {
                 int N = samples();
-                if (!(N > 1)) throw new ApplicationException("sample number <=1, unsufficient");
+                if (!(N > 1)) throw new Exception("sample number <=1, unsufficient");
                 // Subtract the mean and square. Repeat on the whole range.
                 // Hopefully, the whole thing will be inlined in a single loop.
                 double s2 = expectationValue(x => Math.Pow(x.Key * x.Value - mean(), 2), x => true).Key;
@@ -158,7 +158,7 @@ namespace QLNet {
         public double skewness() {
             if (skewness_ == null) {
                 int N = samples();
-                if (!(N > 2)) throw new ApplicationException("sample number <=2, unsufficient");
+                if (!(N > 2)) throw new Exception("sample number <=2, unsufficient");
 
                 double x = expectationValue(y => Math.Pow(y.Key * y.Value - mean(), 3), y => true).Key;
                 double sigma = standardDeviation();
@@ -177,7 +177,7 @@ namespace QLNet {
         public double kurtosis() {
             if (kurtosis_ == null) {
                 int N = samples();
-                if (!(N > 3)) throw new ApplicationException("sample number <=3, unsufficient");
+                if (!(N > 3)) throw new Exception("sample number <=3, unsufficient");
 
                 double x = expectationValue(y => Math.Pow(y.Key * y.Value - mean(), 4), y => true).Key;
                 double sigma2 = variance();
@@ -224,10 +224,10 @@ namespace QLNet {
         public double percentile(double percent) {
 
             if (!(percent > 0.0 && percent <= 1.0))
-                throw new ApplicationException("percentile (" + percent + ") must be in (0.0, 1.0]");
+                throw new Exception("percentile (" + percent + ") must be in (0.0, 1.0]");
 
             double sampleWeight = weightSum();
-            if (!(sampleWeight > 0)) throw new ApplicationException("empty sample set");
+            if (!(sampleWeight > 0)) throw new Exception("empty sample set");
 
             sort();
 
@@ -245,10 +245,10 @@ namespace QLNet {
         */
         public double topPercentile(double percent) {
             if (!(percent > 0.0 && percent <= 1.0))
-                throw new ApplicationException("percentile (" + percent + ") must be in (0.0, 1.0]");
+                throw new Exception("percentile (" + percent + ") must be in (0.0, 1.0]");
 
             double sampleWeight = weightSum();
-            if (!(sampleWeight > 0)) throw new ApplicationException("empty sample set");
+            if (!(sampleWeight > 0)) throw new Exception("empty sample set");
 
             sort();
 

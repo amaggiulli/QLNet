@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -26,7 +27,7 @@ namespace QLNet
 
        Volatilities are assumed to be expressed on an annual basis.
    */
-   public class LocalVolTermStructure : VolatilityTermStructure 
+   public abstract class LocalVolTermStructure : VolatilityTermStructure 
    {
       #region Constructors
       //! default constructor
@@ -78,9 +79,9 @@ namespace QLNet
       */
       
       //! local vol calculation
-      protected virtual double localVolImpl(double t, double strike) { throw new NotSupportedException(); }
+      protected abstract double localVolImpl(double t, double strike);
 
       #endregion
-    }
+   }
 
 }
