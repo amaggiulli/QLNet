@@ -14,7 +14,7 @@ using Xunit;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Test")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright( "Copyright (c) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using Xunit;
 //
 // È possibile specificare tutti i valori oppure impostare i valori predefiniti per i numeri relativi alla build e alla revisione 
 // utilizzando l'asterisco (*) come descritto di seguito:
-[assembly: AssemblyVersion( "1.7.0.0" )]
-[assembly: AssemblyFileVersion( "1.7.0.0" )]
+[assembly: AssemblyVersion( "1.8.0.0" )]
+[assembly: AssemblyFileVersion( "1.8.0.0" )]
