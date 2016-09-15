@@ -17,15 +17,25 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_Money
    {
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testNone()
       {
          Currency EUR = new EURCurrency();
@@ -41,10 +51,14 @@ namespace TestSuite
          Money expected = new Money(x, EUR);
 
          if (calculated != expected)
-            Assert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testBaseCurrency()
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();
@@ -73,11 +87,15 @@ namespace TestSuite
 
          if (calculated != expected)
          {
-            Assert.Fail("Wrong result: expected: " + expected + "calculated: " + calculated);
+            QAssert.Fail("Wrong result: expected: " + expected + "calculated: " + calculated);
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAutomated() 
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();
@@ -105,7 +123,7 @@ namespace TestSuite
 
          if (calculated != expected) 
          {
-            Assert.Fail("Wrong result: " + "expected: " + expected + " calculated: " + calculated);
+            QAssert.Fail("Wrong result: " + "expected: " + expected + " calculated: " + calculated);
          }
       }
 

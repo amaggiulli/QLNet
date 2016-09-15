@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008 Andrea Maggiulli 
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com) 
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -30,7 +30,7 @@ namespace QLNet
 
       \test observability against evaluation date changes is checked.
    */
-   public class YieldTermStructure : TermStructure 
+   public abstract class YieldTermStructure : TermStructure 
    {
       private const double dt = 0.0001;
 
@@ -272,7 +272,7 @@ namespace QLNet
       //    must assume that extrapolation is required.
 
       //! discount factor calculation
-      protected virtual double discountImpl(double d) { throw new NotSupportedException(); }
+      protected abstract double discountImpl(double d);
       
       #endregion
       

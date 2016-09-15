@@ -59,11 +59,11 @@ namespace QLNet
         {
             PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
             if (payoff == null)
-                throw new ApplicationException("non-plain payoff given");
+                throw new Exception("non-plain payoff given");
 
             EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
             if (exercise == null)
-                throw new ApplicationException("wrong exercise given");
+                throw new Exception("wrong exercise given");
 
             return (PathPricer<IPath>)new ArithmeticAPOPathPricer(
                         payoff.optionType(),
@@ -77,11 +77,11 @@ namespace QLNet
         {
             PlainVanillaPayoff payoff = (PlainVanillaPayoff)this.arguments_.payoff;
             if (payoff == null)
-                throw new ApplicationException("non-plain payoff given");
+                throw new Exception("non-plain payoff given");
 
             EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
             if (exercise == null)
-                throw new ApplicationException("wrong exercise given");
+                throw new Exception("wrong exercise given");
 
             // for seasoned option the geometric strike might be rescaled
             // to obtain an equivalent arithmetic strike.
@@ -116,7 +116,7 @@ namespace QLNet
             runningSum_ = runningSum;
             pastFixings_ = pastFixings;
             if(!(strike>=0.0))
-                throw new ApplicationException("strike less than zero not allowed");
+                throw new Exception("strike less than zero not allowed");
         }
 
         public ArithmeticAPOPathPricer(Option.Type type,
@@ -135,7 +135,7 @@ namespace QLNet
         {
             int n = path.length();
             if(!(n>1))
-               throw new ApplicationException("the path cannot be empty");
+               throw new Exception("the path cannot be empty");
 
             double sum = runningSum_;
             int fixings;
@@ -158,7 +158,7 @@ namespace QLNet
 
         /*public double value(IPath path){
             if (!(path.length() > 0))
-                throw new ApplicationException("the path cannot be empty");
+                throw new Exception("the path cannot be empty");
             return payoff_.value((path as Path).back()) * discount_;
         }*/
     }
@@ -205,7 +205,7 @@ namespace QLNet
         {
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
             if ((new RNG().allowsErrorEstimate == 0))
-                throw new ApplicationException("chosen random generator policy " +
+                throw new Exception("chosen random generator policy " +
                                                "does not allow an error estimate");
             tolerance_ = tolerance;
             return this;
@@ -244,7 +244,7 @@ namespace QLNet
         public IPricingEngine value()
         {
             if (steps_ == null)
-                throw new ApplicationException("max number of steps per year not given");
+                throw new Exception("max number of steps per year not given");
             return (IPricingEngine)new MCDiscreteArithmeticAPEngine<RNG, S>(process_,
                                                     steps_.Value,
                                                     brownianBridge_,

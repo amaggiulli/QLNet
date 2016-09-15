@@ -17,23 +17,22 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-	//! %NZD %LIBOR rate
-//    ! New Zealand Dollar LIBOR fixed by BBA.
-//
-//        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-//    
-	public class NZDLibor : Libor
-	{
-        public NZDLibor(Period tenor)
-            : base("NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), new Handle<YieldTermStructure>())
-        {
-        }
-        public NZDLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), h)
-		{
-		}
-	}
+   //! %NZD %LIBOR rate
+   /*! New Zealand Dollar LIBOR discontinued as of 2013.
+   */
+   public class NZDLibor : Libor
+   {
+      public NZDLibor( Period tenor )
+         : base( "NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
+
+      public NZDLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), h )
+      {}
+
+   }
 
 }

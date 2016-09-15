@@ -32,7 +32,7 @@ namespace QLNet {
             maxEvaluations_ = maxEvaluations;
             if ( absoluteAccuracy != null)
                if (!(absoluteAccuracy > ((Double.Epsilon))))
-                   throw new ApplicationException("required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + Double.Epsilon);
+                   throw new Exception("required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + Double.Epsilon);
         }
 
         public double value(Func<double, double> f, double a, double b) {

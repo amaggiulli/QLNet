@@ -194,9 +194,9 @@ namespace QLNet {
             secondStrike_ = secondStrike;
 
             if (!(strike>0.0))
-                throw new ApplicationException("strike (" +  strike + ") must be positive");
+                throw new Exception("strike (" +  strike + ") must be positive");
             if (!(secondStrike>strike))
-                throw new ApplicationException("second strike (" +  secondStrike + 
+                throw new Exception("second strike (" +  secondStrike + 
                     ") must be higher than first strike (" + strike + ")");
         }
 
@@ -221,7 +221,7 @@ namespace QLNet {
             cashPayoff_ = cashPayoff;
 
             if (!(secondStrike>strike))
-                throw new ApplicationException("second strike (" +  secondStrike +
+                throw new Exception("second strike (" +  secondStrike +
                     ") must be higher than first strike (" + strike + ")");
         }
 

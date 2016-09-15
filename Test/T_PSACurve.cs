@@ -16,15 +16,25 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_PSACurve
    {
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCashedValues()
       {
 
@@ -47,9 +57,9 @@ namespace TestSuite
          for (int i = 0; i < schedule.Count; i++)
          {
             if ( i <= 29 )
-               Assert.AreEqual(listCPR[i], psa100.getCPR(schedule[i])*100,0.001);
+               QAssert.AreEqual(listCPR[i], psa100.getCPR(schedule[i])*100,0.001);
             else
-               Assert.AreEqual(6.0000, psa100.getCPR(schedule[i])*100);
+               QAssert.AreEqual(6.0000, psa100.getCPR(schedule[i])*100);
          }
 
 

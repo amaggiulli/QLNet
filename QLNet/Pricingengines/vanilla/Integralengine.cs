@@ -62,12 +62,12 @@ namespace QLNet {
 		public override void calculate()
 		{
             if (!(arguments_.exercise.type() == Exercise.Type.European))
-                throw new ApplicationException("not an European Option");
+                throw new Exception("not an European Option");
 
             StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
 
             if (payoff == null)
-                throw new ApplicationException("not an European Option");
+                throw new Exception("not an European Option");
 
 			double variance = process_.blackVolatility().link.blackVariance(arguments_.exercise.lastDate(), payoff.strike());
 

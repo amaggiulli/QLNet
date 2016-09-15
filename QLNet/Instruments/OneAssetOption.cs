@@ -28,71 +28,71 @@ namespace QLNet {
 
         public OneAssetOption(Payoff payoff, Exercise exercise) : base(payoff, exercise) {}
 
-        public override bool isExpired() { return exercise_.lastDate() < Settings.evaluationDate(); }
+        public override bool isExpired() { return new simple_event(exercise_.lastDate()).hasOccurred(); }
 
         public double delta() {
             calculate();
-            if (delta_ == null) throw new ApplicationException("delta not provided");
+            if (delta_ == null) throw new Exception("delta not provided");
             return delta_.GetValueOrDefault();
         }
 
         public double deltaForward() {
             calculate();
-            if (deltaForward_ == null) throw new ApplicationException("forward delta not provided");
+            if (deltaForward_ == null) throw new Exception("forward delta not provided");
             return deltaForward_.GetValueOrDefault();
         }
 
         public double elasticity() {
             calculate();
-            if (elasticity_ == null) throw new ApplicationException("elasticity not provided");
+            if (elasticity_ == null) throw new Exception("elasticity not provided");
             return elasticity_.GetValueOrDefault();
         }
 
         public double gamma() {
             calculate();
-            if (gamma_ == null) throw new ApplicationException("gamma not provided");
+            if (gamma_ == null) throw new Exception("gamma not provided");
             return gamma_.GetValueOrDefault();
         }
 
         public double theta() {
             calculate();
-            if (theta_ == null) throw new ApplicationException("theta not provided");
+            if (theta_ == null) throw new Exception("theta not provided");
             return theta_.GetValueOrDefault();
         }
 
         public double thetaPerDay() {
             calculate();
-            if (thetaPerDay_ == null) throw new ApplicationException("theta per-day not provided");
+            if (thetaPerDay_ == null) throw new Exception("theta per-day not provided");
             return thetaPerDay_.GetValueOrDefault();
         }
 
         public double vega() {
             calculate();
-            if (vega_ == null) throw new ApplicationException("vega not provided");
+            if (vega_ == null) throw new Exception("vega not provided");
             return vega_.GetValueOrDefault();
         }
 
         public double rho() {
             calculate();
-            if (rho_ == null) throw new ApplicationException("rho not provided");
+            if (rho_ == null) throw new Exception("rho not provided");
             return rho_.GetValueOrDefault();
         }
 
         public double dividendRho() {
             calculate();
-            if (dividendRho_ == null) throw new ApplicationException("dividend rho not provided");
+            if (dividendRho_ == null) throw new Exception("dividend rho not provided");
             return dividendRho_.GetValueOrDefault();
         }
 
         public double strikeSensitivity() {
             calculate();
-            if (strikeSensitivity_ == null) throw new ApplicationException("strike sensitivity not provided");
+            if (strikeSensitivity_ == null) throw new Exception("strike sensitivity not provided");
             return strikeSensitivity_.GetValueOrDefault();
         }
 
         public double itmCashProbability() {
             calculate();
-            if (itmCashProbability_ == null) throw new ApplicationException("in-the-money cash probability not provided");
+            if (itmCashProbability_ == null) throw new Exception("in-the-money cash probability not provided");
             return itmCashProbability_.GetValueOrDefault();
         }
 
@@ -107,7 +107,7 @@ namespace QLNet {
 
             Results results = r as Results;
             if (results == null)
-                throw new ApplicationException("no greeks returned from pricing engine");
+                throw new Exception("no greeks returned from pricing engine");
             /* no check on null values - just copy.
                this allows:
                a) to decide in derived options what to do when null

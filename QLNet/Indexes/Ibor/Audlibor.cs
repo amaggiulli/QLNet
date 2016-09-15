@@ -17,24 +17,21 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-	//! %AUD %LIBOR rate
-//    ! Australian Dollar LIBOR fixed by BBA.
-//
-//        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-//    
-	public class AUDLibor : Libor
-	{
-        public AUDLibor(Period tenor)
-            : base("AUDLibor", tenor, 2, new AUDCurrency(), new Australia(), new Actual360(), new Handle<YieldTermStructure>())
-        {
-        }
+   //! %AUD %LIBOR rate
+   /*! Australian Dollar LIBOR discontinued as of 2013.
+   */
+   public class AUDLibor : Libor
+   {
+      public AUDLibor( Period tenor )
+         : base( "AUDLibor", tenor, 2, new AUDCurrency(), new Australia(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
 
-        public AUDLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("AUDLibor", tenor, 2, new AUDCurrency(), new Australia(), new Actual360(), h)
-		{
-		}
-	}
+      public AUDLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "AUDLibor", tenor, 2, new AUDCurrency(), new Australia(), new Actual360(), h )
+      {}
+   }
 
 }

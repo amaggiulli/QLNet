@@ -135,9 +135,9 @@ namespace QLNet
          for ( int i = 0; i < dimensionality; i++ )
             directionIntegers_[i] = new InitializedList<ulong>( bits_ );
 
-         if ( !( dimensionality > 0 ) ) throw new ApplicationException( "dimensionality must be greater than 0" );
+         if ( !( dimensionality > 0 ) ) throw new Exception( "dimensionality must be greater than 0" );
          if ( !( dimensionality <= PPMT_MAX_DIM ) )
-            throw new ApplicationException( "dimensionality " + dimensionality + " exceeds the number of available "
+            throw new Exception( "dimensionality " + dimensionality + " exceeds the number of available "
                    + "primitive polynomials modulo two (" + PPMT_MAX_DIM + ")" );
 
          // initializes coefficient array of the k-th primitive polynomial
@@ -476,7 +476,7 @@ namespace QLNet
          // increment the counter
          sequenceCounter_++;
          // did we overflow?
-         if ( sequenceCounter_ == 0 ) throw new ApplicationException( "period exceeded" );
+         if ( sequenceCounter_ == 0 ) throw new Exception( "period exceeded" );
 
          // instead of using the counter n as new unique generating integer
          // for the n-th draw use the Gray code G(n) as proposed

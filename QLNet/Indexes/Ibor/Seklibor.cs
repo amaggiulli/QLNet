@@ -17,22 +17,22 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-	//! %SEK %LIBOR rate
-//    ! Sweden Krone LIBOR fixed by BBA.
-//
-//        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-//    
-	public class SEKLibor : Libor
-	{
-		public SEKLibor(Period tenor) : base("SEKLibor", tenor, 2, new SEKCurrency(), new Sweden(), new Actual360(), new Handle<YieldTermStructure>())
-		{
-		}
-        public SEKLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("SEKLibor", tenor, 2, new SEKCurrency(), new Sweden(), new Actual360(), h)
-		{
-		}
-	}
+   //! %SEK %LIBOR rate
+   /*! Sweden Krone LIBOR discontinued as of 2013.
+   */ 
+   public class SEKLibor : Libor
+   {
+      public SEKLibor( Period tenor )
+         : base( "SEKLibor", tenor, 2, new SEKCurrency(), new Sweden(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
+
+      public SEKLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "SEKLibor", tenor, 2, new SEKCurrency(), new Sweden(), new Actual360(), h )
+      {}
+
+   }
 
 }

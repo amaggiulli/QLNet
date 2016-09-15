@@ -59,7 +59,7 @@ namespace QLNet
       public CappedFlooredCoupon() { }
 
       public CappedFlooredCoupon(FloatingRateCoupon underlying, double? cap = null, double? floor = null)
-         : base(underlying.nominal(), underlying.date(), underlying.accrualStartDate(), underlying.accrualEndDate(), underlying.fixingDays, underlying.index(), underlying.gearing(), underlying.spread(), underlying.refPeriodStart, underlying.refPeriodEnd, underlying.dayCounter(), underlying.isInArrears())
+         : base(underlying.date(), underlying.nominal(), underlying.accrualStartDate(), underlying.accrualEndDate(), underlying.fixingDays, underlying.index(), underlying.gearing(), underlying.spread(), underlying.referencePeriodStart, underlying.referencePeriodEnd, underlying.dayCounter(), underlying.isInArrears())
       {
          underlying_ = underlying;
          isCapped_ = false;
@@ -93,7 +93,7 @@ namespace QLNet
          }
          if (isCapped_ && isFloored_)
             if (!(cap >= floor))
-               throw new ApplicationException("cap level (" + cap + ") less than floor level (" + floor + ")");
+               throw new Exception("cap level (" + cap + ") less than floor level (" + floor + ")");
          underlying.registerWith(update);
       }
       //! \name Coupon interface
@@ -101,7 +101,7 @@ namespace QLNet
       public override double rate()
       {
          if (underlying_.pricer() == null)
-            throw new ApplicationException("pricer not set");
+            throw new Exception("pricer not set");
 
          double swapletRate = underlying_.rate();
          double floorletRate = 0.0;
@@ -165,7 +165,7 @@ namespace QLNet
       // Factory - for Leg generators
       public virtual CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays, InterestRateIndex index, double gearing, double spread, double? cap, double? floor, Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
       {
-         return new CappedFlooredCoupon(new FloatingRateCoupon(nominal, paymentDate, startDate, endDate, fixingDays, index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears), cap, floor);
+         return new CappedFlooredCoupon( new FloatingRateCoupon( paymentDate, nominal, startDate, endDate, fixingDays, index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears ), cap, floor );
       }
    }
 
@@ -174,8 +174,8 @@ namespace QLNet
       // need by CashFlowVectors
       public CappedFlooredIborCoupon() { }
 
-      public CappedFlooredIborCoupon(double nominal, 
-                                     Date paymentDate, 
+      public CappedFlooredIborCoupon(Date paymentDate,
+                                     double nominal, 
                                      Date startDate, 
                                      Date endDate, 
                                      int fixingDays, 
@@ -188,14 +188,14 @@ namespace QLNet
                                      Date refPeriodEnd = null, 
                                      DayCounter dayCounter = null, 
                                      bool isInArrears = false)
-         : base(new IborCoupon(nominal, paymentDate, startDate, endDate, fixingDays, index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears) as FloatingRateCoupon, cap, floor)
+         : base( new IborCoupon( paymentDate, nominal, startDate, endDate, fixingDays, index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears ) as FloatingRateCoupon, cap, floor )
       {
       }
 
       // Factory - for Leg generators
       public virtual CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays, IborIndex index, double gearing, double spread, double? cap, double? floor, Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
       {
-         return new CappedFlooredIborCoupon(nominal, paymentDate, startDate, endDate, fixingDays, index, gearing, spread, cap, floor, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
+         return new CappedFlooredIborCoupon( paymentDate, nominal, startDate, endDate, fixingDays, index, gearing, spread, cap, floor, refPeriodStart, refPeriodEnd, dayCounter, isInArrears );
       }
    }
 

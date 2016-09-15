@@ -18,29 +18,33 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
+namespace QLNet
+{
 
-    //! %CHF %LIBOR rate
-    //    ! Swiss Franc LIBOR fixed by BBA.
-    //
-    //        See <http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1414>.
-    //
-    //        \warning This is the rate fixed in London by BBA. Use ZIBOR if
-    //                 you're interested in the Zurich fixing.
-    //    
-    public class CHFLibor : Libor {
-        public CHFLibor(Period tenor)
-            : base("CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), new Handle<YieldTermStructure>()) {
-        }
+   //! %CHF %LIBOR rate
+   /*! Swiss Franc LIBOR fixed by ICE.
 
-        public CHFLibor(Period tenor, Handle<YieldTermStructure> h)
-            : base("CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), h) {
-        }
-    }
+       See <https://www.theice.com/marketdata/reports/170>.
 
-    //! base class for the one day deposit BBA %CHF %LIBOR indexes
-    public class DailyTenorCHFLibor : DailyTenorLibor {
-        public DailyTenorCHFLibor(int settlementDays, Handle<YieldTermStructure> h)
-            : base("CHFLibor", settlementDays, new CHFCurrency(), new Switzerland(), new Actual360(), h) {}
-    };
+       \warning This is the rate fixed in London by BBA. Use ZIBOR if
+                you're interested in the Zurich fixing.
+   */
+   public class CHFLibor : Libor
+   {
+      public CHFLibor( Period tenor )
+         : base( "CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), new Handle<YieldTermStructure>() )
+      {}
+
+      public CHFLibor( Period tenor, Handle<YieldTermStructure> h )
+         : base( "CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), h )
+      {}
+   }
+
+   //! base class for the one day deposit BBA %CHF %LIBOR indexes
+   public class DailyTenorCHFLibor : DailyTenorLibor
+   {
+      public DailyTenorCHFLibor( int settlementDays, Handle<YieldTermStructure> h )
+         : base( "CHFLibor", settlementDays, new CHFCurrency(), new Switzerland(), new Actual360(), h ) 
+      { }
+   }
 }

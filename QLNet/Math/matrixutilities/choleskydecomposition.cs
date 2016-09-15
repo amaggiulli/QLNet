@@ -24,7 +24,7 @@ namespace QLNet {
             int i, j, size = S.rows();
 
             if(size != S.columns())
-                throw new ApplicationException("input matrix is not a square matrix");
+                throw new Exception("input matrix is not a square matrix");
             #if QL_EXTRA_SAFETY_CHECKS
             for (i=0; i<S.rows(); i++)
                 for (j=0; j<i; j++)
@@ -42,7 +42,7 @@ namespace QLNet {
                     }
                     if (i == j) {
                         if (!(flexible || sum > 0.0))
-                            throw new ApplicationException("input matrix is not positive definite");
+                            throw new Exception("input matrix is not positive definite");
                         // To handle positive semi-definite matrices take the
                         // square root of sum if positive, else zero.
                         result[i,i] = Math.Sqrt(Math.Max(sum, 0.0));

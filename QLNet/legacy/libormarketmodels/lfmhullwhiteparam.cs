@@ -39,15 +39,15 @@ namespace QLNet
             Matrix sqrtCorr = new Matrix(size_ - 1, factors_, 1.0);
             if (correlation.empty()) {
                 if(!(factors_ == 1))
-                    throw new ApplicationException("correlation matrix must be given for "+
+                    throw new Exception("correlation matrix must be given for "+
                                                     "multi factor models");
             } else {
                 if(!(correlation.rows() == size_-1
                    && correlation.rows() == correlation.columns()))
-                   throw new ApplicationException("wrong dimesion of the correlation matrix");
+                   throw new Exception("wrong dimesion of the correlation matrix");
 
                 if(!(factors_ <= size_-1))
-                    throw new ApplicationException("too many factors for given LFM process");
+                    throw new Exception("too many factors for given LFM process");
 
                 Matrix tmpSqrtCorr =MatrixUtilitites.pseudoSqrt(correlation,
                                                MatrixUtilitites.SalvagingAlgorithm.Spectral);

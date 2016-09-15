@@ -1,6 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
+#if ! QL_DOTNET_FRAMEWORK
+using Xunit;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+#endif
+
 // Le informazioni generali relative a un assembly sono controllate dal seguente 
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // è necessario modificare i valori di questi attributi.
@@ -9,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Test")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright( "Copyright (c) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,5 +35,5 @@ using System.Runtime.InteropServices;
 //
 // È possibile specificare tutti i valori oppure impostare i valori predefiniti per i numeri relativi alla build e alla revisione 
 // utilizzando l'asterisco (*) come descritto di seguito:
-[assembly: AssemblyVersion( "1.7.0.0" )]
-[assembly: AssemblyFileVersion( "1.7.0.0" )]
+[assembly: AssemblyVersion( "1.8.0.0" )]
+[assembly: AssemblyFileVersion( "1.8.0.0" )]

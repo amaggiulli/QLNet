@@ -152,7 +152,7 @@ namespace QLNet
                throw new ArgumentException("not enough instruments: " + n_ + " provided, " +
                      (ts_.interpolator_.requiredPoints-1) + " required");
 
-         ts_.instruments_.ForEach(x => ts_.registerWith(x));
+         ts_.instruments_.ForEach((i, x) => ts_.registerWith(x));
 
          loopRequired_ = ts_.interpolator_.global;
       }
@@ -191,7 +191,7 @@ namespace QLNet
 
          for (int iteration = 0; ; ++iteration)
          {
-            previousData_ = ts_.data_;
+            previousData_ = new List<double>(ts_.data_);
 
             for (int i = 1; i <= alive_; ++i)
             {

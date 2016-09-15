@@ -43,7 +43,8 @@ namespace QLNet {
                          Date refPeriodEnd = null, 
                          DayCounter dayCounter = null, 
                          bool isInArrears = false )
-            : base(nominal, paymentDate, startDate, endDate, fixingDays, swapIndex, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears) {
+           : base( paymentDate, nominal, startDate, endDate, fixingDays, swapIndex, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears )
+        {
             swapIndex_ = swapIndex;
         }
         //! \name Inspectors

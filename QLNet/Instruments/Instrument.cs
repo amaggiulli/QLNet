@@ -142,7 +142,7 @@ namespace QLNet
         // This method must leave the instrument in a consistent state when the expiration condition is met.
         protected virtual void setupExpired()
         {
-            NPV_ = errorEstimate_ = CASH_ = null;
+            NPV_ = errorEstimate_ = CASH_ = 0.0;
             valuationDate_ = null;
             additionalResults_.Clear();
         }

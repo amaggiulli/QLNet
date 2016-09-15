@@ -17,15 +17,25 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_DefaultProbabilityCurves
    {
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testDefaultProbability() 
       {
          // Testing default-probability structure...
@@ -57,7 +67,7 @@ namespace TestSuite
             double pBetween = pEnd - pStart;
 
             if (Math.Abs(pBetween - pBetweenComputed) > tolerance)
-               Assert.Fail( "Failed to reproduce probability(d1, d2) "
+               QAssert.Fail( "Failed to reproduce probability(d1, d2) "
                             + "for default probability structure\n"
                             + "    calculated probability: " + pBetweenComputed + "\n"
                             + "    expected probability:   " + pBetween);
@@ -68,7 +78,7 @@ namespace TestSuite
                flatHazardRate.defaultProbability(endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               Assert.Fail( "single-time probability and single-date probability do not match\n"
+               QAssert.Fail( "single-time probability and single-date probability do not match\n"
                            + "    time probability: " + timeProbability + "\n"
                            + "    date probability: " + dateProbability);
 
@@ -77,14 +87,18 @@ namespace TestSuite
             dateProbability = flatHazardRate.defaultProbability(startDate, endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               Assert.Fail( "double-time probability and double-date probability do not match\n"
+               QAssert.Fail( "double-time probability and double-date probability do not match\n"
                             + "    time probability: " + timeProbability + "\n"
                             + "    date probability: " + dateProbability);
       
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFlatHazardRate() 
       {
 
@@ -111,13 +125,17 @@ namespace TestSuite
             double computedProbability = flatHazardRate.defaultProbability(t);
 
             if (Math.Abs(probability - computedProbability) > tolerance)
-               Assert.Fail( "Failed to reproduce probability for flat hazard rate\n"
+               QAssert.Fail( "Failed to reproduce probability for flat hazard rate\n"
                             + "    calculated probability: " + computedProbability + "\n"
                             + "    expected probability:   " + probability);
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testFlatHazardConsistency() 
       {
          // Testing piecewise-flat hazard-rate consistency...

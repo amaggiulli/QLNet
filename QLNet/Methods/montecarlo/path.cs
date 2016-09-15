@@ -52,7 +52,7 @@ namespace QLNet {
                 values_ = new Vector(timeGrid_.size());
 
             if (values_.size() != timeGrid_.size())
-                throw new ApplicationException("different number of times and asset values");
+                throw new Exception("different number of times and asset values");
         }
 
         //! \name inspectors

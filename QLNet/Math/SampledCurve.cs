@@ -62,7 +62,7 @@ namespace QLNet {
         /*! \todo replace or complement with a more general function valueAt(spot) */
         public double valueAtCenter() {
             if(empty())
-                throw new ApplicationException("empty sampled curve");
+                throw new Exception("empty sampled curve");
             
             int jmid = size() / 2;
             if (size() % 2 == 1)
@@ -74,7 +74,7 @@ namespace QLNet {
         /*! \todo replace or complement with a more general function firstDerivativeAt(spot) */
         public double firstDerivativeAtCenter() {
             if (!(size() >= 3))
-                throw new ApplicationException("the size of the curve must be at least 3");
+                throw new Exception("the size of the curve must be at least 3");
             
             int jmid = size() / 2;
             if (size() % 2 == 1) {
@@ -87,7 +87,7 @@ namespace QLNet {
         /*! \todo replace or complement with a more general function secondDerivativeAt(spot) */
         public double secondDerivativeAtCenter() {
             if (!(size() >= 4))
-                throw new ApplicationException("the size of the curve must be at least 4");
+                throw new Exception("the size of the curve must be at least 4");
             int jmid = size() / 2;
             if (size() % 2 == 1) {
                 double deltaPlus = (values_[jmid + 1] - values_[jmid]) / (grid_[jmid + 1] - grid_[jmid]);

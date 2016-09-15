@@ -117,10 +117,10 @@ namespace QLNet
                        (ts_.interpolator_.requiredPoints) + " required");
 
             if (!(n > localisation_))
-                throw new ApplicationException("not enough instruments: " + n + " provided, " + localisation_ + " required.");
+                throw new Exception("not enough instruments: " + n + " provided, " + localisation_ + " required.");
 
             //ts_.instruments_.ForEach(i => i.registerWith(ts_.update));
-				ts_.instruments_.ForEach( x => ts_.registerWith( x ) ); 
+				ts_.instruments_.ForEach((i, x) => ts_.registerWith( x ) ); 
         }
 
         public void calculate() {
@@ -144,7 +144,7 @@ namespace QLNet
                        ") has an invalid quote");
 
             // setup instruments and register with them
-				ts_.instruments_.ForEach( j => ts_.setTermStructure( j ) );
+				ts_.instruments_.ForEach((x, j) => ts_.setTermStructure( j ) );
 
             // set initial guess only if the current curve cannot be used as guess
             if (validCurve_) {
@@ -208,7 +208,7 @@ namespace QLNet
                 // check the end criteria
                 if (!(endType == EndCriteria.Type.StationaryFunctionAccuracy ||
                            endType == EndCriteria.Type.StationaryFunctionValue))
-                    throw new ApplicationException("Unable to strip yieldcurve to required accuracy ");
+                    throw new Exception("Unable to strip yieldcurve to required accuracy ");
                 ++iInst;
             } while (iInst < nInsts);
 

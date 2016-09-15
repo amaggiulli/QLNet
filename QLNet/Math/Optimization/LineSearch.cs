@@ -63,7 +63,7 @@ namespace QLNet {
             int icount = 0;
             while (!valid) {
                 if (icount > 200)
-                    throw new ApplicationException("can't update linesearch");
+                    throw new Exception("can't update linesearch");
                 diff *= 0.5;
                 icount++;
                 newParams = data + diff * direction;

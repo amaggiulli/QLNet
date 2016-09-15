@@ -17,12 +17,18 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_SampledCurve
    {
 
@@ -31,7 +37,11 @@ namespace TestSuite
          public double value(double x) { return x * x; }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testConstruction()
       {
          //("Testing sampled curve construction...");
@@ -42,30 +52,30 @@ namespace TestSuite
          double expected = 100.0;
          if (Math.Abs(curve.value(0) - expected) > 1e-5)
          {
-            Assert.Fail("function sampling failed");
+            QAssert.Fail("function sampling failed");
          }
 
          curve.setValue(0, 2.0);
          if (Math.Abs(curve.value(0) - 2.0) > 1e-5)
          {
-            Assert.Fail("curve value setting failed");
+            QAssert.Fail("curve value setting failed");
          }
 
          Vector value = curve.values();
          value[1] = 3.0;
          if (Math.Abs(curve.value(1) - 3.0) > 1e-5)
          {
-            Assert.Fail("curve value grid failed");
+            QAssert.Fail("curve value grid failed");
          }
 
          curve.shiftGrid(10.0);
          if (Math.Abs(curve.gridValue(0) - 0.0) > 1e-5)
          {
-            Assert.Fail("sample curve shift grid failed");
+            QAssert.Fail("sample curve shift grid failed");
          }
          if (Math.Abs(curve.value(0) - 2.0) > 1e-5)
          {
-            Assert.Fail("sample curve shift grid - value failed");
+            QAssert.Fail("sample curve shift grid - value failed");
          }
 
          curve.sample(f2.value);
@@ -78,7 +88,7 @@ namespace TestSuite
             double exp = f2.value(grid);
             if (Math.Abs(v - exp) > tolerance)
             {
-               Assert.Fail("sample curve regriding failed" +
+               QAssert.Fail("sample curve regriding failed" +
                            "\n    at " + (i + 1) + " point " + "(x = " + grid + ")" +
                            "\n    grid value: " + v +
                            "\n    expected:   " + exp);

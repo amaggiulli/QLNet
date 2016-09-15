@@ -21,12 +21,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+   #if QL_DOTNET_FRAMEWORK
    [TestClass()]
+   #endif
    public class T_AsianOptions
    {
       public void REPORT_FAILURE( string greekName, Average.Type averageType,
@@ -36,7 +42,7 @@ namespace TestSuite
                                   Date today, double v, double expected,
                                   double calculated, double tolerance )
       {
-         Assert.Fail( exercise + " "
+         QAssert.Fail( exercise + " "
          + exercise
          + " Asian option with "
          + averageType + " and "
@@ -73,7 +79,11 @@ namespace TestSuite
          return String.Empty;
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAnalyticContinuousGeometricAveragePrice()
       {
          // Testing analytic continuous geometric average-price Asians
@@ -152,7 +162,11 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAnalyticContinuousGeometricAveragePriceGreeks()
       {
          // Testing analytic continuous geometric average-price Asian greeks
@@ -313,7 +327,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAnalyticDiscreteGeometricAveragePrice()
       {
          // Testing analytic discrete geometric average-price Asians
@@ -371,8 +389,12 @@ namespace TestSuite
                            vol.value(), expected, calculated, tolerance );
          }
       }
-      
-      [TestMethod()]
+
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAnalyticDiscreteGeometricAverageStrike() 
       {
          // Testing analytic discrete geometric average-strike Asians
@@ -500,7 +522,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAnalyticDiscreteGeometricAveragePriceGreeks()
       {
          // Testing discrete-averaging geometric Asian greeks
@@ -1120,7 +1146,7 @@ namespace TestSuite
       //        double price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            Assert.Fail(
+      //            QAssert.Fail(
       //                 "past fixings had no effect on arithmetic average-price option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1138,7 +1164,7 @@ namespace TestSuite
       //        price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            Assert.Fail(
+      //            QAssert.Fail(
       //                 "past fixings had no effect on arithmetic average-strike option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1170,7 +1196,7 @@ namespace TestSuite
       //        double price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            Assert.Fail(
+      //            QAssert.Fail(
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);
@@ -1189,7 +1215,7 @@ namespace TestSuite
       //        price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            Assert.Fail(
+      //            QAssert.Fail(
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);

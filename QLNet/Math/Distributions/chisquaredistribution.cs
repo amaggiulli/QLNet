@@ -101,7 +101,7 @@ namespace QLNet {
             }
         }
     L_End:
-        if (bound > errmax) throw new ApplicationException("didn't converge");
+        if (bound > errmax) throw new Exception("didn't converge");
         return (ans);
         }
     }

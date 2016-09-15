@@ -19,12 +19,18 @@
 
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_DayCounters
    {
       public struct SingleCase
@@ -54,7 +60,11 @@ namespace TestSuite
          public Date _refEnd;
          public double _result;
       }
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testActualActual()
       {
          SingleCase[] testCases = 
@@ -151,13 +161,17 @@ namespace TestSuite
 
             if (Math.Abs(calculated - testCases[i]._result) > 1.0e-10)
             {
-               Assert.Fail(dayCounter.name() + "period: " + d1 + " to " + d2 +
+               QAssert.Fail(dayCounter.name() + "period: " + d1 + " to " + d2 +
                            "    calculated: " + calculated + "    expected:   " + testCases[i]._result); 
             }
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testSimple()
       {
          Period[] p = { new Period(3, TimeUnit.Months), new Period(6, TimeUnit.Months), new Period(1, TimeUnit.Years) };
@@ -176,7 +190,7 @@ namespace TestSuite
                   double calculated = dayCounter.yearFraction(start,end,null ,null );
                   if (Math.Abs(calculated-expected[i]) > 1.0e-12) 
                   {
-                      Assert.Fail ("from " + start + " to " + end +
+                      QAssert.Fail ("from " + start + " to " + end +
                                    "Calculated: " + calculated +
                                    "Expected:   " + expected[i]);
                   }
@@ -184,8 +198,12 @@ namespace TestSuite
           }
 
       }
-      
-      [TestMethod()]
+
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testOne()
       {
           Period[] p = { new Period(3,TimeUnit.Months), new Period(6,TimeUnit.Months), new Period(1,TimeUnit.Years) };
@@ -204,7 +222,7 @@ namespace TestSuite
                   double calculated = dayCounter.yearFraction(start,end,null,null);
                   if (Math.Abs(calculated-expected[i]) > 1.0e-12) 
                   {
-                      Assert.Fail("from " + start + " to " + end +
+                      QAssert.Fail("from " + start + " to " + end +
                                   "Calculated: " + calculated +
                                   "Expected:   " + expected[i]);
                   }
@@ -213,7 +231,11 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testBusiness252() 
       {
          // Testing business/252 day counter
@@ -261,7 +283,7 @@ namespace TestSuite
             calculated = dayCounter1.yearFraction(testDates[i-1],testDates[i]);
             if (Math.Abs(calculated-expected[i-1]) > 1.0e-12) 
             {
-               Assert.Fail("from " + testDates[i-1]
+               QAssert.Fail("from " + testDates[i-1]
                                    + " to " + testDates[i] + ":\n"
                                    + "    calculated: " + calculated + "\n"
                                    + "    expected:   " + expected[i-1]);
@@ -275,7 +297,7 @@ namespace TestSuite
             calculated = dayCounter2.yearFraction(testDates[i-1],testDates[i]);
             if (Math.Abs(calculated-expected[i-1]) > 1.0e-12) 
             {
-               Assert.Fail("from " + testDates[i-1]
+               QAssert.Fail("from " + testDates[i-1]
                                    + " to " + testDates[i] + ":\n"
                                    + "    calculated: " + calculated + "\n"
                                    + "    expected:   " + expected[i-1]);
@@ -284,7 +306,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testThirty360_BondBasis() 
       {
          // Testing thirty/360 day counter (Bond Basis)
@@ -341,7 +367,7 @@ namespace TestSuite
             calculated = dayCounter.dayCount(testStartDates[i], testEndDates[i]);
             if (calculated != expected[i]) 
             {
-               Assert.Fail("from " + testStartDates[i]
+               QAssert.Fail("from " + testStartDates[i]
                                    + " to " + testEndDates[i] + ":\n"
                                    + "    calculated: " + calculated + "\n"
                                    + "    expected:   " + expected[i]);
@@ -349,7 +375,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testThirty360_EurobondBasis() 
       {
          // Testing thirty/360 day counter (Eurobond Basis)
@@ -413,7 +443,7 @@ namespace TestSuite
             calculated = dayCounter.dayCount(testStartDates[i], testEndDates[i]);
             if (calculated != expected[i]) 
             {
-               Assert.Fail("from " + testStartDates[i]
+               QAssert.Fail("from " + testStartDates[i]
                                    + " to " + testEndDates[i] + ":\n"
                                    + "    calculated: " + calculated + "\n"
                                    + "    expected:   " + expected[i]);
@@ -421,7 +451,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testIntraday() 
       {
          // Testing intraday behavior of day counter
@@ -441,10 +475,10 @@ namespace TestSuite
                                  * dc.yearFraction(d1, d1+1)/86400
                                  + dc.yearFraction(d1, d1+2);
 
-            Assert.IsTrue( Math.Abs(dc.yearFraction(d1, d2) - expected) < tol,
+            QAssert.IsTrue( Math.Abs(dc.yearFraction(d1, d2) - expected) < tol,
                            "can not reproduce result for day counter " + dc.name());
 
-            Assert.IsTrue( Math.Abs(dc.yearFraction(d2, d1) + expected) < tol,
+            QAssert.IsTrue( Math.Abs(dc.yearFraction(d2, d1) + expected) < tol,
                            "can not reproduce result for day counter " + dc.name());
          }
       }

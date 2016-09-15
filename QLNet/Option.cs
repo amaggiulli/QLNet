@@ -39,7 +39,7 @@ namespace QLNet {
             Option.Arguments arguments = args as Option.Arguments;
 
             if (arguments == null)
-                throw new ApplicationException("wrong argument type");
+                throw new Exception("wrong argument type");
 
             arguments.payoff = payoff_;
             arguments.exercise = exercise_;
@@ -52,8 +52,8 @@ namespace QLNet {
             public Exercise exercise;
 
            public virtual void validate() {
-                if (payoff == null) throw new ApplicationException("no payoff given");
-                if (exercise == null) throw new ApplicationException("no exercise given");
+                if (payoff == null) throw new Exception("no payoff given");
+                if (exercise == null) throw new Exception("no exercise given");
             }
         }
     }

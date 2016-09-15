@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -16,12 +17,11 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
    //! Basic term-structure functionality
-   public class TermStructure : Extrapolator, IObserver, IObservable
+   public abstract class TermStructure : Extrapolator, IObserver, IObservable
    {
         
       #region Constructors
@@ -92,7 +92,7 @@ namespace QLNet
       //! date/time conversion
       public double timeFromReference( Date date) { return dayCounter().yearFraction(referenceDate(), date);}
       //! the latest date for which the curve can return values
-      public virtual Date maxDate() { throw new NotSupportedException(); }
+      public abstract Date maxDate();
       //! the latest time for which the curve can return values
       public virtual double maxTime() {return timeFromReference(maxDate());}
       //! the date at which discount = 1.0 and/or variance = 0.0
@@ -159,9 +159,9 @@ namespace QLNet
 
       protected  bool moving_;
       protected  bool updated_;
+      protected Calendar calendar_;
 
-       
-      private  Calendar calendar_;
+
       private  Date referenceDate_;
       private  int? settlementDays_;
       private  DayCounter dayCounter_;

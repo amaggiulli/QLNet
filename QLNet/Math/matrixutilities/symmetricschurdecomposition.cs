@@ -48,9 +48,9 @@ namespace QLNet {
             eigenVectors_ = new Matrix(s.rows(), s.columns(), 0.0);
 
             if (!(s.rows() > 0 && s.columns() > 0)) 
-                throw new ApplicationException( "null matrix given");
+                throw new Exception( "null matrix given");
             if (s.rows()!=s.columns()) 
-                throw new ApplicationException( "input matrix must be square");
+                throw new Exception( "input matrix must be square");
 
             int size = s.rows();
             for (int q=0; q<size; q++) {
@@ -132,7 +132,7 @@ namespace QLNet {
             } while (++ite<=maxIterations && keeplooping);
 
             if(!(ite<=maxIterations))
-                throw new ApplicationException("Too many iterations (" + maxIterations + ") reached");
+                throw new Exception("Too many iterations (" + maxIterations + ") reached");
 
 
             // sort (eigenvalues, eigenvectors)

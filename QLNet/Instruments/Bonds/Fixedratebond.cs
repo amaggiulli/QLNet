@@ -60,10 +60,10 @@ namespace QLNet
          addRedemptionsToCashflows(new List<double>() { redemption });
 
          if (cashflows().Count == 0)
-            throw new ApplicationException("bond with no cashflows!");
+            throw new Exception("bond with no cashflows!");
 
          if (redemptions_.Count != 1)
-            throw new ApplicationException("multiple redemptions created");
+            throw new Exception("multiple redemptions created");
       }
       
       /*! simple annual compounding coupon rates
@@ -115,10 +115,10 @@ namespace QLNet
             case DateGeneration.Rule.ThirdWednesday:
             case DateGeneration.Rule.Twentieth:
             case DateGeneration.Rule.TwentiethIMM:
-               throw new ApplicationException("stub date (" + stubDate + ") not allowed with " + rule + " DateGeneration::Rule");
+               throw new Exception("stub date (" + stubDate + ") not allowed with " + rule + " DateGeneration::Rule");
               
             default:
-               throw new ApplicationException("unknown DateGeneration::Rule (" + rule + ")");
+               throw new Exception("unknown DateGeneration::Rule (" + rule + ")");
          }
 
 
@@ -142,10 +142,10 @@ namespace QLNet
 
 
          if (cashflows().Count == 0)
-            throw new ApplicationException("bond with no cashflows!");
+            throw new Exception("bond with no cashflows!");
          
          if (redemptions_.Count != 1)
-            throw new ApplicationException("multiple redemptions created");
+            throw new Exception("multiple redemptions created");
       }
 
       public FixedRateBond(int settlementDays,
@@ -183,10 +183,10 @@ namespace QLNet
 
 
         if (cashflows().Count == 0)
-         throw new ApplicationException("bond with no cashflows!");
+         throw new Exception("bond with no cashflows!");
         
         if (redemptions_.Count != 1)
-           throw new ApplicationException("multiple redemptions created");
+           throw new Exception("multiple redemptions created");
     }
       
       Frequency frequency() { return frequency_; }

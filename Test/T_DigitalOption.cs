@@ -16,12 +16,18 @@
 
 using System;
 using System.Collections.Generic;
+#if QL_DOTNET_FRAMEWORK
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+   using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
+#if QL_DOTNET_FRAMEWORK
    [TestClass()]
+#endif
    public class T_DigitalOption
    {
       struct DigitalOptionData
@@ -56,7 +62,7 @@ namespace TestSuite
                            Date today, double v, double expected, double calculated, double error, double tolerance,
                            bool knockin )
       {
-         Assert.Fail( exercise + " "
+         QAssert.Fail( exercise + " "
                 + payoff.optionType() + " option with "
                 + payoff + " payoff:\n"
                 + "    spot value:       " + s + "\n"
@@ -74,7 +80,11 @@ namespace TestSuite
 
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCashOrNothingEuropeanValues()
       {
          // Testing European cash-or-nothing digital option
@@ -130,7 +140,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAssetOrNothingEuropeanValues()
       {
 
@@ -186,7 +200,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testGapEuropeanValues()
       {
          // Testing European gap digital option
@@ -241,7 +259,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCashAtHitOrNothingAmericanValues()
       {
          // Testing American cash-(at-hit)-or-nothing digital option
@@ -307,7 +329,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAssetAtHitOrNothingAmericanValues()
       {
          // Testing American asset-(at-hit)-or-nothing "digital option
@@ -371,7 +397,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCashAtExpiryOrNothingAmericanValues()
       {
          // Testing American cash-(at-expiry)-or-nothing digital option
@@ -438,7 +468,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testAssetAtExpiryOrNothingAmericanValues()
       {
 
@@ -511,7 +545,11 @@ namespace TestSuite
          }
       }
 
-      [TestMethod()]
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
       public void testCashAtHitOrNothingAmericanGreeks()
       {
 

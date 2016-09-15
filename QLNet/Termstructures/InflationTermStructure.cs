@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -47,7 +47,7 @@ namespace QLNet {
                     startMonth = endMonth = month;
                     break;
                 default:
-                    throw new ApplicationException("Frequency not handled: " + frequency);
+                    throw new Exception("Frequency not handled: " + frequency);
             }
 
             Date startDate = new Date(1, startMonth, year);
@@ -83,7 +83,7 @@ namespace QLNet {
 
    //! Interface for inflation term structures.
    //! \ingroup inflationtermstructures 
-   public class InflationTermStructure : TermStructure 
+   public abstract class InflationTermStructure : TermStructure 
    {
       public InflationTermStructure() { }
 
@@ -170,7 +170,7 @@ namespace QLNet {
            a not-interpolated curve because interpolation, usually,
            of fixings is forward looking).
       */
-      public virtual Date baseDate() { return null; }
+      public abstract Date baseDate();
       //@}
 
       //! Functions to set and get seasonality.
@@ -184,7 +184,7 @@ namespace QLNet {
          if (seasonality_ != null) 
          {
             if (!seasonality_.isConsistent(this))
-               throw new ApplicationException("Seasonality inconsistent with " +
+               throw new Exception("Seasonality inconsistent with " +
                                              "inflation term structure");
          }
          notifyObservers();
@@ -211,10 +211,10 @@ namespace QLNet {
       protected override void checkRange(Date d,bool extrapolate)
       {
          if (d < baseDate())
-            throw new ApplicationException("date (" + d + ") is before base date");
+            throw new Exception("date (" + d + ") is before base date");
 
          if (!extrapolate && allowsExtrapolation() && d > maxDate())
-            throw new ApplicationException("date (" + d + ") is past max curve date ("
+            throw new Exception("date (" + d + ") is past max curve date ("
                                             + maxDate() + ")");
       }
 
@@ -225,7 +225,7 @@ namespace QLNet {
     //! Interface for zero inflation term structures.
     // Child classes use templates but do not want that exposed to
     // general users.
-    public class ZeroInflationTermStructure : InflationTermStructure 
+    public abstract class ZeroInflationTermStructure : InflationTermStructure 
     {
        public ZeroInflationTermStructure() { }
 
@@ -348,14 +348,14 @@ namespace QLNet {
        //@}
    
        //! to be defined in derived classes
-       protected virtual double zeroRateImpl(double t) {return 0;}
-   
-   }
+       protected abstract double zeroRateImpl(double t);
+
+    }
 
 
    
    //! Base class for year-on-year inflation term structures.
-    public class YoYInflationTermStructure : InflationTermStructure
+    public abstract class YoYInflationTermStructure : InflationTermStructure
     {
        public YoYInflationTermStructure() { }
        //! \name Constructors
@@ -465,8 +465,7 @@ namespace QLNet {
        //@}
 
        //! to be defined in derived classes
-       protected virtual double yoyRateImpl(double time) { return 0; }
-
+       protected abstract double yoyRateImpl(double time);
     }
 
 

@@ -54,10 +54,10 @@ namespace QLNet
 				maxStationaryStateIterations_ = Math.Min((int)(maxIterations/2), (int)(100));
 
             if (!(maxStationaryStateIterations_ > 1))
-                throw new ApplicationException("maxStationaryStateIterations_ (" + maxStationaryStateIterations_ + ") must be greater than one");
+                throw new Exception("maxStationaryStateIterations_ (" + maxStationaryStateIterations_ + ") must be greater than one");
 
             if (!(maxStationaryStateIterations_ < maxIterations_))
-                throw new ApplicationException("maxStationaryStateIterations_ (" + maxStationaryStateIterations_ + ") must be less than maxIterations_ (" + maxIterations_ + ")");
+                throw new Exception("maxStationaryStateIterations_ (" + maxStationaryStateIterations_ + ") must be less than maxIterations_ (" + maxIterations_ + ")");
 
 			if (gradientNormEpsilon_ == null)
 				gradientNormEpsilon_ = functionEpsilon_;

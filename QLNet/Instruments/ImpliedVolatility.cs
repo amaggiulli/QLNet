@@ -64,7 +64,7 @@ namespace QLNet {
             
             results_ = engine_.getResults() as Instrument.Results;
             if (results_ == null)
-                throw new ApplicationException("pricing engine does not supply needed results");
+                throw new Exception("pricing engine does not supply needed results");
         }
 
         public override double value(double x) {

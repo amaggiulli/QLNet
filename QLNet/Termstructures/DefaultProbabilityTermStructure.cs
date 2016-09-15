@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -27,7 +28,7 @@ namespace QLNet
 
       \ingroup defaultprobabilitytermstructures
    */
-   public  class DefaultProbabilityTermStructure : TermStructure 
+   public abstract class DefaultProbabilityTermStructure : TermStructure 
    {
       #region Constructors
 
@@ -233,12 +234,10 @@ namespace QLNet
       // must assume that extrapolation is required.
 
       //! survival probability calculation
-      protected virtual double survivalProbabilityImpl(double t) 
-      {throw new NotImplementedException("DefaultProbabilityTermStructure.survivalProbabilityImpl");}
+      protected abstract double survivalProbabilityImpl(double t);
       
       //! default density calculation
-      protected virtual double defaultDensityImpl(double t)  
-      {throw new NotImplementedException("DefaultProbabilityTermStructure.defaultDensityImpl");}
+      protected abstract double defaultDensityImpl(double t);
       
       #endregion
 

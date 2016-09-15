@@ -32,7 +32,7 @@ namespace QLNet {
 
         protected override void performCalculations() {
             if (quote_.empty())
-                throw new ApplicationException("null quote set");
+                throw new Exception("null quote set");
             NPV_ = quote_.link.value();
         }
     }
