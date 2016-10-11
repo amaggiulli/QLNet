@@ -69,6 +69,7 @@
     <Compile Include="T_BasketOption.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
     <Compile Include="T_DigitalOption.cs" />
+    <Compile Include="T_ForwardOption.cs" />
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_HestonModel.cs" />
     <Compile Include="T_HybridHestonHullWhiteProcess.cs" />

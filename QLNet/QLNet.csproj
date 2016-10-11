@@ -183,13 +183,16 @@
     <Compile Include="Instruments\Callability.cs" />
     <Compile Include="Instruments\CapFloor.cs" />
     <Compile Include="Instruments\Claim.cs" />
+    <Compile Include="Instruments\CompositeInstrument.cs" />
     <Compile Include="Instruments\CreditDefaultSwap.cs" />
+    <Compile Include="Instruments\DividendBarrierOption.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
     <Compile Include="Instruments\DividendVanillaOption.cs" />
     <Compile Include="Instruments\EuropeanOption.cs" />
     <Compile Include="Instruments\fixedratebondforward.cs" />
     <Compile Include="Instruments\forward.cs" />
     <Compile Include="Instruments\forwardrateagreement.cs" />
+    <Compile Include="Instruments\ForwardVanillaOption.cs" />
     <Compile Include="Instruments\Futures.cs" />
     <Compile Include="Instruments\ImpliedVolatility.cs" />
     <Compile Include="Instruments\InflationCapFloor.cs" />
@@ -430,6 +433,8 @@
     <Compile Include="Pricingengines\CapFloor\discretizedcapfloor.cs" />
     <Compile Include="Pricingengines\credit\IntegralCdsEngine.cs" />
     <Compile Include="Pricingengines\credit\MidPointCdsEngine.cs" />
+    <Compile Include="Pricingengines\Forward\ForwardPerformanceVanillaEngine.cs" />
+    <Compile Include="Pricingengines\Forward\ForwardVanillaEngine.cs" />
     <Compile Include="Pricingengines\genericmodelengine.cs" />
     <Compile Include="Pricingengines\Greeks.cs" />
     <Compile Include="Pricingengines\inflation\InflationCapFloorEngines.cs" />
@@ -524,6 +529,7 @@
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolSurface.cs" />
     <Compile Include="Termstructures\Volatility\equityfx\BlackVarianceSurface.cs" />
+    <Compile Include="Termstructures\Volatility\equityfx\ImpliedVolTermStructure.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\CPIVolatilitySurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\yoyinflationoptionletvolatilitystructure.cs" />
     <Compile Include="Termstructures\Volatility\InterpolatedSmileSection.cs" />
