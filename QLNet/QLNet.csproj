@@ -198,6 +198,7 @@
     <Compile Include="Instruments\InflationCapFloor.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\Loan.cs" />
+    <Compile Include="Instruments\LookbackOption.cs" />
     <Compile Include="Instruments\MakeBasisSwap.cs" />
     <Compile Include="Instruments\MakeCapFloor.cs" />
     <Compile Include="Instruments\MakeLoans.cs" />
@@ -440,6 +441,10 @@
     <Compile Include="Pricingengines\inflation\InflationCapFloorEngines.cs" />
     <Compile Include="Pricingengines\latticeshortratemodelengine.cs" />
     <Compile Include="Pricingengines\Loan\DiscountingLoanEngine.cs" />
+    <Compile Include="Pricingengines\Lookback\AnalyticContinuousFixedLookbackEngine.cs" />
+    <Compile Include="Pricingengines\Lookback\AnalyticContinuousFloatingLookbackEngine.cs" />
+    <Compile Include="Pricingengines\Lookback\AnalyticContinuousPartialFixedLookbackEngine.cs" />
+    <Compile Include="Pricingengines\Lookback\AnalyticContinuousPartialFloatingLookbackEngine.cs" />
     <Compile Include="Pricingengines\mclongstaffschwartzengine.cs" />
     <Compile Include="Pricingengines\mcsimulation.cs" />
     <Compile Include="Pricingengines\swaption\blackswaptionengine.cs" />
