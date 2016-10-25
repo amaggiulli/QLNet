@@ -171,7 +171,7 @@ namespace QLNet
          Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
             () => "dates/data count mismatch");
          Utils.QL_REQUIRE(this.data_[0] == 1.0, () => "the first discount must be == 1.0 " +
-                                                      "to flag the corrsponding date as settlement date");
+                                                      "to flag the corresponding date as settlement date");
 
          times_ = new InitializedList<double>(dates_.Count - 1);
          times_.Add(0.0);
