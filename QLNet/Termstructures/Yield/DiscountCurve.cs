@@ -1,4 +1,4 @@
-﻿/*
+/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -167,11 +167,11 @@ namespace QLNet
       private void initialize()
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,
-            () => "not enough input dates givesn");
+            () => "not enough input dates given");
          Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
             () => "dates/data count mismatch");
          Utils.QL_REQUIRE(this.data_[0] == 1.0, () => "the first discount must be == 1.0 " +
-                                                      "to flag the corrsponding date as settlement date");
+                                                      "to flag the corresponding date as settlement date");
 
          times_ = new InitializedList<double>(dates_.Count - 1);
          times_.Add(0.0);
