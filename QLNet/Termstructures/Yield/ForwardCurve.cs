@@ -161,7 +161,7 @@ namespace QLNet
       private void initialize()
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,
-            () => "not enough input dates given");
+            () => "not enough input dates givesn");
          Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
             () => "dates/data count mismatch");
 
