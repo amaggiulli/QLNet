@@ -546,7 +546,11 @@
     <Compile Include="Termstructures\Volatility\Optionlet\StrippedOptionletAdapter.cs" />
     <Compile Include="Termstructures\Volatility\Optionlet\StrippedOptionletBase.cs" />
     <Compile Include="Termstructures\Volatility\SpreadedSmileSection.cs" />
+    <Compile Include="Termstructures\Volatility\swaption\SpreadedSwaptionVolatility.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionconstantvol.cs" />
+    <Compile Include="Termstructures\Volatility\swaption\SwaptionVolatilityCube.cs" />
+    <Compile Include="Termstructures\Volatility\swaption\SwaptionVolCube1.cs" />
+    <Compile Include="Termstructures\Volatility\swaption\SwaptionVolCube2.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionvoldiscrete.cs" />
     <Compile Include="Termstructures\Volatility\swaption\swaptionvolmatrix.cs" />
     <Compile Include="Termstructures\voltermstructure.cs" />

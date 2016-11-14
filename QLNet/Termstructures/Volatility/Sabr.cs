@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -51,10 +52,7 @@ namespace QLNet {
             if (Math.Abs(z * z) > Const.QL_EPSILON * m)
                 multiplier = z/xx;
             else {
-                alpha = (0.5-rho*rho)/(1.0-rho);
-                beta = alpha - .5;
-                double gamma = rho/(1-rho);
-                multiplier = 1.0 - beta*z + (gamma - alpha + beta*beta*.5)*z*z;
+                multiplier = 1.0 - 0.5 * rho * z - ( 3.0 * rho * rho - 2.0 ) * z * z / 12.0;
             }
             return (alpha/D)*multiplier*d;
         }

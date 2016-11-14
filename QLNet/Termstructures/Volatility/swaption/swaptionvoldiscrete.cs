@@ -170,7 +170,13 @@ namespace QLNet
             if (moving_){
                 initializeOptionDatesAndTimes();
                 initializeSwapLengths();
+                optionInterpolator_.update();
             }
+        }
+        //! additional inspectors
+        public Date optionDateFromTime(double optionTime)
+        {
+           return new Date(  (int)optionInterpolator_.value( optionTime )  );
         }
 
         private void checkOptionDates() {
