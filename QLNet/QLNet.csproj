@@ -114,7 +114,10 @@
     <Compile Include="Index.cs" />
     <Compile Include="Indexes\BMAIndex.cs" />
     <Compile Include="Indexes\IborIndex.cs" />
+    <Compile Include="Indexes\Ibor\Aonia.cs" />
     <Compile Include="Indexes\Ibor\Audlibor.cs" />
+    <Compile Include="Indexes\Ibor\Bbsw.cs" />
+    <Compile Include="Indexes\Ibor\Bkbm.cs" />
     <Compile Include="Indexes\Ibor\Cadlibor.cs" />
     <Compile Include="Indexes\Ibor\Cdor.cs" />
     <Compile Include="Indexes\Ibor\Chflibor.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Indexes\Ibor\Jpylibor.cs" />
     <Compile Include="Indexes\Ibor\Libor.cs" />
     <Compile Include="Indexes\Ibor\Nzdlibor.cs" />
+    <Compile Include="Indexes\Ibor\Nzocr.cs" />
     <Compile Include="Indexes\Ibor\Seklibor.cs" />
     <Compile Include="Indexes\Ibor\Shibor.cs" />
     <Compile Include="Indexes\Ibor\Sonia.cs" />
