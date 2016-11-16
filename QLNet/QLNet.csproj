@@ -87,6 +87,7 @@
     <Compile Include="Cashflows\IndexedCashFlow.cs" />
     <Compile Include="Cashflows\InflationCoupon.cs" />
     <Compile Include="Cashflows\InflationCouponPricer.cs" />
+    <Compile Include="Cashflows\LinearTsrPricer.cs" />
     <Compile Include="Cashflows\OvernightIndexedCoupon.cs" />
     <Compile Include="Cashflows\Principal.cs" />
     <Compile Include="Cashflows\PrincipalLegBase.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Instruments\LookbackOption.cs" />
     <Compile Include="Instruments\MakeBasisSwap.cs" />
     <Compile Include="Instruments\MakeCapFloor.cs" />
+    <Compile Include="Instruments\MakeCms.cs" />
     <Compile Include="Instruments\MakeLoans.cs" />
     <Compile Include="Instruments\MakeOIS.cs" />
     <Compile Include="Instruments\Makeswaption.cs" />
@@ -529,6 +531,7 @@
     <Compile Include="Termstructures\TermStructure.cs" />
     <Compile Include="Termstructures\Volatility\AbcdCalibration.cs" />
     <Compile Include="Termstructures\Volatility\AbcdFunction.cs" />
+    <Compile Include="Termstructures\Volatility\AtmSmileSection.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondConstantVolatility.cs" />
     <Compile Include="Termstructures\Volatility\Bond\CallableBondVolatilityStructure.cs" />
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />
