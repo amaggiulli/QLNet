@@ -140,15 +140,15 @@ namespace TestSuite
                               expected["gamma"] = (delta_p - delta_m) / (2 * du);
 
                               // perturb date and get theta
-                              /*
-                                 Time dT = dc.yearFraction(today-1, today+1);
-                                 Settings::instance().evaluationDate() = today-1;
-                                 value_m = option.NPV();
-                                 Settings::instance().evaluationDate() = today+1;
-                                 value_p = option.NPV();
-                                 Settings::instance().evaluationDate() = today;
-                                 expected["theta"] = (value_p - value_m)/dT;
-                              */
+                              
+                              double dT = dc.yearFraction(today-1, today+1);
+                              Settings.setEvaluationDate(today-1);
+                              value_m = option.NPV();
+                              Settings.setEvaluationDate(today+1);
+                              value_p = option.NPV();
+                              Settings.setEvaluationDate(today);
+                              expected["theta"] = (value_p - value_m)/dT;
+                              
 
                               // compare
                               foreach (string greek in calculated.Keys)
