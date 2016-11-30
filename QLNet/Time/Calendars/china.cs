@@ -122,6 +122,7 @@ namespace QLNet
                 || ( y == 2014 && d >= 31 && m == Month.January )
                 || ( y == 2014 && d <= 6 && m == Month.February )
                 || ( y == 2015 && d >= 18 && d <= 24 && m == Month.February )
+                || ( y == 2016 && d >= 8 && d <= 12 && m == Month.February )
                // Ching Ming Festival
                 || ( y <= 2008 && d == 4 && m == Month.April )
                 || ( y == 2009 && d == 6 && m == Month.April )
@@ -131,6 +132,7 @@ namespace QLNet
                 || ( y == 2013 && d >= 4 && d <= 5 && m == Month.April )
                 || ( y == 2014 && d == 7 && m == Month.April )
                 || ( y == 2015 && d >= 5 && d <= 6 && m == Month.April )
+                || ( y == 2016 && d == 4 && m == Month.April )
                // Labor Day
                 || ( y <= 2007 && d >= 1 && d <= 7 && m == Month.May )
                 || ( y == 2008 && d >= 1 && d <= 2 && m == Month.May )
@@ -143,6 +145,7 @@ namespace QLNet
                                   ( d == 1 && m == Month.May ) ) )
                 || ( y == 2014 && d >= 1 && d <= 3 && m == Month.May )
                 || ( y == 2015 && d == 1 && m == Month.May )
+                || ( y == 2016 && d >= 1 && d <= 2 && m == Month.May )
                // Tuen Ng Festival
                 || ( y <= 2008 && d == 9 && m == Month.June )
                 || ( y == 2009 && ( d == 28 || d == 29 ) && m == Month.May )
@@ -152,6 +155,7 @@ namespace QLNet
                 || ( y == 2013 && d >= 10 && d <= 12 && m == Month.June )
                 || ( y == 2014 && d == 2 && m == Month.June )
                 || ( y == 2015 && d == 22 && m == Month.June )
+                || ( y == 2016 && d >= 9 && d <= 10 && m == Month.June )
                // Mid-Autumn Festival
                 || ( y <= 2008 && d == 15 && m == Month.September )
                 || ( y == 2010 && d >= 22 && d <= 24 && m == Month.September )
@@ -160,6 +164,7 @@ namespace QLNet
                 || ( y == 2013 && d >= 19 && d <= 20 && m == Month.September )
                 || ( y == 2014 && d == 8 && m == Month.September )
                 || ( y == 2015 && d == 27 && m == Month.September )
+                || ( y == 2016 && d >= 15 && d <= 16 && m == Month.September )
                // National Day
                 || ( y <= 2007 && d >= 1 && d <= 7 && m == Month.October )
                 || ( y == 2008 && ( ( d >= 29 && m == Month.September ) ||
@@ -171,6 +176,7 @@ namespace QLNet
                 || ( y == 2013 && d >= 1 && d <= 7 && m == Month.October )
                 || ( y == 2014 && d >= 1 && d <= 7 && m == Month.October )
                 || ( y == 2015 && d >= 1 && d <= 7 && m == Month.October )
+                || ( y == 2016 && d >= 3 && d <= 7 && m == Month.October )
                // 70th anniversary of the victory of anti-Japaneses war
                 || ( y == 2015 && d >= 3 && d <= 4 && m == Month.September )
                 )
@@ -279,7 +285,14 @@ namespace QLNet
             new Date(15,Month.February,2015),
             new Date(28,Month.February,2015),
             new Date(6,Month.September,2015),
-            new Date(10,Month.October,2015)
+            new Date(10,Month.October,2015),
+            // 2016
+            new Date(6,Month.February,2016),
+            new Date(14,Month.February,2016),
+            new Date(12,Month.June,2016),
+            new Date(18,Month.September,2016),
+            new Date(8,Month.October,2016),
+            new Date(9,Month.October,2016)
         };
 
             // If it is already a SSE business day, it must be a IB business day
