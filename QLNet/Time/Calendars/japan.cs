@@ -113,7 +113,7 @@ namespace QLNet {
                     || ((d == 20 || (d == 21 && w == DayOfWeek.Monday)) && m == Month.July
                         && y >= 1996 && y < 2003)
                     // Mountain Day (from 2016)
-                    || ( d == 11 && m == Month.August && y >= 2016 )
+                    || ( ( d == 11 || ( d == 12 && w == DayOfWeek.Monday ) ) && m == Month.August && y >= 2016 )
                     // Respect for the Aged Day (3rd Monday in September),
                     // was September 15th until 2003
                     || (w == DayOfWeek.Monday && (d >= 15 && d <= 21) && m == Month.September
