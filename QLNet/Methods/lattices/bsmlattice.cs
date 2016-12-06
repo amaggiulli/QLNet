@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -16,44 +17,88 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    // this is just a wrapper for QL compatibility
-    public class BlackScholesLattice<T> : BlackScholesLattice where T : ITree {
-        public BlackScholesLattice(ITree tree, double riskFreeRate, double end, int steps)
-            : base(tree, riskFreeRate, end, steps) { }
-    }
+namespace QLNet
+{
+   // this is just a wrapper for QL compatibility
+   public class BlackScholesLattice<T> : BlackScholesLattice where T : ITree
+   {
+      public BlackScholesLattice(ITree tree, double riskFreeRate, double end, int steps)
+         : base(tree, riskFreeRate, end, steps)
+      {}
+   }
 
-    //! Simple binomial lattice approximating the Black-Scholes model
-    /*! \ingroup lattices */
-    public class BlackScholesLattice : TreeLattice1D<BlackScholesLattice>, IGenericLattice {
-        private ITree tree_;
-        private double discount_;
-        private double pd_, pu_;
+   //! Simple binomial lattice approximating the Black-Scholes model
+   /*! \ingroup lattices */
 
-        public BlackScholesLattice(ITree tree, double riskFreeRate, double end, int steps)
-            : base(new TimeGrid(end, steps), 2) {
-            tree_ = tree;
-            discount_ = Math.Exp(-riskFreeRate*(end/steps));
-            pd_ = tree.probability(0,0,0);
-            pu_ = tree.probability(0,0,1);
-        }
+   public class BlackScholesLattice : TreeLattice1D<BlackScholesLattice>, IGenericLattice
+   {
+      public BlackScholesLattice(ITree tree, double riskFreeRate, double end, int steps)
+         : base(new TimeGrid(end, steps), 2)
+      {
+         tree_ = tree;
+         riskFreeRate_ = riskFreeRate;
+         dt_ = end/steps;
+         discount_ = Math.Exp(-riskFreeRate*(end/steps));
+         pd_ = tree.probability(0, 0, 0);
+         pu_ = tree.probability(0, 0, 1);
+      }
 
-        public int size(int i) { return tree_.size(i); }
-        public double discount(int i, int j) { return discount_; }
+      public double riskFreeRate()
+      {
+         return riskFreeRate_;
+      }
 
-        public override void stepback(int i, Vector values, Vector newValues){
-            for (int j=0; j<size(i); j++)
-                newValues[j] = (pd_*values[j] + pu_*values[j+1])*discount_;
-        }
+      public double dt()
+      {
+         return dt_;
+      }
 
-        public override double underlying(int i, int index) { return tree_.underlying(i, index); }
-        public int descendant(int i, int index, int branch) { return tree_.descendant(i, index, branch); }
-        public double probability(int i, int index, int branch) { return tree_.probability(i, index, branch); }
+      public int size(int i)
+      {
+         return tree_.size(i);
+      }
 
-        // this is a workaround for CuriouslyRecurringTemplate of TreeLattice
-        // recheck it
-        protected override BlackScholesLattice impl() { return this; }
-    }
+      public double discount(int i, int j)
+      {
+         return discount_;
+      }
+
+      public override void stepback(int i, Vector values, Vector newValues)
+      {
+         for (int j = 0; j < size(i); j++)
+            newValues[j] = (pd_*values[j] + pu_*values[j + 1])*discount_;
+      }
+
+      public override double underlying(int i, int index)
+      {
+         return tree_.underlying(i, index);
+      }
+
+      public int descendant(int i, int index, int branch)
+      {
+         return tree_.descendant(i, index, branch);
+      }
+
+      public double probability(int i, int index, int branch)
+      {
+         return tree_.probability(i, index, branch);
+      }
+
+      // this is a workaround for CuriouslyRecurringTemplate of TreeLattice
+      // recheck it
+      protected override BlackScholesLattice impl()
+      {
+         return this;
+      }
+
+      protected ITree tree_;
+      protected double riskFreeRate_;
+      protected double dt_;
+      private double discount_;
+      private double pd_, pu_;
+
+   }
 }
