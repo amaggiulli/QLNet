@@ -424,6 +424,8 @@
     <Compile Include="Pricingengines\asian\mc_discr_arith_av_strike.cs" />
     <Compile Include="Pricingengines\asian\mc_discr_geom_av_price.cs" />
     <Compile Include="Pricingengines\barrier\AnalyticBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\BinomialBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\DiscretizedBarrierOption.cs" />
     <Compile Include="Pricingengines\Basket\KirkEngine.cs" />
     <Compile Include="Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
     <Compile Include="Pricingengines\Basket\StulzEngine.cs" />

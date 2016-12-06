@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="T_BarrierOption.cs" />
     <Compile Include="T_BasketOption.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
     <Compile Include="T_Cms.cs">
