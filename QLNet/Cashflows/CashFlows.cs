@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -726,27 +726,29 @@ namespace QLNet
       public static void npvbps(Leg leg,YieldTermStructure discountCurve, bool includeSettlementDateFlows,
                                 Date settlementDate, Date npvDate, out double npv,out double bps) 
       {
-         npv = 0.0;
+         npv = bps = 0.0;
          if (leg.empty())
          {
             bps = 0.0;
             return;
          }
 
-         BPSCalculator calc = new BPSCalculator(discountCurve);
          for (int i=0; i<leg.Count; ++i) 
          {
             CashFlow cf = leg[i];
 				if (!cf.hasOccurred(settlementDate, includeSettlementDateFlows) &&
 					 !cf.tradingExCoupon(settlementDate)) 
             {
-               npv += cf.amount() * discountCurve.discount(cf.date());
-               cf.accept(calc);
+               Coupon cp = leg[i] as Coupon;
+               double df = discountCurve.discount( cf.date() );
+               npv += cf.amount() * df;
+               if ( cp != null )
+                  bps += cp.nominal() * cp.accrualPeriod() * df;
             }
          }
          double d = discountCurve.discount(npvDate);
          npv /= d;
-         bps = basisPoint_ * calc.bps() / d;
+         bps = basisPoint_ * bps / d;
       }
 
       // At-the-money rate of the cash flows.
