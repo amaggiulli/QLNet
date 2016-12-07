@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com) 
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -165,7 +165,7 @@ namespace QLNet
       // Factory - for Leg generators
       public virtual CashFlow factory(double nominal, Date paymentDate, Date startDate, Date endDate, int fixingDays, InterestRateIndex index, double gearing, double spread, double? cap, double? floor, Date refPeriodStart, Date refPeriodEnd, DayCounter dayCounter, bool isInArrears)
       {
-         return new CappedFlooredCoupon( new FloatingRateCoupon( paymentDate, nominal, startDate, endDate, fixingDays, index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears ), cap, floor );
+         return new CappedFlooredCoupon( new IborCoupon( paymentDate, nominal, startDate, endDate, fixingDays, (IborIndex )index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears ), cap, floor );
       }
    }
 
