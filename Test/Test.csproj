@@ -70,6 +70,7 @@
     <Compile Include="T_BasketOption.cs" />
     <Compile Include="T_BinaryOption.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
+    <Compile Include="T_CapFlooredCoupon.cs" />
     <Compile Include="T_Cms.cs">
       <SubType>Code</SubType>
     </Compile>
