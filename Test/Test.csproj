@@ -69,6 +69,7 @@
     <Compile Include="T_BarrierOption.cs" />
     <Compile Include="T_BasketOption.cs" />
     <Compile Include="T_BinaryOption.cs" />
+    <Compile Include="T_BlackDeltaCalculator.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
     <Compile Include="T_CapFlooredCoupon.cs" />
     <Compile Include="T_CliquetOption.cs" />

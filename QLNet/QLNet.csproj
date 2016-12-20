@@ -432,6 +432,7 @@
     <Compile Include="Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
     <Compile Include="Pricingengines\Basket\StulzEngine.cs" />
     <Compile Include="Pricingengines\BlackCalculator.cs" />
+    <Compile Include="Pricingengines\BlackDeltaCalculator.cs" />
     <Compile Include="Pricingengines\blackformula.cs" />
     <Compile Include="Pricingengines\Blackscholescalculator.cs" />
     <Compile Include="Pricingengines\Bond\BlackCallableBondEngine.cs" />
@@ -514,6 +515,7 @@
     <Compile Include="processes\stochasticprocessarray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quotes\CompositeQuote.cs" />
+    <Compile Include="Quotes\DeltaVolQuote.cs" />
     <Compile Include="Quotes\DerivedQuote.cs" />
     <Compile Include="Quotes\LastFixingQuote.cs" />
     <Compile Include="Quotes\Quote.cs" />
