@@ -194,6 +194,7 @@
     <Compile Include="Instruments\DividendBarrierOption.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
     <Compile Include="Instruments\DividendVanillaOption.cs" />
+    <Compile Include="Instruments\DoubleBarrierOption.cs" />
     <Compile Include="Instruments\EuropeanOption.cs" />
     <Compile Include="Instruments\fixedratebondforward.cs" />
     <Compile Include="Instruments\forward.cs" />
@@ -427,9 +428,12 @@
     <Compile Include="Pricingengines\asian\mc_discr_geom_av_price.cs" />
     <Compile Include="Pricingengines\barrier\AnalyticBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\AnalyticDoubleBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\BinomialBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\DiscretizedBarrierOption.cs" />
     <Compile Include="Pricingengines\barrier\VannaVolgaBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\VannaVolgaDoubleBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\WulinYongDoubleBarrierEngine.cs" />
     <Compile Include="Pricingengines\Basket\KirkEngine.cs" />
     <Compile Include="Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
     <Compile Include="Pricingengines\Basket\StulzEngine.cs" />

@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="T_DigitalCoupon.cs" />
     <Compile Include="T_DigitalOption.cs" />
+    <Compile Include="T_DoubleBarrierOption.cs" />
     <Compile Include="T_ForwardOption.cs" />
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_HestonModel.cs" />
