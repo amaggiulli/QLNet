@@ -249,6 +249,7 @@
     <Compile Include="Math\Interpolations\BackwardflatLinearInterpolation.cs" />
     <Compile Include="Math\Interpolations\FlatExtrapolator2D.cs" />
     <Compile Include="Math\Interpolations\MixedInterpolation.cs" />
+    <Compile Include="Math\Interpolations\VannaVolgaInterpolation.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />
@@ -428,6 +429,7 @@
     <Compile Include="Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\BinomialBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\DiscretizedBarrierOption.cs" />
+    <Compile Include="Pricingengines\barrier\VannaVolgaBarrierEngine.cs" />
     <Compile Include="Pricingengines\Basket\KirkEngine.cs" />
     <Compile Include="Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
     <Compile Include="Pricingengines\Basket\StulzEngine.cs" />

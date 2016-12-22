@@ -50,7 +50,7 @@ namespace QLNet
        //! %Arguments for dividend barrier option calculation
       public new class Arguments : BarrierOption.Arguments 
       {
-         public List<Dividend> cashFlow;
+         public List<Dividend> cashFlow = new List<Dividend>();
          public Arguments() {}
          public override void validate()
          {
