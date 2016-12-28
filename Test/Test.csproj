@@ -69,13 +69,16 @@
     <Compile Include="T_BarrierOption.cs" />
     <Compile Include="T_BasketOption.cs" />
     <Compile Include="T_BinaryOption.cs" />
+    <Compile Include="T_BlackDeltaCalculator.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
     <Compile Include="T_CapFlooredCoupon.cs" />
     <Compile Include="T_CliquetOption.cs" />
     <Compile Include="T_Cms.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="T_DigitalCoupon.cs" />
     <Compile Include="T_DigitalOption.cs" />
+    <Compile Include="T_DoubleBarrierOption.cs" />
     <Compile Include="T_ForwardOption.cs" />
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_HestonModel.cs" />

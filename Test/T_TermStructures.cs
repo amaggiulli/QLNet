@@ -308,5 +308,91 @@ namespace TestSuite
          if (!flag.isUp())
             QAssert.Fail("Observer was not notified of spread change");
       }
+
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
+      public void testInterpolatedZeroCurveWithRefDateAndTenorDates()
+      {
+         CommonVars vars = new CommonVars();
+
+         // Create the interpolated curve
+         var refDate = new Date( 1, 10, 2015 );
+         var dates = new List<Date>()
+         {
+            new Date(30, 12, 2015),
+            new Date(30, 3, 2016),
+            new Date(30, 9, 2016),
+            new Date(29, 9, 2017),
+            new Date(28, 9, 2018),
+            new Date(30, 9, 2019),
+            new Date(30, 9, 2020),
+            new Date(30, 9, 2021),
+            new Date(30, 9, 2022),
+            new Date(29, 9, 2023),
+            new Date(30, 9, 2024),
+            new Date(30, 9, 2025),
+            new Date(30, 9, 2030),
+            new Date(28, 9, 2035),
+            new Date(29, 9, 2045),
+         };
+
+         var yields = new List<double>()
+         {
+            -0.002558362,
+            -0.002478462,
+            -0.00248845,
+            -0.002498437,
+            -0.00196903,
+            -0.001219628,
+            -0.000209989,
+            0.000940221,
+            0.00220121,
+            0.003493045,
+            0.004785712,
+            0.00602906,
+            0.010909594,
+            0.013132837,
+            0.01403893
+         };
+
+         var curve = new InterpolatedZeroCurve<Linear>( dates,
+            yields,
+            new ActualActual( ActualActual.Convention.ISMA ),
+            new Linear(),
+            Compounding.Continuous,
+            Frequency.Annual, refDate );
+
+         Dictionary<Date, double> tenors2 = new Dictionary<Date, double>
+         {
+            {new Date(30, 12, 2015), -0.002558362},
+            {new Date(30, 3, 2016), -0.002478462},
+            {new Date(30, 9, 2016), -0.00248845},
+            {new Date(29, 9, 2017), -0.002498437},
+            {new Date(28, 9, 2018), -0.00196903},
+            {new Date(30, 9, 2019), -0.001219628},
+            {new Date(30, 9, 2020), -0.000209989},
+            {new Date(30, 9, 2021), 0.000940221},
+            {new Date(30, 9, 2022), 0.00220121},
+            {new Date(29, 9, 2023), 0.003493045},
+            {new Date(30, 9, 2024), 0.004785712},
+            {new Date(30, 9, 2025), 0.00602906},
+            {new Date(30, 9, 2030), 0.010909594},
+            {new Date(28, 9, 2035), 0.013132837},
+            {new Date(29, 9, 2045), 0.01403893}
+         };
+
+         // Make sure the points come back as expected
+         var tenors = new[] { 0.25, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 30.0 };
+
+         for ( int i = 0; i < tenors.Length; i++ )
+         {
+            var test = curve.interpolation_.value( tenors[i],true );
+            Assert.AreEqual( yields[i], test );
+         }
+         Assert.AreNotEqual( yields[0], curve.interpolation_.value( 0.0,true ) );
+        }
    }
 }

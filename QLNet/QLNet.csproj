@@ -194,6 +194,7 @@
     <Compile Include="Instruments\DividendBarrierOption.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
     <Compile Include="Instruments\DividendVanillaOption.cs" />
+    <Compile Include="Instruments\DoubleBarrierOption.cs" />
     <Compile Include="Instruments\EuropeanOption.cs" />
     <Compile Include="Instruments\fixedratebondforward.cs" />
     <Compile Include="Instruments\forward.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Math\Interpolations\BackwardflatLinearInterpolation.cs" />
     <Compile Include="Math\Interpolations\FlatExtrapolator2D.cs" />
     <Compile Include="Math\Interpolations\MixedInterpolation.cs" />
+    <Compile Include="Math\Interpolations\VannaVolgaInterpolation.cs" />
     <Compile Include="Math\Optimization\BFGS.cs" />
     <Compile Include="Math\Optimization\CostFunction.cs" />
     <Compile Include="Math\Distributions\binomialdistribution.cs" />
@@ -426,12 +428,17 @@
     <Compile Include="Pricingengines\asian\mc_discr_geom_av_price.cs" />
     <Compile Include="Pricingengines\barrier\AnalyticBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\AnalyticDoubleBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\BinomialBarrierEngine.cs" />
     <Compile Include="Pricingengines\barrier\DiscretizedBarrierOption.cs" />
+    <Compile Include="Pricingengines\barrier\VannaVolgaBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\VannaVolgaDoubleBarrierEngine.cs" />
+    <Compile Include="Pricingengines\barrier\WulinYongDoubleBarrierEngine.cs" />
     <Compile Include="Pricingengines\Basket\KirkEngine.cs" />
     <Compile Include="Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
     <Compile Include="Pricingengines\Basket\StulzEngine.cs" />
     <Compile Include="Pricingengines\BlackCalculator.cs" />
+    <Compile Include="Pricingengines\BlackDeltaCalculator.cs" />
     <Compile Include="Pricingengines\blackformula.cs" />
     <Compile Include="Pricingengines\Blackscholescalculator.cs" />
     <Compile Include="Pricingengines\Bond\BlackCallableBondEngine.cs" />
@@ -514,6 +521,7 @@
     <Compile Include="processes\stochasticprocessarray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quotes\CompositeQuote.cs" />
+    <Compile Include="Quotes\DeltaVolQuote.cs" />
     <Compile Include="Quotes\DerivedQuote.cs" />
     <Compile Include="Quotes\LastFixingQuote.cs" />
     <Compile Include="Quotes\Quote.cs" />

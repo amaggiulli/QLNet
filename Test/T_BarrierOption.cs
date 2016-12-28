@@ -64,7 +64,7 @@ namespace TestSuite
                   + "    tolerance:        " + tolerance );
       }
 
-      private void REPORT_FAILURE_EX( string greekName,
+      private void REPORT_FX_FAILURE( string greekName,
                              Barrier.Type barrierType,
                              double barrier,
                              double rebate,
@@ -779,6 +779,237 @@ namespace TestSuite
                         + "\n    maturity:   " + exDate
                         + "\n    calculated: " + calculatedLocalVolNPV
                         + "\n    expected:   " + expectedLocalVolNPV);
+         }
+      }
+
+      #if QL_DOTNET_FRAMEWORK
+         [TestMethod()]
+      #else
+         [Fact]
+      #endif
+      public void testVannaVolgaSimpleBarrierValues() 
+      {
+         // Testing barrier FX options against Vanna/Volga values
+         SavedSettings backup = new SavedSettings();
+
+         BarrierFxOptionData[] values = {
+
+            //barrierType,barrier,rebate,type,strike,s,q,r,t,vol25Put,volAtm,vol25Call,vol, result, tol
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.148127, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.075943, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.0274771, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.00573, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00012, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00697606, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.020078, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.0489395, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.0969877, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.157, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.0322202, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.0241491, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.0164275, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.01, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00489, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.000560713, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.000546804, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.000130649, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.000300828, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.5,0,      Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00135, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,   Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.17746, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,   Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.0994142, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,   Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.0439, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,   Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.01574, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,   Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00501, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,   Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00612, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,   Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.00426, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,   Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.00257, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,   Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.00122, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,   Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00045, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,  Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00022, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,  Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.00284, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,  Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.02032, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,  Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.058235, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.1,0,  Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.109432, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.00017, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00083, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00289, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.00067784, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.17423, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.09584, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.04133, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.01452, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.00456, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00732, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.01778, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.02875, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.0390535, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.1,0,   Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.0489236, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.00753, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.02062, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.31179,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08925,0.04907, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.38843,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08463,0.09711, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.46047,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.08412,0.15752, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.20493, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.105577, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.0358872, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.00634958, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.0108218, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.0313339, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.0751237, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.153407, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpOut,1.6,0,    Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.253767, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.05402, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.0410069, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.0279562, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.0173055, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.00764, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.000962737, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.00102637, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.000419834, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.00159277, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.UpIn,1.6,0,     Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.00473629, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.255098, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.145701, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.06384, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.02366, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.00764, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.00592, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.00421, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.00256, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.0012, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.0004, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.00280549, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.0279945, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.0896352, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1,0,    Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.175182, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,    0.00000, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,     0.00000, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,    0.00000, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.0002, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownOut,1.3,0,  Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.00096, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.00384783, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.000883232, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,   0.00000, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,   0.00000, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.25302, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.14238, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.06128, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.02245, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Call,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.00725, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.01178, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.0295548, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.047549, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.0653642, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1,0,     Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.0833221, 1.0e-4),
+
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.06145,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.12511,0.01178, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.19545,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.1089,0.03236, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.07554, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.15479, 1.0e-4),
+            new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.25754, 1.0e-4),
+
+         };
+
+         DayCounter dc = new Actual365Fixed();
+         Date today = new Date(5, Month.March, 2013);
+         Settings.setEvaluationDate(today);
+
+         SimpleQuote spot = new SimpleQuote(0.0);
+         SimpleQuote qRate = new SimpleQuote(0.0);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+         SimpleQuote rRate = new SimpleQuote(0.0);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol25Put = new SimpleQuote(0.0);
+         SimpleQuote volAtm = new SimpleQuote(0.0);
+         SimpleQuote vol25Call = new SimpleQuote(0.0);
+
+         for (int i=0; i< values.Length; i++) 
+         {
+            spot.setValue(values[i].s);
+            qRate.setValue(values[i].q);
+            rRate.setValue(values[i].r);
+            vol25Put.setValue(values[i].vol25Put);
+            volAtm.setValue(values[i].volAtm);
+            vol25Call.setValue(values[i].vol25Call);
+
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type,values[i].strike);
+            Date exDate = today + (int)(values[i].t*365+0.5);
+            Exercise exercise = new EuropeanExercise(exDate);
+
+            Handle<DeltaVolQuote> volAtmQuote = new Handle<DeltaVolQuote>(
+					new DeltaVolQuote( new Handle<Quote>(volAtm),
+							             DeltaVolQuote.DeltaType.Fwd,
+							             values[i].t,
+							             DeltaVolQuote.AtmType.AtmDeltaNeutral));
+
+            Handle<DeltaVolQuote> vol25PutQuote = new Handle<DeltaVolQuote>(
+				   new DeltaVolQuote( -0.25,
+							             new Handle<Quote>(vol25Put),
+							             values[i].t,
+							             DeltaVolQuote.DeltaType.Fwd));
+
+            Handle<DeltaVolQuote> vol25CallQuote = new Handle<DeltaVolQuote>(
+				   new DeltaVolQuote( 0.25,
+							             new Handle<Quote>(vol25Call),
+							             values[i].t,
+							             DeltaVolQuote.DeltaType.Fwd));
+
+            BarrierOption barrierOption = new BarrierOption(values[i].barrierType,values[i].barrier,values[i].rebate,
+               payoff,exercise);
+
+            double bsVanillaPrice = Utils.blackFormula(values[i].type, values[i].strike,
+               spot.value()*qTS.discount(values[i].t)/rTS.discount(values[i].t),
+				   values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
+            IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine( volAtmQuote, vol25PutQuote, vol25CallQuote,
+				   new Handle<Quote> (spot),
+				   new Handle<YieldTermStructure> (rTS),
+				   new Handle<YieldTermStructure> (qTS),
+				   true,
+				   bsVanillaPrice);
+            barrierOption.setPricingEngine(vannaVolgaEngine);
+
+            double calculated = barrierOption.NPV();
+            double expected = values[i].result;
+            double error = Math.Abs(calculated-expected);
+            if (error>values[i].tol) 
+            {
+               REPORT_FX_FAILURE( "value", values[i].barrierType, values[i].barrier,
+                                  values[i].rebate, payoff, exercise, values[i].s,
+                                  values[i].q, values[i].r, today, values[i].vol25Put,
+                                  values[i].volAtm, values[i].vol25Call, values[i].v,
+                                  expected, calculated, error, values[i].tol);
+            }
          }
       }
    }
