@@ -191,6 +191,7 @@
     <Compile Include="Instruments\CliquetOption.cs" />
     <Compile Include="Instruments\CompositeInstrument.cs" />
     <Compile Include="Instruments\CPICapFloor.cs" />
+    <Compile Include="Instruments\CPISwap.cs" />
     <Compile Include="Instruments\CreditDefaultSwap.cs" />
     <Compile Include="Instruments\DividendBarrierOption.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
