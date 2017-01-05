@@ -55,7 +55,7 @@ namespace QLNet
         Date referenceDate;
         DayCounter dayCounter;
 
-        ITermStructureConsistentModel tsmodel = (ITermStructureConsistentModel)base.model_;
+        ITermStructureConsistentModel tsmodel = (ITermStructureConsistentModel)base.model_.link;
         if (tsmodel != null) 
         {
             referenceDate = tsmodel.termStructure().link.referenceDate();
