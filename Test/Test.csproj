@@ -76,6 +76,7 @@
     <Compile Include="T_Cms.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="T_CPISwap.cs" />
     <Compile Include="T_DigitalCoupon.cs" />
     <Compile Include="T_DigitalOption.cs" />
     <Compile Include="T_DoubleBarrierOption.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_HestonModel.cs" />
     <Compile Include="T_HybridHestonHullWhiteProcess.cs" />
+    <Compile Include="T_InflationCPICapFloor.cs" />
     <Compile Include="T_LookbackOption.cs" />
     <Compile Include="T_OptionletStripper.cs" />
     <Compile Include="T_PiecewiseZeroSpreadedTermStructure.cs" />

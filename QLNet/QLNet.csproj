@@ -190,6 +190,8 @@
     <Compile Include="Instruments\Claim.cs" />
     <Compile Include="Instruments\CliquetOption.cs" />
     <Compile Include="Instruments\CompositeInstrument.cs" />
+    <Compile Include="Instruments\CPICapFloor.cs" />
+    <Compile Include="Instruments\CPISwap.cs" />
     <Compile Include="Instruments\CreditDefaultSwap.cs" />
     <Compile Include="Instruments\DividendBarrierOption.cs" />
     <Compile Include="Instruments\DividendSchedule.cs" />
@@ -449,6 +451,7 @@
     <Compile Include="Pricingengines\CapFloor\BachelierCapFloorEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\BlackCapFloorEngine.cs" />
     <Compile Include="Pricingengines\CapFloor\discretizedcapfloor.cs" />
+    <Compile Include="Pricingengines\inflation\InterpolatingCPICapFloorEngine.cs" />
     <Compile Include="Pricingengines\Cliquet\AnalyticCliquetEngine.cs" />
     <Compile Include="Pricingengines\Cliquet\AnalyticPerformanceEngine.cs" />
     <Compile Include="Pricingengines\credit\IntegralCdsEngine.cs" />
@@ -537,6 +540,7 @@
     <Compile Include="Termstructures\Curve.cs" />
     <Compile Include="Termstructures\DefaultProbabilityTermStructure.cs" />
     <Compile Include="Termstructures\InflationTermStructure.cs" />
+    <Compile Include="Termstructures\Inflation\CPICapFloorTermPriceSurface.cs" />
     <Compile Include="Termstructures\Inflation\InflationHelpers.cs" />
     <Compile Include="Termstructures\Inflation\InflationTraits.cs" />
     <Compile Include="Termstructures\Inflation\InterpolatedZeroInflationCurve.cs" />
