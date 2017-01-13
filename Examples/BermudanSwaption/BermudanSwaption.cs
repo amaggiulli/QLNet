@@ -154,7 +154,7 @@ namespace BermudanSwaption
             }
 
             // Building time-grid
-            TimeGrid grid = new TimeGrid(times, times.Count);
+            TimeGrid grid = new TimeGrid(times, times.Count, 30);
 
 
             // defining the models
