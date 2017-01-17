@@ -450,9 +450,9 @@ namespace TestSuite
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(Option.Type.Call, DeltaVolQuote.DeltaType.Spot,
                spotQuote.value(),discDom, discFor, implVol);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+            deltaCall=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+            deltaPut=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
             expectedDiff=discFor;
@@ -469,9 +469,9 @@ namespace TestSuite
             }
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Fwd);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+            deltaCall=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+            deltaPut=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
             expectedDiff=1.0;
@@ -489,9 +489,9 @@ namespace TestSuite
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaSpot);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+            deltaCall=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+            deltaPut=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
             expectedDiff=discFor*values[i].strike/forward;
@@ -509,9 +509,9 @@ namespace TestSuite
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaFwd);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);;
+            deltaCall=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);;
+            deltaPut=myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
             expectedDiff = values[i].strike/forward;
