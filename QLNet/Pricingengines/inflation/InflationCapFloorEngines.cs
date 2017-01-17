@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */using System;
+using System.Collections.Generic;
 
 namespace QLNet
 {
@@ -57,9 +58,9 @@ namespace QLNet
 
 			double value = 0.0;
 			int optionlets = arguments_.startDates.Count;
-			InitializedList<double> values = new InitializedList<double>( optionlets,0.0 );
-			InitializedList<double> stdDevs = new InitializedList<double>( optionlets,0.0);
-			InitializedList<double> forwards = new InitializedList<double> (optionlets,0.0);
+			List<double> values = new InitializedList<double>( optionlets,0.0 );
+			List<double> stdDevs = new InitializedList<double>( optionlets,0.0);
+			List<double> forwards = new InitializedList<double> (optionlets,0.0);
 			CapFloorType type = arguments_.type;
 
 			Handle<YoYInflationTermStructure> yoyTS

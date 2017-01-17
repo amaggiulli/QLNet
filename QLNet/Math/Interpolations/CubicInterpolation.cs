@@ -167,8 +167,8 @@ namespace QLNet {
         //           a[i]*(x-x[i]) +
         //           b[i]*(x-x[i])^2 +
         //           c[i]*(x-x[i])^3
-        public InitializedList<double> primitiveConst_, a_, b_, c_;
-        InitializedList<bool> monotonicityAdjustments_;
+        public List<double> primitiveConst_, a_, b_, c_;
+        List<bool> monotonicityAdjustments_;
 
 
         public CubicInterpolationImpl(List<double> xBegin, int size, List<double> yBegin,

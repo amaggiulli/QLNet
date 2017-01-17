@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace QLNet {
     /* linear interpolation between discrete points */
     public class LinearInterpolationImpl : Interpolation.templateImpl {
-        private InitializedList<double> primitiveConst_, s_;
+        private List<double> primitiveConst_, s_;
 
         public LinearInterpolationImpl(List<double> xBegin, int size, List<double> yBegin)
             : base(xBegin, size, yBegin) {

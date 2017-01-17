@@ -102,7 +102,7 @@ namespace QLNet
 							 termStructure_.link.dayCounter(),
 							 termStructure_ );
 
-			InitializedList<double> nominals = new InitializedList<double>( 1, 1.0 );
+			List<double> nominals = new InitializedList<double>( 1, 1.0 );
 
 			Schedule floatSchedule = new Schedule( startDate, maturity,
 										  index_.tenor(), index_.fixingCalendar(),
