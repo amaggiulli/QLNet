@@ -259,19 +259,35 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public InitializedList<double?> legNPV = new InitializedList<double?>();
-         public InitializedList<double?> legBPS = new InitializedList<double?>();
-         public InitializedList<double?> startDiscounts = new InitializedList<double?>();
-         public InitializedList<double?> endDiscounts = new InitializedList<double?>();
+         public List<double?> legNPV ;
+         public List<double?> legBPS ;
+         public List<double?> startDiscounts ;
+         public List<double?> endDiscounts ;
          public double? npvDateDiscount;
          public override void reset()
          {
             base.reset();
             // clear all previous results
-            legNPV.Erase();
-            legBPS.Erase();
-            startDiscounts.Erase();
-            endDiscounts.Erase();
+            if ( legNPV == null) 
+               legNPV = new List<double?>();
+            else
+               legNPV.Clear();
+
+            if ( legBPS == null )
+               legBPS = new List<double?>();
+            else
+               legBPS.Clear();
+
+            if ( startDiscounts == null )
+               startDiscounts = new List<double?>();
+            else
+               startDiscounts.Clear();
+
+            if ( endDiscounts == null )
+               endDiscounts = new List<double?>();
+            else
+               endDiscounts.Clear();
+
             npvDateDiscount = null;
          }
       }

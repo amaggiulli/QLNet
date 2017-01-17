@@ -17,12 +17,13 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+using System.Collections.Generic;
 
 namespace QLNet
 {
     public static partial class Utils {
         // Computes the size of the simplex
-        public static double computeSimplexSize(InitializedList<Vector> vertices)
+        public static double computeSimplexSize(List<Vector> vertices)
         {
             Vector center = new Vector(vertices[0].Count, 0);
             for (int i = 0; i < vertices.Count; ++i)
@@ -216,7 +217,7 @@ namespace QLNet
 
         }
         private double lambda_;
-        private InitializedList<Vector> vertices_;
+        private List<Vector> vertices_;
         private Vector values_;
         private Vector sum_;
     }

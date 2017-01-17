@@ -254,17 +254,17 @@ namespace QLNet
       }
       // swaps
       public List<double> swapLengths() { return swapLenghts_; }
-      public InitializedList<double?> swapRates()
+      public List<double?> swapRates()
       {
          calculate();
          return swapRates_;
       }
-      public InitializedList<double?> swapYields()
+      public List<double?> swapYields()
       {
          calculate();
          return swapBondYields_;
       }
-      public InitializedList<double?> swapDurations()
+      public List<double?> swapDurations()
       {
          calculate();
          return swapBondDurations_;
@@ -395,7 +395,7 @@ namespace QLNet
       private Euribor euriborIndex_;
       private Handle<YieldTermStructure> discountCurve_;
 
-      private InitializedList<double> yields_;
+      private List<double> yields_;
       private List<double> durations_;
       private double duration_;
       private int equivalentSwapIndex_;
@@ -403,8 +403,8 @@ namespace QLNet
       private int nSwaps_;
       private List<VanillaSwap> swaps_;
       private List<double> swapLenghts_;
-      private InitializedList<double?> swapBondDurations_;
-      private InitializedList<double?> swapBondYields_, swapRates_;
+      private List<double?> swapBondDurations_;
+      private List<double?> swapBondYields_, swapRates_;
     }
 
    //! RendistatoCalculator equivalent swap lenth Quote adapter

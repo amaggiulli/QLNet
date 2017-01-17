@@ -102,12 +102,15 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public InitializedList<double?> legNPV = new InitializedList<double?>();
+         public List<double?> legNPV ;
          public override void reset()
          {
             base.reset();
             // clear all previous results
-            legNPV.Erase();
+            if (legNPV==null)
+               legNPV = new List<double?>();
+            else
+               legNPV.Clear();
          }
       }
 
