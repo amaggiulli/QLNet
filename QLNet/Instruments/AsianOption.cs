@@ -29,7 +29,7 @@ namespace QLNet {
 //    
 	public class ContinuousAveragingAsianOption : OneAssetOption
 	{
-		new public class Arguments : OneAssetOption.Arguments
+		public new class Arguments : OneAssetOption.Arguments
 		{
 			public Arguments()
 			{
@@ -45,7 +45,7 @@ namespace QLNet {
 			public Average.Type averageType;
 		}
 
- 	    new public class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results> 
+ 	    public new class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results> 
         {
         }
 
@@ -70,7 +70,7 @@ namespace QLNet {
 	//! \ingroup instruments 
 	public class DiscreteAveragingAsianOption : OneAssetOption
 	{
-		new public class Arguments : OneAssetOption.Arguments
+		public new class Arguments : OneAssetOption.Arguments
 		{
             public Arguments()
 			{
@@ -113,7 +113,7 @@ namespace QLNet {
             public List<Date> fixingDates;
 		}
 
- 	    new public class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results> 
+ 	    public new class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results> 
         {
         }
 

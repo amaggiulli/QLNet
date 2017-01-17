@@ -25,7 +25,7 @@ namespace QLNet {
 	{
         public class Engine : GenericEngine<MultiAssetOption.Arguments, MultiAssetOption.Results> {};
 
-        new public class Results : Instrument.Results
+        public new class Results : Instrument.Results
 		{
             public double? delta, gamma, theta, vega, rho, dividendRho;
 
