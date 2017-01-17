@@ -166,7 +166,7 @@ namespace QLNet {
         \f]
     */
     public abstract class StochasticProcess1D : StochasticProcess {
-        new protected IDiscretization1D discretization_;
+        protected new IDiscretization1D discretization_;
 
         protected StochasticProcess1D() {}
         protected StochasticProcess1D(IDiscretization1D disc) {

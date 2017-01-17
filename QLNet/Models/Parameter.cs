@@ -63,7 +63,7 @@ namespace QLNet
    //! Standard constant parameter \f$ a(t) = a \f$
    public class ConstantParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public override double value( Vector parameters, double UnnamedParameter1 )
          {
@@ -89,7 +89,7 @@ namespace QLNet
    //! %Parameter which is always zero \f$ a(t) = 0 \f$
    public class NullParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public override double value( Vector UnnamedParameter1, double UnnamedParameter2 )
          {
@@ -109,7 +109,7 @@ namespace QLNet
    //    
    public class PiecewiseConstantParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public Impl( List<double> times )
          {
