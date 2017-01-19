@@ -1,42 +1,75 @@
-QLNet 1.8 
+QLNet 1.9 
 =========================
 
-QLNet 1.8 stable version.
+QLNet 1.9 stable version.
 
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
 FRAMEWORK
 
-+ Refactored code to be compatible with .NET Core , created VS 2015 solution QLNet_Core.sln
-  that build the .NET Core version.
-  
-+ Refactored test project to work with Microsoft UnitTesting and Xunit.
++ Refactoring & Update BlackScholesProcess, LocalVolCurve, bsmlattice
++ Optimized npvbps calculation
++ List and InitializedList refactoring
 
-INTEREST RATES
+CASHFLOWS
 
-+ Fixed links to documentation for LIBOR indexes.
++ Fixed CappedFlooredCoupon factory
 
 INSTRUMENTS
 
-+ Added basic CVA IRS pricing engine.
-
-CURRENCIES
-
-+ Added Ukrainian hryvnia.
++ Added CompositeInstrument.
++ Added DividendBarrierOption.
++ Added ForwardVanillaOption.
++ Added LookbackOption.
++ Added CMS Helper.
++ Added BarrierOption.
++ Added Cliquet Option.
++ Added DoubleBarrier Option.
++ Added CPICapFloor.
++ Added CPISwap.
 
 DATE/TIME
 
-+ Added new Ukrainian holiday, Defender's Day.
++ Added ECB dates for 2017.
++ Fixed rule for the Japanese Mountain Day holiday.
++ Fixed United States holidays before 1971.
+
+INDEXES
+
++ Added Ibor indexes : Aonia , Bbsw, Bkbm and Nzocr.
 
 MATH
 
-+ Added mixed log interpolation.
-+ Added FlatExtrapolator2D
-+ Added BackwardflatLinear Interpolation.
-+ Added AbcdInterpolation.
-+ Implemented Lagrange boundary condition for cubic interpolation
++ Added Matrix inverse calculation with Crout's LU decomposition.
++ Added VannaVolga Interpolation.
+ 
+TERMSTRUCTURES
+
++ Added Swaption volatility cube.
++ Allow negative jumps in yield term structures.
 
 PRICING ENGINES
 
-+ Added CounterpartyAdjSwapEngine engine with example program.
++ Added ForwardVanillaEngine engine.
++ Added AnalyticContinuousFixedLookbackEngine engine.
++ Added AnalyticContinuousFloatingLookbackEngine engine.
++ Added AnalyticContinuousPartialFixedLookbackEngine engine.
++ Added AnalyticContinuousPartialFloatingLookbackEngine engine.
++ Added AnalyticBinaryBarrierEngine.
++ Added AnalyticCliquetEngine.
++ Added AnalyticPerformanceEngine.
++ Added BlackDeltaCalculator and DeltaVolQuote.
++ Added VannaVolga BarrierEngine.
++ Added AnalyticDoubleBarrierEngine.
++ Added VannaVolgaDoubleBarrierEngine.
++ Added WulinYongDoubleBarrierEngine.
++ Added InterpolatingCPICapFloorEngine.
+
+TESTS
+
++ Added theta pertubation in AmericanOption & DividendOption tests.
++ Added tests for China SSE and IB calendars and a missing Chinese holiday
++ Added Test : Chambers-Nawalkha implied vol approximation
++ Added CapFloored coupon tests.
++ Added Digital Coupon tests.
