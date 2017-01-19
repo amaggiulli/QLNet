@@ -697,6 +697,74 @@ namespace TestSuite
          }
       }
 
+      // Issue #115
+      public void testIssue115()
+      {
+         DateTime timer = DateTime.Now;
+
+         // set up dates
+         Calendar calendar = new TARGET();
+         Date todaysDate = new Date( 1, Month.January, 2017 );
+         Date settlementDate = new Date( 1, Month.January, 2017 );
+         Date maturity = new Date( 17, Month.May, 2018 );
+         Settings.setEvaluationDate( todaysDate );
+
+         // our options
+         Option.Type type = Option.Type.Call;
+         double underlying = 100;
+         double strike = 100;
+         double dividendYield = 0.00;
+         double riskFreeRate = 0.06;
+         double volatility = 0.20;
+
+         DayCounter dayCounter = new Actual365Fixed();
+         Exercise europeanExercise = new EuropeanExercise( maturity );
+
+         double? accumulator = underlying;
+         int? pastfixingcount = 1;
+         List<Date> fixings = new List<Date>();
+         fixings.Add( new Date( 1, 1, 2018 ) );
+
+         Handle<Quote> underlyingH = new Handle<Quote>( new SimpleQuote( underlying ) );
+         // bootstrap the yield/dividend/vol curves
+         var flatTermStructure = new Handle<YieldTermStructure>( new FlatForward( settlementDate, riskFreeRate, dayCounter ) );
+         var flatDividendTS = new Handle<YieldTermStructure>( new FlatForward( settlementDate, dividendYield, dayCounter ) );
+         var flatVolTS = new Handle<BlackVolTermStructure>( new BlackConstantVol( settlementDate, calendar, volatility, dayCounter ) );
+         StrikedTypePayoff payoff = new PlainVanillaPayoff( type, strike );
+         var bsmProcess = new BlackScholesMertonProcess( underlyingH, flatDividendTS, flatTermStructure, flatVolTS );
+
+         // options
+         VanillaOption europeanOption = new VanillaOption( payoff, europeanExercise );
+         PlainVanillaPayoff callpayoff = new PlainVanillaPayoff( type, strike );
+
+         DiscreteAveragingAsianOption asianoption = new DiscreteAveragingAsianOption(
+             Average.Type.Arithmetic,
+             accumulator,
+             pastfixingcount,
+             fixings,
+             callpayoff,
+             europeanExercise );
+
+         int minSamples = 10000;
+         int maxSamples = 10000;
+         ulong seed = 42;
+         double tolerance = 1.0;
+
+         var pricingengine = new MCDiscreteArithmeticAPEngine<PseudoRandom, GeneralStatistics>(
+             bsmProcess,
+             252,
+             false,
+             false,
+             false,
+             minSamples,
+             tolerance,
+             maxSamples,
+             seed );
+
+         asianoption.setPricingEngine( pricingengine );
+
+         double price = asianoption.NPV();
+      }
 
       //    public struct DiscreteAverageData
       //    {

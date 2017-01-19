@@ -90,7 +90,7 @@ namespace QLNet
             CASH_ = results.cash;
             errorEstimate_ = results.errorEstimate;
             valuationDate_ = results.valuationDate;
-            additionalResults_ = results.additionalResults;
+            additionalResults_ = new Dictionary<string, object>(results.additionalResults);
         }
 
         public double NPV()

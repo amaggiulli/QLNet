@@ -175,8 +175,8 @@ namespace TestSuite
                               BusinessDayConvention.Unadjusted,// ref periods & acc periods
                               DateGeneration.Rule.Forward, false);
 
-            InitializedList<double> gearingVector = new InitializedList<double>(length, gearing);
-            InitializedList<double> spreadVector = new InitializedList<double>(length, spread);
+            List<double> gearingVector = new InitializedList<double>(length, gearing);
+            List<double> spreadVector = new InitializedList<double>(length, spread);
 
             return new yoyInflationLeg(schedule, calendar, ii, observationLag)
             .withPaymentDayCounter(dc)
@@ -192,7 +192,7 @@ namespace TestSuite
             Schedule schedule = new Schedule(startDate, endDate, new Period(frequency), calendar,
                               convention, convention,
                               DateGeneration.Rule.Forward, false);
-            InitializedList<double> coupons = new InitializedList<double>(length, 0.0);
+            List<double> coupons = new InitializedList<double>(length, 0.0);
             return new FixedRateLeg(schedule)
             .withCouponRates(coupons, dc)
             .withNotionals(nominals);
@@ -235,8 +235,8 @@ namespace TestSuite
             }
 
 
-            InitializedList<double> gearingVector = new InitializedList<double>(length, gearing);
-            InitializedList<double> spreadVector = new InitializedList<double>(length, spread);
+            List<double> gearingVector = new InitializedList<double>(length, gearing);
+            List<double> spreadVector = new InitializedList<double>(length, spread);
 
             YoYInflationIndex ii = iir as YoYInflationIndex;
             Date endDate = calendar.advance(startDate,new Period(length,TimeUnit.Years),BusinessDayConvention.Unadjusted);
@@ -362,9 +362,9 @@ namespace TestSuite
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         InitializedList<double> caps = new InitializedList<double>(vars.length,capstrike);
+         List<double> caps = new InitializedList<double>(vars.length,capstrike);
          List<double> caps0 = new List<double>();
-         InitializedList<double> floors = new InitializedList<double>(vars.length,floorstrike);
+         List<double> floors = new InitializedList<double>(vars.length,floorstrike);
          List<double> floors0 = new List<double>();
          double gearing_p = 0.5;
          double spread_p = 0.002;

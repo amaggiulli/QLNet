@@ -97,7 +97,7 @@ namespace QLNet
         }
     }
 
-    public class ArithmeticAPOPathPricer : PathPricer<Path>
+    public class ArithmeticAPOPathPricer : PathPricer<IPath>
     {
 
         private PlainVanillaPayoff payoff_;
@@ -156,11 +156,11 @@ namespace QLNet
 
             }
 
-        /*public double value(IPath path){
-            if (!(path.length() > 0))
-                throw new Exception("the path cannot be empty");
-            return payoff_.value((path as Path).back()) * discount_;
-        }*/
+       public double value(IPath path)
+       {
+          Utils.QL_REQUIRE( path.length() > 0, () => "the path cannot be empty" );
+          return payoff_.value(((Path) path).back()) * discount_;
+       }
     }
     //<class RNG = PseudoRandom, class S = Statistics>
     public class MakeMCDiscreteArithmeticAPEngine<RNG, S>

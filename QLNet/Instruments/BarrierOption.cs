@@ -26,7 +26,7 @@ namespace QLNet {
     //    
 	public class BarrierOption : OneAssetOption
 	{
-		new public class Arguments : OneAssetOption.Arguments
+		public new class Arguments : OneAssetOption.Arguments
 		{
 			public Arguments()
 			{
@@ -61,7 +61,7 @@ namespace QLNet {
 			}
 		}
 
-		new public class Engine : GenericEngine<BarrierOption.Arguments, BarrierOption.Results>
+		public new class Engine : GenericEngine<BarrierOption.Arguments, BarrierOption.Results>
 		{
 			protected bool triggered(double underlying)
 			{

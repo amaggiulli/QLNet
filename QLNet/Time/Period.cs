@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,7 +20,7 @@
 using System;
 
 namespace QLNet {
-    public class Period {
+    public class Period : IComparable {
         private int length_;
         private TimeUnit unit_;
 
@@ -350,6 +350,15 @@ namespace QLNet {
                 default:
                     throw new Exception("unknown time unit (" + units() + ")");
             }
+        }
+
+        public int CompareTo( object obj )
+        {
+           if ( this < (Period)obj )
+              return -1;
+           else if ( this == (Period)obj )
+              return 0;
+           else return 1;
         }
     }
 }

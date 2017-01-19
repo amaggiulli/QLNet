@@ -353,5 +353,39 @@ namespace TestSuite {
            }
         }
 
-    }
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
+      public void testInverse() 
+      {
+
+         // Testing LU inverse calculation
+         setup();
+
+         double tol = 1.0e-12;
+         Matrix[] testMatrices = { M1, M2, I, M5 };
+
+         for (int j = 0; j < testMatrices.Length; j++) 
+         {
+            Matrix A = testMatrices[j];
+            Matrix invA = Matrix.inverse(A);
+
+            Matrix I1 = invA*A;
+            Matrix I2 = A*invA;
+
+            Matrix eins = new Matrix(A.rows(), A.rows(), 0.0);
+            for (int i=0; i < A.rows(); ++i) eins[i,i] = 1.0;
+
+            if (norm(I1 - eins) > tol)
+               Assert.Fail("inverse(A)*A does not recover unit matrix (norm = "
+                           + norm(I1-eins) + ")");
+
+            if (norm(I2 - eins) > tol)
+               Assert.Fail("A*inverse(A) does not recover unit matrix (norm = "
+                           + norm(I1-eins) + ")");
+         }
+      }
+   }
 }

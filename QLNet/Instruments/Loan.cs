@@ -32,10 +32,10 @@ namespace QLNet
          Step = 2,
          French = 3
       }
-      protected InitializedList<List<CashFlow>> legs_;
-      protected InitializedList<double> payer_;
+      protected List<List<CashFlow>> legs_;
+      protected List<double> payer_;
       protected List<double> notionals_;
-      protected InitializedList<double?> legNPV_;
+      protected List<double?> legNPV_;
 
       public Loan(int legs)
       {
@@ -79,7 +79,7 @@ namespace QLNet
          {
             if (results.legNPV.Count != legNPV_.Count)
                throw new ArgumentException("wrong number of leg NPV returned");
-            legNPV_ = results.legNPV;
+            legNPV_ = new List<double?>(results.legNPV);
          }
          else
          {
@@ -102,12 +102,15 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public InitializedList<double?> legNPV = new InitializedList<double?>();
+         public List<double?> legNPV ;
          public override void reset()
          {
             base.reset();
             // clear all previous results
-            legNPV.Erase();
+            if (legNPV==null)
+               legNPV = new List<double?>();
+            else
+               legNPV.Clear();
          }
       }
 

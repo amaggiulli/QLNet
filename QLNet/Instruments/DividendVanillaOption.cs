@@ -78,7 +78,7 @@ namespace QLNet {
 
 
         //! %Arguments for dividend vanilla option calculation
-        new public class Arguments : OneAssetOption.Arguments {
+        public new class Arguments : OneAssetOption.Arguments {
             public List<Dividend> cashFlow;
 
            public override void validate() {
@@ -95,6 +95,6 @@ namespace QLNet {
         }
 
         //! %Dividend-vanilla-option %engine base class
-        new public class Engine : GenericEngine<Arguments, Results> { }
+        public new class Engine : GenericEngine<Arguments, Results> { }
     }
 }

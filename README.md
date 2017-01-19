@@ -11,6 +11,7 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![NuGet](https://buildstats.info/nuget/qlnet)](https://www.nuget.org/packages/qlnet/)
 [![Stars](https://img.shields.io/github/stars/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/stargazers)
 [![Coverity](https://scan.coverity.com/projects/7000/badge.svg)](https://scan.coverity.com/projects/amaggiulli-qlnet)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
 
 ## Development workflow 
 

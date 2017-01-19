@@ -29,8 +29,9 @@ namespace QLNet
                                        Handle<Quote> atmLevel,
                                        Interpolator interpolator = default(Interpolator),
                                        DayCounter dc = null, //Actual365Fixed()
+                                       VolatilityType type = VolatilityType.ShiftedLognormal,
                                        double shift = 0.0)
-         : base( timeToExpiry, dc, VolatilityType.ShiftedLognormal, shift )
+         : base( timeToExpiry, dc ?? new Actual365Fixed(), type, shift )
       {
          exerciseTimeSquareRoot_ = Math.Sqrt(exerciseTime());
          strikes_ = strikes;
@@ -52,8 +53,9 @@ namespace QLNet
                                        double atmLevel,
                                        Interpolator interpolator = default(Interpolator),
                                        DayCounter dc = null , //Actual365Fixed(),
+                                        VolatilityType type = VolatilityType.ShiftedLognormal,
                                        double shift = 0.0)
-         :base(timeToExpiry, dc, VolatilityType.ShiftedLognormal, shift)
+         :base(timeToExpiry, dc?? new Actual365Fixed(), type, shift)
       {
          exerciseTimeSquareRoot_ = Math.Sqrt(exerciseTime());
          strikes_ = strikes;
@@ -77,8 +79,9 @@ namespace QLNet
                                        DayCounter dc = null , //Actual365Fixed(),
                                        Interpolator interpolator = default(Interpolator),
                                        Date referenceDate = null,
+                                       VolatilityType type = VolatilityType.ShiftedLognormal,
                                        double shift = 0.0)
-         : base( d, dc, referenceDate, VolatilityType.ShiftedLognormal, shift )
+         : base( d, dc?? new Actual365Fixed(), referenceDate, type, shift )
       {
          exerciseTimeSquareRoot_ = Math.Sqrt(exerciseTime());
          strikes_ = strikes;
@@ -101,7 +104,7 @@ namespace QLNet
                                         Interpolator interpolator = default(Interpolator),
                                         Date referenceDate = null,
                                         double shift = 0.0)
-         : base( d, dc, referenceDate, VolatilityType.ShiftedLognormal, shift )
+         : base( d, dc?? new Actual365Fixed(), referenceDate, VolatilityType.ShiftedLognormal, shift )
        {
           strikes_ = strikes;
           stdDevHandles_ = new InitializedList<Handle<Quote>>(stdDevs.Count);

@@ -29,12 +29,12 @@ namespace QLNet
    {
       #region Data members
 
-      protected InitializedList<List<CashFlow>> legs_;
-      protected InitializedList<double> payer_;
-      protected InitializedList<double?> legNPV_;
-      protected InitializedList<double?> legBPS_;
-      protected InitializedList<double?> startDiscounts_;
-      protected InitializedList<double?> endDiscounts_;
+      protected List<List<CashFlow>> legs_;
+      protected List<double> payer_;
+      protected List<double?> legNPV_;
+      protected List<double?> legBPS_;
+      protected List<double?> startDiscounts_;
+      protected List<double?> endDiscounts_;
       protected double? npvDateDiscount_;
 
       public Arguments arguments;
@@ -140,7 +140,7 @@ namespace QLNet
          if (!results.legNPV.empty())
          {
             Utils.QL_REQUIRE( results.legNPV.Count == legNPV_.Count, () => "wrong number of leg NPV returned" );
-            legNPV_ = results.legNPV;
+            legNPV_ = new List<double?>( results.legNPV);
          }
          else
          {
@@ -150,7 +150,7 @@ namespace QLNet
          if (!results.legBPS.empty())
          {
             Utils.QL_REQUIRE( results.legBPS.Count == legBPS_.Count, () => "wrong number of leg BPS returned" );
-            legBPS_ = results.legBPS;
+            legBPS_ =  new List<double?>(results.legBPS);
          }
          else
          {
@@ -160,7 +160,7 @@ namespace QLNet
          if (!results.startDiscounts.empty()) 
          {
             Utils.QL_REQUIRE( results.startDiscounts.Count == startDiscounts_.Count, () => "wrong number of leg start discounts returned" );
-            startDiscounts_ = results.startDiscounts;
+            startDiscounts_ =  new List<double?>(results.startDiscounts);
          } 
          else 
          {
@@ -170,7 +170,7 @@ namespace QLNet
          if (!results.endDiscounts.empty()) 
          {
             Utils.QL_REQUIRE( results.endDiscounts.Count == endDiscounts_.Count, () => "wrong number of leg end discounts returned" );
-            endDiscounts_ = results.endDiscounts;
+            endDiscounts_ =  new List<double?>(results.endDiscounts);
          } 
          else 
          {
@@ -259,19 +259,35 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public InitializedList<double?> legNPV = new InitializedList<double?>();
-         public InitializedList<double?> legBPS = new InitializedList<double?>();
-         public InitializedList<double?> startDiscounts = new InitializedList<double?>();
-         public InitializedList<double?> endDiscounts = new InitializedList<double?>();
+         public List<double?> legNPV ;
+         public List<double?> legBPS ;
+         public List<double?> startDiscounts ;
+         public List<double?> endDiscounts ;
          public double? npvDateDiscount;
          public override void reset()
          {
             base.reset();
             // clear all previous results
-            legNPV.Erase();
-            legBPS.Erase();
-            startDiscounts.Erase();
-            endDiscounts.Erase();
+            if ( legNPV == null) 
+               legNPV = new List<double?>();
+            else
+               legNPV.Clear();
+
+            if ( legBPS == null )
+               legBPS = new List<double?>();
+            else
+               legBPS.Clear();
+
+            if ( startDiscounts == null )
+               startDiscounts = new List<double?>();
+            else
+               startDiscounts.Clear();
+
+            if ( endDiscounts == null )
+               endDiscounts = new List<double?>();
+            else
+               endDiscounts.Clear();
+
             npvDateDiscount = null;
          }
       }

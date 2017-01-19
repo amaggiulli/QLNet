@@ -230,7 +230,7 @@ namespace QLNet
 
 
       //! %Arguments for simple swap calculation
-      new public class Arguments : Swap.Arguments
+      public new class Arguments : Swap.Arguments
       {
          public Type type;
          public double nominal;

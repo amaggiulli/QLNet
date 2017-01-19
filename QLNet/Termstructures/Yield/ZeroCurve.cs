@@ -140,23 +140,29 @@ namespace QLNet
                                    DayCounter dayCounter,
                                    Interpolator interpolator,
                                    Compounding compounding = Compounding.Continuous,
-                                   Frequency frequency = Frequency.Annual)
-         : base(dates[0], null, dayCounter)
+                                   Frequency frequency = Frequency.Annual, 
+                                   Date refDate = null)
+         : base(refDate ?? dates[0], null, dayCounter)
       {
          times_ = new List<double>();
          dates_ = dates;
          data_ = yields;
          interpolator_ = interpolator;
-         initialize(compounding, frequency);
+         initialize( compounding, frequency, refDate );
       }
 
-      private void initialize(Compounding compounding, Frequency frequency)
+      private void initialize( Compounding compounding, Frequency frequency, Date refDate = null )
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given");
          Utils.QL_REQUIRE(data_.Count == dates_.Count, () => "dates/yields count mismatch");
 
          times_ = new List<double>(dates_.Count);
-         times_.Add(0.0);
+         double offset = 0.0;
+         if ( refDate != null )
+         {
+            offset = dayCounter().yearFraction(refDate, dates_[0]);
+         }
+         times_.Add( offset );
 
          if (compounding != Compounding.Continuous)
          {
@@ -174,8 +180,9 @@ namespace QLNet
          for (int i = 1; i < dates_.Count; i++)
          {
             Utils.QL_REQUIRE(dates_[i] > dates_[i - 1], () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
-            times_.Add(dayCounter().yearFraction(dates_[0], dates_[i]));
-            Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]), () =>
+            times_.Add( dayCounter().yearFraction( refDate ?? dates_[0], dates_[i] ) );
+      
+            Utils.QL_REQUIRE( !Utils.close( times_[i], times_[i - 1] ), () =>
                        "two dates correspond to the same time " +
                        "under this curve's day count convention");
 

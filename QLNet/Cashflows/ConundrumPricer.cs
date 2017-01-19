@@ -1,7 +1,8 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -572,7 +573,7 @@ namespace QLNet {
                 swapRateValue_ = swap.fairRate();
 
                 double bp = 1.0e-4;
-                annuity_ = (swap.floatingLegBPS() / bp);
+                annuity_ = Math.Abs( swap.fixedLegBPS() / bp );
 
                 int q = (int)swapIndex.fixedLegTenor().frequency();
                 Schedule schedule = swap.fixedSchedule();
@@ -638,14 +639,22 @@ namespace QLNet {
         public double requiredStdDeviations_;
         public double precision_;
         public double refiningIntegrationTolerance_;
+        public double hardUpperLimit_;
 
-        public NumericHaganPricer(Handle<SwaptionVolatilityStructure> swaptionVol, GFunctionFactory.YieldCurveModel modelOfYieldCurve, Handle<Quote> meanReversion, double lowerLimit, double upperLimit, double precision)
+        public NumericHaganPricer(Handle<SwaptionVolatilityStructure> swaptionVol, 
+           GFunctionFactory.YieldCurveModel modelOfYieldCurve, 
+           Handle<Quote> meanReversion, 
+           double lowerLimit = 0.0, 
+           double upperLimit = 1.0,
+           double precision = 1.0e-6, 
+           double hardUpperLimit = Double.MaxValue)
             : base(swaptionVol, modelOfYieldCurve, meanReversion) {
             upperLimit_ = upperLimit;
             lowerLimit_ = lowerLimit;
             requiredStdDeviations_ = 8;
             precision_ = precision;
             refiningIntegrationTolerance_ = 0.0001;
+            hardUpperLimit_ = hardUpperLimit;
         }
 
         protected override double optionletPrice(Option.Type optionType, double strike) {
@@ -700,6 +709,7 @@ namespace QLNet {
                 GaussKronrodNonAdaptive gaussKronrodNonAdaptive = new GaussKronrodNonAdaptive(precision_, 1000000, 1.0);
                 // if the integration intervall is wide enough we use the
                 // following change variable x -> a + (b-a)*(t/(a-b))^3
+                upperBoundary = Math.Max(a,Math.Min(upperBoundary, hardUpperLimit_));
                 if (upperBoundary > 2 * a) {
                     VariableChange variableChange = new VariableChange(integrand.value, a, upperBoundary, 3);
                     result = gaussKronrodNonAdaptive.value(variableChange.value, .0, 1.0);
@@ -709,12 +719,14 @@ namespace QLNet {
 
                 // if the expected precision has not been reached we use the old algorithm
                 if (!gaussKronrodNonAdaptive.integrationSuccess()) {
-                    GaussKronrodAdaptive integrator = new GaussKronrodAdaptive(precision_, 1000000);
+                    GaussKronrodAdaptive integrator = new GaussKronrodAdaptive(precision_, 100000);
+                    b = Math.Max(a,Math.Min(b, hardUpperLimit_));
                     result = integrator.value(integrand.value, a, b);
                 }
             } // if a < b we use the old algorithm
             else {
-                GaussKronrodAdaptive integrator = new GaussKronrodAdaptive(precision_, 1000000);
+                b = Math.Max(a,Math.Min(b,hardUpperLimit_));
+                GaussKronrodAdaptive integrator = new GaussKronrodAdaptive(precision_, 100000);
                 result = integrator.value(integrand.value, a, b);
             }
             return result;
@@ -755,13 +767,12 @@ namespace QLNet {
 
         #region Nested classes
         public class VariableChange {
-            private double a_, b_, width_;
+            private double a_,  width_;
             private Func<double, double> f_;
             private int k_;
 
             public VariableChange(Func<double, double> f, double a, double b, int k) {
                 a_ = a;
-                b_ = b;
                 width_ = b - a;
                 f_ = f;
                 k_ = k;

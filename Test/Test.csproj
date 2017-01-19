@@ -66,12 +66,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="T_BarrierOption.cs" />
     <Compile Include="T_BasketOption.cs" />
+    <Compile Include="T_BinaryOption.cs" />
+    <Compile Include="T_BlackDeltaCalculator.cs" />
     <Compile Include="T_BusinessDayConvention.cs" />
+    <Compile Include="T_CapFlooredCoupon.cs" />
+    <Compile Include="T_CliquetOption.cs" />
+    <Compile Include="T_Cms.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="T_CPISwap.cs" />
+    <Compile Include="T_DigitalCoupon.cs" />
     <Compile Include="T_DigitalOption.cs" />
+    <Compile Include="T_DoubleBarrierOption.cs" />
+    <Compile Include="T_ForwardOption.cs" />
     <Compile Include="T_Functions.cs" />
     <Compile Include="T_HestonModel.cs" />
     <Compile Include="T_HybridHestonHullWhiteProcess.cs" />
+    <Compile Include="T_InflationCPICapFloor.cs" />
+    <Compile Include="T_LookbackOption.cs" />
     <Compile Include="T_OptionletStripper.cs" />
     <Compile Include="T_PiecewiseZeroSpreadedTermStructure.cs" />
     <Compile Include="T_AsianOptions.cs" />
@@ -116,6 +130,7 @@
     <Compile Include="T_Solvers.cs" />
     <Compile Include="T_Stats.cs" />
     <Compile Include="T_Swaps.cs" />
+    <Compile Include="T_SwaptionVolatilityCube.cs" />
     <Compile Include="T_TermStructures.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="T_LiborMarketModel.cs" />

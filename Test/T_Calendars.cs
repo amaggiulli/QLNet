@@ -177,16 +177,40 @@ namespace TestSuite {
             Calendar c = new UnitedStates(UnitedStates.Market.Settlement);
             List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
                                                      new Date(31, Month.December, 2005));
+            if ( hol.Count != expectedHol.Count )
+               Assert.Fail( "there were " + expectedHol.Count
+                          + " expected holidays, while there are " + hol.Count
+                          + " calculated holidays" );
 
-            for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++) {
+            for (int i = 0; i <hol.Count; i++) {
                 if (hol[i] != expectedHol[i])
                     QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
             }
+            
+            // before Uniform Monday Holiday Act
+            expectedHol = new List<Date>();
+            expectedHol.Add(new Date(2,Month.January,1961));
+            expectedHol.Add(new Date(22,Month.February,1961));
+            expectedHol.Add(new Date(30,Month.May,1961));
+            expectedHol.Add(new Date(4,Month.July,1961));
+            expectedHol.Add(new Date(4,Month.September,1961));
+            expectedHol.Add(new Date(10,Month.November,1961));
+            expectedHol.Add(new Date(23,Month.November,1961));
+            expectedHol.Add(new Date(25,Month.December,1961));
+
+            hol = Calendar.holidayList( c, new Date( 1, Month.January, 1961 ), new Date( 31, Month.December, 1961 ) );
 
             if (hol.Count != expectedHol.Count)
                 QAssert.Fail("there were " + expectedHol.Count +
                              " expected holidays, while there are " + hol.Count +
                              " calculated holidays");
+            
+            for ( int i = 0; i < hol.Count; i++ )
+            {
+               if ( hol[i] != expectedHol[i] )
+                  Assert.Fail( "expected holiday was " + expectedHol[i]
+                             + " while calculated holiday is " + hol[i] );
+            }
         }
 
 #if QL_DOTNET_FRAMEWORK
@@ -966,6 +990,145 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
+#if QL_DOTNET_FRAMEWORK
+        [TestMethod()]
+#else
+       [Fact]
+#endif
+   public void testChinaSSE() 
+   {
+      // Testing China Shanghai Stock Exchange holiday list
+
+      List<Date> expectedHol = new List<Date>();
+
+      // China Shanghai Securities Exchange holiday list in the year 2014
+      expectedHol.Add(new Date(1, Month.Jan, 2014));
+      expectedHol.Add(new Date(31, Month.Jan, 2014));
+      expectedHol.Add(new Date(3, Month.Feb, 2014));
+      expectedHol.Add(new Date(4, Month.Feb, 2014));
+      expectedHol.Add(new Date(5, Month.Feb, 2014));
+      expectedHol.Add(new Date(6, Month.Feb, 2014));
+      expectedHol.Add(new Date(7, Month.Apr, 2014));
+      expectedHol.Add(new Date(1, Month.May, 2014));
+      expectedHol.Add(new Date(2, Month.May, 2014));
+      expectedHol.Add(new Date(2, Month.Jun, 2014));
+      expectedHol.Add(new Date(8, Month.Sep, 2014));
+      expectedHol.Add(new Date(1, Month.Oct, 2014));
+      expectedHol.Add(new Date(2, Month.Oct, 2014));
+      expectedHol.Add(new Date(3, Month.Oct, 2014));
+      expectedHol.Add(new Date(6, Month.Oct, 2014));
+      expectedHol.Add(new Date(7, Month.Oct, 2014));
+
+      // China Shanghai Securities Exchange holiday list in the year 2015
+      expectedHol.Add(new Date(1, Month.Jan, 2015));
+      expectedHol.Add(new Date(2, Month.Jan, 2015));
+      expectedHol.Add(new Date(18,Month.Feb, 2015));
+      expectedHol.Add(new Date(19,Month.Feb, 2015));
+      expectedHol.Add(new Date(20,Month.Feb, 2015));
+      expectedHol.Add(new Date(23,Month.Feb, 2015));
+      expectedHol.Add(new Date(24,Month.Feb, 2015));
+      expectedHol.Add(new Date(6, Month.Apr, 2015));
+      expectedHol.Add(new Date(1, Month.May, 2015));
+      expectedHol.Add(new Date(22,Month.Jun, 2015));
+      expectedHol.Add(new Date(3, Month.Sep, 2015));
+      expectedHol.Add(new Date(4, Month.Sep, 2015));
+      expectedHol.Add(new Date(1, Month.Oct, 2015));
+      expectedHol.Add(new Date(2, Month.Oct, 2015));
+      expectedHol.Add(new Date(5, Month.Oct, 2015));
+      expectedHol.Add(new Date(6, Month.Oct, 2015));
+      expectedHol.Add(new Date(7, Month.Oct, 2015));
+
+      // China Shanghai Securities Exchange holiday list in the year 2016
+      expectedHol.Add(new Date(1, Month.Jan, 2016));
+      expectedHol.Add(new Date(8, Month.Feb, 2016));
+      expectedHol.Add(new Date(9, Month.Feb, 2016));
+      expectedHol.Add(new Date(10,Month.Feb, 2016));
+      expectedHol.Add(new Date(11,Month.Feb, 2016));
+      expectedHol.Add(new Date(12,Month.Feb, 2016));
+      expectedHol.Add(new Date(4, Month.Apr, 2016));
+      expectedHol.Add(new Date(2, Month.May, 2016));
+      expectedHol.Add(new Date(9, Month.Jun, 2016));
+      expectedHol.Add(new Date(10,Month.Jun, 2016));
+      expectedHol.Add(new Date(15,Month.Sep, 2016));
+      expectedHol.Add(new Date(16,Month.Sep, 2016));
+      expectedHol.Add(new Date(3, Month.Oct, 2016));
+      expectedHol.Add(new Date(4, Month.Oct, 2016));
+      expectedHol.Add(new Date(5, Month.Oct, 2016));
+      expectedHol.Add(new Date(6, Month.Oct, 2016));
+      expectedHol.Add(new Date(7, Month.Oct, 2016));
+
+
+      Calendar c = new China(China.Market.SSE);
+      List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2014),
+         new Date(31, Month.December, 2016));
+
+      for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++) 
+      {
+         if (hol[i] != expectedHol[i])
+            Assert.Fail("expected holiday was " + expectedHol[i]
+                  + " while calculated holiday is " + hol[i]);
+      }
+      if (hol.Count != expectedHol.Count)
+         Assert.Fail("there were " + expectedHol.Count
+            + " expected holidays, while there are " + hol.Count
+            + " calculated holidays");
+}
+
+#if QL_DOTNET_FRAMEWORK
+   [TestMethod()]
+#else
+   [Fact]
+#endif
+   public void testChinaIB() 
+   {
+      // Testing China Inter Bank working weekends list
+      List<Date> expectedWorkingWeekEnds = new List<Date>();
+
+      // China Inter Bank working weekends list in the year 2014
+      expectedWorkingWeekEnds.Add(new Date(26,Month. Jan, 2014));
+      expectedWorkingWeekEnds.Add(new Date(8, Month.Feb, 2014));
+      expectedWorkingWeekEnds.Add(new Date(4, Month.May, 2014));
+      expectedWorkingWeekEnds.Add(new Date(28,Month. Sep, 2014));
+      expectedWorkingWeekEnds.Add(new Date(11,Month. Oct, 2014));
+
+      // China Inter Bank working weekends list in the year 2015
+      expectedWorkingWeekEnds.Add(new Date(4, Month.Jan, 2015));
+      expectedWorkingWeekEnds.Add(new Date(15,Month. Feb, 2015));
+      expectedWorkingWeekEnds.Add(new Date(28,Month. Feb, 2015));
+      expectedWorkingWeekEnds.Add(new Date(6, Month.Sep, 2015));
+      expectedWorkingWeekEnds.Add(new Date(10,Month. Oct, 2015));
+
+      // China Inter Bank working weekends list in the year 2016
+      expectedWorkingWeekEnds.Add(new Date(6, Month.Feb, 2016));
+      expectedWorkingWeekEnds.Add(new Date(14,Month. Feb, 2016));
+      expectedWorkingWeekEnds.Add(new Date(12,Month. Jun, 2016));
+      expectedWorkingWeekEnds.Add(new Date(18,Month. Sep, 2016));
+      expectedWorkingWeekEnds.Add(new Date(8, Month.Oct, 2016));
+      expectedWorkingWeekEnds.Add(new Date(9, Month.Oct, 2016));
+
+      Calendar c = new China(China.Market.IB);
+      Date start = new Date(1, Month.Jan, 2014);
+      Date end = new Date(31, Month.Dec, 2016);
+
+      int k = 0;
+
+      while (start <= end) 
+      {
+         if (c.isBusinessDay(start) && c.isWeekend(start.DayOfWeek)) 
+         {
+            if (expectedWorkingWeekEnds[k] != start)
+                  Assert.Fail("expected working weekend was " + expectedWorkingWeekEnds[k]
+                     + " while calculated working weekend is " + start);
+            ++k;
+         }
+         ++start;
+      }
+    
+      if (k != (expectedWorkingWeekEnds.Count))
+         Assert.Fail("there were " + expectedWorkingWeekEnds.Count
+            + " expected working weekends, while there are " + k
+            + " calculated holidays");
+}
 #if QL_DOTNET_FRAMEWORK
         [TestMethod()]
 #else

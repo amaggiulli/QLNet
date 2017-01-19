@@ -147,6 +147,52 @@ namespace QLNet
          return v * v * optionTime;
       }
 
+      
+      //! returns the shift for a given option tenor and swap tenor
+      public double shift( Period optionTenor, Period swapTenor,bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor( optionTenor );
+         return shift( optionDate, swapTenor, extrapolate );
+      }
+      //! returns the shift for a given option date and swap tenor
+      public double shift( Date optionDate, Period swapTenor,bool extrapolate = false)
+      {
+         checkSwapTenor( swapTenor, extrapolate );
+         checkRange( optionDate, extrapolate );
+         return shiftImpl( optionDate, swapTenor );
+      }
+      //! returns the shift for a given option time and swap tenor
+      public double shift( double optionTime, Period swapTenor,bool extrapolate = false)
+      {
+         checkSwapTenor( swapTenor, extrapolate );
+         checkRange( optionTime, extrapolate );
+         double length = swapLength( swapTenor );
+         return shiftImpl( optionTime, length );
+      }
+      //! returns the shift for a given option tenor and swap length
+      public double shift( Period optionTenor, double swapLength, bool extrapolate = false)
+      {
+         Date optionDate = optionDateFromTenor( optionTenor );
+         return shift( optionDate, swapLength, extrapolate );
+      }
+      //! returns the shift for a given option date and swap length
+      public double shift( Date optionDate, double swapLength, bool extrapolate = false)
+      {
+         checkSwapTenor( swapLength, extrapolate );
+         checkRange( optionDate, extrapolate );
+         double optionTime = timeFromReference( optionDate );
+         return shiftImpl( optionTime, swapLength );
+      }
+      //! returns the shift for a given option time and swap length
+      public double shift( double optionTime, double swapLength,bool extrapolate = false)
+      {
+         checkSwapTenor( swapLength, extrapolate );
+         checkRange( optionTime, extrapolate );
+         return shiftImpl( optionTime, swapLength );
+      }
+
+
+
       //! returns the smile for a given option tenor and swap tenor
       public SmileSection smileSection(Period optionTenor, Period swapTenor, bool extr = false)
       {
@@ -192,6 +238,9 @@ namespace QLNet
 
       #endregion
 
+      //! volatility type
+      public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
+
       //! implements the conversion between swap tenor and swap (time) length
       public double swapLength(Period swapTenor)
       {
@@ -231,6 +280,17 @@ namespace QLNet
       }
 
       protected abstract double volatilityImpl(double optionTime, double swapLength, double strike);
+
+      protected virtual double shiftImpl( Date optionDate, Period swapTenor)
+      {
+         return shiftImpl( timeFromReference( optionDate ), swapLength( swapTenor ) );
+      }
+      protected virtual double shiftImpl( double optionTime, double swapLength)
+      {
+         Utils.QL_REQUIRE(volatilityType() == VolatilityType.ShiftedLognormal,()=>
+           "shift parameter only makes sense for lognormal volatilities" );
+         return 0.0;
+      }
 
       protected void checkSwapTenor(Period swapTenor, bool extrapolate)
       {

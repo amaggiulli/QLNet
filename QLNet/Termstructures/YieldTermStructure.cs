@@ -129,9 +129,12 @@ namespace QLNet
             if (jumpTimes_[i]>0 && jumpTimes_[i]<t) 
             {
                Utils.QL_REQUIRE( jumps_[i].link.isValid(), () => "invalid " + ( i + 1 ) + " jump quote" );
-                double thisJump = jumps_[i].link.value();
-                Utils.QL_REQUIRE( thisJump > 0.0 && thisJump <= 1.0, () => "invalid " + ( i + 1 ) + " jump value: " + thisJump );
-                jumpEffect *= thisJump;
+               double thisJump = jumps_[i].link.value();
+               Utils.QL_REQUIRE(thisJump > 0.0,()=> "invalid " + (i+1) + " jump value: " + thisJump);
+               #if !QL_NEGATIVE_RATES
+               Utils.QL_REQUIRE(thisJump <= 1.0,()=> "invalid " + (i+1) + " jump value: " + thisJump);
+               #endif
+               jumpEffect *= thisJump;
             }
          }
          return jumpEffect * discountImpl(t);
