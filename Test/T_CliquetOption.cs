@@ -101,7 +101,7 @@ namespace TestSuite
          double tolerance = 1e-4;
          if (error > tolerance) 
          {
-            Assert.Fail("value", payoff, exercise, spot.value(),
+            REPORT_FAILURE("value", payoff, exercise, spot.value(),
                         qRate.value(), rRate.value(), today,
                         vol.value(), expected, calculated,
                         error, tolerance);

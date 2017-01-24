@@ -764,7 +764,7 @@ namespace TestSuite
     
          if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV) 
          {
-            Assert.Fail("Failed to reproduce Heston barrier price for "
+            QAssert.Fail("Failed to reproduce Heston barrier price for "
                         + "\n    strike:     " + payoff.strike()
                         + "\n    barrier:    " + barrier
                         + "\n    maturity:   " + exDate
@@ -773,7 +773,7 @@ namespace TestSuite
          }
          if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol*expectedLocalVolNPV) 
          {
-            Assert.Fail("Failed to reproduce Heston barrier price for "
+            QAssert.Fail("Failed to reproduce Heston barrier price for "
                         + "\n    strike:     " + payoff.strike()
                         + "\n    barrier:    " + barrier
                         + "\n    maturity:   " + exDate

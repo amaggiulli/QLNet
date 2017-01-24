@@ -379,11 +379,11 @@ namespace TestSuite {
             for (int i=0; i < A.rows(); ++i) eins[i,i] = 1.0;
 
             if (norm(I1 - eins) > tol)
-               Assert.Fail("inverse(A)*A does not recover unit matrix (norm = "
+               QAssert.Fail("inverse(A)*A does not recover unit matrix (norm = "
                            + norm(I1-eins) + ")");
 
             if (norm(I2 - eins) > tol)
-               Assert.Fail("A*inverse(A) does not recover unit matrix (norm = "
+               QAssert.Fail("A*inverse(A) does not recover unit matrix (norm = "
                            + norm(I1-eins) + ")");
          }
       }

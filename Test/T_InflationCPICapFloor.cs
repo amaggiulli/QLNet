@@ -365,7 +365,7 @@ namespace TestSuite
                double a = common.cPriceUK[i,j];
                double b = cpiSurf.capPrice(t,qK);
 
-               Assert.IsTrue(Math.Abs(a-b)<1e-7,"cannot reproduce cpi cap data from surface: "
+               QAssert.IsTrue(Math.Abs(a-b)<1e-7,"cannot reproduce cpi cap data from surface: "
                   + a + " vs constructed = " + b);
             }
          }
@@ -434,7 +434,7 @@ namespace TestSuite
 
 
          double cached = cpiCFsurfUKh.link.capPrice(d, strike);
-         Assert.IsTrue(Math.Abs(cached - aCap.NPV())<1e-10,"InterpolatingCPICapFloorEngine does not reproduce cached price: "
+         QAssert.IsTrue(Math.Abs(cached - aCap.NPV())<1e-10,"InterpolatingCPICapFloorEngine does not reproduce cached price: "
                   + cached + " vs " + aCap.NPV());
 
          // remove circular refernce
