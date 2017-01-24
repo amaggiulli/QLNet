@@ -14,4 +14,10 @@
     <copyright>Copyright (c) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)</copyright>
     <tags>QLNet QuantLib quantitative finance financial</tags>
   </metadata>
+  <files>
+	<file src="bin\Release-net40\QLNet.dll" target="lib\net40\QLNet.dll" />
+	<file src="bin\Release-net45\QLNet.dll" target="lib\net45\QLNet.dll" />
+	<file src="bin\Release-net46\QLNet.dll" target="lib\net46\QLNet.dll" />
+	<file src="bin\Release\netstandard1.1\QLNet.dll" target="lib\netstandard1.1\QLNet.dll" />	
+  </files>
 </package>
