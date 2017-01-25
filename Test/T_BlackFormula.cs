@@ -112,7 +112,7 @@ namespace TestSuite
                               if(moneyness > 1.0) moneyness = 1.0 / moneyness;
                               double error = (iStdDev - stdDevs[i5]) / stdDevs[i5] * moneyness;
                               if(error > tol)
-                                 Assert.Fail("Failed to verify Chambers-Nawalkha approximation for "
+                                 QAssert.Fail("Failed to verify Chambers-Nawalkha approximation for "
                                        + types[i1]
                                        + " displacement=" + displacements[i2]
                                        + " forward=" + forwards[i3]

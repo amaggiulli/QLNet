@@ -295,7 +295,7 @@ namespace TestSuite
             bool linearTsr = j==vars.yieldCurveModels.Count-1;
 
             if (difference > tol)
-               Assert.Fail("\nCoupon payment date: " + paymentDate +
+               QAssert.Fail("\nCoupon payment date: " + paymentDate +
                            "\nCoupon start date:   " + startDate +
                            "\nCoupon floor:        " + (infiniteFloor) +
                            "\nCoupon gearing:      " + (gearing) +
@@ -364,7 +364,7 @@ namespace TestSuite
                double tol = 2.0e-4;
                bool linearTsr = j==vars.yieldCurveModels.Count-1;
                if (difference > tol)
-                     Assert.Fail("\nLength in Years:  " + swapLengths[sl] +
+                  QAssert.Fail("\nLength in Years:  " + swapLengths[sl] +
                                  "\nswap index:       " + swapIndex.name() +
                                  "\nibor index:       " + vars.iborIndex.name() +
                                  "\nspread:           " + (spread) +
@@ -440,7 +440,7 @@ namespace TestSuite
                      if(linearTsr)
                         tol = 1.0e-7;
                      if (difference > tol)
-                        Assert.Fail("\nCoupon payment date: " + paymentDate +
+                        QAssert.Fail("\nCoupon payment date: " + paymentDate +
                                     "\nCoupon start date:   " + startDate +
                                     "\nCoupon gearing:      " + (gearing) +
                                     "\nCoupon swap index:   " + swapIndex.name() +

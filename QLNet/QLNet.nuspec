@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>QLNet</id>
-    <version>$version$</version>
+    <version>1.9.1.0</version>
     <title>QLNet</title>
     <authors>Andrea Maggiulli</authors>
     <owners>Andrea Maggiulli</owners>
@@ -10,8 +10,13 @@
     <projectUrl>http://github.com/amaggiulli/qlnet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A free/open-source library for quantitative finance</description>
-    <releaseNotes>Version $version$</releaseNotes>
-    <copyright>Copyright (c) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)</copyright>
+    <releaseNotes>Version 1.9.1.0</releaseNotes>
+    <copyright>Copyright (c) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)</copyright>
     <tags>QLNet QuantLib quantitative finance financial</tags>
   </metadata>
+    <files>
+      <file src="bin\Release\net40\QLNet.dll" target="lib\net40\QLNet.dll" />
+	   <file src="bin\Release\net45\QLNet.dll" target="lib\net45\QLNet.dll" />
+	   <file src="bin\Release\netstandard1.1\QLNet.dll" target="lib\netstandard1.1\QLNet.dll" />	
+    </files>
 </package>

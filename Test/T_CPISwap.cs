@@ -337,14 +337,14 @@ namespace TestSuite
             if (zicV != null)
             {
                diff = Math.Abs( zicV.rate() - (fixedRate*(zicV.indexFixing()/baseCPI)) );
-               Assert.IsTrue(diff<1e-8, "failed "+i+"th coupon reconstruction as "
+               QAssert.IsTrue(diff<1e-8, "failed "+i+"th coupon reconstruction as "
                            + (fixedRate*(zicV.indexFixing()/baseCPI)) + " vs rate = "
                            +zicV.rate() + ", with difference: " + diff);
             }
          }
 
          double error = Math.Abs(testInfLegNPV - zisV.legNPV(0).Value);
-         Assert.IsTrue( error < 1e-5, "failed manual inf leg NPV calc vs pricing engine: " + testInfLegNPV + " vs " + 
+         QAssert.IsTrue( error < 1e-5, "failed manual inf leg NPV calc vs pricing engine: " + testInfLegNPV + " vs " + 
             zisV.legNPV(0));
 
          diff = Math.Abs(1-zisV.NPV()/4191660.0);
@@ -353,7 +353,7 @@ namespace TestSuite
          #else
          double max_diff = 3e-5;
          #endif
-         Assert.IsTrue( diff < max_diff, "failed stored consistency value test, ratio = " + diff );
+         QAssert.IsTrue( diff < max_diff, "failed stored consistency value test, ratio = " + diff );
 
          // remove circular refernce
          common.hcpi.linkTo(null);
@@ -385,7 +385,7 @@ namespace TestSuite
          DiscountingSwapEngine dse = new DiscountingSwapEngine(common.nominalUK);
 
          zciis.setPricingEngine(dse);
-         Assert.IsTrue(Math.Abs(zciis.NPV())<1e-3,"zciis does not reprice to zero");
+         QAssert.IsTrue(Math.Abs(zciis.NPV())<1e-3,"zciis does not reprice to zero");
 
          List<Date> oneDate = new List<Date>();
          oneDate.Add(endDate);
@@ -408,13 +408,13 @@ namespace TestSuite
                   common.ii, InterpolationType.AsIndex, inflationNominal);
 
          cS.setPricingEngine(dse);
-         Assert.IsTrue(Math.Abs(cS.NPV())<1e-3,"CPISwap as ZCIIS does not reprice to zero");
+         QAssert.IsTrue(Math.Abs(cS.NPV())<1e-3,"CPISwap as ZCIIS does not reprice to zero");
 
          for (int i=0; i<2; i++)
          {
             double cs = cS.legNPV(i).GetValueOrDefault();
             double z = zciis.legNPV(i).GetValueOrDefault();
-            Assert.IsTrue(Math.Abs(cs - z)<1e-3, "zciis leg does not equal CPISwap leg");
+            QAssert.IsTrue(Math.Abs(cs - z)<1e-3, "zciis leg does not equal CPISwap leg");
          }
          // remove circular refernce
          common.hcpi.linkTo(null);
@@ -508,7 +508,7 @@ namespace TestSuite
          DiscountingBondEngine dbe = new DiscountingBondEngine(common.nominalUK);
          cpiB.setPricingEngine(dbe);
 
-         Assert.IsTrue(Math.Abs(cpiB.NPV() - zisV.legNPV(0).GetValueOrDefault())<1e-5,
+         QAssert.IsTrue(Math.Abs(cpiB.NPV() - zisV.legNPV(0).GetValueOrDefault())<1e-5,
             "cpi bond does not equal equivalent cpi swap leg");
          // remove circular refernce
          common.hcpi.linkTo(null);
