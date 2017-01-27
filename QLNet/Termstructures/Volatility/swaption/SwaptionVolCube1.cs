@@ -775,8 +775,8 @@ namespace QLNet
          {
             for (int k=0; k<atmSwapLengths.Count; k++) 
             {
-               bool expandOptionTimes =!(optionTimes.Exists(x => x == atmOptionTimes[j]));
-               bool expandSwapLengths =!(swapLengths.Exists(x => x == atmSwapLengths[k]));
+               bool expandOptionTimes = !(optionTimes.Exists(x => x == atmOptionTimes[j]));
+               bool expandSwapLengths = !(swapLengths.Exists(x => x == atmSwapLengths[k]));
                if(expandOptionTimes || expandSwapLengths)
                {
                   double atmForward = atmStrike(atmOptionDates[j],atmSwapTenors[k]);

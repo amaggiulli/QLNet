@@ -42,7 +42,7 @@ namespace QLNet {
 
             // Calculation of seed value, Si
             double n= 2.0*Math.Log(dividendDiscount/riskFreeDiscount)/(variance);
-            double m=-2.0*Math.Log(riskFreeDiscount)/(variance);
+            double m= -2.0*Math.Log(riskFreeDiscount)/(variance);
             double bT = Math.Log(dividendDiscount/riskFreeDiscount);
 
             double qu, Su, h, Si;

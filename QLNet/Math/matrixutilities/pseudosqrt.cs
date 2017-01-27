@@ -152,18 +152,18 @@ namespace QLNet {
                         if (theta[i*(i-1)/2+j]>1-eps)
                             theta[i*(i-1)/2+j]=1-eps;
                         if (theta[i*(i-1)/2+j]<-1+eps)
-                            theta[i*(i-1)/2+j]=-1+eps;
+                            theta[i*(i-1)/2+j]= -1+eps;
                         for (k=0; k<j; k++) {
                             theta[i*(i-1)/2+j] /= Math.Sin(theta[i*(i-1)/2+k]);
                             if (theta[i*(i-1)/2+j]>1-eps)
                                 theta[i*(i-1)/2+j]=1-eps;
                             if (theta[i*(i-1)/2+j]<-1+eps)
-                                theta[i*(i-1)/2+j]=-1+eps;
+                                theta[i*(i-1)/2+j]= -1+eps;
                         }
                         theta[i*(i-1)/2+j] = Math.Acos(theta[i*(i-1)/2+j]);
                         if (j==i-1) {
                             if (result[i,i]<0)
-                                theta[i*(i-1)/2+j]=-theta[i*(i-1)/2+j];
+                                theta[i*(i-1)/2+j]= -theta[i*(i-1)/2+j];
                         }
                     }
                 }
@@ -194,18 +194,18 @@ namespace QLNet {
                         if (theta[j*size+i]>1-eps)
                             theta[j*size+i]=1-eps;
                         if (theta[j*size+i]<-1+eps)
-                            theta[j*size+i]=-1+eps;
+                            theta[j*size+i]= -1+eps;
                         for (k=0;k<j;k++) {
                             theta[j*size+i] /= Math.Sin(theta[k*size+i]);
                             if (theta[j*size+i]>1-eps)
                                 theta[j*size+i]=1-eps;
                             if (theta[j*size+i]<-1+eps)
-                                theta[j*size+i]=-1+eps;
+                                theta[j*size+i]= -1+eps;
                         }
                         theta[j*size+i] = Math.Acos(theta[j*size+i]);
                         if (j==size-2) {
                             if (result[i,j+1]<0)
-                                theta[j*size+i]=-theta[j*size+i];
+                                theta[j*size+i]= -theta[j*size+i];
                         }
                     }
                 }

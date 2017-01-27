@@ -473,13 +473,13 @@ namespace QLNet {
         private double average_, sigma_;
 
         const double a0_ =  2.50662823884;
-        const double a1_ =-18.61500062529;
+        const double a1_ = -18.61500062529;
         const double a2_ = 41.39119773534;
-        const double a3_ =-25.44106049637;
+        const double a3_ = -25.44106049637;
 
         const double b0_ = -8.47351093090;
         const double b1_ = 23.08336743743;
-        const double b2_ =-21.06224101826;
+        const double b2_ = -21.06224101826;
         const double b3_ =  3.13082909833;
 
         const double c0_ = 0.3374754822726147;
@@ -526,7 +526,7 @@ namespace QLNet {
                                        (c4_+result*(c5_+result*(c6_+result*
                                                            (c7_+result*c8_)))))));
                 if (x<0.5)
-                    result=-result;
+                    result= -result;
             }
 
             return average_ + result*sigma_;
