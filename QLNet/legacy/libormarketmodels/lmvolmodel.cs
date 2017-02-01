@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -16,53 +17,52 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
 {
-    public abstract class LmVolatilityModel {
+   //! caplet volatility model
+   public abstract class LmVolatilityModel
+   {
+      public LmVolatilityModel(int size, int nArguments)
+      {
+         size_ = size;
+         arguments_ = new InitializedList<Parameter>(nArguments);
+      }
 
-        protected int size_;
-        protected List<Parameter> arguments_;
+      public int size()
+      {
+         return size_;
+      }
 
-        public LmVolatilityModel(int size, int nArguments){
-            size_ = size;
-            arguments_ = new InitializedList<Parameter>( nArguments);
-        }
+      public abstract void generateArguments();
 
-        public int size(){
-            return size_;
-        }
+      public abstract Vector volatility(double t, Vector x = null);
 
-        public abstract void generateArguments();
+      public virtual double volatility(int i, double t, Vector x = null)
+      {
+         // inefficient implementation, please overload in derived classes
+         return volatility(t, x)[i];
+      }
 
-        public abstract Vector volatility(double t, Vector x);
+      public virtual double integratedVariance(int i, int j, double u, Vector x = null)
+      {
+         Utils.QL_FAIL("integratedVariance() method is not supported");
+         return 0;
+      }
 
-        public abstract Vector volatility(double t);
+      public List<Parameter> parameters()
+      {
+         return arguments_;
+      }
 
-        public virtual double volatility(int i, double t, Vector x) {
-                 return volatility(t, x)[i];
-        }
+      public void setParams(List<Parameter> arguments)
+      {
+         arguments_ = arguments;
+         generateArguments();
+      }
 
-        public virtual double volatility(int i, double t){
-            return volatility(t)[i];
-        }
-
-        public virtual double integratedVariance(int i, int j, double u, Vector x){
-                throw new NotSupportedException("integratedVariance() method is not supported");
-        }
-        public virtual double integratedVariance(int i, int j, double u) {
-            throw new NotSupportedException("integratedVariance() method is not supported");
-        }
-
-        public List<Parameter> parameters()  {
-            return arguments_;
-        }
-
-        public void setParams(List<Parameter> arguments) {
-            arguments_ = arguments;
-            generateArguments();
-        }
-    }
+      protected int size_;
+      protected List<Parameter> arguments_;
+   }
 }
