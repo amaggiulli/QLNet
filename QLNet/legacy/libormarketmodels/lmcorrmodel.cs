@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,52 +21,61 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-    public abstract class LmCorrelationModel
-    {
-        protected int size_;
-        protected List<Parameter> arguments_;
+   // libor forward correlation model
+   public abstract class LmCorrelationModel
+   {
 
-        public LmCorrelationModel(int size, int nArguments) {
-            size_ = size;
-            arguments_ = new InitializedList<Parameter>( nArguments);
-        }
+      public LmCorrelationModel(int size, int nArguments)
+      {
+         size_ = size;
+         arguments_ = new InitializedList<Parameter>(nArguments);
+      }
 
-        public virtual int size() {return size_;}
+      public virtual int size()
+      {
+         return size_;
+      }
 
-        public virtual int factors() {return size_;}
+      public virtual int factors()
+      {
+         return size_;
+      }
 
-        public List<Parameter> parameters() { return arguments_; }
+      public List<Parameter> parameters()
+      {
+         return arguments_;
+      }
 
-        public void setParams(List<Parameter> arguments){
-            arguments_ = arguments;
-            generateArguments();
-        }
+      public void setParams(List<Parameter> arguments)
+      {
+         arguments_ = arguments;
+         generateArguments();
+      }
 
-        public abstract Matrix correlation(double t, Vector x);
+      public abstract Matrix correlation(double t, Vector x = null);
 
-        public abstract Matrix correlation(double t);
+      public virtual double correlation(int i, int j, double t, Vector x = null )
+      {
+         // inefficient implementation, please overload in derived classes
+         return correlation(t, x)[i, j];
+      }
 
-        public virtual double correlation(int i, int j, double t, Vector x){
-            // inefficient implementation, please overload in derived classes
-            return correlation(t, x)[i, j];
-        }
+      public virtual Matrix pseudoSqrt(double t, Vector x = null)
+      {
+         return MatrixUtilitites.pseudoSqrt(this.correlation(t, x),
+            MatrixUtilitites.SalvagingAlgorithm.Spectral);
+      }
 
-        public virtual double correlation(int i, int j, double t){
-            return correlation(i, j, t, null);
-        }
+      public virtual bool isTimeIndependent()
+      {
+         return false;
+      }
 
-        public virtual Matrix pseudoSqrt(double t, Vector x) {
-            return MatrixUtilitites.pseudoSqrt(this.correlation(t, x),
-                                                MatrixUtilitites.SalvagingAlgorithm.Spectral);
-        }
+      protected abstract void generateArguments();
 
-        public virtual Matrix pseudoSqrt(double t){
-            return pseudoSqrt(t, null);
-        }
+      protected int size_;
+      protected List<Parameter> arguments_;
 
-        protected abstract void generateArguments();
 
-        public virtual bool isTimeIndependent() { return false; }
-       
-    }
+   }
 }
