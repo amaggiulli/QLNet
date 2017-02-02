@@ -173,14 +173,18 @@ namespace QLNet
             cashFlow.registerWith(update);
          }
 
-         foreach (CashFlow cashFlow in floatingLeg)
+         if (floatingLeg != null)
          {
-            cashFlow.registerWith(update);
-         }
+            foreach (CashFlow cashFlow in floatingLeg)
+            {
+               cashFlow.registerWith(update);
+            }
 
+         }
 
          legs_[0] = cpiLeg;
          legs_[1] = floatingLeg;
+
 
          if (type_==Type.Payer) 
          {
