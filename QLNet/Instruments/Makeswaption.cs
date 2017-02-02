@@ -84,11 +84,11 @@ namespace QLNet
            if (exerciseDate_ == null) {
                 exercise_ =new EuropeanExercise(fixingDate_);
            } 
-           else {
+           else
+           {
                 if(exerciseDate_ <= fixingDate_)
-                throw new ArgumentException(
-                        "exercise date (" + exerciseDate_ + ") must be less "+
-                        "than or equal to fixing date (" + fixingDate_ + ")");
+                  throw new ArgumentException( "exercise date (" + exerciseDate_ + ") must be less "+
+                     "than or equal to fixing date (" + fixingDate_ + ")");
                 exercise_ = new EuropeanExercise(exerciseDate_);
             }
 

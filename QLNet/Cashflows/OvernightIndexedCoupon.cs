@@ -92,14 +92,13 @@ namespace QLNet
          {
             Handle<YieldTermStructure> curve = index.forwardingTermStructure();
             if (curve.empty())
-               throw new ArgumentException("null term structure set to this instance of" +
-                                           index.name());
+               throw new ArgumentException("null term structure set to this instance of" + index.name());
                   
-               List<Date> dates = coupon_.valueDates();
-               double startDiscount = curve.link.discount(dates[i]);
-               double endDiscount = curve.link.discount(dates[n]);
+            List<Date> dates = coupon_.valueDates();
+            double startDiscount = curve.link.discount(dates[i]);
+            double endDiscount = curve.link.discount(dates[n]);
 
-               compoundFactor *= startDiscount/endDiscount;
+            compoundFactor *= startDiscount/endDiscount;
          }
 
          double rate = (compoundFactor - 1.0) / coupon_.accrualPeriod();

@@ -50,8 +50,7 @@ namespace QLNet
          if ( amount_ != null )
             return amount_.Value;
 
-            return nominal()*(rate_.compoundFactor(accrualStartDate_,
-                                                   accrualEndDate_, refPeriodStart_, refPeriodEnd_) - 1.0); 
+         return nominal()*(rate_.compoundFactor(accrualStartDate_,accrualEndDate_, refPeriodStart_, refPeriodEnd_) - 1.0); 
       }
 
       //! Coupon interface

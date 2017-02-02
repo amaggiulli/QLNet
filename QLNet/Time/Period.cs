@@ -261,15 +261,16 @@ namespace QLNet {
         public static Period operator *(int n, Period p) { return new Period(n * p.length(), p.units()); }
         public static Period operator *(Period p, int n) { return new Period(n * p.length(), p.units()); }
 
-        public static bool operator ==(Period p1, Period p2) 
-		  {
-			  if ((object)p1 == null && (object)p2 == null)
-				  return true;
-			  else if ((object)p1 == null || (object)p2 == null)
-				  return false;
-			  else
-				return !(p1 < p2 || p2 < p1); 
-		  }
+       public static bool operator ==(Period p1, Period p2)
+       {
+          if ((object) p1 == null && (object) p2 == null)
+             return true;
+
+          if ((object) p1 == null || (object) p2 == null)
+             return false;
+
+          return !(p1 < p2 || p2 < p1);
+       }
         public static bool operator !=(Period p1, Period p2) { return !(p1 == p2); }
         public static bool operator <=(Period p1, Period p2) { return !(p1 > p2); }
         public static bool operator >=(Period p1, Period p2) { return !(p1 < p2); }
