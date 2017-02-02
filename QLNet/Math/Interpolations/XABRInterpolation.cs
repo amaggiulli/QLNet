@@ -155,7 +155,7 @@ namespace QLNet
         }
 
         // there is nothing to optimize
-        if ( coeff_.paramIsFixed_.Aggregate( ( a, b ) => b & a ) )
+        if ( coeff_.paramIsFixed_.Aggregate( ( a, b ) => b && a ) )
         {
            coeff_.error_ = interpolationError();
            coeff_.maxError_ = interpolationMaxError();

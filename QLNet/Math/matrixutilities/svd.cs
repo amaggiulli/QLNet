@@ -135,7 +135,7 @@ namespace QLNet {
                         e[k + 1] += 1.0;
                     }
                     e[k] = -e[k];
-                    if ((k + 1 < m_) & (e[k].IsNotEqual(0.0))) {
+                    if ((k + 1 < m_) && (e[k].IsNotEqual(0.0))) {
                         // Apply the transformation.
                         for (i = k + 1; i < m_; i++) {
                             work[i] = 0.0;
@@ -205,7 +205,7 @@ namespace QLNet {
 
             // generate V
             for (k = n_ - 1; k >= 0; --k) {
-                if ((k < nrt) & (e[k].IsNotEqual(0.0))) {
+                if ((k < nrt) && (e[k].IsNotEqual(0.0))) {
                     for (j = k + 1; j < n_; ++j) {
                         double t = 0;
                         for (i = k + 1; i < n_; i++) {
@@ -341,7 +341,7 @@ namespace QLNet {
                             double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
                             double c = (sp * epm1) * (sp * epm1);
                             double shift = 0.0;
-                            if ((b.IsNotEqual(0.0)) | (c.IsNotEqual(0.0))) {
+                            if ((b.IsNotEqual(0.0)) || (c.IsNotEqual(0.0))) {
                                 shift = Math.Sqrt(b * b + c);
                                 if (b < 0.0) {
                                     shift = -shift;
