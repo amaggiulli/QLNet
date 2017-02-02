@@ -177,7 +177,7 @@ namespace QLNet
             //throw new NotImplementedException("Need to implement the FindIndex method()");
 
             //int nIndex = times_.FindIndex( delegate(double val) { return val == locVal; });
-            int nIndex = times_.FindIndex( val => val == t );
+            int nIndex = times_.FindIndex( val => val.IsEqual(t) );
             if ( nIndex == -1 )
                throw new Exception( "fitting parameter not set!" );
 

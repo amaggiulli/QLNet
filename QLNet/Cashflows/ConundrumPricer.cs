@@ -245,7 +245,7 @@ namespace QLNet {
             }
             //* calibration of shift*/
             private double calibrationOfShift(double Rs) {
-                if (Rs != tmpRs_) {
+                if (Rs.IsNotEqual(tmpRs_)) {
                     double initialGuess;
                     double N = 0;
                     double D = 0;
@@ -296,7 +296,7 @@ namespace QLNet {
                 double numerator = 0;
                 numerator += shapedSwapPaymentTimes_.Last() * swapPaymentDiscounts_.Last() * Math.Exp(-shapedSwapPaymentTimes_.Last() * x) * sqrtDenominator;
                 numerator -= (discountAtStart_ - swapPaymentDiscounts_.Last() * Math.Exp(-shapedSwapPaymentTimes_.Last() * x)) * derSqrtDenominator;
-                if (!(denominator != 0))
+                if (denominator.IsEqual(0.0))
                     throw new Exception("GFunctionWithShifts::derRs_derX: denominator == 0");
                 return numerator / denominator;
             }
@@ -304,7 +304,7 @@ namespace QLNet {
             private double derZ_derX(double x) {
                 double sqrtDenominator = (1.0 - discountRatio_ * Math.Exp(-shapedSwapPaymentTimes_.Last() * x));
                 double denominator = sqrtDenominator * sqrtDenominator;
-                if (!(denominator != 0))
+                if (denominator.IsEqual(0.0))
                     throw new Exception("GFunctionWithShifts::derZ_derX: denominator == 0");
 
                 double numerator = 0;
@@ -342,7 +342,7 @@ namespace QLNet {
                 double derDenOfDerR = 2 * denOfRfunztion * derDenOfRfunztion;
 
                 double numerator = derNumOfDerR * denOfDerR - numOfDerR * derDenOfDerR;
-                if (!(denominator != 0))
+                if (denominator.IsEqual(0.0))
                     throw new Exception("GFunctionWithShifts::der2Rs_derX2: denominator == 0");
                 return numerator / denominator;
             }
@@ -351,7 +351,7 @@ namespace QLNet {
                 double denOfZfunction = (1.0 - discountRatio_ * Math.Exp(-shapedSwapPaymentTimes_.Last() * x));
                 double derDenOfZfunction = shapedSwapPaymentTimes_.Last() * discountRatio_ * Math.Exp(-shapedSwapPaymentTimes_.Last() * x);
                 double denominator = Math.Pow(denOfZfunction, 4);
-                if (!(denominator != 0))
+                if (denominator.IsEqual(0))
                     throw new Exception("GFunctionWithShifts::der2Z_derX2: denominator == 0");
 
                 double numOfDerZ = 0;

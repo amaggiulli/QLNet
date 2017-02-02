@@ -83,7 +83,7 @@ namespace QLNet {
             double w, wp, wm, dwdy, d2wdy2;
             strike = underlyingLevel;
             y = Math.Log(strike/forwardValue);
-            dy = ((y!=0.0) ? y*0.000001 : 0.000001);
+            dy = y.IsNotEqual(0.0) ? y*0.000001 : 0.000001;
             strikep=strike*Math.Exp(dy);
             strikem=strike/Math.Exp(dy);
             w  = blackTS_.link.blackVariance(t, strike,  true);
@@ -94,7 +94,7 @@ namespace QLNet {
 
             // time derivative
             double dt, wpt, wmt, dwdt;
-            if (t==0.0) {
+            if (t.IsEqual(0.0)) {
                 dt = 0.0001;
                 wpt = blackTS_.link.blackVariance(t+dt, strike, true);
 
@@ -115,7 +115,7 @@ namespace QLNet {
                 dwdt = (wpt-wmt)/(2.0*dt);
             }
 
-            if (dwdy==0.0 && d2wdy2==0.0) { // avoid /w where w might be 0.0
+            if (dwdy.IsEqual(0.0) && d2wdy2.IsEqual(0.0)) { // avoid /w where w might be 0.0
                 return Math.Sqrt(dwdt);
             } else {
                 double den1 = 1.0 - y/w*dwdy;

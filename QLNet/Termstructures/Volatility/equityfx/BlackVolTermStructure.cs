@@ -115,9 +115,9 @@ namespace QLNet
          Utils.QL_REQUIRE( time1 <= time2, () => time1 + " later than " + time2 );
          checkRange(time2, extrapolate);
          checkStrike(strike, extrapolate);
-         if (time2==time1) 
+         if (time2.IsEqual(time1)) 
          {
-            if (time1==0.0) 
+            if (time1.IsEqual(0.0)) 
             {
                double epsilon = 1.0e-5;
                double var = blackVarianceImpl(epsilon, strike);
@@ -299,7 +299,7 @@ namespace QLNet
       */
       protected override double blackVolImpl(double t, double strike)
       {
-         double nonZeroMaturity = (t==0.0 ? 0.00001 : t);
+         double nonZeroMaturity = t.IsEqual(0.0) ? 0.00001 : t;
          double var = blackVarianceImpl(nonZeroMaturity, strike);
          return Math.Sqrt(var/nonZeroMaturity);
       }

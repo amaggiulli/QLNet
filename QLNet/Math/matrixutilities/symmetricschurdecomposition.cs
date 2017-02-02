@@ -73,7 +73,7 @@ namespace QLNet {
                     }
                 }
 
-                if (sum==0) {
+                if (sum.IsEqual(0.0)) {
                     keeplooping = false;
                 } else {
                     /* To speed up computation a threshold is introduced to

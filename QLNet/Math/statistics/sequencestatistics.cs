@@ -75,15 +75,15 @@ namespace QLNet {
             for (int i=0; i<dimension_; i++){
                 for (int j=0; j<dimension_; j++){
                     if (i==j) {
-                        if (variances[i]==0.0) {
+                        if (variances[i].IsEqual(0.0)) {
                             correlation[i,j] = 1.0;
                         } else {
                             correlation[i,j] *= 1.0/Math.Sqrt(variances[i]*variances[j]);
                         }
                     } else {
-                        if (variances[i]==0.0 && variances[j]==0) {
+                        if (variances[i].IsEqual(0.0) && variances[j].IsEqual(0.0)) {
                             correlation[i,j] = 1.0;
-                        } else if (variances[i]==0.0 || variances[j]==0.0) {
+                        } else if (variances[i].IsEqual(0.0) || variances[j].IsEqual(0.0)) {
                             correlation[i,j] = 0.0;
                         } else {
                             correlation[i,j] *= 1.0/Math.Sqrt(variances[i]*variances[j]);

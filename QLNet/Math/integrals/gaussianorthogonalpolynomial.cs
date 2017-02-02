@@ -121,8 +121,8 @@ namespace QLNet {
             double num = beta_*beta_ - alpha_*alpha_;
             double denom = (2.0*i+alpha_+beta_)*(2.0*i+alpha_+beta_+2);
 
-            if (denom == 0) {
-                if (num != 0) {
+            if (denom.IsEqual(0.0)) {
+                if (num.IsNotEqual(0.0)) {
                     throw new Exception("can't compute a_k for jacobi integration\n");
                 }
                 else {
@@ -130,7 +130,7 @@ namespace QLNet {
                     num  = 2*beta_;
                     denom= 2*(2.0*i+alpha_+beta_+1);
 
-                    if(denom == 0)
+                    if(denom.IsEqual(0.0))
                         throw new Exception("can't compute a_k for jacobi integration\n");
                 }
             }
@@ -142,15 +142,15 @@ namespace QLNet {
             double denom = (2.0*i+alpha_+beta_)*(2.0*i+alpha_+beta_)
                        * ((2.0*i+alpha_+beta_)*(2.0*i+alpha_+beta_)-1);
 
-            if (denom == 0) {
-                if (num != 0) {
+            if (denom.IsEqual(0.0)) {
+                if (num.IsNotEqual(0.0)) {
                     throw new Exception("can't compute b_k for jacobi integration\n");
                 } else {
                     // l'Hospital
                     num  = 4.0*i*(i+beta_)* (2.0*i+2*alpha_+beta_);
                     denom= 2.0*(2.0*i+alpha_+beta_);
                     denom*=denom-1;
-                    if(denom == 0)
+                    if(denom.IsEqual(0.0))
                         throw new Exception("can't compute b_k for jacobi integration\n");
                 }
             }

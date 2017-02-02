@@ -316,13 +316,13 @@ namespace QLNet {
                            tmp[0] = (Math.Abs(S[1]-S[0])*2*S[0]*S[1]+Math.Abs(2*S[0]*S[1]-4*S[0]*S[0]*S[1])*S[0])/(Math.Abs(S[1]-S[0])+Math.Abs(2*S[0]*S[1]-4*S[0]*S[0]*S[1]));
                            tmp[1] = (Math.Abs(S[2]-S[1])*S[0]+Math.Abs(S[0]-2*S[0]*S[1])*S[1])/(Math.Abs(S[2]-S[1])+Math.Abs(S[0]-2*S[0]*S[1]));
                            for (int i=2; i<size_-2; ++i) {
-                              if ((S[i-2]==S[i-1]) && (S[i]!=S[i+1]))
+                              if ((S[i-2].IsEqual(S[i-1])) && (S[i].IsNotEqual(S[i+1])))
                                     tmp[i] = S[i-1];
-                              else if ((S[i-2]!=S[i-1]) && (S[i]==S[i+1]))
+                              else if ((S[i-2].IsNotEqual(S[i-1])) && (S[i].IsEqual(S[i+1])))
                                     tmp[i] = S[i];
-                              else if (S[i]==S[i-1])
+                              else if (S[i].IsEqual(S[i-1]))
                                     tmp[i] = S[i];
-                              else if ((S[i-2]==S[i-1]) && (S[i-1]!=S[i]) && (S[i]==S[i+1]))
+                              else if ((S[i-2].IsEqual(S[i-1])) && (S[i-1].IsNotEqual(S[i])) && (S[i].IsEqual(S[i+1])))
                                     tmp[i] = (S[i-1]+S[i])/2.0;
                               else
                                     tmp[i] = (Math.Abs(S[i+1]-S[i])*S[i-1]+Math.Abs(S[i-1]-S[i-2])*S[i])/(Math.Abs(S[i+1]-S[i])+Math.Abs(S[i-1]-S[i-2]));
@@ -367,7 +367,7 @@ namespace QLNet {
                         } else {
                             correction = 0.0;
                         }
-                        if (correction!=tmp[i]) {
+                        if (correction.IsNotEqual(tmp[i])) {
                             tmp[i] = correction;
                             monotonicityAdjustments_[i] = true;
                         }
@@ -378,7 +378,7 @@ namespace QLNet {
                         } else {
                             correction = 0.0;
                         }
-                        if (correction!=tmp[i]) {
+                        if (correction.IsNotEqual(tmp[i])) {
                             tmp[i] = correction;
                             monotonicityAdjustments_[i] = true;
                         }
@@ -414,7 +414,7 @@ namespace QLNet {
                         } else {
                             correction = 0.0;
                         }
-                        if (correction!=tmp[i]) {
+                        if (correction.IsNotEqual(tmp[i])) {
                             tmp[i] = correction;
                             monotonicityAdjustments_[i] = true;
                         }

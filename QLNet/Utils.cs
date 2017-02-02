@@ -49,13 +49,13 @@ namespace QLNet
             double result = Get(spreads, i);
             double floor = Get(floors, i);
             double cap = Get(caps, i);
-            if (floor != default(double)) result = Math.Max(floor, result);
-            if (cap != default(double)) result = Math.Min(cap, result);
+            if (floor.IsNotEqual(default(double))) result = Math.Max(floor, result);
+            if (cap.IsNotEqual(default(double))) result = Math.Min(cap, result);
             return result;
         }
 
         public static bool noOption(List<double> caps, List<double> floors, int i) {
-            return (Get(caps, i) == default(double)) && (Get(floors, i) == default(double));
+            return Get(caps, i).IsEqual(default(double)) && Get(floors, i).IsEqual(default(double));
         }
 
         public static void swap(ref double a1, ref double a2) { swap<double>(ref a1, ref a2); }

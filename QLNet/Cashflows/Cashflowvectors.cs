@@ -25,7 +25,7 @@ namespace QLNet {
 
     public static partial class Utils {
         public static double? toNullable(double val) {
-            if (val == double.MinValue)
+            if (val.IsEqual(double.MinValue))
                 return null;
             else
                 return val;
@@ -80,7 +80,7 @@ namespace QLNet {
                 if (i == n - 1 && !schedule.isRegular(i + 1))
                     refEnd = calendar.adjust(start + schedule.tenor(), schedule.businessDayConvention());
 
-                if (Utils.Get(gearings, i, 1) == 0) {                               // fixed coupon
+                if (Utils.Get(gearings, i, 1).IsEqual(0.0)) {                               // fixed coupon
                    leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( nominals, i ),
                                                 Utils.effectiveFixedRate(spreads, caps, floors, i),
                                                 paymentDayCounter,
@@ -168,7 +168,7 @@ namespace QLNet {
                     BusinessDayConvention bdc = schedule.businessDayConvention();
                     refEnd = calendar.adjust(start + schedule.tenor(), bdc);
                 }
-                if (Utils.Get(gearings, i, 1.0) == 0.0) { // fixed coupon
+                if (Utils.Get(gearings, i, 1.0).IsEqual(0.0)) { // fixed coupon
                     leg.Add(new
                         FixedRateCoupon( paymentDate,Utils.Get( nominals, i, 1.0 ),
                                         Utils.Get(spreads, i, 1.0),
@@ -311,7 +311,7 @@ namespace QLNet {
                   BusinessDayConvention bdc = schedule_.businessDayConvention();
                   refEnd = schedule_.calendar().adjust(start + schedule_.tenor(), bdc);
                }
-               if (Utils.Get(gearings_, i, 1.0) == 0.0)
+               if (Utils.Get(gearings_, i, 1.0).IsEqual(0.0))
                {
                   // fixed coupon
                   leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( notionals_, i, 1.0 ),

@@ -34,7 +34,7 @@ namespace QLNet {
             froot = f.value(root_);
             dfroot = f.derivative(root_);
 
-            if (dfroot == default(double))
+            if (dfroot.IsEqual(default(double)))
                 throw new ArgumentException("Newton requires function's derivative");
             ++evaluationNumber_;
 

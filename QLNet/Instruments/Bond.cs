@@ -208,7 +208,7 @@ namespace QLNet
       public double dirtyPrice()
       {
          double currentNotional = notional(settlementDate());
-         if (currentNotional == 0.0)
+         if (currentNotional.IsEqual(0.0))
             return 0.0;
          else
             return settlementValue() * 100 / currentNotional ;
@@ -233,7 +233,7 @@ namespace QLNet
       {
          double currentNotional = notional(settlementDate());
          
-         if (currentNotional == 0.0)
+         if (currentNotional.IsEqual(0.0))
             return 0.0;
 
          return BondFunctions.yield(this, cleanPrice(), dc, comp, freq,settlementDate(), accuracy, maxEvaluations);
@@ -251,7 +251,7 @@ namespace QLNet
       public double dirtyPrice(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
       {
          double currentNotional = notional(settlement);
-         if (currentNotional == 0.0)
+         if (currentNotional.IsEqual(0.0))
             return 0.0;
 
          return BondFunctions.cleanPrice(this, yield, dc, comp, freq, settlement) + accruedAmount(settlement);
@@ -263,7 +263,7 @@ namespace QLNet
                           double accuracy = 1.0e-8, int maxEvaluations=100)
       {
          double currentNotional = notional(settlement);
-         if (currentNotional == 0.0)
+         if (currentNotional.IsEqual(0.0))
             return 0.0;
 
          return BondFunctions.yield(this, cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
@@ -275,7 +275,7 @@ namespace QLNet
       {
          double currentNotional = notional(settlement);
          
-         if (currentNotional == 0.0)
+         if (currentNotional.IsEqual(0.0))
             return 0.0;
 
          return BondFunctions.accruedAmount(this, settlement);

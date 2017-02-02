@@ -117,7 +117,7 @@ namespace QLNet
             double averagePrice;
             double product = runningProduct_;
             int fixings = n+pastFixings_;
-            if (path.timeGrid().mandatoryTimes()[0]==0.0) {
+            if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 fixings += 1;
                 product *= path.front();
             }

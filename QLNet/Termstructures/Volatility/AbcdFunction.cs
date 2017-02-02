@@ -64,7 +64,7 @@ namespace QLNet
          \f[ \sqrt{ \frac{\int_{tMin}^{tMax} f^2(T-u)du}{tMax-tMin} } \f] */
       public double volatility( double tMin, double tMax, double T )
       {
-         if (tMax==tMin)
+         if (tMax.IsEqual(tMin))
             return instantaneousVolatility(tMax, T);
          Utils.QL_REQUIRE(tMax>tMin,()=> "tMax must be > tMin");
          return Math.Sqrt(variance(tMin, tMax, T)/(tMax-tMin));

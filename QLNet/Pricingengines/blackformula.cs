@@ -36,7 +36,7 @@ namespace QLNet
          Utils.QL_REQUIRE(stdDev>=0.0,()=> "stdDev (" + stdDev + ") must be non-negative");
          Utils.QL_REQUIRE(discount>0.0,()=> "discount (" + discount + ") must be positive");
 
-         if (stdDev==0.0)
+         if (stdDev.IsEqual(0.0))
             return Math.Max((forward-strike)*(int)optionType, 0.0)*discount;
 
          forward = forward + displacement;
@@ -44,7 +44,7 @@ namespace QLNet
 
          // since displacement is non-negative strike==0 iff displacement==0
          // so returning forward*discount is OK
-         if (strike==0.0)
+         if (strike.IsEqual(0.0))
             return (optionType==Option.Type.Call ? forward*discount : 0.0);
 
          double d1 = Math.Log(forward/strike)/stdDev + 0.5*stdDev;
@@ -94,7 +94,7 @@ namespace QLNet
          double stdDev;
          forward = forward + displacement;
          strike = strike + displacement;
-         if (strike==forward)
+         if (strike.IsEqual(forward))
             // Brenner-Subrahmanyan (1988) and Feinstein (1988) ATM approx.
             stdDev = blackPrice/discount*Math.Sqrt(2.0 * Const.M_PI)/forward;
          else 
@@ -288,12 +288,12 @@ namespace QLNet
                                                            double displacement = 0.0 )
       {
          checkParameters(strike, forward, displacement);
-         if (stdDev==0.0)
+         if (stdDev.IsEqual(0.0))
             return (forward*(int)optionType > strike*(int)optionType ? 1.0 : 0.0);
 
          forward = forward + displacement;
          strike = strike + displacement;
-         if (strike==0.0)
+         if (strike.IsEqual(0.0))
             return (optionType==Option.Type.Call ? 1.0 : 0.0);
          double d2 = Math.Log(forward/strike)/stdDev - 0.5*stdDev;
          CumulativeNormalDistribution phi = new CumulativeNormalDistribution();
@@ -331,7 +331,7 @@ namespace QLNet
          forward = forward + displacement;
          strike = strike + displacement;
 
-         if (stdDev==0.0 || strike==0.0)
+         if (stdDev.IsEqual(0.0) || strike.IsEqual(0.0))
             return 0.0;
 
          double d1 = Math.Log(forward/strike)/stdDev + .5*stdDev;
@@ -380,7 +380,7 @@ namespace QLNet
          forward = forward + displacement;
          strike = strike + displacement;
 
-         if (stdDev==0.0 || strike==0.0)
+         if (stdDev.IsEqual(0.0) || strike.IsEqual(0.0))
             return 0.0;
 
          double d1 = Math.Log(forward/strike)/stdDev + .5*stdDev;
@@ -416,7 +416,7 @@ namespace QLNet
          QL_REQUIRE(discount>0.0,()=>
                    "discount (" + discount + ") must be positive");
          double d = (forward-strike)*(int)optionType, h = d/stdDev;
-         if (stdDev==0.0)
+         if (stdDev.IsEqual(0.0))
             return discount*Math.Max(d, 0.0);
          CumulativeNormalDistribution phi = new CumulativeNormalDistribution();
          double result = discount*(stdDev*phi.derivative(h) + d*phi.value(h));
@@ -537,7 +537,7 @@ namespace QLNet
          QL_REQUIRE( discount > 0.0,()=>
                     "discount (" + discount + ") must be positive" );
 
-         if ( stdDev == 0.0 )
+         if ( stdDev.IsEqual(0.0) )
             return 0.0;
 
          double d1 = ( forward - strike ) / stdDev;
@@ -587,7 +587,7 @@ namespace QLNet
 #if QL_EXTRA_SAFETY_CHECKS
                Utils.QL_REQUIRE(stdDev>=0.0,()=> "stdDev (" + stdDev + ") must be non-negative");
 #endif
-            if ( stdDev == 0.0 )
+            if ( stdDev.IsEqual(0.0) )
                return Math.Max( signedForward_ - signedStrike_, 0.0 )
                                                   - undiscountedBlackPrice_;
             double temp = halfOptionType_ * stdDev;

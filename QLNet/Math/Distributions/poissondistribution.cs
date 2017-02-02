@@ -36,7 +36,7 @@ namespace QLNet {
             if (!(x >= 0.0 && x <= 1.0)) 
                 throw new Exception("Inverse cumulative Poisson distribution is only defined on the interval [0,1]");
 
-            if (x == 1.0)
+            if (x.IsEqual(1.0))
                 return double.MaxValue;
 
             double sum = 0.0;

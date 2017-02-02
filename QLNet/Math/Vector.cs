@@ -71,7 +71,7 @@ namespace QLNet {
 				  if ( from.Count != to.Count ) return false;
 
 				  for ( int i = 0; i < from.Count; i++ )
-					  if ( from[i] != to[i] ) return false;
+					  if ( from[i].IsNotEqual(to[i]) ) return false;
 
 				  return true;
 			  }

@@ -49,7 +49,7 @@ namespace QLNet {
                 throw new Exception("positive discount required: " + discount + " not allowed");
 
             if (stdDev_>=Const.QL_EPSILON) {
-                if (strike_==0.0) {
+                if (strike_.IsEqual(0.0)) {
                     n_d1_ = 0.0;
                     n_d2_ = 0.0;
                     cum_d1_ = 1.0;
@@ -213,7 +213,7 @@ namespace QLNet {
         /*! Sensitivity to time to maturity. */
         public virtual double theta(double spot, double maturity) {
 
-            if (maturity==0.0) return 0.0;
+            if (maturity.IsEqual(0.0)) return 0.0;
             if (!(maturity>0.0))
                 throw new Exception("non negative maturity required: " + maturity + " not allowed");
             //vol = stdDev_ / std::sqrt(maturity);

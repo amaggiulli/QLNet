@@ -79,7 +79,7 @@ namespace QLNet
             // Volatilities are quoted for zero-spreaded swaps.
             // Therefore, any spread on the floating leg must be removed
             // with a corresponding correction on the fixed leg.
-            if (swap.spread!=0.0) {
+            if (swap.spread.IsNotEqual(0.0)) {
                 double correction = swap.spread*Math.Abs(swap.floatingLegBPS()/swap.fixedLegBPS());
                 strike -= correction;
                 atmForward -= correction;

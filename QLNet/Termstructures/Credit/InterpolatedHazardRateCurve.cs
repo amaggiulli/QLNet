@@ -102,7 +102,7 @@ namespace QLNet
 		}
 		protected override double survivalProbabilityImpl( double t )
 		{
-			if (t == 0.0)
+			if (t.IsEqual(0.0))
             return 1.0;
 
         double integral;

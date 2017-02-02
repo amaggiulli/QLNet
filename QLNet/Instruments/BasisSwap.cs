@@ -264,7 +264,7 @@ namespace QLNet
          {
             base.validate();
 
-            if (nominal == default(double)) throw new ArgumentException("nominal null or not set");
+            if (nominal.IsEqual(default(double))) throw new ArgumentException("nominal null or not set");
             if (floating1ResetDates.Count != floating1PayDates.Count)
                throw new ArgumentException("number of floating1 start dates different from number of floating1 payment dates");
             if (floating1PayDates.Count != floating1Coupons.Count)

@@ -139,7 +139,7 @@ namespace QLNet
 
             double sum = runningSum_;
             int fixings;
-            if (path.timeGrid().mandatoryTimes()[0]==0.0) {
+            if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 // include initial fixing
                 //sum = std::accumulate(path.begin(),path.end(),runningSum_);  
                 for(int i=0;i<path.length();i++ )

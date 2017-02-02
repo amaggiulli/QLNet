@@ -60,7 +60,7 @@ namespace QLNet {
             int i;
             for (i=0; i<bcs_.Count; i++)
                 bcs_[i].setTime(t);
-            if (theta_!=1.0) { // there is an explicit part
+            if (theta_.IsNotEqual(1.0)) { // there is an explicit part
                 if (L_.isTimeDependent()) {
                     L_.setTime(t);
                     explicitPart_ = (Operator)L_.subtract(I_, L_.multiply((1.0 - theta_) * dt_, L_));
@@ -71,7 +71,7 @@ namespace QLNet {
                 for (i = 0; i < bcs_.Count; i++)
                     bcs_[i].applyAfterApplying(a);
             }
-            if (theta_!=0.0) { // there is an implicit part
+            if (theta_.IsNotEqual(0.0)) { // there is an implicit part
                 if (L_.isTimeDependent()) {
                     L_.setTime(t-dt_);
                     implicitPart_ = (Operator)L_.add(I_, L_.multiply(theta_ * dt_, L_));
@@ -88,9 +88,9 @@ namespace QLNet {
 
         public void setStep(double dt) {
             dt_ = dt;
-            if (theta_!=1.0) // there is an explicit part
+            if (theta_.IsNotEqual(1.0)) // there is an explicit part
                 explicitPart_ = (Operator)L_.subtract(I_, L_.multiply((1.0 - theta_) * dt_, L_));
-            if (theta_!=0.0) // there is an implicit part
+            if (theta_.IsNotEqual(0.0)) // there is an implicit part
                 implicitPart_ = (Operator)L_.add(I_, L_.multiply(theta_ * dt_, L_));
         }
     }

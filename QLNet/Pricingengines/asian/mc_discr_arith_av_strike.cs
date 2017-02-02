@@ -94,7 +94,7 @@ namespace QLNet {
             if(!(n > 1))
                 throw new Exception("the path cannot be empty");
             double averageStrike=runningSum_;
-            if (path.timeGrid().mandatoryTimes()[0]==0.0) {
+            if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 //averageStrike =
                 //std::accumulate(path.begin(),path.end(),runningSum_)/(pastFixings_ + n)
                 for(int i=0;i<path.length();i++ )

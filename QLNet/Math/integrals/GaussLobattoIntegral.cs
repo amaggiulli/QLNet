@@ -81,7 +81,7 @@ namespace QLNet
         
          // avoid 80 bit logic on x86 cpu
          double dist = acc + (integral1-integral2);
-         if( dist==acc || mll<=a || b<=mrr) 
+         if( dist.IsEqual(acc) || mll<=a || b<=mrr)
          {
             Utils.QL_REQUIRE(m>a && b>m,()=> "Interval contains no more machine number");
             return integral1;
@@ -128,8 +128,8 @@ namespace QLNet
                        +0.2426110719014077338*y7);  
         
          increaseNumberOfEvaluations(13);
-         if (acc == 0.0 && (   f1 != 0.0 || f2 != 0.0 || f3 != 0.0
-                           || f4 != 0.0 || f5 != 0.0 || f6 != 0.0)) 
+         if (acc.IsEqual(0.0) && ( f1.IsNotEqual(0.0) || f2.IsNotEqual(0.0) || f3.IsNotEqual(0.0)
+                                || f4.IsNotEqual(0.0) || f5.IsNotEqual(0.0) || f6.IsNotEqual(0.0))) 
          {
             Utils.QL_FAIL("can not calculate absolute accuracy from relative accuracy");
          }
@@ -141,9 +141,9 @@ namespace QLNet
             double integral1 = (h/1470)*(77*(y1+y13)+432*(y3+y11)+
                                              625*(y5+y9)+672*y7);
         
-            if (Math.Abs(integral2-acc) != 0.0) 
+            if (Math.Abs(integral2-acc).IsNotEqual(0.0)) 
                   r = Math.Abs(integral1-acc)/Math.Abs(integral2-acc);
-            if (r == 0.0 || r > 1.0)
+            if (r.IsEqual(0.0) || r > 1.0)
                   r = 1.0;
          }
 

@@ -136,7 +136,7 @@ namespace QLNet
               // If end criteria is not met, continue
               double factor = -1.0;
               double vTry = extrapolate( ref P, iHighest, ref factor );
-              if ( ( vTry <= values_[iLowest] ) && ( factor == -1.0 ) )
+              if ( ( vTry <= values_[iLowest] ) && ( factor.IsEqual(-1.0) ) )
               {
                  factor = 2.0;
                  extrapolate( ref P, iHighest, ref factor );

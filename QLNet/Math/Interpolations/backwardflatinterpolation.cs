@@ -38,7 +38,7 @@ namespace QLNet {
             if (x <= xBegin_[0])
                 return yBegin_[0];
             int i = locate(x);
-            if (x == xBegin_[i])
+            if (x.IsEqual(xBegin_[i]))
                 return yBegin_[i];
             else
                 return yBegin_[i+1];

@@ -125,7 +125,7 @@ namespace QLNet {
             {
                double dt = 0;
                double periodEnd = mandatoryTimes_[k];
-               if ( periodEnd != 0.0 )
+               if ( periodEnd.IsNotEqual(0.0) )
                {
                   // the nearest integer
                   int nSteps = (int)( ( periodEnd - periodBegin ) / dtMax + 0.5 );

@@ -46,7 +46,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
 
-         return bond.notional(settlementDate) != 0.0;
+         return bond.notional(settlementDate).IsNotEqual(0.0);
       }
 
       #endregion

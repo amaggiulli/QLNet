@@ -26,7 +26,7 @@ public static class KronrodintegralArrays
 		public static double rescaleError(double err, double resultAbs, double resultAsc)
 		{
 			err = Math.Abs(err);
-			if (resultAsc != 0 && err != 0)
+			if (resultAsc.IsNotEqual(0.0) && err.IsNotEqual(0.0))
 			{
 				double scale = Math.Pow((200 * err / resultAsc), 1.5);
 				if (scale < 1)

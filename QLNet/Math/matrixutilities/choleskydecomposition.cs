@@ -50,7 +50,7 @@ namespace QLNet {
                         // With positive semi-definite matrices is possible
                         // to have result[i][i]==0.0
                         // In this case sum happens to be zero as well
-                        result[j,i] = (sum==0.0 ? 0.0 : sum/result[i,i]);
+                        result[j,i] = (sum.IsEqual(0.0) ? 0.0 : sum/result[i,i]);
                     }
                 }
             }

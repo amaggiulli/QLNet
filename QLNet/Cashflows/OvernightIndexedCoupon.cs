@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QLNet
 {
@@ -54,7 +53,7 @@ namespace QLNet
             double pastFixing = IndexManager.instance().getHistory(
                index.name()).value()[fixingDates[i]];
 
-            if (pastFixing == default(double) )
+            if (pastFixing.IsEqual(default(double)) )
                throw new Exception("Missing " + index.name() + " fixing for " 
                                               + fixingDates[i].ToString());
 
@@ -71,7 +70,7 @@ namespace QLNet
                double pastFixing = IndexManager.instance().getHistory(
                                              index.name()).value()[fixingDates[i]];
                      
-               if (pastFixing != default(double)) 
+               if (pastFixing.IsNotEqual(default(double))) 
                {
                   compoundFactor *= (1.0 + pastFixing*dt[i]);
                   ++i;

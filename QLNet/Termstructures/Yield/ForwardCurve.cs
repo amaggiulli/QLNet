@@ -196,7 +196,7 @@ namespace QLNet
       }
       protected override double zeroYieldImpl(double t)
       {
-         if (t == 0.0)
+         if (t.IsEqual(0.0))
             return forwardImpl(0.0);
 
          double integral;

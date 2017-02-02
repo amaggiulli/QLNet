@@ -482,7 +482,7 @@ namespace QLNet {
             eigenValues.ForEach((ii, vv) => accumulate += eigenValues[ii]);
             double enough = componentRetainedPercentage * accumulate;
 
-            if (componentRetainedPercentage == 1.0)
+            if (componentRetainedPercentage.IsEqual(1.0))
             {
                 // numerical glitches might cause some factors to be discarded
                 enough *= 1.1;

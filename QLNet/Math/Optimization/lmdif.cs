@@ -362,7 +362,7 @@ namespace QLNet {
                 if (mode != 2) {
                     for (j = 0; j < n; j++) {
                         diag[j] = wa2[j];
-                        if (wa2[j] == zero)
+                        if (wa2[j].IsEqual(zero))
                             diag[j] = one;
                     }
                 }
@@ -376,7 +376,7 @@ namespace QLNet {
 
                 xnorm = enorm(n, wa3);
                 delta = factor * xnorm;
-                if (delta == zero)
+                if (delta.IsEqual(zero))
                     delta = factor;
             }
 
@@ -389,7 +389,7 @@ namespace QLNet {
             jj = 0;
             for (j = 0; j < n; j++) {
                 temp3 = fjac[jj];
-                if (temp3 != zero) {
+                if (temp3.IsNotEqual(zero)) {
                     sum = zero;
                     ij = jj;
                     for (i = j; i < m; i++) {
@@ -412,11 +412,11 @@ namespace QLNet {
             *    compute the norm of the scaled gradient.
             */
             gnorm = zero;
-            if (fnorm != zero) {
+            if (fnorm.IsNotEqual(zero)) {
                 jj = 0;
                 for (j = 0; j < n; j++) {
                     l = ipvt[j];
-                    if (wa2[l] != zero) {
+                    if (wa2[l].IsNotEqual(zero)) {
                         sum = zero;
                         ij = jj;
                         for (i = 0; i <= j; i++) {
@@ -509,7 +509,7 @@ namespace QLNet {
             *       reduction.
             */
             ratio = zero;
-            if (prered != zero)
+            if (prered.IsNotEqual(zero))
                 ratio = actred / prered;
             /*
             *       update the step bound.
@@ -525,7 +525,7 @@ namespace QLNet {
                 delta = temp * dmin1(delta, pnorm / p1);
                 par = par / temp;
             } else {
-                if ((par == zero) || (ratio >= p75)) {
+                if ((par.IsEqual(zero)) || (ratio >= p75)) {
                     delta = pnorm / p5;
                     par = p5 * par;
                 }
@@ -685,7 +685,7 @@ namespace QLNet {
                     s3 = one + s3 * temp * temp;
                     x3max = xabs;
                 } else {
-                    if (xabs != zero) {
+                    if (xabs.IsNotEqual(zero)) {
                         temp = xabs / x3max;
                         s3 += temp * temp;
                     }
@@ -694,12 +694,12 @@ namespace QLNet {
             /*
             *     calculation of norm.
             */
-            if (s1 != zero) {
+            if (s1.IsNotEqual(zero)) {
                 temp = s1 + (s2 / x1max) / x1max;
                 ans = x1max * Math.Sqrt(temp);
                 return (ans);
             }
-            if (s2 != zero) {
+            if (s2.IsNotEqual(zero)) {
                 if (s2 >= x3max)
                     temp = s2 * (one + (x3max / s2) * (x3max * s3));
                 else
@@ -802,7 +802,7 @@ namespace QLNet {
             for (j = 0; j < n; j++) {
                 temp = x[j];
                 h = eps * Math.Abs(temp);
-                if (h == zero)
+                if (h.IsEqual(zero))
                     h = eps;
                 x[j] = temp + h;
                 wa = fcn(m, n, x, iflag);
@@ -955,7 +955,7 @@ namespace QLNet {
                 */
                 jj = j + m * j;
                 ajnorm = enorm(m - j, a.GetRange(jj, m-j));
-                if (ajnorm == zero)
+                if (ajnorm.IsEqual(zero))
                     goto L100;
                 if (a[jj] < zero)
                     ajnorm = -ajnorm;
@@ -988,7 +988,7 @@ namespace QLNet {
                             ij += 1; /* [i+m*k] */
                             jj += 1; /* [i+m*j] */
                         }
-                        if ((pivot != 0) && (rdiag[k] != zero)) {
+                        if ((pivot != 0) && (rdiag[k].IsNotEqual(zero))) {
                             temp = a[j + m * k] / rdiag[k];
                             temp = dmax1(zero, one - temp * temp);
                             rdiag[k] *= Math.Sqrt(temp);
@@ -1121,7 +1121,7 @@ namespace QLNet {
                 *    diagonal element using p from the qr factorization.
                 */
                 l = ipvt[j];
-                if (diag[l] == zero)
+                if (diag[l].IsEqual(zero))
                     goto L90;
                 for (k = j; k < n; k++)
                     sdiag[k] = zero;
@@ -1137,7 +1137,7 @@ namespace QLNet {
                     *       determine a givens rotation which eliminates the
                     *       appropriate element in the current row of d.
                     */
-                    if (sdiag[k] == zero)
+                    if (sdiag[k].IsEqual(zero))
                         continue;
                     kk = k + ldr * k;
                     if (Math.Abs(r[kk]) < Math.Abs(sdiag[k])) {
@@ -1186,7 +1186,7 @@ namespace QLNet {
             */
             nsing = n;
             for (j = 0; j < n; j++) {
-                if ((sdiag[j] == zero) && (nsing == n))
+                if ((sdiag[j].IsEqual(zero)) && (nsing == n))
                     nsing = j;
                 if (nsing < n)
                     wa[j] = zero;
@@ -1333,7 +1333,7 @@ namespace QLNet {
             jj = 0;
             for (j = 0; j < n; j++) {
                 wa1[j] = qtb[j];
-                if ((r[jj] == zero) && (nsing == n))
+                if ((r[jj].IsEqual(zero)) && (nsing == n))
                     nsing = j;
                 if (nsing < n)
                     wa1[j] = zero;
@@ -1418,7 +1418,7 @@ namespace QLNet {
             }
             gnorm = enorm(n, wa1);
             paru = gnorm / delta;
-            if (paru == zero)
+            if (paru.IsEqual(zero))
                 paru = DWARF / dmin1(delta, p1);
             /*
             *     if the input par lies outside of the interval (parl,paru),
@@ -1426,7 +1426,7 @@ namespace QLNet {
             */
             par = dmax1(par, parl);
             par = dmin1(par, paru);
-            if (par == zero)
+            if (par.IsEqual(zero))
                 par = gnorm / dxnorm;
 
             /*
@@ -1437,7 +1437,7 @@ namespace QLNet {
             /*
             *    evaluate the function at the current value of par.
             */
-            if (par == zero)
+            if (par.IsEqual(zero))
                 par = dmax1(DWARF, p001 * paru);
             temp = Math.Sqrt(par);
             for (j = 0; j < n; j++)
@@ -1454,7 +1454,7 @@ namespace QLNet {
             *    is zero or the number of iterations has reached 10.
             */
             if ((Math.Abs(fp) <= p1 * delta)
-             || ((parl == zero) && (fp <= temp) && (temp < zero))
+             || ((parl.IsEqual(zero)) && (fp <= temp) && (temp < zero))
              || (iter == 10))
                 goto L220;
             /*

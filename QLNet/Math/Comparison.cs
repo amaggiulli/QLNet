@@ -32,12 +32,12 @@ namespace QLNet {
         public static bool close(double x, double y) { return close(x, y, 42); }
         public static bool close(double x, double y, int n) 
         {
-           if (x == y)
+           if (x.IsEqual(y))
               return true;
 
            double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
 
-           if (x * y == 0.0) // x or y = 0.0
+           if ((x * y).IsEqual(0.0)) // x or y = 0.0
               return diff < (tolerance * tolerance);
 
            return diff <= tolerance*Math.Abs(x) &&
@@ -57,12 +57,12 @@ namespace QLNet {
 
         public static bool close_enough(double x, double y, int n) {
            // Deals with +infinity and -infinity representations etc.
-           if (x == y)
+           if (x.IsEqual(y))
               return true;
 
            double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
 
-           if (x * y == 0.0) // x or y = 0.0
+           if ((x * y).IsEqual(0.0)) // x or y = 0.0
              return diff < (tolerance * tolerance);
 
           return diff <= tolerance*Math.Abs(x) ||

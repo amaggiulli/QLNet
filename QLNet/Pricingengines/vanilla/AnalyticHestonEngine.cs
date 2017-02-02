@@ -463,7 +463,7 @@ namespace QLNet
 
             if (cpxLog_ == ComplexLogFormula.Gatheral) 
             {
-               if (phi != 0.0) 
+               if (phi.IsNotEqual(0.0)) 
                {
                   if (sigma_ > 1e-5) 
                   {

@@ -83,7 +83,7 @@ namespace QLNet {
                     for (i = k; i < m_; i++) {
                         s_[k] = hypot(s_[k], A[i, k]);
                     }
-                    if (s_[k] != 0.0) {
+                    if (s_[k].IsNotEqual(0.0)) {
                         if (A[k, k] < 0.0) {
                             s_[k] = -s_[k];
                         }
@@ -95,7 +95,7 @@ namespace QLNet {
                     s_[k] = -s_[k];
                 }
                 for (j = k + 1; j < n_; j++) {
-                    if ((k < nct) && (s_[k] != 0.0)) {
+                    if ((k < nct) && (s_[k].IsNotEqual(0.0))) {
 
                         // Apply the transformation.
                         double t = 0;
@@ -125,7 +125,7 @@ namespace QLNet {
                     for (i = k + 1; i < n_; i++) {
                         e[k] = hypot(e[k], e[i]);
                     }
-                    if (e[k] != 0.0) {
+                    if (e[k].IsNotEqual(0.0)) {
                         if (e[k + 1] < 0.0) {
                             e[k] = -e[k];
                         }
@@ -135,7 +135,7 @@ namespace QLNet {
                         e[k + 1] += 1.0;
                     }
                     e[k] = -e[k];
-                    if ((k + 1 < m_) & (e[k] != 0.0)) {
+                    if ((k + 1 < m_) & (e[k].IsNotEqual(0.0))) {
                         // Apply the transformation.
                         for (i = k + 1; i < m_; i++) {
                             work[i] = 0.0;
@@ -177,7 +177,7 @@ namespace QLNet {
                 U_[j, j] = 1.0;
             }
             for (k = nct - 1; k >= 0; --k) {
-                if (s_[k] != 0.0) {
+                if (s_[k].IsNotEqual(0.0)) {
                     for (j = k + 1; j < n_; ++j) {
                         double t = 0;
                         for (i = k; i < m_; i++) {
@@ -205,7 +205,7 @@ namespace QLNet {
 
             // generate V
             for (k = n_ - 1; k >= 0; --k) {
-                if ((k < nrt) & (e[k] != 0.0)) {
+                if ((k < nrt) & (e[k].IsNotEqual(0.0))) {
                     for (j = k + 1; j < n_; ++j) {
                         double t = 0;
                         for (i = k + 1; i < n_; i++) {
@@ -341,7 +341,7 @@ namespace QLNet {
                             double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
                             double c = (sp * epm1) * (sp * epm1);
                             double shift = 0.0;
-                            if ((b != 0.0) | (c != 0.0)) {
+                            if ((b.IsNotEqual(0.0)) | (c.IsNotEqual(0.0))) {
                                 shift = Math.Sqrt(b * b + c);
                                 if (b < 0.0) {
                                     shift = -shift;
@@ -468,7 +468,7 @@ namespace QLNet {
         /*  returns hypotenuse of real (non-complex) scalars a and b by avoiding underflow/overflow
             using (a * sqrt( 1 + (b/a) * (b/a))), rather than sqrt(a*a + b*b). */
         private double hypot(double a, double b) {
-            if (a == 0) {
+            if (a.IsEqual(0.0)) {
                 return Math.Abs(b);
             } else {
                 double c = b / a;

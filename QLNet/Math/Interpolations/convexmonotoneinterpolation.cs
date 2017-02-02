@@ -490,7 +490,7 @@ namespace QLNet {
                         if ((gPrev > 0.0 && -0.5*gPrev >= gNext && gNext >= -2.0*gPrev) ||
                             (gPrev < 0.0 && -0.5*gPrev <= gNext && gNext <= -2.0*gPrev)) {
                             quadraticity = 1.0;
-                            if (quadraticity_ == 0) {
+                            if (quadraticity_.IsEqual(0.0)) {
                                 if (forcePositive_) {
                                     quadraticHelper = new QuadraticMinHelper(
                                                            xBegin_[i-1],
@@ -592,9 +592,9 @@ namespace QLNet {
                         }
                     }
 
-                    if (quadraticity == 1.0) {
+                    if (quadraticity.IsEqual(1.0)) {
                         sectionHelpers_.Add(xBegin_[i], quadraticHelper);
-                    } else if (quadraticity == 0.0) {
+                    } else if (quadraticity.IsEqual(0.0)) {
                         sectionHelpers_.Add(xBegin_[i], convMonotoneHelper);
                     } else {
                         sectionHelpers_.Add(xBegin_[i], new ComboHelper(quadraticHelper, convMonotoneHelper, quadraticity));

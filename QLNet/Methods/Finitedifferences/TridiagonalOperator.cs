@@ -141,13 +141,13 @@ namespace QLNet {
             Vector result = new Vector(size()), tmp = new Vector(size());
 
             double bet = diagonal_[0];
-            if (bet == 0.0) throw new Exception("division by zero");
+            if (bet.IsEqual(0.0)) throw new Exception("division by zero");
             result[0] = rhs[0] / bet;
 
             for (int j = 1; j < size(); j++) {
                 tmp[j] = upperDiagonal_[j - 1] / bet;
                 bet = diagonal_[j] - lowerDiagonal_[j - 1] * tmp[j];
-                if (bet == 0.0) throw new Exception("division by zero");
+                if (bet.IsEqual(0.0)) throw new Exception("division by zero");
                 result[j] = (rhs[j] - lowerDiagonal_[j - 1] * result[j - 1]) / bet;
             }
             // cannot be j>=0 with Size j

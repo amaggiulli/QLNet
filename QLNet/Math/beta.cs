@@ -80,9 +80,9 @@ namespace QLNet {
             if (!(b > 0.0)) throw new Exception("b must be greater than zero");
 
 
-            if (x == 0.0)
+            if (x.IsEqual(0.0))
                 return 0.0;
-            else if (x == 1.0)
+            else if (x.IsEqual(1.0))
                 return 1.0;
             else
                 if (!(x>0.0 && x<1.0)) throw new Exception("x must be in [0,1]");

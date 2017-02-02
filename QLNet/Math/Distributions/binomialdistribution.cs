@@ -31,9 +31,9 @@ namespace QLNet {
         public BinomialDistribution(double p, int n) {
             n_ = n;
 
-            if (p==0.0) {
+            if (p.IsEqual(0.0)) {
                 logOneMinusP_ = 0.0;
-            } else if (p==1.0) {
+            } else if (p.IsEqual(1.0)) {
                 logP_ = 0.0;
             } else {
                 if (!(p>0)) throw new Exception("negative p not allowed");
@@ -49,10 +49,10 @@ namespace QLNet {
             if (k > n_) return 0.0;
 
             // p==1.0
-            if (logP_==0.0)
+            if (logP_.IsEqual(0.0))
                 return (k==n_ ? 1.0 : 0.0);
             // p==0.0
-            else if (logOneMinusP_==0.0)
+            else if (logOneMinusP_.IsEqual(0.0))
                 return (k==0 ? 1.0 : 0.0);
             else
                 return Math.Exp(Utils.binomialCoefficientLn(n_, k) + k * logP_ + (n_ - k) * logOneMinusP_);

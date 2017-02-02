@@ -146,7 +146,7 @@ namespace QLNet
          Utils.QL_REQUIRE( compound > 0.0, () => "positive compound factor required" );
 
          double r = 0;
-         if (compound==1.0) 
+         if (compound.IsEqual(1.0)) 
          {
             Utils.QL_REQUIRE( t >= 0.0, () => "non negative time (" + t + ") required" );
             r = 0.0;

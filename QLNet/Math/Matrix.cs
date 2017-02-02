@@ -235,7 +235,7 @@ namespace QLNet {
               }
 
               double xjj = lum[j,j];
-              if ( xjj != 0.0 )
+              if ( xjj.IsNotEqual(0.0) )
               {
                  for ( int i = j + 1; i < n; ++i )
                  {

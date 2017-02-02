@@ -83,10 +83,10 @@ namespace QLNet {
             double cum_d1_;
             double cum_d2_;
             if (variance_ >= Const.QL_EPSILON) {
-                if (discount_ == 0.0 && dividendDiscount_ == 0.0) {
+                if (discount_ .IsEqual(0.0) && dividendDiscount_.IsEqual(0.0)) {
                     mu_ = -0.5;
                     lambda_ = 0.5;
-                } else if (discount_ == 0.0) {
+                } else if (discount_.IsEqual(0.0)) {
                     throw new Exception("null discount not handled yet");
                 } else {
                     mu_ = Math.Log(dividendDiscount_ / discount_) / variance_ - 0.5;

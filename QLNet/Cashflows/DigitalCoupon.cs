@@ -267,7 +267,7 @@ namespace QLNet
          {
             // might have been fixed
             double pastFixing = IndexManager.instance().getHistory((underlying_.index()).name()).value()[fixingDate];
-            if (pastFixing != default(double))
+            if (pastFixing.IsNotEqual(default(double)))
             {
                return underlyingRate + callCsi_ * callPayoff() + putCsi_ * putPayoff();
             }
@@ -330,11 +330,11 @@ namespace QLNet
       }
       public bool isLongPut()
       {
-         return (putCsi_ == 1.0);
+         return putCsi_.IsEqual(1.0);
       }
       public bool isLongCall()
       {
-         return (callCsi_ == 1.0);
+         return callCsi_.IsEqual(1.0);
       }
       public FloatingRateCoupon underlying()
       {

@@ -75,7 +75,7 @@ namespace QLNet {
                 for (int j=0; j < Math.Min(n, m); ++j) 
                 {
                     double t3 = mT[j,j];
-                    if (t3 != 0.0) 
+                    if (t3.IsNotEqual(0.0)) 
                     {
                        double t = 0;
                        for ( int kk = j ; kk < mT.columns(); kk++ )

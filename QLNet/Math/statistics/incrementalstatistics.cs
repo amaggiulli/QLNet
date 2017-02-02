@@ -84,7 +84,7 @@ namespace QLNet {
             \f$ \theta \f$ =1 if x <0
         */
         public double downsideVariance() {
-            if (downsideSampleWeight_==0.0) {
+            if (downsideSampleWeight_.IsEqual(0.0)) {
                 if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
                 return 0.0;
             }
@@ -112,7 +112,7 @@ namespace QLNet {
             if (!(sampleNumber_>2)) throw new Exception("sample number <=2, insufficient");
 
             double s = standardDeviation();
-            if (s==0.0) return 0.0;
+            if (s.IsEqual(0.0)) return 0.0;
 
             double m = mean();
             double result = cubicSum_/sampleWeight_;
@@ -140,7 +140,7 @@ namespace QLNet {
             c *= (sampleNumber_-1.0)/(sampleNumber_-3.0);
             c *= 3.0;
 
-            if (v==0) return c;
+            if (v.IsEqual(0.0)) return c;
 
             double result = fourthPowerSum_/sampleWeight_;
             result -= 4.0*m*(cubicSum_/sampleWeight_);

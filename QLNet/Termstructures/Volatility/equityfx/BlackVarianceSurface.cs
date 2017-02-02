@@ -123,7 +123,7 @@ namespace QLNet
 
       protected override double blackVarianceImpl(double t, double strike)
       {
-         if (t == 0.0) return 0.0;
+         if (t.IsEqual(0.0)) return 0.0;
          // enforce constant extrapolation when required
          if (strike < strikes_.First() && lowerExtrapolation_ == Extrapolation.ConstantExtrapolation)
             strike = strikes_.First();

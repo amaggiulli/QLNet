@@ -37,7 +37,7 @@ namespace QLNet {
 
         public double value(Func<double, double> f, double a, double b) {
             evaluations_ = 0;
-            if (a == b)
+            if (a.IsEqual(b))
                 return 0.0;
             if (b > a)
                 return integrate(f, a, b);

@@ -105,7 +105,7 @@ namespace QLNet {
 
             double spreadNPV = (liborSpread_/basisPoint)*liborLegBPS();
             double pureLiborNPV = liborLegNPV() - spreadNPV;
-            if (pureLiborNPV == 0.0)
+            if (pureLiborNPV.IsEqual(0.0))
                 throw new Exception("result not available (null libor NPV)");
             return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
         }

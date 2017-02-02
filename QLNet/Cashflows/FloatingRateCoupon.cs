@@ -54,7 +54,7 @@ namespace QLNet
          spread_ = spread;
          isInArrears_ = isInArrears;
 
-         if (gearing_ == 0) throw new ArgumentException("Null gearing not allowed");
+         if (gearing_.IsEqual(0)) throw new ArgumentException("Null gearing not allowed");
 
          if (dayCounter_.empty())
             dayCounter_ = index_.dayCounter();
@@ -150,7 +150,7 @@ namespace QLNet
       //! convexity adjustment for the given index fixing
       protected double convexityAdjustmentImpl(double f)
       {
-         return (gearing() == 0 ? 0 : adjustedFixing - f);
+         return (gearing().IsEqual(0.0) ? 0.0 : adjustedFixing - f);
       }
 
       //! convexity adjustment

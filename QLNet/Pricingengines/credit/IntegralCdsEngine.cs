@@ -151,7 +151,7 @@ namespace QLNet
             results_.defaultLegNPV+results_.couponLegNPV+results_.upfrontNPV;
         results_.errorEstimate = null;
 
-        if (results_.couponLegNPV != 0.0) {
+        if (results_.couponLegNPV.IsNotEqual(0.0)) {
             results_.fairSpread =
                 -results_.defaultLegNPV*arguments_.spread/results_.couponLegNPV;
         } else {
@@ -159,7 +159,7 @@ namespace QLNet
         }
 
         double upfrontSensitivity = upfPVO1 * arguments_.notional.Value;
-        if (upfrontSensitivity != 0.0) {
+        if (upfrontSensitivity.IsNotEqual(0.0)) {
             results_.fairUpfront =
                 -upfrontSign*(results_.defaultLegNPV + results_.couponLegNPV)
                 / upfrontSensitivity;
@@ -168,14 +168,14 @@ namespace QLNet
         }
 
 
-        if (arguments_.spread != 0.0) {
+        if (arguments_.spread.IsNotEqual(0.0)) {
             results_.couponLegBPS =
                 results_.couponLegNPV*basisPoint/arguments_.spread;
         } else {
             results_.couponLegBPS = null;
         }
 
-        if (arguments_.upfront.HasValue && arguments_.upfront.Value != 0.0) {
+        if (arguments_.upfront.HasValue && arguments_.upfront.IsNotEqual(0.0)) {
             results_.upfrontBPS =
                 results_.upfrontNPV*basisPoint/(arguments_.upfront.Value);
         } else {

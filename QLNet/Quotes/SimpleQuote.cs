@@ -41,7 +41,7 @@ namespace QLNet
         public double setValue(double? value)
         {
             double? diff = value - value_;
-            if (diff != 0)
+            if (diff.IsNotEqual(0.0))
             {
                 value_ = value;
                 notifyObservers();

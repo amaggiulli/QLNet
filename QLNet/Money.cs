@@ -196,7 +196,7 @@ namespace QLNet
             return false;
          else if (m1.currency == m2.currency) 
          {
-            return m1.value == m2.value;
+            return m1.value.IsEqual(m2.value);
          } 
          else if (Money.conversionType == Money.ConversionType.BaseCurrencyConversion) 
          {

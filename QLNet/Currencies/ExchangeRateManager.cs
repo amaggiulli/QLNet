@@ -203,7 +203,7 @@ namespace QLNet
       {
          ExchangeRate rate = fetch(source,target,date); 
 
-         if (rate.rate !=  0)
+         if (rate.rate.IsNotEqual(0.0))
             return rate;
         else
             throw new Exception("no direct conversion available from " + source.code + " to " + target.code + " for " + date);

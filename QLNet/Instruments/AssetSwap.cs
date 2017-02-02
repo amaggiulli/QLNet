@@ -381,7 +381,7 @@ namespace QLNet
       public double cleanPrice() { return bondCleanPrice_; }
       public double nonParRepayment() { return nonParRepayment_; }
       public Bond bond() { return bond_; }
-      public bool payBondCoupon() { return (payer_[0] == -1.0); }
+      public bool payBondCoupon() { return payer_[0].IsEqual(-1.0); }
       public List<CashFlow> bondLeg() { return legs_[0]; }
       public List<CashFlow> floatingLeg() { return legs_[1]; }
       // other

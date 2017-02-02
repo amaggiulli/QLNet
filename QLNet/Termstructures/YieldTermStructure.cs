@@ -171,7 +171,7 @@ namespace QLNet
       */
       public InterestRate zeroRate(double t, Compounding comp,Frequency freq = Frequency.Annual,bool extrapolate = false)
       {
-         if (t==0.0) t = dt;
+         if (t.IsEqual(0.0)) t = dt;
          double compound = 1.0/discount(t, extrapolate);
          return InterestRate.impliedRate(compound,dayCounter(), comp, freq, t);
       }
@@ -226,7 +226,7 @@ namespace QLNet
          bool extrapolate = false)
       {
          double compound;
-         if (t2==t1) 
+         if (t2.IsEqual(t1)) 
          {
             checkRange(t1, extrapolate);
             t1 = Math.Max(t1 - dt/2.0, 0.0);
