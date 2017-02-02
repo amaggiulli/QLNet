@@ -87,7 +87,7 @@ namespace QLNet
          return new LongstaffSchwartzPathPricer<IPath>( timeGrid(), earlyExercisePathPricer, process.riskFreeRate() );
       }
 
-      protected override double controlVariateValue()
+      protected override double? controlVariateValue()
       {
          IPricingEngine controlPE = controlPricingEngine();
 
@@ -102,7 +102,7 @@ namespace QLNet
 
          VanillaOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
 
-         return controlResults.value.GetValueOrDefault();
+         return controlResults.value;
       }
 
       protected override IPricingEngine controlPricingEngine()

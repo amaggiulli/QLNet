@@ -128,7 +128,7 @@ namespace QLNet
 
       }
 
-      protected override double controlVariateValue()
+      protected override double? controlVariateValue()
       {
          AnalyticHestonHullWhiteEngine controlPE = controlPricingEngine() as AnalyticHestonHullWhiteEngine;
          if ( controlPE == null )
@@ -145,7 +145,7 @@ namespace QLNet
          if ( controlResults == null )
             throw new Exception( "engine returns an inconsistent result type" );
 
-         return controlResults.value.GetValueOrDefault();
+         return controlResults.value;
       }
 
       #region PricingEngine
