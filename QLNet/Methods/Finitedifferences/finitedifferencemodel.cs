@@ -34,7 +34,7 @@ namespace QLNet {
             evolver_ = (Evolver)new Evolver().factory(L, bcs);
             stoppingTimes_ = stoppingTimes;
             stoppingTimes_.Sort();
-            stoppingTimes_.Distinct();
+            stoppingTimes_ = stoppingTimes_.Distinct().ToList();
         }
 
         //public FiniteDifferenceModel(Evolver evolver, List<double> stoppingTimes = List<double>())
@@ -43,8 +43,8 @@ namespace QLNet {
 
             stoppingTimes_ = stoppingTimes;
             stoppingTimes_.Sort();
-            stoppingTimes_.Distinct();
-        }
+            stoppingTimes_ = stoppingTimes_.Distinct().ToList();
+      }
 
         /*! solves the problem between the given times, applying a condition at every step.
             \warning being this a rollback, <tt>from</tt> must be a later time than <tt>to</tt>. */
