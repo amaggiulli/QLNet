@@ -236,7 +236,7 @@ namespace QLNet
                     if (isBusinessDay(to))
                         ++wd;
                 }
-                else if (from > to)
+                else 
                 {
                     for (Date d = to; d < from; ++d)
                     {
