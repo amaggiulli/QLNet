@@ -225,9 +225,7 @@ namespace QLNet
 
          if (isCapped_ && isFloored_)
          {
-            if ( cap < floor )
-               throw new Exception( "cap level (" + cap +
-                                               ") less than floor level (" + floor + ")");
+            Utils.QL_REQUIRE(cap >= floor,()=> "cap level (" + cap + ") less than floor level (" + floor + ")");
          }
 
       }

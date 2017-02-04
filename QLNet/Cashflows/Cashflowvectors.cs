@@ -266,27 +266,12 @@ namespace QLNet {
          {
             int n = schedule_.Count -1 ;
 
-            if (notionals_.empty())
-               throw new Exception("no notional given");
-
-            if (notionals_.Count > n)
-               throw new Exception("too many nominals (" + notionals_.Count +
-                                              "), only " + n + " required");
-				if ( gearings_ != null && gearings_.Count > n )
-               throw new Exception("too many gearings (" + gearings_.Count +
-                                              "), only " + n + " required");
-
-				if ( spreads_ != null && spreads_.Count > n )
-               throw new Exception("too many spreads (" + spreads_.Count +
-                                              "), only " + n + " required");
-
-				if ( caps_ != null && caps_.Count > n )
-               throw new Exception("too many caps (" + caps_.Count +
-                                              "), only " + n + " required");
-
-				if ( floors_ != null && floors_.Count > n )
-               throw new Exception("too many floors (" + floors_.Count +
-                                              "), only " + n + " required");
+            Utils.QL_REQUIRE(!notionals_.empty(),()=>"no notional given");
+            Utils.QL_REQUIRE(notionals_.Count <= n,()=> "too many nominals (" + notionals_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(gearings_.Count <= n ,()=> "too many gearings (" + gearings_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(spreads_.Count <= n ,()=> "too many spreads (" + spreads_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(caps_.Count <= n ,()=> "too many caps (" + caps_.Count +"), only " + n + " required");
+            Utils.QL_REQUIRE(floors_.Count <= n ,()=> "too many floors (" + floors_.Count + "), only " + n + " required");
 
 
             List<CashFlow> leg = new List<CashFlow>(n);

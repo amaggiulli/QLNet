@@ -92,16 +92,17 @@ namespace QLNet
             }
          }
          if (isCapped_ && isFloored_)
-            if (!(cap >= floor))
-               throw new Exception("cap level (" + cap + ") less than floor level (" + floor + ")");
+         {
+            Utils.QL_REQUIRE(cap >= floor, () =>
+               "cap level (" + cap + ") less than floor level (" + floor + ")");
+         }
          underlying.registerWith(update);
       }
       //! \name Coupon interface
       //@{
       public override double rate()
       {
-         if (underlying_.pricer() == null)
-            throw new Exception("pricer not set");
+         Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
 
          double swapletRate = underlying_.rate();
          double floorletRate = 0.0;
