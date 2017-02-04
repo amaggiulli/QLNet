@@ -63,9 +63,11 @@ namespace QLNet {
                     length_ = 1;
                     break;
                 case Frequency.OtherFrequency:
-                    throw Error.UnknownFrequency(f);
+                    Utils.QL_FAIL("unknown frequency");
+                    break;
                 default:
-                    throw Error.UnknownFrequency(f);
+                    Utils.QL_FAIL("unknown frequency (" + f + ")");
+                  break;
             }
         }
 

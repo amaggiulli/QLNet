@@ -154,8 +154,8 @@ namespace QLNet
                else
                   return d1;
             }
-            else throw Error.UnknownBusinessDayConvention(c);
-            return d1;
+            else Utils.QL_FAIL("unknown business-day convention");
+         return d1;
         }
 
         /// <summary>

@@ -29,8 +29,7 @@ namespace QLNet
       public override void initialize(FloatingRateCoupon coupon)
       {
          coupon_ = coupon as OvernightIndexedCoupon;
-         if (coupon_ == null)
-            throw new Exception("wrong coupon type");
+         Utils.QL_REQUIRE(coupon_ != null,()=> "wrong coupon type");
       }
             
       public override double swapletRate()
@@ -53,9 +52,8 @@ namespace QLNet
             double pastFixing = IndexManager.instance().getHistory(
                index.name()).value()[fixingDates[i]];
 
-            if (pastFixing.IsEqual(default(double)) )
-               throw new Exception("Missing " + index.name() + " fixing for " 
-                                              + fixingDates[i].ToString());
+            Utils.QL_REQUIRE(pastFixing.IsNotEqual(default(double)),()=>
+               "Missing " + index.name() + " fixing for " + fixingDates[i].ToString());
 
             compoundFactor *= (1.0 + pastFixing*dt[i]);
             ++i;
@@ -91,8 +89,7 @@ namespace QLNet
          if (i<n) 
          {
             Handle<YieldTermStructure> curve = index.forwardingTermStructure();
-            if (curve.empty())
-               throw new ArgumentException("null term structure set to this instance of" + index.name());
+            Utils.QL_REQUIRE(!curve.empty(),()=> "null term structure set to this instance of" + index.name());
                   
             List<Date> dates = coupon_.valueDates();
             double startDiscount = curve.link.discount(dates[i]);
@@ -105,17 +102,11 @@ namespace QLNet
          return coupon_.gearing() * rate + coupon_.spread();
       }
 
-      public override double swapletPrice() 
-         { throw new Exception("swapletPrice not available");  }
-      public override double capletPrice(double d) 
-         { throw new Exception("capletPrice not available"); }
-      public override double capletRate(double d) 
-         { throw new Exception("capletRate not available"); }
-      public override double floorletPrice(double d) 
-         { throw new Exception("floorletPrice not available"); }
-      public override double floorletRate(double d) 
-         { throw new Exception("floorletRate not available"); }
-
+      public override double swapletPrice() { Utils.QL_FAIL("swapletPrice not available"); return 0; }
+      public override double capletPrice(double d) { Utils.QL_FAIL("capletPrice not available"); return 0; }
+      public override double capletRate(double d) { Utils.QL_FAIL("capletRate not available"); return 0; }
+      public override double floorletPrice(double d) { Utils.QL_FAIL("floorletPrice not available"); return 0; }
+      public override double floorletRate(double d) { Utils.QL_FAIL("floorletRate not available"); return 0; }
 
    }
 
@@ -149,8 +140,7 @@ namespace QLNet
                       .value();
             
          valueDates_ = sch.dates();
-         if (valueDates_.Count < 2)
-            throw new ArgumentException("degenerate schedule");
+         Utils.QL_REQUIRE(valueDates_.Count >= 2,()=> "degenerate schedule");
 
          // fixing dates
          n_ = valueDates_.Count-1;

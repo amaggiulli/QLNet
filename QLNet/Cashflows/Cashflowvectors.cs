@@ -268,10 +268,10 @@ namespace QLNet {
 
             Utils.QL_REQUIRE(!notionals_.empty(),()=>"no notional given");
             Utils.QL_REQUIRE(notionals_.Count <= n,()=> "too many nominals (" + notionals_.Count + "), only " + n + " required");
-            Utils.QL_REQUIRE(gearings_.Count <= n ,()=> "too many gearings (" + gearings_.Count + "), only " + n + " required");
-            Utils.QL_REQUIRE(spreads_.Count <= n ,()=> "too many spreads (" + spreads_.Count + "), only " + n + " required");
-            Utils.QL_REQUIRE(caps_.Count <= n ,()=> "too many caps (" + caps_.Count +"), only " + n + " required");
-            Utils.QL_REQUIRE(floors_.Count <= n ,()=> "too many floors (" + floors_.Count + "), only " + n + " required");
+            if (gearings_ != null ) Utils.QL_REQUIRE(gearings_.Count <= n ,()=> "too many gearings (" + gearings_.Count + "), only " + n + " required");
+            if (spreads_ != null) Utils.QL_REQUIRE(spreads_.Count <= n ,()=> "too many spreads (" + spreads_.Count + "), only " + n + " required");
+            if (caps_ != null) Utils.QL_REQUIRE(caps_.Count <= n ,()=> "too many caps (" + caps_.Count +"), only " + n + " required");
+            if(floors_ != null )Utils.QL_REQUIRE(floors_.Count <= n ,()=> "too many floors (" + floors_.Count + "), only " + n + " required");
 
 
             List<CashFlow> leg = new List<CashFlow>(n);

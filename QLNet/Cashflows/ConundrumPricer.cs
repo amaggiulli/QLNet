@@ -273,7 +273,7 @@ namespace QLNet {
                     try {
                         calibratedShift_ = solver.solve(objectiveFunction_, accuracy_, Math.Max(Math.Min(initialGuess, upper * .99), lower * .99), lower, upper);
                     } catch (Exception e) {
-                        throw new Exception("meanReversion: " + meanReversion_.link.value() + ", swapRateValue: " + swapRateValue_ + ", swapStartTime: " + swapStartTime_ + ", shapedPaymentTime: " + shapedPaymentTime_ + "\n error message: " + e.Message);
+                        Utils.QL_FAIL("meanReversion: " + meanReversion_.link.value() + ", swapRateValue: " + swapRateValue_ + ", swapStartTime: " + swapStartTime_ + ", shapedPaymentTime: " + shapedPaymentTime_ + "\n error message: " + e.Message);
                     }
                     tmpRs_ = Rs;
                 }
@@ -297,7 +297,7 @@ namespace QLNet {
                 numerator += shapedSwapPaymentTimes_.Last() * swapPaymentDiscounts_.Last() * Math.Exp(-shapedSwapPaymentTimes_.Last() * x) * sqrtDenominator;
                 numerator -= (discountAtStart_ - swapPaymentDiscounts_.Last() * Math.Exp(-shapedSwapPaymentTimes_.Last() * x)) * derSqrtDenominator;
                 if (denominator.IsEqual(0.0))
-                    throw new Exception("GFunctionWithShifts::derRs_derX: denominator == 0");
+                    Utils.QL_FAIL("GFunctionWithShifts::derRs_derX: denominator == 0");
                 return numerator / denominator;
             }
 
@@ -305,7 +305,7 @@ namespace QLNet {
                 double sqrtDenominator = (1.0 - discountRatio_ * Math.Exp(-shapedSwapPaymentTimes_.Last() * x));
                 double denominator = sqrtDenominator * sqrtDenominator;
                 if (denominator.IsEqual(0.0))
-                    throw new Exception("GFunctionWithShifts::derZ_derX: denominator == 0");
+                   Utils.QL_FAIL("GFunctionWithShifts::derZ_derX: denominator == 0");
 
                 double numerator = 0;
                 numerator -= shapedPaymentTime_ * Math.Exp(-shapedPaymentTime_ * x) * sqrtDenominator;
@@ -343,7 +343,7 @@ namespace QLNet {
 
                 double numerator = derNumOfDerR * denOfDerR - numOfDerR * derDenOfDerR;
                 if (denominator.IsEqual(0.0))
-                    throw new Exception("GFunctionWithShifts::der2Rs_derX2: denominator == 0");
+                    Utils.QL_FAIL("GFunctionWithShifts::der2Rs_derX2: denominator == 0");
                 return numerator / denominator;
             }
 
@@ -352,7 +352,7 @@ namespace QLNet {
                 double derDenOfZfunction = shapedSwapPaymentTimes_.Last() * discountRatio_ * Math.Exp(-shapedSwapPaymentTimes_.Last() * x);
                 double denominator = Math.Pow(denOfZfunction, 4);
                 if (denominator.IsEqual(0))
-                    throw new Exception("GFunctionWithShifts::der2Z_derX2: denominator == 0");
+                    Utils.QL_FAIL("GFunctionWithShifts::der2Z_derX2: denominator == 0");
 
                 double numOfDerZ = 0;
                 numOfDerZ -= shapedPaymentTime_ * Math.Exp(-shapedPaymentTime_ * x) * denOfZfunction;
@@ -600,7 +600,8 @@ namespace QLNet {
                         gFunction_ = GFunctionFactory.newGFunctionWithShifts(coupon_, meanReversion_);
                         break;
                     default:
-                        throw new Exception("unknown/illegal gFunction type");
+                        Utils.QL_FAIL("unknown/illegal gFunction type");
+                        break;
                 }
                 vanillaOptionPricer_ = new BlackVanillaOptionPricer(swapRateValue_, fixingDate_, swapTenor_, swaptionVolatility().link);
             }

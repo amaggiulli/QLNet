@@ -122,7 +122,6 @@
     <Compile Include="Currencies\ExchangeRateManager.cs" />
     <Compile Include="Currencies\Oceania.cs" />
     <Compile Include="discretizedasset.cs" />
-    <Compile Include="Error.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Exercise.cs" />
     <Compile Include="Extensions\DoubleExtension.cs" />

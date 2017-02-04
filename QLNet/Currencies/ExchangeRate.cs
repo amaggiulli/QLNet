@@ -121,20 +121,21 @@ namespace QLNet {
             case Type.Direct:
                if (amount.currency == source_)
                   return new Money(amount.value * rate_.Value, target_);
-               else if (amount.currency == target_)
+               if (amount.currency == target_)
                   return new Money(amount.value / rate_.Value, source_);
-               else
-                  throw new Exception ("exchange rate not applicable");
+               Utils.QL_FAIL("exchange rate not applicable");
+               return null;
 
             case Type.Derived:
                if (amount.currency == rateChain_.Key.source || amount.currency == rateChain_.Key.target)
-                   return rateChain_.Value.exchange(rateChain_.Key.exchange(amount));
-               else if (amount.currency == rateChain_.Value.source || amount.currency == rateChain_.Value.target)
-                   return rateChain_.Key.exchange(rateChain_.Value.exchange(amount));
-               else
-                  throw new Exception("exchange rate not applicable");
+                  return rateChain_.Value.exchange(rateChain_.Key.exchange(amount));
+               if (amount.currency == rateChain_.Value.source || amount.currency == rateChain_.Value.target)
+                  return rateChain_.Key.exchange(rateChain_.Value.exchange(amount));
+               Utils.QL_FAIL("exchange rate not applicable");
+               return null;
             default:
-               throw new Exception("unknown exchange-rate type");
+               Utils.QL_FAIL("unknown exchange-rate type");
+               return null;
          }
       }
 
@@ -175,7 +176,7 @@ namespace QLNet {
             } 
             else 
             {
-                throw new Exception ("exchange rates not chainable");
+                Utils.QL_FAIL("exchange rates not chainable");
             }
             return result;
         }

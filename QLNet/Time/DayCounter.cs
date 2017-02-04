@@ -53,20 +53,20 @@ namespace QLNet
 
         public virtual string name()
         {
-            if (empty()) return "No implementation provided";
-            else return dayCounter_.name();
+           if (empty()) return "No implementation provided";
+           return dayCounter_.name();
         }
 
         public virtual int dayCount(Date d1, Date d2)
         {
-            if (empty()) throw Error.MissingImplementation();
+            Utils.QL_REQUIRE(!empty(), () => "No implementation provided");
             return dayCounter_.dayCount(d1, d2);
         }
 
         public double yearFraction(Date d1, Date d2) { return yearFraction(d1, d2, d1, d2); }
         public virtual double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
         {
-            if (empty()) throw Error.MissingImplementation();
+            Utils.QL_REQUIRE(!empty(), () => "No implementation provided");
             return dayCounter_.yearFraction(d1, d2, refPeriodStart, refPeriodEnd);
         }
 

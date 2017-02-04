@@ -100,11 +100,10 @@ namespace QLNet
 
       public virtual void setCapletVolatility(Handle<YoYOptionletVolatilitySurface> capletVol)
       {
-         if ( capletVol.empty() )
-            throw new Exception("empty capletVol handle");
+         Utils.QL_REQUIRE( !capletVol.empty() ,()=> "empty capletVol handle");
 
-        capletVol_ = capletVol;
-        capletVol_.registerWith(update);
+         capletVol_ = capletVol;
+         capletVol_.registerWith(update);
       }
 
       //! \name InflationCouponPricer interface
@@ -191,11 +190,9 @@ namespace QLNet
          else 
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
-            if ( capletVolatility().empty() )
-               throw new Exception ("missing optionlet volatility");
+            Utils.QL_REQUIRE( !capletVolatility().empty() ,()=> "missing optionlet volatility");
 
-            double stdDev =
-            Math.Sqrt(capletVolatility().link.totalVariance(fixingDate,effStrike));
+            double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate,effStrike));
 
             double fixing = optionletPriceImp(optionType,
                                               effStrike,
@@ -211,7 +208,8 @@ namespace QLNet
       protected virtual double optionletPriceImp(Option.Type t, double strike,
                                        double forward, double stdDev)
       {
-         throw new Exception("you must implement this to get a vol-dependent price");
+         Utils.QL_FAIL("you must implement this to get a vol-dependent price");
+         return 0;
       }
 
       protected virtual double adjustedFixing()
