@@ -53,8 +53,8 @@ namespace QLNet {
             residuals_ = new Vector(x.Count, 0);
             standardErrors_ = new Vector(v.Count, 0);
 
-            if (x.Count != y.Count) throw new Exception("sample set need to be of the same size");
-            if (!(x.Count >= v.Count)) throw new Exception("sample set is too small");
+            Utils.QL_REQUIRE(x.Count == y.Count,()=> "sample set need to be of the same size");
+            Utils.QL_REQUIRE(x.Count >= v.Count,()=> "sample set is too small");
 
             int i;
             int n = x.Count;

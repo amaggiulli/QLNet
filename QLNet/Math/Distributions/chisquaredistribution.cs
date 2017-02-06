@@ -101,7 +101,7 @@ namespace QLNet {
             }
         }
     L_End:
-        if (bound > errmax) throw new Exception("didn't converge");
+        Utils.QL_REQUIRE(bound <= errmax,()=> "didn't converge");
         return (ans);
         }
     }

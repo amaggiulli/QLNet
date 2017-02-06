@@ -81,7 +81,8 @@ namespace QLNet {
                     xh=root_;
             }
 
-            throw new Exception("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded");
+            Utils.QL_FAIL("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded");
+            return 0;
         }
     }
 }

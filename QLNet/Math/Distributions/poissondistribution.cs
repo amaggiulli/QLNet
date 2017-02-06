@@ -16,41 +16,50 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    //! Inverse cumulative Poisson distribution function
-    /*! \test the correctness of the returned value is tested by
-              checking it against known good results.
-    */
-    public class InverseCumulativePoisson : IValue {
-        private double lambda_;
+namespace QLNet
+{
+   //! Inverse cumulative Poisson distribution function
+   /*! \test the correctness of the returned value is tested by
+             checking it against known good results.
+   */
+   public class InverseCumulativePoisson : IValue
+   {
+      private double lambda_;
 
-        public InverseCumulativePoisson() : this(1) { }
-        public InverseCumulativePoisson(double lambda) {
-            lambda_ = lambda;
-            if (!(lambda_ > 0.0)) throw new Exception("lambda must be positive");
-        }
+      public InverseCumulativePoisson() : this(1)
+      {}
 
-        public double value(double x) {
-            if (!(x >= 0.0 && x <= 1.0)) 
-                throw new Exception("Inverse cumulative Poisson distribution is only defined on the interval [0,1]");
+      public InverseCumulativePoisson(double lambda)
+      {
+         lambda_ = lambda;
+         Utils.QL_REQUIRE(lambda_ > 0.0, () => "lambda must be positive");
+      }
 
-            if (x.IsEqual(1.0))
-                return double.MaxValue;
+      public double value(double x)
+      {
+         Utils.QL_REQUIRE(x >= 0.0 && x <= 1.0,()=> 
+            "Inverse cumulative Poisson distribution is only defined on the interval [0,1]");
 
-            double sum = 0.0;
-            uint index = 0;
-            while (x > sum) {
-                sum += calcSummand(index);
-                index++;
-            }
+         if (x.IsEqual(1.0))
+            return double.MaxValue;
 
-            return index-1;
-        }
-        
-        private double calcSummand(uint index) {
-            return Math.Exp(-lambda_) * Math.Pow(lambda_, index) / Factorial.get(index);
-        }
-    }
+         double sum = 0.0;
+         uint index = 0;
+         while (x > sum)
+         {
+            sum += calcSummand(index);
+            index++;
+         }
+
+         return index - 1;
+      }
+
+      private double calcSummand(uint index)
+      {
+         return Math.Exp(-lambda_) * Math.Pow(lambda_, index) / Factorial.get(index);
+      }
+   }
 }

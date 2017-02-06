@@ -39,8 +39,7 @@ namespace QLNet {
             quadraticity_ = quadraticity;
             quadraticHelper_ = quadraticHelper;
             convMonoHelper_ = convMonoHelper;
-            if (!(quadraticity < 1.0 && quadraticity > 0.0))
-                throw new Exception("Quadratic value must lie between 0 and 1");
+            Utils.QL_REQUIRE(quadraticity < 1.0 && quadraticity > 0.0,()=> "Quadratic value must lie between 0 and 1");
         }
 
         public double value(double x) {
@@ -401,15 +400,11 @@ namespace QLNet {
             quadraticity_ = quadraticity;
             monotonicity_ = monotonicity;
 
-            if (!(monotonicity_ >= 0 && monotonicity_ <= 1))
-                throw new Exception("Monotonicity must lie between 0 and 1");
-            if(!(quadraticity_ >= 0 && quadraticity_ <= 1))
-                       throw new Exception("Quadraticity must lie between 0 and 1");
-            if(!(size_ >= 2))
-                       throw new Exception("Single point provided, not supported by convex " +
-                       "monotone method as first point is ignored");
-            if(!((size_ - preExistingHelpers.Count) > 1))
-                        throw new Exception("Too many existing helpers have been supplied");
+            Utils.QL_REQUIRE(monotonicity_ >= 0 && monotonicity_ <= 1,()=> "Monotonicity must lie between 0 and 1");
+            Utils.QL_REQUIRE(quadraticity_ >= 0 && quadraticity_ <= 1,()=> "Quadraticity must lie between 0 and 1");
+            Utils.QL_REQUIRE(size_ >= 2,()=> "Single point provided, not supported by convex " +
+               "monotone method as first point is ignored");
+            Utils.QL_REQUIRE((size_ - preExistingHelpers.Count) > 1,()=> "Too many existing helpers have been supplied");
         }
 
         public override void update() {

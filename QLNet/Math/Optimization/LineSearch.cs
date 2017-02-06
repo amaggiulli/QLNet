@@ -62,8 +62,7 @@ namespace QLNet {
             bool valid = constraint.test(newParams);
             int icount = 0;
             while (!valid) {
-                if (icount > 200)
-                    throw new Exception("can't update linesearch");
+                Utils.QL_REQUIRE(icount <= 200,()=> "can't update linesearch");
                 diff *= 0.5;
                 icount++;
                 newParams = data + diff * direction;

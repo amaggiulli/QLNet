@@ -67,8 +67,7 @@ namespace QLNet {
         public GaussLaguerrePolynomial() : this(0.0) { }
         public GaussLaguerrePolynomial(double s) {
             s_ = s;
-            if (!(s > -1.0))
-                throw new Exception("s must be bigger than -1");
+            Utils.QL_REQUIRE(s > -1.0,()=> "s must be bigger than -1");
         }
 
         public override double mu_0() { return Math.Exp(GammaFunction.logValue(s_+1)); }
@@ -84,8 +83,7 @@ namespace QLNet {
         public GaussHermitePolynomial() : this(0.0) { }
         public GaussHermitePolynomial(double mu) {
             mu_ = mu;
-            if (!(mu > -0.5))
-                throw new Exception("mu must be bigger than -0.5");
+            Utils.QL_REQUIRE(mu > -0.5,()=> "mu must be bigger than -0.5");
         }
 
         public override double mu_0() { return Math.Exp(GammaFunction.logValue(mu_+0.5)); }
@@ -103,12 +101,9 @@ namespace QLNet {
             alpha_ = alpha;
             beta_  = beta;
 
-            if (!(alpha_+beta_ > -2.0))
-                throw new Exception("alpha+beta must be bigger than -2");
-            if (!(alpha_       > -1.0))
-                throw new Exception("alpha must be bigger than -1");
-            if (!(beta_        > -1.0))
-                throw new Exception("beta  must be bigger than -1");
+            Utils.QL_REQUIRE(alpha_+beta_ > -2.0,()=> "alpha+beta must be bigger than -2");
+            Utils.QL_REQUIRE(alpha_ > -1.0,()=> "alpha must be bigger than -1");
+            Utils.QL_REQUIRE(beta_ > -1.0,()=> "beta  must be bigger than -1");
         }
 
         public override double mu_0() {
@@ -123,15 +118,14 @@ namespace QLNet {
 
             if (denom.IsEqual(0.0)) {
                 if (num.IsNotEqual(0.0)) {
-                    throw new Exception("can't compute a_k for jacobi integration\n");
+                    Utils.QL_FAIL("can't compute a_k for jacobi integration");
                 }
                 else {
                     // l'Hospital
                     num  = 2*beta_;
                     denom= 2*(2.0*i+alpha_+beta_+1);
 
-                    if(denom.IsEqual(0.0))
-                        throw new Exception("can't compute a_k for jacobi integration\n");
+                    Utils.QL_REQUIRE(denom.IsNotEqual(0.0),()=> "can't compute a_k for jacobi integration");
                 }
             }
 
@@ -144,14 +138,13 @@ namespace QLNet {
 
             if (denom.IsEqual(0.0)) {
                 if (num.IsNotEqual(0.0)) {
-                    throw new Exception("can't compute b_k for jacobi integration\n");
+                    Utils.QL_FAIL("can't compute b_k for jacobi integration");
                 } else {
                     // l'Hospital
                     num  = 4.0*i*(i+beta_)* (2.0*i+2*alpha_+beta_);
                     denom= 2.0*(2.0*i+alpha_+beta_);
                     denom*=denom-1;
-                    if(denom.IsEqual(0.0))
-                        throw new Exception("can't compute b_k for jacobi integration\n");
+                    Utils.QL_REQUIRE(denom.IsNotEqual(0.0),()=> "can't compute b_k for jacobi integration");
                 }
             }
             return num / denom;

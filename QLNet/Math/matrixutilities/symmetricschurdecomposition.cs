@@ -47,10 +47,8 @@ namespace QLNet {
             diagonal_ = new Vector(s.rows());
             eigenVectors_ = new Matrix(s.rows(), s.columns(), 0.0);
 
-            if (!(s.rows() > 0 && s.columns() > 0)) 
-                throw new Exception( "null matrix given");
-            if (s.rows()!=s.columns()) 
-                throw new Exception( "input matrix must be square");
+            Utils.QL_REQUIRE(s.rows() > 0 && s.columns() > 0,()=> "null matrix given");
+            Utils.QL_REQUIRE(s.rows()==s.columns(),()=> "input matrix must be square");
 
             int size = s.rows();
             for (int q=0; q<size; q++) {
@@ -131,9 +129,7 @@ namespace QLNet {
                 }
             } while (++ite<=maxIterations && keeplooping);
 
-            if(!(ite<=maxIterations))
-                throw new Exception("Too many iterations (" + maxIterations + ") reached");
-
+            Utils.QL_REQUIRE(ite<=maxIterations,()=> "Too many iterations (" + maxIterations + ") reached");
 
             // sort (eigenvalues, eigenvectors)
             List<KeyValuePair<double, Vector>> temp = new InitializedList<KeyValuePair<double, Vector>>(size);

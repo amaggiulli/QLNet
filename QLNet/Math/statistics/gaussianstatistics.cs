@@ -98,8 +98,7 @@ namespace QLNet {
         */
         /*! \pre percentile must be in range (0%-100%) extremes excluded */
         public double gaussianPercentile(double percentile)  {
-            if (!(percentile > 0.0 && percentile < 1.0))
-                throw new Exception("percentile (" + percentile + ") must be in (0.0, 1.0)");
+            Utils.QL_REQUIRE(percentile > 0.0 && percentile < 1.0,()=> "percentile (" + percentile + ") must be in (0.0, 1.0)");
 
             InverseCumulativeNormal gInverse = new InverseCumulativeNormal(mean(), standardDeviation());
             return gInverse.value(percentile);
@@ -108,8 +107,7 @@ namespace QLNet {
 
         //! gaussian-assumption Potential-Upside at a given percentile
         public double gaussianPotentialUpside(double percentile) {
-            if (!(percentile<1.0 && percentile>=0.9))
-                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(percentile<1.0 && percentile>=0.9,()=> "percentile (" + percentile + ") out of range [0.9, 1)");
 
             double result = gaussianPercentile(percentile);
             // potential upside must be a gain, i.e., floored at 0.0
@@ -118,8 +116,7 @@ namespace QLNet {
 
         //! gaussian-assumption Value-At-Risk at a given percentile
         public double gaussianValueAtRisk(double percentile) {
-            if (!(percentile<1.0 && percentile>=0.9))
-                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(percentile<1.0 && percentile>=0.9,()=> "percentile (" + percentile + ") out of range [0.9, 1)");
 
             double result = gaussianPercentile(1.0-percentile);
             // VAR must be a loss
@@ -143,8 +140,7 @@ namespace QLNet {
             "Coherent measures of risk", Mathematical Finance 9 (1999)
         */
         public double gaussianExpectedShortfall(double percentile) {
-            if (!(percentile<1.0 && percentile>=0.9))
-                throw new Exception("percentile (" + percentile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(percentile<1.0 && percentile>=0.9,()=> "percentile (" + percentile + ") out of range [0.9, 1)");
 
             double m = this.mean();
             double std = this.standardDeviation();

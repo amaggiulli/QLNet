@@ -74,7 +74,7 @@ namespace QLNet {
                     xMin_ = root_;
                     fxMin_ = froot;
                 } else {
-                    throw new Exception("never get here.");
+                    Utils.QL_FAIL("never get here.");
                 }
 
                 if (Math.Abs(xMax_-xMin_) <= xAccuracy) return root_;
