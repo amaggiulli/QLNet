@@ -113,7 +113,8 @@ namespace QLNet
                payer_[1] = -1.0;
                break;
             default:
-               throw new Exception("Unknown vanilla-swap type");
+               Utils.QL_FAIL("Unknown vanilla-swap type");
+               break;
          }
       }
 

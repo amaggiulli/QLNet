@@ -84,8 +84,7 @@ namespace QLNet {
          notionalAmount_ = notionalAmount;
          index_ = index;
 
-         if (notionalAmount <= 0.0)
-            throw new Exception("notional Amount must be positive");
+         Utils.QL_REQUIRE(notionalAmount > 0.0,()=> "notional Amount must be positive");
 
          // do I adjust this ?
          // valueDate_ = calendar_.adjust(valueDate_,businessDayConvention_);

@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -59,14 +58,9 @@ namespace QLNet
               
              addRedemptionsToCashflows(new List<double>() { redemption });
 
-             if (cashflows().Count == 0)
-                throw new Exception("bond with no cashflows!");
-             if (redemptions_.Count != 1)
-                throw new Exception("multiple redemptions created");
-
-             index.registerWith(update);
-
-        
+             Utils.QL_REQUIRE(cashflows().Count != 0, ()=> "bond with no cashflows!");
+             Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
+             index.registerWith(update);      
         }
     }
 }

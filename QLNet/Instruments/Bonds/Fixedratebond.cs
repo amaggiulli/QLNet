@@ -59,11 +59,8 @@ namespace QLNet
 
          addRedemptionsToCashflows(new List<double>() { redemption });
 
-         if (cashflows().Count == 0)
-            throw new Exception("bond with no cashflows!");
-
-         if (redemptions_.Count != 1)
-            throw new Exception("multiple redemptions created");
+         Utils.QL_REQUIRE(cashflows().Count != 0,()=> "bond with no cashflows!");
+         Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
       }
       
       /*! simple annual compounding coupon rates
@@ -96,7 +93,7 @@ namespace QLNet
          dayCounter_ = accrualDayCounter;
          maturityDate_     = maturityDate;
 
-         Date firstDate, nextToLastDate;
+         Date firstDate = null , nextToLastDate = null;
 
          switch (rule) 
          {
@@ -115,10 +112,12 @@ namespace QLNet
             case DateGeneration.Rule.ThirdWednesday:
             case DateGeneration.Rule.Twentieth:
             case DateGeneration.Rule.TwentiethIMM:
-               throw new Exception("stub date (" + stubDate + ") not allowed with " + rule + " DateGeneration::Rule");
+               Utils.QL_FAIL("stub date (" + stubDate + ") not allowed with " + rule + " DateGeneration::Rule");
+               break;
               
             default:
-               throw new Exception("unknown DateGeneration::Rule (" + rule + ")");
+               Utils.QL_FAIL("unknown DateGeneration::Rule (" + rule + ")");
+               break;
          }
 
 
@@ -141,11 +140,8 @@ namespace QLNet
          addRedemptionsToCashflows(new List<double>() { redemption });
 
 
-         if (cashflows().Count == 0)
-            throw new Exception("bond with no cashflows!");
-         
-         if (redemptions_.Count != 1)
-            throw new Exception("multiple redemptions created");
+         Utils.QL_REQUIRE(cashflows().Count != 0,()=> "bond with no cashflows!");
+         Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
       }
 
       public FixedRateBond(int settlementDays,
@@ -182,11 +178,8 @@ namespace QLNet
         addRedemptionsToCashflows(new List<double>() { redemption });
 
 
-        if (cashflows().Count == 0)
-         throw new Exception("bond with no cashflows!");
-        
-        if (redemptions_.Count != 1)
-           throw new Exception("multiple redemptions created");
+        Utils.QL_REQUIRE(cashflows().Count != 0,()=> "bond with no cashflows!");
+        Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
     }
       
       Frequency frequency() { return frequency_; }

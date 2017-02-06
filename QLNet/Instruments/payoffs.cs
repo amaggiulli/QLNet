@@ -193,11 +193,9 @@ namespace QLNet {
         public SuperFundPayoff(double strike, double secondStrike) : base(Option.Type.Call, strike) {
             secondStrike_ = secondStrike;
 
-            if (!(strike>0.0))
-                throw new Exception("strike (" +  strike + ") must be positive");
-            if (!(secondStrike>strike))
-                throw new Exception("second strike (" +  secondStrike + 
-                    ") must be higher than first strike (" + strike + ")");
+            Utils.QL_REQUIRE(strike>0.0,()=> "strike (" +  strike + ") must be positive");
+            Utils.QL_REQUIRE(secondStrike>strike,()=> "second strike (" +  secondStrike + 
+               ") must be higher than first strike (" + strike + ")");
         }
 
         //! \name Payoff interface
@@ -220,9 +218,8 @@ namespace QLNet {
             secondStrike_ = secondStrike;
             cashPayoff_ = cashPayoff;
 
-            if (!(secondStrike>strike))
-                throw new Exception("second strike (" +  secondStrike +
-                    ") must be higher than first strike (" + strike + ")");
+            Utils.QL_REQUIRE(secondStrike>strike,()=> "second strike (" +  secondStrike +
+               ") must be higher than first strike (" + strike + ")");
         }
 
         //! \name Payoff interface

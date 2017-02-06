@@ -238,7 +238,8 @@ namespace QLNet
                {
                   case Frequency.NoFrequency:
                   case Frequency.Once:
-                     throw new Exception(frequency() + " frequency not allowed for this interest rate");
+                     Utils.QL_FAIL(frequency() + " frequency not allowed for this interest rate");
+                     break;
                   default:
                      result += frequency() + " compounding";
                      break;
@@ -252,7 +253,8 @@ namespace QLNet
                {
                   case Frequency.NoFrequency:
                   case Frequency.Once:
-                     throw new Exception(frequency() + " frequency not allowed for this interest rate");
+                     Utils.QL_FAIL(frequency() + " frequency not allowed for this interest rate");
+                     break;
                   default:
                      result += "simple compounding up to "
                         + (int)(12 / (int)frequency()) + " months, then "
@@ -261,7 +263,8 @@ namespace QLNet
                }
                break;
             default:
-               throw new Exception("unknown compounding convention (" + compounding() + ")");
+               Utils.QL_FAIL("unknown compounding convention (" + compounding() + ")");
+               break;
          }
          return result;
       }

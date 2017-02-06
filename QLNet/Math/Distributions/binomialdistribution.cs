@@ -16,101 +16,117 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    //! Binomial probability distribution function
-    /*! formula here ...
-        Given an integer k it returns its probability in a Binomial
-        distribution with parameters p and n.
-    */
-    public class BinomialDistribution {
-        private int n_;
-        private double logP_, logOneMinusP_;
+namespace QLNet
+{
+   //! Binomial probability distribution function
+   /*! formula here ...
+       Given an integer k it returns its probability in a Binomial
+       distribution with parameters p and n.
+   */
 
-        public BinomialDistribution(double p, int n) {
-            n_ = n;
+   public class BinomialDistribution
+   {
+      private int n_;
+      private double logP_, logOneMinusP_;
 
-            if (p.IsEqual(0.0)) {
-                logOneMinusP_ = 0.0;
-            } else if (p.IsEqual(1.0)) {
-                logP_ = 0.0;
-            } else {
-                if (!(p>0)) throw new Exception("negative p not allowed");
-                if (!(p < 1.0)) throw new Exception("p>1.0 not allowed");
+      public BinomialDistribution(double p, int n)
+      {
+         n_ = n;
 
-                logP_ = Math.Log(p);
-                logOneMinusP_ = Math.Log(1.0 - p);
-            }
-        }
+         if (p.IsEqual(0.0))
+         {
+            logOneMinusP_ = 0.0;
+         }
+         else if (p.IsEqual(1.0))
+         {
+            logP_ = 0.0;
+         }
+         else
+         {
+            Utils.QL_REQUIRE(p > 0,()=> "negative p not allowed");
+            Utils.QL_REQUIRE(p < 1.0,()=> "p>1.0 not allowed");
 
-        // function
-        public double value (int k) {
-            if (k > n_) return 0.0;
+            logP_ = Math.Log(p);
+            logOneMinusP_ = Math.Log(1.0 - p);
+         }
+      }
 
-            // p==1.0
-            if (logP_.IsEqual(0.0))
-                return (k==n_ ? 1.0 : 0.0);
-            // p==0.0
-            else if (logOneMinusP_.IsEqual(0.0))
-                return (k==0 ? 1.0 : 0.0);
-            else
-                return Math.Exp(Utils.binomialCoefficientLn(n_, k) + k * logP_ + (n_ - k) * logOneMinusP_);
-        }
-    }
+      // function
+      public double value(int k)
+      {
+         if (k > n_) return 0.0;
 
-    //! Cumulative binomial distribution function
-    /*! Given an integer k it provides the cumulative probability
-        of observing kk<=k:
-        formula here ...
-    */
-    public class CumulativeBinomialDistribution {
-        private int n_;
-        private double p_;
+         // p==1.0
+         if (logP_.IsEqual(0.0))
+            return (k == n_ ? 1.0 : 0.0);
+         // p==0.0
+         if (logOneMinusP_.IsEqual(0.0))
+            return (k == 0 ? 1.0 : 0.0);
+         return Math.Exp(Utils.binomialCoefficientLn(n_, k) + k * logP_ + (n_ - k) * logOneMinusP_);
+      }
+   }
 
-        public CumulativeBinomialDistribution(double p, int n) {
-            n_ = n;
-            p_ = p;
+   //! Cumulative binomial distribution function
+   /*! Given an integer k it provides the cumulative probability
+       of observing kk<=k:
+       formula here ...
+   */
 
-            if (!(p >= 0)) throw new Exception("negative p not allowed");
-            if (!(p <= 1.0)) throw new Exception("p>1.0 not allowed");
-        }
-        
-        // function
-        public double value(long k) {
-            if (k >= n_)
-                return 1.0;
-            else
-                return 1.0 - Utils.incompleteBetaFunction(k+1, n_-k, p_);
-        }
-    }
+   public class CumulativeBinomialDistribution
+   {
+      private int n_;
+      private double p_;
 
-    public static partial class Utils {
-        /*! Given an odd integer n and a real number z it returns p such that:
-        1 - CumulativeBinomialDistribution((n-1)/2, n, p) =
-                               CumulativeNormalDistribution(z)
+      public CumulativeBinomialDistribution(double p, int n)
+      {
+         n_ = n;
+         p_ = p;
 
-        \pre n must be odd
-        */
-        public static double PeizerPrattMethod2Inversion(double z, int n) {
+         Utils.QL_REQUIRE(p >= 0,()=> "negative p not allowed");
+         Utils.QL_REQUIRE(p <= 1.0,()=> "p>1.0 not allowed");
+      }
 
-            if (!(n%2==1)) throw new Exception("n must be an odd number: " + n + " not allowed");
+      // function
+      public double value(long k)
+      {
+         if (k >= n_)
+            return 1.0;
+         return 1.0 - Utils.incompleteBetaFunction(k + 1, n_ - k, p_);
+      }
+   }
 
-            double result = (z/(n+1.0/3.0+0.1/(n+1.0)));
-            result *= result;
-            result = Math.Exp(-result*(n+1.0/6.0));
-            result = 0.5 + (z>0 ? 1 : -1) * Math.Sqrt((0.25 * (1.0-result)));
-            return result;
-        }
+   public static partial class Utils
+   {
+      /*! Given an odd integer n and a real number z it returns p such that:
+      1 - CumulativeBinomialDistribution((n-1)/2, n, p) =
+                             CumulativeNormalDistribution(z)
 
-        public static double binomialCoefficientLn(int n, int k) {
-            if (!(n>=k)) throw new Exception("n<k not allowed");
+      \pre n must be odd
+      */
 
-            return Factorial.ln(n)-Factorial.ln(k)-Factorial.ln(n-k);
-        }
+      public static double PeizerPrattMethod2Inversion(double z, int n)
+      {
+         QL_REQUIRE(n % 2 == 1,()=> "n must be an odd number: " + n + " not allowed");
 
-        public static double binomialCoefficient(int n, int k) {
-            return Math.Floor(0.5+Math.Exp(Utils.binomialCoefficientLn(n, k)));
-        }
-    }
+         double result = (z / (n + 1.0 / 3.0 + 0.1 / (n + 1.0)));
+         result *= result;
+         result = Math.Exp(-result * (n + 1.0 / 6.0));
+         result = 0.5 + (z > 0 ? 1 : -1) * Math.Sqrt((0.25 * (1.0 - result)));
+         return result;
+      }
+
+      public static double binomialCoefficientLn(int n, int k)
+      {
+         QL_REQUIRE(n >= k,()=> "n<k not allowed");
+         return Factorial.ln(n) - Factorial.ln(k) - Factorial.ln(n - k);
+      }
+
+      public static double binomialCoefficient(int n, int k)
+      {
+         return Math.Floor(0.5 + Math.Exp(Utils.binomialCoefficientLn(n, k)));
+      }
+   }
 }

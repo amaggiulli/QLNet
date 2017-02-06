@@ -37,8 +37,7 @@ namespace QLNet {
             average_ = average;
             sigma_ = sigma;
 
-            if (!(sigma_>0.0))
-                throw new Exception("sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
+            Utils.QL_REQUIRE(sigma_>0.0,()=> "sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
 
             normalizationFactor_ = Const.M_SQRT_2*Const.M_1_SQRTPI/sigma_;
             derNormalizationFactor_ = sigma_*sigma_;
@@ -78,8 +77,7 @@ namespace QLNet {
             average_ = average;
             sigma_ = sigma;
 
-            if (!(sigma_>0.0))
-                throw new Exception("sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
+            Utils.QL_REQUIRE(sigma_>0.0,()=> "sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
         }
 
         // function
@@ -394,8 +392,7 @@ namespace QLNet {
             average_ = average;
             sigma_ = sigma;
 
-            if (!(sigma_>0.0))
-                throw new Exception("sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
+            Utils.QL_REQUIRE(sigma_>0.0,()=> "sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
         }
 
         // function
@@ -407,7 +404,7 @@ namespace QLNet {
                 } else if (Math.Abs(x) < Const.QL_EPSILON) {
                     x = 0.0;
                 } else {
-                throw new Exception("InverseCumulativeNormal(" + x + ") undefined: must be 0 < x < 1");
+                Utils.QL_FAIL("InverseCumulativeNormal(" + x + ") undefined: must be 0 < x < 1");
                 }
             }
 
@@ -497,14 +494,12 @@ namespace QLNet {
             average_ = average;
             sigma_ = sigma;
 
-            if (!(sigma_>0.0))
-                throw new Exception("sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
+            Utils.QL_REQUIRE(sigma_>0.0,()=> "sigma must be greater than 0.0 (" + sigma_ + " not allowed)");
         }
 
         // function
         public double value(double x)  {
-            if(!(x > 0.0 && x < 1.0))
-                throw new Exception("MoroInverseCumulativeNormal(" + x + ") undefined: must be 0<x<1");
+            Utils.QL_REQUIRE(x > 0.0 && x < 1.0,()=> "MoroInverseCumulativeNormal(" + x + ") undefined: must be 0<x<1");
 
             double result;
             double temp=x-0.5;

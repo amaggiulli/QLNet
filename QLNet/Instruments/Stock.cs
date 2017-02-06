@@ -31,8 +31,7 @@ namespace QLNet {
         public override bool isExpired() { return false; }
 
         protected override void performCalculations() {
-            if (quote_.empty())
-                throw new Exception("null quote set");
+            Utils.QL_REQUIRE(!quote_.empty(),()=> "null quote set");
             NPV_ = quote_.link.value();
         }
     }
