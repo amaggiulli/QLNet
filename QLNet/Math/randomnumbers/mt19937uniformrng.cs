@@ -37,7 +37,8 @@ namespace QLNet
 
       /*! if the given seed is 0, a random seed will be chosen based on clock() */
       public MersenneTwisterUniformRng() : this(0) {}
-      public MersenneTwisterUniformRng( ulong seed = 0 )
+
+      public MersenneTwisterUniformRng( ulong seed )
       {
          mt = new InitializedList<ulong>( N );
          seedInitialization( seed );
