@@ -78,9 +78,8 @@ namespace QLNet
          }
          else
          {
-            if (exerciseDate_ <= fixingDate_)
-               throw new ArgumentException("exercise date (" + exerciseDate_ + ") must be less " +
-                                           "than or equal to fixing date (" + fixingDate_ + ")");
+            Utils.QL_REQUIRE(exerciseDate_ <= fixingDate_,()=>
+               "exercise date (" + exerciseDate_ + ") must be less " + "than or equal to fixing date (" + fixingDate_ + ")");
             exercise_ = new EuropeanExercise(exerciseDate_);
          }
 
