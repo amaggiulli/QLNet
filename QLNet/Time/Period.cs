@@ -343,7 +343,7 @@ namespace QLNet {
                     return result + n + "Y";
                 default:
                     Utils.QL_FAIL("unknown time unit (" + units() + ")");
-                    return result; ;
+                    return result;
             }
         }
 
