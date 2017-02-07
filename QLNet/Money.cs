@@ -102,9 +102,8 @@ namespace QLNet
       }
       public static void convertToBase(ref Money m)
       {
-         if (Money.baseCurrency.empty())
-            throw new Exception("no base currency set");
-         convertTo(ref m, Money.baseCurrency);
+         Utils.QL_REQUIRE(!baseCurrency.empty(),()=> "no base currency set");
+         convertTo(ref m, baseCurrency);
       }
       public Money rounded()
       {
@@ -154,7 +153,7 @@ namespace QLNet
         } 
         else 
         {
-         throw new Exception("currency mismatch and no conversion specified");
+         Utils.QL_FAIL("currency mismatch and no conversion specified");
         }
 
         return m;
@@ -182,7 +181,7 @@ namespace QLNet
          } 
          else 
          {
-            throw new Exception ("currency mismatch and no conversion specified");
+            Utils.QL_FAIL("currency mismatch and no conversion specified");
          }
          
          return m;
@@ -214,7 +213,8 @@ namespace QLNet
          } 
          else 
          {
-           throw new Exception ("currency mismatch and no conversion specified");
+           Utils.QL_FAIL("currency mismatch and no conversion specified");
+            return false;
          }
       }
       public static bool  operator !=(Money m1,Money m2) 

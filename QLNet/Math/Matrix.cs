@@ -277,10 +277,10 @@ namespace QLNet {
         public static Matrix outerProduct(List<double> v1begin, List<double> v2begin) {
 
             int size1 = v1begin.Count;
-            if (!(size1>0)) throw new Exception("null first vector");
+            Utils.QL_REQUIRE(size1>0,()=> "null first vector");
 
             int size2 = v2begin.Count;
-            if(!(size2>0)) throw new Exception("null second vector");
+            Utils.QL_REQUIRE(size2>0,()=> "null second vector");
 
             Matrix result = new Matrix(size1, size2);
 

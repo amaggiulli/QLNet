@@ -58,17 +58,10 @@ namespace QLNet {
             dividendDiscount_ = dividendDiscount;
             variance_ = variance;
 
-            if (!(spot_ > 0.0))
-                throw new Exception("positive spot value required");
-
-            if (!(discount_ > 0.0))
-                throw new Exception("positive discount required");
-
-            if (!(dividendDiscount_ > 0.0))
-                throw new Exception("positive dividend discount required");
-
-            if (!(variance_ >= 0.0))
-                throw new Exception("negative variance not allowed");
+            Utils.QL_REQUIRE(spot_ > 0.0,()=> "positive spot value required");
+            Utils.QL_REQUIRE(discount_ > 0.0,()=> "positive discount required");
+            Utils.QL_REQUIRE(dividendDiscount_ > 0.0,()=> "positive dividend discount required");
+            Utils.QL_REQUIRE(variance_ >= 0.0,()=> "negative variance not allowed");
 
             stdDev_ = Math.Sqrt(variance_);
 
@@ -87,7 +80,7 @@ namespace QLNet {
                     mu_ = -0.5;
                     lambda_ = 0.5;
                 } else if (discount_.IsEqual(0.0)) {
-                    throw new Exception("null discount not handled yet");
+                    Utils.QL_FAIL("null discount not handled yet");
                 } else {
                     mu_ = Math.Log(dividendDiscount_ / discount_) / variance_ - 0.5;
                     lambda_ = Math.Sqrt(mu_ * mu_ - 2.0 * Math.Log(discount_) / variance_);
@@ -147,7 +140,8 @@ namespace QLNet {
                     }
                     break;
                 default:
-                    throw new Exception("invalid option type");
+                    Utils.QL_FAIL("invalid option type");
+                    break;
             }
 
 
@@ -238,8 +232,7 @@ namespace QLNet {
         }
 
         public double rho(double maturity) {
-            if (!(maturity >= 0.0))
-                throw new Exception("negative maturity not allowed");
+            Utils.QL_REQUIRE(maturity >= 0.0,()=> "negative maturity not allowed");
 
             // actually D.Dr / T
             double DalphaDr = -DalphaDd1_ / (lambda_ * stdDev_) * (1.0 + mu_);

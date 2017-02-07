@@ -38,8 +38,7 @@ namespace QLNet {
         public override void setupArguments(IPricingEngineArguments args) {
             Option.Arguments arguments = args as Option.Arguments;
 
-            if (arguments == null)
-                throw new Exception("wrong argument type");
+            Utils.QL_REQUIRE(arguments != null,()=> "wrong argument type");
 
             arguments.payoff = payoff_;
             arguments.exercise = exercise_;
@@ -52,8 +51,8 @@ namespace QLNet {
             public Exercise exercise;
 
            public virtual void validate() {
-                if (payoff == null) throw new Exception("no payoff given");
-                if (exercise == null) throw new Exception("no exercise given");
+                Utils.QL_REQUIRE(payoff != null,()=> "no payoff given");
+                Utils.QL_REQUIRE(exercise != null,()=> "no exercise given");
             }
         }
     }

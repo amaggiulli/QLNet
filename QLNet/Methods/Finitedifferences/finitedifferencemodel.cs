@@ -55,7 +55,7 @@ namespace QLNet {
 
         private void rollbackImpl(ref object o, double from, double to, int steps, IStepCondition<Vector> condition) {
 
-            if (!(from >= to)) throw new Exception("trying to roll back from " + from + " to " + to);
+            Utils.QL_REQUIRE(from >= to,()=> "trying to roll back from " + from + " to " + to);
 
             double dt = (from - to) / steps, t = from;
             evolver_.setStep(dt);
