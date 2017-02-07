@@ -53,8 +53,7 @@ namespace QLNet {
                        + process.factors() + " * " + (times.size()-1)
                        + ") the number of factors "
                        + "times the number of time steps");
-            if (!(times.size() > 1))
-                throw new Exception("no times given");
+            Utils.QL_REQUIRE(times.size() > 1,()=> "no times given");
         }
 
         public Sample<IPath> next() { return next(false); }

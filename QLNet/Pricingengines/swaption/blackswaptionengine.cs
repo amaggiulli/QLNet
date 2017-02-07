@@ -92,7 +92,7 @@ namespace QLNet
 
             // using the discounting curve
             swap.setPricingEngine(new DiscountingSwapEngine(termStructure_));
-            double annuity;
+            double annuity = 0;
             switch(arguments_.settlementType) {
               case Settlement.Type.Physical: {
                   annuity = Math.Abs(swap.fixedLegBPS())/basisPoint;
@@ -110,7 +110,8 @@ namespace QLNet
                   break;
               }
               default:
-                throw new Exception("unknown settlement type");
+                Utils.QL_FAIL("unknown settlement type");
+                break;
             }
             results_.additionalResults["annuity"] = annuity;
 

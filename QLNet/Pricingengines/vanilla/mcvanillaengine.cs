@@ -131,19 +131,16 @@ namespace QLNet
       protected override double? controlVariateValue()
       {
          AnalyticHestonHullWhiteEngine controlPE = controlPricingEngine() as AnalyticHestonHullWhiteEngine;
-         if ( controlPE == null )
-            throw new Exception( "engine does not provide control variation pricing engine" );
+         Utils.QL_REQUIRE( controlPE != null,()=> "engine does not provide control variation pricing engine" );
 
          OneAssetOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
-         if ( controlArguments == null )
-            throw new Exception( "engine is using inconsistent arguments" );
+         Utils.QL_REQUIRE( controlArguments != null,()=> "engine is using inconsistent arguments" );
 
          controlPE.setupArguments( arguments_ );
          controlPE.calculate();
 
          OneAssetOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
-         if ( controlResults == null )
-            throw new Exception( "engine returns an inconsistent result type" );
+         Utils.QL_REQUIRE( controlResults != null,()=> "engine returns an inconsistent result type" );
 
          return controlResults.value;
       }

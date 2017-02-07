@@ -179,14 +179,11 @@ namespace QLNet {
                       break;
                    case TimeUnit.Weeks:
                    case TimeUnit.Days:
-                      if ( p1.length() != 0 )
-                         throw new Exception(
-                               "impossible addition between " + p1 +
-                               " and " + p2);
+                      Utils.QL_REQUIRE( p1.length() == 0 ,()=> "impossible addition between " + p1 + " and " + p2);
                       break;
                    default:
-                      throw new Exception("unknown time unit (" 
-                            + p2.units() + ")");
+                      Utils.QL_FAIL("unknown time unit (" + p2.units() + ")");
+                      break;
                 }
                 break;
 
@@ -198,14 +195,11 @@ namespace QLNet {
                     break;
                   case TimeUnit.Weeks:
                   case TimeUnit.Days:
-                    if (p1.length() != 0)
-                       throw new Exception(
-                             "impossible addition between " + p1 +
-                             " and " + p2);
+                    Utils.QL_REQUIRE(p1.length() == 0,()=> "impossible addition between " + p1 + " and " + p2);
                     break;
                   default:
-                    throw new Exception("unknown time unit ("
-                          + p2.units() + ")");
+                    Utils.QL_FAIL("unknown time unit (" + p2.units() + ")");
+                    break;
                 }
                 break;
 
@@ -218,14 +212,11 @@ namespace QLNet {
                     break;
                   case TimeUnit.Years:
                   case TimeUnit.Months:
-                    if (p1.length() != 0)
-                       throw new Exception(
-                             "impossible addition between " + p1 +
-                             " and " + p2);
+                    Utils.QL_REQUIRE(p1.length() == 0,()=> "impossible addition between " + p1 + " and " + p2);
                     break;
                   default:
-                    throw new Exception("unknown time unit ("
-                          + p2.units() + ")");
+                    Utils.QL_FAIL("unknown time unit (" + p2.units() + ")");
+                    break;
                 }
                 break;
 
@@ -237,19 +228,17 @@ namespace QLNet {
                     break;
                   case TimeUnit.Years:
                   case TimeUnit.Months:
-                    if (p1.length() != 0)
-                       throw new Exception(
-                             "impossible addition between " + p1 +
-                             " and " + p2);
+                    Utils.QL_REQUIRE(p1.length() == 0,()=> "impossible addition between " + p1 + " and " + p2);
                     break;
                   default:
-                    throw new Exception("unknown time unit ("
-                          + p2.units() + ")");
+                    Utils.QL_FAIL("unknown time unit (" + p2.units() + ")");
+                    break;
                 }
                 break;
 
               default:
-                throw new Exception("unknown time unit (" + units_ + ")");
+                Utils.QL_FAIL("unknown time unit (" + units_ + ")");
+                break;
              }
           }
           return new Period(length_,units_);
@@ -293,8 +282,8 @@ namespace QLNet {
             pair p1lim = new pair(p1), p2lim = new pair(p2);
             if (p1lim.hi < p2lim.lo || p2lim.hi < p1lim.lo)
                 return p1lim.hi < p2lim.lo;
-            else
-                throw new ArgumentException("Undecidable comparison between " + p1.ToString() + " and " + p2.ToString());
+           Utils.QL_FAIL("Undecidable comparison between " + p1.ToString() + " and " + p2.ToString());
+           return false;
         }
 
         // required by operator <
@@ -311,7 +300,9 @@ namespace QLNet {
                     case TimeUnit.Years:
                         lo = 365 * p.length(); hi = 366 * p.length(); break;
                     default:
-                        throw new ArgumentException("Unknown TimeUnit: " + p.units());
+                        Utils.QL_FAIL("Unknown TimeUnit: " + p.units());
+                        lo = hi = 0;
+                         break;
                 }
             }
         }
@@ -351,7 +342,8 @@ namespace QLNet {
                 case TimeUnit.Years:
                     return result + n + "Y";
                 default:
-                    throw new Exception("unknown time unit (" + units() + ")");
+                    Utils.QL_FAIL("unknown time unit (" + units() + ")");
+                    return result; ;
             }
         }
 
@@ -359,9 +351,9 @@ namespace QLNet {
         {
            if ( this < (Period)obj )
               return -1;
-           else if ( this == (Period)obj )
+           if ( this == (Period)obj )
               return 0;
-           else return 1;
+           return 1;
         }
     }
 }

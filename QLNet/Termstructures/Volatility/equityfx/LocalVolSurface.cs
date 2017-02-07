@@ -98,20 +98,17 @@ namespace QLNet {
                 dt = 0.0001;
                 wpt = blackTS_.link.blackVariance(t+dt, strike, true);
 
-                if (!(wpt>=w))
-                    throw new Exception("decreasing variance at strike " + strike
-                          + " between time " + t + " and time " + (t+dt));
+                Utils.QL_REQUIRE(wpt>=w,()=> 
+                  "decreasing variance at strike " + strike + " between time " + t + " and time " + (t+dt));
                 dwdt = (wpt-w)/dt;
             } else {
                 dt = Math.Min(0.0001, t/2.0);
                 wpt = blackTS_.link.blackVariance(t+dt, strike, true);
                 wmt = blackTS_.link.blackVariance(t-dt, strike, true);
-                if (!(wpt>=w))
-                    throw new Exception("decreasing variance at strike " + strike
-                          + " between time " + t + " and time " + (t+dt));
-                if (!(w>=wmt))
-                    throw new Exception("decreasing variance at strike " + strike
-                          + " between time " + (t-dt) + " and time " + t);
+                Utils.QL_REQUIRE(wpt>=w,()=> 
+                  "decreasing variance at strike " + strike + " between time " + t + " and time " + (t+dt));
+                Utils.QL_REQUIRE(w>=wmt,()=> 
+                  "decreasing variance at strike " + strike + " between time " + (t-dt) + " and time " + t);
                 dwdt = (wpt-wmt)/(2.0*dt);
             }
 
@@ -123,12 +120,9 @@ namespace QLNet {
                 double den3 = 0.5*d2wdy2;
                 double den = den1+den2+den3;
                 double result = dwdt / den;
-                if (!(result>=0.0))
-                    throw new Exception("negative local vol^2 at strike " + strike
-                          + " and time " + t + "; the black vol surface is not smooth enough");
+                Utils.QL_REQUIRE(result>=0.0,()=> 
+                  "negative local vol^2 at strike " + strike + " and time " + t + "; the black vol surface is not smooth enough");
                 return Math.Sqrt(result);
-                // return std::sqrt(dwdt / (1.0 - y/w*dwdy +
-                //    0.25*(-0.25 - 1.0/w + y*y/w/w)*dwdy*dwdy + 0.5*d2wdy2));
             }
         }
     }

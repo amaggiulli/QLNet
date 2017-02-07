@@ -42,18 +42,14 @@ namespace QLNet {
 	
 			PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
 
-			if (payoff == null)
-                throw new Exception("non-plain payoff given");
-			if (!(payoff.strike()>0.0))
-                throw new Exception("strike must be positive");
+			Utils.QL_REQUIRE(payoff != null,()=> "non-plain payoff given");
+			Utils.QL_REQUIRE(payoff.strike()>0.0,()=> "strike must be positive");
 
 			double strike = payoff.strike();
 			double spot = process_.x0();
 
-			if (!(spot >= 0.0))
-                throw new Exception("negative or null underlying given");
-			if (triggered(spot))
-                throw new Exception("barrier touched");
+			Utils.QL_REQUIRE(spot >= 0.0,()=> "negative or null underlying given");
+			Utils.QL_REQUIRE(!triggered(spot),()=> "barrier touched");
 	
 			Barrier.Type barrierType = arguments_.barrierType;
 	
@@ -118,7 +114,8 @@ namespace QLNet {
 				}
 				break;
 			  default:
-                throw new Exception("unknown type");
+                Utils.QL_FAIL("unknown type");
+			       break;
 			}
 		}
 		private GeneralizedBlackScholesProcess process_;
@@ -131,9 +128,8 @@ namespace QLNet {
 
 		private double strike()
 		{
-            PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
-            if (payoff == null)
-                throw new Exception("non-plain payoff given");
+         PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
+         Utils.QL_REQUIRE(payoff != null,()=> "non-plain payoff given");
 			return payoff.strike();
 		}
 		private double residualTime()

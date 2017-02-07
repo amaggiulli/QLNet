@@ -82,8 +82,8 @@ namespace QLNet
             List<double>   accrualEndTimes
                 = process_.accrualEndTimes();
 
-            if (!(accrualStartTimes.First() <= maturity && accrualStartTimes.Last() >= maturity))
-                throw new Exception("capet maturity does not fit to the process"); 
+            Utils.QL_REQUIRE(accrualStartTimes.First() <= maturity && accrualStartTimes.Last() >= maturity,()=> 
+               "capet maturity does not fit to the process"); 
             
             int i = accrualStartTimes.BinarySearch(maturity);
             if (i < 0)
@@ -95,10 +95,10 @@ namespace QLNet
             // impose limits. we need the one before last at max or the first at min
             i = Math.Max(Math.Min(i, accrualStartTimes.Count - 1), 0);
             
-            if  (!(i<process_.size()
+            Utils.QL_REQUIRE(i<process_.size()
                 && Math.Abs(maturity - accrualStartTimes[i]) < 100 * Const.QL_EPSILON
-                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON))
-                throw new Exception("irregular fixings are not (yet) supported"); 
+                && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON,()=> 
+                  "irregular fixings are not (yet) supported"); 
 
             double tenor     = accrualEndTimes[i] - accrualStartTimes[i];
             double forward   = process_.initialValues()[i];
@@ -126,8 +126,7 @@ namespace QLNet
         public Vector w_0(int alpha, int beta)  
 {
             Vector omega = new Vector(beta + 1, 0.0);
-            if(!(alpha<beta))
-                throw new Exception("alpha needs to be smaller than beta");
+            Utils.QL_REQUIRE(alpha<beta,()=> "alpha needs to be smaller than beta");
 
             double s=0.0;
             for (int k=alpha+1; k<=beta; ++k) {

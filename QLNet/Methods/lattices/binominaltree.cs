@@ -213,7 +213,7 @@ namespace QLNet {
         public LeisenReimer(StochasticProcess1D process, double end, int steps, double strike)    
             : base(process, end, (steps%2 != 0 ? steps : steps+1)) {
 
-            if (!(strike>0.0)) throw new Exception("strike must be positive");
+            Utils.QL_REQUIRE(strike>0.0,()=> "strike must be positive");
             int oddSteps = (steps%2 != 0 ? steps : steps+1);
             double variance = process.variance(0.0, x0_, end);
             double ermqdt = Math.Exp(driftPerStep_ + 0.5*variance/oddSteps);

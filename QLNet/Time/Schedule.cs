@@ -707,12 +707,9 @@ namespace QLNet {
         {
 
            // check for mandatory arguments
-           if (effectiveDate_ == null)
-              throw new Exception("effective date not provided");
-           if (terminationDate_ == null)
-              throw new Exception("termination date not provided");
-           if ((object)tenor_ == null)
-              throw new Exception("tenor/frequency not provided");
+           Utils.QL_REQUIRE(effectiveDate_ != null,()=> "effective date not provided");
+           Utils.QL_REQUIRE(terminationDate_ != null,()=> "termination date not provided");
+           Utils.QL_REQUIRE((object)tenor_ != null,()=> "tenor/frequency not provided");
 
            // if no calendar was set...
            if (calendar_ == null)

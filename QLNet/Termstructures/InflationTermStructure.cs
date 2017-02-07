@@ -28,8 +28,8 @@ namespace QLNet {
             Month month = (Month)d.Month;
             int year = d.Year;
 
-            Month startMonth;
-            Month endMonth;
+            Month startMonth = 0;
+            Month endMonth = 0;
             switch (frequency) {
                 case Frequency.Annual:
                     startMonth = Month.January;
@@ -47,7 +47,8 @@ namespace QLNet {
                     startMonth = endMonth = month;
                     break;
                 default:
-                    throw new Exception("Frequency not handled: " + frequency);
+                    Utils.QL_FAIL("Frequency not handled: " + frequency);
+                    break;
             }
 
             Date startDate = new Date(1, startMonth, year);
@@ -183,9 +184,7 @@ namespace QLNet {
          seasonality_ = seasonality;
          if (seasonality_ != null) 
          {
-            if (!seasonality_.isConsistent(this))
-               throw new Exception("Seasonality inconsistent with " +
-                                             "inflation term structure");
+            Utils.QL_REQUIRE(seasonality_.isConsistent(this),()=> "Seasonality inconsistent with " + "inflation term structure");
          }
          notifyObservers();
       }
@@ -210,12 +209,10 @@ namespace QLNet {
       // range-checking
       protected override void checkRange(Date d,bool extrapolate)
       {
-         if (d < baseDate())
-            throw new Exception("date (" + d + ") is before base date");
+         Utils.QL_REQUIRE(d >= baseDate(),()=> "date (" + d + ") is before base date");
 
-         if (!extrapolate && allowsExtrapolation() && d > maxDate())
-            throw new Exception("date (" + d + ") is past max curve date ("
-                                            + maxDate() + ")");
+         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(),()=> 
+            "date (" + d + ") is past max curve date ("+ maxDate() + ")");
       }
 
       private Seasonality seasonality_;

@@ -56,14 +56,12 @@ namespace QLNet {
             dayCounter_ = dayCounter;
             maxDate_ = dates.Last();
 
-            if (!(dates.Count == blackVolCurve.Count))
-                throw new Exception("mismatch between date vector and black vol vector");
+            Utils.QL_REQUIRE(dates.Count == blackVolCurve.Count,()=> "mismatch between date vector and black vol vector");
 
             // cannot have dates[0]==referenceDate, since the
             // value of the vol at dates[0] would be lost
             // (variance at referenceDate must be zero)
-            if (!(dates[0]>referenceDate))
-                throw new Exception("cannot have dates[0] <= referenceDate");
+            Utils.QL_REQUIRE(dates[0]>referenceDate,()=> "cannot have dates[0] <= referenceDate");
 
             variances_ = new InitializedList<double>(dates.Count+1);
             times_ = new InitializedList<double>(dates.Count + 1);
@@ -72,11 +70,9 @@ namespace QLNet {
             for (int j = 1; j <= blackVolCurve.Count; j++) {
                 times_[j] = timeFromReference(dates[j-1]);
 
-                if (!(times_[j]>times_[j-1]))
-                    throw new Exception("dates must be sorted unique!");
+                Utils.QL_REQUIRE(times_[j]>times_[j-1],()=> "dates must be sorted unique!");
                 variances_[j] = times_[j] * blackVolCurve[j-1]*blackVolCurve[j-1];
-                if (!(variances_[j]>=variances_[j-1] || !forceMonotoneVariance))
-                    throw new Exception("variance must be non-decreasing");
+                Utils.QL_REQUIRE(variances_[j]>=variances_[j-1] || !forceMonotoneVariance,()=> "variance must be non-decreasing");
             }
 
             // default: linear interpolation

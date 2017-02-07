@@ -36,11 +36,9 @@ namespace QLNet
          speed_ = speed;
          level_ = level;
          volatility_ = vol;
-         if ( !( speed_ >= 0.0 ) )
-            throw new Exception( "negative speed given" );
+         Utils.QL_REQUIRE( speed_ >= 0.0,()=> "negative speed given" );
 
-         if ( !( volatility_ >= 0.0 ) )
-            throw new Exception( "negative volatility given" );
+         Utils.QL_REQUIRE( volatility_ >= 0.0,()=> "negative volatility given" );
       }
       //! \name StochasticProcess interface
       //@{

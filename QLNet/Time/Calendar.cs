@@ -284,11 +284,7 @@ namespace QLNet
         /// Returns the holidays between two dates
         /// </summary>
         public static List<Date> holidayList(Calendar calendar, Date from, Date to, bool includeWeekEnds = false) {
-            if (to <= from)
-            {
-                throw new Exception("'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
-            }
-
+            Utils.QL_REQUIRE(to > from,()=> "'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
             List<Date> result = new List<Date>();
 
             for (Date d = from; d <= to; ++d)

@@ -215,8 +215,7 @@ namespace QLNet
       // acts as zero time value for boostrapping
       public virtual double baseLevel() 
       {
-         if (baseLevel_ == null)
-            throw new Exception("Base volatility, for baseDate(), not set.");
+         Utils.QL_REQUIRE(baseLevel_ != null,()=> "Base volatility, for baseDate(), not set.");
          return baseLevel_.Value;
       }
 
@@ -224,33 +223,25 @@ namespace QLNet
       protected virtual void checkRange(Date d, double strike,bool extrapolate) 
       {
 
-         if ( d < baseDate() )
-            throw new Exception ("date (" + d + ") is before base date");
+         Utils.QL_REQUIRE( d >= baseDate(),()=> "date (" + d + ") is before base date");
 
-         if ( !extrapolate && !allowsExtrapolation() && d > maxDate())
-            throw new Exception ("date (" + d + ") is past max curve date ("
-                                         + maxDate() + ")");
+         Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || d <= maxDate(),()=> 
+            "date (" + d + ") is past max curve date (" + maxDate() + ")");
 
 
-         if ( !extrapolate && !allowsExtrapolation() && 
-              ( strike < minStrike() || strike > maxStrike()))
-            throw new Exception ("strike (" + strike + ") is outside the curve domain ["
-                + minStrike() + "," + maxStrike()+ "]] at date = " + d);
+         Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || ( strike >= minStrike() && strike <= maxStrike()),()=> 
+            "strike (" + strike + ") is outside the curve domain [" + minStrike() + "," + maxStrike()+ "]] at date = " + d);
       }
     
       protected virtual void checkRange(double t, double strike,bool extrapolate) 
       {
-         if ( t < timeFromReference(baseDate()) )
-            throw new Exception("time (" + t + ") is before base date");
+         Utils.QL_REQUIRE( t >= timeFromReference(baseDate()),()=> "time (" + t + ") is before base date");
 
-         if ( !extrapolate && !allowsExtrapolation() && t > maxTime() )
-            throw new Exception("time (" + t + ") is past max curve time ("
-                                           + maxTime() + ")");
+         Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || t <= maxTime(),()=> 
+            "time (" + t + ") is past max curve time (" + maxTime() + ")");
 
-         if ( !extrapolate && !allowsExtrapolation() && 
-              (strike < minStrike() || strike > maxStrike()))
-            throw new Exception("strike (" + strike + ") is outside the curve domain ["
-                   + minStrike() + "," + maxStrike()+ "] at time = " + t);
+         Utils.QL_REQUIRE( extrapolate || allowsExtrapolation() || (strike >= minStrike() && strike <= maxStrike()),()=> 
+            "strike (" + strike + ") is outside the curve domain [" + minStrike() + "," + maxStrike()+ "] at time = " + t);
     
       }
 
@@ -315,6 +306,6 @@ namespace QLNet
 
         protected double volatility_;
         protected double minStrike_, maxStrike_;
-    };
+    }
 
 }

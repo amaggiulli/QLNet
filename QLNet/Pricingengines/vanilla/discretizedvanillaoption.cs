@@ -64,7 +64,8 @@ namespace QLNet {
                     }
                     break;
                 default:
-                    throw new Exception("invalid option type");
+                    Utils.QL_FAIL("invalid option type");
+                    break;
             }
         }
 
