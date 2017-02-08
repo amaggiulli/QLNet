@@ -159,10 +159,10 @@ namespace QLNet
 
       protected double? relAccuracy_;
       protected bool useConvergenceEstimate_;
-      protected static double alpha_ = Math.Sqrt( 2.0 / 3.0 );
-      protected static double beta_ = 1.0 / Math.Sqrt( 5.0 );
-      protected static double x1_ = 0.94288241569547971906;
-      protected static double x2_ = 0.64185334234578130578;
-      protected static double x3_ = 0.23638319966214988028;
+      protected static readonly double alpha_ = Math.Sqrt( 2.0 / 3.0 );
+      protected static readonly double beta_ = 1.0 / Math.Sqrt( 5.0 );
+      protected static readonly double x1_ = 0.94288241569547971906;
+      protected static readonly double x2_ = 0.64185334234578130578;
+      protected static readonly double x3_ = 0.23638319966214988028;
    }
 }

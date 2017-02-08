@@ -197,7 +197,7 @@ namespace QLNet
                 alphaIsFixed_, betaIsFixed_, nuIsFixed_, rhoIsFixed_, vegaWeighted_,
                 endCriteria_, optMethod_, errorAccept_, useMaxError_, maxGuesses_);
         }
-        public static bool global = true;
+        public const bool global = true;
       
       
       private double t_;

@@ -132,7 +132,7 @@ namespace QLNet
          return new VannaVolgaInterpolation(xBegin, size, yBegin, spot_, dDiscount_, fDiscount_, T_);
       }
         
-      public static int requiredPoints = 3;
+      public const int requiredPoints = 3;
       
       private double spot_;
       private double dDiscount_;
