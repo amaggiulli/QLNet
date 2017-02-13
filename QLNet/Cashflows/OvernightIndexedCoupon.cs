@@ -150,7 +150,7 @@ namespace QLNet
          }
          else 
          {
-            fixingDates_ = new List<Date>(n_);
+            fixingDates_ = new InitializedList<Date>(n_);
             for (int i=0; i<n_; ++i)
                 fixingDates_[i] = overnightIndex.fixingDate(valueDates_[i]);
          }
@@ -167,7 +167,7 @@ namespace QLNet
 
       public List<double> indexFixings()
       {
-        fixings_ = new List<double>(n_);
+        fixings_ = new InitializedList<double>(n_);
         for (int i=0; i<n_; ++i)
             fixings_[i] = index_.fixing(fixingDates_[i]);
         return fixings_;
