@@ -111,7 +111,7 @@ namespace QLNet
                h_ = h;
                isObserver_ = registerAsObserver;
 
-               if (h_ != null && isObserver_)
+               if ( isObserver_)
                {
                   h_.registerWith(update);
                }
