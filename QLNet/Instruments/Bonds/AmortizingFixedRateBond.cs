@@ -56,6 +56,33 @@ namespace QLNet
       }
 
       public AmortizingFixedRateBond(
+                        int settlementDays,
+                        List<double> notionals,
+                        Schedule schedule,
+                        List<InterestRate> coupons,
+                        DayCounter accrualDayCounter,
+                        BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                        Date issueDate = null)
+          : base(settlementDays, schedule.calendar(), issueDate)
+      {
+          frequency_ = schedule.tenor().frequency();
+          dayCounter_ = accrualDayCounter;
+          schedule_ = schedule;
+
+          maturityDate_ = schedule.endDate();
+
+          cashflows_ = new FixedRateLeg(schedule)
+              .withCouponRates(coupons)
+              .withNotionals(notionals)
+              .withPaymentAdjustment(paymentConvention).value();
+
+
+          addRedemptionsToCashflows();
+
+          Utils.QL_REQUIRE(!cashflows().empty(), () => "bond with no cashflows!");
+      }
+
+      public AmortizingFixedRateBond(
                           int settlementDays,
                           Calendar calendar,
                           double faceAmount,
