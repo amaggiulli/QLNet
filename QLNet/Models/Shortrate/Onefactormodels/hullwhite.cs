@@ -125,16 +125,11 @@ namespace QLNet {
                                     double T,
                                     double sigma,
                                     double a){
-        if(!(futuresPrice>=0.0))
-            throw new Exception("negative futures price (" + futuresPrice + ") not allowed");
-        if(!(t>=0.0))
-            throw new Exception("negative t (" + t + ") not allowed");
-        if(!(T>=t))
-            throw new Exception("T (" + T + ") must not be less than t (" + t + ")");
-        if(!(sigma>=0.0))
-            throw new Exception("negative sigma (" + sigma + ") not allowed");
-        if(!(a>=0.0))
-            throw new Exception("negative a (" + a + ") not allowed");
+        Utils.QL_REQUIRE(futuresPrice>=0.0,()=> "negative futures price (" + futuresPrice + ") not allowed");
+        Utils.QL_REQUIRE(t>=0.0,()=> "negative t (" + t + ") not allowed");
+        Utils.QL_REQUIRE(T>=t,()=> "T (" + T + ") must not be less than t (" + t + ")");
+        Utils.QL_REQUIRE(sigma>=0.0,()=> "negative sigma (" + sigma + ") not allowed");
+        Utils.QL_REQUIRE(a>=0.0,()=> "negative a (" + a + ") not allowed");
 
         double deltaT = (T-t);
         double tempDeltaT = (1.0-Math.Exp(-a*deltaT)) / a;

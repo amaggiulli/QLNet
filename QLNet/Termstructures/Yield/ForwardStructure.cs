@@ -71,7 +71,7 @@ namespace QLNet
       */
       protected virtual double zeroYieldImpl(double t)
       {
-         if (t == 0.0)
+         if (t.IsEqual(0.0))
             return forwardImpl(0.0);
          // implement smarter integration if plan to use the following code
          double sum = 0.5 * forwardImpl(0.0);
@@ -91,7 +91,7 @@ namespace QLNet
       */
       protected override double discountImpl(double t)
       {
-         if (t == 0.0)     // this acts as a safe guard in cases where
+         if (t.IsEqual(0.0))     // this acts as a safe guard in cases where
             return 1.0;   // zeroYieldImpl(0.0) would throw.
 
         double r = zeroYieldImpl(t);

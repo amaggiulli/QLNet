@@ -33,7 +33,7 @@ namespace QLNet {
         <li>May Revolution, May 25th</li>
         <li>Death of General Manuel Belgrano, third Monday of June</li>
         <li>Independence Day, July 9th</li>
-        <li>Death of General José de San Martín, third Monday of August</li>
+        <li>Death of General JosÃ© de San MartÃ­n, third Monday of August</li>
         <li>Columbus Day, October 12th (moved to preceding Monday if
             on Tuesday or Wednesday and to following if on Thursday
             or Friday)</li>
@@ -74,7 +74,7 @@ namespace QLNet {
                     || (d >= 15 && d <= 21 && w == DayOfWeek.Monday && m == Month.June)
                     // Independence Day
                     || (d == 9 && m == Month.July)
-                    // Death of General José de San Martín
+                    // Death of General JosÃ© de San MartÃ­n
                     || (d >= 15 && d <= 21 && w == DayOfWeek.Monday && m == Month.August)
                     // Columbus Day
                     || ((d == 10 || d == 11 || d == 12 || d == 15 || d == 16)

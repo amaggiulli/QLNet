@@ -277,7 +277,7 @@ namespace QLNet
 		}
 		public double zeroYieldImpl( Interpolation i, double t )
 		{
-			if ( t == 0.0 )
+			if ( t.IsEqual(0.0) )
 				return forwardImpl( i, 0.0 );
 			else
 				return i.primitive( t, true ) / t;

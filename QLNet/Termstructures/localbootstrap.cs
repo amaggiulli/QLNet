@@ -112,14 +112,12 @@ namespace QLNet
             ts_ = ts;
 
             int n = ts_.instruments_.Count;
-            if (!(n >= ts_.interpolator_.requiredPoints))
-                throw new ArgumentException("not enough instruments: " + n + " provided, " +
-                       (ts_.interpolator_.requiredPoints) + " required");
+            Utils.QL_REQUIRE(n >= ts_.interpolator_.requiredPoints,()=> 
+               "not enough instruments: " + n + " provided, " + (ts_.interpolator_.requiredPoints) + " required");
 
-            if (!(n > localisation_))
-                throw new Exception("not enough instruments: " + n + " provided, " + localisation_ + " required.");
+            Utils.QL_REQUIRE(n > localisation_,()=> 
+               "not enough instruments: " + n + " provided, " + localisation_ + " required.");
 
-            //ts_.instruments_.ForEach(i => i.registerWith(ts_.update));
 				ts_.instruments_.ForEach((i, x) => ts_.registerWith( x ) ); 
         }
 
@@ -135,21 +133,20 @@ namespace QLNet
             for (i = 1; i < nInsts; ++i) {
                 Date m1 = ts_.instruments_[i - 1].latestDate(),
                      m2 = ts_.instruments_[i].latestDate();
-                if (m1 == m2) throw new ArgumentException("two instruments have the same maturity (" + m1 + ")");
+                Utils.QL_REQUIRE(m1 != m2,()=> "two instruments have the same maturity (" + m1 + ")");
             }
 
             // check that there is no instruments with invalid quote
-            if ((i = ts_.instruments_.FindIndex(x => !x.quoteIsValid())) != -1)
-                throw new ArgumentException("instrument " + i + " (maturity: " + ts_.instruments_[i].latestDate() +
-                       ") has an invalid quote");
+            Utils.QL_REQUIRE((i = ts_.instruments_.FindIndex(x => !x.quoteIsValid())) == -1,()=> 
+               "instrument " + i + " (maturity: " + ts_.instruments_[i].latestDate() + ") has an invalid quote");
 
             // setup instruments and register with them
 				ts_.instruments_.ForEach((x, j) => ts_.setTermStructure( j ) );
 
             // set initial guess only if the current curve cannot be used as guess
             if (validCurve_) {
-                if (ts_.data_.Count != nInsts + 1)
-                    throw new ArgumentException("dimension mismatch: expected " + nInsts + 1 + ", actual " + ts_.data_.Count);
+                Utils.QL_REQUIRE(ts_.data_.Count == nInsts + 1,()=> 
+                  "dimension mismatch: expected " + nInsts + 1 + ", actual " + ts_.data_.Count);
             } else {
                 ts_.data_ = new InitializedList<double>(nInsts + 1);
                 ts_.data_[0] = ts_.initialValue();
@@ -206,9 +203,9 @@ namespace QLNet
                 EndCriteria.Type endType = solver.minimize(toSolve, endCriteria);
 
                 // check the end criteria
-                if (!(endType == EndCriteria.Type.StationaryFunctionAccuracy ||
-                           endType == EndCriteria.Type.StationaryFunctionValue))
-                    throw new Exception("Unable to strip yieldcurve to required accuracy ");
+                Utils.QL_REQUIRE(endType == EndCriteria.Type.StationaryFunctionAccuracy ||
+                                 endType == EndCriteria.Type.StationaryFunctionValue,()=> 
+                  "Unable to strip yieldcurve to required accuracy ");
                 ++iInst;
             } while (iInst < nInsts);
 

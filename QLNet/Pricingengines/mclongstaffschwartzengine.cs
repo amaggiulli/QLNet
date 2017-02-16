@@ -146,7 +146,8 @@ namespace QLNet
          }
          else
          {
-            throw new Exception( "time steps not specified" );
+            Utils.QL_FAIL( "time steps not specified" );
+            return null;
          }
       }
 

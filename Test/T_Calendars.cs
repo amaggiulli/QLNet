@@ -178,7 +178,7 @@ namespace TestSuite {
             List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
                                                      new Date(31, Month.December, 2005));
             if ( hol.Count != expectedHol.Count )
-               Assert.Fail( "there were " + expectedHol.Count
+               QAssert.Fail( "there were " + expectedHol.Count
                           + " expected holidays, while there are " + hol.Count
                           + " calculated holidays" );
 
@@ -208,7 +208,7 @@ namespace TestSuite {
             for ( int i = 0; i < hol.Count; i++ )
             {
                if ( hol[i] != expectedHol[i] )
-                  Assert.Fail( "expected holiday was " + expectedHol[i]
+                  QAssert.Fail( "expected holiday was " + expectedHol[i]
                              + " while calculated holiday is " + hol[i] );
             }
         }
@@ -1065,11 +1065,11 @@ namespace TestSuite {
       for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++) 
       {
          if (hol[i] != expectedHol[i])
-            Assert.Fail("expected holiday was " + expectedHol[i]
+               QAssert.Fail("expected holiday was " + expectedHol[i]
                   + " while calculated holiday is " + hol[i]);
       }
       if (hol.Count != expectedHol.Count)
-         Assert.Fail("there were " + expectedHol.Count
+            QAssert.Fail("there were " + expectedHol.Count
             + " expected holidays, while there are " + hol.Count
             + " calculated holidays");
 }
@@ -1117,7 +1117,7 @@ namespace TestSuite {
          if (c.isBusinessDay(start) && c.isWeekend(start.DayOfWeek)) 
          {
             if (expectedWorkingWeekEnds[k] != start)
-                  Assert.Fail("expected working weekend was " + expectedWorkingWeekEnds[k]
+                  QAssert.Fail("expected working weekend was " + expectedWorkingWeekEnds[k]
                      + " while calculated working weekend is " + start);
             ++k;
          }
@@ -1125,7 +1125,7 @@ namespace TestSuite {
       }
     
       if (k != (expectedWorkingWeekEnds.Count))
-         Assert.Fail("there were " + expectedWorkingWeekEnds.Count
+         QAssert.Fail("there were " + expectedWorkingWeekEnds.Count
             + " expected working weekends, while there are " + k
             + " calculated holidays");
 }

@@ -5,3 +5,5 @@ bin
 *.user
 *.suo
 *.tss
+.sonarqube
+dotCover

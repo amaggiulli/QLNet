@@ -80,8 +80,7 @@ namespace QLNet
      }
      public override double rate()
      {
-        if (pricer_ == null)
-           throw new Exception("pricer not set");
+        Utils.QL_REQUIRE(pricer_ != null,()=> "pricer not set");
 
         // we know it is the correct type because checkPricerImpl checks on setting
         // in general pricer_ will be a derived class, as will *this on calling
@@ -117,15 +116,12 @@ namespace QLNet
 
       public void setPricer(InflationCouponPricer pricer) 
       {
-         if (!checkPricerImpl(pricer))
-            throw new Exception("pricer given is wrong type");
+         Utils.QL_REQUIRE(checkPricerImpl(pricer),()=> "pricer given is wrong type");
 
-         if (pricer_ != null)
-            pricer_.unregisterWith(update);
-        pricer_ = pricer;
-        if (pricer_ != null)
-           pricer_.registerWith(update);
-        update();
+         pricer_?.unregisterWith(update);
+         pricer_ = pricer;
+         pricer_?.registerWith(update);
+         update();
       }
 
       public InflationCouponPricer pricer() {return pricer_;}

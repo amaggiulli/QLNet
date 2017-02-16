@@ -52,8 +52,7 @@ namespace QLNet
 
          addRedemptionsToCashflows();
 
-         if ( cashflows().empty())
-            throw new Exception("bond with no cashflows!");
+         Utils.QL_REQUIRE( !cashflows().empty(),()=> "bond with no cashflows!");
       }
 
       public AmortizingFixedRateBond(
@@ -174,18 +173,20 @@ namespace QLNet
 
       KeyValuePair<int, int> daysMinMax(Period p) 
       {
-            switch (p.units()) {
-              case TimeUnit.Days:
-                return new KeyValuePair<int, int>(p.length(), p.length());
-              case TimeUnit.Weeks:
-                return new KeyValuePair<int, int>(7*p.length(), 7*p.length());
-              case TimeUnit.Months:
-                return new KeyValuePair<int, int>(28*p.length(), 31*p.length());
-              case TimeUnit.Years:
-                return new KeyValuePair<int, int>(365 * p.length(), 366 * p.length());
-              default:
-                throw new Exception("unknown time unit (" + p.units() + ")");
-            }
-        }
+         switch (p.units())
+         {
+            case TimeUnit.Days:
+               return new KeyValuePair<int, int>(p.length(), p.length());
+            case TimeUnit.Weeks:
+               return new KeyValuePair<int, int>(7 * p.length(), 7 * p.length());
+            case TimeUnit.Months:
+               return new KeyValuePair<int, int>(28 * p.length(), 31 * p.length());
+            case TimeUnit.Years:
+               return new KeyValuePair<int, int>(365 * p.length(), 366 * p.length());
+            default:
+               Utils.QL_FAIL("unknown time unit (" + p.units() + ")");
+               return new KeyValuePair<int, int>();
+         }
+      }
    }
 }

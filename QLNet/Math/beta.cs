@@ -62,7 +62,8 @@ namespace QLNet {
                 if (Math.Abs(del-1.0) < accuracy)
                     return result;
             }
-            throw new Exception("a or b too big, or maxIteration too small in betacf");
+            Utils.QL_FAIL("a or b too big, or maxIteration too small in betacf");
+            return 0;
         }
 
         /*! Incomplete Beta function
@@ -76,27 +77,24 @@ namespace QLNet {
         }
         public static double incompleteBetaFunction(double a, double b, double x, double accuracy, int maxIteration) {
 
-            if (!(a > 0.0)) throw new Exception("a must be greater than zero");
-            if (!(b > 0.0)) throw new Exception("b must be greater than zero");
+            QL_REQUIRE(a > 0.0,()=> "a must be greater than zero");
+            QL_REQUIRE(b > 0.0,()=> "b must be greater than zero");
 
-
-            if (x == 0.0)
+            if (x.IsEqual(0.0))
                 return 0.0;
-            else if (x == 1.0)
-                return 1.0;
-            else
-                if (!(x>0.0 && x<1.0)) throw new Exception("x must be in [0,1]");
+           if (x.IsEqual(1.0))
+              return 1.0;
+           QL_REQUIRE(x>0.0 && x<1.0,()=> "x must be in [0,1]");
 
-            double result = Math.Exp(GammaFunction.logValue(a+b) -
+           double result = Math.Exp(GammaFunction.logValue(a+b) -
                 GammaFunction.logValue(a) - GammaFunction.logValue(b) +
                 a*Math.Log(x) + b*Math.Log(1.0-x));
 
             if (x < (a+1.0)/(a+b+2.0))
                 return result *
                     betaContinuedFraction(a, b, x, accuracy, maxIteration)/a;
-            else
-                return 1.0 - result *
-                    betaContinuedFraction(b, a, 1.0-x, accuracy, maxIteration)/b;
+           return 1.0 - result *
+                  betaContinuedFraction(b, a, 1.0-x, accuracy, maxIteration)/b;
         }
     }
 }

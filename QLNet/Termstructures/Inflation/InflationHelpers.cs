@@ -67,8 +67,7 @@ namespace QLNet
          if (zii_.interpolated()) 
          {
             Period pShift = new Period(zii_.frequency());
-            if ( (swapObsLag_ - pShift) <= zii_.availabilityLag())
-               throw new Exception(
+            Utils.QL_REQUIRE( (swapObsLag_ - pShift) > zii_.availabilityLag(),()=> 
                      "inconsistency between swap observation of index "
                      + swapObsLag_ +
                      " index availability " + zii_.availabilityLag() +

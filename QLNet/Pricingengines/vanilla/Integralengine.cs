@@ -61,26 +61,25 @@ namespace QLNet {
 
 		public override void calculate()
 		{
-            if (!(arguments_.exercise.type() == Exercise.Type.European))
-                throw new Exception("not an European Option");
+		   Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European, () => "not an European Option");
 
-            StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
+		   StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
 
-            if (payoff == null)
-                throw new Exception("not an European Option");
+		   Utils.QL_REQUIRE(payoff != null, () => "not an European Option");
 
-			double variance = process_.blackVolatility().link.blackVariance(arguments_.exercise.lastDate(), payoff.strike());
+		   double variance = process_.blackVolatility().link.blackVariance(arguments_.exercise.lastDate(), payoff.strike());
 
-            double dividendDiscount = process_.dividendYield().link.discount(arguments_.exercise.lastDate());
-            double riskFreeDiscount = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate());
-			double drift = Math.Log(dividendDiscount/riskFreeDiscount)-0.5 *variance;
+		   double dividendDiscount = process_.dividendYield().link.discount(arguments_.exercise.lastDate());
+		   double riskFreeDiscount = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate());
+		   double drift = Math.Log(dividendDiscount / riskFreeDiscount) - 0.5 * variance;
 
-            Integrand f = new Integrand(arguments_.payoff, process_.stateVariable().link.value(), drift, variance);
-			SegmentIntegral integrator = new SegmentIntegral(5000);
-	
-			double infinity = 10.0 *Math.Sqrt(variance);
-            results_.value = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate()) / 
-                             Math.Sqrt(2.0 * Math.PI * variance) * integrator.value(f.value, drift - infinity, drift + infinity);
+		   Integrand f = new Integrand(arguments_.payoff, process_.stateVariable().link.value(), drift, variance);
+		   SegmentIntegral integrator = new SegmentIntegral(5000);
+
+		   double infinity = 10.0 * Math.Sqrt(variance);
+		   results_.value = process_.riskFreeRate().link.discount(arguments_.exercise.lastDate()) /
+		                    Math.Sqrt(2.0 * Math.PI * variance) *
+		                    integrator.value(f.value, drift - infinity, drift + infinity);
 		}
 	}
 

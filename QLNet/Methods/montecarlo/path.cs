@@ -51,8 +51,7 @@ namespace QLNet {
             if (values_.empty())
                 values_ = new Vector(timeGrid_.size());
 
-            if (values_.size() != timeGrid_.size())
-                throw new Exception("different number of times and asset values");
+            Utils.QL_REQUIRE(values_.size() == timeGrid_.size(),()=> "different number of times and asset values");
         }
 
         //! \name inspectors

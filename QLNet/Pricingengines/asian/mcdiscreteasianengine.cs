@@ -106,11 +106,9 @@ namespace QLNet
                                            gen, brownianBridge_);
         }
 
-        protected override double controlVariateValue() {
+        protected override double? controlVariateValue() {
             IPricingEngine controlPE = this.controlPricingEngine(); 
-            if(controlPE==null)
-                throw new Exception( "engine does not provide " +
-                                                "control variation pricing engine");
+            Utils.QL_REQUIRE(controlPE!=null,()=> "engine does not provide control variation pricing engine");
 
             DiscreteAveragingAsianOption.Arguments controlArguments =
                     (DiscreteAveragingAsianOption.Arguments)controlPE.getArguments();
@@ -120,7 +118,7 @@ namespace QLNet
             DiscreteAveragingAsianOption.Results controlResults =
                 (DiscreteAveragingAsianOption.Results)(controlPE.getResults());
 
-            return controlResults.value.GetValueOrDefault();
+            return controlResults.value;
     
         }
 

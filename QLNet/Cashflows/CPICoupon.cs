@@ -164,22 +164,24 @@ namespace QLNet
          interpolation_= interpolation;
          frequency_=frequency;
 
-         if(Math.Abs(baseFixing_) <= 1e-16)
-               throw new Exception("|baseFixing|<1e-16, future divide-by-zero error");
+         Utils.QL_REQUIRE(Math.Abs(baseFixing_) > 1e-16,()=> "|baseFixing|<1e-16, future divide-by-zero error");
 
          if (interpolation_ != InterpolationType.AsIndex)
          {
-               if ( frequency_ == Frequency.NoFrequency)
-                  throw new Exception ("non-index interpolation w/o frequency");
+            Utils.QL_REQUIRE( frequency_ != Frequency.NoFrequency,()=>"non-index interpolation w/o frequency");
          }
-        }
+      }
         
       //! value used on base date
       /*! This does not have to agree with index on that date. */
       public virtual double baseFixing() {return baseFixing_;}
 
       //! you may not have a valid date
-      public override Date baseDate() {throw new Exception();}
+      public override Date baseDate()
+      {
+         Utils.QL_FAIL("no base date specified");
+         return null;
+      }
 
       //! do you want linear/constant/as-index interpolation of future data?
       public virtual InterpolationType interpolation() { return interpolation_; }
@@ -263,16 +265,14 @@ namespace QLNet
 
       public override List<CashFlow> value()
       {
-         if (notionals_.empty())
-            throw new Exception("no notional given");
+         Utils.QL_REQUIRE(!notionals_.empty(),()=> "no notional given");
 
          int n = schedule_.Count - 1;
          List<CashFlow> leg = new List<CashFlow>(n + 1);
 
          if (n > 0)
          {
-            if (fixedRates_.empty() && spreads_.empty())
-               throw new Exception("no fixedRates or spreads given");
+            Utils.QL_REQUIRE(!fixedRates_.empty() || !spreads_.empty(),()=> "no fixedRates or spreads given");
 
             Date refStart, start, refEnd, end;
 
@@ -301,7 +301,7 @@ namespace QLNet
                   BusinessDayConvention bdc = schedule_.businessDayConvention();
                   refEnd = schedule_.calendar().adjust(start + schedule_.tenor(), bdc);
                }
-               if (Utils.Get(fixedRates_, i, 1.0) == 0.0)
+               if (Utils.Get(fixedRates_, i, 1.0).IsEqual(0.0))
                {
                   // fixed coupon
                   leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( notionals_, i, 0.0 ),
@@ -338,7 +338,7 @@ namespace QLNet
                   else
                   {
                      // cap/floorlet
-                     throw new Exception("caps/floors on CPI coupons not implemented.");
+                     Utils.QL_FAIL("caps/floors on CPI coupons not implemented.");
                   }
                }
             }

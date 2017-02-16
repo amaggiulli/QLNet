@@ -23,8 +23,7 @@ namespace QLNet {
         public static Matrix CholeskyDecomposition(Matrix S, bool flexible) {
             int i, j, size = S.rows();
 
-            if(size != S.columns())
-                throw new Exception("input matrix is not a square matrix");
+            Utils.QL_REQUIRE(size == S.columns(),()=> "input matrix is not a square matrix");
             #if QL_EXTRA_SAFETY_CHECKS
             for (i=0; i<S.rows(); i++)
                 for (j=0; j<i; j++)
@@ -41,8 +40,7 @@ namespace QLNet {
                         sum -= result[i,k]*result[j,k];
                     }
                     if (i == j) {
-                        if (!(flexible || sum > 0.0))
-                            throw new Exception("input matrix is not positive definite");
+                        Utils.QL_REQUIRE(flexible || sum > 0.0,()=> "input matrix is not positive definite");
                         // To handle positive semi-definite matrices take the
                         // square root of sum if positive, else zero.
                         result[i,i] = Math.Sqrt(Math.Max(sum, 0.0));
@@ -50,7 +48,7 @@ namespace QLNet {
                         // With positive semi-definite matrices is possible
                         // to have result[i][i]==0.0
                         // In this case sum happens to be zero as well
-                        result[j,i] = (sum==0.0 ? 0.0 : sum/result[i,i]);
+                        result[j,i] = (sum.IsEqual(0.0) ? 0.0 : sum/result[i,i]);
                     }
                 }
             }

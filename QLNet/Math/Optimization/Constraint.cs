@@ -50,7 +50,7 @@ namespace QLNet
          while ( !valid )
          {
             if ( icount > 200 )
-               throw new Exception( "can't update parameter vector" );
+               Utils.QL_FAIL( "can't update parameter vector" );
             diff *= 0.5;
             icount++;
             newParams = p + diff * direction;

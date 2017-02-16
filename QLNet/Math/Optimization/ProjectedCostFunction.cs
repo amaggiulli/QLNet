@@ -42,15 +42,14 @@ namespace QLNet
 				parametersFreedoms_ = parametersFreedoms;
 				costFunction_ = costFunction;
 
-                if (!(fixedParameters_.Count==parametersFreedoms_.Count))
-                    throw new Exception("fixedParameters_.Count!=parametersFreedoms_.Count");
+            Utils.QL_REQUIRE(fixedParameters_.Count==parametersFreedoms_.Count,()=> 
+               "fixedParameters_.Count!=parametersFreedoms_.Count");
 
 				 for (int i =0; i<parametersFreedoms_.Count; i++)
 					if(!parametersFreedoms_[i])
     					numberOfFreeParameters_++;
 
-                if (!(numberOfFreeParameters_>0))
-                    throw new Exception("numberOfFreeParameters==0");
+            Utils.QL_REQUIRE(numberOfFreeParameters_>0,()=> "numberOfFreeParameters==0");
 			}
 
 			//! \name CostFunction interface
@@ -71,8 +70,7 @@ namespace QLNet
 			// to set of parameters
 			public Vector project (Vector parameters)
 			{
-                if (!(parameters.Count==parametersFreedoms_.Count))
-                    throw new Exception("parameters.Count!=parametersFreedoms_.Count");
+            Utils.QL_REQUIRE(parameters.Count==parametersFreedoms_.Count,()=> "parameters.Count!=parametersFreedoms_.Count");
 
 				Vector projectedParameters = new Vector(numberOfFreeParameters_);
 				int i = 0;
@@ -86,8 +84,8 @@ namespace QLNet
 			// of projected parameters
 			public Vector include(Vector projectedParameters)
 			{
-                if (!(projectedParameters.Count==numberOfFreeParameters_))
-                    throw new Exception("projectedParameters.Count!=numberOfFreeParameters");
+            Utils.QL_REQUIRE(projectedParameters.Count==numberOfFreeParameters_,()=> 
+               "projectedParameters.Count!=numberOfFreeParameters");
 
 				Vector y = new Vector(fixedParameters_);
 				int i = 0;
@@ -99,8 +97,8 @@ namespace QLNet
 
 			private void mapFreeParameters (Vector parametersValues)
 			{
-                if (!(parametersValues.Count==numberOfFreeParameters_))
-                    throw new Exception("parametersValues.Count!=numberOfFreeParameters");
+            Utils.QL_REQUIRE(parametersValues.Count==numberOfFreeParameters_,()=> 
+               "parametersValues.Count!=numberOfFreeParameters");
 
 				int i = 0;
 				for (int j =0; j<actualParameters_.Count; j++)

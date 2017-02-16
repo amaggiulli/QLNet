@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QLNet
 {
@@ -30,8 +29,7 @@ namespace QLNet
       public override void initialize(FloatingRateCoupon coupon)
       {
          coupon_ = coupon as OvernightIndexedCoupon;
-         if (coupon_ == null)
-            throw new Exception("wrong coupon type");
+         Utils.QL_REQUIRE(coupon_ != null,()=> "wrong coupon type");
       }
             
       public override double swapletRate()
@@ -54,9 +52,8 @@ namespace QLNet
             double pastFixing = IndexManager.instance().getHistory(
                index.name()).value()[fixingDates[i]];
 
-            if (pastFixing == default(double) )
-               throw new Exception("Missing " + index.name() + " fixing for " 
-                                              + fixingDates[i].ToString());
+            Utils.QL_REQUIRE(pastFixing.IsNotEqual(default(double)),()=>
+               "Missing " + index.name() + " fixing for " + fixingDates[i].ToString());
 
             compoundFactor *= (1.0 + pastFixing*dt[i]);
             ++i;
@@ -71,7 +68,7 @@ namespace QLNet
                double pastFixing = IndexManager.instance().getHistory(
                                              index.name()).value()[fixingDates[i]];
                      
-               if (pastFixing != default(double)) 
+               if (pastFixing.IsNotEqual(default(double))) 
                {
                   compoundFactor *= (1.0 + pastFixing*dt[i]);
                   ++i;
@@ -92,32 +89,24 @@ namespace QLNet
          if (i<n) 
          {
             Handle<YieldTermStructure> curve = index.forwardingTermStructure();
-            if (curve.empty())
-               throw new ArgumentException("null term structure set to this instance of" +
-                                           index.name());
+            Utils.QL_REQUIRE(!curve.empty(),()=> "null term structure set to this instance of" + index.name());
                   
-               List<Date> dates = coupon_.valueDates();
-               double startDiscount = curve.link.discount(dates[i]);
-               double endDiscount = curve.link.discount(dates[n]);
+            List<Date> dates = coupon_.valueDates();
+            double startDiscount = curve.link.discount(dates[i]);
+            double endDiscount = curve.link.discount(dates[n]);
 
-               compoundFactor *= startDiscount/endDiscount;
+            compoundFactor *= startDiscount/endDiscount;
          }
 
          double rate = (compoundFactor - 1.0) / coupon_.accrualPeriod();
          return coupon_.gearing() * rate + coupon_.spread();
       }
 
-      public override double swapletPrice() 
-         { throw new Exception("swapletPrice not available");  }
-      public override double capletPrice(double d) 
-         { throw new Exception("capletPrice not available"); }
-      public override double capletRate(double d) 
-         { throw new Exception("capletRate not available"); }
-      public override double floorletPrice(double d) 
-         { throw new Exception("floorletPrice not available"); }
-      public override double floorletRate(double d) 
-         { throw new Exception("floorletRate not available"); }
-
+      public override double swapletPrice() { Utils.QL_FAIL("swapletPrice not available"); return 0; }
+      public override double capletPrice(double d) { Utils.QL_FAIL("capletPrice not available"); return 0; }
+      public override double capletRate(double d) { Utils.QL_FAIL("capletRate not available"); return 0; }
+      public override double floorletPrice(double d) { Utils.QL_FAIL("floorletPrice not available"); return 0; }
+      public override double floorletRate(double d) { Utils.QL_FAIL("floorletRate not available"); return 0; }
 
    }
 
@@ -151,8 +140,7 @@ namespace QLNet
                       .value();
             
          valueDates_ = sch.dates();
-         if (valueDates_.Count < 2)
-            throw new ArgumentException("degenerate schedule");
+         Utils.QL_REQUIRE(valueDates_.Count >= 2,()=> "degenerate schedule");
 
          // fixing dates
          n_ = valueDates_.Count-1;
@@ -162,7 +150,7 @@ namespace QLNet
          }
          else 
          {
-            fixingDates_ = new List<Date>(n_);
+            fixingDates_ = new InitializedList<Date>(n_);
             for (int i=0; i<n_; ++i)
                 fixingDates_[i] = overnightIndex.fixingDate(valueDates_[i]);
          }
@@ -179,7 +167,7 @@ namespace QLNet
 
       public List<double> indexFixings()
       {
-        fixings_ = new List<double>(n_);
+        fixings_ = new InitializedList<double>(n_);
         for (int i=0; i<n_; ++i)
             fixings_[i] = index_.fixing(fixingDates_[i]);
         return fixings_;

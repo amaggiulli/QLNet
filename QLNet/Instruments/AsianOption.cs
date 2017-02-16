@@ -38,9 +38,7 @@ namespace QLNet {
 			public override void validate()
 			{
 				base.validate();
-
-                if (averageType == Average.Type.NULL)
-                    throw new Exception("unspecified average type");
+            Utils.QL_REQUIRE(averageType != Average.Type.NULL,()=> "unspecified average type");
 			}
 			public Average.Type averageType;
 		}
@@ -59,8 +57,7 @@ namespace QLNet {
 			base.setupArguments(args);
 	
 			ContinuousAveragingAsianOption.Arguments moreArgs = args as ContinuousAveragingAsianOption.Arguments;
-			if (!(moreArgs != null))
-                throw new Exception("wrong argument type");
+			Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
 			moreArgs.averageType = averageType_;
 		}
 		protected Average.Type averageType_;
@@ -72,37 +69,33 @@ namespace QLNet {
 	{
 		public new class Arguments : OneAssetOption.Arguments
 		{
-            public Arguments()
+         public Arguments()
 			{
 				averageType = Average.Type.NULL;
 				runningAccumulator = null;
-                pastFixings = null;
+            pastFixings = null;
 			}
 			public override void validate()
 			{
 				base.validate();
 
-                if (averageType == Average.Type.NULL)
-                    throw new Exception("unspecified average type");
-
-				if (!(pastFixings != null))
-                    throw new Exception("null past-fixing number");
-
-				if (!(runningAccumulator != null))
-                    throw new Exception("null running product");
+            Utils.QL_REQUIRE(averageType != Average.Type.NULL,()=> "unspecified average type");
+            Utils.QL_REQUIRE(pastFixings != null,()=> "null past-fixing number");
+            Utils.QL_REQUIRE(runningAccumulator != null,()=> "null running product");
 
 				switch (averageType)
 				{
 					case Average.Type.Arithmetic:
-						if (!(runningAccumulator >= 0.0))
-                            throw new Exception("non negative running sum required: " + runningAccumulator + " not allowed");
+                  Utils.QL_REQUIRE(runningAccumulator >= 0.0,()=>
+                     "non negative running sum required: " + runningAccumulator + " not allowed");
 						break;
 					case Average.Type.Geometric:
-						if (!(runningAccumulator > 0.0))
-                            throw new Exception("positive running product required: " + runningAccumulator + " not allowed");
+                  Utils.QL_REQUIRE(runningAccumulator > 0.0,()=>
+                     "positive running product required: " + runningAccumulator + " not allowed");
 						break;
 					default:
-                        throw new Exception("invalid average type");
+                  Utils.QL_FAIL("invalid average type");
+				      break;
 				}
 		
 				// check fixingTimes_ here
@@ -135,8 +128,7 @@ namespace QLNet {
 			base.setupArguments(args);
 	
 			DiscreteAveragingAsianOption.Arguments moreArgs = args as DiscreteAveragingAsianOption.Arguments;
-			if (!(moreArgs != null))
-                throw new Exception("wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
 
 			moreArgs.averageType = averageType_;
 			moreArgs.runningAccumulator = runningAccumulator_;

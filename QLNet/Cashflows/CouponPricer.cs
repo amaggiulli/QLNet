@@ -115,7 +115,7 @@ namespace QLNet
          gearing_ = coupon.gearing();
          spread_ = coupon.spread();
          accrualPeriod_ = coupon.accrualPeriod();
-         Utils.QL_REQUIRE(accrualPeriod_ != 0.0,()=> "null accrual period");
+         Utils.QL_REQUIRE(accrualPeriod_.IsNotEqual(0.0),()=> "null accrual period");
 
          index_ = coupon.index() as IborIndex;
          if (index_ == null) 

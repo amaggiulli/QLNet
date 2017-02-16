@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,43 +20,42 @@
 
 namespace QLNet
 {
-    public class LmConstWrapperCorrelationModel : LmCorrelationModel {
-      
-        public LmConstWrapperCorrelationModel(LmCorrelationModel corrModel)
-        : base(corrModel.size(), 0){
-            corrModel_=corrModel;
-        }
+   public class LmConstWrapperCorrelationModel : LmCorrelationModel
+   {
+      public LmConstWrapperCorrelationModel(LmCorrelationModel corrModel)
+         : base(corrModel.size(), 0)
+      {
+         corrModel_ = corrModel;
+      }
 
-        public new int factors(){
-            return corrModel_.factors();
-        }
+      public override int factors()
+      {
+         return corrModel_.factors();
+      }
 
-        public override Matrix correlation(double t, Vector x) {
-            return corrModel_.correlation(t, x);
-        }
+      public override Matrix correlation(double t, Vector x = null)
+      {
+         return corrModel_.correlation(t, x);
+      }
 
-        public override Matrix correlation(double t){
-            return correlation(t, null);
-        }
+      public override Matrix pseudoSqrt(double t, Vector x = null)
+      {
+         return corrModel_.pseudoSqrt(t, x);
+      }
 
-        public override Matrix pseudoSqrt(double t, Vector x) {
-            return corrModel_.pseudoSqrt(t, x);
-        }
+      public override double correlation(int i, int j, double t, Vector x = null)
+      {
+         return corrModel_.correlation(i, j, t, x);
+      }
 
-        public override double correlation(int i, int j, double t, Vector x){
-            return corrModel_.correlation(i, j, t, x);
-        }
+      public new bool isTimeIndependent()
+      {
+         return corrModel_.isTimeIndependent();
+      }
 
-        public override double correlation(int i, int j, double t){
-            return correlation(i, j, t, null);
-        }
+      protected override void generateArguments()
+      {}
 
-        public new bool isTimeIndependent() {
-            return corrModel_.isTimeIndependent();
-        }
-
-        protected override void generateArguments() { }
-
-        protected LmCorrelationModel corrModel_;
-    }
+      protected LmCorrelationModel corrModel_;
+   }
 }

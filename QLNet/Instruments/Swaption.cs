@@ -189,7 +189,7 @@ namespace QLNet
 
       public override double value(double x)
       {
-         if (x != vol_.value())
+         if (x.IsNotEqual(vol_.value()))
          {
             vol_.setValue(x);
             engine_.calculate();
@@ -199,14 +199,12 @@ namespace QLNet
 
       public override double derivative(double x)
       {
-         if (x != vol_.value())
+         if (x.IsNotEqual(vol_.value()))
          {
             vol_.setValue(x);
             engine_.calculate();
          }
-         if (!results_.additionalResults.Keys.Contains("vega"))
-            throw new Exception("vega not provided");
-
+         Utils.QL_REQUIRE(results_.additionalResults.Keys.Contains("vega"),()=> "vega not provided");
          return (double)results_.additionalResults["vega"];
       }
    }

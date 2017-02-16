@@ -71,7 +71,7 @@ namespace QLNet {
 				  if ( from.Count != to.Count ) return false;
 
 				  for ( int i = 0; i < from.Count; i++ )
-					  if ( from[i] != to[i] ) return false;
+					  if ( from[i].IsNotEqual(to[i]) ) return false;
 
 				  return true;
 			  }
@@ -102,8 +102,8 @@ namespace QLNet {
         public static Vector operator /(Vector v1, double value) { return operValue(v1, value, (x, y) => x / y); }
 
         internal static Vector operVector(Vector v1, Vector v2, Func<double, double, double> func) {
-            if (v1.Count != v2.Count)
-                throw new Exception("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+            Utils.QL_REQUIRE(v1.Count == v2.Count,()=> 
+               "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
             Vector temp = new Vector(v1.Count);
             for (int i = 0; i < v1.Count; i++)
@@ -118,8 +118,8 @@ namespace QLNet {
         }
 
         public static double operator *(Vector v1, Vector v2) {
-            if (v1.Count != v2.Count)
-                throw new Exception("operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+            Utils.QL_REQUIRE(v1.Count == v2.Count,()=> 
+               "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
             double result = 0;
             for (int i = 0; i < v1.Count; i++)

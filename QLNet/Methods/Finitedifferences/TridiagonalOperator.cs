@@ -72,10 +72,8 @@ namespace QLNet {
             lowerDiagonal_ = (Vector)low.Clone();
             upperDiagonal_ = (Vector)high.Clone();
 
-            if (!(low.Count == mid.Count - 1))
-                throw new Exception("wrong size for lower diagonal vector");
-            if (!(high.Count == mid.Count - 1))
-                throw new Exception("wrong size for upper diagonal vector");
+            Utils.QL_REQUIRE(low.Count == mid.Count - 1,()=> "wrong size for lower diagonal vector");
+            Utils.QL_REQUIRE(high.Count == mid.Count - 1,()=> "wrong size for upper diagonal vector");
         }
 
         // TridiagonalOperator(const Disposable<TridiagonalOperator>&);
@@ -116,8 +114,7 @@ namespace QLNet {
 
         //! apply operator to a given array
         public Vector applyTo(Vector v) {
-            if (!(v.Count == size()))
-                throw new Exception("vector of the wrong size (" + v.Count + "instead of " + size() + ")");
+            Utils.QL_REQUIRE(v.Count == size(),()=> "vector of the wrong size (" + v.Count + "instead of " + size() + ")");
 
             Vector result = new Vector(size());
 
@@ -136,18 +133,18 @@ namespace QLNet {
 
         //! solve linear system for a given right-hand side
         public Vector solveFor(Vector rhs) {
-            if (rhs.Count != size()) throw new Exception("rhs has the wrong size");
+            Utils.QL_REQUIRE(rhs.Count == size(),()=> "rhs has the wrong size");
 
             Vector result = new Vector(size()), tmp = new Vector(size());
 
             double bet = diagonal_[0];
-            if (bet == 0.0) throw new Exception("division by zero");
+            Utils.QL_REQUIRE(bet.IsNotEqual(0.0),()=> "division by zero");
             result[0] = rhs[0] / bet;
 
             for (int j = 1; j < size(); j++) {
                 tmp[j] = upperDiagonal_[j - 1] / bet;
                 bet = diagonal_[j] - lowerDiagonal_[j - 1] * tmp[j];
-                if (bet == 0.0) throw new Exception("division by zero");
+                Utils.QL_REQUIRE(bet.IsNotEqual(0.0),()=> "division by zero");
                 result[j] = (rhs[j] - lowerDiagonal_[j - 1] * result[j - 1]) / bet;
             }
             // cannot be j>=0 with Size j
@@ -159,7 +156,7 @@ namespace QLNet {
 
         //! solve linear system with SOR approach
         public Vector SOR(Vector rhs, double tol) {
-            if (rhs.Count != size()) throw new Exception("rhs has the wrong size");
+            Utils.QL_REQUIRE(rhs.Count == size(),()=> "rhs has the wrong size");
 
             // initial guess
             Vector result = (Vector)rhs.Clone();
@@ -170,9 +167,8 @@ namespace QLNet {
             double temp;
             int i;
             for (int sorIteration = 0; err > tol; sorIteration++) {
-                if (!(sorIteration < 100000))
-                    throw new Exception("tolerance (" + tol + ") not reached in " + sorIteration + " iterations. "
-                           + "The error still is " + err);
+                Utils.QL_REQUIRE(sorIteration < 100000,()=> 
+                "tolerance (" + tol + ") not reached in " + sorIteration + " iterations. " + "The error still is " + err);
 
                 temp = omega * (rhs[0] -
                                 upperDiagonal_[0] * result[1] -
@@ -211,8 +207,7 @@ namespace QLNet {
             upperDiagonal_[0] = valC;
         }
         public void setMidRow(int i, double valA, double valB, double valC) {
-            if (!(i >= 1 && i <= size() - 2))
-                throw new Exception("out of range in TridiagonalSystem::setMidRow");
+            Utils.QL_REQUIRE(i >= 1 && i <= size() - 2,()=> "out of range in TridiagonalSystem::setMidRow");
             lowerDiagonal_[i - 1] = valA;
             diagonal_[i] = valB;
             upperDiagonal_[i] = valC;

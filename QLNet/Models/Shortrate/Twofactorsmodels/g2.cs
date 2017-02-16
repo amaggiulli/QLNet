@@ -135,8 +135,7 @@ namespace QLNet
                                   double maturity,
                                   Vector factors)
         {
-            if (!(factors.size() > 1))
-                throw new Exception("g2 model needs two factors to compute discount bond");
+            Utils.QL_REQUIRE(factors.size() > 1,()=> "g2 model needs two factors to compute discount bond");
             return discountBond(now, maturity, factors[0], factors[1]);
         }
 

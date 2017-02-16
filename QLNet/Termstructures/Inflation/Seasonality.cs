@@ -169,7 +169,7 @@ namespace QLNet
             int diffDays = Math.Abs(to - from);  // in days
             int dir = 1;
             if(from > to)dir = -1;
-            int diff;
+            int diff = 0 ;
             if (factorPeriod.units() == TimeUnit.Days)
             {
                 diff = dir*diffDays;
@@ -192,12 +192,11 @@ namespace QLNet
             }
             else if (factorPeriod.units() == TimeUnit.Years) 
             {
-                throw new Exception(
-                   "seasonality period time unit is not allowed to be : " + factorPeriod.units());
+                Utils.QL_FAIL("seasonality period time unit is not allowed to be : " + factorPeriod.units());
             } 
             else 
             {
-                throw new Exception("Unknown time unit: " + factorPeriod.units());
+                Utils.QL_FAIL("Unknown time unit: " + factorPeriod.units());
             }
             // now adjust to the available number of factors, direction dependent
 
@@ -252,8 +251,8 @@ namespace QLNet
          for (int i = 1; i < nTest; i++) 
          {
             double factorAt = this.seasonalityFactor(curveBaseDate+new Period(i,TimeUnit.Years));
-            if (Math.Abs(factorAt-factorBase)>=eps)
-               throw new Exception("seasonality is inconsistent with inflation " +
+            Utils.QL_REQUIRE(Math.Abs(factorAt-factorBase)<eps,()=>
+                        "seasonality is inconsistent with inflation " +
                         "term structure, factors " + factorBase + " and later factor " 
                         + factorAt + ", " + i + " years later from inflation curve "
                         + " with base date at " + curveBaseDate);
@@ -275,16 +274,15 @@ namespace QLNet
             case Frequency.Biweekly:          // etc.
             case Frequency.Weekly:
             case Frequency.Daily:
-               if ((this.seasonalityFactors().Count % (int)this.frequency()) != 0)
-                  throw new Exception(
+               Utils.QL_REQUIRE((this.seasonalityFactors().Count % (int)this.frequency()) == 0,()=>
                            "For frequency " + this.frequency()
                            + " require multiple of " + ((int)this.frequency()) + " factors "
                            + this.seasonalityFactors().Count + " were given.");
             break;
             default:
-               throw new Exception("bad frequency specified: " + this.frequency()
-                        + ", only semi-annual through daily permitted.");
-        }
+               Utils.QL_FAIL("bad frequency specified: " + this.frequency() + ", only semi-annual through daily permitted.");
+               break;
+         }
 
       }
       protected virtual double seasonalityCorrection(double rate, Date atDate, DayCounter dc,

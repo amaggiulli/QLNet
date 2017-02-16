@@ -66,9 +66,8 @@ namespace QLNet {
         public AmericanExercise(Date earliestDate, Date latestDate, bool payoffAtExpiry = false)
             : base(Type.American, payoffAtExpiry) {
 
-            if (!(earliestDate <= latestDate))
-                throw new Exception("earliest > latest exercise date");
-            dates_ = new InitializedList<Date>(2);
+         Utils.QL_REQUIRE(earliestDate <= latestDate,()=> "earliest > latest exercise date");
+         dates_ = new InitializedList<Date>(2);
             dates_[0] = earliestDate;
             dates_[1] = latestDate;
         }
@@ -86,9 +85,8 @@ namespace QLNet {
         public BermudanExercise(List<Date> dates) : this(dates, false) { }
         public BermudanExercise(List<Date> dates, bool payoffAtExpiry)
             : base(Type.Bermudan, payoffAtExpiry) {
-            
-            if (dates.Count == 0)
-                throw new Exception("no exercise date given");
+
+            Utils.QL_REQUIRE(!dates.empty(),()=> "no exercise date given");
 
             dates_ = dates;
             dates_.Sort();

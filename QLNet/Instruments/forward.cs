@@ -124,8 +124,7 @@ namespace QLNet {
 		}
 
 		protected override void performCalculations() {
-			if (discountCurve_.empty())
-				throw new Exception("no discounting term structure set to Forward");
+			Utils.QL_REQUIRE(!discountCurve_.empty(),()=> "no discounting term structure set to Forward");
 
 			ForwardTypePayoff ftpayoff = payoff_ as ForwardTypePayoff;
 			double fwdValue = forwardValue();
@@ -144,8 +143,7 @@ namespace QLNet {
 		public ForwardTypePayoff(Position.Type type, double strike) {
 			type_ = type;
 			strike_ = strike;
-			if (strike < 0.0)
-				throw new Exception("negative strike given");
+			Utils.QL_REQUIRE(strike >= 0.0,()=> "negative strike given");
         }
 
         //! \name Payoff interface
@@ -161,7 +159,8 @@ namespace QLNet {
 				case Position.Type.Short:
 					return (strike_-price);
 				default:
-					throw new Exception("unknown/illegal position type");
+					Utils.QL_FAIL("unknown/illegal position type");
+			      return 0;
 			}
 		}
     };

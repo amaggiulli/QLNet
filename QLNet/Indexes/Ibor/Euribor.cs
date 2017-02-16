@@ -58,8 +58,8 @@ namespace QLNet {
                  new EURCurrency(), new TARGET(),
                  Utils.euriborConvention(tenor), Utils.euriborEOM(tenor),
                  new Actual360(), h) {
-            if (this.tenor().units() == TimeUnit.Days)
-                throw new Exception("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
+            Utils.QL_REQUIRE(this.tenor().units() != TimeUnit.Days,()=>
+                "for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
         }
     }
 
@@ -75,8 +75,8 @@ namespace QLNet {
                    2, // settlement days
                    new EURCurrency(), new TARGET(), Utils.euriborConvention(tenor), Utils.euriborEOM(tenor),
                    new Actual365Fixed(), h) {
-            if (this.tenor().units() == TimeUnit.Days)
-                throw new Exception("for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
+            Utils.QL_REQUIRE(this.tenor().units() != TimeUnit.Days, () =>
+                "for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used");
         }
     }
 

@@ -63,8 +63,7 @@ namespace QLNet {
                                         double maturity,
                                         double bondMaturity)
         {
-            if (!(strike > 0.0))
-                throw new Exception("strike must be positive");
+            Utils.QL_REQUIRE(strike > 0.0,()=> "strike must be positive");
             double discountT = discountBond(0.0, maturity, x0());
             double discountS = discountBond(0.0, bondMaturity, x0());
 
@@ -76,7 +75,8 @@ namespace QLNet {
                     case Option.Type.Put:
                         return Math.Max(strike - discountS, 0.0);
                     default:
-                       throw new Exception("unsupported option type");
+                       Utils.QL_FAIL("unsupported option type");
+                       break;
                 }
             }
             double sigma2 = sigma()*sigma();

@@ -433,7 +433,7 @@ namespace QLNet
 			{
             Utils.QL_REQUIRE( side != (Protection.Side)( -1 ), () => "side not set" );
             Utils.QL_REQUIRE( notional != null, () => "notional not set" );
-            Utils.QL_REQUIRE( notional != 0.0, () => "null notional set" );
+            Utils.QL_REQUIRE( notional.IsNotEqual(0.0), () => "null notional set" );
             Utils.QL_REQUIRE( spread != null, () => "spread not set" );
             Utils.QL_REQUIRE( !leg.empty(), () => "coupons not set" );
             Utils.QL_REQUIRE( upfrontPayment != null, () => "upfront payment not set" );

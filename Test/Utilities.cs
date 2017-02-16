@@ -207,6 +207,16 @@ namespace TestSuite {
          #endif
       }
 
+      public static void AreNotEqual<T>(T expected, T actual)
+      {
+
+         #if QL_DOTNET_FRAMEWORK
+            Assert.AreNotEqual( expected, actual );
+         #else
+            Assert.NotEqual(expected, actual);
+         #endif
+      }
+
       public static void IsTrue( bool condition, string message )
       {
          #if QL_DOTNET_FRAMEWORK

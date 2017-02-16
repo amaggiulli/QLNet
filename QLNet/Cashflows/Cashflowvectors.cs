@@ -25,7 +25,7 @@ namespace QLNet {
 
     public static partial class Utils {
         public static double? toNullable(double val) {
-            if (val == double.MinValue)
+            if (val.IsEqual(double.MinValue))
                 return null;
             else
                 return val;
@@ -80,7 +80,7 @@ namespace QLNet {
                 if (i == n - 1 && !schedule.isRegular(i + 1))
                     refEnd = calendar.adjust(start + schedule.tenor(), schedule.businessDayConvention());
 
-                if (Utils.Get(gearings, i, 1) == 0) {                               // fixed coupon
+                if (Utils.Get(gearings, i, 1).IsEqual(0.0)) {                               // fixed coupon
                    leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( nominals, i ),
                                                 Utils.effectiveFixedRate(spreads, caps, floors, i),
                                                 paymentDayCounter,
@@ -168,7 +168,7 @@ namespace QLNet {
                     BusinessDayConvention bdc = schedule.businessDayConvention();
                     refEnd = calendar.adjust(start + schedule.tenor(), bdc);
                 }
-                if (Utils.Get(gearings, i, 1.0) == 0.0) { // fixed coupon
+                if (Utils.Get(gearings, i, 1.0).IsEqual(0.0)) { // fixed coupon
                     leg.Add(new
                         FixedRateCoupon( paymentDate,Utils.Get( nominals, i, 1.0 ),
                                         Utils.Get(spreads, i, 1.0),
@@ -266,27 +266,12 @@ namespace QLNet {
          {
             int n = schedule_.Count -1 ;
 
-            if (notionals_.empty())
-               throw new Exception("no notional given");
-
-            if (notionals_.Count > n)
-               throw new Exception("too many nominals (" + notionals_.Count +
-                                              "), only " + n + " required");
-				if ( gearings_ != null && gearings_.Count > n )
-               throw new Exception("too many gearings (" + gearings_.Count +
-                                              "), only " + n + " required");
-
-				if ( spreads_ != null && spreads_.Count > n )
-               throw new Exception("too many spreads (" + spreads_.Count +
-                                              "), only " + n + " required");
-
-				if ( caps_ != null && caps_.Count > n )
-               throw new Exception("too many caps (" + caps_.Count +
-                                              "), only " + n + " required");
-
-				if ( floors_ != null && floors_.Count > n )
-               throw new Exception("too many floors (" + floors_.Count +
-                                              "), only " + n + " required");
+            Utils.QL_REQUIRE(!notionals_.empty(),()=>"no notional given");
+            Utils.QL_REQUIRE(notionals_.Count <= n,()=> "too many nominals (" + notionals_.Count + "), only " + n + " required");
+            if (gearings_ != null ) Utils.QL_REQUIRE(gearings_.Count <= n ,()=> "too many gearings (" + gearings_.Count + "), only " + n + " required");
+            if (spreads_ != null) Utils.QL_REQUIRE(spreads_.Count <= n ,()=> "too many spreads (" + spreads_.Count + "), only " + n + " required");
+            if (caps_ != null) Utils.QL_REQUIRE(caps_.Count <= n ,()=> "too many caps (" + caps_.Count +"), only " + n + " required");
+            if(floors_ != null )Utils.QL_REQUIRE(floors_.Count <= n ,()=> "too many floors (" + floors_.Count + "), only " + n + " required");
 
 
             List<CashFlow> leg = new List<CashFlow>(n);
@@ -311,7 +296,7 @@ namespace QLNet {
                   BusinessDayConvention bdc = schedule_.businessDayConvention();
                   refEnd = schedule_.calendar().adjust(start + schedule_.tenor(), bdc);
                }
-               if (Utils.Get(gearings_, i, 1.0) == 0.0)
+               if (Utils.Get(gearings_, i, 1.0).IsEqual(0.0))
                {
                   // fixed coupon
                   leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( notionals_, i, 1.0 ),

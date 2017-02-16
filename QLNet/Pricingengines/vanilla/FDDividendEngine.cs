@@ -45,7 +45,7 @@ namespace QLNet {
 
         public override void setupArguments(IPricingEngineArguments a) {
             DividendVanillaOption.Arguments args = a as DividendVanillaOption.Arguments;
-            if (args == null) throw new Exception("incorrect argument type");
+            Utils.QL_REQUIRE(args != null,()=> "incorrect argument type");
             List<Event> events = new List<Event>();
             foreach (Event e in args.cashFlow)
                 events.Add(e);

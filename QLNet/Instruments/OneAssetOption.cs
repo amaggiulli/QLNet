@@ -32,67 +32,67 @@ namespace QLNet {
 
         public double delta() {
             calculate();
-            if (delta_ == null) throw new Exception("delta not provided");
+            Utils.QL_REQUIRE(delta_ != null,()=> "delta not provided");
             return delta_.GetValueOrDefault();
         }
 
         public double deltaForward() {
             calculate();
-            if (deltaForward_ == null) throw new Exception("forward delta not provided");
+            Utils.QL_REQUIRE(deltaForward_ != null,()=> "forward delta not provided");
             return deltaForward_.GetValueOrDefault();
         }
 
         public double elasticity() {
             calculate();
-            if (elasticity_ == null) throw new Exception("elasticity not provided");
+            Utils.QL_REQUIRE(elasticity_ != null,()=> "elasticity not provided");
             return elasticity_.GetValueOrDefault();
         }
 
         public double gamma() {
             calculate();
-            if (gamma_ == null) throw new Exception("gamma not provided");
+            Utils.QL_REQUIRE(gamma_ != null,()=> "gamma not provided");
             return gamma_.GetValueOrDefault();
         }
 
         public double theta() {
             calculate();
-            if (theta_ == null) throw new Exception("theta not provided");
+            Utils.QL_REQUIRE(theta_ != null,()=> "theta not provided");
             return theta_.GetValueOrDefault();
         }
 
         public double thetaPerDay() {
             calculate();
-            if (thetaPerDay_ == null) throw new Exception("theta per-day not provided");
+           Utils.QL_REQUIRE(thetaPerDay_ != null,()=> "theta per-day not provided");
             return thetaPerDay_.GetValueOrDefault();
         }
 
         public double vega() {
             calculate();
-            if (vega_ == null) throw new Exception("vega not provided");
+            Utils.QL_REQUIRE(vega_ != null,()=> "vega not provided");
             return vega_.GetValueOrDefault();
         }
 
         public double rho() {
             calculate();
-            if (rho_ == null) throw new Exception("rho not provided");
+            Utils.QL_REQUIRE(rho_ != null,()=> "rho not provided");
             return rho_.GetValueOrDefault();
         }
 
         public double dividendRho() {
             calculate();
-            if (dividendRho_ == null) throw new Exception("dividend rho not provided");
+            Utils.QL_REQUIRE(dividendRho_ != null,()=> "dividend rho not provided");
             return dividendRho_.GetValueOrDefault();
         }
 
         public double strikeSensitivity() {
             calculate();
-            if (strikeSensitivity_ == null) throw new Exception("strike sensitivity not provided");
+            Utils.QL_REQUIRE(strikeSensitivity_ != null,()=> "strike sensitivity not provided");
             return strikeSensitivity_.GetValueOrDefault();
         }
 
         public double itmCashProbability() {
             calculate();
-            if (itmCashProbability_ == null) throw new Exception("in-the-money cash probability not provided");
+            Utils.QL_REQUIRE(itmCashProbability_ != null,()=> "in-the-money cash probability not provided");
             return itmCashProbability_.GetValueOrDefault();
         }
 
@@ -106,8 +106,7 @@ namespace QLNet {
             base.fetchResults(r);
 
             Results results = r as Results;
-            if (results == null)
-                throw new Exception("no greeks returned from pricing engine");
+            Utils.QL_REQUIRE(results != null,()=> "no greeks returned from pricing engine");
             /* no check on null values - just copy.
                this allows:
                a) to decide in derived options what to do when null

@@ -192,8 +192,7 @@ namespace QLNet
         // acts as zero time value for boostrapping
         public virtual double? baseLevel() 
         {
-            if(baseLevel_ == null )
-                throw new Exception("Base volatility, for baseDate(), not set.");
+            Utils.QL_REQUIRE(baseLevel_ != null ,()=> "Base volatility, for baseDate(), not set.");
             return baseLevel_;
         }
         //@}

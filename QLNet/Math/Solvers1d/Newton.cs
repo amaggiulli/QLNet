@@ -34,7 +34,7 @@ namespace QLNet {
             froot = f.value(root_);
             dfroot = f.derivative(root_);
 
-            if (dfroot == default(double))
+            if (dfroot.IsEqual(default(double)))
                 throw new ArgumentException("Newton requires function's derivative");
             ++evaluationNumber_;
 
@@ -54,7 +54,8 @@ namespace QLNet {
                 evaluationNumber_++;
             }
 
-            throw new Exception("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded");
+            Utils.QL_FAIL("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded");
+            return 0;
         }
     }
 }

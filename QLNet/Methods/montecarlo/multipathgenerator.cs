@@ -47,56 +47,55 @@ namespace QLNet {
             generator_ = generator;
             next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
 
-            if (generator_.dimension() != process.factors()*(times.size()-1))
-                throw new Exception("dimension (" + generator_.dimension()
+            Utils.QL_REQUIRE(generator_.dimension() == process.factors()*(times.size()-1),()=>
+                         "dimension (" + generator_.dimension()
                        + ") is not equal to ("
                        + process.factors() + " * " + (times.size()-1)
                        + ") the number of factors "
                        + "times the number of time steps");
-            if (!(times.size() > 1))
-                throw new Exception("no times given");
+            Utils.QL_REQUIRE(times.size() > 1,()=> "no times given");
         }
 
         public Sample<IPath> next() { return next(false); }
         public Sample<IPath> antithetic() { return next(true); }
         private Sample<IPath> next(bool antithetic) {
             if (brownianBridge_) {
-                throw new Exception("Brownian bridge not supported");
-            } else {
-                // typedef typename GSG::sample_type sequence_type;
-                Sample<List<double>> sequence_ =
-                    antithetic ? generator_.lastSequence()
-                               : generator_.nextSequence();
-
-                int m = process_.size();
-                int n = process_.factors();
-
-                MultiPath path = (MultiPath)next_.value;
-
-                Vector asset = process_.initialValues();
-                for (int j=0; j<m; j++)
-                    path[j].setFront(asset[j]);
-
-                Vector temp; // = new Vector(n);
-                next_.weight = sequence_.weight;
-
-                TimeGrid timeGrid = path[0].timeGrid();
-                double t, dt;
-                for (int i = 1; i < path.pathSize(); i++) {
-                    int offset = (i-1)*n;
-                    t = timeGrid[i-1];
-                    dt = timeGrid.dt(i-1);
-                    if (antithetic)
-                        temp = -1 * new Vector(sequence_.value.GetRange(offset, n));
-                    else
-                        temp = new Vector(sequence_.value.GetRange(offset, n));
-
-                    asset = process_.evolve(t, asset, dt, temp);
-                    for (int j=0; j<m; j++)
-                        path[j][i] = asset[j];
-                }
-                return next_;
+                Utils.QL_FAIL("Brownian bridge not supported");
+                return null;
             }
+           // typedef typename GSG::sample_type sequence_type;
+           Sample<List<double>> sequence_ =
+              antithetic ? generator_.lastSequence()
+                 : generator_.nextSequence();
+
+           int m = process_.size();
+           int n = process_.factors();
+
+           MultiPath path = (MultiPath)next_.value;
+
+           Vector asset = process_.initialValues();
+           for (int j=0; j<m; j++)
+              path[j].setFront(asset[j]);
+
+           Vector temp; // = new Vector(n);
+           next_.weight = sequence_.weight;
+
+           TimeGrid timeGrid = path[0].timeGrid();
+           double t, dt;
+           for (int i = 1; i < path.pathSize(); i++) {
+              int offset = (i-1)*n;
+              t = timeGrid[i-1];
+              dt = timeGrid.dt(i-1);
+              if (antithetic)
+                 temp = -1 * new Vector(sequence_.value.GetRange(offset, n));
+              else
+                 temp = new Vector(sequence_.value.GetRange(offset, n));
+
+              asset = process_.evolve(t, asset, dt, temp);
+              for (int j=0; j<m; j++)
+                 path[j][i] = asset[j];
+           }
+           return next_;
         }
     }
 }

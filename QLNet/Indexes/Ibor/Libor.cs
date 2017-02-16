@@ -45,11 +45,10 @@ namespace QLNet
          financialCenterCalendar_ = financialCenterCalendar;
          jointCalendar_ = new JointCalendar( new UnitedKingdom( UnitedKingdom.Market.Exchange ),
                                             financialCenterCalendar, JointCalendar.JointCalendarRule.JoinHolidays );
-         if ( this.tenor().units() == TimeUnit.Days )
-            throw new Exception( "for daily tenors (" + this.tenor() +
-                                           ") dedicated DailyTenor constructor must be used" );
-         if ( currency == new EURCurrency() )
-            throw new Exception( "for EUR Libor dedicated EurLibor constructor must be used" );
+         Utils.QL_REQUIRE(this.tenor().units() != TimeUnit.Days, () =>
+            "for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used" );
+         Utils.QL_REQUIRE( currency != new EURCurrency() ,()=>
+            "for EUR Libor dedicated EurLibor constructor must be used" );
       }
 
       /*! \name Date calculations
@@ -59,8 +58,7 @@ namespace QLNet
       */
       public override Date valueDate( Date fixingDate )
       {
-         if ( !isValidFixingDate( fixingDate ) )
-            throw new Exception( "Fixing date " + fixingDate + " is not valid" );
+         Utils.QL_REQUIRE(isValidFixingDate(fixingDate),()=> "Fixing date " + fixingDate + " is not valid");
 
          // http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412 :
          // For all currencies other than EUR and GBP the period between
@@ -116,8 +114,8 @@ namespace QLNet
                 new JointCalendar( new UnitedKingdom( UnitedKingdom.Market.Exchange ), financialCenterCalendar, JointCalendar.JointCalendarRule.JoinHolidays ),
                 Utils.liborConvention( new Period( 1, TimeUnit.Days ) ), Utils.liborEOM( new Period( 1, TimeUnit.Days ) ), dayCounter, h )
       {
-         if ( !( currency != new EURCurrency() ) )
-            throw new Exception( "for EUR Libor dedicated EurLibor constructor must be used" );
+         Utils.QL_REQUIRE( currency != new EURCurrency() ,()=>
+            "for EUR Libor dedicated EurLibor constructor must be used" );
       }
    }
 
@@ -134,7 +132,8 @@ namespace QLNet
             case TimeUnit.Years:
                return BusinessDayConvention.ModifiedFollowing;
             default:
-               throw new Exception( "invalid time units" );
+               QL_FAIL( "invalid time units" );
+               return BusinessDayConvention.Unadjusted;
          }
       }
 
@@ -149,7 +148,8 @@ namespace QLNet
             case TimeUnit.Years:
                return true;
             default:
-               throw new Exception( "invalid time units" );
+               QL_FAIL( "invalid time units" );
+               return false;
          }
       }
    }

@@ -42,10 +42,10 @@ namespace QLNet {
 
             // Calculation of seed value, Si
             double n= 2.0*Math.Log(dividendDiscount/riskFreeDiscount)/(variance);
-            double m=-2.0*Math.Log(riskFreeDiscount)/(variance);
+            double m= -2.0*Math.Log(riskFreeDiscount)/(variance);
             double bT = Math.Log(dividendDiscount/riskFreeDiscount);
 
-            double qu, Su, h, Si;
+            double qu, Su, h, Si = 0;
             switch (payoff.optionType()) {
                 case Option.Type.Call:
                     qu = (-(n-1.0) + Math.Sqrt(((n-1.0)*(n-1.0)) + 4.0*m))/2.0;
@@ -63,7 +63,8 @@ namespace QLNet {
                     Si = Su + (payoff.strike() - Su) * Math.Exp(h);
                     break;
                 default:
-                    throw new ArgumentException("unknown option type");
+                    Utils.QL_FAIL("unknown option type");
+                    break;
             }
 
 
@@ -125,7 +126,8 @@ namespace QLNet {
                     }
                     break;
                 default:
-                    throw new ArgumentException("unknown option type");
+                   Utils.QL_FAIL("unknown option type");
+                   break;
             }
 
             return Si;
@@ -133,22 +135,21 @@ namespace QLNet {
 
         public override void calculate() {
 
-            if (!(arguments_.exercise.type() == Exercise.Type.American))
-                throw new Exception("not an American Option");
+            Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.American,()=> "not an American Option");
 
             AmericanExercise ex = arguments_.exercise as AmericanExercise;
-            if (ex == null) throw new Exception("non-American exercise given");
+            Utils.QL_REQUIRE(ex != null,()=> "non-American exercise given");
 
-            if(ex.payoffAtExpiry()) throw new Exception("payoff at expiry not handled");
+            Utils.QL_REQUIRE(!ex.payoffAtExpiry(),()=> "payoff at expiry not handled");
 
             StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
-            if (payoff == null) throw new Exception("non-striked payoff given");
+            Utils.QL_REQUIRE(payoff != null,()=> "non-striked payoff given");
 
             double variance = process_.blackVolatility().link.blackVariance(ex.lastDate(), payoff.strike());
             double dividendDiscount = process_.dividendYield().link.discount(ex.lastDate());
             double riskFreeDiscount = process_.riskFreeRate().link.discount(ex.lastDate());
             double spot = process_.stateVariable().link.value();
-            if (!(spot > 0.0)) throw new Exception("negative or null underlying given");
+            Utils.QL_REQUIRE(spot > 0.0,()=> "negative or null underlying given");
             double forwardPrice = spot * dividendDiscount / riskFreeDiscount;
             BlackCalculator black = new BlackCalculator(payoff, forwardPrice, Math.Sqrt(variance), riskFreeDiscount);
 
@@ -214,7 +215,8 @@ namespace QLNet {
                         }
                         break;
                     default:
-                      throw new Exception("unknown option type");
+                      Utils.QL_FAIL("unknown option type");
+                      break;
                 }
             } // end of "early exercise can be optimal"
         }

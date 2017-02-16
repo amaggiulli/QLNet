@@ -160,7 +160,8 @@ namespace QLNet
                     }
                     break;
                 default:
-                    throw new Exception("unknown rounding method");
+                    Utils.QL_FAIL("unknown rounding method");
+                    break;
             }
             return (neg) ? -(lvalue / mult) : lvalue / mult;
         }

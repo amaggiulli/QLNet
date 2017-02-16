@@ -77,7 +77,7 @@ namespace QLNet
          double a1 = a / Math.Sqrt(2.0 * (1.0 - rho2_));
          double b1 = b / Math.Sqrt(2.0 * (1.0 - rho2_));
 
-         double result=-1.0;
+         double result= -1.0;
 
          if (a<=0.0 && b<=0 && rho_<=0) 
          {

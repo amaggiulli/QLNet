@@ -17,7 +17,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 
 namespace QLNet 
@@ -202,7 +201,7 @@ namespace QLNet
       public double hazardRate(double t, bool extrapolate = false)
       {
          double S = survivalProbability(t, extrapolate);
-         return S == 0.0 ? 0.0 : defaultDensity(t, extrapolate)/S;
+         return S.IsEqual(0.0) ? 0.0 : defaultDensity(t, extrapolate)/S;
       }
 
       #endregion

@@ -113,7 +113,8 @@ namespace QLNet
                payer_[1] = -1.0;
                break;
             default:
-               throw new Exception("Unknown vanilla-swap type");
+               Utils.QL_FAIL("Unknown vanilla-swap type");
+               break;
          }
       }
 
@@ -295,7 +296,7 @@ namespace QLNet
          {
             base.validate();
 
-            if (nominal == default(double)) throw new ArgumentException("nominal null or not set");
+            if (nominal.IsEqual(default(double))) throw new ArgumentException("nominal null or not set");
             if (fixedResetDates.Count != fixedPayDates.Count)
                throw new ArgumentException("number of fixed start dates different from number of fixed payment dates");
             if (fixedPayDates.Count != fixedCoupons.Count)

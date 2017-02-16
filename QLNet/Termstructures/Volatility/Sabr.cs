@@ -57,25 +57,19 @@ namespace QLNet {
             return (alpha/D)*multiplier*d;
         }
 
-        public static void validateSabrParameters(double alpha, double beta, double nu, double rho) {
-            if (!(alpha > 0.0))
-                throw new Exception("alpha must be positive: " + alpha + " not allowed");
-            if (!(beta >= 0.0 && beta <= 1.0))
-                throw new Exception("beta must be in (0.0, 1.0): " + beta + " not allowed");
-            if (!(nu >= 0.0))
-                throw new Exception("nu must be non negative: " + nu + " not allowed");
-            if (!(rho * rho < 1.0))
-                throw new Exception("rho square must be less than one: " + rho + " not allowed");
-            }
+        public static void validateSabrParameters(double alpha, double beta, double nu, double rho)
+        {
+            QL_REQUIRE(alpha > 0.0,()=> "alpha must be positive: " + alpha + " not allowed");
+            QL_REQUIRE(beta >= 0.0 && beta <= 1.0,()=> "beta must be in (0.0, 1.0): " + beta + " not allowed");
+            QL_REQUIRE(nu >= 0.0,()=> "nu must be non negative: " + nu + " not allowed");
+            QL_REQUIRE(rho * rho < 1.0,()=> "rho square must be less than one: " + rho + " not allowed");
+        }
 
         public static double sabrVolatility(double strike, double forward, double expiryTime, double alpha, double beta,
                                      double nu, double rho) {
-            if (!(strike>0.0))
-                throw new Exception("strike must be positive: " + strike + " not allowed");
-            if (!(forward>0.0))
-                throw new Exception("at the money forward rate must be: " + forward + " not allowed");
-            if (!(expiryTime>=0.0))
-                throw new Exception("expiry time must be non-negative: " + expiryTime + " not allowed");
+            QL_REQUIRE(strike>0.0,()=> "strike must be positive: " + strike + " not allowed");
+            QL_REQUIRE(forward>0.0,()=> "at the money forward rate must be: " + forward + " not allowed");
+            QL_REQUIRE(expiryTime>=0.0,()=> "expiry time must be non-negative: " + expiryTime + " not allowed");
             validateSabrParameters(alpha, beta, nu, rho);
             return unsafeSabrVolatility(strike, forward, expiryTime, alpha, beta, nu, rho);
         }

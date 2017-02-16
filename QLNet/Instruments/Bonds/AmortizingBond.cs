@@ -57,7 +57,7 @@ namespace QLNet
          // Store regular payment of faceValue * couponRate for later calculation
          _originalPayment = (_faceValue * _couponRate) / (double)_payFrequency;
 
-         if (gYield == 0)
+         if (gYield.IsEqual(0.0))
             _yield = calculateYield();
          else
             _yield = gYield;

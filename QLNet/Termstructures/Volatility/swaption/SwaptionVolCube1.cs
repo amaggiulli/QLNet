@@ -161,8 +161,8 @@ namespace QLNet
 
          public void setPoint(Date optionDate,Period swapTenor,double optionTime,double swapLength,List<double> point)
          {
-            bool expandOptionTimes = !( optionTimes_.Exists(x => x == optionTime));
-            bool expandSwapLengths = !( swapLengths_.Exists(x => x == swapLength));
+            bool expandOptionTimes = !optionTimes_.Exists(x => x.IsEqual(optionTime));
+            bool expandSwapLengths = !swapLengths_.Exists(x => x.IsEqual(swapLength));
 
             double optionTimesPreviousNode,swapLengthsPreviousNode;
 
@@ -495,7 +495,7 @@ namespace QLNet
             calibrationResult[6]=sabrInterpolation.maxError();
             calibrationResult[7]=(double)sabrInterpolation.endCriteria();
 
-            Utils.QL_REQUIRE(calibrationResult[7]!=(double)EndCriteria.Type.MaxIterations,()=>
+            Utils.QL_REQUIRE(calibrationResult[7].IsNotEqual((double)EndCriteria.Type.MaxIterations),()=>
                       "section calibration failed: " +
                       "option tenor " + optionDates[j] +
                       ", swap tenor " + swapTenors[k] +
@@ -698,7 +698,7 @@ namespace QLNet
                maxErrors  [j,k] = maxError;
                endCriteria[j,k] = (double)sabrInterpolation.endCriteria();
 
-               Utils.QL_REQUIRE(endCriteria[j,k]!=(double) EndCriteria.Type.MaxIterations,()=>
+               Utils.QL_REQUIRE(endCriteria[j,k].IsNotEqual((double) EndCriteria.Type.MaxIterations),()=>
                         "global swaptions calibration failed: "+
                         "MaxIterations reached: " + "\n" +
                         "option maturity = " + optionDates[j] + ", \n" +
@@ -775,8 +775,8 @@ namespace QLNet
          {
             for (int k=0; k<atmSwapLengths.Count; k++) 
             {
-               bool expandOptionTimes =!(optionTimes.Exists(x => x == atmOptionTimes[j]));
-               bool expandSwapLengths =!(swapLengths.Exists(x => x == atmSwapLengths[k]));
+               bool expandOptionTimes = !optionTimes.Exists(x => x.IsEqual(atmOptionTimes[j]));
+               bool expandSwapLengths = !swapLengths.Exists(x => x.IsEqual(atmSwapLengths[k]));
                if(expandOptionTimes || expandSwapLengths)
                {
                   double atmForward = atmStrike(atmOptionDates[j],atmSwapTenors[k]);

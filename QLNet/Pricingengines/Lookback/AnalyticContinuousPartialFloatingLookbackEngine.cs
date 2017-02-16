@@ -74,7 +74,7 @@ namespace QLNet
       private double dividendDiscount() { return process_.dividendYield().link.discount( residualTime() ); }
       private double A(double eta)
       {
-         bool fullLookbackPeriod = lookbackPeriodEndTime() == residualTime();
+         bool fullLookbackPeriod = lookbackPeriodEndTime().IsEqual(residualTime());
          double carry = riskFreeRate() - dividendYield();
          double vol = volatility();
          double x = 2.0*carry/(vol*vol);

@@ -390,9 +390,9 @@ namespace TestSuite
          for ( int i = 0; i < tenors.Length; i++ )
          {
             var test = curve.interpolation_.value( tenors[i],true );
-            Assert.AreEqual( yields[i], test );
+            QAssert.AreEqual( yields[i], test );
          }
-         Assert.AreNotEqual( yields[0], curve.interpolation_.value( 0.0,true ) );
+         QAssert.AreNotEqual( yields[0], curve.interpolation_.value( 0.0,true ) );
         }
    }
 }

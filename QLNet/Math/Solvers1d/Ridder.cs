@@ -62,19 +62,19 @@ namespace QLNet {
                     return root_;
 
                 // Bookkeeping to keep the root bracketed on next iteration
-                if (sign(fxMid,froot) != fxMid) {
+                if (sign(fxMid,froot).IsNotEqual(fxMid)) {
                     xMin_ = xMid;
                     fxMin_ = fxMid;
                     xMax_ = root_;
                     fxMax_ = froot;
-                } else if (sign(fxMin_,froot) != fxMin_) {
+                } else if (sign(fxMin_,froot).IsNotEqual(fxMin_)) {
                     xMax_ = root_;
                     fxMax_ = froot;
-                } else if (sign(fxMax_,froot) != fxMax_) {
+                } else if (sign(fxMax_,froot).IsNotEqual(fxMax_)) {
                     xMin_ = root_;
                     fxMin_ = froot;
                 } else {
-                    throw new Exception("never get here.");
+                    Utils.QL_FAIL("never get here.");
                 }
 
                 if (Math.Abs(xMax_-xMin_) <= xAccuracy) return root_;

@@ -117,7 +117,7 @@ namespace QLNet
                cum_d1_pos_ = 0.0;
                cum_d1_neg_ = 1.0;
             } 
-            else if(forward_==strike)
+            else if(forward_.IsEqual(strike))
             {
                d1_ = 0.5*stdDev_;
                return f.value(phi_*d1_);
@@ -159,7 +159,7 @@ namespace QLNet
                cum_d2_pos_= 0.0;
                cum_d2_neg_= 1.0;
             } 
-            else if (forward_==strike) 
+            else if (forward_.IsEqual(strike)) 
             {
                d2_ = -0.5*stdDev_;
                return f.value(phi_*d2_);

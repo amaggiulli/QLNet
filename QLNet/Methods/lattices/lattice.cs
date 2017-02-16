@@ -65,7 +65,7 @@ namespace QLNet {
 
         public TreeLattice(TimeGrid timeGrid, int n) : base(timeGrid) {
             n_ = n;
-            if (!(n>0)) throw new Exception("there is no zeronomial lattice!");
+            Utils.QL_REQUIRE(n>0,()=> "there is no zeronomial lattice!");
             statePrices_ = new InitializedList<Vector>(1, new Vector(1, 1.0));
             statePricesLimit_ = 0;
         }
@@ -88,8 +88,7 @@ namespace QLNet {
 
             if (Utils.close(from,to)) return;
 
-            if (!(from > to)) throw new Exception("cannot roll the asset back to" + to
-                       + " (it is already at t = " + from + ")");
+            Utils.QL_REQUIRE(from > to,()=> "cannot roll the asset back to" + to + " (it is already at t = " + from + ")");
 
             int iFrom = t_.index(from);
             int iTo = t_.index(to);

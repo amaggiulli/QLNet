@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -615,7 +614,7 @@ namespace QLNet
                BusinessDayConvention bdc = schedule_.businessDayConvention();
                refEnd = calendar.adjust(start + schedule_.tenor(), bdc);
             }
-            if (Utils.Get(gearings_, i, 1.0) == 0.0)
+            if (Utils.Get(gearings_, i, 1.0).IsEqual(0.0))
             {
                // fixed coupon
                leg.Add( new FixedRateCoupon(paymentDate,

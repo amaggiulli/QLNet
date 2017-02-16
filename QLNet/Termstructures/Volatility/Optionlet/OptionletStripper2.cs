@@ -170,7 +170,7 @@ namespace QLNet
          }
          public override double value(double s)
          {
-            if ( s != spreadQuote_.value() )
+            if ( s.IsNotEqual(spreadQuote_.value()) )
                spreadQuote_.setValue( s );
             return cap_.NPV() - targetValue_;
          }

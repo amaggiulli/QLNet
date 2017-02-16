@@ -112,7 +112,7 @@ namespace QLNet
             IPathGenerator<IRNG> controlPG = this.controlPathGenerator();
 
             this.mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer(), new S(), antitheticVariate_,
-                                                          controlPP, controlVariateValue.Value, controlPG );
+                                                          controlPP, controlVariateValue.GetValueOrDefault(), controlPG );
          }
          else
          {
@@ -128,7 +128,7 @@ namespace QLNet
          }
          else
          {
-            valueWithSamples( requiredSamples.Value );
+            valueWithSamples( requiredSamples.GetValueOrDefault() );
          }
       }
 
@@ -139,7 +139,7 @@ namespace QLNet
       protected virtual PathPricer<IPath> controlPathPricer() { return null; }
       protected virtual IPathGenerator<IRNG> controlPathGenerator() { return null; }
       protected virtual IPricingEngine controlPricingEngine() { return null; }
-      protected virtual double controlVariateValue() { return 0; }
+      protected virtual double? controlVariateValue() { return null; }
 
       protected static double maxError( List<double> sequence ) { return sequence.Max(); }
       protected static double maxError( double error ) { return error; }

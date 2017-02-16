@@ -53,7 +53,7 @@ namespace QLNet {
             \f[ \langle x \rangle = \frac{\sum w_i x_i}{\sum w_i}. \f]
         */
         public double mean() {
-            if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
+            Utils.QL_REQUIRE(sampleWeight_>0.0,()=> "sampleWeight_=0, insufficient");
             return sum_/sampleWeight_;
         }
 
@@ -62,15 +62,15 @@ namespace QLNet {
                 x-\langle x \rangle \right)^2 \right\rangle. \f]
         */
         public double variance() {
-            if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
-            if (!(sampleNumber_>1)) throw new Exception("sample number <=1, insufficient");
+            Utils.QL_REQUIRE(sampleWeight_>0.0,()=> "sampleWeight_=0, insufficient");
+            Utils.QL_REQUIRE(sampleNumber_>1,()=> "sample number <=1, insufficient");
 
             double m = mean();
             double v = quadraticSum_/sampleWeight_;
             v -= m*m;
             v *= sampleNumber_/(sampleNumber_-1.0);
 
-            if (!(v >= 0.0)) throw new Exception("negative variance (" + v + ")");
+            Utils.QL_REQUIRE(v >= 0.0,()=> "negative variance (" + v + ")");
             return v;
         }
 
@@ -84,12 +84,12 @@ namespace QLNet {
             \f$ \theta \f$ =1 if x <0
         */
         public double downsideVariance() {
-            if (downsideSampleWeight_==0.0) {
-                if (!(sampleWeight_>0.0)) throw new Exception("sampleWeight_=0, insufficient");
+            if (downsideSampleWeight_.IsEqual(0.0)) {
+                Utils.QL_REQUIRE(sampleWeight_>0.0,()=> "sampleWeight_=0, insufficient");
                 return 0.0;
             }
 
-            if (!(downsideSampleNumber_>1)) throw new Exception("sample number below zero <=1, insufficient");
+            Utils.QL_REQUIRE(downsideSampleNumber_>1,()=> "sample number below zero <=1, insufficient");
             return (downsideSampleNumber_/(downsideSampleNumber_-1.0))*
                 (downsideQuadraticSum_ /downsideSampleWeight_);
         }
@@ -99,7 +99,7 @@ namespace QLNet {
          * square root of the ratio of the variance to the number of samples. */
         public double errorEstimate() {
             double var = variance();
-            if (!(samples() > 0)) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
             return Math.Sqrt(var/samples());
         }
 
@@ -109,10 +109,10 @@ namespace QLNet {
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double skewness() {
-            if (!(sampleNumber_>2)) throw new Exception("sample number <=2, insufficient");
+            Utils.QL_REQUIRE(sampleNumber_>2,()=> "sample number <=2, insufficient");
 
             double s = standardDeviation();
-            if (s==0.0) return 0.0;
+            if (s.IsEqual(0.0)) return 0.0;
 
             double m = mean();
             double result = cubicSum_/sampleWeight_;
@@ -131,7 +131,7 @@ namespace QLNet {
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double kurtosis() {
-            if (!(sampleNumber_>3)) throw new Exception("sample number <=3, insufficient");
+            Utils.QL_REQUIRE(sampleNumber_>3,()=> "sample number <=3, insufficient");
 
             double m = mean();
             double v = variance();
@@ -140,7 +140,7 @@ namespace QLNet {
             c *= (sampleNumber_-1.0)/(sampleNumber_-3.0);
             c *= 3.0;
 
-            if (v==0) return c;
+            if (v.IsEqual(0.0)) return c;
 
             double result = fourthPowerSum_/sampleWeight_;
             result -= 4.0*m*(cubicSum_/sampleWeight_);
@@ -156,13 +156,13 @@ namespace QLNet {
 
         /*! returns the minimum sample value */
         public double min() {
-            if (!(samples() > 0)) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
             return min_;
         }
 
         /*! returns the maximum sample value */
         public double max() {
-            if (!(samples() > 0)) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
             return max_;
         }
 
@@ -176,11 +176,11 @@ namespace QLNet {
         /*! \pre weight must be positive or null */
         public void add(double value) { add(value, 1); }
         public void add(double value, double weight) {
-            if (!(weight>=0.0)) throw new Exception("negative weight (" + weight + ") not allowed");
+            Utils.QL_REQUIRE(weight>=0.0,()=> "negative weight (" + weight + ") not allowed");
 
             int oldSamples = sampleNumber_;
             sampleNumber_++;
-            if (!(sampleNumber_ > oldSamples)) throw new Exception("maximum number of samples reached");
+            Utils.QL_REQUIRE(sampleNumber_ > oldSamples,()=> "maximum number of samples reached");
 
             sampleWeight_ += weight;
 

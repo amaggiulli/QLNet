@@ -193,7 +193,7 @@ namespace QLNet
          else
          {
             X_ = 1.0;
-            if (cum_d2_ == 0.0)
+            if (cum_d2_.IsEqual(0.0))
                 Y_ = 0.0; // check needed on some extreme cases
             else
                 Y_ = Math.Pow((strike_/spot_),(2.0*mu_));

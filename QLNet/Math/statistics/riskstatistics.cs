@@ -91,14 +91,13 @@ namespace QLNet {
                                                                 z => z.Key < target);
             double x = result.Key;
             int N = result.Value;
-            if (!(N > 1)) throw new Exception("samples under target <= 1, unsufficient");
+            Utils.QL_REQUIRE(N > 1,()=> "samples under target <= 1, unsufficient");
             return (N/(N-1.0))*x;
         }
 
         //! potential upside (the reciprocal of VAR) at a given percentile
         public double potentialUpside(double centile) {
-            if (!(centile < 1.0 && centile >= 0.9))
-                throw new Exception("percentile (" + centile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9,()=> "percentile (" + centile + ") out of range [0.9, 1)");
 
             // potential upside must be a gain, i.e., floored at 0.0
             return Math.Max(percentile(centile), 0.0);
@@ -106,8 +105,7 @@ namespace QLNet {
 
         //! value-at-risk at a given percentile
         public double valueAtRisk(double centile) {
-            if (!(centile < 1.0 && centile >= 0.9))
-                throw new Exception("percentile (" + centile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9,()=> "percentile (" + centile + ") out of range [0.9, 1)");
 
             // must be a loss, i.e., capped at 0.0 and negated
             return -Math.Min(percentile(1.0 - centile), 0.0);
@@ -127,16 +125,15 @@ namespace QLNet {
             "Coherent measures of risk", Mathematical Finance 9 (1999)
         */
         public double expectedShortfall(double centile) {
-            if (!(centile < 1.0 && centile >= 0.9))
-                throw new Exception("percentile (" + centile + ") out of range [0.9, 1)");
+            Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9,()=> "percentile (" + centile + ") out of range [0.9, 1)");
 
-            if (samples() == 0) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(samples() != 0,()=> "empty sample set");
 
             double target = -valueAtRisk(centile);
             KeyValuePair<double, int> result = expectationValue(z => z.Key, z => z.Key < target);
             double x = result.Key;
             int N = result.Value;
-            if (N == 0) throw new Exception("no data below the target");
+            Utils.QL_REQUIRE(N != 0,()=> "no data below the target");
             // must be a loss, i.e., capped at 0.0 and negated
             return -Math.Min(x, 0.0);
         }
@@ -152,9 +149,8 @@ namespace QLNet {
                 \right. \f]
         */
         public double shortfall(double target) {
-            if (samples() == 0) throw new Exception("empty sample set");
-            return expectationValue(x => x.Key < target ? 1 : 0, 
-                                    x => true).Key;
+            Utils.QL_REQUIRE(samples() != 0,()=> "empty sample set");
+            return expectationValue(x => x.Key < target ? 1 : 0, x => true).Key;
         }
 
         /*! averaged shortfallness, defined as
@@ -164,7 +160,7 @@ namespace QLNet {
             KeyValuePair<double, int> result = expectationValue(z => target - z.Key, z => z.Key < target);
             double x = result.Key;
             int N = result.Value;
-            if (N == 0) throw new Exception("no data below the target");
+            Utils.QL_REQUIRE(N != 0,()=> "no data below the target");
             return x;
         }
     }

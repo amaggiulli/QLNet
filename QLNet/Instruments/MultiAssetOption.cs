@@ -52,63 +52,55 @@ namespace QLNet {
 		public double delta()
 		{
 			calculate();
-			if (delta_ == null)
-                throw new Exception("delta not provided");
+			Utils.QL_REQUIRE(delta_ != null,()=> "delta not provided");
             return delta_.GetValueOrDefault();
 		}
 		public double gamma()
 		{
 			calculate();
-            if (gamma_ == null)
-                throw new Exception("gamma not provided");
-            return gamma_.GetValueOrDefault();
+         Utils.QL_REQUIRE(gamma_ != null,()=> "gamma not provided");
+         return gamma_.GetValueOrDefault();
 		}
 		public double theta()
 		{
 			calculate();
-            if (theta_ == null)
-                throw new Exception("theta not provided");
-            return theta_.GetValueOrDefault();
+         Utils.QL_REQUIRE(theta_ != null,()=> "theta not provided");
+         return theta_.GetValueOrDefault();
 		}
 		public double vega()
 		{
 			calculate();
-            if (vega_ == null)
-                throw new Exception("vega not provided");
-            return vega_.GetValueOrDefault();
+         Utils.QL_REQUIRE(vega_ != null,()=> "vega not provided");
+         return vega_.GetValueOrDefault();
 		}
 		public double rho()
 		{
 			calculate();
-            if (rho_ == null)
-                throw new Exception("rho not provided");
-            return rho_.GetValueOrDefault();
+         Utils.QL_REQUIRE(rho_ != null,()=> "rho not provided");
+         return rho_.GetValueOrDefault();
 		}
 		public double dividendRho()
 		{
 			calculate();
-            if (dividendRho_ == null)
-                throw new Exception("dividend rho not provided");
-            return dividendRho_.GetValueOrDefault();
+         Utils.QL_REQUIRE(dividendRho_ != null,()=> "dividend rho not provided");
+         return dividendRho_.GetValueOrDefault();
 		}
 
-        public override void setupArguments(IPricingEngineArguments args)
+      public override void setupArguments(IPricingEngineArguments args)
 		{
 			MultiAssetOption.Arguments arguments = args as MultiAssetOption.Arguments;
-			if (arguments == null)
-                throw new Exception("wrong argument type");
+         Utils.QL_REQUIRE(arguments != null,()=> "wrong argument type");
 	
 			arguments.payoff = payoff_;
 			arguments.exercise = exercise_;
 		}
 
-        public override void fetchResults(IPricingEngineResults r)
+      public override void fetchResults(IPricingEngineResults r)
 		{
 			base.fetchResults(r);
 
-            Results results = r as Results;
-            if (results == null)
-                throw new Exception("no greeks returned from pricing engine");
+         Results results = r as Results;
+         Utils.QL_REQUIRE(results != null,()=> "no greeks returned from pricing engine");
 
 			delta_ = results.delta;
 			gamma_ = results.gamma;
@@ -125,10 +117,10 @@ namespace QLNet {
 
 		// results
 		protected double? delta_;
-        protected double? gamma_;
-        protected double? theta_;
-        protected double? vega_;
-        protected double? rho_;
-        protected double? dividendRho_;
+	   protected double? gamma_;
+	   protected double? theta_;
+	   protected double? vega_;
+	   protected double? rho_;
+	   protected double? dividendRho_;
 	}
 }

@@ -62,12 +62,10 @@ namespace QLNet
         // conversion to pricing engine
         protected override PathPricer<IPath> pathPricer() {
             PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
-            if (payoff == null)
-                throw new Exception("non-plain payoff given");
+            Utils.QL_REQUIRE(payoff != null,()=> "non-plain payoff given");
 
             EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
-            if (exercise == null)
-                throw new Exception("wrong exercise given");
+            Utils.QL_REQUIRE(exercise != null,()=> "wrong exercise given");
 
             return (PathPricer<IPath>)new GeometricAPOPathPricer(
                     payoff.optionType(),
@@ -95,8 +93,7 @@ namespace QLNet
             discount_ = discount;
             runningProduct_ = runningProduct;
             pastFixings_ = pastFixings;
-            if(!(strike>=0.0))
-                throw new Exception("negative strike given");
+            Utils.QL_REQUIRE(strike>=0.0,()=> "negative strike given");
         }
         public GeometricAPOPathPricer(Option.Type type,
                                double strike,
@@ -111,13 +108,12 @@ namespace QLNet
 
         public double value(Path path){
             int n = path.length() - 1;
-            if(!(n>0))
-                throw new Exception("the path cannot be empty");
+            Utils.QL_REQUIRE(n>0,()=> "the path cannot be empty");
 
             double averagePrice;
             double product = runningProduct_;
             int fixings = n+pastFixings_;
-            if (path.timeGrid().mandatoryTimes()[0]==0.0) {
+            if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 fixings += 1;
                 product *= path.front();
             }
@@ -181,9 +177,8 @@ namespace QLNet
 
         public MakeMCDiscreteGeometricAPEngine<RNG, S> withTolerance(double tolerance){
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
-            if ((new RNG().allowsErrorEstimate == 0))
-                throw new Exception("chosen random generator policy " +
-                                               "does not allow an error estimate");
+            Utils.QL_REQUIRE(new RNG().allowsErrorEstimate != 0,()=> 
+               "chosen random generator policy " + "does not allow an error estimate");
             tolerance_ = tolerance;
             return this;
         }
@@ -219,8 +214,7 @@ namespace QLNet
 
         // conversion to pricing engine
         public IPricingEngine value(){
-            if (steps_ == null)
-                throw new Exception("max number of steps per year not given");
+            Utils.QL_REQUIRE(steps_ != null,()=> "max number of steps per year not given");
             return (IPricingEngine)new MCDiscreteGeometricAPEngine<RNG,S>(process_,
                                                steps_.Value,
                                                brownianBridge_,

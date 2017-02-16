@@ -45,7 +45,8 @@ namespace QLNet {
 		public override double hazardRate(double t, double s)
 		{
 			if (s <= 0.0)
-			return 0.0;
+			   return 0.0;
+
 			return alpha_ * Math.Pow(s, -p_);
 		}
         public override double defaultRecovery(double t, double s)

@@ -38,8 +38,8 @@ namespace QLNet
 
         public override void calculate()
         {
-            if(!(arguments_.settlementType == Settlement.Type.Physical))
-                throw new Exception( "cash-settled swaptions not priced with Lfm engine");      
+            Utils.QL_REQUIRE(arguments_.settlementType == Settlement.Type.Physical,()=> 
+               "cash-settled swaptions not priced with Lfm engine");      
 
             double basisPoint = 1.0e-4;
 

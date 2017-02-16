@@ -23,7 +23,7 @@ namespace QLNet {
     //! Random seed generator
     /*! Random number generator used for automatic generation of initialization seeds. */
     public class SeedGenerator {
-        private static MersenneTwisterUniformRng rng_;
+        private MersenneTwisterUniformRng rng_;
 
         private static readonly SeedGenerator instance_ = new SeedGenerator();
         private SeedGenerator() {

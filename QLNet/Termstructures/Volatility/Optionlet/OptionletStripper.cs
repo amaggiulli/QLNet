@@ -99,7 +99,7 @@ namespace QLNet
                  
          if (volatilityType_ ==  VolatilityType.Normal) 
          {
-            Utils.QL_REQUIRE(displacement_ == 0.0,()=>
+            Utils.QL_REQUIRE(displacement_.IsEqual(0.0),()=>
                        "non-null displacement is not allowed with Normal model");
         }
 

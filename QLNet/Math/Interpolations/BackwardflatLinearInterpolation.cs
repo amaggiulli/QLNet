@@ -42,7 +42,7 @@ namespace QLNet
          else
          {
             int i = locateX(x);
-            if (x == xBegin_[i])
+            if (x.IsEqual(xBegin_[i]))
             {
                z1 = zData_[j,i];
                z2 = zData_[j + 1,i];

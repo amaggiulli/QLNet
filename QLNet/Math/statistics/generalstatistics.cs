@@ -72,21 +72,21 @@ namespace QLNet {
 
         /*! returns the minimum sample value */
         public double min() {
-            if (!(samples() > 0)) throw new Exception("empty sample set");
-            return samples_.Min<KeyValuePair<double,double>>(x => x.Key);
+            Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
+            return samples_.Min(x => x.Key);
         }
 
         /*! returns the maximum sample value */
         public double max() {
-            if (!(samples() > 0)) throw new Exception("empty sample set");
-            return samples_.Max<KeyValuePair<double, double>>(x => x.Key);
+            Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
+            return samples_.Max(x => x.Key);
         }
         
 
         //! adds a datum to the set, possibly with a weight
         public void add(double value) { add(value, 1); }
         public void add(double value, double weight) {
-            if (!(weight>=0.0)) throw new Exception("negative weight not allowed");
+            Utils.QL_REQUIRE(weight>=0.0,()=> "negative weight not allowed");
             samples_.Add(new KeyValuePair<double,double>(value,weight));
             
             sorted_ = false;
@@ -122,7 +122,7 @@ namespace QLNet {
         public double mean() {
             if (mean_ == null) {
                 int N = samples();
-                if (!(samples() > 0)) throw new Exception("empty sample set");
+                Utils.QL_REQUIRE(samples() > 0,()=> "empty sample set");
                 // eat our own dog food
                 mean_ = expectationValue(x => x.Key * x.Value, x => true).Key;
             }
@@ -139,7 +139,7 @@ namespace QLNet {
         public double variance()  {
             if (variance_ == null) {
                 int N = samples();
-                if (!(N > 1)) throw new Exception("sample number <=1, unsufficient");
+                Utils.QL_REQUIRE(N > 1,()=> "sample number <=1, unsufficient");
                 // Subtract the mean and square. Repeat on the whole range.
                 // Hopefully, the whole thing will be inlined in a single loop.
                 double s2 = expectationValue(x => Math.Pow(x.Key * x.Value - mean(), 2), x => true).Key;
@@ -158,7 +158,7 @@ namespace QLNet {
         public double skewness() {
             if (skewness_ == null) {
                 int N = samples();
-                if (!(N > 2)) throw new Exception("sample number <=2, unsufficient");
+                Utils.QL_REQUIRE(N > 2,()=> "sample number <=2, unsufficient");
 
                 double x = expectationValue(y => Math.Pow(y.Key * y.Value - mean(), 3), y => true).Key;
                 double sigma = standardDeviation();
@@ -177,7 +177,7 @@ namespace QLNet {
         public double kurtosis() {
             if (kurtosis_ == null) {
                 int N = samples();
-                if (!(N > 3)) throw new Exception("sample number <=3, unsufficient");
+                Utils.QL_REQUIRE(N > 3,()=> "sample number <=3, unsufficient");
 
                 double x = expectationValue(y => Math.Pow(y.Key * y.Value - mean(), 4), y => true).Key;
                 double sigma2 = variance();
@@ -211,7 +211,7 @@ namespace QLNet {
             }
 
             if (N == 0) return new KeyValuePair<double,int>(0,0);
-            else return new KeyValuePair<double,int>(num/den,N);
+           return new KeyValuePair<double,int>(num/den,N);
         }
 
         /*! \f$ y \f$-th percentile, defined as the value \f$ \bar{x} \f$
@@ -223,16 +223,15 @@ namespace QLNet {
         */
         public double percentile(double percent) {
 
-            if (!(percent > 0.0 && percent <= 1.0))
-                throw new Exception("percentile (" + percent + ") must be in (0.0, 1.0]");
+            Utils.QL_REQUIRE(percent > 0.0 && percent <= 1.0,()=> "percentile (" + percent + ") must be in (0.0, 1.0]");
 
             double sampleWeight = weightSum();
-            if (!(sampleWeight > 0)) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(sampleWeight > 0,()=> "empty sample set");
 
             sort();
 
             double integral = 0, target = percent*sampleWeight;
-            int pos = samples_.Count<KeyValuePair<double, double>>(x => { integral += x.Value; return integral < target; } );
+            int pos = samples_.Count(x => { integral += x.Value; return integral < target; } );
             return samples_[pos].Key;
         }
 
@@ -244,16 +243,15 @@ namespace QLNet {
             \pre \f$ y \f$ must be in the range \f$ (0-1]. \f$
         */
         public double topPercentile(double percent) {
-            if (!(percent > 0.0 && percent <= 1.0))
-                throw new Exception("percentile (" + percent + ") must be in (0.0, 1.0]");
+            Utils.QL_REQUIRE(percent > 0.0 && percent <= 1.0,()=> "percentile (" + percent + ") must be in (0.0, 1.0]");
 
             double sampleWeight = weightSum();
-            if (!(sampleWeight > 0)) throw new Exception("empty sample set");
+            Utils.QL_REQUIRE(sampleWeight > 0,()=> "empty sample set");
 
             sort();
 
             double integral = 0, target = 1 - percent*sampleWeight;
-            int pos = samples_.Count<KeyValuePair<double, double>>(x => { integral += x.Value; return integral < target; } );
+            int pos = samples_.Count(x => { integral += x.Value; return integral < target; } );
             return samples_[pos].Key;
         }
 

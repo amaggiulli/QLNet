@@ -73,7 +73,7 @@ namespace QLNet {
         }
 
         protected void setGridLimits(double center, double t) {
-            if (!(center > 0.0)) throw new Exception("negative or null underlying given");
+            Utils.QL_REQUIRE(center > 0.0,()=> "negative or null underlying given");
             Utils.QL_REQUIRE( t > 0.0,()=> "negative or zero residual time" );
             center_ = center;
             int newGridPoints = safeGridPoints(gridPoints_, t);
@@ -142,7 +142,7 @@ namespace QLNet {
 
         public virtual void setupArguments(IPricingEngineArguments a) {
             OneAssetOption.Arguments args = a as OneAssetOption.Arguments;
-            if (args == null) throw new Exception("incorrect argument type");
+            Utils.QL_REQUIRE(args != null,()=> "incorrect argument type");
 
             exerciseDate_ = args.exercise.lastDate();
             payoff_ = args.payoff;

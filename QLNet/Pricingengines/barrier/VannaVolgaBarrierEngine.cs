@@ -39,11 +39,11 @@ namespace QLNet
          adaptVanDelta_ = adaptVanDelta;
          bsPriceWithSmile_ = bsPriceWithSmile;
 
-         Utils.QL_REQUIRE( vol25Put_.link.delta() == -0.25,()=> "25 delta put is required by vanna volga method" );
-         Utils.QL_REQUIRE( vol25Call_.link.delta() == 0.25,()=> "25 delta call is required by vanna volga method" );
+         Utils.QL_REQUIRE( vol25Put_.link.delta().IsEqual(-0.25),()=> "25 delta put is required by vanna volga method" );
+         Utils.QL_REQUIRE( vol25Call_.link.delta().IsEqual(0.25),()=> "25 delta call is required by vanna volga method" );
 
-         Utils.QL_REQUIRE( vol25Put_.link.maturity() == vol25Call_.link.maturity() && 
-                           vol25Put_.link.maturity() == atmVol_.link.maturity(),()=>
+         Utils.QL_REQUIRE( vol25Put_.link.maturity().IsEqual(vol25Call_.link.maturity()) && 
+                           vol25Put_.link.maturity().IsEqual(atmVol_.link.maturity()),()=>
              "Maturity of 3 vols are not the same" );
 
          Utils.QL_REQUIRE( !domesticTS_.empty(),()=> "domestic yield curve is not defined" );

@@ -103,25 +103,21 @@ namespace QLNet
          replicationType_ = replication.replicationType();
 
 
-         if (!(replication.gap() > 0.0))
-            throw new Exception("Non positive epsilon not allowed");
+         Utils.QL_REQUIRE(replication.gap() > 0.0,()=> "Non positive epsilon not allowed");
 
          if (putStrike == null)
-            if (!(putDigitalPayoff == null))
-               throw new Exception("Put Cash rate non allowed if put strike is null");
+            Utils.QL_REQUIRE(putDigitalPayoff == null,()=> "Put Cash rate non allowed if put strike is null");
 
          if (callStrike == null)
-            if (!(callDigitalPayoff == null))
-               throw new Exception("Call Cash rate non allowed if call strike is null");
+            Utils.QL_REQUIRE(callDigitalPayoff == null,()=> "Call Cash rate non allowed if call strike is null");
+
          if (callStrike != null)
          {
-            if (!(callStrike >= 0.0))
-               throw new Exception("negative call strike not allowed");
+            Utils.QL_REQUIRE(callStrike >= 0.0,()=> "negative call strike not allowed");
 
             hasCallStrike_ = true;
             callStrike_ = callStrike.GetValueOrDefault();
-            if (!(callStrike_ >= replication.gap() / 2.0))
-               throw new Exception("call strike < eps/2");
+            Utils.QL_REQUIRE(callStrike_ >= replication.gap() / 2.0,()=> "call strike < eps/2");
 
             switch (callPosition)
             {
@@ -132,7 +128,8 @@ namespace QLNet
                   callCsi_ = -1.0;
                   break;
                default:
-                  throw new Exception("unsupported position type");
+                  Utils.QL_FAIL("unsupported position type");
+                  break;
             }
             if (callDigitalPayoff != null)
             {
@@ -142,9 +139,7 @@ namespace QLNet
          }
          if (putStrike != null)
          {
-            if (!(putStrike >= 0.0))
-               throw new Exception("negative put strike not allowed");
-
+            Utils.QL_REQUIRE(putStrike >= 0.0,()=> "negative put strike not allowed");
             hasPutStrike_ = true;
             putStrike_ = putStrike.GetValueOrDefault();
             switch (putPosition)
@@ -156,7 +151,8 @@ namespace QLNet
                   putCsi_ = -1.0;
                   break;
                default:
-                  throw new Exception("unsupported position type");
+                  Utils.QL_FAIL("unsupported position type");
+                  break;
             }
             if (putDigitalPayoff != null)
             {
@@ -184,7 +180,8 @@ namespace QLNet
                         callRightEps_ = 0.0;
                         break;
                      default:
-                        throw new Exception("unsupported position type");
+                        Utils.QL_FAIL("unsupported position type");
+                        break;
                   }
                }
                if (hasPutStrike_)
@@ -200,7 +197,8 @@ namespace QLNet
                         putRightEps_ = replication.gap();
                         break;
                      default:
-                        throw new Exception("unsupported position type");
+                        Utils.QL_FAIL("unsupported position type");
+                        break;
                   }
                }
                break;
@@ -218,7 +216,8 @@ namespace QLNet
                         callRightEps_ = replication.gap();
                         break;
                      default:
-                        throw new Exception("unsupported position type");
+                        Utils.QL_FAIL("unsupported position type");
+                        break;
                   }
                }
                if (hasPutStrike_)
@@ -234,12 +233,14 @@ namespace QLNet
                         putRightEps_ = 0.0;
                         break;
                      default:
-                        throw new Exception("unsupported position type");
+                        Utils.QL_FAIL("unsupported position type");
+                        break;
                   }
                }
                break;
             default:
-               throw new Exception("unsupported position type");
+               Utils.QL_FAIL("unsupported position type");
+               break;
          }
 
          underlying.registerWith(update);
@@ -251,8 +252,7 @@ namespace QLNet
       public override double rate()
       {
 
-         if (underlying_.pricer() == null)
-            throw new Exception("pricer not set");
+         Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
          Date today = Settings.evaluationDate();
@@ -267,7 +267,7 @@ namespace QLNet
          {
             // might have been fixed
             double pastFixing = IndexManager.instance().getHistory((underlying_.index()).name()).value()[fixingDate];
-            if (pastFixing != default(double))
+            if (pastFixing.IsNotEqual(default(double)))
             {
                return underlyingRate + callCsi_ * callPayoff() + putCsi_ * putPayoff();
             }
@@ -284,37 +284,33 @@ namespace QLNet
       //@}
       //! \name Digital inspectors
       //@{
-      public double callStrike()
+      public double? callStrike()
       {
          if (hasCall())
             return callStrike_;
-         else
-            throw new Exception("callStrike has not been set");
-         // return null;
+
+         return null;
       }
-      public double putStrike()
+      public double? putStrike()
       {
          if (hasPut())
             return putStrike_;
-         else
-            throw new Exception("putStrike has not been set");
-         // return null;
+
+         return null;
       }
-      public double callDigitalPayoff()
+      public double? callDigitalPayoff()
       {
          if (isCallCashOrNothing_)
             return callDigitalPayoff_;
-         else
-            throw new Exception("callDigitalPayoff has not been set");
-         // return null;
+
+         return null;
       }
-      public double putDigitalPayoff()
+      public double? putDigitalPayoff()
       {
          if (isPutCashOrNothing_)
             return putDigitalPayoff_;
-         else
-            throw new Exception("putDigitalPayoff has not been set");
-         // return null;
+
+         return null;
       }
       public bool hasPut()
       {
@@ -330,11 +326,11 @@ namespace QLNet
       }
       public bool isLongPut()
       {
-         return (putCsi_ == 1.0);
+         return putCsi_.IsEqual(1.0);
       }
       public bool isLongCall()
       {
-         return (callCsi_ == 1.0);
+         return callCsi_.IsEqual(1.0);
       }
       public FloatingRateCoupon underlying()
       {

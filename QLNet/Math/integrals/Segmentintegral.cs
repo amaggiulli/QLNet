@@ -44,8 +44,7 @@ namespace QLNet {
             : base(1, 1) {
             intervals_ = intervals;
 
-            if (!(intervals > 0))
-                throw new Exception("at least 1 interval needed, 0 given");
+            Utils.QL_REQUIRE(intervals > 0,()=> "at least 1 interval needed, 0 given");
         }
 
         // inline and template definitions

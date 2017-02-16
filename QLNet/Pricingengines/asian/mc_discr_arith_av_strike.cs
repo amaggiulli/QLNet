@@ -47,12 +47,10 @@ namespace QLNet {
 
         protected override PathPricer<IPath> pathPricer(){
             PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
-            if (payoff == null)
-                throw new Exception("non-plain payoff given");
+            Utils.QL_REQUIRE(payoff != null,()=> "non-plain payoff given");
 
             EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
-            if (exercise == null)
-                throw new Exception("wrong exercise given");
+            Utils.QL_REQUIRE(exercise != null,()=> "wrong exercise given");
 
             return (PathPricer<IPath>)new ArithmeticASOPathPricer(
                     payoff.optionType(),
@@ -91,10 +89,9 @@ namespace QLNet {
 
         public double value(Path path){
             int n = path.length();
-            if(!(n > 1))
-                throw new Exception("the path cannot be empty");
+            Utils.QL_REQUIRE(n > 1, () => "the path cannot be empty");
             double averageStrike=runningSum_;
-            if (path.timeGrid().mandatoryTimes()[0]==0.0) {
+            if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 //averageStrike =
                 //std::accumulate(path.begin(),path.end(),runningSum_)/(pastFixings_ + n)
                 for(int i=0;i<path.length();i++ )
@@ -148,9 +145,8 @@ namespace QLNet {
         {
 
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
-            if ((new RNG().allowsErrorEstimate == 0))
-                throw new Exception("chosen random generator policy " +
-                                               "does not allow an error estimate");
+            Utils.QL_REQUIRE(new RNG().allowsErrorEstimate != 0, () => 
+               "chosen random generator policy " +  "does not allow an error estimate");
             tolerance_ = tolerance;
             return this;
         }

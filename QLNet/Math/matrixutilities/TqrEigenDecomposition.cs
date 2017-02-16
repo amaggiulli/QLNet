@@ -124,7 +124,7 @@ namespace QLNet
                     double p = sine*e[i];
 
                     e[i-1] = Math.Sqrt(p*p+q*q);
-                    if (e[i-1] != 0.0) {
+                    if (e[i-1].IsNotEqual(0.0)) {
                         sine = p/e[i-1];
                         cosine = q/e[i-1];
 
@@ -200,7 +200,7 @@ namespace QLNet
 
       private bool offDiagIsZero(int k, Vector e)
       {
-         return Math.Abs(d_[k-1])+Math.Abs(d_[k])== Math.Abs(d_[k - 1]) + Math.Abs(d_[k]) + Math.Abs(e[k]);
+         return (Math.Abs(d_[k-1])+Math.Abs(d_[k])).IsEqual(Math.Abs(d_[k - 1]) + Math.Abs(d_[k]) + Math.Abs(e[k]));
       }
       private int iter_;
       private Vector d_;

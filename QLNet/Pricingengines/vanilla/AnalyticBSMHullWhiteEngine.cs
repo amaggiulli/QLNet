@@ -119,7 +119,7 @@ namespace QLNet
             
       protected override double blackVolImpl(double t, double strike) 
       {
-         double nonZeroMaturity = (t==0.0 ? 0.00001 : t);
+         double nonZeroMaturity = (t.IsEqual(0.0) ? 0.00001 : t);
          double var = blackVarianceImpl(nonZeroMaturity, strike);
          return Math.Sqrt(var/nonZeroMaturity);
       }

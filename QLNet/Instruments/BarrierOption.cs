@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet {
 	//! %Barrier option on a single asset.
@@ -44,20 +43,18 @@ namespace QLNet {
 		
 				switch (barrierType)
 				{
-                    case Barrier.Type.DownIn:
-                    case Barrier.Type.UpIn:
-                    case Barrier.Type.DownOut:
-                    case Barrier.Type.UpOut:
-					break;
+               case Barrier.Type.DownIn:
+               case Barrier.Type.UpIn:
+               case Barrier.Type.DownOut:
+               case Barrier.Type.UpOut:
+					   break;
 				  default:
-                    throw new Exception("unknown type");
+                  Utils.QL_FAIL("unknown type");
+				      break;
 				}
 		
-				if (!(barrier != null))
-                    throw new Exception("no barrier given");
-
-                if (!(rebate != null))
-                    throw new Exception("no rebate given");
+				Utils.QL_REQUIRE(barrier != null,()=> "no barrier given");
+            Utils.QL_REQUIRE(rebate != null,()=> "no rebate given");
 			}
 		}
 
@@ -67,14 +64,15 @@ namespace QLNet {
 			{
 				switch (arguments_.barrierType)
 				{
-                    case Barrier.Type.DownIn:
-                    case Barrier.Type.DownOut:
-					return underlying < arguments_.barrier;
-                    case Barrier.Type.UpIn:
-                    case Barrier.Type.UpOut:
-					return underlying > arguments_.barrier;
-				  default:
-                    throw new Exception("unknown type");
+               case Barrier.Type.DownIn:
+               case Barrier.Type.DownOut:
+					   return underlying < arguments_.barrier;
+               case Barrier.Type.UpIn:
+               case Barrier.Type.UpOut:
+					   return underlying > arguments_.barrier;
+				   default:
+                    Utils.QL_FAIL("unknown type");
+                    return false;
 				}
 			}
 		}
@@ -87,20 +85,18 @@ namespace QLNet {
 
         public override void setupArguments(IPricingEngineArguments args)
 		{
-	
 			base.setupArguments(args);
 	
 			BarrierOption.Arguments moreArgs = args as BarrierOption.Arguments;
-			if (!(moreArgs != null))
-                throw new Exception("wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
 
 			moreArgs.barrierType = barrierType_;
 			moreArgs.barrier = barrier_;
 			moreArgs.rebate = rebate_;
 		}
-        //        ! \warning see VanillaOption for notes on implied-volatility
-        //                     calculation.
-        //        
+      //        ! \warning see VanillaOption for notes on implied-volatility
+      //                     calculation.
+      //        
       public double impliedVolatility( double targetValue, GeneralizedBlackScholesProcess process, double accuracy = 1.0e-4,
          int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
 		{
@@ -114,20 +110,23 @@ namespace QLNet {
 			IPricingEngine engine = null;
 			switch (exercise_.type())
 			{
-			  case Exercise.Type.European:
-				engine = new AnalyticBarrierEngine(newProcess);
-				break;
-              case Exercise.Type.American:
-              case Exercise.Type.Bermudan:
-                throw new Exception("Engine not available for non-European barrier option");
-			  default:
-                throw new Exception("unknown exercise type");
+			   case Exercise.Type.European:
+				   engine = new AnalyticBarrierEngine(newProcess);
+				   break;
+            case Exercise.Type.American:
+            case Exercise.Type.Bermudan:
+                Utils.QL_FAIL("Engine not available for non-European barrier option");
+			      break;
+			   default:
+               Utils.QL_FAIL("unknown exercise type");
+			      break;
 			}
 	
 			return ImpliedVolatilityHelper.calculate( this, engine, volQuote, targetValue, accuracy, maxEvaluations, minVol, maxVol);
 		}
-		// Arguments
-        protected Barrier.Type barrierType_;
+		
+      // Arguments
+      protected Barrier.Type barrierType_;
 		protected double? barrier_;
 		protected double? rebate_;
 	}

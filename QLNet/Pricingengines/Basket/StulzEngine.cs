@@ -157,7 +157,7 @@ namespace QLNet
          double D1 = (Math.Log(forward1/forward2) + 0.5*variance) / stdDev;
 
          double alfa, beta, gamma;
-         if (strike != 0.0) 
+         if (strike.IsNotEqual(0.0)) 
          {
             BivariateCumulativeNormalDistribution bivCNorm = new BivariateCumulativeNormalDistribution(rho);
             BivariateCumulativeNormalDistribution bivCNormMod2 = new BivariateCumulativeNormalDistribution(modRho2);

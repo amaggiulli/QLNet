@@ -75,5 +75,43 @@ namespace QLNet
       #endregion
       
       public int CompareTo(CashFlow cf) { return this.date().CompareTo(cf.date()); }
+
+      public override bool Equals(Object cf)
+      {
+         var other = cf as CashFlow;
+         if (object.ReferenceEquals(other, null))
+         {
+            return false;
+         }
+         return this.CompareTo(other) == 0;
+      }
+
+      public override int GetHashCode()
+      {
+         return date().serialNumber();
+      }
+
+      public static bool operator ==(CashFlow left, CashFlow right)
+      {
+         if (object.ReferenceEquals(left, null))
+         {
+            return object.ReferenceEquals(right, null);
+         }
+         return left.Equals(right);
+      }
+
+      public static bool operator >(CashFlow left, CashFlow right)
+      {
+         return left.date() > right.date() ;
+      }
+
+      public static bool operator <(CashFlow left, CashFlow right)
+      {
+         return left.date() < right.date() ;
+      }
+      public static bool operator !=(CashFlow left, CashFlow right)
+      {
+         return !(left == right);
+      }
    }
 }

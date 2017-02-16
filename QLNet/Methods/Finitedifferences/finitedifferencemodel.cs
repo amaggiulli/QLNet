@@ -34,7 +34,7 @@ namespace QLNet {
             evolver_ = (Evolver)new Evolver().factory(L, bcs);
             stoppingTimes_ = stoppingTimes;
             stoppingTimes_.Sort();
-            stoppingTimes_.Distinct();
+            stoppingTimes_ = stoppingTimes_.Distinct().ToList();
         }
 
         //public FiniteDifferenceModel(Evolver evolver, List<double> stoppingTimes = List<double>())
@@ -43,8 +43,8 @@ namespace QLNet {
 
             stoppingTimes_ = stoppingTimes;
             stoppingTimes_.Sort();
-            stoppingTimes_.Distinct();
-        }
+            stoppingTimes_ = stoppingTimes_.Distinct().ToList();
+      }
 
         /*! solves the problem between the given times, applying a condition at every step.
             \warning being this a rollback, <tt>from</tt> must be a later time than <tt>to</tt>. */
@@ -55,7 +55,7 @@ namespace QLNet {
 
         private void rollbackImpl(ref object o, double from, double to, int steps, IStepCondition<Vector> condition) {
 
-            if (!(from >= to)) throw new Exception("trying to roll back from " + from + " to " + to);
+            Utils.QL_REQUIRE(from >= to,()=> "trying to roll back from " + from + " to " + to);
 
             double dt = (from - to) / steps, t = from;
             evolver_.setStep(dt);

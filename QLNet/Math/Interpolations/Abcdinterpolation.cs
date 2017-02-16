@@ -56,7 +56,7 @@ namespace QLNet
             dIsFixed_ = dIsFixed;
          else d_ = 0.17;
 
-         AbcdMathFunction.validate(a.Value, b.Value, c.Value, d.Value);
+         AbcdMathFunction.validate(a_.Value, b_.Value, c_.Value, d_.Value);
 
       }
 

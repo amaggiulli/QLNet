@@ -52,8 +52,8 @@ namespace QLNet
             {
                if (firstCouponFound)
                {
-                  Utils.QL_REQUIRE(nominal == cp.nominal() &&
-                                   accrualPeriod == cp.accrualPeriod() &&
+                  Utils.QL_REQUIRE(nominal.IsEqual(cp.nominal()) &&
+                                   accrualPeriod.IsEqual(cp.accrualPeriod()) &&
                                    dc == cp.dayCounter(), () =>
                                    "cannot aggregate two different coupons on "
                                    + paymentDate);
@@ -131,7 +131,7 @@ namespace QLNet
             lastDate = couponDate;
          }
             
-         if (P == 0.0) // no cashflows
+         if (P.IsEqual(0.0)) // no cashflows
             return 0.0;
          return dPdy/P;
       }
@@ -216,7 +216,7 @@ namespace QLNet
             lastDate = couponDate;
          }
 
-         if (P == 0.0) // no cashflows
+         if (P.IsEqual(0.0)) // no cashflows
             return 0.0;
          return -dPdy/P; // reverse derivative sign
       }
@@ -785,11 +785,11 @@ namespace QLNet
             targetNpv -= calc.nonSensNPV();
          }
 
-         if (targetNpv==0.0)
+         if (targetNpv.IsEqual(0.0))
             return 0.0;
 
          double bps = calc.bps();
-         Utils.QL_REQUIRE( bps != 0.0, () => "null bps: impossible atm rate" );
+         Utils.QL_REQUIRE( bps.IsNotEqual(0.0), () => "null bps: impossible atm rate" );
 
          return targetNpv.Value/bps;
     }
@@ -1098,7 +1098,7 @@ namespace QLNet
             lastDate = couponDate;
         }
 
-        if (P == 0.0)
+        if (P.IsEqual(0.0))
             // no cashflows
             return 0.0;
 

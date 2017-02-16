@@ -20,71 +20,78 @@
 using System;
 
 namespace QLNet {
-    public static partial class Utils {
-        /*! Follows somewhat the advice of Knuth on checking for floating-point
-            equality. The closeness relationship is:
-            \f[
-            \mathrm{close}(x,y,n) \equiv |x-y| \leq \varepsilon |x|
-                                  \wedge |x-y| \leq \varepsilon |y|
-            \f]
-            where \f$ \varepsilon \f$ is \f$ n \f$ times the machine accuracy;
-            \f$ n \f$ equals 42 if not given.  */
-        public static bool close(double x, double y) { return close(x, y, 42); }
-        public static bool close(double x, double y, int n) 
-        {
-           if (x == y)
-              return true;
+    public static partial class Utils
+   {
+      /*! Follows somewhat the advice of Knuth on checking for floating-point
+         equality. The closeness relationship is:
+         \f[
+         \mathrm{close}(x,y,n) \equiv |x-y| \leq \varepsilon |x|
+                                 \wedge |x-y| \leq \varepsilon |y|
+         \f]
+         where \f$ \varepsilon \f$ is \f$ n \f$ times the machine accuracy;
+         \f$ n \f$ equals 42 if not given.  */
+      public static bool close(double x, double y) { return close(x, y, 42); }
+      public static bool close(double x, double y, int n) 
+      {
+         if (x.IsEqual(y))
+            return true;
 
-           double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
+         double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
 
-           if (x * y == 0.0) // x or y = 0.0
-              return diff < (tolerance * tolerance);
+         if ((x * y).IsEqual(0.0)) // x or y = 0.0
+            return diff < (tolerance * tolerance);
 
-           return diff <= tolerance*Math.Abs(x) &&
-                  diff <= tolerance*Math.Abs(y);
+         return diff <= tolerance*Math.Abs(x) &&
+               diff <= tolerance*Math.Abs(y);
+      }
 
-            //double diff = System.Math.Abs(x - y), tolerance = n * Const.QL_EPSILON;
-            //return diff <= tolerance * System.Math.Abs(x) && diff <= tolerance * System.Math.Abs(y);
+      public static bool close(Money m1, Money m2)
+      {
+         return close(m1, m2, 42);
+      }
+
+      public static bool close_enough(double x, double y)
+      {
+         return close_enough(x,y,42);
+      }
+
+      public static bool close_enough(double x, double y, int n)
+      {
+         // Deals with +infinity and -infinity representations etc.
+         if (x.IsEqual(y))
+            return true;
+
+         double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
+
+         if ((x * y).IsEqual(0.0)) // x or y = 0.0
+            return diff < (tolerance * tolerance);
+
+         return diff <= tolerance*Math.Abs(x) ||
+               diff <= tolerance*Math.Abs(y);
         }
 
-        public static bool close(Money m1, Money m2) {
-            return close(m1, m2, 42);
-        }
-
-        public static bool close_enough(double x, double y) {
-            return close_enough(x,y,42);
-        }
-
-        public static bool close_enough(double x, double y, int n) {
-           // Deals with +infinity and -infinity representations etc.
-           if (x == y)
-              return true;
-
-           double diff = Math.Abs(x-y), tolerance = n * Const.QL_EPSILON;
-
-           if (x * y == 0.0) // x or y = 0.0
-             return diff < (tolerance * tolerance);
-
-          return diff <= tolerance*Math.Abs(x) ||
-                 diff <= tolerance*Math.Abs(y);
-        }
-
-        public static bool close(Money m1, Money m2, int n) {
-            if (m1.currency == m2.currency) {
-                return close(m1.value, m2.value, n);
-            } else if (Money.conversionType == Money.ConversionType.BaseCurrencyConversion) {
-                Money tmp1 = m1;
-                Money.convertToBase(ref tmp1);
-                Money tmp2 = m2;
-                Money.convertToBase(ref tmp2);
-                return close(tmp1, tmp2, n);
-            } else if (Money.conversionType == Money.ConversionType.AutomatedConversion) {
-                Money tmp = m2;
-                Money.convertTo(ref tmp, m1.currency);
-                return close(m1, tmp, n);
-            } else {
-                throw new Exception("currency mismatch and no conversion specified");
-            }
-        }
+       public static bool close(Money m1, Money m2, int n)
+       {
+          if (m1.currency == m2.currency)
+          {
+             return close(m1.value, m2.value, n);
+          }
+          if (Money.conversionType == Money.ConversionType.BaseCurrencyConversion)
+          {
+             Money tmp1 = m1;
+             Money.convertToBase(ref tmp1);
+             Money tmp2 = m2;
+             Money.convertToBase(ref tmp2);
+             return close(tmp1, tmp2, n);
+          }
+          if (Money.conversionType == Money.ConversionType.AutomatedConversion)
+          {
+             Money tmp = m2;
+             Money.convertTo(ref tmp, m1.currency);
+             return close(m1, tmp, n);
+          }
+          Utils.QL_FAIL("currency mismatch and no conversion specified");
+          return false;
+       }
     }
 }

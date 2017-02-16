@@ -173,8 +173,7 @@ namespace QLNet {
         }
 
         public override void reset(int size) {
-            if (method() != underlying_.method())
-                throw new Exception("option and underlying were initialized on different methods");
+            Utils.QL_REQUIRE(method() == underlying_.method(),()=> "option and underlying were initialized on different methods");
             values_ = new Vector(size, 0.0);
             adjustValues();
         }
@@ -209,7 +208,8 @@ namespace QLNet {
                     }
                     break;
                 default:
-                    throw new Exception("invalid exercise type");
+                    Utils.QL_FAIL("invalid exercise type");
+                    break;
             }
             underlying_.postAdjustValues();
         }

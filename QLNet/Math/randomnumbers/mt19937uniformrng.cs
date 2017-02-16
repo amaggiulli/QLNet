@@ -37,7 +37,8 @@ namespace QLNet
 
       /*! if the given seed is 0, a random seed will be chosen based on clock() */
       public MersenneTwisterUniformRng() : this(0) {}
-      public MersenneTwisterUniformRng( ulong seed = 0 )
+
+      public MersenneTwisterUniformRng( ulong seed )
       {
          mt = new InitializedList<ulong>( N );
          seedInitialization( seed );
@@ -89,14 +90,14 @@ namespace QLNet
          if (mti==N)
             twist(); /* generate N words at a time */
 
-            ulong y = mt[mti++];
+         ulong y = mt[mti++];
 
-            /* Tempering */
-            y ^= (y >> 11);
-            y ^= (y << 7) & 0x9d2c5680UL;
-            y ^= (y << 15) & 0xefc60000UL;
-            y ^= (y >> 18);
-            return y;
+         /* Tempering */
+         y ^= (y >> 11);
+         y ^= (y << 7) & 0x9d2c5680UL;
+         y ^= (y << 15) & 0xefc60000UL;
+         y ^= (y >> 18);
+         return y;
       }
 
       private void seedInitialization( ulong seed )

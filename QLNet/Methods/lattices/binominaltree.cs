@@ -121,8 +121,8 @@ namespace QLNet {
             pu_ = 0.5 + 0.5*driftPerStep_/dx_;
             pd_ = 1.0 - pu_;
 
-            if (!(pu_<=1.0)) throw new Exception("negative probability");
-            if (!(pu_ >= 0.0)) throw new Exception("negative probability");
+            Utils.QL_REQUIRE(pu_<=1.0,()=> "negative probability");
+            Utils.QL_REQUIRE(pu_ >= 0.0,()=> "negative probability");
         }
 
         public CoxRossRubinstein factory(StochasticProcess1D process, double end, int steps, double strike) {
@@ -157,8 +157,8 @@ namespace QLNet {
             pu_ = 0.5 + 0.5*driftPerStep_/dx_;
             pd_ = 1.0 - pu_;
 
-            if (!(pu_<=1.0)) throw new Exception("negative probability");
-            if (!(pu_ >= 0.0)) throw new Exception("negative probability");
+            Utils.QL_REQUIRE(pu_<=1.0,()=> "negative probability");
+            Utils.QL_REQUIRE(pu_ >= 0.0,()=> "negative probability");
         }
 
         public Trigeorgis factory(StochasticProcess1D process, double end, int steps, double strike) {
@@ -189,8 +189,8 @@ namespace QLNet {
             //     treeCentering_ = (up_+down_)/2.0;
             //     up_ = up_-treeCentering_;
 
-            if (!(pu_<=1.0)) throw new Exception("negative probability");
-            if (!(pu_ >= 0.0)) throw new Exception("negative probability");
+            Utils.QL_REQUIRE(pu_<=1.0,()=> "negative probability");
+            Utils.QL_REQUIRE(pu_ >= 0.0,()=> "negative probability");
         }
 
         public override double underlying(int i, int index) {
@@ -213,7 +213,7 @@ namespace QLNet {
         public LeisenReimer(StochasticProcess1D process, double end, int steps, double strike)    
             : base(process, end, (steps%2 != 0 ? steps : steps+1)) {
 
-            if (!(strike>0.0)) throw new Exception("strike must be positive");
+            Utils.QL_REQUIRE(strike>0.0,()=> "strike must be positive");
             int oddSteps = (steps%2 != 0 ? steps : steps+1);
             double variance = process.variance(0.0, x0_, end);
             double ermqdt = Math.Exp(driftPerStep_ + 0.5*variance/oddSteps);
@@ -246,7 +246,7 @@ namespace QLNet {
         public Joshi4(StochasticProcess1D process, double end, int steps, double strike)    
             : base(process, end, (steps%2 != 0 ? steps : steps+1)) {
 
-            if (!(strike>0.0)) throw new Exception("strike must be positive");
+            Utils.QL_REQUIRE(strike>0.0,()=> "strike must be positive");
 
             int oddSteps = (steps%2 != 0 ? steps : steps+1);
             double variance = process.variance(0.0, x0_, end);

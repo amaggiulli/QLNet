@@ -684,7 +684,6 @@ namespace QLNet
          fixedConvention_ = swapIndex.fixedLegConvention();
          fixedFrequency_ = swapIndex.fixedLegTenor().frequency();
          fixedDayCount_ = swapIndex.dayCounter();
-         spread_ = spread;
          iborIndex_ = swapIndex.iborIndex();
          fwdStart_ = fwdStart;
          discountHandle_ = discount ?? new Handle<YieldTermStructure>();

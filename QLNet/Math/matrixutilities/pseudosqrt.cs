@@ -27,9 +27,8 @@ namespace QLNet {
 
         public static void normalizePseudoRoot(Matrix matrix, Matrix pseudo) {
             int size = matrix.rows();
-            if (size != pseudo.rows())
-                throw new Exception("matrix/pseudo mismatch: matrix rows are " + size +
-                       " while pseudo rows are " + pseudo.columns());
+            Utils.QL_REQUIRE(size == pseudo.rows(),()=> 
+               "matrix/pseudo mismatch: matrix rows are " + size + " while pseudo rows are " + pseudo.columns());
             int pseudoCols = pseudo.columns();
 
             // row normalization
@@ -65,7 +64,8 @@ namespace QLNet {
             }
 
             public override Vector values(Vector a) {
-                throw new Exception("values method not implemented");
+                Utils.QL_FAIL("values method not implemented");
+               return null;
             }
 
             public override double value(Vector x) {
@@ -152,18 +152,18 @@ namespace QLNet {
                         if (theta[i*(i-1)/2+j]>1-eps)
                             theta[i*(i-1)/2+j]=1-eps;
                         if (theta[i*(i-1)/2+j]<-1+eps)
-                            theta[i*(i-1)/2+j]=-1+eps;
+                            theta[i*(i-1)/2+j]= -1+eps;
                         for (k=0; k<j; k++) {
                             theta[i*(i-1)/2+j] /= Math.Sin(theta[i*(i-1)/2+k]);
                             if (theta[i*(i-1)/2+j]>1-eps)
                                 theta[i*(i-1)/2+j]=1-eps;
                             if (theta[i*(i-1)/2+j]<-1+eps)
-                                theta[i*(i-1)/2+j]=-1+eps;
+                                theta[i*(i-1)/2+j]= -1+eps;
                         }
                         theta[i*(i-1)/2+j] = Math.Acos(theta[i*(i-1)/2+j]);
                         if (j==i-1) {
                             if (result[i,i]<0)
-                                theta[i*(i-1)/2+j]=-theta[i*(i-1)/2+j];
+                                theta[i*(i-1)/2+j]= -theta[i*(i-1)/2+j];
                         }
                     }
                 }
@@ -194,18 +194,18 @@ namespace QLNet {
                         if (theta[j*size+i]>1-eps)
                             theta[j*size+i]=1-eps;
                         if (theta[j*size+i]<-1+eps)
-                            theta[j*size+i]=-1+eps;
+                            theta[j*size+i]= -1+eps;
                         for (k=0;k<j;k++) {
                             theta[j*size+i] /= Math.Sin(theta[k*size+i]);
                             if (theta[j*size+i]>1-eps)
                                 theta[j*size+i]=1-eps;
                             if (theta[j*size+i]<-1+eps)
-                                theta[j*size+i]=-1+eps;
+                                theta[j*size+i]= -1+eps;
                         }
                         theta[j*size+i] = Math.Acos(theta[j*size+i]);
                         if (j==size-2) {
                             if (result[i,j+1]<0)
-                                theta[j*size+i]=-theta[j*size+i];
+                                theta[j*size+i]= -theta[j*size+i];
                         }
                     }
                 }
@@ -253,8 +253,7 @@ namespace QLNet {
         // Take a matrix and make all the diagonal entries 1.
         private static Matrix projectToUnitDiagonalMatrix(Matrix M) {
             int size = M.rows();
-            if (size != M.columns())
-                throw new Exception("matrix not square");
+            Utils.QL_REQUIRE(size == M.columns(),()=> "matrix not square");
 
             Matrix result = new Matrix(M);
             for (int i=0; i<size; ++i)
@@ -267,16 +266,14 @@ namespace QLNet {
         // Take a matrix and make all the eigenvalues non-negative
         private static Matrix projectToPositiveSemidefiniteMatrix(Matrix M) {
             int size = M.rows();
-            if (size != M.columns())
-                throw new Exception("matrix not square");
+            Utils.QL_REQUIRE(size == M.columns(),()=> "matrix not square");
 
             Matrix diagonal = new Matrix(size, size);
             SymmetricSchurDecomposition jd = new SymmetricSchurDecomposition(M);
             for (int i=0; i<size; ++i)
                 diagonal[i,i] = Math.Max(jd.eigenvalues()[i], 0.0);
 
-            Matrix result =
-                jd.eigenvectors()*diagonal*Matrix.transpose(jd.eigenvectors());
+            Matrix result = jd.eigenvectors()*diagonal*Matrix.transpose(jd.eigenvectors());
             return result;
         }
 
@@ -350,8 +347,8 @@ namespace QLNet {
             #if QL_EXTRA_SAFETY_CHECKS
             checkSymmetry(matrix);
             #else
-            if (size != matrix.columns())
-                throw new Exception("non square matrix: " + size + " rows, " + matrix.columns() + " columns");
+            Utils.QL_REQUIRE(size == matrix.columns(),()=> 
+               "non square matrix: " + size + " rows, " + matrix.columns() + " columns");
             #endif
 
             // spectral (a.k.a Principal Component) analysis
@@ -364,8 +361,8 @@ namespace QLNet {
             switch (sa) {
                 case SalvagingAlgorithm.None:
                     // eigenvalues are sorted in decreasing order
-                    if (!(jd.eigenvalues()[size-1]>=-1e-16))
-                        throw new Exception("negative eigenvalue(s) (" + jd.eigenvalues()[size-1] + ")");
+                    Utils.QL_REQUIRE(jd.eigenvalues()[size-1]>=-1e-16,()=> 
+                       "negative eigenvalue(s) (" + jd.eigenvalues()[size-1] + ")");
                     result = MatrixUtilities.CholeskyDecomposition(matrix, true);
                     break;
 
@@ -415,7 +412,8 @@ namespace QLNet {
                     break;
 
                 default:
-                    throw new Exception("unknown salvaging algorithm");
+                    Utils.QL_FAIL("unknown salvaging algorithm");
+                    break;
             }
 
             return result;
@@ -431,18 +429,13 @@ namespace QLNet {
             #if QL_EXTRA_SAFETY_CHECKS
                 checkSymmetry(matrix);
             #else
-            if (size != matrix.columns())
-                throw new Exception("non square matrix: " + size + " rows, " + matrix.columns() + " columns");
+            Utils.QL_REQUIRE(size == matrix.columns(),()=> 
+               "non square matrix: " + size + " rows, " + matrix.columns() + " columns");
             #endif
 
-            if (!(componentRetainedPercentage > 0.0))
-                throw new Exception("no eigenvalues retained");
-
-            if (!(componentRetainedPercentage <= 1.0))
-                throw new Exception("percentage to be retained > 100%");
-
-            if (!(maxRank >= 1))
-                throw new Exception("max rank required < 1");
+            Utils.QL_REQUIRE(componentRetainedPercentage > 0.0,()=> "no eigenvalues retained");
+            Utils.QL_REQUIRE(componentRetainedPercentage <= 1.0,()=> "percentage to be retained > 100%");
+            Utils.QL_REQUIRE(maxRank >= 1,()=> "max rank required < 1");
 
             // spectral (a.k.a Principal Component) analysis
             SymmetricSchurDecomposition jd = new SymmetricSchurDecomposition(matrix);
@@ -453,8 +446,8 @@ namespace QLNet {
             {
                 case SalvagingAlgorithm.None:
                     // eigenvalues are sorted in decreasing order
-                    if (!(eigenValues[size - 1] >= -1e-16))
-                        throw new Exception("negative eigenvalue(s) (" + eigenValues[size - 1] + ")");
+                    Utils.QL_REQUIRE(eigenValues[size - 1] >= -1e-16,()=> 
+                       "negative eigenvalue(s) (" + eigenValues[size - 1] + ")");
                     break;
                 case SalvagingAlgorithm.Spectral:
                     // negative eigenvalues set to zero
@@ -471,8 +464,8 @@ namespace QLNet {
                     }
                     break;
                 default:
-                    throw new Exception("unknown or invalid salvaging algorithm");
-
+                    Utils.QL_FAIL("unknown or invalid salvaging algorithm");
+                    break;
             }
 
             // factor reduction
@@ -482,7 +475,7 @@ namespace QLNet {
             eigenValues.ForEach((ii, vv) => accumulate += eigenValues[ii]);
             double enough = componentRetainedPercentage * accumulate;
 
-            if (componentRetainedPercentage == 1.0)
+            if (componentRetainedPercentage.IsEqual(1.0))
             {
                 // numerical glitches might cause some factors to be discarded
                 enough *= 1.1;

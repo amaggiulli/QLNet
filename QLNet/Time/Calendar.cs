@@ -154,8 +154,8 @@ namespace QLNet
                else
                   return d1;
             }
-            else throw Error.UnknownBusinessDayConvention(c);
-            return d1;
+            else Utils.QL_FAIL("unknown business-day convention");
+         return d1;
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace QLNet
                     if (isBusinessDay(to))
                         ++wd;
                 }
-                else if (from > to)
+                else 
                 {
                     for (Date d = to; d < from; ++d)
                     {
@@ -284,11 +284,7 @@ namespace QLNet
         /// Returns the holidays between two dates
         /// </summary>
         public static List<Date> holidayList(Calendar calendar, Date from, Date to, bool includeWeekEnds = false) {
-            if (to <= from)
-            {
-                throw new Exception("'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
-            }
-
+            Utils.QL_REQUIRE(to > from,()=> "'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
             List<Date> result = new List<Date>();
 
             for (Date d = from; d <= to; ++d)

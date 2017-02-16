@@ -353,24 +353,16 @@ namespace QLNet
                // recall that they are stored flat for every day
                double? limFirstFix =
                IndexManager.instance().getHistory( name() ).value()[lim.Key];
-               if ( limFirstFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + lim.Key );
+               Utils.QL_REQUIRE( limFirstFix != null ,()=> "Missing " + name() + " fixing for " + lim.Key );
                double? limSecondFix =
                IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
-               if ( limSecondFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + lim.Value + 1 );
+               Utils.QL_REQUIRE( limSecondFix != null ,()=> "Missing " + name() + " fixing for " + lim.Value + 1 );
                double? limBefFirstFix =
                IndexManager.instance().getHistory( name() ).value()[limBef.Key];
-               if ( limBefFirstFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + limBef.Key );
+               Utils.QL_REQUIRE( limBefFirstFix != null ,()=> "Missing " + name() + " fixing for " + limBef.Key );
                double? limBefSecondFix =
                IndexManager.instance().getHistory( name() ).value()[limBef.Value + 1];
-               if ( limBefSecondFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + limBef.Value + 1 );
+               Utils.QL_REQUIRE( limBefSecondFix != null ,()=> "Missing " + name() + " fixing for " + limBef.Value + 1 );
 
                double linearNow = limFirstFix.Value + ( limSecondFix.Value - limFirstFix.Value ) * dl / dp;
                double linearBef = limBefFirstFix.Value + ( limBefSecondFix.Value - limBefFirstFix.Value ) * dlBef / dpBef;
@@ -382,18 +374,11 @@ namespace QLNet
             else
             {
                // IS ratio, NOT interpolated
-               double? pastFixing =
-                    IndexManager.instance().getHistory( name() ).value()[fixingDate];
-               if ( pastFixing == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + fixingDate );
+               double? pastFixing = IndexManager.instance().getHistory( name() ).value()[fixingDate];
+               Utils.QL_REQUIRE( pastFixing != null , ()=> "Missing " + name() + " fixing for " + fixingDate );
                Date previousDate = fixingDate - new Period( 1, TimeUnit.Years );
-               double? previousFixing =
-               IndexManager.instance().getHistory( name() ).value()[previousDate];
-               if ( previousFixing == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + previousDate );
-
+               double? previousFixing = IndexManager.instance().getHistory( name() ).value()[previousDate];
+               Utils.QL_REQUIRE( previousFixing != null,()=> "Missing " + name() + " fixing for " + previousDate );
                return pastFixing.Value / previousFixing.Value - 1.0;
             }
          }
@@ -406,18 +391,11 @@ namespace QLNet
                KeyValuePair<Date, Date> lim = Utils.inflationPeriod( fixingDate, frequency_ );
                double dp = lim.Value + 1 - lim.Key;
                double dl = fixingDate - lim.Key;
-               double? limFirstFix =
-               IndexManager.instance().getHistory( name() ).value()[lim.Key];
-               if ( limFirstFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + lim.Key );
-               double? limSecondFix =
-               IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
-               if ( limSecondFix == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + lim.Value + 1 );
+               double? limFirstFix = IndexManager.instance().getHistory( name() ).value()[lim.Key];
+               Utils.QL_REQUIRE( limFirstFix != null,()=> "Missing " + name() + " fixing for " + lim.Key );
+               double? limSecondFix = IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
+               Utils.QL_REQUIRE( limSecondFix != null ,()=> "Missing " + name() + " fixing for " + lim.Value + 1 );
                double linearNow = limFirstFix.Value + ( limSecondFix.Value - limFirstFix.Value ) * dl / dp;
-
                return linearNow;
 
             }
@@ -425,11 +403,8 @@ namespace QLNet
             {
                // NOT ratio, NOT interpolated
                // so just flat
-               double? pastFixing =
-                   IndexManager.instance().getHistory( name() ).value()[fixingDate];
-               if ( pastFixing == null )
-                  throw new Exception( "Missing " + name() + " fixing for "
-                                                 + fixingDate );
+               double? pastFixing = IndexManager.instance().getHistory( name() ).value()[fixingDate];
+               Utils.QL_REQUIRE( pastFixing != null ,()=> "Missing " + name() + " fixing for " + fixingDate );
                return pastFixing.Value;
 
             }

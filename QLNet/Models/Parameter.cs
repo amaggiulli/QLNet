@@ -63,7 +63,7 @@ namespace QLNet
    //! Standard constant parameter \f$ a(t) = a \f$
    public class ConstantParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public override double value( Vector parameters, double UnnamedParameter1 )
          {
@@ -80,8 +80,7 @@ namespace QLNet
       {
          params_[0] = value;
 
-         if ( !( testParams( params_ ) ) )
-            throw new Exception( ": invalid value" );
+         Utils.QL_REQUIRE(testParams( params_ ) ,()=> ": invalid value" );
       }
 
    }
@@ -89,7 +88,7 @@ namespace QLNet
    //! %Parameter which is always zero \f$ a(t) = 0 \f$
    public class NullParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public override double value( Vector UnnamedParameter1, double UnnamedParameter2 )
          {
@@ -109,7 +108,7 @@ namespace QLNet
    //    
    public class PiecewiseConstantParameter : Parameter
    {
-      new private class Impl : Parameter.Impl
+      private new class Impl : Parameter.Impl
       {
          public Impl( List<double> times )
          {
@@ -177,9 +176,8 @@ namespace QLNet
             //throw new NotImplementedException("Need to implement the FindIndex method()");
 
             //int nIndex = times_.FindIndex( delegate(double val) { return val == locVal; });
-            int nIndex = times_.FindIndex( val => val == t );
-            if ( nIndex == -1 )
-               throw new Exception( "fitting parameter not set!" );
+            int nIndex = times_.FindIndex( val => val.IsEqual(t) );
+            Utils.QL_REQUIRE( nIndex != -1,()=> "fitting parameter not set!" );
 
             return values_[nIndex];
          }

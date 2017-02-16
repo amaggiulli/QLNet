@@ -73,26 +73,22 @@ namespace QLNet
       protected override LongstaffSchwartzPathPricer<IPath> lsmPathPricer()
       {
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
-         if ( process == null )
-            throw new Exception( "generalized Black-Scholes process required" );
+         Utils.QL_REQUIRE( process != null ,()=> "generalized Black-Scholes process required" );
 
          EarlyExercise exercise = arguments_.exercise as EarlyExercise;
-         if ( exercise == null )
-            throw new Exception( "wrong exercise given" );
-         if ( exercise.payoffAtExpiry() )
-            throw new Exception( "payoff at expiry not handled" );
+         Utils.QL_REQUIRE( exercise != null,()=> "wrong exercise given" );
+         Utils.QL_REQUIRE( !exercise.payoffAtExpiry(),()=> "payoff at expiry not handled" );
 
          AmericanPathPricer earlyExercisePathPricer = new AmericanPathPricer( arguments_.payoff, polynomOrder_, polynomType_ );
 
          return new LongstaffSchwartzPathPricer<IPath>( timeGrid(), earlyExercisePathPricer, process.riskFreeRate() );
       }
 
-      protected override double controlVariateValue()
+      protected override double? controlVariateValue()
       {
          IPricingEngine controlPE = controlPricingEngine();
 
-         if ( controlPE == null )
-            throw new Exception( "engine does not provide control variation pricing engine" );
+         Utils.QL_REQUIRE( controlPE != null ,()=> "engine does not provide control variation pricing engine" );
 
          VanillaOption.Arguments controlArguments = controlPE.getArguments() as VanillaOption.Arguments;
          controlArguments = arguments_;
@@ -102,14 +98,13 @@ namespace QLNet
 
          VanillaOption.Results controlResults = controlPE.getResults() as VanillaOption.Results;
 
-         return controlResults.value.GetValueOrDefault();
+         return controlResults.value;
       }
 
       protected override IPricingEngine controlPricingEngine()
       {
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
-         if ( process == null )
-            throw new Exception( "generalized Black-Scholes process required" );
+         Utils.QL_REQUIRE( process != null,()=> "generalized Black-Scholes process required" );
 
          return new AnalyticEuropeanEngine( process );
       }
@@ -117,12 +112,10 @@ namespace QLNet
       protected override PathPricer<IPath> controlPathPricer()
       {
          StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
-         if ( payoff == null )
-            throw new Exception( "StrikedTypePayoff needed for control variate" );
+         Utils.QL_REQUIRE( payoff != null,()=> "StrikedTypePayoff needed for control variate" );
 
          GeneralizedBlackScholesProcess process = process_ as GeneralizedBlackScholesProcess;
-         if ( process == null )
-            throw new Exception( "generalized Black-Scholes process required" );
+         Utils.QL_REQUIRE( process != null,()=> "generalized Black-Scholes process required" );
 
          return new EuropeanPathPricer( payoff.optionType(), payoff.strike(),
                                        process.riskFreeRate().link.discount( timeGrid().Last() ) );
@@ -142,12 +135,11 @@ namespace QLNet
          payoff_ = payoff;
          v_ = LsmBasisSystem.pathBasisSystem( polynomOrder, polynomType );
 
-         if ( !( polynomType == LsmBasisSystem.PolynomType.Monomial
+         Utils.QL_REQUIRE( ( polynomType == LsmBasisSystem.PolynomType.Monomial
                || polynomType == LsmBasisSystem.PolynomType.Laguerre
                || polynomType == LsmBasisSystem.PolynomType.Hermite
                || polynomType == LsmBasisSystem.PolynomType.Hyperbolic
-               || polynomType == LsmBasisSystem.PolynomType.Chebyshev2th ) )
-            throw new Exception( "insufficient polynom type" );
+               || polynomType == LsmBasisSystem.PolynomType.Chebyshev2th ) ,()=> "insufficient polynom type" );
 
          // the payoff gives an additional value
          v_.Add( this.payoff );

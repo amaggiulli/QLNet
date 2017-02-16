@@ -32,11 +32,8 @@ namespace QLNet {
 			spot_ = spot;
 			growth_ = growth;
 
-            if (!(spot_ >= 0.0))
-                throw new Exception("positive spot value required: " + spot_ + " not allowed");
-
-            if (!(growth_ >= 0.0))
-                throw new Exception("positive growth value required: " + growth_ + " not allowed");
+         Utils.QL_REQUIRE(spot_ >= 0.0,()=> "positive spot value required: " + spot_ + " not allowed");
+         Utils.QL_REQUIRE(growth_ >= 0.0,()=> "positive growth value required: " + growth_ + " not allowed");
 		}
 
 		//! Sensitivity to change in the underlying spot price. 

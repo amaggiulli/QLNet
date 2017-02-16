@@ -50,9 +50,8 @@ namespace QLNet {
             next_ = new Sample<IPath>(new Path(timeGrid_),1.0);
             temp_ = new InitializedList<double>(dimension_);
             bb_ = new BrownianBridge(timeGrid_);
-            if (dimension_ != timeSteps) 
-                throw new Exception("sequence generator dimensionality (" + dimension_
-                       + ") != timeSteps (" + timeSteps + ")");
+            Utils.QL_REQUIRE(dimension_ == timeSteps,()=> 
+               "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + timeSteps + ")");
         }
 
         public PathGenerator(StochasticProcess process, TimeGrid timeGrid, GSG generator, bool brownianBridge) {
@@ -65,9 +64,8 @@ namespace QLNet {
             temp_ = new InitializedList<double>(dimension_);
             bb_ = new BrownianBridge(timeGrid_);
 
-            if (dimension_ != timeGrid_.size() - 1)
-                throw new Exception("sequence generator dimensionality (" + dimension_
-                       + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
+            Utils.QL_REQUIRE(dimension_ == timeGrid_.size() - 1,()=> 
+               "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
         }
 
         public Sample<IPath> next() { return next(false); }

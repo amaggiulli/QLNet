@@ -55,7 +55,7 @@ namespace TestSuite
                   double actVol = volCube.volatility(atm.tenors.options[i], atm.tenors.swaps[j], strike, true);
                   double error = Math.Abs(expVol-actVol);
                   if (error>tolerance)
-                     Assert.Fail("recovery of atm vols failed:" +
+                     QAssert.Fail("recovery of atm vols failed:" +
                                  "\nexpiry time = " + atm.tenors.options[i] +
                                  "\nswap length = " + atm.tenors.swaps[j] +
                                  "\n atm strike = " + strike +
@@ -83,7 +83,7 @@ namespace TestSuite
                      double expVolSpread = cube.volSpreads[i*cube.tenors.swaps.Count+j,k];
                      double error = Math.Abs(expVolSpread-spread);
                      if (error>tolerance)
-                        Assert.Fail("\nrecovery of smile vol spreads failed:" +
+                        QAssert.Fail("\nrecovery of smile vol spreads failed:" +
                                  "\n    option tenor = " + cube.tenors.options[i] +
                                  "\n      swap tenor = " + cube.tenors.swaps[j] +
                                  "\n      atm strike = " + atmStrike +
@@ -258,7 +258,7 @@ namespace TestSuite
                   double diff = spreadedVolCube.volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike)
                               - volCube.link.volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike);
                   if (Math.Abs(diff-spread.value())>1e-16)
-                     Assert.Fail("\ndiff!=spread in volatility method:" +
+                     QAssert.Fail("\ndiff!=spread in volatility method:" +
                                  "\nexpiry time = " + vars.cube.tenors.options[i] +
                                  "\nswap length = " + vars.cube.tenors.swaps[j] +
                                  "\n atm strike = " + (strike) +
@@ -267,7 +267,7 @@ namespace TestSuite
 
                   diff = smileSectionBySpreadedCube.volatility(strike) - smileSectionByCube.volatility(strike);
                   if (Math.Abs(diff-spread.value())>1e-16)
-                     Assert.Fail("\ndiff!=spread in smile section method:" +
+                     QAssert.Fail("\ndiff!=spread in smile section method:" +
                                  "\nexpiry time = " + vars.cube.tenors.options[i] +
                                  "\nswap length = " + vars.cube.tenors.swaps[j] +
                                  "\n atm strike = " + (strike) +
@@ -282,12 +282,12 @@ namespace TestSuite
          spreadedVolCube.registerWith(f.update);
          volCube.link.update();
          if(!f.isUp())
-            Assert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
+            QAssert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
          
          f.lower();
          spread.setValue(.001);
          if(!f.isUp())
-            Assert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
+            QAssert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
       }
 
       #if QL_DOTNET_FRAMEWORK
@@ -358,7 +358,7 @@ namespace TestSuite
                                                     dummyStrike + vars.cube.strikeSpreads[k],
                                                     false);
                      if (Math.Abs(v0 - v1) > 1e-14)
-                        Assert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
+                     QAssert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
                                     " swap tenor = " + vars.cube.tenors.swaps[j] +
                                     " strike = " + (dummyStrike+vars.cube.strikeSpreads[k])+
                                     "  v0 = " + (v0) +
@@ -408,7 +408,7 @@ namespace TestSuite
                                                     dummyStrike + vars.cube.strikeSpreads[k],
                                                     false);
                   if (Math.Abs(v0 - v1) > 1e-14)
-                     Assert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
+                     QAssert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
                                  " swap tenor = " + vars.cube.tenors.swaps[j] +
                                  " strike = " + (dummyStrike+vars.cube.strikeSpreads[k])+
                                  "  v0 = " + (v0) +

@@ -78,7 +78,8 @@ namespace QLNet {
                     payer_[1] = +1.0;
                     break;
                 default:
-                    throw new Exception("Unknown BMA-swap type");
+                    Utils.QL_FAIL("Unknown BMA-swap type");
+                    break;
             }
         }
 
@@ -88,15 +89,13 @@ namespace QLNet {
 
         public double liborLegBPS() {
             calculate();
-            if (legBPS_[0] == null)
-                throw new Exception("result not available");
+            Utils.QL_REQUIRE(legBPS_[0] != null,()=> "result not available");
             return legBPS_[0].GetValueOrDefault();
         }
 
         public double liborLegNPV() {
             calculate();
-            if (legNPV_[0] == null)
-                throw new Exception("result not available");
+            Utils.QL_REQUIRE(legNPV_[0] != null,()=> "result not available");
             return legNPV_[0].GetValueOrDefault();
         }
 
@@ -105,8 +104,7 @@ namespace QLNet {
 
             double spreadNPV = (liborSpread_/basisPoint)*liborLegBPS();
             double pureLiborNPV = liborLegNPV() - spreadNPV;
-            if (pureLiborNPV == 0.0)
-                throw new Exception("result not available (null libor NPV)");
+            Utils.QL_REQUIRE(pureLiborNPV.IsNotEqual(0.0),()=> "result not available (null libor NPV)");
             return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
         }
 
@@ -117,15 +115,13 @@ namespace QLNet {
 
         public double bmaLegBPS() {
             calculate();
-            if (legBPS_[1] == null)
-                throw new Exception("result not available");
+            Utils.QL_REQUIRE(legBPS_[1] != null,()=> "result not available");
             return legBPS_[1].GetValueOrDefault();
         }
         
         public double bmaLegNPV() {
             calculate();
-            if (legNPV_[1] == null)
-                throw new Exception("result not available");
+            Utils.QL_REQUIRE(legNPV_[1] != null,()=> "result not available");
             return legNPV_[1].GetValueOrDefault();
         }
     }

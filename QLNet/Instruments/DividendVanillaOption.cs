@@ -40,14 +40,14 @@ namespace QLNet {
 				 double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
 		  {
 
-					 if (isExpired()) throw new Exception("option expired");
+					 Utils.QL_REQUIRE(!isExpired(),()=> "option expired");
 
 					 SimpleQuote volQuote = new SimpleQuote();
 
 					 GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
 
 					 // engines are built-in for the time being
-					 IPricingEngine engine;
+					 IPricingEngine engine = null;
 					 switch (exercise_.type())
 					 {
 						 case Exercise.Type.European:
@@ -57,9 +57,11 @@ namespace QLNet {
 							engine = new FDDividendAmericanEngine(newProcess);
 							break;
 						 case Exercise.Type.Bermudan:
-							 throw new Exception("engine not available for Bermudan option with dividends");
+							 Utils.QL_FAIL("engine not available for Bermudan option with dividends");
+					       break;
 						 default:
-							 throw new ArgumentException("unknown exercise type");
+							 Utils.QL_FAIL("unknown exercise type");
+					       break;
 					 }
 
 					 return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
@@ -71,7 +73,7 @@ namespace QLNet {
             base.setupArguments(args);
 
             Arguments arguments = args as Arguments;
-            if (arguments == null) throw new Exception("wrong engine type");
+            Utils.QL_REQUIRE(arguments != null,()=> "wrong engine type");
 
             arguments.cashFlow = cashFlow_;
         }
@@ -87,9 +89,8 @@ namespace QLNet {
                 Date exerciseDate = exercise.lastDate();
 
                 for (int i = 0; i < cashFlow.Count; i++) {
-                    if (!(cashFlow[i].date() <= exerciseDate))
-                        throw new Exception((i+1) + " dividend date (" + cashFlow[i].date()
-                               + ") is later than the exercise date (" + exerciseDate + ")");
+                    Utils.QL_REQUIRE(cashFlow[i].date() <= exerciseDate,()=>
+                       " dividend date (" + cashFlow[i].date() + ") is later than the exercise date (" + exerciseDate + ")");
                 }
             }
         }

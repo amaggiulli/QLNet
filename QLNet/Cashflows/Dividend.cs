@@ -79,7 +79,7 @@ namespace QLNet
       //! \name Dividend interface
       public override double amount()
       {
-         if (nominal_ == null) throw new Exception("no nominal given");
+         Utils.QL_REQUIRE(nominal_ != null,()=> "no nominal given");
          return rate_ * nominal_.GetValueOrDefault();
       }
 
@@ -94,9 +94,7 @@ namespace QLNet
       //! helper function building a sequence of fixed dividends
       public static List<Dividend> DividendVector(List<Date> dividendDates, List<double> dividends)
       {
-
-         if (dividendDates.Count != dividends.Count)
-            throw new Exception("size mismatch between dividend dates and amounts");
+         QL_REQUIRE(dividendDates.Count == dividends.Count,()=>"size mismatch between dividend dates and amounts");
 
          List<Dividend> items = new List<Dividend>(dividendDates.Count);
          for (int i = 0; i < dividendDates.Count; i++)

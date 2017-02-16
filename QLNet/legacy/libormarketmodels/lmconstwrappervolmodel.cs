@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,41 +20,33 @@
 
 namespace QLNet
 {
-    //! caplet const volatility model
-    public class LmConstWrapperVolatilityModel :  LmVolatilityModel {
-      
-        public LmConstWrapperVolatilityModel(LmVolatilityModel volaModel)
-        : base(volaModel.size(), 0){
-          volaModel_=volaModel ;
-        }
+   //! caplet const volatility model
+   public class LmConstWrapperVolatilityModel : LmVolatilityModel
+   {
+      public LmConstWrapperVolatilityModel(LmVolatilityModel volaModel)
+         : base(volaModel.size(), 0)
+      {
+         volaModel_ = volaModel;
+      }
 
-        public override Vector volatility(double t, Vector x) {
-            return volaModel_.volatility(t, x);
-        }
+      public override Vector volatility(double t, Vector x = null)
+      {
+         return volaModel_.volatility(t, x);
+      }
 
-        public override Vector volatility(double t){
-            return volaModel_.volatility(t,null);
-        }
+      public override double volatility(int i, double t, Vector x = null)
+      {
+         return volaModel_.volatility(i, t, x);
+      }
 
-        public override double volatility(int i, double t,Vector x) {
-            return volaModel_.volatility(i, t, x);
-        }
+      public override double integratedVariance(int i, int j, double u, Vector x = null)
+      {
+         return volaModel_.integratedVariance(i, j, u, x);
+      }
 
-        public override double volatility(int i, double t){
-            return volaModel_.volatility(i, t, null);
-        }
+      protected LmVolatilityModel volaModel_;
 
-        public override double integratedVariance(int i, int j, 
-                                                  double u, Vector x ) {
-            return volaModel_.integratedVariance(i, j, u, x);
-        }
-
-        public override double integratedVariance(int i, int j,double u){
-            return volaModel_.integratedVariance(i, j, u, null);
-        }
-
-        protected LmVolatilityModel volaModel_;
-
-        public override void generateArguments() { }
-    }
+      public override void generateArguments()
+      {}
+   }
 }

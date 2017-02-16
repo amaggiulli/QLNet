@@ -58,7 +58,7 @@ namespace QLNet
       //! time at which the function reaches maximum (if any)
       public double maximumLocation()
       {
-         if ( b_ == 0.0 )
+         if ( b_ .IsEqual(0.0) )
          {
             if ( a_ >= 0.0 )
                return 0.0;
@@ -76,7 +76,7 @@ namespace QLNet
       //! maximum value of the function
       public double maximumValue()
       {
-         if (b_==0.0 || a_<=0.0)
+         if (b_.IsEqual(0.0) || a_<=0.0)
             return d_;
         return this.value(maximumLocation());
       }

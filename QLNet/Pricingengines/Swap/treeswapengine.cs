@@ -56,7 +56,7 @@ namespace QLNet
         
         public override void calculate(){
             if(base.model_==null)
-            throw new ArgumentException("no model specified");
+               throw new ArgumentException("no model specified");
 
             Date referenceDate;
             DayCounter dayCounter;
