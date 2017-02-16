@@ -49,8 +49,10 @@ namespace QLNet
       {
       
          type_= type;
-         fixedNominal_ = overnightNominal_ = nominal;
-         fixedPaymentFrequency_ = overnightPaymentFrequency_ = schedule.tenor().frequency();
+         fixedNominal_ = nominal;
+         overnightNominal_ = nominal;
+         fixedPaymentFrequency_ = schedule.tenor().frequency();
+         overnightPaymentFrequency_ = schedule.tenor().frequency();
          fixedRate_ = fixedRate;
          fixedDC_ = fixedDC;
          overnightIndex_ = overnightIndex;
