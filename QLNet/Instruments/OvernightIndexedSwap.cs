@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ *             2017              Jean-Camille Tournier (tournier.jc@openmailbox.org)
  * 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -26,8 +27,10 @@ namespace QLNet
    public class OvernightIndexedSwap : Swap 
    {
       private Type type_;
-      private double nominal_;
-      private Frequency paymentFrequency_;
+      private double fixedNominal_;
+      private double overnightNominal_;
+      private Frequency fixedPaymentFrequency_;
+      private Frequency overnightPaymentFrequency_;
       private double fixedRate_;
       private DayCounter fixedDC_;
       private OvernightIndex overnightIndex_;
@@ -46,8 +49,8 @@ namespace QLNet
       {
       
          type_= type;
-         nominal_ = nominal;
-         paymentFrequency_ = schedule.tenor().frequency();
+         fixedNominal_ = overnightNominal_ = nominal;
+         fixedPaymentFrequency_ = overnightPaymentFrequency_ = schedule.tenor().frequency();
          fixedRate_ = fixedRate;
          fixedDC_ = fixedDC;
          overnightIndex_ = overnightIndex;
@@ -58,10 +61,10 @@ namespace QLNet
 
          legs_[0] = new FixedRateLeg(schedule)
             .withCouponRates(fixedRate_, fixedDC_)
-            .withNotionals(nominal_);
+            .withNotionals(nominal);
 
         legs_[1] = new OvernightLeg(schedule, overnightIndex_)
-            .withNotionals(nominal_)
+            .withNotionals(nominal)
             .withSpreads(spread_);
 
          for (int j = 0; j < 2; ++j)
@@ -81,14 +84,71 @@ namespace QLNet
                payer_[1] = -1.0;
                break;
             default:
-               Utils.QL_FAIL("Unknown overnight-swap type");
-               break;
+               throw new Exception("Unknown overnight-swap type"); 
+         
          }
       }
 
+      public OvernightIndexedSwap(Type type,
+                                 double fixedNominal,
+                                 Schedule fixedSchedule,
+                                 double fixedRate,
+                                 DayCounter fixedDC,
+                                 double overnightNominal,
+                                 Schedule overnightSchedule,
+                                 OvernightIndex overnightIndex,
+                                 double spread) :
+          base(2)
+      {
+
+          type_ = type;
+          fixedNominal_ = fixedNominal;
+          overnightNominal_ = overnightNominal;
+          fixedPaymentFrequency_ = fixedSchedule.tenor().frequency();
+          overnightPaymentFrequency_ = overnightSchedule.tenor().frequency();
+          fixedRate_ = fixedRate;
+          fixedDC_ = fixedDC;
+          overnightIndex_ = overnightIndex;
+          spread_ = spread;
+
+          if (fixedDC_ == null)
+              fixedDC_ = overnightIndex_.dayCounter();
+
+          legs_[0] = new FixedRateLeg(fixedSchedule)
+             .withCouponRates(fixedRate_, fixedDC_)
+             .withNotionals(fixedNominal_);
+
+          legs_[1] = new OvernightLeg(overnightSchedule, overnightIndex_)
+              .withNotionals(overnightNominal_)
+              .withSpreads(spread_);
+
+          for (int j = 0; j < 2; ++j)
+          {
+              for (int i = 0; i < legs_[j].Count; i++)
+                  legs_[j][i].registerWith(update);
+          }
+
+          switch (type_)
+          {
+              case Type.Payer:
+                  payer_[0] = -1.0;
+                  payer_[1] = +1.0;
+                  break;
+              case Type.Receiver:
+                  payer_[0] = +1.0;
+                  payer_[1] = -1.0;
+                  break;
+              default:
+                  throw new Exception("Unknown overnight-swap type");
+
+          }
+      }
+
       public Type type() { return type_; }
-      public double nominal() { return nominal_; }
-      public Frequency paymentFrequency() { return paymentFrequency_; }
+      public double fixedNominal() { return fixedNominal_; }
+      public double overnightNominal() { return overnightNominal_; }
+      public Frequency fixedPaymentFrequency() { return fixedPaymentFrequency_; }
+      public Frequency overnightPaymentFrequency() { return overnightPaymentFrequency_; }
       public double fixedRate() { return fixedRate_; }
       public DayCounter fixedDayCount() { return fixedDC_; }
       //OvernightIndex overnightIndex();
@@ -115,28 +175,32 @@ namespace QLNet
       public double? fixedLegBPS() 
       {
          calculate();
-         Utils.QL_REQUIRE(legBPS_[0] != null,()=> "result not available");
+         if (legBPS_[0] == null)
+            throw new Exception("result not available");
          return legBPS_[0];
       }
 
       public double? overnightLegBPS()
       {
         calculate();
-        Utils.QL_REQUIRE(legBPS_[1] != null,()=> "result not available");
+        if (legBPS_[1] == null)
+           throw new Exception("result not available");
         return legBPS_[1];
       }
 
       public double? fixedLegNPV() 
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[0] != null,()=> "result not available");
+         if (legNPV_[0] == null)
+            throw new Exception("result not available");
          return legNPV_[0];
       }
 
       public double? overnightLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[1] != null,()=> "result not available");
+         if (legNPV_[1] == null)
+            throw new Exception("result not available");
          return legNPV_[1];
       }
    }
