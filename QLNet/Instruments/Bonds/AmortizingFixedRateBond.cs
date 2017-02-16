@@ -52,7 +52,36 @@ namespace QLNet
 
          addRedemptionsToCashflows();
 
-         Utils.QL_REQUIRE( !cashflows().empty(),()=> "bond with no cashflows!");
+         if ( cashflows().empty())
+            throw new Exception("bond with no cashflows!");
+      }
+
+      public AmortizingFixedRateBond(
+                         int settlementDays,
+                         List<double> notionals,
+                         Schedule schedule,
+                         List<InterestRate> coupons,
+                         DayCounter accrualDayCounter,
+                         BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+                         Date issueDate = null)
+          : base(settlementDays, schedule.calendar(), issueDate)
+      {
+          frequency_ = schedule.tenor().frequency();
+          dayCounter_ = accrualDayCounter;
+          schedule_ = schedule;
+
+          maturityDate_ = schedule.endDate();
+
+          cashflows_ = new FixedRateLeg(schedule)
+              .withCouponRates(coupons)
+              .withNotionals(notionals)
+              .withPaymentAdjustment(paymentConvention).value();
+
+
+          addRedemptionsToCashflows();
+
+          if (cashflows().empty())
+              throw new Exception("bond with no cashflows!");
       }
 
       public AmortizingFixedRateBond(
@@ -173,20 +202,18 @@ namespace QLNet
 
       KeyValuePair<int, int> daysMinMax(Period p) 
       {
-         switch (p.units())
-         {
-            case TimeUnit.Days:
-               return new KeyValuePair<int, int>(p.length(), p.length());
-            case TimeUnit.Weeks:
-               return new KeyValuePair<int, int>(7 * p.length(), 7 * p.length());
-            case TimeUnit.Months:
-               return new KeyValuePair<int, int>(28 * p.length(), 31 * p.length());
-            case TimeUnit.Years:
-               return new KeyValuePair<int, int>(365 * p.length(), 366 * p.length());
-            default:
-               Utils.QL_FAIL("unknown time unit (" + p.units() + ")");
-               return new KeyValuePair<int, int>();
-         }
-      }
+            switch (p.units()) {
+              case TimeUnit.Days:
+                return new KeyValuePair<int, int>(p.length(), p.length());
+              case TimeUnit.Weeks:
+                return new KeyValuePair<int, int>(7*p.length(), 7*p.length());
+              case TimeUnit.Months:
+                return new KeyValuePair<int, int>(28*p.length(), 31*p.length());
+              case TimeUnit.Years:
+                return new KeyValuePair<int, int>(365 * p.length(), 366 * p.length());
+              default:
+                throw new Exception("unknown time unit (" + p.units() + ")");
+            }
+        }
    }
 }
