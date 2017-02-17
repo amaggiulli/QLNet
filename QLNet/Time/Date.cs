@@ -60,40 +60,36 @@ namespace QLNet
          return (date - new DateTime(1899, 12, 31).Date).Days + 1;
       }
 
-      public int Day => date.Day;
+      public int Day { get { return date.Day; } }
 
-      public int Month => date.Month;
+      public int Month { get { return date.Month; } }
 
       public int month()
       {
          return date.Month;
       }
 
-      public int Year => date.Year;
+      public int Year { get { return date.Year; } }
 
       public int year()
       {
          return date.Year;
       }
 
-      public int DayOfYear => date.DayOfYear;
+      public int DayOfYear { get { return date.DayOfYear; } }
 
       public int weekday()
       {
          return (int) date.DayOfWeek + 1;
       } // QL compatible definition
 
-      public DayOfWeek DayOfWeek => date.DayOfWeek;
+      public DayOfWeek DayOfWeek { get { return date.DayOfWeek; } }
 
-      public int hours => date.Hour;
-
-      public int minutes => date.Minute;
-
-      public int seconds => date.Second;
-
-      public int milliseconds => date.Millisecond;
-
-      public double fractionOfSecond => (double) date.Millisecond / 1000;
+      public int hours { get { return date.Hour; } }
+      public int minutes { get { return date.Minute; } }
+      public int seconds { get { return date.Second; } }
+      public int milliseconds { get { return date.Millisecond; } }      
+      public double fractionOfSecond { get { return (double)date.Millisecond/1000; } }
 
       public double fractionOfDay()
       {
@@ -111,7 +107,7 @@ namespace QLNet
          return new Date(31, 12, 2199);
       }
 
-      public static Date Today => new Date(DateTime.Today);
+      public static Date Today { get { return new Date( DateTime.Today ); } }
 
       public static bool IsLeapYear(int y)
       {

@@ -118,9 +118,14 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(checkPricerImpl(pricer),()=> "pricer given is wrong type");
 
-         pricer_?.unregisterWith(update);
+         if (pricer_ != null)
+            pricer_.unregisterWith(update);
+         
          pricer_ = pricer;
-         pricer_?.registerWith(update);
+         
+         if (pricer_ != null)
+           pricer_.registerWith(update);
+
          update();
       }
 
