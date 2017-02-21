@@ -180,7 +180,7 @@ namespace QLNet
 			return maxInflation;
 		}
 
-		void updateGuess( List<double> data, double discount, int i )
+		public void updateGuess( List<double> data, double discount, int i )
 		{
 			data[i] = discount;
 		}

@@ -446,7 +446,7 @@ namespace QLNet {
 
       //! \name Date access
       //@{
-      int size() { return dates_.Count; }
+      public int size() { return dates_.Count; }
       public Date this[int i]
       {
          get

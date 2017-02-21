@@ -43,8 +43,8 @@ namespace QLNet
 
       //! \name inspectors
       //@{
-      double value1() { return element1_.link.value(); }
-      double value2() { return element2_.link.value(); }
+      public double value1() { return element1_.link.value(); }
+      public double value2() { return element2_.link.value(); }
       //@}
 
       public void update()

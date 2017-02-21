@@ -259,7 +259,7 @@ namespace QLNet
       }
 
       //! next ECB code following the given date
-      static string nextCode(Date d = null) {
+      public static string nextCode(Date d = null) {
          return code(nextDate(d));
       }
 

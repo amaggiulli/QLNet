@@ -113,7 +113,7 @@ namespace QLNet
          : base(settlementDays, schedule.calendar(), issueDate)
       {
          paymentDayCounter_ = paymentDayCounter;
-         putCallSchedule_ = putCallSchedule ?? new CallabilitySchedule(); ;
+         putCallSchedule_ = putCallSchedule ?? new CallabilitySchedule(); 
          maturityDate_ = schedule.dates().Last();
 
         if (!putCallSchedule_.empty()) 

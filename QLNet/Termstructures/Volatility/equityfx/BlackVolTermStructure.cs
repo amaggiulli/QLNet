@@ -30,8 +30,6 @@ namespace QLNet
    */
    public abstract class BlackVolTermStructure : VolatilityTermStructure 
    {
-      private const double dT = 1.0/365.0;       
-
       #region Constructors
         //! default constructor
         /*! \warning term structures initialized by means of this
