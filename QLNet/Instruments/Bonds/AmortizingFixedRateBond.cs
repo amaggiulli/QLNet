@@ -114,8 +114,8 @@ namespace QLNet
 
       }
 
-      Frequency frequency() { return frequency_; }
-      DayCounter dayCounter() { return dayCounter_; }
+      public Frequency frequency() { return frequency_; }
+      public DayCounter dayCounter() { return dayCounter_; }
 
       protected Schedule sinkingSchedule( Date startDate,
                                 Period maturityTenor,

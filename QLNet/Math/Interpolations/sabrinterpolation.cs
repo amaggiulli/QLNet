@@ -191,7 +191,7 @@ namespace QLNet
          maxGuesses_ = maxGuesses;
       }
 
-      Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
+      public Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
       {
          return new SABRInterpolation( xBegin, xEnd, yBegin, t_, forward_, alpha_, beta_, nu_, rho_,
                 alphaIsFixed_, betaIsFixed_, nuIsFixed_, rhoIsFixed_, vegaWeighted_,

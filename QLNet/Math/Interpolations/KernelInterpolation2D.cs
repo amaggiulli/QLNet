@@ -87,7 +87,7 @@ namespace QLNet
       // singularity or rounding errors the recalculation
       // M*a may not give y. Here, a failure will be thrown if
       // |M*a-y|>=invPrec_
-      void setInverseResultPrecision(double invPrec){invPrec_=invPrec;}
+      public void setInverseResultPrecision(double invPrec){invPrec_=invPrec;}
 
    
       // returns K(||X-Y||) where X,Y are vectors

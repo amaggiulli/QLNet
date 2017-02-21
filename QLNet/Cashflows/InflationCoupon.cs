@@ -61,7 +61,7 @@ namespace QLNet
       }
      //! \name Coupon interface
      //@{
-     double price(Handle<YieldTermStructure> discountingCurve) 
+     public double price(Handle<YieldTermStructure> discountingCurve) 
      {
         return amount() * discountingCurve.link.discount(date());
      }

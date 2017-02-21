@@ -114,7 +114,7 @@ namespace QLNet
             return errorEstimate_.GetValueOrDefault();
         }
         //! returns the date the net present value refers to.
-        Date valuationDate()
+        public Date valuationDate()
         {
            calculate();
            Utils.QL_REQUIRE( valuationDate_ != null, () => "valuation date not provided" );

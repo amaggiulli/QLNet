@@ -158,7 +158,7 @@ namespace QLNet
          rightValue_ = rightConditionValue;
       }
 
-      Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
+      public Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
       {
          return new MixedLinearCubicInterpolation(xBegin, xEnd,
                                                   yBegin, n_, behavior_,

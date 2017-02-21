@@ -97,7 +97,7 @@ namespace QLNet
          arguments.exercise = exercise_;
       }
 
-      void validate()
+      public void validate()
       {
          arguments.validate();
          if (arguments.swap == null)

@@ -25,16 +25,16 @@ namespace QLNet
 	public class SwaptionHelper : CalibrationHelper
 	{
 		public SwaptionHelper( Period maturity,
-							  Period length,
-							  Handle<Quote> volatility,
-							  IborIndex index,
-							  Period fixedLegTenor,
-							  DayCounter fixedLegDayCounter,
-							  DayCounter floatingLegDayCounter,
-							  Handle<YieldTermStructure> termStructure,
-							  CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
-							  double? strike = null,
-							  double nominal = 1.0 )
+							        Period length,
+							        Handle<Quote> volatility,
+							        IborIndex index,
+							        Period fixedLegTenor,
+							        DayCounter fixedLegDayCounter,
+							        DayCounter floatingLegDayCounter,
+							        Handle<YieldTermStructure> termStructure,
+							        CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
+							        double? strike = null,
+							        double nominal = 1.0 )
 			: base( volatility, termStructure, errorType )
 		{
 			exerciseDate_ = null;
@@ -51,17 +51,17 @@ namespace QLNet
 			index_ .registerWith(update);
 		}
 
-		SwaptionHelper( Date exerciseDate,
-							 Period length,
-							 Handle<Quote> volatility,
-							 IborIndex index,
-							 Period fixedLegTenor,
-							 DayCounter fixedLegDayCounter,
-							 DayCounter floatingLegDayCounter,
-							 Handle<YieldTermStructure> termStructure,
-							 CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
-							 double? strike = null,
-							 double nominal = 1.0 )
+		public SwaptionHelper( Date exerciseDate,
+							        Period length,
+							        Handle<Quote> volatility,
+							        IborIndex index,
+							        Period fixedLegTenor,
+							        DayCounter fixedLegDayCounter,
+							        DayCounter floatingLegDayCounter,
+							        Handle<YieldTermStructure> termStructure,
+							        CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
+							        double? strike = null,
+							        double nominal = 1.0 )
 			: base( volatility, termStructure, errorType )
 		{
 			exerciseDate_ = exerciseDate;
@@ -78,17 +78,17 @@ namespace QLNet
 			index_.registerWith( update );
 		}
 
-		SwaptionHelper(  Date exerciseDate,
-                       Date endDate,
-                       Handle<Quote> volatility,
-                       IborIndex index,
-                       Period fixedLegTenor,
-                       DayCounter fixedLegDayCounter,
-                       DayCounter floatingLegDayCounter,
-                       Handle<YieldTermStructure> termStructure,
-                       CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
-							  double? strike =null,
-                       double nominal = 1.0)
+		public SwaptionHelper( Date exerciseDate,
+                             Date endDate,
+                             Handle<Quote> volatility,
+                             IborIndex index,
+                             Period fixedLegTenor,
+                             DayCounter fixedLegDayCounter,
+                             DayCounter floatingLegDayCounter,
+                             Handle<YieldTermStructure> termStructure,
+                             CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
+							        double? strike =null,
+                             double nominal = 1.0)
 			: base( volatility, termStructure, errorType )
 		{
 			exerciseDate_ = exerciseDate;

@@ -182,8 +182,8 @@ namespace QLNet
         Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
     }
       
-      Frequency frequency() { return frequency_; }
-      DayCounter dayCounter() { return dayCounter_; }
+      public Frequency frequency() { return frequency_; }
+      public DayCounter dayCounter() { return dayCounter_; }
 
       protected Frequency frequency_;
       protected DayCounter dayCounter_;

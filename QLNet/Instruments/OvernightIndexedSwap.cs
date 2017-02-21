@@ -155,10 +155,10 @@ namespace QLNet
       public double fixedRate() { return fixedRate_; }
       public DayCounter fixedDayCount() { return fixedDC_; }
       //OvernightIndex overnightIndex();
-      double spread() { return spread_; }
+      public double spread() { return spread_; }
 
-      List<CashFlow> fixedLeg() { return legs_[0]; }
-      List<CashFlow> overnightLeg() { return legs_[1]; }
+      public List<CashFlow> fixedLeg() { return legs_[0]; }
+      public List<CashFlow> overnightLeg() { return legs_[1]; }
 
 
       public double? fairRate() 

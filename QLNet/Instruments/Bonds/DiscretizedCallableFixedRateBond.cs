@@ -145,13 +145,7 @@ namespace QLNet
          values_ += arguments_.couponAmounts[i];
       }
 
-      bool withinPreviousWeek(double t1, double t2) 
-      {
-         double dt = 1.0/52;
-         return t1-dt <= t2 && t2 <= t1;
-      }
-
-      bool withinNextWeek(double t1, double t2)
+      private bool withinNextWeek(double t1, double t2)
       {
          double dt = 1.0/52;
          return t1 <= t2 && t2 <= t1+dt;
