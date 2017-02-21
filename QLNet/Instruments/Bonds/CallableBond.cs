@@ -112,11 +112,8 @@ namespace QLNet
                               CallabilitySchedule putCallSchedule = null)
          : base(settlementDays, schedule.calendar(), issueDate)
       {
-         if (putCallSchedule == null)
-            putCallSchedule = new CallabilitySchedule();
-
          paymentDayCounter_ = paymentDayCounter;
-         putCallSchedule_ =putCallSchedule;
+         putCallSchedule_ = putCallSchedule ?? new CallabilitySchedule(); ;
          maturityDate_ = schedule.dates().Last();
 
         if (!putCallSchedule_.empty()) 
@@ -193,10 +190,6 @@ namespace QLNet
                                     CallabilitySchedule putCallSchedule = null)
          :base(settlementDays, schedule, accrualDayCounter, issueDate, putCallSchedule)
       {
-         
-         if ( putCallSchedule == null )
-            putCallSchedule = new CallabilitySchedule();
-          
          frequency_ = schedule.tenor().frequency();
 
          bool isZeroCouponBond = (coupons.Count == 1 && Utils.close(coupons[0], 0.0));
@@ -335,9 +328,6 @@ namespace QLNet
                                                        DateGeneration.Rule.Backward,
                                                        false), 
                new List<double>(){0.0}, dayCounter, paymentConvention, redemption, issueDate, putCallSchedule)
-      {
-         if (putCallSchedule == null)
-            putCallSchedule = new CallabilitySchedule();
-      }
+      {}
    }
 }
