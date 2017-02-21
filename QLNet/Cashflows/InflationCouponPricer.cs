@@ -85,12 +85,9 @@ namespace QLNet
    {
       public YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
       {
-         if ((object)capletVol == null)
-            capletVol = new Handle<YoYOptionletVolatilitySurface>();
+         capletVol_ = capletVol ?? new Handle<YoYOptionletVolatilitySurface>();
 
-         capletVol_ = capletVol;
-
-         if (!capletVol.empty()) capletVol_.registerWith(update);
+         if (!capletVol_.empty()) capletVol_.registerWith(update);
       }
 
       public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility() 
@@ -241,11 +238,7 @@ namespace QLNet
     
       public BlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol)
          : base(capletVol)
-      {
-         if ( capletVol == null )
-            capletVol = new Handle<YoYOptionletVolatilitySurface>();
-                        
-      }
+      {}
        
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)
@@ -263,11 +256,7 @@ namespace QLNet
    {
       public UnitDisplacedBlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
          : base(capletVol) 
-      {
-         if ( capletVol == null )
-            capletVol = new Handle<YoYOptionletVolatilitySurface>();
-   
-      }
+      {}
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                          double forward, double stdDev)
@@ -285,10 +274,7 @@ namespace QLNet
    {
       public BachelierYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
             : base(capletVol) 
-      {
-         if (capletVol == null )
-            capletVol = new Handle<YoYOptionletVolatilitySurface>();
-      }
+      {}
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                          double forward, double stdDev)
