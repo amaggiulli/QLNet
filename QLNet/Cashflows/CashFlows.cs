@@ -257,10 +257,10 @@ namespace QLNet
             npvDate_=npvDate;
 
             if (settlementDate == null)
-               settlementDate = Settings.evaluationDate();
+               settlementDate_ = Settings.evaluationDate();
 
             if (npvDate == null)
-               npvDate = settlementDate;
+               npvDate_ = settlementDate_;
 
             checkSign();
          }
@@ -325,10 +325,10 @@ namespace QLNet
             npvDate_ = npvDate;
 
             if (settlementDate == null)
-               settlementDate = Settings.evaluationDate();
+               settlementDate_ = Settings.evaluationDate();
 
             if (npvDate == null)
-               npvDate = settlementDate;
+               npvDate_ = settlementDate_;
 
             // if the discount curve allows extrapolation, let's
             // the spreaded curve do too.
