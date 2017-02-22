@@ -88,6 +88,9 @@ namespace QLNet {
     //! %null step condition
     /*! \ingroup findiff */
     public class NullCondition<array_type> : IStepCondition<array_type> where array_type : Vector {
-        public void applyTo(object a, double t) { }
+        public void applyTo(object a, double t)
+        {
+           // Nothing to do here
+        }
     }
 }

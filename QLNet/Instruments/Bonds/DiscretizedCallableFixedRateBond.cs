@@ -90,7 +90,10 @@ namespace QLNet
          return times;
       }
 
-      protected override void preAdjustValuesImpl() {}
+      protected override void preAdjustValuesImpl()
+      {
+         // Nothing to do here
+      }
       protected override void postAdjustValuesImpl()
       {
          for (int i = 0; i < callabilityTimes_.Count -1; i++)

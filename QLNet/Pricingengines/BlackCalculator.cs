@@ -318,7 +318,10 @@ namespace QLNet {
                 Utils.QL_FAIL("unsupported payoff type: " + p.name());
             }
 
-            public void visit(PlainVanillaPayoff p) { }
+            public void visit(PlainVanillaPayoff p)
+            {
+               // Nothing to do here
+            }
 
             public void visit(CashOrNothingPayoff payoff) {
                 black_.alpha_ = black_.DalphaDd1_ = 0.0;

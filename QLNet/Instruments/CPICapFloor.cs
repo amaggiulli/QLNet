@@ -57,7 +57,10 @@ namespace QLNet
          public Period observationLag;
          public InterpolationType observationInterpolation;
 
-         public void validate() {}
+         public void validate()
+         {
+            // Nothing to do here
+         }
       }
 
       public new class Results : Instrument.Results 

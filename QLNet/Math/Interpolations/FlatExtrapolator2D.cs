@@ -44,7 +44,10 @@ namespace QLNet
          public Matrix zData() {return decoratedInterp_.zData();}
          public bool isInRange(double x, double y) {return decoratedInterp_.isInRange(x,y);}
          public void update() {decoratedInterp_.update();}
-         public void calculate() {}
+         public void calculate()
+         {
+            // Nothing to do here
+         }
          public double value(double x, double y)  
          {
             x = bindX(x);
