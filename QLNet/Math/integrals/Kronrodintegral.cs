@@ -120,7 +120,6 @@ public static class KronrodintegralArrays
 		protected override double integrate(Func<double, double> f, double a, double b)
 		{
 			double result;
-			//Size neval;
 			double[] fv1 = new double[5];
 			double[] fv2 = new double[5];
 			double[] fv3 = new double[5];

@@ -23,6 +23,5 @@ namespace QLNet {
     // data structures
 
     // Multi-cubic spline
-    // typedef std::vector<std::vector<Real> > SplineGrid;
     public class SplineGrid : InitializedList<List<double>> { }
 }

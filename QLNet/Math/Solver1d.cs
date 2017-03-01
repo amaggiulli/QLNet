@@ -30,7 +30,7 @@ namespace QLNet {
 
     //! Base class for 1-D solvers
     /*! Before calling <tt>solveImpl</tt>, the base class will set its protected data members so that:
-        - <tt>xMin_</tt> and  <tt>xMax_</tt> form a valid bracket;
+        - <tt>xMin_</tt> and  <tt>xMax_</tt> form a valid bracket
         - <tt>fxMin_</tt> and <tt>fxMax_</tt> contain the values of the function in <tt>xMin_</tt> and <tt>xMax_</tt>;
         - <tt>root_</tt> is a valid initial guess.
         The implementation of <tt>solveImpl</tt> can safely assume all of the above.
@@ -46,7 +46,7 @@ namespace QLNet {
         private bool lowerBoundEnforced_ = false, upperBoundEnforced_ = false;
 
 
-        /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$;
+        /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
             depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
             \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
 
@@ -113,7 +113,7 @@ namespace QLNet {
                 + "-> [" + fxMin_ + "," + fxMax_ + "])");
         }
 
-        /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$;
+        /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
             depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
             \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
 

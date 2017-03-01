@@ -40,7 +40,6 @@ namespace QLNet
          return values_;
       }
 
-      //public SampledCurve(int gridSize = 0);
       public SampledCurve(int gridSize)
       {
          grid_ = new Vector(gridSize);

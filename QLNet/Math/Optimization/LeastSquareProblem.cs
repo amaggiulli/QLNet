@@ -138,7 +138,6 @@ namespace QLNet
         private double bestAccuracy_;
         //! maximum and real number of iterations
         private int maxIterations_;
-        //private int nbIterations_;
         //! Optimization method
         private OptimizationMethod om_;
         //constraint
@@ -186,9 +185,6 @@ namespace QLNet
             EndCriteria ec = new EndCriteria(maxIterations_, Math.Min((int)(maxIterations_ / 2), (int)(100)), eps, eps, eps);
             exitFlag_ = (int)om_.minimize(P, ec);
 
-            // summarize results of minimization
-            //        nbIterations_ = om_->iterationNumber();
-
             results_ = P.currentValue();
             resnorm_ = P.functionValue();
             bestAccuracy_ = P.functionValue();
@@ -225,10 +221,5 @@ namespace QLNet
             return exitFlag_;
         }
 
-        //! return the performed number of iterations
-        //public int iterationsNumber()
-        //{
-        //    return nbIterations_;
-        //}
     }
 }

@@ -105,7 +105,6 @@ namespace QLNet {
             reg_ = new LinearLeastSquaresRegression<List<double>>(x, y, linearFcts(x[0].Count));
         }
 
-        //! returns paramters {a_0, a_1, ..., a_n}
         public Vector coefficients()   { return reg_.coefficients(); }
 
         public Vector residuals()      { return reg_.residuals(); }

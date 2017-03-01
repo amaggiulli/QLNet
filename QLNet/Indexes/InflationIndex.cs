@@ -126,7 +126,6 @@ namespace QLNet
       */
       public Period availabilityLag() { return availabilityLag_; }
       public Currency currency() { return currency_; }
-      //@}
 
       protected Date referenceDate_;
       protected string familyName_;
@@ -138,7 +137,6 @@ namespace QLNet
       protected Currency currency_;
 
       private string name_;
-
    }
 
 

@@ -59,7 +59,6 @@ namespace QLNet
 
       // arguments
       private VanillaSwap swap_;
-      //Handle<YieldTermStructure> termStructure_;
       private Settlement.Type settlementType_;
 
       public Swaption(VanillaSwap swap,Exercise exercise)
@@ -78,8 +77,7 @@ namespace QLNet
          swap_.registerWith(update);
       }
 
-      //! \name Instrument interface
-      //@{ 
+      // Instrument interface
       public override bool isExpired()
       {
          return new simple_event(exercise_.dates().Last()).hasOccurred();
@@ -106,8 +104,7 @@ namespace QLNet
             throw new ArgumentException("exercise not set");
       }
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public Settlement.Type settlementType()
       {
          return settlementType_;
@@ -136,7 +133,6 @@ namespace QLNet
          if (isExpired())
             throw new ArgumentException("instrument expired");
          ImpliedVolHelper_ f = new ImpliedVolHelper_(this, discountCurve, targetValue);
-         //Brent solver;
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
@@ -151,11 +147,6 @@ namespace QLNet
          public Arguments()
          {
             settlementType = Settlement.Type.Physical;
-         }
-
-         public override void validate()
-         {
-            base.validate();
          }
       }
    }

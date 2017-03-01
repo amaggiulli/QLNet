@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet {
 	//! Abstract base forward class
@@ -58,10 +57,6 @@ namespace QLNet {
         /*! must set this in derived classes, based on particular underlying */
 		protected Handle<YieldTermStructure> incomeDiscountCurve_;
 
-
-		//protected Forward(DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
-		//                  int settlementDays, Payoff payoff, Date valueDate, Date maturityDate,
-		//                  Handle<YieldTermStructure> discountCurve = Handle<YieldTermStructure>()) {
 		protected Forward(DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
 						  int settlementDays, Payoff payoff, Date valueDate, Date maturityDate,
 						  Handle<YieldTermStructure> discountCurve) {
@@ -95,8 +90,7 @@ namespace QLNet {
         //! NPV of income/dividends/storage-costs etc. of underlying instrument
         public abstract double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve);
 
-		//! \name Calculations
-		//@{
+		// Calculations
 		//! forward value/price of underlying, discounting income/dividends
 		/*! \note if this is a bond forward price, is must be a dirty
 				  forward price.
@@ -113,7 +107,7 @@ namespace QLNet {
 		forwardValue=strikePrice, to get current yield. For a
 		repo, if \f$ t=0 \f$, impliedYield should reproduce the
 		spot repo rate. For FRA's, this should reproduce the
-		relevant zero rate at the FRA's maturityDate_;
+		relevant zero rate at the FRA's maturityDate_
 		*/
 		public InterestRate impliedYield(double underlyingSpotValue, double forwardValue, Date settlementDate,
                                          Compounding compoundingConvention, DayCounter dayCounter) {

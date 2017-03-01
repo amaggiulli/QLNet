@@ -41,8 +41,6 @@ namespace QLNet
 
    public struct SABRSpecs : IModel
    {
-      //private SABRWrapper wrapper;
-
       public int dimension() { return 4; }
       public void defaultValues( List<double?> param, List<bool> b, double forward, double expiryTIme )
       {
@@ -83,7 +81,6 @@ namespace QLNet
          Vector x = new Vector( 4 );
          x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt( y[0] - eps1() )
                                      : ( y[0] - eps1() + 25.0 ) / 10.0;
-         // y_[1] = std::tan(M_PI*(x[1] - 0.5))/dilationFactor();
          x[1] = Math.Sqrt( -Math.Log( y[1] ) );
          x[2] = y[2] < 25.0 + eps1() ? Math.Sqrt( y[2] - eps1() )
                                        : ( y[2] - eps1() + 25.0 ) / 10.0;
@@ -96,7 +93,6 @@ namespace QLNet
          y[0] = Math.Abs( x[0] ) < 5.0
                      ? x[0] * x[0] + eps1()
                      : ( 10.0 * Math.Abs( x[0] ) - 25.0 ) + eps1();
-         // y_[1] = std::atan(dilationFactor_*x[1])/M_PI + 0.5;
          y[1] = Math.Abs( x[1] ) < Math.Sqrt( -Math.Log( eps1() ) )
                      ? Math.Exp( -( x[1] * x[1] ) )
                      : eps1();

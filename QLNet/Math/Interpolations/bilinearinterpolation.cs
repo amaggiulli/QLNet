@@ -16,70 +16,66 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
+   public class BilinearInterpolationImpl : Interpolation2D.templateImpl
+   {
+      public BilinearInterpolationImpl(List<double> xBegin, int xSize,
+         List<double> yBegin, int ySize,
+         Matrix zData)
+         : base(xBegin, xSize, yBegin, ySize, zData)
+      {
+         calculate();
+      }
 
-    //namespace detail {
+      public override void calculate()
+      {}
 
-        public class BilinearInterpolationImpl  : Interpolation2D.templateImpl
-        {
+      public override double value(double x, double y)
+      {
+         int i = this.locateX(x), j = this.locateY(y);
 
-            public BilinearInterpolationImpl(List<double> xBegin, int xSize,
-                                      List<double>  yBegin,int ySize,
-                                      Matrix zData)
-            :base(xBegin,xSize,yBegin,ySize,zData){
-                calculate();
-            }
+         double z1 = this.zData_[j, i];
+         double z2 = this.zData_[j, i + 1];
+         double z3 = this.zData_[j + 1, i];
+         double z4 = this.zData_[j + 1, i + 1];
 
-            public override void calculate() { }
+         double t = (x - this.xBegin_[i]) /
+                    (this.xBegin_[i + 1] - this.xBegin_[i]);
+         double u = (y - this.yBegin_[j]) /
+                    (this.yBegin_[j + 1] - this.yBegin_[j]);
 
-            public override double value(double x, double y)
-            {
-                int i = this.locateX(x), j = this.locateY(y);
+         return (1.0 - t) * (1.0 - u) * z1 + t * (1.0 - u) * z2
+                + (1.0 - t) * u * z3 + t * u * z4;
+      }
+   }
 
-                double z1 = this.zData_[j,i];
-                double z2 = this.zData_[j, i + 1];
-                double z3 = this.zData_[j + 1, i];
-                double z4 = this.zData_[j + 1, i + 1];
+   //! %bilinear interpolation between discrete points
+   public class BilinearInterpolation : Interpolation2D
+   {
+      /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
 
-                double t = (x - this.xBegin_[i]) /
-                    (this.xBegin_[i+1]-this.xBegin_[i]);
-                double u = (y - this.yBegin_[j]) /
-                    (this.yBegin_[j+1]-this.yBegin_[j]);
+      public BilinearInterpolation(List<double> xBegin, int xSize,
+         List<double> yBegin, int ySize,
+         Matrix zData)
+      {
+         impl_ = (Interpolation2D.Impl) (
+            new BilinearInterpolationImpl(xBegin, xSize,
+               yBegin, ySize, zData));
+      }
+   }
 
-                return (1.0-t)*(1.0-u)*z1 + t*(1.0-u)*z2
-                     + (1.0-t)*u*z3 + t*u*z4;
-            }
-        }
-
-
-        //! %bilinear interpolation between discrete points
-        public class BilinearInterpolation : Interpolation2D
-        {
-
-            /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
-            public BilinearInterpolation(List<double> xBegin, int xSize,
-                                         List<double> yBegin, int ySize,
-                                         Matrix zData){
-                impl_ = (Interpolation2D.Impl)(
-                      new BilinearInterpolationImpl(xBegin, xSize,
-                                                    yBegin, ySize,zData));
-            }
-        }
-
-        //! bilinear-interpolation factory
-        public class Bilinear : IInterpolationFactory2D
-        {
-            public Interpolation2D interpolate(List<double> xBegin, int xSize,
-                                                                List<double> yBegin, int ySize,
-                                                                Matrix zData)
-            {
-               return new BilinearInterpolation(xBegin, xSize, yBegin, ySize, zData);
-            }
-        }
-    }
+   //! bilinear-interpolation factory
+   public class Bilinear : IInterpolationFactory2D
+   {
+      public Interpolation2D interpolate(List<double> xBegin, int xSize,
+         List<double> yBegin, int ySize,
+         Matrix zData)
+      {
+         return new BilinearInterpolation(xBegin, xSize, yBegin, ySize, zData);
+      }
+   }
+}

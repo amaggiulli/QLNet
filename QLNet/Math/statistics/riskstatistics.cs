@@ -29,7 +29,6 @@ namespace QLNet {
         \todo add historical annualized volatility
     */
     public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new() {
-        //typedef typename S::value_type value_type;
 
         #region wrap-up Stat
         protected Stat impl_ = new Stat();
@@ -58,10 +57,6 @@ namespace QLNet {
 
 
         /*! returns the variance of observations below the mean,
-            \f[ \frac{N}{N-1}
-                \mathrm{E}\left[ (x-\langle x \rangle)^2 \;|\;
-                                  x < \langle x \rangle \right]. \f]
-
             See Markowitz (1959).
         */
         public double semiVariance() { return regret(this.mean()); }
@@ -69,20 +64,13 @@ namespace QLNet {
         /*! returns the semi deviation, defined as the square root of the semi variance. */
         public double semiDeviation() { return Math.Sqrt(semiVariance()); }
 
-        /*! returns the variance of observations below 0.0,
-            \f[ \frac{N}{N-1}
-                \mathrm{E}\left[ x^2 \;|\; x < 0\right]. \f]
-        */
+        // returns the variance of observations below 0.0,
         public double downsideVariance() { return regret(0.0); }
 
         /*! returns the downside deviation, defined as the square root of the downside variance. */
         public double downsideDeviation() { return Math.Sqrt(downsideVariance()); }
 
         /*! returns the variance of observations below target,
-            \f[ \frac{N}{N-1}
-                \mathrm{E}\left[ (x-t)^2 \;|\;
-                                  x < t \right]. \f]
-
             See Dembo and Freeman, "The Rules Of Risk", Wiley (2001).
         */
         public double regret(double target) {
@@ -115,8 +103,6 @@ namespace QLNet {
         /*! returns the expected loss in case that the loss exceeded
             a VaR threshold,
 
-            \f[ \mathrm{E}\left[ x \;|\; x < \mathrm{VaR}(p) \right], \f]
-
             that is the average of observations below the
             given percentile \f$ p \f$.
             Also know as conditional value-at-risk.
@@ -138,24 +124,13 @@ namespace QLNet {
             return -Math.Min(x, 0.0);
         }
 
-        /*! probability of missing the given target, defined as
-            \f[ \mathrm{E}\left[ \Theta \;|\; (-\infty,\infty) \right] \f]
-            where
-            \f[ \Theta(x) = \left\{
-                \begin{array}{ll}
-                1 & x < t \\
-                0 & x \geq t
-                \end{array}
-                \right. \f]
-        */
+        // probability of missing the given target
         public double shortfall(double target) {
             Utils.QL_REQUIRE(samples() != 0,()=> "empty sample set");
             return expectationValue(x => x.Key < target ? 1 : 0, x => true).Key;
         }
 
-        /*! averaged shortfallness, defined as
-            \f[ \mathrm{E}\left[ t-x \;|\; x<t \right] \f]
-        */
+        // averaged shortfallness
         public double averageShortfall(double target) {
             KeyValuePair<double, int> result = expectationValue(z => target - z.Key, z => z.Key < target);
             double x = result.Key;
@@ -167,7 +142,6 @@ namespace QLNet {
 
     //! default risk measures tool
     /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
-    //typedef GenericRiskStatistics<GaussianStatistics> RiskStatistics;
     public class RiskStatistics : GenericRiskStatistics<GaussianStatistics> {
         public double gaussianPercentile(double value) {
             return ((GaussianStatistics)impl_).gaussianPercentile(value);

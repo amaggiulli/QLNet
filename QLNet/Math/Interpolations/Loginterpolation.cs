@@ -84,11 +84,7 @@ namespace QLNet {
         private double leftValue_, rightValue_;
 
         public LogCubic() { }
-        //public LogCubic(CubicInterpolation::DerivativeApprox da, bool monotonic = true,
-        //          CubicInterpolation::BoundaryCondition leftCondition = CubicInterpolation::SecondDerivative,
-        //          double leftConditionValue = 0.0,
-        //          CubicInterpolation::BoundaryCondition rightCondition = CubicInterpolation::SecondDerivative,
-        //          double rightConditionValue = 0.0) {
+
         public LogCubic(CubicInterpolation.DerivativeApprox da, bool monotonic,
                         CubicInterpolation.BoundaryCondition leftCondition, double leftConditionValue,
                         CubicInterpolation.BoundaryCondition rightCondition, double rightConditionValue) {

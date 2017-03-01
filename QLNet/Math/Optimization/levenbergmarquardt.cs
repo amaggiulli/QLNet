@@ -110,12 +110,8 @@ namespace QLNet
          info_ = info;
          // check requirements & endCriteria evaluation
          Utils.QL_REQUIRE( info != 0 ,()=> "MINPACK: improper input parameters" );
-         //if(info == 6) throw new Exception("MINPACK: ftol is too small. no further " +
-         //                                             "reduction in the sum of squares is possible.");
-
          if ( info != 6 ) ecType = EndCriteria.Type.StationaryFunctionValue;
-         //QL_REQUIRE(info != 5, "MINPACK: number of calls to fcn has reached or exceeded maxfev.");
-         endCriteria.checkMaxIterations( nfev, ref ecType );
+        endCriteria.checkMaxIterations( nfev, ref ecType );
          Utils.QL_REQUIRE( info != 7 ,()=> "MINPACK: xtol is too small. no further " +
                                            "improvement in the approximate " +
                                            "solution x is possible." );
@@ -151,7 +147,6 @@ namespace QLNet
       {
          Vector xt = new Vector(x);
          Matrix fjac;
-         //std::copy(x, x+n, xt.begin());
          // constraint handling needs some improvement in the future:
          // starting point should not be close to a constraint violation
          if (currentProblem_.constraint().test(xt)) 

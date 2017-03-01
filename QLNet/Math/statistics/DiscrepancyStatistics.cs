@@ -72,7 +72,6 @@ namespace QLNet
             for (k = 0; k < dimension_; ++k)
             {
                // running i=1..(N-1)
-               //r_ik = stats_[k].data()[m].first;
                r_ik = 0;
                // fixed j=N
                r_jk = begin[k];
@@ -86,7 +85,6 @@ namespace QLNet
                // fixed i=N
                r_ik = begin[k];
                // running j=1..(N-1)
-               //r_jk = stats_[k].data()[m].first;
                r_jk = 0;
                temp *= (1.0 - Math.Max(r_ik, r_jk));
             }

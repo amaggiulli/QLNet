@@ -166,7 +166,6 @@ namespace QLNet
         for (i=0; i<n; i++) 
         {
             if (ev_.rows() > 0)
-                //std::copy(ev_.column_begin(i),ev_.column_end(i), eigenVector.begin());
                 eigenVector = ev_.column(i) ;
 
             temp[i] = new KeyValuePair<double,List<double>>(d_[i], eigenVector);

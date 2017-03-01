@@ -42,8 +42,8 @@ namespace QLNet {
         the \f$ n \f$-th step. Any passed class must implement the
         following interface:
         \code
-        Size initialSamples() const;
-        Size nextSamples(Size currentSamples) const;
+        Size initialSamples() const
+        Size nextSamples(Size currentSamples) const
         \endcode
         as well as a copy constructor.
 
@@ -66,7 +66,6 @@ namespace QLNet {
         private U samplingRule_;
         private int nextSampleSize_;
 
-        //public ConvergenceStatistics(T stats, U rule = U());
         public ConvergenceStatistics(T stats, U rule) {
             impl_ = stats;
             samplingRule_ = rule;

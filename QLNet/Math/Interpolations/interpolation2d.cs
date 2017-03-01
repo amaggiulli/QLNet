@@ -159,16 +159,6 @@ namespace QLNet
            }
 
            public int locateY(double y) {
-               /*#if QL_EXTRA_SAFETY_CHECKS
-               for (I2 k=yBegin_, l=yBegin_+1; l!=yEnd_; ++k, ++l)
-                   QL_REQUIRE(*l > *k, "unsorted y values");
-               #endif
-               if (y < *yBegin_)
-                   return 0;
-               else if (y > *(yEnd_-1))
-                   return yEnd_-yBegin_-2;
-               else
-                   return std::upper_bound(yBegin_,yEnd_-1,y)-yBegin_-1;*/
                int result = yBegin_.BinarySearch(y);
                if (result < 0)
                    // The upper_bound() algorithm finds the last position in a sequence that value can occupy

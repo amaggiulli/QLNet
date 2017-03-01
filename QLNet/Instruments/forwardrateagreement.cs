@@ -17,9 +17,8 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-
-namespace QLNet {
+namespace QLNet
+{
    //! %Forward rate agreement (FRA) class
    /*! 1. Unlike the forward contract conventions on carryable
           financial assets (stocks, bonds, commodities), the
@@ -64,7 +63,9 @@ namespace QLNet {
 
        \ingroup instruments
    */
-   public class ForwardRateAgreement : Forward {
+
+   public class ForwardRateAgreement : Forward
+   {
       protected Position.Type fraType_;
       //! aka FRA rate (the market forward rate)
       protected InterestRate forwardRate_;
@@ -73,23 +74,21 @@ namespace QLNet {
       protected double notionalAmount_;
       protected IborIndex index_;
 
-
-      // Handle<YieldTermStructure> discountCurve = Handle<YieldTermStructure>());
       public ForwardRateAgreement(Date valueDate, Date maturityDate, Position.Type type, double strikeForwardRate,
-                                  double notionalAmount, IborIndex index, Handle<YieldTermStructure> discountCurve)
-         : base(index.dayCounter(), index.fixingCalendar(), index.businessDayConvention(), index.fixingDays(), new Payoff(),
-                 valueDate, maturityDate, discountCurve) {
-
+         double notionalAmount, IborIndex index, Handle<YieldTermStructure> discountCurve)
+         : base(
+            index.dayCounter(), index.fixingCalendar(), index.businessDayConvention(), index.fixingDays(), new Payoff(),
+            valueDate, maturityDate, discountCurve)
+      {
          fraType_ = type;
          notionalAmount_ = notionalAmount;
          index_ = index;
 
-         Utils.QL_REQUIRE(notionalAmount > 0.0,()=> "notional Amount must be positive");
+         Utils.QL_REQUIRE(notionalAmount > 0.0, () => "notional Amount must be positive");
 
          // do I adjust this ?
-         // valueDate_ = calendar_.adjust(valueDate_,businessDayConvention_);
          Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
-         forwardRate_ = new InterestRate(index.fixing(fixingDate), index.dayCounter(), Compounding.Simple, Frequency.Once);
+         forwardRate_ = new InterestRate(index.fixing(fixingDate), index.dayCounter(), Compounding.Simple,Frequency.Once);
          strikeForwardRate_ = new InterestRate(strikeForwardRate, index.dayCounter(), Compounding.Simple, Frequency.Once);
          double strike = notionalAmount_ * strikeForwardRate_.compoundFactor(valueDate_, maturityDate_);
          payoff_ = new ForwardTypePayoff(fraType_, strike);
@@ -97,47 +96,57 @@ namespace QLNet {
          incomeDiscountCurve_ = discountCurve_;
          // income is irrelevant to FRA - set it to zero
          underlyingIncome_ = 0.0;
-         
+
          index_.registerWith(update);
       }
 
-        //! \name Calculations
-        //@{
-        public override Date settlementDate() {
-            return calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
-        }
+      // Calculations
+      public override Date settlementDate()
+      {
+         return calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
+      }
 
-        /*! A FRA expires/settles on the valueDate */
-        public override bool isExpired() {
-            return new simple_event(valueDate_).hasOccurred(settlementDate());
-        }
+      /*! A FRA expires/settles on the valueDate */
 
-        /*!  Income is zero for a FRA */
-        public override double spotIncome(Handle<YieldTermStructure> t) { return 0.0; }
+      public override bool isExpired()
+      {
+         return new simple_event(valueDate_).hasOccurred(settlementDate());
+      }
 
-        //! Spot value (NPV) of the underlying loan
-        /*! This has always a positive value (asset), even if short the FRA */
-        public override double spotValue() {
-            calculate();
-            double result = notionalAmount_ *
-                   forwardRate().compoundFactor(valueDate_, maturityDate_) *
-                   discountCurve_.link.discount(maturityDate_);
-            return result;
-        }
+      /*!  Income is zero for a FRA */
 
-        //! Returns the relevant forward rate associated with the FRA term
-        public InterestRate forwardRate() {
-            calculate();
-            return forwardRate_;
-        }
+      public override double spotIncome(Handle<YieldTermStructure> t)
+      {
+         return 0.0;
+      }
 
-        protected override void performCalculations() {
-            Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
-            forwardRate_ = new InterestRate(index_.fixing(fixingDate), index_.dayCounter(),
-                                            Compounding.Simple, Frequency.Once);
-            underlyingSpotValue_ = spotValue();
-            underlyingIncome_    = 0.0;
-            base.performCalculations();
-        }
+      //! Spot value (NPV) of the underlying loan
+      /*! This has always a positive value (asset), even if short the FRA */
+
+      public override double spotValue()
+      {
+         calculate();
+         double result = notionalAmount_ *
+                         forwardRate().compoundFactor(valueDate_, maturityDate_) *
+                         discountCurve_.link.discount(maturityDate_);
+         return result;
+      }
+
+      //! Returns the relevant forward rate associated with the FRA term
+      public InterestRate forwardRate()
+      {
+         calculate();
+         return forwardRate_;
+      }
+
+      protected override void performCalculations()
+      {
+         Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
+         forwardRate_ = new InterestRate(index_.fixing(fixingDate), index_.dayCounter(),
+            Compounding.Simple, Frequency.Once);
+         underlyingSpotValue_ = spotValue();
+         underlyingIncome_ = 0.0;
+         base.performCalculations();
+      }
    }
 }

@@ -55,11 +55,6 @@ namespace QLNet {
                 this[i] = from[i];
         }
 
-        //public Vector(const Disposable<Vector>&);
-
-        // these can not be overloaded
-        //Array& operator=(const Array&);
-        //Array& operator=(const Disposable<Vector>&);
         public Object Clone() { return this.MemberwiseClone(); }
 
         public static bool operator ==(Vector to, Vector from) {
@@ -126,7 +121,6 @@ namespace QLNet {
                 result += v1[i] * v2[i];
             return result;
         }
-        //public static double operator /(Vector v1, Vector v2) { return operVector(ref v1, ref v2, (x, y) => x / y); }
         #endregion
 
 

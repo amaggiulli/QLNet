@@ -16,144 +16,168 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
-namespace QLNet {
-    //! Base class for options on a single asset
-    public class OneAssetOption : Option {
-        // results
-        protected double? delta_, deltaForward_, elasticity_, gamma_, theta_,
-            thetaPerDay_, vega_, rho_, dividendRho_, strikeSensitivity_,
-            itmCashProbability_;
+namespace QLNet
+{
+   //! Base class for options on a single asset
+   public class OneAssetOption : Option
+   {
+      // results
+      protected double? delta_,
+         deltaForward_,
+         elasticity_,
+         gamma_,
+         theta_,
+         thetaPerDay_,
+         vega_,
+         rho_,
+         dividendRho_,
+         strikeSensitivity_,
+         itmCashProbability_;
 
-        public OneAssetOption(Payoff payoff, Exercise exercise) : base(payoff, exercise) {}
+      public OneAssetOption(Payoff payoff, Exercise exercise) : base(payoff, exercise)
+      {}
 
-        public override bool isExpired() { return new simple_event(exercise_.lastDate()).hasOccurred(); }
+      public override bool isExpired()
+      {
+         return new simple_event(exercise_.lastDate()).hasOccurred();
+      }
 
-        public double delta() {
-            calculate();
-            Utils.QL_REQUIRE(delta_ != null,()=> "delta not provided");
-            return delta_.GetValueOrDefault();
-        }
+      public double delta()
+      {
+         calculate();
+         Utils.QL_REQUIRE(delta_ != null, () => "delta not provided");
+         return delta_.GetValueOrDefault();
+      }
 
-        public double deltaForward() {
-            calculate();
-            Utils.QL_REQUIRE(deltaForward_ != null,()=> "forward delta not provided");
-            return deltaForward_.GetValueOrDefault();
-        }
+      public double deltaForward()
+      {
+         calculate();
+         Utils.QL_REQUIRE(deltaForward_ != null, () => "forward delta not provided");
+         return deltaForward_.GetValueOrDefault();
+      }
 
-        public double elasticity() {
-            calculate();
-            Utils.QL_REQUIRE(elasticity_ != null,()=> "elasticity not provided");
-            return elasticity_.GetValueOrDefault();
-        }
+      public double elasticity()
+      {
+         calculate();
+         Utils.QL_REQUIRE(elasticity_ != null, () => "elasticity not provided");
+         return elasticity_.GetValueOrDefault();
+      }
 
-        public double gamma() {
-            calculate();
-            Utils.QL_REQUIRE(gamma_ != null,()=> "gamma not provided");
-            return gamma_.GetValueOrDefault();
-        }
+      public double gamma()
+      {
+         calculate();
+         Utils.QL_REQUIRE(gamma_ != null, () => "gamma not provided");
+         return gamma_.GetValueOrDefault();
+      }
 
-        public double theta() {
-            calculate();
-            Utils.QL_REQUIRE(theta_ != null,()=> "theta not provided");
-            return theta_.GetValueOrDefault();
-        }
+      public double theta()
+      {
+         calculate();
+         Utils.QL_REQUIRE(theta_ != null, () => "theta not provided");
+         return theta_.GetValueOrDefault();
+      }
 
-        public double thetaPerDay() {
-            calculate();
-           Utils.QL_REQUIRE(thetaPerDay_ != null,()=> "theta per-day not provided");
-            return thetaPerDay_.GetValueOrDefault();
-        }
+      public double thetaPerDay()
+      {
+         calculate();
+         Utils.QL_REQUIRE(thetaPerDay_ != null, () => "theta per-day not provided");
+         return thetaPerDay_.GetValueOrDefault();
+      }
 
-        public double vega() {
-            calculate();
-            Utils.QL_REQUIRE(vega_ != null,()=> "vega not provided");
-            return vega_.GetValueOrDefault();
-        }
+      public double vega()
+      {
+         calculate();
+         Utils.QL_REQUIRE(vega_ != null, () => "vega not provided");
+         return vega_.GetValueOrDefault();
+      }
 
-        public double rho() {
-            calculate();
-            Utils.QL_REQUIRE(rho_ != null,()=> "rho not provided");
-            return rho_.GetValueOrDefault();
-        }
+      public double rho()
+      {
+         calculate();
+         Utils.QL_REQUIRE(rho_ != null, () => "rho not provided");
+         return rho_.GetValueOrDefault();
+      }
 
-        public double dividendRho() {
-            calculate();
-            Utils.QL_REQUIRE(dividendRho_ != null,()=> "dividend rho not provided");
-            return dividendRho_.GetValueOrDefault();
-        }
+      public double dividendRho()
+      {
+         calculate();
+         Utils.QL_REQUIRE(dividendRho_ != null, () => "dividend rho not provided");
+         return dividendRho_.GetValueOrDefault();
+      }
 
-        public double strikeSensitivity() {
-            calculate();
-            Utils.QL_REQUIRE(strikeSensitivity_ != null,()=> "strike sensitivity not provided");
-            return strikeSensitivity_.GetValueOrDefault();
-        }
+      public double strikeSensitivity()
+      {
+         calculate();
+         Utils.QL_REQUIRE(strikeSensitivity_ != null, () => "strike sensitivity not provided");
+         return strikeSensitivity_.GetValueOrDefault();
+      }
 
-        public double itmCashProbability() {
-            calculate();
-            Utils.QL_REQUIRE(itmCashProbability_ != null,()=> "in-the-money cash probability not provided");
-            return itmCashProbability_.GetValueOrDefault();
-        }
+      public double itmCashProbability()
+      {
+         calculate();
+         Utils.QL_REQUIRE(itmCashProbability_ != null, () => "in-the-money cash probability not provided");
+         return itmCashProbability_.GetValueOrDefault();
+      }
 
-        protected override void setupExpired() {
-            base.setupExpired();
-            delta_ = deltaForward_ = elasticity_ = gamma_ = theta_ = thetaPerDay_ = vega_ = rho_ = dividendRho_ =
-                strikeSensitivity_ = itmCashProbability_ = 0.0;
-        }
+      protected override void setupExpired()
+      {
+         base.setupExpired();
+         delta_ = deltaForward_ = elasticity_ = gamma_ = theta_ = thetaPerDay_ = vega_ = rho_ = dividendRho_ =
+            strikeSensitivity_ = itmCashProbability_ = 0.0;
+      }
 
-        public override void fetchResults(IPricingEngineResults r) {
-            base.fetchResults(r);
+      public override void fetchResults(IPricingEngineResults r)
+      {
+         base.fetchResults(r);
 
-            Results results = r as Results;
-            Utils.QL_REQUIRE(results != null,()=> "no greeks returned from pricing engine");
-            /* no check on null values - just copy.
-               this allows:
-               a) to decide in derived options what to do when null
-               results are returned (throw? numerical calculation?)
-               b) to implement slim engines which only calculate the
-               value---of course care must be taken not to call
-               the greeks methods when using these.
-            */
-            delta_          = results.delta;
-            gamma_          = results.gamma;
-            theta_          = results.theta;
-            vega_           = results.vega;
-            rho_            = results.rho;
-            dividendRho_    = results.dividendRho;
+         Results results = r as Results;
+         Utils.QL_REQUIRE(results != null, () => "no greeks returned from pricing engine");
+         /* no check on null values - just copy.
+            this allows:
+            a) to decide in derived options what to do when null
+            results are returned (throw? numerical calculation?)
+            b) to implement slim engines which only calculate the
+            value---of course care must be taken not to call
+            the greeks methods when using these.
+         */
+         delta_ = results.delta;
+         gamma_ = results.gamma;
+         theta_ = results.theta;
+         vega_ = results.vega;
+         rho_ = results.rho;
+         dividendRho_ = results.dividendRho;
 
-            // QL_ENSURE(moreResults != 0, "no more greeks returned from pricing engine");
-            /* no check on null values - just copy.
-               this allows:
-               a) to decide in derived options what to do when null
-               results are returned (throw? numerical calculation?)
-               b) to implement slim engines which only calculate the
-               value---of course care must be taken not to call
-               the greeks methods when using these.
-            */
-            deltaForward_       = results.deltaForward;
-            elasticity_         = results.elasticity;
-            thetaPerDay_        = results.thetaPerDay;
-            strikeSensitivity_  = results.strikeSensitivity;
-            itmCashProbability_ = results.itmCashProbability;
-        }
+         /* no check on null values - just copy.
+            this allows:
+            a) to decide in derived options what to do when null
+            results are returned (throw? numerical calculation?)
+            b) to implement slim engines which only calculate the
+            value---of course care must be taken not to call
+            the greeks methods when using these.
+         */
+         deltaForward_ = results.deltaForward;
+         elasticity_ = results.elasticity;
+         thetaPerDay_ = results.thetaPerDay;
+         strikeSensitivity_ = results.strikeSensitivity;
+         itmCashProbability_ = results.itmCashProbability;
+      }
 
+      //! %Results from single-asset option calculation
+      public new class Results : Instrument.Results
+      {
+         public double? delta, gamma, theta, vega, rho, dividendRho;
+         public double? itmCashProbability, deltaForward, elasticity, thetaPerDay, strikeSensitivity;
 
-        //! %Results from single-asset option calculation
-        public new class Results : Instrument.Results {
-            public double? delta, gamma, theta, vega, rho, dividendRho;
-            public double? itmCashProbability, deltaForward, elasticity, thetaPerDay, strikeSensitivity;
+         public override void reset()
+         {
+            base.reset();
+            delta = gamma = theta = vega = rho = dividendRho = null;
+            itmCashProbability = deltaForward = elasticity = thetaPerDay = strikeSensitivity = null;
+         }
+      }
 
-            public override void reset() {
-                base.reset();
-                // Greeks::reset();
-                delta = gamma = theta = vega = rho = dividendRho = null;
-                // MoreGreeks::reset();
-                itmCashProbability = deltaForward = elasticity = thetaPerDay = strikeSensitivity = null;
-            }
-        }
-
-        public class Engine : GenericEngine<OneAssetOption.Arguments, OneAssetOption.Results> {
-        }
-    }
+      public class Engine : GenericEngine<OneAssetOption.Arguments, OneAssetOption.Results>
+      {}
+   }
 }

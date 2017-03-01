@@ -59,7 +59,6 @@ namespace QLNet
       
       #region Conversions
 
-      //operator Rate() const { return r_; }
       public double value() { return rate(); }        // operator redefinition
 
       #endregion

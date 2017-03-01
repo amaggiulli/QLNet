@@ -124,10 +124,8 @@ namespace QLNet
          }
          if (x > -20.0)
          {
-            // \Gamma(x) = \frac{\Gamma(x+1)}{x}
             return value(x + 1.0) / x;
          }
-         // \Gamma(-x) = -\frac{\pi}{\Gamma(x)\sin(\pi x) x}
          return -Const.M_PI / (value(-x) * x * Math.Sin(Const.M_PI * x));
       }
    }

@@ -136,7 +136,6 @@ namespace QLNet {
             -1
         };
 
-        // #define N_ALT_MAX_DEGREE 8;
         static long[][] AltPrimitivePolynomials =
         {
             AltPrimitivePolynomialDegree01,

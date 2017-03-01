@@ -27,8 +27,6 @@ namespace QLNet {
         the underlying statistic tool.
     */
     public class GenericGaussianStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new() {
-        //public typedef typename Stat::value_type value_type;
-
         public GenericGaussianStatistics() { }
         public GenericGaussianStatistics(Stat s) {
             impl_ = s;
@@ -60,13 +58,8 @@ namespace QLNet {
         #endregion
 
 
-        //! \name Gaussian risk measures
-        //@{
-        /*! returns the downside variance, defined as
-            \f[ \frac{N}{N-1} \times \frac{ \sum_{i=1}^{N}
-                \theta \times x_i^{2}}{ \sum_{i=1}^{N} w_i} \f],
-            where \f$ \theta \f$ = 0 if x > 0 and
-            \f$ \theta \f$ =1 if x <0
+        // Gaussian risk measures
+        /*! returns the downside variance
         */
         public double gaussianDownsideVariance() { return gaussianRegret(0.0); }
 
@@ -74,8 +67,6 @@ namespace QLNet {
         public double gaussianDownsideDeviation() { return Math.Sqrt(gaussianDownsideVariance()); }
 
         /*! returns the variance of observations below target
-            \f[ \frac{\sum w_i (min(0, x_i-target))^2 }{\sum w_i}. \f]
-
             See Dembo, Freeman "The Rules Of Risk", Wiley (2001)
         */
         public double gaussianRegret(double target) {
@@ -92,9 +83,7 @@ namespace QLNet {
             return result/alfa;
         }
 
-        /*! gaussian-assumption y-th percentile, defined as the value x
-            such that \f[ y = \frac{1}{\sqrt{2 \pi}}
-                                      \int_{-\infty}^{x} \exp (-u^2/2) du \f]
+        /*! gaussian-assumption y-th percentile
         */
         /*! \pre percentile must be in range (0%-100%) extremes excluded */
         public double gaussianPercentile(double percentile)  {
@@ -129,8 +118,6 @@ namespace QLNet {
         /*! Assuming a gaussian distribution it
             returns the expected loss in case that the loss exceeded
             a VaR threshold,
-
-            \f[ \mathrm{E}\left[ x \;|\; x < \mathrm{VaR}(p) \right], \f]
 
             that is the average of observations below the
             given percentile \f$ p \f$.
@@ -171,7 +158,6 @@ namespace QLNet {
     }
 
     //! default gaussian statistic tool
-    //typedef GenericGaussianStatistics<GeneralStatistics> GaussianStatistics;
     public class GaussianStatistics : GenericGaussianStatistics<GeneralStatistics> { }
 
     

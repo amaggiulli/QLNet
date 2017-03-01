@@ -188,8 +188,7 @@ namespace QLNet
          coeffs_ = ((AbcdInterpolationImpl)impl_).AbcdCoeffHolder();
         }
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public double? a() { return coeffs_.a_; }
       public double? b() { return coeffs_.b_; }
       public double? c() { return coeffs_.c_; }

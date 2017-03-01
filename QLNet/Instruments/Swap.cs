@@ -45,7 +45,7 @@ namespace QLNet
 
       #region Constructors
 
-      // The cash flows belonging to the first leg are paid; 
+      // The cash flows belonging to the first leg are paid
       // the ones belonging to the second leg are received.
       public Swap(List<CashFlow> firstLeg, List<CashFlow> secondLeg)
       {

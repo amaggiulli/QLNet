@@ -112,14 +112,6 @@ namespace QLNet
                     iLowest = i;
               }
               // Now compute accuracy, update iteration number and check end criteria
-              //// Numerical Recipes exit strategy on fx (see NR in C++, p.410)
-              //double low = values_[iLowest];
-              //double high = values_[iHighest];
-              //double rtol = 2.0*std::fabs(high - low)/
-              //    (std::fabs(high) + std::fabs(low) + QL_EPSILON);
-              //++iterationNumber_;
-              //if (rtol < ftol ||
-              //    endCriteria.checkMaxIterations(iterationNumber_, ecType)) {
               // GSL exit strategy on x (see GSL v. 1.9, http://www.gnu.org/software/gsl
               double simplexSize = Utils.computeSimplexSize( vertices_ );
               ++iterationNumber_;
@@ -189,13 +181,7 @@ namespace QLNet
                 int dimensions = values_.Count - 1;
                 double factor1 = (1.0 - factor) / dimensions;
                 double factor2 = factor1 - factor;
-                // #if QL_ARRAY_EXPRESSIONS
                 pTry = sum_ * factor1 - vertices_[iHighest] * factor2;
-                //#else
-                //                    // composite expressions fail to compile with gcc 3.4 on windows
-                //                    pTry = sum_ * factor1;
-                //                    pTry -= vertices_[iHighest] * factor2;
-                //#endif
                 factor *= 0.5;
             } while (!P.constraint().test(pTry) && Math.Abs(factor) > Const.QL_EPSILON);
             if (Math.Abs(factor) <= Const.QL_EPSILON) {
@@ -206,12 +192,7 @@ namespace QLNet
             if (vTry < values_[iHighest])
             {
                 values_[iHighest] = vTry;
-                //#if QL_ARRAY_EXPRESSIONS
                 sum_ += pTry - vertices_[iHighest];
-                //#else
-                //                    sum_ += pTry;
-                //                    sum_ -= vertices_[iHighest];
-                //#endif
                 vertices_[iHighest] = pTry;
             }
             return vTry;

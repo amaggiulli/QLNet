@@ -18,7 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -154,7 +153,6 @@ namespace QLNet
       public Frequency overnightPaymentFrequency() { return overnightPaymentFrequency_; }
       public double fixedRate() { return fixedRate_; }
       public DayCounter fixedDayCount() { return fixedDC_; }
-      //OvernightIndex overnightIndex();
       public double spread() { return spread_; }
 
       public List<CashFlow> fixedLeg() { return legs_[0]; }
