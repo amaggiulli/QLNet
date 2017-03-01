@@ -137,9 +137,9 @@ namespace QLNet
                }
                break;
 
-            //default:
-            //   Utils.QL_FAIL("unknown callability type");
-            //   break;
+            default:
+               Utils.QL_FAIL("unknown callability type");
+               break;
          }
       }
       

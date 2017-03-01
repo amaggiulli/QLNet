@@ -47,23 +47,11 @@ namespace QLNet {
         {
             swapIndex_ = swapIndex;
         }
-        //! \name Inspectors
-        //@{
+        // Inspectors
         public SwapIndex swapIndex() {
             return swapIndex_;
         }
-        //@}
-        //! \name Visitability
-        //@{
-        //public void accept(ref AcyclicVisitor v)
-        //{
-        //    Visitor<CmsCoupon> v1 = v as Visitor<CmsCoupon>;
-        //    if (v1 != 0)
-        //        v1.visit( this);
-        //    else
-        //        base.accept(ref v);
-        //}
-        //@}
+
         private SwapIndex swapIndex_;
 
         // Factory - for Leg generators

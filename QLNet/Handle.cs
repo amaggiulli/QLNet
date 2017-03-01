@@ -17,8 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-
 namespace QLNet
 {
    //! Shared handle to an observable
@@ -66,9 +64,9 @@ namespace QLNet
 
       public static bool operator ==(Handle<T> here, Handle<T> there)
       {
-         if (System.Object.ReferenceEquals(here, there)) return true;
-         else if ((object)here == null || (object)there == null) return false;
-         else return here.Equals(there);
+         if (ReferenceEquals(here, there)) return true;
+         if ((object)here == null || (object)there == null) return false;
+         return here.Equals(there);
       }
 
       public static bool operator !=(Handle<T> here, Handle<T> there)
@@ -78,16 +76,12 @@ namespace QLNet
 
       public override bool Equals(object o)
       {
-         return this.link_ == ((Handle<T>)o).link_;
+         return link_ == ((Handle<T>)o).link_;
       }
 
-      public override int GetHashCode() { return this.ToString().GetHashCode(); }
+      public override int GetHashCode() { return ToString().GetHashCode(); }
 
       #endregion operator overload
-
-      ////! strict weak ordering
-      //bool operator<(Handle<U>& other) {
-      //    return link_ < other.link_;
 
       protected class Link : IObservable, IObserver
       {
@@ -163,7 +157,7 @@ namespace QLNet
 
       public void linkTo(T h, bool registerAsObserver)
       {
-         this.link_.linkTo(h, registerAsObserver);
+         link_.linkTo(h, registerAsObserver);
       }
    }
 }

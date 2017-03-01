@@ -242,13 +242,9 @@ namespace QLNet
           return CashFlowVectors.OvernightLeg(notionals_, schedule_, paymentAdjustment_, overnightIndex_, gearings_, spreads_, paymentDayCounter_);
        }
 
-       //private Schedule schedule_;
        private OvernightIndex overnightIndex_;
-       //private List<double> notionals_;
-       //private DayCounter paymentDayCounter_;
-       //private BusinessDayConvention paymentAdjustment_;
        private List<double> gearings_;
        private List<double> spreads_;
-    };
+    }
 
 }

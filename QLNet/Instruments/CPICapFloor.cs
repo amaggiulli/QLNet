@@ -119,8 +119,7 @@ namespace QLNet
          }
       }
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public Option.Type type()  { return type_; }
       public double nominal() { return nominal_; }
       //! \f$ K \f$ in the above formula.
@@ -130,10 +129,8 @@ namespace QLNet
       public Date payDate() { return payCalendar_.adjust( maturity_, payConvention_ ); }
       public Handle<ZeroInflationIndex> inflationIndex() { return infIndex_; }
       public Period observationLag() { return observationLag_; }
-      //@}
 
-      //! \name Instrument interface
-      //@{
+      // Instrument interface
       public override bool isExpired() {return (Settings.evaluationDate() > maturity_);}
       public override void setupArguments(IPricingEngineArguments args)
       {
@@ -159,8 +156,6 @@ namespace QLNet
          arguments.observationInterpolation = observationInterpolation_;
 
       }
-
-      //@}
 
       protected Option.Type type_;
       protected double nominal_;

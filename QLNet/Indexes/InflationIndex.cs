@@ -101,15 +101,11 @@ namespace QLNet
          base.addFixings( dates, rates, forceOverwrite );
 
       }
-      //@}
 
-      //! \name Observer interface
-      //@{
+      // Observer interface
       public void update() { notifyObservers(); }
-      //@}
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public string familyName() { return familyName_; }
       public Region region() { return region_; }
       public bool revised() { return revised_; }
@@ -409,9 +405,6 @@ namespace QLNet
 
             }
          }
-
-         // QL_FAIL("YoYInflationIndex::fixing, should never get here");
-
       }
 
       // Other methods

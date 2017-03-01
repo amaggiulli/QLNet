@@ -268,11 +268,9 @@ namespace QLNet
             throw new ArgumentException("instrument expired");
 
          ImpliedVolHelper f = new ImpliedVolHelper(this, discountCurve, targetValue);
-         //Brent solver;
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
-         //return 0;
       }
 
       #endregion
@@ -395,9 +393,6 @@ namespace QLNet
          results_ = engine_.getResults() as Instrument.Results;
 
       }
-
-      //Real operator()(Volatility x) const;
-      //Real derivative(Volatility x) const;
 
       public override double value(double x)
       {

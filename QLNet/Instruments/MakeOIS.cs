@@ -59,13 +59,10 @@ namespace QLNet
          rule_ = DateGeneration.Rule.Backward;
          // any value here for endOfMonth_ would not be actually used
          isDefaultEOM_ = true;
-         //endOfMonth_ = (new Period(1,TimeUnit.Months)<=swapTenor && swapTenor<=new Period(2,TimeUnit.Years) ? true : false);
          type_ = OvernightIndexedSwap.Type.Payer;
          nominal_ = 1.0;
          overnightSpread_ = 0.0;
          fixedDayCount_ = overnightIndex.dayCounter();
-         //engine_ = new DiscountingSwapEngine(overnightIndex_.forwardingTermStructure());
-
       }
 
       public MakeOIS receiveFixed(bool flag = true) 

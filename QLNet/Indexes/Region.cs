@@ -22,8 +22,7 @@ namespace QLNet
    //! Region class, used for inflation applicability.
    public class Region
    {
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public string name() 
       {
          return data_.name;
@@ -32,7 +31,6 @@ namespace QLNet
       {
          return data_.code;
       }
-      //@}
       
       protected  Region() {}
       protected struct Data
@@ -47,11 +45,11 @@ namespace QLNet
       }
       protected Data data_;
 
-      public static bool operator ==(Region r1, Region r2) 
+      public static bool operator ==(Region r1, Region r2)
       {
-			if ( System.Object.ReferenceEquals( r1, r2 ) )  return true; 
-			else if ( (object)r1 == null || (object)r2 == null ) return false;
-			else return r1.Equals( r2 );  
+         if ( ReferenceEquals( r1, r2 ) )  return true;
+         if ( (object)r1 == null || (object)r2 == null ) return false;
+         return r1.Equals( r2 );
       }
 
       public static bool operator !=(Region r1, Region r2)
@@ -61,7 +59,7 @@ namespace QLNet
 
       public override bool Equals(object o)
       {
-			return this.name() == ( (Region)o ).name();
+			return name() == ( (Region)o ).name();
       }
 
       public override int GetHashCode()
@@ -124,13 +122,11 @@ namespace QLNet
 
 	//! South Africa as geographical/economic region
    public class ZARegion : Region
-  {
-     public ZARegion()
-     {
-        Data ZAdata = new Data("South Africa", "ZA");
-       data_ = ZAdata;
-     
-	  }
-}
-
+   {
+      public ZARegion()
+      {
+         Data ZAdata = new Data("South Africa", "ZA");
+         data_ = ZAdata;
+	   }
+   }
 }

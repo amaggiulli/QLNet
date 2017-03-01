@@ -52,10 +52,7 @@ namespace QLNet
          public override void validate()
          {
             Utils.QL_REQUIRE( settlementDate != null, () => "null settlement date" );
-            
-            //Utils.QL_REQUIRE(redemption != null, "null redemption");
             Utils.QL_REQUIRE( redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed" );
-
             Utils.QL_REQUIRE( callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices" );
             Utils.QL_REQUIRE( couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts" );
          }
@@ -68,16 +65,13 @@ namespace QLNet
       //! base class for callable fixed rate bond engine
       public new class Engine :  GenericEngine<CallableBond.Arguments,CallableBond.Results> {};
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       //! return the bond's put/call schedule
       public CallabilitySchedule callability() 
       {
          return putCallSchedule_;
       }
-      //@}
-      //! \name Calculations
-      //@{
+      // Calculations
       //! returns the Black implied forward yield volatility
       /*! the forward yield volatility, see Hull, Fourth Edition,
          Chapter 20, pg 536). Relevant only to European put/call
@@ -98,11 +92,6 @@ namespace QLNet
          Brent solver = new Brent();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
-      }
-      //@}
-      public override void setupArguments(IPricingEngineArguments args) 
-      {
-         base.setupArguments(args);
       }
 
       protected CallableBond( int settlementDays,
@@ -154,7 +143,6 @@ namespace QLNet
            bond.setupArguments(engine_.getArguments());
            results_ = engine_.getResults() as Instrument.Results;
          }
-         //double operator()(double x);
          public override double value(double x)
          {
             vol_.setValue(x);
@@ -230,9 +218,7 @@ namespace QLNet
          List<CashFlow> cfs = cashflows();
 
          arguments.couponDates = new List<Date>(cfs.Count - 1);
-         //arguments.couponDates.Capacity = ;
          arguments.couponAmounts = new List<double>(cfs.Count - 1);
-         //arguments.couponAmounts.Capacity = cfs.Count - 1;
 
          for (int i = 0; i < cfs.Count ; i++)
          {
@@ -248,13 +234,10 @@ namespace QLNet
 
          arguments.callabilityPrices = new List<double>(putCallSchedule_.Count);
          arguments.callabilityDates = new List<Date>(putCallSchedule_.Count);
-         //arguments.callabilityPrices.Capacity = putCallSchedule_.Count;
-         //arguments.callabilityDates.Capacity = putCallSchedule_.Count;
-
          arguments.paymentDayCounter = paymentDayCounter_;
          arguments.frequency = frequency_;
-
          arguments.putCallSchedule = putCallSchedule_;
+
          for (int i = 0; i < putCallSchedule_.Count; i++)
          {
             if (!putCallSchedule_[i].hasOccurred(settlement, false))

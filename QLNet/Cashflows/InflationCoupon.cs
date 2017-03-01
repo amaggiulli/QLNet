@@ -53,14 +53,12 @@ namespace QLNet
          Settings.registerWith(update);
       }
 
-      //! \name CashFlow interface
-      //@{
+      // CashFlow interface
       public override double amount()
       {
          return rate() * accrualPeriod() * nominal();
       }
-     //! \name Coupon interface
-     //@{
+     // Coupon interface
      public double price(Handle<YieldTermStructure> discountingCurve) 
      {
         return amount() * discountingCurve.link.discount(date());
@@ -87,10 +85,8 @@ namespace QLNet
         pricer_.initialize(this);
         return pricer_.swapletRate();
      }
-     //@}
 
-      //! \name Inspectors
-     //@{
+     // Inspectors
      //! yoy inflation index
      public InflationIndex index() { return index_; }
      //! how the coupon observes the index
@@ -109,7 +105,6 @@ namespace QLNet
      {
         return index_.fixing(fixingDate());
      }
-     //@}
 
 
       public void update() { notifyObservers(); }

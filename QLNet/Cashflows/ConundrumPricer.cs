@@ -187,8 +187,6 @@ namespace QLNet {
                 derC *= (c - c * c);
 
                 return -delta_ * accruals_[0] * Math.Pow(b[0], delta_ + 1.0) * x * c + Math.Pow(b[0], delta_) * c + Math.Pow(b[0], delta_) * x * derC;
-                //double dx = 1.0e-8;
-                //return (operator()(x+dx)-operator()(x-dx))/(2.0*dx);
             }
 
             public override double secondDerivative(double x) {
@@ -208,8 +206,6 @@ namespace QLNet {
                 double derC = sum * (c - c * c);
 
                 return (-delta_ * accruals_[0] * Math.Pow(b[0], delta_ + 1.0) * c + Math.Pow(b[0], delta_) * derC) * (-delta_ * accruals_[0] * b[0] * x + 1.0 + x * (1.0 - c) * sum) + Math.Pow(b[0], delta_) * c * (delta_ * Math.Pow(accruals_[0] * b[0], 2.0) * x - delta_ * accruals_[0] * b[0] - x * derC * sum + (1.0 - c) * sum - x * (1.0 - c) * sumOfSquare);
-                //double dx = 1.0e-8;
-                //return (firstDerivative(x+dx)-firstDerivative(x-dx))/(2.0*dx);
             }
         }
 
@@ -449,15 +445,11 @@ namespace QLNet {
             }
 
             public override double firstDerivative(double Rs) {
-                //double dRs = 1.0e-8;
-                //return (operator()(Rs+dRs)-operator()(Rs-dRs))/(2.0*dRs);
                 double calibratedShift = calibrationOfShift(Rs);
                 return functionZ(calibratedShift) + Rs * derZ_derX(calibratedShift) / derRs_derX(calibratedShift);
             }
 
             public override double secondDerivative(double Rs) {
-                //double dRs = 1.0e-8;
-                //return (firstDerivative(Rs+dRs)-firstDerivative(Rs-dRs))/(2.0*dRs);
                 double calibratedShift = calibrationOfShift(Rs);
                 return 2.0 * derZ_derX(calibratedShift) / derRs_derX(calibratedShift) + Rs * der2Z_derX2(calibratedShift) / Math.Pow(derRs_derX(calibratedShift), 2.0) - Rs * derZ_derX(calibratedShift) * der2Rs_derX2(calibratedShift) / Math.Pow(derRs_derX(calibratedShift), 3.0);
             }
@@ -578,7 +570,6 @@ namespace QLNet {
                 int q = (int)swapIndex.fixedLegTenor().frequency();
                 Schedule schedule = swap.fixedSchedule();
                 DayCounter dc = swapIndex.dayCounter();
-                //DayCounter dc = coupon.dayCounter();
                 double startTime = dc.yearFraction(rateCurve_.referenceDate(), swap.startDate());
                 double swapFirstPaymentTime = dc.yearFraction(rateCurve_.referenceDate(), schedule.date(1));
                 double paymentTime = dc.yearFraction(rateCurve_.referenceDate(), paymentDate_);
@@ -666,12 +657,7 @@ namespace QLNet {
             double integralValue;
             if (optionType == Option.Type.Call) {
                 upperLimit_ = resetUpperLimit(stdDeviationsForUpperLimit_);
-                //    while(upperLimit_ <= strike){
-                //        stdDeviationsForUpperLimit_ += 1.;
-                //        upperLimit_ = resetUpperLimit(stdDeviationsForUpperLimit_);
-                //    }
                 integralValue = integrate(strike, upperLimit_, integrand);
-                //refineIntegration(integralValue, *integrand);
             } else {
                 a = Math.Min(strike, lowerLimit_);
                 b = strike;
@@ -690,13 +676,6 @@ namespace QLNet {
 
         public double integrate(double a, double b, ConundrumIntegrand integrand) {
             double result = .0;
-            //double abserr =.0;
-            //double alpha = 1.0;
-
-            //double epsabs = precision_;
-            //double epsrel = 1.0; // we are interested only in absolute precision
-            //size_t neval =0;
-
             // we use the non adaptive algorithm only for semi infinite interval
             if (a > 0) {
                 // we estimate the actual boudary by testing integrand values
@@ -748,7 +727,6 @@ namespace QLNet {
         }
 
         public double resetUpperLimit(double stdDeviationsForUpperLimit) {
-            //return 1.0;
             double variance = swaptionVolatility().link.blackVariance(fixingDate_, swapTenor_, swapRateValue_);
             return swapRateValue_ * Math.Exp(stdDeviationsForUpperLimit * Math.Sqrt(variance));
         }

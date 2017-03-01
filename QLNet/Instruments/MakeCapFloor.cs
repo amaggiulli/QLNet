@@ -58,7 +58,6 @@ namespace QLNet
             Utils.QL_REQUIRE(temp!=null,()=> "cannot calculate ATM without a BlackCapFloorEngine");
             Handle<YieldTermStructure> discountCurve = temp.termStructure();
             strikeVector = new InitializedList<double>( 1, CashFlows.atmRate( leg, discountCurve, false, discountCurve.link.referenceDate() ) );
-            //strikeVector[0] = CashFlows.atmRate(leg,discountCurve,false,discountCurve.link.referenceDate());
         }
          else
          {

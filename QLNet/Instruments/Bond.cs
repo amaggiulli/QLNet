@@ -154,7 +154,7 @@ namespace QLNet
          else
          {
             // d is equal to a redemption date.
-            // As per bond conventions, the payment has occurred;
+            // As per bond conventions, the payment has occurred
             // the bond already changed notional.
             return notionals_[index];
          }
@@ -478,7 +478,6 @@ namespace QLNet
       protected List<CashFlow> redemptions_ = new List<CashFlow>(); // the redemptions
       protected Date maturityDate_, issueDate_;
       protected double? settlementValue_;
-      //public double faceAmount() { return notionals_.First(); }
 
       #endregion
 

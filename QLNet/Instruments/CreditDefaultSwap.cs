@@ -40,8 +40,6 @@ namespace QLNet
 	*/
 	public class CreditDefaultSwap : Instrument
 	{
-		//! \name ructors
-      //@{
       //! CDS quoted as running-spread only
       /*! @param side  Whether the protection is bought or sold.
           @param notional  Notional value
@@ -150,9 +148,8 @@ namespace QLNet
             claim_ = new FaceValueClaim();
 		  claim_.registerWith(update);     
 		}
-      //@}
-      //! \name Instrument interface
-      //@{
+
+      // Instrument interface
 		public override bool isExpired()
 		{
 			for (int i = leg_.Count; i > 0; --i)
@@ -192,9 +189,8 @@ namespace QLNet
 			upfrontNPV_ = results.upfrontNPV;
 			upfrontBPS_ = results.upfrontBPS;
 		}
-      //@}
-      //! \name Inspectors
-      //@{
+
+      // Inspectors
 		public Protection.Side side() { return side_; }
 		public double? notional() { return notional_; }
 		public double runningSpread() { return runningSpread_; }
@@ -206,9 +202,7 @@ namespace QLNet
 		public Date protectionStartDate() { return protectionStart_; }
       //! The last date for which defaults will trigger the contract
       public  Date protectionEndDate() {return ((Coupon)(leg_.Last())).accrualEndDate();}
-      //@}
-      //! \name Results
-      //@{
+      // Results
       /*! Returns the upfront spread that, given the running spread
           and the quoted recovery rate, will make the instrument
           have an NPV of 0.
@@ -380,9 +374,7 @@ namespace QLNet
 		  CreditDefaultSwap.Results results = engine.getResults() as CreditDefaultSwap.Results;
         return results.fairSpread;
 		}
-      //@}
-      //! \name Instrument interface
-      //@{
+      // Instrument interface
 		protected override void setupExpired()
 		{
  			base.setupExpired();
@@ -390,7 +382,6 @@ namespace QLNet
 			couponLegBPS_ = upfrontBPS_ = 0.0;
 			couponLegNPV_ = defaultLegNPV_ = upfrontNPV_ = 0.0;
 		}
-      //@}
       // data members
       protected Protection.Side side_;
       protected double? notional_;

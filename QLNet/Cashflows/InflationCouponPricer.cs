@@ -41,9 +41,7 @@ namespace QLNet
    */
    public class InflationCouponPricer : IObserver,IObservable
    {
-      //public virtual ~InflationCouponPricer() { }
-      //! \name Interface
-      //@{
+      // Interface
       public virtual double swapletPrice() {return 0; }
       public virtual double swapletRate() { return 0; }
       public virtual double capletPrice(double effectiveCap) { return 0; }
@@ -51,7 +49,6 @@ namespace QLNet
       public virtual double floorletPrice(double effectiveFloor) { return 0; }
       public virtual double floorletRate(double effectiveFloor) { return 0; }
       public virtual void initialize(InflationCoupon i) {}
-      //@}
 
       #region Observer & observable
       private readonly WeakEventSource eventSource = new WeakEventSource();
@@ -103,8 +100,7 @@ namespace QLNet
          capletVol_.registerWith(update);
       }
 
-      //! \name InflationCouponPricer interface
-      //@{
+      // InflationCouponPricer interface
       public override double swapletPrice()
       {
          double swapletPrice = adjustedFixing() * coupon_.accrualPeriod() * discount_;
@@ -160,7 +156,6 @@ namespace QLNet
 
          spreadLegValue_ = spread_ * coupon_.accrualPeriod()* discount_;
       }
-      //@}
 
       //! car replace this if really required
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)

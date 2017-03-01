@@ -48,8 +48,6 @@ namespace QLNet
          dayCounter_ = new Actual365Fixed();
          rule_ = DateGeneration.Rule.Forward;
          endOfMonth_ = false;
-
-         //engine_ = new DiscountingSwapEngine(index.termStructure());
       }
 
       public MakeFixedLoan withType(Loan.Type type)
@@ -155,8 +153,6 @@ namespace QLNet
          rule_ = DateGeneration.Rule.Forward;
          endOfMonth_ = false;
          index_ = new IborIndex();
-
-         //engine_ = new DiscountingSwapEngine(index.termStructure());
       }
 
       public MakeFloatingLoan withType(Loan.Type type)
@@ -266,8 +262,6 @@ namespace QLNet
          dayCounter_ = new Actual365Fixed();
          rule_ = DateGeneration.Rule.Forward;
          endOfMonth_ = false;
-
-         //engine_ = new DiscountingSwapEngine(index.termStructure());
       }
 
       public MakeCommercialPaper withType(Loan.Type type)
@@ -369,8 +363,6 @@ namespace QLNet
          dayCounter_ = new Actual365Fixed();
          rule_ = DateGeneration.Rule.Forward;
          endOfMonth_ = false;
-
-         //engine_ = new DiscountingSwapEngine(index.termStructure());
       }
 
       public MakeCash withType(Loan.Type type)

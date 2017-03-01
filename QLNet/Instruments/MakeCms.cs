@@ -60,8 +60,6 @@ namespace QLNet
          floatNextToLastDate_ = null;
          cmsDayCount_ = new Actual360();
          floatDayCount_ = iborIndex.dayCounter();
-         // arbitrary choice:
-         //engine_ = new DiscountingSwapEngine(iborIndex->termStructure());
          engine_ = new DiscountingSwapEngine(swapIndex.forwardingTermStructure());
       }
 

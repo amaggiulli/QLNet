@@ -42,11 +42,6 @@ namespace QLNet
       private DayCounter floating2DayCount_;
       private BusinessDayConvention paymentConvention_;
 
-      // results
-      //private double? fairSpread1_;
-      //private double? fairSpread2_;
-
-
       // constructor
       public BasisSwap(Type type, double nominal,
                          Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,

@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
@@ -54,7 +53,6 @@ namespace QLNet
       /*! \name Date calculations
 
             See <https://www.theice.com/marketdata/reports/170>.
-            @{
       */
       public override Date valueDate( Date fixingDate )
       {

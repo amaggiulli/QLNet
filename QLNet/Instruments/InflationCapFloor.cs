@@ -44,9 +44,6 @@ namespace QLNet
 
 	public class YoYInflationCapFloor : Instrument 
 	{
-      //public class arguments;
-      //public class engine;
-
       public YoYInflationCapFloor(CapFloorType type, List<CashFlow> yoyLeg,  List<double> capRates,List<double> floorRates)
 		{
 			type_ = type;
@@ -57,14 +54,12 @@ namespace QLNet
 			if (type_ ==  CapFloorType.Cap || type_ == CapFloorType.Collar) 
 			{
             Utils.QL_REQUIRE( !capRates_.empty(), () => "no cap rates given" );
-            //capRates_.reserve(yoyLeg_.size());
             while (capRates_.Count < yoyLeg_.Count)
                 capRates_.Add(capRates_.Last());
         }
         if (type_ == CapFloorType.Floor || type_ == CapFloorType.Collar) 
 		  {
            Utils.QL_REQUIRE( !floorRates_.empty(), () => "no floor rates given" );
-            //floorRates_.reserve(yoyLeg_.size());
             while (floorRates_.Count < yoyLeg_.Count)
                 floorRates_.Add(floorRates_.Last());
         }
@@ -85,14 +80,12 @@ namespace QLNet
 			if (type_ == CapFloorType.Cap) 
 			{
             capRates_ = strikes;
-            //capRates_.reserve(yoyLeg_.size());
             while (capRates_.Count < yoyLeg_.Count)
                 capRates_.Add(capRates_.Last());
 			} 
 			else if (type_ == CapFloorType.Floor) 
 			{
             floorRates_ = strikes;
-            //floorRates_.reserve(yoyLeg_.size());
             while (floorRates_.Count < yoyLeg_.Count)
                 floorRates_.Add(floorRates_.Last());
 			} 
@@ -105,8 +98,7 @@ namespace QLNet
 			Settings.registerWith(update);
 		}
 		
-		//! \name Instrument interface
-		//@{
+		// Instrument interface
 		public override bool isExpired()
 		{
 			for (int i=yoyLeg_.Count; i>0; --i)
@@ -162,9 +154,8 @@ namespace QLNet
         }
 
 		}
-		//@}
-		//! \name Inspectors
-		//@{
+
+		// Inspectors
 		public CapFloorType type() { return type_; }
 		public  List<double> capRates()  { return capRates_; }
 		public  List<double> floorRates()  { return floorRates_; }
@@ -192,7 +183,7 @@ namespace QLNet
 
         return new YoYInflationCapFloor(type(), cf, cap, floor);
 		}
-		//@}
+
 		public virtual double atmRate( YieldTermStructure discountCurve )
 		{
 			return CashFlows.atmRate(yoyLeg_, discountCurve,

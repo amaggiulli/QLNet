@@ -48,18 +48,6 @@ namespace QLNet
       {
          return new DigitalIborCoupon(underlying, callStrike, callPosition, isCallATMIncluded, callDigitalPayoff, putStrike, putPosition, isPutATMIncluded, putDigitalPayoff, replication);
       }
-
-      //! \name Visitability
-      //@{
-      //public void accept(ref AcyclicVisitor v)
-      //{
-      //    Visitor<DigitalIborCoupon> v1 = v as Visitor<DigitalIborCoupon>;
-      //    if (v1 != 0)
-      //        v1.visit( this);
-      //    else
-      //        base.accept(ref v);
-      //}
-      //@}
    }
 
 

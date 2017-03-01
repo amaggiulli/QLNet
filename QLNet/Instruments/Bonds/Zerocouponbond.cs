@@ -23,19 +23,15 @@ namespace QLNet {
 
         \test calculations are tested by checking results against cached values.
     */
-    public class ZeroCouponBond : Bond {
-
-        //public ZeroCouponBond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate,
-        //               BusinessDayConvention paymentConvention = Following,
-        //               double redemption = 100.0,
-        //               Date issueDate = Date());
-        public ZeroCouponBond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate,
-                              BusinessDayConvention paymentConvention, double redemption, Date issueDate)
-            : base(settlementDays, calendar, issueDate) {
-
-            maturityDate_ = maturityDate;
-            Date redemptionDate = calendar_.adjust(maturityDate, paymentConvention);
-            setSingleRedemption(faceAmount, redemption, redemptionDate);
-        }
-    }
+   public class ZeroCouponBond : Bond
+   {
+      public ZeroCouponBond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate,
+                           BusinessDayConvention paymentConvention, double redemption, Date issueDate)
+         : base(settlementDays, calendar, issueDate)
+      {
+         maturityDate_ = maturityDate;
+         Date redemptionDate = calendar_.adjust(maturityDate, paymentConvention);
+         setSingleRedemption(faceAmount, redemption, redemptionDate);
+      }
+   }
 }

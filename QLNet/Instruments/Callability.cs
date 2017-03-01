@@ -66,14 +66,8 @@ namespace QLNet
          return price_;
       }
       public Type type() { return type_; }
-      //! \name Event interface
-      //@{
+      // Event interface
       public override Date date() { return date_; }
-      //@}
-      //! \name Visitability
-      //@{
-      //public virtual void accept(AcyclicVisitor&);
-      //@}
       
       private Price price_;
       private Type type_;

@@ -23,17 +23,6 @@ namespace QLNet
 {
    public class MBSFixedRateBond : AmortizingFixedRateBond
    {
-      //public MBSFixedRateBond(int settlementDays,
-      //                        List<double> notionals,
-      //                        Schedule schedule,
-      //                        List<double> coupons,
-      //                        DayCounter accrualDayCounter,
-      //                        BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
-      //                        Date issueDate = null)
-      //   :base(settlementDays,notionals,schedule,coupons,accrualDayCounter,paymentConvention,issueDate)
-      //{
-      //}
-
       public MBSFixedRateBond(int settlementDays,
                                Calendar calendar,
                                double faceAmount,
@@ -57,17 +46,6 @@ namespace QLNet
          dCounter_ = accrualDayCounter;
          cashflows_ = expectedCashflows();
       }
-
-      //public List<CashFlow> interestCashflows()
-      //{
-      //   List<CashFlow> icf = new List<CashFlow>();
-      //   foreach (CashFlow cf in cashflows())
-      //   {
-      //      if (cf is QLNet.FixedRateCoupon)
-      //         icf.Add(cf);
-      //   }
-      //   return icf;
-      //}
 
       public List<CashFlow> expectedCashflows()
       {
@@ -151,7 +129,6 @@ namespace QLNet
    {
       private double faceAmount_;
       private List<CashFlow> cashflows_;
-      //private double PVDifference_;
       private Date settlement_;
 
       public MonthlyYieldFinder(double faceAmount, List<CashFlow> cashflows,Date settlement)

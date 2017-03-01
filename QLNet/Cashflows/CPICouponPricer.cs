@@ -49,8 +49,7 @@ namespace QLNet
       }
 
 
-      //! \name InflationCouponPricer interface
-      //@{
+      // InflationCouponPricer interface
       public override double swapletPrice()
       {
          double swapletPrice = adjustedFixing() * coupon_.accrualPeriod() * discount_;
@@ -62,7 +61,6 @@ namespace QLNet
          // a yield curve, i.e. we do not get the problem
          // that a discounting-instrument-pricer is used
          // with a different yield curve
-         //std::cout << (gearing_ * adjustedFixing() + spread_) << " SWAPLET rate" << gearing_ << " " << spread_ << std::endl;
          return gearing_ * adjustedFixing() + spread_;
       }
       public override double capletPrice(double effectiveCap)
@@ -102,8 +100,6 @@ namespace QLNet
 
          spreadLegValue_ = spread_ * coupon_.accrualPeriod()* discount_;
       }
-      //@}
-
 
       //! can replace this if really required
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
