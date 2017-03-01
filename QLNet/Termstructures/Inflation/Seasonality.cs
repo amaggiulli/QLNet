@@ -45,8 +45,7 @@ namespace QLNet
    */
    public class Seasonality
    {
-      //! \name Seasonality interface
-      //@{
+      // Seasonality interface
       public virtual double correctZeroRate(Date d, double r,InflationTermStructure iTS) 
       {
          return 0;
@@ -71,7 +70,6 @@ namespace QLNet
       {
          return true;
       }
-      //@}
    }
 
    //! Multiplicative seasonality in the price index (CPI/RPI/HICP/etc).
@@ -147,7 +145,6 @@ namespace QLNet
       }
 
       //! inspectors
-      //@{
       public virtual Date seasonalityBaseDate() { return seasonalityBaseDate_; }
       public virtual Frequency frequency() { return frequency_; }
       public virtual List<double> seasonalityFactors() { return seasonalityFactors_; }
@@ -211,11 +208,8 @@ namespace QLNet
         }
         return seasonalityFactors()[which];
       }
-      //@}
 
-      //! \name Seasonality interface
-      //@{
-
+      // Seasonality interface
       public override double correctZeroRate(Date d,double r,InflationTermStructure iTS)
       {
         KeyValuePair<Date,Date> lim = Utils.inflationPeriod(iTS.baseDate(), iTS.frequency());
@@ -261,7 +255,7 @@ namespace QLNet
          return true;
 
       }
-      //@}
+
       protected virtual void validate()
       {
          switch (this.frequency()) 

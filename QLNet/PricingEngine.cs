@@ -16,90 +16,94 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    // Pricing Engine interfaces
-    // these interfaces replace the abstract PricingEngine class below
-    public interface IPricingEngine : IObservable {
-        IPricingEngineArguments getArguments();
-        IPricingEngineResults getResults();
-        void reset();
-        void calculate();
-    }
-    public interface IPricingEngineArguments {
-        void validate();
-    }
-    public interface IPricingEngineResults {
-        void reset();
-    }
+namespace QLNet
+{
+   // Pricing Engine interfaces
+   // these interfaces replace the abstract PricingEngine class below
+   public interface IPricingEngine : IObservable
+   {
+      IPricingEngineArguments getArguments();
+      IPricingEngineResults getResults();
+      void reset();
+      void calculate();
+   }
 
-    public interface IGenericEngine : IPricingEngine, IObserver { }
+   public interface IPricingEngineArguments
+   {
+      void validate();
+   }
 
-    // template base class for option pricing engines
-    // Derived engines only need to implement the <tt>calculate()</tt> method.
-    public abstract class GenericEngine<ArgumentsType, ResultsType> : IGenericEngine
-        where ArgumentsType : IPricingEngineArguments, new()
-        where ResultsType : IPricingEngineResults, new()
-    {
-        protected ArgumentsType arguments_ = new ArgumentsType();
-        protected ResultsType results_ = new ResultsType();
+   public interface IPricingEngineResults
+   {
+      void reset();
+   }
 
-        public IPricingEngineArguments getArguments() { return arguments_; }
-        public IPricingEngineResults getResults() { return results_; }
-        public void reset() { results_.reset(); }
+   public interface IGenericEngine : IPricingEngine, IObserver
+   {}
 
-        public virtual void calculate() { throw new NotSupportedException(); }
+   // template base class for option pricing engines
+   // Derived engines only need to implement the <tt>calculate()</tt> method.
+   public abstract class GenericEngine<ArgumentsType, ResultsType> : IGenericEngine
+      where ArgumentsType : IPricingEngineArguments, new()
+      where ResultsType : IPricingEngineResults, new()
+   {
+      protected ArgumentsType arguments_ = new ArgumentsType();
+      protected ResultsType results_ = new ResultsType();
 
-        #region Observer & Observable
-        // observable interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
+      public IPricingEngineArguments getArguments()
+      {
+         return arguments_;
+      }
 
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
+      public IPricingEngineResults getResults()
+      {
+         return results_;
+      }
 
-        public virtual void update() { notifyObservers(); } 
-        #endregion
-    }
+      public void reset()
+      {
+         results_.reset();
+      }
 
+      public virtual void calculate()
+      {
+         throw new NotSupportedException();
+      }
 
-    //! abstract class for pricing engines
-    //public abstract class PricingEngine
-    //{
-    //    public abstract IPricingEngineArguments getArguments();
-    //    public abstract IPricingEngineResults getResults();
-    //    public abstract void reset();
-    //    public virtual void calculate() { }
+      #region Observer & Observable
 
-    //    public abstract class Arguments : IPricingEngineArguments
-    //    {
-    //        public abstract void validate();
-    //    }
-    //    public abstract class Results : IPricingEngineResults
-    //    {
-    //        public abstract void reset();
-    //    }
+      // observable interface
+      private readonly WeakEventSource eventSource = new WeakEventSource();
 
-    //    // observable interface
-    //    public event Callback notifyObserversEvent;
-    //    public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-    //    public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-    //    protected void notifyObservers()
-    //    {
-    //        Callback handler = notifyObserversEvent;
-    //        if (handler != null)
-    //        {
-    //            handler();
-    //        }
-    //    }
-    //}
+      public event Callback notifyObserversEvent
+      {
+         add { eventSource.Subscribe(value); }
+         remove { eventSource.Unsubscribe(value); }
+      }
+
+      public void registerWith(Callback handler)
+      {
+         notifyObserversEvent += handler;
+      }
+
+      public void unregisterWith(Callback handler)
+      {
+         notifyObserversEvent -= handler;
+      }
+
+      protected void notifyObservers()
+      {
+         eventSource.Raise();
+      }
+
+      public virtual void update()
+      {
+         notifyObservers();
+      }
+
+      #endregion
+   }
 }

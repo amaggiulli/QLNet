@@ -491,7 +491,7 @@ namespace QLNet
                }
                else 
                {
-                  // use l'Hospital's rule to get lim_{phi->0}
+                  // use l'Hospital's rule 
                   if (j_ == 1) 
                   {
                      double kmr = rsigma_-kappa_;
@@ -539,7 +539,7 @@ namespace QLNet
                   if (g.Imaginary > Const.M_PI || g.Imaginary <= -Const.M_PI) 
                   {
                      // get back to principal branch of the complex logarithm
-                     double im = g.Imaginary - (2*Const.M_PI)* Math.Floor(g.Imaginary/2*Const.M_PI);  // TODO Check std::fmod(g.Imaginary, 2*Const.M_PI);
+                     double im = g.Imaginary - (2*Const.M_PI)* Math.Floor(g.Imaginary/2*Const.M_PI);
                      if (im > Const.M_PI)
                         im -= 2*Const.M_PI;
                      else if (im <= -Const.M_PI)
@@ -579,7 +579,6 @@ namespace QLNet
          }
 
          private int j_;
-         //      VanillaOption::arguments& arg_;
          private double kappa_, theta_, sigma_, v0_;
          private ComplexLogFormula cpxLog_;
 

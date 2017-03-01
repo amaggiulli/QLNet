@@ -99,7 +99,7 @@ namespace QLNet
          }
          catch ( Exception /*Error*/)
          {
-            results_.theta = null; //Null<Real>();
+            results_.theta = null; 
          }
       }
 

@@ -125,8 +125,7 @@ namespace QLNet
             Utils.QL_REQUIRE( cfStrikes_[i] > cfStrikes_[i-1],()=> "cfStrikes not increasing");
 
       }
-      //! \name InflationTermStructure interface
-      //@{
+      // InflationTermStructure interface
       public override Period observationLag()
       {
           return zeroInflationIndex().link.zeroInflationTermStructure().link.observationLag();
@@ -135,7 +134,6 @@ namespace QLNet
       {
          return zeroInflationIndex().link.zeroInflationTermStructure().link.baseDate();
       }
-      //@}
 
       //! is based on
       public Handle<ZeroInflationIndex> zeroInflationIndex() { return zii_; }
@@ -145,15 +143,12 @@ namespace QLNet
       /*! \note you don't know if price() is a cap or a floor
                without checking the ZeroInflation ATM level.
       */
-      //@{
       public virtual double nominal() {return nominal_;}
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
-      //@}
 
       //! \warning you MUST remind the compiler in any descendants with the using:: mechanism 
       //!          because you overload the names
       //! remember that the strikes use the quoting convention
-      //@{
       public virtual double price( Period d, double k)
       {
          return this.price(cpiOptionDateFromTenor(d), k);
@@ -169,7 +164,6 @@ namespace QLNet
       public abstract double price( Date d, double k)  ;
       public abstract double capPrice( Date d, double k)  ;
       public abstract double floorPrice( Date d, double k)  ;
-      //@}
         
       public virtual List<double> strikes()  {return cfStrikes_;}
       public virtual List<double> capStrikes()  {return cStrikes_;}
@@ -183,9 +177,7 @@ namespace QLNet
       public virtual double maxStrike() {return cfStrikes_.Last();}
       public virtual Date minDate() {return referenceDate()+cfMaturities_.First();}// \TODO deal with index interpolation
       public override Date maxDate() {return referenceDate()+cfMaturities_.Last();}
-      //@}
-
-        
+       
       public virtual Date cpiOptionDateFromTenor(Period p)
       {
          return new Date(calendar().adjust(referenceDate() + p, businessDayConvention()));
@@ -240,8 +232,7 @@ namespace QLNet
          performCalculations();
       }
 
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       public override void update() { notifyObservers(); }
 
       //! set up the interpolations for capPrice_ and floorPrice_
@@ -315,10 +306,8 @@ namespace QLNet
 
         floorPrice_.enableExtrapolation();
       }
-      //@}
             
       //! remember that the strikes use the quoting convention
-      //@{
       public override double price( Date d, double k)
       {
          double atm = zeroInflationIndex().link.zeroInflationTermStructure().link.zeroRate( d );
@@ -334,7 +323,6 @@ namespace QLNet
          double t = timeFromReference( d );
          return floorPrice_.value( t, k );
       }
-      //@}
             
       // data for surfaces and curve
       protected List<double> allStrikes_;

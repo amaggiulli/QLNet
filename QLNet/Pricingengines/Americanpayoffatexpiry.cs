@@ -218,7 +218,6 @@ namespace QLNet
 
       private double strike_;
       private double K_;
-      //private double DKDstrike_;
 
       private double mu_;
       private double log_H_S_;

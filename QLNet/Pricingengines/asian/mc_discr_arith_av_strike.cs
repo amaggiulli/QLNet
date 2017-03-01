@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 /*! \file mc_discr_arith_av_strike.hpp
     \brief Monte Carlo engine for discrete arithmetic average-strike Asian
@@ -98,8 +97,6 @@ namespace QLNet {
                     averageStrike += path[i];
                 averageStrike /= (pastFixings_ + n);
             } else {
-                //averageStrike =
-                //std::accumulate(path.begin()+1,path.end(),runningSum_)/(pastFixings_+n-1);
                 for(int i=1;i<path.length();i++ )
                     averageStrike += path[i];
                 averageStrike /= (pastFixings_ + n-1);

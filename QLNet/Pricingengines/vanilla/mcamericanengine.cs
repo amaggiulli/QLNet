@@ -240,7 +240,7 @@ namespace QLNet
          antithetic_ = b;
          return this;
       }
-      //public MakeMCAmericanEngine withControlVariate(bool b = true);
+
       public MakeMCAmericanEngine<RNG, S> withControlVariate( bool b )
       {
          controlVariate_ = b;

@@ -74,8 +74,6 @@ namespace QLNet
                 s1d.setMaxEvaluations(1000);
                 value = s1d.solve(finder, 1e-7, value, vMin, vMax);
                 impl.setvalue(grid[i], value);
-                // vMin = value - 10.0;
-                // vMax = value + 10.0;
             }
             return numericTree;
         }
@@ -95,15 +93,6 @@ namespace QLNet
     }
 
     //! Short-rate dynamics in the Black-Karasinski model
-    /*! The short-rate is here
-        \f[
-            r_t = e^{\varphi(t) + x_t}
-         \f]
-         where \f$ \varphi(t) \f$ is the deterministic time-dependent
-         parameter (which can not be determined analytically)
-         used for term-structure fitting and \f$ x_t \f$ is the state
-         variable following an Ornstein-Uhlenbeck process.
-    */
     public class Dynamics : OneFactorModel.ShortRateDynamics 
     {
       

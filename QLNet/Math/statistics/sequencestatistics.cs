@@ -45,7 +45,6 @@ namespace QLNet {
         protected List<double> results_;
         protected Matrix quadraticSum_;
 
-        //public GenericSequenceStatistics(int dimension = 0) {
         public GenericSequenceStatistics(int dimension) {
             dimension_ = 0;
             reset(dimension);
@@ -98,8 +97,7 @@ namespace QLNet {
         public int samples() { return (stats_.Count == 0) ? 0 : stats_[0].samples(); }
         public double weightSum(){ return (stats_.Count == 0) ? 0.0 : stats_[0].weightSum(); }
 
-        //@}
-        //! \name N-D inspectors lifted from underlying statistics class
+        // N-D inspectors lifted from underlying statistics class
         // no argument list
         private List<double> noArg(string method) {
             // do not check for null - in this case we throw anyways
@@ -173,8 +171,7 @@ namespace QLNet {
         public List<double> regret(double x) { return singleArg(x, "regret"); }
 
 
-        //! \name Modifiers
-        //public void reset(Size dimension = 0) {
+        // Modifiers
         public virtual void reset(int dimension) {
             // (re-)initialize
             if (dimension > 0) {
@@ -192,10 +189,8 @@ namespace QLNet {
             }
         }
 
-        //philippe2009_16
         public virtual void add(List<double> begin) { add(begin, 1); }
 
-        //public void add(S sample, double weight = 1.0) {
         public virtual void add(List<double> begin, double weight) {
             if (dimension_ == 0) {
                 // stat wasn't initialized yet
@@ -218,7 +213,6 @@ namespace QLNet {
     /*! \test the correctness of the returned values is tested by
               checking them against numerical calculations.
     */
-    // typedef GenericSequenceStatistics<Statistics> SequenceStatistics;
     public class SequenceStatistics : GenericSequenceStatistics<RiskStatistics> {
         public SequenceStatistics(int dimension) : base(dimension) { }
     }

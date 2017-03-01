@@ -82,10 +82,6 @@ namespace QLNet
             }
 
             bridge_.transform( permList, bridgedVariates_[i] ); // TODO Check
-            //bridge_.transform( sample.value, bridgedVariates_[i] ); // TODO Check
-         //   bridge_.transform(boost::make_permutation_iterator(sample.value.begin(),orderedIndices_[i].begin()),
-         //                     boost::make_permutation_iterator(sample.value.begin(),orderedIndices_[i].end()),
-         //                     bridgedVariates_[i].begin());
          }
          lastStep_ = 0;
          return sample.weight;
@@ -131,12 +127,7 @@ namespace QLNet
                   permList.Add( sample[index] );
                }
                List<double> temp = retVal[i].GetRange( j * steps_, retVal[i].Count - ( j * steps_ ) );
-
                bridge_.transform( permList, temp ); // TODO Check
-               //bridge_.transform( sample, retVal[i + j * steps_] ); // TODO Check
-               //bridge_.transform(boost::make_permutation_iterator(sample.begin(),orderedIndices_[i].begin()),
-               //                  boost::make_permutation_iterator(sample.begin(),orderedIndices_[i].end()),
-               //                  retVal[i].begin()+j*steps_);
             }
          }
          return retVal;

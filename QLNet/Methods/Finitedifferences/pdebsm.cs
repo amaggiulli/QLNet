@@ -20,9 +20,6 @@ using System;
 
 namespace QLNet {
     public class PdeBSM : PdeSecondOrderParabolic {
-        //typedef boost::shared_ptr<GeneralizedBlackScholesProcess> argument_type;
-        //typedef LogGrid grid_type;
-
         private GeneralizedBlackScholesProcess process_;
 
         public PdeBSM() { }     // required for generics

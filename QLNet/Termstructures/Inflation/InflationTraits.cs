@@ -216,7 +216,6 @@ namespace QLNet
 
 		void ITraits<YoYInflationTermStructure>.updateGuess( List<double> data, double discount, int i )
 		{
-			//throw new NotImplementedException();
 			data[i] = discount;
 		}
 

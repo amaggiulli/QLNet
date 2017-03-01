@@ -72,7 +72,6 @@ namespace QLNet
 																		  new Handle<Quote>( vol ) );
 			cap_.setPricingEngine( black );
 			double value = cap_.NPV();
-			//cap_.unregisterWith( update );
 			cap_.setPricingEngine( engine_ );
 			return value;
 		}

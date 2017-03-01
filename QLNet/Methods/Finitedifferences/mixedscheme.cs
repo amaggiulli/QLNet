@@ -31,10 +31,6 @@ namespace QLNet {
     //! Mixed (explicit/implicit) scheme for finite difference methods
     /*! In this implementation, the passed operator must be derived
         from either TimeConstantOperator or TimeDependentOperator.
-        Also, it must implement at least the following interface:
-
-        \code
-        typedef ... array_type;
 
         \ingroup findiff
     */

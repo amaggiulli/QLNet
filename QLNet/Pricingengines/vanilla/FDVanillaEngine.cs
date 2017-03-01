@@ -35,13 +35,11 @@ namespace QLNet {
         protected TridiagonalOperator finiteDifferenceOperator_;
         public SampledCurve intrinsicValues_;
 
-        // typedef BoundaryCondition<TridiagonalOperator> bc_type;
         protected List<BoundaryCondition<IOperator>> BCs_;
         // temporaries
         protected double sMin_, center_, sMax_;
 
         // temporaries
-        //private double gridLogSpacing_;
         const double safetyZoneFactor_ = 1.1;
 
         // required for generics and template iheritance
@@ -53,8 +51,6 @@ namespace QLNet {
             return new FDVanillaEngine(process, timeSteps, gridPoints, timeDependent);
         }
 
-        //public FDVanillaEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
-        //                       bool timeDependent = false)
         public FDVanillaEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent) {
             process_ = process;
             timeSteps_ = timeSteps;
@@ -63,7 +59,6 @@ namespace QLNet {
             intrinsicValues_ = new SampledCurve(gridPoints);
             BCs_ = new InitializedList<BoundaryCondition<IOperator>>(2);
         }
-
 
         public Vector grid() { return intrinsicValues_.grid(); }
 

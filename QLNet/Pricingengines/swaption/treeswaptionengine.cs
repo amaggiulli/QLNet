@@ -44,7 +44,6 @@ namespace QLNet
             \note the term structure is only needed when the short-rate
                   model cannot provide one itself.
         */
-        //@{
         public TreeSwaptionEngine(ShortRateModel model,
                            int timeSteps)
             : this(model, timeSteps, new Handle<YieldTermStructure>())
@@ -68,7 +67,7 @@ namespace QLNet
             termStructure_=termStructure;
             termStructure_.registerWith(update);
         }
-        //@}
+
         public override void calculate(){
 
         if(!(base.arguments_.settlementType==Settlement.Type.Physical))
@@ -116,9 +115,6 @@ namespace QLNet
         swaption.initialize(lattice, stoppingTimes.Last());
 
         double nextExercise;
-            /*std::find_if(stoppingTimes.begin(),
-                          stoppingTimes.end(),
-                          std::bind2nd(std::greater_equal<Time>(), 0.0));*/
 
         List<double> listExercise = new List<double>();
         listExercise.AddRange(stoppingTimes.FindAll(x => x >= 0));

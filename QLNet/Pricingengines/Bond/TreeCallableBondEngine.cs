@@ -29,7 +29,6 @@ namespace QLNet
           \note the term structure is only needed when the short-rate
                 model cannot provide one itself.
       */
-      //@{
       public TreeCallableFixedRateBondEngine(ShortRateModel model, int  timeSteps,
                                              Handle<YieldTermStructure> termStructure)
          : base(model, timeSteps)
@@ -47,7 +46,7 @@ namespace QLNet
          termStructure_ = termStructure;
          termStructure_.registerWith(update);
       }
-      //@}
+
       public override void calculate()
       {
          Utils.QL_REQUIRE( model_ != null, () => "no model specified" );

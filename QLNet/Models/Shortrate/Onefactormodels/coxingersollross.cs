@@ -52,10 +52,6 @@ namespace QLNet {
            k_=arguments_[1];
            sigma_=arguments_[2];
            r0_ = arguments_[3];
-           //theta_ = new ConstantParameter(theta, new PositiveConstraint());
-           //k_ = new ConstantParameter(k, new PositiveConstraint());
-           //sigma_ = new ConstantParameter(sigma, new VolatilityConstraint(k,theta));
-           //r0_ = new ConstantParameter(r0, new PositiveConstraint());
         }
 
         public override double discountBondOption(Option.Type type,
@@ -161,12 +157,7 @@ namespace QLNet {
 
         //! %Dynamics of the short-rate under the Cox-Ingersoll-Ross model
         /*! The state variable \f$ y_t \f$ will here be the square-root of the
-            short-rate. It satisfies the following stochastic equation
-            \f[
-                dy_t=\left[
-                        (\frac{k\theta }{2}+\frac{\sigma ^2}{8})\frac{1}{y_t}-
-                        \frac{k}{2}y_t \right] d_t+ \frac{\sigma }{2}dW_{t}
-            \f].
+            short-rate.
         */
         public class Dynamics : ShortRateDynamics {
           public Dynamics(double theta,

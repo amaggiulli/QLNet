@@ -155,8 +155,6 @@ namespace QLNet
                 double reset = floatingResetTimes_[i];
                 if (t >= 0.0 && isOnTime(t) && reset < 0.0){
                     double currentFloatingCoupon = arguments_.floatingCoupons[i];
-                    //QL_REQUIRE(currentFloatingCoupon != Null<Real>(),
-                    //           "current floating coupon not given");
                     if (arguments_.type == VanillaSwap.Type.Payer)
                         values_ += currentFloatingCoupon;
                     else

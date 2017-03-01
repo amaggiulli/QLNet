@@ -57,12 +57,6 @@ namespace QLNet
       where RNG : IRSG, new()
       where S : IGeneralStatistics, new()
    {
-
-      //typedef typename MC<RNG>::path_type path_type;
-      //typedef typename McSimulation<MC,RNG,S>::stats_type stats_type;
-      //typedef typename McSimulation<MC,RNG,S>::path_pricer_type path_pricer_type;
-      //typedef typename McSimulation<MC,RNG,S>::path_generator_type path_generator_type;
-
       protected StochasticProcess process_;
       protected int? timeSteps_;
       protected int? timeStepsPerYear_;

@@ -686,7 +686,6 @@ namespace QLNet {
         private double quadraticity_, monotonicity_;
         private bool forcePositive_;
 
-        //public ConvexMonotone(double quadraticity = 0.3, double monotonicity = 0.7, bool forcePositive = true) {
         public ConvexMonotone() : this(0.3, 0.7, true) { }
         public ConvexMonotone(double quadraticity, double monotonicity, bool forcePositive) {
             quadraticity_ = quadraticity;

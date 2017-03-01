@@ -50,8 +50,7 @@ namespace QLNet
 
       public override List<double> mandatoryTimes() {
         List<double>  times = startTimes_;
-        //copy(endTimes_.begin(), endTimes_.end(),
-        //          std::back_inserter(times));
+
         for (int j = 0; j < endTimes_.Count; j++)
             times.Insert(0, endTimes_[j]);
         return times;

@@ -19,19 +19,7 @@ using System.Numerics;
 namespace QLNet
 {
    //! Analytic Heston engine incl. stochastic interest rates
-   /*! This class is pricing a european option under the following process
-
-       \f[
-       \begin{array}{rcl}
-       dS(t, S)  &=& (r-d) S dt +\sqrt{v} S dW_1 \\
-       dv(t, S)  &=& \kappa (\theta - v) dt + \sigma \sqrt{v} dW_2 \\
-       dr(t)     &=& (\theta(t) - a r) dt + \eta dW_3 \\
-       dW_1 dW_2 &=& \rho dt \\
-       dW_1 dW_3 &=& 0 \\
-       dW_2 dW_3 &=& 0 \\
-       \end{array}
-       \f]
-
+   /*! 
        References:
 
        Karel in't Hout, Joris Bierkens, Antoine von der Ploeg,

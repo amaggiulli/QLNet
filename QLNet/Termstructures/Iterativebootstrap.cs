@@ -215,7 +215,6 @@ namespace QLNet
 							// extend interpolation a point at a time
 							// including the pillar to be boostrapped
 							ts_.interpolation_ = ts_.interpolator_.interpolate(ts_.times_, i + 1, ts_.data_);
-							//ts_.interpolation_ = ts_.interpolator_.interpolate(times, times.Count, data);
                   }
                   catch (Exception)
                   {
@@ -225,7 +224,6 @@ namespace QLNet
 							// otherwise use Linear while the target
 							// interpolation is not usable yet
 							ts_.interpolation_ = new Linear().interpolate(ts_.times_, i + 1, ts_.data_);
-							//ts_.interpolation_ = new Linear().interpolate(times, times.Count, data);
                   }
                   ts_.interpolation_.update();
                }

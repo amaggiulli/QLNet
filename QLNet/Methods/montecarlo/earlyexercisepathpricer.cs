@@ -19,24 +19,24 @@
 using System;
 using System.Collections.Generic;
 
-namespace QLNet {
-    
-    //! base class for early exercise path pricers
-    /*! Returns the value of an option on a given path and given time.
-    */
-    public static class EarlyExerciseTraits<PathType> where PathType : IPath {
-        //typedef Real StateType;
-        public static int pathLength(PathType path) { return path.length(); }
-    }
+namespace QLNet
+{
+   //! base class for early exercise path pricers
+   // Returns the value of an option on a given path and given time.
 
+   public static class EarlyExerciseTraits<PathType> where PathType : IPath
+   {
+      public static int pathLength(PathType path)
+      {
+         return path.length();
+      }
+   }
 
-    // template<class PathType, class TimeType=Size, class ValueType=Real>
-    public interface IEarlyExercisePathPricer<PathType, StateType> where PathType : IPath {
-        // typedef typename EarlyExerciseTraits<PathType>::StateType StateType;
+   public interface IEarlyExercisePathPricer<PathType, StateType> where PathType : IPath
+   {
+      double value(PathType path, int t);
 
-        double value(PathType path, int t);
-
-        StateType state(PathType path, int t);
-        List<Func<StateType, double>> basisSystem();
-    }
+      StateType state(PathType path, int t);
+      List<Func<StateType, double>> basisSystem();
+   }
 }

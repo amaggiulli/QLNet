@@ -35,8 +35,6 @@ namespace QLNet {
         }
 
         // critical commodity price
-        //public static double criticalPrice(StrikedTypePayoff payoff, double riskFreeDiscount, double dividendDiscount,
-        //                                   double variance, double tolerance = 1e-6);
         public static double criticalPrice(StrikedTypePayoff payoff, double riskFreeDiscount, double dividendDiscount,
                                            double variance, double tolerance) {
 

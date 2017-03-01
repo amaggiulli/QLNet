@@ -166,20 +166,9 @@ namespace QLNet {
             return Math.Exp(value)*discount2/discount1;
         }
 
-        
-        //private class Dynamics;
-        //private class FittingParameter;
         private Parameter phi_;
 
         //! Short-rate dynamics in the Hull-White model
-        /*! The short-rate is here
-            \f[
-                r_t = \varphi(t) + x_t
-            \f]
-            where \f$ \varphi(t) \f$ is the deterministic time-dependent
-            parameter used for term-structure fitting and \f$ x_t \f$ is the
-            state variable following an Ornstein-Uhlenbeck process.
-        */
         public new class Dynamics : ShortRateDynamics {
           
             public Dynamics(Parameter fitting,double a,double sigma)

@@ -41,11 +41,9 @@ namespace QLNet
          element2_.registerWith(this.update);
       }
 
-      //! \name inspectors
-      //@{
+      // inspectors
       public double value1() { return element1_.link.value(); }
       public double value2() { return element2_.link.value(); }
-      //@}
 
       public void update()
       {

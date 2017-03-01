@@ -77,16 +77,11 @@ namespace QLNet {
             return new FDAmericanCondition<baseEngine>(process, timeSteps, gridPoints, timeDependent);
         }
 
-        //public FDAmericanCondition(GeneralizedBlackScholesProcess process,
-        //     int timeSteps = 100, int gridPoints = 100, bool timeDependent = false)
         public FDAmericanCondition(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {
             engine_.setStepCondition(initializeStepConditionImpl);
         }
 
-        //protected override void initializeStepCondition() {
-        //    stepCondition_ = new AmericanCondition(intrinsicValues_.values());
-        //}
         protected IStepCondition<Vector> initializeStepConditionImpl() {
             return new AmericanCondition(engine_.intrinsicValues_.values());
         }
@@ -104,25 +99,17 @@ namespace QLNet {
             return new FDShoutCondition<baseEngine>(process, timeSteps, gridPoints, timeDependent);
         }
 
-        //public FDShoutCondition(GeneralizedBlackScholesProcess process,
-        //        Size timeSteps = 100, Size gridPoints = 100, bool timeDependent = false)
         public FDShoutCondition(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {
             engine_.setStepCondition(initializeStepConditionImpl);
         }
 
-        //protected override void initializeStepCondition() {
-        //    double residualTime = getResidualTime();
-        //    double riskFreeRate = process_.riskFreeRate().link.zeroRate(residualTime, Compounding.Continuous).rate();
-        //    stepCondition_ = new ShoutCondition(intrinsicValues_.values(), residualTime, riskFreeRate);
-        //}
         protected IStepCondition<Vector> initializeStepConditionImpl() {
             // the following to rely on process_ which is the same for engine and here
             // therefore wrapping is not requried
             double residualTime = engine_.getResidualTime();
             double riskFreeRate = process_.riskFreeRate().link.zeroRate(residualTime, Compounding.Continuous).rate();
 
-            //stepCondition_ = new ShoutCondition(intrinsicValues_.values(), residualTime, riskFreeRate);
             return new ShoutCondition(engine_.intrinsicValues_.values(), residualTime, riskFreeRate);
         }
     }

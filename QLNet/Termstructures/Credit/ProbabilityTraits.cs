@@ -40,9 +40,6 @@ namespace QLNet
          // discount are not required to be decreasing--all bets are off.
          // We choose as max a value very unlikely to be exceeded.
          return 3.0;
-
-         // discounts cannot increase
-         //return data[i - 1]; 
       }
       // update with new guess
       public void updateGuess(List<double> data, double discount, int i) { data[i] = discount; }

@@ -185,10 +185,6 @@ namespace QLNet {
             pu_ = (r - down_) / (up_ - down_);
             pd_ = 1.0 - pu_;
 
-            // doesn't work
-            //     treeCentering_ = (up_+down_)/2.0;
-            //     up_ = up_-treeCentering_;
-
             Utils.QL_REQUIRE(pu_<=1.0,()=> "negative probability");
             Utils.QL_REQUIRE(pu_ >= 0.0,()=> "negative probability");
         }

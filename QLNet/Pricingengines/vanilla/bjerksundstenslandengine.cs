@@ -117,7 +117,6 @@ namespace QLNet {
 
             double beta = (0.5 - bT/variance) + Math.Sqrt(Math.Pow((bT/variance - 0.5), 2.0) + 2.0 * rT/variance);
             double BInfinity = beta / (beta - 1.0) * X;
-            // Real B0 = std::max(X, std::log(rfD) / std::log(dD) * X);
             double B0 = Math.Max(X, rT / (rT - bT) * X);
             double ht = -(bT + 2.0*Math.Sqrt(variance)) * B0 / (BInfinity - B0);
 

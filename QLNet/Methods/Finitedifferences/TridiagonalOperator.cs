@@ -76,8 +76,6 @@ namespace QLNet {
             Utils.QL_REQUIRE(high.Count == mid.Count - 1,()=> "wrong size for upper diagonal vector");
         }
 
-        // TridiagonalOperator(const Disposable<TridiagonalOperator>&);
-        // TridiagonalOperator& operator=(const Disposable<TridiagonalOperator>&);
         public object Clone() { return this.MemberwiseClone(); }
 
         public IOperator multiply(double a, IOperator o) {

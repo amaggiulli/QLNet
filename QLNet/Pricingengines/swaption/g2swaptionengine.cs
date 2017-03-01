@@ -17,22 +17,19 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-/*! \file g2swaptionengine.hpp
-    \brief Swaption pricing engine for two-factor additive Gaussian Model G2++
-*/
-
 
 using System;
 
 namespace QLNet
 {
-    //! %Swaption priced by means of the Black formula
-    /*! \ingroup swaptionengines
+   // Swaption pricing engine for two-factor additive Gaussian Model G2 + +
+   //! %Swaption priced by means of the Black formula
+   /*! \ingroup swaptionengines
 
-        \warning The engine assumes that the exercise date equals the
-                 start date of the passed swap.
-    */
-    public class G2SwaptionEngine : GenericModelEngine<G2, Swaption.Arguments,
+       \warning The engine assumes that the exercise date equals the
+                start date of the passed swap.
+   */
+   public class G2SwaptionEngine : GenericModelEngine<G2, Swaption.Arguments,
                                                            Swaption.Results> {
         double range_;
         int intervals_;

@@ -16,35 +16,41 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    public class PdeShortRate : PdeSecondOrderParabolic {
-        // typedef boost::shared_ptr<OneFactorModel::ShortRateDynamics> argument_type;
-        // typedef TransformedGrid grid_type;
+namespace QLNet
+{
+   public class PdeShortRate : PdeSecondOrderParabolic
+   {
+      private OneFactorModel.ShortRateDynamics dynamics_;
 
-        private OneFactorModel.ShortRateDynamics dynamics_;
+      public PdeShortRate()
+      {} // required for geerics
 
-        public PdeShortRate() { } // required for geerics
-        public PdeShortRate(OneFactorModel.ShortRateDynamics d) {
-            dynamics_ = d;
-        }
+      public PdeShortRate(OneFactorModel.ShortRateDynamics d)
+      {
+         dynamics_ = d;
+      }
 
-        public override double diffusion(double t, double x) {
-            return dynamics_.process().diffusion(t, x);
-        }
+      public override double diffusion(double t, double x)
+      {
+         return dynamics_.process().diffusion(t, x);
+      }
 
-        public override double drift(double t, double x) {
-            return dynamics_.process().drift(t, x);
-        }
+      public override double drift(double t, double x)
+      {
+         return dynamics_.process().drift(t, x);
+      }
 
-        public override double discount(double t, double x) {
-            return dynamics_.shortRate(t,x);
-        }
+      public override double discount(double t, double x)
+      {
+         return dynamics_.shortRate(t, x);
+      }
 
-        public override PdeSecondOrderParabolic factory(GeneralizedBlackScholesProcess process) {
-            throw new NotSupportedException();
-            //return new PdeShortRate(process);
-        }
-    }
+      public override PdeSecondOrderParabolic factory(GeneralizedBlackScholesProcess process)
+      {
+         throw new NotSupportedException();
+      }
+   }
 }

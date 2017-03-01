@@ -167,15 +167,6 @@ namespace QLNet
          }
          public override double value( Vector UnnamedParameter1, double t )
          {
-            //std::vector<Time>::const_iterator result =
-            //     std::find(times_.begin(), times_.end(), t);
-            // QL_REQUIRE(result!=times_.end(),
-            //            "fitting parameter not set!");
-            // return values_[result - times_.begin()];
-
-            //throw new NotImplementedException("Need to implement the FindIndex method()");
-
-            //int nIndex = times_.FindIndex( delegate(double val) { return val == locVal; });
             int nIndex = times_.FindIndex( val => val.IsEqual(t) );
             Utils.QL_REQUIRE( nIndex != -1,()=> "fitting parameter not set!" );
 

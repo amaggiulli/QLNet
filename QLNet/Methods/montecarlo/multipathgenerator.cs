@@ -16,20 +16,12 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 
 namespace QLNet {
     //! Generates a multipath from a random number generator.
     /*! RSG is a sample generator which returns a random sequence.
-        It must have the minimal interface:
-        \code
-        RSG {
-            Sample<Array> next();
-        };
-        \endcode
-
-        \ingroup mcarlo
 
         \test the generated paths are checked against cached results
     */
@@ -63,7 +55,7 @@ namespace QLNet {
                 Utils.QL_FAIL("Brownian bridge not supported");
                 return null;
             }
-           // typedef typename GSG::sample_type sequence_type;
+
            Sample<List<double>> sequence_ =
               antithetic ? generator_.lastSequence()
                  : generator_.nextSequence();
@@ -77,7 +69,7 @@ namespace QLNet {
            for (int j=0; j<m; j++)
               path[j].setFront(asset[j]);
 
-           Vector temp; // = new Vector(n);
+           Vector temp; 
            next_.weight = sequence_.weight;
 
            TimeGrid timeGrid = path[0].timeGrid();

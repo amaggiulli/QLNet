@@ -43,15 +43,12 @@ namespace QLNet {
 
         }
 
-        // public class ShortRateTree;
-
         //! returns the short-rate dynamics
         public abstract ShortRateDynamics dynamics();
 
         //! Return by default a trinomial recombining tree
         public override Lattice tree(TimeGrid grid)
         {
-            //throw new NotImplementedException();
             TrinomialTree trinomial = new TrinomialTree(dynamics().process(), grid);
             return new ShortRateTree(trinomial, dynamics(), grid);
         }
@@ -93,8 +90,6 @@ namespace QLNet {
                     Brent s1d = new Brent();
                     s1d.setMaxEvaluations(1000);
                     value = s1d.solve(finder, 1e-7, value, vMin, vMax);
-                    // vMin = value - 1.0;
-                    // vMax = value + 1.0;
                     theta.change(value);
                 }
 
@@ -187,13 +182,13 @@ namespace QLNet {
             double r0 = dynamics().shortRate(0.0, x0);
             return discountBond(0.0, t, r0);
         }
-        //double discountBond(double now, double maturity, Vector factors);
+
         public virtual double discountBondOption(Option.Type type,
                                             double strike,
                                             double maturity,
                                             double bondMaturity) { throw new NotImplementedException(); }
 
-        protected abstract double A(double t, double T);//{throw new NotImplementedException();}
-        protected abstract double B(double t, double T);//{throw new NotImplementedException();}
+        protected abstract double A(double t, double T);
+        protected abstract double B(double t, double T);
     }
 }

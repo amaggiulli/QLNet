@@ -118,7 +118,7 @@ namespace QLNet
                 product *= path.front();
             }
             // care must be taken not to overflow product
-            double maxValue = double.MaxValue; //QL_MAX_REAL;
+            double maxValue = double.MaxValue; 
             averagePrice = 1.0;
             for (int i=1; i<n+1; i++) {
                 double price = path[i];

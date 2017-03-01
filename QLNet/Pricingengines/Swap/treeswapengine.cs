@@ -37,7 +37,7 @@ namespace QLNet
             \note the term structure is only needed when the short-rate
                   model cannot provide one itself.
         */
-        //@{
+
         public TreeVanillaSwapEngine(ShortRateModel model,
                            int timeSteps,
                            Handle<YieldTermStructure> termStructure)

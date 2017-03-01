@@ -21,9 +21,6 @@ namespace QLNet {
     //! \f$ D_{0} \f$ matricial representation
     /*! The differential operator \f$ D_{0} \f$ discretizes the
         first derivative with the second-order formula
-        \f[ \frac{\partial u_{i}}{\partial x} \approx
-            \frac{u_{i+1}-u_{i-1}}{2h} = D_{0} u_{i}
-        \f]
 
         \ingroup findiff
 

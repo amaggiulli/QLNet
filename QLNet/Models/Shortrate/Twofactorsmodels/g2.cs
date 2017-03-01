@@ -18,11 +18,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-/*! \file g2.hpp
-    \brief Two-factor additive Gaussian Model G2++
-*/
+// Two-factor additive Gaussian Model G2 + +
 
 namespace QLNet
 {
@@ -76,14 +73,6 @@ namespace QLNet
            double rho)
             : base(5)
         {
-            //TermStructureConsistentModel = termStructure;
-            /* regroupement car plant!!
-             * *a_ = arguments_[0];
-            sigma_ = arguments_[1]; 
-            b_ = arguments_[2];
-            eta_ = arguments_[3];
-            rho_ = arguments_[4];*/
-
             termStructure_ = termStructure;
             a_ = arguments_[0] = new ConstantParameter(a, new PositiveConstraint());
             sigma_ = arguments_[1] = new ConstantParameter(sigma, new PositiveConstraint());
@@ -414,8 +403,6 @@ namespace QLNet
                 lambda[i] = c*A_[i]*Math.Exp(-Ba_[i]*x);
             }
 
-            //SolvingFunction function = new SolvingFunction(lambda, Bb_);
-            //verifier le polymorphisme
             SolvingFunction function = new SolvingFunction(lambda, Bb_);
             Brent s1d = new Brent();
             s1d.setMaxEvaluations(1000);

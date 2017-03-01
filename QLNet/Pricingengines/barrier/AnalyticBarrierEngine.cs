@@ -34,8 +34,7 @@ namespace QLNet {
 		public AnalyticBarrierEngine(GeneralizedBlackScholesProcess process)
 		{
 			process_ = process;
-			//registerWith(process_);
-            process_.registerWith(update);
+         process_.registerWith(update);
 		}
 		public override void calculate()
 		{

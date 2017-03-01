@@ -42,8 +42,6 @@ namespace QLNet {
             results_.legBPS = new InitializedList<double?>(arguments_.legs.Count);
             List<double?> startDiscounts = new InitializedList<double?>(arguments_.legs.Count);
             for (int i=0; i<arguments_.legs.Count; ++i) {
-               //results_.legNPV[i] = arguments_.payer[i] * CashFlows.npv(arguments_.legs[i], discountCurve_[i]);
-               //results_.legBPS[i] = arguments_.payer[i] * CashFlows.bps(arguments_.legs[i], discountCurve_[i]);
                 results_.value += results_.legNPV[i];
                 results_.cash += arguments_.payer[i] * CashFlows.cash(arguments_.legs[i]);
                 try {

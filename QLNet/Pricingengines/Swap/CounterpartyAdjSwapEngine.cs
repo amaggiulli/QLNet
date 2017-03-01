@@ -13,10 +13,8 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -39,8 +37,7 @@ namespace QLNet
    */
    public class CounterpartyAdjSwapEngine : VanillaSwap.Engine
    {
-      //! \name Constructors
-      //@{
+      // Constructors
       //! 
       /*! Creates the engine from an arbitrary swaption engine.
         If the investor default model is not given a default 
@@ -130,7 +127,7 @@ namespace QLNet
          invstDTS_.registerWith(update) ;
          blackVol.registerWith(update) ;
       }
-      //@}
+
       public override void calculate()
       {
          /* both DTS, YTS ref dates and pricing date consistency 
@@ -181,9 +178,6 @@ namespace QLNet
             IborIndex swapIndex = ((FloatingRateCoupon)arguments_.legs[1][0]).index() as IborIndex;
 
             // Alternatively one could cap this period to, say, 1M 
-            // Period swapPeriod = boost::dynamic_pointer_cast<FloatingRateCoupon>(
-            //   arguments_.legs[1][0])->index()->tenor();
-
             Period baseSwapsTenor = new Period(arguments_.fixedPayDates.Last().serialNumber()
              - swapletStart.serialNumber(),TimeUnit.Days);
             VanillaSwap swaplet = new MakeVanillaSwap(baseSwapsTenor, swapIndex, baseSwapFairRate)

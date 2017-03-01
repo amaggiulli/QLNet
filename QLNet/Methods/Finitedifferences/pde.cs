@@ -63,7 +63,6 @@ namespace QLNet {
 
 
     public class GenericTimeSetter<PdeClass> : TridiagonalOperator.TimeSetter where PdeClass : PdeSecondOrderParabolic, new() {
-        // typedef LogGrid grid_type;
         private LogGrid grid_;
         private PdeClass pde_;
 

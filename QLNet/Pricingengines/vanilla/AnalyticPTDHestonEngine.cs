@@ -153,7 +153,6 @@ namespace QLNet
          public double value(double phi)
          {
             // avoid numeric overflow for phi->0. 
-            // todo: use l'Hospital's rule use to get lim_{phi->0}
             phi = Math.Max(Double.Epsilon, phi);
 
             Complex D = 0.0;
@@ -199,7 +198,6 @@ namespace QLNet
          private double v0_, x_, sx_;
         
          private List<double> r_, q_;
-         //private YieldTermStructure qTS_;
          private Handle<PiecewiseTimeDependentHestonModel> model_;      
          private TimeGrid timeGrid_;
       }

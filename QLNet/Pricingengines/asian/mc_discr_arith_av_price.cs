@@ -135,12 +135,10 @@ namespace QLNet
             int fixings;
             if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0)) {
                 // include initial fixing
-                //sum = std::accumulate(path.begin(),path.end(),runningSum_);  
                 for(int i=0;i<path.length();i++ )
                     sum += path[i];
                 fixings = pastFixings_ + n;
             } else {
-                //sum = std::accumulate(path.begin()+1,path.end(),runningSum_);
                 for (int i = 1; i < path.length(); i++)
                     sum += path[i];
                 fixings = pastFixings_ + n - 1;

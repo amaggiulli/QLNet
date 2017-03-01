@@ -36,7 +36,6 @@ namespace QLNet
 
 		public double guess( ZeroInflationTermStructure c, Date d ) { return traits_.guess( c, d ); }
 
-		// protected InflationTraits traits_;
 		public Date initialDate( ZeroInflationTermStructure c ) { return traits_.initialDate( c ); }
 		public double initialValue( ZeroInflationTermStructure c ) { return traits_.initialValue( c ); }
 		public double guess( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.guess( i, c, validData, first ); }
@@ -165,7 +164,7 @@ namespace QLNet
 		protected IBootStrap<PiecewiseZeroInflationCurve> bootstrap_;
 
 
-		protected double _accuracy_;//= 1.0e-12;
+		protected double _accuracy_;
 		public double accuracy_
 		{
 			get { return _accuracy_; }
@@ -243,9 +242,7 @@ namespace QLNet
 
 		}
 
-		//@}
-		//! \name Inflation interface
-		//@{
+		// Inflation interface
 		public override Date baseDate()
 		{
 			this.calculate();
@@ -256,9 +253,8 @@ namespace QLNet
 			this.calculate();
 			return base.maxDate();
 		}
-		//@
-		//! \name Inspectors
-		//@{
+
+		// Inspectors
 		public override List<double> times()
 		{
 			calculate();
@@ -279,11 +275,6 @@ namespace QLNet
 			calculate();
 			return base.nodes();
 		}
-		//@}
-		//! \name Observer interface
-		//@{
-		public override void update() { base.update(); }
-		//@}
 
 		// methods
 		protected override void performCalculations() { bootstrap_.calculate(); }

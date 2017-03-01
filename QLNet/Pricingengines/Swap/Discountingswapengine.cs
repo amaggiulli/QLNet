@@ -127,22 +127,7 @@ namespace QLNet
                 Utils.QL_FAIL( (i+1) + " leg: " + e.Message);
             }
             results_.value += results_.legNPV[i];
-
-            //results_.legNPV[i] = arguments_.payer[i] * CashFlows.npv(arguments_.legs[i], discountCurve_);
-            //results_.legBPS[i] = arguments_.payer[i] * CashFlows.bps(arguments_.legs[i], discountCurve_);
-            //results_.value += results_.legNPV[i];
-            //results_.cash += arguments_.payer[i] * CashFlows.cash(arguments_.legs[i]);
-            //try 
-            //{
-            //   Date d = CashFlows.startDate(arguments_.legs[i]);
-            //   startDiscounts[i] = discountCurve_.link.discount(d);
-            //} 
-            //catch 
-            //{
-            //   startDiscounts[i] = null;
-            //}
          }
-         //results_.additionalResults.Add("startDiscounts", startDiscounts);
       }
     }
 }
