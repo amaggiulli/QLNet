@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace QLNet {
     // this is an abstract class to give access to all properties and methods of PiecewiseYieldCurve and avoiding generics
-	public class PiecewiseYieldCurve : YieldTermStructure, InterpolatedCurve, Curve<YieldTermStructure>
+	public class PiecewiseYieldCurve : YieldTermStructure, Curve<YieldTermStructure>
 	{
 		# region new fields: Curve
 

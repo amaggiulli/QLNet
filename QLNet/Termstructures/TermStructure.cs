@@ -21,7 +21,7 @@
 namespace QLNet
 {
    //! Basic term-structure functionality
-   public abstract class TermStructure : Extrapolator, IObserver, IObservable
+   public abstract class TermStructure : Extrapolator
    {
         
       #region Constructors

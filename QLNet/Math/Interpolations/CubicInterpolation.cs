@@ -63,7 +63,7 @@ namespace QLNet
        \test to be adapted from old ones.
    */
 
-   public class CubicInterpolation : Interpolation, IValue
+   public class CubicInterpolation : Interpolation
    {
       #region enums
 

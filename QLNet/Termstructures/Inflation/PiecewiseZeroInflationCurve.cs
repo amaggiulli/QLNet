@@ -24,7 +24,7 @@ using System.Linq;
 namespace QLNet
 {
 
-	public class PiecewiseZeroInflationCurve : ZeroInflationTermStructure, InterpolatedCurve, Curve<ZeroInflationTermStructure>
+	public class PiecewiseZeroInflationCurve : ZeroInflationTermStructure, Curve<ZeroInflationTermStructure>
 	{
 		#region InflationTraits
 

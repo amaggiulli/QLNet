@@ -37,7 +37,7 @@ namespace QLNet {
        Sample<IPath> antithetic();
     }
 
-    public class Path : ICloneable, IPath {
+    public class Path : IPath {
         private TimeGrid timeGrid_;
         private Vector values_;
 

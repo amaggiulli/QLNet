@@ -76,7 +76,7 @@ namespace QLNet {
       /// <summary>
       /// given directly by the user 
       /// </summary>
-      public enum Type : int 
+      public enum Type
       {
          /// <summary>
          /// given directly by the user

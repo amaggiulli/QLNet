@@ -27,7 +27,7 @@ namespace QLNet {
 //    
 	public struct Replication
 	{
-		public enum Type: int
+		public enum Type
 		{
 			Sub,
 			Central,

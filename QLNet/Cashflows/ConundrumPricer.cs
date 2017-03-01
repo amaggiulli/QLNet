@@ -58,7 +58,8 @@ namespace QLNet {
     }
 
     public class GFunctionFactory {
-        public enum YieldCurveModel : int {
+        public enum YieldCurveModel
+        {
             Standard,
             ExactYield,
             ParallelShifts,

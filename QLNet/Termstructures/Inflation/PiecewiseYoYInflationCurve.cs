@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
 
-	public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, InterpolatedCurve, Curve<YoYInflationTermStructure>
+	public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, Curve<YoYInflationTermStructure>
 	{
 		#region InflationTraits
 

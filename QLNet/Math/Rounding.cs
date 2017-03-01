@@ -34,7 +34,7 @@ namespace QLNet
         private Type type_;
         private int digit_;
 
-        public enum Type : int
+        public enum Type
         {
             /// <summary>
             /// do not round: return the number unmodified 
