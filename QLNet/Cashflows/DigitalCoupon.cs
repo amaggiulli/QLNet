@@ -445,11 +445,8 @@ namespace QLNet
             }
             else
             {
-               if (isCallATMIncluded_)
-               {
-                  if (Math.Abs(callStrike_ - underlyingRate) <= 1.0e-16)
-                     payoff = isCallCashOrNothing_ ? callDigitalPayoff_ : underlyingRate;
-               }
+               if (isCallATMIncluded_ && Math.Abs(callStrike_ - underlyingRate) <= 1.0e-16)
+                  payoff = isCallCashOrNothing_ ? callDigitalPayoff_ : underlyingRate;
             }
          }
          return payoff;
