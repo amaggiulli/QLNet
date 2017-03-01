@@ -25,7 +25,7 @@ namespace QLNet
    /*! \ingroup callablebondengines */
    public class TreeCallableFixedRateBondEngine : LatticeShortRateModelEngine<CallableBond.Arguments, CallableBond.Results>
    {
-      /*! \name Constructors
+      /* Constructors
           \note the term structure is only needed when the short-rate
                 model cannot provide one itself.
       */

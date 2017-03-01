@@ -54,7 +54,7 @@ namespace QLNet {
         }
 
 
-        //! \name Lattice interface
+        // Lattice interface
         public override void initialize(DiscretizedAsset asset, double t) {
             int i = t_.index(t);
             asset.setTime(t);

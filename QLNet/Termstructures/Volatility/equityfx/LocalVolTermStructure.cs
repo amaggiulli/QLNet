@@ -68,7 +68,7 @@ namespace QLNet
          return localVolImpl(t, underlyingLevel);
       }
 
-      /*! \name Calculations
+      /* Calculations
 
           These methods must be implemented in derived classes to perform
           the actual volatility calculations. When they are called,

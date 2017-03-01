@@ -48,7 +48,7 @@ namespace QLNet
 
         }
         
-        //! \name Volatility
+        // Volatility
         /*! by default, inflation is observed with the lag
             of the term structure.
 

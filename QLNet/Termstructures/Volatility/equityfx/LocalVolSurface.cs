@@ -63,12 +63,12 @@ namespace QLNet {
             underlying_.registerWith(update);
         }
 
-        //! \name TermStructure interface
+        // TermStructure interface
         public override Date referenceDate() { return blackTS_.link.referenceDate(); }
         public override DayCounter dayCounter() { return blackTS_.link.dayCounter(); }
         public override Date maxDate() { return blackTS_.link.maxDate(); }
 
-        //! \name VolatilityTermStructure interface
+        // VolatilityTermStructure interface
         public override double minStrike() { return blackTS_.link.minStrike(); }
         public override double maxStrike() { return blackTS_.link.maxStrike(); }
 

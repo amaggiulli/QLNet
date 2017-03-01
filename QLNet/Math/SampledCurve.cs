@@ -83,7 +83,7 @@ namespace QLNet
          return grid_.Count == 0;
       }
 
-      //! \name modifiers
+      // modifiers
       public void setGrid(Vector g)
       {
          grid_ = (Vector) g.Clone();
@@ -100,7 +100,7 @@ namespace QLNet
             values_[i] = f(grid_[i]);
       }
 
-      //! \name calculations
+      // calculations
       /*! \todo replace or complement with a more general function valueAt(spot) */
 
       public double valueAtCenter()
@@ -149,7 +149,7 @@ namespace QLNet
          }
       }
 
-      //! \name utilities
+      // utilities
       public void setLogGrid(double min, double max)
       {
          setGrid(Utils.BoundedLogGrid(min, max, size() - 1));

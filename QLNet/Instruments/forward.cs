@@ -140,7 +140,7 @@ namespace QLNet {
 			Utils.QL_REQUIRE(strike >= 0.0,()=> "negative strike given");
         }
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "Forward";}
 		public override string description()  {
 			string result = name() + ", " + strike() + " strike";

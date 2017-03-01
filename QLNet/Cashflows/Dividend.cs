@@ -26,7 +26,7 @@ namespace QLNet
    public abstract class Dividend : CashFlow
    {
       protected Date date_;
-      //! \name Event interface
+      // Event interface
       public override Date date() { return date_; }
 
       public Dividend(Date date)
@@ -76,7 +76,7 @@ namespace QLNet
          nominal_ = nominal;
       }
 
-      //! \name Dividend interface
+      // Dividend interface
       public override double amount()
       {
          Utils.QL_REQUIRE(nominal_ != null,()=> "no nominal given");

@@ -149,7 +149,7 @@ namespace QLNet {
             }
         }
 
-        //! \name Brownian-bridge constructor
+        // Brownian-bridge constructor
         public void transform(List<double> begin, List<double> output) {
             Utils.QL_REQUIRE(begin.Count != 0,()=> "invalid sequence");
             Utils.QL_REQUIRE(begin.Count == size_,()=> "incompatible sequence size");

@@ -93,7 +93,7 @@ namespace QLNet {
             return correlation;
         }
 
-        //! \name 1-D inspectors lifted from underlying statistics class
+        // 1-D inspectors lifted from underlying statistics class
         public int samples() { return (stats_.Count == 0) ? 0 : stats_[0].samples(); }
         public double weightSum(){ return (stats_.Count == 0) ? 0.0 : stats_[0].weightSum(); }
 

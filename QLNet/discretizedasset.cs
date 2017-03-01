@@ -40,7 +40,7 @@ namespace QLNet {
         }
 
 
-        /*! \name High-level interface
+        /* High-level interface
 
             Users of discretized assets should use these methods in
             order to initialize, evolve and take the present value of
@@ -64,7 +64,7 @@ namespace QLNet {
             return method_.presentValue(this);
         }
 
-        /*! \name Low-level interface
+        /* Low-level interface
 
             These methods (that developers should override when
             deriving from DiscretizedAsset) are to be used by

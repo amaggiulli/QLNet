@@ -54,7 +54,7 @@ namespace QLNet {
             Utils.QL_REQUIRE(values_.size() == timeGrid_.size(),()=> "different number of times and asset values");
         }
 
-        //! \name inspectors
+        // inspectors
         public bool empty() { return timeGrid_.empty(); }
         public int length() { return timeGrid_.size(); }
 

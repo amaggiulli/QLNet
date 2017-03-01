@@ -28,7 +28,7 @@ namespace QLNet {
             t_ = timeGrid;
         }
 
-        /*! \name Numerical method interface
+        /* Numerical method interface
 
             These methods are to be used by discretized assets and
             must be overridden by developers implementing numerical

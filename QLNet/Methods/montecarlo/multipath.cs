@@ -41,12 +41,12 @@ namespace QLNet {
             multiPath_ = multiPath;
         }
 
-        //! \name inspectors
+        // inspectors
         public int assetNumber() { return multiPath_.Count; }
         public int length() { return pathSize(); }
         public int pathSize() { return multiPath_[0].length(); }
 
-        //! \name read/write access to components
+        // read/write access to components
         public Path this[int j] { get { return multiPath_[j]; } set { multiPath_[j] = value; } }
 
         // ICloneable interface

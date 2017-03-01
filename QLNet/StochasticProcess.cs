@@ -48,7 +48,7 @@ namespace QLNet {
             discretization_ = disc;
         }
    
-        //! \name Stochastic process interface
+        // Stochastic process interface
         //! returns the number of dimensions of the stochastic process
         public abstract int size();
 

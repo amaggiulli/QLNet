@@ -32,7 +32,7 @@ namespace QLNet
          blackVarianceCurve_.registerWith( update );
       }
 
-      //! \name TermStructure interface
+      // TermStructure interface
       public override Date referenceDate()
       {
          return blackVarianceCurve_.link.referenceDate();
@@ -53,7 +53,7 @@ namespace QLNet
          return blackVarianceCurve_.link.maxDate();
       }
 
-      //! \name VolatilityTermStructure interface
+      // VolatilityTermStructure interface
       public override double minStrike()
       {
          return double.MinValue;

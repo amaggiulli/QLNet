@@ -902,7 +902,7 @@ namespace QLNet
          return result;
       }
 
-      //! \name SwapRateHelper inspectors
+      // SwapRateHelper inspectors
       public double spread() { return spread_.empty() ? 0.0 : spread_.link.value(); }
       public VanillaSwap swap() { return swap_; }
       public Period forwardStart() { return fwdStart_; }
@@ -954,7 +954,7 @@ namespace QLNet
          initializeDates();
       }
 
-      //! \name RateHelper interface
+      // RateHelper interface
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE( termStructure_ != null,()=> "term structure not set" );

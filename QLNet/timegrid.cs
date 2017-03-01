@@ -153,7 +153,7 @@ namespace QLNet
          }
       }
 
-      //! \name Time grid interface
+      // Time grid interface
       //! returns the index i such that grid[i] = t
       public int index(double t)
       {

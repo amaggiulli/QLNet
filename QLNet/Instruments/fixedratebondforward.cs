@@ -67,7 +67,7 @@ namespace QLNet
    {
       protected FixedRateBond fixedCouponBond_;
 
-      //! \name Constructors
+      // Constructors
       /*! If strike is given in the constructor, can calculate the
           NPV of the contract via NPV().
 

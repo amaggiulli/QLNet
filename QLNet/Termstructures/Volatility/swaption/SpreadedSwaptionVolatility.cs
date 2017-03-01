@@ -29,7 +29,7 @@ namespace QLNet
          spread_.registerWith(update);
       }
       // All virtual methods of base classes must be forwarded
-      //! \name TermStructure interface
+      // TermStructure interface
       public override DayCounter dayCounter() { return baseVol_.link.dayCounter(); }
       public override Date maxDate() { return baseVol_.link.maxDate(); }
       public override double maxTime() { return baseVol_.link.maxTime(); }
