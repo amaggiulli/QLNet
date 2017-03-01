@@ -39,13 +39,11 @@ namespace QLNet {
             originalCurve_.registerWith(update);
         }
 
-        //! \name YieldTermStructure interface
-        //@{
+        // YieldTermStructure interface
         public override DayCounter dayCounter() { return originalCurve_.link.dayCounter(); }
         public override Calendar calendar() { return originalCurve_.link.calendar(); }
         public override int settlementDays() { return originalCurve_.link.settlementDays(); }
         public override Date maxDate() { return originalCurve_.link.maxDate(); }
-        //@}
 
         //! returns the discount factor as seen from the evaluation date
         /* t is relative to the current reference date and needs to be converted to the time relative

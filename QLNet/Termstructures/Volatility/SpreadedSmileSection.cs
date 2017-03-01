@@ -30,8 +30,7 @@ namespace QLNet
          underlyingSection_.registerWith(update);
          spread_.registerWith(update);
       }
-      //! \name SmileSection interface
-      //@{
+      // SmileSection interface
       public override double minStrike() { return underlyingSection_.minStrike(); }
       public override double maxStrike() { return underlyingSection_.maxStrike(); }
       public override double? atmLevel() { return underlyingSection_.atmLevel(); }
@@ -41,11 +40,9 @@ namespace QLNet
       public override Date referenceDate() { return underlyingSection_.referenceDate(); }
       public override VolatilityType volatilityType() { return underlyingSection_.volatilityType(); }
       public override double shift() { return underlyingSection_.shift(); }
-      //@}
-      //! \name LazyObject interface
-      //@{
+
+      // LazyObject interface
       public override void update() { notifyObservers(); }
-      //@}
 
       protected override double volatilityImpl( double k )
       {

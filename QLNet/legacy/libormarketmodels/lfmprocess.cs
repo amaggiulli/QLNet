@@ -114,18 +114,7 @@ namespace QLNet
         }
 
         public override Vector evolve(double t0, Vector x0, double dt, Vector dw) {
-            /* predictor-corrector step to reduce discretization errors.
-
-               Short - but slow - solution would be
-
-               Array rnd_0     = stdDeviation(t0, x0, dt)*dw;
-               Array drift_0   = discretization_->drift(*this, t0, x0, dt);
-
-               return apply(x0, ( drift_0 + discretization_
-                    ->drift(*this,t0,apply(x0, drift_0 + rnd_0),dt) )*0.5 + rnd_0);
-
-               The following implementation does the same but is faster.
-            */
+            // predictor-corrector step to reduce discretization errors.
 
             int m = nextIndexReset(t0);
             double sdt = Math.Sqrt(dt);
@@ -228,8 +217,6 @@ namespace QLNet
         }
 
         public int nextIndexReset(double t) {
-            //return upper_bound(fixingTimes_.begin(), fixingTimes_.end(), t)
-            //        - fixingTimes_.begin();
             int result = fixingTimes_.FindIndex(x => x>t);
             if (result < 0)
                 result = ~result - 1;

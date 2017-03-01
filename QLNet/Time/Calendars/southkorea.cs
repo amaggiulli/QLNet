@@ -163,7 +163,6 @@ namespace QLNet {
                     // Buddha's birthday
                     || (d == 26 && m == Month.May && y == 2004)
                     || (d == 15 && m == Month.May && y == 2005)
-                    // || (d == 5 && m == Month.May && y == 2006) dead code , 5 May always holiday ( Children's Day)
                     || (d == 24 && m == Month.May && y == 2007)
                     || (d == 12 && m == Month.May && y == 2008)
                     || (d == 2 && m == Month.May && y == 2009)

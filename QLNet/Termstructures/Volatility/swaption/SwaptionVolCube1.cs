@@ -356,8 +356,7 @@ namespace QLNet
          registerWithParametersGuess();
          setParameterGuess();
       }
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       protected override void performCalculations()
       {
          base.performCalculations();
@@ -382,9 +381,7 @@ namespace QLNet
          marketVolCube_.updateInterpolators();
 
          sparseParameters_ = sabrCalibration(marketVolCube_);
-         //parametersGuess_ = sparseParameters_;
          sparseParameters_.updateInterpolators();
-         //parametersGuess_.updateInterpolators();
          volCubeAtmCalibrated_= marketVolCube_;
 
          if(isAtmCalibrated_)
@@ -395,19 +392,15 @@ namespace QLNet
          }
 
       }
-      //@}
-      //! \name SwaptionVolatilityCube interface
-      //@{
+
+      // SwaptionVolatilityCube interface
       protected override SmileSection smileSectionImpl(double optionTime,double swapLength)
       {
          if (isAtmCalibrated_)
             return smileSection(optionTime, swapLength, ref denseParameters_);
-         else
-            return smileSection(optionTime, swapLength, ref sparseParameters_);
+         return smileSection(optionTime, swapLength, ref sparseParameters_);
       }
-      //@}
-      //! \name Other inspectors
-      //@{
+      // Other inspectors
       public Matrix marketVolCube(int i)  {return marketVolCube_.points()[i];}
       public Matrix sparseSabrParameters()
       {
@@ -429,7 +422,7 @@ namespace QLNet
          calculate();
          return volCubeAtmCalibrated_.browse();
       }
-      //@}
+
       public void sabrCalibrationSection( Cube marketVolCube,Cube parametersCube,Period swapTenor)
       {
          List<double> optionTimes = marketVolCube.optionTimes();
@@ -437,7 +430,6 @@ namespace QLNet
          List<Date> optionDates = marketVolCube.optionDates();
          List<Period> swapTenors = marketVolCube.swapTenors();
 
-         //List<Period> swapTenors = marketVolCube_.swapTenors();
          int k = swapTenors.IndexOf(swapTenors.First(x => x == swapTenor));
 
          Utils.QL_REQUIRE(k != swapTenors.Count,()=> "swap tenor not found");
@@ -603,7 +595,6 @@ namespace QLNet
          for (int i=0; i<4; i++)
             for (int j=0; j<nOptionTenors_; j++)
                 for (int k=0; k<nSwapTenors_; k++)
-                    //privateObserver_.registerWith(parametersGuessQuotes_[j+k*nOptionTenors_][i]);
                     parametersGuessQuotes_[j + k * nOptionTenors_][i].registerWith( privateObserver_.update );
       }
       protected void setParameterGuess()
@@ -963,18 +954,4 @@ namespace QLNet
 
        PrivateObserver privateObserver_;
    }
-   
-   //public class SwaptionVolCubeSabrModel
-   //{
-   //   public SwaptionVolCubeSabrModel()
-   //   {
-   //      Interpolation = new SABRInterpolation();
-   //   }
-   //   SABRInterpolation Interpolation { get; set; }
-   //   SabrSmileSection SmileSection { get; set; }
-   //}
-   //public class SwaptionVolCube1 : SwaptionVolCube1x<SwaptionVolCubeSabrModel>
-   //{
-      
-   //}
 }

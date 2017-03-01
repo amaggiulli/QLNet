@@ -33,7 +33,6 @@ namespace QLNet
            blackCurve_=new BlackVarianceCurve(referenceDate, dates, capletVolCurve, dayCounter, false);
        }
 
-        //@{
         public override DayCounter dayCounter() {
             return blackCurve_.dayCounter();
         }
@@ -42,7 +41,6 @@ namespace QLNet
             return blackCurve_.maxDate();
         }
 
-        //@}
         public override double minStrike() {
             return blackCurve_.minStrike();
         }

@@ -70,8 +70,7 @@ namespace QLNet
    */
    public class FittedBondDiscountCurve : YieldTermStructure
    {
-      //! \name Constructors
-      //@{
+      // Constructors
       //! reference date based on current evaluation date
       public FittedBondDiscountCurve( int settlementDays,
                                       Calendar calendar,
@@ -120,10 +119,8 @@ namespace QLNet
          fittingMethod_.curve_ = this;
         setup();
       }
-      //@}
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       //! total number of bonds used to fit the yield curve
       public int numberOfBonds() {return bondHelpers_.Count;}
       //! the latest date for which the curve can return values
@@ -138,12 +135,6 @@ namespace QLNet
          calculate();
          return fittingMethod_.clone();
       }
-      //@}
-
-      //! \name Observer interface
-      //@{
-      public override void update() {base.update();}
-      //@}
 
       private void setup()
       {
@@ -152,8 +143,7 @@ namespace QLNet
       }
 
       protected override void performCalculations()
-      {
-                 
+      {                 
          Utils.QL_REQUIRE(!bondHelpers_.empty(),()=> "no bondHelpers given");
 
          maxDate_ = Date.minDate();
@@ -235,7 +225,6 @@ namespace QLNet
       */
       public class FittingMethod
       {
-         //friend class FittedBondDiscountCurve;
          // internal class
          public class FittingCost : CostFunction
          {

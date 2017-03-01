@@ -30,8 +30,8 @@ namespace QLNet
          Utils.QL_REQUIRE( a_ >= 0.0,()=> "negative a given" );
          Utils.QL_REQUIRE( sigma_ >= 0.0,()=> "negative sigma given" );
       }
-      //! \name StochasticProcess1D interface
-      //@{
+
+      // StochasticProcess1D interface
       public override double x0() { return process_.x0(); }
       public override double drift(double t, double x)
       {
@@ -63,7 +63,6 @@ namespace QLNet
          alfa += h_.link.forwardRate(t, t, Compounding.Continuous, Frequency.NoFrequency).value();
          return alfa;
       }
-      //@}
     
       protected OrnsteinUhlenbeckProcess process_;
       protected Handle<YieldTermStructure> h_;
@@ -82,8 +81,7 @@ namespace QLNet
          a_ = a;
          sigma_ = sigma;
       }
-      //! \name StochasticProcess1D interface
-      //@{
+      // StochasticProcess1D interface
       public override double x0() { return process_.x0(); }
       public override double drift(double t, double x)
       {
@@ -104,7 +102,6 @@ namespace QLNet
       }
       public override double stdDeviation( double t0, double x0, double dt ) { return process_.stdDeviation( t0, x0, dt ); }
       public override double variance( double t0, double x0, double dt ) { return process_.variance( t0, x0, dt ); }
-      //@}
 
       public double a() { return a_; }
       public double sigma() { return sigma_; }

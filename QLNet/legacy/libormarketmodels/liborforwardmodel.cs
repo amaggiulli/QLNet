@@ -40,12 +40,7 @@ namespace QLNet
             accrualPeriod_ = new InitializedList<double>(process.size());
             covarProxy_=new LfmCovarianceProxy(volaModel, corrModel);
             process_=process;
-            
-            /*copy(volaModel.parameters().begin(), volaModel.parameters().end(),
-            arguments_.begin());
-            copy(corrModel.parameters().begin(), corrModel.parameters().end(),
-            arguments_.begin()+k);*/
-            
+                        
             int k=volaModel.parameters().Count;
             for (int j = 0; j < k; j++)
                 arguments_[j] = volaModel.parameters()[j];

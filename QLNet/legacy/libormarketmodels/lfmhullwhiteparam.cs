@@ -54,7 +54,6 @@ namespace QLNet
                 for (int i=0; i < size_-1; ++i) {
                     double d = 0;
                     tmpSqrtCorr.row(i).GetRange(0, factors_).ForEach((ii, vv) => d += vv*tmpSqrtCorr.row(i)[ii]);
-                    //sqrtCorr.row(i).GetRange(0, factors_).ForEach((ii, vv) => sqrtCorr.row(i)[ii] = tmpSqrtCorr.row(i).GetRange(0, factors_)[ii] / Math.Sqrt(d));
                     for (int k = 0; k < factors_; ++k){
                         sqrtCorr[i, k] = tmpSqrtCorr.row(i).GetRange(0, factors_)[k] / Math.Sqrt(d);
                     }                    
@@ -147,8 +146,6 @@ namespace QLNet
         }
 
         protected int nextIndexReset(double t) {
-          //return std::upper_bound(fixingTimes_.begin(), fixingTimes_.end(), t)
-          //       - fixingTimes_.begin();
             int result = fixingTimes_.BinarySearch(t);
             if (result < 0)
                 // The upper_bound() algorithm finds the last position in a sequence that value can occupy 

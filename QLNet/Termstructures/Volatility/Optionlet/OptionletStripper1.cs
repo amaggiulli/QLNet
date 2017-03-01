@@ -76,8 +76,7 @@ namespace QLNet
          return switchStrike_.Value;
       }
 
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       protected override void performCalculations()
       {
          // update dates
@@ -131,7 +130,6 @@ namespace QLNet
                   : CapFloorType.Cap;
                for (int i = 0; i < nOptionletTenors_; ++i)
                {
-                  //volQuotes_[i][j] = new SimpleQuote();
                   if (volatilityType_ == VolatilityType.ShiftedLognormal)
                   {
                      BlackCapFloorEngine engine = new BlackCapFloorEngine(discountCurve,
@@ -209,7 +207,6 @@ namespace QLNet
             }
          }
       }
-      //@}
 
       private Matrix capFloorPrices_, optionletPrices_;
       private Matrix capFloorVols_;

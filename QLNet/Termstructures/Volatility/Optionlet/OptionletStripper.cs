@@ -25,8 +25,7 @@ namespace QLNet
    public enum VolatilityType { ShiftedLognormal, Normal };
    public class OptionletStripper : StrippedOptionletBase
    {
-      //! \name StrippedOptionletBase interface
-      //@{
+      // StrippedOptionletBase interface
       public override List<double> optionletStrikes(int i)
       {
          calculate();
@@ -66,7 +65,6 @@ namespace QLNet
       public override Calendar calendar() { return termVolSurface_.calendar(); }
       public override int settlementDays() { return termVolSurface_.settlementDays(); }
       public override BusinessDayConvention businessDayConvention() { return termVolSurface_.businessDayConvention(); }
-      //@}
 
       public List<Period> optionletFixingTenors() { return optionletTenors_; }
       public List<Date> optionletPaymentDates()
@@ -125,12 +123,12 @@ namespace QLNet
         }
         nOptionletTenors_ = optionletTenors_.Count;
 
-        optionletVolatilities_ = new InitializedList<List<double>>( nOptionletTenors_) ; //, new InitializedList<double>( nStrikes_ ) );
+        optionletVolatilities_ = new InitializedList<List<double>>( nOptionletTenors_) ; 
         for ( int x = 0 ; x < nOptionletTenors_; x++)
         {
            optionletVolatilities_[x] = new InitializedList<double>(nStrikes_);
         }
-        optionletStrikes_ = new InitializedList<List<double>>( nOptionletTenors_ ) ; //,termVolSurface.strikes());
+        optionletStrikes_ = new InitializedList<List<double>>( nOptionletTenors_ ) ; 
         for ( int x = 0; x < nOptionletTenors_; x++ )
         {
            optionletStrikes_[x] = new List<double>( termVolSurface.strikes() );

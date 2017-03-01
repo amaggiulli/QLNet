@@ -19,9 +19,6 @@
 
 namespace QLNet
 {
-    //public partial class Quote
-    //{}
-
     //! Constant swaption volatility, no time-strike dependence
     public class ConstantSwaptionVolatility : SwaptionVolatilityStructure 
     {    
@@ -75,15 +72,11 @@ namespace QLNet
             maxSwapTenor_ = new Period(100, TimeUnit.Years);
         }
         
-        //! \name TermStructure interface
-        //@{
+        // TermStructure interface
         public override Date maxDate(){
             return Date.maxDate();
         }
-
-        //@}
-        //! \name VolatilityTermStructure interface
-        //@{
+        // VolatilityTermStructure interface
         public override double minStrike(){
             return double.MinValue;
         }
@@ -92,9 +85,7 @@ namespace QLNet
             return double.MaxValue;
         }
            
-        //@}
-        //! \name SwaptionVolatilityStructure interface
-        //@{
+        // SwaptionVolatilityStructure interface
         public override Period maxSwapTenor(){
             return maxSwapTenor_;
         }

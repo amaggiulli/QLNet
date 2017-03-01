@@ -149,7 +149,6 @@ namespace QLNet
       private List<Handle<Quote>> stdDevHandles_;
       private Handle<Quote> atmLevel_;
       private List<double> vols_;
-      //private Interpolation interpolation_;
 
       #region InterpolatedCurve
 

@@ -19,18 +19,7 @@ using System.Numerics;
 namespace QLNet
 {
    //! Square-root stochastic-volatility Heston process
-   /*! This class describes the square root stochastic volatility
-       process governed by
-       \f[
-       \begin{array}{rcl}
-       dS(t, S)  &=& \mu S dt + \sqrt{v} S dW_1 \\
-       dv(t, S)  &=& \kappa (\theta - v) dt + \sigma \sqrt{v} dW_2 \\
-       dW_1 dW_2 &=& \rho dt
-       \end{array}
-       \f]
-
-       \ingroup processes
-   */
+   // This class describes the square root stochastic volatility
    public class HestonProcess : StochasticProcess
    {
       public enum Discretization { PartialTruncation,
@@ -266,10 +255,6 @@ namespace QLNet
 
                cdf_nu_ds f = new cdf_nu_ds( this, nu_0, nu_t, dt, discretization_ );
                double vds = new Brent().solve( f, 1e-5, -x, theta_ * dt, 0.1 * theta_ * dt );
-
-                //double vds = new Brent().solve( boost::lambda::bind(&cdf_nu_ds, *this, boost::lambda::_1,
-                //                               nu_0, nu_t, dt, discretization_)-x,
-                //                               1e-5, theta_*dt, 0.1*theta_*dt);
 
                double vdw = (nu_t - nu_0 - kappa_*theta_*dt + kappa_*vds)/sigma_;
 

@@ -29,9 +29,6 @@ namespace QLNet
     */
     public abstract class CPIVolatilitySurface : VolatilityTermStructure
     {
-        //public CPIVolatilitySurface()
-        //  : base(BusinessDayConvention.Following, null) { }
-
         /*! calculates the reference date based on the global
             evaluation date.
         */
@@ -60,7 +57,6 @@ namespace QLNet
             methods are not provided.
         */
 
-        //@{
         //! Returns the volatility for a given maturity date and strike rate.
         double volatility(Date maturityDate, double strike,
                            Period obsLag = null,
@@ -133,10 +129,8 @@ namespace QLNet
             Date maturityDate = optionDateFromTenor(optionTenor);
             return totalVariance(maturityDate, strike, obsLag, extrapolate);
         }
-        //@}
 
-        //! \name Inspectors
-        //@{
+        // Inspectors
         /*! The term structure observes with a lag that is usually
             different from the availability lag of the index.  An
             inflation rate is given, by default, for the maturity
@@ -195,15 +189,6 @@ namespace QLNet
             Utils.QL_REQUIRE(baseLevel_ != null ,()=> "Base volatility, for baseDate(), not set.");
             return baseLevel_;
         }
-        //@}
-
-        //! \name Limits
-        //@{
-        //! the minimum strike for which the term structure can return vols
-       //public abstract double minStrike();
-        //! the maximum strike for which the term structure can return vols
-       //public abstract double maxStrike();
-        //@}
 
         protected virtual void checkRange(Date d, double strike, bool extrapolate)
         {

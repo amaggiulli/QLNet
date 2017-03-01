@@ -48,8 +48,7 @@ namespace QLNet
          for ( int i = 0 ; i < nStrikes_; i++)
             volSpreadsMatrix_.Add (new Matrix(optionTenors.Count, swapTenors.Count, 0.0));
       }
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       protected override void performCalculations()
       {
          base.performCalculations();
@@ -69,9 +68,8 @@ namespace QLNet
             volSpreadsInterpolator_[i].enableExtrapolation();
          }
       }
-      //@}
-      //! \name SwaptionVolatilityCube inspectors
-      //@{
+
+      // SwaptionVolatilityCube inspectors
       public  Matrix volSpreads(int i) { return volSpreadsMatrix_[i]; }
 
       protected override SmileSection smileSectionImpl( Date optionDate, Period swapTenor)
@@ -108,7 +106,7 @@ namespace QLNet
                 : shortSwapIndexBase_.fixingCalendar().adjust(optionDate,BusinessDayConvention.Following);
         return smileSectionImpl(optionDate, swapTenor);
       }
-      //@}
+
       private List<Interpolation2D> volSpreadsInterpolator_;
       private List<Matrix> volSpreadsMatrix_;
    }

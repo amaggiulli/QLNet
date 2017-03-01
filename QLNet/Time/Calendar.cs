@@ -59,20 +59,19 @@ namespace QLNet
         public Calendar() { }
         public Calendar(Calendar c) { calendar_ = c; }
 
-        //! \name Wrappers for interface
-        //@{
-        /// <summary>
-        /// This method is used for output and comparison between
-        /// calendars. It is <b>not</b> meant to be used for writing
-        /// switch-on-type code.
-        /// </summary>
-        /// <returns>
-        /// The name of the calendar.
-        /// </returns>
+        // Wrappers for interface
+        // <summary>
+        // This method is used for output and comparison between
+        // calendars. It is <b>not</b> meant to be used for writing
+        // switch-on-type code.
+        // </summary>
+        // <returns>
+        // The name of the calendar.
+        // </returns>
         public virtual string name() { return calendar.name(); }
-        /// <param name="d">Date</param>
-        /// <returns>Returns <tt>true</tt> iff the date is a business day for the
-        /// given market.</returns>
+        // <param name="d">Date</param>
+        // <returns>Returns <tt>true</tt> iff the date is a business day for the
+        // given market.</returns>
         public virtual bool isBusinessDay(Date d) {
             if (calendar.addedHolidays.Contains(d))
                 return false;
@@ -80,17 +79,16 @@ namespace QLNet
                 return true;
             return calendar.isBusinessDay(d);
         }
-        ///<summary>
-        /// Returns <tt>true</tt> iff the weekday is part of the
-        /// weekend for the given market.
-        ///</summary>
+        //<summary>
+        // Returns <tt>true</tt> iff the weekday is part of the
+        // weekend for the given market.
+        //</summary>
         public virtual bool isWeekend(DayOfWeek w) { return calendar.isWeekend(w); }
-        //@}
 
         // other functions
-        /// <summary>
-        /// Returns whether or not the calendar is initialized
-        /// </summary>
+        // <summary>
+        // Returns whether or not the calendar is initialized
+        // </summary>
         public bool empty() { return (object)calendar == null; }				//!  Returns whether or not the calendar is initialized
         /// <summary>
         /// Returns <tt>true</tt> iff the date is a holiday for the given
@@ -405,8 +403,7 @@ namespace QLNet
             }
         }
 
-        //! \name Operators
-        //@{
+        // Operators
         public static bool operator ==(Calendar c1, Calendar c2)
         {
            // If both are null, or both are same instance, return true.
@@ -431,6 +428,5 @@ namespace QLNet
         }
         public override bool Equals(object o) { return (this == (Calendar)o); }
         public override int GetHashCode() { return 0; }
-        //@}
     }
 }

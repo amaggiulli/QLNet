@@ -36,9 +36,6 @@ namespace QLNet
                      constructor must manage their own reference date
                      by overriding the referenceDate() method.
         */
-      //public BlackVolTermStructure()
-      //   : base(BusinessDayConvention.Following, null)
-      //{ }
         
       public BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(bdc, dc)
@@ -166,20 +163,6 @@ namespace QLNet
       
       #endregion
       
-      #region Visitability
- 
-      //public virtual void accept(IAcyclicVisitor v)
-      //{
-      //    IVisitor<BlackVolTermStructure>* v1 =
-      //      dynamic_cast<Visitor<BlackVolTermStructure>*>(&v);
-      //  if (v1 != 0)
-      //      v1->visit(*this);
-      //  else
-      //      QL_FAIL("not a Black-volatility term structure visitor");
-      //}
- 
-      #endregion
-
       #region Calculations
 
       //   These methods must be implemented in derived classes to perform
@@ -233,12 +216,6 @@ namespace QLNet
       
       #endregion
       
-      #region Visitability
-
-      // public virtual void accept(IAcyclicVisitor v);
-      
-      #endregion
-
       /*! Returns the variance for the given strike and date calculating it
           from the volatility.
       */
@@ -247,7 +224,7 @@ namespace QLNet
          double vol = blackVolImpl(maturity, strike);
          return vol*vol*maturity;
       }
-    };
+    }
 
 
    //! Black variance term structure
@@ -284,12 +261,6 @@ namespace QLNet
          :base(settlementDays, cal, bdc, dc)
       {}
 
-      #endregion
-
-      #region Visitability
-
-      //public virtual void accept(IAcyclicVisitor v);
-      
       #endregion
 
       /*! Returns the volatility for the given strike and date calculating it

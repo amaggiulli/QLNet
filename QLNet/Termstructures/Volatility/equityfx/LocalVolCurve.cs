@@ -64,18 +64,6 @@ namespace QLNet
          return double.MaxValue;
       }
 
-      /*! The relation
-      \f[
-          \int_0^T \sigma_L^2(t)dt = \sigma_B^2 T
-      \f]
-      holds, where \f$ \sigma_L(t) \f$ is the local volatility at
-      time \f$ t \f$ and \f$ \sigma_B(T) \f$ is the Black
-      volatility for maturity \f$ T \f$. From the above, the formula
-      \f[
-          \sigma_L(t) = \sqrt{\frac{\mathrm{d}}{\mathrm{d}t}\sigma_B^2(t)t}
-      \f]
-      can be deduced which is here implemented. */
-
       protected override double localVolImpl(double t, double dummy)
       {
          double dt = (1.0/365.0);

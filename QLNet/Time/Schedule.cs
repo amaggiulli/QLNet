@@ -444,8 +444,7 @@ namespace QLNet {
       }
       #endregion
 
-      //! \name Date access
-      //@{
+      // Date access
       public int size() { return dates_.Count; }
       public Date this[int i]
       {
@@ -487,10 +486,8 @@ namespace QLNet {
          Utils.QL_REQUIRE(isRegular_.Count > 0, () => "full interface (isRegular) not available");
          return isRegular_;
       }
-      //@}
 
-      //! \name Other inspectors
-      //@{
+      // Other inspectors
       public bool empty() { return dates_.Count == 0; }
       public Calendar calendar() { return calendar_; }
       public Date startDate() { return dates_.First(); }
@@ -514,9 +511,7 @@ namespace QLNet {
          Utils.QL_REQUIRE( endOfMonth_.HasValue, () => "full interface (end of month) not available" );
          return endOfMonth_.Value;
       }
-      //@}
 
-      //@{
       //! truncated schedule
       public Schedule until(Date truncationDate)
       {
@@ -556,7 +551,6 @@ namespace QLNet {
 
          return result;
       }
-      //@}
 
       Date nextTwentieth(Date d, DateGeneration.Rule rule)
       {
@@ -689,19 +683,6 @@ namespace QLNet {
            nextToLastDate_ = d;
            return this;
         }
-
-        //public MakeSchedule(Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
-        //                    BusinessDayConvention convention) {
-        //    calendar_ = calendar;
-        //    effectiveDate_ = effectiveDate;
-        //    terminationDate_ = terminationDate;
-        //    tenor_ = tenor;
-        //    convention_ = convention;
-        //    terminationDateConvention_ = convention;
-        //    rule_ = DateGeneration.Rule.Backward;
-        //    endOfMonth_ = false;
-        //    firstDate_ = nextToLastDate_ = null;
-        //}
 
         public Schedule value()
         {

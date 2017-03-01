@@ -484,7 +484,6 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
          iborIndex_.registerWith(update);
          pillarDate_ = customPillarDate;
          initializeDates();
@@ -501,7 +500,6 @@ namespace QLNet
          pillarChoice_ = pillarChoice;
 
          iborIndex_ = i.clone( termStructureHandle_ );
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
          iborIndex_.registerWith( update );
          pillarDate_ = customPillarDate;
 
@@ -570,7 +568,6 @@ namespace QLNet
          // no way to take fixing into account,
          // even if we would like to for FRA over today
          iborIndex_ = iborIndex.clone( termStructureHandle_ );
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
          iborIndex_.registerWith( update );
          pillarDate_ = customPillarDate;
          initializeDates();
@@ -588,7 +585,6 @@ namespace QLNet
          // no way to take fixing into account,
          // even if we would like to for FRA over today
          iborIndex_ = iborIndex.clone( termStructureHandle_ );
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
          iborIndex_.registerWith( update );
          pillarDate_ = customPillarDate;
          initializeDates();
@@ -693,8 +689,6 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
-
          iborIndex_.registerWith(update) ;
          spread_.registerWith(update);
          discountHandle_.registerWith( update );
@@ -739,8 +733,6 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
-
          iborIndex_.registerWith(update) ;
          spread_.registerWith(update); 
          discountHandle_.registerWith(update); 
@@ -775,8 +767,6 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
-
          iborIndex_.registerWith(update);
          spread_.registerWith(update);
          discountHandle_.registerWith(update);
@@ -821,8 +811,6 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         //iborIndex_.unregisterWith( termStructureHandle_.link.update );
-
          iborIndex_.registerWith(update);
          spread_.registerWith(update);
          discountHandle_.registerWith(update);
@@ -1070,8 +1058,7 @@ namespace QLNet
          initializeDates();
       }
 
-      //! \name RateHelper interface
-      //@{
+      // RateHelper interface
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null,()=> "term structure not set");
@@ -1088,12 +1075,8 @@ namespace QLNet
          if (isFxBaseCurrencyCollateralCurrency_) 
          {
             return (ratio/collRatio-1)*spot;
-         } 
-         else 
-         {
-            return (collRatio/ratio-1)*spot;
          }
-
+         return (collRatio/ratio-1)*spot;
       }
       public override void setTermStructure(YieldTermStructure t)
       {
@@ -1105,9 +1088,8 @@ namespace QLNet
         base.setTermStructure(t);
 
       }
-      //@}
-      //! \name FxSwapRateHelper inspectors
-      //@{
+
+      // FxSwapRateHelper inspectors
       public double spot()  { return spot_.link.value(); }
       public Period tenor()  { return tenor_; }
       public int fixingDays()  { return fixingDays_; }
@@ -1115,11 +1097,6 @@ namespace QLNet
       public BusinessDayConvention businessDayConvention()  { return conv_; }
       public bool endOfMonth()  { return eom_; }
       public bool isFxBaseCurrencyCollateralCurrency()  { return isFxBaseCurrencyCollateralCurrency_; }
-      //@}
-      //! \name Visitability
-      //@{
-      //public void accept(AcyclicVisitor&);
-      //@}
     
       protected override void initializeDates()
       {

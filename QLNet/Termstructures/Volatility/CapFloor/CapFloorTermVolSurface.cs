@@ -146,21 +146,16 @@ namespace QLNet
         }
         interpolate();
       }
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override Date maxDate()
       {
          calculate();
          return optionDateFromTenor(optionTenors_.Last());
       }
-      //@}
-      //! \name VolatilityTermStructure interface
-      //@{
+      // VolatilityTermStructure interface
       public override double minStrike() { return strikes_.First(); }
       public override double maxStrike() { return strikes_.Last(); }
-      //@}
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       public override void update()
       {
          // recalculate dates if necessary...
@@ -186,9 +181,7 @@ namespace QLNet
          interpolation_.update();  
       }
 
-      //@}
-      //! \name some inspectors
-      //@{
+      // some inspectors
       public List<Period> optionTenors() { return optionTenors_; }
       public List<Date> optionDates()
       {
@@ -203,7 +196,6 @@ namespace QLNet
          return optionTimes_;
       }
       public List<double> strikes() {return strikes_;}
-      //@}
       protected override double volatilityImpl(double t,double strike)
       {
          calculate();

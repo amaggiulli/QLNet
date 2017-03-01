@@ -57,13 +57,10 @@ namespace QLNet {
             volatility_.registerWith(update);
         }
 
-        //! \name TermStructure interface
-        //@{
+        // TermStructure interface
         public override DayCounter dayCounter() { return dayCounter_; }
         public override Date maxDate() { return Date.maxDate(); }
-        //@}
-        //! \name VolatilityTermStructure interface
-        //@{
+        // VolatilityTermStructure interface
         public override double minStrike() { return double.MinValue; }
         public override double maxStrike() { return double.MaxValue; }
 

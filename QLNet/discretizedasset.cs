@@ -48,7 +48,6 @@ namespace QLNet {
             Lattice interface, to which we refer for
             documentation.
 
-            @{
         */
         public void initialize(Lattice method, double t) {
             method_ = method;
@@ -73,8 +72,6 @@ namespace QLNet {
             exception of adjustValues(), preAdjustValues() and
             postAdjustValues() that can be used together with
             partialRollback().
-
-            @{
         */
 
         /*! This method should initialize the asset values to an Array

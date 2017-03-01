@@ -24,10 +24,6 @@ namespace QLNet
    //! exponential correlation model
    /*! This class describes a exponential correlation model
 
-       \f[
-       \rho_{i,j}=e^{(-\beta \|i-j\|)}
-       \f]
-
        References:
 
        Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,

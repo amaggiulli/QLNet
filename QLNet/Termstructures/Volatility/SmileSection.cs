@@ -179,21 +179,6 @@ namespace QLNet
       private double exerciseTime_;
       private VolatilityType volatilityType_;
       private double shift_;
-
-      //#region Observable & Observer
-      //public event Callback notifyObserversEvent;
-      //public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
-      //public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
-      //protected void notifyObservers()
-      //{
-      //   Callback handler = notifyObserversEvent;
-      //   if ( handler != null )
-      //   {
-      //      handler();
-      //   }
-      //}
-
-      //#endregion
    }
     public class SabrSmileSection : SmileSection {
         private double alpha_, beta_, nu_, rho_, forward_;
