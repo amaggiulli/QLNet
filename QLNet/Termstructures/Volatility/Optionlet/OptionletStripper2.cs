@@ -112,7 +112,7 @@ namespace QLNet
                   adjustedVol = unadjustedVol + spreadsVolImplied_[j];
 
                   var previous = optionletStrikes_[i].FindIndex(x => x >= atmCapFloorStrikes_[j]);
-                  int insertIndex = (int) previous ;  // (int)optionletStrikes_[i].First();
+                  int insertIndex = previous ; 
 
                   optionletStrikes_[i].Insert(insertIndex,atmCapFloorStrikes_[j]);
                   optionletVolatilities_[i].Insert(insertIndex, adjustedVol);

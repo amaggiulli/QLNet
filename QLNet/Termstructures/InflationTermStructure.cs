@@ -37,11 +37,11 @@ namespace QLNet {
                     break;
                 case Frequency.Semiannual:
                     startMonth = (Month)(6 * ((int)month - 1) / 6 + 1);
-                    endMonth = (Month)(startMonth + 5);
+                    endMonth = startMonth + 5;
                     break;
                 case Frequency.Quarterly:
                     startMonth = (Month)(3 * ((int)month - 1) / 3 + 1);
-                    endMonth = (Month)(startMonth + 2);
+                    endMonth = startMonth + 2;
                     break;
                 case Frequency.Monthly:
                     startMonth = endMonth = month;

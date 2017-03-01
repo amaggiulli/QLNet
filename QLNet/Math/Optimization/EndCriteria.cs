@@ -51,7 +51,7 @@ namespace QLNet
 			gradientNormEpsilon_ = gradientNormEpsilon;
 	
 			if (maxStationaryStateIterations_ == null)
-				maxStationaryStateIterations_ = Math.Min((int)(maxIterations/2), (int)(100));
+				maxStationaryStateIterations_ = Math.Min(maxIterations/2, 100);
 
             Utils.QL_REQUIRE(maxStationaryStateIterations_ > 1,()=> 
                "maxStationaryStateIterations_ (" + maxStationaryStateIterations_ + ") must be greater than one");

@@ -50,7 +50,7 @@ namespace QLNet
         
       protected override PathPricer<IPath> pathPricer()
       {
-         Exercise exercise = this.arguments_.exercise as Exercise;
+         Exercise exercise = arguments_.exercise;
 
          Utils.QL_REQUIRE(exercise.type() == Exercise.Type.European,()=> "only european exercise is supported");
 

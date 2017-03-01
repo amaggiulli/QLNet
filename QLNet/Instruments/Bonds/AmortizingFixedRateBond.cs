@@ -145,7 +145,7 @@ namespace QLNet
             double coupon = couponRate / (double)sinkingFrequency;
             double compoundedInterest = 1.0;
             double totalValue = Math.Pow(1.0+coupon, nPeriods);
-            for(int i = 0; i < (int)nPeriods-1; ++i) 
+            for(int i = 0; i < nPeriods-1; ++i) 
             {
                 compoundedInterest *= (1.0 + coupon);
                 double currentNotional = 0.0;

@@ -15,8 +15,6 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -166,7 +164,7 @@ namespace QLNet
                        bondSettlement + " settlement date (maturity" +
                        " being " + bond.maturityDate() + ")");
             maxDate_ = Date.Max(maxDate_, bondHelpers_[i].pillarDate());
-            bondHelpers_[i].setTermStructure((FittedBondDiscountCurve)this);
+            bondHelpers_[i].setTermStructure(this);
          }
          fittingMethod_.init();
          fittingMethod_.calculate();

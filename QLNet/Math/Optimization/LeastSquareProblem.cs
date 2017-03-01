@@ -182,7 +182,7 @@ namespace QLNet
             Problem P = new Problem(lsf, c_, initialValue_);
 
             // minimize
-            EndCriteria ec = new EndCriteria(maxIterations_, Math.Min((int)(maxIterations_ / 2), (int)(100)), eps, eps, eps);
+            EndCriteria ec = new EndCriteria(maxIterations_, Math.Min(maxIterations_ / 2, 100), eps, eps, eps);
             exitFlag_ = (int)om_.minimize(P, ec);
 
             results_ = P.currentValue();

@@ -65,7 +65,7 @@ namespace QLNet {
       /// <returns></returns>
       public double rate
       {
-         get { return (double)rate_.Value; }
+         get { return rate_.Value; }
       }
 
       public bool HasValue

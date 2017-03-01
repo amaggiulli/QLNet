@@ -108,7 +108,7 @@ namespace QLNet
             case Compounding.Continuous:
                return Math.Exp(r_.Value*t);
             case Compounding.SimpleThenCompounded:
-               if (t<=1.0/((double)freq_))
+               if (t<=1.0/freq_)
                   return 1.0 + r_.Value*t;
                else
                   return Math.Pow(1.0+r_.Value/freq_, freq_*t);
@@ -256,7 +256,7 @@ namespace QLNet
                      break;
                   default:
                      result += "simple compounding up to "
-                        + (int)(12 / (int)frequency()) + " months, then "
+                        + 12 / (int)frequency() + " months, then "
                         + frequency() + " compounding";
                      break;
                }

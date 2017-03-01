@@ -144,28 +144,28 @@ namespace QLNet {
     /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
     public class RiskStatistics : GenericRiskStatistics<GaussianStatistics> {
         public double gaussianPercentile(double value) {
-            return ((GaussianStatistics)impl_).gaussianPercentile(value);
+            return impl_.gaussianPercentile(value);
         }
         public double gaussianPotentialUpside(double value) {
-            return ((GaussianStatistics)impl_).gaussianPotentialUpside(value);
+            return impl_.gaussianPotentialUpside(value);
         }
         public double gaussianValueAtRisk(double value) {
-            return ((GaussianStatistics)impl_).gaussianValueAtRisk(value);
+            return impl_.gaussianValueAtRisk(value);
         }
         public double gaussianExpectedShortfall(double value) {
-            return ((GaussianStatistics)impl_).gaussianExpectedShortfall(value);
+            return impl_.gaussianExpectedShortfall(value);
         }
         public double gaussianShortfall(double value) {
-            return ((GaussianStatistics)impl_).gaussianShortfall(value);
+            return impl_.gaussianShortfall(value);
         }
         public double gaussianAverageShortfall(double value) {
-            return ((GaussianStatistics)impl_).gaussianAverageShortfall(value);
+            return impl_.gaussianAverageShortfall(value);
         }
         public double gaussianRegret(double value) {
-            return ((GaussianStatistics)impl_).gaussianRegret(value);
+            return impl_.gaussianRegret(value);
         }
         public double gaussianDownsideVariance() {
-            return ((GaussianStatistics)impl_).gaussianDownsideVariance();
+            return impl_.gaussianDownsideVariance();
         }
     }
 

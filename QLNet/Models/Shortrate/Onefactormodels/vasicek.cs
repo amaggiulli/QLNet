@@ -32,8 +32,8 @@ namespace QLNet
          : base( 4 )
       {
          r0_ = r0;
-         a_ = (Parameter)arguments_[0];
-         b_ = (Parameter)arguments_[1];
+         a_ = arguments_[0];
+         b_ = arguments_[1];
          sigma_ = arguments_[2];
          lambda_ = arguments_[3];
          a_ = arguments_[0] = new ConstantParameter( a, new PositiveConstraint() );
