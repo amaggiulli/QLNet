@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -34,7 +33,7 @@ namespace QLNet
    {
       // Constructor
       //! calculate the reference date based on the global evaluation date
-      public YoYOptionletVolatilitySurface(int settlementDays,
+      protected YoYOptionletVolatilitySurface(int settlementDays,
                                            Calendar cal,
                                            BusinessDayConvention bdc,
                                            DayCounter dc,

@@ -27,11 +27,11 @@ namespace QLNet {
     */
     public abstract class FDDividendEngineBase : FDMultiPeriodEngine {
 		 // required for generics
-		 public FDDividendEngineBase() { }
+       protected FDDividendEngineBase() { }
 
         //public FDDividendEngineBase(GeneralizedBlackScholesProcess process,
         //    Size timeSteps = 100, Size gridPoints = 100, bool timeDependent = false)
-        public FDDividendEngineBase(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+       protected FDDividendEngineBase(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
 
 		  public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,

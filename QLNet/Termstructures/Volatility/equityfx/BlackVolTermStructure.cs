@@ -36,19 +36,19 @@ namespace QLNet
                      constructor must manage their own reference date
                      by overriding the referenceDate() method.
         */
-        
-      public BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
+
+      protected BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(bdc, dc)
          {}
       
       //! initialize with a fixed reference date
-      public BlackVolTermStructure(Date referenceDate,Calendar cal = null, 
+      protected BlackVolTermStructure(Date referenceDate,Calendar cal = null, 
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(referenceDate, cal, bdc, dc)
       {}
         
       //! calculate the reference date based on the global evaluation date
-      public BlackVolTermStructure(int settlementDays,Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
+      protected BlackVolTermStructure(int settlementDays,Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)
          :base(settlementDays, cal, bdc, dc)
       {}
@@ -197,19 +197,20 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      public BlackVolatilityTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
+
+      protected BlackVolatilityTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)
          :base(bdc, dc)
       {}
       
       //! initialize with a fixed reference date
-      public BlackVolatilityTermStructure(Date referenceDate,Calendar cal = null,
+      protected BlackVolatilityTermStructure(Date referenceDate,Calendar cal = null,
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(referenceDate, cal, bdc, dc)
       {}
       
       //! calculate the reference date based on the global evaluation date
-      public BlackVolatilityTermStructure(int settlementDays,Calendar cal, 
+      protected BlackVolatilityTermStructure(int settlementDays,Calendar cal, 
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(settlementDays, cal, bdc, dc)
       {}
@@ -244,19 +245,20 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      public BlackVarianceTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
+
+      protected BlackVarianceTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)
          :base(bdc, dc)
       {}
       
       //! initialize with a fixed reference date
-      public BlackVarianceTermStructure(Date referenceDate,Calendar cal = null,
+      protected BlackVarianceTermStructure(Date referenceDate,Calendar cal = null,
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(referenceDate, cal, bdc, dc)
       {}
 
       //! calculate the reference date based on the global evaluation date
-      public BlackVarianceTermStructure(int settlementDays,Calendar cal, 
+      protected BlackVarianceTermStructure(int settlementDays,Calendar cal, 
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(settlementDays, cal, bdc, dc)
       {}

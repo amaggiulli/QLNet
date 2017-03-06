@@ -30,7 +30,7 @@ namespace QLNet
 			RelativePriceError, PriceError, ImpliedVolError
 		}
 
-		public CalibrationHelper( Handle<Quote> volatility, 
+	   protected CalibrationHelper( Handle<Quote> volatility, 
 			Handle<YieldTermStructure> termStructure,
 			CalibrationErrorType calibrationErrorType = CalibrationErrorType.RelativePriceError )
 		{

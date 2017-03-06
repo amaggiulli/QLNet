@@ -17,7 +17,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet 
 {
@@ -33,15 +32,15 @@ namespace QLNet
                    by overriding the referenceDate() method.
       */
 
-      public SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
+      protected SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(bdc, dc) {}
       
       //! initialize with a fixed reference date
-      public SwaptionVolatilityStructure(Date referenceDate,Calendar calendar,BusinessDayConvention bdc,DayCounter dc = null)
+      protected SwaptionVolatilityStructure(Date referenceDate,Calendar calendar,BusinessDayConvention bdc,DayCounter dc = null)
          : base(referenceDate, calendar, bdc, dc) {}
       
       //! calculate the reference date based on the global evaluation date
-      public SwaptionVolatilityStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+      protected SwaptionVolatilityStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
       
       #endregion

@@ -50,8 +50,8 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
         */
-        
-      public TermStructure(DayCounter dc = null)
+
+      protected TermStructure(DayCounter dc = null)
       {
          moving_ = false;
          updated_ = true;
@@ -60,7 +60,7 @@ namespace QLNet
       }
         
       //! initialize with a fixed reference date
-      public TermStructure(Date referenceDate,Calendar calendar = null,DayCounter dc = null)
+      protected TermStructure(Date referenceDate,Calendar calendar = null,DayCounter dc = null)
       {
          moving_ = false;
          updated_ = true;
@@ -71,7 +71,7 @@ namespace QLNet
       }
         
       //! calculate the reference date based on the global evaluation date
-      public TermStructure(int settlementDays, Calendar cal, DayCounter dc = null)
+      protected TermStructure(int settlementDays, Calendar cal, DayCounter dc = null)
       {
          moving_ = true;
          updated_ = false;

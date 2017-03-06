@@ -36,7 +36,7 @@ namespace QLNet
 
       #region Constructors
 
-      public YieldTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
+      protected YieldTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(dc)
       {
          if ( jumps != null )
@@ -55,7 +55,8 @@ namespace QLNet
          for (int i=0; i<nJumps_; ++i)
             jumps_[i].registerWith(update);
       }
-      public YieldTermStructure(Date referenceDate,Calendar cal = null,DayCounter dc = null,
+
+      protected YieldTermStructure(Date referenceDate,Calendar cal = null,DayCounter dc = null,
                                 List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(referenceDate, cal, dc) 
       {
@@ -75,7 +76,8 @@ namespace QLNet
          for (int i=0; i<nJumps_; ++i)
             jumps_[i].registerWith(update);
       }
-      public YieldTermStructure(int settlementDays,Calendar cal,DayCounter dc = null,
+
+      protected YieldTermStructure(int settlementDays,Calendar cal,DayCounter dc = null,
                                 List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          : base(settlementDays, cal, dc)
       {

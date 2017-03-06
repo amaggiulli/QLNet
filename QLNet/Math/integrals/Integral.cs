@@ -17,73 +17,93 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
+namespace QLNet
+{
+   public abstract class Integrator
+   {
+      protected Integrator(double? absoluteAccuracy, int maxEvaluations)
+      {
+         absoluteAccuracy_ = absoluteAccuracy;
+         maxEvaluations_ = maxEvaluations;
+         if (absoluteAccuracy != null)
+            Utils.QL_REQUIRE(absoluteAccuracy > double.Epsilon, () =>
+               "required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + double.Epsilon);
+      }
 
-    public abstract class Integrator {
-        private double? absoluteAccuracy_;
-        private double absoluteError_;
-        private int maxEvaluations_;
-        private int evaluations_;
+      public double value(Func<double, double> f, double a, double b)
+      {
+         evaluations_ = 0;
+         if (a.IsEqual(b))
+            return 0.0;
+         if (b > a)
+            return integrate(f, a, b);
 
-        public Integrator(double? absoluteAccuracy, int maxEvaluations) {
-            absoluteAccuracy_ = absoluteAccuracy;
-            maxEvaluations_ = maxEvaluations;
-            if ( absoluteAccuracy != null)
-               Utils.QL_REQUIRE(absoluteAccuracy > double.Epsilon,()=>
-                  "required tolerance (" + absoluteAccuracy + ") not allowed. It must be > " + Double.Epsilon);
-        }
+         return -integrate(f, b, a);
+      }
 
-        public double value(Func<double, double> f, double a, double b) {
-            evaluations_ = 0;
-            if (a.IsEqual(b))
-                return 0.0;
-            if (b > a)
-                return integrate(f, a, b);
-            else
-                return -integrate(f, b, a);
-        }
+      // Modifiers
+      public void setAbsoluteAccuracy(double accuracy)
+      {
+         absoluteAccuracy_ = accuracy;
+      }
 
-        // Modifiers
-        public void setAbsoluteAccuracy(double accuracy) {
-            absoluteAccuracy_ = accuracy;
-        }
-        public void setMaxEvaluations(int maxEvaluations) {
-            maxEvaluations_ = maxEvaluations;
-        }
+      public void setMaxEvaluations(int maxEvaluations)
+      {
+         maxEvaluations_ = maxEvaluations;
+      }
 
-        // Inspectors
-        public double? absoluteAccuracy() {
-            return absoluteAccuracy_;
-        }
-        public int maxEvaluations() {
-            return maxEvaluations_;
-        }
+      // Inspectors
+      public double? absoluteAccuracy()
+      {
+         return absoluteAccuracy_;
+      }
 
-        public double absoluteError() {
-            return absoluteError_;
-        }
+      public int maxEvaluations()
+      {
+         return maxEvaluations_;
+      }
 
-        public int numberOfEvaluations() {
-            return evaluations_;
-        }
+      public double absoluteError()
+      {
+         return absoluteError_;
+      }
 
-        public bool integrationSuccess() {
-            return evaluations_ <= maxEvaluations_ && absoluteError_ <= absoluteAccuracy_;
-        }
+      public int numberOfEvaluations()
+      {
+         return evaluations_;
+      }
 
-        protected abstract double integrate(Func<double, double> f, double a, double b);
+      public bool integrationSuccess()
+      {
+         return evaluations_ <= maxEvaluations_ && absoluteError_ <= absoluteAccuracy_;
+      }
 
-        protected void setAbsoluteError(double error) {
-            absoluteError_ = error;
-        }
-        protected void setNumberOfEvaluations(int evaluations) {
-            evaluations_ = evaluations;
-        }
-        protected void increaseNumberOfEvaluations(int increase) {
-            evaluations_ += increase;
-        }
-    }
+      protected abstract double integrate(Func<double, double> f, double a, double b);
+
+      protected void setAbsoluteError(double error)
+      {
+         absoluteError_ = error;
+      }
+
+      protected void setNumberOfEvaluations(int evaluations)
+      {
+         evaluations_ = evaluations;
+      }
+
+      protected void increaseNumberOfEvaluations(int increase)
+      {
+         evaluations_ += increase;
+      }
+
+      private double? absoluteAccuracy_;
+      private double absoluteError_;
+      private int maxEvaluations_;
+      private int evaluations_;
+
+
+   }
 
 }

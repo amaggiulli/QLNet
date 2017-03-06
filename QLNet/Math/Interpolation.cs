@@ -112,7 +112,7 @@ namespace QLNet
          protected int size_;
 
          // this method should be used for initialisation
-         public templateImpl( List<double> xBegin, int size, List<double> yBegin, int requiredPoints = 2 )
+         protected templateImpl( List<double> xBegin, int size, List<double> yBegin, int requiredPoints = 2 )
          {
             xBegin_ = xBegin;
             yBegin_ = yBegin;

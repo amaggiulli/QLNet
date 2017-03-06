@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -29,7 +28,7 @@ namespace QLNet
       // Event interface
       public override Date date() { return date_; }
 
-      public Dividend(Date date)
+      protected Dividend(Date date)
       {
          date_ = date;
       }

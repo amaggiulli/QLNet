@@ -24,7 +24,7 @@ namespace QLNet
    //! caplet volatility model
    public abstract class LmVolatilityModel
    {
-      public LmVolatilityModel(int size, int nArguments)
+      protected LmVolatilityModel(int size, int nArguments)
       {
          size_ = size;
          arguments_ = new InitializedList<Parameter>(nArguments);

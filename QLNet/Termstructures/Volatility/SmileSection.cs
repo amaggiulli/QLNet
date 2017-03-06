@@ -26,7 +26,7 @@ namespace QLNet
    /*! This abstract class provides volatility smile section interface */
    public abstract class SmileSection : LazyObject
    {
-      public SmileSection( Date d, DayCounter dc = null, Date referenceDate = null,
+      protected SmileSection( Date d, DayCounter dc = null, Date referenceDate = null,
          VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0 )
       {
          exerciseDate_ = d;
@@ -44,7 +44,8 @@ namespace QLNet
             referenceDate_ = referenceDate;
          initializeExerciseTime();
       }
-      public SmileSection( double exerciseTime, DayCounter dc = null,
+
+      protected SmileSection( double exerciseTime, DayCounter dc = null,
          VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0 )
       {
          isFloating_ = false;
@@ -56,7 +57,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE( exerciseTime_ >= 0.0, () => "expiry time must be positive: " + exerciseTime_ + " not allowed" );
       }
-      public SmileSection() { }
+
+      protected SmileSection() { }
 
 
       public override void update()

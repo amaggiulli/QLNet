@@ -24,8 +24,7 @@ namespace QLNet
    // libor forward correlation model
    public abstract class LmCorrelationModel
    {
-
-      public LmCorrelationModel(int size, int nArguments)
+      protected LmCorrelationModel(int size, int nArguments)
       {
          size_ = size;
          arguments_ = new InitializedList<Parameter>(nArguments);

@@ -17,8 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-
 namespace QLNet
 {
    //! Cap/floor term-volatility structure
@@ -32,15 +30,16 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      public CapFloorTermVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
+
+      protected CapFloorTermVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          :base(bdc, dc) {}
       
       //! initialize with a fixed reference date
-      public CapFloorTermVolatilityStructure(Date referenceDate,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+      protected CapFloorTermVolatilityStructure(Date referenceDate,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
       
       //! calculate the reference date based on the global evaluation date
-      public CapFloorTermVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
+      protected CapFloorTermVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
       
       #endregion
