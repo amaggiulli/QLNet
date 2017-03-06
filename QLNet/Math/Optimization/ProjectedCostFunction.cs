@@ -52,8 +52,7 @@ namespace QLNet
             Utils.QL_REQUIRE(numberOfFreeParameters_>0,()=> "numberOfFreeParameters==0");
 			}
 
-			//! \name CostFunction interface
-			//@{
+			// CostFunction interface
 			public override double value(Vector freeParameters)
 			{
 				mapFreeParameters(freeParameters);
@@ -64,7 +63,6 @@ namespace QLNet
 				mapFreeParameters(freeParameters);
 				return costFunction_.values(actualParameters_);
 			}
-			//@}
 
 			//! returns the subset of free parameters corresponding
 			// to set of parameters

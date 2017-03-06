@@ -26,23 +26,14 @@ namespace QLNet
 {
 
    //! %Vasicek model class
-   /*! This class implements the Vasicek model defined by
-       \f[
-           dr_t = a(b - r_t)dt + \sigma dW_t ,
-       \f]
-       where \f$ a \f$, \f$ b \f$ and \f$ \sigma \f$ are constants;
-       a risk premium \f$ \lambda \f$ can also be specified.
-
-       \ingroup shortrate
-   */
    public class Vasicek : OneFactorAffineModel
    {
       public Vasicek( double r0, double a, double b = 0.05, double sigma = 0.01, double lambda = 0.0 )
          : base( 4 )
       {
          r0_ = r0;
-         a_ = (Parameter)arguments_[0];
-         b_ = (Parameter)arguments_[1];
+         a_ = arguments_[0];
+         b_ = arguments_[1];
          sigma_ = arguments_[2];
          lambda_ = arguments_[3];
          a_ = arguments_[0] = new ConstantParameter( a, new PositiveConstraint() );

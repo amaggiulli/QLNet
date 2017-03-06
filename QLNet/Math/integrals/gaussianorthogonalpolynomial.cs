@@ -30,13 +30,7 @@ namespace QLNet {
         Press, Teukolsky, Vetterling, Flannery,
 
         The polynomials are defined by the three-term recurrence relation
-        \f[
-        P_{k+1}(x)=(x-\alpha_k) P_k(x) - \beta_k P_{k-1}(x)
-        \f]
-        and
-        \f[
-        \mu_0 = \int{w(x)dx}
-        \f]
+
     */
     public abstract class GaussianOrthogonalPolynomial {
         public abstract double mu_0();

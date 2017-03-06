@@ -37,7 +37,7 @@ namespace QLNet {
        Sample<IPath> antithetic();
     }
 
-    public class Path : ICloneable, IPath {
+    public class Path : IPath {
         private TimeGrid timeGrid_;
         private Vector values_;
 
@@ -54,7 +54,7 @@ namespace QLNet {
             Utils.QL_REQUIRE(values_.size() == timeGrid_.size(),()=> "different number of times and asset values");
         }
 
-        //! \name inspectors
+        // inspectors
         public bool empty() { return timeGrid_.empty(); }
         public int length() { return timeGrid_.size(); }
 

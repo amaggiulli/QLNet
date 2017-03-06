@@ -53,8 +53,6 @@ namespace QLNet {
         double discount(double t);
         double discountBond(double now, double maturity, Vector factors);
         double discountBondOption(Option.Type type, double strike, double maturity, double bondMaturity);
-        //event Callback notifyObserversEvent;
-        // this method is required for calling from derived classes
     }
 
     //TermStructureConsistentModel used in analyticcapfloorengine.cs
@@ -119,8 +117,6 @@ namespace QLNet {
         /*! An additional constraint can be passed which must be
             satisfied in addition to the constraints of the model.
         */
-        //public void calibrate(List<CalibrationHelper> instruments, OptimizationMethod method, EndCriteria endCriteria,
-        //           Constraint constraint = new Constraint(), List<double> weights = new List<double>()) {
         public void calibrate(List<CalibrationHelper> instruments, 
                               OptimizationMethod method, 
                               EndCriteria endCriteria,
@@ -154,17 +150,6 @@ namespace QLNet {
             Vector shortRateProblemValues_ = prob.values(result);
 
             notifyObservers();
-
-            //CalibrationFunction f = new CalibrationFunction(this, instruments, w);
-
-            //Problem prob = new Problem(f, c, parameters());
-            //shortRateEndCriteria_ = method.minimize(prob, endCriteria);
-            //Vector result = new Vector(prob.currentValue());
-            //setParams(result);
-            //// recheck
-            //Vector shortRateProblemValues_ = prob.values(result);
-
-            //notifyObservers();
         }
 
         public double value(Vector parameters, List<CalibrationHelper> instruments) {

@@ -329,11 +329,6 @@ namespace QLNet
          duration_ = 0;
          basket_.weights().ForEach((ii, vv) => duration_ += vv * yields()[ii]);
 
-
-         //duration_ = std::inner_product(basket_->weights().begin(),
-         //                              basket_->weights().end(),
-         //                              durations_.begin(), 0.0);
-
          int settlDays = 2;
          DayCounter fixedDayCount = swaps_[0].fixedDayCount();
          equivalentSwapIndex_ = nSwaps_-1;

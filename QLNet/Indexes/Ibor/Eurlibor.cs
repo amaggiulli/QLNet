@@ -91,10 +91,9 @@ namespace QLNet
             "for daily tenors (" + this.tenor() + ") dedicated DailyTenor constructor must be used" );
       }
 
-      /*! \name Date calculations
+      /* Date calculations
 
             See <https://www.theice.com/marketdata/reports/170>.
-            @{
       */
       public override Date valueDate( Date fixingDate )
       {

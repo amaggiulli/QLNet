@@ -90,8 +90,7 @@ namespace QLNet
 			: base( settlementDays, cal, dc, jumps, jumpDates )
 		{}
 
-      //! \name DefaultProbabilityTermStructure implementation
-      //@{
+      // DefaultProbabilityTermStructure implementation
 		protected override double hazardRateImpl( double t )
 		{
 			if ( t <= this.times_.Last() )
@@ -118,15 +117,12 @@ namespace QLNet
         }
         return Math.Exp(-integral);
 		}
-      //@}
-
 
 		private void initialize()
 		{
          Utils.QL_REQUIRE( dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given" );
          Utils.QL_REQUIRE( this.data_.Count == dates_.Count, () => "dates/data count mismatch" );
 
-        //this.times_ = new List<double>(dates_.Count);
         this.times_.Add(0.0);
         for (int i=1; i<dates_.Count; ++i) 
 		  {

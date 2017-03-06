@@ -22,14 +22,7 @@ using System;
 namespace QLNet {
     public static partial class Utils
    {
-      /*! Follows somewhat the advice of Knuth on checking for floating-point
-         equality. The closeness relationship is:
-         \f[
-         \mathrm{close}(x,y,n) \equiv |x-y| \leq \varepsilon |x|
-                                 \wedge |x-y| \leq \varepsilon |y|
-         \f]
-         where \f$ \varepsilon \f$ is \f$ n \f$ times the machine accuracy;
-         \f$ n \f$ equals 42 if not given.  */
+      // Follows somewhat the advice of Knuth on checking for floating-point equality.
       public static bool close(double x, double y) { return close(x, y, 42); }
       public static bool close(double x, double y, int n) 
       {

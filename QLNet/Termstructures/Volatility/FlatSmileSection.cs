@@ -24,7 +24,6 @@ namespace QLNet {
         private double? atmLevel_;
         public override double? atmLevel() 
         {
-           //Utils.QL_REQUIRE( atmLevel_.HasValue, () => "FlatSmileSection.atmLevel is null" );
            return atmLevel_;
         }
 

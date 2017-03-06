@@ -17,7 +17,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet {
     // helper class
@@ -55,7 +54,6 @@ namespace QLNet {
             
             type_ = VanillaSwap.Type.Payer;
             nominal_ = 1.0;
-            //fixedTenor_ = new Period(1, TimeUnit.Years);
             floatTenor_ = index.tenor();
             fixedConvention_ = fixedTerminationDateConvention_ = BusinessDayConvention.ModifiedFollowing;
             floatConvention_ = floatTerminationDateConvention_ = index.businessDayConvention();
@@ -63,10 +61,7 @@ namespace QLNet {
             fixedEndOfMonth_ = floatEndOfMonth_ = false;
             fixedFirstDate_ = fixedNextToLastDate_ = floatFirstDate_ = floatNextToLastDate_ = null;
             floatSpread_ = 0.0;
-            //fixedDayCount_ = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
             floatDayCount_ = index.dayCounter();
-
-            //engine_ = new DiscountingSwapEngine(index.forwardingTermStructure());
         }
 
         public MakeVanillaSwap receiveFixed(bool flag = true) {
@@ -204,7 +199,6 @@ namespace QLNet {
             if (effectiveDate_ != null)
                 startDate = effectiveDate_;
             else {
-                //int fixingDays = iborIndex_.fixingDays();
                 Date refDate = Settings.evaluationDate();
                 // if the evaluation date is not a business day
                 // then move to the next business day

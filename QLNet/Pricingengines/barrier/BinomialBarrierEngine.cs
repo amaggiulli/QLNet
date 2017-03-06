@@ -54,7 +54,7 @@ namespace QLNet
          Utils.QL_REQUIRE(maxTimeSteps==0 || maxTimeSteps>=timeSteps,()=>
             "maxTimeSteps must be zero or greater than or equal to timeSteps, " + maxTimeSteps + " not allowed");
          if (maxTimeSteps_== 0)
-               maxTimeSteps_ = Math.Max( (int)1000, timeSteps_*5);
+               maxTimeSteps_ = Math.Max( 1000, timeSteps_*5);
          process_.registerWith(update);
       }
 

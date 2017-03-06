@@ -40,7 +40,6 @@ namespace QLNet {
 
             See lmdiff.cpp for further details.
         */
-        //public static List<int> qrDecomposition(Matrix A, Matrix q, Matrix r, bool pivot = true) {
         public static List<int> qrDecomposition(Matrix M, ref Matrix q, ref Matrix r, bool pivot) {
             Matrix mT = Matrix.transpose(M);
             int m = M.rows();
@@ -135,8 +134,6 @@ namespace QLNet {
            List<int> ipvt = new List<int>( n );
            ipvt = lipvt;
 
-           //std::copy(lipvt.begin(), lipvt.end(), ipvt.get());
-
            Matrix aT = Matrix.transpose( a );
            Matrix rT = Matrix.transpose( r );
 
@@ -147,7 +144,6 @@ namespace QLNet {
            if ( !d.empty() )
            {
               ld = d;
-              //std::copy(d.begin(), d.end(), ld.begin());
            }
            Vector x = new Vector( n );
            Vector qtb = Matrix.transpose( q ) * b;

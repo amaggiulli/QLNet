@@ -48,18 +48,6 @@ namespace QLNet
       {
          return new DigitalCmsCoupon(underlying, callStrike, callPosition, isCallATMIncluded, callDigitalPayoff, putStrike, putPosition, isPutATMIncluded, putDigitalPayoff, replication);
       }
-
-      //! \name Visitability
-      //@{
-      //public void accept(ref AcyclicVisitor v)
-      //{
-      //    Visitor<DigitalCmsCoupon> v1 = v as Visitor<DigitalCmsCoupon>;
-      //    if (v1 != 0)
-      //        v1.visit( this);
-      //    else
-      //        base.accept(ref v);
-      //}
-      //@}
    }
 
 

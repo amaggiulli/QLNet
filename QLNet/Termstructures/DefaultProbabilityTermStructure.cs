@@ -31,8 +31,6 @@ namespace QLNet
    {
       #region Constructors
 
-      //public DefaultProbabilityTermStructure() {}
-
       public DefaultProbabilityTermStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          :base(dc)
       {

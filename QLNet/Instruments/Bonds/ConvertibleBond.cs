@@ -42,7 +42,6 @@ namespace QLNet
    //! base class for convertible bonds
    public class ConvertibleBond : Bond
    {
-      //class option;
       public class option : OneAssetOption
       {
          public class arguments : OneAssetOption.Arguments
@@ -97,7 +96,6 @@ namespace QLNet
             }
          }
 
-         //public class engine;
          public option(ConvertibleBond bond,
             Exercise exercise,
             double conversionRatio,

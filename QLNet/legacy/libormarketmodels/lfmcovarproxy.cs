@@ -55,12 +55,8 @@ namespace QLNet
             Matrix pca = corrModel_.pseudoSqrt(t, x);
             Vector  vol = volaModel_.volatility(t, x);
             for (int i=0; i<size_; ++i) {
-                /*transform(pca.row_begin(i), pca.row_end(i),
-                           pca.row_begin(i),
-                           bind2nd(multiplies<double>(), vol[i]));*/
                 for (int j = 0; j < size_; ++j)
                     pca[i,j] =   pca[i,j] * vol[i];
-                //pca.column(i).ForEach((ii, v) => v *= vol[ii]);   
             }
             return pca;
         }
@@ -97,7 +93,6 @@ namespace QLNet
                 }
             }
             
-            //QL_REQUIRE(x.empty(), "can not handle given x here");
             try {
                 Utils.QL_REQUIRE(x.empty() != false,()=> "can not handle given x here");
             }

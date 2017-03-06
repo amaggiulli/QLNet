@@ -15,8 +15,6 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -24,8 +22,6 @@ namespace QLNet
    // to the "conventional" sequence generator interface
    public class SobolBrownianBridgeRsg : IRNG
    {
-      //typedef Sample<std::vector<Real> > sample_type;
-
       public SobolBrownianBridgeRsg(int factors, int steps,
                                     SobolBrownianGenerator.Ordering ordering = SobolBrownianGenerator.Ordering.Diagonal,
                                     ulong seed = 0,
@@ -47,7 +43,7 @@ namespace QLNet
             gen_.nextStep(output);
             for ( int j = 0; j < output.Count ; j++)
             {
-               seq_.value[j + i*factors_] = output[j]; // std::copy(output.begin(), output.end(),seq_.value.begin()+i*factors_);
+               seq_.value[j + i*factors_] = output[j]; 
             }
         }
 

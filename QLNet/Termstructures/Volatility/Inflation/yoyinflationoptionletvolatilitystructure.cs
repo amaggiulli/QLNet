@@ -32,10 +32,7 @@ namespace QLNet
 
    public abstract class YoYOptionletVolatilitySurface :  VolatilityTermStructure 
    {
-      //public YoYOptionletVolatilitySurface()
-      //: base (BusinessDayConvention.Following,null) {}
-
-      //! \name Constructor
+      // Constructor
       //! calculate the reference date based on the global evaluation date
       public YoYOptionletVolatilitySurface(int settlementDays,
                                            Calendar cal,
@@ -54,8 +51,7 @@ namespace QLNet
       }
 
 
-      //! \name Volatility (only)
-      //@{
+      // Volatility (only)
       //! Returns the volatility for a given maturity date and strike rate
       //! that observes inflation, by default, with the observation lag
       //! of the term structure.
@@ -209,8 +205,6 @@ namespace QLNet
          // which is the usual case.
          return dayCounter().yearFraction(baseDate(), useDate);
       }
-      //@}
-   
       
       // acts as zero time value for boostrapping
       public virtual double baseLevel() 
@@ -266,8 +260,7 @@ namespace QLNet
    public class ConstantYoYOptionletVolatility  : YoYOptionletVolatilitySurface 
 	{
 		
-		//! \name Constructor
-		//@{
+		// Constructor
 		//! calculate the reference date based on the global evaluation date
 		public ConstantYoYOptionletVolatility(double v,
 														  int settlementDays,
@@ -285,18 +278,13 @@ namespace QLNet
 			minStrike_ = minStrike; 
 			maxStrike_ = maxStrike; 
 		}
-      
-        //@}
 
-        //! \name Limits
-        //@{
+        // Limits
         public override Date maxDate()  { return Date.maxDate(); }
         //! the minimum strike for which the term structure can return vols
 		  public override double minStrike() { return minStrike_; }
         //! the maximum strike for which the term structure can return vols
 		  public override double maxStrike() { return maxStrike_; }
-        //@}
-
     
         //! implements the actual volatility calculation in derived classes
 		  protected override double volatilityImpl( double length, double strike )

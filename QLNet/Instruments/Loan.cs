@@ -125,7 +125,7 @@ namespace QLNet
       private double nominal_;
       private Schedule fixedSchedule_;
       private double fixedRate_;
-      private DayCounter fixedDayCount_; // principalDayCount_;
+      private DayCounter fixedDayCount_;
       private Schedule principalSchedule_;
       private BusinessDayConvention paymentConvention_;
 

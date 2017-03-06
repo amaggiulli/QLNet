@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
@@ -51,10 +50,9 @@ namespace QLNet
             "for EUR Libor dedicated EurLibor constructor must be used" );
       }
 
-      /*! \name Date calculations
+      /* Date calculations
 
             See <https://www.theice.com/marketdata/reports/170>.
-            @{
       */
       public override Date valueDate( Date fixingDate )
       {
@@ -84,7 +82,7 @@ namespace QLNet
          return jointCalendar_.advance( valueDate, tenor_, convention_, endOfMonth() );
       }
 
-      //! \name Other methods
+      // Other methods
       public override IborIndex clone( Handle<YieldTermStructure> h )
       {
          return new Libor( familyName(), tenor(), fixingDays(), currency(), financialCenterCalendar_,

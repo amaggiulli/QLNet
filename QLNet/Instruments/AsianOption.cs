@@ -17,7 +17,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 using System.Collections.Generic;
 
 namespace QLNet {
@@ -118,8 +117,7 @@ namespace QLNet {
 			pastFixings_ = pastFixings;
 			fixingDates_ = fixingDates;
 
-            // std.sort(fixingDates_.begin(), fixingDates_.end());
-            fixingDates_.Sort();
+         fixingDates_.Sort();
 		}
 
         public override void setupArguments(IPricingEngineArguments args)

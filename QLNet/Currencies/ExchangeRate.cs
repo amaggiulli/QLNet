@@ -65,7 +65,7 @@ namespace QLNet {
       /// <returns></returns>
       public double rate
       {
-         get { return (double)rate_.Value; }
+         get { return rate_.Value; }
       }
 
       public bool HasValue
@@ -76,7 +76,7 @@ namespace QLNet {
       /// <summary>
       /// given directly by the user 
       /// </summary>
-      public enum Type : int 
+      public enum Type
       {
          /// <summary>
          /// given directly by the user

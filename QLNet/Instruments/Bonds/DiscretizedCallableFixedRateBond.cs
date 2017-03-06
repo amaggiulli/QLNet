@@ -90,7 +90,10 @@ namespace QLNet
          return times;
       }
 
-      protected override void preAdjustValuesImpl() {}
+      protected override void preAdjustValuesImpl()
+      {
+         // Nothing to do here
+      }
       protected override void postAdjustValuesImpl()
       {
          for (int i = 0; i < callabilityTimes_.Count -1; i++)
@@ -134,9 +137,9 @@ namespace QLNet
                }
                break;
 
-            //default:
-            //   Utils.QL_FAIL("unknown callability type");
-            //   break;
+            default:
+               Utils.QL_FAIL("unknown callability type");
+               break;
          }
       }
       
@@ -145,13 +148,7 @@ namespace QLNet
          values_ += arguments_.couponAmounts[i];
       }
 
-      bool withinPreviousWeek(double t1, double t2) 
-      {
-         double dt = 1.0/52;
-         return t1-dt <= t2 && t2 <= t1;
-      }
-
-      bool withinNextWeek(double t1, double t2)
+      private bool withinNextWeek(double t1, double t2)
       {
          double dt = 1.0/52;
          return t1 <= t2 && t2 <= t1+dt;

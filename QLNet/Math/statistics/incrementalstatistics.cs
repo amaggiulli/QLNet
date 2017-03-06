@@ -77,11 +77,7 @@ namespace QLNet {
         /*! returns the standard deviation \f$ \sigma \f$, defined as the square root of the variance. */
         public double standardDeviation() { return Math.Sqrt(variance()); }
 
-        /*! returns the downside variance, defined as
-            \f[ \frac{N}{N-1} \times \frac{ \sum_{i=1}^{N}
-                \theta \times x_i^{2}}{ \sum_{i=1}^{N} w_i} \f],
-            where \f$ \theta \f$ = 0 if x > 0 and
-            \f$ \theta \f$ =1 if x <0
+        /*! returns the downside variance
         */
         public double downsideVariance() {
             if (downsideSampleWeight_.IsEqual(0.0)) {
@@ -124,10 +120,7 @@ namespace QLNet {
             return result;
         }
 
-        /*! returns the excess kurtosis, defined as
-            \f[ \frac{N^2(N+1)}{(N-1)(N-2)(N-3)}
-                \frac{\left\langle \left(x-\langle x \rangle \right)^4
-                \right\rangle}{\sigma^4} - \frac{3(N-1)^2}{(N-2)(N-3)}. \f]
+        /*! returns the excess kurtosis
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double kurtosis() {
@@ -170,8 +163,7 @@ namespace QLNet {
         public double downsideDeviation() { return Math.Sqrt(downsideVariance()); }
 
 
-        //! \name Modifiers
-        //@{
+        // Modifiers
         //! adds a datum to the set, possibly with a weight
         /*! \pre weight must be positive or null */
         public void add(double value) { add(value, 1); }

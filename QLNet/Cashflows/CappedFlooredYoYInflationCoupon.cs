@@ -107,9 +107,8 @@ namespace QLNet
          setCommon(cap, floor);
       }
 
-      //! \name augmented Coupon interface
-      //@{
-      //! swap(let) rate
+      // augmented Coupon interface
+      // swap(let) rate
       public override double rate()
       {
          double swapletRate = underlying_ != null ? underlying_.rate() : base.rate();
@@ -179,7 +178,6 @@ namespace QLNet
       {
          return (floor_ - spread()) / gearing();
       }
-      //@}
 
       public bool isCapped() { return isCapped_; }
       public bool isFloored() { return isFloored_; }

@@ -35,17 +35,17 @@ namespace QLNet
          optionletStripper_.registerWith(update);
       }
 
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
+      
       public override Date maxDate() { return optionletStripper_.optionletFixingDates().Last(); }
-      //@}
-      //! \name VolatilityTermStructure interface
-      //@{
+      
+      // VolatilityTermStructure interface
+      
       public override double minStrike() { return optionletStripper_.optionletStrikes(0).First(); }
       public override double maxStrike() { return optionletStripper_.optionletStrikes( 0 ).Last(); }
-      //@} 
-      //! \name LazyObject interface
-      //@{
+       
+      // LazyObject interface
+      
       public override void update() { base.update(); }
 
       protected override void performCalculations()
@@ -57,11 +57,9 @@ namespace QLNet
             strikeInterpolations_.Add(new LinearInterpolation(optionletStrikes,optionletStrikes.Count,optionletVolatilities));
          }
       }
-      //@}
-
+       
+      // OptionletVolatilityStructure interface
       
-      //! \name OptionletVolatilityStructure interface
-      //@{
       protected override SmileSection smileSectionImpl(double t)
       {
          List<double> optionletStrikes = new List<double>(optionletStripper_.optionletStrikes(0)); // strikes are the same for all times ?!
@@ -87,7 +85,7 @@ namespace QLNet
          LinearInterpolation timeInterpolator = new LinearInterpolation(optionletTimes, optionletTimes.Count,vol);
          return timeInterpolator.value(length, true);
       }
-      //@} 
+       
     
       private StrippedOptionletBase optionletStripper_;
       private int nInterpolations_;

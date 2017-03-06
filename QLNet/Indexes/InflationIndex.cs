@@ -101,15 +101,11 @@ namespace QLNet
          base.addFixings( dates, rates, forceOverwrite );
 
       }
-      //@}
 
-      //! \name Observer interface
-      //@{
+      // Observer interface
       public void update() { notifyObservers(); }
-      //@}
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       public string familyName() { return familyName_; }
       public Region region() { return region_; }
       public bool revised() { return revised_; }
@@ -130,7 +126,6 @@ namespace QLNet
       */
       public Period availabilityLag() { return availabilityLag_; }
       public Currency currency() { return currency_; }
-      //@}
 
       protected Date referenceDate_;
       protected string familyName_;
@@ -142,7 +137,6 @@ namespace QLNet
       protected Currency currency_;
 
       private string name_;
-
    }
 
 
@@ -409,9 +403,6 @@ namespace QLNet
 
             }
          }
-
-         // QL_FAIL("YoYInflationIndex::fixing, should never get here");
-
       }
 
       // Other methods

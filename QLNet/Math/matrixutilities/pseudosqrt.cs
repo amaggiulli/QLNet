@@ -469,8 +469,6 @@ namespace QLNet {
             }
 
             // factor reduction
-            /*std::accumulate(eigenValues.begin(),
-                              eigenValues.end(), 0.0);*/
             double accumulate = 0;
             eigenValues.ForEach((ii, vv) => accumulate += eigenValues[ii]);
             double enough = componentRetainedPercentage * accumulate;

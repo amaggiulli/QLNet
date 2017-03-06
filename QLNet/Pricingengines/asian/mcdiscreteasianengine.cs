@@ -16,7 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,15 +34,6 @@ namespace QLNet
             where RNG : IRSG, new()
             where S : IGeneralStatistics, new()
     {     
-        /*typedef
-        typename McSimulation<SingleVariate,RNG,S>::path_generator_type
-            path_generator_type;
-        typedef typename McSimulation<SingleVariate,RNG,S>::path_pricer_type
-            path_pricer_type;
-        typedef typename McSimulation<SingleVariate,RNG,S>::stats_type
-            stats_type;
-         */
-        
         // data members
         protected GeneralizedBlackScholesProcess process_;
         protected int maxTimeStepsPerYear_;

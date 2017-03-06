@@ -45,25 +45,21 @@ namespace QLNet {
                 return -integrate(f, b, a);
         }
 
-        //! \name Modifiers
-        //@{
+        // Modifiers
         public void setAbsoluteAccuracy(double accuracy) {
             absoluteAccuracy_ = accuracy;
         }
         public void setMaxEvaluations(int maxEvaluations) {
             maxEvaluations_ = maxEvaluations;
         }
-        //@}
 
-        //! \name Inspectors
-        //@{
+        // Inspectors
         public double? absoluteAccuracy() {
             return absoluteAccuracy_;
         }
         public int maxEvaluations() {
             return maxEvaluations_;
         }
-        //@}
 
         public double absoluteError() {
             return absoluteError_;

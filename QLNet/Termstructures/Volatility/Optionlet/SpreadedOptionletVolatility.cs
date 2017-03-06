@@ -31,26 +31,20 @@ namespace QLNet
          spread_.registerWith(update);
       }
       // All virtual methods of base classes must be forwarded
-      //! \name VolatilityTermStructure interface
-      //@{
+      // VolatilityTermStructure interface
       public override BusinessDayConvention businessDayConvention() { return baseVol_.link.businessDayConvention(); }
       public override double minStrike() { return baseVol_.link.minStrike(); }
       public override double maxStrike() { return baseVol_.link.maxStrike(); }
-      //@}
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override DayCounter dayCounter() { return baseVol_.link.dayCounter(); }
       public override Date maxDate() { return baseVol_.link.maxDate(); }
       public override double maxTime() { return baseVol_.link.maxTime(); }
       public override Date referenceDate() { return baseVol_.link.referenceDate(); }
       public override Calendar calendar() { return baseVol_.link.calendar(); }
       public override int settlementDays() { return baseVol_.link.settlementDays(); }
-      //@}
-
 
       // All virtual methods of base classes must be forwarded
-      //! \name OptionletVolatilityStructure interface
-      //@{
+      // OptionletVolatilityStructure interface
       protected override SmileSection smileSectionImpl( Date d )
       {
          SmileSection baseSmile = baseVol_.link.smileSection(d, true);
@@ -65,7 +59,6 @@ namespace QLNet
       {
          return baseVol_.link.volatility( t, s, true ) + spread_.link.value();
       }
-      //@}
 
       private Handle<OptionletVolatilityStructure> baseVol_;
       private Handle<Quote> spread_;

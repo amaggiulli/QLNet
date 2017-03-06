@@ -36,18 +36,13 @@ namespace QLNet
          originalTS_ = originalTS;
          originalTS_.registerWith(update);
       }
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override DayCounter dayCounter() { return originalTS_.link.dayCounter(); }
       public override Date maxDate() { return originalTS_.link.maxDate(); }
-      //@}
-      //! \name VolatilityTermStructure interface
-      //@{
+      // VolatilityTermStructure interface
       public override double minStrike() { return originalTS_.link.minStrike(); }
       public override double maxStrike() { return originalTS_.link.maxStrike(); }
-      //@}
-      //! \name Visitability
-      //@{
+      // Visitability
       public virtual void accept( IAcyclicVisitor v )
       {
          if ( v != null )
@@ -55,7 +50,6 @@ namespace QLNet
          else
             Utils.QL_FAIL( "not an event visitor" );
       }
-      //@}
       protected override double blackVarianceImpl(double t, double strike)
       {
          /* timeShift (and/or variance) variance at evaluation date

@@ -20,11 +20,7 @@ namespace QLNet
 {
    //! Exponential-splines fitting method
    /*! Fits a discount function to the exponential form
-       \f[
-       d(t) = \sum_{i=1}^9 c_i \exp^{-kappa i t}
-       \f]
-       where the constants \f$ c_i \f$ and \f$ \kappa \f$ are to be
-       determined.  See:Li, B., E. DeWetering, G. Lucas, R. Brenner
+       See:Li, B., E. DeWetering, G. Lucas, R. Brenner
        and A. Shapiro (2001): "Merrill Lynch Exponential Spline
        Model." Merrill Lynch Working Paper
 
@@ -113,12 +109,7 @@ namespace QLNet
 
    //! Svensson Fitting method
    /*! Fits a discount function to the form
-       \f$ d(t) = \exp^{-r t}, \f$ where the zero rate \f$r\f$ is defined as
-       \f[
-       r \equiv c_0 + (c_0 + c_1)(\frac {1 - exp^{-\kappa t}}{\kappa t})
-       - c_2exp^{ - \kappa t}
-       + c_3{(\frac{1 - exp^{-\kappa_1 t}}{\kappa_1 t} -exp^{-\kappa_1 t})}.
-       \f]
+
        See: Svensson, L. (1994). Estimating and interpreting forward
        interest rates: Sweden 1992-4.
        Discussion paper, Centre for Economic Policy Research(1051).
@@ -254,12 +245,7 @@ namespace QLNet
    }
 
    //! Simple polynomial fitting method
-      /*  Fits a discount function to the simple polynomial form:
-         \f[
-         d(t) = \sum_{i=0}^{degree}  c_i * t^{i}
-         \f]
-         where the constants \f$ c_i \f$ are to be determined.
-
+   /*  
          This is a simple/crude, but fast and robust, means of fitting
          a yield curve.
    */

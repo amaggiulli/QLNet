@@ -29,29 +29,22 @@ namespace QLNet
          spread_.registerWith(update);
       }
       // All virtual methods of base classes must be forwarded
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override DayCounter dayCounter() { return baseVol_.link.dayCounter(); }
       public override Date maxDate() { return baseVol_.link.maxDate(); }
       public override double maxTime() { return baseVol_.link.maxTime(); }
       public override Date referenceDate() { return baseVol_.link.referenceDate(); }
       public override Calendar calendar() { return baseVol_.link.calendar(); }
       public override int settlementDays() { return baseVol_.link.settlementDays(); }
-      //@}
-      //! \name VolatilityTermStructure interface
-      //@{
+
+      // VolatilityTermStructure interface
       public override double minStrike() { return baseVol_.link.minStrike(); }
       public override double maxStrike() { return baseVol_.link.maxStrike(); }
-      //@}
-      //! \name SwaptionVolatilityStructure interface
-      //@{
+      // SwaptionVolatilityStructure interface
       public override Period maxSwapTenor() { return baseVol_.link.maxSwapTenor(); }
-      //@}
       public override VolatilityType volatilityType() { return baseVol_.link.volatilityType(); }
-      
-      
-      //! \name SwaptionVolatilityStructure interface
-      //@{
+            
+      // SwaptionVolatilityStructure interface
       protected override SmileSection smileSectionImpl(Date optionDate,Period swapTenor)
       {
          SmileSection baseSmile = baseVol_.link.smileSection(optionDate, swapTenor, true);
@@ -74,7 +67,7 @@ namespace QLNet
       {
          return baseVol_.link.shift( optionTime, swapLength, true );
       }
-      //@}
+
       private Handle<SwaptionVolatilityStructure> baseVol_;
       private Handle<Quote> spread_;
 

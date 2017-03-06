@@ -119,9 +119,8 @@ namespace QLNet
          Utils.QL_REQUIRE( Math.Abs( baseCPI_ ) > 1e-16, () => "|baseCPI_| < 1e-16, future divide-by-zero problem" );
       }
 
-      //! \name Inspectors
-      //@{
-      //! fixed rate that will be inflated by the index ratio
+      // Inspectors
+      // fixed rate that will be inflated by the index ratio
       public double fixedRate() { return fixedRate_; }
       //! spread paid over the fixing of the underlying index
       public double spread() { return spread_; }
@@ -142,7 +141,6 @@ namespace QLNet
       public double indexObservation(Date onDate) { return indexFixing(onDate); }
       //! index used
       public ZeroInflationIndex cpiIndex() { return index() as ZeroInflationIndex; }
-      //@}
    }
 
    //! Cash flow paying the performance of a CPI (zero inflation) index
@@ -202,17 +200,12 @@ namespace QLNet
          else 
          {
                // work out what it should be
-               //std::cout << fixingDate() << " and " << frequency() << std::endl;
-               //std::pair<Date,Date> dd = inflationPeriod(fixingDate(), frequency());
-               //std::cout << fixingDate() << " and " << dd.first << " " << dd.second << std::endl;
-               // work out what it should be
                KeyValuePair<Date,Date> dd = Utils.inflationPeriod(fixingDate(), frequency());
                double indexStart = index().fixing(dd.Key);
                if (interpolation() == InterpolationType.Linear)
                {
                   double indexEnd = index().fixing(dd.Value + new Period(1, TimeUnit.Days));
                   // linear interpolation
-                  //std::cout << indexStart << " and " << indexEnd << std::endl;
                   I1 = indexStart + (indexEnd - indexStart) * (fixingDate() - dd.Key)
                   / ((dd.Value + new Period(1, TimeUnit.Days)) - dd.Key); // can't get to next period's value within current period
                } 

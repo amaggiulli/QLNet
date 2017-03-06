@@ -128,37 +128,24 @@ namespace QLNet
       }
       #endregion
 
-      //! \name InflationTermStructure interface
-      //@{
+      // InflationTermStructure interface
       public override Date baseDate()
       {
          // if indexIsInterpolated we fixed the dates in the constructor
          return dates_.First();
       }
 
-      //@}
-
-      //! \name Inspectors
-      //@{
-
-
-
+      // Inspectors
       public List<double> rates()
       {
          return this.data_;
       }
 
-      //@}
-
-
-      //! \name ZeroInflationTermStructure Interface
-      //@{
+      // ZeroInflationTermStructure Interface
       protected override double zeroRateImpl(double t)
       {
          return this.interpolation_.value(t, true);
       }
-      //@}
-
 
       /*! Protected version for use when descendents don't want to
           (or can't) provide the points for interpolation on

@@ -88,8 +88,6 @@ namespace QLNet
             }
             return tmp;
         }
-
-        //private Var_Helper varHelper_;
     }
 
 }

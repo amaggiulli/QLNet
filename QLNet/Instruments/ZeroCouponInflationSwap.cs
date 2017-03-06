@@ -231,11 +231,6 @@ namespace QLNet
                                                 dayCounter_, baseDate_, obsDate_);
 
          return Math.Pow(growth,1.0/T) - 1.0;
-
-         // we cannot use this simple definition because
-         // it does not work for already-issued instruments
-         // return infIndex_->zeroInflationTermStructure()->zeroRate(
-         //      maturityDate(), observationLag(), infIndex_->interpolated());
       }
       
       #endregion

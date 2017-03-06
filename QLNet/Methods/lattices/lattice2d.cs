@@ -36,7 +36,6 @@ namespace QLNet {
         
         protected Tl tree1_; 
         protected Tl tree2_;
-        //public enum Branches { branches = 3 };
         public enum Branches { branches = 3 };
         //// smelly
         
@@ -44,8 +43,6 @@ namespace QLNet {
 
         // this is a workaround for CuriouslyRecurringTemplate of TreeLattice
         // recheck it
-    /*  public override TreeLattice2D impl() { return this; }
-    */
         public TreeLattice2D(TrinomialTree tree1,TrinomialTree tree2,double correlation)
             : base(tree1.timeGrid(), (int)Branches.branches * (int)Branches.branches)
         {

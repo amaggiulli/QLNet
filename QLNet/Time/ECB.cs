@@ -106,8 +106,6 @@ namespace QLNet
         else Utils.QL_FAIL("not an ECB month (and it should have been)");
 
         // lexical_cast causes compilation errors with x64
-        //Year y = boost::lexical_cast<Year>(code.substr(3, 2));
-
         int y = int.Parse(code.Substring(3, 2));
         Date referenceDate = (refDate ?? new Date(Settings.evaluationDate()));
         int referenceYear = (referenceDate.year() % 100);
@@ -259,7 +257,7 @@ namespace QLNet
       }
 
       //! next ECB code following the given date
-      static string nextCode(Date d = null) {
+      public static string nextCode(Date d = null) {
          return code(nextDate(d));
       }
 
@@ -285,8 +283,6 @@ namespace QLNet
         else if (monthString=="OCT") result += "NOV" + code.Substring(3, 2);
         else if (monthString=="NOV") result += "DEC" + code.Substring(3, 2);
         else if (monthString=="DEC") {
-            // lexical_cast causes compilation errors with x64
-            //Year y = boost::lexical_cast<Year>(code.substr(3, 2));
             int y = (int.Parse(code.Substring(3, 2)) + 1) % 100;
             String padding = String.Empty;
             if (y < 10)

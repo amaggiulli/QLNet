@@ -37,11 +37,11 @@ namespace QLNet {
                     break;
                 case Frequency.Semiannual:
                     startMonth = (Month)(6 * ((int)month - 1) / 6 + 1);
-                    endMonth = (Month)(startMonth + 5);
+                    endMonth = startMonth + 5;
                     break;
                 case Frequency.Quarterly:
                     startMonth = (Month)(3 * ((int)month - 1) / 3 + 1);
-                    endMonth = (Month)(startMonth + 2);
+                    endMonth = startMonth + 2;
                     break;
                 case Frequency.Monthly:
                     startMonth = endMonth = month;
@@ -88,8 +88,7 @@ namespace QLNet {
    {
       public InflationTermStructure() { }
 
-      //! \name Constructors
-      //@{
+      // Constructors
       public InflationTermStructure(double baseRate,
                                      Period observationLag,
                                      Frequency frequency,
@@ -147,10 +146,8 @@ namespace QLNet {
       nominalTermStructure_.registerWith(update);
       setSeasonality(seasonality);
    }
-   //@}
 
-      //! \name Inflation interface
-      //@{
+      // Inflation interface
       //! The TS observes with a lag that is usually different from the
       //! availability lag of the index.  An inflation rate is given,
       //! by default, for the maturity requested assuming this lag.
@@ -172,7 +169,6 @@ namespace QLNet {
            of fixings is forward looking).
       */
       public abstract Date baseDate();
-      //@}
 
       //! Functions to set and get seasonality.
       /*! Calling setSeasonality with no arguments means unsetting
@@ -226,8 +222,7 @@ namespace QLNet {
     {
        public ZeroInflationTermStructure() { }
 
-       //! \name Constructors
-       //@{
+       // Constructors
        public ZeroInflationTermStructure(DayCounter dayCounter,
                                          double baseZeroRate,
                                          Period observationLag,
@@ -262,11 +257,8 @@ namespace QLNet {
                                          Seasonality seasonality = null)
           :base(settlementDays, calendar, baseZeroRate, observationLag, frequency, 
                 indexIsInterpolated, yTS, dayCounter, seasonality) { }
-       //@}
 
-
-       //! \name Inspectors
-       //@{
+       // Inspectors
        //! zero-coupon inflation rate for an instrument with maturity (pay date) d
        //! that observes with given lag and interpolation.
        //! Since inflation is highly linked to dates (lags, interpolation, months for seasonality, etc)
@@ -341,8 +333,6 @@ namespace QLNet {
         
           return zeroRate;
        }
-
-       //@}
    
        //! to be defined in derived classes
        protected abstract double zeroRateImpl(double t);
@@ -355,8 +345,7 @@ namespace QLNet {
     public abstract class YoYInflationTermStructure : InflationTermStructure
     {
        public YoYInflationTermStructure() { }
-       //! \name Constructors
-       //@{
+       // Constructors
        public YoYInflationTermStructure(DayCounter dayCounter,
                                         double baseYoYRate,
                                         Period observationLag,
@@ -391,10 +380,8 @@ namespace QLNet {
           : base(settlementDays, calendar, baseYoYRate, observationLag,
                               frequency, indexIsInterpolated,
                               yTS, dayCounter, seasonality) { }
-       //@}
 
-       //! \name Inspectors
-       //@{
+       // Inspectors
        //! year-on-year inflation rate, forceLinearInterpolation
        //! is relative to the frequency of the TS.
        //! Since inflation is highly linked to dates (lags, interpolation, months for seasonality etc)
@@ -459,11 +446,8 @@ namespace QLNet {
           }
           return yoyRate;
        }
-       //@}
 
        //! to be defined in derived classes
        protected abstract double yoyRateImpl(double time);
     }
-
-
 }

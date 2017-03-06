@@ -40,7 +40,7 @@ namespace QLNet {
         }
 
 
-        /*! \name High-level interface
+        /* High-level interface
 
             Users of discretized assets should use these methods in
             order to initialize, evolve and take the present value of
@@ -48,7 +48,6 @@ namespace QLNet {
             Lattice interface, to which we refer for
             documentation.
 
-            @{
         */
         public void initialize(Lattice method, double t) {
             method_ = method;
@@ -65,7 +64,7 @@ namespace QLNet {
             return method_.presentValue(this);
         }
 
-        /*! \name Low-level interface
+        /* Low-level interface
 
             These methods (that developers should override when
             deriving from DiscretizedAsset) are to be used by
@@ -73,8 +72,6 @@ namespace QLNet {
             exception of adjustValues(), preAdjustValues() and
             postAdjustValues() that can be used together with
             partialRollback().
-
-            @{
         */
 
         /*! This method should initialize the asset values to an Array

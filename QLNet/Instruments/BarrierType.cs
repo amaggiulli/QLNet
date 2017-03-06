@@ -22,7 +22,7 @@ namespace QLNet {
 	//! Placeholder for enumerated barrier types
 	public struct Barrier
 	{
-		public enum Type: int
+		public enum Type
 		{
 			DownIn,
 			UpIn,

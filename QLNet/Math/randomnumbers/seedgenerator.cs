@@ -39,7 +39,7 @@ namespace QLNet {
 
         private void initialize() {
             // firstSeed is chosen based on clock() and used for the first rng
-            ulong firstSeed = (ulong)DateTime.Now.Ticks; // (std::time(0));
+            ulong firstSeed = (ulong)DateTime.Now.Ticks; 
             MersenneTwisterUniformRng first = new MersenneTwisterUniformRng(firstSeed);
 
             // secondSeed is as random as it could be

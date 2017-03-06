@@ -67,8 +67,7 @@ namespace QLNet
          return spreadsVolImplied_;
       }
 
-      //! \name LazyObject interface
-      //@{
+      // LazyObject interface
       protected override void performCalculations()
       {
          //// optionletStripper data
@@ -112,24 +111,15 @@ namespace QLNet
                   unadjustedVol = adapter.volatility(optionletTimes_[i],atmCapFloorStrikes_[j]);
                   adjustedVol = unadjustedVol + spreadsVolImplied_[j];
 
-                  // insert adjusted volatility
-                  //List<Rate>::const_iterator previous =
-                  //      std::lower_bound(optionletStrikes_[i].begin(),
-                  //                        optionletStrikes_[i].end(),
-                  //                        atmCapFloorStrikes_[j]);
                   var previous = optionletStrikes_[i].FindIndex(x => x >= atmCapFloorStrikes_[j]);
-                  int insertIndex = (int) previous ;  // (int)optionletStrikes_[i].First();
+                  int insertIndex = previous ; 
 
                   optionletStrikes_[i].Insert(insertIndex,atmCapFloorStrikes_[j]);
                   optionletVolatilities_[i].Insert(insertIndex, adjustedVol);
-                  //optionletStrikes_[i].Insert((int)atmCapFloorStrikes_[j], optionletStrikes_[i][insertIndex]);
-                  //optionletVolatilities_[i].Insert((int)adjustedVol,optionletVolatilities_[i][insertIndex]);
                }
             }
          }
       }
-      //@}
-
             
       private List<double> spreadsVolImplied()
       {

@@ -180,7 +180,7 @@ namespace QLNet
 			return maxInflation;
 		}
 
-		void updateGuess( List<double> data, double discount, int i )
+		public void updateGuess( List<double> data, double discount, int i )
 		{
 			data[i] = discount;
 		}
@@ -216,7 +216,6 @@ namespace QLNet
 
 		void ITraits<YoYInflationTermStructure>.updateGuess( List<double> data, double discount, int i )
 		{
-			//throw new NotImplementedException();
 			data[i] = discount;
 		}
 

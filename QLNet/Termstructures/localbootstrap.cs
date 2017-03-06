@@ -32,10 +32,6 @@ namespace QLNet
 		where T : Curve<U>, new()
 		where U : TermStructure
 	{
-        //typedef typename Curve::traits_type Traits;
-        //typedef typename Traits::helper helper;
-        //typedef typename std::vector< boost::shared_ptr<helper> >::const_iterator helper_iterator;
-
         private T curve_;
         private int initialIndex_;
         private int localisation_, start_, end_;
@@ -92,16 +88,12 @@ namespace QLNet
     public class LocalBootstrap <T,U>:IBootStrap<T>
         where T : Curve<U>, new()
         where U : TermStructure
-	 {
-        //typedef typename Curve::traits_type Traits;
-        //typedef typename Curve::interpolator_type Interpolator;
-      
+	 {      
         private bool validCurve_;
         private T ts_; // yes, it is a workaround
         int localisation_;
         bool forcePositive_;
         
-        //public LocalBootstrap(Size localisation = 2, bool forcePositive = true) {
         public LocalBootstrap() : this(2, true) { }
         public LocalBootstrap(int localisation, bool forcePositive) {
             localisation_ = localisation;

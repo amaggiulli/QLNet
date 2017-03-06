@@ -26,8 +26,6 @@ namespace QLNet
       where RNG : IRSG, new()
       where S : IGeneralStatistics, new()
    {
-      // typedef typename MCVanillaEngine<MultiVariate,RNG,S>::path_pricer_type path_pricer_type;
-
       public MCEuropeanHestonEngine( HestonProcess process,
                                      int? timeSteps,
                                      int? timeStepsPerYear,

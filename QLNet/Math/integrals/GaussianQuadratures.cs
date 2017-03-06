@@ -86,16 +86,7 @@ namespace QLNet
    }
 
    //! generalized Gauss-Laguerre integration
-   /*! This class performs a 1-dimensional Gauss-Laguerre integration.
-       \f[
-       \int_{0}^{\inf} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x;s)=x^s \exp{-x}
-       \f]
-       and \f[ s > -1 \f]
-   */
+   // This class performs a 1-dimensional Gauss-Laguerre integration.
    public class GaussLaguerreIntegration : GaussianQuadrature 
    {
       public GaussLaguerreIntegration(int n, double s = 0.0)
@@ -103,16 +94,7 @@ namespace QLNet
    }
 
    //! generalized Gauss-Hermite integration
-   /*! This class performs a 1-dimensional Gauss-Hermite integration.
-       \f[
-       \int_{-\inf}^{\inf} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x;\mu)=|x|^{2\mu} \exp{-x*x}
-       \f]
-       and \f[ \mu > -0.5 \f]
-   */
+   // This class performs a 1-dimensional Gauss-Hermite integration.
    public class GaussHermiteIntegration : GaussianQuadrature 
    {
      public GaussHermiteIntegration(int n, double mu = 0.0)
@@ -120,15 +102,7 @@ namespace QLNet
     }
 
    //! Gauss-Jacobi integration
-   /*! This class performs a 1-dimensional Gauss-Jacobi integration.
-       \f[
-       \int_{-1}^{1} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x;\alpha,\beta)=(1-x)^\alpha (1+x)^\beta
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Jacobi integration.
    public class GaussJacobiIntegration : GaussianQuadrature 
    {
      public GaussJacobiIntegration(int n, double alpha, double beta)
@@ -136,15 +110,7 @@ namespace QLNet
    }
 
    //! Gauss-Hyperbolic integration
-   /*! This class performs a 1-dimensional Gauss-Hyperbolic integration.
-       \f[
-       \int_{-\inf}^{\inf} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x)=1/cosh(x)
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Hyperbolic integration.
    public class GaussHyperbolicIntegration : GaussianQuadrature 
    {
      public GaussHyperbolicIntegration(int n)
@@ -152,15 +118,7 @@ namespace QLNet
    }
 
    //! Gauss-Legendre integration
-   /*! This class performs a 1-dimensional Gauss-Legendre integration.
-       \f[
-       \int_{-1}^{1} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x)=1
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Legendre integration.
    public class GaussLegendreIntegration : GaussianQuadrature 
    {
      public GaussLegendreIntegration(int n)
@@ -168,15 +126,7 @@ namespace QLNet
    }
 
    //! Gauss-Chebyshev integration
-   /*! This class performs a 1-dimensional Gauss-Chebyshev integration.
-       \f[
-       \int_{-1}^{1} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x)=(1-x^2)^{-1/2}
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Chebyshev integration.
    public class GaussChebyshevIntegration : GaussianQuadrature 
    {
      public GaussChebyshevIntegration(int n)
@@ -184,15 +134,7 @@ namespace QLNet
    }
 
    //! Gauss-Chebyshev integration (second kind)
-   /*! This class performs a 1-dimensional Gauss-Chebyshev integration.
-       \f[
-       \int_{-1}^{1} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x)=(1-x^2)^{1/2}
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Chebyshev integration.
    public class GaussChebyshev2ndIntegration : GaussianQuadrature 
    {
      public GaussChebyshev2ndIntegration(int n)
@@ -200,15 +142,7 @@ namespace QLNet
    }
 
    //! Gauss-Gegenbauer integration
-   /*! This class performs a 1-dimensional Gauss-Gegenbauer integration.
-       \f[
-       \int_{-1}^{1} f(x) \mathrm{d}x
-       \f]
-       The weighting function is
-       \f[
-           w(x)=(1-x^2)^{\lambda-1/2}
-       \f]
-   */
+   // This class performs a 1-dimensional Gauss-Gegenbauer integration.
    public class GaussGegenbauerIntegration : GaussianQuadrature 
    {
      public GaussGegenbauerIntegration(int n, double lambda)
@@ -219,30 +153,6 @@ namespace QLNet
    public class TabulatedGaussLegendre 
    {
       public TabulatedGaussLegendre(int n = 20) { order(n); }
-        //template <class F>
-        //Real operator() (const F& f) const {
-        //    QL_ASSERT(w_!=0, "Null weights" );
-        //    QL_ASSERT(x_!=0, "Null abscissas");
-        //    Size startIdx;
-        //    Real val;
-
-        //    const Size isOrderOdd = order_ & 1;
-
-        //    if (isOrderOdd) {
-        //      QL_ASSERT((n_>0), "assume at least 1 point in quadrature");
-        //      val = w_[0]*f(x_[0]);
-        //      startIdx=1;
-        //    } else {
-        //      val = 0.0;
-        //      startIdx=0;
-        //    }
-
-        //    for (Size i=startIdx; i<n_; ++i) {
-        //        val += w_[i]*f( x_[i]);
-        //        val += w_[i]*f(-x_[i]);
-        //    }
-        //    return val;
-        //}
       
       public double value (Func<double,double> f) 
       {

@@ -28,7 +28,7 @@ namespace QLNet {
             type_ = type;
         }
         
-        //! \name Payoff interface
+        // Payoff interface
         public override string description() { return name() + " " + optionType(); }
     }
 
@@ -36,7 +36,7 @@ namespace QLNet {
     public class FloatingTypePayoff : TypePayoff {
         public FloatingTypePayoff(Option.Type type) : base(type) {}
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "FloatingType";}
 
         public override double value(double k) { throw new NotSupportedException("floating payoff not handled"); }
@@ -50,7 +50,7 @@ namespace QLNet {
             strike_ = strike;
         }
         
-        //! \name Payoff interface
+        // Payoff interface
         public override string description() {
             return base.description() + ", " + strike() + " strike";
         }
@@ -62,7 +62,7 @@ namespace QLNet {
     public class PlainVanillaPayoff : StrikedTypePayoff {
         public PlainVanillaPayoff(Option.Type type, double strike) : base(type, strike) {}
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "Vanilla";}
         public override double value(double price) {
             switch (type_) {
@@ -80,7 +80,7 @@ namespace QLNet {
     public class PercentageStrikePayoff : StrikedTypePayoff {
         public PercentageStrikePayoff(Option.Type type, double moneyness) : base(type, moneyness) {}
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "PercentageStrike";}
         public override double value(double price) {
             switch (type_) {
@@ -102,7 +102,7 @@ namespace QLNet {
     public class AssetOrNothingPayoff : StrikedTypePayoff {
         public AssetOrNothingPayoff(Option.Type type, double strike) : base(type, strike) {}
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "AssetOrNothing";}
         public override double value(double price) {
             switch (type_) {
@@ -124,7 +124,7 @@ namespace QLNet {
         public CashOrNothingPayoff(Option.Type type, double strike, double cashPayoff) : base(type, strike) {
             cashPayoff_ = cashPayoff;
         }
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "CashOrNothing";}
         public override string description() {
             return base.description() + ", " + cashPayoff() + " cash payoff";
@@ -158,7 +158,7 @@ namespace QLNet {
             secondStrike_ = secondStrike;
         }
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "Gap";}
         public override string description() {
             return base.description() + ", " + secondStrike() + " strike payoff";
@@ -198,7 +198,7 @@ namespace QLNet {
                ") must be higher than first strike (" + strike + ")");
         }
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "SuperFund";}
         public override double value(double price) {
             return (price >= strike_ && price < secondStrike_) ? price / strike_ : 0.0;
@@ -222,7 +222,7 @@ namespace QLNet {
                ") must be higher than first strike (" + strike + ")");
         }
 
-        //! \name Payoff interface
+        // Payoff interface
         public override string name() { return "SuperShare";}
         public override string description() {
             return base.description() + ", " + secondStrike() + " second strike" + ", " + cashPayoff() + " amount";

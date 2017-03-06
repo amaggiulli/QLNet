@@ -28,8 +28,7 @@ namespace QLNet
    //! generic pricer for floating-rate coupons
    public abstract class FloatingRateCouponPricer : IObservable, IObserver
    {
-      //! \name required interface
-      //@{
+      // required interface
       public abstract double swapletPrice();
       public abstract double swapletRate();
       public abstract double capletPrice( double effectiveCap );
@@ -356,48 +355,27 @@ namespace QLNet
          Utils.QL_REQUIRE( cmsCouponPricer!=null,()=> "pricer not compatible with CMS coupon" );
          c.setPricer( cmsCouponPricer );
       }
-      //public void visit(CmsSpreadCoupon c) 
-      //{
-      //   CmsSpreadCouponPricer cmsSpreadCouponPricer = pricer_ as CmsSpreadCouponPricer;
-      //   Utils.QL_REQUIRE(cmsSpreadCouponPricer!=null,()=>"pricer not compatible with CMS spread coupon");
-      //   c.setPricer(cmsSpreadCouponPricer);
-      //}
+
       public void visit( CappedFlooredCmsCoupon c )
       {
          CmsCouponPricer cmsCouponPricer = pricer_ as CmsCouponPricer;
          Utils.QL_REQUIRE( cmsCouponPricer != null, () => "pricer not compatible with CMS coupon" );
          c.setPricer( cmsCouponPricer );
       }
-      //public void visit(CappedFlooredCmsSpreadCoupon c) 
-      //{
-      //   CmsSpreadCouponPricer cmsSpreadCouponPricer = pricer_ as CmsSpreadCouponPricer;
-      //   QL_REQUIRE(cmsSpreadCouponPricer!=null,()=>"pricer not compatible with CMS spread coupon");
-      //   c.setPricer(cmsSpreadCouponPricer);
-      //}
+
       public void visit( DigitalCmsCoupon c )
       {
          CmsCouponPricer cmsCouponPricer = pricer_ as CmsCouponPricer;
          Utils.QL_REQUIRE( cmsCouponPricer != null, () => "pricer not compatible with CMS coupon" );
          c.setPricer( cmsCouponPricer );
       }
-      //public void visit(DigitalCmsSpreadCoupon c) 
-      //{
-      //   CmsSpreadCouponPricer cmsSpreadCouponPricer = pricer_ as CmsSpreadCouponPricer;
-      //   Utils.QL_REQUIRE(cmsSpreadCouponPricer!=null,()=> "pricer not compatible with CMS spread coupon");
-      //   c.setPricer(cmsSpreadCouponPricer);
-      //}
+
       public void visit(RangeAccrualFloatersCoupon c)
       {
          RangeAccrualPricer rangeAccrualPricer = pricer_ as RangeAccrualPricer;
          Utils.QL_REQUIRE(rangeAccrualPricer!=null,()=> "pricer not compatible with range-accrual coupon");
          c.setPricer(rangeAccrualPricer);
       }
-      //public void visit(SubPeriodsCoupon c) 
-      //{
-      //   SubPeriodsPricer subPeriodsPricer = pricer_ as SubPeriodsPricer;
-      //   Utils.QL_REQUIRE(subPeriodsPricer!=null,()=> "pricer not compatible with sub-period coupon");
-      //   c.setPricer(subPeriodsPricer);
-      //}
    }
 
    partial class Utils

@@ -70,9 +70,6 @@ namespace QLNet
 			// discount are not required to be decreasing--all bets are off.
 			// We choose as max a value very unlikely to be exceeded.
 			return 3.0;
-
-			// discounts cannot increase
-			//return data[i - 1]; 
 		}
 		// update with new guess
 		public void updateGuess( List<double> data, double discount, int i ) { data[i] = discount; }
@@ -84,8 +81,7 @@ namespace QLNet
 
 
 		public double guess( int i, InterpolatedCurve c, bool validData, int f )
-		{
-			//return 1.0 / (1.0 + avgRate * 0.25);      
+		{    
 			if ( validData ) // previous iteration value
 				return c.data()[i];
 
@@ -99,8 +95,6 @@ namespace QLNet
 
 		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
-			//return Const.QL_Epsilon;
-
 			if ( validData )
 			{
 				#if QL_NEGATIVE_RATES
@@ -115,7 +109,6 @@ namespace QLNet
 
 		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
-			//return 3.0;
 
 #if QL_NEGATIVE_RATES
             double dt = c.times()[i] - c.times()[i-1];
@@ -289,7 +282,6 @@ namespace QLNet
 
 		public double guess( int i, InterpolatedCurve c, bool validData, int f )
 		{
-			//return 1.0 / (1.0 + avgRate * 0.25);
 			if ( validData ) // previous iteration value
 				return c.data()[i];
 
@@ -302,8 +294,6 @@ namespace QLNet
 
 		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
-			//return Const.QL_Epsilon;
-
 			if ( validData )
 			{
 				double r = c.data().Min();
@@ -324,9 +314,6 @@ namespace QLNet
 
 		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
-			// return 3.0;
-
-
 			if ( validData )
 			{
 				double r = c.data().Max();

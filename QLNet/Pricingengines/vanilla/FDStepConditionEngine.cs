@@ -50,8 +50,6 @@ namespace QLNet {
             initializeBoundaryConditions();
             initializeStepCondition();
 
-            // typedef StandardSystemFiniteDifferenceModel model_type;
-
             List<IOperator> operatorSet = new List<IOperator>();
             List<Vector> arraySet = new List<Vector>();
             BoundaryConditionSet bcSet = new BoundaryConditionSet();

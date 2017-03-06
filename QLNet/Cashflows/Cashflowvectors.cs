@@ -279,7 +279,6 @@ namespace QLNet {
             Calendar calendar = paymentCalendar_;
 
             Date refStart, start, refEnd, end;
-            //Date lastPaymentDate = calendar.adjust(schedule_.date(n), paymentAdjustment_);
 
             for (int i = 0; i < n; ++i)
             {

@@ -29,8 +29,8 @@ namespace QLNet
         option date and swapLength.
 
         The volatility matrix <tt>M</tt> must be defined so that:
-        - the number of rows equals the number of option dates;
-        - the number of columns equals the number of swap tenors;
+        - the number of rows equals the number of option dates
+        - the number of columns equals the number of swap tenors
         - <tt>M[i][j]</tt> contains the volatility corresponding
           to the <tt>i</tt>-th option and <tt>j</tt>-th tenor.
     */
@@ -164,8 +164,7 @@ namespace QLNet
             volatilities_);
         }
 
-        //! \name LazyObject interface
-        //@{
+        // LazyObject interface
         //verifier protected QL public!!
         protected override void performCalculations() 
         {
@@ -177,16 +176,12 @@ namespace QLNet
                     volatilities_[i,j] = volHandles_[i][j].link.value() ;
         }
 
-        //@}
-        //! \name TermStructure interface
-        //@{   
+        // TermStructure interface
         public override Date maxDate()  {
             return optionDates_.Last();
         }
 
-        //@}
-        //! \name VolatilityTermStructure interface
-        //@{
+        // VolatilityTermStructure interface
         public override double minStrike()  {
             return double.MinValue;
         }
@@ -194,16 +189,13 @@ namespace QLNet
         public override double maxStrike()  {
             return double.MaxValue;
         }
-        //@}
-        //! \name SwaptionVolatilityStructure interface
-        //@{
+
+        // SwaptionVolatilityStructure interface
         public override Period maxSwapTenor()  {
             return swapTenors_.Last();
         }
 
-        //@}
-        //! \name Other inspectors
-        //@{
+        // Other inspectors
         //! returns the lower indexes of surrounding volatility matrix corners
         public KeyValuePair<int,int> locate(  Date optionDate,
                                               Period swapTenor)  {
@@ -217,7 +209,7 @@ namespace QLNet
             return new KeyValuePair<int, int>(interpolation_.locateY(optionTime),
                                   interpolation_.locateX(swapLength));
         }
-        //@}
+
         #region protected
         // defining the following method would break CMS test suite
         // to be further investigated

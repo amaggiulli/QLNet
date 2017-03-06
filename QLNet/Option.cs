@@ -16,56 +16,60 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
-namespace QLNet {
-    //! base option class
-    public class Option : Instrument {
-        public enum Type { Put = -1, Call = 1 }
+namespace QLNet
+{
+   //! base option class
+   public class Option : Instrument
+   {
+      public enum Type
+      {
+         Put = -1,
+         Call = 1
+      }
 
-        // arguments
-        protected Payoff payoff_;
-        public Payoff payoff() { return payoff_; }
+      // arguments
+      protected Payoff payoff_;
 
-        protected Exercise exercise_;
-        public Exercise exercise() { return exercise_; }
+      public Payoff payoff()
+      {
+         return payoff_;
+      }
 
-        public Option(Payoff payoff, Exercise exercise) {
-            payoff_ = payoff;
-            exercise_ = exercise;
-        }
+      protected Exercise exercise_;
 
-        public override void setupArguments(IPricingEngineArguments args) {
-            Option.Arguments arguments = args as Option.Arguments;
+      public Exercise exercise()
+      {
+         return exercise_;
+      }
 
-            Utils.QL_REQUIRE(arguments != null,()=> "wrong argument type");
+      public Option(Payoff payoff, Exercise exercise)
+      {
+         payoff_ = payoff;
+         exercise_ = exercise;
+      }
 
-            arguments.payoff = payoff_;
-            arguments.exercise = exercise_;
-        }
+      public override void setupArguments(IPricingEngineArguments args)
+      {
+         Option.Arguments arguments = args as Option.Arguments;
 
+         Utils.QL_REQUIRE(arguments != null, () => "wrong argument type");
 
-        //! basic %option %arguments
-        public class Arguments : IPricingEngineArguments {
-            public Payoff payoff;
-            public Exercise exercise;
+         arguments.payoff = payoff_;
+         arguments.exercise = exercise_;
+      }
 
-           public virtual void validate() {
-                Utils.QL_REQUIRE(payoff != null,()=> "no payoff given");
-                Utils.QL_REQUIRE(exercise != null,()=> "no exercise given");
-            }
-        }
-    }
+      //! basic %option %arguments
+      public class Arguments : IPricingEngineArguments
+      {
+         public Payoff payoff;
+         public Exercise exercise;
 
-    //! additional %option results
-    // class Greeks
-    // public double? delta, gamma, theta, vega, rho, dividendRho;
-    // reset method should include the following line
-    // delta = gamma = theta = vega = rho = dividendRho = null;
-
-    //! more additional %option results
-    // class MoreGreeks
-    // public double? itmCashProbability, deltaForward, elasticity, thetaPerDay, strikeSensitivity;
-    // reset method should include the following line
-    // itmCashProbability = deltaForward = elasticity = thetaPerDay = strikeSensitivity = null;
+         public virtual void validate()
+         {
+            Utils.QL_REQUIRE(payoff != null, () => "no payoff given");
+            Utils.QL_REQUIRE(exercise != null, () => "no exercise given");
+         }
+      }
+   }
 }

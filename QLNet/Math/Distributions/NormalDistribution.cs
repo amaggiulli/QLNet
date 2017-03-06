@@ -82,8 +82,6 @@ namespace QLNet {
 
         // function
         public double value(double z) {
-            //QL_REQUIRE(!(z >= average_ && 2.0*average_-z > average_),
-            //           "not a real number. ");
             z = (z - average_) / sigma_;
 
             double result = 0.5 * (1.0 + erf(z * Const.M_SQRT_2));
@@ -196,7 +194,7 @@ namespace QLNet {
         *         precision number and s := x; then
         *              -x*x = -s*s + (s-x)*(s+x)
         *              exp(-x*x-0.5626+R/S) = 
-        *                      exp(-s*s-0.5625)*exp((s-x)*(s+x)+R/S);
+        *                      exp(-s*s-0.5625)*exp((s-x)*(s+x)+R/S)
         *      Note2:
         *         Here 4 and 5 make use of the asymptotic series
         *                        exp(-x*x)
@@ -489,7 +487,6 @@ namespace QLNet {
         const double c7_ = 0.0000002888167364;
         const double c8_ = 0.0000003960315187;
 
-        // public MoroInverseCumulativeNormal(double average = 0.0, double sigma   = 1.0);
         public MoroInverseCumulativeNormal(double average, double sigma) {
             average_ = average;
             sigma_ = sigma;

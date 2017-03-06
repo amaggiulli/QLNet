@@ -62,9 +62,6 @@ namespace QLNet {
         #endregion
 
         #region Constructors
-        //! creates a null matrix
-        // public Matrix() : base(0) { rows_ = 0; columns_ = 0; }
-
         //! creates a matrix with the given dimensions
         public Matrix(int rows, int columns) {
             data_ = new double[rows * columns];

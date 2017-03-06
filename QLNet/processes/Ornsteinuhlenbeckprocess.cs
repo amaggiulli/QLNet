@@ -40,8 +40,7 @@ namespace QLNet
 
          Utils.QL_REQUIRE( volatility_ >= 0.0,()=> "negative volatility given" );
       }
-      //! \name StochasticProcess interface
-      //@{
+      // StochasticProcess interface
       public override double x0()
       {
          return x0_;

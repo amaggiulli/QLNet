@@ -51,26 +51,20 @@ namespace QLNet
       private Interpolation2D varianceSurface_;
       private Extrapolation lowerExtrapolation_, upperExtrapolation_;
 
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override DayCounter dayCounter() { return dayCounter_; }
-
       public override Date maxDate()
       {
          return maxDate_;
       }
 
-      //@}
-      //! \name VolatilityTermStructure interface
-      //@{
+      // VolatilityTermStructure interface
       public override double minStrike() { return strikes_.First(); }
 
       public override double maxStrike()
       {
          return strikes_.Last();
       }
-
-      //@}
 
       // required for Handle
       public BlackVarianceSurface() { }
@@ -132,7 +126,7 @@ namespace QLNet
 
          if (t <= times_.Last())
             return varianceSurface_.value(t, strike, true);
-         else // t>times_.Last() || extrapolate
+         else 
             return varianceSurface_.value(times_.Last(), strike, true) * t / times_.Last();
       }
 

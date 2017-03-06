@@ -70,8 +70,7 @@ namespace QLNet
       // need by CashFlowVectors
       public DigitalCoupon() { }
 
-      //! \name Constructors
-      //@{
+      //! Constructors
       //! general constructor
       public DigitalCoupon(FloatingRateCoupon underlying, 
                            double? callStrike = null,
@@ -246,9 +245,7 @@ namespace QLNet
          underlying.registerWith(update);
       }
 
-      //@}
-      //! \name Coupon interface
-      //@{
+      // Coupon interface
       public override double rate()
       {
 
@@ -280,10 +277,7 @@ namespace QLNet
       {
          return underlying_.convexityAdjustment();
       }
-      //@}
-      //@}
-      //! \name Digital inspectors
-      //@{
+      // Digital inspectors
       public double? callStrike()
       {
          if (hasCall())
@@ -404,9 +398,7 @@ namespace QLNet
          return new DigitalCoupon(underlying, callStrike, callPosition, isCallATMIncluded, callDigitalPayoff, putStrike, putPosition, isPutATMIncluded, putDigitalPayoff, replication);
       }
 
-      //! \name Data members
-      //@{
-      //!
+      // Data members
       protected FloatingRateCoupon underlying_;
       //! strike rate for the the call option
       protected double callStrike_;
@@ -440,7 +432,6 @@ namespace QLNet
       //! Type of replication
       protected Replication.Type replicationType_;
 
-      //@}
       private double callPayoff()
       {
          // to use only if index has fixed
@@ -454,11 +445,8 @@ namespace QLNet
             }
             else
             {
-               if (isCallATMIncluded_)
-               {
-                  if (Math.Abs(callStrike_ - underlyingRate) <= 1.0e-16)
-                     payoff = isCallCashOrNothing_ ? callDigitalPayoff_ : underlyingRate;
-               }
+               if (isCallATMIncluded_ && Math.Abs(callStrike_ - underlyingRate) <= 1.0e-16)
+                  payoff = isCallCashOrNothing_ ? callDigitalPayoff_ : underlyingRate;
             }
          }
          return payoff;

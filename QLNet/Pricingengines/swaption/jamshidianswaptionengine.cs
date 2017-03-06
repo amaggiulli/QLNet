@@ -125,7 +125,6 @@ namespace QLNet
             for (int i = 0; i < amounts.Count; i++)
                 amounts[i] = arguments_.fixedCoupons[i];
             amounts[amounts.Count-1] = amounts.Last() + arguments_.nominal;
-            //amounts.Last()+=arguments_.nominal;
 
             double maturity = dayCounter.yearFraction(referenceDate,
                                                     arguments_.exercise.date(0));

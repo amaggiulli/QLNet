@@ -17,87 +17,126 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QLNet {
-    //! Base exercise class
-    public class Exercise {
-        public enum Type { American, Bermudan, European };
+namespace QLNet
+{
+   //! Base exercise class
+   public class Exercise
+   {
+      public enum Type
+      {
+         American,
+         Bermudan,
+         European
+      }
 
-        protected Type type_;
-        public Type type() { return type_; }
+      protected Type type_;
 
-        protected List<Date> dates_;
-        public List<Date> dates() { return dates_; }
+      public Type type()
+      {
+         return type_;
+      }
 
-        // constructor
-        public Exercise(Type type) {
-            type_ = type;
-        }
+      protected List<Date> dates_;
 
-        // inspectors
-        public Date date(int index) { return dates_[index]; }
-        public Date lastDate() { return dates_.Last(); }
-    }
+      public List<Date> dates()
+      {
+         return dates_;
+      }
 
-    //! Early-exercise base class
-    /*! The payoff can be at exercise (the default) or at expiry */
-    public class EarlyExercise : Exercise {
-        private bool payoffAtExpiry_;
-        public bool payoffAtExpiry() { return payoffAtExpiry_; }
-        
-        // public EarlyExercise(Type type, bool payoffAtExpiry = false) : base(type) {
-        public EarlyExercise(Type type, bool payoffAtExpiry) : base(type) {
-            payoffAtExpiry_ = payoffAtExpiry;
-        }
-    }
+      // constructor
+      public Exercise(Type type)
+      {
+         type_ = type;
+      }
 
-    //! American exercise
-    /*! An American option can be exercised at any time between two
-        predefined dates; the first date might be omitted, in which
-        case the option can be exercised at any time before the expiry.
+      // inspectors
+      public Date date(int index)
+      {
+         return dates_[index];
+      }
 
-        \todo check that everywhere the American condition is applied
-              from earliestDate and not earlier
-    */
-    public class AmericanExercise : EarlyExercise {
-        public AmericanExercise(Date earliestDate, Date latestDate, bool payoffAtExpiry = false)
-            : base(Type.American, payoffAtExpiry) {
+      public Date lastDate()
+      {
+         return dates_.Last();
+      }
+   }
 
-         Utils.QL_REQUIRE(earliestDate <= latestDate,()=> "earliest > latest exercise date");
+   //! Early-exercise base class
+   /*! The payoff can be at exercise (the default) or at expiry */
+
+   public class EarlyExercise : Exercise
+   {
+      private bool payoffAtExpiry_;
+
+      public bool payoffAtExpiry()
+      {
+         return payoffAtExpiry_;
+      }
+
+      public EarlyExercise(Type type, bool payoffAtExpiry) : base(type)
+      {
+         payoffAtExpiry_ = payoffAtExpiry;
+      }
+   }
+
+   //! American exercise
+   /*! An American option can be exercised at any time between two
+       predefined dates; the first date might be omitted, in which
+       case the option can be exercised at any time before the expiry.
+
+       \todo check that everywhere the American condition is applied
+             from earliestDate and not earlier
+   */
+
+   public class AmericanExercise : EarlyExercise
+   {
+      public AmericanExercise(Date earliestDate, Date latestDate, bool payoffAtExpiry = false)
+         : base(Type.American, payoffAtExpiry)
+      {
+         Utils.QL_REQUIRE(earliestDate <= latestDate, () => "earliest > latest exercise date");
          dates_ = new InitializedList<Date>(2);
-            dates_[0] = earliestDate;
-            dates_[1] = latestDate;
-        }
+         dates_[0] = earliestDate;
+         dates_[1] = latestDate;
+      }
 
-        public AmericanExercise(Date latest, bool payoffAtExpiry = false) : base(Type.American, payoffAtExpiry) {
-            dates_ = new InitializedList<Date>(2);
-            dates_[0] = Date.minDate();
-            dates_[1] = latest;
-        }
-    }
+      public AmericanExercise(Date latest, bool payoffAtExpiry = false) : base(Type.American, payoffAtExpiry)
+      {
+         dates_ = new InitializedList<Date>(2);
+         dates_[0] = Date.minDate();
+         dates_[1] = latest;
+      }
+   }
 
-    //! Bermudan exercise
-    /*! A Bermudan option can only be exercised at a set of fixed dates. */
-    public class BermudanExercise : EarlyExercise {
-        public BermudanExercise(List<Date> dates) : this(dates, false) { }
-        public BermudanExercise(List<Date> dates, bool payoffAtExpiry)
-            : base(Type.Bermudan, payoffAtExpiry) {
+   //! Bermudan exercise
+   /*! A Bermudan option can only be exercised at a set of fixed dates. */
 
-            Utils.QL_REQUIRE(!dates.empty(),()=> "no exercise date given");
+   public class BermudanExercise : EarlyExercise
+   {
+      public BermudanExercise(List<Date> dates) : this(dates, false)
+      {}
 
-            dates_ = dates;
-            dates_.Sort();
-        }
-    }
+      public BermudanExercise(List<Date> dates, bool payoffAtExpiry)
+         : base(Type.Bermudan, payoffAtExpiry)
+      {
+         Utils.QL_REQUIRE(!dates.empty(), () => "no exercise date given");
 
-    //! European exercise
-    /*! A European option can only be exercised at one (expiry) date. */
-    public class EuropeanExercise : Exercise {
-        public EuropeanExercise(Date date) : base(Type.European) {
-            dates_ = new InitializedList<Date>(1, date);
-        }
-    }
+         dates_ = dates;
+         dates_.Sort();
+      }
+   }
+
+   //! European exercise
+   /*! A European option can only be exercised at one (expiry) date. */
+
+   public class EuropeanExercise : Exercise
+   {
+      public EuropeanExercise(Date date) : base(Type.European)
+      {
+         dates_ = new InitializedList<Date>(1, date);
+      }
+   }
 }

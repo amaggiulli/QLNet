@@ -257,10 +257,10 @@ namespace QLNet
             npvDate_=npvDate;
 
             if (settlementDate == null)
-               settlementDate = Settings.evaluationDate();
+               settlementDate_ = Settings.evaluationDate();
 
             if (npvDate == null)
-               npvDate = settlementDate;
+               npvDate_ = settlementDate_;
 
             checkSign();
          }
@@ -325,10 +325,10 @@ namespace QLNet
             npvDate_ = npvDate;
 
             if (settlementDate == null)
-               settlementDate = Settings.evaluationDate();
+               settlementDate_ = Settings.evaluationDate();
 
             if (npvDate == null)
-               npvDate = settlementDate;
+               npvDate_ = settlementDate_;
 
             // if the discount curve allows extrapolation, let's
             // the spreaded curve do too.
@@ -656,22 +656,6 @@ namespace QLNet
       }
       #endregion
 
-
-      //// need to refactor the bond classes and remove the following  
-      //public static Date previousCouponDate(List<CashFlow> leg, bool includeSettlementDateFlows,Date refDate)
-      //{
-      //   var cf = previousCashFlow(leg,includeSettlementDateFlows, refDate);
-      //   if (cf == leg.Last()) return null;
-      //   return cf.date();
-      //}
-      //public static Date nextCouponDate(List<CashFlow> leg, bool includeSettlementDateFlows,Date refDate)
-      //{
-      //   var cf = nextCashFlow(leg,includeSettlementDateFlows, refDate);
-      //   if (cf == leg.Last()) return null;
-      //   return cf.date();
-      //}
-      ////@}
-
       #region YieldTermStructure functions
 
       //! NPV of the cash flows. The NPV is the sum of the cash flows, each discounted according to the given term structure.
@@ -951,27 +935,6 @@ namespace QLNet
       }
 
       //! Cash-flow duration.
-      /*! The simple duration of a string of cash flows is defined as
-         \f[
-         D_{\mathrm{simple}} = \frac{\sum t_i c_i B(t_i)}{\sum c_i B(t_i)}
-         \f]
-         where \f$ c_i \f$ is the amount of the \f$ i \f$-th cash
-         flow, \f$ t_i \f$ is its payment time, and \f$ B(t_i) \f$ is the corresponding discount according to the passed yield.
-
-         The modified duration is defined as
-         \f[
-         D_{\mathrm{modified}} = -\frac{1}{P} \frac{\partial P}{\partial y}
-         \f]
-         where \f$ P \f$ is the present value of the cash flows according to the given IRR \f$ y \f$.
-
-         The Macaulay duration is defined for a compounded IRR as
-         \f[
-         D_{\mathrm{Macaulay}} = \left( 1 + \frac{y}{N} \right)
-                                 D_{\mathrm{modified}}
-         \f]
-         where \f$ y \f$ is the IRR and \f$ N \f$ is the number of cash flows per year.
-   
-      */
       public static double duration(Leg leg, InterestRate rate, Duration.Type type, bool includeSettlementDateFlows,
                                     Date settlementDate = null, Date npvDate = null)
       {
@@ -1008,13 +971,6 @@ namespace QLNet
       }
 
       //! Cash-flow convexity
-      /*! The convexity of a string of cash flows is defined as
-          \f[
-          C = \frac{1}{P} \frac{\partial^2 P}{\partial y^2}
-          \f]
-          where \f$ P \f$ is the present value of the cash flows
-          according to the given IRR \f$ y \f$.
-      */
       public static double convexity(Leg leg, InterestRate yield, bool includeSettlementDateFlows,
                                      Date settlementDate = null, Date npvDate = null)
       {

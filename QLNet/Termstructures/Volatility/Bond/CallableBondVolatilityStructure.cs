@@ -29,16 +29,6 @@ namespace QLNet
    */
    public abstract class CallableBondVolatilityStructure : TermStructure
    {
-      /*! \name Constructors
-         See the TermStructure documentation for issues regarding
-         constructors.
-      */
-      //public CallableBondVolatilityStructure()
-      //   : base(new DayCounter())
-      //{
-      //   bdc_ = BusinessDayConvention.Following;
-      //}
-      //@{
       //! default constructor
       /*! \warning term structures initialized by means of this
                   constructor must manage their own reference date
@@ -63,10 +53,6 @@ namespace QLNet
       {
          bdc_ = bdc;
       }
-      //@}
-      //public virtual ~CallableBondVolatilityStructure() {}
-      //! \name Volatility, variance and smile
-      //@{
       //! returns the volatility for a given option time and bondLength
       public double volatility(double optionTenor, double bondTenor, double strike, bool extrapolate = false)
       {
@@ -118,9 +104,7 @@ namespace QLNet
          Date optionDate = optionDateFromTenor(optionTenor);
          return smileSection(optionDate, bondTenor);
       }
-      //@}
-      //! \name Limits
-      //@{
+      // Limits
       //! the largest length for which the term structure can return vols
       public abstract Period maxBondTenor();
       //! the largest bondLength for which the term structure can return vols
@@ -132,7 +116,7 @@ namespace QLNet
       public abstract double minStrike();
       //! the maximum strike for which the term structure can return vols
       public abstract double maxStrike();
-      //@}
+
       //! implements the conversion between dates and times
       public virtual KeyValuePair<double, double> convertDates(Date optionDate, Period bondTenor)
       {

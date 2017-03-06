@@ -93,7 +93,7 @@ namespace QLNet
 
     //! Peruvian inti
     //    ! The ISO three-letter code was PEI.
-    //        It was divided in 100 centimos. A numeric code is not available;
+    //        It was divided in 100 centimos. A numeric code is not available
     //        as per ISO 3166-1, we assign 998 as a user-defined code.
     //
     //        Obsoleted by the nuevo sol since July 1991.
@@ -105,7 +105,7 @@ namespace QLNet
     }
 
     //! Peruvian sol
-    //    ! The ISO three-letter code was PEH. A numeric code is not available;
+    //    ! The ISO three-letter code was PEH. A numeric code is not available
     //        as per ISO 3166-1, we assign 999 as a user-defined code.
     //        It was divided in 100 centavos.
     //

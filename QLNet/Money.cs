@@ -29,7 +29,7 @@ namespace QLNet
    {
       #region Define
       
-      public enum ConversionType : int
+      public enum ConversionType
       {
          /// <summary>
          /// do not perform conversions

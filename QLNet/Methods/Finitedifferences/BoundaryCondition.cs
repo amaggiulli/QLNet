@@ -110,8 +110,14 @@ namespace QLNet {
                     throw new ArgumentException("unknown side for Neumann boundary condition");
             }
         }
-        public override void applyAfterSolving(Vector v) {}
+        public override void applyAfterSolving(Vector v)
+        {
+           // Nothing to do here
+        }
         
-        public override void setTime(double t) {}
+        public override void setTime(double t)
+        {
+           // Nothing to do here
+        }
     }
 }

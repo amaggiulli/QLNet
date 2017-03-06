@@ -14,9 +14,6 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -35,8 +32,7 @@ namespace QLNet
          inverseHessian_ = new Matrix();
       }
       
-      //! \name LineSearchBasedMethod interface
-      //@{
+      // LineSearchBasedMethod interface
       protected override Vector getUpdatedDirection(Problem P,double gold2,Vector oldGradient)
       {
          if (inverseHessian_.rows() == 0)
@@ -83,9 +79,6 @@ namespace QLNet
                   inverseHessian_[i,j] += fae * diffGradient[i] * diffGradient[j];
                }
          }
-         //else
-         //  throw "BFGS: FAC not sufficiently positive";
-
 
          Vector direction = new Vector(P.currentValue().size());
          for (int i = 0; i < P.currentValue().size(); ++i)
@@ -98,8 +91,8 @@ namespace QLNet
         return direction;
 
       }
-      //@}
-      //! inverse of hessian matrix
+
+      // inverse of hessian matrix
       private Matrix inverseHessian_;
    }
 }

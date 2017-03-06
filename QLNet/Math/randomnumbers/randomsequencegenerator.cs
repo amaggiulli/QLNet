@@ -29,16 +29,9 @@ namespace QLNet {
     }
 
     /*! Random sequence generator based on a pseudo-random number generator RNG.
-
-        Class RNG must implement the following interface:
-        \code
-            RNG::sample_type RNG::next() const;
-        \endcode
-
-        \warning do not use with low-discrepancy sequence generator.
+        Do not use with low-discrepancy sequence generator.
     */
     public class RandomSequenceGenerator<RNG> : IRNG where RNG : IRNGTraits, new() {
-        // typedef Sample<std::vector<Real> > sample_type;
         private int dimensionality_;
 
         private RNG rng_;
@@ -58,7 +51,6 @@ namespace QLNet {
             Utils.QL_REQUIRE(dimensionality>0,()=> "dimensionality must be greater than 0");
         }
 
-        //public RandomSequenceGenerator(int dimensionality, long seed = 0) {
         public RandomSequenceGenerator(int dimensionality, ulong seed) {
             dimensionality_ = dimensionality;
             rng_ = (RNG)new RNG().factory(seed);
@@ -77,7 +69,7 @@ namespace QLNet {
         public Sample<List<double>> nextSequence() {
             sequence_.weight = 1.0;
             for (int i = 0; i < dimensionality_; i++) {
-                Sample<double> x = rng_.next();  // typename RNG::sample_type x(rng_.next());
+                Sample<double> x = rng_.next();  
                 sequence_.value[i] = x.value;
                 sequence_.weight *= x.weight;
             }

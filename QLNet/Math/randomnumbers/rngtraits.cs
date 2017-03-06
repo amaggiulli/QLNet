@@ -35,12 +35,6 @@ namespace QLNet {
         // data
         public static IC icInstance = new IC();
 
-        //// typedefs
-        //typedef URNG urng_type;
-        //typedef InverseCumulativeRng<urng_type,IC> rng_type;
-        //typedef RandomSequenceGenerator<urng_type> ursg_type;
-        //typedef InverseCumulativeRsg<ursg_type,IC> rsg_type;
-
         // more traits
         public int allowsErrorEstimate { get { return 1; } }
 
@@ -54,22 +48,16 @@ namespace QLNet {
 
     //! default traits for pseudo-random number generation
     /*! \test a sequence generator is generated and tested by comparing samples against known good values. */
-    // typedef GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativeNormal> PseudoRandom;
     public class PseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativeNormal> { }
 
     //! traits for Poisson-distributed pseudo-random number generation
     /*! \test sequence generators are generated and tested by comparing
               samples against known good values.
     */
-    // typedef GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativePoisson> PoissonPseudoRandom;
     public class PoissonPseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativePoisson> { }
 
 
     public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new() where IC : IValue, new() {
-        // typedefs
-        //typedef URSG ursg_type;
-        //typedef InverseCumulativeRsg<ursg_type,IC> rsg_type;
-
         // data
         public static IC icInstance = new IC();
 
@@ -85,6 +73,5 @@ namespace QLNet {
     }
 
     //! default traits for low-discrepancy sequence generation
-    //typedef GenericLowDiscrepancy<SobolRsg, InverseCumulativeNormal> LowDiscrepancy;
     public class LowDiscrepancy : GenericLowDiscrepancy<SobolRsg, InverseCumulativeNormal> { }
 }

@@ -58,15 +58,13 @@ namespace QLNet
       {
          public override void validate()
          {
-            //Utils.QL_REQUIRE(moneyness != null,()=> "null moneyness given");
             Utils.QL_REQUIRE(moneyness > 0.0,()=> "negative or zero moneyness given");
-
             Utils.QL_REQUIRE(resetDate != null,()=> "null reset date given");
             Utils.QL_REQUIRE(resetDate >= Settings.evaluationDate(),()=>"reset date in the past");
             Utils.QL_REQUIRE(this.exercise.lastDate() > resetDate,()=>"reset date later or equal to maturity");
-        }
-        public double moneyness;
-        public Date resetDate;
+         }
+         public double moneyness;
+         public Date resetDate;
       }
       
    }

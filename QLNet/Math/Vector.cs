@@ -30,7 +30,7 @@ namespace QLNet {
         \test construction of arrays is checked in a number of cases
     */
     public class Vector : InitializedList<double>, ICloneable {
-        //! \name Constructors, and assignment
+        // Constructors, and assignment
         //! creates the array with the given dimension
         public Vector() : this(0) { }
         public Vector(int size) : base(size) { }
@@ -55,11 +55,6 @@ namespace QLNet {
                 this[i] = from[i];
         }
 
-        //public Vector(const Disposable<Vector>&);
-
-        // these can not be overloaded
-        //Array& operator=(const Array&);
-        //Array& operator=(const Disposable<Vector>&);
         public Object Clone() { return this.MemberwiseClone(); }
 
         public static bool operator ==(Vector to, Vector from) {
@@ -91,7 +86,7 @@ namespace QLNet {
         //    shortcuts for \f$ \forall i : v_i = v_i \times w_i \f$
 
         //    \pre all arrays involved in an algebraic expression must have the same size.
-        ////@{
+        //
         public static Vector operator +(Vector v1, Vector v2) { return operVector(v1, v2, (x, y) => x + y); }
         public static Vector operator -(Vector v1, Vector v2) { return operVector(v1, v2, (x, y) => x - y); }
 
@@ -126,7 +121,6 @@ namespace QLNet {
                 result += v1[i] * v2[i];
             return result;
         }
-        //public static double operator /(Vector v1, Vector v2) { return operVector(ref v1, ref v2, (x, y) => x / y); }
         #endregion
 
 

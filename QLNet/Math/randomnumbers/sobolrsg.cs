@@ -96,8 +96,6 @@ namespace QLNet
    */
    public partial class SobolRsg : IRNG
    {
-      //typedef Sample<List<double>> sample_type;
-
       const int bits_ = 8 * sizeof( int );
       // 1/(2^bits_) (written as (1/2)/(2^(bits_-1)) to avoid long overflow)
       const double normalizationFactor_ = 0.5 / ( 1UL << ( bits_ - 1 ) );
@@ -419,23 +417,6 @@ namespace QLNet
                directionIntegers_[k][l] = n;
             }
          }
-
-         // in case one needs to check the directionIntegers used
-         /* bool printDirectionIntegers = false;
-            if (printDirectionIntegers) {
-                std::ofstream outStream("directionIntegers.txt");
-                for (k=0; k<std::min(32UL,dimensionality_); k++) {
-                    outStream << std::endl << k+1       << "\t"
-                                           << degree[k] << "\t"
-                                           << ppmt[k]   << "\t";
-                    for (j=0; j<10; j++) {
-                        outStream << io::power_of_two(
-                            directionIntegers_[k][j]) << "\t";
-                    }
-                }
-                outStream.close();
-            }
-         */
 
          // initialize the Sobol integer/double vectors
          // first draw

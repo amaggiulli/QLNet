@@ -32,8 +32,6 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      //public SwaptionVolatilityStructure()
-      //   : base(BusinessDayConvention.Following, null) { }
 
       public SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(bdc, dc) {}
@@ -207,16 +205,6 @@ namespace QLNet
          checkRange(optionDate, extrapolate);
          return smileSectionImpl(optionDate, swapTenor);
       }
-
-      //! returns the smile for a given option time and swap tenor
-      //public SmileSection smileSection(double optionTime, Period swapTenor, bool extr = false);
-
-      //! returns the smile for a given option tenor and swap length
-      //public SmileSection smileSection(Period optionTenor, double swapLength, bool extr = false);
-
-
-      //! returns the smile for a given option date and swap length
-      //public SmileSection smileSection( Date optionDate, double swapLength, bool extr = false) ;
 
       //! returns the smile for a given option time and swap length
       public SmileSection smileSection(double optionTime, double swapLength, bool extr = false)

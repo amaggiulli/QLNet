@@ -24,12 +24,12 @@ namespace QLNet
    /*
      Grid Explanation:
 
-     Grid=[  (x1,y1) (x1,y2) (x1,y3)... (x1,yM);
-             (x2,y1) (x2,y2) (x2,y3)... (x2,yM);
+     Grid=[  (x1,y1) (x1,y2) (x1,y3)... (x1,yM)
+             (x2,y1) (x2,y2) (x2,y3)... (x2,yM)
              .
              .
              .
-             (xN,y1) (xN,y2) (xN,y3)... (xN,yM);
+             (xN,y1) (xN,y2) (xN,y3)... (xN,yM)
           ]
 
      The Passed variables are:
@@ -87,7 +87,7 @@ namespace QLNet
       // singularity or rounding errors the recalculation
       // M*a may not give y. Here, a failure will be thrown if
       // |M*a-y|>=invPrec_
-      void setInverseResultPrecision(double invPrec){invPrec_=invPrec;}
+      public void setInverseResultPrecision(double invPrec){invPrec_=invPrec;}
 
    
       // returns K(||X-Y||) where X,Y are vectors

@@ -45,8 +45,7 @@ namespace QLNet
       {
          add( instrument, -multiplier );
       }
-      //! \name Instrument interface
-      //@{
+      // Instrument interface
       public override bool isExpired()
       {
          foreach (component c in components_)
@@ -65,7 +64,7 @@ namespace QLNet
             NPV_ += c.Value * c.Key.NPV();
          }
       }
-      //@}
+
       private List<component> components_ = new List<component>();
 
    }

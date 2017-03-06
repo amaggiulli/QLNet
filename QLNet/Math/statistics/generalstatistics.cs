@@ -143,8 +143,6 @@ namespace QLNet {
                 // Subtract the mean and square. Repeat on the whole range.
                 // Hopefully, the whole thing will be inlined in a single loop.
                 double s2 = expectationValue(x => Math.Pow(x.Key * x.Value - mean(), 2), x => true).Key;
-
-                //compose(square<Real>(), std::bind2nd(std::minus<Real>(), mean())), () => true).Key;
                 variance_ = s2 * N / (N - 1.0);
             }
             return variance_.GetValueOrDefault();
@@ -168,10 +166,7 @@ namespace QLNet {
             return skewness_.GetValueOrDefault();
         }
 
-        /*! returns the excess kurtosis, defined as
-            \f[ \frac{N^2(N+1)}{(N-1)(N-2)(N-3)}
-                \frac{\left\langle \left(x-\langle x \rangle \right)^4
-                \right\rangle}{\sigma^4} - \frac{3(N-1)^2}{(N-2)(N-3)}. \f]
+        /*! returns the excess kurtosis
             The above evaluates to 0 for a Gaussian distribution.
         */
         public double kurtosis() {
@@ -191,9 +186,7 @@ namespace QLNet {
         }
 
         /*! Expectation value of a function \f$ f \f$ on a given range \f$ \mathcal{R} \f$, i.e.,
-            \f[ \mathrm{E}\left[f \;|\; \mathcal{R}\right] =
-                \frac{\sum_{x_i \in \mathcal{R}} f(x_i) w_i}{
-                      \sum_{x_i \in \mathcal{R}} w_i}. \f]
+
             The range is passed as a boolean function returning
             <tt>true</tt> if the argument belongs to the range
             or <tt>false</tt> otherwise.
@@ -215,10 +208,6 @@ namespace QLNet {
         }
 
         /*! \f$ y \f$-th percentile, defined as the value \f$ \bar{x} \f$
-            such that
-            \f[ y = \frac{\sum_{x_i < \bar{x}} w_i}{
-                          \sum_i w_i} \f]
-
             \pre \f$ y \f$ must be in the range \f$ (0-1]. \f$
         */
         public double percentile(double percent) {
@@ -236,10 +225,6 @@ namespace QLNet {
         }
 
         /*! \f$ y \f$-th top percentile, defined as the value
-            \f$ \bar{x} \f$ such that
-            \f[ y = \frac{\sum_{x_i > \bar{x}} w_i}{
-                          \sum_i w_i} \f]
-
             \pre \f$ y \f$ must be in the range \f$ (0-1]. \f$
         */
         public double topPercentile(double percent) {

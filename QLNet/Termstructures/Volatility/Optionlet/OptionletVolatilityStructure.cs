@@ -33,8 +33,6 @@ namespace QLNet
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
-      //public OptionletVolatilityStructure()
-      //   : base(BusinessDayConvention.Following, null) { }
 
       public OptionletVolatilityStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)

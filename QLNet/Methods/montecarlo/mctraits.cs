@@ -17,28 +17,13 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
-    // path generation and pricing traits
+namespace QLNet
+{
+   // path generation and pricing traits
 
-    //! default Monte Carlo traits for single-variate models
-    //template <class RNG = PseudoRandom>
-    public struct SingleVariate {
-        //typedef RNG rng_traits;
-        //typedef Path path_type;
-        //typedef PathPricer<path_type> path_pricer_type;
-        //typedef typename RNG::rsg_type rsg_type;
-        //typedef PathGenerator<rsg_type> path_generator_type;
-        //enum { allowsErrorEstimate = RNG::allowsErrorEstimate };
-    };
+   //! default Monte Carlo traits for single-variate models
+   public struct SingleVariate {}
 
-    //! default Monte Carlo traits for multi-variate models
-    //template <class RNG = PseudoRandom>
-    public struct MultiVariate {
-        //typedef RNG rng_traits;
-        //typedef MultiPath path_type;
-        //typedef PathPricer<path_type> path_pricer_type;
-        //typedef typename RNG::rsg_type rsg_type;
-        //typedef MultiPathGenerator<rsg_type> path_generator_type;
-        //enum { allowsErrorEstimate = RNG::allowsErrorEstimate };
-    };
+   //! default Monte Carlo traits for multi-variate models
+   public struct MultiVariate {}
 }

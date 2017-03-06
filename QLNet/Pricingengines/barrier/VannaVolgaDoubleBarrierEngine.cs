@@ -152,7 +152,6 @@ namespace QLNet
             //set up BS barrier option pricing
             //only calculate out barrier option price
             // in barrier price = vanilla - out barrier
-            //StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
             DoubleBarrierOption doubleBarrierOption = new DoubleBarrierOption(
                arguments_.barrierType,
                arguments_.barrier_lo.GetValueOrDefault(),

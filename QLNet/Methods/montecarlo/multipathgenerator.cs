@@ -16,86 +16,92 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 
-namespace QLNet {
-    //! Generates a multipath from a random number generator.
-    /*! RSG is a sample generator which returns a random sequence.
-        It must have the minimal interface:
-        \code
-        RSG {
-            Sample<Array> next();
-        };
-        \endcode
+namespace QLNet
+{
+   //! Generates a multipath from a random number generator.
+   /*! RSG is a sample generator which returns a random sequence.
 
-        \ingroup mcarlo
+       \test the generated paths are checked against cached results
+   */
 
-        \test the generated paths are checked against cached results
-    */
-    public class MultiPathGenerator<GSG> :IPathGenerator<GSG> where GSG : IRNG {
-        // typedef Sample<MultiPath> sample_type;
-        
-        private bool brownianBridge_;
-        private StochasticProcess process_;
-        private GSG generator_;
-        private Sample<IPath> next_;
+   public class MultiPathGenerator<GSG> : IPathGenerator<GSG> where GSG : IRNG
+   {
+      private bool brownianBridge_;
+      private StochasticProcess process_;
+      private GSG generator_;
+      private Sample<IPath> next_;
 
-        public MultiPathGenerator(StochasticProcess process, TimeGrid times, GSG generator, bool brownianBridge) {
-            brownianBridge_ = brownianBridge;
-            process_ = process;
-            generator_ = generator;
-            next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
+      public MultiPathGenerator(StochasticProcess process, TimeGrid times, GSG generator, bool brownianBridge)
+      {
+         brownianBridge_ = brownianBridge;
+         process_ = process;
+         generator_ = generator;
+         next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
 
-            Utils.QL_REQUIRE(generator_.dimension() == process.factors()*(times.size()-1),()=>
-                         "dimension (" + generator_.dimension()
-                       + ") is not equal to ("
-                       + process.factors() + " * " + (times.size()-1)
-                       + ") the number of factors "
-                       + "times the number of time steps");
-            Utils.QL_REQUIRE(times.size() > 1,()=> "no times given");
-        }
+         Utils.QL_REQUIRE(generator_.dimension() == process.factors() * (times.size() - 1), () =>
+            "dimension (" + generator_.dimension()
+            + ") is not equal to ("
+            + process.factors() + " * " + (times.size() - 1)
+            + ") the number of factors "
+            + "times the number of time steps");
+         Utils.QL_REQUIRE(times.size() > 1, () => "no times given");
+      }
 
-        public Sample<IPath> next() { return next(false); }
-        public Sample<IPath> antithetic() { return next(true); }
-        private Sample<IPath> next(bool antithetic) {
-            if (brownianBridge_) {
-                Utils.QL_FAIL("Brownian bridge not supported");
-                return null;
-            }
-           // typedef typename GSG::sample_type sequence_type;
-           Sample<List<double>> sequence_ =
-              antithetic ? generator_.lastSequence()
-                 : generator_.nextSequence();
+      public Sample<IPath> next()
+      {
+         return next(false);
+      }
 
-           int m = process_.size();
-           int n = process_.factors();
+      public Sample<IPath> antithetic()
+      {
+         return next(true);
+      }
 
-           MultiPath path = (MultiPath)next_.value;
+      private Sample<IPath> next(bool antithetic)
+      {
+         if (brownianBridge_)
+         {
+            Utils.QL_FAIL("Brownian bridge not supported");
+            return null;
+         }
 
-           Vector asset = process_.initialValues();
-           for (int j=0; j<m; j++)
-              path[j].setFront(asset[j]);
+         Sample<List<double>> sequence_ =
+            antithetic
+               ? generator_.lastSequence()
+               : generator_.nextSequence();
 
-           Vector temp; // = new Vector(n);
-           next_.weight = sequence_.weight;
+         int m = process_.size();
+         int n = process_.factors();
 
-           TimeGrid timeGrid = path[0].timeGrid();
-           double t, dt;
-           for (int i = 1; i < path.pathSize(); i++) {
-              int offset = (i-1)*n;
-              t = timeGrid[i-1];
-              dt = timeGrid.dt(i-1);
-              if (antithetic)
-                 temp = -1 * new Vector(sequence_.value.GetRange(offset, n));
-              else
-                 temp = new Vector(sequence_.value.GetRange(offset, n));
+         MultiPath path = (MultiPath) next_.value;
 
-              asset = process_.evolve(t, asset, dt, temp);
-              for (int j=0; j<m; j++)
-                 path[j][i] = asset[j];
-           }
-           return next_;
-        }
-    }
+         Vector asset = process_.initialValues();
+         for (int j = 0; j < m; j++)
+            path[j].setFront(asset[j]);
+
+         Vector temp;
+         next_.weight = sequence_.weight;
+
+         TimeGrid timeGrid = path[0].timeGrid();
+         double t, dt;
+         for (int i = 1; i < path.pathSize(); i++)
+         {
+            int offset = (i - 1) * n;
+            t = timeGrid[i - 1];
+            dt = timeGrid.dt(i - 1);
+            if (antithetic)
+               temp = -1 * new Vector(sequence_.value.GetRange(offset, n));
+            else
+               temp = new Vector(sequence_.value.GetRange(offset, n));
+
+            asset = process_.evolve(t, asset, dt, temp);
+            for (int j = 0; j < m; j++)
+               path[j][i] = asset[j];
+         }
+         return next_;
+      }
+   }
 }

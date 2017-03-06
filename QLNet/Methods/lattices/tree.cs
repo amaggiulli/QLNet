@@ -17,32 +17,25 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
-    //! %Tree approximating a single-factor diffusion
-    /*! Derived classes must implement the following interface:
-        \code
-        public:
-          Real underlying(Size i, Size index) const;
-          Size size(Size i) const;
-          Size descendant(Size i, Size index, Size branch) const;
-          Real probability(Size i, Size index, Size branch) const;
-        \endcode
-        and provide a public enumeration
-        \code
-        enum { branches = N };
-        \endcode
-        where N is a suitable constant (2 for binomial, 3 for trinomial...)
+namespace QLNet
+{
+   //! %Tree approximating a single-factor diffusion
+   public class Tree<T>
+   {
+      private int columns_;
 
-        \ingroup lattices
-    */
-    public class Tree<T> {
-        private int columns_;
-        public int columns() { return columns_; }
+      public int columns()
+      {
+         return columns_;
+      }
 
-        // parameterless constructor is requried for generics
-        public Tree() { }
-        public Tree(int columns) {
-            columns_ = columns;
-        }
-    }
+      // parameterless constructor is requried for generics
+      public Tree()
+      {}
+
+      public Tree(int columns)
+      {
+         columns_ = columns;
+      }
+   }
 }

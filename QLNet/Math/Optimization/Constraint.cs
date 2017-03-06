@@ -66,7 +66,7 @@ namespace QLNet
       //! Returns upper bound for given parameters
       public virtual Vector upperBound(Vector parameters) 
       {
-         return impl_.upperBound( parameters ); // new Vector( parameters.size(), Double.MaxValue );
+         return impl_.upperBound( parameters ); 
       }
       
       //! Returns lower bound for given parameters

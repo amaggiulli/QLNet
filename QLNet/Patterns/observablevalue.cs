@@ -44,7 +44,7 @@ namespace QLNet {
         }
 
 
-        //! \name controlled assignment
+        // controlled assignment
         public ObservableValue<T> Assign(T t) {
             value_ = t;
             notifyObservers();

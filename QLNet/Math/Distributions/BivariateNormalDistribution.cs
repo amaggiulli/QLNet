@@ -154,7 +154,7 @@ namespace QLNet
       www.sci.wsu.edu/math/faculty/henz/homepage)
 
       The QuantLib implementation mainly differs from the original
-      code in two regards;
+      code in two regards
       - The implementation of the cumulative normal distribution is
          QuantLib::CumulativeNormalDistribution
       - The arrays XX and W are zero-based

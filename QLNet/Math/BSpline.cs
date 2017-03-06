@@ -13,10 +13,8 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -34,17 +32,6 @@ namespace QLNet
        \f$ p=1 \f$, quadratic B-spline has \f$ p=2 \f$, a cubic
        B-spline has \f$ p=3 \f$, etc.
 
-       The B-spline basis functions are defined recursively
-       as follows:
-
-       \f[
-       \begin{array}{rcl}
-       N_{i,0}(x) &=& 1   \textrm{\ if\ } x_{i} \leq x < x_{i+1} \\
-                  &=& 0   \textrm{\ otherwise} \\
-       N_{i,p}(x) &=& N_{i,p-1}(x) \frac{(x - x_{i})}{ (x_{i+p-1} - x_{i})} +
-                      N_{i+1,p-1}(x) \frac{(x_{i+p} - x)}{(x_{i+p} - x_{i+1})}
-       \end{array}
-       \f]
    */
    public class BSpline
    {

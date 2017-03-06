@@ -34,7 +34,7 @@ namespace QLNet
         private Type type_;
         private int digit_;
 
-        public enum Type : int
+        public enum Type
         {
             /// <summary>
             /// do not round: return the number unmodified 
@@ -129,8 +129,6 @@ namespace QLNet
             bool neg = (value < 0.0);
             double lvalue = Math.Abs(value) * mult;
             double integral = 0.0;
-            //double modVal = std.modf(lvalue, ref integral);
-
             double modVal = lvalue - (integral = Math.Floor(lvalue));
 
             lvalue -= modVal;

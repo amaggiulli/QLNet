@@ -45,8 +45,6 @@ namespace QLNet
     */
     public class HaltonRsg : IRNG
     {
-      
-        //typedef Sample<std::vector<Real> > sample_type;
         private int dimensionality_;
         private ulong sequenceCounter_;
         private  Sample<List<double> > sequence_;

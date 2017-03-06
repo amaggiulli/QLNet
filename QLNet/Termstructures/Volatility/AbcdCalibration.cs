@@ -179,8 +179,6 @@ namespace QLNet
          if (aIsFixed_ && bIsFixed_ && cIsFixed_ && dIsFixed_) 
          {
             abcdEndCriteria_ = QLNet.EndCriteria.Type.None;
-            //error_ = interpolationError();
-            //maxError_ = interpolationMaxError();
             return;
          }    
          else 

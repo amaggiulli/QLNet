@@ -51,24 +51,9 @@ namespace QLNet{
             timeGrid_=timeGrid;
             timeSteps_=0;
             lattice_=this.model_.link.tree(timeGrid);
-            //model_.registerWith(update); 
         }
 
-        /*public override void update()
-        {
-            if (!timeGrid_.empty())
-                lattice_ = this.model_.tree(timeGrid_);
-            this.notifyObservers();
-        }*/
-
         #region PricingEngine
-       /* protected OneAssetOption.Arguments arguments_ = new OneAssetOption.Arguments();
-        protected OneAssetOption.Results results_ = new OneAssetOption.Results();
-
-        public IPricingEngineArguments getArguments() { return arguments_; }
-        public IPricingEngineResults getResults() { return results_; }
-        public void reset() { results_.reset(); }
-        */
         #region Observer & Observable
         public override void update()
         {

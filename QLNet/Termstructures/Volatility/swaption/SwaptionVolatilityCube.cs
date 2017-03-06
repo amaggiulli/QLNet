@@ -75,8 +75,7 @@ namespace QLNet
          Settings.registerWith(update);
          evaluationDate_ = Settings.evaluationDate();
       }
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public new DayCounter dayCounter() { return atmVol_.link.dayCounter(); }
       public override Date maxDate() { return atmVol_.link.maxDate(); }
       public new double maxTime() { return atmVol_.link.maxTime(); }
@@ -89,17 +88,13 @@ namespace QLNet
       }
       public new Calendar calendar() { return atmVol_.link.calendar(); }
       public new int settlementDays() { return atmVol_.link.settlementDays(); }
-      //! \name VolatilityTermStructure interface
-      //@{
+      // VolatilityTermStructure interface
       public override double minStrike() { return -double.MaxValue; }
       public override double maxStrike() { return double.MaxValue; }
-      //@}
-      //! \name SwaptionVolatilityStructure interface
-      //@{
+
+      // SwaptionVolatilityStructure interface
       public override Period maxSwapTenor() { return atmVol_.link.maxSwapTenor(); }
-      //@}
-      //! \name Other inspectors
-      //@{
+      // Other inspectors
       public double atmStrike( Date optionDate, Period swapTenor)
       {
          // FIXME use a familyName-based index factory
@@ -171,9 +166,8 @@ namespace QLNet
       public SwapIndex swapIndexBase() { return swapIndexBase_; }
       public SwapIndex shortSwapIndexBase() { return shortSwapIndexBase_; }
       public bool vegaWeightedSmileFit()  { return vegaWeightedSmileFit_; }
-      //@}
-      //! \name LazyObject interface
-      //@{
+
+      // LazyObject interface
       protected override void performCalculations() 
       {
          Utils.QL_REQUIRE(nStrikes_ >= requiredNumberOfStrikes(),()=>
@@ -182,7 +176,7 @@ namespace QLNet
                                           + requiredNumberOfStrikes());
          base.performCalculations();
       }
-      //@}
+
       public override VolatilityType volatilityType() { return atmVol_.link.volatilityType(); }
 
       protected void registerWithVolatilitySpread()

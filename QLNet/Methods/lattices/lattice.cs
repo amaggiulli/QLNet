@@ -25,23 +25,6 @@ namespace QLNet {
     /*! This class defines a lattice method that is able to rollback
         (with discount) a discretized asset object. It will be based
         on one or more trees.
-
-        Derived classes must implement the following interface:
-        \code
-        public:
-          DiscountFactor discount(Size i, Size index) const;
-          Size descendant(Size i, Size index, Size branch) const;
-          Real probability(Size i, Size index, Size branch) const;
-        \endcode
-        and may implement the following:
-        \code
-        public:
-          void stepback(Size i,
-                        const Array& values,
-                        Array& newValues) const;
-        \endcode
-
-        \ingroup lattices
     */
     public interface IGenericLattice
     {
@@ -71,7 +54,7 @@ namespace QLNet {
         }
 
 
-        //! \name Lattice interface
+        // Lattice interface
         public override void initialize(DiscretizedAsset asset, double t) {
             int i = t_.index(t);
             asset.setTime(t);

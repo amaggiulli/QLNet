@@ -98,8 +98,7 @@ namespace QLNet
          }
          underlying.registerWith(update);
       }
-      //! \name Coupon interface
-      //@{
+      // Coupon interface
       public override double rate()
       {
          Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
@@ -117,8 +116,7 @@ namespace QLNet
       {
          return underlying_.convexityAdjustment();
       }
-      //@}
-      //! cap
+      // cap
       public double cap()
       {
          if ((gearing_ > 0) && isCapped_)

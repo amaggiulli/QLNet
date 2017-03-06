@@ -56,13 +56,11 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      //! \name TermStructure interface
-      //@{
+      // TermStructure interface
       public override DayCounter dayCounter() { return dayCounter_; }
       public override Date maxDate() { return Date.maxDate(); }
-      //@}
-      //! \name CallableBondConstantVolatility interface
-      //@{
+
+      // CallableBondConstantVolatility interface
       public override Period maxBondTenor() {return maxBondTenor_;}
       public override double maxBondLength() {return double.MaxValue;}
       public override double minStrike() {return double.MinValue;}
@@ -81,7 +79,7 @@ namespace QLNet
       {
          return volatility_.link.value();
       }
-      //@}
+
       private Handle<Quote> volatility_;
       private DayCounter dayCounter_;
       private Period maxBondTenor_;

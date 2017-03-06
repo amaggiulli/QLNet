@@ -52,7 +52,6 @@ namespace QLNet
       public JuQuadraticApproximationEngine(GeneralizedBlackScholesProcess process)
       {
          process_ = process;
-         //registerWith(process_);
          process_.registerWith(update);
       }
 

@@ -49,8 +49,7 @@ namespace QLNet {
 			speed_ = a;
 			volatility_ = sigma;
 		}
-		//! \name StochasticProcess interface
-		//@{
+		// StochasticProcess interface
         public override double x0()
 		{
 			return x0_;

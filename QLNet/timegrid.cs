@@ -123,13 +123,6 @@ namespace QLNet
          if (steps == 0)
          {
             List<double> diff = new List<double>();
-            //std::vector<Time> diff;
-            //std::adjacent_difference(mandatoryTimes_.begin(),
-            //                         mandatoryTimes_.end(),
-            //                         std::back_inserter(diff));
-            //if (diff.front()==0.0)
-            //    diff.erase(diff.begin());
-            //dtMax = *(std::min_element(diff.begin(), diff.end()));
          }
          else
          {
@@ -150,7 +143,6 @@ namespace QLNet
                // at least one time step!
                nSteps = (nSteps != 0 ? nSteps : 1);
                dt = (periodEnd - periodBegin) / nSteps;
-               //times_.Capacity=nSteps+1;
                for (int n = 1; n <= nSteps; ++n)
                {
                   times_.Add(periodBegin + n * dt);
@@ -161,7 +153,7 @@ namespace QLNet
          }
       }
 
-      //! \name Time grid interface
+      // Time grid interface
       //! returns the index i such that grid[i] = t
       public int index(double t)
       {

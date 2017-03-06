@@ -21,8 +21,7 @@ using System;
 namespace QLNet {
 	//! Abstract base class for option payoffs
 	public class Payoff {
-        //! \name Payoff interface
-        //@{
+        // Payoff interface
         /*! \warning This method is used for output and comparison between
                 payoffs. It is <b>not</b> meant to be used for writing
                 switch-on-type code.

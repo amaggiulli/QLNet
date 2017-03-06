@@ -86,7 +86,6 @@ namespace QLNet
         // the Gauss-Chebyshev quadratures integrate over [-1,1],
         // hence the remapping (and the Jacobian term t/2)
         return Math.Exp(-integral.value(hazardRateImpl) * t/2.0);
-        // return 0;
       }
       
       //! default density calculation

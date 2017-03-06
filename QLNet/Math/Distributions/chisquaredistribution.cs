@@ -79,7 +79,6 @@ namespace QLNet {
         for (;;) {
             if (f_x_2n > 0) {
                 flag = true;
-                //goto L10;
                 bound = t * x / f_x_2n;
                 if (bound <= errmax || n > itrmax)
                     goto L_End;
@@ -141,12 +140,6 @@ namespace QLNet {
             // use a brent solver for the rest
             Brent solver = new Brent();
             solver.setMaxEvaluations(evaluations);
-            /*return solver.solve(compose(std::bind2nd(std::minus<Real>(),x), 
-                                        nonCentralDist_),
-                                accuracy_, 0.75*upper, 
-                                (evaluations == maxEvaluations_)? 0.0: 0.5*upper,
-                                upper);*/
-
             return 0d;
         }
     }

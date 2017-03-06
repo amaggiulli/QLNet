@@ -19,20 +19,6 @@ using System.Numerics;
 namespace QLNet
 {
    //! Analytic Heston-Hull-White engine based on the H1-HW approximation
-   /*! This class is pricing a european option under the following process
-
-       \f[
-       \begin{array}{rcl}
-       dS(t, S)  &=& (r-d) S dt +\sqrt{v} S dW_1 \\
-       dv(t, S)  &=& \kappa (\theta - v) dt + \sigma \sqrt{v} dW_2 \\
-       dr(t)     &=& (\theta(t) - a r) dt + \eta dW_3 \\
-       dW_1 dW_2 &=& \rho_{S,v} dt, \rho_{S,r} >= 0 \\
-       dW_1 dW_3 &=& \rho_{S.r} dt \\
-       dW_2 dW_3 &=& 0 dt \\
-       \end{array}
-       \f]
-   */
-
    /*! References:
 
        Lech A. Grzelak, Cornelis W. Oosterlee,
@@ -138,7 +124,6 @@ namespace QLNet
          }
          private double Lambda(double t)
          {
-            //const GammaFunction g = new GammaFunction();
             int maxIter = 1000;
             double lambdaT = lambda(t);
 

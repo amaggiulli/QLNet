@@ -15,8 +15,6 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -70,8 +68,7 @@ namespace QLNet
    */
    public class FittedBondDiscountCurve : YieldTermStructure
    {
-      //! \name Constructors
-      //@{
+      // Constructors
       //! reference date based on current evaluation date
       public FittedBondDiscountCurve( int settlementDays,
                                       Calendar calendar,
@@ -120,10 +117,8 @@ namespace QLNet
          fittingMethod_.curve_ = this;
         setup();
       }
-      //@}
 
-      //! \name Inspectors
-      //@{
+      // Inspectors
       //! total number of bonds used to fit the yield curve
       public int numberOfBonds() {return bondHelpers_.Count;}
       //! the latest date for which the curve can return values
@@ -138,12 +133,6 @@ namespace QLNet
          calculate();
          return fittingMethod_.clone();
       }
-      //@}
-
-      //! \name Observer interface
-      //@{
-      public override void update() {base.update();}
-      //@}
 
       private void setup()
       {
@@ -152,8 +141,7 @@ namespace QLNet
       }
 
       protected override void performCalculations()
-      {
-                 
+      {                 
          Utils.QL_REQUIRE(!bondHelpers_.empty(),()=> "no bondHelpers given");
 
          maxDate_ = Date.minDate();
@@ -176,7 +164,7 @@ namespace QLNet
                        bondSettlement + " settlement date (maturity" +
                        " being " + bond.maturityDate() + ")");
             maxDate_ = Date.Max(maxDate_, bondHelpers_[i].pillarDate());
-            bondHelpers_[i].setTermStructure((FittedBondDiscountCurve)this);
+            bondHelpers_[i].setTermStructure(this);
          }
          fittingMethod_.init();
          fittingMethod_.calculate();
@@ -235,7 +223,6 @@ namespace QLNet
       */
       public class FittingMethod
       {
-         //friend class FittedBondDiscountCurve;
          // internal class
          public class FittingCost : CostFunction
          {

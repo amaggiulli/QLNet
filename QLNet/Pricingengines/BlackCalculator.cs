@@ -31,7 +31,6 @@ namespace QLNet {
         double n_d1_, cum_d1_, n_d2_, cum_d2_;
         double X_, DXDs_, DXDstrike_;
 
-        // public BlackCalculator(StrikedTypePayoff payoff, double forward, double stdDev, double discount = 1.0) {
         public BlackCalculator(StrikedTypePayoff payoff, double forward, double stdDev, double discount) {
             strike_ = payoff.strike();
             forward_ = forward;
@@ -207,11 +206,7 @@ namespace QLNet {
 
             if (maturity.IsEqual(0.0)) return 0.0;
             Utils.QL_REQUIRE(maturity>0.0,()=> "non negative maturity required: " + maturity + " not allowed");
-            //vol = stdDev_ / std::sqrt(maturity);
-            //rate = -std::log(discount_)/maturity;
-            //dividendRate = -std::log(forward_ / spot * discount_)/maturity;
-            //return rate*value() - (rate-dividendRate)*spot*delta(spot)
-            //    - 0.5*vol*vol*spot*spot*gamma(spot);
+
             return -( Math.Log(discount_)            * value()
                      + Math.Log(forward_ / spot) * spot * delta(spot)
                      +0.5*variance_ * spot  * spot * gamma(spot))/maturity;
@@ -318,7 +313,10 @@ namespace QLNet {
                 Utils.QL_FAIL("unsupported payoff type: " + p.name());
             }
 
-            public void visit(PlainVanillaPayoff p) { }
+            public void visit(PlainVanillaPayoff p)
+            {
+               // Nothing to do here
+            }
 
             public void visit(CashOrNothingPayoff payoff) {
                 black_.alpha_ = black_.DalphaDd1_ = 0.0;

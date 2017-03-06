@@ -27,8 +27,6 @@ namespace QLNet {
     public class FDEuropeanEngine : FDVanillaEngine, IGenericEngine {
         private SampledCurve prices_;
 
-        //public FDEuropeanEngine(GeneralizedBlackScholesProcess process,
-        //                        Size timeSteps=100, Size gridPoints=100, bool timeDependent = false) {
         public FDEuropeanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints)
             : this(process, timeSteps, gridPoints, false) { }
         public FDEuropeanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)

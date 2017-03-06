@@ -24,18 +24,4 @@ namespace QLNet
     {
         void visit(object o);
     }
-
-    //// visitor classes should implement the generic visit method in the following form
-    //public void visit(object o) {
-    //    Type[] types = new Type[] { o.GetType() };
-    //    MethodInfo methodInfo = this.GetType().GetMethod("visit", types);
-    //    if (methodInfo != null) {
-    //        methodInfo.Invoke(this, new object[] { o });
-    //    }
-    //}
-
-    // all visit methods should be of the form
-    //public void visit(YourClassType o) {
-    //    // code to perform
-    //}
 }

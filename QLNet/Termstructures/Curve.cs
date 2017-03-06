@@ -35,7 +35,7 @@ namespace QLNet
 		void setTermStructure( BootstrapHelper<T> helper );
 
 		double accuracy_ { get; }
-		bool moving_ { get; }//set; }
+		bool moving_ { get; }
 
 		void registerWith( BootstrapHelper<T> helper );
 		Date initialDate();

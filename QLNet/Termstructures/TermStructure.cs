@@ -21,7 +21,7 @@
 namespace QLNet
 {
    //! Basic term-structure functionality
-   public abstract class TermStructure : Extrapolator, IObserver, IObservable
+   public abstract class TermStructure : Extrapolator
    {
         
       #region Constructors
@@ -36,7 +36,7 @@ namespace QLNet
       // In the first case, the constructor taking a date is to be
       // used; the default implementation of referenceDate() will
       // then return such date. In the second case, the constructor
-      // taking a number of days and a calendar is to be used;
+      // taking a number of days and a calendar is to be used
       // referenceDate() will return a date calculated based on the
       // current evaluation date, and the term structure and its
       // observers will be notified when the evaluation date
@@ -129,8 +129,6 @@ namespace QLNet
          calculated_ = true;
          base.update();
          // otherwise the following code would be required
-         //if (notifyObservers != null)
-         //    notifyObservers();
          // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
       }
       #endregion

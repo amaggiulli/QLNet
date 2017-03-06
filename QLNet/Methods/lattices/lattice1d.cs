@@ -19,12 +19,6 @@
 
 namespace QLNet {
     //! One-dimensional tree-based lattice.
-    /*! Derived classes must implement the following interface:
-        \code
-        Real underlying(Size i, Size index) const;
-        \endcode
-
-        \ingroup lattices */
     public class TreeLattice1D<T> : TreeLattice<T> where T : IGenericLattice{
         public TreeLattice1D(TimeGrid timeGrid, int n) : base(timeGrid, n) { }
 

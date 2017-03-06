@@ -42,7 +42,7 @@ namespace QLNet
          lineSearch_.searchDirection = new Vector( x_.size() );
          bool done = false;
 
-         // function and squared norm of gradient values;
+         // function and squared norm of gradient values
          double fnew, fold, gold2;
          double fdiff;
          // classical initial value for line-search step
@@ -65,7 +65,6 @@ namespace QLNet
                prevGradient = lineSearch_.lastGradient();
             t = ( lineSearch_.value( P, ref ecType, endCriteria, t ) );
             // don't throw: it can fail just because maxIterations exceeded
-            //QL_REQUIRE(lineSearch_->succeed(), "line-search failed!");
             if ( lineSearch_.succeed() )
             {
                // Updates

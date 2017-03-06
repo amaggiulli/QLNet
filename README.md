@@ -14,11 +14,11 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![Vulnerabilities](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=vulnerabilities)](https://sonarqube.com/component_issues?id=QLNet-develop#resolved=false|types=VULNERABILITY)
 [![Code Smells](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=code_smells)](https://sonarqube.com/component_issues?id=QLNet-develop#resolved=false|types=CODE_SMELL)
 [![Duplicated Lines](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=duplicated_lines_density)](https://sonarqube.com/component_measures/metric/duplicated_lines_density/treemap?id=QLNet-develop)
-[![Blocker Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=blocker_violations)](https://sonarqube.com/component_issues/index?id=QLNet-develop#resolved=false|severities=BLOCKER)
-[![Critical Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=critical_violations)](https://sonarqube.com/component_issues/index?id=QLNet-develop#resolved=false|severities=CRITICAL)
-[![Major Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=major_violations)](https://sonarqube.com/component_issues/index?id=QLNet-develop#resolved=false|severities=MAJOR)
-[![Minor Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=minor_violations)](https://sonarqube.com/component_issues/index?id=QLNet-develop#resolved=false|severities=MINOR)
-[![Technical Debt](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=sqale_debt_ratio)](https://sonarqube.com/dashboard/index?id=QLNet-develop)
+[![Blocker Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=blocker_violations)](https://sonarqube.com/component_issues/?id=QLNet-develop#resolved=false|severities=BLOCKER)
+[![Critical Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=critical_violations)](https://sonarqube.com/component_issues?id=QLNet-develop#resolved=false|severities=CRITICAL)
+[![Major Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=major_violations)](https://sonarqube.com/component_issues?id=QLNet-develop#resolved=false|severities=MAJOR)
+[![Minor Issues](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=minor_violations)](https://sonarqube.com/component_issues?id=QLNet-develop#resolved=false|severities=MINOR)
+[![Technical Debt](https://sonarqube.com/api/badges/measure?key=QLNet-develop&metric=sqale_debt_ratio)](https://sonarqube.com/dashboard?id=QLNet-develop)
 
 ## Development workflow 
 

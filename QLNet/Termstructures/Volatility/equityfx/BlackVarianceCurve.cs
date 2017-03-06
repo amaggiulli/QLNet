@@ -45,10 +45,6 @@ namespace QLNet {
         Interpolation varianceCurve_;
 
         // required for Handle
-        //public BlackVarianceCurve() { }
-
-        //public BlackVarianceCurve(Date referenceDate, List<Date> dates, List<double> blackVolCurve, DayCounter dayCounter,
-        //                          bool forceMonotoneVariance = true);
         public BlackVarianceCurve(Date referenceDate, List<Date> dates, List<double> blackVolCurve, DayCounter dayCounter,
                                   bool forceMonotoneVariance)
             : base(referenceDate) {

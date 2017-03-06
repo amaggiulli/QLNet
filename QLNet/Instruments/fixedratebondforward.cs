@@ -16,122 +16,140 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
 
-namespace QLNet {
-	//! %Forward contract on a fixed-rate bond
-	/*! 1. valueDate refers to the settlement date of the bond forward
-		   contract.  maturityDate is the delivery (or repurchase)
-		   date for the underlying bond (not the bond's maturity
-		   date).
+namespace QLNet
+{
+   //! %Forward contract on a fixed-rate bond
+   /*! 1. valueDate refers to the settlement date of the bond forward
+         contract.  maturityDate is the delivery (or repurchase)
+         date for the underlying bond (not the bond's maturity
+         date).
 
-		2. Relevant formulas used in the calculations (\f$P\f$ refers
-		   to a price):
+      2. Relevant formulas used in the calculations (\f$P\f$ refers
+         to a price):
 
-		   a. \f$ P_{CleanFwd}(t) = P_{DirtyFwd}(t) -
-			  AI(t=deliveryDate) \f$ where \f$ AI \f$ refers to the
-			  accrued interest on the underlying bond.
+         a. \f$ P_{CleanFwd}(t) = P_{DirtyFwd}(t) -
+           AI(t=deliveryDate) \f$ where \f$ AI \f$ refers to the
+           accrued interest on the underlying bond.
 
-		   b. \f$ P_{DirtyFwd}(t) = \frac{P_{DirtySpot}(t) -
-			  SpotIncome(t)} {discountCurve->discount(t=deliveryDate)} \f$
+         b. \f$ P_{DirtyFwd}(t) = \frac{P_{DirtySpot}(t) -
+           SpotIncome(t)} {discountCurve->discount(t=deliveryDate)} \f$
 
-		   c. \f$ SpotIncome(t) = \sum_i \left( CF_i \times
-			  incomeDiscountCurve->discount(t_i) \right) \f$ where \f$
-			  CF_i \f$ represents the ith bond cash flow (coupon
-			  payment) associated with the underlying bond falling
-			  between the settlementDate and the deliveryDate. (Note
-			  the two different discount curves used in b. and c.)
+         c. \f$ SpotIncome(t) = \sum_i \left( CF_i \times
+           incomeDiscountCurve->discount(t_i) \right) \f$ where \f$
+           CF_i \f$ represents the ith bond cash flow (coupon
+           payment) associated with the underlying bond falling
+           between the settlementDate and the deliveryDate. (Note
+           the two different discount curves used in b. and c.)
 
-		<b>Example: </b>
-		\link Repo.cpp
-		valuation of a repo on a fixed-rate bond
-		\endlink
+      <b>Example: </b>
+      \link Repo.cpp
+      valuation of a repo on a fixed-rate bond
+      \endlink
 
-		\todo Add preconditions and tests
+      \todo Add preconditions and tests
 
-		\todo Create switch- if coupon goes to seller is toggled on,
-			  don't consider income in the \f$ P_{DirtyFwd}(t) \f$
-			  calculation.
+      \todo Create switch- if coupon goes to seller is toggled on,
+           don't consider income in the \f$ P_{DirtyFwd}(t) \f$
+           calculation.
 
-		\todo Verify this works when the underlying is paper (in which
-			  case ignore all AI.)
+      \todo Verify this works when the underlying is paper (in which
+           case ignore all AI.)
 
-		\warning This class still needs to be rigorously tested
+      \warning This class still needs to be rigorously tested
 
-		\ingroup instruments
-	*/
-	public class FixedRateBondForward : Forward {
-		protected FixedRateBond fixedCouponBond_;
+      \ingroup instruments
+   */
 
-        //! \name Constructors
-        /*! If strike is given in the constructor, can calculate the
-            NPV of the contract via NPV().
+   public class FixedRateBondForward : Forward
+   {
+      protected FixedRateBond fixedCouponBond_;
 
-            If strike/forward price is desired, it can be obtained via
-            forwardPrice(). In this case, the strike variable in the
-            constructor is irrelevant and will be ignored.
-        */
-        //@{
-		//Handle<YieldTermStructure> discountCurve = Handle<YieldTermStructure>(),
-		//Handle<YieldTermStructure> incomeDiscountCurve = Handle<YieldTermStructure>());
-		public FixedRateBondForward(Date valueDate, Date maturityDate, Position.Type type, double strike, int settlementDays,
-									DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
-									FixedRateBond fixedCouponBond,
-									Handle<YieldTermStructure> discountCurve,
-									Handle<YieldTermStructure> incomeDiscountCurve) 
-			: base(dayCounter, calendar, businessDayConvention, settlementDays, new ForwardTypePayoff(type, strike),
-				   valueDate, maturityDate, discountCurve) {
-			fixedCouponBond_ = fixedCouponBond;
-	        incomeDiscountCurve_ = incomeDiscountCurve;
-			incomeDiscountCurve_.registerWith(update);
-		}
+      // Constructors
+      /*! If strike is given in the constructor, can calculate the
+          NPV of the contract via NPV().
 
-		//! \name Calculations
-        //@{
+          If strike/forward price is desired, it can be obtained via
+          forwardPrice(). In this case, the strike variable in the
+          constructor is irrelevant and will be ignored.
+      */
+      public FixedRateBondForward(Date valueDate, Date maturityDate, Position.Type type, double strike,
+         int settlementDays,
+         DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
+         FixedRateBond fixedCouponBond,
+         Handle<YieldTermStructure> discountCurve,
+         Handle<YieldTermStructure> incomeDiscountCurve)
+         : base(dayCounter, calendar, businessDayConvention, settlementDays, new ForwardTypePayoff(type, strike),
+            valueDate, maturityDate, discountCurve)
+      {
+         fixedCouponBond_ = fixedCouponBond;
+         incomeDiscountCurve_ = incomeDiscountCurve;
+         incomeDiscountCurve_.registerWith(update);
+      }
 
-        //! (dirty) forward bond price
-		public double forwardPrice() { return forwardValue(); }
-		
-		//! (dirty) forward bond price minus accrued on bond at delivery
-		public double cleanForwardPrice() {	return forwardValue() - fixedCouponBond_.accruedAmount(maturityDate_); }
+      // Calculations
 
-		//!  NPV of bond coupons discounted using incomeDiscountCurve
-        /*! Here only coupons between max(evaluation date,settlement
-            date) and maturity date of bond forward contract are
-            considered income.
-        */
-		public override double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve) {
-			double income = 0.0;
-			Date settlement = settlementDate();
-			List<CashFlow> cf = fixedCouponBond_.cashflows();
+      //! (dirty) forward bond price
+      public double forwardPrice()
+      {
+         return forwardValue();
+      }
 
-			/*
-			  the following assumes
-			  1. cashflows are in ascending order !
-			  2. considers as income: all coupons paid between settlementDate()
-			  and contract delivery/maturity date
-			*/
-			for (int i = 0; i < cf.Count; ++i) {
-				if (!cf[i].hasOccurred(settlement)) {
-					if (cf[i].hasOccurred(maturityDate_)) {
-						income += cf[i].amount() *
-								  incomeDiscountCurve.link.discount(cf[i].date()) ;
-					} else {
-						break;
-					}
-				}
-			}
-			return income;
-		}
+      //! (dirty) forward bond price minus accrued on bond at delivery
+      public double cleanForwardPrice()
+      {
+         return forwardValue() - fixedCouponBond_.accruedAmount(maturityDate_);
+      }
 
-		//!  NPV of underlying bond
-		public override double spotValue() { return fixedCouponBond_.dirtyPrice(); }
+      //!  NPV of bond coupons discounted using incomeDiscountCurve
+      /*! Here only coupons between max(evaluation date,settlement
+          date) and maturity date of bond forward contract are
+          considered income.
+      */
 
-		protected override void performCalculations() {
-			underlyingSpotValue_ = spotValue();
-			underlyingIncome_    = spotIncome(incomeDiscountCurve_);
+      public override double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve)
+      {
+         double income = 0.0;
+         Date settlement = settlementDate();
+         List<CashFlow> cf = fixedCouponBond_.cashflows();
 
-			base.performCalculations();
-		}
-	}
+         /*
+           the following assumes
+           1. cashflows are in ascending order !
+           2. considers as income: all coupons paid between settlementDate()
+           and contract delivery/maturity date
+         */
+         for (int i = 0; i < cf.Count; ++i)
+         {
+            if (!cf[i].hasOccurred(settlement))
+            {
+               if (cf[i].hasOccurred(maturityDate_))
+               {
+                  income += cf[i].amount() * incomeDiscountCurve.link.discount(cf[i].date());
+               }
+               else
+               {
+                  break;
+               }
+            }
+         }
+         return income;
+      }
+
+      //!  NPV of underlying bond
+      public override double spotValue()
+      {
+         return fixedCouponBond_.dirtyPrice();
+      }
+
+      protected override void performCalculations()
+      {
+         underlyingSpotValue_ = spotValue();
+         underlyingIncome_ = spotIncome(incomeDiscountCurve_);
+
+         base.performCalculations();
+      }
+   }
 }

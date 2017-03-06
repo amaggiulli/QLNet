@@ -373,9 +373,6 @@ namespace QLNet {
 
 
     public class ConvexMonotoneImpl : Interpolation.templateImpl {
-        //typedef std::map<Real, boost::shared_ptr<SectionHelper> > helper_map;
-        //Dictionary<double,SectionHelper>
-
         private Dictionary<double, ISectionHelper> sectionHelpers_ = new Dictionary<double,ISectionHelper>();
         private Dictionary<double, ISectionHelper> preSectionHelpers_ = new Dictionary<double,ISectionHelper>();
         private ISectionHelper extrapolationHelper_;
@@ -447,7 +444,6 @@ namespace QLNet {
                 primitive += yBegin_[i+1] * (xBegin_[i+1]-xBegin_[i]);
 
             int endPoint = size_;
-            //constantLastPeriod_ = false;
             if (constantLastPeriod_)
                 endPoint = endPoint-1;
 
@@ -666,13 +662,6 @@ namespace QLNet {
         values (if required) is in place.
     */
     public class ConvexMonotoneInterpolation : Interpolation {
-        //typedef std::map<Real, boost::shared_ptr<SectionHelper> > helper_map;
-        //Dictionary<double,ISectionHelper>
-      
-        //public ConvexMonotoneInterpolation(List<double> xBegin, int size, List<double> yBegin, double quadraticity,
-        //                            double monotonicity, bool forcePositive,
-        //                            bool flatFinalPeriod = false,
-        //                            Dictionary<double,ISectionHelper> preExistingHelpers = new Dictionary<double,ISectionHelper>()) {
         public ConvexMonotoneInterpolation(List<double> xBegin, int size, List<double> yBegin, double quadraticity,
                                     double monotonicity, bool forcePositive, bool flatFinalPeriod)
             : this(xBegin, size, yBegin, quadraticity, monotonicity, forcePositive, flatFinalPeriod, 
@@ -684,8 +673,6 @@ namespace QLNet {
                                            flatFinalPeriod, preExistingHelpers);
             impl_.update();
         }
-
-        // public ConvexMonotoneInterpolation(Interpolation interp) : base(interp) { }
 
         public Dictionary<double,ISectionHelper> getExistingHelpers() {
             ConvexMonotoneImpl derived = impl_ as ConvexMonotoneImpl;
@@ -699,7 +686,6 @@ namespace QLNet {
         private double quadraticity_, monotonicity_;
         private bool forcePositive_;
 
-        //public ConvexMonotone(double quadraticity = 0.3, double monotonicity = 0.7, bool forcePositive = true) {
         public ConvexMonotone() : this(0.3, 0.7, true) { }
         public ConvexMonotone(double quadraticity, double monotonicity, bool forcePositive) {
             quadraticity_ = quadraticity;

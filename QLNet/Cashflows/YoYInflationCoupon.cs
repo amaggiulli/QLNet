@@ -44,15 +44,13 @@ namespace QLNet
          spread_ = spread;
       }
  
-      //! \name Inspectors
-      //@{
-      //! index gearing, i.e. multiplicative coefficient for the index
+      // Inspectors
+      // index gearing, i.e. multiplicative coefficient for the index
       public double gearing() { return gearing_; }
       //! spread paid over the fixing of the underlying index
       public double spread() { return spread_; }
       public double adjustedFixing() { return (rate() - spread()) / gearing(); }
       public YoYInflationIndex yoyIndex() { return yoyIndex_; }
-      //@}
 
       private YoYInflationIndex yoyIndex_;
       protected double gearing_;

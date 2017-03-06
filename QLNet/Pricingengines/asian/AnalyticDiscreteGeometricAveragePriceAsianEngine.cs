@@ -19,7 +19,6 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace QLNet
 {
@@ -53,8 +52,7 @@ namespace QLNet
       {
          /* this engine cannot really check for the averageType==Geometric
             since it can be used as control variate for the Arithmetic version
-               QL_REQUIRE(arguments_.averageType == Average::Geometric,
-                        "not a geometric average option");
+            QL_REQUIRE(arguments_.averageType == Average::Geometric,"not a geometric average option")
          */
          Utils.QL_REQUIRE( arguments_.exercise.type() == Exercise.Type.European, () => "not an European Option" );
 
@@ -99,8 +97,6 @@ namespace QLNet
          double pastWeight = pastFixings / N;
          double futureWeight = 1.0 - pastWeight;
 
-         /*double timeSum = std::accumulate(fixingTimes.begin(),
-                                          fixingTimes.end(), 0.0);*/
          double timeSum = 0;
          fixingTimes.ForEach( ( ii, vv ) => timeSum += fixingTimes[ii] );
 

@@ -109,7 +109,6 @@ namespace QLNet
                 // 1. zero it
                 temp2=0.0;
                 // 2. Manaster-Koehler (1982) efficient Newton-Raphson seed
-                //return std::fabs(std::log(forward/strike))*std::sqrt(2.0);
             temp2 = Math.Sqrt(temp2);
             temp += temp2;
             temp *= Math.Sqrt(2.0 * Const.M_PI);

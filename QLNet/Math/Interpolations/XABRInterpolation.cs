@@ -29,7 +29,6 @@ namespace QLNet
 
    public interface IModel
    {
-      //IModel modelInstance_ { get; set; }
       void defaultValues( List<double?> param, List<bool> b, double forward, double expiryTIme );
       double dilationFactor();
       int dimension();
@@ -39,7 +38,6 @@ namespace QLNet
       void guess( Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r );
       IWrapper instance( double t, double forward, List<double?> param );
       Vector inverse( Vector y, List<bool> b, List<double?> c, double d );
-      //double volatility( double x );
    }
 
    public class XABRCoeffHolder<Model> where Model : IModel, new()
@@ -120,8 +118,6 @@ namespace QLNet
          // if no optimization method or endCriteria is provided, we provide one
          if (optMethod_ == null)
             optMethod_ = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
-            // optMethod_ = boost::shared_ptr<OptimizationMethod>(new
-            //    Simplex(0.01));
          if (endCriteria_ == null) 
          {
             endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
@@ -201,14 +197,9 @@ namespace QLNet
                 NoConstraint raint = new NoConstraint();
                 Problem problem = new Problem(rainedXABRError, raint, projectedGuess);
                 tmpEndCriteria = optMethod_.minimize(problem, endCriteria_);
-               // TEST
-               // coeff_.params_[3] = 0.0099999966589763966;
-               // TEST
                 Vector projectedResult = new Vector(problem.currentValue());
                 Vector transfResult = new Vector(rainedXABRError.include(projectedResult));
-                //transfResult[3] = 0.0099999966589763966; ;
                 Vector result = coeff_.model_.direct( transfResult, coeff_.paramIsFixed_, coeff_.params_, forward_ );
-                //result[3] = 0.0099999966589763966;
                 tmpInterpolationError = useMaxError_ ? interpolationMaxError()
                                                      : interpolationError();
 
@@ -318,8 +309,6 @@ namespace QLNet
       private int maxGuesses_;
       private double forward_;
       private bool vegaWeighted_;
-      //private NoConstraint constraint_;
       public XABRCoeffHolder<Model> coeff_;
-   };
-
+   }
 }
