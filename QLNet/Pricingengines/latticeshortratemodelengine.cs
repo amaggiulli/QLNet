@@ -38,10 +38,8 @@ namespace QLNet{
                                             int timeSteps)
             : base(model)
         {
-            timeSteps_=timeSteps; 
-            if(!(timeSteps>0))
-                   throw new ArgumentException("timeSteps must be positive, " + timeSteps +
-                   " not allowed");
+            timeSteps_=timeSteps;
+            Utils.QL_REQUIRE(timeSteps > 0,()=> "timeSteps must be positive, " + timeSteps + " not allowed");
         }
 
         public LatticeShortRateModelEngine( ShortRateModel model,

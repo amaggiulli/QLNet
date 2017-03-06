@@ -231,16 +231,12 @@ namespace QLNet
         private void checkInputs(int volRows,
                                 int volsColumns) 
         {
-            if(!(nOptionTenors_ == volRows))
-                throw new ArgumentException("mismatch between number of option dates (" +
-                   nOptionTenors_ + ") and number of rows (" + volRows +
-                   ") in the vol matrix");
-            if(!(nSwapTenors_ == volsColumns))
-                throw new ArgumentException("mismatch between number of swap tenors (" +
-                       nSwapTenors_ + ") and number of rows (" + volsColumns +
-                       ") in the vol matrix");
-
-
+            Utils.QL_REQUIRE(nOptionTenors_ == volRows,()=>
+               "mismatch between number of option dates (" + nOptionTenors_ + ") and number of rows (" + 
+               volRows + ") in the vol matrix");
+            Utils.QL_REQUIRE(nSwapTenors_ == volsColumns,()=>
+                "mismatch between number of swap tenors (" + nSwapTenors_ + ") and number of rows (" + 
+                volsColumns + ") in the vol matrix");
         }
         private void registerWithMarketData()
         {

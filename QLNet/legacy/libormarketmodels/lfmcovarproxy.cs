@@ -33,10 +33,8 @@ namespace QLNet
             volaModel_=volaModel;
             corrModel_=corrModel ;
 
-            if(!(volaModel_.size() == corrModel_.size()))
-                throw new ArgumentException("different size for the volatility (" + volaModel_.size() +
-                                            ") and correlation (" + corrModel_.size() +
-                                            ") models");
+           Utils.QL_REQUIRE(volaModel_.size() == corrModel_.size(),()=>
+              "different size for the volatility (" + volaModel_.size() + ") and correlation (" + corrModel_.size() + ") models");
         }
 
         public LmVolatilityModel volatilityModel() {

@@ -90,18 +90,19 @@ namespace QLNet
 
         public override void calculate()
         {
-            if (!(arguments_.settlementType == Settlement.Type.Physical))
-                throw new ArgumentException("cash-settled swaptions not priced by Jamshidian engine");
+            Utils.QL_REQUIRE(arguments_.settlementType == Settlement.Type.Physical,()=> 
+               "cash-settled swaptions not priced by Jamshidian engine");
 
-            if (!(arguments_.exercise.type() == Exercise.Type.European))
-                throw new ArgumentException("cannot use the Jamshidian decomposition "
-                       + "on exotic swaptions");
+            Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European,()=>
+               "cannot use the Jamshidian decomposition on exotic swaptions");
+            
+            Utils.QL_REQUIRE(arguments_.swap.spread.IsEqual(0.0) ,()=> 
+               "non zero spread (" + arguments_.swap.spread + ") not allowed");
 
             Date referenceDate;
             DayCounter dayCounter;
 
-            ITermStructureConsistentModel tsmodel =
-                (ITermStructureConsistentModel)base.model_.link;
+            ITermStructureConsistentModel tsmodel = (ITermStructureConsistentModel)base.model_.link;
             try
             {
                 if (tsmodel != null)

@@ -187,41 +187,31 @@ namespace QLNet
 
       private void checkOptionDates()
       {
-         if (!(optionDates_[0] > referenceDate()))
-            throw new ArgumentException("first option date (" + optionDates_[0] +
-                                        ") must be greater than reference date (" +
-                                        referenceDate() + ")");
+         Utils.QL_REQUIRE(optionDates_[0] > referenceDate(),()=>
+           "first option date (" + optionDates_[0] + ") must be greater than reference date (" + referenceDate() + ")");
          for (int i = 1; i < nOptionTenors_; ++i)
          {
-            if (!(optionDates_[i] > optionDates_[i - 1]))
-               throw new ArgumentException("non increasing option dates: " + i +
-                                           " is " + optionDates_[i - 1] + ", " + i + 1 +
-                                           " is " + optionDates_[i]);
+            Utils.QL_REQUIRE(optionDates_[i] > optionDates_[i - 1],()=>
+              "non increasing option dates: " + i + " is " + optionDates_[i - 1] + ", " + i + 1 + " is " + optionDates_[i]);
          }
       }
 
       private void checkOptionTenors()
       {
-         if (!(optionTenors_[0] > new Period(0, TimeUnit.Days)))
-            throw new ArgumentException("first option tenor is negative (" +
-                                        optionTenors_[0] + ")");
+         Utils.QL_REQUIRE(optionTenors_[0] > new Period(0, TimeUnit.Days),()=> 
+            "first option tenor is negative (" + optionTenors_[0] + ")");
          for (int i = 1; i < nOptionTenors_; ++i)
-            if (!(optionTenors_[i] > optionTenors_[i - 1]))
-               throw new ArgumentException("non increasing option tenor: " + i +
-                                           " is " + optionTenors_[i - 1] + ", " + i + 1 +
-                                           " is " + optionTenors_[i]);
+            Utils.QL_REQUIRE(optionTenors_[i] > optionTenors_[i - 1],()=>
+               "non increasing option tenor: " + i + " is " + optionTenors_[i - 1] + ", " + i + 1 + " is " + optionTenors_[i]);
       }
 
       private void checkSwapTenors()
       {
-         if (!(swapTenors_[0] > new Period(0, TimeUnit.Days)))
-            throw new ArgumentException("first swap tenor is negative (" +
-                                        swapTenors_[0] + ")");
+         Utils.QL_REQUIRE(swapTenors_[0] > new Period(0, TimeUnit.Days),()=> 
+            "first swap tenor is negative (" + swapTenors_[0] + ")");
          for (int i = 1; i < nSwapTenors_; ++i)
-            if (!(swapTenors_[i] > swapTenors_[i - 1]))
-               throw new ArgumentException("non increasing swap tenor: " + i +
-                                           " is " + swapTenors_[i - 1] + ", " + i + 1 +
-                                           " is " + swapTenors_[i]);
+            Utils.QL_REQUIRE(swapTenors_[i] > swapTenors_[i - 1],()=>
+               "non increasing swap tenor: " + i + " is " + swapTenors_[i - 1] + ", " + i + 1 + " is " + swapTenors_[i]);
       }
 
       private void initializeOptionDatesAndTimes()

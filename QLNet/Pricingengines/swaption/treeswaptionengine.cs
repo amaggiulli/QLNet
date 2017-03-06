@@ -70,11 +70,10 @@ namespace QLNet
 
         public override void calculate(){
 
-        if(!(base.arguments_.settlementType==Settlement.Type.Physical))
-           throw new ArgumentException("cash-settled swaptions not priced with tree engine");
+         Utils.QL_REQUIRE(arguments_.settlementType == Settlement.Type.Physical,()=> 
+            "cash-settled swaptions not priced with tree engine");
 
-        if(base.model_==null)
-           throw new ArgumentException("no model specified");
+         Utils.QL_REQUIRE(model_!= null, ()=> "no model specified");
 
         Date referenceDate;
         DayCounter dayCounter;

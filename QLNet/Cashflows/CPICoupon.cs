@@ -43,9 +43,9 @@ namespace QLNet
       This is more sophisticated than an %IndexedCashFlow because it
       does date calculations itself.
 
-      \todo we do not do any convexity adjustment for lags different
-            to the natural ZCIIS lag that was used to create the
-            forward inflation curve.
+      We do not do any convexity adjustment for lags different
+      to the natural ZCIIS lag that was used to create the
+      forward inflation curve.
    */
    public class CPICoupon : InflationCoupon
    {
