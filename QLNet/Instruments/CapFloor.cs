@@ -250,7 +250,7 @@ namespace QLNet
                               int maxEvaluations)
       {
          return impliedVolatility(targetValue, discountCurve, guess, accuracy, maxEvaluations,
-                                  1.0e-7, 4.0);
+                                  1.0e-7, 4.0, VolatilityType.ShiftedLognormal, 0.0);
       }
 
 
@@ -261,13 +261,15 @@ namespace QLNet
                               double accuracy,
                               int maxEvaluations,
                               double minVol,
-                              double maxVol) 
+                              double maxVol,
+                              VolatilityType type,
+                              double displacement) 
       {
          calculate();
          if (isExpired()) 
             throw new ArgumentException("instrument expired");
 
-         ImpliedVolHelper f = new ImpliedVolHelper(this, discountCurve, targetValue);
+         ImpliedVolHelper f = new ImpliedVolHelper(this, discountCurve, targetValue, displacement, type);
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
@@ -380,15 +382,33 @@ namespace QLNet
       private SimpleQuote vol_;
       private Instrument.Results results_;
 
-      public ImpliedVolHelper(CapFloor cap,Handle<YieldTermStructure> discountCurve,
-                              double targetValue)
+      public ImpliedVolHelper(CapFloor cap,
+                              Handle<YieldTermStructure> discountCurve,
+                              double targetValue,
+                              double displacement,
+                              VolatilityType type)
       {
          discountCurve_ = discountCurve;
          targetValue_ = targetValue;
 
          vol_ = new SimpleQuote(-1.0);
          Handle<Quote> h = new Handle<Quote>(vol_);
-         engine_ = (IPricingEngine)new BlackCapFloorEngine(discountCurve_, h);
+
+         switch (type)
+         {
+             case VolatilityType.ShiftedLognormal:
+                engine_ = (IPricingEngine)new BlackCapFloorEngine(discountCurve_, h, new Actual365Fixed(), displacement);
+                break;
+
+             case VolatilityType.Normal:
+                engine_ = (IPricingEngine)new BachelierCapFloorEngine(discountCurve_, h, new Actual365Fixed());
+                break;
+
+             default:
+                Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
+                break;
+         }
+         
          cap.setupArguments(engine_.getArguments());
          results_ = engine_.getResults() as Instrument.Results;
 
