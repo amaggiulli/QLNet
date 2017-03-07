@@ -50,8 +50,8 @@ namespace QLNet
       where ArgumentsType : IPricingEngineArguments, new()
       where ResultsType : IPricingEngineResults, new()
    {
-      protected ArgumentsType arguments_ = new ArgumentsType();
-      protected ResultsType results_ = new ResultsType();
+      protected ArgumentsType arguments_ = FastActivator<ArgumentsType>.Create();
+      protected ResultsType results_ = FastActivator<ResultsType>.Create();
 
       public IPricingEngineArguments getArguments()
       {

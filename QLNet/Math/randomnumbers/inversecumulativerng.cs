@@ -32,7 +32,7 @@ namespace QLNet
    public class InverseCumulativeRng<RNG, IC> where RNG : IRNGTraits where IC : IValue, new()
    {
       private RNG uniformGenerator_;
-      private IC ICND_ = new IC();
+      private IC ICND_ = FastActivator<IC>.Create();
 
       public InverseCumulativeRng(RNG uniformGenerator)
       {

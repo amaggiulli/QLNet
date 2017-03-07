@@ -32,7 +32,7 @@ namespace QLNet {
         private T value_;
         
         public ObservableValue() {
-            value_ = new T();
+            value_ = FastActivator<T>.Create();
         }
 
         public ObservableValue(T t) {

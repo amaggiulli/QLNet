@@ -227,7 +227,7 @@ namespace QLNet
                                                      Matrix fPrice)
          :base(nominal, startRate, observationLag, cal, bdc, dc,zii, yts, cStrikes, fStrikes, cfMaturities, cPrice, fPrice)
       {
-         interpolator2d_ = new Interpolator2D();
+         interpolator2d_ = FastActivator<Interpolator2D>.Create();
 
          performCalculations();
       }

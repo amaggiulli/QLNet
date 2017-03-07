@@ -140,7 +140,7 @@ namespace TestSuite
       }                                 
       void check<S>(string name) where S : IGeneralStatistics, new()
       {
-         S s = new S();
+         S s = FastActivator<S>.Create();
 
          for (int i = 0; i < data.Length; i++)
             s.add(data[i], weights[i]);

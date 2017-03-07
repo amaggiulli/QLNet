@@ -112,14 +112,14 @@ namespace QLNet
       public virtual void calculate()
       {
          pathPricer_ = lsmPathPricer();
-         mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer_, new S(), antitheticVariate_ );
+         mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer_, FastActivator<S>.Create(), antitheticVariate_ );
 
          mcModel_.addSamples( nCalibrationSamples_ );
          pathPricer_.calibrate();
 
          base.calculate( requiredTolerance_, requiredSamples_, maxSamples_ );
          results_.value = mcModel_.sampleAccumulator().mean();
-         if ( new RNG().allowsErrorEstimate != 0 )
+         if ( FastActivator<RNG>.Create().allowsErrorEstimate != 0 )
          {
             results_.errorEstimate = mcModel_.sampleAccumulator().errorEstimate();
          }
@@ -155,7 +155,7 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = timeGrid();
-         IRNG generator = (IRNG)new RNG().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
+         IRNG generator = (IRNG) FastActivator<RNG>.Create().make_sequence_generator( dimensions * ( grid.size() - 1 ), seed_ );
          if ( typeof( MC ) == typeof( SingleVariate ) )
             return new PathGenerator<IRNG>( process_, grid, generator, brownianBridge_ );
          else

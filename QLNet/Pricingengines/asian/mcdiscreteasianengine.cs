@@ -67,7 +67,7 @@ namespace QLNet
         public void calculate() {
             base.calculate(requiredTolerance_,requiredSamples_,maxSamples_);
             results_.value = this.mcModel_.sampleAccumulator().mean();
-            if (new RNG().allowsErrorEstimate!=0)
+            if (FastActivator<RNG>.Create().allowsErrorEstimate!=0)
             results_.errorEstimate =
                 this.mcModel_.sampleAccumulator().errorEstimate();
         }

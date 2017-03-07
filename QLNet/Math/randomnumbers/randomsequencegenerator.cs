@@ -53,7 +53,7 @@ namespace QLNet {
 
         public RandomSequenceGenerator(int dimensionality, ulong seed) {
             dimensionality_ = dimensionality;
-            rng_ = (RNG)new RNG().factory(seed);
+            rng_ = (RNG)FastActivator<RNG>.Create().factory(seed);
             sequence_ = new Sample<List<double>>(new InitializedList<double>(dimensionality), 1.0);
             int32Sequence_ = new InitializedList<ulong>(dimensionality);
         }

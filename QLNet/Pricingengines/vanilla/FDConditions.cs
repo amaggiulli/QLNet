@@ -61,7 +61,7 @@ namespace QLNet {
         public FDConditionTemplate(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {
             // init engine
-            engine_ = (baseEngine)new baseEngine().factory(process, timeSteps, gridPoints, timeDependent);
+            engine_ = (baseEngine)FastActivator<baseEngine>.Create().factory(process, timeSteps, gridPoints, timeDependent);
         }
     }
 

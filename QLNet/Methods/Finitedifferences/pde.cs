@@ -47,7 +47,7 @@ namespace QLNet {
         private double discount_;
 
         public PdeConstantCoeff(GeneralizedBlackScholesProcess process, double t, double x) {
-            PdeClass pde = (PdeClass)new PdeClass().factory(process);
+            PdeClass pde = (PdeClass) FastActivator<PdeClass>.Create().factory(process);
             diffusion_ = pde.diffusion(t, x);
             drift_ = pde.drift(t, x);
             discount_ = pde.discount(t, x);
@@ -68,7 +68,7 @@ namespace QLNet {
 
         public GenericTimeSetter(Vector grid, GeneralizedBlackScholesProcess process) {
             grid_ = new LogGrid(grid);
-            pde_ = (PdeClass)new PdeClass().factory(process);
+            pde_ = (PdeClass) FastActivator<PdeClass>.Create().factory(process);
         }
 
         public override void setTime(double t, IOperator L) {

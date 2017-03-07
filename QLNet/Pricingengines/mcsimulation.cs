@@ -111,12 +111,12 @@ namespace QLNet
 
             IPathGenerator<IRNG> controlPG = this.controlPathGenerator();
 
-            this.mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer(), new S(), antitheticVariate_,
+            this.mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer(), FastActivator<S>.Create(), antitheticVariate_,
                                                           controlPP, controlVariateValue.GetValueOrDefault(), controlPG );
          }
          else
          {
-            this.mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer(), new S(), antitheticVariate_ );
+            this.mcModel_ = new MonteCarloModel<MC, RNG, S>( pathGenerator(), pathPricer(), FastActivator<S>.Create(), antitheticVariate_ );
          }
 
          if ( requiredTolerance != null )

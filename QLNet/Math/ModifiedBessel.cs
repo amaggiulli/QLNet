@@ -143,7 +143,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE( ++k < 1000, () => "max iterations exceeded" );
             }
-            return sum * new T().weightSmallX( x );
+            return sum * FastActivator<T>.Create().weightSmallX( x );
          }
          else
          {
@@ -164,10 +164,10 @@ namespace QLNet
                s1 += sign * a_k;
             }
 
-            double i = new I().value();
+            double i = FastActivator<I>.Create().value();
             return 1.0 / Math.Sqrt( 2 * Const.M_PI * x ) *
-               ( new T().weight1LargeX( x ) * s1 +
-               i * Math.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
+               (FastActivator<T>.Create().weight1LargeX( x ) * s1 +
+               i * Math.Exp( i * nu * Const.M_PI ) * FastActivator<T>.Create().weight2LargeX( x ) * s2 );
          }
       }
 
@@ -187,7 +187,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE( ++k < 1000, () => "max iterations exceeded" );
             }
-            return sum * new T().weightSmallX( x );
+            return sum * FastActivator<T>.Create().weightSmallX( x );
          }
          else
          {
@@ -208,10 +208,10 @@ namespace QLNet
                s1 += sign * a_k;
             }
 
-            Complex i = new I().value();
+            Complex i = FastActivator<I>.Create().value();
             return 1.0 / Complex.Sqrt( 2 * Const.M_PI * x ) *
-                ( new T().weight1LargeX( x ) * s1 +
-                 i * Complex.Exp( i * nu * Const.M_PI ) * new T().weight2LargeX( x ) * s2 );
+                (FastActivator<T>.Create().weight1LargeX( x ) * s1 +
+                 i * Complex.Exp( i * nu * Const.M_PI ) * FastActivator<T>.Create().weight2LargeX( x ) * s2 );
          }
       }
 

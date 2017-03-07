@@ -85,7 +85,7 @@ namespace QLNet {
         }
 
         public void setInterpolation<Interpolator>() where Interpolator : IInterpolationFactory, new() {
-            setInterpolation<Interpolator>(new Interpolator());
+            setInterpolation<Interpolator>(FastActivator<Interpolator>.Create());
         }
         public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory, new() {
             varianceCurve_ = i.interpolate(times_, times_.Count, variances_);

@@ -59,7 +59,7 @@ namespace QLNet
 
 		public IterativeBootstrap()
 		{
-			ts_ = new T();
+			ts_ = FastActivator<T>.Create();
 			initialized_ = false;
 			validCurve_ = false;
 		}

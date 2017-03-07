@@ -40,7 +40,7 @@ namespace QLNet
          compounding_ = compounding;
          frequency_ = frequency;
          dc_ = dc ?? new DayCounter();
-         factory_ = factory ?? new Interpolator();
+         factory_ = factory ?? FastActivator<Interpolator>.Create();
 
          Utils.QL_REQUIRE(!spreads_.empty(), () => "no spreads given");
          Utils.QL_REQUIRE(spreads_.Count == dates_.Count, () => "spread and date vector have different sizes");

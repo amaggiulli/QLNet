@@ -31,7 +31,7 @@ namespace QLNet {
     public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new() {
 
         #region wrap-up Stat
-        protected Stat impl_ = new Stat();
+        protected Stat impl_ = FastActivator<Stat>.Create();
 
         public int samples() { return impl_.samples(); }
         public double mean() { return impl_.mean(); }

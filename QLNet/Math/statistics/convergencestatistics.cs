@@ -73,7 +73,7 @@ namespace QLNet {
             reset();
         }
 
-        public ConvergenceStatistics() : this(new U()) { }
+        public ConvergenceStatistics() : this(FastActivator<U>.Create()) { }
         public ConvergenceStatistics(U rule) {
             samplingRule_ = rule;
             reset();
@@ -106,7 +106,7 @@ namespace QLNet {
         }
 
         #region wrap-up Stat
-        protected T impl_ = new T();
+        protected T impl_ = FastActivator<T>.Create();
 
         public int samples() { return impl_.samples(); }
         public double mean() { return impl_.mean(); }

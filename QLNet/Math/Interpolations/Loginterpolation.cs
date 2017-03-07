@@ -29,7 +29,7 @@ namespace QLNet
       private Interpolation interpolation_;
 
       public LogInterpolationImpl(List<double> xBegin, int size, List<double> yBegin)
-         : this(xBegin, size, yBegin, new Interpolator())
+         : this(xBegin, size, yBegin, FastActivator<Interpolator>.Create())
       {}
 
       public LogInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, IInterpolationFactory factory)

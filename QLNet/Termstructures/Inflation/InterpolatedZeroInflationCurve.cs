@@ -34,7 +34,7 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = rates;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
 
          Utils.QL_REQUIRE(dates_.Count > 1, () => "too few dates: " + dates_.Count);
 
@@ -162,7 +162,7 @@ namespace QLNet
                                      Interpolator interpolator = default(Interpolator))
          : base( referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS )
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
    }

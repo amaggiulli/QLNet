@@ -227,16 +227,16 @@ namespace QLNet
 			_instruments_ = instruments;
 			accuracy_ = accuracy;
 			if ( bootstrap == null )
-				bootstrap_ = new Bootstrap();
+				bootstrap_ = FastActivator<Bootstrap>.Create();
 			else
 				bootstrap_ = bootstrap;
 
 			if ( i == null )
-				interpolator_ = new Interpolator();
+				interpolator_ = FastActivator<Interpolator>.Create();
 			else
 				interpolator_ = i;
 
-			_traits_ = new Traits();
+			_traits_ = FastActivator<Traits>.Create();
 			bootstrap_.setup( this );
 
 		}
