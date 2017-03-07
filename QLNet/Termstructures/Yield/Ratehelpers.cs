@@ -308,14 +308,14 @@ namespace QLNet
 
       ///////////////////////////////////////////
       // constructors
-      public RelativeDateRateHelper( Handle<Quote> quote )
+      protected RelativeDateRateHelper( Handle<Quote> quote )
          : base( quote )
       {
          Settings.registerWith( update );
          evaluationDate_ = Settings.evaluationDate();
       }
 
-      public RelativeDateRateHelper( double quote )
+      protected RelativeDateRateHelper( double quote )
          : base( quote )
       {
          Settings.registerWith( update );

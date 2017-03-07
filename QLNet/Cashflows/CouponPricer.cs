@@ -60,7 +60,7 @@ namespace QLNet
    //! base pricer for capped/floored Ibor coupons
    public abstract class IborCouponPricer : FloatingRateCouponPricer
    {
-      public IborCouponPricer( Handle<OptionletVolatilityStructure> v = null )
+      protected IborCouponPricer( Handle<OptionletVolatilityStructure> v = null )
       {
          capletVol_ = v ?? new Handle<OptionletVolatilityStructure>();
          if ( !capletVol_.empty() )
@@ -267,7 +267,7 @@ namespace QLNet
    //! base pricer for vanilla CMS coupons
    public abstract class CmsCouponPricer : FloatingRateCouponPricer
    {
-      public CmsCouponPricer( Handle<SwaptionVolatilityStructure> v = null )
+      protected CmsCouponPricer( Handle<SwaptionVolatilityStructure> v = null )
       {
          swaptionVol_ = v ?? new Handle<SwaptionVolatilityStructure>();
          swaptionVol_.registerWith( update );

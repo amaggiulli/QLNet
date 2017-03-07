@@ -34,7 +34,7 @@ namespace QLNet
 			data_ = hazardRates;
 
 			if ( interpolator == null )
-				interpolator_ = new Interpolator();
+				interpolator_ = FastActivator<Interpolator>.Create();
 			else
 				interpolator_ = interpolator;
 
@@ -49,7 +49,7 @@ namespace QLNet
 			times_ = new List<double>();
 			data_ = hazardRates;
 			if ( interpolator == null )
-				interpolator_ = new Interpolator();
+				interpolator_ = FastActivator<Interpolator>.Create();
 			else
 				interpolator_ = interpolator;
 			initialize();
@@ -60,7 +60,7 @@ namespace QLNet
 		{
 			dates_ = dates;
 			if ( interpolator == null )
-				interpolator_ = new Interpolator();
+				interpolator_ = FastActivator<Interpolator>.Create();
 			else
 				interpolator_ = interpolator;
 			initialize();

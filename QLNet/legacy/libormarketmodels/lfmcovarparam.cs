@@ -19,75 +19,91 @@
 
 namespace QLNet
 {
-    internal class Var_Helper
-    {
-        public LfmCovarianceParameterization param_;
-        public int i_;
-        public int j_;
+   internal class Var_Helper
+   {
+      public LfmCovarianceParameterization param_;
+      public int i_;
+      public int j_;
 
-        public Var_Helper(LfmCovarianceParameterization param, int i, int j) {
-            param_ = param; 
-            i_ = i; 
-            j_ = j; 
-        }
+      public Var_Helper(LfmCovarianceParameterization param, int i, int j)
+      {
+         param_ = param;
+         i_ = i;
+         j_ = j;
+      }
 
-        public virtual double value(double t) {
-            Matrix m = param_.diffusion(t, new Vector());
-            double u = 0;
-            m.row(i_).ForEach((ii, vv) => u += vv * m.row(j_)[ii]);
-            return u;
-        }
-    }
+      public virtual double value(double t)
+      {
+         Matrix m = param_.diffusion(t, new Vector());
+         double u = 0;
+         m.row(i_).ForEach((ii, vv) => u += vv * m.row(j_)[ii]);
+         return u;
+      }
+   }
 
-    public abstract class LfmCovarianceParameterization
-    {
-        protected int size_;
-        protected int factors_;
+   public abstract class LfmCovarianceParameterization
+   {
+      protected int size_;
+      protected int factors_;
 
-        public LfmCovarianceParameterization(int size, int factors)
-        { size_ = size; factors_ = factors; }
+      protected LfmCovarianceParameterization(int size, int factors)
+      {
+         size_ = size;
+         factors_ = factors;
+      }
 
-        public int size() { return size_; }
-        
-        public int factors() { return factors_; }
+      public int size()
+      {
+         return size_;
+      }
 
-        public abstract Matrix diffusion(double t);
+      public int factors()
+      {
+         return factors_;
+      }
 
-        public abstract Matrix diffusion(double t, Vector x);
+      public abstract Matrix diffusion(double t);
 
-        public virtual Matrix covariance(double t){
-            return covariance(t, null);
-        }
+      public abstract Matrix diffusion(double t, Vector x);
 
-        public virtual Matrix covariance(double t, Vector x) {
-            Matrix sigma = this.diffusion(t, x);
-            Matrix result = sigma * Matrix.transpose(sigma);
-            return result;
-        }
+      public virtual Matrix covariance(double t)
+      {
+         return covariance(t, null);
+      }
 
+      public virtual Matrix covariance(double t, Vector x)
+      {
+         Matrix sigma = diffusion(t, x);
+         Matrix result = sigma * Matrix.transpose(sigma);
+         return result;
+      }
 
-        public virtual Matrix integratedCovariance(double t, Vector x = null) {
-            // this implementation is not intended for production.
-            // because it is too slow and too inefficient.
-            // This method is useful for testing and R&D.
-            // Please overload the method within derived classes.
-            
-            Utils.QL_REQUIRE(x == null ,()=> "can not handle given x here");
-            
-            Matrix tmp= new Matrix(size_, size_,0.0);
+      public virtual Matrix integratedCovariance(double t, Vector x = null)
+      {
+         // this implementation is not intended for production.
+         // because it is too slow and too inefficient.
+         // This method is useful for testing and R&D.
+         // Please overload the method within derived classes.
 
-            for (int i=0; i<size_; ++i) {
-                for (int j=0; j<=i;++j) {
-                    Var_Helper helper = new Var_Helper(this, i, j);
-                    GaussKronrodAdaptive integrator=new GaussKronrodAdaptive(1e-10, 10000);
-                    for (int k=0; k < 64; ++k) {
-                        tmp[i,j] +=integrator.value(helper.value, k * t / 64.0, (k + 1) * t / 64.0);
-                    }
-                    tmp[j,i]=tmp[i,j];
-                }
+         Utils.QL_REQUIRE(x == null, () => "can not handle given x here");
+
+         Matrix tmp = new Matrix(size_, size_, 0.0);
+
+         for (int i = 0; i < size_; ++i)
+         {
+            for (int j = 0; j <= i; ++j)
+            {
+               Var_Helper helper = new Var_Helper(this, i, j);
+               GaussKronrodAdaptive integrator = new GaussKronrodAdaptive(1e-10, 10000);
+               for (int k = 0; k < 64; ++k)
+               {
+                  tmp[i, j] += integrator.value(helper.value, k * t / 64.0, (k + 1) * t / 64.0);
+               }
+               tmp[j, i] = tmp[i, j];
             }
-            return tmp;
-        }
-    }
+         }
+         return tmp;
+      }
+   }
 
 }

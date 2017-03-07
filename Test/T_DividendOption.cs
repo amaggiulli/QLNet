@@ -98,7 +98,7 @@ namespace TestSuite
                BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                       qTS, rTS, volTS);
 
-               IPricingEngine engine = new Engine().factory(stochProcess);
+               IPricingEngine engine = FastActivator<Engine>.Create().factory(stochProcess);
                DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
                option.setPricingEngine(engine);
 
@@ -187,7 +187,7 @@ namespace TestSuite
          int timeSteps = 300;
          int gridPoints = 300;
 
-         IPricingEngine engine = new Engine().factory(process, timeSteps, gridPoints);
+         IPricingEngine engine = FastActivator<Engine>.Create().factory(process, timeSteps, gridPoints);
 
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 55.0);
 

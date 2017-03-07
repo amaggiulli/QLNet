@@ -35,15 +35,15 @@ namespace QLNet
    {
       #region Constructors
 
-      public ForwardRateStructure(DayCounter dc = null,
+      protected ForwardRateStructure(DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(dc, jumps, jumpDates) {}
-      
-      public ForwardRateStructure(Date refDate,Calendar cal = null,DayCounter dc = null,
+
+      protected ForwardRateStructure(Date refDate,Calendar cal = null,DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
            : base(refDate, cal, dc, jumps, jumpDates) {}
 
-      public ForwardRateStructure(int settlDays,Calendar cal,DayCounter dc = null,
+      protected ForwardRateStructure(int settlDays,Calendar cal,DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(settlDays, cal, dc, jumps, jumpDates) {}
       

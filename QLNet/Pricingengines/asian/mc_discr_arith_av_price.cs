@@ -16,7 +16,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
@@ -196,7 +195,7 @@ namespace QLNet
         public MakeMCDiscreteArithmeticAPEngine<RNG, S> withTolerance(double tolerance)
         {
            Utils.QL_REQUIRE( samples_ == null, () => "number of samples already set" );
-           Utils.QL_REQUIRE(new RNG().allowsErrorEstimate != 0,()=> 
+           Utils.QL_REQUIRE(FastActivator<RNG>.Create().allowsErrorEstimate != 0,()=> 
             "chosen random generator policy does not allow an error estimate");
             tolerance_ = tolerance;
             return this;

@@ -114,7 +114,7 @@ namespace QLNet
         public InitializedList() : base() { }
         public InitializedList(int size) : base(size) {
             for (int i = 0; i < this.Capacity; i++)
-                this.Add(default(T) == null ? new T() : default(T));
+                this.Add(default(T) == null ? FastActivator<T>.Create() : default(T));
         }
         public InitializedList(int size, T value) : base(size) {
             for (int i = 0; i < this.Capacity; i++)

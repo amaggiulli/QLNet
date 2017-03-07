@@ -59,7 +59,7 @@ namespace QLNet
 
 		public IterativeBootstrap()
 		{
-			ts_ = new T();
+			ts_ = FastActivator<T>.Create();
 			initialized_ = false;
 			validCurve_ = false;
 		}
@@ -148,9 +148,8 @@ namespace QLNet
          n_ = ts_.instruments_.Count;
          Utils.QL_REQUIRE( n_ > 0, () => "no bootstrap helpers given" );
 
-         if (!(n_+1 >= ts_.interpolator_.requiredPoints))
-               throw new ArgumentException("not enough instruments: " + n_ + " provided, " +
-                     (ts_.interpolator_.requiredPoints-1) + " required");
+         Utils.QL_REQUIRE(n_+1 >= ts_.interpolator_.requiredPoints,()=>
+            "not enough instruments: " + n_ + " provided, " + (ts_.interpolator_.requiredPoints-1) + " required");
 
          ts_.instruments_.ForEach((i, x) => ts_.registerWith(x));
 

@@ -31,7 +31,7 @@ namespace QLNet {
         public FiniteDifferenceModel(object L, object bcs)
             : this(L, bcs, new List<double>()) { }
         public FiniteDifferenceModel(object L, object bcs, List<double> stoppingTimes) {
-            evolver_ = (Evolver)new Evolver().factory(L, bcs);
+            evolver_ = (Evolver)FastActivator<Evolver>.Create().factory(L, bcs);
             stoppingTimes_ = stoppingTimes;
             stoppingTimes_.Sort();
             stoppingTimes_ = stoppingTimes_.Distinct().ToList();

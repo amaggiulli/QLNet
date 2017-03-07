@@ -374,7 +374,7 @@ namespace QLNet
                      // the direction integer has at most the
                      // rightmost l bits non-zero
                      directionIntegers_[k][l - 1] = (ulong)( u * ( 1UL << l ) );
-                  } while ( !( ( directionIntegers_[k][l - 1] & 1UL ) != 0 ) );
+                  } while ( ( directionIntegers_[k][l - 1] & 1UL ) == 0 );
                   // iterate until the direction integer is odd
                   // that is it has the rightmost bit set
 

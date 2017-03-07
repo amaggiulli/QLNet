@@ -134,8 +134,7 @@ public static class KronrodintegralArrays
 			double resasc; // approximation to the integral of abs(f-i/(b-a)) 
 			int k;
 	
-			if (!(a<b))
-                throw new ArgumentException("b must be greater than a)");
+			Utils.QL_REQUIRE(a<b,()=> "b must be greater than a)");
 	
 			double halfLength = 0.5 * (b - a);
 			double center = 0.5 * (b + a);
@@ -267,8 +266,8 @@ public static class KronrodintegralArrays
 	{
 		  public GaussKronrodAdaptive(double absoluteAccuracy, int maxEvaluations) : base(absoluteAccuracy, maxEvaluations)
 		  {
-			  if (!(maxEvaluations >= 15))
-                throw new ArgumentException("required maxEvaluations (" + maxEvaluations + ") not allowed. It must be >= 15");
+           Utils.QL_REQUIRE(maxEvaluations >= 15,()=> 
+              "required maxEvaluations (" + maxEvaluations + ") not allowed. It must be >= 15");
 		  }
           protected override double integrate(Func<double, double> f, double a, double b)
 		  {
@@ -324,8 +323,8 @@ public static class KronrodintegralArrays
 				  }
 				  else
 				  {
-					  if (!(numberOfEvaluations()+30 <= maxEvaluations()))
-                          throw new ArgumentException("maximum number of function evaluations " + "exceeded");
+                 Utils.QL_REQUIRE(numberOfEvaluations() + 30 <= maxEvaluations(),()=> 
+                    "maximum number of function evaluations " + "exceeded");
 					  return integrateRecursively(f, a, center, tolerance/2) + integrateRecursively(f, center, b, tolerance/2);
 				  }
 			  }

@@ -429,6 +429,7 @@
     <Compile Include="Money.cs" />
     <Compile Include="numericalmethod.cs" />
     <Compile Include="Option.cs" />
+    <Compile Include="Patterns\FastActivator.cs" />
     <Compile Include="Patterns\LazyObject.cs" />
     <Compile Include="Patterns\observablevalue.cs" />
     <Compile Include="Patterns\Observer.cs" />

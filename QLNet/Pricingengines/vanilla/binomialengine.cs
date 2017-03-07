@@ -74,7 +74,7 @@ namespace QLNet {
 
             TimeGrid grid = new TimeGrid(maturity, timeSteps_);
 
-            T tree = new T().factory(bs, maturity, timeSteps_, payoff.strike());
+            T tree = FastActivator<T>.Create().factory(bs, maturity, timeSteps_, payoff.strike());
 
             BlackScholesLattice<T> lattice = new BlackScholesLattice<T>(tree, r, maturity, timeSteps_);
 

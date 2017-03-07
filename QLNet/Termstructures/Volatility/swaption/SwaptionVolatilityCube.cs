@@ -20,14 +20,14 @@ namespace QLNet
 {
    public abstract class SwaptionVolatilityCube : SwaptionVolatilityDiscrete
    {
-      public SwaptionVolatilityCube( Handle<SwaptionVolatilityStructure> atmVol,
-                                     List<Period> optionTenors,
-                                     List<Period> swapTenors,
-                                     List<double> strikeSpreads,
-                                     List<List<Handle<Quote> > > volSpreads,
-                                     SwapIndex swapIndexBase,
-                                     SwapIndex shortSwapIndexBase,
-                                     bool vegaWeightedSmileFit)
+      protected SwaptionVolatilityCube( Handle<SwaptionVolatilityStructure> atmVol,
+                                        List<Period> optionTenors,
+                                        List<Period> swapTenors,
+                                        List<double> strikeSpreads,
+                                        List<List<Handle<Quote> > > volSpreads,
+                                        SwapIndex swapIndexBase,
+                                        SwapIndex shortSwapIndexBase,
+                                        bool vegaWeightedSmileFit)
          :base(optionTenors, swapTenors, 0,atmVol.link.calendar(),atmVol.link.businessDayConvention(),
                atmVol.link.dayCounter())
       {

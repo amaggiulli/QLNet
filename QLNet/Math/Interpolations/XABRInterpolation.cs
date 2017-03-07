@@ -54,20 +54,18 @@ namespace QLNet
          XABREndCriteria_ = EndCriteria.Type.None;
 
          Utils.QL_REQUIRE( t > 0.0, () => "expiry time must be positive: " + t + " not allowed" );
-         Utils.QL_REQUIRE( _params.Count == new Model().dimension(), () =>
-                   "wrong number of parameters (" + _params.Count
-                                                  + "), should be "
-                                                  + new Model().dimension() );
-         Utils.QL_REQUIRE( paramIsFixed.Count == new Model().dimension(), () =>
-                   "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be "
-                   + new Model().dimension() );
+         Utils.QL_REQUIRE( _params.Count == FastActivator<Model>.Create().dimension(), () =>
+            "wrong number of parameters (" + _params.Count + "), should be " + FastActivator<Model>.Create().dimension() );
+         Utils.QL_REQUIRE( paramIsFixed.Count == FastActivator<Model>.Create().dimension(), () =>
+            "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be " + 
+            FastActivator<Model>.Create().dimension() );
 
          for ( int i = 0; i < _params.Count; ++i )
          {
             if ( _params[i] != null )
                paramIsFixed_[i] = paramIsFixed[i];
          }
-         new Model().defaultValues( params_, paramIsFixed_, forward_, t_ );
+         FastActivator<Model>.Create().defaultValues( params_, paramIsFixed_, forward_, t_ );
          updateModelInstance();
       }
 
@@ -75,8 +73,8 @@ namespace QLNet
       {
          // forward might have changed
          Utils.QL_REQUIRE( forward_ > 0.0, () => "forward must be positive: " + forward_ + " not allowed" );
-         modelInstance_ = new Model().instance( t_, forward_, params_ );
-         model_ = new Model();
+         modelInstance_ = FastActivator<Model>.Create().instance( t_, forward_, params_ );
+         model_ = FastActivator<Model>.Create();
       }
 
       /*! Expiry, Forward */
@@ -283,7 +281,7 @@ namespace QLNet
 
          public override double value( Vector x )
          {
-            Vector y = new Model().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = FastActivator<Model>.Create().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();
@@ -292,7 +290,7 @@ namespace QLNet
 
          public override Vector values( Vector x )
          {
-            Vector y = new Model().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = FastActivator<Model>.Create().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();

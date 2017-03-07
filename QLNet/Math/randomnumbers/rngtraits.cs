@@ -33,7 +33,7 @@ namespace QLNet {
     // random number traits
     public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new() where IC : IValue, new() {
         // data
-        public static IC icInstance = new IC();
+        public static IC icInstance = FastActivator<IC>.Create();
 
         // more traits
         public int allowsErrorEstimate { get { return 1; } }
@@ -59,14 +59,14 @@ namespace QLNet {
 
     public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new() where IC : IValue, new() {
         // data
-        public static IC icInstance = new IC();
+        public static IC icInstance = FastActivator<IC>.Create();
 
         // more traits
         public int allowsErrorEstimate { get { return 0; } }
 
         // factory
         public object make_sequence_generator(int dimension, ulong seed) {
-            URSG g = (URSG)new URSG().factory(dimension, seed);
+            URSG g = (URSG)FastActivator<URSG>.Create().factory(dimension, seed);
             return (icInstance != null ? new InverseCumulativeRsg<URSG, IC>(g, icInstance)
                                        : new InverseCumulativeRsg<URSG, IC>(g));
         }

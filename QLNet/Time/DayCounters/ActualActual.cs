@@ -71,9 +71,9 @@ namespace QLNet
                 Date refPeriodStart = (d3 ?? d1);
                 Date refPeriodEnd = (d4 ?? d2);
 
-                if (!(refPeriodEnd > refPeriodStart && refPeriodEnd > d1))
-                    throw new ArgumentException("Invalid reference period: date 1: " + d1 + ", date 2: " + d2 +
-                          ", reference period start: " + refPeriodStart + ", reference period end: " + refPeriodEnd);
+                Utils.QL_REQUIRE(refPeriodEnd > refPeriodStart && refPeriodEnd > d1,()=>
+                    "Invalid reference period: date 1: " + d1 + ", date 2: " + d2 +
+                    ", reference period start: " + refPeriodStart + ", reference period end: " + refPeriodEnd);
 
                 // estimate roughly the length in months of a period
                 int months = (int)(0.5 + 12 * (refPeriodEnd - refPeriodStart) / 365.0);
@@ -119,7 +119,7 @@ namespace QLNet
                 {
                     // here refPeriodEnd is the last (notional?) payment date
                     // d1 < refPeriodEnd < d2 AND refPeriodStart < refPeriodEnd
-                    if (!(refPeriodStart <= d1)) throw new ArgumentException("invalid dates: d1 < refPeriodStart < refPeriodEnd < d2");
+                    Utils.QL_REQUIRE(refPeriodStart<=d1, ()=> "invalid dates: d1 < refPeriodStart < refPeriodEnd < d2");
 
                     // now it is: refPeriodStart <= d1 < refPeriodEnd < d2
 

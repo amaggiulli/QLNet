@@ -23,7 +23,7 @@ namespace QLNet
 {
    public abstract class TwoFactorModel : ShortRateModel
    {
-      public TwoFactorModel(int nArguments)
+      protected TwoFactorModel(int nArguments)
          : base(nArguments)
       {}
 
@@ -47,7 +47,7 @@ namespace QLNet
          StochasticProcess1D xProcess_, yProcess_;
          public double correlation_;
 
-         public ShortRateDynamics(StochasticProcess1D xProcess,
+         protected ShortRateDynamics(StochasticProcess1D xProcess,
             StochasticProcess1D yProcess,
             double correlation)
          {

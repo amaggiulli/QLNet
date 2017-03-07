@@ -26,15 +26,15 @@ namespace QLNet
    public abstract class Coupon : CashFlow 
    {
       // Constructors
-      public Coupon() { }       // default constructor
+      protected Coupon() { }       // default constructor
       // coupon does not adjust the payment date which must already be a business day
-      public Coupon( Date paymentDate, 
-                     double nominal,  
-                     Date accrualStartDate, 
-                     Date accrualEndDate,
-                     Date refPeriodStart = null, 
-                     Date refPeriodEnd = null, 
-                     Date exCouponDate = null )
+      protected Coupon( Date paymentDate, 
+                        double nominal,  
+                        Date accrualStartDate, 
+                        Date accrualEndDate,
+                        Date refPeriodStart = null, 
+                        Date refPeriodEnd = null, 
+                        Date exCouponDate = null )
       {
          paymentDate_ = paymentDate;
          nominal_ = nominal;

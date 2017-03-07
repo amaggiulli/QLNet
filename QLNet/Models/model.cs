@@ -338,7 +338,7 @@ namespace QLNet {
     //! Abstract short-rate model class
     /*! \ingroup shortrate */
     public abstract class ShortRateModel : CalibratedModel {
-        public ShortRateModel(int nArguments) : base(nArguments) { }
+       protected ShortRateModel(int nArguments) : base(nArguments) { }
 
         public abstract Lattice tree(TimeGrid t);
     }

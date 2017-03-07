@@ -16,204 +16,258 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 
-namespace QLNet {
-    //! Discretized asset class used by numerical 
-    public abstract class DiscretizedAsset {
-        private Lattice method_;
-        public Lattice method() { return method_; }
+namespace QLNet
+{
+   //! Discretized asset class used by numerical 
+   public abstract class DiscretizedAsset
+   {
+      private Lattice method_;
 
-        protected double time_;
-        public double time() { return time_; }
+      public Lattice method()
+      {
+         return method_;
+      }
 
-        protected double latestPreAdjustment_, latestPostAdjustment_;
+      protected double time_;
 
-        protected Vector values_;
-        public Vector values() { return values_; }
+      public double time()
+      {
+         return time_;
+      }
 
+      protected double latestPreAdjustment_, latestPostAdjustment_;
 
-        public DiscretizedAsset() {
-            latestPreAdjustment_ = double.MaxValue;
-            latestPostAdjustment_ = double.MaxValue;
-        }
+      protected Vector values_;
 
+      public Vector values()
+      {
+         return values_;
+      }
 
-        /* High-level interface
+      protected DiscretizedAsset()
+      {
+         latestPreAdjustment_ = double.MaxValue;
+         latestPostAdjustment_ = double.MaxValue;
+      }
 
-            Users of discretized assets should use these methods in
-            order to initialize, evolve and take the present value of
-            the assets.  They call the corresponding methods in the
-            Lattice interface, to which we refer for
-            documentation.
+      /* High-level interface
+      
+                  Users of discretized assets should use these methods in
+                  order to initialize, evolve and take the present value of
+                  the assets.  They call the corresponding methods in the
+                  Lattice interface, to which we refer for
+                  documentation.
+      
+              */
 
-        */
-        public void initialize(Lattice method, double t) {
-            method_ = method;
-            method_.initialize(this, t);
-        }
+      public void initialize(Lattice method, double t)
+      {
+         method_ = method;
+         method_.initialize(this, t);
+      }
 
-        public void rollback(double to) {
-            method_.rollback(this, to);
-        }
-        public void partialRollback(double to) {
-            method_.partialRollback(this, to);
-        }
-        public double presentValue() {
-            return method_.presentValue(this);
-        }
+      public void rollback(double to)
+      {
+         method_.rollback(this, to);
+      }
 
-        /* Low-level interface
+      public void partialRollback(double to)
+      {
+         method_.partialRollback(this, to);
+      }
 
-            These methods (that developers should override when
-            deriving from DiscretizedAsset) are to be used by
-            numerical methods and not directly by users, with the
-            exception of adjustValues(), preAdjustValues() and
-            postAdjustValues() that can be used together with
-            partialRollback().
-        */
+      public double presentValue()
+      {
+         return method_.presentValue(this);
+      }
 
-        /*! This method should initialize the asset values to an Array
-            of the given size and with values depending on the
-            particular asset.
-        */
-        public abstract void reset(int size);
+      /* Low-level interface
 
-        /*! This method will be invoked after rollback and before any
-        other asset (i.e., an option on this one) has any chance to
-        look at the values. For instance, payments happening at times
-        already spanned by the rollback will be added here.
+          These methods (that developers should override when
+          deriving from DiscretizedAsset) are to be used by
+          numerical methods and not directly by users, with the
+          exception of adjustValues(), preAdjustValues() and
+          postAdjustValues() that can be used together with
+          partialRollback().
+      */
 
-        This method is not virtual; derived classes must override
-        the protected preAdjustValuesImpl() method instead. */
-        public void preAdjustValues() {
-            if (!Utils.close(time(), latestPreAdjustment_)) {
-                preAdjustValuesImpl();
-                latestPreAdjustment_ = time();
-            }
-        }
+      /*! This method should initialize the asset values to an Array
+          of the given size and with values depending on the
+          particular asset.
+      */
+      public abstract void reset(int size);
 
-        /*! This method will be invoked after rollback and after any
-        other asset had their chance to look at the values. For
-        instance, payments happening at the present time (and therefore
-        not included in an option to be exercised at this time) will be
-        added here.
+      /*! This method will be invoked after rollback and before any
+      other asset (i.e., an option on this one) has any chance to
+      look at the values. For instance, payments happening at times
+      already spanned by the rollback will be added here.
 
-        This method is not virtual; derived classes must override
-        the protected postAdjustValuesImpl() method instead. */
-        public void postAdjustValues() {
-            if (!Utils.close(time(), latestPostAdjustment_)) {
-                postAdjustValuesImpl();
-                latestPostAdjustment_ = time();
-            }
-        }
+      This method is not virtual; derived classes must override
+      the protected preAdjustValuesImpl() method instead. */
 
-        /*! This method performs both pre- and post-adjustment */
-        public void adjustValues() {
-            preAdjustValues();
-            postAdjustValues();
-        }
+      public void preAdjustValues()
+      {
+         if (!Utils.close(time(), latestPreAdjustment_))
+         {
+            preAdjustValuesImpl();
+            latestPreAdjustment_ = time();
+         }
+      }
 
-        /*! This method returns the times at which the numerical
-            method should stop while rolling back the asset. Typical
-            examples include payment times, exercise times and such.
+      /*! This method will be invoked after rollback and after any
+      other asset had their chance to look at the values. For
+      instance, payments happening at the present time (and therefore
+      not included in an option to be exercised at this time) will be
+      added here.
 
-            \note The returned values are not guaranteed to be sorted.
-        */
-        public abstract List<double> mandatoryTimes();
+      This method is not virtual; derived classes must override
+      the protected postAdjustValuesImpl() method instead. */
 
+      public void postAdjustValues()
+      {
+         if (!Utils.close(time(), latestPostAdjustment_))
+         {
+            postAdjustValuesImpl();
+            latestPostAdjustment_ = time();
+         }
+      }
 
-        /*! This method checks whether the asset was rolled at the given time. */
-        protected bool isOnTime(double t) {
-            TimeGrid grid = method().timeGrid();
-            return Utils.close(grid[grid.index(t)],time());
-        }
-        /*! This method performs the actual pre-adjustment */
-        protected virtual void preAdjustValuesImpl() {}
-        /*! This method performs the actual post-adjustment */
-        protected virtual void postAdjustValuesImpl() {}
+      /*! This method performs both pre- and post-adjustment */
 
-        // safe version of QL double* time()
-        public void setTime(double t) { time_ = t; }
+      public void adjustValues()
+      {
+         preAdjustValues();
+         postAdjustValues();
+      }
 
-        // safe version of QL Vector* values()
-        public void setValues(Vector v) { values_ = v; }
-    }
+      /*! This method returns the times at which the numerical
+          method should stop while rolling back the asset. Typical
+          examples include payment times, exercise times and such.
 
-    //! Useful discretized discount bond asset
-    public class DiscretizedDiscountBond : DiscretizedAsset {
+          \note The returned values are not guaranteed to be sorted.
+      */
+      public abstract List<double> mandatoryTimes();
 
-        public override void reset(int size) {
-            values_ = new Vector(size, 1.0);
-        }
+      /*! This method checks whether the asset was rolled at the given time. */
 
-        public override List<double> mandatoryTimes() {
-            return new Vector();
-        }
-    }
+      protected bool isOnTime(double t)
+      {
+         TimeGrid grid = method().timeGrid();
+         return Utils.close(grid[grid.index(t)], time());
+      }
 
-    //! Discretized option on a given asset
-    /*! \warning it is advised that derived classes take care of
-                 creating and initializing themselves an instance of
-                 the underlying.
-    */
-    public class DiscretizedOption : DiscretizedAsset {
-        protected DiscretizedAsset underlying_;
-        protected Exercise.Type exerciseType_;
-        protected List<double> exerciseTimes_;
+      /*! This method performs the actual pre-adjustment */
 
-        public DiscretizedOption(DiscretizedAsset underlying, Exercise.Type exerciseType, List<double> exerciseTimes) {
-            underlying_ = underlying;
-            exerciseType_ = exerciseType;
-            exerciseTimes_ =exerciseTimes;
-        }
+      protected virtual void preAdjustValuesImpl()
+      {}
 
-        public override void reset(int size) {
-            Utils.QL_REQUIRE(method() == underlying_.method(),()=> "option and underlying were initialized on different methods");
-            values_ = new Vector(size, 0.0);
-            adjustValues();
-        }
+      /*! This method performs the actual post-adjustment */
 
-        public override List<double> mandatoryTimes()  {
-            List<double> times = underlying_.mandatoryTimes();
+      protected virtual void postAdjustValuesImpl()
+      {}
 
-            // add the positive ones
-            times.AddRange(exerciseTimes_.FindAll(x => x > 0));
-            return times;
-        }
-        
-        protected override void postAdjustValuesImpl() {
-            /* In the real world, with time flowing forward, first
-               any payment is settled and only after options can be
-               exercised. Here, with time flowing backward, options
-               must be exercised before performing the adjustment.
-            */
-            underlying_.partialRollback(time());
-            underlying_.preAdjustValues();
-            switch (exerciseType_) {
-                case Exercise.Type.American:
-                    if (time_ >= exerciseTimes_[0] && time_ <= exerciseTimes_[1])
-                        applyExerciseCondition();
-                    break;
-                case Exercise.Type.Bermudan:
-                case Exercise.Type.European:
-                    for (int i=0; i<exerciseTimes_.Count; i++) {
-                        double t = exerciseTimes_[i];
-                        if (t >= 0.0 && isOnTime(t))
-                            applyExerciseCondition();
-                    }
-                    break;
-                default:
-                    Utils.QL_FAIL("invalid exercise type");
-                    break;
-            }
-            underlying_.postAdjustValues();
-        }
+      // safe version of QL double* time()
+      public void setTime(double t)
+      {
+         time_ = t;
+      }
 
-        protected void applyExerciseCondition() {
-            for (int i=0; i<values_.size(); i++)
-                values_[i] = Math.Max(underlying_.values()[i], values_[i]);
-        }
-    }
+      // safe version of QL Vector* values()
+      public void setValues(Vector v)
+      {
+         values_ = v;
+      }
+   }
+
+   //! Useful discretized discount bond asset
+   public class DiscretizedDiscountBond : DiscretizedAsset
+   {
+      public override void reset(int size)
+      {
+         values_ = new Vector(size, 1.0);
+      }
+
+      public override List<double> mandatoryTimes()
+      {
+         return new Vector();
+      }
+   }
+
+   //! Discretized option on a given asset
+   /*! \warning it is advised that derived classes take care of
+                creating and initializing themselves an instance of
+                the underlying.
+   */
+
+   public class DiscretizedOption : DiscretizedAsset
+   {
+      protected DiscretizedAsset underlying_;
+      protected Exercise.Type exerciseType_;
+      protected List<double> exerciseTimes_;
+
+      public DiscretizedOption(DiscretizedAsset underlying, Exercise.Type exerciseType, List<double> exerciseTimes)
+      {
+         underlying_ = underlying;
+         exerciseType_ = exerciseType;
+         exerciseTimes_ = exerciseTimes;
+      }
+
+      public override void reset(int size)
+      {
+         Utils.QL_REQUIRE(method() == underlying_.method(),
+            () => "option and underlying were initialized on different methods");
+         values_ = new Vector(size, 0.0);
+         adjustValues();
+      }
+
+      public override List<double> mandatoryTimes()
+      {
+         List<double> times = underlying_.mandatoryTimes();
+
+         // add the positive ones
+         times.AddRange(exerciseTimes_.FindAll(x => x > 0));
+         return times;
+      }
+
+      protected override void postAdjustValuesImpl()
+      {
+         /* In the real world, with time flowing forward, first
+            any payment is settled and only after options can be
+            exercised. Here, with time flowing backward, options
+            must be exercised before performing the adjustment.
+         */
+         underlying_.partialRollback(time());
+         underlying_.preAdjustValues();
+         switch (exerciseType_)
+         {
+            case Exercise.Type.American:
+               if (time_ >= exerciseTimes_[0] && time_ <= exerciseTimes_[1])
+                  applyExerciseCondition();
+               break;
+            case Exercise.Type.Bermudan:
+            case Exercise.Type.European:
+               for (int i = 0; i < exerciseTimes_.Count; i++)
+               {
+                  double t = exerciseTimes_[i];
+                  if (t >= 0.0 && isOnTime(t))
+                     applyExerciseCondition();
+               }
+               break;
+            default:
+               Utils.QL_FAIL("invalid exercise type");
+               break;
+         }
+         underlying_.postAdjustValues();
+      }
+
+      protected void applyExerciseCondition()
+      {
+         for (int i = 0; i < values_.size(); i++)
+            values_[i] = Math.Max(underlying_.values()[i], values_[i]);
+      }
+   }
 }

@@ -105,9 +105,9 @@ namespace QLNet
            protected Matrix zData_;
 
            // this method should be used for initialisation
-           public templateImpl( List<double> xBegin, int xSize,
-                                List<double> yBegin, int ySize,
-                                Matrix zData) {
+           protected templateImpl( List<double> xBegin, int xSize,
+                                   List<double> yBegin, int ySize,
+                                   Matrix zData) {
                xBegin_ = xBegin;
                xSize_ = xSize;
                yBegin_ = yBegin;

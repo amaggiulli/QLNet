@@ -46,7 +46,7 @@ namespace QLNet {
             // ...and refine it
             int i = 1;
 
-            IntegrationPolicy ip = new IntegrationPolicy();
+            IntegrationPolicy ip = FastActivator<IntegrationPolicy>.Create();
             do {
                 newI = ip.integrate(f, a, b, I, N);
                 N *= ip.nbEvalutions();

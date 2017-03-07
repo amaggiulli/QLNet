@@ -77,7 +77,7 @@ namespace QLNet
                                    Interpolator interpolator = default(Interpolator))
          : base(dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       public InterpolatedZeroCurve(Date referenceDate,
@@ -87,7 +87,7 @@ namespace QLNet
                                    Interpolator interpolator = default(Interpolator))
          : base(referenceDate, null, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       public InterpolatedZeroCurve(int settlementDays,
@@ -98,7 +98,7 @@ namespace QLNet
                                    Interpolator interpolator = default(Interpolator))
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       public InterpolatedZeroCurve(List<Date> dates,
@@ -115,7 +115,7 @@ namespace QLNet
          times_ = new List<double>();
          dates_ = dates;
          data_ = yields;
-         interpolator_ = interpolator ?? new Interpolator();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
          initialize(compounding, frequency);
       }
 

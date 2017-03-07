@@ -164,7 +164,7 @@ namespace QLNet {
 
         //public FDEngineAdapter(GeneralizedBlackScholesProcess process, Size timeSteps=100, Size gridPoints=100, bool timeDependent = false)
         public FDEngineAdapter(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent) {
-            optionBase = (Base)new Base().factory(process, timeSteps, gridPoints, timeDependent);
+            optionBase = (Base) FastActivator<Base>.Create().factory(process, timeSteps, gridPoints, timeDependent);
             process.registerWith(update);
         }
 
@@ -176,7 +176,7 @@ namespace QLNet {
 
         #region IGenericEngine wrap-up
         // we do not need to register with the wrapped engine because all we need is containers for parameters and results
-        protected IGenericEngine engine_ = new Engine();    
+        protected IGenericEngine engine_ = FastActivator<Engine>.Create();    
 
         public IPricingEngineArguments getArguments() { return engine_.getArguments(); }
         public IPricingEngineResults getResults() { return engine_.getResults(); }

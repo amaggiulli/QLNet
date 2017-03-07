@@ -219,7 +219,7 @@ namespace QLNet
       public MakeMCAmericanEngine<RNG, S> withAbsoluteTolerance( double tolerance )
       {
          Utils.QL_REQUIRE(samples_ == null,()=> "number of samples already set");
-         Utils.QL_REQUIRE( new RNG().allowsErrorEstimate != 0, () => "chosen random generator policy does not allow an error estimate" );
+         Utils.QL_REQUIRE( FastActivator<RNG>.Create().allowsErrorEstimate != 0, () => "chosen random generator policy does not allow an error estimate" );
 
          tolerance_ = tolerance;
          return this;

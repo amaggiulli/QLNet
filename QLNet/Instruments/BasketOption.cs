@@ -25,7 +25,7 @@ namespace QLNet
    {
       private Payoff basePayoff_;
 
-      public BasketPayoff(Payoff p)
+      protected BasketPayoff(Payoff p)
       {
          basePayoff_ = p;
       }

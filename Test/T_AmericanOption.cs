@@ -460,7 +460,7 @@ namespace TestSuite {
                                                      new Handle<YieldTermStructure>( rTS ),
                                                      new Handle<BlackVolTermStructure>( volTS ) );
 
-                       IPricingEngine engine = new Engine().factory( stochProcess );
+                       IPricingEngine engine = FastActivator<Engine>.Create().factory( stochProcess );
 
                        VanillaOption option = new VanillaOption( payoff, exercise );
                        option.setPricingEngine( engine );

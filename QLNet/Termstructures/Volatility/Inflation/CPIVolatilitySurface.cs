@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -32,13 +31,14 @@ namespace QLNet
         /*! calculates the reference date based on the global
             evaluation date.
         */
-        public CPIVolatilitySurface(int settlementDays,
-                                    Calendar cal,
-                                    BusinessDayConvention bdc,
-                                    DayCounter dc,
-                                    Period observationLag,
-                                    Frequency frequency,
-                                    bool indexIsInterpolated)
+
+       protected CPIVolatilitySurface(int settlementDays,
+                                      Calendar cal,
+                                      BusinessDayConvention bdc,
+                                      DayCounter dc,
+                                      Period observationLag,
+                                      Frequency frequency,
+                                      bool indexIsInterpolated)
             :base(settlementDays, cal, bdc, dc)
         {
             baseLevel_ = null;

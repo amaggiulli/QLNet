@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -34,20 +33,21 @@ namespace QLNet
                   constructor must manage their own reference date
                   by overriding the referenceDate() method.
       */
-      public CallableBondVolatilityStructure(DayCounter dc = null, BusinessDayConvention bdc = BusinessDayConvention.Following)
+
+      protected CallableBondVolatilityStructure(DayCounter dc = null, BusinessDayConvention bdc = BusinessDayConvention.Following)
          : base(dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }
       //! initialize with a fixed reference date
-      public CallableBondVolatilityStructure( Date referenceDate, Calendar calendar = null, DayCounter dc = null,
+      protected CallableBondVolatilityStructure( Date referenceDate, Calendar calendar = null, DayCounter dc = null,
                                               BusinessDayConvention bdc = BusinessDayConvention.Following)
          : base(referenceDate, calendar ?? new Calendar(), dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }
       //! calculate the reference date based on the global evaluation date
-      public CallableBondVolatilityStructure(int settlementDays, Calendar calendar, DayCounter dc = null,
+      protected CallableBondVolatilityStructure(int settlementDays, Calendar calendar, DayCounter dc = null,
                                               BusinessDayConvention bdc = BusinessDayConvention.Following)
          : base(settlementDays, calendar, dc ?? new DayCounter())
       {

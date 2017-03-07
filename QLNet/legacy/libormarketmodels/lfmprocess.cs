@@ -51,8 +51,7 @@ namespace QLNet
             DayCounter dayCounter = index.dayCounter();
             IList<CashFlow> flows = cashFlows(1);
 
-            if(!(size_ == flows.Count))
-                    throw new ArgumentException( "wrong number of cashflows");
+            Utils.QL_REQUIRE(size_ == flows.Count,()=> "wrong number of cashflows");
 
             Date settlement = index_.forwardingTermStructure().link.referenceDate();
             Date startDate;
@@ -63,8 +62,7 @@ namespace QLNet
             {
                 IborCoupon coupon = (IborCoupon)flows[i];
 
-                if(!(coupon.date() == coupon.accrualEndDate()))
-                    throw new ArgumentException("irregular coupon types are not suppported");
+                Utils.QL_REQUIRE(coupon.date() == coupon.accrualEndDate(),()=> "irregular coupon types are not suppported");
 
                 initialValues_[i]=coupon.rate();
                 accrualPeriod_[i]=coupon.accrualPeriod();

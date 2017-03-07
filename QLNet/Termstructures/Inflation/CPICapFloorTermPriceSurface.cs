@@ -40,19 +40,19 @@ namespace QLNet
    */    
    public abstract class CPICapFloorTermPriceSurface : InflationTermStructure
    {
-      public CPICapFloorTermPriceSurface(double nominal, 
-                                         double baseRate,  // avoids an uncontrolled crash if index has no TS
-                                         Period observationLag,   
-                                         Calendar cal, // calendar in index may not be useful
-                                         BusinessDayConvention bdc,
-                                         DayCounter dc,
-                                         Handle<ZeroInflationIndex> zii,
-                                         Handle<YieldTermStructure> yts,
-                                         List<double> cStrikes,
-                                         List<double> fStrikes,
-                                         List<Period> cfMaturities,
-                                         Matrix cPrice,
-                                         Matrix fPrice)
+      protected CPICapFloorTermPriceSurface(double nominal, 
+                                            double baseRate,  // avoids an uncontrolled crash if index has no TS
+                                            Period observationLag,   
+                                            Calendar cal, // calendar in index may not be useful
+                                            BusinessDayConvention bdc,
+                                            DayCounter dc,
+                                            Handle<ZeroInflationIndex> zii,
+                                            Handle<YieldTermStructure> yts,
+                                            List<double> cStrikes,
+                                            List<double> fStrikes,
+                                            List<Period> cfMaturities,
+                                            Matrix cPrice,
+                                            Matrix fPrice)
          :base(0, cal, baseRate, observationLag, zii.link.frequency(), zii.link.interpolated(), yts, dc)
       {
          zii_ = zii; 
@@ -227,7 +227,7 @@ namespace QLNet
                                                      Matrix fPrice)
          :base(nominal, startRate, observationLag, cal, bdc, dc,zii, yts, cStrikes, fStrikes, cfMaturities, cPrice, fPrice)
       {
-         interpolator2d_ = new Interpolator2D();
+         interpolator2d_ = FastActivator<Interpolator2D>.Create();
 
          performCalculations();
       }

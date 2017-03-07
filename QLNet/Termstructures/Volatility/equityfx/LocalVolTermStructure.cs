@@ -36,16 +36,16 @@ namespace QLNet
                    by overriding the referenceDate() method.
       */
 
-      public LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
+      protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          :base(bdc, dc) {}
       
       //! initialize with a fixed reference date
-      public LocalVolTermStructure(Date referenceDate,Calendar cal = null,
+      protected LocalVolTermStructure(Date referenceDate,Calendar cal = null,
          BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
          :base(referenceDate, cal, bdc, dc) {}
       
       //! calculate the reference date based on the global evaluation date
-      public LocalVolTermStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc = BusinessDayConvention.Following,
+      protected LocalVolTermStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)
          :base(settlementDays, cal, bdc, dc) {}
       

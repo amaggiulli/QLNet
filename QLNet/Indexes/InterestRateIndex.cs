@@ -154,7 +154,7 @@ namespace QLNet
 
 
       // need by CashFlowVectors
-      public InterestRateIndex() { }
+      protected InterestRateIndex() { }
    }
 
 }

@@ -38,14 +38,14 @@ namespace QLNet
    {
       #region Constructors
 
-      public HazardRateStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
+      protected HazardRateStructure(DayCounter dc = null,List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          : base(dc, jumps, jumpDates) {}
-         
-      public HazardRateStructure(Date referenceDate,Calendar cal = null,DayCounter dc = null,
+
+      protected HazardRateStructure(Date referenceDate,Calendar cal = null,DayCounter dc = null,
          List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          : base(referenceDate, cal, dc, jumps, jumpDates) { }
-      
-      public HazardRateStructure(int settlementDays,Calendar cal,DayCounter dc = null,
+
+      protected HazardRateStructure(int settlementDays,Calendar cal,DayCounter dc = null,
          List<Handle<Quote> > jumps = null,List<Date> jumpDates = null)
          : base(settlementDays, cal, dc, jumps, jumpDates) { }
 
