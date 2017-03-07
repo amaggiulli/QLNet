@@ -15,6 +15,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Reflection.Emit;
 
 namespace QLNet
@@ -38,12 +39,21 @@ namespace QLNet
          Expression<Func<T>> expr = () => new T();
          NewExpression newExpr = (NewExpression)expr.Body;
 
+         #if QL_DOTNET_FRAMEWORK
          var method = new DynamicMethod(
              name: "lambda",
              returnType: newExpr.Type,
              parameterTypes: new Type[0],
              m: typeof(DynamicModuleLambdaCompiler).Module,
              skipVisibility: true);
+         #else
+         var method = new DynamicMethod(
+             name: "lambda",
+             returnType: newExpr.Type,
+             parameterTypes: new Type[0],
+             m: typeof(DynamicModuleLambdaCompiler).GetTypeInfo().Module,
+             skipVisibility: true);
+         #endif
 
          ILGenerator ilGen = method.GetILGenerator();
          // Constructor for value types could be null

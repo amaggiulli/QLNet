@@ -1570,7 +1570,7 @@
           "System.Runtime": "4.1.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {}
@@ -1585,7 +1585,7 @@
           "System.Runtime": "4.1.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/System.Reflection.Emit.Lightweight.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll": {}
@@ -2480,11 +2480,12 @@
           "lib/netstandard1.1/xunit.runner.utility.dotnet.dll": {}
         }
       },
-      "QLNet/1.8.0": {
+      "QLNet/1.9.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.1",
         "dependencies": {
-          "NETStandard.Library": "1.6.0"
+          "NETStandard.Library": "1.6.0",
+          "System.Reflection.Emit.Lightweight": "4.0.0"
         },
         "compile": {
           "netstandard1.1/QLNet.dll": {}
@@ -7475,7 +7476,7 @@
         "xunit.runner.utility.nuspec"
       ]
     },
-    "QLNet/1.8.0": {
+    "QLNet/1.9.1": {
       "type": "project",
       "path": "../QLNet/project.json",
       "msbuildProject": "../QLNet/QLNet.xproj"
@@ -7483,7 +7484,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "QLNet >= 1.8.0-*",
+      "QLNet >= 1.9.1-*",
       "dotnet-test-xunit >= 2.2.0-preview2-build1029",
       "xunit >= 2.2.0-beta2-build3300"
     ],

@@ -4,7 +4,7 @@
   "dependencies": {
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "xunit": "2.2.0-beta2-build3300",
-	"QLNet": "1.8.0-*"
+	"QLNet": "1.9.1-*"
   },
 
   "frameworks": {
