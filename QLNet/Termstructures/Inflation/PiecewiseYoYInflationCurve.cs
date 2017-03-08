@@ -208,9 +208,34 @@ namespace QLNet
 		where Traits : ITraits<YoYInflationTermStructure>, new()
 		where Interpolator : IInterpolationFactory, new()
 		where Bootstrap : IBootStrap<PiecewiseYoYInflationCurve>, new()
-	{
+    {
+        #region Constructors
+        public PiecewiseYoYInflationCurve( Date referenceDate,
+					Calendar calendar,
+					DayCounter dayCounter,
+					Period lag,
+					Frequency frequency,
+					bool indexIsInterpolated,
+					double baseZeroRate,
+					Handle<YieldTermStructure> nominalTS,
+					List<BootstrapHelper<YoYInflationTermStructure>> instruments)
+			: this( referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS, instruments, 1.0e-12, 
+             FastActivator<Interpolator>.Create(),  FastActivator<Bootstrap>.Create()) { }
 
-		public PiecewiseYoYInflationCurve( Date referenceDate,
+         public PiecewiseYoYInflationCurve( Date referenceDate,
+					Calendar calendar,
+					DayCounter dayCounter,
+					Period lag,
+					Frequency frequency,
+					bool indexIsInterpolated,
+					double baseZeroRate,
+					Handle<YieldTermStructure> nominalTS,
+					List<BootstrapHelper<YoYInflationTermStructure>> instruments,
+					double accuracy = 1.0e-12)
+			: this( referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS, instruments, accuracy, 
+             FastActivator<Interpolator>.Create(),  FastActivator<Bootstrap>.Create()) { }
+
+        public PiecewiseYoYInflationCurve( Date referenceDate,
 					Calendar calendar,
 					DayCounter dayCounter,
 					Period lag,
@@ -240,8 +265,9 @@ namespace QLNet
 			bootstrap_.setup( this );
 
 		}
+        #endregion
 
-		// Inflation interface
+        // Inflation interface
 		public override Date baseDate()
 		{
 			this.calculate();

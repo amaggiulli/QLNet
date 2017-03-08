@@ -209,9 +209,34 @@ namespace QLNet
 		where Traits : ITraits<ZeroInflationTermStructure>, new()
 		where Interpolator : IInterpolationFactory, new()
 		where Bootstrap : IBootStrap<PiecewiseZeroInflationCurve>, new()
-	{
+    {
+        #region Constructors
+        public PiecewiseZeroInflationCurve(Date referenceDate,
+                    Calendar calendar,
+                    DayCounter dayCounter,
+                    Period lag,
+                    Frequency frequency,
+                    bool indexIsInterpolated,
+                    double baseZeroRate,
+                    Handle<YieldTermStructure> nominalTS,
+                    List<BootstrapHelper<ZeroInflationTermStructure>> instruments)
+            : this(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS, instruments, 1.0e-12
+                                , FastActivator<Interpolator>.Create(), FastActivator<Bootstrap>.Create()) { }
 
-		public PiecewiseZeroInflationCurve( Date referenceDate,
+        public PiecewiseZeroInflationCurve(Date referenceDate,
+					Calendar calendar,
+					DayCounter dayCounter,
+					Period lag,
+					Frequency frequency,
+					bool indexIsInterpolated,
+					double baseZeroRate,
+					Handle<YieldTermStructure> nominalTS,
+					List<BootstrapHelper<ZeroInflationTermStructure>> instruments,
+					double accuracy = 1.0e-12)
+            : this(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS, instruments, accuracy
+                                , FastActivator<Interpolator>.Create(), FastActivator<Bootstrap>.Create()) { }
+
+		public PiecewiseZeroInflationCurve(Date referenceDate,
 					Calendar calendar,
 					DayCounter dayCounter,
 					Period lag,
@@ -241,8 +266,8 @@ namespace QLNet
 			bootstrap_.setup( this );
 
 		}
-
-		// Inflation interface
+        #endregion
+        // Inflation interface
 		public override Date baseDate()
 		{
 			this.calculate();
