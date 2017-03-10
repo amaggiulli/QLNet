@@ -141,7 +141,7 @@ namespace QLNet
             )
          {
             Date payNotional;
-            floatingLeg = new List<CashFlow>();
+            
             if (floatSchedule_.Count==1) 
             { 
                // no coupons
