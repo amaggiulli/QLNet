@@ -170,8 +170,8 @@ namespace QLNet
             Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).value().ContainsKey( lim.Key ), () =>
                "Missing " + name() + " fixing for " + lim.Key );
 
-            double pastFixing = IndexManager.instance().getHistory( name() ).value()[lim.Key];
-            double theFixing = pastFixing;
+            double? pastFixing = IndexManager.instance().getHistory( name() ).value()[lim.Key];
+            double? theFixing = pastFixing;
             if ( interpolated_ )
             {
                // fixings stored on first day of every period
@@ -184,13 +184,13 @@ namespace QLNet
                {
                   Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).value().ContainsKey( lim.Value + 1 ), () =>
                      "Missing " + name() + " fixing for " + ( lim.Value + 1 ) );
-                  double pastFixing2 = IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
+                  double? pastFixing2 = IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
                   // now linearly interpolate
                   double daysInPeriod = lim.Value + 1 - lim.Key;
                   theFixing = pastFixing + ( pastFixing2 - pastFixing ) * ( aFixingDate - lim.Key ) / daysInPeriod;
                }
             }
-            return theFixing;
+            return theFixing.GetValueOrDefault();
          }
          else
          {

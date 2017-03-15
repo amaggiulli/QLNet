@@ -23,8 +23,8 @@ using System.Collections.Generic;
 namespace QLNet {
     //! global repository for past index fixings
     public class IndexManager {
-        private static Dictionary<string, ObservableValue<TimeSeries<double>>> data_ =
-            new Dictionary<string, ObservableValue<TimeSeries<double>>>();
+        private static Dictionary<string, ObservableValue<TimeSeries<double?>>> data_ =
+            new Dictionary<string, ObservableValue<TimeSeries<double?>>>();
 
         // Index manager can store a callback for missing fixings
         public static Func<InterestRateIndex, DateTime, double> MissingPastFixingCallBack { get; set; }
@@ -39,19 +39,19 @@ namespace QLNet {
         }
 
         //! returns the (possibly empty) history of the index fixings
-        public ObservableValue<TimeSeries<double>> getHistory(string name) {
+        public ObservableValue<TimeSeries<double?>> getHistory(string name) {
             checkExists(name);
             return data_[name];
         }
 
         //! stores the historical fixings of the index
-        public void setHistory(string name, ObservableValue<TimeSeries<double>> history) {
+        public void setHistory(string name, ObservableValue<TimeSeries<double?>> history) {
             checkExists(name);
             data_[name].Assign(history);
         }
 
         //! observer notifying of changes in the index fixings; in .NET it has the same logic as getHistory
-        public ObservableValue<TimeSeries<double>> notifier(string name) { return getHistory(name); }
+        public ObservableValue<TimeSeries<double?>> notifier(string name) { return getHistory(name); }
 
         //! returns all names of the indexes for which fixings were stored
         public List<string> histories() {
@@ -74,7 +74,7 @@ namespace QLNet {
         // checks whether index exists and adds it otherwise; for interal use only
         private void checkExists(string name) {
             if (!data_.ContainsKey(name))
-                data_.Add(name, new ObservableValue<TimeSeries<double>>());
+                data_.Add(name, new ObservableValue<TimeSeries<double?>>());
         }
     }
 }

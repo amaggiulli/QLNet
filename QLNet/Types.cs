@@ -16,7 +16,10 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QLNet {
     // interface for all value methods
@@ -38,13 +41,97 @@ namespace QLNet {
        public const double M_2_PI = 0.636619772367581343076;
     }
 
-    public class TimeSeries<T> : Dictionary<Date, T> {
-		// constructors
-		public TimeSeries() : base() {}
-        public TimeSeries(int size) : base(size) { }
-    }
+   public class TimeSeries<T> : IDictionary<Date, T>
+   {
+      private Dictionary<Date, T> backingDictionary_;
 
-    public struct Duration {
+      // constructors
+      public TimeSeries()
+      {
+         backingDictionary_ = new Dictionary<Date, T>();
+      }
+
+      public TimeSeries(int size)
+      {
+         backingDictionary_ = new Dictionary<Date, T>(size);
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+         return backingDictionary_.GetEnumerator();
+      }
+
+      public IEnumerator<KeyValuePair<Date, T>> GetEnumerator()
+      {
+         return backingDictionary_.GetEnumerator();
+      }
+
+      public void Add(KeyValuePair<Date, T> item)
+      {
+         backingDictionary_.Add(item.Key, item.Value);
+      }
+
+      public void Clear()
+      {
+         backingDictionary_.Clear();
+      }
+
+      public bool Contains(KeyValuePair<Date, T> item)
+      {
+         return backingDictionary_.Contains(item);
+      }
+
+      public void CopyTo(KeyValuePair<Date, T>[] array, int arrayIndex)
+      {
+         throw new System.NotImplementedException();
+      }
+
+      public bool Remove(KeyValuePair<Date, T> item)
+      {
+         return backingDictionary_.Remove(item.Key);
+      }
+
+      public int Count { get; }
+      public bool IsReadOnly { get; }
+
+      public bool ContainsKey(Date key)
+      {
+         return backingDictionary_.ContainsKey(key);
+      }
+
+      public void Add(Date key, T value)
+      {
+         backingDictionary_.Add(key,value);
+      }
+
+      public bool Remove(Date key)
+      {
+         return backingDictionary_.Remove(key);
+      }
+
+      public bool TryGetValue(Date key, out T value)
+      {
+         return backingDictionary_.TryGetValue(key, out value);
+      }
+
+      public T this[Date key]
+      {
+         get
+         {
+            if (backingDictionary_.ContainsKey(key))
+            {
+               return backingDictionary_[key];
+            }
+            return default(T);
+         }
+         set { backingDictionary_[key] = value; }
+      }
+
+      public ICollection<Date> Keys { get { return backingDictionary_.Keys; } }
+      public ICollection<T> Values { get { return backingDictionary_.Values; } }
+   }
+
+   public struct Duration {
         public enum Type { Simple, Macaulay, Modified };
     };
 
