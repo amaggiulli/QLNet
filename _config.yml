@@ -10,7 +10,7 @@ locale                   : "en"
 title                    : "QLNet Blog"
 title_separator          : "-"
 name                     : "Andrea Maggiulli"
-description              : "An amazing website."
+description              : "QLNet Financial Library"
 url                      : "https://amaggiulli.github.io"
 baseurl                  : "/QLNet"
 repository               : "amaggiulli/qlnet"
@@ -18,7 +18,7 @@ teaser                   : # path of fallback teaser image, e.g. "/assets/images
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
+  provider               : "staticman" # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "custom"
   disqus:
     shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
@@ -79,7 +79,7 @@ analytics:
 author:
   name             : "Andrea Maggiulli"
   avatar           : "/assets/images/andrea-maggiulli.jpg"
-  bio              : "I am an amazing person."
+  bio              : "QLNet founder, lead developer and administrator."
   location         : "Rome,IT"
   email            : 
   uri              :
