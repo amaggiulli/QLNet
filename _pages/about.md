@@ -10,7 +10,7 @@ QLNet is a financial library written in C# for the Windows enviroment derived pr
 which has been used as a base reference for modelling various financial instruments.
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
-![Build status](https://ci.appveyor.com/api/projects/status/iii1m7n3cdq3v5xm?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet)
+[![Build status](https://ci.appveyor.com/api/projects/status/iii1m7n3cdq3v5xm?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet)
 [![NuGet](https://buildstats.info/nuget/qlnet)](https://www.nuget.org/packages/qlnet/)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=QLNet-develop)](https://sonarqube.com/dashboard/index?id=QLNet-develop)
