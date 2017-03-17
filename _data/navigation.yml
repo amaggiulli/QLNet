@@ -1,9 +1,9 @@
 # main links
 main:
   - title: "Quick-Start Guide"
-    url: http://amaggiulli.github.io/QLNet/docs/quick-start-guide/
-   - title: "About"
-     url: http://amaggiulli.github.io/QLNet/about/
+    url: https://amaggiulli.github.io/QLNet/docs/quick-start-guide/
+  - title: "About"
+    url: https://amaggiulli.github.io/QLNet/about/
   # - title: "Sample Posts"
   #   url: /year-archive/
   # - title: "Sample Collections"
