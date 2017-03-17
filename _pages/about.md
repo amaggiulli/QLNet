@@ -1,3 +1,11 @@
+---
+permalink: /about/
+title: "About"
+excerpt: "About QLNet Library"
+layouts_gallery:
+modified: 2017-03-17T15:02:13-05:00
+---
+
 QLNet
 =====
 
