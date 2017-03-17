@@ -78,7 +78,7 @@ analytics:
 # Site Author
 author:
   name             : "Andrea Maggiulli"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/andrea-maggiulli.jpg"
   bio              : "I am an amazing person."
   location         : "Rome,IT"
   email            : "a.maggiulli@gmail.com"
