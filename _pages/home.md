@@ -33,6 +33,6 @@ intro:
   - excerpt: 'Get notified when I add new stuff &nbsp; [<i class="fa fa-twitter"></i> @mmistakes](https://twitter.com/mmistakes){: .btn .btn--twitter} [<i class="fa fa-paypal"></i> Tip Me](https://www.paypal.me/mmistakes){: .btn}'
 ---
 
----{% include feature_row id="intro" type="center" %}
+{% include feature_row id="intro" type="center" %}
 
----{% include feature_row %}
+{% include feature_row %}
