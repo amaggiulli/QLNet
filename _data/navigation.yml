@@ -2,6 +2,8 @@
 main:
   - title: "Quick-Start Guide"
     url: https://amaggiulli.github.io/QLNet/docs/quick-start-guide/
+  - title: "News"
+    url: /news/
   - title: "Blog"
     url: /year-archive/
   - title: "About"
