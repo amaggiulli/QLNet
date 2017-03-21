@@ -2,10 +2,10 @@
 main:
   - title: "Quick-Start Guide"
     url: https://amaggiulli.github.io/QLNet/docs/quick-start-guide/
+  - title: "Blog"
+    url: /year-archive/
   - title: "About"
     url: https://amaggiulli.github.io/QLNet/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
   # - title: "Sample Collections"
   #   url: /collection-archive/
   # - title: "Sitemap"
