@@ -10,13 +10,13 @@ header:
 excerpt: 'A financial library written in C#.<br /> <small><a href="https://github.com/amaggiulli/QLNet/releases/latest">Latest release</a></small><br /><br /> {::nomarkdown}<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=amaggiulli&repo=qlnet&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe> <iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=amaggiulli&repo=qlnet&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>{:/nomarkdown}'
 feature_row:
   - image_path: /assets/images/qlnet-quality-feature.png
-    alt: "quality"
+    alt: "Quality"
     title: "Continuos code quality "
     excerpt: "Source code is continuously analyzed to detect bugs, vulnerabilities and code smells. Every update is tested with more than 300 unit test ."
     url: "/docs/configuration/"
     btn_label: "Learn More"
-  - image_path: /assets/images/mm-responsive-feature.png
-    alt: "fully responsive"
+  - image_path: /assets/images/qlnet-run-feature.png
+    alt: "Run everywhere"
     title: "Run everywhere"
     excerpt: "QLNet is compiled for .NET 4.0 , 4.5 and .NET Standard. This way the library can be used on Windows,Linux and Mac. And it's fast !"
     url: "/docs/layouts/"
