@@ -9,7 +9,7 @@ header:
   caption:
 excerpt: 'A financial library written in C#.<br /> <small><a href="https://github.com/amaggiulli/QLNet/releases/latest">Latest release</a></small><br /><br /> {::nomarkdown}<iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=amaggiulli&repo=qlnet&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe> <iframe style="display: inline-block;" src="https://ghbtns.com/github-btn.html?user=amaggiulli&repo=qlnet&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="158px" height="30px"></iframe>{:/nomarkdown}'
 feature_row:
-  - image_path: /assets/images/mm-customizable-feature.png
+  - image_path: /assets/images/qlnet-quality-feature.png
     alt: "quality"
     title: "Continuos code quality "
     excerpt: "Source code is continuously analyzed to detect bugs, vulnerabilities and code smells. Every update is tested with more than 300 unit test ."
