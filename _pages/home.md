@@ -21,10 +21,10 @@ feature_row:
     excerpt: "QLNet is compiled for .NET 4.0 , 4.5 and .NET Standard. This way the library can be used on Windows,Linux and Mac. And it's fast !"
     url: "/docs/layouts/"
     btn_label: "Learn More"
-  - image_path: /assets/images/mm-free-feature.png
+  - image_path: /assets/images/qlnet-free-feature.png
     alt: "100% free"
     title: "100% Free"
-    excerpt: "The library is free to use however you want under the QLNet License. Get it from NuGet or clone it, fork it, customize it from GitHub."
+    excerpt: "The library is free to use however you want under the QLNet License, is hosted on GitHub where contributions are accepted, tested and fully supported."
     url: "/docs/license/"
     btn_label: "Learn More"
 github:
