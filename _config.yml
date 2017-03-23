@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en"
-title                    : "Welcome to QLNet!"
+title                    : "QLNet"
 title_separator          : "-"
 name                     : "Andrea Maggiulli"
 description              : "QLNet Financial Library"
