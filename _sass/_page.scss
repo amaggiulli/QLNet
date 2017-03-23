@@ -111,7 +111,7 @@
 
 .page__hero {
   position: relative;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   @include clearfix;
   -webkit-animation: intro 0.3s both;
           animation: intro 0.3s both;
@@ -121,7 +121,8 @@
   &--overlay {
     position: relative;
     margin-bottom: 2em;
-    padding: 3em 0;
+    padding: 2em 0;
+	box-shadow:0 5px 20px -2px rgba(0,0,0,.4);
     @include clearfix;
     background-size: cover;
     background-repeat: no-repeat;
@@ -141,6 +142,7 @@
 
       @include breakpoint($x-large) {
         max-width: $x-large;
+		text-align: center;
       }
     }
 
@@ -153,14 +155,14 @@
     }
 
     .page__lead {
-      max-width: $medium;
+      /*---max-width: $medium;*/
     }
 
     .page__title {
       font-size: $type-size-2;
 
       @include breakpoint($small) {
-        font-size: $type-size-1;
+        /*font-size: $type-size-1;*/
       }
     }
   }

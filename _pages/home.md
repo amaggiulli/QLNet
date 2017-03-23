@@ -3,7 +3,8 @@ layout: splash
 permalink: /
 header:
   overlay_color: "#5e616c"
-  overlay_image: /assets/images/qlnet-home-page.jpg
+  overlay_filter:  "to bottom,#364c68,#6a7d99"
+  ---overlay_image: /assets/images/qlnet-home-page.jpg
   cta_label: "<i class='fa fa-download'></i> Install Now"
   cta_url: "/docs/quick-start-guide/"
   caption:
