@@ -184,10 +184,15 @@ namespace QLNet
                {
                   Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).value().ContainsKey( lim.Value + 1 ), () =>
                      "Missing " + name() + " fixing for " + ( lim.Value + 1 ) );
+
                   double? pastFixing2 = IndexManager.instance().getHistory( name() ).value()[lim.Value + 1];
+
+                  // Use lagged period for interpolation
+                  KeyValuePair<Date, Date> reference_period_lim = Utils.inflationPeriod(aFixingDate + zeroInflationTermStructure().link.observationLag(), frequency_);
+
                   // now linearly interpolate
-                  double daysInPeriod = lim.Value + 1 - lim.Key;
-                  theFixing = pastFixing + ( pastFixing2 - pastFixing ) * ( aFixingDate - lim.Key ) / daysInPeriod;
+                  double daysInPeriod = reference_period_lim.Value + 1 - reference_period_lim.Key;
+                  theFixing = pastFixing + (pastFixing2 - pastFixing) * (aFixingDate - lim.Key) / daysInPeriod;
                }
             }
             return theFixing.GetValueOrDefault();
