@@ -17,7 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_CashFlows
@@ -58,7 +58,7 @@ namespace TestSuite
          while (false);
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -178,7 +178,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -228,7 +228,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -264,7 +264,7 @@ namespace TestSuite
             QAssert.Fail("null accrued amount with default settlement date");
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

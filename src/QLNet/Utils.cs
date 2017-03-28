@@ -98,7 +98,7 @@ namespace QLNet
        {
           MethodInfo methodInfo;
           if (types == null) types = new Type[0];
-          #if QL_DOTNET_FRAMEWORK
+          #if NET40 || NET45
              methodInfo =  t.GetType().GetMethod(function, types);
           #else
              methodInfo = t.GetType().GetRuntimeMethod( function, types );
@@ -128,7 +128,7 @@ namespace QLNet
         }
     }
 
-    #if ! QL_DOTNET_FRAMEWORK
+    #if ! NET40 || NET45
     public interface ICloneable
     {
        object Clone();

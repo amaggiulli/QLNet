@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -58,7 +58,7 @@ namespace TestSuite {
          result = result_;
       }
    }
-    #if QL_DOTNET_FRAMEWORK
+    #if NET40 || NET45
     [TestClass()]
     #endif
     public class T_AmericanOption {
@@ -136,7 +136,7 @@ namespace TestSuite {
             new AmericanOptionData( Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177 )
         };
         
-#if QL_DOTNET_FRAMEWORK  
+#if NET40 || NET45  
         [TestMethod()]
 #else
        [Fact]
@@ -235,7 +235,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -306,7 +306,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -359,7 +359,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -539,7 +539,7 @@ namespace TestSuite {
            }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -549,7 +549,7 @@ namespace TestSuite {
             testFdGreeks<FDAmericanEngine>();
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -577,7 +577,7 @@ namespace TestSuite {
                    + "    tolerance:        " + tolerance);
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

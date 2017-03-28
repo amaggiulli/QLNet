@@ -18,7 +18,7 @@
 */
 
 using System;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -28,7 +28,7 @@ using QLNet;
 namespace TestSuite
 {
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_Quotes
@@ -41,7 +41,7 @@ namespace TestSuite
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -60,7 +60,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of quote change");
 
       }
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -91,7 +91,7 @@ namespace TestSuite
 
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -117,7 +117,7 @@ namespace TestSuite
       
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

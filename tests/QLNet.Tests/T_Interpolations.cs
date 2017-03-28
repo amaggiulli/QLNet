@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -30,7 +30,7 @@ using QLNet;
 namespace TestSuite 
 {
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_Interpolations 
@@ -40,7 +40,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -108,7 +108,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -179,7 +179,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -321,7 +321,7 @@ namespace TestSuite
          Applied Linear Algebra and Numerical Analysis AMATH 352 Lecture Notes
          http://www.amath.washington.edu/courses/352-winter-2002/spline_note.pdf
       */
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -396,7 +396,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -432,7 +432,7 @@ namespace TestSuite
          checkSymmetry("MC not-a-knot spline", f, x[0]);
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -533,7 +533,7 @@ namespace TestSuite
          Hermite Interpolation"
          Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
       */
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -706,7 +706,7 @@ namespace TestSuite
 
       class NotThrown : Exception { }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -757,7 +757,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -866,7 +866,7 @@ namespace TestSuite
 
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -974,7 +974,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1145,7 +1145,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1276,7 +1276,7 @@ namespace TestSuite
    
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1399,7 +1399,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1451,7 +1451,7 @@ namespace TestSuite
       }
    }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1484,7 +1484,7 @@ namespace TestSuite
             QAssert.Fail("Failed to update bicubic spline");
 }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1534,7 +1534,7 @@ namespace TestSuite
 }
 
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

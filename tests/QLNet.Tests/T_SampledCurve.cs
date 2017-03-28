@@ -17,7 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -26,7 +26,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_SampledCurve
@@ -37,7 +37,7 @@ namespace TestSuite
          public double value(double x) { return x * x; }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

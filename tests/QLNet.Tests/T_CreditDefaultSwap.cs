@@ -17,7 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -28,12 +28,12 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_CreditDefaultSwap
    {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -139,7 +139,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -278,7 +278,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -382,7 +382,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -450,7 +450,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

@@ -17,7 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -26,7 +26,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_Rounding
@@ -77,7 +77,7 @@ namespace TestSuite
            new TestCase(7.89428221, 2, 7.89, 7.90, 7.89, 7.89, 7.89 ) 
         };
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -94,7 +94,7 @@ namespace TestSuite
                QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -112,7 +112,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -130,7 +130,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -148,7 +148,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

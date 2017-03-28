@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -163,7 +163,7 @@ namespace TestSuite {
    {
       public static void Fail(string message)
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.Fail(message);
          #else
             Assert.True(false,message);
@@ -172,7 +172,7 @@ namespace TestSuite {
 
       public static void AreEqual( double expected, double actual, double delta )
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.AreEqual( expected, actual, delta );
          #else
             Assert.True(Math.Abs(expected- actual) <= delta);
@@ -181,7 +181,7 @@ namespace TestSuite {
 
       public static void AreEqual(double expected, double actual, double delta, string message)
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.AreEqual(expected, actual, delta, message);
          #else
             Assert.True(Math.Abs(expected- actual) <= delta,message);
@@ -191,7 +191,7 @@ namespace TestSuite {
       public static void AreEqual<T>( T expected, T actual )
       {
          
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.AreEqual( expected, actual );
          #else
             Assert.Equal(expected, actual);
@@ -200,7 +200,7 @@ namespace TestSuite {
 
       public static void AreEqual<T>( T expected, T actual, string message )
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.AreEqual( expected, actual, message );
          #else
             Assert.Equal(expected, actual);
@@ -210,7 +210,7 @@ namespace TestSuite {
       public static void AreNotEqual<T>(T expected, T actual)
       {
 
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.AreNotEqual( expected, actual );
          #else
             Assert.NotEqual(expected, actual);
@@ -219,7 +219,7 @@ namespace TestSuite {
 
       public static void IsTrue( bool condition, string message )
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.IsTrue( condition, message);
          #else
             Assert.True( condition, message);
@@ -228,7 +228,7 @@ namespace TestSuite {
 
       public static void IsFalse( bool condition, string message )
       {
-         #if QL_DOTNET_FRAMEWORK
+         #if NET40 || NET45
             Assert.IsFalse( condition, message );
          #else
             Assert.False( condition, message);

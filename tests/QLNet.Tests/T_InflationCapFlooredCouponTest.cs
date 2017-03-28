@@ -18,7 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -27,14 +27,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_InflationCapFlooredCouponTest : IDisposable
 	{
       #region Initialize&Cleanup
       private SavedSettings backup;
-      #if QL_DOTNET_FRAMEWORK
+      #if NET40 || NET45
       [TestInitialize]
       public void testInitialize()
       {
@@ -44,7 +44,7 @@ namespace TestSuite
       #endif
          backup = new SavedSettings();
       }
-      #if QL_DOTNET_FRAMEWORK
+      #if NET40 || NET45
       [TestCleanup]
       #endif
       public void testCleanup()
@@ -346,7 +346,7 @@ namespace TestSuite
          }
       }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -661,7 +661,7 @@ namespace TestSuite
          vars.hy.linkTo(null);
    }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

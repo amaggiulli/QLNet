@@ -19,7 +19,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
 namespace TestSuite {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_PiecewiseyieldCurve : IDisposable
@@ -222,7 +222,7 @@ namespace TestSuite {
         #region Initialize&Cleanup
         private SavedSettings backup;
         private IndexHistoryCleaner cleaner;
-        #if QL_DOTNET_FRAMEWORK
+        #if NET40 || NET45
         [TestInitialize]
         public void testInitialize()
         {
@@ -233,7 +233,7 @@ namespace TestSuite {
            backup = new SavedSettings();
            cleaner = new IndexHistoryCleaner();
         }
-        #if QL_DOTNET_FRAMEWORK
+        #if NET40 || NET45
         [TestCleanup]
         #endif
         public void testCleanup()
@@ -263,7 +263,7 @@ namespace TestSuite {
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -277,7 +277,7 @@ namespace TestSuite {
 				testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -290,7 +290,7 @@ namespace TestSuite {
 				testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
 				testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
         }
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -310,7 +310,7 @@ namespace TestSuite {
 			  }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -324,7 +324,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -347,7 +347,7 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -361,7 +361,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -395,7 +395,7 @@ namespace TestSuite {
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -409,7 +409,7 @@ namespace TestSuite {
             testBMACurveConsistency<ForwardRate,ConvexMonotone,IterativeBootstrapForYield>(vars);
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -422,7 +422,7 @@ namespace TestSuite {
 				testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-9 );
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -456,7 +456,7 @@ namespace TestSuite {
                 QAssert.Fail("Observer was not notified of date change");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -541,7 +541,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -565,7 +565,7 @@ namespace TestSuite {
 
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -639,7 +639,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -651,7 +651,7 @@ namespace TestSuite {
             testCurveCopy<Discount, LogLinear>(vars);
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -663,7 +663,7 @@ namespace TestSuite {
             testCurveCopy<ForwardRate, BackwardFlat>(vars);
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

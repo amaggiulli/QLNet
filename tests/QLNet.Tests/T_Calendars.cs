@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -29,11 +29,11 @@ using QLNet;
 using System.Diagnostics;
 
 namespace TestSuite {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
     public class T_Calendars {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -75,7 +75,7 @@ namespace TestSuite {
             QAssert.IsFalse(c1.isHoliday(d2), d2 + " still a holiday");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -143,7 +143,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -213,7 +213,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -246,7 +246,7 @@ namespace TestSuite {
                             " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -348,7 +348,7 @@ namespace TestSuite {
 
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -415,7 +415,7 @@ namespace TestSuite {
 
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -451,7 +451,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -488,7 +488,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -523,7 +523,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -582,7 +582,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -641,7 +641,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -700,7 +700,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -749,7 +749,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -798,7 +798,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -891,7 +891,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -990,7 +990,7 @@ namespace TestSuite {
                            + " calculated holidays");
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1074,7 +1074,7 @@ namespace TestSuite {
             + " calculated holidays");
 }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestMethod()]
 #else
    [Fact]
@@ -1129,7 +1129,7 @@ namespace TestSuite {
             + " expected working weekends, while there are " + k
             + " calculated holidays");
 }
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1161,7 +1161,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -1211,7 +1211,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]

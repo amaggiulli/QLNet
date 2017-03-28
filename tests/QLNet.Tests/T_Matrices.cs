@@ -19,7 +19,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
    using Xunit;
@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QLNet;
 
 namespace TestSuite {
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
    [TestClass()]
 #endif
     public class T_Matrices {
@@ -93,7 +93,7 @@ namespace TestSuite {
             M7[0,1] = 0.3; M7[0,2] = 0.2; M7[2,1] = 1.2;
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -136,7 +136,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -161,7 +161,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -185,7 +185,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -232,7 +232,7 @@ namespace TestSuite {
             }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -275,7 +275,7 @@ namespace TestSuite {
          }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
@@ -353,7 +353,7 @@ namespace TestSuite {
            }
         }
 
-#if QL_DOTNET_FRAMEWORK
+#if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
