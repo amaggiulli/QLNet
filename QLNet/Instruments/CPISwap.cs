@@ -124,7 +124,7 @@ namespace QLNet
 
          inflationNominal_ = inflationNominal ?? nominal_;
 
-         List<CashFlow> floatingLeg = null;
+         List<CashFlow> floatingLeg = new List<CashFlow>();
          if (floatSchedule_.Count > 1)
          {
             floatingLeg = new IborLeg(floatSchedule_, floatIndex_)
@@ -141,7 +141,7 @@ namespace QLNet
             )
          {
             Date payNotional;
-            floatingLeg = new List<CashFlow>();
+            
             if (floatSchedule_.Count==1) 
             { 
                // no coupons
@@ -173,7 +173,7 @@ namespace QLNet
             cashFlow.registerWith(update);
          }
 
-         if (floatingLeg != null)
+         if (floatingLeg.Count > 0)
          {
             foreach (CashFlow cashFlow in floatingLeg)
             {
