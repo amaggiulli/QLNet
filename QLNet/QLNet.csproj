@@ -577,6 +577,7 @@
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />
     <Compile Include="Termstructures\Volatility\CapFloor\CapFloorTermVolSurface.cs" />
     <Compile Include="Termstructures\Volatility\equityfx\BlackVarianceSurface.cs" />
+    <Compile Include="Termstructures\Volatility\equityfx\HestonBlackVolSurface.cs" />
     <Compile Include="Termstructures\Volatility\equityfx\ImpliedVolTermStructure.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\CPIVolatilitySurface.cs" />
     <Compile Include="Termstructures\Volatility\Inflation\yoyinflationoptionletvolatilitystructure.cs" />
