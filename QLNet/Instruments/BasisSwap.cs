@@ -210,6 +210,12 @@ namespace QLNet
       public List<CashFlow> floating1Leg() { return legs_[0]; }
       public List<CashFlow> floating2Leg() { return legs_[1]; }
 
+      public double fairSpread()
+      {
+          calculate();
+          if (fairSpread_ == null) throw new ArgumentException("result not available");
+          return fairSpread_.GetValueOrDefault();
+      }
 
       protected override void setupExpired()
       {
@@ -219,10 +225,26 @@ namespace QLNet
 
       public override void fetchResults(IPricingEngineResults r)
       {
+         const double basisPoint = 1.0e-4;
          base.fetchResults(r);
          BasisSwap.Results results = r as BasisSwap.Results;
+
+         if (results != null)
+             fairSpread_ = results.fairSpread;
+         else
+             fairSpread_ = null;
+
+         if (fairSpread_ == null)
+         {
+             if (legBPS_[1] != null && type_ == BasisSwap.Type.Payer)
+                 fairSpread_ = spread2_ - NPV_.GetValueOrDefault() / (legBPS_[1] / basisPoint);
+             else if (legBPS_[0] != null && type_ == BasisSwap.Type.Receiver)
+                 fairSpread_ = spread1_ - NPV_.GetValueOrDefault() / (legBPS_[0] / basisPoint);
+         }
       }
 
+      //results
+      private double? fairSpread_;
 
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
@@ -290,9 +312,11 @@ namespace QLNet
       //! %Results from simple swap calculation
       new class Results : Swap.Results
       {
+         public double? fairSpread;
          public override void reset()
          {
             base.reset();
+            fairSpread = null;
          }
       }
    }
