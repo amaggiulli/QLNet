@@ -42,6 +42,9 @@ namespace QLNet
       private DayCounter floating2DayCount_;
       private BusinessDayConvention paymentConvention_;
 
+      private int longNo_, shortNo_;
+      private double longSpread_, shortSpread_;
+
       // constructor
       public BasisSwap(Type type, double nominal,
                          Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
@@ -94,11 +97,19 @@ namespace QLNet
          {
             payer_[0] = -1;
             payer_[1] = +1;
+            longNo_ = 1;
+            longSpread_ = spread2;
+            shortNo_ = 0;
+            shortSpread_ = spread1;
          }
          else
          {
             payer_[0] = +1;
             payer_[1] = -1;
+            longNo_ = 0;
+            longSpread_ = spread1;
+            shortNo_ = 1;
+            shortSpread_ = spread2;
          }
       }
 
@@ -210,11 +221,18 @@ namespace QLNet
       public List<CashFlow> floating1Leg() { return legs_[0]; }
       public List<CashFlow> floating2Leg() { return legs_[1]; }
 
-      public double fairSpread()
+      public double fairLongSpread()
       {
           calculate();
-          if (fairSpread_ == null) throw new ArgumentException("result not available");
-          return fairSpread_.GetValueOrDefault();
+          if (fairLongSpread_ == null) throw new ArgumentException("result not available");
+          return fairLongSpread_.GetValueOrDefault();
+      }
+
+      public double fairShortSpread()
+      {
+          calculate();
+          if (fairShortSpread_ == null) throw new ArgumentException("result not available");
+          return fairShortSpread_.GetValueOrDefault();
       }
 
       protected override void setupExpired()
@@ -230,21 +248,36 @@ namespace QLNet
          BasisSwap.Results results = r as BasisSwap.Results;
 
          if (results != null)
-             fairSpread_ = results.fairSpread;
-         else
-             fairSpread_ = null;
-
-         if (fairSpread_ == null)
          {
-             if (legBPS_[1] != null && type_ == BasisSwap.Type.Payer)
-                 fairSpread_ = spread2_ - NPV_.GetValueOrDefault() / (legBPS_[1] / basisPoint);
-             else if (legBPS_[0] != null && type_ == BasisSwap.Type.Receiver)
-                 fairSpread_ = spread1_ - NPV_.GetValueOrDefault() / (legBPS_[0] / basisPoint);
+             fairLongSpread_ = results.fairLongSpread;
+             fairShortSpread_ = results.fairShortSpread;
          }
+         else
+         {
+             fairLongSpread_ = null;
+             fairShortSpread_ = null;
+         }
+
+        // Long fair spread should be fine - no averaging or compounding
+        if (fairLongSpread_ == null) {
+            if (legBPS_[longNo_] != null) {
+                fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / basisPoint);
+            }
+        }
+
+        /* Short fair spread calculation ok if no averaging/compounding OR
+           if there is averaging/compounding and the spread is added after */
+        if (fairShortSpread_ == null) 
+        {
+                if (legBPS_[shortNo_] != null)
+                    fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / basisPoint);
+        }
+
       }
 
       //results
-      private double? fairSpread_;
+      private double? fairLongSpread_;
+      private double? fairShortSpread_;
 
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
@@ -312,11 +345,12 @@ namespace QLNet
       //! %Results from simple swap calculation
       new class Results : Swap.Results
       {
-         public double? fairSpread;
+         public double? fairLongSpread, fairShortSpread;
          public override void reset()
          {
             base.reset();
-            fairSpread = null;
+            fairLongSpread = null;
+            fairShortSpread = null;
          }
       }
    }
