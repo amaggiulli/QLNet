@@ -96,7 +96,10 @@ namespace QLNet
       }
 
       public int Count { get { return backingDictionary_.Count; } }
-      public bool IsReadOnly { get; }
+      public bool IsReadOnly
+      {
+         get { return false; }
+      }
 
       public bool ContainsKey(Date key)
       {
