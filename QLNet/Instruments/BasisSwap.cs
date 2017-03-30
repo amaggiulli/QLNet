@@ -42,6 +42,9 @@ namespace QLNet
       private DayCounter floating2DayCount_;
       private BusinessDayConvention paymentConvention_;
 
+      private int longNo_, shortNo_;
+      private double longSpread_, shortSpread_;
+
       // constructor
       public BasisSwap(Type type, double nominal,
                          Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
@@ -94,11 +97,19 @@ namespace QLNet
          {
             payer_[0] = -1;
             payer_[1] = +1;
+            longNo_ = 1;
+            longSpread_ = spread2;
+            shortNo_ = 0;
+            shortSpread_ = spread1;
          }
          else
          {
             payer_[0] = +1;
             payer_[1] = -1;
+            longNo_ = 0;
+            longSpread_ = spread1;
+            shortNo_ = 1;
+            shortSpread_ = spread2;
          }
       }
 
@@ -210,6 +221,19 @@ namespace QLNet
       public List<CashFlow> floating1Leg() { return legs_[0]; }
       public List<CashFlow> floating2Leg() { return legs_[1]; }
 
+      public double fairLongSpread()
+      {
+          calculate();
+          if (fairLongSpread_ == null) throw new ArgumentException("result not available");
+          return fairLongSpread_.GetValueOrDefault();
+      }
+
+      public double fairShortSpread()
+      {
+          calculate();
+          if (fairShortSpread_ == null) throw new ArgumentException("result not available");
+          return fairShortSpread_.GetValueOrDefault();
+      }
 
       protected override void setupExpired()
       {
@@ -219,10 +243,38 @@ namespace QLNet
 
       public override void fetchResults(IPricingEngineResults r)
       {
+         const double basisPoint = 1.0e-4;
          base.fetchResults(r);
          BasisSwap.Results results = r as BasisSwap.Results;
+
+         if (results != null)
+         {
+             fairLongSpread_ = results.fairLongSpread;
+             fairShortSpread_ = results.fairShortSpread;
+         }
+         else
+         {
+             fairLongSpread_ = null;
+             fairShortSpread_ = null;
+         }
+
+        if (fairLongSpread_ == null) {
+            if (legBPS_[longNo_] != null) {
+                fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / basisPoint);
+            }
+        }
+
+        if (fairShortSpread_ == null) 
+        {
+                if (legBPS_[shortNo_] != null)
+                    fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / basisPoint);
+        }
+
       }
 
+      //results
+      private double? fairLongSpread_;
+      private double? fairShortSpread_;
 
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
@@ -290,9 +342,12 @@ namespace QLNet
       //! %Results from simple swap calculation
       new class Results : Swap.Results
       {
+         public double? fairLongSpread, fairShortSpread;
          public override void reset()
          {
             base.reset();
+            fairLongSpread = null;
+            fairShortSpread = null;
          }
       }
    }
