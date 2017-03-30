@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2017 Adapted in C# for QLNet by Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-               
+  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -96,7 +96,7 @@ namespace QLNet
         {
             Utils.QL_REQUIRE(termStructure_ != null, () => "Term structure needs to be set");
             swap_.recalculate();
-            return Convert.ToDouble(swap_.fairSpread());
+            return (spreadOnShort_ ? swap_.fairShortSpread() : swap_.fairLongSpread());
         }
 
         //@}
@@ -142,8 +142,8 @@ namespace QLNet
 
             /* Arbitrarily set the swap as paying the long index */
             swap_ = new BasisSwap(BasisSwap.Type.Payer, nominal,
-                                  longLegSchedule, longIndex_, longLegSpread, longIndex_.dayCounter(),
                                   shortLegSchedule, shortIndex_, shortLegSpread, shortIndex_.dayCounter(),
+                                  longLegSchedule, longIndex_, longLegSpread, longIndex_.dayCounter(),
                                   BusinessDayConvention.Following);
 
             IPricingEngine engine;
