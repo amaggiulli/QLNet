@@ -12,9 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QLNet.Tests", "tests\QLNet.Tests\QLNet.Tests.csproj", "{5D0C9349-1A5B-455F-9485-0EF4860C8F62}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BermudanSwaption", "src\BermudanSwaption\BermudanSwaption.csproj", "{B616E3F5-7201-4BE2-801D-6A084F77690E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A12A9BB7-9C80-4ED2-ADA7-A267D1D36DA4} = {A12A9BB7-9C80-4ED2-ADA7-A267D1D36DA4}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bonds", "src\Bonds\Bonds.csproj", "{39C6B719-526E-4BEF-98E6-8E48319ABF0B}"
 EndProject
