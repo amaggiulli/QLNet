@@ -1,0 +1,722 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F6E762BD-DCDF-4CA0-ABAD-CB21C7D03BEC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QLNet</RootNamespace>
+    <AssemblyName>QLNet</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\net40\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;QL_NEGATIVE_RATES,NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\net40\</OutputPath>
+    <DefineConstants>TRACE;QL_NEGATIVE_RATES,QL_DOTNET_FRAMEWORK</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-net45|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\net45\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;QL_NEGATIVE_RATES,QL_DOTNET_FRAMEWORK</DefineConstants>
+    <DebugType>full</DebugType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-net45|AnyCPU'">
+    <OutputPath>bin\Release\net45\</OutputPath>
+    <DefineConstants>TRACE;QL_NEGATIVE_RATES,QL_DOTNET_FRAMEWORK</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\QLNet\Cashflow.cs" />
+    <Compile Include="..\QLNet\Cashflows\AverageBMACoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\CappedFlooredCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\CappedFlooredYoYInflationCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\CashFlows.cs" />
+    <Compile Include="..\QLNet\Cashflows\Cashflowvectors.cs" />
+    <Compile Include="..\QLNet\Cashflows\CmsCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\ConundrumPricer.cs" />
+    <Compile Include="..\QLNet\Cashflows\Coupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\CouponPricer.cs" />
+    <Compile Include="..\QLNet\Cashflows\CPICoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\CPICouponPricer.cs" />
+    <Compile Include="..\QLNet\Cashflows\DigitalCmsCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\DigitalCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\DigitalIborCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\Dividend.cs" />
+    <Compile Include="..\QLNet\Cashflows\FixedRateCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\FloatingRateCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\Iborcoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\IndexedCashFlow.cs" />
+    <Compile Include="..\QLNet\Cashflows\InflationCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\InflationCouponPricer.cs" />
+    <Compile Include="..\QLNet\Cashflows\LinearTsrPricer.cs" />
+    <Compile Include="..\QLNet\Cashflows\OvernightIndexedCoupon.cs" />
+    <Compile Include="..\QLNet\Cashflows\Principal.cs" />
+    <Compile Include="..\QLNet\Cashflows\PrincipalLegBase.cs" />
+    <Compile Include="..\QLNet\Cashflows\RangeAccrual.cs" />
+    <Compile Include="..\QLNet\Cashflows\RateLegBase.cs" />
+    <Compile Include="..\QLNet\Cashflows\Replication.cs" />
+    <Compile Include="..\QLNet\Cashflows\SimpleCashFlow.cs" />
+    <Compile Include="..\QLNet\Cashflows\YoYInflationCoupon.cs" />
+    <Compile Include="..\QLNet\Currencies\Africa.cs" />
+    <Compile Include="..\QLNet\Currencies\America.cs" />
+    <Compile Include="..\QLNet\Currencies\Asia.cs" />
+    <Compile Include="..\QLNet\Currencies\Currency.cs" />
+    <Compile Include="..\QLNet\Currencies\Europe.cs" />
+    <Compile Include="..\QLNet\Currencies\ExchangeRate.cs" />
+    <Compile Include="..\QLNet\Currencies\ExchangeRateManager.cs" />
+    <Compile Include="..\QLNet\Currencies\Oceania.cs" />
+    <Compile Include="..\QLNet\discretizedasset.cs" />
+    <Compile Include="..\QLNet\Event.cs" />
+    <Compile Include="..\QLNet\Exercise.cs" />
+    <Compile Include="..\QLNet\Extensions\DoubleExtension.cs" />
+    <Compile Include="..\QLNet\Extensions\ListExtension.cs" />
+    <Compile Include="..\QLNet\grid.cs" />
+    <Compile Include="..\QLNet\Handle.cs" />
+    <Compile Include="..\QLNet\Index.cs" />
+    <Compile Include="..\QLNet\Indexes\BMAIndex.cs" />
+    <Compile Include="..\QLNet\Indexes\IborIndex.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Aonia.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Audlibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Bbsw.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Bkbm.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Cadlibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Cdor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Chflibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Dkklibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Eonia.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Euribor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Eurlibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\FedFunds.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Gbplibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Jibar.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Jpylibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Libor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Nzdlibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Nzocr.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Seklibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Shibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Sonia.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Tibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Trylibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Usdlibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Ibor\Zibor.cs" />
+    <Compile Include="..\QLNet\Indexes\Indexmanager.cs" />
+    <Compile Include="..\QLNet\Indexes\InflationIndex.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\AUCPI.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\EUHICP.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\FRHICP.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\UKRPI.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\USCPI.cs" />
+    <Compile Include="..\QLNet\Indexes\Inflation\ZACPI.cs" />
+    <Compile Include="..\QLNet\Indexes\InterestRateIndex.cs" />
+    <Compile Include="..\QLNet\Indexes\Region.cs" />
+    <Compile Include="..\QLNet\Indexes\Swapindex.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\ChfLiborSwap.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\EuriborSwap.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\EurLiborSwap.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\GbpLiborSwap.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\JpyLiborSwap.cs" />
+    <Compile Include="..\QLNet\Indexes\swap\UsdLiborSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\AsianOption.cs" />
+    <Compile Include="..\QLNet\Instruments\AssetSwap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Instruments\AverageType.cs" />
+    <Compile Include="..\QLNet\Instruments\BarrierOption.cs" />
+    <Compile Include="..\QLNet\Instruments\BarrierType.cs" />
+    <Compile Include="..\QLNet\Instruments\BasisSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\BasketOption.cs" />
+    <Compile Include="..\QLNet\Instruments\bmaswap.cs" />
+    <Compile Include="..\QLNet\Instruments\Bond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\AmortizingBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\AmortizingCmsRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\AmortizingFixedRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\AmortizingFloatingRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\BondFactory.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\BTP.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\CallableBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\CmsRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\ConstantCPR.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\ConvertibleBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\CPIBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\DiscretizedCallableFixedRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\Fixedratebond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\FloatingRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\IPrepayModel.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\MBSFixedRateBond.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\PSACurve.cs" />
+    <Compile Include="..\QLNet\Instruments\Bonds\Zerocouponbond.cs" />
+    <Compile Include="..\QLNet\Instruments\Callability.cs" />
+    <Compile Include="..\QLNet\Instruments\CapFloor.cs" />
+    <Compile Include="..\QLNet\Instruments\Claim.cs" />
+    <Compile Include="..\QLNet\Instruments\CliquetOption.cs" />
+    <Compile Include="..\QLNet\Instruments\CompositeInstrument.cs" />
+    <Compile Include="..\QLNet\Instruments\CPICapFloor.cs" />
+    <Compile Include="..\QLNet\Instruments\CPISwap.cs" />
+    <Compile Include="..\QLNet\Instruments\CreditDefaultSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\DividendBarrierOption.cs" />
+    <Compile Include="..\QLNet\Instruments\DividendSchedule.cs" />
+    <Compile Include="..\QLNet\Instruments\DividendVanillaOption.cs" />
+    <Compile Include="..\QLNet\Instruments\DoubleBarrierOption.cs" />
+    <Compile Include="..\QLNet\Instruments\EuropeanOption.cs" />
+    <Compile Include="..\QLNet\Instruments\fixedratebondforward.cs" />
+    <Compile Include="..\QLNet\Instruments\forward.cs" />
+    <Compile Include="..\QLNet\Instruments\forwardrateagreement.cs" />
+    <Compile Include="..\QLNet\Instruments\ForwardVanillaOption.cs" />
+    <Compile Include="..\QLNet\Instruments\Futures.cs" />
+    <Compile Include="..\QLNet\Instruments\ImpliedVolatility.cs" />
+    <Compile Include="..\QLNet\Instruments\InflationCapFloor.cs" />
+    <Compile Include="..\QLNet\Instruments\Instrument.cs" />
+    <Compile Include="..\QLNet\Instruments\Loan.cs" />
+    <Compile Include="..\QLNet\Instruments\LookbackOption.cs" />
+    <Compile Include="..\QLNet\Instruments\MakeBasisSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\MakeCapFloor.cs" />
+    <Compile Include="..\QLNet\Instruments\MakeCms.cs" />
+    <Compile Include="..\QLNet\Instruments\MakeLoans.cs" />
+    <Compile Include="..\QLNet\Instruments\MakeOIS.cs" />
+    <Compile Include="..\QLNet\Instruments\Makeswaption.cs" />
+    <Compile Include="..\QLNet\Instruments\Makevanillaswap.cs" />
+    <Compile Include="..\QLNet\Instruments\MultiAssetOption.cs" />
+    <Compile Include="..\QLNet\Instruments\OneAssetOption.cs" />
+    <Compile Include="..\QLNet\Instruments\OvernightIndexedSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\payoffs.cs" />
+    <Compile Include="..\QLNet\Instruments\Stock.cs" />
+    <Compile Include="..\QLNet\Instruments\Swap.cs" />
+    <Compile Include="..\QLNet\Instruments\Swaption.cs" />
+    <Compile Include="..\QLNet\Instruments\VanillaOption.cs" />
+    <Compile Include="..\QLNet\Instruments\VanillaSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\YearOnYearInflationSwap.cs" />
+    <Compile Include="..\QLNet\Instruments\ZeroCouponInflationSwap.cs" />
+    <Compile Include="..\QLNet\InterestRate.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarparam.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarproxy.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmhullwhiteparam.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmprocess.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmswaptionengine.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\liborforwardmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmconstwrappercorrmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmconstwrappervolmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmcorrmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmexpcorrmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmextlinexpvolmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmfixedvolmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmlinexpcorrmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmlinexpvolmodel.cs" />
+    <Compile Include="..\QLNet\legacy\libormarketmodels\lmvolmodel.cs" />
+    <Compile Include="..\QLNet\Math\AbcdMathFunction.cs" />
+    <Compile Include="..\QLNet\Math\BernsteinPolynomial.cs" />
+    <Compile Include="..\QLNet\Math\beta.cs" />
+    <Compile Include="..\QLNet\Math\BSpline.cs" />
+    <Compile Include="..\QLNet\Math\Comparison.cs" />
+    <Compile Include="..\QLNet\Math\integrals\GaussLobattoIntegral.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\Abcdinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\BackwardflatLinearInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\FlatExtrapolator2D.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\MixedInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\VannaVolgaInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\BFGS.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\CostFunction.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\binomialdistribution.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\BivariateNormalDistribution.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\chisquaredistribution.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\GammaDistribution.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\NormalDistribution.cs" />
+    <Compile Include="..\QLNet\Math\Distributions\poissondistribution.cs" />
+    <Compile Include="..\QLNet\Math\factorial.cs" />
+    <Compile Include="..\QLNet\Math\integrals\gaussianorthogonalpolynomial.cs" />
+    <Compile Include="..\QLNet\Math\integrals\GaussianQuadratures.cs" />
+    <Compile Include="..\QLNet\Math\integrals\Integral.cs" />
+    <Compile Include="..\QLNet\Math\integrals\Kronrodintegral.cs" />
+    <Compile Include="..\QLNet\Math\integrals\Segmentintegral.cs" />
+    <Compile Include="..\QLNet\Math\integrals\simpsonintegral.cs" />
+    <Compile Include="..\QLNet\Math\integrals\trapezoidintegral.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\backwardflatinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\BicubicSplineInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\bilinearinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\convexmonotoneinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\CubicInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\Extrapolator.cs" />
+    <Compile Include="..\QLNet\Math\Interpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\forwardflatinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\interpolation2d.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\KernelInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\KernelInterpolation2D.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\Linearinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\Loginterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\multicubicspline.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\sabrinterpolation.cs" />
+    <Compile Include="..\QLNet\Math\Interpolations\XABRInterpolation.cs" />
+    <Compile Include="..\QLNet\Math\KernelFunctions.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\TqrEigenDecomposition.cs" />
+    <Compile Include="..\QLNet\Math\linearleastsquaresregression.cs" />
+    <Compile Include="..\QLNet\Math\Matrix.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\choleskydecomposition.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\pseudosqrt.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\qrdecomposition.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\svd.cs" />
+    <Compile Include="..\QLNet\Math\matrixutilities\symmetricschurdecomposition.cs" />
+    <Compile Include="..\QLNet\Math\ModifiedBessel.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\ArmijoLineSearch.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\ConjugateGradient.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\Constraint.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\EndCriteria.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\GoldsteinLineSearch.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\LeastSquareProblem.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\levenbergmarquardt.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\LineSearch.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\LineSearchBasedMethod.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\lmdif.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\method.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\problem.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\ProjectedConstraint.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\ProjectedCostFunction.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\Projection.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\Simplex.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\SteepestDescent.cs" />
+    <Compile Include="..\QLNet\Math\PascalTriangle.cs" />
+    <Compile Include="..\QLNet\Math\PolynomialFunction.cs" />
+    <Compile Include="..\QLNet\Math\PrimeNumbers.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\Haltonrsg.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\inversecumulativerng.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\inversecumulativersg.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\mt19937uniformrng.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\primitivepolynomials.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\randomsequencegenerator.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\rngtraits.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\seedgenerator.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\SobolBrownianBridgeRsg.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\sobolrsg.cs" />
+    <Compile Include="..\QLNet\Math\randomnumbers\sobolrsg2.cs" />
+    <Compile Include="..\QLNet\Math\RichardsonExtrapolation.cs" />
+    <Compile Include="..\QLNet\Math\SampledCurve.cs" />
+    <Compile Include="..\QLNet\Math\Solver1d.cs" />
+    <Compile Include="..\QLNet\Math\Rounding.cs" />
+    <Compile Include="..\QLNet\Math\Solvers1d\Bisection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Math\Solvers1d\Brent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Math\Solvers1d\FalsePosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Math\Solvers1d\FiniteDifferenceNewtonSafe.cs" />
+    <Compile Include="..\QLNet\Math\Solvers1d\Newton.cs" />
+    <Compile Include="..\QLNet\Math\Solvers1d\Newtonsafe.cs" />
+    <Compile Include="..\QLNet\Math\Solvers1d\Ridder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Math\Solvers1d\Secant.cs" />
+    <Compile Include="..\QLNet\Math\statistics\convergencestatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\DiscrepancyStatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\gaussianstatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\generalstatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\incrementalstatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\riskstatistics.cs" />
+    <Compile Include="..\QLNet\Math\statistics\sequencestatistics.cs" />
+    <Compile Include="..\QLNet\Math\transformedgrid.cs" />
+    <Compile Include="..\QLNet\Math\Vector.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\AmericanCondition.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\BoundaryCondition.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\bsmoperator.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\cranknicolson.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\DPlusDMinus.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\dzero.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\finitedifferencemodel.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\mixedscheme.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\OperatorFactory.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\ParallelEvolver.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\pde.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\pdebsm.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\pdeshortrate.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\ShoutCondition.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\StepCondition.cs" />
+    <Compile Include="..\QLNet\Methods\Finitedifferences\TridiagonalOperator.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\binominaltree.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\bsmlattice.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\lattice.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\lattice1d.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\lattice2d.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\tree.cs" />
+    <Compile Include="..\QLNet\Methods\lattices\trinomialtree.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\brownianbridge.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\earlyexercisepathpricer.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\longstaffschwartzpathpricer.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\lsmbasissystem.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\mctraits.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\montecarlomodel.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\multipath.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\multipathgenerator.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\path.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\pathgenerator.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\pathpricer.cs" />
+    <Compile Include="..\QLNet\Methods\montecarlo\sample.cs" />
+    <Compile Include="..\QLNet\Models\CalibrationHelper.cs" />
+    <Compile Include="..\QLNet\Models\Equity\HestonModel.cs" />
+    <Compile Include="..\QLNet\Models\Equity\HestonModelHelper.cs" />
+    <Compile Include="..\QLNet\Models\Equity\PiecewiseTimeDependentHestonModel.cs" />
+    <Compile Include="..\QLNet\Models\MarketModels\BrownianGenerator.cs" />
+    <Compile Include="..\QLNet\Models\MarketModels\BrownianGenerators\SobolBrownianGenerator.cs" />
+    <Compile Include="..\QLNet\Models\model.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\QLNet\Models\Parameter.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\calibrationhelpers\caphelper.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\calibrationhelpers\swaptionhelper.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\OneFactorModel.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\Onefactormodels\blackkarasinski.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\Onefactormodels\coxingersollross.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\Onefactormodels\hullwhite.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\Onefactormodels\vasicek.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\twofactormodel.cs" />
+    <Compile Include="..\QLNet\Models\Shortrate\Twofactorsmodels\g2.cs" />
+    <Compile Include="..\QLNet\Money.cs" />
+    <Compile Include="..\QLNet\numericalmethod.cs" />
+    <Compile Include="..\QLNet\Option.cs" />
+    <Compile Include="..\QLNet\Patterns\FastActivator.cs" />
+    <Compile Include="..\QLNet\Patterns\LazyObject.cs" />
+    <Compile Include="..\QLNet\Patterns\observablevalue.cs" />
+    <Compile Include="..\QLNet\Patterns\Observer.cs" />
+    <Compile Include="..\QLNet\Patterns\Visitor.cs" />
+    <Compile Include="..\QLNet\Patterns\WeakEventSource.cs" />
+    <Compile Include="..\QLNet\payoff.cs" />
+    <Compile Include="..\QLNet\PricingEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Americanpayoffatexpiry.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Americanpayoffathit.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\AnalyticContinuousGeometricAveragePriceAsianEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\AnalyticDiscreteGeometricAveragePriceAsianEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\AnalyticDiscreteGeometricAverageStrikeAsianEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\mcdiscreteasianengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\mc_discr_arith_av_price.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\mc_discr_arith_av_strike.cs" />
+    <Compile Include="..\QLNet\Pricingengines\asian\mc_discr_geom_av_price.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticDoubleBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\BinomialBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\DiscretizedBarrierOption.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\VannaVolgaBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\VannaVolgaDoubleBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\barrier\WulinYongDoubleBarrierEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Basket\KirkEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Basket\MCEuropeanBasketEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Basket\StulzEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\BlackCalculator.cs" />
+    <Compile Include="..\QLNet\Pricingengines\BlackDeltaCalculator.cs" />
+    <Compile Include="..\QLNet\Pricingengines\blackformula.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Blackscholescalculator.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Bond\BlackCallableBondEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Bond\BondFunctions.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Bond\Discountingbondengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Bond\TreeCallableBondEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\CapFloor\analyticcapfloorengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\CapFloor\BachelierCapFloorEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\CapFloor\BlackCapFloorEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\CapFloor\discretizedcapfloor.cs" />
+    <Compile Include="..\QLNet\Pricingengines\inflation\InterpolatingCPICapFloorEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Cliquet\AnalyticCliquetEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Cliquet\AnalyticPerformanceEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\credit\IntegralCdsEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\credit\MidPointCdsEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Forward\ForwardPerformanceVanillaEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Forward\ForwardVanillaEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\genericmodelengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Greeks.cs" />
+    <Compile Include="..\QLNet\Pricingengines\inflation\InflationCapFloorEngines.cs" />
+    <Compile Include="..\QLNet\Pricingengines\latticeshortratemodelengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Loan\DiscountingLoanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Lookback\AnalyticContinuousFixedLookbackEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Lookback\AnalyticContinuousFloatingLookbackEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Lookback\AnalyticContinuousPartialFixedLookbackEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Lookback\AnalyticContinuousPartialFloatingLookbackEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\mclongstaffschwartzengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\mcsimulation.cs" />
+    <Compile Include="..\QLNet\Pricingengines\swaption\blackswaptionengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\swaption\discretizedswaption.cs" />
+    <Compile Include="..\QLNet\Pricingengines\swaption\g2swaptionengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\swaption\jamshidianswaptionengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\swaption\treeswaptionengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Swap\CounterpartyAdjSwapEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Swap\DiscountingBasisSwapEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Swap\Discountingswapengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Swap\discretizedswap.cs" />
+    <Compile Include="..\QLNet\Pricingengines\Swap\treeswapengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticBSMHullWhiteEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticDigitalAmericanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticDividendEuropeanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticEuropeanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticH1HWEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticHestonEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticHestonHullWhiteEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\AnalyticPTDHestonEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\baroneadesiwhaleyengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\binomialengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\bjerksundstenslandengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\discretizedvanillaoption.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDAmericanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDBermudanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDConditions.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDDividendAmericanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDDividendEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDDividendEuropeanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDEuropeanEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FdHestonVanillaEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDMultiPeriodEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDShoutEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDStepConditionEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FDVanillaEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\HestonExpansionEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\Integralengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\Juquadraticengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\mcamericanengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\mceuropeanengine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\MCEuropeanHestonEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\MCHestonHullWhiteEngine.cs" />
+    <Compile Include="..\QLNet\Pricingengines\vanilla\mcvanillaengine.cs" />
+    <Compile Include="..\QLNet\processes\BlackScholesProcess.cs" />
+    <Compile Include="..\QLNet\processes\Defaultable.cs" />
+    <Compile Include="..\QLNet\processes\EulerDiscretization.cs" />
+    <Compile Include="..\QLNet\processes\ForwardMeasureProcess.cs" />
+    <Compile Include="..\QLNet\processes\GeometricBrownianMotionProcess.cs" />
+    <Compile Include="..\QLNet\processes\HestonProcess.cs" />
+    <Compile Include="..\QLNet\processes\HullWhiteProcess.cs" />
+    <Compile Include="..\QLNet\processes\HybridHestonHullWhiteProcess.cs" />
+    <Compile Include="..\QLNet\processes\Ornsteinuhlenbeckprocess.cs" />
+    <Compile Include="..\QLNet\processes\Squarerootprocess.cs" />
+    <Compile Include="..\QLNet\processes\stochasticprocessarray.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\QLNet\Quotes\CompositeQuote.cs" />
+    <Compile Include="..\QLNet\Quotes\DeltaVolQuote.cs" />
+    <Compile Include="..\QLNet\Quotes\DerivedQuote.cs" />
+    <Compile Include="..\QLNet\Quotes\LastFixingQuote.cs" />
+    <Compile Include="..\QLNet\Quotes\Quote.cs" />
+    <Compile Include="..\QLNet\Quotes\SimpleQuote.cs" />
+    <Compile Include="..\QLNet\Settings.cs" />
+    <Compile Include="..\QLNet\StochasticProcess.cs" />
+    <Compile Include="..\QLNet\Termstructures\Bootstraperror.cs" />
+    <Compile Include="..\QLNet\Termstructures\Bootstraphelper.cs" />
+    <Compile Include="..\QLNet\Termstructures\Credit\FlatHazardRate.cs" />
+    <Compile Include="..\QLNet\Termstructures\Credit\HazardRateStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Credit\InterpolatedHazardRateCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Credit\ProbabilityTraits.cs" />
+    <Compile Include="..\QLNet\Termstructures\Curve.cs" />
+    <Compile Include="..\QLNet\Termstructures\DefaultProbabilityTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\InflationTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\CPICapFloorTermPriceSurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\InflationHelpers.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\InflationTraits.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\InterpolatedZeroInflationCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\PiecewiseYoYInflationCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\PiecewiseZeroInflationCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Inflation\Seasonality.cs" />
+    <Compile Include="..\QLNet\Termstructures\interpolatedcurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Iterativebootstrap.cs" />
+    <Compile Include="..\QLNet\Termstructures\localbootstrap.cs" />
+    <Compile Include="..\QLNet\Termstructures\TermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\AbcdCalibration.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\AbcdFunction.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\AtmSmileSection.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Bond\CallableBondConstantVolatility.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Bond\CallableBondVolatilityStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\CapFloor\CapFloorTermVolCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\CapFloor\CapFloorTermVolSurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\BlackVarianceSurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\HestonBlackVolSurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\ImpliedVolTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Inflation\CPIVolatilitySurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Inflation\yoyinflationoptionletvolatilitystructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\InterpolatedSmileSection.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\capletvariancecurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\OptionletStripper.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\OptionletStripper1.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\OptionletStripper2.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\SpreadedOptionletVolatility.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\StrippedOptionletAdapter.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\StrippedOptionletBase.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\SpreadedSmileSection.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SpreadedSwaptionVolatility.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\swaptionconstantvol.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SwaptionVolatilityCube.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SwaptionVolCube1.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SwaptionVolCube2.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\swaptionvoldiscrete.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\swaptionvolmatrix.cs" />
+    <Compile Include="..\QLNet\Termstructures\voltermstructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\CapFloor\CapFloorTermVolatilityStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\CapFloor\ConstantCapFloorTermVolatility.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\BlackConstantVol.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\BlackVarianceCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\BlackVolTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\LocalConstantVol.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\LocalVolCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\LocalVolSurface.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\LocalVolTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\FlatSmileSection.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\ConstantOptionletVolatility.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\OptionletVolatilityStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\Sabr.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\SmileSection.cs" />
+    <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SwaptionVolatilityStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\YieldTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\Bondhelpers.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\Bootstraptraits.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\DiscountCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\FittedBondDiscountCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\Flatforward.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ForwardCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ForwardSpreadedTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ForwardStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ImpliedTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\InterpolatedPiecewiseZeroSpreadedTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\NonLinearFittingMethods.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\OISRateHelper.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\PiecewiseYieldCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\Ratehelpers.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ZeroCurve.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\ZeroSpreadedTermStructure.cs" />
+    <Compile Include="..\QLNet\Termstructures\Yield\Zeroyieldstructure.cs" />
+    <Compile Include="..\QLNet\timegrid.cs" />
+    <Compile Include="..\QLNet\Time\ASX.cs" />
+    <Compile Include="..\QLNet\Time\Calendar.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\argentina.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\australia.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\bespokecalendar.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\brazil.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\canada.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\china.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\czechrepublic.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\denmark.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\finland.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\germany.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\hongkong.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\hungary.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\iceland.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\india.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\indonesia.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\Israel.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\italy.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\japan.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\JointCalendar.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\mexico.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\newzealand.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\norway.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\nullcalendar.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\poland.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\Romania.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\russia.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\saudiarabia.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\singapore.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\slovakia.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\southafrica.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\southkorea.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\sweden.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\switzerland.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\taiwan.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\TARGET.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\turkey.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\Ukraine.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\UnitedKingdom.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\UnitedStates.cs" />
+    <Compile Include="..\QLNet\Time\Calendars\WeekendsOnly.cs" />
+    <Compile Include="..\QLNet\Time\Date.cs" />
+    <Compile Include="..\QLNet\Time\DayCounter.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\Actual360.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\Actual365Fixed.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\Actual365NoLeap.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\ActualActual.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\Business252.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\OneDayCounter.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\SimpleDayCounter.cs" />
+    <Compile Include="..\QLNet\Time\DayCounters\Thirty360.cs" />
+    <Compile Include="..\QLNet\Time\ECB.cs" />
+    <Compile Include="..\QLNet\Time\Imm.cs" />
+    <Compile Include="..\QLNet\Time\Period.cs" />
+    <Compile Include="..\QLNet\Time\Schedule.cs" />
+    <Compile Include="..\QLNet\Types.cs" />
+    <Compile Include="..\QLNet\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\QLNet\.editorconfig" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+-->
+</Project>

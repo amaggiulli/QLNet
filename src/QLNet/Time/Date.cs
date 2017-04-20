@@ -1,0 +1,342 @@
+/*
+ Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ 
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is  
+ available online at <http://qlnet.sourceforge.net/License.html>.
+  
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+ 
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+
+using System;
+
+namespace QLNet
+{
+   public class Date : IComparable
+   {
+      private DateTime date;
+
+      //! Default constructor returning a null date.
+      public Date()
+      {} 
+      //! Constructor taking a serial number as given by Excel. 
+      // Serial numbers in Excel have a known problem with leap year 1900
+      public Date(int serialNumber)
+      {
+         date = (new DateTime(1899, 12, 31)).AddDays(serialNumber - 1);
+      }
+
+      public Date(int d, Month m, int y, int h = 0, int mi = 0, int s = 0, int ms = 0)
+         : this(new DateTime(y, (int)m, d, h, mi, s, ms))
+      { }
+
+      public Date(int d, int m, int y) : //! More traditional constructor.
+         this(new DateTime(y, m, d))
+      {}
+
+      public Date(int d, int m, int y, int h , int mi , int s , int ms ) : //! More traditional constructor.
+         this(new DateTime(y, m, d, h, mi, s, ms))
+      {}
+
+      public Date(DateTime d)
+      {
+         //! System DateTime constructor
+         date = d;
+      }
+
+      public int serialNumber()
+      {
+         return (date - new DateTime(1899, 12, 31).Date).Days + 1;
+      }
+
+      public int Day { get { return date.Day; } }
+
+      public int Month { get { return date.Month; } }
+
+      public int month()
+      {
+         return date.Month;
+      }
+
+      public int Year { get { return date.Year; } }
+
+      public int year()
+      {
+         return date.Year;
+      }
+
+      public int DayOfYear { get { return date.DayOfYear; } }
+
+      public int weekday()
+      {
+         return (int) date.DayOfWeek + 1;
+      } // QL compatible definition
+
+      public DayOfWeek DayOfWeek { get { return date.DayOfWeek; } }
+
+      public int hours { get { return date.Hour; } }
+      public int minutes { get { return date.Minute; } }
+      public int seconds { get { return date.Second; } }
+      public int milliseconds { get { return date.Millisecond; } }      
+      public double fractionOfSecond { get { return (double)date.Millisecond/1000; } }
+
+      public double fractionOfDay()
+      {
+         return date.TimeOfDay.TotalSeconds / 86400.0;
+      }
+
+      // static properties
+      public static Date minDate()
+      {
+         return new Date(1, 1, 1901);
+      }
+
+      public static Date maxDate()
+      {
+         return new Date(31, 12, 2199);
+      }
+
+      public static Date Today { get { return new Date( DateTime.Today ); } }
+
+      public static bool IsLeapYear(int y)
+      {
+         return DateTime.IsLeapYear(y);
+      }
+
+      public static int DaysInMonth(int y, int m)
+      {
+         return DateTime.DaysInMonth(y, m);
+      }
+
+      public static Date endOfMonth(Date d)
+      {
+         return (d - d.Day + DaysInMonth(d.Year, d.Month));
+      }
+
+      public static bool isEndOfMonth(Date d)
+      {
+         return (d.Day == DaysInMonth(d.Year, d.Month));
+      }
+
+      public static double daysBetween(Date d1, Date d2)
+      {
+         return (d2.date - d1.date).TotalDays;
+      }
+
+      //! next given weekday following or equal to the given date
+      public static Date nextWeekday(Date d, DayOfWeek dayOfWeek)
+      {
+         int wd = dayOfWeek - d.DayOfWeek;
+         return d + (wd >= 0 ? wd : (7 + wd));
+      }
+
+      //! n-th given weekday in the given month and year, e.g., the 4th Thursday of March, 1998 was March 26th, 1998.
+      public static Date nthWeekday(int nth, DayOfWeek dayOfWeek, int m, int y)
+      {
+         Utils.QL_REQUIRE(nth > 0,()=> "zeroth day of week in a given (month, year) is undefined");
+         Utils.QL_REQUIRE(nth < 6,()=> "no more than 5 weekday in a given (month, year)");
+         DayOfWeek first = new DateTime(y, m, 1).DayOfWeek;
+         int skip = nth - (dayOfWeek >= first ? 1 : 0);
+         return new Date(1, m, y) + (dayOfWeek - first + skip * 7);
+      }
+
+      public static int monthOffset(int m, bool leapYear)
+      {
+         int[] MonthOffset =
+         {
+            0, 31, 59, 90, 120, 151, // Jan - Jun
+            181, 212, 243, 273, 304, 334, // Jun - Dec
+            365 // used in dayOfMonth to bracket day
+         };
+         return (MonthOffset[m - 1] + ((leapYear && m > 1) ? 1 : 0));
+      }
+
+      public static Date advance(Date d, int n, TimeUnit u)
+      {
+         switch (u)
+         {
+            case TimeUnit.Days:
+               return d + n;
+            case TimeUnit.Weeks:
+               return d + 7 * n;
+            case TimeUnit.Months:
+            {
+               DateTime t = d.date;
+               return new Date(t.AddMonths(n));
+            }
+            case TimeUnit.Years:
+            {
+               DateTime t = d.date;
+               return new Date(t.AddYears(n));
+            }
+            default:
+               throw new ArgumentException("Unknown TimeUnit: " + u);
+         }
+      }
+
+      // operator overloads
+      public static int operator -(Date d1, Date d2)
+      {
+         return (d1.date.Date - d2.date.Date).Days;
+      }
+
+      public static Date operator +(Date d, int days)
+      {
+         DateTime t = d.date;
+         return new Date(t.AddDays(days));
+      }
+
+      public static Date operator -(Date d, int days)
+      {
+         DateTime t = d.date;
+         return new Date(t.AddDays(-days));
+      }
+
+      public static Date operator +(Date d, TimeUnit u)
+      {
+         return advance(d, 1, u);
+      }
+
+      public static Date operator -(Date d, TimeUnit u)
+      {
+         return advance(d, -1, u);
+      }
+
+      public static Date operator +(Date d, Period p)
+      {
+         return advance(d, p.length(), p.units());
+      }
+
+      public static Date operator -(Date d, Period p)
+      {
+         return advance(d, -p.length(), p.units());
+      }
+
+      public static Date operator ++(Date d)
+      {
+         d = d + 1;
+         return d;
+      }
+
+      public static Date operator --(Date d)
+      {
+         d = d - 1;
+         return d;
+      }
+
+      public static Date Min(Date d1, Date d2)
+      {
+         return d1 < d2 ? d1 : d2;
+      }
+
+      public static Date Max(Date d1, Date d2)
+      {
+         return d1 > d2 ? d1 : d2;
+      }
+
+      // this is the overload for DateTime operations
+      public static implicit operator DateTime(Date d)
+      {
+         return d.date;
+      }
+
+      public static implicit operator Date(DateTime d)
+      {
+         return new Date(d.Day, d.Month, d.Year);
+      }
+
+      public static bool operator ==(Date d1, Date d2)
+      {
+         return ((Object)d1 == null || (Object)d2 == null) ?
+                   ((Object)d1 == null && (Object)d2 == null) :
+                   d1.date == d2.date;
+      }
+
+      public static bool operator !=(Date d1, Date d2)
+      {
+         return !(d1 == d2);
+      }
+
+      public static bool operator <(Date d1, Date d2)
+      {
+         return d1.date < d2.date;
+      }
+
+      public static bool operator <=(Date d1, Date d2)
+      {
+         return d1.date <= d2.date;
+      }
+
+      public static bool operator >(Date d1, Date d2)
+      {
+         return d1.date > d2.date;
+      }
+
+      public static bool operator >=(Date d1, Date d2)
+      {
+         return d1.date >= d2.date;
+      }
+
+      public string ToLongDateString()
+      {
+         return date.ToString("D");
+      }
+
+      public string ToShortDateString()
+      {
+         return date.ToString("d");
+      }
+
+      public override string ToString()
+      {
+         return ToShortDateString();
+      }
+
+      public string ToString(IFormatProvider provider)
+      {
+         return date.ToString(provider);
+      }
+
+      public string ToString(string format)
+      {
+         return date.ToString(format);
+      }
+
+      public string ToString(string format, IFormatProvider provider)
+      {
+         return date.ToString(format, provider);
+      }
+
+      public override bool Equals(object o)
+      {
+         return this == (Date) o;
+      }
+
+      public override int GetHashCode()
+      {
+         return 0;
+      }
+
+      // IComparable interface
+      public int CompareTo(object obj)
+      {
+         if (this < (Date) obj)
+            return -1;
+         if (this == (Date) obj)
+            return 0;
+         return 1;
+      }
+   }
+}
+
