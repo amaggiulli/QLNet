@@ -102,11 +102,12 @@ namespace QLNet
                 BSStdDevs
          }
 
-         public Strategy strategy_;
-         public double vegaRatio_;
-         public double priceThreshold_;
-         public double stdDevs_;
-         public double lowerRateBound_, upperRateBound_;
+         public Strategy strategy_ { get; set; }
+         public double vegaRatio_ { get; set; }
+         public double priceThreshold_ { get; set; }
+         public double stdDevs_ { get; set; }
+         public double lowerRateBound_ { get; set; }
+         public double upperRateBound_{ get; set; }
         
       }
 
