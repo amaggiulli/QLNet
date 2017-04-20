@@ -626,13 +626,13 @@ namespace QLNet {
     //        "Conundrums..." article via numerical integration based on
     //        prices of vanilla swaptions
     public class NumericHaganPricer : HaganPricer {
-        public double upperLimit_;
-        public double stdDeviationsForUpperLimit_;
-        public double lowerLimit_;
-        public double requiredStdDeviations_;
-        public double precision_;
-        public double refiningIntegrationTolerance_;
-        public double hardUpperLimit_;
+        private double upperLimit_;
+        private double stdDeviationsForUpperLimit_;
+        private double lowerLimit_;
+        private double requiredStdDeviations_;
+        private double precision_;
+        private double refiningIntegrationTolerance_;
+        private double hardUpperLimit_;
 
         public NumericHaganPricer(Handle<SwaptionVolatilityStructure> swaptionVol, 
            GFunctionFactory.YieldCurveModel modelOfYieldCurve, 

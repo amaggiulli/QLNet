@@ -47,7 +47,7 @@ namespace QLNet
                                Date refPeriodEnd = null, 
                                DayCounter dayCounter = null )
          : base( paymentDate, nominal, startDate, endDate, index.fixingDays(), index, gearing, spread,
-                       refPeriodStart, refPeriodEnd, dayCounter, false )
+                       refPeriodStart, refPeriodEnd, dayCounter )
       {
          fixingSchedule_ = index.fixingSchedule(
                              index.fixingCalendar()
@@ -101,8 +101,7 @@ namespace QLNet
          int cutoffDays = 0; // to be verified
          Date startDate = coupon_.accrualStartDate() - cutoffDays,
               endDate = coupon_.accrualEndDate() - cutoffDays,
-              d1 = startDate,
-              d2 = startDate;
+              d1 = startDate;
 
          Utils.QL_REQUIRE(fixingDates.Count > 0,()=> "fixing date list empty");
          Utils.QL_REQUIRE(index.valueDate(fixingDates.First()) <= startDate,()=> "first fixing date valid after period start");
@@ -120,7 +119,7 @@ namespace QLNet
             if ( fixingDates[i + 1] < startDate || nextValueDate <= startDate )
                continue;
 
-            d2 = Date.Min( nextValueDate, endDate );
+            Date d2 = Date.Min( nextValueDate, endDate );
 
             avgBMA += index.fixing( fixingDates[i] ) * ( d2 - d1 );
 
@@ -233,11 +232,11 @@ namespace QLNet
                refEnd = calendar.adjust( start + schedule_.tenor(), paymentAdjustment_ );
 
             cashflows.Add( new AverageBMACoupon( paymentDate,
-                                               Utils.Get<double>( notionals_, i, notionals_.Last() ),
+                                               Utils.Get( notionals_, i, notionals_.Last() ),
                                                start, end,
                                                index_,
-                                               Utils.Get<double>( gearings_, i, 1.0 ),
-                                               Utils.Get<double>( spreads_, i, 0.0 ),
+                                               Utils.Get( gearings_, i, 1.0 ),
+                                               Utils.Get( spreads_, i, 0.0 ),
                                                refStart, refEnd,
                                                paymentDayCounter_ ) );
          }
