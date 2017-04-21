@@ -77,6 +77,15 @@ namespace QLNet
         public bool empty() { return (name_ == null); }
 
         public override string ToString() { return code; }
+
+        /*! \relates Currency */
+        public static bool operator ==(Currency c1, Currency c2) 
+        {
+            if ((object)c1 == null && (object)c2 == null) return true;
+            else if ((object)c1 == null || (object)c2 == null) return false;
+           else return c1.name == c2.name; 
+        }
+        public static bool operator !=(Currency c1, Currency c2) { return !(c1 == c2); }
         public static Money operator *(double value, Currency c) { return new Money(value, c);
         }
 

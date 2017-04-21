@@ -44,7 +44,7 @@ namespace QLNet
     {
         protected Calendar calendar_;
         public List<Date> addedHolidays { get; set; } 
-        public List<Date> removedHolidays { get; set; } 
+        public List<Date> removedHolidays { get; set; }
 
         public Calendar calendar
         {
@@ -52,32 +52,33 @@ namespace QLNet
             set { calendar_ = value; }
         }
 
-        // constructors
-        /*! The default constructor returns a calendar with a null 
-            implementation, which is therefore unusable except as a
-            placeholder. */
-        public Calendar()
-        {
-           addedHolidays  = new List<Date>();
-           removedHolidays = new List<Date>();
-        }
-        public Calendar(Calendar c)
-        {
-           calendar_ = c;
-           addedHolidays = new List<Date>();
-           removedHolidays = new List<Date>();
-        }
+       // constructors
+       /*! The default constructor returns a calendar with a null 
+           implementation, which is therefore unusable except as a
+           placeholder. */
+       public Calendar()
+       {
+          addedHolidays = new List<Date>();
+          removedHolidays = new List<Date>();
+       }
 
-        // Wrappers for interface
-        // <summary>
-        // This method is used for output and comparison between
-        // calendars. It is <b>not</b> meant to be used for writing
-        // switch-on-type code.
-        // </summary>
-        // <returns>
-        // The name of the calendar.
-        // </returns>
-        public virtual string name() { return calendar.name(); }
+       public Calendar(Calendar c)
+       {
+          calendar_ = c;
+          addedHolidays = new List<Date>();
+          removedHolidays = new List<Date>();
+       }
+
+      // Wrappers for interface
+      // <summary>
+      // This method is used for output and comparison between
+      // calendars. It is <b>not</b> meant to be used for writing
+      // switch-on-type code.
+      // </summary>
+      // <returns>
+      // The name of the calendar.
+      // </returns>
+      public virtual string name() { return calendar.name(); }
         // <param name="d">Date</param>
         // <returns>Returns <tt>true</tt> iff the date is a business day for the
         // given market.</returns>
@@ -413,6 +414,28 @@ namespace QLNet
         }
 
         // Operators
+        public static bool operator ==(Calendar c1, Calendar c2)
+        {
+           // If both are null, or both are same instance, return true.
+           if (System.Object.ReferenceEquals(c1, c2))
+           {
+              return true;
+           }
+
+           // If one is null, but not both, return false.
+           if (((object)c1 == null) || ((object)c2 == null))
+           {
+              return false;
+           }
+           
+           return (c1.empty() && c2.empty())
+           || (!c1.empty() && !c2.empty() && c1.name() == c2.name());
+        }
+
+        public static bool operator !=(Calendar c1, Calendar c2)
+        {
+            return !(c1 == c2);
+        }
         public override bool Equals(object o) { return (this == (Calendar)o); }
         public override int GetHashCode() { return 0; }
     }
