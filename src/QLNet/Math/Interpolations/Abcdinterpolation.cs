@@ -236,6 +236,7 @@ namespace QLNet
          vegaWeighted_ = vegaWeighted;
          endCriteria_ = endCriteria;
          optMethod_ = optMethod;
+         global = true;
       }
         
       public Interpolation interpolate(List<double> xBegin, int size,List<double> yBegin) 
@@ -248,7 +249,7 @@ namespace QLNet
                                          endCriteria_, optMethod_);
       }
 
-      public bool global { get; set; } = true;
+      public bool global { get; set; } 
 
       private double a_, b_, c_, d_;
       private bool aIsFixed_, bIsFixed_, cIsFixed_, dIsFixed_;

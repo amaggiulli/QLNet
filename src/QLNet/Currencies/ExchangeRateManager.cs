@@ -43,7 +43,7 @@ namespace QLNet
 
       private Dictionary<int, List<Entry>> data_ = new Dictionary<int, List<Entry>>();
 
-      public struct Entry
+      public class Entry
       {
          public Entry(ExchangeRate r, Date s, Date e)
          {

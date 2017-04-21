@@ -153,12 +153,16 @@ namespace QLNet
 
       public class Results : IPricingEngineResults
       {
+         public Results()
+         {
+            additionalResults = new Dictionary<string, object>();
+         }
          public double? value { get; set; }
          public double? errorEstimate { get; set; }
          public double? cash { get; set; }
          public Date valuationDate { get; set; }
 
-         public Dictionary<string, object> additionalResults { get; set; } = new Dictionary<string, object>();
+         public Dictionary<string, object> additionalResults { get; set; } 
 
          public virtual void reset()
          {

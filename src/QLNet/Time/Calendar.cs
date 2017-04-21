@@ -43,8 +43,8 @@ namespace QLNet
     public class Calendar
     {
         protected Calendar calendar_;
-        public List<Date> addedHolidays { get; set; } = new List<Date>();
-        public List<Date> removedHolidays { get; set; } = new List<Date>();
+        public List<Date> addedHolidays { get; set; } 
+        public List<Date> removedHolidays { get; set; } 
 
         public Calendar calendar
         {
@@ -56,8 +56,17 @@ namespace QLNet
         /*! The default constructor returns a calendar with a null 
             implementation, which is therefore unusable except as a
             placeholder. */
-        public Calendar() { }
-        public Calendar(Calendar c) { calendar_ = c; }
+        public Calendar()
+        {
+           addedHolidays  = new List<Date>();
+           removedHolidays = new List<Date>();
+        }
+        public Calendar(Calendar c)
+        {
+           calendar_ = c;
+           addedHolidays = new List<Date>();
+           removedHolidays = new List<Date>();
+        }
 
         // Wrappers for interface
         // <summary>
@@ -404,28 +413,6 @@ namespace QLNet
         }
 
         // Operators
-        public static bool operator ==(Calendar c1, Calendar c2)
-        {
-           // If both are null, or both are same instance, return true.
-           if (System.Object.ReferenceEquals(c1, c2))
-           {
-              return true;
-           }
-
-           // If one is null, but not both, return false.
-           if (((object)c1 == null) || ((object)c2 == null))
-           {
-              return false;
-           }
-           
-           return (c1.empty() && c2.empty())
-           || (!c1.empty() && !c2.empty() && c1.name() == c2.name());
-        }
-
-        public static bool operator !=(Calendar c1, Calendar c2)
-        {
-            return !(c1 == c2);
-        }
         public override bool Equals(object o) { return (this == (Calendar)o); }
         public override int GetHashCode() { return 0; }
     }

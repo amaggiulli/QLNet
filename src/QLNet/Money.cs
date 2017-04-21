@@ -55,8 +55,8 @@ namespace QLNet
       [ThreadStatic]
       private static Currency baseCurrency_;
 
-      public static ConversionType conversionType {get => conversionType_;set => conversionType_ = value;}
-      public static Currency baseCurrency { get => baseCurrency_; set => baseCurrency_ = value; }
+      public static ConversionType conversionType {get {return conversionType_;}set {conversionType_ = value;}}
+      public static Currency baseCurrency { get { return baseCurrency_; } set { baseCurrency_ = value; } }
 
       private double value_;
       private Currency currency_;

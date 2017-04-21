@@ -156,6 +156,8 @@ namespace QLNet
          rightType_ = rightCondition;
          leftValue_ = leftConditionValue;
          rightValue_ = rightConditionValue;
+         global  = true;
+         requiredPoints = 3;
       }
 
       public Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
@@ -168,8 +170,8 @@ namespace QLNet
       }
 
       // fix below
-      public bool global { get; set; } = true;
-      public int requiredPoints { get; set; } = 3;
+      public bool global { get; set; } 
+      public int requiredPoints { get; set; }
 
       private int n_;
       private Behavior behavior_;

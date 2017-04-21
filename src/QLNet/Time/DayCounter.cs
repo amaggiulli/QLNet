@@ -40,15 +40,6 @@ namespace QLNet
 
         // comparison based on name
         // Returns <tt>true</tt> iff the two day counters belong to the same derived class.
-        public static bool operator ==(DayCounter d1, DayCounter d2)
-        {
-            return ((Object)d1 == null || (Object)d2 == null) ?
-                   ((Object)d1 == null && (Object)d2 == null) :
-                   (d1.empty() && d2.empty()) || (!d1.empty() && !d2.empty() && d1.name() == d2.name());
-        }
-        public static bool operator !=(DayCounter d1, DayCounter d2) { return !(d1 == d2); }
-
-
         public bool empty() { return dayCounter_ == null; }
 
         public virtual string name()

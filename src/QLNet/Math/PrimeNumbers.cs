@@ -39,16 +39,19 @@ namespace QLNet
     public class PrimeNumbers {
         //! Get and store one after another.
       
-        public static ulong[]  firstPrimes { get; set; } = {
-            // the first two primes are mandatory for bootstrapping
-            2,  3,
-            // optional additional precomputed primes
-            5,  7, 11, 13, 17, 19, 23, 29,
-            31, 37, 41, 43, 47 };
+        public static ulong[]  firstPrimes { get; set; } 
       
         private static List<ulong> primeNumbers_ = new List<ulong>();
 
-        private PrimeNumbers() { }
+        private PrimeNumbers()
+        {
+           firstPrimes = new ulong []{
+              // the first two primes are mandatory for bootstrapping
+              2,  3,
+              // optional additional precomputed primes
+              5,  7, 11, 13, 17, 19, 23, 29,
+              31, 37, 41, 43, 47 };
+        }
 
         public  static ulong get(int absoluteIndex)
         {        

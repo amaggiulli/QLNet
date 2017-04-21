@@ -45,17 +45,6 @@ namespace QLNet
       }
       protected Data data_;
 
-      public static bool operator ==(Region r1, Region r2)
-      {
-         if ( ReferenceEquals( r1, r2 ) )  return true;
-         if ( (object)r1 == null || (object)r2 == null ) return false;
-         return r1.Equals( r2 );
-      }
-
-      public static bool operator !=(Region r1, Region r2)
-      {
-         return !(r1 == r2);
-      }
 
       public override bool Equals(object o)
       {

@@ -30,7 +30,7 @@ namespace QLNet
       public List<double> fixingTimes_ { get; set; }
       public List<Date> fixingDates_ { get; set; }
       public List<double> accrualStartTimes_ { get; set; }
-      List<double> accrualEndTimes_ { get; }
+      private List<double> accrualEndTimes_;
       public List<double> accrualPeriod_ { get; set; }
 
       private Vector m1;
