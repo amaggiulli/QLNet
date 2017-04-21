@@ -38,17 +38,16 @@ namespace QLNet
    {
       public new class Arguments : Bond.Arguments 
       {
-         public List<Date> couponDates;
-         public List<double> couponAmounts;
-         //! redemption = face amount * redemption / 100.
-         public double redemption;
-         public Date redemptionDate;
-         public DayCounter paymentDayCounter;
-         public Frequency frequency;
-         public CallabilitySchedule putCallSchedule;
+         public List<Date> couponDates { get; set; }
+         public List<double> couponAmounts { get; set; }
+         public double redemption { get; set; }
+         public Date redemptionDate { get; set; }
+         public DayCounter paymentDayCounter { get; set; }
+         public Frequency frequency { get; set; }
+         public CallabilitySchedule putCallSchedule { get; set; }
          //! bond full/dirty/cash prices
-         public List<double> callabilityPrices;
-         public List<Date> callabilityDates;
+         public List<double> callabilityPrices { get; set; }
+         public List<Date> callabilityDates { get; set; }
          public override void validate()
          {
             Utils.QL_REQUIRE( settlementDate != null, () => "null settlement date" );

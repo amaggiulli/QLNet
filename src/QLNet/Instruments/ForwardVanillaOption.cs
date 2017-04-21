@@ -63,8 +63,8 @@ namespace QLNet
             Utils.QL_REQUIRE(resetDate >= Settings.evaluationDate(),()=>"reset date in the past");
             Utils.QL_REQUIRE(this.exercise.lastDate() > resetDate,()=>"reset date later or equal to maturity");
          }
-         public double moneyness;
-         public Date resetDate;
+         public double moneyness { get; set; }
+         public Date resetDate { get; set; }
       }
       
    }

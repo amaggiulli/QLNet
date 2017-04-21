@@ -77,9 +77,13 @@ namespace QLNet
                Utils.QL_REQUIRE( i == 0 || resetDates[i] > resetDates[i - 1], () => "unsorted reset dates" );
             }
          }
-         public double? accruedCoupon, lastFixing;
-         public double? localCap, localFloor, globalCap, globalFloor;
-         public List<Date> resetDates;
+         public double? accruedCoupon { get; set; }
+         public double? lastFixing { get; set; }
+         public double? localCap { get; set; }
+         public double? localFloor { get; set; }
+         public double? globalCap { get; set; }
+         public double? globalFloor { get; set; }
+         public List<Date> resetDates { get; set; }
       }
 
       //! Cliquet %engine base class

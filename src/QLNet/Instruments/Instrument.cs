@@ -151,21 +151,23 @@ namespace QLNet
         public virtual bool isExpired() { throw new NotSupportedException(); }   
 
 
-        public class Results : IPricingEngineResults
-        {
-            public double? value;
-            public double? errorEstimate;
-            public double? cash;
-            public Date valuationDate;
+      public class Results : IPricingEngineResults
+      {
+         public double? value { get; set; }
+         public double? errorEstimate { get; set; }
+         public double? cash { get; set; }
+         public Date valuationDate { get; set; }
 
-            public Dictionary<string, object> additionalResults = new Dictionary<string, object>();
+         public Dictionary<string, object> additionalResults = new Dictionary<string, object>();
 
-            public virtual void reset()
-            {
-                value = errorEstimate = cash = null;
-                additionalResults.Clear();
-                valuationDate = null;
-            }
-        }
-    }
+         public virtual void reset()
+         {
+            value = errorEstimate = cash = null;
+            additionalResults.Clear();
+            valuationDate = null;
+         }
+
+      }
+
+   }
 }

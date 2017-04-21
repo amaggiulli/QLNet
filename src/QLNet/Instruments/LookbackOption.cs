@@ -22,7 +22,7 @@ namespace QLNet
       //! %Arguments for continuous fixed lookback option calculation
       public new class Arguments :  OneAssetOption.Arguments 
       {
-         public double? minmax;
+         public double? minmax { get; set; }
          public override void validate()
          {
             base.validate();
@@ -61,7 +61,7 @@ namespace QLNet
       //! %Arguments for continuous fixed lookback option calculation
       public new class Arguments : OneAssetOption.Arguments 
       {
-         public double? minmax;
+         public double? minmax { get; set; }
          public override void validate()
          {
             base.validate();
@@ -112,8 +112,8 @@ namespace QLNet
       //! %Arguments for continuous partial floating lookback option calculation
       public new class Arguments: ContinuousFloatingLookbackOption.Arguments 
       {
-         public double lambda;
-         public Date lookbackPeriodEnd;
+         public double lambda { get; set; }
+         public Date lookbackPeriodEnd { get; set; }
          public override void validate()
          {
             base.validate();
@@ -189,7 +189,7 @@ namespace QLNet
       //! %Arguments for continuous partial fixed lookback option calculation
       public new class Arguments : ContinuousFixedLookbackOption.Arguments 
       {
-         public Date lookbackPeriodStart;
+         public Date lookbackPeriodStart { get; set; }
          public override void validate()
          {
             base.validate();

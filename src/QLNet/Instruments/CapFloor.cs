@@ -281,17 +281,17 @@ namespace QLNet
 
       public class Arguments : IPricingEngineArguments
       {
-         public CapFloorType type;
-         public List<Date> startDates;
-         public List<Date> fixingDates;
-         public List<Date> endDates;
-         public List<double> accrualTimes;
-         public List<double?> capRates;
-         public List<double?> floorRates;
-         public List<double?> forwards;
-         public List<double> gearings;
-         public List<double> spreads;
-         public List<double> nominals;
+         public CapFloorType type { get; set; }
+         public List<Date> startDates { get; set; }
+         public List<Date> fixingDates { get; set; }
+         public List<Date> endDates { get; set; }
+         public List<double> accrualTimes { get; set; }
+         public List<double?> capRates { get; set; }
+         public List<double?> floorRates { get; set; }
+         public List<double?> forwards { get; set; }
+         public List<double> gearings { get; set; }
+         public List<double> spreads { get; set; }
+         public List<double> nominals { get; set; }
          public void validate() 
          {
             if (endDates.Count != startDates.Count)

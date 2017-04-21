@@ -266,20 +266,20 @@ namespace QLNet
 				nominal = null ;
 			}
 
-			public Type type;
-			public double? nominal;
+			public Type type { get; set; }
+         public double? nominal { get; set; }
 
-			public List<Date> fixedResetDates;
-			public List<Date> fixedPayDates;
-			public List<double> yoyAccrualTimes;
-			public List<Date> yoyResetDates;
-			public List<Date> yoyFixingDates;
-			public List<Date> yoyPayDates;
+         public List<Date> fixedResetDates { get; set; }
+         public List<Date> fixedPayDates { get; set; }
+         public List<double> yoyAccrualTimes { get; set; }
+         public List<Date> yoyResetDates { get; set; }
+         public List<Date> yoyFixingDates { get; set; }
+         public List<Date> yoyPayDates { get; set; }
 
-			public List<double> fixedCoupons;
-			public List<double> yoySpreads;
-			public List<double?> yoyCoupons;
-			public override void validate()
+         public List<double> fixedCoupons { get; set; }
+         public List<double> yoySpreads { get; set; }
+         public List<double?> yoyCoupons { get; set; }
+         public override void validate()
 			{
 				base.validate();
             Utils.QL_REQUIRE( nominal != null, () => "nominal null or not set" );
@@ -303,9 +303,9 @@ namespace QLNet
 		//! %Results from YoY swap calculation
 		public new class Results : Swap.Results
 		{
-			public double? fairRate;
-			public double? fairSpread;
-			public override void reset()
+			public double? fairRate { get; set; }
+         public double? fairSpread { get; set; }
+         public override void reset()
 			{
 				base.reset();
 				fairRate = null;

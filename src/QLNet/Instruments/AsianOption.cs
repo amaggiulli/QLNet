@@ -39,7 +39,7 @@ namespace QLNet {
 				base.validate();
             Utils.QL_REQUIRE(averageType != Average.Type.NULL,()=> "unspecified average type");
 			}
-			public Average.Type averageType;
+			public Average.Type averageType { get; set; }
 		}
 
  	    public new class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results> 
@@ -99,11 +99,11 @@ namespace QLNet {
 		
 				// check fixingTimes_ here
 			}
-			public Average.Type averageType;
-			public double? runningAccumulator;
-            public int? pastFixings;
-            public List<Date> fixingDates;
-		}
+			public Average.Type averageType { get; set; }
+         public double? runningAccumulator { get; set; }
+         public int? pastFixings { get; set; }
+         public List<Date> fixingDates { get; set; }
+      }
 
  	    public new class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results> 
         {

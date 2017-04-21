@@ -300,6 +300,7 @@ namespace QLNet
          double strikePrice = payoff.strike();
          double term = process.time(arguments_.exercise.lastDate());
 
+         double? resultsValue = null;
          doCalculation( riskFreeDiscount,
                         dividendDiscount,
                         spotPrice,
@@ -314,9 +315,9 @@ namespace QLNet
                         integration_,
                         cpxLog_,
                         this,
-                        ref results_.value,
+                        ref resultsValue,
                         ref evaluations_);
-   
+         results_.value = resultsValue;
       }
 
       public int numberOfEvaluations() { return evaluations_; }

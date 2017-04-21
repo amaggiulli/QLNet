@@ -37,9 +37,9 @@ namespace QLNet
       protected List<double?> endDiscounts_;
       protected double? npvDateDiscount_;
 
-      public Arguments arguments;
-      public Results results;
-      public SwapEngine engine;
+      public Arguments arguments { get; set; }
+      public Results results { get; set; }
+      public SwapEngine engine { get; set; }
 
       #endregion
 
@@ -249,8 +249,8 @@ namespace QLNet
       // arguments, results, pricing engine
       public class Arguments : IPricingEngineArguments
       {
-         public List<List<CashFlow>> legs;
-         public List<double> payer;
+         public List<List<CashFlow>> legs { get; set; }
+         public List<double> payer { get; set; }
          public virtual void validate()
          {
             Utils.QL_REQUIRE( legs.Count == payer.Count, () => "number of legs and multipliers differ" );
@@ -259,11 +259,11 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public List<double?> legNPV ;
-         public List<double?> legBPS ;
-         public List<double?> startDiscounts ;
-         public List<double?> endDiscounts ;
-         public double? npvDateDiscount;
+         public List<double?> legNPV { get; set; }
+         public List<double?> legBPS { get; set; }
+         public List<double?> startDiscounts { get; set; }
+         public List<double?> endDiscounts { get; set; }
+         public double? npvDateDiscount { get; set; }
          public override void reset()
          {
             base.reset();

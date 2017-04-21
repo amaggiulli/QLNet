@@ -212,19 +212,19 @@ namespace QLNet
 		//! %Arguments for YoY Inflation cap/floor calculation
 		public class Arguments : IPricingEngineArguments 
 		{
-		   public CapFloorType type;
-			public YoYInflationIndex index;
-			public Period observationLag;
-			public List<Date> startDates;
-			public List<Date> fixingDates;
-			public List<Date> payDates;
-			public List<double> accrualTimes;
-			public List<double?> capRates;
-			public List<double?> floorRates;
-			public List<double> gearings;
-			public List<double> spreads;
-			public List<double> nominals;
-			public void validate()
+		   public CapFloorType type { get; set; }
+         public YoYInflationIndex index { get; set; }
+         public Period observationLag { get; set; }
+         public List<Date> startDates { get; set; }
+         public List<Date> fixingDates { get; set; }
+         public List<Date> payDates { get; set; }
+         public List<double> accrualTimes { get; set; }
+         public List<double?> capRates { get; set; }
+         public List<double?> floorRates { get; set; }
+         public List<double> gearings { get; set; }
+         public List<double> spreads { get; set; }
+         public List<double> nominals { get; set; }
+         public void validate()
 			{
             Utils.QL_REQUIRE( payDates.Count == startDates.Count, () =>
                    "number of start dates (" + startDates.Count

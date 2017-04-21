@@ -33,11 +33,11 @@ namespace QLNet {
 				barrier = null;
 				rebate = null;
 			}
-			public Barrier.Type barrierType;
-			public double? barrier;
-			public double? rebate;
+			public Barrier.Type barrierType { get; set; }
+			public double? barrier { get; set; }
+         public double? rebate { get; set; }
 
-			public override void validate()
+         public override void validate()
 			{
 				base.validate();
 		

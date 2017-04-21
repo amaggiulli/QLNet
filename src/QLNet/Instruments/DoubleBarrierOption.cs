@@ -113,10 +113,10 @@ namespace QLNet
             barrier_hi = null;
             rebate = null;
          }
-         public DoubleBarrier.Type barrierType;
-         public double? barrier_lo;
-         public double? barrier_hi;
-         public double? rebate;
+         public DoubleBarrier.Type barrierType { get; set; }
+         public double? barrier_lo { get; set; }
+         public double? barrier_hi { get; set; }
+         public double? rebate { get; set; }
          public override void validate()
          {
             base.validate();

@@ -45,17 +45,21 @@ namespace QLNet
    {
       public class Arguments : IPricingEngineArguments
       {
-         public Option.Type type;
-         public double nominal;
-         public Date startDate, fixDate, payDate;
-         public double baseCPI;
-         public Date maturity;
-         public Calendar fixCalendar, payCalendar;
-         public BusinessDayConvention fixConvention, payConvention;
-         public double strike;
-         public Handle<ZeroInflationIndex> infIndex;
-         public Period observationLag;
-         public InterpolationType observationInterpolation;
+         public Option.Type type { get; set; }
+         public double nominal { get; set; }
+         public Date startDate { get; set; }
+         public Date fixDate{ get; set; }
+         public Date payDate{ get; set; }
+         public double baseCPI { get; set; }
+         public Date maturity { get; set; }
+         public Calendar fixCalendar { get; set; }
+         public Calendar payCalendar { get; set; }
+         public BusinessDayConvention fixConvention { get; set; }
+         public BusinessDayConvention payConvention{ get; set; }
+         public double strike { get; set; }
+         public Handle<ZeroInflationIndex> infIndex { get; set; }
+         public Period observationLag { get; set; }
+         public InterpolationType observationInterpolation { get; set; }
 
          public void validate()
          {

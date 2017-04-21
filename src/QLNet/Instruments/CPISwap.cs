@@ -58,15 +58,15 @@ namespace QLNet
             nominal = null;
          }
          
-         public Type type;
-         public double? nominal;
+         public Type type { get; set; }
+         public double? nominal { get; set; }
 
       }
 
       public new class Results : Swap.Results
       {
-         public double? fairRate;
-         public double? fairSpread;
+         public double? fairRate { get; set; }
+         public double? fairSpread { get; set; }
          public override void reset()
          {
             base.reset();
