@@ -252,12 +252,7 @@ namespace QLNet
 
     public new class Arguments : Swap.Arguments 
     {
-       public double fixedRate;
-       public override void validate() 
-       {
-           base.validate();
-            // you don't actually need to do anything else because it is so simple
-       }
+       public double fixedRate{ get; set; }
     }
 
 	 public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { };

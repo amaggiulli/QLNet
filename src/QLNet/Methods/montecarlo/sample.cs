@@ -17,17 +17,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet {
-    //! weighted sample
-    /*! \ingroup mcarlo */
-    // todo check for Sample for value types and Sample for object types to take care of proper object copying
-    public class Sample<T> {
-        public T value;
-        public double weight;
+namespace QLNet
+{
+   //! weighted sample
+   /*! \ingroup mcarlo */
+   // todo check for Sample for value types and Sample for object types to take care of proper object copying
+   public class Sample<T>
+   {
+      public T value { get; set; }
+      public double weight { get; set; }
 
-        public Sample(T value_, double weight_) {
-            value = value_;
-            weight = weight_;
-        }
-    }
+      public Sample(T value_, double weight_)
+      {
+         value = value_;
+         weight = weight_;
+      }
+   }
 }

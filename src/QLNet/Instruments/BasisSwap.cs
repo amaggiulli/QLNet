@@ -227,26 +227,26 @@ namespace QLNet
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
       {
-         public Type type;
-         public double nominal;
+         public Type type { get; set; }
+         public double nominal { get; set; }
 
-         public List<Date> floating1ResetDates;
-         public List<Date> floating1PayDates;
-         public List<double> floating1Coupons;
+         public List<Date> floating1ResetDates { get; set; }
+         public List<Date> floating1PayDates { get; set; }
+         public List<double> floating1Coupons { get; set; }
 
-         public List<Date> floating2ResetDates;
-         public List<Date> floating2PayDates;
-         public List<double> floating2Coupons;
+         public List<Date> floating2ResetDates { get; set; }
+         public List<Date> floating2PayDates { get; set; }
+         public List<double> floating2Coupons { get; set; }
 
          // ****
 
-         public List<double> floating1AccrualTimes;
-         public List<Date> floating1FixingDates;
-         public List<double> floating1Spreads;
+         public List<double> floating1AccrualTimes { get; set; }
+         public List<Date> floating1FixingDates { get; set; }
+         public List<double> floating1Spreads { get; set; }
 
-         public List<double> floating2AccrualTimes;
-         public List<Date> floating2FixingDates;
-         public List<double> floating2Spreads;
+         public List<double> floating2AccrualTimes { get; set; }
+         public List<Date> floating2FixingDates { get; set; }
+         public List<double> floating2Spreads { get; set; }
 
 
          public Arguments()

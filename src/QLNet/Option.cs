@@ -62,8 +62,8 @@ namespace QLNet
       //! basic %option %arguments
       public class Arguments : IPricingEngineArguments
       {
-         public Payoff payoff;
-         public Exercise exercise;
+         public Payoff payoff { get; set; }
+         public Exercise exercise { get; set; }
 
          public virtual void validate()
          {

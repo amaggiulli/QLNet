@@ -52,9 +52,9 @@ namespace QLNet
             endDate = e;
          }
 
-         public ExchangeRate rate;
-         public Date startDate;
-         public Date endDate;
+         public ExchangeRate rate { get; set; }
+         public Date startDate { get; set; }
+         public Date endDate { get; set; }
       }
 
       private void addKnownRates()

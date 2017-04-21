@@ -21421,7 +21421,7 @@ namespace QLNet {
     i+1. Each one-dimensional array of primitive polynomials of a given
     degree is terminated with an entry of -1. Accessing beyond this entry
     will result in a memory violation and must be avoided.  */
-        public static long[][] PrimitivePolynomials = new long[N_MAX_DEGREE][] {
+        public static long[][] PrimitivePolynomials { get; } = new long[N_MAX_DEGREE][] {
             PrimitivePolynomialDegree01
             //#if PPMT_MAX_DIM > N_PRIMITIVES_UP_TO_DEGREE_01
             , PrimitivePolynomialDegree02

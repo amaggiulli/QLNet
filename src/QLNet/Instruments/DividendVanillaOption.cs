@@ -78,22 +78,25 @@ namespace QLNet {
             arguments.cashFlow = cashFlow_;
         }
 
+       //! %Arguments for dividend vanilla option calculation
+       public new class Arguments : OneAssetOption.Arguments
+       {
+          public List<Dividend> cashFlow { get; set; }
 
-        //! %Arguments for dividend vanilla option calculation
-        public new class Arguments : OneAssetOption.Arguments {
-            public List<Dividend> cashFlow;
+          public override void validate()
+          {
+             base.validate();
 
-           public override void validate() {
-                base.validate();
+             Date exerciseDate = exercise.lastDate();
 
-                Date exerciseDate = exercise.lastDate();
-
-                for (int i = 0; i < cashFlow.Count; i++) {
-                    Utils.QL_REQUIRE(cashFlow[i].date() <= exerciseDate,()=>
-                       " dividend date (" + cashFlow[i].date() + ") is later than the exercise date (" + exerciseDate + ")");
-                }
-            }
-        }
+             for (int i = 0; i < cashFlow.Count; i++)
+             {
+                Utils.QL_REQUIRE(cashFlow[i].date() <= exerciseDate, () =>
+                   " dividend date (" + cashFlow[i].date() + ") is later than the exercise date (" + exerciseDate +
+                   ")");
+             }
+          }
+       }
 
         //! %Dividend-vanilla-option %engine base class
         public new class Engine : GenericEngine<Arguments, Results> { }

@@ -78,20 +78,20 @@ namespace QLNet
       }
 
       /*! Expiry, Forward */
-      public double t_;
-      public double forward_;
+      public double t_ { get; set; }
+      public double forward_ { get; set; }
       /*! Parameters */
-      public List<double?> params_;
-      public List<bool> paramIsFixed_;
-      public List<double> weights_;
+      public List<double?> params_ { get; set; }
+      public List<bool> paramIsFixed_ { get; set; }
+      public List<double> weights_ { get; set; }
       /*! Interpolation results */
-      public double? error_, maxError_;
-      public EndCriteria.Type XABREndCriteria_;
+      public double? error_ { get; set; }
+      public double? maxError_ { get; set; }
+      public EndCriteria.Type XABREndCriteria_ { get; set; }
       /*! Model instance (if required) */
-      public IWrapper modelInstance_;
-      public IModel model_;
-
-   }
+      public IWrapper modelInstance_ { get; set; }
+      public IModel model_ { get; set; }
+}
 
    //template <class I1, class I2, typename Model>
    public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new()
@@ -307,6 +307,6 @@ namespace QLNet
       private int maxGuesses_;
       private double forward_;
       private bool vegaWeighted_;
-      public XABRCoeffHolder<Model> coeff_;
+      public XABRCoeffHolder<Model> coeff_ { get; set; }
    }
 }

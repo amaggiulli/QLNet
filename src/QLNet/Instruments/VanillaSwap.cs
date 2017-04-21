@@ -272,19 +272,19 @@ namespace QLNet
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
       {
-         public Type type;
-         public double nominal;
+         public Type type { get; set; }
+         public double nominal { get; set; }
 
-         public List<Date> fixedResetDates;
-         public List<Date> fixedPayDates;
-         public List<double> floatingAccrualTimes;
-         public List<Date> floatingResetDates;
-         public List<Date> floatingFixingDates;
-         public List<Date> floatingPayDates;
+         public List<Date> fixedResetDates { get; set; }
+         public List<Date> fixedPayDates { get; set; }
+         public List<double> floatingAccrualTimes { get; set; }
+         public List<Date> floatingResetDates { get; set; }
+         public List<Date> floatingFixingDates { get; set; }
+         public List<Date> floatingPayDates { get; set; }
 
-         public List<double> fixedCoupons;
-         public List<double> floatingSpreads;
-         public List<double> floatingCoupons;
+         public List<double> fixedCoupons { get; set; }
+         public List<double> floatingSpreads { get; set; }
+         public List<double> floatingCoupons { get; set; }
 
          public Arguments()
          {
@@ -317,7 +317,8 @@ namespace QLNet
       //! %Results from simple swap calculation
       public new class Results : Swap.Results
       {
-         public double? fairRate, fairSpread;
+         public double? fairRate { get; set; }
+         public double? fairSpread { get; set; }
          public override void reset()
          {
             base.reset();

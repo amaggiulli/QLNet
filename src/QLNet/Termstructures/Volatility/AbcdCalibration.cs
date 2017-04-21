@@ -267,11 +267,14 @@ namespace QLNet
       public double b()  { return b_; }
       public double c()  { return c_; }
       public double d()  { return d_; }
-      public bool aIsFixed_, bIsFixed_, cIsFixed_, dIsFixed_;
-      public double a_, b_, c_, d_;
-      public IParametersTransformation transformation_;
+      public bool aIsFixed_ { get; set; }
+      public bool bIsFixed_ { get; set; }
+      public bool cIsFixed_ { get; set; }
+      public bool dIsFixed_ { get; set; }
+      private double a_,b_, c_, d_;
+      public IParametersTransformation transformation_ { get; set; }
 
-   
+
       // optimization method used for fitting
       private EndCriteria.Type abcdEndCriteria_;
       private EndCriteria endCriteria_;

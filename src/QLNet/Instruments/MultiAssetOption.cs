@@ -27,7 +27,12 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public double? delta, gamma, theta, vega, rho, dividendRho;
+         public double? delta { get; set; }
+         public double? gamma { get; set; }
+         public double? theta { get; set; }
+         public double? vega { get; set; }
+         public double? rho { get; set; }
+         public double? dividendRho { get; set; }
          public override void reset()
          {
             base.reset();

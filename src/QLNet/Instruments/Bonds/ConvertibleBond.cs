@@ -53,21 +53,21 @@ namespace QLNet
                redemption = null;
             }
 
-            public double? conversionRatio;
-            public Handle<Quote> creditSpread;
-            public DividendSchedule dividends;
-            public List<Date> dividendDates;
-            public List<Date> callabilityDates;
-            public List<Callability.Type> callabilityTypes;
-            public List<double> callabilityPrices;
-            public List<double?> callabilityTriggers;
-            public List<Date> couponDates;
-            public List<double> couponAmounts;
-            public Date issueDate;
-            public Date settlementDate;
+            public double? conversionRatio { get; set; }
+            public Handle<Quote> creditSpread { get; set; }
+            public DividendSchedule dividends { get; set; }
+            public List<Date> dividendDates { get; set; }
+            public List<Date> callabilityDates { get; set; }
+            public List<Callability.Type> callabilityTypes { get; set; }
+            public List<double> callabilityPrices { get; set; }
+            public List<double?> callabilityTriggers { get; set; }
+            public List<Date> couponDates { get; set; }
+            public List<double> couponAmounts { get; set; }
+            public Date issueDate { get; set; }
+            public Date settlementDate { get; set; }
 
-            public int? settlementDays;
-            public double? redemption;
+            public int? settlementDays { get; set; }
+            public double? redemption { get; set; }
 
             public override void validate()
             {

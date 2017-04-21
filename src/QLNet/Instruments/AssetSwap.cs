@@ -464,14 +464,14 @@ namespace QLNet
       //! %Arguments for asset swap calculation
       public new class Arguments : Swap.Arguments
       {
-         public List<Date> fixedResetDates;
-         public List<Date> fixedPayDates;
-         public List<double> fixedCoupons;
-         public List<double> floatingAccrualTimes;
-         public List<Date> floatingResetDates;
-         public List<Date> floatingFixingDates;
-         public List<Date> floatingPayDates;
-         public List<double> floatingSpreads;
+         public List<Date> fixedResetDates { get; set; }
+         public List<Date> fixedPayDates { get; set; }
+         public List<double> fixedCoupons { get; set; }
+         public List<double> floatingAccrualTimes { get; set; }
+         public List<Date> floatingResetDates { get; set; }
+         public List<Date> floatingFixingDates { get; set; }
+         public List<Date> floatingPayDates { get; set; }
+         public List<double> floatingSpreads { get; set; }
          public override void validate()
          {
             Utils.QL_REQUIRE( fixedResetDates.Count == fixedPayDates.Count, () =>
@@ -498,8 +498,9 @@ namespace QLNet
       //! %Results from simple swap calculation
       public new class Results : Swap.Results
       {
-         public double? fairSpread;
-         public double? fairCleanPrice, fairNonParRepayment;
+         public double? fairSpread { get; set; }
+         public double? fairCleanPrice { get; set; }
+         public double? fairNonParRepayment { get; set; }
          public override void reset()
          {
             base.reset();

@@ -45,7 +45,7 @@ namespace QLNet
       public abstract class ShortRateDynamics
       {
          StochasticProcess1D xProcess_, yProcess_;
-         public double correlation_;
+         public double correlation_ { get; set; }
 
          protected ShortRateDynamics(StochasticProcess1D xProcess,
             StochasticProcess1D yProcess,

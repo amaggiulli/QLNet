@@ -168,8 +168,8 @@ namespace QLNet
       }
 
       // fix below
-      public bool global = true;
-      public int requiredPoints = 3;
+      public bool global { get; set; } = true;
+      public int requiredPoints { get; set; } = 3;
 
       private int n_;
       private Behavior behavior_;

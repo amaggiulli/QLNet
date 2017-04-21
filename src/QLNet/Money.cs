@@ -50,10 +50,13 @@ namespace QLNet
       #region Attributes
 
       [ThreadStatic]
-      public static ConversionType conversionType;
+      private static ConversionType conversionType_;
 
       [ThreadStatic]
-      public static Currency baseCurrency;
+      private static Currency baseCurrency_;
+
+      public static ConversionType conversionType {get => conversionType_;set => conversionType_ = value;}
+      public static Currency baseCurrency { get => baseCurrency_; set => baseCurrency_ = value; }
 
       private double value_;
       private Currency currency_;

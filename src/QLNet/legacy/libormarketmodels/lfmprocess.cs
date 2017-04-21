@@ -23,17 +23,18 @@ namespace QLNet
 {
     public class LiborForwardModelProcess : StochasticProcess
     {
-        public int size_;
-        public IborIndex index_;
-        public LfmCovarianceParameterization lfmParam_;
-        public List<double> initialValues_; 
-        public List<double> fixingTimes_;
-        public List<Date> fixingDates_;
-        public List<double> accrualStartTimes_;
-        List<double> accrualEndTimes_;
-        public List<double> accrualPeriod_;
-        Vector m1;
-        Vector m2;
+      public int size_ { get; set; }
+      public IborIndex index_ { get; set; }
+      public LfmCovarianceParameterization lfmParam_ { get; set; }
+      public List<double> initialValues_ { get; set; }
+      public List<double> fixingTimes_ { get; set; }
+      public List<Date> fixingDates_ { get; set; }
+      public List<double> accrualStartTimes_ { get; set; }
+      List<double> accrualEndTimes_ { get; }
+      public List<double> accrualPeriod_ { get; set; }
+
+      private Vector m1;
+      private Vector m2;
 
         public LiborForwardModelProcess(int size, IborIndex index, IDiscretization disc)
             : base(disc )

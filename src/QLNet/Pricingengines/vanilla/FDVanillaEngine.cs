@@ -33,9 +33,9 @@ namespace QLNet {
         protected Date exerciseDate_;
         protected Payoff payoff_;
         protected TridiagonalOperator finiteDifferenceOperator_;
-        public SampledCurve intrinsicValues_;
+        public SampledCurve intrinsicValues_ { get; set; }
 
-        protected List<BoundaryCondition<IOperator>> BCs_;
+      protected List<BoundaryCondition<IOperator>> BCs_;
         // temporaries
         protected double sMin_, center_, sMax_;
 

@@ -410,17 +410,17 @@ namespace QLNet
 				spread = null;
 			}
 
-			public Protection.Side side;
-			public double? notional;
-			public double? upfront;
-			public double? spread;
-			public List<CashFlow> leg;
-			public CashFlow upfrontPayment;
-			public bool settlesAccrual;
-			public bool paysAtDefaultTime;
-			public Claim claim;
-			public Date protectionStart;
-			public void validate()
+			public Protection.Side side { get; set; }
+         public double? notional { get; set; }
+         public double? upfront { get; set; }
+         public double? spread { get; set; }
+         public List<CashFlow> leg { get; set; }
+         public CashFlow upfrontPayment { get; set; }
+         public bool settlesAccrual { get; set; }
+         public bool paysAtDefaultTime { get; set; }
+         public Claim claim { get; set; }
+         public Date protectionStart { get; set; }
+         public void validate()
 			{
             Utils.QL_REQUIRE( side != (Protection.Side)( -1 ), () => "side not set" );
             Utils.QL_REQUIRE( notional != null, () => "notional not set" );
@@ -436,14 +436,14 @@ namespace QLNet
 
 		public new class Results : Instrument.Results 
 		{
-			public double? fairSpread;
-			public double? fairUpfront;
-			public double? couponLegBPS;
-			public double? couponLegNPV;
-			public double? defaultLegNPV;
-			public double? upfrontBPS;
-			public double? upfrontNPV;
-			public override void reset()
+			public double? fairSpread { get; set; }
+         public double? fairUpfront { get; set; }
+         public double? couponLegBPS { get; set; }
+         public double? couponLegNPV { get; set; }
+         public double? defaultLegNPV { get; set; }
+         public double? upfrontBPS { get; set; }
+         public double? upfrontNPV { get; set; }
+         public override void reset()
 			{
 				base.reset();
 				fairSpread = null;

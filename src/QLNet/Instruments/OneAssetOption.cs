@@ -166,8 +166,17 @@ namespace QLNet
       //! %Results from single-asset option calculation
       public new class Results : Instrument.Results
       {
-         public double? delta, gamma, theta, vega, rho, dividendRho;
-         public double? itmCashProbability, deltaForward, elasticity, thetaPerDay, strikeSensitivity;
+         public double? delta { get; set; }
+         public double? gamma { get; set; }
+         public double? theta { get; set; }
+         public double? vega { get; set; }
+         public double? rho { get; set; }
+         public double? dividendRho { get; set; }
+         public double? itmCashProbability { get; set; }
+         public double? deltaForward { get; set; }
+         public double? elasticity { get; set; }
+         public double? thetaPerDay { get; set; }
+         public double? strikeSensitivity { get; set; }
 
          public override void reset()
          {

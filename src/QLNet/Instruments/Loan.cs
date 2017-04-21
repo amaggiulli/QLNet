@@ -92,8 +92,8 @@ namespace QLNet
       // arguments, results, pricing engine
       public class Arguments : IPricingEngineArguments
       {
-         public List<List<CashFlow>> legs;
-         public List<double> payer;
+         public List<List<CashFlow>> legs { get; set; }
+         public List<double> payer { get; set; }
          public virtual void validate()
          {
             if (legs.Count != payer.Count) throw new ArgumentException("number of legs and multipliers differ");
@@ -102,7 +102,7 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public List<double?> legNPV ;
+         public List<double?> legNPV { get; set; }
          public override void reset()
          {
             base.reset();

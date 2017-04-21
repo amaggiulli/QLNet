@@ -485,7 +485,7 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public double? settlementValue;
+         public double? settlementValue { get; set; }
          public override void reset()
          {
             settlementValue = null;
@@ -495,9 +495,9 @@ namespace QLNet
 
       public class Arguments : IPricingEngineArguments
       {
-         public Date settlementDate;
-         public List<CashFlow> cashflows;
-         public Calendar calendar;
+         public Date settlementDate { get; set; }
+         public List<CashFlow> cashflows { get; set; }
+         public Calendar calendar { get; set; }
 
          public virtual void validate()
          {

@@ -158,7 +158,7 @@ namespace QLNet
          public double? cash { get; set; }
          public Date valuationDate { get; set; }
 
-         public Dictionary<string, object> additionalResults = new Dictionary<string, object>();
+         public Dictionary<string, object> additionalResults { get; set; } = new Dictionary<string, object>();
 
          public virtual void reset()
          {

@@ -190,8 +190,11 @@ namespace QLNet
       private bool monotonic_;
       private CubicInterpolation.BoundaryCondition leftType_, rightType_;
       private double leftValue_, rightValue_;
-      public List<double> primitiveConst_, a_, b_, c_;
-      List<bool> monotonicityAdjustments_;
+      public List<double> primitiveConst_ { get; set; }
+      public List<double> a_ { get; set; }
+      public List<double> b_ { get; set; }
+      public List<double> c_ { get; set; }
+      private List<bool> monotonicityAdjustments_;
 
       public CubicInterpolationImpl(List<double> xBegin, int size, List<double> yBegin,
          CubicInterpolation.DerivativeApprox da,

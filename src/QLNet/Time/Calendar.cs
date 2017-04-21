@@ -43,8 +43,8 @@ namespace QLNet
     public class Calendar
     {
         protected Calendar calendar_;
-        public List<Date> addedHolidays = new List<Date>(), 
-                           removedHolidays = new List<Date>();
+        public List<Date> addedHolidays { get; set; } = new List<Date>();
+        public List<Date> removedHolidays { get; set; } = new List<Date>();
 
         public Calendar calendar
         {

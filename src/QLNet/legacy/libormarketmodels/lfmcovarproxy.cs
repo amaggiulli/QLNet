@@ -22,12 +22,12 @@ namespace QLNet
 {
     public class LfmCovarianceProxy : LfmCovarianceParameterization
     {
-        public LmVolatilityModel volaModel;
-        public LmCorrelationModel corrModel;
-        public LmVolatilityModel volaModel_;
-        public LmCorrelationModel corrModel_;
+      public LmVolatilityModel volaModel { get; set; }
+      public LmCorrelationModel corrModel { get; set; }
+      public LmVolatilityModel volaModel_ { get; set; }
+      public LmCorrelationModel corrModel_ { get; set; }
 
-        public LfmCovarianceProxy(LmVolatilityModel volaModel,
+      public LfmCovarianceProxy(LmVolatilityModel volaModel,
                            LmCorrelationModel corrModel)
             : base(corrModel.size(), corrModel.factors()){
             volaModel_=volaModel;
@@ -111,8 +111,8 @@ namespace QLNet
     public class VarProxy_Helper
     {
         private int i_, j_;
-        public LmVolatilityModel volaModel_;
-        public LmCorrelationModel corrModel_;
+        public LmVolatilityModel volaModel_{ get; set; }
+        public LmCorrelationModel corrModel_{ get; set; }
 
         public VarProxy_Helper(LfmCovarianceProxy proxy, int i, int j) {
             i_=i;

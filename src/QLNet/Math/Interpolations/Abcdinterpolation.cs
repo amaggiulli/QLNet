@@ -60,11 +60,18 @@ namespace QLNet
 
       }
 
-      public double? a_, b_, c_, d_;
-      public bool aIsFixed_, bIsFixed_, cIsFixed_, dIsFixed_;
-      public List<double> k_;
-      public double? error_, maxError_;
-      public EndCriteria.Type abcdEndCriteria_;
+      public double? a_ { get; set; }
+      public double? b_ { get; set; }
+      public double? c_ { get; set; }
+      public double? d_ { get; set; }
+      public bool aIsFixed_ { get; set; }
+      public bool bIsFixed_ { get; set; }
+      public bool cIsFixed_ { get; set; }
+      public bool dIsFixed_ { get; set; }
+      public List<double> k_ { get; set; }
+      public double? error_ { get; set; }
+      public double?  maxError_ { get; set; }
+      public EndCriteria.Type abcdEndCriteria_ { get; set; }
    }
            
    public class AbcdInterpolationImpl : Interpolation.templateImpl   
@@ -240,8 +247,8 @@ namespace QLNet
                                          vegaWeighted_,
                                          endCriteria_, optMethod_);
       }
-        
-      public  bool global = true;
+
+      public bool global { get; set; } = true;
 
       private double a_, b_, c_, d_;
       private bool aIsFixed_, bIsFixed_, cIsFixed_, dIsFixed_;

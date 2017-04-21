@@ -33,7 +33,7 @@ namespace QLNet {
     // random number traits
     public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new() where IC : IValue, new() {
         // data
-        public static IC icInstance = FastActivator<IC>.Create();
+        public static IC icInstance { get; set; } = FastActivator<IC>.Create();
 
         // more traits
         public int allowsErrorEstimate { get { return 1; } }
@@ -59,7 +59,7 @@ namespace QLNet {
 
     public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new() where IC : IValue, new() {
         // data
-        public static IC icInstance = FastActivator<IC>.Create();
+        public static IC icInstance { get; set; } = FastActivator<IC>.Create();
 
         // more traits
         public int allowsErrorEstimate { get { return 0; } }

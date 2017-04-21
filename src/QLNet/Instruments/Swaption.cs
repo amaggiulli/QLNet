@@ -54,8 +54,8 @@ namespace QLNet
    public class Swaption : Option
    {
 
-      public Arguments arguments;
-      public SwaptionEngine engine;
+      public Arguments arguments { get; set; }
+      public SwaptionEngine engine { get; set; }
 
       // arguments
       private VanillaSwap swap_;
@@ -141,9 +141,9 @@ namespace QLNet
       // arguments, pricing engine
       public new class Arguments : VanillaSwap.Arguments
       {
-         public Exercise exercise;
-         public VanillaSwap swap;
-         public Settlement.Type settlementType;
+         public Exercise exercise { get; set; }
+         public VanillaSwap swap { get; set; }
+         public Settlement.Type settlementType { get; set; }
          public Arguments()
          {
             settlementType = Settlement.Type.Physical;
