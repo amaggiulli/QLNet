@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.9.2</VersionPrefix>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
+    <AssemblyName>CallableBonds</AssemblyName>
+    <PackageId>CallableBonds</PackageId>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\QLNet\QLNet.csproj" />
+  </ItemGroup>
+
+</Project>
