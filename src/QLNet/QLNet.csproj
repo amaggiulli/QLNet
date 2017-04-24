@@ -1,13 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.9.1</VersionPrefix>
+    <VersionPrefix>1.9.2</VersionPrefix>
     <TargetFrameworks>net45;net40;netstandard1.6;netcoreapp1.1</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
     <PackageId>QLNet</PackageId>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+    <Authors>Andrea Maggiulli</Authors>
+    <Company />
+    <Description>A free/open-source library for quantitative finance</Description>
+    <Copyright>Copyright (c) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)</Copyright>
+    <PackageLicenseUrl>http://qlnet.sourceforge.net/License.html</PackageLicenseUrl>
+    <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
+    <PackageTags>QLNet QuantLib quantitative finance financial</PackageTags>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
  
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
