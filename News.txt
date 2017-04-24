@@ -1,75 +1,28 @@
-QLNet 1.9 
+QLNet 1.9.2 
 =========================
 
-QLNet 1.9 stable version.
+QLNet 1.9.2 stable version.
 
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
 FRAMEWORK
 
-+ Refactoring & Update BlackScholesProcess, LocalVolCurve, bsmlattice
-+ Optimized npvbps calculation
-+ List and InitializedList refactoring
++ Fixed floating point numbers equality.
++ Added FastActivator to avoid new() on generic classes
++ Project updated to Visual Studio 2017 new .csproj model.
++ General project refactoring
++ Removed "System.Exception" thrown by user code.
 
-CASHFLOWS
+TERMSTRUCTURES
 
-+ Fixed CappedFlooredCoupon factory
-
-INSTRUMENTS
-
-+ Added CompositeInstrument.
-+ Added DividendBarrierOption.
-+ Added ForwardVanillaOption.
-+ Added LookbackOption.
-+ Added CMS Helper.
-+ Added BarrierOption.
-+ Added Cliquet Option.
-+ Added DoubleBarrier Option.
-+ Added CPICapFloor.
-+ Added CPISwap.
-
-DATE/TIME
-
-+ Added ECB dates for 2017.
-+ Fixed rule for the Japanese Mountain Day holiday.
-+ Fixed United States holidays before 1971.
++ Added HestonBlackVolSurface 
 
 INDEXES
 
-+ Added Ibor indexes : Aonia , Bbsw, Bkbm and Nzocr.
++ Fixed inflation index reference period
 
-MATH
+INSTRUMENTS
 
-+ Added Matrix inverse calculation with Crout's LU decomposition.
-+ Added VannaVolga Interpolation.
- 
-TERMSTRUCTURES
-
-+ Added Swaption volatility cube.
-+ Allow negative jumps in yield term structures.
-
-PRICING ENGINES
-
-+ Added ForwardVanillaEngine engine.
-+ Added AnalyticContinuousFixedLookbackEngine engine.
-+ Added AnalyticContinuousFloatingLookbackEngine engine.
-+ Added AnalyticContinuousPartialFixedLookbackEngine engine.
-+ Added AnalyticContinuousPartialFloatingLookbackEngine engine.
-+ Added AnalyticBinaryBarrierEngine.
-+ Added AnalyticCliquetEngine.
-+ Added AnalyticPerformanceEngine.
-+ Added BlackDeltaCalculator and DeltaVolQuote.
-+ Added VannaVolga BarrierEngine.
-+ Added AnalyticDoubleBarrierEngine.
-+ Added VannaVolgaDoubleBarrierEngine.
-+ Added WulinYongDoubleBarrierEngine.
-+ Added InterpolatingCPICapFloorEngine.
-
-TESTS
-
-+ Added theta pertubation in AmericanOption & DividendOption tests.
-+ Added tests for China SSE and IB calendars and a missing Chinese holiday
-+ Added Test : Chambers-Nawalkha implied vol approximation
-+ Added CapFloored coupon tests.
-+ Added Digital Coupon tests.
++ Added normal implied vol cap floor
++ Added Bachelier volatility for CapFloor

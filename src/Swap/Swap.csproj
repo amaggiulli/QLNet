@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.9.1</VersionPrefix>
+    <VersionPrefix>1.9.2</VersionPrefix>
     <TargetFrameworks>net45</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>Swap</AssemblyName>
