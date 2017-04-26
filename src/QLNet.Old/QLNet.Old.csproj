@@ -1457,6 +1457,9 @@
     <Compile Include="..\QLNet\Termstructures\Inflation\InflationTraits.cs">
       <Link>Termstructures\Inflation\InflationTraits.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Inflation\InterpolatedYoYInflationCurve.cs">
+      <Link>Termstructures\Inflation\InterpolatedYoYInflationCurve.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Inflation\InterpolatedZeroInflationCurve.cs">
       <Link>Termstructures\Inflation\InterpolatedZeroInflationCurve.cs</Link>
     </Compile>
