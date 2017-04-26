@@ -341,7 +341,8 @@ namespace QLNet
       //! %Results from simple swap calculation
       public new class Results : Swap.Results
       {
-         public double? fairLongSpread, fairShortSpread;
+         public double? fairLongSpread { get; set; }
+         public double? fairShortSpread { get; set; }
          public override void reset()
          {
             base.reset();
