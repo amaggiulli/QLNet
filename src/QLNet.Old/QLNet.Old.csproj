@@ -1616,6 +1616,9 @@
     <Compile Include="..\QLNet\Termstructures\YieldTermStructure.cs">
       <Link>Termstructures\YieldTermStructure.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Yield\BasisSwapHelper.cs">
+      <Link>Termstructures\Yield\BasisSwapHelper.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Yield\Bondhelpers.cs">
       <Link>Termstructures\Yield\Bondhelpers.cs</Link>
     </Compile>
