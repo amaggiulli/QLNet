@@ -48,7 +48,7 @@ namespace QLNet
          Handle<YieldTermStructure> yTS,
          List<Date> dates,
          List<double> rates,
-         Interpolator interpolator = default(Interpolator))
+         Interpolator interpolator )
          : base(referenceDate, calendar, dayCounter, rates[0], lag, frequency, indexIsInterpolated, yTS)
       {
          times_ = new List<double>();
