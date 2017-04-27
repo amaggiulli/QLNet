@@ -82,7 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\QLNet\Cashflow.cs" />
+    <Compile Include="..\QLNet\CashflowBase.cs" />
     <Compile Include="..\QLNet\Cashflows\AverageBMACoupon.cs">
       <Link>Cashflows\AverageBMACoupon.cs</Link>
     </Compile>
