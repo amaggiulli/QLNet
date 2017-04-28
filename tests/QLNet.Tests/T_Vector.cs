@@ -13,7 +13,6 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-using System;
 using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +29,7 @@ namespace TestSuite
    public class T_Vector
    {
       /// <summary>
-      /// Test vector values.
+      /// Sample values.
       /// </summary>
       protected readonly List<double> Data = new List<double>(){ 1, 2, 3, 4, 5 };
 
@@ -93,6 +92,23 @@ namespace TestSuite
          QAssert.IsFalse(vector1.Equals(vector3));
          QAssert.IsFalse(vector1.Equals(null));
          QAssert.IsFalse(vector1.Equals(2));
+      }
+
+      /// <summary>
+      /// Test Vector hash code.
+      /// </summary>
+      #if NET40 || NET45
+         [TestMethod()]
+      #else
+         [Fact]
+      #endif
+      public void testHashCode()
+      {
+         Vector vector = new Vector(Data);
+         QAssert.AreEqual(vector.GetHashCode(), vector.GetHashCode());
+         QAssert.AreEqual(vector.GetHashCode(), 
+            new Vector(new List<double>() { 1, 2, 3, 4,5  }).GetHashCode());
+         QAssert.AreNotEqual(vector.GetHashCode(), new Vector(new List<double>() { 1 }).GetHashCode());
       }
    }
 }

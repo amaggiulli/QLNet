@@ -25,40 +25,54 @@ using System.Collections.Generic;
 namespace QLNet
 {
    /// <summary>
-   /// 1-D array used in linear algebra.
-   /// This class implements the concept of vector as used in linear algebra.
-   /// As such, it is <c>not</c> meant to be used as a container -
-   /// <tt>List</tt> should be used instead.
+   /// 1-D vector used in linear algebra.
    /// </summary>
-
+   /// <remarks>This class implements the concept of vector as used in linear algebra.
+   /// As such, it is not meant to be used as a container -
+   /// <c>List</c> should be used instead.</remarks>
    public class Vector : InitializedList<double>, ICloneable
    {
-      // Constructors, and assignment
-      //! creates the array with the given dimension
+      /// <summary>
+      /// Creates an empty Vector.
+      /// </summary>
       public Vector() : this(0)
       {}
 
+      /// <summary>
+      /// Creates a Vector of the given size.
+      /// </summary>
       public Vector(int size) : base(size)
       {}
 
-      //! creates the array and fills it with <tt>value</tt>
+      /// <summary>
+      /// Creates the Vector and fills it with value
+      /// </summary>
       public Vector(int size, double value) : base(size, value)
       {}
 
-      /*! \brief creates the array and fills it according to \f$ a_{0} = value, a_{i}=a_{i-1}+increment \f$ */
+      /// <summary>
+      /// Creates the vector and fills it according to 
+      /// <para>Vector[0] = value</para>
+      /// Vector[i]=Vector[i-1]+increment
+      /// </summary>
       public Vector(int size, double value, double increment) : this(size)
       {
          for (int i = 0; i < Count; i++, value += increment)
             this[i] = value;
       }
 
+      /// <summary>
+      /// Creates a Vector cloning from
+      /// </summary>
       public Vector(Vector from) : base(from.Count)
       {
          for (int i = 0; i < Count; i++)
             this[i] = from[i];
       }
 
-      //! creates the array as a copy of a given stl vector
+      /// <summary>
+      /// Creates a Vector as a copy of a given List
+      /// </summary>
       public Vector(List<double> from) : this(from.Count)
       {
          for (int i = 0; i < Count; i++)
@@ -85,24 +99,33 @@ namespace QLNet
          return Clone();
       }
 
-      public static bool operator ==(Vector to, Vector from)
+      /// <summary>
+      /// Indicates whether the current Vector is equal to another Vector.
+      /// </summary>
+      /// <param name="other">A Vector to compare with this Vector.</param>
+      /// <returns>
+      ///    <c>true</c> if the current Vector is equal to the <paramref name="other"/> parameter; otherwise, <c>false</c>.
+      /// </returns>
+      public bool Equals(Vector other)
       {
-         if (ReferenceEquals(to, from)) return true;
-         if ((object) to == null || (object) from == null) return false;
-         if (from.Count != to.Count) return false;
+         if (other == null) return false;
+         if (ReferenceEquals(this, other)) return true;
+         if (Count != other.Count) return false;
 
-         for (int i = 0; i < from.Count; i++)
-            if (from[i].IsNotEqual(to[i])) return false;
+         for (int i = 0; i < Count; i++)
+            if (other[i].IsNotEqual(this[i])) return false;
 
          return true;
       }
 
-      public static bool operator !=(Vector to, Vector from)
-      {
-         return !(to == from);
-      }
-
-      public override bool Equals(object o)
+      /// <summary>
+      /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+      /// </summary>
+      /// <param name="o">The <see cref="System.Object"/> to compare with this instance.</param>
+      /// <returns>
+      ///     <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+      /// </returns>
+      public sealed override bool Equals(object o)
       {
          var v = o as Vector;
          return v != null && this == v ;
@@ -110,7 +133,12 @@ namespace QLNet
 
       public override int GetHashCode()
       {
-         return 0;
+         int hash = 0;
+         for (var i = 0; i < Count; i++)
+         {
+            hash = hash * 31 + this[i].GetHashCode();
+         }
+         return hash;
       }
 
       public int size()
