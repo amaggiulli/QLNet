@@ -49,7 +49,7 @@ namespace QLNet {
         public Problem(CostFunction costFunction, Constraint constraint, Vector initialValue) {
             costFunction_ = costFunction;
             constraint_ = constraint;
-            currentValue_ = (Vector)initialValue.Clone();
+            currentValue_ = initialValue.Clone();
         }
 
         /*! \warning it does not reset the current minumum to any initial value
@@ -86,7 +86,7 @@ namespace QLNet {
         }
 
         public void setCurrentValue(Vector currentValue) {
-            currentValue_ = (Vector)currentValue.Clone();
+            currentValue_ = currentValue.Clone();
         }
 
         public void setFunctionValue(double functionValue) {

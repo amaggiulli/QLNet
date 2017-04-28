@@ -48,7 +48,7 @@ namespace QLNet
 
       public SampledCurve(Vector grid)
       {
-         grid_ = (Vector) grid.Clone();
+         grid_ = grid.Clone();
          values_ = new Vector(grid.Count);
       }
 
@@ -86,12 +86,12 @@ namespace QLNet
       // modifiers
       public void setGrid(Vector g)
       {
-         grid_ = (Vector) g.Clone();
+         grid_ = g.Clone();
       }
 
       public void setValues(Vector g)
       {
-         values_ = (Vector) g.Clone();
+         values_ = g.Clone();
       }
 
       public void sample(Func<double, double> f)
@@ -183,7 +183,7 @@ namespace QLNet
             newValues[i] = priceSpline.value(new_grid[i], true);
 
          values_ = newValues;
-         grid_ = (Vector) new_grid.Clone();
+         grid_ = new_grid.Clone();
       }
 
       public void regrid(Vector new_grid, Func<double, double> func)
@@ -199,7 +199,7 @@ namespace QLNet
             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
          priceSpline.update();
 
-         Vector newValues = (Vector) new_grid.Clone();
+         Vector newValues = new_grid.Clone();
 
          for (int i = 0; i < grid_.Count; i++)
             newValues[i] = func(newValues[i]);
@@ -208,7 +208,7 @@ namespace QLNet
             newValues[j] = priceSpline.value(newValues[j], true);
 
          values_ = newValues;
-         grid_ = (Vector) new_grid.Clone();
+         grid_ = new_grid.Clone();
       }
 
       public SampledCurve transform(Func<double, double> x)
