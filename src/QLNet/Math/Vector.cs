@@ -24,13 +24,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! 1-D array used in linear algebra.
-   /*! This class implements the concept of vector as used in linear algebra.
-       As such, it is <b>not</b> meant to be used as a container -
-       <tt>std::vector</tt> should be used instead.
+   /// <summary>
+   /// 1-D array used in linear algebra.
+   /// This class implements the concept of vector as used in linear algebra.
+   /// As such, it is <c>not</c> meant to be used as a container -
+   /// <tt>List</tt> should be used instead.
+   /// </summary>
 
-       \test construction of arrays is checked in a number of cases
-   */
    public class Vector : InitializedList<double>, ICloneable
    {
       // Constructors, and assignment
@@ -65,9 +65,24 @@ namespace QLNet
             this[i] = from[i];
       }
 
-      public Object Clone()
+      /// <summary>
+      /// Returns a deep-copy clone of the Vector.
+      /// </summary>
+      /// <returns>A clone of the vector.</returns>
+      public Vector Clone()
       {
-         return MemberwiseClone();
+         return new Vector(this);
+      }
+
+      /// <summary>
+      /// Creates a new object that is a copy of the current instance.
+      /// </summary>
+      /// <returns>
+      /// A new object that is a copy of this instance.
+      /// </returns>
+      Object ICloneable.Clone()
+      {
+         return Clone();
       }
 
       public static bool operator ==(Vector to, Vector from)
@@ -89,7 +104,8 @@ namespace QLNet
 
       public override bool Equals(object o)
       {
-         return (this == (Vector) o);
+         var v = o as Vector;
+         return v != null && this == v ;
       }
 
       public override int GetHashCode()

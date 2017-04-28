@@ -19,6 +19,7 @@
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 #if NET40 || NET45
@@ -161,6 +162,32 @@ namespace TestSuite {
 
    public static partial class QAssert
    {
+      public static void CollectionAreEqual(ICollection expected, ICollection actual)
+      {
+         #if NET40 || NET45
+            CollectionAssert.AreEqual(expected, actual);
+         #else
+            Assert.AreEqual(expected,actual);
+         #endif
+      }
+      public static void CollectionAreNotEqual(ICollection notExpected, ICollection actual)
+      {
+         #if NET40 || NET45
+            CollectionAssert.AreNotEqual(notExpected, actual);
+         #else
+            Assert.AreNotEqual(notExpected,actual);
+         #endif
+      }
+
+      public static void AreNotSame(object notExpected, object actual)
+      {
+         #if NET40 || NET45
+            Assert.AreNotSame(notExpected, actual);
+         #else
+            Assert.NotSame(notExpected,actual);
+         #endif
+      }
+
       public static void Fail(string message)
       {
          #if NET40 || NET45
@@ -217,12 +244,30 @@ namespace TestSuite {
          #endif
       }
 
+      public static void IsTrue(bool condition)
+      {
+         #if NET40 || NET45
+            Assert.IsTrue(condition);
+         #else
+            Assert.True(condition);
+         #endif
+      }
+
       public static void IsTrue( bool condition, string message )
       {
          #if NET40 || NET45
             Assert.IsTrue( condition, message);
          #else
             Assert.True( condition, message);
+         #endif
+      }
+
+      public static void IsFalse(bool condition)
+      {
+         #if NET40 || NET45
+            Assert.IsFalse(condition);
+         #else
+            Assert.False( condition);
          #endif
       }
 
