@@ -47,7 +47,7 @@ namespace QLNet {
         public Path(TimeGrid timeGrid) : this(timeGrid, new Vector()) { }
         public Path(TimeGrid timeGrid, Vector values) {
             timeGrid_ = timeGrid;
-            values_ = (Vector)values.Clone();
+            values_ = values.Clone();
             if (values_.empty())
                 values_ = new Vector(timeGrid_.size());
 

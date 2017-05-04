@@ -36,8 +36,8 @@ namespace QLNet {
         public Vector dxArray() { return dx_;}
 
         public TransformedGrid (Vector grid) {
-            grid_ = (Vector)grid.Clone();
-            transformedGrid_ = (Vector)grid.Clone();
+            grid_ = grid.Clone();
+            transformedGrid_ = grid.Clone();
             dxm_= new Vector(grid.size());
             dxp_ = new Vector(grid.size());
             dx_ = new Vector(grid.size());
@@ -50,7 +50,7 @@ namespace QLNet {
         }
 
         public TransformedGrid(Vector grid, Func<double, double> func) {
-            grid_ = (Vector)grid.Clone();
+            grid_ = grid.Clone();
             transformedGrid_ = new Vector(grid.size());
             dxm_= new Vector(grid.size());
             dxp_ = new Vector(grid.size());

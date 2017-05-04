@@ -128,7 +128,7 @@ namespace QLNet
         }
     }
 
-    #if ! NET40 || NET45
+    #if !(NET40 || NET45)
     public interface ICloneable
     {
        object Clone();

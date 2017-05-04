@@ -68,9 +68,9 @@ namespace QLNet {
         }
 
         public TridiagonalOperator(Vector low, Vector mid, Vector high) {
-            diagonal_ = (Vector)mid.Clone();
-            lowerDiagonal_ = (Vector)low.Clone();
-            upperDiagonal_ = (Vector)high.Clone();
+            diagonal_ = mid.Clone();
+            lowerDiagonal_ = low.Clone();
+            upperDiagonal_ = high.Clone();
 
             Utils.QL_REQUIRE(low.Count == mid.Count - 1,()=> "wrong size for lower diagonal vector");
             Utils.QL_REQUIRE(high.Count == mid.Count - 1,()=> "wrong size for upper diagonal vector");
@@ -157,7 +157,7 @@ namespace QLNet {
             Utils.QL_REQUIRE(rhs.Count == size(),()=> "rhs has the wrong size");
 
             // initial guess
-            Vector result = (Vector)rhs.Clone();
+            Vector result = rhs.Clone();
 
             // solve tridiagonal system with SOR technique
             double omega = 1.5;

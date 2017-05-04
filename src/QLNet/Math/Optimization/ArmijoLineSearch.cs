@@ -64,7 +64,7 @@ namespace QLNet
          // Initialize gradient
          gradient_ = new Vector(P.currentValue().Count);
          // Compute new point
-         xtd_ = (Vector) P.currentValue().Clone();
+         xtd_ = P.currentValue().Clone();
          t = update(ref xtd_, searchDirection_, t, constraint);
          // Compute function value at the new point
          qt_ = P.value(xtd_);

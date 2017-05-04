@@ -252,7 +252,7 @@ namespace QLNet
             // we're not sure, but the fixing might be there so we
             // check.  Todo: check which fixings are not possible, to
             // avoid using fixings in the future
-            return IndexManager.instance().getHistory( name() ).value().ContainsKey( latestNeededDate );
+            return !timeSeries().value().ContainsKey(latestNeededDate);
          }
       }
       private double forecastFixing( Date fixingDate )
