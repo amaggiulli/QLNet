@@ -92,10 +92,16 @@ namespace QLNet
       public Date maxDate_ { get; set; }
       public override Date maxDate()
       {
-         if ( maxDate_ != null )
-            return maxDate_;
-
-         return dates_.Last();
+         Date d;
+         if (indexIsInterpolated())
+         {
+            d = dates_.Last();
+         }
+         else
+         {
+            d = Utils.inflationPeriod(dates_.Last(), frequency()).Value;
+         }
+         return d;
       }
 
       public List<double> data_ { get; set; }

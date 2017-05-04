@@ -220,12 +220,12 @@ namespace TestSuite
                               194.1, 193.4, 194.2, 195.0, 196.5, 197.7,
                               198.5, 198.5, 199.2, 200.1, 200.4, 201.1,
                               202.7, 201.6, 203.1, 204.4, 205.4, 206.2,
-                              207.3, 206.1,  -999.0 };
+                              207.3};
 
             RelinkableHandle<ZeroInflationTermStructure> hz = new RelinkableHandle<ZeroInflationTermStructure>();
             bool interp = false;
             UKRPI iiUKRPI = new UKRPI(interp, hz);
-            for (int i = 0; i < rpiSchedule.Count; i++)
+            for (int i = 0; i < fixData.Length; i++)
             {
                iiUKRPI.addFixing(rpiSchedule[i], fixData[i]);
             }
