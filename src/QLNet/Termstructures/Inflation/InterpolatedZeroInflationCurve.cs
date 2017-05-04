@@ -25,6 +25,11 @@ namespace QLNet
        where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
+                                              Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
+                                              List<Date> dates, List<double> rates)
+           : this(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, yTS, dates, rates, FastActivator<Interpolator>.Create()) { }
+
+      public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
                                             Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
                                             List<Date> dates, List<double> rates,
                                             Interpolator interpolator = default(Interpolator))
@@ -92,10 +97,16 @@ namespace QLNet
       public Date maxDate_ { get; set; }
       public override Date maxDate()
       {
-         if ( maxDate_ != null )
-            return maxDate_;
-
-         return dates_.Last();
+         Date d;
+         if (indexIsInterpolated())
+         {
+            d = dates_.Last();
+         }
+         else
+         {
+            d = Utils.inflationPeriod(dates_.Last(), frequency()).Value;
+         }
+         return d;
       }
 
       public List<double> data_ { get; set; }
