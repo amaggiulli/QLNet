@@ -14,6 +14,7 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System.Collections.Generic;
+using System;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
@@ -65,7 +66,7 @@ namespace TestSuite
       public void testCloneICloneable()
       {
          Vector vector = new Vector(Data);
-         Vector clone = (Vector)((QLNet.ICloneable)vector).Clone();
+         Vector clone = (Vector)((ICloneable)vector).Clone();
 
          QAssert.AreNotSame(vector, clone);
          QAssert.AreEqual(vector.Count, clone.Count);
