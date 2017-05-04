@@ -1,4 +1,4 @@
-﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
+//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
 //  
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
@@ -13,6 +13,7 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
+using System;
 using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -65,7 +66,7 @@ namespace TestSuite
       public void testCloneICloneable()
       {
          Vector vector = new Vector(Data);
-         Vector clone = (Vector)((QLNet.ICloneable)vector).Clone();
+         Vector clone = (Vector)((ICloneable)vector).Clone();
 
          QAssert.AreNotSame(vector, clone);
          QAssert.AreEqual(vector.Count, clone.Count);
