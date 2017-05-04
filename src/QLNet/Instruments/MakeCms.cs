@@ -177,6 +177,7 @@ namespace QLNet
             .withSpreads(usedSpread.Value)
             .withPaymentDayCounter(floatDayCount_)
             .withFixingDays(iborIndex_.fixingDays())
+            .withGearings(iborGearing_)
             .withPaymentAdjustment(floatConvention_)
             .withNotionals(nominal_);
 
@@ -296,6 +297,11 @@ namespace QLNet
          floatDayCount_ = dc;
          return this;
       }
+      public MakeCms withFloatingLegGearing(double iborGearing)
+      {
+          iborGearing_ = iborGearing;
+          return this;
+      }
 
       public MakeCms withAtmSpread(bool flag = true)
       {
@@ -313,11 +319,17 @@ namespace QLNet
          couponPricer_ = couponPricer;
          return this;
       }
+      public MakeCms withCmsGearing(double cmsGearing)
+      {
+          cmsGearing_ = cmsGearing;
+          return this;
+      }
 
       private Period swapTenor_;
       private SwapIndex swapIndex_;
       private IborIndex iborIndex_;
       private double iborSpread_;
+      private double iborGearing_;
       private bool useAtmSpread_;
       private Period forwardStart_;
 
