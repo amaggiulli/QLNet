@@ -13,6 +13,7 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
+using System;
 using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
