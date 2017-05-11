@@ -243,6 +243,12 @@ namespace QLNet
          return legs_[j];
       }
 
+      public double payer(int j)
+      {
+          Utils.QL_REQUIRE(j < legs_.Count, () => "leg #" + j + " doesn't exist!");
+          return payer_[j];
+      }
+
       #endregion
 
       ////////////////////////////////////////////////////////////////
