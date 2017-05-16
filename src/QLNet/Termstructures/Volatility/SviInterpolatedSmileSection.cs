@@ -23,9 +23,7 @@ namespace QLNet
 {
     public class SviInterpolatedSmileSection : SmileSection
     {
-        //! \name Constructors
-        //@{
-        //! all market data are quotes
+        // all market data are quotes
         public SviInterpolatedSmileSection(
             Date optionDate, 
             Handle<Quote> forward,
@@ -103,7 +101,7 @@ namespace QLNet
             endCriteria_ = endCriteria;
             method_ = method;
 
-            for (int i = 0; i < volHandles_.Count(); ++i)
+            for (int i = 0; i < volHandles_.Count; ++i)
                 volHandles_[i] = new Handle<Quote>(new SimpleQuote(volHandles[i]));
         }
 
@@ -140,9 +138,9 @@ namespace QLNet
 
         protected void createInterpolation() 
         {
-            SviInterpolation tmp = new SviInterpolation(actualStrikes_.Where(x => actualStrikes_.First() == x).ToList(),
-                                                        actualStrikes_.Count(),
-                                                        vols_.Where(x => vols_.First() == x).ToList(),
+            SviInterpolation tmp = new SviInterpolation(actualStrikes_.Where(x => Utils.close_enough(actualStrikes_.First(), x)).ToList(),
+                                                        actualStrikes_.Count,
+                                                        vols_.Where(x => Utils.close_enough(vols_.First(), x)).ToList(),
                                                         exerciseTime(), forwardValue_, a_, b_, sigma_, rho_, m_, isAFixed_,
                                                         isBFixed_, isSigmaFixed_, isRhoFixed_, isMFixed_, vegaWeighted_,
                                                         endCriteria_, method_);
@@ -166,18 +164,18 @@ namespace QLNet
         public override double? atmLevel() { throw new NotImplementedException(); }
         public override void update() { base.update(); }
 
-        private List<double> strikes_;
-        private List<double> vols_;
+        private readonly List<double> strikes_;
+        private readonly List<double> vols_;
 
         #region svi
         //! Svi parameters
-        private double a_, b_, sigma_, rho_, m_;
+        private readonly double a_, b_, sigma_, rho_, m_;
         //! Svi interpolation settings
-        bool isAFixed_, isBFixed_, isSigmaFixed_, isRhoFixed_, isMFixed_;
-        bool vegaWeighted_;
-        EndCriteria endCriteria_;
-        OptimizationMethod method_;
-        SviInterpolation sviInterpolation_;
+        private readonly bool isAFixed_, isBFixed_, isSigmaFixed_, isRhoFixed_, isMFixed_;
+        private readonly bool vegaWeighted_;
+        private readonly EndCriteria endCriteria_;
+        private readonly OptimizationMethod method_;
+        private SviInterpolation sviInterpolation_;
 
         public double a() { calculate(); return a_; }
         public double b() { calculate(); return b_; }
