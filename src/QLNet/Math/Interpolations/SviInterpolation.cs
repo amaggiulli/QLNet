@@ -22,9 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-    public class SVIWrapper : IWrapper
+    public class SviWrapper : IWrapper
     {
-        public SVIWrapper(double t, double forward, List<double?> param)
+        public SviWrapper(double t, double forward, List<double?> param)
         {
             t_ = t;
             forward_ = forward;
@@ -36,11 +36,11 @@ namespace QLNet
             return Utils.sviVolatility(x, forward_, t_, params_);
         }
 
-        private double t_, forward_;
-        private List<double?> params_;
+        private readonly double t_, forward_;
+        private readonly List<double?> params_;
     }
 
-    public struct SVISpecs : IModel
+    public struct SviSpecs : IModel
     {
         public int dimension() { return 5; }
         public void defaultValues(List<double?> param, List<bool> paramIsFixed, double forward, double expiryTime)
@@ -113,13 +113,13 @@ namespace QLNet
         }
         public IWrapper instance(double t, double forward, List<double?> param)
         {
-            return new SVIWrapper(t, forward, param);
+            return new SviWrapper(t, forward, param);
         }
-        double weight(double strike, double forward, double stdDev, List<double> addParams)
+        public double weight(double strike, double forward, double stdDev)
         {
             return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
         }
-        public SVIWrapper modelInstance_ { get; set; }
+        public SviWrapper modelInstance_ { get; set; }
     }
 
     //! %SABR smile interpolation between discrete volatility points.
@@ -147,13 +147,13 @@ namespace QLNet
                                 int maxGuesses = 50)
         {
 
-            impl_ = new XABRInterpolationImpl<SVISpecs>(
+            impl_ = new XABRInterpolationImpl<SviSpecs>(
                     xBegin, size, yBegin, t, forward,
                     new List<double?>() { a, b, sigma, rho, m },
                     new List<bool>() { aIsFixed, bIsFixed, sigmaIsFixed, rhoIsFixed, mIsFixed },
                     vegaWeighted, endCriteria, optMethod, errorAccept, useMaxError,
                     maxGuesses);
-            coeffs_ = (impl_ as XABRInterpolationImpl<SVISpecs>).coeff_;
+            coeffs_ = (impl_ as XABRInterpolationImpl<SviSpecs>).coeff_;
         }
         public double expiry() { return coeffs_.t_; }
         public double forward() { return coeffs_.forward_; }
@@ -167,13 +167,13 @@ namespace QLNet
         public List<double> interpolationWeights() { return coeffs_.weights_; }
         public EndCriteria.Type endCriteria() { return coeffs_.XABREndCriteria_; }
 
-        private XABRCoeffHolder<SVISpecs> coeffs_;
+        private readonly XABRCoeffHolder<SviSpecs> coeffs_;
     }
 
     //! %SABR interpolation factory and traits
-    public class SVI
+    public class Svi
     {
-        public SVI(double t, double forward, double a, double b, double sigma, double rho, double m,
+        public Svi(double t, double forward, double a, double b, double sigma, double rho, double m,
                     bool aIsFixed, bool bIsFixed, bool sigmaIsFixed, bool rhoIsFixed, bool mIsFixed,
                     bool vegaWeighted = false,
                     EndCriteria endCriteria = null,
@@ -209,15 +209,15 @@ namespace QLNet
         public const bool global = true;
 
 
-        private double t_;
-        private double forward_;
-        private double a_, b_, sigma_, rho_, m_;
-        private bool aIsFixed_, bIsFixed_, sigmaIsFixed_, rhoIsFixed_, mIsFixed_;
-        private bool vegaWeighted_;
-        private EndCriteria endCriteria_;
-        private OptimizationMethod optMethod_;
-        private double errorAccept_;
-        private bool useMaxError_;
-        private int maxGuesses_;
+        private readonly double t_;
+        private readonly double forward_;
+        private readonly double a_, b_, sigma_, rho_, m_;
+        private readonly bool aIsFixed_, bIsFixed_, sigmaIsFixed_, rhoIsFixed_, mIsFixed_;
+        private readonly bool vegaWeighted_;
+        private readonly EndCriteria endCriteria_;
+        private readonly OptimizationMethod optMethod_;
+        private readonly double errorAccept_;
+        private readonly bool useMaxError_;
+        private readonly int maxGuesses_;
     }
 }
