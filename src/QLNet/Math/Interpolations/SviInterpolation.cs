@@ -115,7 +115,7 @@ namespace QLNet
         {
             return new SVIWrapper(t, forward, param);
         }
-        double weight(double strike, double forward, double stdDev, List<double> addParams)
+        public double weight(double strike, double forward, double stdDev, List<double> addParams)
         {
             return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
         }
