@@ -74,7 +74,7 @@ namespace QLNet
             if (!paramIsFixed[1])
                 values[1] = r[j++] * 4.0 / (1.0 + Math.Abs(values[3])) * eps2();
             if (!paramIsFixed[0])
-                values[0] = r[j++] * expiryTime -
+                values[0] = r[j] * expiryTime -
                             eps2() * (values[1] * values[2] *
                                       Math.Sqrt(1.0 - values[3] * values[3]));
         }
