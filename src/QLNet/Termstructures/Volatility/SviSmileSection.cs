@@ -58,9 +58,9 @@ namespace QLNet
         protected List<double> param_;
         public void init() 
         { 
-            Utils.QL_REQUIRE(param_.Count() == 5,
+            Utils.QL_REQUIRE(param_.Count == 5,
                             () => "svi expects 5 parameters (a,b,sigma,rho,s,m) but ("
-                                    + param_.Count() + ") given");
+                                    + param_.Count + ") given");
 
             Utils.checkSviParameters(param_[0], param_[1], param_[2], param_[3], param_[4]);
             return;
