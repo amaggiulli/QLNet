@@ -25,6 +25,11 @@ namespace QLNet
        where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
+                                              Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
+                                              List<Date> dates, List<double> rates)
+           : this(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, yTS, dates, rates, FastActivator<Interpolator>.Create()) { }
+
+      public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
                                             Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
                                             List<Date> dates, List<double> rates,
                                             Interpolator interpolator = default(Interpolator))
