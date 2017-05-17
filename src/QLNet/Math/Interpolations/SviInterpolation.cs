@@ -24,7 +24,7 @@ namespace QLNet
 {
     public class SVIWrapper : IWrapper
     {
-        public SVIWrapper(double t, double forward, List<double?> param)
+        public SVIWrapper(double t, double forward, List<double?> param, List<double?> addParams)
         {
             t_ = t;
             forward_ = forward;
@@ -43,7 +43,7 @@ namespace QLNet
     public struct SVISpecs : IModel
     {
         public int dimension() { return 5; }
-        public void defaultValues(List<double?> param, List<bool> paramIsFixed, double forward, double expiryTime)
+        public void defaultValues(List<double?> param, List<bool> paramIsFixed, double forward, double expiryTime, List<double?> addParams)
         {
             if (param[2] == null)
                 param[2] = 0.1;
@@ -62,7 +62,7 @@ namespace QLNet
                                     Math.Sqrt(1.0 - (double)param[3] * (double)param[3]) + eps1());
         }
 
-        public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r)
+        public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams)
         {
             int j = 0;
             if (!paramIsFixed[2])
@@ -74,7 +74,7 @@ namespace QLNet
             if (!paramIsFixed[1])
                 values[1] = r[j++] * 4.0 / (1.0 + Math.Abs(values[3])) * eps2();
             if (!paramIsFixed[0])
-                values[0] = r[j] * expiryTime -
+                values[0] = r[j++] * expiryTime -
                             eps2() * (values[1] * values[2] *
                                       Math.Sqrt(1.0 - values[3] * values[3]));
         }
@@ -111,11 +111,11 @@ namespace QLNet
                        y[1] * y[2] * Math.Sqrt(1.0 - y[3] * y[3]);
             return y;
         }
-        public IWrapper instance(double t, double forward, List<double?> param)
+        public IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams)
         {
-            return new SVIWrapper(t, forward, param);
+            return new SVIWrapper(t, forward, param, addParams);
         }
-        public double weight(double strike, double forward, double stdDev, List<double> addParams)
+        public double weight(double strike, double forward, double stdDev, List<double?> addParams)
         {
             return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
         }
