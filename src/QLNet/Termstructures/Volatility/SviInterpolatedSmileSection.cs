@@ -64,7 +64,7 @@ namespace QLNet
             forward_.registerWith(update);
             atmVolatility_.registerWith(update);
 
-            for (int i = 0; i < volHandles_.Count(); ++i)
+            for (int i = 0; i < volHandles_.Count; ++i)
                 volHandles_[i].registerWith(update);
         }
 
@@ -103,7 +103,7 @@ namespace QLNet
             endCriteria_ = endCriteria;
             method_ = method;
 
-            for (int i = 0; i < volHandles_.Count(); ++i)
+            for (int i = 0; i < volHandles_.Count; ++i)
                 volHandles_[i] = new Handle<Quote>(new SimpleQuote(volHandles[i]));
         }
 
@@ -114,7 +114,7 @@ namespace QLNet
             vols_.Clear();
             actualStrikes_.Clear();
             // we populate the volatilities, skipping the invalid ones
-            for (int i = 0; i < volHandles_.Count(); ++i)
+            for (int i = 0; i < volHandles_.Count; ++i)
             {
                 if (volHandles_[i].link.isValid())
                 {
@@ -140,9 +140,9 @@ namespace QLNet
 
         protected void createInterpolation() 
         {
-            SviInterpolation tmp = new SviInterpolation(actualStrikes_.Where(x => actualStrikes_.First() == x).ToList(),
-                                                        actualStrikes_.Count(),
-                                                        vols_.Where(x => vols_.First() == x).ToList(),
+            SviInterpolation tmp = new SviInterpolation(actualStrikes_.Where(x => actualStrikes_.First().IsEqual(x)).ToList(),
+                                                        actualStrikes_.Count,
+                                                        vols_.Where(x => vols_.First().IsEqual(x)).ToList(),
                                                         exerciseTime(), forwardValue_, a_, b_, sigma_, rho_, m_, isAFixed_,
                                                         isBFixed_, isSigmaFixed_, isRhoFixed_, isMFixed_, vegaWeighted_,
                                                         endCriteria_, method_);
