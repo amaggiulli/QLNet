@@ -57,6 +57,20 @@ namespace QLNet {
             return (alpha/D)*multiplier*d;
         }
 
+        public static double unsafeShiftedSabrVolatility(double strike,
+                                                  double forward,
+                                                  double expiryTime,
+                                                  double alpha,
+                                                  double beta,
+                                                  double nu,
+                                                  double rho,
+                                                  double shift)
+        {
+
+            return unsafeSabrVolatility(strike + shift, forward + shift, expiryTime,
+                                        alpha, beta, nu, rho);
+        }
+
         public static void validateSabrParameters(double alpha, double beta, double nu, double rho)
         {
             QL_REQUIRE(alpha > 0.0,()=> "alpha must be positive: " + alpha + " not allowed");
@@ -72,6 +86,26 @@ namespace QLNet {
             QL_REQUIRE(expiryTime>=0.0,()=> "expiry time must be non-negative: " + expiryTime + " not allowed");
             validateSabrParameters(alpha, beta, nu, rho);
             return unsafeSabrVolatility(strike, forward, expiryTime, alpha, beta, nu, rho);
+        }
+
+        public static double shiftedSabrVolatility(double strike,
+                                     double forward,
+                                     double expiryTime,
+                                     double alpha,
+                                     double beta,
+                                     double nu,
+                                     double rho,
+                                     double shift) 
+        {
+            QL_REQUIRE(strike + shift > 0.0, () => "strike+shift must be positive: "
+                       + strike + "+"  + shift + " not allowed");
+            QL_REQUIRE(forward + shift > 0.0, () => "at the money forward rate + shift must be "
+                       + "positive: " + forward + " " + shift + " not allowed");
+            QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: "
+                                       + expiryTime + " not allowed");
+            validateSabrParameters(alpha, beta, nu, rho);
+            return unsafeShiftedSabrVolatility(strike, forward, expiryTime,
+                                                 alpha, beta, nu, rho, shift);
         }
 
     }
