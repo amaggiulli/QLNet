@@ -28,20 +28,6 @@ namespace QLNet
         protected bool frozen_;
 
         #region Observer interface
-        // Here we define this object as observable
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
 
         // This method is the observer interface
         // It must be implemented in derived classes and linked to the event of the required Observer
@@ -50,7 +36,7 @@ namespace QLNet
             // observers don't expect notifications from frozen objects
             // LazyObject forwards notifications only once until it has been recalculated
             if (!frozen_ && calculated_)
-                notifyObservers();
+                this.notifyObservers();
             calculated_ = false;
         }
         #endregion
@@ -72,11 +58,11 @@ namespace QLNet
             catch
             {
                 frozen_ = wasFrozen;
-                notifyObservers();
+                this.notifyObservers();
                 throw;
             }
             frozen_ = wasFrozen;
-            notifyObservers();
+            this.notifyObservers();
         }
 
         /*! This method constrains the object to return the presently cached results on successive invocations,
@@ -87,7 +73,7 @@ namespace QLNet
         public void unfreeze()
         {
             frozen_ = false;
-            notifyObservers();              // send notification, just in case we lost any
+            this.notifyObservers();              // send notification, just in case we lost any
         }
 
         /*! This method performs all needed calculations by calling the <i><b>performCalculations</b></i> method.

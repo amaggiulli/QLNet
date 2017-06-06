@@ -111,7 +111,7 @@ namespace QLNet
                }
 
                // finally, notify observers of this of the change in the underlying object
-               notifyObservers();
+               this.notifyObservers();
             }
          }
 
@@ -119,25 +119,8 @@ namespace QLNet
 
          public T currentLink() { return h_; }
 
-         public void update() { notifyObservers(); }
+         public void update() { this.notifyObservers(); }
 
-         // Observable
-         private readonly WeakEventSource eventSource = new WeakEventSource();
-
-         public event Callback notifyObserversEvent
-         {
-            add { eventSource.Subscribe(value); }
-            remove { eventSource.Unsubscribe(value); }
-         }
-
-         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-
-         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-
-         protected void notifyObservers()
-         {
-            eventSource.Raise();
-         }
       }
    }
 

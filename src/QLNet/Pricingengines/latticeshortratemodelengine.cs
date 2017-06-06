@@ -57,7 +57,7 @@ namespace QLNet{
         {
             if (!timeGrid_.empty())
                 lattice_ = this.model_.link.tree(timeGrid_);
-            notifyObservers();
+           this.notifyObservers();
         }
         #endregion
         #endregion

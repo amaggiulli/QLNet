@@ -549,7 +549,7 @@ namespace QLNet
             fillVolatilityCube();
             sabrCalibrationSection(volCubeAtmCalibrated_, denseParameters_,swapTenor);
          }
-         notifyObservers();
+         this.notifyObservers();
       }
       public void recalibration(List<Period> swapLengths,List<double> beta, Period swapTenor)
       {
@@ -587,7 +587,7 @@ namespace QLNet
             denseParameters_ = sabrCalibration(volCubeAtmCalibrated_);
             denseParameters_.updateInterpolators();
          }
-         notifyObservers();
+         this.notifyObservers();
       }
      
       protected void registerWithParametersGuess()

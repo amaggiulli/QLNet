@@ -137,7 +137,7 @@ namespace QLNet
 
 
       // Observer interface
-      public void update() { notifyObservers(); }
+      public void update() { this.notifyObservers(); }
 
 
       //////////////////////////////////////////////////////////////////////////////////////

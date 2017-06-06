@@ -233,7 +233,7 @@ namespace QLNet
       }
 
       // LazyObject interface
-      public override void update() { notifyObservers(); }
+      public override void update() { this.notifyObservers(); }
 
       //! set up the interpolations for capPrice_ and floorPrice_
       //! since we know ATM, and we have single flows,

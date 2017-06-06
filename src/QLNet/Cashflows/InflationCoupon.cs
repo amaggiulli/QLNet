@@ -107,7 +107,7 @@ namespace QLNet
      }
 
 
-      public void update() { notifyObservers(); }
+      public void update() { this.notifyObservers(); }
 
       public void setPricer(InflationCouponPricer pricer) 
       {

@@ -42,7 +42,7 @@ namespace QLNet
       public override double shift() { return underlyingSection_.shift(); }
 
       // LazyObject interface
-      public override void update() { notifyObservers(); }
+      public override void update() { this.notifyObservers(); }
 
       protected override double volatilityImpl( double k )
       {
