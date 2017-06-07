@@ -21,15 +21,6 @@ namespace QLNet
 {
    public abstract class Claim : IObservable, IObserver
    {
-      #region Observer & Observable
-
-      public void update()
-      {
-         this.notifyObservers();
-      }
-
-      #endregion Observer & Observable
-
       public abstract double amount(Date defaultDate, double notional, double recoveryRate);
    }
 
@@ -48,7 +39,7 @@ namespace QLNet
       public FaceValueAccrualClaim(Bond referenceSecurity)
       {
          referenceSecurity_ = referenceSecurity;
-         referenceSecurity.registerWith(update);
+         referenceSecurity.registerWith(this.update);
       }
 
       public override double amount(Date d, double notional, double recoveryRate)

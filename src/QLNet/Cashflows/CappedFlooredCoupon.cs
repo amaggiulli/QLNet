@@ -96,7 +96,7 @@ namespace QLNet
             Utils.QL_REQUIRE(cap >= floor, () =>
                "cap level (" + cap + ") less than floor level (" + floor + ")");
          }
-         underlying.registerWith(update);
+         underlying.registerWith(this.update);
       }
       // Coupon interface
       public override double rate()

@@ -41,7 +41,7 @@ namespace QLNet {
 
             Utils.QL_REQUIRE(timeSteps>0,()=> "timeSteps must be positive, " + timeSteps + " not allowed");
 
-            process_.registerWith(update);
+            process_.registerWith(this.update);
         }
 
         public override void calculate() {

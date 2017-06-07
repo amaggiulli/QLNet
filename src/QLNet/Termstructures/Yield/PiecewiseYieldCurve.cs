@@ -221,13 +221,6 @@ namespace QLNet {
       } 
       #endregion
 
-      // observer interface
-      public override void update() 
-		{
-         base.update();
-         // LazyObject::update();        // we do it in the TermStructure 
-      }
-
       protected override void performCalculations() 
 		{
          // just delegate to the bootstrapper

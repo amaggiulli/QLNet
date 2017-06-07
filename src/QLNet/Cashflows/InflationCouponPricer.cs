@@ -50,11 +50,6 @@ namespace QLNet
       public virtual double floorletRate(double effectiveFloor) { return 0; }
       public virtual void initialize(InflationCoupon i) {}
 
-      #region Observer & observable
-      // observer interface
-      public void update() { this.notifyObservers(); }
-      #endregion
-
       protected Handle<YieldTermStructure> rateCurve_;
       protected Date paymentDate_;
 
@@ -70,7 +65,7 @@ namespace QLNet
       {
          capletVol_ = capletVol ?? new Handle<YoYOptionletVolatilitySurface>();
 
-         if (!capletVol_.empty()) capletVol_.registerWith(update);
+         if (!capletVol_.empty()) capletVol_.registerWith(this.update);
       }
 
       public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility() 
@@ -83,7 +78,7 @@ namespace QLNet
          Utils.QL_REQUIRE( !capletVol.empty() ,()=> "empty capletVol handle");
 
          capletVol_ = capletVol;
-         capletVol_.registerWith(update);
+         capletVol_.registerWith(this.update);
       }
 
       // InflationCouponPricer interface

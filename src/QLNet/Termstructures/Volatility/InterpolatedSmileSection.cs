@@ -142,7 +142,6 @@ namespace QLNet
       public override double minStrike () { return strikes_.First(); }
       public override double maxStrike () { return strikes_.Last(); }
       public override double? atmLevel()  { return atmLevel_.link.value(); }
-      public override void update() {base.update();}
 
       private double exerciseTimeSquareRoot_;
       private List<double> strikes_;

@@ -106,7 +106,7 @@ namespace QLNet
          Utils.QL_REQUIRE( timeStepsPerYear != 0,()=>
                     "timeStepsPerYear must be positive, " + timeStepsPerYear + " not allowed" );
 
-         process_.registerWith( update );
+         process_.registerWith(this.update );
       }
 
       public virtual void calculate()
@@ -172,7 +172,6 @@ namespace QLNet
       public IPricingEngineArguments getArguments() { return arguments_; }
       public IPricingEngineResults getResults() { return results_; }
       public void reset() { results_.reset(); }
-
       #region Observer & Observable
       public void update() { this.notifyObservers(); }
       #endregion

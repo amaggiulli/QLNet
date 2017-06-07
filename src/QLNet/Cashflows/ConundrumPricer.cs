@@ -517,11 +517,11 @@ namespace QLNet {
         }
         public void setMeanReversion(Handle<Quote> meanReversion) {
             if (meanReversion_ != null)
-                meanReversion_.unregisterWith(update);
+                meanReversion_.unregisterWith(this.update);
             meanReversion_ = meanReversion;
             if (meanReversion_ != null)
-                meanReversion_.registerWith(update);
-            update();
+                meanReversion_.registerWith(this.update);
+           this.update();
         }
 
         protected HaganPricer(Handle<SwaptionVolatilityStructure> swaptionVol, GFunctionFactory.YieldCurveModel modelOfYieldCurve, Handle<Quote> meanReversion)
@@ -532,7 +532,7 @@ namespace QLNet {
             meanReversion_ = meanReversion;
 
             if (meanReversion_.link != null)
-                meanReversion_.registerWith(update);
+                meanReversion_.registerWith(this.update);
         }
         
        protected virtual double optionletPrice(Option.Type optionType,double strike)

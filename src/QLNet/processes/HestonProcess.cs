@@ -50,9 +50,9 @@ namespace QLNet
          rho_ = rho;
          discretization_ = d;
 
-         riskFreeRate_.registerWith(update);
-         dividendYield_.registerWith( update ) ;
-         s0_.registerWith( update ) ;
+         riskFreeRate_.registerWith(this.update);
+         dividendYield_.registerWith(this.update ) ;
+         s0_.registerWith(this.update ) ;
       }
 
       public override int size() { return 2; }

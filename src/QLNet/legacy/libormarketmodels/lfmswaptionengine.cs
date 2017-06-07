@@ -33,7 +33,7 @@ namespace QLNet
                                  Handle<YieldTermStructure> discountCurve)
           : base(model) {
             discountCurve_=discountCurve;
-            discountCurve_.registerWith(update);
+            discountCurve_.registerWith(this.update);
         }
 
         public override void calculate()

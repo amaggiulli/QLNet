@@ -125,7 +125,7 @@ namespace QLNet
          integrator_ = integrator;
 
           if (!couponDiscountCurve_.empty())
-            couponDiscountCurve_.registerWith(update);
+            couponDiscountCurve_.registerWith(this.update);
 
         if (integrator_ == null)
             integrator_ = new  GaussKronrodNonAdaptive(1E-10, 5000, 1E-10);
@@ -214,10 +214,10 @@ namespace QLNet
       public double meanReversion() { return meanReversion_.link.value(); }
       public void setMeanReversion( Handle<Quote> meanReversion) 
       {
-         meanReversion_.unregisterWith(update);
+         meanReversion_.unregisterWith(this.update);
          meanReversion_ = meanReversion;
-         meanReversion_.registerWith(update);
-         update();
+         meanReversion_.registerWith(this.update);
+         this.update();
       }
 
 

@@ -68,11 +68,11 @@ namespace QLNet
          this.arguments_ = args;
       }
 
-      public override void update()
+      public void update()
       {
          a_ = hullWhiteModel_.parameters()[0];
          sigma_ = hullWhiteModel_.parameters()[1];
-         base.update();
+         ((IObserver)this).update();
       }
 
       public override void calculate()

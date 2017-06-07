@@ -61,7 +61,7 @@ namespace QLNet
             requiredTolerance_=requiredTolerance;
             brownianBridge_ = brownianBridge;
             seed_=seed;
-            process_.registerWith(update);
+            process_.registerWith(this.update);
         }
 
         public void calculate() {
@@ -125,9 +125,6 @@ namespace QLNet
         public IPricingEngineResults getResults() { return results_; }
         public void reset() { results_.reset(); }
 
-        #region Observer & Observable
-        public void update() { this.notifyObservers(); }
-        #endregion 
         #endregion
     }
 }

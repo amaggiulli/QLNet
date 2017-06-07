@@ -111,13 +111,6 @@ namespace QLNet {
         public virtual double time(Date d) {
             throw new NotSupportedException("date/time conversion not supported");
         }
-
-
-        #region Observer & Observable
-        public virtual void update() {
-            this.notifyObservers();
-        }
-	    #endregion   
     }
 
     //! 1-dimensional stochastic process

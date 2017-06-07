@@ -26,7 +26,7 @@ namespace QLNet
       {
          priceSurf_ = priceSurf;
 
-         priceSurf_.registerWith(update);
+         priceSurf_.registerWith(this.update);
       }
 
       public override void calculate()

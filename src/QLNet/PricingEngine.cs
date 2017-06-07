@@ -72,14 +72,5 @@ namespace QLNet
       {
          throw new NotSupportedException();
       }
-
-      #region Observer & Observable
-
-      public virtual void update()
-      {
-         this.notifyObservers();
-      }
-
-      #endregion
    }
 }

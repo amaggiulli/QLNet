@@ -60,8 +60,8 @@ namespace QLNet
             dayCounter_ = index_.dayCounter();
 
          // add as observer
-         index_.registerWith(update);
-         Settings.registerWith(update);
+         index_.registerWith(this.update);
+         Settings.registerWith(this.update);
       }
 
       // need by CashFlowVectors
@@ -70,14 +70,14 @@ namespace QLNet
       public virtual void setPricer(FloatingRateCouponPricer pricer)
       {
          if (pricer_ != null)   // remove from the old observable
-            pricer_.unregisterWith(update);
+            pricer_.unregisterWith(this.update);
 
          pricer_ = pricer;
 
          if (pricer_ != null)
-            pricer_.registerWith(update);      // add to observers of new pricer
+            pricer_.registerWith(this.update);      // add to observers of new pricer
 
-         update();                                   // fire the change event to notify observers of this
+         this.update();                                   // fire the change event to notify observers of this
       }
 
       public FloatingRateCouponPricer pricer() { return pricer_; }
@@ -134,11 +134,6 @@ namespace QLNet
       public double adjustedFixing { get { return (rate() - spread()) / gearing(); } }
       //! whether or not the coupon fixes in arrears
       public bool isInArrears() { return isInArrears_; }
-
-
-      // Observer interface
-      public void update() { this.notifyObservers(); }
-
 
       //////////////////////////////////////////////////////////////////////////////////////
       // methods

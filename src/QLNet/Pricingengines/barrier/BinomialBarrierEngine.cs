@@ -55,7 +55,7 @@ namespace QLNet
             "maxTimeSteps must be zero or greater than or equal to timeSteps, " + maxTimeSteps + " not allowed");
          if (maxTimeSteps_== 0)
                maxTimeSteps_ = Math.Max( 1000, timeSteps_*5);
-         process_.registerWith(update);
+         process_.registerWith(this.update);
       }
 
       public override void calculate()

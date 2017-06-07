@@ -155,7 +155,7 @@ namespace QLNet
          for (int i=0; i<n_; ++i) 
          {
             weights_.Add(outstandings[i]/outstanding_);
-            quotes_[i].registerWith(update);
+            quotes_[i].registerWith(this.update);
         }
 
       }
@@ -170,12 +170,7 @@ namespace QLNet
 
       #endregion
 
-      #region Observer & observable
-      // observer interface
-      public void update() { this.notifyObservers(); }
-      #endregion
-
-      
+     
       private   List<BTP> btps_;
       private   List<double> outstandings_;
       private   List<Handle<Quote> > quotes_;

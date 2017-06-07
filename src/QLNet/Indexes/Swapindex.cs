@@ -46,7 +46,7 @@ namespace QLNet
          exogenousDiscount_ = false;
          discount_ = new Handle<YieldTermStructure>();
 
-         iborIndex_.registerWith( update );
+         iborIndex_.registerWith(this.update );
       }
 
       public SwapIndex( string familyName,
@@ -67,7 +67,7 @@ namespace QLNet
          exogenousDiscount_ = true;
          discount_ = discountingTermStructure;
 
-         iborIndex_.registerWith( update );
+         iborIndex_.registerWith(this.update );
       }
 
       // InterestRateIndex interface

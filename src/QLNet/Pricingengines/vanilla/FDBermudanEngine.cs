@@ -52,9 +52,6 @@ namespace QLNet {
         public IPricingEngineResults getResults() { return results_; }
         public void reset() { results_.reset(); }
 
-        #region Observer & Observable
-        public void update() { this.notifyObservers(); }
-        #endregion
         #endregion
     }
 }

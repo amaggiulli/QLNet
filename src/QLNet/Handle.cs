@@ -99,7 +99,7 @@ namespace QLNet
             {
                if (h_ != null && isObserver_)
                {
-                  h_.unregisterWith(update);
+                  h_.unregisterWith(this.update);
                }
 
                h_ = h;
@@ -107,7 +107,7 @@ namespace QLNet
 
                if ( isObserver_)
                {
-                  h_.registerWith(update);
+                  h_.registerWith(this.update);
                }
 
                // finally, notify observers of this of the change in the underlying object
@@ -118,8 +118,6 @@ namespace QLNet
          public bool empty() { return h_ == null; }
 
          public T currentLink() { return h_; }
-
-         public void update() { this.notifyObservers(); }
 
       }
    }

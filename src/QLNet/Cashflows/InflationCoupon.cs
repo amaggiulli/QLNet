@@ -49,8 +49,8 @@ namespace QLNet
          dayCounter_= dayCounter;
          fixingDays_ = fixingDays;
 
-         index_.registerWith(update);
-         Settings.registerWith(update);
+         index_.registerWith(this.update);
+         Settings.registerWith(this.update);
       }
 
       // CashFlow interface
@@ -106,22 +106,19 @@ namespace QLNet
         return index_.fixing(fixingDate());
      }
 
-
-      public void update() { this.notifyObservers(); }
-
       public void setPricer(InflationCouponPricer pricer) 
       {
          Utils.QL_REQUIRE(checkPricerImpl(pricer),()=> "pricer given is wrong type");
 
          if (pricer_ != null)
-            pricer_.unregisterWith(update);
+            pricer_.unregisterWith(this.update);
          
          pricer_ = pricer;
          
          if (pricer_ != null)
-           pricer_.registerWith(update);
+           pricer_.registerWith(this.update);
 
-         update();
+         this.update();
       }
 
       public InflationCouponPricer pricer() {return pricer_;}

@@ -34,7 +34,7 @@ namespace QLNet
          series_ = series;
          f_ = new CumulativeNormalDistribution();
 
-         process_.registerWith(update);
+         process_.registerWith(this.update);
       }
       public override void calculate()
       {

@@ -165,7 +165,7 @@ namespace QLNet {
         //public FDEngineAdapter(GeneralizedBlackScholesProcess process, Size timeSteps=100, Size gridPoints=100, bool timeDependent = false)
         public FDEngineAdapter(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent) {
             optionBase = (Base) FastActivator<Base>.Create().factory(process, timeSteps, gridPoints, timeDependent);
-            process.registerWith(update);
+            process.registerWith(this.update);
         }
 
         public void calculate() {
@@ -183,8 +183,5 @@ namespace QLNet {
         public void reset() { engine_.reset(); }
         #endregion
 
-        #region Observer & Observable
-        public void update() { this.notifyObservers(); }
-        #endregion
     }
 }

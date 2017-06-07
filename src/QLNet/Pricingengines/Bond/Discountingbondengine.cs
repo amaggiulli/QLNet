@@ -30,7 +30,7 @@ namespace QLNet
       public DiscountingBondEngine(Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null) 
       {
          discountCurve_ = discountCurve;
-         discountCurve_.registerWith(update);
+         discountCurve_.registerWith(this.update);
          includeSettlementDateFlows_ = includeSettlementDateFlows;
       }
 

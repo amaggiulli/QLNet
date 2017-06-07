@@ -51,8 +51,8 @@ namespace QLNet
          availabilityLag_ = availabilitiyLag;
          currency_ = currency;
          name_ = region_.name() + " " + familyName_; 
-         Settings.registerWith( update );
-         IndexManager.instance().notifier( name() ).registerWith( update );
+         Settings.registerWith(this.update );
+         IndexManager.instance().notifier( name() ).registerWith(this.update );
       }
 
 
@@ -101,9 +101,6 @@ namespace QLNet
          base.addFixings( dates, rates, forceOverwrite );
 
       }
-
-      // Observer interface
-      public void update() { this.notifyObservers(); }
 
       // Inspectors
       public string familyName() { return familyName_; }
@@ -156,7 +153,7 @@ namespace QLNet
                      frequency, availabilityLag, currency )
       {
          zeroInflation_ = ts ?? new Handle<ZeroInflationTermStructure>();
-         zeroInflation_.registerWith( update );
+         zeroInflation_.registerWith(this.update );
       }
 
       /*! \warning the forecastTodaysFixing parameter (required by
@@ -308,7 +305,7 @@ namespace QLNet
       {
          ratio_ = ratio;
          yoyInflation_ = yoyInflation ?? new Handle<YoYInflationTermStructure>();
-         yoyInflation_.registerWith( update );
+         yoyInflation_.registerWith(this.update );
       }
 
       // Index interface

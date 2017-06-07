@@ -36,8 +36,8 @@ namespace QLNet
 			index_ = index;
 			volatility_ = vol;
 
-			index_.registerWith( update );
-			volatility_.registerWith(update);
+			index_.registerWith(this.update );
+			volatility_.registerWith(this.update);
 		}
 
       public YoYInflationIndex index() { return index_;}
@@ -46,10 +46,10 @@ namespace QLNet
 		public void setVolatility( Handle<YoYOptionletVolatilitySurface> vol )
 		{
 			if ( !volatility_.empty() )
-				volatility_ .unregisterWith(update );
+				volatility_ .unregisterWith(this.update );
 			volatility_ = vol;
-			volatility_.registerWith(update);
-			update();
+			volatility_.registerWith(this.update);
+		   this.update();
 		}
 
 		public override void calculate()

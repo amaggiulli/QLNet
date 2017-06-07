@@ -53,7 +53,7 @@ namespace QLNet{
 
         #region PricingEngine
         #region Observer & Observable
-        public override void update()
+        public void update()
         {
             if (!timeGrid_.empty())
                 lattice_ = this.model_.link.tree(timeGrid_);

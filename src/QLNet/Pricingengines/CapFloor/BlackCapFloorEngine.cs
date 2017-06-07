@@ -37,7 +37,7 @@ namespace QLNet
          discountCurve_ = discountCurve;
          vol_ = new Handle<OptionletVolatilityStructure>(new ConstantOptionletVolatility(0, new NullCalendar(), BusinessDayConvention.Following, vol, dc??new Actual365Fixed()));
          displacement_ = displacement;
-         discountCurve_.registerWith(update );
+         discountCurve_.registerWith(this.update );
       }
       public BlackCapFloorEngine( Handle<YieldTermStructure> discountCurve,Handle<Quote> vol,
                                   DayCounter dc = null,double displacement = 0.0)
@@ -46,8 +46,8 @@ namespace QLNet
          vol_ = new Handle<OptionletVolatilityStructure>( new ConstantOptionletVolatility(
                               0, new NullCalendar(), BusinessDayConvention.Following, vol, dc ?? new Actual365Fixed() ) );
          displacement_ = displacement;
-         discountCurve_.registerWith( update );
-         vol_.registerWith( update );
+         discountCurve_.registerWith(this.update );
+         vol_.registerWith(this.update );
   
       }
       public BlackCapFloorEngine( Handle<YieldTermStructure> discountCurve,Handle<OptionletVolatilityStructure> vol,
@@ -56,8 +56,8 @@ namespace QLNet
          discountCurve_ = discountCurve;
          vol_ = vol;
          displacement_ = displacement;
-         discountCurve_.registerWith( update );
-         vol_.registerWith( update );
+         discountCurve_.registerWith(this.update );
+         vol_.registerWith(this.update );
       }
 
       public override void calculate() 

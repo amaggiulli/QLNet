@@ -242,7 +242,7 @@ namespace QLNet
                break;
          }
 
-         underlying.registerWith(update);
+         underlying.registerWith(this.update);
       }
 
       // Coupon interface
@@ -384,11 +384,11 @@ namespace QLNet
       public override void setPricer(FloatingRateCouponPricer pricer)
       {
          if (pricer_ != null)
-            pricer_.unregisterWith(update);
+            pricer_.unregisterWith(this.update);
          pricer_ = pricer;
          if (pricer_ != null)
-            pricer_.registerWith(update);
-         update();
+            pricer_.registerWith(this.update);
+         this.update();
          underlying_.setPricer(pricer);
       }
 

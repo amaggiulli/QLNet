@@ -33,7 +33,7 @@ namespace QLNet
 
    public interface IObserver
    {
-      void update();
+      //void update();
    }
 
    public static class IObservableCode

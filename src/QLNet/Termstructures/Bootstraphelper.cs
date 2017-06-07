@@ -46,7 +46,7 @@ namespace QLNet {
 
         public BootstrapHelper(Handle<Quote> quote) {
             quote_ = quote;
-            quote_.registerWith(update);
+            quote_.registerWith(this.update);
         }
         public BootstrapHelper(double quote) { 
             quote_ = new Handle<Quote>(new SimpleQuote(quote)); 
@@ -118,10 +118,6 @@ namespace QLNet {
            return latestDate_;
         }
 
-
-        #region observer interface
-        public virtual void update() { this.notifyObservers(); }
-        #endregion
     }
 
     public class RateHelper : BootstrapHelper<YieldTermStructure>

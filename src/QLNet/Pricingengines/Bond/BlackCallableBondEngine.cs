@@ -43,8 +43,8 @@ namespace QLNet
                                                                                                new Actual365Fixed()));
          discountCurve_ = discountCurve;
 
-         volatility_.registerWith(update);
-         discountCurve_.registerWith(update);
+         volatility_.registerWith(this.update);
+         discountCurve_.registerWith(this.update);
       }
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableFixedRateBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
@@ -52,8 +52,8 @@ namespace QLNet
       {
          volatility_ = yieldVolStructure;
          discountCurve_ = discountCurve;
-         volatility_.registerWith(update);
-         discountCurve_.registerWith(update);
+         volatility_.registerWith(this.update);
+         discountCurve_.registerWith(this.update);
       }
 
       public override void calculate()

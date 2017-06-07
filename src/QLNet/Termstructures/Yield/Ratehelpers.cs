@@ -56,7 +56,7 @@ namespace QLNet
         yearFraction_ = dayCounter.yearFraction(earliestDate_, maturityDate_);
         pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
 
-        convAdj_.registerWith(update);
+        convAdj_.registerWith(this.update);
       }
 
 
@@ -151,7 +151,7 @@ namespace QLNet
          yearFraction_ = dayCounter.yearFraction(earliestDate_, maturityDate_);
          pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
 
-         convAdj_.registerWith(update);
+         convAdj_.registerWith(this.update);
       }
 
       public FuturesRateHelper( double price,
@@ -241,7 +241,7 @@ namespace QLNet
          maturityDate_ = cal.advance(iborStartDate, i.tenor(), i.businessDayConvention());
          yearFraction_ = i.dayCounter().yearFraction(earliestDate_, maturityDate_);
          pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
-         convAdj_.registerWith( update );
+         convAdj_.registerWith(this.update );
       }
 
       public FuturesRateHelper( double price,
@@ -325,14 +325,14 @@ namespace QLNet
 
       //////////////////////////////////////
       //! Observer interface
-      public override void update()
+      public void update()
       {
          if ( evaluationDate_ != Settings.evaluationDate() )
          {
             evaluationDate_ = Settings.evaluationDate();
             initializeDates();
          }
-         base.update();
+         ((IObserver)this).update();
       }
 
       ///////////////////////////////////////////

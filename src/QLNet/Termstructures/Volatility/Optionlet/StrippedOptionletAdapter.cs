@@ -45,8 +45,6 @@ namespace QLNet
       public override double maxStrike() { return optionletStripper_.optionletStrikes( 0 ).Last(); }
        
       // LazyObject interface
-      
-      public override void update() { base.update(); }
 
       protected override void performCalculations()
       {

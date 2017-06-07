@@ -43,7 +43,7 @@ namespace QLNet
             : base(model)
         {
             termStructure_ = termStructure;
-            termStructure_.registerWith(update);
+            termStructure_.registerWith(this.update);
         }
 
         public JamshidianSwaptionEngine(OneFactorAffineModel model)
