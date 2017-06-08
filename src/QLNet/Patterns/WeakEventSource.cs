@@ -85,7 +85,7 @@ namespace QLNet
             {
                var expr = Expression.Lambda<OpenEventHandler>(
                    Expression.Call(
-                       method),
+                       method,Expression.Convert(target,method.GetParameters()[0].ParameterType)),
                    target);
                return expr.Compile();
             }

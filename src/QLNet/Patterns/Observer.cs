@@ -17,7 +17,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace QLNet
@@ -26,19 +25,12 @@ namespace QLNet
 
    public interface IObservable
    {
-      //event Callback notifyObserversEvent;
-      //void registerWith(Callback handler);
-      //void unregisterWith(Callback handler);
-   }
-
-   public interface IObserver
-   {
-      //void update();
+      // Implemented in IObservableCode with extension methods
    }
 
    public static class IObservableCode
    {
-      class State
+      private class State
       {
          public readonly WeakEventSource eventSource = new WeakEventSource();
          public event Callback notifyObserversEvent
@@ -70,14 +62,11 @@ namespace QLNet
       {
          _stateTable.GetOrCreateValue(self).eventSource.Raise();
       }
+   }
 
-      //private static readonly ConditionalWeakTable<IObservable, WeakEventSource>
-      //   _eventSourceTable = new ConditionalWeakTable<IObservable, WeakEventSource>();
-
-      //public static WeakEventSource eventSource(this IObservable self)
-      //{
-      //   return _eventSourceTable.GetOrCreateValue(self);
-      //}
+   public interface IObserver
+   {
+      // Implemented in IObserverCode with extension methods
    }
 
    public static class IObserverCode
