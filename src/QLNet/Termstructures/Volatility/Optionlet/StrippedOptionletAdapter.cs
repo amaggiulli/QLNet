@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace QLNet
 {
-   public class StrippedOptionletAdapter : OptionletVolatilityStructure
+   public class StrippedOptionletAdapter : OptionletVolatilityStructure, ILazyObject
    {
        /*! Adapter class for turning a StrippedOptionletBase object into an
         OptionletVolatilityStructure.
@@ -46,7 +46,7 @@ namespace QLNet
        
       // LazyObject interface
 
-      public override void performCalculations()
+      public void performCalculations()
       {
          for (int i=0; i<nInterpolations_; ++i) 
          {

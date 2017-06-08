@@ -18,12 +18,13 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
+
 namespace QLNet
 {
    //! Basic term-structure functionality
-   public abstract class TermStructure : Extrapolator
+   public abstract class TermStructure : Extrapolator, IObservable,IObserver
    {
-        
       #region Constructors
 
       // There are three ways in which a term structure can keep
@@ -43,7 +44,7 @@ namespace QLNet
       // changes. In the last case, the referenceDate() method must
       // be overridden in derived classes so that it fetches and
       // return the appropriate date.
-       
+
 
       //! default constructor
       /*! \warning term structures initialized by means of this
@@ -125,11 +126,16 @@ namespace QLNet
          if (moving_)
                updated_ = false;
 
-         // recheck. this is in order to notify observers in the base method of LazyObject
-         this.calculated_(true);
-         ((ILazyObject)this).update();
-         // otherwise the following code would be required
-         // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
+
+         // With this work ( if you make TermStructure : Extrapolator, ILazyObject )
+         //                  and add 
+         //                  public virtual void performCalculations() { throw new NotSupportedException(); }
+
+         //this.calculated_(true);         <== OLD CODE
+         //((ILazyObject)this).update();   <== OLD CODE
+
+         // Like this no actually ( and this the quantlib implementation )
+         this.notifyObservers();
       }
       #endregion
 

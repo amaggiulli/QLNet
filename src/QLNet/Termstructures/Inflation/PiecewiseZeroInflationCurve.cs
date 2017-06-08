@@ -24,7 +24,7 @@ using System.Linq;
 namespace QLNet
 {
 
-	public class PiecewiseZeroInflationCurve : ZeroInflationTermStructure, Curve<ZeroInflationTermStructure>
+	public class PiecewiseZeroInflationCurve : ZeroInflationTermStructure, Curve<ZeroInflationTermStructure>, ILazyObject
 	{
 		#region InflationTraits
 
@@ -208,7 +208,9 @@ namespace QLNet
 		public PiecewiseZeroInflationCurve()
 			: base()
 		{ }
-	}
+
+	   public virtual void performCalculations() { throw new NotSupportedException(); }
+   }
 
 
 	public class PiecewiseZeroInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseZeroInflationCurve

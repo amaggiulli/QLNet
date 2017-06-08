@@ -20,7 +20,7 @@
 namespace QLNet
 {
     //! Flat interest-rate curve
-    public class FlatForward : YieldTermStructure {
+    public class FlatForward : YieldTermStructure, ILazyObject {
         private Quote forward_;
         private Compounding compounding_;
         private Frequency frequency_;
@@ -84,7 +84,7 @@ namespace QLNet
 			return rate_.discountFactor(t);
 		}
 
-       public override void performCalculations() {
+       public void performCalculations() {
 			rate_ = new InterestRate(forward_.value(), dayCounter(), compounding_, frequency_);
 		}
 	}

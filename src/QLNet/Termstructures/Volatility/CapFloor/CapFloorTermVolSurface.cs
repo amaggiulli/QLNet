@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace QLNet
 {
-   public class CapFloorTermVolSurface : CapFloorTermVolatilityStructure
+   public class CapFloorTermVolSurface : CapFloorTermVolatilityStructure, ILazyObject
    {
       //! floating reference date, floating market data
       public CapFloorTermVolSurface( int settlementDays,
@@ -170,7 +170,7 @@ namespace QLNet
         base.update();
       }
 
-      public override void performCalculations()
+      public void performCalculations()
       {
          // check if date recalculation must be called here
 

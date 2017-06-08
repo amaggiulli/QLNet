@@ -66,7 +66,7 @@ namespace QLNet
 
        \ingroup yieldtermstructures
    */
-   public class FittedBondDiscountCurve : YieldTermStructure
+   public class FittedBondDiscountCurve : YieldTermStructure, ILazyObject
    {
       // Constructors
       //! reference date based on current evaluation date
@@ -140,7 +140,7 @@ namespace QLNet
             bondHelpers_[i].registerWith(update);
       }
 
-      public override void performCalculations()
+      public void performCalculations()
       {                 
          Utils.QL_REQUIRE(!bondHelpers_.empty(),()=> "no bondHelpers given");
 

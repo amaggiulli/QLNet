@@ -30,7 +30,7 @@ namespace QLNet
 
       \test observability against evaluation date changes is checked.
    */
-   public abstract class YieldTermStructure : TermStructure 
+   public abstract class YieldTermStructure : TermStructure
    {
       private const double dt = 0.0001;
 

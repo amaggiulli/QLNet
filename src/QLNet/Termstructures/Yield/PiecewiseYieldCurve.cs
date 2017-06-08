@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace QLNet {
     // this is an abstract class to give access to all properties and methods of PiecewiseYieldCurve and avoiding generics
-	public class PiecewiseYieldCurve : YieldTermStructure, Curve<YieldTermStructure>
+	public class PiecewiseYieldCurve : YieldTermStructure, Curve<YieldTermStructure>, ILazyObject
 	{
 		# region new fields: Curve
 
@@ -163,7 +163,9 @@ namespace QLNet {
 		public PiecewiseYieldCurve()
 			: base()
 		{}
-	}
+
+	   public virtual void performCalculations() { throw new NotSupportedException(); }
+   }
 
 	public class PiecewiseYieldCurve<Traits, Interpolator, BootStrap> : PiecewiseYieldCurve
 		where Traits : ITraits<YieldTermStructure>, new()

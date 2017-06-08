@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure                                 
+   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure  ,ILazyObject                               
    {
       protected int nOptionTenors_;
       protected List<Period> optionTenors_;
@@ -168,7 +168,7 @@ namespace QLNet
          calculations and set any needed results.
        * In case a pricing engine is used, the default implementation can be used. */
 
-      public override void performCalculations()
+      public virtual void performCalculations()
       {
          // check if date recalculation could be avoided here
          if (moving_)
