@@ -100,7 +100,7 @@ namespace QLNet
                                      .withPaymentAdjustment(paymentConvention_);
 
          foreach (var cf in legs_[1])
-            cf.registerWith(update);
+            cf.registerWith(this.update);
 
          switch (type_)
          {

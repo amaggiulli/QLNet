@@ -74,10 +74,10 @@ namespace QLNet
 
             calculateNotionalsFromCashflows();
 
-            cpiIndex_.registerWith(update);
+            cpiIndex_.registerWith(this.update);
 
             foreach ( CashFlow i in cashflows_) 
-                i.registerWith(update);
+                i.registerWith(this.update);
         }
 
         public Frequency frequency() { return frequency_; }

@@ -238,7 +238,7 @@ namespace QLNet
       //! since we know ATM, and we have single flows,
       //! we can use put/call parity to extend the surfaces
       //! across all strikes
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          allStrikes_ = new List<double>();
          int nMat = cfMaturities_.Count, 

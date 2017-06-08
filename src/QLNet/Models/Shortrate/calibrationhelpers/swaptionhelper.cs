@@ -48,7 +48,7 @@ namespace QLNet
 			strike_ = strike;
 			nominal_ = nominal;
 
-			index_ .registerWith(update);
+			index_ .registerWith(this.update);
 		}
 
 		public SwaptionHelper( Date exerciseDate,
@@ -75,7 +75,7 @@ namespace QLNet
 			strike_ = strike;
 			nominal_ = nominal;
 
-			index_.registerWith( update );
+			index_.registerWith(this.update );
 		}
 
 		public SwaptionHelper( Date exerciseDate,
@@ -102,13 +102,13 @@ namespace QLNet
 			strike_ = strike;
 			nominal_ = nominal;
 
-			index_.registerWith( update );
+			index_.registerWith(this.update );
 		}
  
 
 		public override void addTimesTo( List<double> times )
 		{
-			calculate();
+		   this.calculate();
 			Swaption.Arguments args = new Swaption.Arguments();
 			swaption_.setupArguments( args );
 
@@ -123,14 +123,14 @@ namespace QLNet
 
 		public override double modelValue()
 		{
-			calculate();
+		   this.calculate();
 			swaption_.setPricingEngine( engine_ );
 			return swaption_.NPV();
 		}
 
 		public override double blackPrice( double sigma )
 		{
-			calculate();
+		   this.calculate();
 			SimpleQuote sq = new SimpleQuote( sigma );
 			Handle<Quote> vol = new Handle<Quote>( sq );
 			IPricingEngine black = new BlackSwaptionEngine( termStructure_, vol );
@@ -140,10 +140,10 @@ namespace QLNet
 			return value;
 		}
 
-		public VanillaSwap underlyingSwap() { calculate(); return swap_; }
-      public Swaption swaption() { calculate(); return swaption_; }
+		public VanillaSwap underlyingSwap() { this.calculate(); return swap_; }
+      public Swaption swaption() { this.calculate(); return swaption_; }
 
-		protected override void performCalculations()
+		public override void performCalculations()
 		{
 			Calendar calendar = index_.fixingCalendar();
 			int fixingDays = index_.fixingDays();

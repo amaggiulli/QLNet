@@ -41,12 +41,12 @@ namespace QLNet
 			fixedLegDayCounter_ = fixedLegDayCounter;
 			includeFirstSwaplet_ = includeFirstSwaplet;
 
-			index_.registerWith(update);
+			index_.registerWith(this.update);
 		}
 
 		public override void addTimesTo( List<double> times )
 		{
-			calculate();
+		   this.calculate();
 			CapFloor.Arguments args = new CapFloor.Arguments();
 			cap_.setupArguments( args );
 			List<double> capTimes = new DiscretizedCapFloor( args,
@@ -59,14 +59,14 @@ namespace QLNet
 
 		public override double modelValue()
 		{
-			calculate();
+		   this.calculate();
 			cap_.setPricingEngine( engine_ );
 			return cap_.NPV();
 		}
 
 		public override double blackPrice( double sigma )
 		{
-			calculate();
+		   this.calculate();
 			Quote vol = new SimpleQuote( sigma );
 			IPricingEngine black = new BlackCapFloorEngine( termStructure_,
 																		  new Handle<Quote>( vol ) );
@@ -76,7 +76,7 @@ namespace QLNet
 			return value;
 		}
 
-		protected override void performCalculations()
+		public override void performCalculations()
 		{
 			Period indexTenor = index_.tenor();
 			double fixedRate = 0.04; // dummy value

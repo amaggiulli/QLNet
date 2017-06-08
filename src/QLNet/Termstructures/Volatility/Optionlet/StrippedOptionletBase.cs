@@ -14,6 +14,7 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 
+using System;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -21,7 +22,7 @@ namespace QLNet
    /*! Abstract base class interface for a (double indexed) vector of (strike
        indexed) optionlet (i.e. caplet/floorlet) volatilities.
    */
-   public abstract class StrippedOptionletBase : LazyObject
+   public abstract class StrippedOptionletBase : ILazyObject
    {
       public abstract List<double> optionletStrikes(int i) ;
       public abstract List<double> optionletVolatilities(int i) ;
@@ -36,5 +37,6 @@ namespace QLNet
       public abstract Calendar calendar() ;
       public abstract int settlementDays() ;
       public abstract BusinessDayConvention businessDayConvention() ;
+      public virtual void performCalculations() { throw new NotSupportedException(); }
    }
 }

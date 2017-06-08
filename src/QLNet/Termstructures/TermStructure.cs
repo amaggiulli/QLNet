@@ -120,14 +120,14 @@ namespace QLNet
       #region observable & observer interface
 
       // observer interface
-      public override void update()
+      public virtual void update()
       {
          if (moving_)
                updated_ = false;
 
          // recheck. this is in order to notify observers in the base method of LazyObject
-         calculated_ = true;
-         base.update();
+         this.calculated_(true);
+         ((ILazyObject)this).update();
          // otherwise the following code would be required
          // the grand reason is that multiple inheritance is not allowed in c# and we need to notify observers in such way
       }

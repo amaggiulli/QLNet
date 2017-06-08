@@ -168,7 +168,7 @@ namespace QLNet
          calculations and set any needed results.
        * In case a pricing engine is used, the default implementation can be used. */
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          // check if date recalculation could be avoided here
          if (moving_)

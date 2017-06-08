@@ -59,15 +59,15 @@ namespace QLNet {
 
       #region InterpolatedCurve
       public List<double> times_ { get; set; }
-      public List<double> times() { calculate(); return times_; }
+      public List<double> times() { this.calculate(); return times_; }
 
       public List<Date> dates_ { get; set; }
-      public List<Date> dates() { calculate(); return dates_; }
+      public List<Date> dates() { this.calculate(); return dates_; }
       // here we do not refer to the base curve as in QL because our base curve is YieldTermStructure and not Traits::base_curve
       public Date maxDate_ { get; set; }
       public override Date maxDate()
       {
-         calculate();
+         this.calculate();
          if ( maxDate_ != null )
             return maxDate_;
 
@@ -75,13 +75,13 @@ namespace QLNet {
       }
 
       public List<double> data_ { get; set; }
-      public List<double> data() { calculate(); return data_; }
+      public List<double> data() { this.calculate(); return data_; }
 
       public Interpolation interpolation_ { get; set; }
       public IInterpolationFactory interpolator_ { get; set; }
 
       public Dictionary<Date, double> nodes() {
-         calculate();
+         this.calculate();
          Dictionary<Date, double> results = new Dictionary<Date, double>();
          dates_.ForEach((i, x) => results.Add(x, data_[i]));
          return results;
@@ -114,7 +114,7 @@ namespace QLNet {
       public int maxIterations() { return traits_.maxIterations(); }
 
       protected override double discountImpl(double t) {
-         calculate();
+         this.calculate();
          return traits_.discountImpl(interpolation_, t);
       }
       protected double zeroYieldImpl(double t) { return traits_.zeroYieldImpl(interpolation_, t); }
@@ -221,7 +221,7 @@ namespace QLNet {
       } 
       #endregion
 
-      protected override void performCalculations() 
+	   public override void performCalculations() 
 		{
          // just delegate to the bootstrapper
          bootstrap_.calculate();

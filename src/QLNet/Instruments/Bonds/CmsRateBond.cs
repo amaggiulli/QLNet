@@ -60,7 +60,7 @@ namespace QLNet
 
              Utils.QL_REQUIRE(cashflows().Count != 0, ()=> "bond with no cashflows!");
              Utils.QL_REQUIRE(redemptions_.Count == 1,()=> "multiple redemptions created");
-             index.registerWith(update);      
+             index.registerWith(this.update);      
         }
     }
 }

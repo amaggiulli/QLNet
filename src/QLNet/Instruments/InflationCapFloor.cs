@@ -65,9 +65,9 @@ namespace QLNet
         }
         
 			foreach (var cf in yoyLeg_)
-            cf.registerWith(update);
+            cf.registerWith(this.update);
 			
-			Settings.registerWith(update);
+			Settings.registerWith(this.update);
 
 		}
 
@@ -93,9 +93,9 @@ namespace QLNet
             Utils.QL_FAIL("only Cap/Floor types allowed in this constructor");
 
 			foreach (var cf in yoyLeg_)
-            cf.registerWith(update);
+            cf.registerWith(this.update);
 
-			Settings.registerWith(update);
+			Settings.registerWith(this.update);
 		}
 		
 		// Instrument interface

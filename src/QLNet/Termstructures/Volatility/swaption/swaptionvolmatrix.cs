@@ -166,7 +166,7 @@ namespace QLNet
 
         // LazyObject interface
         //verifier protected QL public!!
-        protected override void performCalculations() 
+        public override void performCalculations() 
         {
             base.performCalculations();
 
@@ -222,7 +222,7 @@ namespace QLNet
 
         protected override double volatilityImpl(double optionTime,double swapLength,
                                                 double strike) {
-            calculate();
+           this.calculate();
             return interpolation_.value(swapLength, optionTime, true);
         }
         #endregion 

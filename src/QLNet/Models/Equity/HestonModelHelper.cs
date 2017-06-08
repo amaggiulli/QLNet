@@ -37,7 +37,7 @@ namespace QLNet
          strikePrice_ = strikePrice;
          dividendYield_ = dividendYield;
 
-         dividendYield.registerWith(update);
+         dividendYield.registerWith(this.update);
       }
 
       public HestonModelHelper( Period maturity,
@@ -56,13 +56,13 @@ namespace QLNet
          strikePrice_ = strikePrice;
          dividendYield_ = dividendYield;
           
-         s0.registerWith(update);
-         dividendYield.registerWith(update);
+         s0.registerWith(this.update);
+         dividendYield.registerWith(this.update);
       }
 
       public override void addTimesTo(List<double> t) {}
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          exerciseDate_ = calendar_.advance(termStructure_.link.referenceDate(), maturity_);
          tau_ = termStructure_.link.timeFromReference(exerciseDate_);
@@ -78,20 +78,20 @@ namespace QLNet
 
       public override double modelValue()
       {
-         calculate();
+         this.calculate();
          option_.setPricingEngine(engine_);
          return option_.NPV();
       }
 
       public override double blackPrice(double volatility)
       {
-         calculate();
+         this.calculate();
          double stdDev = volatility * Math.Sqrt(maturity());
          return Utils.blackFormula( type_, strikePrice_ * termStructure_.link.discount(tau_),
             s0_.link.value() * dividendYield_.link.discount(tau_), stdDev);
       }
 
-      public double maturity()  { calculate(); return tau_; }
+      public double maturity()  { this.calculate(); return tau_; }
       
    
       private Period maturity_;

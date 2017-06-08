@@ -80,11 +80,11 @@ namespace QLNet
         public override Date maxDate() { return Date.maxDate(); }
 
         protected override double discountImpl(double t) {
-            calculate();
+           this.calculate();
 			return rate_.discountFactor(t);
 		}
-  
-		protected override void performCalculations() {
+
+       public override void performCalculations() {
 			rate_ = new InterestRate(forward_.value(), dayCounter(), compounding_, frequency_);
 		}
 	}

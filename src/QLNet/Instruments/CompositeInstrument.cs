@@ -36,8 +36,8 @@ namespace QLNet
       public void add(Instrument instrument,double multiplier = 1.0)
       {
         components_.Add(new KeyValuePair<Instrument,double>(instrument,multiplier));
-        instrument.registerWith(update);
-        update();
+        instrument.registerWith(this.update);
+         this.update();
       }
 
       //! shorts an instrument from the composite
@@ -56,7 +56,7 @@ namespace QLNet
          return true;
       }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          NPV_ = 0.0;
          foreach (component c in components_)

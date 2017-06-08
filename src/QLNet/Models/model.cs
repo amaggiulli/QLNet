@@ -57,7 +57,7 @@ namespace QLNet {
     }
 
     //ITermStructureConsistentModel used ins shortratemodel blackkarasinski.cs/hullwhite.cs
-    public interface ITermStructureConsistentModel
+    public interface ITermStructureConsistentModel : IObservable, IObserver
     {
         Handle<YieldTermStructure> termStructure();
         Handle<YieldTermStructure> termStructure_ { get; set; }

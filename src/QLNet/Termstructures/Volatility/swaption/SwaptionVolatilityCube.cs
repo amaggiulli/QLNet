@@ -168,7 +168,7 @@ namespace QLNet
       public bool vegaWeightedSmileFit()  { return vegaWeightedSmileFit_; }
 
       // LazyObject interface
-      protected override void performCalculations() 
+      public override void performCalculations() 
       {
          Utils.QL_REQUIRE(nStrikes_ >= requiredNumberOfStrikes(),()=>
                      "too few strikes (" + nStrikes_

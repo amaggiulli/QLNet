@@ -46,7 +46,7 @@ namespace QLNet
        
       // LazyObject interface
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          for (int i=0; i<nInterpolations_; ++i) 
          {
@@ -73,7 +73,7 @@ namespace QLNet
       }
       protected override double volatilityImpl(double length,double strike)
       {
-         calculate();
+         this.calculate();
 
          List<double> vol = new InitializedList<double>(nInterpolations_);
          for (int i=0; i<nInterpolations_; ++i)

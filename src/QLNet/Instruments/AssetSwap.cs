@@ -102,7 +102,7 @@ namespace QLNet
                 .withPaymentAdjustment(paymentAdjustment);
 
          foreach (CashFlow c in legs_[1])
-            c.registerWith(update);
+            c.registerWith(this.update);
 
          List<CashFlow> bondLeg = bond_.cashflows();
          foreach (CashFlow c in bondLeg)
@@ -139,7 +139,7 @@ namespace QLNet
          Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg" );
 
          foreach (CashFlow c in legs_[0])
-            c.registerWith(update);
+            c.registerWith(this.update);
 
          if (payBondCoupon)
          {
@@ -226,7 +226,7 @@ namespace QLNet
                   .withPaymentAdjustment(paymentAdjustment);
 
          foreach (CashFlow c in legs_[1])
-            c.registerWith(update);
+            c.registerWith(this.update);
 
 
          List<CashFlow> bondLeg = bond_.cashflows();
@@ -280,7 +280,7 @@ namespace QLNet
          Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg" );
 
          foreach (CashFlow c in legs_[0])
-            c.registerWith(update);
+            c.registerWith(this.update);
 
          if (payBondCoupon)
          {

@@ -65,7 +65,7 @@ namespace QLNet {
 
             for (int j=0; j<2; ++j) {
                 for (int i=0; i<legs_[j].Count; i++)
-                    legs_[j][i].registerWith(update);
+                    legs_[j][i].registerWith(this.update);
             }
 
             switch (type_) {

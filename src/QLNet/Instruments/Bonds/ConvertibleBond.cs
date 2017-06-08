@@ -284,10 +284,10 @@ namespace QLNet
                + maturityDate_.ToShortDateString() + ")");
          }
 
-         creditSpread.registerWith(update);
+         creditSpread.registerWith(this.update);
       }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          option_.setPricingEngine(engine_);
          NPV_ = settlementValue_ = option_.NPV();

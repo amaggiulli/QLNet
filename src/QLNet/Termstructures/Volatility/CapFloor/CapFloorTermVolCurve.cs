@@ -119,7 +119,7 @@ namespace QLNet
       // TermStructure interface
       public override Date maxDate()
       {
-         calculate();
+         this.calculate();
          return optionDateFromTenor( optionTenors_.Last() );
       }
 
@@ -142,7 +142,7 @@ namespace QLNet
          base.update();
       }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          // check if date recalculation must be called here
 
@@ -156,19 +156,19 @@ namespace QLNet
       public List<Date> optionDates()
       {
          // what if quotes are not available?
-         calculate();
+         this.calculate();
          return optionDates_;
       }
       public List<double> optionTimes()
       {
          // what if quotes are not available?
-         calculate();
+         this.calculate();
          return optionTimes_;
       }
       
       protected override double volatilityImpl(double t,double r)
       {
-         calculate();
+         this.calculate();
          return interpolation_.value( t, true );
       }
       

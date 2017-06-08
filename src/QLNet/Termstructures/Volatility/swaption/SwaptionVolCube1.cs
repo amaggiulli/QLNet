@@ -357,7 +357,7 @@ namespace QLNet
          setParameterGuess();
       }
       // LazyObject interface
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          base.performCalculations();
 
@@ -404,22 +404,22 @@ namespace QLNet
       public Matrix marketVolCube(int i)  {return marketVolCube_.points()[i];}
       public Matrix sparseSabrParameters()
       {
-         calculate();
+         this.calculate();
          return sparseParameters_.browse();
       }
       public Matrix denseSabrParameters()
       {
-         calculate();
+         this.calculate();
          return denseParameters_.browse();
       }
       public Matrix marketVolCube()
       {
-         calculate();
+         this.calculate();
          return marketVolCube_.browse();
       }
       public Matrix volCubeAtmCalibrated()
       {
-         calculate();
+         this.calculate();
          return volCubeAtmCalibrated_.browse();
       }
 
@@ -613,7 +613,7 @@ namespace QLNet
       }
       protected SmileSection smileSection(double optionTime,double swapLength,ref Cube sabrParametersCube)
       {
-         calculate();
+         this.calculate();
          List<double> sabrParameters = sabrParametersCube.value(optionTime, swapLength);
          double shiftTmp = atmVol_.link.shift(optionTime,swapLength);
          return new SabrSmileSection( optionTime, sabrParameters[4], sabrParameters ); // ,shiftTmp

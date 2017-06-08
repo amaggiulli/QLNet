@@ -49,7 +49,7 @@ namespace QLNet
             volSpreadsMatrix_.Add (new Matrix(optionTenors.Count, swapTenors.Count, 0.0));
       }
       // LazyObject interface
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          base.performCalculations();
          //! set volSpreadsMatrix_ by volSpreads_ quotes
@@ -74,7 +74,7 @@ namespace QLNet
 
       protected override SmileSection smileSectionImpl( Date optionDate, Period swapTenor)
       {
-         calculate();
+         this.calculate();
          double atmForward = atmStrike(optionDate, swapTenor);
          double atmVol = atmVol_.link.volatility(optionDate,swapTenor,atmForward);
          double optionTime = timeFromReference(optionDate);
@@ -95,7 +95,7 @@ namespace QLNet
 
       protected override SmileSection smileSectionImpl( double optionTime, double swapLength)
       {
-         calculate();
+         this.calculate();
          Date optionDate = optionDateFromTime(optionTime);
          Rounding rounder = new Rounding(0);
          Period swapTenor = new Period((int)(rounder.Round(swapLength*12.0)), TimeUnit.Months);
