@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
   
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,73 +20,91 @@
 
 namespace QLNet
 {
-    //! Flat interest-rate curve
-    public class FlatForward : YieldTermStructure, ILazyObject {
-        private Quote forward_;
-        private Compounding compounding_;
-        private Frequency frequency_;
-        private InterestRate rate_;
-		
-        // constructors
-		public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter) :
-				this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
-		public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter, Compounding compounding) :
-				this(referenceDate, forward, dayCounter, compounding, Frequency.Annual) {}
-		public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
-				base(referenceDate, new Calendar(), dayCounter) {
-			forward_ = forward;
-			compounding_ = compounding;
-			frequency_ = frequency;
+   //! Flat interest-rate curve
+   public class FlatForward : YieldTermStructure, ILazyObject
+   {
+      // constructors
+      public FlatForward( Date referenceDate, 
+                          Handle<Quote> forward, 
+                          DayCounter dayCounter, 
+                          Compounding compounding = Compounding.Continuous,
+                          Frequency frequency = Frequency.Annual)
+         : base(referenceDate, new Calendar(), dayCounter)
+      {
+         forward_ = forward;
+         compounding_ = compounding;
+         frequency_ = frequency;
 
-            forward_.registerWith(update);
-		}
+         forward_.registerWith(update);
+      }
 
-        public FlatForward(Date referenceDate, double forward, DayCounter dayCounter) :
-				this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
-        public FlatForward(Date referenceDate, double forward, DayCounter dayCounter, Compounding compounding) :
-				this(referenceDate, forward, dayCounter, compounding, Frequency.Annual) {}
-        public FlatForward(Date referenceDate, double forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
-				base(referenceDate, new Calendar(), dayCounter) {
-			forward_ = new SimpleQuote(forward);
-			compounding_ = compounding;
-			frequency_ = frequency;
-		}
+      public FlatForward( Date referenceDate, 
+                          double forward, 
+                          DayCounter dayCounter, 
+                          Compounding compounding = Compounding.Continuous,
+                          Frequency frequency = Frequency.Annual) :
+         base(referenceDate, new Calendar(), dayCounter)
+      {
+         forward_ = new Handle<Quote>(new SimpleQuote(forward));
+         compounding_ = compounding;
+         frequency_ = frequency;
+      }
 
-		public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter) :
-				this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
-		public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter, Compounding compounding) :
-				this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual) {}
-		public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
-				base(settlementDays, calendar, dayCounter) {
-			forward_ = forward;
-			compounding_ = compounding;
-			frequency_ = frequency;
+      public FlatForward( int settlementDays, 
+                          Calendar calendar, 
+                          Handle<Quote> forward, 
+                          DayCounter dayCounter,
+                          Compounding compounding = Compounding.Continuous, 
+                          Frequency frequency = Frequency.Annual) :
+         base(settlementDays, calendar, dayCounter)
+      {
+         forward_ = forward;
+         compounding_ = compounding;
+         frequency_ = frequency;
 
-            forward_.registerWith(update);
-		}
+         forward_.registerWith(update);
+      }
 
-        public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter) :
-				this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
-        public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter, Compounding compounding) :
-				this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual) {}
-        public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter,
-							Compounding compounding, Frequency frequency) :
-				base(settlementDays, calendar, dayCounter) {
-			forward_ = new SimpleQuote(forward);
-			compounding_ = compounding;
-			frequency_ = frequency;
-		}
-		
-		// TermStructure interface
-        public override Date maxDate() { return Date.maxDate(); }
+      public FlatForward( int settlementDays, 
+                          Calendar calendar, 
+                          double forward, 
+                          DayCounter dayCounter,
+                          Compounding compounding = Compounding.Continuous, 
+                          Frequency frequency = Frequency.Annual) :
+         base(settlementDays, calendar, dayCounter)
+      {
+         forward_ = forward_ = new Handle<Quote>(new SimpleQuote(forward)); 
+         compounding_ = compounding;
+         frequency_ = frequency;
+      }
 
-        protected override double discountImpl(double t) {
-           this.calculate();
-			return rate_.discountFactor(t);
-		}
+      // TermStructure interface
+      public override Date maxDate()
+      {
+         return Date.maxDate();
+      }
 
-       public void performCalculations() {
-			rate_ = new InterestRate(forward_.value(), dayCounter(), compounding_, frequency_);
-		}
-	}
+      protected override double discountImpl(double t)
+      {
+         this.calculate();
+         return rate_.discountFactor(t);
+      }
+
+      public void performCalculations()
+      {
+         rate_ = new InterestRate(forward_.link.value(), dayCounter(), compounding_, frequency_);
+      }
+
+      public override void update()
+      {
+         ((ILazyObject)this).update();
+         base.update();
+      }
+
+      private Handle<Quote> forward_;
+      private Compounding compounding_;
+      private Frequency frequency_;
+      private InterestRate rate_;
+
+   }
 }
