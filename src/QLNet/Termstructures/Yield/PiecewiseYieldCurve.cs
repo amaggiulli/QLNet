@@ -254,5 +254,17 @@ namespace QLNet {
         public PiecewiseYieldCurve(int settlementDays, Calendar calendar, List<RateHelper> instruments,
                                       DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates, double accuracy)
             : base(settlementDays, calendar, instruments, dayCounter, jumps, jumpDates, accuracy) { }
-    }
+
+	   public override void update()
+	   {
+	      // it dispatches notifications only if (!calculated_ && !frozen_)
+	      ((ILazyObject)this).update();
+
+	      // do not use base_curve::update() as it would always notify observers
+
+	      // TermStructure::update() update part
+	      if (this.moving_)
+	         this.updated_ = false;
+	   }
+   }
 }
