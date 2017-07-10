@@ -24,8 +24,9 @@ namespace QLNet
 {
    //! interest rate volatility smile section
    /*! This abstract class provides volatility smile section interface */
-   public abstract class SmileSection : LazyObject
+   public abstract class SmileSection : ILazyObject
    {
+      public virtual void performCalculations() { throw new NotSupportedException(); }
       protected SmileSection( Date d, DayCounter dc = null, Date referenceDate = null,
          VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0 )
       {
@@ -61,7 +62,7 @@ namespace QLNet
       protected SmileSection() { }
 
 
-      public override void update()
+      public void update()
       {
          if ( isFloating_ )
          {

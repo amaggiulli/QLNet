@@ -78,9 +78,9 @@ namespace QLNet
          }
 
          for (int i = 0; i < floatingLeg_.Count; i++)
-            floatingLeg_[i].registerWith(update);
+            floatingLeg_[i].registerWith(this.update);
 
-         Settings.registerWith(update);
+         Settings.registerWith(this.update);
 
       }
       public CapFloor(CapFloorType type,List<CashFlow> floatingLeg,List<double> strikes)
@@ -112,9 +112,9 @@ namespace QLNet
 
 
          for (int i = 0; i < floatingLeg_.Count; i++)
-            floatingLeg_[i].registerWith(update);
+            floatingLeg_[i].registerWith(this.update);
 
-         Settings.registerWith(update);
+         Settings.registerWith(this.update);
       }
 
       #endregion

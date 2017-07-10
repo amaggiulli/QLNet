@@ -64,7 +64,7 @@ namespace QLNet
 
          for (int i = 0; i < legs_.Count; i++)
             for (int j = 0; j < legs_[i].Count; j++)
-               legs_[i][j].registerWith(update);
+               legs_[i][j].registerWith(this.update);
       }
 
       // Multi leg constructor.
@@ -84,7 +84,7 @@ namespace QLNet
          {
             if (payer[i]) payer_[i] = -1;
             for (int j = 0; j < legs_[i].Count; j++)
-               legs_[i][j].registerWith(update);
+               legs_[i][j].registerWith(this.update);
          }
       }
 

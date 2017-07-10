@@ -28,7 +28,7 @@ namespace QLNet
       // StrippedOptionletBase interface
       public override List<double> optionletStrikes(int i)
       {
-         calculate();
+         this.calculate();
          Utils.QL_REQUIRE( i < optionletStrikes_.Count,()=>
                     "index (" + i + ") must be less than optionletStrikes size (" + optionletStrikes_.Count + ")" );
          return optionletStrikes_[i];
@@ -36,7 +36,7 @@ namespace QLNet
 
       public override List<double> optionletVolatilities(int i)
       {
-         calculate();
+         this.calculate();
          Utils.QL_REQUIRE( i < optionletVolatilities_.Count,()=>
                     "index (" + i + ") must be less than optionletVolatilities size (" +
                     optionletVolatilities_.Count + ")" );
@@ -45,19 +45,19 @@ namespace QLNet
 
       public override List<Date> optionletFixingDates()
       {
-         calculate();
+         this.calculate();
          return optionletDates_;
       }
       public override List<double> optionletFixingTimes()
       {
-         calculate();
+         this.calculate();
          return optionletTimes_;
       }
       public override int optionletMaturities() { return optionletTenors_.Count; }
 
       public override List<double> atmOptionletRates()
       {
-         calculate();
+         this.calculate();
          return atmOptionletRate_;
       }
 
@@ -69,12 +69,12 @@ namespace QLNet
       public List<Period> optionletFixingTenors() { return optionletTenors_; }
       public List<Date> optionletPaymentDates()
       {
-         calculate();
+         this.calculate();
          return optionletPaymentDates_;
       }
       public List<double> optionletAccrualPeriods()
       {
-         calculate();
+         this.calculate();
          return optionletAccrualPeriods_;
       }
       public CapFloorTermVolSurface termVolSurface() { return termVolSurface_; }
@@ -101,10 +101,10 @@ namespace QLNet
                        "non-null displacement is not allowed with Normal model");
         }
 
-        termVolSurface.registerWith(update);
-        iborIndex_.registerWith( update );
-        discount_.registerWith( update );
-        Settings.registerWith(update);
+        termVolSurface.registerWith(this.update);
+        iborIndex_.registerWith(this.update );
+        discount_.registerWith(this.update );
+        Settings.registerWith(this.update);
 
         Period indexTenor = iborIndex_.tenor();
         Period maxCapFloorTenor = termVolSurface.optionTenors().Last();

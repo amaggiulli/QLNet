@@ -31,7 +31,7 @@ namespace QLNet {
         public BaroneAdesiWhaleyApproximationEngine(GeneralizedBlackScholesProcess process) {
             process_ = process;
 
-            process_.registerWith(update);
+            process_.registerWith(this.update);
         }
 
         // critical commodity price

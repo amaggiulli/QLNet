@@ -17,109 +17,133 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+using System.Runtime.CompilerServices;
 
 namespace QLNet
 {
-    // Framework for calculation on demand and result caching.
-    // Introduces Observer pattern
-    public abstract class LazyObject : IObservable, IObserver
-    {
-        protected bool calculated_;
-        protected bool frozen_;
+   // Framework for calculation on demand and result caching.
+   // Introduces Observer pattern
+   public interface ILazyObject : IObservable, IObserver
+   {
+      void performCalculations();
+   }
 
-        #region Observer interface
-        // Here we define this object as observable
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
+   public static class ILazyObjectCode
+   {
+      private class State
+      {
+         public bool calculated_;
+         public bool frozen_;
+      }
 
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
+      private static readonly ConditionalWeakTable<ILazyObject, State>
+         _stateTable = new ConditionalWeakTable<ILazyObject, State>();
 
-        // This method is the observer interface
-        // It must be implemented in derived classes and linked to the event of the required Observer
-        public virtual void update()
-        {
-            // observers don't expect notifications from frozen objects
-            // LazyObject forwards notifications only once until it has been recalculated
-            if (!frozen_ && calculated_)
-                notifyObservers();
-            calculated_ = false;
-        }
-        #endregion
+      public static bool calculated_(this ILazyObject self)
+      {
+         return _stateTable.GetOrCreateValue(self).calculated_;
+      }
 
-        #region Calculation methods
-        /*! This method forces recalculation of any results which would otherwise be cached.
-         * It needs to call the <i><b>LazyCalculationEvent</b></i> event.
-           Explicit invocation of this method is <b>not</b> necessary if the object has registered itself as
-           observer with the structures on which such results depend.  It is strongly advised to follow this
-           policy when possible. */
-        public virtual void recalculate()
-        {
-            bool wasFrozen = frozen_;
-            calculated_ = frozen_ = false;
+      public static void calculated_(this ILazyObject self, bool value)
+      {
+         _stateTable.GetOrCreateValue(self).calculated_ = value;
+      }
+
+      public static bool frozen_(this ILazyObject self)
+      {
+         return _stateTable.GetOrCreateValue(self).frozen_;
+      }
+
+      public static void frozen_(this ILazyObject self, bool value)
+      {
+         _stateTable.GetOrCreateValue(self).frozen_ = value;
+      }
+
+      #region Observer interface
+
+      // This method is the observer interface
+      // It must be implemented in derived classes and linked to the event of the required Observer
+      public static void update(this ILazyObject self)
+      {
+         // observers don't expect notifications from frozen objects
+         // LazyObject forwards notifications only once until it has been recalculated
+         if (!_stateTable.GetOrCreateValue(self).frozen_ && _stateTable.GetOrCreateValue(self).calculated_)
+            self.notifyObservers();
+         _stateTable.GetOrCreateValue(self).calculated_= false;
+      }
+
+      #endregion
+
+      #region Calculation methods
+
+      /*! This method forces recalculation of any results which would otherwise be cached.
+       * It needs to call the <i><b>LazyCalculationEvent</b></i> event.
+         Explicit invocation of this method is <b>not</b> necessary if the object has registered itself as
+         observer with the structures on which such results depend.  It is strongly advised to follow this
+         policy when possible. */
+      public static void recalculate(this ILazyObject self)
+      {
+         bool wasFrozen = _stateTable.GetOrCreateValue(self).frozen_;
+         _stateTable.GetOrCreateValue(self).calculated_ = _stateTable.GetOrCreateValue(self).frozen_ = false;
+         try
+         {
+            self.calculate();
+         }
+         catch
+         {
+            _stateTable.GetOrCreateValue(self).frozen_ = wasFrozen;
+            self.notifyObservers();
+            throw;
+         }
+         _stateTable.GetOrCreateValue(self).frozen_ = wasFrozen;
+         self.notifyObservers();
+      }
+
+      /*! This method constrains the object to return the presently cached results on successive invocations,
+       * even if arguments upon which they depend should change. */
+      public static void freeze(this ILazyObject self)
+      {
+         _stateTable.GetOrCreateValue(self).frozen_ = true;
+      }
+
+      // This method reverts the effect of the <i><b>freeze</b></i> method, thus re-enabling recalculations.
+      public static void unfreeze(this ILazyObject self)
+      {
+         _stateTable.GetOrCreateValue(self).frozen_ = false;
+         self.notifyObservers(); // send notification, just in case we lost any
+      }
+
+      /*! This method performs all needed calculations by calling the <i><b>performCalculations</b></i> method.
+          Objects cache the results of the previous calculation. Such results will be returned upon
+          later invocations of <i><b>calculate</b></i>. When the results depend
+          on arguments which could change between invocations, the lazy object must register itself
+          as observer of such objects for the calculations to be performed again when they change.
+          Should this method be redefined in derived classes, LazyObject::calculate() should be called
+          in the overriding method. */
+      public static void calculate(this ILazyObject self)
+      {
+         if (!_stateTable.GetOrCreateValue(self).calculated_ && !_stateTable.GetOrCreateValue(self).frozen_)
+         {
+            _stateTable.GetOrCreateValue(self).calculated_ = true; // prevent infinite recursion in case of bootstrapping
             try
             {
-                calculate();
+               self.performCalculations();
             }
             catch
             {
-                frozen_ = wasFrozen;
-                notifyObservers();
-                throw;
+               _stateTable.GetOrCreateValue(self).calculated_ = false;
+               throw;
             }
-            frozen_ = wasFrozen;
-            notifyObservers();
-        }
+         }
+      }
 
-        /*! This method constrains the object to return the presently cached results on successive invocations,
-         * even if arguments upon which they depend should change. */
-        public void freeze() { frozen_ = true; }
+      /* This method must implement any calculations which must be (re)done 
+       * in order to calculate the desired results. */
+      //public static void performCalculations(this ILazyObject self)
+      //{
+      //   throw new NotSupportedException();
+      //}
 
-        // This method reverts the effect of the <i><b>freeze</b></i> method, thus re-enabling recalculations.
-        public void unfreeze()
-        {
-            frozen_ = false;
-            notifyObservers();              // send notification, just in case we lost any
-        }
-
-        /*! This method performs all needed calculations by calling the <i><b>performCalculations</b></i> method.
-            Objects cache the results of the previous calculation. Such results will be returned upon
-            later invocations of <i><b>calculate</b></i>. When the results depend
-            on arguments which could change between invocations, the lazy object must register itself
-            as observer of such objects for the calculations to be performed again when they change.
-            Should this method be redefined in derived classes, LazyObject::calculate() should be called
-            in the overriding method. */
-        protected virtual void calculate()
-        {
-            if (!calculated_ && !frozen_)
-            {
-                calculated_ = true;   // prevent infinite recursion in case of bootstrapping
-                try
-                {
-                    performCalculations();
-                }
-                catch
-                {
-                    calculated_ = false;
-                    throw;
-                }
-            }
-        }
-
-        /* This method must implement any calculations which must be (re)done 
-         * in order to calculate the desired results. */
-        protected virtual void performCalculations()
-        {
-            throw new NotSupportedException();
-        }
-        #endregion
-    }
+      #endregion
+   }
 }

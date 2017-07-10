@@ -76,7 +76,7 @@ namespace QLNet
                      " need (obsLag-index period) > availLag");
 
          }
-         Settings.registerWith(update);
+         Settings.registerWith(this.update);
       }
 
 
@@ -180,7 +180,7 @@ namespace QLNet
                        " need (obsLag-index period) > availLag");
         }
 
-        Settings.registerWith(update);
+        Settings.registerWith(this.update);
 		}
 
 		public override void setTermStructure( YoYInflationTermStructure y )

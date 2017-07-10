@@ -165,7 +165,7 @@ namespace QLNet {
         //public FDEngineAdapter(GeneralizedBlackScholesProcess process, Size timeSteps=100, Size gridPoints=100, bool timeDependent = false)
         public FDEngineAdapter(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent) {
             optionBase = (Base) FastActivator<Base>.Create().factory(process, timeSteps, gridPoints, timeDependent);
-            process.registerWith(update);
+            process.registerWith(this.update);
         }
 
         public void calculate() {
@@ -183,23 +183,5 @@ namespace QLNet {
         public void reset() { engine_.reset(); }
         #endregion
 
-        #region Observer & Observable
-        // observable interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
-
-        public void update() { notifyObservers(); }
-        #endregion
     }
 }

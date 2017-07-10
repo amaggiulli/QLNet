@@ -35,7 +35,7 @@ namespace QLNet
         {
             termStructure_ = termStructure;
             volatility_ = new Handle<SwaptionVolatilityStructure>(new ConstantSwaptionVolatility(0, new NullCalendar(), BusinessDayConvention.Following, vol, dc));
-            termStructure_.registerWith(update);
+            termStructure_.registerWith(this.update);
         }
 
         public BlackSwaptionEngine(Handle<YieldTermStructure> termStructure, Handle<Quote> vol)
@@ -47,8 +47,8 @@ namespace QLNet
             termStructure_ = termStructure;
             volatility_ = new Handle<SwaptionVolatilityStructure>(new ConstantSwaptionVolatility(
                              0, new NullCalendar(), BusinessDayConvention.Following, vol, dc));
-            termStructure_.registerWith(update);
-            volatility_.registerWith(update);
+            termStructure_.registerWith(this.update);
+            volatility_.registerWith(this.update);
         }
 
         public BlackSwaptionEngine(  Handle<YieldTermStructure> discountCurve,
@@ -56,8 +56,8 @@ namespace QLNet
         {
             termStructure_ = discountCurve;
             volatility_=vol;
-            termStructure_.registerWith(update);
-            volatility_.registerWith(update);
+            termStructure_.registerWith(this.update);
+            volatility_.registerWith(this.update);
         }
 
         public override void calculate() 

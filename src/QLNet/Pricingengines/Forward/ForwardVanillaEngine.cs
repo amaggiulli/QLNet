@@ -37,7 +37,7 @@ namespace QLNet
       public ForwardVanillaEngine( GeneralizedBlackScholesProcess process, GetOriginalEngine getEngine)
       {
          process_ = process;
-         process_.registerWith(update);
+         process_.registerWith(this.update);
          getOriginalEngine_ = getEngine;
       }
       public override void calculate()

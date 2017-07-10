@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace QLNet
 {
 	//! liquid market instrument used during calibration
-	public abstract class CalibrationHelper : LazyObject
+	public abstract class CalibrationHelper : ILazyObject
 	{
 		public enum CalibrationErrorType
 		{
@@ -38,11 +38,11 @@ namespace QLNet
 			termStructure_ = termStructure;
 			calibrationErrorType_ = calibrationErrorType;
 
-			volatility_.registerWith( update );
-			termStructure_.registerWith( update );
+			volatility_.registerWith(this.update );
+			termStructure_.registerWith(this.update );
 		}
 
-		protected override void performCalculations() 
+		public virtual void performCalculations() 
 		{
 			marketValue_ = blackPrice(volatility_.link.value());
       }
@@ -51,7 +51,7 @@ namespace QLNet
 		public Handle<Quote> volatility() { return volatility_; }
 
 		//! returns the actual price of the instrument (from volatility)
-      public double marketValue() { calculate(); return marketValue_; }
+      public double marketValue() { this.calculate(); return marketValue_; }
 
 		//! returns the price of the instrument according to the model
 		public abstract double modelValue();

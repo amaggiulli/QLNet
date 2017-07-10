@@ -149,10 +149,10 @@ namespace QLNet
       {
          return riskFreeRate_.link.dayCounter().yearFraction( riskFreeRate_.link.referenceDate(), d );
       }
-      public override void update()
+      public void update()
       {
          updated_ = false;
-         base.update();
+         ((IObserver)this).update();
       }
       public Handle<Quote> stateVariable()
       {

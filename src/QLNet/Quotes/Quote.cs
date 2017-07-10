@@ -29,20 +29,5 @@ namespace QLNet
         public virtual double value() { return 0; }
         //! returns true if the Quote holds a valid value, true by default
         public virtual bool isValid() { return true; }
-
-        // observable interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
     }
 }

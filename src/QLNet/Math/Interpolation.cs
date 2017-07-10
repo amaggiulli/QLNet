@@ -71,7 +71,7 @@ namespace QLNet
       {
          return impl_.isInRange( x );
       }
-      public override void update()
+      public void update()
       {
          impl_.update();
       }

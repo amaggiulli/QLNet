@@ -86,7 +86,7 @@ namespace QLNet
       {
          fixedCouponBond_ = fixedCouponBond;
          incomeDiscountCurve_ = incomeDiscountCurve;
-         incomeDiscountCurve_.registerWith(update);
+         incomeDiscountCurve_.registerWith(this.update);
       }
 
       // Calculations
@@ -144,7 +144,7 @@ namespace QLNet
          return fixedCouponBond_.dirtyPrice();
       }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          underlyingSpotValue_ = spotValue();
          underlyingIncome_ = spotIncome(incomeDiscountCurve_);

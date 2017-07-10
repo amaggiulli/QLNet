@@ -63,7 +63,7 @@ namespace QLNet
             addRedemptionsToCashflows();
          }
 
-         Settings.registerWith(update);
+         Settings.registerWith(this.update);
       }
 
       //! old constructor for non amortizing bonds.
@@ -109,7 +109,7 @@ namespace QLNet
             
          }
 
-         Settings.registerWith(update);
+         Settings.registerWith(this.update);
       }
       #endregion
 

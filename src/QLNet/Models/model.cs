@@ -30,20 +30,6 @@ namespace QLNet {
         public abstract double discount(double t);
         public abstract double discountBond(double now, double maturity, Vector factors);
         public abstract double discountBondOption(Option.Type type, double strike, double maturity, double bondMaturity);
-
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
     }
 
     //Affince Model Interface used for multihritage in 
@@ -68,32 +54,13 @@ namespace QLNet {
             return termStructure_;
         }
         private Handle<YieldTermStructure> termStructure_;
-
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
     }
 
     //ITermStructureConsistentModel used ins shortratemodel blackkarasinski.cs/hullwhite.cs
-    public interface ITermStructureConsistentModel
+    public interface ITermStructureConsistentModel : IObservable, IObserver
     {
         Handle<YieldTermStructure> termStructure();
         Handle<YieldTermStructure> termStructure_ { get; set; }
-        void notifyObservers();
-        event Callback notifyObserversEvent;
-        void registerWith(Callback handler);
-        void unregisterWith(Callback handler);
-        void update();
     }
     
     //! Calibrated model class
@@ -149,7 +116,7 @@ namespace QLNet {
             setParams(proj.include(result));
             Vector shortRateProblemValues_ = prob.values(result);
 
-            notifyObservers();
+            this.notifyObservers();
         }
 
         public double value(Vector parameters, List<CalibrationHelper> instruments) {
@@ -313,24 +280,24 @@ namespace QLNet {
 
 
         #region Observer & Observable
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
+        //private readonly WeakEventSource eventSource = new WeakEventSource();
+        //public event Callback notifyObserversEvent
+        //{
+        //   add { eventSource.Subscribe(value); }
+        //   remove { eventSource.Unsubscribe(value); }
+        //}
 
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        public void notifyObservers()
-        {
-           eventSource.Raise();
-        }
+        //public void registerWith(Callback handler) { notifyObserversEvent += handler; }
+        //public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+        //public void notifyObservers()
+        //{
+        //   eventSource.Raise();
+        //}
 
         public void update()
         {
            generateArguments();
-           notifyObservers();
+           this.notifyObservers();
         }
         #endregion
     }

@@ -62,7 +62,7 @@ namespace QLNet
 
         public bool isInRange(double x, double y){return impl_.isInRange(x,y);}
 
-        public override void update(){impl_.calculate();}
+        public void update(){impl_.calculate();}
 
         // main method to derive an interpolated point
         public double value(double x, double y) { return value(x, y, false); }

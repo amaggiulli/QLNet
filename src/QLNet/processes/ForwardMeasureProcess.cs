@@ -28,7 +28,7 @@ namespace QLNet
       public virtual void setForwardMeasureTime(double T)
       {
          T_ = T;
-         notifyObservers();
+         this.notifyObservers();
       }
       public double getForwardMeasureTime() { return T_; }
       
@@ -74,7 +74,7 @@ namespace QLNet
       public virtual void setForwardMeasureTime(double T )
       {
          T_ = T;
-        notifyObservers();
+         this.notifyObservers();
       }
       public double getForwardMeasureTime()
       {

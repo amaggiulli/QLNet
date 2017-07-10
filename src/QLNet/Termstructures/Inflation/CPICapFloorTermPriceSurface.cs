@@ -233,13 +233,12 @@ namespace QLNet
       }
 
       // LazyObject interface
-      public override void update() { notifyObservers(); }
 
       //! set up the interpolations for capPrice_ and floorPrice_
       //! since we know ATM, and we have single flows,
       //! we can use put/call parity to extend the surfaces
       //! across all strikes
-      protected override void performCalculations()
+      public void performCalculations()
       {
          allStrikes_ = new List<double>();
          int nMat = cfMaturities_.Count, 

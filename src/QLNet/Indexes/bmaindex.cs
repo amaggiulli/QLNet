@@ -35,7 +35,7 @@ namespace QLNet
                 new UnitedStates( UnitedStates.Market.NYSE ), new ActualActual( ActualActual.Convention.ISDA ) )
       {
          termStructure_ = h ?? new Handle<YieldTermStructure>();
-         termStructure_.registerWith( update );
+         termStructure_.registerWith(this.update );
       }
 
       // Index interface

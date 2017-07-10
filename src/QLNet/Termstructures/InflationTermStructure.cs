@@ -207,7 +207,7 @@ namespace QLNet
             Utils.QL_REQUIRE(seasonality_.isConsistent(this),
                () => "Seasonality inconsistent with " + "inflation term structure");
          }
-         notifyObservers();
+         this.notifyObservers();
       }
 
       public Seasonality seasonality()

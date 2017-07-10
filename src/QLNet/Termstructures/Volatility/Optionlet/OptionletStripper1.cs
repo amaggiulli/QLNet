@@ -56,28 +56,28 @@ namespace QLNet
 
       public Matrix capFloorPrices()
       {
-         calculate();
+         this.calculate();
          return capFloorPrices_;
       }
       public Matrix capFloorVolatilities()
       {
-         calculate();
+         this.calculate();
          return capFloorVols_;
       }
       public Matrix optionletPrices()
       {
-         calculate();
+         this.calculate();
          return optionletPrices_;
       }
       public double switchStrike()
       {
          if ( floatingSwitchStrike_ )
-            calculate();
+            this.calculate();
          return switchStrike_.Value;
       }
 
       // LazyObject interface
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          // update dates
          Date referenceDate = termVolSurface_.referenceDate();

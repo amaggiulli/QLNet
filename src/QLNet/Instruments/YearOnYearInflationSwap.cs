@@ -81,7 +81,7 @@ namespace QLNet
 			.withNotionals( nominal_ )
 			.withPaymentAdjustment( paymentConvention_ );
 
-         yoyLeg.ForEach((i, x) =>  x.registerWith( update ) );
+         yoyLeg.ForEach((i, x) =>  x.registerWith(this.update ) );
 			
 
 			legs_[0] = fixedLeg;

@@ -89,7 +89,7 @@ namespace QLNet
          : base(fixedRate) 
       {
 
-        overnightIndex.registerWith(update);
+        overnightIndex.registerWith(this.update);
 
         // dummy OvernightIndex with curve/swap arguments
         // review here

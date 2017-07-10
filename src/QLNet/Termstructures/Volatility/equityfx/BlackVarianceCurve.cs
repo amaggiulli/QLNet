@@ -90,7 +90,7 @@ namespace QLNet {
         public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory, new() {
             varianceCurve_ = i.interpolate(times_, times_.Count, variances_);
             varianceCurve_.update();
-            notifyObservers();
+            this.notifyObservers();
         }
 
         public override Date maxDate() { return maxDate_; }

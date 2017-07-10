@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace QLNet
 {
     // Abstract instrument class. It defines the interface of concrete instruments
-    public class Instrument : LazyObject
+    public class Instrument : ILazyObject
     {
         // The value of these attributes and any other that derived classes might declare must be set during calculation.
         protected double? NPV_, errorEstimate_,CASH_;
@@ -36,11 +36,11 @@ namespace QLNet
             was overridden in a derived class. */
         public void setPricingEngine(IPricingEngine e)
         {
-            if (engine_ != null) engine_.unregisterWith(update);
+            if (engine_ != null) engine_.unregisterWith(this.update);
             engine_ = e;
-            if (engine_ != null) engine_.registerWith(update);
+            if (engine_ != null) engine_.registerWith(this.update);
 
-            update();       // trigger (lazy) recalculation and notify observers
+           this.update();       // trigger (lazy) recalculation and notify observers
         }
 
 
@@ -51,23 +51,23 @@ namespace QLNet
 
 
         #region Lazy object interface
-        protected override void calculate()
+        protected void calculate()
         {
             if (isExpired())
             {
                 setupExpired();
-                calculated_ = true;
+               this.calculated_(true);
             }
             else
             {
-                base.calculate();
+                ((ILazyObject)this).calculate();
             }
         }
 
         /* In case a pricing engine is not used, this method must be overridden to perform the actual
            calculations and set any needed results.
          * In case a pricing engine is used, the default implementation can be used. */
-        protected override void performCalculations()
+        public virtual void performCalculations()
         {
             if (engine_ == null) throw new ArgumentException("null pricing engine");
             engine_.reset();

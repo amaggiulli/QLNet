@@ -21,32 +21,6 @@ namespace QLNet
 {
    public abstract class Claim : IObservable, IObserver
    {
-      #region Observer & Observable
-
-      private readonly WeakEventSource eventSource = new WeakEventSource();
-
-      public event Callback notifyObserversEvent
-      {
-         add { eventSource.Subscribe(value); }
-         remove { eventSource.Unsubscribe(value); }
-      }
-
-      public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-
-      public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-
-      protected void notifyObservers()
-      {
-         eventSource.Raise();
-      }
-
-      public void update()
-      {
-         notifyObservers();
-      }
-
-      #endregion Observer & Observable
-
       public abstract double amount(Date defaultDate, double notional, double recoveryRate);
    }
 
@@ -65,7 +39,7 @@ namespace QLNet
       public FaceValueAccrualClaim(Bond referenceSecurity)
       {
          referenceSecurity_ = referenceSecurity;
-         referenceSecurity.registerWith(update);
+         referenceSecurity.registerWith(this.update);
       }
 
       public override double amount(Date d, double notional, double recoveryRate)

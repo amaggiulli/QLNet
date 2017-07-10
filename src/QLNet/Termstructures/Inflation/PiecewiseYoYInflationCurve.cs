@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
 
-	public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, Curve<YoYInflationTermStructure>
+	public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, Curve<YoYInflationTermStructure>, ILazyObject
 	{
 		#region InflationTraits
 
@@ -201,7 +201,9 @@ namespace QLNet
       public PiecewiseYoYInflationCurve()
          : base()
       { }
-	}
+
+	   public virtual void performCalculations() { throw new NotSupportedException(); }
+   }
 
 
 	public class PiecewiseYoYInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseYoYInflationCurve
@@ -255,27 +257,27 @@ namespace QLNet
 		// Inspectors
 		public override List<double> times()
 		{
-			calculate();
+		   this.calculate();
 			return base.times();
 		}
 		public override List<Date> dates()
 		{
-			calculate();
+		   this.calculate();
 			return base.dates();
 		}
 		public override List<double> data()
 		{
-			calculate();
+		   this.calculate();
 			return base.rates();
 		}
 		public override Dictionary<Date, double> nodes()
 		{
-			calculate();
+		   this.calculate();
 			return base.nodes();
 		}
 
 		// methods
-		protected override void performCalculations() { bootstrap_.calculate(); }
+	   public override void performCalculations() { bootstrap_.calculate(); }
 	}
 
 

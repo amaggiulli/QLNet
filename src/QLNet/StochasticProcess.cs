@@ -111,28 +111,6 @@ namespace QLNet {
         public virtual double time(Date d) {
             throw new NotSupportedException("date/time conversion not supported");
         }
-
-
-        #region Observer & Observable
-        // Subjects, i.e. observables, should define interface internally like follows.
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
-
-        public virtual void update() {
-            notifyObservers();
-        }
-	    #endregion   
     }
 
     //! 1-dimensional stochastic process

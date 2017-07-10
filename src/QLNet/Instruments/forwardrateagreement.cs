@@ -97,7 +97,7 @@ namespace QLNet
          // income is irrelevant to FRA - set it to zero
          underlyingIncome_ = 0.0;
 
-         index_.registerWith(update);
+         index_.registerWith(this.update);
       }
 
       // Calculations
@@ -139,7 +139,7 @@ namespace QLNet
          return forwardRate_;
       }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
          forwardRate_ = new InterestRate(index_.fixing(fixingDate), index_.dayCounter(),

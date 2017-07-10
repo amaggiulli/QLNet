@@ -43,7 +43,7 @@ namespace QLNet
 
          // observer interface
          if ( !termStructure_.empty() )
-            termStructure_.registerWith( update );
+            termStructure_.registerWith(this.update );
       }
 
       // InterestRateIndex interface

@@ -85,9 +85,9 @@ namespace QLNet
                                      .withPaymentAdjustment(paymentConvention_);
 
          foreach (var cf in floating1Leg)
-            cf.registerWith(update);
+            cf.registerWith(this.update);
          foreach (var cf in floating2Leg)
-            cf.registerWith(update);
+            cf.registerWith(this.update);
 
 
          legs_[0] = floating1Leg;

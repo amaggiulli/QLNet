@@ -44,31 +44,31 @@ namespace QLNet
          maxEvaluations_ = 10000;
          accuracy_ = 1E-6;
 
-         stripper1_.registerWith(update);
-         atmCapFloorTermVolCurve_.registerWith(update); 
+         stripper1_.registerWith(this.update);
+         atmCapFloorTermVolCurve_.registerWith(this.update); 
 
          Utils.QL_REQUIRE( dc_ == atmCapFloorTermVolCurve.link.dayCounter(),()=> "different day counters provided" );
       }
 
       public List<double> atmCapFloorStrikes()
       {
-         calculate();
+         this.calculate();
          return atmCapFloorStrikes_;
       }
       public List<double> atmCapFloorPrices()
       {
-         calculate();
+         this.calculate();
          return atmCapFloorPrices_;
       }
 
       public List<double> spreadsVol()
       {
-         calculate();
+         this.calculate();
          return spreadsVolImplied_;
       }
 
       // LazyObject interface
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          //// optionletStripper data
          optionletDates_ = new List<Date>(stripper1_.optionletFixingDates());

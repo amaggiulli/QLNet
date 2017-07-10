@@ -37,24 +37,6 @@ namespace QLNet
       public abstract double floorletRate( double effectiveFloor );
       public abstract void initialize( FloatingRateCoupon coupon );
 
-      #region Observer & observable
-      private readonly WeakEventSource eventSource = new WeakEventSource();
-      public event Callback notifyObserversEvent
-      {
-         add { eventSource.Subscribe( value ); }
-         remove { eventSource.Unsubscribe( value ); }
-      }
-
-      public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
-      public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
-      protected void notifyObservers()
-      {
-         eventSource.Raise();
-      }
-
-      // observer interface
-      public void update() { notifyObservers(); }
-      #endregion
    }
 
    //! base pricer for capped/floored Ibor coupons
@@ -64,7 +46,7 @@ namespace QLNet
       {
          capletVol_ = v ?? new Handle<OptionletVolatilityStructure>();
          if ( !capletVol_.empty() )
-            capletVol_.registerWith( update );
+            capletVol_.registerWith( this.update );
       }
 
       public Handle<OptionletVolatilityStructure> capletVolatility()
@@ -74,12 +56,12 @@ namespace QLNet
 
       public void setCapletVolatility( Handle<OptionletVolatilityStructure> v = null)
       {
-         capletVol_.unregisterWith( update );
+         capletVol_.unregisterWith( this.update );
          capletVol_ = v ?? new Handle<OptionletVolatilityStructure>();
          if ( !capletVol_.empty() )
-            capletVol_.registerWith( update );
+            capletVol_.registerWith(this.update );
 
-         update();
+         this.update();
       }
       private Handle<OptionletVolatilityStructure> capletVol_;
    }
@@ -105,7 +87,7 @@ namespace QLNet
          Utils.QL_REQUIRE( timingAdjustment_ == TimingAdjustment.Black76 ||
                            timingAdjustment_ == TimingAdjustment.BivariateLognormal,()=>
                        "unknown timing adjustment (code " + timingAdjustment_ + ")" );
-         correlation_.registerWith(update);
+         correlation_.registerWith(this.update);
       }
 
 
@@ -270,17 +252,17 @@ namespace QLNet
       protected CmsCouponPricer( Handle<SwaptionVolatilityStructure> v = null )
       {
          swaptionVol_ = v ?? new Handle<SwaptionVolatilityStructure>();
-         swaptionVol_.registerWith( update );
+         swaptionVol_.registerWith(this.update );
       }
 
       public Handle<SwaptionVolatilityStructure> swaptionVolatility() {return swaptionVol_;}
 
       public void setSwaptionVolatility( Handle<SwaptionVolatilityStructure> v = null)
       {
-         swaptionVol_.unregisterWith( update );
+         swaptionVol_.unregisterWith(this.update );
          swaptionVol_ = v ?? new Handle<SwaptionVolatilityStructure>();
-         swaptionVol_.registerWith( update );
-         update();
+         swaptionVol_.registerWith(this.update );
+         this.update();
       }
       private Handle<SwaptionVolatilityStructure> swaptionVol_;
    }

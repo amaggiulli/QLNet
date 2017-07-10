@@ -155,7 +155,7 @@ namespace QLNet
          for (int i=0; i<n_; ++i) 
          {
             weights_.Add(outstandings[i]/outstanding_);
-            quotes_[i].registerWith(update);
+            quotes_[i].registerWith(this.update);
         }
 
       }
@@ -170,26 +170,7 @@ namespace QLNet
 
       #endregion
 
-      #region Observer & observable
-      private readonly WeakEventSource eventSource = new WeakEventSource();
-      public event Callback notifyObserversEvent
-      {
-         add { eventSource.Subscribe(value); }
-         remove { eventSource.Unsubscribe(value); }
-      }
-
-      public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-      public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-      protected void notifyObservers()
-      {
-         eventSource.Raise();
-      }
-
-      // observer interface
-      public void update() { notifyObservers(); }
-      #endregion
-
-      
+     
       private   List<BTP> btps_;
       private   List<double> outstandings_;
       private   List<Handle<Quote> > quotes_;
@@ -198,7 +179,7 @@ namespace QLNet
       private   List<double> weights_;
     }
 
-   public class RendistatoCalculator : LazyObject 
+   public class RendistatoCalculator : ILazyObject 
    {
       public RendistatoCalculator(RendistatoBasket basket, Euribor euriborIndex, Handle<YieldTermStructure> discountCurve)
       {
@@ -214,9 +195,9 @@ namespace QLNet
          swapBondYields_ = new InitializedList<double?>(nSwaps_, 0.05);
          swapRates_ = new InitializedList<double?>(nSwaps_, null);
 
-         basket_.registerWith(update);
-         euriborIndex_.registerWith(update);
-         discountCurve_.registerWith(update);
+         basket_.registerWith(this.update);
+         euriborIndex_.registerWith(this.update);
+         discountCurve_.registerWith(this.update);
 
          double dummyRate = 0.05;
          for (int i=0; i<nSwaps_; ++i) 
@@ -238,35 +219,35 @@ namespace QLNet
       }
       public double duration()
       {
-         calculate();
+         this.calculate();
          return duration_;
       }
       // bonds
       public List<double> yields()
       {
-         calculate();
+         this.calculate();
          return yields_;
       }
       public List<double> durations()
       {
-         calculate();
+         this.calculate();
          return durations_;
       }
       // swaps
       public List<double> swapLengths() { return swapLenghts_; }
       public List<double?> swapRates()
       {
-         calculate();
+         this.calculate();
          return swapRates_;
       }
       public List<double?> swapYields()
       {
-         calculate();
+         this.calculate();
          return swapBondYields_;
       }
       public List<double?> swapDurations()
       {
-         calculate();
+         this.calculate();
          return swapBondDurations_;
       }
       #endregion
@@ -275,27 +256,27 @@ namespace QLNet
       
       public VanillaSwap equivalentSwap()
       {
-         calculate();
+         this.calculate();
          return swaps_[equivalentSwapIndex_];
       }
       public double equivalentSwapRate()
       {
-         calculate();
+         this.calculate();
          return swapRates_[equivalentSwapIndex_].Value;
       }
       public double equivalentSwapYield()
       {
-         calculate();
+         this.calculate();
          return swapBondYields_[equivalentSwapIndex_].Value;
       }
       public double equivalentSwapDuration()
       {
-         calculate();
+         this.calculate();
          return swapBondDurations_[equivalentSwapIndex_].Value;
       }
       public double equivalentSwapLength()
       {
-         calculate();
+         this.calculate();
          return swapLenghts_[equivalentSwapIndex_];
       }
       public double equivalentSwapSpread()
@@ -307,7 +288,7 @@ namespace QLNet
 
       #region LazyObject interface
       
-      protected override void performCalculations()
+      public void performCalculations()
       {
          List<BTP> btps = basket_.btps();
          List<Handle<Quote> > quotes = basket_.cleanPriceQuotes();

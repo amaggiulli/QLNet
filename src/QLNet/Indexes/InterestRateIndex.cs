@@ -60,9 +60,9 @@ namespace QLNet
          res = res + " " + dayCounter_.name();
          name_=  res;
 
-         Settings.registerWith( update );
+         Settings.registerWith(this.update );
          // recheck
-         IndexManager.instance().notifier( name() ).registerWith( update );
+         IndexManager.instance().notifier( name() ).registerWith(this.update );
       }
 
       // Index interface
@@ -105,9 +105,6 @@ namespace QLNet
          }
          return forecastFixing(fixingDate);
       }
-
-      // Observer interface
-      public void update() { notifyObservers(); }
 
       // Inspectors
       public string familyName() { return familyName_; }

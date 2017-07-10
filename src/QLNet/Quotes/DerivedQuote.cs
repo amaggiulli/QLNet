@@ -52,7 +52,7 @@ namespace QLNet
 
       public void update() 
       {
-        notifyObservers();
+         this.notifyObservers();
       }
 
    }

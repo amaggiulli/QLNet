@@ -25,12 +25,12 @@ namespace QLNet {
 
         public Stock(Handle<Quote> quote) {
             quote_ = quote;
-            quote_.registerWith(update);
+            quote_.registerWith(this.update);
         }
 
         public override bool isExpired() { return false; }
 
-        protected override void performCalculations() {
+        public override void performCalculations() {
             Utils.QL_REQUIRE(!quote_.empty(),()=> "null quote set");
             NPV_ = quote_.link.value();
         }

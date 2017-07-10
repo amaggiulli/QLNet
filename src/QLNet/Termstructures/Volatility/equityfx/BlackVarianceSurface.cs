@@ -139,7 +139,7 @@ namespace QLNet
       {
          varianceSurface_ = i.interpolate(times_, times_.Count, strikes_, strikes_.Count, variances_);
          varianceSurface_.update();
-         notifyObservers();
+         this.notifyObservers();
       }
    }
 }

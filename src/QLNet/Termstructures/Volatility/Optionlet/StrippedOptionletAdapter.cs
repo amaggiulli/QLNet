@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace QLNet
 {
-   public class StrippedOptionletAdapter : OptionletVolatilityStructure
+   public class StrippedOptionletAdapter : OptionletVolatilityStructure, ILazyObject
    {
        /*! Adapter class for turning a StrippedOptionletBase object into an
         OptionletVolatilityStructure.
@@ -45,10 +45,8 @@ namespace QLNet
       public override double maxStrike() { return optionletStripper_.optionletStrikes( 0 ).Last(); }
        
       // LazyObject interface
-      
-      public override void update() { base.update(); }
 
-      protected override void performCalculations()
+      public void performCalculations()
       {
          for (int i=0; i<nInterpolations_; ++i) 
          {
@@ -75,7 +73,7 @@ namespace QLNet
       }
       protected override double volatilityImpl(double length,double strike)
       {
-         calculate();
+         this.calculate();
 
          List<double> vol = new InitializedList<double>(nInterpolations_);
          for (int i=0; i<nInterpolations_; ++i)

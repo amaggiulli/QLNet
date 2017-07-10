@@ -44,7 +44,7 @@ namespace QLNet
             if (diff.IsNotEqual(0.0))
             {
                 value_ = value;
-                notifyObservers();
+               this.notifyObservers();
             }
             return diff.GetValueOrDefault();
         }

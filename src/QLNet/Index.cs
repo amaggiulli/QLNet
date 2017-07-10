@@ -109,24 +109,6 @@ namespace QLNet
       {
          Utils.QL_REQUIRE( allowsNativeFixings(), ()=>
             "native fixings not allowed for " + name() + "; refer to underlying indices instead" );
-      }
-
-        
-
-      #region observable interface
-      private readonly WeakEventSource eventSource = new WeakEventSource();
-      public event Callback notifyObserversEvent
-      {
-         add { eventSource.Subscribe( value ); }
-         remove { eventSource.Unsubscribe( value ); }
-      }
-
-      public void registerWith( Callback handler ) { notifyObserversEvent += handler; }
-      public void unregisterWith( Callback handler ) { notifyObserversEvent -= handler; }
-      protected void notifyObservers()
-      {
-         eventSource.Raise();
-      }
-      #endregion
+      }       
    }
 }

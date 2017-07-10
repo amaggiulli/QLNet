@@ -31,21 +31,21 @@ namespace QLNet
       public GenericModelEngine( Handle<ModelType> model )
       {
          model_ = model;
-         model_.registerWith( update );
+         model_.registerWith(this.update );
       }
       public GenericModelEngine(ModelType model )
       {
          model_  = new Handle<ModelType>(model);
-         model_.registerWith( update );
+         model_.registerWith(this.update );
       }
       public void setModel( Handle<ModelType> model )
       {
          if ( model_ != null )
-            model_.unregisterWith( update );
+            model_.unregisterWith(this.update );
          model_ = model;
          if ( model_ != null )
-            model_.registerWith( update );
-         update();
+            model_.registerWith(this.update );
+         this.update();
       }
 
       protected Handle<ModelType> model_;

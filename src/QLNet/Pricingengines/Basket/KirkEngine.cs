@@ -41,8 +41,8 @@ namespace QLNet
          process2_ = process2;
          rho_ = correlation;
 
-         process1_.registerWith(update);
-         process2_.registerWith(update);
+         process1_.registerWith(this.update);
+         process2_.registerWith(this.update);
       }
 
       public override void calculate()

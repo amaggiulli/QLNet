@@ -89,7 +89,7 @@ namespace QLNet
         if (claim_ == null )
             claim_ = new FaceValueClaim();
 
-		  claim_.registerWith(update);
+		  claim_.registerWith(this.update);
 		}
       //! CDS quoted as upfront and running spread
       /*! @param side  Whether the protection is bought or sold.
@@ -146,7 +146,7 @@ namespace QLNet
 
         if (claim_ == null)
             claim_ = new FaceValueClaim();
-		  claim_.registerWith(update);     
+		  claim_.registerWith(this.update);     
 		}
 
       // Instrument interface

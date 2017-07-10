@@ -52,24 +52,6 @@ namespace QLNet {
         public IPricingEngineResults getResults() { return results_; }
         public void reset() { results_.reset(); }
 
-        #region Observer & Observable
-        // observable interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
-
-        public void update() { notifyObservers(); }
-        #endregion
         #endregion
     }
 }

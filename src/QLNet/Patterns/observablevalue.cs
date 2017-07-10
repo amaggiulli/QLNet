@@ -47,33 +47,17 @@ namespace QLNet {
         // controlled assignment
         public ObservableValue<T> Assign(T t) {
             value_ = t;
-            notifyObservers();
+            this.notifyObservers();
             return this;
         }
 
         public ObservableValue<T> Assign(ObservableValue<T> t) {
             value_ = t.value_;
-            notifyObservers();
+            this.notifyObservers();
             return this;
         }
 
         //! explicit inspector
         public T value() { return value_; }
-
-
-        // Subjects, i.e. observables, should define interface internally like follows.
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
     }
 }

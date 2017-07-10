@@ -66,7 +66,7 @@ namespace QLNet
       {
          settlementType_ = Settlement.Type.Physical;
          swap_ = swap;
-         swap_.registerWith(update);
+         swap_.registerWith(this.update);
       }
 
       public Swaption(VanillaSwap swap,Exercise exercise,Settlement.Type delivery)
@@ -74,7 +74,7 @@ namespace QLNet
       {
          settlementType_ = delivery;
          swap_ = swap;
-         swap_.registerWith(update);
+         swap_.registerWith(this.update);
       }
 
       // Instrument interface

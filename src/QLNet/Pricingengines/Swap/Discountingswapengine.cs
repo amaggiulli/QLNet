@@ -31,7 +31,7 @@ namespace QLNet
                                    Date settlementDate = null, Date npvDate = null) 
       {
          discountCurve_ = discountCurve;
-         discountCurve_.registerWith(update);
+         discountCurve_.registerWith(this.update);
          includeSettlementDateFlows_ = includeSettlementDateFlows;
          settlementDate_ = settlementDate;
          npvDate_ = npvDate;

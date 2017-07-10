@@ -34,7 +34,7 @@ namespace QLNet {
             Utils.QL_REQUIRE(correlation.rows() == processes.Count,()=> 
                "mismatch between number of processes and size of correlation matrix");
             for (int i=0; i<processes_.Count; i++)
-                processes_[i].registerWith(update);
+                processes_[i].registerWith(this.update);
         }
 
 

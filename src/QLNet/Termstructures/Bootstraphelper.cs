@@ -46,7 +46,7 @@ namespace QLNet {
 
         public BootstrapHelper(Handle<Quote> quote) {
             quote_ = quote;
-            quote_.registerWith(update);
+            quote_.registerWith(this.update);
         }
         public BootstrapHelper(double quote) { 
             quote_ = new Handle<Quote>(new SimpleQuote(quote)); 
@@ -118,24 +118,6 @@ namespace QLNet {
            return latestDate_;
         }
 
-
-        #region observer interface
-        private readonly WeakEventSource eventSource = new WeakEventSource();
-        public event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        protected void notifyObservers()
-        {
-           eventSource.Raise();
-        }
-
-        public virtual void update() { notifyObservers(); }
-        #endregion
     }
 
     public class RateHelper : BootstrapHelper<YieldTermStructure>

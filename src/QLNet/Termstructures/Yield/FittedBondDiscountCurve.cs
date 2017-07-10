@@ -66,7 +66,7 @@ namespace QLNet
 
        \ingroup yieldtermstructures
    */
-   public class FittedBondDiscountCurve : YieldTermStructure
+   public class FittedBondDiscountCurve : YieldTermStructure, ILazyObject
    {
       // Constructors
       //! reference date based on current evaluation date
@@ -124,13 +124,13 @@ namespace QLNet
       //! the latest date for which the curve can return values
       public override Date maxDate()
       {
-         calculate();
+         this.calculate();
          return maxDate_;
       }
       //! class holding the results of the fit
       public FittingMethod fitResults()
       {
-         calculate();
+         this.calculate();
          return fittingMethod_.clone();
       }
 
@@ -140,7 +140,7 @@ namespace QLNet
             bondHelpers_[i].registerWith(update);
       }
 
-      protected override void performCalculations()
+      public void performCalculations()
       {                 
          Utils.QL_REQUIRE(!bondHelpers_.empty(),()=> "no bondHelpers given");
 
@@ -173,7 +173,7 @@ namespace QLNet
 
       protected override double discountImpl(double t)
       {
-         calculate();
+         this.calculate();
          return fittingMethod_.discountFunction(fittingMethod_.solution_, t);
       }
       // target accuracy level to be used in the optimization routine

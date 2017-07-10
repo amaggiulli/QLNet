@@ -32,8 +32,8 @@ namespace QLNet
 			discountCurve_ = discountCurve;
 			includeSettlementDateFlows_ = includeSettlementDateFlows;
 
-			probability_.registerWith(update);
-			discountCurve_.registerWith(update);
+			probability_.registerWith(this.update);
+			discountCurve_.registerWith(this.update);
 		}
 
 		public override void calculate()

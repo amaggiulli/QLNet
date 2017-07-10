@@ -33,7 +33,7 @@ namespace QLNet
         
         capletVol_ = capletVol;
 
-        if( !capletVol_.empty() ) capletVol_.registerWith(update);
+        if( !capletVol_.empty() ) capletVol_.registerWith(this.update);
       }
 
       public virtual Handle<CPIVolatilitySurface> capletVolatility() 
@@ -45,7 +45,7 @@ namespace QLNet
       {
          Utils.QL_REQUIRE( !capletVol.empty(), () => "empty capletVol handle" );
          capletVol_ = capletVol;
-         capletVol_.registerWith(update);
+         capletVol_.registerWith(this.update);
       }
 
 

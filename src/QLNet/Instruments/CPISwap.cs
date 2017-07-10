@@ -171,14 +171,14 @@ namespace QLNet
 
          foreach (CashFlow cashFlow in cpiLeg)
          {
-            cashFlow.registerWith(update);
+            cashFlow.registerWith(this.update);
          }
 
          if (floatingLeg.Count > 0)
          {
             foreach (CashFlow cashFlow in floatingLeg)
             {
-               cashFlow.registerWith(update);
+               cashFlow.registerWith(this.update);
             }
 
          }

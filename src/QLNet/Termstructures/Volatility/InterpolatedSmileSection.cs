@@ -119,7 +119,7 @@ namespace QLNet
           interpolation_ = interpolator.interpolate(strikes_, strikes_.Count, vols_);
        }
 
-      protected override void performCalculations()
+      public override void performCalculations()
       {
          for (int i = 0; i < stdDevHandles_.Count; ++i)
             vols_[i] = stdDevHandles_[i].link.value()/exerciseTimeSquareRoot_;
@@ -129,20 +129,19 @@ namespace QLNet
 
       protected override double varianceImpl(double strike)
       {
-         calculate();
+         this.calculate();
          double v = interpolation_.value(strike, true);
          return v*v*exerciseTime();
       }
 
       protected override double volatilityImpl(double strike)
       {
-         calculate();
+         this.calculate();
          return interpolation_.value(strike, true);
       }
       public override double minStrike () { return strikes_.First(); }
       public override double maxStrike () { return strikes_.Last(); }
       public override double? atmLevel()  { return atmLevel_.link.value(); }
-      public override void update() {base.update();}
 
       private double exerciseTimeSquareRoot_;
       private List<double> strikes_;

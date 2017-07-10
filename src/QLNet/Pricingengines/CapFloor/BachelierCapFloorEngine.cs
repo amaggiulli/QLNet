@@ -28,7 +28,7 @@ namespace QLNet
          vol_ = new Handle<OptionletVolatilityStructure>(
             new ConstantOptionletVolatility(0, new NullCalendar(), BusinessDayConvention.Following, vol, 
                dc ?? new Actual365Fixed())) ;
-         discountCurve_.registerWith(update);
+         discountCurve_.registerWith(this.update);
       }
       public BachelierCapFloorEngine(Handle<YieldTermStructure> discountCurve,Handle<Quote> vol,DayCounter dc = null)
       {
@@ -36,15 +36,15 @@ namespace QLNet
          vol_ = new Handle<OptionletVolatilityStructure>(
             new ConstantOptionletVolatility( 0, new NullCalendar(), BusinessDayConvention.Following, vol,
                dc ?? new Actual365Fixed() ) );
-         discountCurve_.registerWith( update );
-         vol_.registerWith(update);
+         discountCurve_.registerWith(this.update );
+         vol_.registerWith(this.update);
       }
       public BachelierCapFloorEngine(Handle<YieldTermStructure> discountCurve,Handle<OptionletVolatilityStructure> vol)
       {
          discountCurve_ = discountCurve;
          vol_ = vol;
-         discountCurve_.registerWith( update );
-         vol_.registerWith( update );
+         discountCurve_.registerWith(this.update );
+         vol_.registerWith(this.update );
       }
 
       public override void calculate()

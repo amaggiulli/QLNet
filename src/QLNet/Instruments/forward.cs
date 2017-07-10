@@ -71,8 +71,8 @@ namespace QLNet {
 
 			maturityDate_ = calendar_.adjust(maturityDate_, businessDayConvention_);
 
-			Settings.registerWith(update);
-			discountCurve_.registerWith(update);
+			Settings.registerWith(this.update);
+			discountCurve_.registerWith(this.update);
 		}
 
 		public virtual Date settlementDate() {
@@ -117,7 +117,7 @@ namespace QLNet {
 			return InterestRate.impliedRate(compoundingFactor,dayCounter,compoundingConvention,Frequency.Annual,tenor);
 		}
 
-		protected override void performCalculations() {
+		public override void performCalculations() {
 			Utils.QL_REQUIRE(!discountCurve_.empty(),()=> "no discounting term structure set to Forward");
 
 			ForwardTypePayoff ftpayoff = payoff_ as ForwardTypePayoff;

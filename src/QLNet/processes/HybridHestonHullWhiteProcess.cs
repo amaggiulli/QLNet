@@ -206,7 +206,7 @@ namespace QLNet
       public double eta() { return corrEquityShortRate_; }
       public override double time( Date date ) { return hestonProcess_.time( date ); }
       public Discretization discretization() { return disc_; }
-      public override void update() { endDiscount_ = hestonProcess_.riskFreeRate().link.discount( T_ ); }
+      public void update() { endDiscount_ = hestonProcess_.riskFreeRate().link.discount( T_ ); }
 
       protected HestonProcess hestonProcess_;
       protected HullWhiteForwardProcess hullWhiteProcess_;

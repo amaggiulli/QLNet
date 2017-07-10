@@ -17,19 +17,63 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System.Runtime.CompilerServices;
+
 namespace QLNet
 {
    public delegate void Callback();
 
    public interface IObservable
    {
-      event Callback notifyObserversEvent;
-      void registerWith(Callback handler);
-      void unregisterWith(Callback handler);
+      // Implemented in IObservableCode with extension methods
+   }
+
+   public static class IObservableCode
+   {
+      private class State
+      {
+         public readonly WeakEventSource eventSource = new WeakEventSource();
+         public event Callback notifyObserversEvent
+         {
+            add { eventSource.Subscribe(value); }
+            remove { eventSource.Unsubscribe(value); }
+         }
+      }
+
+      private static readonly ConditionalWeakTable<IObservable, State>
+         _stateTable = new ConditionalWeakTable<IObservable, State>();
+
+      public static WeakEventSource eventSource(this IObservable self)
+      {
+         return _stateTable.GetOrCreateValue(self).eventSource;
+      }
+
+      public static void registerWith(this IObservable self, Callback handler)
+      {
+         _stateTable.GetOrCreateValue(self).notifyObserversEvent += handler;
+      }
+
+      public static void unregisterWith(this IObservable self, Callback handler)
+      {
+         _stateTable.GetOrCreateValue(self).notifyObserversEvent -= handler;
+      }
+
+      public static void notifyObservers(this IObservable self)
+      {
+         _stateTable.GetOrCreateValue(self).eventSource.Raise();
+      }
    }
 
    public interface IObserver
    {
-      void update();
+      // Implemented in IObserverCode with extension methods
+   }
+
+   public static class IObserverCode
+   {
+      public static void update(this IObserver self)
+      {
+         ((IObservable) self).notifyObservers();
+      }
    }
 }
