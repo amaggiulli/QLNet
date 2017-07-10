@@ -302,7 +302,7 @@ namespace TestSuite
                                                index.dayCounter(),
 															  termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError );
 
-                        //swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
+                        swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
 
                         calibrationHelper.Add(swaptionHelper);
                     }
@@ -432,8 +432,8 @@ namespace TestSuite
                     forwardSwap.setPricingEngine(new DiscountingSwapEngine(index.forwardingTermStructure()));
 
                     if (i == j && i<=size/2) {
-                  IPricingEngine engine = null;
-                            //new LfmSwaptionEngine(liborModel, index.forwardingTermStructure());
+                  IPricingEngine engine = 
+                            new LfmSwaptionEngine(liborModel, index.forwardingTermStructure());
                         Exercise exercise =
                             new EuropeanExercise(process.fixingDates()[i]);
 
