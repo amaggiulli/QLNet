@@ -136,7 +136,7 @@ namespace TestSuite
          // make sure of the evaluation date
          Date evaluationDate = new Date(13, Month.August, 2007);
          evaluationDate = new UnitedKingdom().adjust(evaluationDate);
-         Settings.setEvaluationDate(evaluationDate);
+         Singleton<Settings>.link.setEvaluationDate(evaluationDate);
 
          // fixing data
          Date from = new Date(1, Month.January, 2005);
@@ -204,7 +204,7 @@ namespace TestSuite
             BusinessDayConvention bdc = BusinessDayConvention.ModifiedFollowing;
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = calendar.adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Singleton<Settings>.link.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);
@@ -712,7 +712,7 @@ namespace TestSuite
             // make sure of the evaluation date
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = new UnitedKingdom().adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Singleton<Settings>.link.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);
@@ -809,7 +809,7 @@ namespace TestSuite
             BusinessDayConvention bdc = BusinessDayConvention.ModifiedFollowing;
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = calendar.adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Singleton<Settings>.link.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);

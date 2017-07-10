@@ -55,7 +55,7 @@ namespace TestSuite
             Calendar calendar = new TARGET();
 
             Date referenceDate = calendar.adjust( Date.Today );
-            Settings.setEvaluationDate( referenceDate );
+            Singleton<Settings>.link.setEvaluationDate( referenceDate );
 
             termStructure = new RelinkableHandle<YieldTermStructure>();
             termStructure.linkTo( Utilities.flatRate( referenceDate, 0.05, new Actual365Fixed() ) );

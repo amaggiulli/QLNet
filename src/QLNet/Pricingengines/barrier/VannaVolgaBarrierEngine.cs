@@ -68,7 +68,7 @@ namespace QLNet
          Handle<Quote> x0Quote = new Handle<Quote>(new SimpleQuote(spotFX_.link.value())); //used for shift
          Handle<Quote> atmVolQuote = new Handle<Quote>(new SimpleQuote(atmVol_.link.value())); //used for shift
 
-         BlackVolTermStructure blackVolTS = new BlackConstantVol(Settings.evaluationDate(),
+         BlackVolTermStructure blackVolTS = new BlackConstantVol(Singleton<Settings>.link.evaluationDate(),
                   new NullCalendar(), atmVolQuote, new Actual365Fixed());
          BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(x0Quote,foreignTS_,domesticTS_,
             new Handle<BlackVolTermStructure>(blackVolTS));

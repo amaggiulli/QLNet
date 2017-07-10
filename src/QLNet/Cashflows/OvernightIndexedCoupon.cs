@@ -45,7 +45,7 @@ namespace QLNet
          double compoundFactor = 1.0;
 
          // already fixed part
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          while (fixingDates[i]<today && i<n) 
          {
             // rate must have been fixed

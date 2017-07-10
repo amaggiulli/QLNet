@@ -36,8 +36,8 @@ namespace QLNet
       */
       public virtual bool hasOccurred(Date d = null, bool? includeRefDate = null)
       {
-         Date refDate = d ?? Settings.evaluationDate();
-         bool includeRefDateEvent = includeRefDate ?? Settings.includeReferenceDateEvents;
+         Date refDate = d ?? Singleton<Settings>.link.evaluationDate();
+         bool includeRefDateEvent = includeRefDate ?? Singleton<Settings>.link.includeReferenceDateEvents;
          if (includeRefDateEvent)
             return date() < refDate;
          else

@@ -32,7 +32,7 @@ namespace EquityOption {
             Calendar calendar = new TARGET();
             Date todaysDate = new Date(15, Month.May, 1998);
             Date settlementDate = new Date(17, Month.May, 1998);
-            Settings.setEvaluationDate(todaysDate);
+            Singleton<Settings>.link.setEvaluationDate(todaysDate);
 
             // our options
             Option.Type type = Option.Type.Put;

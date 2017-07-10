@@ -74,7 +74,7 @@ namespace TestSuite
             {
                 calendar = new TARGET();
                 Date today = calendar.adjust(Date.Today);
-                Settings.setEvaluationDate(today);
+                Singleton<Settings>.link.setEvaluationDate(today);
                 optionBdc = BusinessDayConvention.ModifiedFollowing;
                 dayCounter = new  Actual365Fixed();
             }
@@ -158,17 +158,17 @@ namespace TestSuite
                                                 bool referenceDateFloating) 
             {
                 double dummyStrike = .02;
-                Date referenceDate = Settings.evaluationDate();
+                Date referenceDate = Singleton<Settings>.link.evaluationDate();
                 double initialVol = vol.volatility(
                         referenceDate + atm.tenors.options[0],
                         atm.tenors.swaps[0], dummyStrike, false);
                 // testing evaluation date change ...
-                Settings.setEvaluationDate(referenceDate - new Period(1, TimeUnit.Years));
+                Singleton<Settings>.link.setEvaluationDate(referenceDate - new Period(1, TimeUnit.Years));
                 double newVol =  vol.volatility(
                                         referenceDate + atm.tenors.options[0],
                         atm.tenors.swaps[0], dummyStrike, false);
 
-                Settings.setEvaluationDate(referenceDate);
+                Singleton<Settings>.link.setEvaluationDate(referenceDate);
                 if (referenceDateFloating && (initialVol == newVol))
                     QAssert.Fail(description +
                             " the volatility should change when the reference date is changed !");
@@ -180,13 +180,15 @@ namespace TestSuite
                 if (mktDataFloating)
                 {
                     double initialVolatility = atm.volsHandle[0][0].link.value();
-                    
-                    SimpleQuote sq=(SimpleQuote)(atm.volsHandle[0][0].currentLink());
-                    sq.setValue(10);
+
+               (atm.volsHandle[0][0].currentLink() as SimpleQuote).setValue(10);
+               /*SimpleQuote sq=(SimpleQuote)(atm.volsHandle[0][0].currentLink());
+                    sq.setValue(10);*/
                    
                     newVol = vol.volatility(referenceDate + atm.tenors.options[0],
                                             atm.tenors.swaps[0], dummyStrike, false);
-                    sq.setValue(initialVolatility);
+               (atm.volsHandle[0][0].currentLink() as SimpleQuote).setValue(initialVolatility);
+               //sq.setValue(initialVolatility);
 
                 if (initialVol == newVol)
                     QAssert.Fail(description + " the volatility should change when"+
@@ -362,7 +364,7 @@ namespace TestSuite
 
             //fixed reference date, floating market data
             description = "fixed reference date, floating market data";
-            vol = new SwaptionVolatilityMatrix(Settings.evaluationDate(),
+            vol = new SwaptionVolatilityMatrix(Singleton<Settings>.link.evaluationDate(),
                                                 vars.conventions.calendar,
                                                 vars.conventions.optionBdc,
                                                 vars.atm.tenors.options,
@@ -385,7 +387,7 @@ namespace TestSuite
 
             // fixed reference date, fixed market data
             description = "fixed reference date, fixed market data";
-            vol = new SwaptionVolatilityMatrix(Settings.evaluationDate(),
+            vol = new SwaptionVolatilityMatrix(Singleton<Settings>.link.evaluationDate(),
                                                 vars.conventions.calendar,
                                                 vars.conventions.optionBdc,
                                                 vars.atm.tenors.options,
@@ -422,7 +424,7 @@ namespace TestSuite
 
             //fixed reference date, floating market data
             description = "fixed reference date, floating market data";
-            vol = new SwaptionVolatilityMatrix( Settings.evaluationDate(),
+            vol = new SwaptionVolatilityMatrix( Singleton<Settings>.link.evaluationDate(),
                                                 vars.conventions.calendar,
                                                 vars.conventions.optionBdc,
                                                 vars.atm.tenors.options,
@@ -443,7 +445,7 @@ namespace TestSuite
 
             // fixed reference date, fixed market data
             description = "fixed reference date, fixed market data";
-            vol = new SwaptionVolatilityMatrix( Settings.evaluationDate(),
+            vol = new SwaptionVolatilityMatrix( Singleton<Settings>.link.evaluationDate(),
                                                 vars.conventions.calendar,
                                                 vars.conventions.optionBdc,
                                                 vars.atm.tenors.options,

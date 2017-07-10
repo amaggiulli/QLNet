@@ -51,7 +51,7 @@ namespace QLNet
          availabilityLag_ = availabilitiyLag;
          currency_ = currency;
          name_ = region_.name() + " " + familyName_; 
-         Settings.registerWith(this.update );
+         Singleton<Settings>.link.registerWith(this.update );
          IndexManager.instance().notifier( name() ).registerWith(this.update );
       }
 
@@ -219,7 +219,7 @@ namespace QLNet
          // (because you need the next one to interpolate).
          // The interpolation is calculated (linearly) on demand.
 
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date todayMinusLag = today - availabilityLag_;
 
          Date historicalFixingKnown = Utils.inflationPeriod( todayMinusLag, frequency_ ).Key - 1;
@@ -312,7 +312,7 @@ namespace QLNet
       // The forecastTodaysFixing parameter (required by the Index interface) is currently ignored.
       public override double fixing( Date fixingDate, bool forecastTodaysFixing = false )
       {
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date todayMinusLag = today - availabilityLag_;
          KeyValuePair<Date, Date> limm = Utils.inflationPeriod( todayMinusLag, frequency_ );
          Date lastFix = limm.Key - 1;

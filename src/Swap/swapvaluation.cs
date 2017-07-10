@@ -43,10 +43,10 @@ namespace Swap {
             int fixingDays = 2;
             Date todaysDate = calendar.advance(settlementDate, -fixingDays, TimeUnit.Days);
             // nothing to do with Date::todaysDate
-            Settings.setEvaluationDate(todaysDate);
+            Singleton<Settings>.link.setEvaluationDate(todaysDate);
 
 
-            todaysDate = Settings.evaluationDate();
+            todaysDate = Singleton<Settings>.link.evaluationDate();
             Console.WriteLine("Today: {0}, {1}", todaysDate.DayOfWeek, todaysDate);
             Console.WriteLine("Settlement date: {0}, {1}", settlementDate.DayOfWeek, settlementDate);
 

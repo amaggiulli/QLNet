@@ -53,8 +53,8 @@ namespace TestSuite
             nominal = 1000000.0;
             index = new Euribor6M(termStructure);
             calendar = index.fixingCalendar();
-            today = calendar.adjust(Settings.evaluationDate());
-            Settings.setEvaluationDate(today);
+            today = calendar.adjust(Singleton<Settings>.link.evaluationDate());
+            Singleton<Settings>.link.setEvaluationDate(today);
             settlement = calendar.advance(today,fixingDays,TimeUnit.Days);
             termStructure.linkTo(Utilities.flatRate(settlement,0.05,new Actual365Fixed()));
             optionTolerance = 1.0e-04;

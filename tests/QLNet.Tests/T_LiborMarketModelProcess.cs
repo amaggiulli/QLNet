@@ -79,7 +79,7 @@ namespace TestSuite
 
             Date todaysDate =
             index.fixingCalendar().adjust(new Date(4,9,2005));
-            Settings.setEvaluationDate(todaysDate);
+            Singleton<Settings>.link.setEvaluationDate(todaysDate);
 
             dates[0] = index.fixingCalendar().advance(todaysDate,
                                                    index.fixingDays(), TimeUnit.Days);
@@ -124,7 +124,7 @@ namespace TestSuite
 
             LfmCovarianceParameterization fct=new LfmHullWhiteParameterization(
                                                     process,
-                                                    makeCapVolCurve(Settings.evaluationDate()),
+                                                    makeCapVolCurve(Singleton<Settings>.link.evaluationDate()),
                                                     volaComp * Matrix.transpose(volaComp), factors);
 
             process.setCovarParam(fct);
@@ -156,7 +156,7 @@ namespace TestSuite
 
             for (int daysOffset=0; daysOffset < 1825 /* 5 year*/; daysOffset+=8) {
                 Date todaysDate = calendar.adjust(Date.Today+daysOffset);
-                Settings.setEvaluationDate(todaysDate);
+                Singleton<Settings>.link.setEvaluationDate(todaysDate);
                 Date settlementDate =
                     calendar.advance(todaysDate, index.fixingDays(), TimeUnit.Days);
 

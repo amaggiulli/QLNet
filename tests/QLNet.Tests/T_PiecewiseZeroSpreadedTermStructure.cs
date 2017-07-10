@@ -63,7 +63,7 @@ namespace TestSuite
             dayCount = new Actual360();
             settlementDate = calendar.advance(today, settlementDays, TimeUnit.Days);
 
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             int[] ts = new int[] { 13, 41, 75, 165, 256, 345, 524, 703 };
             double[] r = new double[] { 0.035, 0.033, 0.034, 0.034, 0.036, 0.037, 0.039, 0.040 };

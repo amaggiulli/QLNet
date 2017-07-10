@@ -23,7 +23,7 @@ using System;
 namespace QLNet
 {
    //! Basic term-structure functionality
-   public abstract class TermStructure : Extrapolator, IObservable,IObserver
+   public abstract class TermStructure : Extrapolator, IObservable, IObserver
    {
       #region Constructors
 
@@ -80,7 +80,7 @@ namespace QLNet
          settlementDays_ = settlementDays;
          dayCounter_ = dc;
 
-         Settings.registerWith(update);
+         Singleton<Settings>.link.registerWith(update);
       }
       
 
@@ -101,7 +101,7 @@ namespace QLNet
       {
          if (!updated_) 
          {
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
             referenceDate_ = calendar().advance(today, settlementDays(), TimeUnit.Days);
             updated_ = true;
          }

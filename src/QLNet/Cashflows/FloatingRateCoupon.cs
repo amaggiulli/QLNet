@@ -61,7 +61,7 @@ namespace QLNet
 
          // add as observer
          index_.registerWith(this.update);
-         Settings.registerWith(this.update);
+         Singleton<Settings>.link.registerWith(this.update);
       }
 
       // need by CashFlowVectors

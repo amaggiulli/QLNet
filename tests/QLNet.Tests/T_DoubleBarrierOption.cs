@@ -412,7 +412,7 @@ namespace TestSuite
 
          DayCounter dc = new Actual360();
          Date today = new Date(05, Month.Mar, 2013);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          SimpleQuote spot = new SimpleQuote(0.0);
          SimpleQuote qRate = new SimpleQuote(0.0);

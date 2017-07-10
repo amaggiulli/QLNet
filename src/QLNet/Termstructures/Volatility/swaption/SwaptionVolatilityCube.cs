@@ -72,8 +72,8 @@ namespace QLNet
                    swapIndexBase_.tenor() + ")");
 
          registerWithVolatilitySpread();
-         Settings.registerWith(update);
-         evaluationDate_ = Settings.evaluationDate();
+         Singleton<Settings>.link.registerWith(update);
+         evaluationDate_ = Singleton<Settings>.link.evaluationDate();
       }
       // TermStructure interface
       public new DayCounter dayCounter() { return atmVol_.link.dayCounter(); }

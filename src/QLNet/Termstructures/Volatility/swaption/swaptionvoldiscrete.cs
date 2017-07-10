@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure  ,ILazyObject                               
+   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure, ILazyObject                               
    {
       protected int nOptionTenors_;
       protected List<Period> optionTenors_;
@@ -63,8 +63,8 @@ namespace QLNet
          optionInterpolator_ = new LinearInterpolation(optionTimes_,optionTimes_.Count,optionDatesAsReal_);
          optionInterpolator_.update();
          optionInterpolator_.enableExtrapolation();
-         evaluationDate_ = Settings.evaluationDate();
-         Settings.registerWith(update);
+         evaluationDate_ = Singleton<Settings>.link.evaluationDate();
+         Singleton<Settings>.link.registerWith(update);
       }
 
       protected SwaptionVolatilityDiscrete(List<Period> optionTenors,
@@ -153,7 +153,7 @@ namespace QLNet
       {
          if (moving_)
          {
-            Date d = Settings.evaluationDate();
+            Date d = Singleton<Settings>.link.evaluationDate();
             if (evaluationDate_ != d)
             {
                evaluationDate_ = d;
@@ -162,6 +162,7 @@ namespace QLNet
             }
          }
          base.update();
+         ((ILazyObject) this).update();
       }
 
       /* In case a pricing engine is not used, this method must be overridden to perform the actual

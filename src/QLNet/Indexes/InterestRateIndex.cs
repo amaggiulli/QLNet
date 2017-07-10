@@ -60,7 +60,7 @@ namespace QLNet
          res = res + " " + dayCounter_.name();
          name_=  res;
 
-         Settings.registerWith(this.update );
+         Singleton<Settings>.link.registerWith(this.update );
          // recheck
          IndexManager.instance().notifier( name() ).registerWith(this.update );
       }
@@ -76,13 +76,13 @@ namespace QLNet
       {
          Utils.QL_REQUIRE( isValidFixingDate( fixingDate ),()=> "Fixing date " + fixingDate + " is not valid" );
 
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
 
          if ( fixingDate > today ||
             ( fixingDate == today && forecastTodaysFixing ) )
             return forecastFixing( fixingDate );
 
-         if (fixingDate < today || Settings.enforcesTodaysHistoricFixings)
+         if (fixingDate < today || Singleton<Settings>.link.enforcesTodaysHistoricFixings)
          {
             // must have been fixed
             // do not catch exceptions

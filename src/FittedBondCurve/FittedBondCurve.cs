@@ -100,7 +100,7 @@ namespace FittedBondCurve
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
             Date origToday = today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             // changing bondSettlementDays=3 increases calculation
             // time of exponentialsplines fitting method
@@ -309,7 +309,7 @@ namespace FittedBondCurve
             Console.WriteLine();
 
             today = calendar.advance(origToday,23,TimeUnit.Months,convention);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             bondSettlementDate = calendar.advance(today, new Period(bondSettlementDays,TimeUnit.Days));
 
             printOutput("(a) exponential splines", ts1);
@@ -387,7 +387,7 @@ namespace FittedBondCurve
             instrumentsB.RemoveRange(0,1);  // TODO
 
             today = calendar.advance(origToday,24,TimeUnit.Months,convention);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             bondSettlementDate = calendar.advance(today, new Period(bondSettlementDays,TimeUnit.Days));
 
             YieldTermStructure ts00 = new PiecewiseYieldCurve<Discount,LogLinear>(curveSettlementDays,

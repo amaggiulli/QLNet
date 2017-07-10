@@ -115,7 +115,7 @@ namespace TestSuite
             convention = BusinessDayConvention.ModifiedFollowing;
             Date today = new Date( 25, Month.November, 2009 );
             evaluationDate = calendar.adjust( today );
-            Settings.setEvaluationDate( evaluationDate );
+            Singleton<Settings>.link.setEvaluationDate( evaluationDate );
             settlementDays = 0;
             fixingDays = 0;
             settlement = calendar.advance( today, settlementDays, TimeUnit.Days );
@@ -296,7 +296,7 @@ namespace TestSuite
                      fixedRate, baseCPI, fixedDayCount, fixedSchedule,
                      fixedPaymentConvention, contractObservationLag,
                      fixedIndex, observationInterpolation);
-         Date asofDate = Settings.evaluationDate();
+         Date asofDate = Singleton<Settings>.link.evaluationDate();
 
          double[] floatFix = {0.06255,0.05975,0.0637,0.018425,0.0073438,-1,-1};
          double[] cpiFix = {211.4,217.2,211.4,213.4,-2,-2};

@@ -227,7 +227,7 @@ namespace QLNet
          else
          {
             int fixingDays = iborIndex1_.fixingDays();
-            Date referenceDate = Settings.evaluationDate();
+            Date referenceDate = Singleton<Settings>.link.evaluationDate();
             Date spotDate = float1Calendar_.advance(referenceDate, new Period(fixingDays, TimeUnit.Days));
             startDate = spotDate + forwardStart_;
          }

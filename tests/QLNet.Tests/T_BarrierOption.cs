@@ -663,7 +663,7 @@ namespace TestSuite
          SavedSettings backup = new SavedSettings();
 
          Date settlementDate = new Date(5, Month.July, 2002);
-         Settings.setEvaluationDate(settlementDate);
+         Singleton<Settings>.link.setEvaluationDate(settlementDate);
 
          DayCounter dayCounter = new Actual365Fixed();
          Calendar calendar = new TARGET();
@@ -943,7 +943,7 @@ namespace TestSuite
 
          DayCounter dc = new Actual365Fixed();
          Date today = new Date(5, Month.March, 2013);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          SimpleQuote spot = new SimpleQuote(0.0);
          SimpleQuote qRate = new SimpleQuote(0.0);

@@ -311,15 +311,15 @@ namespace QLNet
       protected RelativeDateRateHelper( Handle<Quote> quote )
          : base( quote )
       {
-         Settings.registerWith( update );
-         evaluationDate_ = Settings.evaluationDate();
+         Singleton<Settings>.link.registerWith( update );
+         evaluationDate_ = Singleton<Settings>.link.evaluationDate();
       }
 
       protected RelativeDateRateHelper( double quote )
          : base( quote )
       {
-         Settings.registerWith( update );
-         evaluationDate_ = Settings.evaluationDate();
+         Singleton<Settings>.link.registerWith( update );
+         evaluationDate_ = Singleton<Settings>.link.evaluationDate();
       }
 
 
@@ -327,9 +327,9 @@ namespace QLNet
       //! Observer interface
       public void update()
       {
-         if ( evaluationDate_ != Settings.evaluationDate() )
+         if ( evaluationDate_ != Singleton<Settings>.link.evaluationDate() )
          {
-            evaluationDate_ = Settings.evaluationDate();
+            evaluationDate_ = Singleton<Settings>.link.evaluationDate();
             initializeDates();
          }
          ((IObserver)this).update();

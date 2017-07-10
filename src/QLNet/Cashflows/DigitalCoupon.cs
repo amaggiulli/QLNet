@@ -252,8 +252,8 @@ namespace QLNet
          Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
-         Date today = Settings.evaluationDate();
-         bool enforceTodaysHistoricFixings = Settings.enforcesTodaysHistoricFixings;
+         Date today = Singleton<Settings>.link.evaluationDate();
+         bool enforceTodaysHistoricFixings = Singleton<Settings>.link.enforcesTodaysHistoricFixings;
          double underlyingRate = underlying_.rate();
          if (fixingDate < today || ((fixingDate == today) && enforceTodaysHistoricFixings))
          {

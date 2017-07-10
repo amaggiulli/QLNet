@@ -130,7 +130,7 @@ namespace TestSuite
                 floatingTenor = index.tenor();
                 calendar = index.fixingCalendar();
                 today = calendar.adjust(Date.Today);
-                Settings.setEvaluationDate(today);
+                Singleton<Settings>.link.setEvaluationDate(today);
                 settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
 
                 termStructure.linkTo(Utilities.flatRate(settlement, 0.05, new Actual365Fixed()));
@@ -401,7 +401,7 @@ namespace TestSuite
 
             vars.today = new Date(13, 3, 2002);
             vars.settlement = new Date(15, 3, 2002);
-            Settings.setEvaluationDate( vars.today);
+            Singleton<Settings>.link.setEvaluationDate( vars.today);
             vars.termStructure.linkTo(Utilities.flatRate(vars.settlement, 0.05, new Actual365Fixed()));
             Date exerciseDate = vars.calendar.advance(vars.settlement, new Period(5,TimeUnit.Years));
             Date startDate = vars.calendar.advance(exerciseDate,

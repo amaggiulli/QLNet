@@ -104,7 +104,7 @@ namespace QLNet
         termVolSurface.registerWith(this.update);
         iborIndex_.registerWith(this.update );
         discount_.registerWith(this.update );
-        Settings.registerWith(this.update);
+        Singleton<Settings>.link.registerWith(this.update);
 
         Period indexTenor = iborIndex_.tenor();
         Period maxCapFloorTenor = termVolSurface.optionTenors().Last();

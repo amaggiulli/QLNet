@@ -69,7 +69,7 @@ namespace TestSuite
 
             Date todaysDate =
             index.fixingCalendar().adjust(new Date(4, 9, 2005));
-            Settings.setEvaluationDate(todaysDate);
+            Singleton<Settings>.link.setEvaluationDate(todaysDate);
 
             dates[0] = index.fixingCalendar().advance(todaysDate,
                                                    index.fixingDays(), TimeUnit.Days);
@@ -203,7 +203,7 @@ namespace TestSuite
             LiborForwardModelProcess process=new LiborForwardModelProcess(size, index);
 
             // set-up pricing engine
-            OptionletVolatilityStructure capVolCurve = makeCapVolCurve(Settings.evaluationDate());
+            OptionletVolatilityStructure capVolCurve = makeCapVolCurve(Singleton<Settings>.link.evaluationDate());
 
             Vector variances = new LfmHullWhiteParameterization(process, capVolCurve).covariance(0.0,null).diagonal();
 
@@ -302,7 +302,7 @@ namespace TestSuite
                                                index.dayCounter(),
 															  termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError );
 
-                        swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
+                        //swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
 
                         calibrationHelper.Add(swaptionHelper);
                     }
@@ -432,8 +432,8 @@ namespace TestSuite
                     forwardSwap.setPricingEngine(new DiscountingSwapEngine(index.forwardingTermStructure()));
 
                     if (i == j && i<=size/2) {
-                        IPricingEngine engine =
-                            new LfmSwaptionEngine(liborModel, index.forwardingTermStructure());
+                  IPricingEngine engine = null;
+                            //new LfmSwaptionEngine(liborModel, index.forwardingTermStructure());
                         Exercise exercise =
                             new EuropeanExercise(process.fixingDates()[i]);
 

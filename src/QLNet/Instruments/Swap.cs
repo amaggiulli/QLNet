@@ -107,7 +107,7 @@ namespace QLNet
 
       public override bool isExpired()
       {
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          return !legs_.Any<List<CashFlow>>(leg => leg.Any<CashFlow>(cf => !cf.hasOccurred(today)));
       }
 
