@@ -623,6 +623,9 @@
     <Compile Include="..\QLNet\Math\Interpolations\VannaVolgaInterpolation.cs">
       <Link>Math\Interpolations\VannaVolgaInterpolation.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Math\Interpolations\SviInterpolation.cs">
+      <Link>Math\Interpolations\SviInterpolation.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Math\Optimization\BFGS.cs">
       <Link>Math\Optimization\BFGS.cs</Link>
     </Compile>
@@ -1523,6 +1526,9 @@
     <Compile Include="..\QLNet\Termstructures\Volatility\InterpolatedSmileSection.cs">
       <Link>Termstructures\Volatility\InterpolatedSmileSection.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Volatility\SviInterpolatedSmileSection.cs">
+      <Link>Termstructures\Volatility\SviInterpolatedSmileSection.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Volatility\Optionlet\capletvariancecurve.cs">
       <Link>Termstructures\Volatility\Optionlet\capletvariancecurve.cs</Link>
     </Compile>
@@ -1610,8 +1616,14 @@
     <Compile Include="..\QLNet\Termstructures\Volatility\Sabr.cs">
       <Link>Termstructures\Volatility\Sabr.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Volatility\Svi.cs">
+      <Link>Termstructures\Volatility\Svi.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Volatility\SmileSection.cs">
       <Link>Termstructures\Volatility\SmileSection.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Termstructures\Volatility\SviSmileSection.cs">
+      <Link>Termstructures\Volatility\SviSmileSection.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Volatility\swaption\SwaptionVolatilityStructure.cs">
       <Link>Termstructures\Volatility\swaption\SwaptionVolatilityStructure.cs</Link>
