@@ -30,13 +30,17 @@ namespace QLNet
 			RelativePriceError, PriceError, ImpliedVolError
 		}
 
-	   protected CalibrationHelper( Handle<Quote> volatility, 
+	    protected CalibrationHelper( Handle<Quote> volatility, 
 			Handle<YieldTermStructure> termStructure,
-			CalibrationErrorType calibrationErrorType = CalibrationErrorType.RelativePriceError )
+			CalibrationErrorType calibrationErrorType = CalibrationErrorType.RelativePriceError,
+            VolatilityType type = VolatilityType.ShiftedLognormal,
+           double shift = 0.0)
 		{
 			volatility_ = volatility;
 			termStructure_ = termStructure;
 			calibrationErrorType_ = calibrationErrorType;
+            volatilityType_ = type;
+            shift_ = shift;
 
 			volatility_.registerWith( update );
 			termStructure_.registerWith( update );
@@ -45,13 +49,16 @@ namespace QLNet
 		protected override void performCalculations() 
 		{
 			marketValue_ = blackPrice(volatility_.link.value());
-      }
+        }
 
 		//! returns the volatility Handle
 		public Handle<Quote> volatility() { return volatility_; }
 
+        //! returns the volatility type
+        public VolatilityType volatilityType() { return volatilityType_; }
+
 		//! returns the actual price of the instrument (from volatility)
-      public double marketValue() { calculate(); return marketValue_; }
+        public double marketValue() { calculate(); return marketValue_; }
 
 		//! returns the price of the instrument according to the model
 		public abstract double modelValue();
@@ -71,8 +78,10 @@ namespace QLNet
 					break;
 				case CalibrationErrorType.ImpliedVolError:
 					{
-						double lowerPrice = blackPrice( 0.001 );
-						double upperPrice = blackPrice( 10 );
+                        double minVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 0.0010 : 0.00005;
+                        double maxVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 10.0 : 0.50;
+                        double lowerPrice = blackPrice(minVol);
+                        double upperPrice = blackPrice(maxVol);
 						double modelPrice = modelValue();
 
 						double implied;
@@ -118,6 +127,8 @@ namespace QLNet
 		protected Handle<Quote> volatility_;
 		protected Handle<YieldTermStructure> termStructure_;
 		protected IPricingEngine engine_;
+        protected VolatilityType volatilityType_;
+        protected double shift_;
 
 
 		private CalibrationErrorType calibrationErrorType_;
