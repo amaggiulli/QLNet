@@ -23,39 +23,64 @@ namespace QLNet
 {
    public class SABRWrapper : IWrapper
    {
-      public SABRWrapper( double t, double forward, List<double?> param )
+      public SABRWrapper( double t, double forward, List<double?> param, List<double?> addParams )
       {
          t_ = t;
          forward_ = forward;
          params_ = param;
+         shift_ = addParams == null ? 0.0 : addParams[0];
+         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
+         approximationModel_ = addParams == null ? SabrApproximationModel.Hagan2002 : (SabrApproximationModel)addParams[2];
+
+         if (volatilityType_ == VolatilityType.ShiftedLognormal)
+            Utils.QL_REQUIRE(forward_ + shift_ > 0.0, () => "forward+shift must be positive: "
+                                                            + forward_ + " with shift "
+                                                            + shift_.Value + " not allowed");
+
          Utils.validateSabrParameters( param[0].Value, param[1].Value, param[2].Value, param[3].Value );
       }
       public double volatility( double x )
       {
-         return Utils.sabrVolatility( x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value );
+          switch (volatilityType_)
+          {
+              case VolatilityType.ShiftedLognormal:
+                  return Utils.shiftedSabrVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value, shift_.Value, approximationModel_);
+              case VolatilityType.Normal:
+                  return Utils.sabrNormalVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value);
+              default:
+                  return Utils.sabrVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value);
+          }
+
       }
 
       private double t_, forward_;
+      private double? shift_;
       private List<double?> params_;
+      private VolatilityType volatilityType_;
+      private SabrApproximationModel approximationModel_;
    }
 
    public struct SABRSpecs : IModel
    {
       public int dimension() { return 4; }
-      public void defaultValues( List<double?> param, List<bool> b, double forward, double expiryTIme )
+      public void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams)
       {
          if ( param[1] == null )
             param[1] = 0.5;
          if ( param[0] == null )
             // adapt alpha to beta level
-            param[0] = 0.2 * ( param[1] < 0.9999 ? Math.Pow( forward, 1.0 - param[1].Value ) : 1.0 );
+            param[0] = 0.2 * ( param[1] < 0.9999 ? Math.Pow( forward + (addParams == null
+                                                                                ? 0.0
+                                                                                : addParams[0].Value)
+                                                            , 1.0 - param[1].Value ) 
+                                                  : 1.0 );
          if ( param[2] == null )
             param[2] = Math.Sqrt( 0.4 );
          if ( param[3] == null )
             param[3] = 0.0;
       }
 
-      public void guess( Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r )
+      public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams)
       {
          int j = 0;
          if ( !paramIsFixed[1] )
@@ -65,7 +90,8 @@ namespace QLNet
             values[0] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6; // lognormal vol guess
             // adapt this to beta level
             if ( values[1] < 0.999 )
-               values[0] *= Math.Pow( forward, 1.0 - values[1] );
+                values[0] *= Math.Pow( forward + (addParams == null ? 0.0 : addParams[0].Value), 
+                                        1.0 - values[1] );
          }
          if ( !paramIsFixed[2] )
             values[2] = 1.5 * r[j++] + 1E-6;
@@ -104,9 +130,16 @@ namespace QLNet
                      : eps2() * ( x[3] > 0.0 ? 1.0 : ( -1.0 ) );
          return y;
       }
-      public IWrapper instance( double t, double forward, List<double?> param )
+      public IWrapper instance( double t, double forward, List<double?> param, List<double?> addParams )
       {
-         return new SABRWrapper( t, forward, param );
+         return new SABRWrapper( t, forward, param, addParams );
+      }
+      public double weight(double strike, double forward, double stdDev, List<double?> addParams) 
+      {
+          if (Convert.ToDouble(addParams[1]) == 0.0)
+                return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0, addParams[0].Value);
+          else
+              return Utils.bachelierBlackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
       }
       public SABRWrapper modelInstance_ { get; set; }
    }
@@ -132,8 +165,15 @@ namespace QLNet
                                OptimizationMethod optMethod = null,
                                double errorAccept = 0.0020,
                                bool useMaxError = false,
-                               int maxGuesses = 50 ) 
+                               int maxGuesses = 50,
+                               double shift = 0.0,
+                               VolatilityType volatilityType = VolatilityType.ShiftedLognormal,
+                               SabrApproximationModel approximationModel = SabrApproximationModel.Hagan2002) 
       {
+            List<double?> addParams = new List<double?>();
+            addParams.Add(shift);
+            addParams.Add(volatilityType == VolatilityType.ShiftedLognormal ? 0.0 : 1.0);
+            addParams.Add((double?)approximationModel);
 
             impl_ = new XABRInterpolationImpl<SABRSpecs>(
                     xBegin, xEnd, yBegin, t, forward,
@@ -142,7 +182,7 @@ namespace QLNet
                     new List<bool>(){alphaIsFixed,betaIsFixed,nuIsFixed,rhoIsFixed},
                     //boost::assign::list_of(alphaIsFixed)(betaIsFixed)(nuIsFixed)(rhoIsFixed),
                     vegaWeighted, endCriteria, optMethod, errorAccept, useMaxError,
-                    maxGuesses);
+                    maxGuesses, addParams);
             coeffs_ = (impl_ as XABRInterpolationImpl<SABRSpecs>).coeff_;
         }
       public double expiry() { return coeffs_.t_; }
@@ -167,7 +207,9 @@ namespace QLNet
                   bool vegaWeighted = false,
                   EndCriteria endCriteria = null,
                   OptimizationMethod optMethod = null,
-                  double errorAccept = 0.0020, bool useMaxError = false,int maxGuesses = 50)
+                  double errorAccept = 0.0020, bool useMaxError = false, int maxGuesses = 50, double shift = 0.0,
+                  VolatilityType volatilityType = VolatilityType.ShiftedLognormal,
+                  SabrApproximationModel approximationModel = SabrApproximationModel.Hagan2002)
       {
          t_ = t; 
          forward_ = forward;
@@ -185,18 +227,23 @@ namespace QLNet
          errorAccept_ = errorAccept;
          useMaxError_ = useMaxError; 
          maxGuesses_ = maxGuesses;
+         shift_ = shift;
+         volatilityType_ = volatilityType;
+         approximationModel_ = approximationModel;
       }
 
       public Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
       {
          return new SABRInterpolation( xBegin, xEnd, yBegin, t_, forward_, alpha_, beta_, nu_, rho_,
                 alphaIsFixed_, betaIsFixed_, nuIsFixed_, rhoIsFixed_, vegaWeighted_,
-                endCriteria_, optMethod_, errorAccept_, useMaxError_, maxGuesses_);
-        }
-        public const bool global = true;
+                endCriteria_, optMethod_, errorAccept_, useMaxError_, maxGuesses_, shift_,
+                volatilityType_, approximationModel_);
+      }
       
+      public const bool global = true;
       
       private double t_;
+      private double shift_;
       private double forward_;
       private double alpha_, beta_, nu_, rho_;
       private bool alphaIsFixed_, betaIsFixed_, nuIsFixed_, rhoIsFixed_;
@@ -206,6 +253,8 @@ namespace QLNet
       private double errorAccept_;
       private bool useMaxError_;
       private int maxGuesses_;
+      private VolatilityType volatilityType_;
+      private SabrApproximationModel approximationModel_;
     }
 }
 
