@@ -1145,6 +1145,182 @@ namespace TestSuite
          }
       }
 
+       #if NET40 || NET45
+        [TestMethod()]
+#else
+       [Fact]
+#endif
+        public void testNormalSabrInterpolation()
+        {
+            // Testing Sabr interpolation...
+
+            // Test SABR function against input volatilities
+            double tolerance = 1.0e-12;
+            List<double> strikes = new InitializedList<double>(31);
+            List<double> volatilities = new InitializedList<double>(31);
+            // input strikes
+            strikes[0] = 0.03; strikes[1] = 0.032; strikes[2] = 0.034;
+            strikes[3] = 0.036; strikes[4] = 0.038; strikes[5] = 0.04;
+            strikes[6] = 0.042; strikes[7] = 0.044; strikes[8] = 0.046;
+            strikes[9] = 0.048; strikes[10] = 0.05; strikes[11] = 0.052;
+            strikes[12] = 0.054; strikes[13] = 0.056; strikes[14] = 0.058;
+            strikes[15] = 0.06; strikes[16] = 0.062; strikes[17] = 0.064;
+            strikes[18] = 0.066; strikes[19] = 0.068; strikes[20] = 0.07;
+            strikes[21] = 0.072; strikes[22] = 0.074; strikes[23] = 0.076;
+            strikes[24] = 0.078; strikes[25] = 0.08; strikes[26] = 0.082;
+            strikes[27] = 0.084; strikes[28] = 0.086; strikes[29] = 0.088;
+            strikes[30] = 0.09;
+            // input volatilities
+            volatilities[0] = 0.00302585323005545; volatilities[1] = 0.00294383987488083; volatilities[2] = 0.00288298622420075;
+            volatilities[3] = 0.00285179755813925; volatilities[4] = 0.00285792878198394; volatilities[5] = 0.00290512184396261;
+            volatilities[6] = 0.00299136112388108; volatilities[7] = 0.00311009972637092; volatilities[8] = 0.00325327416236817;
+            volatilities[9] = 0.00341363771488595; volatilities[10] = 0.0035856197690038; volatilities[11] = 0.00376525972074818;
+            volatilities[12] = 0.00394983924954725; volatilities[13] = 0.00413751556423761; volatilities[14] = 0.0043270404491738;
+            volatilities[15] = 0.00451756485802441; volatilities[16] = 0.00470850804875522; volatilities[17] = 0.00489947094428383;
+            volatilities[18] = 0.00509017869762345; volatilities[19] = 0.00528044232532999; volatilities[20] = 0.00547013280521446;
+            volatilities[21] = 0.0056591633819362; volatilities[22] = 0.00584747733448256; volatilities[23] = 0.0060350394214727;
+            volatilities[24] = 0.00622182983342147; volatilities[25] = 0.00640783987460733; volatilities[26] = 0.00659306885217061;
+            volatilities[27] = 0.0067775218171438; volatilities[28] = 0.00696120791288998; volatilities[29] = 0.00714413916074818;
+            volatilities[30] = 0.00732632956313855;
+
+
+            double expiry = 1.0;
+            double forward = 0.039;
+            // input SABR coefficients (corresponding to the vols above)
+            double initialAlpha = 0.3;
+            double initialBeta = 0.6;
+            double initialNu = 0.02;
+            double initialRho = 0.01;
+            // calculate SABR vols and compare with input vols
+            for (int i = 0; i < strikes.Count; i++)
+            {
+                double calculatedVol = Utils.sabrNormalVolatility(strikes[i], forward, expiry,
+                                                    initialAlpha, initialBeta,
+                                                    initialNu, initialRho);
+                if (Math.Abs(volatilities[i] - calculatedVol) > tolerance)
+                    QAssert.Fail("failed to calculate Sabr function at strike " + strikes[i]
+                                 + "\n    expected:   " + volatilities[i]
+                                 + "\n    calculated: " + calculatedVol
+                                 + "\n    error:      " + Math.Abs(calculatedVol - volatilities[i]));
+            }
+
+            // Test SABR calibration against input parameters
+            // Use default values (but not null, since then parameters
+            // will then not be fixed during optimization, see the
+            // interpolation constructor, thus rendering the test cases
+            // with fixed parameters non-sensical)
+            double alphaGuess = Math.Sqrt(0.2);
+            double betaGuess = 0.5;
+            double nuGuess = Math.Sqrt(0.4);
+            double rhoGuess = 0.0;
+
+            bool[] vegaWeighted = { true, false };
+            bool[] isAlphaFixed = { true, false };
+            bool[] isBetaFixed = { true, false };
+            bool[] isNuFixed = { true, false };
+            bool[] isRhoFixed = { true, false };
+
+            double calibrationTolerance = 5.0e-8;
+            // initialize optimization methods
+            List<OptimizationMethod> methods_ = new List<OptimizationMethod>();
+            methods_.Add(new Simplex(0.01));
+            methods_.Add(new LevenbergMarquardt(1e-8, 1e-8, 1e-8));
+            // Initialize end criteria
+            EndCriteria endCriteria = new EndCriteria(100000, 100, 1e-8, 1e-8, 1e-8);
+            // Test looping over all possibilities
+            for (int j = 0; j < methods_.Count; ++j)
+            {
+                for (int i = 0; i < vegaWeighted.Length; ++i)
+                {
+                    for (int k_a = 0; k_a < isAlphaFixed.Length; ++k_a)
+                    {
+                        for (int k_b = 0; k_b < isBetaFixed.Length; ++k_b)
+                        {
+                            for (int k_n = 0; k_n < isNuFixed.Length; ++k_n)
+                            {
+                                for (int k_r = 0; k_r < isRhoFixed.Length; ++k_r)
+                                {
+                                    // to meet the tough calibration tolerance we need to lower the default
+                                    // error threshold for accepting a calibration (to be more specific, some
+                                    // of the new test cases arising from fixing a subset of the model's
+                                    // parameters do not calibrate with the desired error using the initial
+                                    // guess (i.e. optimization runs into a local minimum) - then a series of
+                                    // random start values for optimization is chosen until our tight custom
+                                    // error threshold is satisfied.
+                                    SABRInterpolation sabrInterpolation = new SABRInterpolation(
+                                          strikes, strikes.Count, volatilities,
+                                          expiry, forward, isAlphaFixed[k_a] ? initialAlpha : alphaGuess,
+                                          isBetaFixed[k_b] ? initialBeta : betaGuess,
+                                          isNuFixed[k_n] ? initialNu : nuGuess,
+                                          isRhoFixed[k_r] ? initialRho : rhoGuess, isAlphaFixed[k_a],
+                                          isBetaFixed[k_b], isNuFixed[k_n], isRhoFixed[k_r],
+                                          vegaWeighted[i], endCriteria, methods_[j], 1E-10, false, 50, 0.0, VolatilityType.Normal);
+                                    sabrInterpolation.update();
+
+                                    // Recover SABR calibration parameters
+                                    bool failed = false;
+                                    double calibratedAlpha = sabrInterpolation.alpha();
+                                    double calibratedBeta = sabrInterpolation.beta();
+                                    double calibratedNu = sabrInterpolation.nu();
+                                    double calibratedRho = sabrInterpolation.rho();
+                                    double error;
+
+                                    // compare results: alpha
+                                    error = Math.Abs(initialAlpha - calibratedAlpha);
+                                    if (error > calibrationTolerance)
+                                    {
+                                        QAssert.Fail("\nfailed to calibrate alpha Sabr parameter:" +
+                                                    "\n    expected:        " + initialAlpha +
+                                                    "\n    calibrated:      " + calibratedAlpha +
+                                                    "\n    error:           " + error);
+                                        failed = true;
+                                    }
+                                    // Beta
+                                    error = Math.Abs(initialBeta - calibratedBeta);
+                                    if (error > calibrationTolerance)
+                                    {
+                                        QAssert.Fail("\nfailed to calibrate beta Sabr parameter:" +
+                                                    "\n    expected:        " + initialBeta +
+                                                    "\n    calibrated:      " + calibratedBeta +
+                                                    "\n    error:           " + error);
+                                        failed = true;
+                                    }
+                                    // Nu
+                                    error = Math.Abs(initialNu - calibratedNu);
+                                    if (error > calibrationTolerance)
+                                    {
+                                        QAssert.Fail("\nfailed to calibrate nu Sabr parameter:" +
+                                                    "\n    expected:        " + initialNu +
+                                                    "\n    calibrated:      " + calibratedNu +
+                                                    "\n    error:           " + error);
+                                        failed = true;
+                                    }
+                                    // Rho
+                                    error = Math.Abs(initialRho - calibratedRho);
+                                    if (error > calibrationTolerance)
+                                    {
+                                        QAssert.Fail("\nfailed to calibrate rho Sabr parameter:" +
+                                                    "\n    expected:        " + initialRho +
+                                                    "\n    calibrated:      " + calibratedRho +
+                                                    "\n    error:           " + error);
+                                        failed = true;
+                                    }
+
+                                    if (failed)
+                                        QAssert.Fail("\nSabr calibration failure:" +
+                                                    "\n    isAlphaFixed:    " + isAlphaFixed[k_a] +
+                                                    "\n    isBetaFixed:     " + isBetaFixed[k_b] +
+                                                    "\n    isNuFixed:       " + isNuFixed[k_n] +
+                                                    "\n    isRhoFixed:      " + isRhoFixed[k_r] +
+                                                    "\n    vegaWeighted[i]: " + vegaWeighted[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 #if NET40 || NET45
         [TestMethod()]
 #else
