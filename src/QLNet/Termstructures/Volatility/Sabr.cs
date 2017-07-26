@@ -28,7 +28,7 @@ namespace QLNet {
                                            double nu, double rho)
         {
             double oneMinusBeta = 1.0 - beta;
-            double Fmid = Math.Sqrt(forward * strike);
+            double Fmid = forward * strike < 0.0 ? (forward + strike) * 0.5 : Math.Sqrt(forward * strike);
             double gamma1 = beta / Fmid;
             double gamma2 = -beta * oneMinusBeta / (Fmid * Fmid);
             double zeta = alpha / (nu * oneMinusBeta) * (Math.Pow(forward, oneMinusBeta) - Math.Pow(strike, oneMinusBeta));
