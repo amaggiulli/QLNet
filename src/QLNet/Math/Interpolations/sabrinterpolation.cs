@@ -29,7 +29,7 @@ namespace QLNet
          forward_ = forward;
          params_ = param;
          shift_ = addParams == null ? 0.0 : addParams[0];
-         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
+         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
          approximationModel_ = addParams == null ? SabrApproximationModel.Hagan2002 : (SabrApproximationModel)addParams[2];
 
          if (volatilityType_ == VolatilityType.ShiftedLognormal)
@@ -50,7 +50,6 @@ namespace QLNet
               default:
                   return Utils.sabrVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value);
           }
-
       }
 
       private double t_, forward_;
@@ -65,15 +64,18 @@ namespace QLNet
       public int dimension() { return 4; }
       public void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams)
       {
+         shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
+         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
          if ( param[1] == null )
             param[1] = 0.5;
-         if ( param[0] == null )
+         if (param[0] == null) 
+         { 
             // adapt alpha to beta level
-            param[0] = 0.2 * ( param[1] < 0.9999 ? Math.Pow( forward + (addParams == null
-                                                                                ? 0.0
-                                                                                : addParams[0].Value)
-                                                            , 1.0 - param[1].Value ) 
-                                                  : 1.0 );
+             param[0] = 0.2 * (param[1] < 0.9999 && forward + shift_ > 0.0 
+                                                ? Math.Pow(forward + shift_
+                                                        , 1.0 - param[1].Value ) 
+                                                : 1.0 );
+         }
          if ( param[2] == null )
             param[2] = Math.Sqrt( 0.4 );
          if ( param[3] == null )
@@ -82,6 +84,8 @@ namespace QLNet
 
       public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams)
       {
+         shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
+         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
          int j = 0;
          if ( !paramIsFixed[1] )
             values[1] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6;
@@ -89,8 +93,8 @@ namespace QLNet
          {
             values[0] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6; // lognormal vol guess
             // adapt this to beta level
-            if ( values[1] < 0.999 )
-                values[0] *= Math.Pow( forward + (addParams == null ? 0.0 : addParams[0].Value), 
+            if (values[1] < 0.999 && forward + shift_ > 0.0)
+                values[0] *= Math.Pow(forward + shift_, 
                                         1.0 - values[1] );
          }
          if ( !paramIsFixed[2] )
@@ -107,7 +111,7 @@ namespace QLNet
          Vector x = new Vector( 4 );
          x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt( y[0] - eps1() )
                                      : ( y[0] - eps1() + 25.0 ) / 10.0;
-         x[1] = Math.Sqrt( -Math.Log( y[1] ) );
+         x[1] = y[1] == 0.0 ? 0.0 : Math.Sqrt( -Math.Log( y[1] ) );
          x[2] = y[2] < 25.0 + eps1() ? Math.Sqrt( y[2] - eps1() )
                                        : ( y[2] - eps1() + 25.0 ) / 10.0;
          x[3] = Math.Asin( y[3] / eps2() );
@@ -119,9 +123,9 @@ namespace QLNet
          y[0] = Math.Abs( x[0] ) < 5.0
                      ? x[0] * x[0] + eps1()
                      : ( 10.0 * Math.Abs( x[0] ) - 25.0 ) + eps1();
-         y[1] = Math.Abs( x[1] ) < Math.Sqrt( -Math.Log( eps1() ) )
+         y[1] = Math.Abs( x[1] ) < Math.Sqrt( -Math.Log( eps1() ) ) && x[1] != 0.0
                      ? Math.Exp( -( x[1] * x[1] ) )
-                     : eps1();
+                     : (volatilityType_ == VolatilityType.ShiftedLognormal ? eps1() : 0.0);
          y[2] = Math.Abs( x[2] ) < 5.0
                      ? x[2] * x[2] + eps1()
                      : ( 10.0 * Math.Abs( x[2] ) - 25.0 ) + eps1();
@@ -132,19 +136,24 @@ namespace QLNet
       }
       public IWrapper instance( double t, double forward, List<double?> param, List<double?> addParams )
       {
+         shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
+         volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
          return new SABRWrapper( t, forward, param, addParams );
       }
       public double weight(double strike, double forward, double stdDev, List<double?> addParams) 
       {
           if (Convert.ToDouble(addParams[1]) == 0.0)
-                return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0, addParams[0].Value);
+              return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0, addParams[0].Value);
           else
               return Utils.bachelierBlackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
       }
-      public SABRWrapper modelInstance_ { get; set; }
+
+      private VolatilityType volatilityType_;
+      private double shift_;
    }
 
    //! %SABR smile interpolation between discrete volatility points.
+   // For volatility type Normal and when the forward < 0, it is suggested to fix beta = 0.0
    public class SABRInterpolation : Interpolation
    {
       public SABRInterpolation( List<double> xBegin,  // x = strikes
