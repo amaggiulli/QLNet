@@ -36,5 +36,7 @@ namespace QLNet
       public abstract Calendar calendar() ;
       public abstract int settlementDays() ;
       public abstract BusinessDayConvention businessDayConvention() ;
+      public abstract VolatilityType volatilityType() ;
+      public abstract double displacement() ;
    }
 }

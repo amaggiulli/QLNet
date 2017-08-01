@@ -43,6 +43,15 @@ namespace QLNet
       
       public override double minStrike() { return optionletStripper_.optionletStrikes(0).First(); }
       public override double maxStrike() { return optionletStripper_.optionletStrikes( 0 ).Last(); }
+      public override VolatilityType volatilityType()
+      {
+          return optionletStripper_.volatilityType();
+      }
+
+      public override double displacement()
+      {
+          return optionletStripper_.displacement();
+      }
        
       // LazyObject interface
       
