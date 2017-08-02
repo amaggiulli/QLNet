@@ -38,8 +38,8 @@ namespace QLNet
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
          cmsGearing_ = 1.0;
-         cmsCap_ = 0; 
-         cmsFloor_ = 0;
+         cmsCap_ = null; 
+         cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex.fixingCalendar();
@@ -76,8 +76,8 @@ namespace QLNet
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
          cmsGearing_ = 1.0;
-         cmsCap_ = 0; 
-         cmsFloor_ = 0;
+         cmsCap_ = null; 
+         cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex_.fixingCalendar();
@@ -335,7 +335,7 @@ namespace QLNet
 
       private double cmsSpread_;
       private double cmsGearing_;
-      private double cmsCap_, cmsFloor_;
+      private double? cmsCap_, cmsFloor_;
 
       private Date effectiveDate_;
       private Calendar cmsCalendar_, floatCalendar_;
