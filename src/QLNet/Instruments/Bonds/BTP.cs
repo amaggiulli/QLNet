@@ -43,8 +43,8 @@ namespace QLNet
                        new Euribor6M().fixingDays(),
                        new List<double>{1.0}, // gearing
                        new List<double>{spread},
-                       new List<double>(), // caps
-                       new List<double>(), // floors
+                       new List<double?>(), // caps
+                       new List<double?>(), // floors
                        false, // in arrears
                        100.0, // redemption
                        issueDate) {}
