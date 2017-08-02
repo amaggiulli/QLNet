@@ -648,7 +648,7 @@ namespace TestSuite
                                 index, new ActualActual(ActualActual.Convention.ISMA),
                                 BusinessDayConvention.ModifiedFollowing, fixingDays,
                                 new List<double>(), new List<double>(),
-                                new List<double>(), new List<double>(),
+                                new List<double?>(), new List<double?>(),
                                 false,
                                 100.0, new Date(30, Month.November, 2004));
 
@@ -678,7 +678,7 @@ namespace TestSuite
                                 index, new ActualActual(ActualActual.Convention.ISMA),
                                 BusinessDayConvention.ModifiedFollowing, fixingDays,
                                 new List<double>(), new List<double>(),
-                                new List<double>(), new List<double>(),
+                                new List<double?>(), new List<double?>(),
                                 false,
                                 100.0, new Date(30, Month.November, 2004));
 
@@ -713,7 +713,7 @@ namespace TestSuite
                                 index, new ActualActual(ActualActual.Convention.ISMA),
                                 BusinessDayConvention.ModifiedFollowing, fixingDays,
                                 new List<double>(), spreads,
-                                new List<double>(), new List<double>(),
+                                new List<double?>(), new List<double?>(),
                                 false,
                                 100.0, new Date(30, Month.November, 2004));
 
