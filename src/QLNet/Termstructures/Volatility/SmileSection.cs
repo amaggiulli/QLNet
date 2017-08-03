@@ -183,31 +183,37 @@ namespace QLNet
       private double shift_;
    }
     public class SabrSmileSection : SmileSection {
-        private double alpha_, beta_, nu_, rho_, forward_;
+        private double alpha_, beta_, nu_, rho_, forward_, shift_;
+        private VolatilityType volatilityType_;
 
-        public SabrSmileSection(double timeToExpiry, double forward, List<double> sabrParams)
-            : base(timeToExpiry) {
+        public SabrSmileSection(double timeToExpiry, double forward, List<double> sabrParams, VolatilityType volatilityType = VolatilityType.ShiftedLognormal, double shift = 0.0)
+            : base(timeToExpiry, null, volatilityType, shift) {
             forward_ = forward;
+            shift_ = shift;
+            volatilityType_ = volatilityType;
 
             alpha_ = sabrParams[0];
             beta_ = sabrParams[1];
             nu_ = sabrParams[2];
             rho_ = sabrParams[3];
 
-            Utils.QL_REQUIRE(forward_>0.0,()=> "at the money forward rate must be: " + forward_ + " not allowed");
+            Utils.QL_REQUIRE(forward_>0.0,()=> "at the money forward rate + shift must be: " + forward_ + shift_ + " not allowed");
             Utils.validateSabrParameters(alpha_, beta_, nu_, rho_);
         }
 
-        public SabrSmileSection( Date d, double forward, List<double> sabrParams, DayCounter dc = null )
-            : base(d, dc ?? new Actual365Fixed()) {
+        public SabrSmileSection(Date d, double forward, List<double> sabrParams, DayCounter dc = null, VolatilityType volatilityType = VolatilityType.ShiftedLognormal, double shift = 0.0)
+            : base(d, dc ?? new Actual365Fixed(), null, volatilityType, shift)
+        {
             forward_ = forward;
-
+            shift_ = shift;
+            volatilityType_ = volatilityType;
+            
             alpha_ = sabrParams[0];
             beta_ = sabrParams[1];
             nu_ = sabrParams[2];
             rho_ = sabrParams[3];
 
-            Utils.QL_REQUIRE(forward_>0.0,()=> "at the money forward rate must be: " + forward_ + " not allowed");
+            Utils.QL_REQUIRE(forward_ > 0.0, () => "at the money forward rate +shift must be: " + forward_ + shift_ + " not allowed");
             Utils.validateSabrParameters(alpha_, beta_, nu_, rho_);
         }
 
@@ -216,12 +222,23 @@ namespace QLNet
         public override double? atmLevel() { return forward_; }
         
         protected override double varianceImpl(double strike) {
-            double vol = Utils.unsafeSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+            double vol;
+            if (volatilityType_ == VolatilityType.ShiftedLognormal)
+                vol = Utils.shiftedSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
+            else
+                vol = Utils.sabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+
             return vol*vol*exerciseTime();
          }
 
          protected override double volatilityImpl(double strike) {
-            return Utils.unsafeSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+             double vol;
+             if (volatilityType_ == VolatilityType.ShiftedLognormal)
+                 vol = Utils.shiftedSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
+             else
+                 vol = Utils.sabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+
+             return vol;
          }
     }
 }
