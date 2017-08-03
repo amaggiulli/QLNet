@@ -232,7 +232,7 @@ namespace QLNet
 
             // fill dummy handles to allow generic handle-based
             // computations later on
-            for (int i = 0; i < vols.rows()-1; ++i)
+            for (int i = 0; i < vols.rows(); ++i)
             {
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
                 shiftValues_[i] = new InitializedList<double>(vols.columns());
