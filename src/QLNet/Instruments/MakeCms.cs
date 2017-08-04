@@ -34,12 +34,14 @@ namespace QLNet
          swapIndex_ = swapIndex;
          iborIndex_ = iborIndex; 
          iborSpread_ = iborSpread;
+         iborCap_ = null;
+         iborFloor_ = null;
          useAtmSpread_ = false; 
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
          cmsGearing_ = 1.0;
-         cmsCap_ = 0; 
-         cmsFloor_ = 0;
+         cmsCap_ = null; 
+         cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex.fixingCalendar();
@@ -72,12 +74,14 @@ namespace QLNet
          swapIndex_ = swapIndex;
          iborIndex_ = swapIndex.iborIndex(); 
          iborSpread_ = iborSpread;
+         iborCap_ = null;
+         iborFloor_ = null;
          useAtmSpread_ = false; 
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
          cmsGearing_ = 1.0;
-         cmsCap_ = 0; 
-         cmsFloor_ = 0;
+         cmsCap_ = null; 
+         cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex_.fixingCalendar();
@@ -178,6 +182,8 @@ namespace QLNet
             .withPaymentDayCounter(floatDayCount_)
             .withFixingDays(iborIndex_.fixingDays())
             .withGearings(iborGearing_)
+            .withCaps(iborCap_)
+            .withFloors(iborFloor_)
             .withPaymentAdjustment(floatConvention_)
             .withNotionals(nominal_);
 
@@ -325,17 +331,42 @@ namespace QLNet
           return this;
       }
 
+      public MakeCms withCmsCap(double cmsCap)
+      {
+          cmsCap_ = cmsCap;
+          return this;
+      }
+
+      public MakeCms withCmsFloor(double cmsFloor)
+      {
+          cmsFloor_ = cmsFloor;
+          return this;
+      }
+
+      public MakeCms withIborCap(double iborCap)
+      {
+          iborCap_ = iborCap;
+          return this;
+      }
+
+      public MakeCms withIborFloor(double iborFloor)
+      {
+          iborFloor_ = iborFloor;
+          return this;
+      }
+
       private Period swapTenor_;
       private SwapIndex swapIndex_;
       private IborIndex iborIndex_;
       private double iborSpread_;
       private double iborGearing_;
+      private double? iborCap_, iborFloor_;
       private bool useAtmSpread_;
       private Period forwardStart_;
 
       private double cmsSpread_;
       private double cmsGearing_;
-      private double cmsCap_, cmsFloor_;
+      private double? cmsCap_, cmsFloor_;
 
       private Date effectiveDate_;
       private Calendar cmsCalendar_, floatCalendar_;
