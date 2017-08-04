@@ -162,8 +162,13 @@ namespace QLNet
             List<CashFlow> fLeg = new IborLeg(floatSchedule, iborIndex_)
                .withPaymentDayCounter(floatDayCount_)
                .withFixingDays(iborIndex_.fixingDays())
+               .withCaps(iborCap_)
+               .withFloors(iborFloor_)
                .withNotionals(nominal_)
                .withPaymentAdjustment(floatConvention_);
+
+            if (iborCouponPricer_ != null)
+                Utils.setCouponPricer(fLeg, iborCouponPricer_);
 
             Swap temp = new Swap(cmsLeg, fLeg);
             temp.setPricingEngine(engine_);
@@ -186,6 +191,9 @@ namespace QLNet
             .withFloors(iborFloor_)
             .withPaymentAdjustment(floatConvention_)
             .withNotionals(nominal_);
+
+         if (iborCouponPricer_ != null)
+             Utils.setCouponPricer(floatLeg, iborCouponPricer_);
 
          Swap swap;
          if (payCms_)
@@ -303,6 +311,11 @@ namespace QLNet
          floatDayCount_ = dc;
          return this;
       }
+      public MakeCms withFloatingCouponPricer(IborCouponPricer couponPricer)
+      {
+          iborCouponPricer_ = couponPricer;
+          return this;
+      }
       public MakeCms withFloatingLegGearing(double iborGearing)
       {
           iborGearing_ = iborGearing;
@@ -320,7 +333,7 @@ namespace QLNet
          engine_ = new DiscountingSwapEngine(discountingTermStructure);
          return this;
       }
-      public MakeCms withCmsCouponPricer( CmsCouponPricer couponPricer)
+       public MakeCms withCmsCouponPricer( CmsCouponPricer couponPricer)
       {
          couponPricer_ = couponPricer;
          return this;
@@ -384,6 +397,7 @@ namespace QLNet
 
       private IPricingEngine engine_;
       private CmsCouponPricer couponPricer_;
+      private IborCouponPricer iborCouponPricer_;
 
    }
 }
