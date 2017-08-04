@@ -331,25 +331,25 @@ namespace QLNet
           return this;
       }
 
-      public MakeCms withCmsCap(double cmsCap)
+      public MakeCms withCmsCap(double? cmsCap)
       {
           cmsCap_ = cmsCap;
           return this;
       }
 
-      public MakeCms withCmsFloor(double cmsFloor)
+      public MakeCms withCmsFloor(double? cmsFloor)
       {
           cmsFloor_ = cmsFloor;
           return this;
       }
 
-      public MakeCms withIborCap(double iborCap)
+      public MakeCms withIborCap(double? iborCap)
       {
           iborCap_ = iborCap;
           return this;
       }
 
-      public MakeCms withIborFloor(double iborFloor)
+      public MakeCms withIborFloor(double? iborFloor)
       {
           iborFloor_ = iborFloor;
           return this;
