@@ -229,6 +229,7 @@ namespace QLNet
             volatilities_ = new Matrix(vols.rows(), vols.columns());
             shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
             checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
             // computations later on
@@ -284,6 +285,7 @@ namespace QLNet
             volatilities_ = new Matrix(vols.rows(), vols.columns());
             shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
             checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
             // computations later on
