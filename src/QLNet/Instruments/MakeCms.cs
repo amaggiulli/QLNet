@@ -28,7 +28,8 @@ namespace QLNet
                       SwapIndex swapIndex,
                       IborIndex iborIndex,
                       double iborSpread = 0.0,
-                      Period forwardStart = null)
+                      Period forwardStart = null,
+                      Date maturityDate = null)
       {
          swapTenor_ = swapTenor; 
          swapIndex_ = swapIndex;
@@ -45,7 +46,9 @@ namespace QLNet
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex.fixingCalendar();
-         payCms_ = true; nominal_ = 1.0;
+         payCms_ = true; 
+         nominal_ = 1.0;
+         maturityDate_ = maturityDate;
          cmsTenor_ = new Period(3,TimeUnit.Months); 
          floatTenor_ = iborIndex.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
@@ -68,7 +71,8 @@ namespace QLNet
       public MakeCms( Period swapTenor,
                       SwapIndex swapIndex,
                       double iborSpread = 0.0,
-                      Period forwardStart = null)
+                      Period forwardStart = null,
+                      Date maturityDate = null)
       {
          swapTenor_ = swapTenor; 
          swapIndex_ = swapIndex;
@@ -87,6 +91,7 @@ namespace QLNet
          floatCalendar_ = iborIndex_.fixingCalendar();
          payCms_ = true; 
          nominal_ = 1.0;
+         maturityDate_ = maturityDate;
          cmsTenor_ = new Period(3,TimeUnit.Months); 
          floatTenor_ = iborIndex_.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
@@ -122,7 +127,7 @@ namespace QLNet
             startDate = spotDate+forwardStart_;
         }
 
-        Date terminationDate = startDate+swapTenor_;
+        Date terminationDate = maturityDate_ == null ? startDate + swapTenor_ : maturityDate_;
 
         Schedule cmsSchedule = new Schedule(startDate, terminationDate,
                                             cmsTenor_, cmsCalendar_,
@@ -393,6 +398,7 @@ namespace QLNet
       private bool cmsEndOfMonth_, floatEndOfMonth_;
       private Date cmsFirstDate_, cmsNextToLastDate_;
       private Date floatFirstDate_, floatNextToLastDate_;
+      private Date maturityDate_;
       private DayCounter cmsDayCount_, floatDayCount_;
 
       private IPricingEngine engine_;
