@@ -224,7 +224,6 @@ namespace QLNet
          effectiveDate_ = effectiveDate;
          return this;
       }
-
       public MakeCms withCmsLegTenor(Period t)
       {
          cmsTenor_ = t;
@@ -270,7 +269,6 @@ namespace QLNet
          cmsDayCount_ = dc;
          return this;
       }
-
       public MakeCms withFloatingLegTenor( Period t)
       {
          floatTenor_ = t;
@@ -326,13 +324,11 @@ namespace QLNet
           iborGearing_ = iborGearing;
           return this;
       }
-
       public MakeCms withAtmSpread(bool flag = true)
       {
          useAtmSpread_ = flag;
          return this;
       }
-
       public MakeCms withDiscountingTermStructure( Handle<YieldTermStructure> discountingTermStructure)
       {
          engine_ = new DiscountingSwapEngine(discountingTermStructure);
@@ -348,25 +344,26 @@ namespace QLNet
           cmsGearing_ = cmsGearing;
           return this;
       }
-
+      public MakeCms withCmsSpread(double cmsSpread)
+      {
+          cmsSpread_ = cmsSpread;
+          return this;
+      }
       public MakeCms withCmsCap(double? cmsCap)
       {
           cmsCap_ = cmsCap;
           return this;
       }
-
       public MakeCms withCmsFloor(double? cmsFloor)
       {
           cmsFloor_ = cmsFloor;
           return this;
       }
-
       public MakeCms withIborCap(double? iborCap)
       {
           iborCap_ = iborCap;
           return this;
       }
-
       public MakeCms withIborFloor(double? iborFloor)
       {
           iborFloor_ = iborFloor;
