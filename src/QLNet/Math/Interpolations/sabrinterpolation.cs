@@ -46,7 +46,7 @@ namespace QLNet
               case VolatilityType.ShiftedLognormal:
                   return Utils.shiftedSabrVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value, shift_.Value, approximationModel_);
               case VolatilityType.Normal:
-                  return Utils.sabrNormalVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value);
+                  return Utils.shiftedSabrNormalVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value, shift_.Value);
               default:
                   return Utils.sabrVolatility(x, forward_, t_, params_[0].Value, params_[1].Value, params_[2].Value, params_[3].Value);
           }
@@ -91,7 +91,7 @@ namespace QLNet
             values[1] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6;
          if ( !paramIsFixed[0] )
          {
-            values[0] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6; // lognormal vol guess
+             values[0] = ( 1.0 - 2E-6 ) * r[j++] + 1E-6; // lognormal vol guess
             // adapt this to beta level
             if (values[1] < 0.999 && forward + shift_ > 0.0)
                 values[0] *= Math.Pow(forward + shift_, 
@@ -109,7 +109,7 @@ namespace QLNet
       public Vector inverse( Vector y, List<bool> b, List<double?> c, double d )
       {
          Vector x = new Vector( 4 );
-         x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt( y[0] - eps1() )
+         x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt(Math.Max(eps1(), y[0]) - eps1())
                                      : ( y[0] - eps1() + 25.0 ) / 10.0;
          x[1] = y[1] == 0.0 ? 0.0 : Math.Sqrt( -Math.Log( y[1] ) );
          x[2] = y[2] < 25.0 + eps1() ? Math.Sqrt( y[2] - eps1() )
