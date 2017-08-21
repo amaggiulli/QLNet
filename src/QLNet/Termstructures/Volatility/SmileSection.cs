@@ -197,7 +197,7 @@ namespace QLNet
             nu_ = sabrParams[2];
             rho_ = sabrParams[3];
 
-            Utils.QL_REQUIRE(forward_>0.0,()=> "at the money forward rate + shift must be: " + forward_ + shift_ + " not allowed");
+            Utils.QL_REQUIRE(volatilityType == VolatilityType.Normal || forward_ + shift_ > 0.0, () => "at the money forward rate + shift must be: " + forward_ + shift_ + " not allowed");
             Utils.validateSabrParameters(alpha_, beta_, nu_, rho_);
         }
 
@@ -213,7 +213,7 @@ namespace QLNet
             nu_ = sabrParams[2];
             rho_ = sabrParams[3];
 
-            Utils.QL_REQUIRE(forward_ > 0.0, () => "at the money forward rate +shift must be: " + forward_ + shift_ + " not allowed");
+            Utils.QL_REQUIRE(volatilityType == VolatilityType.Normal || forward_ + shift_ > 0.0, () => "at the money forward rate +shift must be: " + forward_ + shift_ + " not allowed");
             Utils.validateSabrParameters(alpha_, beta_, nu_, rho_);
         }
 
@@ -226,7 +226,7 @@ namespace QLNet
             if (volatilityType_ == VolatilityType.ShiftedLognormal)
                 vol = Utils.shiftedSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
             else
-                vol = Utils.sabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+                vol = Utils.shiftedSabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
 
             return vol*vol*exerciseTime();
          }
@@ -236,7 +236,7 @@ namespace QLNet
              if (volatilityType_ == VolatilityType.ShiftedLognormal)
                  vol = Utils.shiftedSabrVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
              else
-                 vol = Utils.sabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_);
+                 vol = Utils.shiftedSabrNormalVolatility(strike, forward_, exerciseTime(), alpha_, beta_, nu_, rho_, shift_);
 
              return vol;
          }

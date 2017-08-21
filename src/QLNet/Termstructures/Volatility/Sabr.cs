@@ -173,12 +173,16 @@ namespace QLNet {
                                                  alpha, beta, nu, rho, shift, approximationModel);
         }
 
-        public static double sabrNormalVolatility(double strike, double forward, double expiryTime, double alpha, double beta,
-                                     double nu, double rho)
+        public static double shiftedSabrNormalVolatility(double strike, double forward, double expiryTime, double alpha, double beta,
+                                     double nu, double rho, double shift = 0.0)
         {
+            QL_REQUIRE(strike + shift > 0.0, () => "strike+shift must be positive: "
+                       + strike + "+" + shift + " not allowed");
+            QL_REQUIRE(forward + shift > 0.0, () => "at the money forward rate + shift must be "
+                       + "positive: " + forward + " " + shift + " not allowed");
             QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: " + expiryTime + " not allowed");
             validateSabrParameters(alpha, beta, nu, rho);
-            return unsafeSabrNormalVolatility(strike, forward, expiryTime, alpha, beta, nu, rho);
+            return unsafeSabrNormalVolatility(strike + shift, forward + shift, expiryTime, alpha, beta, nu, rho);
         }
 
     }
