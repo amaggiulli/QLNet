@@ -32,8 +32,8 @@ namespace QLNet
                                int fixingDays = 0,
                                List<double> gearings = null,
                                List<double> spreads = null,
-                               List<double> caps = null,
-                               List<double> floors = null,
+                               List<double?> caps = null,
+                               List<double?> floors = null,
                                bool inArrears = false,
                                Date issueDate = null)
          :base(settlementDays, schedule.calendar(), issueDate)
@@ -41,8 +41,8 @@ namespace QLNet
          // Optional value check
          if ( gearings == null ) gearings = new List<double>(){1.0};
          if ( spreads == null ) spreads = new List<double>(){0};
-         if (caps == null) caps = new List<double>();
-         if (floors == null) floors = new List<double>();
+         if (caps == null) caps = new List<double?>();
+         if (floors == null) floors = new List<double?>();
 
          maturityDate_ = schedule.endDate();
 

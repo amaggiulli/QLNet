@@ -531,8 +531,8 @@ namespace TestSuite
                                                    BusinessDayConvention.Following, fixingDays,
                                                    new List<double>(){1},
                                                    new List<double>(){0.0056},
-                                                   new List<double>(),
-                                                   new List<double>(),
+                                                   new List<double?>(),
+                                                   new List<double?>(),
                                                    inArrears,
                                                    100.0, new Date(29,Month.September,2003));
 
@@ -569,8 +569,8 @@ namespace TestSuite
                                                     BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                     new List<double>(){1},
                                                     new List<double>(){0.0025},
-                                                    new List<double>(),
-                                                    new List<double>(),
+                                                    new List<double?>(),
+                                                    new List<double?>(),
                                                     inArrears,
                                                     100.0, new Date(24,Month.September,2004));
 
@@ -620,8 +620,8 @@ namespace TestSuite
                                              BusinessDayConvention.Following, fixingDays,
                                              new List<double>(){1.0},
                                              new List<double>(){0.0},
-                                             new List<double>(){0.055},
-                                             new List<double>(){0.025},
+                                             new List<double?>(){0.055},
+                                             new List<double?>(){0.025},
                                              inArrears,
                                              100.0, new Date(22,Month.August,2005));
 
@@ -656,7 +656,7 @@ namespace TestSuite
                         vars.swapIndex, new Thirty360(),
                         BusinessDayConvention.Following, fixingDays,
                         new List<double>(){0.84}, new List<double>(){0.0},
-                        new List<double>(), new List<double>(),
+                        new List<double?>(), new List<double?>(),
                         inArrears,
                         100.0, new Date(06,Month.May,2005));
 
@@ -854,7 +854,7 @@ namespace TestSuite
                               vars.iborIndex, new Actual360(),
                               BusinessDayConvention.Following, fixingDays,
                               new List<double>{1}, new List<double>{0.0056},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(29,Month.September,2003));
 
@@ -905,7 +905,7 @@ namespace TestSuite
                               vars.iborIndex, new Actual360(),
                               BusinessDayConvention.ModifiedFollowing, fixingDays,
                               new List<double>{1}, new List<double>{0.0025},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(24,Month.September,2004));
 
@@ -955,7 +955,7 @@ namespace TestSuite
                         vars.swapIndex, new Thirty360(),
                         BusinessDayConvention.Following, fixingDays,
                         new List<double>{1.0}, new List<double>{0.0},
-                        new List<double>{0.055}, new List<double>{0.025},
+                        new List<double?>{0.055}, new List<double?>{0.025},
                         inArrears,
                         100.0, new Date(22,Month.August,2005));
 
@@ -1004,7 +1004,7 @@ namespace TestSuite
                         vars.swapIndex, new Thirty360(),
                         BusinessDayConvention.Following, fixingDays,
                         new List<double>{0.84}, new List<double>{0.0},
-                        new List<double>(), new List<double>(),
+                        new List<double?>(), new List<double?>(),
                         inArrears,
                         100.0, new Date(06,Month.May,2005));
 
@@ -1216,7 +1216,7 @@ namespace TestSuite
                               vars.iborIndex, new Actual360(),
                               BusinessDayConvention.Following, fixingDays,
                               new List<double>{1}, new List<double>{0.0056},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(29,Month.September,2003));
 
@@ -1252,7 +1252,7 @@ namespace TestSuite
                               vars.iborIndex, new Actual360(),
                               BusinessDayConvention.ModifiedFollowing, fixingDays,
                               new List<double>{1}, new List<double>{0.0025},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(24,Month.September,2004));
 
@@ -1287,7 +1287,7 @@ namespace TestSuite
                         vars.swapIndex, new Thirty360(),
                         BusinessDayConvention.Following, fixingDays,
                         new List<double>{1.0}, new List<double>{0.0},
-                        new List<double>{0.055}, new List<double>{0.025},
+                        new List<double?>{0.055}, new List<double?>{0.025},
                         inArrears,
                         100.0, new Date(22,Month.August,2005));
 
@@ -1322,7 +1322,7 @@ namespace TestSuite
                         vars.swapIndex, new Thirty360(),
                         BusinessDayConvention.Following, fixingDays,
                         new List<double>{0.84}, new List<double>{0.0},
-                        new List<double>(), new List<double>(),
+                        new List<double?>(), new List<double?>(),
                         inArrears,
                         100.0, new Date(06,Month.May,2005));
 
@@ -2643,7 +2643,7 @@ namespace TestSuite
                                  BusinessDayConvention.Following, fixingDays,
                                  new List<double>{1},
                                  new List<double>{0.0056},
-                                 new List<double>(), new List<double>(),
+                                 new List<double?>(), new List<double?>(),
                                  inArrears,
                                  100.0, new Date(29,Month.September,2003));
          floatingSpecializedBond1.setPricingEngine(bondEngine);
@@ -2714,7 +2714,7 @@ namespace TestSuite
                               BusinessDayConvention.ModifiedFollowing, fixingDays,
                               new List<double>{1},
                               new List<double>{0.0025},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(24,Month.September,2004));
          floatingSpecializedBond2.setPricingEngine(bondEngine);
@@ -2785,7 +2785,7 @@ namespace TestSuite
                      vars.swapIndex, new Thirty360(),
                      BusinessDayConvention.Following, fixingDays,
                      new List<double>{1.0}, new List<double>{0.0},
-                     new List<double>{0.055}, new List<double>{0.025},
+                     new List<double?>{0.055}, new List<double?>{0.025},
                      inArrears,
                      100.0, new Date(22,Month.August,2005));
          cmsSpecializedBond1.setPricingEngine(bondEngine);
@@ -2846,7 +2846,7 @@ namespace TestSuite
                      vars.swapIndex, new Thirty360(),
                      BusinessDayConvention.Following, fixingDays,
                      new List<double>{0.84}, new List<double>{0.0},
-                     new List<double>(), new List<double>(),
+                     new List<double?>(), new List<double?>(),
                      inArrears, 100.0, new Date(06,Month.May,2005));
          cmsSpecializedBond2.setPricingEngine(bondEngine);
 
@@ -3212,7 +3212,7 @@ namespace TestSuite
                                  BusinessDayConvention.Following, fixingDays,
                                  new List<double>{1},
                                  new List<double>{0.0056},
-                                 new List<double>(), new List<double>(),
+                                 new List<double?>(), new List<double?>(),
                                  inArrears,
                                  100.0, new Date(29,Month.September,2003));
          floatingSpecializedBond1.setPricingEngine(bondEngine);
@@ -3314,7 +3314,7 @@ namespace TestSuite
                               BusinessDayConvention.ModifiedFollowing, fixingDays,
                               new List<double>{1},
                               new List<double>{0.0025},
-                              new List<double>(), new List<double>(),
+                              new List<double?>(), new List<double?>(),
                               inArrears,
                               100.0, new Date(24,Month.September,2004));
          floatingSpecializedBond2.setPricingEngine(bondEngine);
@@ -3416,7 +3416,7 @@ namespace TestSuite
                      vars.swapIndex, new Thirty360(),
                      BusinessDayConvention.Following, fixingDays,
                      new List<double>{1.0}, new List<double>{0.0},
-                     new List<double>{0.055}, new List<double>{0.025},
+                     new List<double?>{0.055}, new List<double?>{0.025},
                      inArrears,
                      100.0, new Date(22,Month.August,2005));
          cmsSpecializedBond1.setPricingEngine(bondEngine);
@@ -3511,7 +3511,7 @@ namespace TestSuite
                      vars.swapIndex, new Thirty360(),
                      BusinessDayConvention.Following, fixingDays,
                      new List<double>{0.84}, new List<double>{0.0},
-                     new List<double>(), new List<double>(),
+                     new List<double?>(), new List<double?>(),
                      inArrears,
                      100.0, new Date(06,Month.May,2005));
          cmsSpecializedBond2.setPricingEngine(bondEngine);

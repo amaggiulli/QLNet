@@ -200,8 +200,8 @@ namespace TestSuite
       
          public List<CashFlow> makeYoYCapFlooredLeg(int which, Date startDate,
                               int length,
-                              List<double> caps,
-                              List<double> floors,
+                              List<double?> caps,
+                              List<double?> floors,
                               double volatility,
                               double gearing = 1.0,
                               double spread = 0.0) 
@@ -362,10 +362,10 @@ namespace TestSuite
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         List<double> caps = new InitializedList<double>(vars.length,capstrike);
-         List<double> caps0 = new List<double>();
-         List<double> floors = new InitializedList<double>(vars.length,floorstrike);
-         List<double> floors0 = new List<double>();
+         List<double?> caps = new InitializedList<double?>(vars.length,capstrike);
+         List<double?> caps0 = new List<double?>();
+         List<double?> floors = new InitializedList<double?>(vars.length,floorstrike);
+         List<double?> floors0 = new List<double?>();
          double gearing_p = 0.5;
          double spread_p = 0.002;
          double gearing_n = -1.5;
@@ -721,16 +721,16 @@ namespace TestSuite
 
                         List<CashFlow> leg2 = vars.makeYoYCapFlooredLeg(whichPricer, from,
                                                             lengths[i],
-                                                            new InitializedList<double>(lengths[i],strikes[j]),//cap
-                                                            new List<double>(),//floor
+                                                            new InitializedList<double?>(lengths[i],strikes[j]),//cap
+                                                            new List<double?>(),//floor
                                                             vols[k],
                                                             1.0,   // gearing
                                                             0.0);// spread
 
                         List<CashFlow> leg3 = vars.makeYoYCapFlooredLeg(whichPricer, from,
                                                             lengths[i],
-                                                            new List<double>(),// cap
-                                                            new InitializedList<double>(lengths[i],strikes[j]),//floor
+                                                            new List<double?>(),// cap
+                                                            new InitializedList<double?>(lengths[i],strikes[j]),//floor
                                                             vols[k],
                                                             1.0,   // gearing
                                                             0.0);// spread
