@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+using System;
 
 namespace QLNet
 {
@@ -24,16 +25,22 @@ namespace QLNet
     {    
         private Handle<Quote> volatility_;
         private Period maxSwapTenor_;
+        private VolatilityType volatilityType_;
+        private double? shift_;
 
         //! floating reference date, floating market data
         public ConstantSwaptionVolatility(int settlementDays,
                                    Calendar cal,
                                    BusinessDayConvention bdc,
                                    Handle<Quote> vol,
-                                   DayCounter dc)
+                                   DayCounter dc,
+                                   VolatilityType type = VolatilityType.ShiftedLognormal,
+                                   double? shift = 0.0)
         : base(settlementDays, cal, bdc, dc){
-            volatility_=vol;
+            volatility_= vol;
             maxSwapTenor_ = new Period(100, TimeUnit.Years);
+            volatilityType_ = type;
+            shift_ = shift;
             volatility_.registerWith(update);
         }
 
@@ -42,11 +49,15 @@ namespace QLNet
                                    Calendar cal,
                                    BusinessDayConvention bdc,
                                    Handle<Quote> vol,
-                                   DayCounter dc)
+                                   DayCounter dc,
+                                   VolatilityType type = VolatilityType.ShiftedLognormal,
+                                   double? shift = 0.0)
 
         : base(referenceDate, cal, bdc, dc){
             volatility_ = vol;
             maxSwapTenor_ = new Period(100, TimeUnit.Years);
+            volatilityType_ = type;
+            shift_ = shift;
             volatility_.registerWith(update);
         }
 
@@ -55,10 +66,14 @@ namespace QLNet
                                     Calendar cal,
                                    BusinessDayConvention bdc,
                                    double vol,
-                                   DayCounter dc)
+                                   DayCounter dc,
+                                   VolatilityType type = VolatilityType.ShiftedLognormal,
+                                   double? shift = 0.0)
         : base(settlementDays, cal, bdc, dc){
             volatility_ = new Handle<Quote>(new SimpleQuote(vol));
             maxSwapTenor_ = new Period(100, TimeUnit.Years);
+            volatilityType_ = type;
+            shift_ = shift;
         }
 
         //! fixed reference date, fixed market data
@@ -66,10 +81,14 @@ namespace QLNet
                                    Calendar cal,
                                    BusinessDayConvention bdc,
                                    double vol,
-                                   DayCounter dc)
+                                   DayCounter dc,
+                                   VolatilityType type = VolatilityType.ShiftedLognormal,
+                                   double? shift = 0.0)
         : base(referenceDate, cal, bdc, dc){
             volatility_ = new Handle<Quote>(new SimpleQuote(vol));
             maxSwapTenor_ = new Period(100, TimeUnit.Years);
+            volatilityType_ = type;
+            shift_ = shift;
         }
         
         // TermStructure interface
@@ -90,6 +109,11 @@ namespace QLNet
             return maxSwapTenor_;
         }
 
+        public override VolatilityType volatilityType()
+        {
+            return volatilityType_;
+        }
+
         protected new SmileSection smileSectionImpl(Date d, Period p) {
             double atmVol = volatility_.link.value();
             return new FlatSmileSection(d, atmVol, dayCounter(), referenceDate());
@@ -106,6 +130,12 @@ namespace QLNet
 
         protected override double volatilityImpl(double time, double t, double rate){
             return volatility_.link.value();
-        }      
+        }
+      
+        protected override double shiftImpl(double optionTime, double swapLength)
+        {
+            base.shiftImpl(optionTime, swapLength);
+            return Convert.ToDouble(shift_);
+        }
     }
 }
