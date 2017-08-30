@@ -22,17 +22,19 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Average BMA coupon
-   /*! %Coupon paying a BMA index, where the coupon rate is a
-       weighted average of relevant fixings.
-
-       The weighted average is computed based on the
-       actual calendar days for which a given fixing is valid and
-       contributing to the given interest period.
-
-       Before weights are computed, the fixing schedule is adjusted
-       for the index's fixing day gap. See rate() method for details.
-   */
+   /// <summary>
+   /// Average BMA coupon
+   /// <para>Coupon paying a BMA index, where the coupon rate is a
+   /// weighted average of relevant fixings.</para>
+   /// </summary>
+   /// <remarks>
+   /// The weighted average is computed based on the
+   /// actual calendar days for which a given fixing is valid and
+   /// contributing to the given interest period.
+   ///
+   /// Before weights are computed, the fixing schedule is adjusted
+   /// for the index's fixing day gap. See rate() method for details.
+   /// </remarks>  
    public class AverageBMACoupon : FloatingRateCoupon
    {
 
@@ -56,26 +58,41 @@ namespace QLNet
          setPricer( new AverageBMACouponPricer() );
       }
 
-      // FloatingRateCoupon interface
-      //! not applicable here; use fixingDates() instead
+      /// <summary>
+      /// Get the fixing date
+      /// </summary>
+      /// <remarks>FloatingRateCoupon interface not applicable here; use <c>fixingDates()</c> instead
+      /// </remarks>
       public override Date fixingDate()
       {
          Utils.QL_FAIL("no single fixing date for average-BMA coupon");
          return null;
       }
-      //! fixing dates of the rates to be averaged
+
+      /// <summary>
+      /// Get the fixing dates of the rates to be averaged
+      /// </summary>
+      /// <returns>A list of dates</returns>
       public List<Date> fixingDates() { return fixingSchedule_.dates(); }
 
-      //! not applicable here; use indexFixings() instead
+      /// <summary>
+      /// not applicable here; use indexFixings() instead
+      /// </summary>
       public override double indexFixing()
       {
          Utils.QL_FAIL("no single fixing for average-BMA coupon");
          return 0;
       }
-      //! fixings of the underlying index to be averaged
+
+      /// <summary>
+      /// fixings of the underlying index to be averaged
+      /// </summary>
+      /// <returns>A list of double</returns>
       public List<double> indexFixings() { return fixingSchedule_.dates().Select( d => index_.fixing( d ) ).ToList(); }
 
-      //! not applicable here
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double convexityAdjustment()
       {
          Utils.QL_FAIL("not defined for average-BMA coupon");
@@ -133,26 +150,46 @@ namespace QLNet
 
          return coupon_.gearing() * avgBMA + coupon_.spread();
       }
+
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double swapletPrice()
       {
          Utils.QL_FAIL("not available");
          return 0;
       }
+
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double capletPrice( double d )
       {
          Utils.QL_FAIL("not available");
          return 0;
       }
+
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double capletRate( double d )
       {
          Utils.QL_FAIL("not available");
          return 0;
       }
+
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double floorletPrice( double d )
       {
          Utils.QL_FAIL("not available");
          return 0;
       }
+
+      /// <summary>
+      /// not applicable here
+      /// </summary>
       public override double floorletRate( double d )
       {
          Utils.QL_FAIL("not available");
@@ -168,7 +205,9 @@ namespace QLNet
       private AverageBMACoupon coupon_;
    }
 
-   //! helper class building a sequence of average BMA coupons
+   /// <summary>
+   /// Helper class building a sequence of average BMA coupons
+   /// </summary>
    public class AverageBMALeg : RateLegBase
    {
       private BMAIndex index_;
