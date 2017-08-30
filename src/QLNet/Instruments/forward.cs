@@ -71,12 +71,12 @@ namespace QLNet {
 
 			maturityDate_ = calendar_.adjust(maturityDate_, businessDayConvention_);
 
-			Settings.registerWith(this.update);
+			Singleton<Settings>.link.registerWith(this.update);
 			discountCurve_.registerWith(this.update);
 		}
 
 		public virtual Date settlementDate() {
-			Date d = calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
+			Date d = calendar_.advance(Singleton<Settings>.link.evaluationDate(), settlementDays_, TimeUnit.Days);
 			return Date.Max(d,valueDate_);
 		}
 

@@ -101,7 +101,7 @@ namespace TestSuite
 
             calendar = index.fixingCalendar();
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
 
             termStructure.linkTo(Utilities.flatRate(settlement, 0.05, new Actual365Fixed()));
@@ -328,7 +328,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          vars.today = new Date(17, Month.June, 2002);
-         Settings.setEvaluationDate(vars.today);
+         Singleton<Settings>.link.setEvaluationDate(vars.today);
          vars.settlement = vars.calendar.advance(vars.today, vars.settlementDays, TimeUnit.Days);
          vars.termStructure.linkTo(Utilities.flatRate(vars.settlement, 0.05, new Actual365Fixed()));
 
@@ -357,7 +357,7 @@ namespace TestSuite
          Date maturityDate = calendar.advance( settlementDate, 5, TimeUnit.Years, BusinessDayConvention.Following );
 
          Date valueDate = new Date( 20, Month.April, 2015 );
-         Settings.setEvaluationDate( valueDate );
+         Singleton<Settings>.link.setEvaluationDate( valueDate );
 
          List<Date> dates = new List<Date>();
          dates.Add( valueDate );

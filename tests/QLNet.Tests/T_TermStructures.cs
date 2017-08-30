@@ -98,7 +98,7 @@ namespace TestSuite
             calendar = new TARGET();
             settlementDays = 2;
             Date today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             Date settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
 
             int deposits = depositData.Length,
@@ -140,12 +140,12 @@ namespace TestSuite
 
          int[] days = new int[] { 10, 30, 60, 120, 360, 720 };
 
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          List<double> expected = new InitializedList<double>(days.Length);
          for (int i = 0; i < days.Length; i++)
             expected[i] = vars.termStructure.discount(today + days[i]);
 
-         Settings.setEvaluationDate(today + 30);
+         Singleton<Settings>.link.setEvaluationDate(today + 30);
          List<double> calculated = new InitializedList<double>(days.Length);
          for (int i = 0; i < days.Length; i++)
             calculated[i] = vars.termStructure.discount(today + 30 + days[i]);
@@ -170,7 +170,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date newToday = today + new Period(3, TimeUnit.Years);
          Date newSettlement = vars.calendar.advance(newToday, vars.settlementDays, TimeUnit.Days);
          Date testDate = newSettlement + new Period(5, TimeUnit.Years);
@@ -194,7 +194,7 @@ namespace TestSuite
          // Testing observability of implied term structure
          CommonVars vars = new CommonVars();
 
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date newToday = today + new Period(3, TimeUnit.Years);
          Date newSettlement = vars.calendar.advance(newToday, vars.settlementDays, TimeUnit.Days);
          RelinkableHandle<YieldTermStructure> h = new RelinkableHandle<YieldTermStructure>();

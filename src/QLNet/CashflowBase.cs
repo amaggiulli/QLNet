@@ -39,11 +39,11 @@ namespace QLNet
                return true;
         }
 
-        if (refDate == null ||  refDate == Settings.evaluationDate()) 
+        if (refDate == null ||  refDate == Singleton<Settings>.link.evaluationDate()) 
         {
             // today's date; we override the bool with the one
             // specified in the settings (if any)
-           bool? includeToday = Settings.includeTodaysCashFlows;
+           bool? includeToday = Singleton<Settings>.link.includeTodaysCashFlows;
             if (includeToday.HasValue)
                 includeRefDate = includeToday;
         }
@@ -67,7 +67,7 @@ namespace QLNet
 			if (ecd == null)
 				return false;
 
-        Date ref_ = refDate ?? Settings.evaluationDate();
+        Date ref_ = refDate ?? Singleton<Settings>.link.evaluationDate();
 
         return ecd <= ref_;
 		}

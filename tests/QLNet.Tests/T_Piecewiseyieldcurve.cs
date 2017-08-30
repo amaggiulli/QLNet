@@ -133,7 +133,7 @@ namespace TestSuite {
                 calendar = new TARGET();
                 settlementDays = 2;
                 today = calendar.adjust(Date.Today);
-                Settings.setEvaluationDate(today);
+                Singleton<Settings>.link.setEvaluationDate(today);
                 settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
                 fixedLegConvention = BusinessDayConvention.Unadjusted;
                 fixedLegFrequency = Frequency.Annual;
@@ -450,8 +450,9 @@ namespace TestSuite {
                 vars.rates[i].setValue(vars.rates[i].value() / 1.01);
             }
 
+            vars.termStructure.maxDate();
             f.lower();
-            Settings.setEvaluationDate(vars.calendar.advance(vars.today, 15, TimeUnit.Days));
+            Singleton<Settings>.link.setEvaluationDate(vars.calendar.advance(vars.today, 15, TimeUnit.Days));
             if (!f.isUp())
                 QAssert.Fail("Observer was not notified of date change");
         }
@@ -576,7 +577,7 @@ namespace TestSuite {
             CommonVars vars = new CommonVars();
 
             vars.today = new Date(4, Month.October, 2007);
-            Settings.setEvaluationDate(vars.today);
+            Singleton<Settings>.link.setEvaluationDate(vars.today);
 
             vars.calendar = new Japan();
             vars.settlement = vars.calendar.advance(vars.today,vars.settlementDays, TimeUnit.Days);
@@ -804,7 +805,7 @@ namespace TestSuite {
                                           new USDLibor(new Period(3, TimeUnit.Months)).fixingCalendar(),
                                           JointCalendar.JointCalendarRule.JoinHolidays);
             vars.today = vars.calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(vars.today);
+            Singleton<Settings>.link.setEvaluationDate(vars.today);
             vars.settlement = vars.calendar.advance(vars.today, vars.settlementDays, TimeUnit.Days);
 
             Handle<YieldTermStructure> riskFreeCurve = new Handle<YieldTermStructure>(

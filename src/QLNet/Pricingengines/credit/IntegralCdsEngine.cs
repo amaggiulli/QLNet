@@ -42,7 +42,7 @@ namespace QLNet
          Utils.QL_REQUIRE( !discountCurve_.empty(), () => "no discount term structure set" );
          Utils.QL_REQUIRE( !probability_.empty(), () => "no probability term structure set" );
 
-			Date today = Settings.evaluationDate();
+			Date today = Singleton<Settings>.link.evaluationDate();
 			Date settlementDate = discountCurve_.link.referenceDate();
 
         // Upfront Flow NPV. Either we are on-the-run (no flow)

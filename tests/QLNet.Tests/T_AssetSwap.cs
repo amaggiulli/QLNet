@@ -92,7 +92,7 @@ namespace TestSuite
             spread = 0.0;
             nonnullspread = 0.003;
             Date today = new Date(24,Month.April,2007);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             //Date today = Settings::instance().evaluationDate();
             termStructure.linkTo(Utilities.flatRate(today, 0.05, new Actual365Fixed()));
@@ -144,7 +144,7 @@ namespace TestSuite
                                                 null, vars.iborIndex.dayCounter(), isPar);
 
          IPricingEngine swapEngine = new DiscountingSwapEngine(vars.termStructure, true, bond.settlementDate(),
-                                                               Settings.evaluationDate());
+                                                               Singleton<Settings>.link.evaluationDate());
 
          parAssetSwap.setPricingEngine(swapEngine);
          double fairCleanPrice = parAssetSwap.fairCleanPrice();
@@ -293,7 +293,7 @@ namespace TestSuite
                                                 null, vars.iborIndex.dayCounter(), isPar);
 
          swapEngine = new DiscountingSwapEngine(vars.termStructure, true, bond.settlementDate(),
-                                                Settings.evaluationDate());
+                                                Singleton<Settings>.link.evaluationDate());
 
          mktAssetSwap.setPricingEngine(swapEngine);
          fairCleanPrice = mktAssetSwap.fairCleanPrice();

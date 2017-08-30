@@ -47,7 +47,7 @@ namespace TestSuite
          int n = 20;
 
          double tolerance = 1.0e-10;
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date startDate = today;
          Date endDate = startDate;
 
@@ -111,7 +111,7 @@ namespace TestSuite
          int n = 20;
 
          double tolerance = 1.0e-10;
-         Date today = Settings.evaluationDate();
+         Date today = Singleton<Settings>.link.evaluationDate();
          Date startDate = today;
          Date endDate = startDate;
 

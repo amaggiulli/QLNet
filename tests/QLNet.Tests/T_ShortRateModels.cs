@@ -59,7 +59,7 @@ namespace TestSuite
 
          Date today=new Date(15, Month.February, 2002);
          Date settlement=new Date(19, Month.February, 2002);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
          Handle<YieldTermStructure> termStructure= 
          new Handle<YieldTermStructure>(Utilities.flatRate(settlement, 0.04875825, new Actual365Fixed()));
          //termStructure.link
@@ -142,7 +142,7 @@ namespace TestSuite
             
             Calendar calendar = new TARGET();
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             Date settlement = calendar.advance(today, 2, TimeUnit.Days);
 

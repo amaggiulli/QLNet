@@ -104,7 +104,7 @@ namespace QLNet {
          // really necessary. In these cases a decent placeholder is enough
          if ( effectiveDate == null && firstDate == null && rule== DateGeneration.Rule.Backward)
          {
-            Date evalDate = Settings.evaluationDate();
+            Date evalDate = Singleton<Settings>.link.evaluationDate();
             Utils.QL_REQUIRE( evalDate < terminationDate, () => "null effective date" );
             int y;
             if (nextToLastDate != null)

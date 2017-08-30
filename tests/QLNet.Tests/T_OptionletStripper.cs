@@ -258,7 +258,7 @@ namespace TestSuite
          // surface using OptionletStripper1 class...
 
          CommonVars vars = new CommonVars();
-         Settings.setEvaluationDate(new Date(28, Month.October, 2013));
+         Singleton<Settings>.link.setEvaluationDate(new Date(28, Month.October, 2013));
 
          vars.setFlatTermVolSurface();
 
@@ -315,7 +315,7 @@ namespace TestSuite
          // vol surface using OptionletStripper1 class
 
          CommonVars vars = new CommonVars();
-         Settings.setEvaluationDate(new Date(28, Month.October, 2013));
+         Singleton<Settings>.link.setEvaluationDate(new Date(28, Month.October, 2013));
 
          vars.setCapFloorTermVolSurface();
 
@@ -372,7 +372,7 @@ namespace TestSuite
          // surface using OptionletStripper2 class...");
 
          CommonVars vars = new CommonVars();
-         Settings.setEvaluationDate(Date.Today);
+         Singleton<Settings>.link.setEvaluationDate(Date.Today);
 
          vars.setFlatTermVolCurve();
          vars.setFlatTermVolSurface();
@@ -436,7 +436,7 @@ namespace TestSuite
          // surface using OptionletStripper2 class...");
 
         CommonVars vars = new CommonVars();
-        Settings.setEvaluationDate(Date.Today);
+        Singleton<Settings>.link.setEvaluationDate(Date.Today);
 
         vars.setCapFloorTermVolCurve();
         vars.setCapFloorTermVolSurface();

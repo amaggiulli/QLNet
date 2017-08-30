@@ -145,11 +145,11 @@
     <Compile Include="..\QLNet.Tests\T_Schedule.cs" />
     <Compile Include="..\QLNet.Tests\T_ShortRateModels.cs" />
     <Compile Include="..\QLNet.Tests\T_Solvers.cs" />
-    <Compile Include="..\QLNet.Tests\T_Stats.cs" />
+    <Compile Include="..\QLNet.Tests\T_Stats.cs" />   
     <Compile Include="..\QLNet.Tests\T_Swaps.cs" />
     <Compile Include="..\QLNet.Tests\T_SwaptionVolatilityCube.cs" />
     <Compile Include="..\QLNet.Tests\T_TermStructures.cs" />
-	 <Compile Include="..\QLNet.Tests\T_Vector.cs" />
+	  <Compile Include="..\QLNet.Tests\T_Vector.cs" />
     <Compile Include="..\QLNet.Tests\Utilities.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModel.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModelProcess.cs" />

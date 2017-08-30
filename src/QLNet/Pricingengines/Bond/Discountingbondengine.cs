@@ -42,7 +42,7 @@ namespace QLNet
          bool includeRefDateFlows =
             includeSettlementDateFlows_.HasValue ?
             includeSettlementDateFlows_.Value :
-            Settings.includeReferenceDateEvents;
+            Singleton<Settings>.link.includeReferenceDateEvents;
 
          results_.value = CashFlows.npv(arguments_.cashflows,
                                         discountCurve_,

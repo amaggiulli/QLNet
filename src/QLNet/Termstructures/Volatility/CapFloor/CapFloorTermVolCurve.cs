@@ -132,7 +132,7 @@ namespace QLNet
          // recalculate dates if necessary...
          if (moving_)
          {
-            Date d = QLNet.Settings.evaluationDate();
+            Date d = QLNet.Singleton<Settings>.link.evaluationDate();
             if (evaluationDate_ != d)
             {
                evaluationDate_ = d;

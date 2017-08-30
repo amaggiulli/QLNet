@@ -20,69 +20,67 @@
 */
 using System;
 
-namespace QLNet {
-    // we need only one instance of the class
-    // we can not derive it from IObservable because the class is static
-    public static class Settings {
+namespace QLNet
+{
+   public interface ISettings : IObservable
+   { }
 
-        [ThreadStatic]
-        private static Date evaluationDate_;
+   // we need only one instance of the class
+   // we can not derive it from IObservable because the class is static
+   public class Settings : ISettings
+   {
+      private ObservableValue<Date> evaluationDate_;
+      private bool includeReferenceDateEvents_;
+      private bool enforcesTodaysHistoricFixings_;
+      private bool? includeTodaysCashFlows_;
 
-        [ThreadStatic]
-        private static bool includeReferenceDateEvents_;
+      public Settings()
+      {}
 
-        [ThreadStatic]
-        private static bool enforcesTodaysHistoricFixings_;
+      public Date evaluationDate()
+      {
+         if (evaluationDate_ == null)
+         {
+            evaluationDate_ = new ObservableValue<Date>();
+            evaluationDate_.Assign(Date.Today);
+         }
+         return evaluationDate_.value();
+      }
 
-        [ThreadStatic]
-        private static bool? includeTodaysCashFlows_;
+      public ObservableValue<Date> observableEvaluationDate()
+      {
+         if (evaluationDate_ == null)
+         {
+            evaluationDate_ = new ObservableValue<Date>();
+            evaluationDate_.Assign(Date.Today);
+         }
+         return evaluationDate_;
+      }
 
-        public static Date evaluationDate() 
-        {
-            if (evaluationDate_ == null)
-                evaluationDate_ = Date.Today;
-            return evaluationDate_; 
-        }
+      public void setEvaluationDate(Date d)
+      {
+         evaluationDate_.Assign(d);
+         this.notifyObservers();
+      }
 
+      public bool enforcesTodaysHistoricFixings
+      {
+         get { return enforcesTodaysHistoricFixings_; }
+         set { enforcesTodaysHistoricFixings_ = value; }
+      }
 
-        public static void setEvaluationDate(Date d) {
-            evaluationDate_ = d;
-            notifyObservers();
-        }
+      public bool includeReferenceDateEvents
+      {
+         get { return includeReferenceDateEvents_; }
+         set { includeReferenceDateEvents_ = value; }
+      }
 
-        public static bool enforcesTodaysHistoricFixings
-        {
-           get { return enforcesTodaysHistoricFixings_; }
-           set { enforcesTodaysHistoricFixings_ = value; }
-        }
-
-        public static bool includeReferenceDateEvents {
-            get { return includeReferenceDateEvents_; }
-            set { includeReferenceDateEvents_ = value; }
-        }
-
-        public static bool? includeTodaysCashFlows
-        {
-           get { return includeTodaysCashFlows_; }
-            set { includeTodaysCashFlows_ = value; }
-        }
-
-        ////////////////////////////////////////////////////
-        // Observable interface
-        private static readonly WeakEventSource eventSource = new WeakEventSource();
-        public static event Callback notifyObserversEvent
-        {
-           add { eventSource.Subscribe(value); }
-           remove { eventSource.Unsubscribe(value); }
-        }
-
-        public static void registerWith(Callback handler) { notifyObserversEvent += handler; }
-        public static void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
-        private static void notifyObservers()
-        {
-           eventSource.Raise();
-        }
-    }
+      public bool? includeTodaysCashFlows
+      {
+         get { return includeTodaysCashFlows_; }
+         set { includeTodaysCashFlows_ = value; }
+      }
+   }
 
    // helper class to temporarily and safely change the settings
    public class SavedSettings : IDisposable
@@ -94,19 +92,19 @@ namespace QLNet {
 
       public SavedSettings()
       {
-         evaluationDate_ = Settings.evaluationDate();
-         enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
-         includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
-         includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
+         evaluationDate_ = Singleton<Settings>.link.evaluationDate();
+         enforcesTodaysHistoricFixings_ = Singleton<Settings>.link.enforcesTodaysHistoricFixings;
+         includeReferenceDateEvents_ = Singleton<Settings>.link.includeReferenceDateEvents;
+         includeTodaysCashFlows_ = Singleton<Settings>.link.includeTodaysCashFlows;
       }
 
       public void Dispose()
       {
-         if (evaluationDate_ != Settings.evaluationDate())
-            Settings.setEvaluationDate(evaluationDate_);
-         Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
-         Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
-         Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
+         if (evaluationDate_ != Singleton<Settings>.link.evaluationDate())
+            Singleton<Settings>.link.setEvaluationDate(evaluationDate_);
+         Singleton<Settings>.link.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
+         Singleton<Settings>.link.includeReferenceDateEvents = includeReferenceDateEvents_;
+         Singleton<Settings>.link.includeTodaysCashFlows = includeTodaysCashFlows_;
       }
    }
 }

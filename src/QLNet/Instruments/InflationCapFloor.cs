@@ -67,7 +67,7 @@ namespace QLNet
 			foreach (var cf in yoyLeg_)
             cf.registerWith(this.update);
 			
-			Settings.registerWith(this.update);
+			Singleton<Settings>.link.registerWith(this.update);
 
 		}
 
@@ -95,7 +95,7 @@ namespace QLNet
 			foreach (var cf in yoyLeg_)
             cf.registerWith(this.update);
 
-			Settings.registerWith(this.update);
+			Singleton<Settings>.link.registerWith(this.update);
 		}
 		
 		// Instrument interface

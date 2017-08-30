@@ -1069,6 +1069,9 @@
     <Compile Include="..\QLNet\Money.cs" />
     <Compile Include="..\QLNet\numericalmethod.cs" />
     <Compile Include="..\QLNet\Option.cs" />
+    <Compile Include="..\QLNet\Patterns\Singleton.cs">
+      <Link>Patterns\Singleton.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Patterns\FastActivator.cs">
       <Link>Patterns\FastActivator.cs</Link>
     </Compile>

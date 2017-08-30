@@ -241,7 +241,7 @@ namespace TestSuite
 
             DayCounter dc = new Actual360();
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -337,7 +337,7 @@ namespace TestSuite
 
             DayCounter dc = new Actual360();
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -411,7 +411,7 @@ namespace TestSuite
 
             DayCounter dc = new Actual360();
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -517,7 +517,7 @@ namespace TestSuite
 
             DayCounter dc = new Actual360();
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -615,11 +615,11 @@ namespace TestSuite
 
                                     // perturb date and get theta
                                     double dT = dc.yearFraction(today - 1, today + 1);
-                                    Settings.setEvaluationDate(today - 1);
+                                    Singleton<Settings>.link.setEvaluationDate(today - 1);
                                     value_m = option.NPV();
-                                    Settings.setEvaluationDate(today + 1);
+                                    Singleton<Settings>.link.setEvaluationDate(today + 1);
                                     value_p = option.NPV();
-                                    Settings.setEvaluationDate(today);
+                                    Singleton<Settings>.link.setEvaluationDate(today);
                                     expected["theta"] = (value_p - value_m) / dT;
 
                                     // compare
@@ -674,7 +674,7 @@ namespace TestSuite
 
             DayCounter dc = new Actual360();
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
 
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -769,7 +769,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             int[] lengths = { 1, 2 };
 
             for (int i = 0; i < lengths.Length; i++)
@@ -792,7 +792,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             int[] lengths = { 1, 2 };
 
             for (int i = 0; i < lengths.Length; i++)
@@ -815,7 +815,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date today = new Date(27, Month.February, 2005);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             Date exDate = new Date(13, Month.April, 2005);
 
             Exercise exercise = new EuropeanExercise(exDate);
@@ -835,7 +835,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date today = new Date(27, Month.February, 2005);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             Date exDate = new Date(13, Month.April, 2005);
 
             Exercise exercise = new AmericanExercise(exDate);

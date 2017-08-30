@@ -110,7 +110,7 @@ namespace QLNet
          else 
          {
             int fixingDays = iborIndex_.fixingDays();
-            Date refDate = Settings.evaluationDate();
+            Date refDate = Singleton<Settings>.link.evaluationDate();
             // if the evaluation date is not a business day
             // then move to the next business day
             refDate = floatCalendar_.adjust(refDate);

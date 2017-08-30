@@ -145,7 +145,7 @@ namespace QLNet
             return new ExchangeRate(source, target, 1.0);
 
          if (date == new Date())
-            date = Settings.evaluationDate();
+            date = Singleton<Settings>.link.evaluationDate();
 
          if (type == ExchangeRate.Type.Direct)
          {

@@ -71,7 +71,7 @@ namespace TestSuite
          {
             calendar = new TARGET();
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Singleton<Settings>.link.setEvaluationDate(today);
             faceAmount = 1000000.0;
          }
       }
@@ -259,7 +259,7 @@ namespace TestSuite
 
          // with implicit settlement calculation:
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          Calendar bondCalendar = new NullCalendar();
          DayCounter bondDayCount = new ActualActual(ActualActual.Convention.ISMA);
@@ -434,7 +434,7 @@ namespace TestSuite
 
          // this should give the same result since the issue date is the
          // earliest possible settlement date
-         Settings.setEvaluationDate(new Date(22, Month.November, 2004));
+         Singleton<Settings>.link.setEvaluationDate(new Date(22, Month.November, 2004));
 
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice3) > tolerance)
@@ -457,7 +457,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -530,7 +530,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -624,7 +624,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -752,7 +752,7 @@ namespace TestSuite
          Date issueDate = new Date(1, Month.January, 2007);
 
          Date today = new Date(6, Month.June, 2007);
-         Settings.setEvaluationDate(today);
+         Singleton<Settings>.link.setEvaluationDate(today);
 
          // NTN-F maturity dates
          List<Date> maturityDates = new InitializedList<Date>(6);
@@ -838,7 +838,7 @@ namespace TestSuite
       public void testAmortizingFixedBond()
       {
          Date startDate = new Date(2, 1, 2007);
-         Settings.setEvaluationDate(startDate);
+         Singleton<Settings>.link.setEvaluationDate(startDate);
 
          Period bondLength = new Period(12, TimeUnit.Months);
          DayCounter dCounter = new Thirty360();
@@ -1014,7 +1014,7 @@ namespace TestSuite
          #endregion
 
          Date startDate = new Date(1, 2, 2007);
-         Settings.setEvaluationDate(startDate);
+         Singleton<Settings>.link.setEvaluationDate(startDate);
 
          Period bondLength = new Period(358, TimeUnit.Months);
          Period originalLenght = new Period(360, TimeUnit.Months);
@@ -1265,7 +1265,7 @@ namespace TestSuite
          Date today = new Date(7, Month.September, 2015);
          Date evaluationDate = calendar.adjust(today);
          Date settlementDate = calendar.advance(evaluationDate, new Period(settlementDays, TimeUnit.Days));
-         Settings.setEvaluationDate(evaluationDate);
+         Singleton<Settings>.link.setEvaluationDate(evaluationDate);
 
          // For the schedule to generate correctly for Feb-28's, make maturity date on Feb 29
          Date maturityDate = new Date(29, Month.February, 2048);

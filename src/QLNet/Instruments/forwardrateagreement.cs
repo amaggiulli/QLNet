@@ -103,7 +103,7 @@ namespace QLNet
       // Calculations
       public override Date settlementDate()
       {
-         return calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
+         return calendar_.advance(Singleton<Settings>.link.evaluationDate(), settlementDays_, TimeUnit.Days);
       }
 
       /*! A FRA expires/settles on the valueDate */

@@ -469,7 +469,7 @@ namespace QLNet {
 
         public override double capletPrice(double effectiveCap) {
             // caplet is equivalent to call option on fixing
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
             if (fixingDate_ <= today) {
                 // the fixing is determined
                 double Rs = Math.Max(coupon_.swapIndex().fixing(fixingDate_) - effectiveCap, 0.0);
@@ -492,7 +492,7 @@ namespace QLNet {
 
         public override double floorletPrice(double effectiveFloor) {
             // floorlet is equivalent to put option on fixing
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
             if (fixingDate_ <= today) {
                 // the fixing is determined
                 double Rs = Math.Max(effectiveFloor - coupon_.swapIndex().fixing(fixingDate_), 0.0);
@@ -550,7 +550,7 @@ namespace QLNet {
             SwapIndex swapIndex = coupon_.swapIndex();
             rateCurve_ = swapIndex.forwardingTermStructure().link;
 
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
 
             if (paymentDate_ > today)
                 discount_ = rateCurve_.discount(paymentDate_);
@@ -714,7 +714,7 @@ namespace QLNet {
         }
 
         public override double swapletPrice() {
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
             if (fixingDate_ <= today) {
                 // the fixing is determined
                 double Rs = coupon_.swapIndex().fixing(fixingDate_);
@@ -876,7 +876,7 @@ namespace QLNet {
 
         //Hagan 3.4c
         public override double swapletPrice() {
-            Date today = Settings.evaluationDate();
+            Date today = Singleton<Settings>.link.evaluationDate();
             if (fixingDate_ <= today) {
                 // the fixing is determined
                 double Rs = coupon_.swapIndex().fixing(fixingDate_);

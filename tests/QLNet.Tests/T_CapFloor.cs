@@ -77,7 +77,7 @@ namespace TestSuite {
                 calendar = index.fixingCalendar();
                 convention = BusinessDayConvention.ModifiedFollowing;
                 Date today = calendar.adjust(Date.Today);
-                Settings.setEvaluationDate(today);
+                Singleton<Settings>.link.setEvaluationDate(today);
                 int settlementDays = 2;
                 fixingDays = 2;
                 settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
@@ -509,7 +509,7 @@ namespace TestSuite {
 
             Date cachedToday = new Date(14, Month.March, 2002),
                  cachedSettlement = new Date(18, Month.March, 2002);
-            Settings.setEvaluationDate(cachedToday);
+            Singleton<Settings>.link.setEvaluationDate(cachedToday);
             vars.termStructure.linkTo(Utilities.flatRate(cachedSettlement, 0.05, new Actual360()));
             Date startDate = vars.termStructure.link.referenceDate();
             List<CashFlow> leg = vars.makeLeg(startDate, 20);

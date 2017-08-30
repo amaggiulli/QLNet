@@ -52,7 +52,7 @@ namespace Repo {
 			double faceAmount = 100.0;
 
 
-			Settings.setEvaluationDate(repoSettlementDate);
+			Singleton<Settings>.link.setEvaluationDate(repoSettlementDate);
 
 			RelinkableHandle<YieldTermStructure> bondCurve = new RelinkableHandle<YieldTermStructure>();
 			bondCurve.linkTo(new FlatForward(repoSettlementDate,

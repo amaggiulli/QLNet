@@ -145,7 +145,7 @@ namespace QLNet
          Utils.QL_REQUIRE(isASXcode(asxCode, false),()=>
                    asxCode + " is not a valid ASX code");
 
-         Date referenceDate = refDate ?? Settings.evaluationDate();
+         Date referenceDate = refDate ?? Singleton<Settings>.link.evaluationDate();
 
          String code = asxCode.ToUpper();
          String ms = code.Substring(0,1);
@@ -186,7 +186,7 @@ namespace QLNet
       */
       public static Date nextDate( Date date = null, bool mainCycle = true )
       {
-         Date refDate = date ?? Settings.evaluationDate();
+         Date refDate = date ?? Singleton<Settings>.link.evaluationDate();
          int y = refDate.year();
          int m = refDate.month();
 

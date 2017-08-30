@@ -79,7 +79,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -142,7 +142,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -257,7 +257,7 @@ namespace QLNet
             npvDate_=npvDate;
 
             if (settlementDate == null)
-               settlementDate_ = Settings.evaluationDate();
+               settlementDate_ = Singleton<Settings>.link.evaluationDate();
 
             if (npvDate == null)
                npvDate_ = settlementDate_;
@@ -325,7 +325,7 @@ namespace QLNet
             npvDate_ = npvDate;
 
             if (settlementDate == null)
-               settlementDate_ = Settings.evaluationDate();
+               settlementDate_ = Singleton<Settings>.link.evaluationDate();
 
             if (npvDate == null)
                npvDate_ = settlementDate_;
@@ -420,7 +420,7 @@ namespace QLNet
             return true;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          for (int i = leg.Count; i > 0; --i)
             if (!leg[i - 1].hasOccurred(settlementDate,includeSettlementDateFlows))
@@ -435,7 +435,7 @@ namespace QLNet
       {
          if (leg.empty()) return null;
 
-         Date d = (settlementDate ?? Settings.evaluationDate());
+         Date d = (settlementDate ?? Singleton<Settings>.link.evaluationDate());
          return  leg.LastOrDefault(x => x.hasOccurred(d, includeSettlementDateFlows));
       }
       //! the first cashflow paying after the given date
@@ -443,7 +443,7 @@ namespace QLNet
       {
          if (leg.empty()) return null;
 
-         Date d = (settlementDate ?? Settings.evaluationDate());
+         Date d = (settlementDate ?? Singleton<Settings>.link.evaluationDate());
 
          // the first coupon paying after d is the one we're after
          return leg.FirstOrDefault(x => !x.hasOccurred(d, includeSettlementDateFlows));
@@ -605,7 +605,7 @@ namespace QLNet
       public static double accruedPeriod(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null) 
       {
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows,  settlementDate);
          if (cf == null) return 0;
@@ -622,7 +622,7 @@ namespace QLNet
       public static int accruedDays(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
 			if ( settlementDate == null )
-				settlementDate = Settings.evaluationDate();
+				settlementDate = Singleton<Settings>.link.evaluationDate();
 
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
@@ -639,7 +639,7 @@ namespace QLNet
       public static double accruedAmount(Leg leg, bool includeSettlementDateFlows,Date settlementDate = null)
       {
 			if ( settlementDate == null )
-				settlementDate = Settings.evaluationDate();
+				settlementDate = Singleton<Settings>.link.evaluationDate();
 
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null) return 0;
@@ -667,7 +667,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -691,7 +691,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -743,7 +743,7 @@ namespace QLNet
       {
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -790,7 +790,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -862,7 +862,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -889,7 +889,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -909,7 +909,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          double totalCASH = cashflows.Where(x => !x.hasOccurred(settlementDate + exDividendDays)).
             Sum(c => c.amount());
@@ -942,7 +942,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -978,7 +978,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -1079,7 +1079,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -1116,7 +1116,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -1153,7 +1153,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;
@@ -1174,7 +1174,7 @@ namespace QLNet
                                    Date npvDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.0)
       {
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Singleton<Settings>.link.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;

@@ -83,7 +83,7 @@ namespace QLNet
          bool includeRefDateFlows =
             includeSettlementDateFlows_.HasValue ?
             includeSettlementDateFlows_.Value :
-            Settings.includeReferenceDateEvents;
+            Singleton<Settings>.link.includeReferenceDateEvents;
 
          for (int i=0; i< n; ++i) 
          {
