@@ -117,6 +117,7 @@ namespace QLNet {
                 QL_FAIL("Unknown approximation model.");
                 return 0.0;
             }
+            return (alpha/D)*multiplier*d;
         }
 
         public static double unsafeShiftedSabrVolatility(double strike,
@@ -183,6 +184,26 @@ namespace QLNet {
             QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: " + expiryTime + " not allowed");
             validateSabrParameters(alpha, beta, nu, rho);
             return unsafeSabrNormalVolatility(strike + shift, forward + shift, expiryTime, alpha, beta, nu, rho);
+        }
+
+        public static double shiftedSabrVolatility(double strike,
+                                     double forward,
+                                     double expiryTime,
+                                     double alpha,
+                                     double beta,
+                                     double nu,
+                                     double rho,
+                                     double shift) 
+        {
+            QL_REQUIRE(strike + shift > 0.0, () => "strike+shift must be positive: "
+                       + strike + "+"  + shift + " not allowed");
+            QL_REQUIRE(forward + shift > 0.0, () => "at the money forward rate + shift must be "
+                       + "positive: " + forward + " " + shift + " not allowed");
+            QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: "
+                                       + expiryTime + " not allowed");
+            validateSabrParameters(alpha, beta, nu, rho);
+            return unsafeShiftedSabrVolatility(strike, forward, expiryTime,
+                                                 alpha, beta, nu, rho, shift);
         }
 
     }

@@ -27,20 +27,23 @@ namespace QLNet {
            return atmLevel_;
         }
 
-        public FlatSmileSection(Date d, double vol, DayCounter dc, Date referenceDate = null, double? atmLevel = null)
-            : base(d, dc, referenceDate) {
+        public FlatSmileSection(Date d, double vol, DayCounter dc, Date referenceDate = null, double? atmLevel = null, 
+                                VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0)
+            : base(d, dc, referenceDate, type, shift) {
             vol_ = vol;
             atmLevel_ = atmLevel;
         }
 
-        public FlatSmileSection(double exerciseTime, double vol, DayCounter dc, double? atmLevel = null)
-            : base(exerciseTime, dc) {
+        public FlatSmileSection(double exerciseTime, double vol, DayCounter dc, double? atmLevel = null,
+                                VolatilityType type = VolatilityType.ShiftedLognormal, double shift = 0.0)
+            : base(exerciseTime, dc, type, shift)
+        {
             vol_ = vol;
             atmLevel_ = atmLevel;
         }
 
         public override double minStrike () {
-            return double.MinValue;
+            return double.MinValue - shift();
         }
 
         public override double maxStrike () {

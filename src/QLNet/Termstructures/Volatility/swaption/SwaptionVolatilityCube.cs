@@ -160,7 +160,7 @@ namespace QLNet
          Date optionDate = optionDateFromTenor(optionTenor);
          return atmStrike(optionDate, swapTenor);
       }
-	   public Handle<SwaptionVolatilityStructure> atmVol() { return atmVol_; }
+	  public Handle<SwaptionVolatilityStructure> atmVol() { return atmVol_; }
       public List<double> strikeSpreads()  { return strikeSpreads_; }
       public List<List<Handle<Quote> > > volSpreads() { return volSpreads_; }
       public SwapIndex swapIndexBase() { return swapIndexBase_; }

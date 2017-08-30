@@ -226,7 +226,7 @@ namespace QLNet
       #endregion
 
       //! volatility type
-      public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
+      public virtual VolatilityType volatilityType() { return VolatilityType.ShiftedLognormal; }
 
       //! implements the conversion between swap tenor and swap (time) length
       public double swapLength(Period swapTenor)

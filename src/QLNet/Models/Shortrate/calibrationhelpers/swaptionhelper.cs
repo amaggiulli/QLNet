@@ -34,8 +34,10 @@ namespace QLNet
 							        Handle<YieldTermStructure> termStructure,
 							        CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
 							        double? strike = null,
-							        double nominal = 1.0 )
-			: base( volatility, termStructure, errorType )
+							        double nominal = 1.0,
+                                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                                    double shift = 0.0)
+            : base(volatility, termStructure, errorType, type, shift)
 		{
 			exerciseDate_ = null;
 			endDate_ = null;
@@ -61,8 +63,10 @@ namespace QLNet
 							        Handle<YieldTermStructure> termStructure,
 							        CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
 							        double? strike = null,
-							        double nominal = 1.0 )
-			: base( volatility, termStructure, errorType )
+							        double nominal = 1.0,
+                                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                                    double shift = 0.0 )
+			: base( volatility, termStructure, errorType, type, shift )
 		{
 			exerciseDate_ = exerciseDate;
 			endDate_ = null;
@@ -87,9 +91,11 @@ namespace QLNet
                              DayCounter floatingLegDayCounter,
                              Handle<YieldTermStructure> termStructure,
                              CalibrationErrorType errorType = CalibrationErrorType.RelativePriceError,
-							        double? strike =null,
-                             double nominal = 1.0)
-			: base( volatility, termStructure, errorType )
+							 double? strike =null,
+                             double nominal = 1.0,
+                             VolatilityType type = VolatilityType.ShiftedLognormal,
+                             double shift = 0.0)
+            : base(volatility, termStructure, errorType, type, shift)
 		{
 			exerciseDate_ = exerciseDate;
 			endDate_ = endDate;
@@ -133,15 +139,31 @@ namespace QLNet
 			calculate();
 			SimpleQuote sq = new SimpleQuote( sigma );
 			Handle<Quote> vol = new Handle<Quote>( sq );
-			IPricingEngine black = new BlackSwaptionEngine( termStructure_, vol );
-			swaption_.setPricingEngine( black );
+
+            IPricingEngine engine = null;
+            switch(volatilityType_)
+            {
+                case VolatilityType.ShiftedLognormal:
+                    engine = new BlackSwaptionEngine( termStructure_, vol, new Actual365Fixed(), shift_ );
+                    break;
+
+                case VolatilityType.Normal:
+                    engine = new BachelierSwaptionEngine( termStructure_, vol, new Actual365Fixed() );
+                    break;
+
+                default:
+                    Utils.QL_FAIL("can not construct engine: " + volatilityType_);
+                    break;
+            }
+
+            swaption_.setPricingEngine(engine);
 			double value = swaption_.NPV();
-			swaption_.setPricingEngine( engine_ );
+			swaption_.setPricingEngine(engine_);
 			return value;
 		}
 
 		public VanillaSwap underlyingSwap() { calculate(); return swap_; }
-      public Swaption swaption() { calculate(); return swaption_; }
+        public Swaption swaption() { calculate(); return swaption_; }
 
 		protected override void performCalculations()
 		{
