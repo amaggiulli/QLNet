@@ -95,7 +95,7 @@ namespace QLNet {
 		/*! \note if this is a bond forward price, is must be a dirty
 				  forward price.
 		*/
-		public double forwardValue() {
+		public virtual double forwardValue() {
 			calculate();
 			return (underlyingSpotValue_ - underlyingIncome_ )/ discountCurve_.link.discount(maturityDate_);
 		}
