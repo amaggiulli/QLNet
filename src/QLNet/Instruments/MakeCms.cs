@@ -28,12 +28,15 @@ namespace QLNet
                       SwapIndex swapIndex,
                       IborIndex iborIndex,
                       double iborSpread = 0.0,
-                      Period forwardStart = null)
+                      Period forwardStart = null,
+                      Date maturityDate = null)
       {
          swapTenor_ = swapTenor; 
          swapIndex_ = swapIndex;
          iborIndex_ = iborIndex; 
          iborSpread_ = iborSpread;
+         iborCap_ = null;
+         iborFloor_ = null;
          useAtmSpread_ = false; 
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
@@ -43,7 +46,9 @@ namespace QLNet
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex.fixingCalendar();
-         payCms_ = true; nominal_ = 1.0;
+         payCms_ = true; 
+         nominal_ = 1.0;
+         maturityDate_ = maturityDate;
          cmsTenor_ = new Period(3,TimeUnit.Months); 
          floatTenor_ = iborIndex.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
@@ -66,12 +71,15 @@ namespace QLNet
       public MakeCms( Period swapTenor,
                       SwapIndex swapIndex,
                       double iborSpread = 0.0,
-                      Period forwardStart = null)
+                      Period forwardStart = null,
+                      Date maturityDate = null)
       {
          swapTenor_ = swapTenor; 
          swapIndex_ = swapIndex;
          iborIndex_ = swapIndex.iborIndex(); 
          iborSpread_ = iborSpread;
+         iborCap_ = null;
+         iborFloor_ = null;
          useAtmSpread_ = false; 
          forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
          cmsSpread_ = 0.0; 
@@ -83,6 +91,7 @@ namespace QLNet
          floatCalendar_ = iborIndex_.fixingCalendar();
          payCms_ = true; 
          nominal_ = 1.0;
+         maturityDate_ = maturityDate;
          cmsTenor_ = new Period(3,TimeUnit.Months); 
          floatTenor_ = iborIndex_.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
@@ -118,7 +127,7 @@ namespace QLNet
             startDate = spotDate+forwardStart_;
         }
 
-        Date terminationDate = startDate+swapTenor_;
+        Date terminationDate = maturityDate_ == null ? startDate + swapTenor_ : maturityDate_;
 
         Schedule cmsSchedule = new Schedule(startDate, terminationDate,
                                             cmsTenor_, cmsCalendar_,
@@ -158,8 +167,13 @@ namespace QLNet
             List<CashFlow> fLeg = new IborLeg(floatSchedule, iborIndex_)
                .withPaymentDayCounter(floatDayCount_)
                .withFixingDays(iborIndex_.fixingDays())
+               .withCaps(iborCap_)
+               .withFloors(iborFloor_)
                .withNotionals(nominal_)
                .withPaymentAdjustment(floatConvention_);
+
+            if (iborCouponPricer_ != null)
+                Utils.setCouponPricer(fLeg, iborCouponPricer_);
 
             Swap temp = new Swap(cmsLeg, fLeg);
             temp.setPricingEngine(engine_);
@@ -178,8 +192,13 @@ namespace QLNet
             .withPaymentDayCounter(floatDayCount_)
             .withFixingDays(iborIndex_.fixingDays())
             .withGearings(iborGearing_)
+            .withCaps(iborCap_)
+            .withFloors(iborFloor_)
             .withPaymentAdjustment(floatConvention_)
             .withNotionals(nominal_);
+
+         if (iborCouponPricer_ != null)
+             Utils.setCouponPricer(floatLeg, iborCouponPricer_);
 
          Swap swap;
          if (payCms_)
@@ -205,7 +224,6 @@ namespace QLNet
          effectiveDate_ = effectiveDate;
          return this;
       }
-
       public MakeCms withCmsLegTenor(Period t)
       {
          cmsTenor_ = t;
@@ -251,7 +269,6 @@ namespace QLNet
          cmsDayCount_ = dc;
          return this;
       }
-
       public MakeCms withFloatingLegTenor( Period t)
       {
          floatTenor_ = t;
@@ -297,24 +314,27 @@ namespace QLNet
          floatDayCount_ = dc;
          return this;
       }
+      public MakeCms withFloatingCouponPricer(IborCouponPricer couponPricer)
+      {
+          iborCouponPricer_ = couponPricer;
+          return this;
+      }
       public MakeCms withFloatingLegGearing(double iborGearing)
       {
           iborGearing_ = iborGearing;
           return this;
       }
-
       public MakeCms withAtmSpread(bool flag = true)
       {
          useAtmSpread_ = flag;
          return this;
       }
-
       public MakeCms withDiscountingTermStructure( Handle<YieldTermStructure> discountingTermStructure)
       {
          engine_ = new DiscountingSwapEngine(discountingTermStructure);
          return this;
       }
-      public MakeCms withCmsCouponPricer( CmsCouponPricer couponPricer)
+       public MakeCms withCmsCouponPricer( CmsCouponPricer couponPricer)
       {
          couponPricer_ = couponPricer;
          return this;
@@ -324,12 +344,38 @@ namespace QLNet
           cmsGearing_ = cmsGearing;
           return this;
       }
+      public MakeCms withCmsSpread(double cmsSpread)
+      {
+          cmsSpread_ = cmsSpread;
+          return this;
+      }
+      public MakeCms withCmsCap(double? cmsCap)
+      {
+          cmsCap_ = cmsCap;
+          return this;
+      }
+      public MakeCms withCmsFloor(double? cmsFloor)
+      {
+          cmsFloor_ = cmsFloor;
+          return this;
+      }
+      public MakeCms withIborCap(double? iborCap)
+      {
+          iborCap_ = iborCap;
+          return this;
+      }
+      public MakeCms withIborFloor(double? iborFloor)
+      {
+          iborFloor_ = iborFloor;
+          return this;
+      }
 
       private Period swapTenor_;
       private SwapIndex swapIndex_;
       private IborIndex iborIndex_;
       private double iborSpread_;
       private double iborGearing_;
+      private double? iborCap_, iborFloor_;
       private bool useAtmSpread_;
       private Period forwardStart_;
 
@@ -349,10 +395,12 @@ namespace QLNet
       private bool cmsEndOfMonth_, floatEndOfMonth_;
       private Date cmsFirstDate_, cmsNextToLastDate_;
       private Date floatFirstDate_, floatNextToLastDate_;
+      private Date maturityDate_;
       private DayCounter cmsDayCount_, floatDayCount_;
 
       private IPricingEngine engine_;
       private CmsCouponPricer couponPricer_;
+      private IborCouponPricer iborCouponPricer_;
 
    }
 }
