@@ -151,7 +151,7 @@ namespace QLNet
          initialize( compounding, frequency, refDate );
       }
 
-      private void initialize( Compounding compounding, Frequency frequency, Date refDate = null )
+      protected void initialize( Compounding compounding, Frequency frequency, Date refDate = null )
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given");
          Utils.QL_REQUIRE(data_.Count == dates_.Count, () => "dates/yields count mismatch");
