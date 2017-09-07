@@ -127,12 +127,14 @@ namespace QLNet
                                       double accuracy = 1.0e-4,
                                       int maxEvaluations = 100,
                                       double minVol = 1.0e-7,
-                                      double maxVol = 4.0)
+                                      double maxVol = 4.0,
+                                      VolatilityType type = VolatilityType.ShiftedLognormal,
+                                      double? displacement = 0.0)
       {
          calculate();
          if (isExpired())
             throw new ArgumentException("instrument expired");
-         ImpliedVolHelper_ f = new ImpliedVolHelper_(this, discountCurve, targetValue);
+         ImpliedVolHelper_ f = new ImpliedVolHelper_(this, discountCurve, targetValue, displacement, type);
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
@@ -165,7 +167,9 @@ namespace QLNet
 
       public ImpliedVolHelper_(Swaption swaption,
                                Handle<YieldTermStructure> discountCurve,
-                               double targetValue)
+                               double targetValue,
+                               double? displacement = 0.0,
+                               VolatilityType type = VolatilityType.ShiftedLognormal)
       {
          discountCurve_ = discountCurve;
          targetValue_ = targetValue;
@@ -173,7 +177,17 @@ namespace QLNet
          // at first ImpliedVolHelper::operator()(Volatility x) call
          vol_ = new SimpleQuote(-1.0);
          Handle<Quote> h = new Handle<Quote>(vol_);
-         engine_ = (IPricingEngine)new BlackSwaptionEngine(discountCurve_, h);
+         switch (type) {
+            case VolatilityType.ShiftedLognormal:
+                engine_ = new BlackSwaptionEngine(discountCurve_, h, new Actual365Fixed(), displacement);
+                break;
+            case VolatilityType.Normal:
+                engine_ = new BachelierSwaptionEngine(discountCurve_, h, new Actual365Fixed());
+                break;
+            default:
+                Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
+                break;
+         }
          swaption.setupArguments(engine_.getArguments());
          results_ = engine_.getResults() as Instrument.Results; 
       }

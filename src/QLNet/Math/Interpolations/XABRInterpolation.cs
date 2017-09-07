@@ -29,52 +29,54 @@ namespace QLNet
 
    public interface IModel
    {
-      void defaultValues( List<double?> param, List<bool> b, double forward, double expiryTIme );
+      void defaultValues( List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams );
       double dilationFactor();
       int dimension();
       Vector direct( Vector x, List<bool> b, List<double?> c, double d );
       double eps1();
       double eps2();
-      void guess( Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r );
-      IWrapper instance( double t, double forward, List<double?> param );
+      void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams);
+      IWrapper instance( double t, double forward, List<double?> param, List<double?> addParams );
       Vector inverse( Vector y, List<bool> b, List<double?> c, double d );
+      double weight(double strike, double forward, double stdDev, List<double?> addParams);
    }
 
    public class XABRCoeffHolder<Model> where Model : IModel, new()
    {
-      public XABRCoeffHolder( double t, double forward, List<double?> _params, List<bool> paramIsFixed )
+      public XABRCoeffHolder( double t, double forward, List<double?> _params, List<bool> paramIsFixed, List<double?> addParams )
       {
          t_ = t;
          forward_ = forward;
          params_ = _params;
          paramIsFixed_ = new InitializedList<bool>( paramIsFixed.Count, false );
+         addParams_ = addParams;
          weights_ = new List<double>();
          error_ = null;
          maxError_ = null;
          XABREndCriteria_ = EndCriteria.Type.None;
+         model_ = FastActivator<Model>.Create();
 
          Utils.QL_REQUIRE( t > 0.0, () => "expiry time must be positive: " + t + " not allowed" );
-         Utils.QL_REQUIRE( _params.Count == FastActivator<Model>.Create().dimension(), () =>
-            "wrong number of parameters (" + _params.Count + "), should be " + FastActivator<Model>.Create().dimension() );
-         Utils.QL_REQUIRE( paramIsFixed.Count == FastActivator<Model>.Create().dimension(), () =>
-            "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be " + 
-            FastActivator<Model>.Create().dimension() );
+         Utils.QL_REQUIRE(_params.Count == model_.dimension(), () =>
+            "wrong number of parameters (" + _params.Count + "), should be " + model_.dimension());
+         Utils.QL_REQUIRE(paramIsFixed.Count == model_.dimension(), () =>
+            "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be " +
+            model_.dimension());
 
          for ( int i = 0; i < _params.Count; ++i )
          {
             if ( _params[i] != null )
                paramIsFixed_[i] = paramIsFixed[i];
          }
-         FastActivator<Model>.Create().defaultValues( params_, paramIsFixed_, forward_, t_ );
+
+         model_.defaultValues(params_, paramIsFixed_, forward_, t_, addParams_);
          updateModelInstance();
       }
 
       public void updateModelInstance()
       {
          // forward might have changed
-         Utils.QL_REQUIRE( forward_ > 0.0, () => "forward must be positive: " + forward_ + " not allowed" );
-         modelInstance_ = FastActivator<Model>.Create().instance( t_, forward_, params_ );
-         model_ = FastActivator<Model>.Create();
+         modelInstance_ = model_.instance(t_, forward_, params_, addParams_);
       }
 
       /*! Expiry, Forward */
@@ -83,6 +85,7 @@ namespace QLNet
       /*! Parameters */
       public List<double?> params_ { get; set; }
       public List<bool> paramIsFixed_ { get; set; }
+      public List<double?> addParams_ { get; set; }
       public List<double> weights_ { get; set; }
       /*! Interpolation results */
       public double? error_ { get; set; }
@@ -101,7 +104,7 @@ namespace QLNet
                                     List<bool> paramIsFixed, bool vegaWeighted,
                                     EndCriteria endCriteria,
                                     OptimizationMethod optMethod,
-                                    double errorAccept, bool useMaxError, int maxGuesses )
+                                    double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null )
          : base( xBegin, size, yBegin )
       {
           // XABRCoeffHolder<Model>(t, forward, params, paramIsFixed),
@@ -120,7 +123,7 @@ namespace QLNet
          {
             endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
          }
-         coeff_ = new XABRCoeffHolder<Model>( t, forward, _params, paramIsFixed );
+         coeff_ = new XABRCoeffHolder<Model>(t, forward, _params, paramIsFixed, addParams);
          this.coeff_.weights_ = new InitializedList<double>( size, 1.0 / size );
       }
       
@@ -139,7 +142,7 @@ namespace QLNet
             for ( int i = 0; i < xBegin_.Count; i++ )
             {
                double stdDev = Math.Sqrt( ( yBegin_[i] ) * ( yBegin_[i] ) * this.coeff_.t_ );
-               coeff_.weights_.Add( Utils.blackFormulaStdDevDerivative( xBegin_[i], forward_, stdDev ) );
+               coeff_.weights_.Add(coeff_.model_.weight(xBegin_[i], forward_, stdDev, this.coeff_.addParams_));
                weightsSum += coeff_.weights_.Last();
             }
 
@@ -179,7 +182,7 @@ namespace QLNet
 
                 if (iterations > 0) {
                    Sample<List<double> > s = halton.nextSequence();
-                    coeff_.model_.guess(guess, coeff_.paramIsFixed_, forward_, coeff_.t_, s.value);
+                   coeff_.model_.guess(guess, coeff_.paramIsFixed_, forward_, coeff_.t_, s.value, coeff_.addParams_);
                     for (int i = 0; i < coeff_.paramIsFixed_.Count; ++i)
                         if (coeff_.paramIsFixed_[i])
                             guess[i] = coeff_.params_[i].Value;
@@ -221,7 +224,6 @@ namespace QLNet
 
       public override double value( double x )
       {
-         Utils.QL_REQUIRE( x > 0.0, () => "strike must be positive: " + x + " not allowed" );
          return coeff_.modelInstance_.volatility( x );
       }
 
@@ -250,9 +252,7 @@ namespace QLNet
             results[i] = (value(xBegin_[i]) - yBegin_[i]) * Math.Sqrt(coeff_.weights_[i]);
 
          return results;
-
-
-    }
+      }
 
       public double interpolationError()  
       {
@@ -281,7 +281,7 @@ namespace QLNet
 
          public override double value( Vector x )
          {
-            Vector y = FastActivator<Model>.Create().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = xabr_.coeff_.model_.direct(x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_);
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();
@@ -290,7 +290,7 @@ namespace QLNet
 
          public override Vector values( Vector x )
          {
-            Vector y = FastActivator<Model>.Create().direct( x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_ );
+            Vector y = xabr_.coeff_.model_.direct(x, xabr_.coeff_.paramIsFixed_, xabr_.coeff_.params_, xabr_.forward_);
             for ( int i = 0; i < xabr_.coeff_.params_.Count; ++i )
                xabr_.coeff_.params_[i] = y[i];
             xabr_.coeff_.updateModelInstance();

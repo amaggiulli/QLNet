@@ -59,7 +59,7 @@ namespace QLNet
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
 
       //! period/date conversion
-      public Date optionDateFromTenor(Period p)
+      public virtual Date optionDateFromTenor(Period p)
       {
          // swaption style
          return calendar().advance(referenceDate(), p, businessDayConvention());

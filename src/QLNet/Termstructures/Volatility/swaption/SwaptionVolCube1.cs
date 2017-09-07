@@ -136,7 +136,7 @@ namespace QLNet
                         optionTimes_, optionTimes_.Count,
                         swapLengths_, swapLengths_.Count,
                         transposedPoints_[k]);
-               interpolators_.Add( new FlatExtrapolator2D(interpolation));
+               interpolators_.Add(new FlatExtrapolator2D(interpolation));
                interpolators_[k].enableExtrapolation();
             }
             setPoints(o.points_);   
@@ -166,10 +166,10 @@ namespace QLNet
 
             double optionTimesPreviousNode,swapLengthsPreviousNode;
 
-            optionTimesPreviousNode = optionTimes_.First(x => x >= optionTime);
+            optionTimesPreviousNode = optionTimes_.First(x => x >= Math.Min(optionTime, optionTimes_.Max()));
             int optionTimesIndex = optionTimes_.IndexOf(optionTimesPreviousNode);
 
-            swapLengthsPreviousNode = swapLengths_.First(x => x >= swapLength);
+            swapLengthsPreviousNode = swapLengths_.First(x => x >= Math.Min(swapLength, swapLengths_.Max()));
             int swapLengthsIndex = swapLengths_.IndexOf(swapLengthsPreviousNode);
 
             if (expandOptionTimes || expandSwapLengths)
@@ -329,11 +329,6 @@ namespace QLNet
          backwardFlat_ = backwardFlat;
          cutoffStrike_ = cutoffStrike;
 
-         // the current implementations are all lognormal, if we have
-         // a normal one, we can move this check to the implementing classes
-         Utils.QL_REQUIRE(atmVolStructure.link.volatilityType() == VolatilityType.ShiftedLognormal,()=>
-                   "vol cubes of type 1 require a lognormal atm surface");
-
          if (maxErrorTolerance != null) 
          {
             maxErrorTolerance_ = maxErrorTolerance.Value;
@@ -423,7 +418,7 @@ namespace QLNet
          return volCubeAtmCalibrated_.browse();
       }
 
-      public void sabrCalibrationSection( Cube marketVolCube,Cube parametersCube,Period swapTenor)
+      public void sabrCalibrationSection(Cube marketVolCube,Cube parametersCube,Period swapTenor)
       {
          List<double> optionTimes = marketVolCube.optionTimes();
          List<double> swapLengths = marketVolCube.swapLengths();
@@ -432,7 +427,7 @@ namespace QLNet
 
          int k = swapTenors.IndexOf(swapTenors.First(x => x == swapTenor));
 
-         Utils.QL_REQUIRE(k != swapTenors.Count,()=> "swap tenor not found");
+         Utils.QL_REQUIRE(k != swapTenors.Count, () => "swap tenor not found");
 
          List<double> calibrationResult = new InitializedList<double>(8,0.0);
          List<Matrix> tmpMarketVolCube = marketVolCube.points();
@@ -473,8 +468,9 @@ namespace QLNet
                                       optMethod_,
                                       errorAccept_,
                                       useMaxError_,
-                                      maxGuesses_
-                                      );//shiftTmp
+                                      maxGuesses_,
+                                      shiftTmp,
+                                      volatilityType());//shiftTmp
 
             sabrInterpolation.update();
             double interpolationError = sabrInterpolation.rmsError();
@@ -600,7 +596,7 @@ namespace QLNet
       protected void setParameterGuess()
       {
          //! set parametersGuess_ by parametersGuessQuotes_
-         parametersGuess_ = new Cube(optionDates_, swapTenors_,optionTimes_, swapLengths_, 4,true, backwardFlat_);
+         parametersGuess_ = new Cube(optionDates_, swapTenors_, optionTimes_, swapLengths_, 4, true, backwardFlat_);
          int i;
          for (i=0; i<4; i++)
             for (int j=0; j<nOptionTenors_ ; j++)
@@ -616,7 +612,7 @@ namespace QLNet
          calculate();
          List<double> sabrParameters = sabrParametersCube.value(optionTime, swapLength);
          double shiftTmp = atmVol_.link.shift(optionTime,swapLength);
-         return new SabrSmileSection( optionTime, sabrParameters[4], sabrParameters ); // ,shiftTmp
+         return new SabrSmileSection( optionTime, sabrParameters[4], sabrParameters, volatilityType(), shiftTmp ); // ,shiftTmp
       }
       protected Cube sabrCalibration(Cube marketVolCube)
       {
@@ -624,7 +620,7 @@ namespace QLNet
          List<double> swapLengths = marketVolCube.swapLengths();
          List<Date> optionDates = marketVolCube.optionDates();
          List<Period> swapTenors = marketVolCube.swapTenors();
-         Matrix alphas = new Matrix(optionTimes.Count, swapLengths.Count,0.0);
+         Matrix alphas = new Matrix(optionTimes.Count, swapLengths.Count, 0.0);
          Matrix betas= new Matrix(alphas);
          Matrix nus= new Matrix(alphas);
          Matrix rhos= new Matrix(alphas);
@@ -649,7 +645,7 @@ namespace QLNet
                for (int i=0; i<nStrikes_; i++)
                {
                   double strike = atmForward+strikeSpreads_[i];
-                  if(strike + shiftTmp >=cutoffStrike_) 
+                  if(strike + shiftTmp >= cutoffStrike_) 
                   {
                      strikes.Add(strike);
                      Matrix matrix = tmpMarketVolCube[i];
@@ -674,8 +670,9 @@ namespace QLNet
                                           optMethod_,
                                           errorAccept_,
                                           useMaxError_,
-                                          maxGuesses_
-                                          );// shiftTmp
+                                          maxGuesses_,
+                                          shiftTmp,
+                                          volatilityType());// shiftTmp
                sabrInterpolation.update();
 
                double rmsError = sabrInterpolation.rmsError();
@@ -817,10 +814,10 @@ namespace QLNet
 
          double optionTimesPreviousNode,swapLengthsPreviousNode;
 
-         optionTimesPreviousNode = optionTimes_.First(x => x >= atmOptionTime);
+         optionTimesPreviousNode = optionTimes_.First(x => x >= Math.Min(atmOptionTime, optionTimes_.Max()));
          int optionTimesPreviousIndex = optionTimes_.IndexOf(optionTimesPreviousNode);
 
-         swapLengthsPreviousNode = swapLengths_.First(x => x >= atmTimeLength);
+         swapLengthsPreviousNode = swapLengths_.First(x => x >= Math.Min(atmTimeLength, swapLengths_.Max()));
          int swapLengthsPreviousIndex = swapLengths_.IndexOf(swapLengthsPreviousNode);
 
          if (optionTimesPreviousIndex >0)

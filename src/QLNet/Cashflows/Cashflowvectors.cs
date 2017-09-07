@@ -26,9 +26,9 @@ namespace QLNet
 {
    public static partial class Utils
    {
-      public static double? toNullable(double val)
+      public static double? toNullable(double? val)
       {
-         if (val.IsEqual(double.MinValue))
+         if (val.IsEqual(double.MinValue) || val == null)
             return null;
          return val;
       }
@@ -45,8 +45,8 @@ namespace QLNet
          List<int> fixingDays,
          List<double> gearings,
          List<double> spreads,
-         List<double> caps,
-         List<double> floors,
+         List<double?> caps,
+         List<double?> floors,
          bool isInArrears,
          bool isZero)
          where InterestRateIndexType : InterestRateIndex, new()
@@ -271,8 +271,8 @@ namespace QLNet
                                                    List<double> gearings_,
                                                    List<double> spreads_,
                                                    DayCounter paymentDayCounter_,
-                                                   List<double> caps_,
-                                                   List<double> floors_,
+                                                   List<double?> caps_,
+                                                   List<double?> floors_,
                                                    Calendar paymentCalendar_,
                                                    List<int> fixingDays_,
                                                    Period observationLag_)

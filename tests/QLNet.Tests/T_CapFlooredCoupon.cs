@@ -99,7 +99,7 @@ namespace TestSuite
                .withPaymentAdjustment(convention);
          }
 
-         public List<CashFlow> makeCapFlooredLeg( Date sDate, int len, List<double> caps, List<double> floors,
+         public List<CashFlow> makeCapFlooredLeg( Date sDate, int len, List<double?> caps, List<double?> floors,
             double volatility,double gearing = 1.0,double spread = 0.0) 
          {
             Date endDate = calendar.advance( sDate, len, TimeUnit.Years, convention );
@@ -172,8 +172,8 @@ namespace TestSuite
             (depending on variance: option expiry and volatility)
          */
 
-         List<double> caps = new InitializedList<double>(vars.length,100.0);
-         List<double> floors = new InitializedList<double>(vars.length,0.0);
+         List<double?> caps = new InitializedList<double?>(vars.length,100.0);
+         List<double?> floors = new InitializedList<double?>(vars.length,0.0);
          double tolerance = 1e-10;
 
          // fixed leg with zero rate
@@ -218,10 +218,10 @@ namespace TestSuite
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         List<double> caps = new InitializedList<double>(vars.length,capstrike);
-         List<double> caps0 = new List<double>();
-         List<double> floors = new InitializedList<double>(vars.length,floorstrike);
-         List<double> floors0 = new List<double>();
+         List<double?> caps = new InitializedList<double?>(vars.length,capstrike);
+         List<double?> caps0 = new List<double?>();
+         List<double?> floors = new InitializedList<double?>(vars.length,floorstrike);
+         List<double?> floors0 = new List<double?>();
          double gearing_p = 0.5;
          double spread_p =  0.002;
          double gearing_n = -1.5;

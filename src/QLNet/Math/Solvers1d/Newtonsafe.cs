@@ -20,7 +20,7 @@
 using System;
 
 namespace QLNet {
-    class NewtonSafe : Solver1D {
+    public class NewtonSafe : Solver1D {
         //! safe %Newton 1-D solver
         /*! \note This solver requires that the passed function object
                   implement a method <tt>Real derivative(Real)</tt>.

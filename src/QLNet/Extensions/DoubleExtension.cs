@@ -44,5 +44,22 @@ namespace QLNet
          if(!d1.HasValue) return true;
          return d1.Value.IsNotEqual(d2);
       }
+
+      public static bool IsEqual(this double? d1, double? d2)
+      {
+         if (!d1.HasValue && !d2.HasValue) return true;
+         if (!d1.HasValue ) return false;
+         if (!d2.HasValue) return false;
+
+         return d1.Value.IsEqual(d2.Value);
+      }
+
+      public static bool IsNotEqual(this double? d1, double? d2)
+      {
+         if (!d1.HasValue && !d2.HasValue) return false;
+         if (!d1.HasValue) return true;
+         if (!d2.HasValue) return true;
+         return d1.Value.IsNotEqual(d2.Value);
+      }
    }
 }

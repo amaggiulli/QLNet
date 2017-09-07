@@ -43,17 +43,56 @@ namespace QLNet
                     List<Period> optionTenors,
                     List<Period> swapTenors,
                     List<List<Handle<Quote> > > vols,
-                    DayCounter dayCounter)
+                    DayCounter dayCounter,
+                    bool flatExtrapolation = false,
+                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                    List<List<double>> shifts = null)
             : base(optionTenors, swapTenors, 0, calendar, bdc, dayCounter)
         {
-            volHandles_=vols;
-            volatilities_ = new Matrix(vols.Count, vols.First().Count );
-            checkInputs(volatilities_.rows(), volatilities_.columns());
+            volHandles_= vols;
+            shiftValues_ = shifts;
+            volatilities_ = new Matrix(vols.Count, vols.First().Count);
+            shifts_ = new Matrix(vols.Count, vols.First().Count, 0.0);
+            volatilityType_ = type;
+            checkInputs(volatilities_.rows(), volatilities_.columns(), shifts_.rows(), shifts_.columns());
             registerWithMarketData();
-            interpolation_ =
-            new BilinearInterpolation(swapLengths_, swapLengths_.Count,
-            optionTimes_, optionTimes_.Count,
-            volatilities_);
+
+            // fill dummy handles to allow generic handle-based
+            if (shiftValues_ == null)
+            {
+                shiftValues_ = new InitializedList<List<double>>(volatilities_.rows());
+                for (int i = 0; i < volatilities_.rows(); ++i)
+                {
+                    shiftValues_[i] = new InitializedList<double>(volatilities_.columns());
+                    for (int j = 0; j < volatilities_.columns(); ++j)
+                    {
+                        shiftValues_[i][j] = shifts_.rows() > 0 ? shifts_[i, j] : 0.0;
+                    }
+                }
+            }
+
+            if (flatExtrapolation)
+            {
+                interpolation_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, volatilities_));
+
+                interpolationShifts_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, shifts_));
+            }
+            else
+            {
+                interpolation_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                volatilities_);
+
+                interpolationShifts_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                shifts_);
+            }
         }
         
         //! fixed reference date, floating market data
@@ -64,16 +103,56 @@ namespace QLNet
                     List<Period> optionTenors,
                     List<Period> swapTenors,
                     List<List<Handle<Quote> > > vols,
-                    DayCounter dayCounter)
+                    DayCounter dayCounter,
+                    bool flatExtrapolation = false,
+                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                    List<List<double>> shifts = null)
             : base(optionTenors, swapTenors, referenceDate, calendar, bdc, dayCounter)
         {
             volHandles_ = vols;
+            shiftValues_ = shifts;
             volatilities_ = new Matrix(vols.Count, vols.First().Count );
-            checkInputs(volatilities_.rows(), volatilities_.columns());
+            shifts_ = new Matrix(vols.Count, vols.First().Count, 0.0);
+            volatilityType_ = type;
+            checkInputs(volatilities_.rows(), volatilities_.columns(), shifts_.rows(), shifts_.columns());
             registerWithMarketData();
-            interpolation_ =new BilinearInterpolation(swapLengths_, swapLengths_.Count,
-                                                        optionTimes_, optionTimes_.Count,
-                                                        volatilities_);
+
+            // fill dummy handles to allow generic handle-based
+            if (shiftValues_ == null)
+            {
+                shiftValues_ = new InitializedList<List<double>>(volatilities_.rows());
+                for (int i = 0; i < volatilities_.rows(); ++i)
+                {
+                    shiftValues_[i] = new InitializedList<double>(volatilities_.columns());
+                    for (int j = 0; j < volatilities_.columns(); ++j)
+                    {
+                        shiftValues_[i][j] = shifts_.rows() > 0 ? shifts_[i, j] : 0.0;
+                    }
+                }
+            }
+
+            if (flatExtrapolation)
+            {
+                interpolation_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, volatilities_));
+
+                interpolationShifts_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, shifts_));
+            }
+            else
+            {
+                interpolation_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                volatilities_);
+
+                interpolationShifts_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                shifts_);
+            }
         }
         
         //! floating reference date, fixed market data
@@ -83,27 +162,52 @@ namespace QLNet
                     List<Period> optionTenors,
                     List<Period> swapTenors,
                     Matrix vols,
-                    DayCounter dayCounter)
+                    DayCounter dayCounter,
+                    bool flatExtrapolation = false,
+                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                    Matrix shifts = new Matrix())
 
             : base(optionTenors, swapTenors, 0, calendar, bdc, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
+            shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            checkInputs(vols.rows(), vols.columns());
+            shifts_ = new Matrix(vols.rows(), vols.columns(), 0.0);
+            volatilityType_ = type;
+            checkInputs(volatilities_.rows(), volatilities_.columns(), shifts_.rows(), shifts_.columns());
 
             // fill dummy handles to allow generic handle-based
             // computations later on
             for (int i=0; i<vols.rows(); ++i) {
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
+                shiftValues_[i] = new InitializedList<double>(vols.columns());
                 for (int j=0; j<vols.columns(); ++j)
                     volHandles_[i][j] = new Handle<Quote>((new
                         SimpleQuote(vols[i,j])));
             }
 
-            interpolation_ =
-            new BilinearInterpolation(swapLengths_, swapLengths_.Count,
-            optionTimes_, optionTimes_.Count,
-            volatilities_);
+            if (flatExtrapolation)
+            {
+                interpolation_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, volatilities_));
+
+                interpolationShifts_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, shifts_));
+            }
+            else
+            {
+                interpolation_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                volatilities_);
+
+                interpolationShifts_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                shifts_);
+            }
         }
         
         //! fixed reference date, fixed market data
@@ -114,27 +218,55 @@ namespace QLNet
                     List<Period> optionTenors,
                     List<Period> swapTenors,
                     Matrix vols,
-                    DayCounter dayCounter)
+                    DayCounter dayCounter,
+                    bool flatExtrapolation = false,
+                    VolatilityType type = VolatilityType.ShiftedLognormal,
+                    Matrix shifts = new Matrix())
             : base(optionTenors, swapTenors, referenceDate, calendar, bdc, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
+            shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            checkInputs(vols.rows(), vols.columns());
+            shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
+            checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
             // computations later on
-            for (int i = 0; i < vols.rows()-1; ++i)
+            for (int i = 0; i < vols.rows(); ++i)
             {
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
+                shiftValues_[i] = new InitializedList<double>(vols.columns());
                 for (int j = 0; j < vols.columns(); ++j)
+                {
                     volHandles_[i][j] = new Handle<Quote>((new
                         SimpleQuote(vols[i, j])));
+                    shiftValues_[i][j] = shifts.rows() > 0 ? shifts[i, j] : 0.0;
+                }
             }
 
-            interpolation_ =
-            new BilinearInterpolation(swapLengths_, swapLengths_.Count,
-            optionTimes_, optionTimes_.Count,
-            volatilities_);
+            if (flatExtrapolation)
+            {
+                interpolation_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, volatilities_));
+
+                interpolationShifts_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, shifts_));
+            }
+            else
+            {
+                interpolation_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                volatilities_);
+
+                interpolationShifts_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                shifts_);
+            }
         }
 
         // fixed reference date and fixed market data, option dates
@@ -142,26 +274,54 @@ namespace QLNet
                                  List<Date> optionDates,
                                  List<Period> swapTenors,
                                  Matrix vols,
-                                 DayCounter dayCounter)
+                                 DayCounter dayCounter,
+                                 bool flatExtrapolation = false,
+                                 VolatilityType type = VolatilityType.ShiftedLognormal,
+                                 Matrix shifts = new Matrix())
             : base(optionDates, swapTenors, today, new Calendar(), BusinessDayConvention.Following, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
+            shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            checkInputs(vols.rows(), vols.columns());
+            shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
+            checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
             // computations later on
             for (int i = 0; i < vols.rows(); ++i){
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
+                shiftValues_[i] = new InitializedList<double>(vols.columns());
                 for (int j = 0; j < vols.columns(); ++j)
+                {
                     volHandles_[i][j] = new Handle<Quote>((new
                         SimpleQuote(vols[i, j])));
+                    shiftValues_[i][j] = shifts.rows() > 0 ? shifts[i, j] : 0.0;
+                }
             }
 
-            interpolation_ =
-            new BilinearInterpolation(swapLengths_, swapLengths_.Count,
-            optionTimes_, optionTimes_.Count,
-            volatilities_);
+            if (flatExtrapolation)
+            {
+                interpolation_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, volatilities_));
+
+                interpolationShifts_ = new FlatExtrapolator2D(new BilinearInterpolation(
+                                                        swapLengths_, swapLengths_.Count,
+                                                        optionTimes_, optionTimes_.Count, shifts_));
+            }
+            else
+            {
+                interpolation_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                volatilities_);
+
+                interpolationShifts_ = new BilinearInterpolation(
+                                swapLengths_, swapLengths_.Count,
+                                optionTimes_, optionTimes_.Count,
+                                shifts_);
+            }
         }
 
         // LazyObject interface
@@ -171,9 +331,15 @@ namespace QLNet
             base.performCalculations();
 
             // we might use iterators here...
-            for (int i=0; i<volatilities_.rows(); ++i)
-                for (int j=0; j<volatilities_.columns(); ++j)
-                    volatilities_[i,j] = volHandles_[i][j].link.value() ;
+            for (int i = 0; i < volatilities_.rows(); ++i)
+            {
+                for (int j = 0; j < volatilities_.columns(); ++j)
+                {
+                    volatilities_[i, j] = volHandles_[i][j].link.value();
+                    if (shiftValues_.Count > 0)
+                        shifts_[i, j] = shiftValues_[i][j];
+                }
+            }
         }
 
         // TermStructure interface
@@ -210,13 +376,20 @@ namespace QLNet
                                   interpolation_.locateX(swapLength));
         }
 
+        //Volatility type
+        public override VolatilityType volatilityType()
+        {
+            return volatilityType_;
+        }
+
         #region protected
         // defining the following method would break CMS test suite
         // to be further investigated
         protected override SmileSection smileSectionImpl(double optionTime, double swapLength) 
         {
             double atmVol = volatilityImpl(optionTime, swapLength, 0.05);
-            return (SmileSection) new FlatSmileSection(optionTime, atmVol, dayCounter());
+            double shift = interpolationShifts_.value(optionTime, swapLength, true);
+            return (SmileSection)new FlatSmileSection(optionTime, atmVol, dayCounter(), null, volatilityType(), shift);
 
         } 
 
@@ -225,11 +398,20 @@ namespace QLNet
             calculate();
             return interpolation_.value(swapLength, optionTime, true);
         }
+
+        protected override double shiftImpl(double optionTime, double swapLength)
+        {
+            calculate();
+            double tmp = interpolationShifts_.value(swapLength, optionTime, true);
+            return tmp;
+        }
         #endregion 
 
         #region private
         private void checkInputs(int volRows,
-                                int volsColumns) 
+                                 int volsColumns,
+                                 int shiftRows,
+                                 int shiftsColumns) 
         {
             Utils.QL_REQUIRE(nOptionTenors_ == volRows,()=>
                "mismatch between number of option dates (" + nOptionTenors_ + ") and number of rows (" + 
@@ -237,6 +419,20 @@ namespace QLNet
             Utils.QL_REQUIRE(nSwapTenors_ == volsColumns,()=>
                 "mismatch between number of swap tenors (" + nSwapTenors_ + ") and number of rows (" + 
                 volsColumns + ") in the vol matrix");
+
+            if (shiftRows == 0 && shiftsColumns == 0)
+            {
+                shifts_ = new Matrix(volRows, volsColumns, 0.0);
+                shiftRows = volRows;
+                shiftsColumns = volsColumns;
+            }
+
+            Utils.QL_REQUIRE(nOptionTenors_ == shiftRows, () =>
+               "mismatch between number of option dates (" + nOptionTenors_ + ") and number of rows (" +
+               shiftRows + ") in the shift matrix");
+            Utils.QL_REQUIRE(nSwapTenors_ == shiftsColumns, () =>
+                "mismatch between number of swap tenors (" + nSwapTenors_ + ") and number of rows (" +
+                shiftsColumns + ") in the shift matrix");
         }
         private void registerWithMarketData()
         {
@@ -245,8 +441,10 @@ namespace QLNet
                     volHandles_[i][j].registerWith(update);
         }
         private List<List<Handle<Quote>>> volHandles_;
-        private Matrix volatilities_;
-        private Interpolation2D interpolation_;
+        private List<List<double>> shiftValues_;
+        private Matrix volatilities_, shifts_;
+        private Interpolation2D interpolation_, interpolationShifts_;
+        VolatilityType volatilityType_;
         #endregion
     }
 

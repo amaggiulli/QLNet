@@ -35,8 +35,9 @@ namespace QLNet
       protected  Region() {}
       protected struct Data
       {
-        public string name;
-        public string code;
+        public readonly string name;
+        public readonly string code;
+
         public Data(string Name, string Code)
         {
            name = Name;

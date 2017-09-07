@@ -79,8 +79,8 @@ namespace QLNet
       }
       public CapFloorTermVolSurface termVolSurface() { return termVolSurface_; }
       public IborIndex iborIndex() { return iborIndex_; }
-      public double displacement() { return displacement_; }
-      public VolatilityType volatilityType() { return volatilityType_; }
+      public override double displacement() { return displacement_; }
+      public override VolatilityType volatilityType() { return volatilityType_; }
 
       protected OptionletStripper( CapFloorTermVolSurface termVolSurface, IborIndex iborIndex,
                                    Handle<YieldTermStructure> discount = null,

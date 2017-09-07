@@ -35,8 +35,24 @@ namespace QLNet
         }
 
         // this is a version of element retrieval with some logic for default values
-        public static T Get<T>(this List<T> v, int i) { return Get(v, i, default(T)); }
-        public static T Get<T>(this List<T> v, int i, T defval) {
+        public static T Get<T>(this List<T> v, int i)
+        {
+            return Get(v, i, default(T));
+        }
+        public static T Get<T>(this List<T> v, int i, T defval)
+        {
+            if (v == null || v.Count == 0) return defval;
+            else if (i >= v.Count) return v.Last();
+            else return v[i];
+        }
+        public static Nullable<T> Get<T>(this List<Nullable<T>> v, int i) 
+            where T : struct 
+        { 
+            return Get(v, i, null); 
+        }
+        public static Nullable<T> Get<T>(this List<Nullable<T>> v, int i, Nullable<T> defval)
+             where T : struct 
+        {
             if (v == null || v.Count == 0) return defval;
             else if (i >= v.Count) return v.Last();
             else return v[i];
@@ -45,17 +61,17 @@ namespace QLNet
 
 
     public static partial class Utils {
-        public static double effectiveFixedRate(List<double> spreads, List<double> caps, List<double> floors, int i) {
+        public static double effectiveFixedRate(List<double> spreads, List<double?> caps, List<double?> floors, int i) {
             double result = Get(spreads, i);
-            double floor = Get(floors, i);
-            double cap = Get(caps, i);
-            if (floor.IsNotEqual(default(double))) result = Math.Max(floor, result);
-            if (cap.IsNotEqual(default(double))) result = Math.Min(cap, result);
+            double? floor = Get(floors, i);
+            double? cap = Get(caps, i);
+            if (floor != null) result = Math.Max(Convert.ToDouble(floor), result);
+            if (cap != null) result = Math.Min(Convert.ToDouble(cap), result);
             return result;
         }
 
-        public static bool noOption(List<double> caps, List<double> floors, int i) {
-            return Get(caps, i).IsEqual(default(double)) && Get(floors, i).IsEqual(default(double));
+        public static bool noOption(List<double?> caps, List<double?> floors, int i) {
+            return Get(caps, i) == null && Get(floors, i) == null;
         }
 
         public static void swap(ref double a1, ref double a2) { swap<double>(ref a1, ref a2); }

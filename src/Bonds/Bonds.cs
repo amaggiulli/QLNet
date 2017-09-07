@@ -400,9 +400,9 @@ namespace Bonds {
                      // Spreads
                      new List<double>() { 0.001 },
                      // Caps
-                     new List<double>(),
+                     new List<double?>(),
                      // Floors
-                     new List<double>(),
+                     new List<double?>(),
                      // Fixing in arrears
                      true,
                      100.0,

@@ -82,12 +82,12 @@ namespace QLNet
          return originalCurve_.link.forwardRate(t, t, comp_, freq_, true).value()
             + spread_.link.value();
       }
-      
-      private   Handle<YieldTermStructure> originalCurve_;
-      private   Handle<Quote> spread_;
-      private   Compounding comp_;
-      private   Frequency freq_;
-      private   DayCounter dc_;
+
+      protected Handle<YieldTermStructure> originalCurve_;
+      protected Handle<Quote> spread_;
+      protected Compounding comp_;
+      protected Frequency freq_;
+      protected DayCounter dc_;
     }
 
 }
