@@ -96,7 +96,7 @@ namespace QLNet
       }
       protected override void postAdjustValuesImpl()
       {
-         for (int i = 0; i < callabilityTimes_.Count -1; i++)
+         for (int i = 0; i < callabilityTimes_.Count; i++)
          {
             double t = callabilityTimes_[i];
             if (t >= 0.0 && isOnTime(t))
