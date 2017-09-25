@@ -91,29 +91,22 @@ namespace TestSuite
             public RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>();
 
             // utilities
-            public Swaption makeSwaption(VanillaSwap swap,Date exercise,double volatility,Settlement.Type settlementType)
+            public Swaption makeSwaption(VanillaSwap swap,Date exercise,double volatility,
+                                         Settlement.Type settlementType = Settlement.Type.Physical,
+                                         BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel model = BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.SwapRate)
             {
                 Handle<Quote> vol=new Handle <Quote>(new SimpleQuote(volatility));
-                IPricingEngine engine=new BlackSwaptionEngine(termStructure, vol);
+                IPricingEngine engine = new BlackSwaptionEngine(termStructure, vol, new Actual365Fixed(), 0.0, model);
                 Swaption result=new Swaption(swap,new EuropeanExercise(exercise),settlementType);
                 result.setPricingEngine(engine);
                 return result;
             }
 
-            public Swaption makeSwaption(VanillaSwap swap,Date exercise,double volatility)
-            {
-                Settlement.Type settlementType= Settlement.Type.Physical;
-                Handle<Quote> vol=new Handle <Quote>(new SimpleQuote(volatility));
-                IPricingEngine engine=new BlackSwaptionEngine(termStructure, vol);
-                Swaption result=new Swaption(swap,new EuropeanExercise(exercise),settlementType);
-                result.setPricingEngine(engine);
-                return result;
-            }
-
-            public IPricingEngine makeEngine(double volatility) 
+            public IPricingEngine makeEngine(double volatility,
+                                             BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel model = BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.SwapRate) 
             {
                 Handle<Quote> h = new Handle < Quote >( new SimpleQuote(volatility));
-                return (IPricingEngine)(new BlackSwaptionEngine(termStructure, h));
+                return (IPricingEngine)(new BlackSwaptionEngine(termStructure, h, new Actual365Fixed(), 0.0, model));
             }
 
             public CommonVars()
@@ -503,6 +496,344 @@ namespace TestSuite
 #else
        [Fact]
 #endif
+        public void testCashSettledSwaptions() {
+
+        CommonVars vars = new CommonVars();
+
+        double strike = 0.05;
+
+        for (int i=0; i<exercises.Length; i++) {
+            for (int j=0; j<lengths.Length; j++) {
+
+                Date exerciseDate = vars.calendar.advance(vars.today,exercises[i]);
+                Date startDate = vars.calendar.advance(exerciseDate,
+                                                       vars.settlementDays, TimeUnit.Days);
+                Date maturity =
+                    vars.calendar.advance(startDate,lengths[j],
+                                          vars.floatingConvention);
+                Schedule floatSchedule = new Schedule(startDate, maturity, vars.floatingTenor,
+                                       vars.calendar,vars.floatingConvention,
+                                       vars.floatingConvention,
+                                       DateGeneration.Rule.Forward, false);
+                // Swap with fixed leg conventions: Business Days = Unadjusted, DayCount = 30/360
+                Schedule fixedSchedule_u = new Schedule(startDate, maturity,
+                                         new Period(vars.fixedFrequency),
+                                         vars.calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                         DateGeneration.Rule.Forward, true);
+                VanillaSwap swap_u360 = 
+                    new VanillaSwap(type[0], vars.nominal,
+                                    fixedSchedule_u,strike,new Thirty360(),
+                                    floatSchedule,vars.index,0.0,
+                                    vars.index.dayCounter());
+
+                // Swap with fixed leg conventions: Business Days = Unadjusted, DayCount = Act/365
+                VanillaSwap swap_u365 = 
+                    new VanillaSwap(type[0],vars.nominal,
+                                    fixedSchedule_u,strike,new Actual365Fixed(),
+                                    floatSchedule,vars.index,0.0,
+                                    vars.index.dayCounter());
+
+                // Swap with fixed leg conventions: Business Days = Modified Following, DayCount = 30/360
+                Schedule fixedSchedule_a = new Schedule(startDate,maturity,
+                                         new Period(vars.fixedFrequency),
+                                         vars.calendar,BusinessDayConvention.ModifiedFollowing,
+                                         BusinessDayConvention.ModifiedFollowing,
+                                         DateGeneration.Rule.Forward, true);
+                VanillaSwap swap_a360 =
+                    new VanillaSwap(type[0],vars.nominal,
+                                    fixedSchedule_a,strike,new Thirty360(),
+                                    floatSchedule,vars.index,0.0,
+                                    vars.index.dayCounter());
+
+                // Swap with fixed leg conventions: Business Days = Modified Following, DayCount = Act/365
+                VanillaSwap swap_a365 =
+                    new VanillaSwap(type[0],vars.nominal,
+                                    fixedSchedule_a,strike,new Actual365Fixed(),
+                                    floatSchedule,vars.index,0.0,
+                                    vars.index.dayCounter());
+
+                IPricingEngine swapEngine =
+                                   new DiscountingSwapEngine(vars.termStructure);
+
+                swap_u360.setPricingEngine(swapEngine);
+                swap_a360.setPricingEngine(swapEngine);
+                swap_u365.setPricingEngine(swapEngine);
+                swap_a365.setPricingEngine(swapEngine);
+
+                List<CashFlow> swapFixedLeg_u360 = swap_u360.fixedLeg();
+                List<CashFlow> swapFixedLeg_a360 = swap_a360.fixedLeg();
+                List<CashFlow> swapFixedLeg_u365 = swap_u365.fixedLeg();
+                List<CashFlow> swapFixedLeg_a365 = swap_a365.fixedLeg();
+
+                // FlatForward curves
+                // FLOATING_POINT_EXCEPTION
+                Handle<YieldTermStructure> termStructure_u360  = new Handle<YieldTermStructure>(
+                        new FlatForward(vars.settlement,swap_u360.fairRate(),
+                                        new Thirty360(),Compounding.Compounded,
+                                        vars.fixedFrequency));
+                Handle<YieldTermStructure> termStructure_a360 = new Handle<YieldTermStructure>(
+                        new FlatForward(vars.settlement,swap_a360.fairRate(),
+                                        new Thirty360(),Compounding.Compounded,
+                                        vars.fixedFrequency));
+                Handle<YieldTermStructure> termStructure_u365 = new Handle<YieldTermStructure>(
+                        new FlatForward(vars.settlement,swap_u365.fairRate(),
+                                        new Actual365Fixed(),Compounding.Compounded,
+                                        vars.fixedFrequency));
+                Handle<YieldTermStructure> termStructure_a365 = new Handle<YieldTermStructure>(
+                        new FlatForward(vars.settlement,swap_a365.fairRate(),
+                                        new Actual365Fixed(),Compounding.Compounded,
+                                        vars.fixedFrequency));
+
+                // Annuity calculated by swap method fixedLegBPS().
+                // Fixed leg conventions: Unadjusted, 30/360
+                double annuity_u360 = swap_u360.fixedLegBPS() / 0.0001;
+                annuity_u360 = swap_u360.swapType==VanillaSwap.Type.Payer ?
+                    -annuity_u360 : annuity_u360;
+                // Fixed leg conventions: ModifiedFollowing, act/365
+                double annuity_a365 = swap_a365.fixedLegBPS() / 0.0001;
+                annuity_a365 = swap_a365.swapType==VanillaSwap.Type.Payer ?
+                    -annuity_a365 : annuity_a365;
+                // Fixed leg conventions: ModifiedFollowing, 30/360
+                double annuity_a360 = swap_a360.fixedLegBPS() / 0.0001;
+                annuity_a360 = swap_a360.swapType==VanillaSwap.Type.Payer ?
+                    -annuity_a360 : annuity_a360;
+                // Fixed leg conventions: Unadjusted, act/365
+                double annuity_u365 = swap_u365.fixedLegBPS() / 0.0001;
+                annuity_u365 = swap_u365.swapType==VanillaSwap.Type.Payer ?
+                    -annuity_u365 : annuity_u365;
+
+                // Calculation of Modified Annuity (cash settlement)
+                // Fixed leg conventions of swap: unadjusted, 30/360
+                double cashannuity_u360 = 0.0;
+                int k;
+                for (k=0; k<swapFixedLeg_u360.Count; k++) {
+                    cashannuity_u360 += swapFixedLeg_u360[k].amount()/strike
+                                      * termStructure_u360.currentLink().discount(
+                                        swapFixedLeg_u360[k].date());
+                }
+                // Fixed leg conventions of swap: unadjusted, act/365
+                double cashannuity_u365 = 0.0;
+                for (k=0; k<swapFixedLeg_u365.Count; k++) {
+                    cashannuity_u365 += swapFixedLeg_u365[k].amount()/strike
+                                      * termStructure_u365.currentLink().discount(
+                                        swapFixedLeg_u365[k].date());
+                }
+                // Fixed leg conventions of swap: modified following, 30/360
+                double cashannuity_a360 = 0.0;
+                for (k=0; k<swapFixedLeg_a360.Count; k++) {
+                    cashannuity_a360 += swapFixedLeg_a360[k].amount()/strike
+                                      * termStructure_a360.currentLink().discount(
+                                        swapFixedLeg_a360[k].date());
+                }
+                // Fixed leg conventions of swap: modified following, act/365
+                double cashannuity_a365 = 0.0;
+                for (k=0; k<swapFixedLeg_a365.Count; k++) {
+                    cashannuity_a365 += swapFixedLeg_a365[k].amount()/strike
+                                      * termStructure_a365.currentLink().discount(
+                                        swapFixedLeg_a365[k].date());
+                }
+
+                // Swaptions: underlying swap fixed leg conventions:
+                // unadjusted, 30/360
+
+                // Physical settled swaption
+                Swaption swaption_p_u360 =
+                    vars.makeSwaption(swap_u360,exerciseDate,0.20);
+                double value_p_u360 = swaption_p_u360.NPV();
+                // Cash settled swaption
+                Swaption swaption_c_u360 =
+                    vars.makeSwaption(swap_u360,exerciseDate,0.20,
+                                      Settlement.Type.Cash);
+                double value_c_u360 = swaption_c_u360.NPV();
+                // the NPV's ratio must be equal to annuities ratio
+                double npv_ratio_u360 = value_c_u360 / value_p_u360;
+                double annuity_ratio_u360 = cashannuity_u360 / annuity_u360;
+
+                // Swaptions: underlying swap fixed leg conventions:
+                // modified following, act/365
+
+                // Physical settled swaption
+                Swaption swaption_p_a365 =
+                    vars.makeSwaption(swap_a365,exerciseDate,0.20);
+                double value_p_a365 = swaption_p_a365.NPV();
+                // Cash settled swaption
+                Swaption swaption_c_a365 =
+                    vars.makeSwaption(swap_a365,exerciseDate,0.20,
+                                      Settlement.Type.Cash);
+                double value_c_a365 = swaption_c_a365.NPV();
+                // the NPV's ratio must be equal to annuities ratio
+                double npv_ratio_a365 = value_c_a365 / value_p_a365;
+                double annuity_ratio_a365 =  cashannuity_a365 / annuity_a365;
+
+                // Swaptions: underlying swap fixed leg conventions:
+                // modified following, 30/360
+
+                // Physical settled swaption
+                Swaption swaption_p_a360 =
+                    vars.makeSwaption(swap_a360,exerciseDate,0.20);
+                double value_p_a360 = swaption_p_a360.NPV();
+                // Cash settled swaption
+                Swaption swaption_c_a360 =
+                    vars.makeSwaption(swap_a360,exerciseDate,0.20,
+                                      Settlement.Type.Cash);
+                double value_c_a360 = swaption_c_a360.NPV();
+                // the NPV's ratio must be equal to annuities ratio
+                double npv_ratio_a360 = value_c_a360 / value_p_a360;
+                double annuity_ratio_a360 =  cashannuity_a360 / annuity_a360;
+
+                // Swaptions: underlying swap fixed leg conventions:
+                // unadjusted, act/365
+
+                // Physical settled swaption
+                Swaption swaption_p_u365 =
+                    vars.makeSwaption(swap_u365,exerciseDate,0.20);
+                double value_p_u365 = swaption_p_u365.NPV();
+                // Cash settled swaption
+                Swaption swaption_c_u365 =
+                    vars.makeSwaption(swap_u365,exerciseDate,0.20,
+                                      Settlement.Type.Cash);
+                double value_c_u365 = swaption_c_u365.NPV();
+                // the NPV's ratio must be equal to annuities ratio
+                double npv_ratio_u365 = value_c_u365 / value_p_u365;
+                double annuity_ratio_u365 =  cashannuity_u365 / annuity_u365;
+
+                if (Math.Abs(annuity_ratio_u360-npv_ratio_u360)>1e-10 ) {
+                    QAssert.Fail("\n" +
+                                "    The npv's ratio must be equal to " +
+                                " annuities ratio" + "\n" +
+                                "    Swaption " +
+                                exercises[i].units() + "y x " + lengths[j].units() + "y" +
+                                " (underlying swap fixed leg Unadjusted, 30/360)" + "\n" +
+                                "    Today           : " +
+                                vars.today + "\n" +
+                                "    Settlement date : " +
+                                vars.settlement + "\n" +
+                                "    Exercise date   : " +
+                                exerciseDate + "\n"   +
+                                "    Swap start date : " +
+                                startDate + "\n"   +
+                                "    Swap end date   : " +
+                                maturity +     "\n"   +
+                                "    physical delivered swaption npv : " +
+                                value_p_u360 + "\t\t\t" +
+                                "    annuity : " +
+                                annuity_u360 + "\n" +
+                                "    cash delivered swaption npv :     " +
+                                value_c_u360 + "\t\t\t" +
+                                "    annuity : " +
+                                cashannuity_u360 + "\n" +
+                                "    npv ratio : " +
+                                npv_ratio_u360 + "\n" +
+                                "    annuity ratio : " +
+                                annuity_ratio_u360 + "\n" +
+                                "    difference : " +
+                                (annuity_ratio_u360-npv_ratio_u360) );
+                }
+                if (Math.Abs(annuity_ratio_a365-npv_ratio_a365)>1e-10) {
+                    QAssert.Fail("\n" +
+                                "    The npv's ratio must be equal to " +
+                                " annuities ratio" + "\n" +
+                                "    Swaption " +
+                                exercises[i].units() + "y x " + lengths[j].units() + "y" +
+                                " (underlying swap fixed leg Modified Following, act/365" + "\n" +
+                                "    Today           : " +
+                                vars.today + "\n" +
+                                "    Settlement date : " +
+                                vars.settlement + "\n" +
+                                "    Exercise date   : " +
+                                exerciseDate +  "\n"  +
+                                "    Swap start date : " +
+                                startDate + "\n"   +
+                                "    Swap end date   : " +
+                                maturity +     "\n"   +
+                                "    physical delivered swaption npv : "  +
+                                value_p_a365 + "\t\t\t" +
+                                "    annuity : " +
+                                annuity_a365 + "\n" +
+                                "    cash delivered swaption npv :     "  +
+                                value_c_a365 + "\t\t\t" +
+                                "    annuity : " +
+                                cashannuity_a365 + "\n" +
+                                "    npv ratio : " +
+                                npv_ratio_a365 + "\n" +
+                                "    annuity ratio : " +
+                                annuity_ratio_a365 + "\n" +
+                                "    difference : " +
+                                (annuity_ratio_a365-npv_ratio_a365) );
+                    }
+                if (Math.Abs(annuity_ratio_a360-npv_ratio_a360)>1e-10) {
+                    QAssert.Fail("\n" +
+                                "    The npv's ratio must be equal to " +
+                                " annuities ratio" + "\n" +
+                                "    Swaption " +
+                                exercises[i].units() + "y x " + lengths[j].units() + "y" +
+                                " (underlying swap fixed leg Unadjusted, 30/360)" + "\n" +
+                                "    Today           : " +
+                                vars.today + "\n" +
+                                "    Settlement date : " +
+                                vars.settlement + "\n" +
+                                "    Exercise date   : " +
+                                exerciseDate + "\n"   +
+                                "    Swap start date : " +
+                                startDate + "\n"   +
+                                "    Swap end date   : " +
+                                maturity +     "\n"   +
+                                "    physical delivered swaption npv : " +
+                                value_p_a360 + "\t\t\t" +
+                                "    annuity : " +
+                                annuity_a360 + "\n" +
+                                "    cash delivered swaption npv :     " +
+                                value_c_a360 + "\t\t\t" +
+                                "    annuity : " +
+                                cashannuity_a360 + "\n" +
+                                "    npv ratio : " +
+                                npv_ratio_a360 + "\n" +
+                                "    annuity ratio : " +
+                                annuity_ratio_a360 + "\n" +
+                                "    difference : " +
+                                (annuity_ratio_a360-npv_ratio_a360) );
+                }
+                if (Math.Abs(annuity_ratio_u365-npv_ratio_u365)>1e-10) {
+                    QAssert.Fail("\n" +
+                                "    The npv's ratio must be equal to " +
+                                " annuities ratio" + "\n" +
+                                "    Swaption " +
+                                exercises[i].units() + "y x " + lengths[j].units() + "y" +
+                                " (underlying swap fixed leg Unadjusted, act/365)" + "\n" +
+                                "    Today           : " +
+                                vars.today + "\n" +
+                                "    Settlement date : " +
+                                vars.settlement + "\n" +
+                                "    Exercise date   : " +
+                                exerciseDate + "\n"   +
+                                "    Swap start date : " +
+                                startDate + "\n"   +
+                                "    Swap end date   : " +
+                                maturity +     "\n"   +
+                                "    physical delivered swaption npv : " +
+                                value_p_u365 + "\t\t\t" +
+                                "    annuity : " +
+                                annuity_u365 + "\n" +
+                                "    cash delivered swaption npv :     " +
+                                value_c_u365 + "\t\t\t" +
+                                "    annuity : " +
+                                cashannuity_u365 + "\n" +
+                                "    npv ratio : " +
+                                npv_ratio_u365 + "\n" +
+                                "    annuity ratio : " +
+                                annuity_ratio_u365 + "\n" +
+                                "    difference : " +
+                                (annuity_ratio_u365-npv_ratio_u365) );
+                }
+            }
+        }
+    }
+
+#if NET40 || NET45
+        [TestMethod()]
+#else
+       [Fact]
+#endif
         public void testImpliedVolatility()
         {
             // Testing implied volatility for swaptions
@@ -538,7 +869,8 @@ namespace TestSuite
                                 for (int u = 0; u < vols.Length; u++)
                                 {
                                     Swaption swaption = vars.makeSwaption(swap, exerciseDate,
-                                                                            vols[u], types[h]);
+                                                                            vols[u], types[h],
+                                                                            BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.DiscountCurve);
                                     // Black price
                                     double value = swaption.NPV();
                                     double implVol = 0.0;
@@ -554,7 +886,7 @@ namespace TestSuite
                                     catch (System.Exception e)
                                     {
                                         // couldn't bracket?
-                                        swaption.setPricingEngine(vars.makeEngine(0.0));
+                                        swaption.setPricingEngine(vars.makeEngine(0.0, BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.DiscountCurve));
                                         double value2 = swaption.NPV();
                                         if (Math.Abs(value - value2) < tolerance)
                                         {
@@ -574,7 +906,7 @@ namespace TestSuite
                                     if (Math.Abs(implVol - vols[u]) > tolerance)
                                     {
                                         // the difference might not matter
-                                        swaption.setPricingEngine(vars.makeEngine(implVol));
+                                        swaption.setPricingEngine(vars.makeEngine(implVol, BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.DiscountCurve));
                                         double value2 = swaption.NPV();
                                         if (Math.Abs(value - value2) > tolerance)
                                         {
