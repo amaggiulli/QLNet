@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace QLNet {
     public interface ISchemeFactory {
-        IMixedScheme factory(object L, object bcs);
+        IMixedScheme factory(object L, object bcs, object[] additionalInputs = null);
     }
 
     public interface IMixedScheme {

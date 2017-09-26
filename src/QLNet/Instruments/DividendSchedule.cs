@@ -22,5 +22,6 @@ namespace QLNet
 {
    public class DividendSchedule : List<Dividend>
    {
+
    }
 }

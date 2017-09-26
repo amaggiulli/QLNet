@@ -91,11 +91,11 @@ namespace QLNet
    public static partial class Utils
    {
       //! helper function building a sequence of fixed dividends
-      public static List<Dividend> DividendVector(List<Date> dividendDates, List<double> dividends)
+      public static DividendSchedule DividendVector(List<Date> dividendDates, List<double> dividends)
       {
          QL_REQUIRE(dividendDates.Count == dividends.Count,()=>"size mismatch between dividend dates and amounts");
 
-         List<Dividend> items = new List<Dividend>(dividendDates.Count);
+         DividendSchedule items = new DividendSchedule();
          for (int i = 0; i < dividendDates.Count; i++)
             items.Add(new FixedDividend(dividends[i], dividendDates[i]));
          return items;

@@ -1194,7 +1194,7 @@ namespace TestSuite
             // calculate SABR vols and compare with input vols
             for (int i = 0; i < strikes.Count; i++)
             {
-                double calculatedVol = Utils.sabrNormalVolatility(strikes[i], forward, expiry,
+                double calculatedVol = Utils.shiftedSabrNormalVolatility(strikes[i], forward, expiry,
                                                     initialAlpha, initialBeta,
                                                     initialNu, initialRho);
                 if (Math.Abs(volatilities[i] - calculatedVol) > tolerance)
