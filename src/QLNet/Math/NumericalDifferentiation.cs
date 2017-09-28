@@ -109,7 +109,6 @@ namespace QLNet
                 c1=c2;
             }
 
-
             Vector retVal = new Vector(N);
             for (int i=0; i < N; ++i) {
                 retVal[i] = d[M,N-1,i];

@@ -29,9 +29,6 @@ namespace QLNet
         from either TimeConstantOperator or TimeDependentOperator.
         Also, it must implement at least the following interface:
 
-        \code
-        typedef ... array_type;
-
         // copy constructor/assignment
         // (these will be provided by the compiler if none is defined)
         Operator(const Operator&);
@@ -80,14 +77,12 @@ namespace QLNet
             alpha_ = 2.0 - Math.Sqrt(2.0);
         }
 
-        public void step(ref object o, double t)
+        public void step(ref object a, double t)
         {
-            Vector a = (Vector)o;
-
             int i;
-            Vector aInit = new Vector(a.size());
-            for (i=0; i<a.size();i++) {
-                aInit[i] = a[i];
+            Vector aInit = new Vector((a as Vector).size());
+            for (i=0; i< (a as Vector).size();i++) {
+                aInit[i] = (a as Vector)[i];
             }
             aInit_ = aInit;
             for (i=0; i<bcs_.Count; i++)
@@ -99,9 +94,9 @@ namespace QLNet
             }
             for (i=0; i<bcs_.Count; i++)
                 bcs_[i].applyBeforeApplying(explicitTrapezoidalPart_);
-            a = explicitTrapezoidalPart_.applyTo(a);
+            a = explicitTrapezoidalPart_.applyTo((a as Vector));
             for (i=0; i<bcs_.Count; i++)
-                bcs_[i].applyAfterApplying(a);
+                bcs_[i].applyAfterApplying((a as Vector));
 
             // trapezoidal implicit part
             if (L_.isTimeDependent()) {
@@ -109,10 +104,10 @@ namespace QLNet
                 implicitPart_ = (Operator)I_.add(I_, L_.multiply(0.5 * alpha_ * dt_, L_));
             }
             for (i=0; i<bcs_.Count; i++)
-                bcs_[i].applyBeforeSolving(implicitPart_,a);
-            a = implicitPart_.solveFor(a);
+                bcs_[i].applyBeforeSolving(implicitPart_, (a as Vector));
+            a = implicitPart_.solveFor((a as Vector));
             for (i=0; i<bcs_.Count; i++)
-                bcs_[i].applyAfterSolving(a);
+                bcs_[i].applyAfterSolving((a as Vector));
 
 
             // BDF2 explicit part
@@ -129,17 +124,17 @@ namespace QLNet
             for (i = 0; i<bcs_.Count; i++) {
                 bcs_[i].applyBeforeApplying(explicitBDF2PartMid_);
             }
-            Vector b1 = explicitBDF2PartMid_.applyTo(a);
+            Vector b1 = explicitBDF2PartMid_.applyTo((a as Vector));
             for (i = 0; i<bcs_.Count; i++)
                 bcs_[i].applyAfterApplying(b1);
             a = b0+b1;
 
             // reuse implicit part - works only for alpha=2-sqrt(2)
             for (i = 0; i<bcs_.Count; i++)
-                bcs_[i].applyBeforeSolving(implicitPart_,a);
-            a = implicitPart_.solveFor(a);
+                bcs_[i].applyBeforeSolving(implicitPart_, (a as Vector));
+            a = implicitPart_.solveFor((a as Vector));
             for (i=0; i<bcs_.Count; i++)
-                bcs_[i].applyAfterSolving(a);
+                bcs_[i].applyAfterSolving((a as Vector));
         }
 
         public void setStep(double dt)
