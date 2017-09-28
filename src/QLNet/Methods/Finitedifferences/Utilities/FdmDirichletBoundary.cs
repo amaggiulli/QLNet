@@ -54,12 +54,8 @@ namespace QLNet
             }
         }
 
-        public override void applyBeforeApplying(IOperator o) {
-
-        }
-        public override void applyBeforeSolving(IOperator o, Vector v) {
-
-        }
+        public override void applyBeforeApplying(IOperator o) { return; }
+        public override void applyBeforeSolving(IOperator o, Vector v) { return; }
         public override void applyAfterApplying(Vector v) {
             foreach (int iter in indices_)
                 v[iter] = valueOnBoundary_;
@@ -67,9 +63,7 @@ namespace QLNet
         public override void applyAfterSolving(Vector v) {
             this.applyAfterApplying(v);
         }
-        public override void setTime(double t) {
-
-        }
+        public override void setTime(double t) { return; }
         public double applyAfterApplying(double x, double value) {
             return ((side_ == Side.Lower && x < xExtreme_)
                 || (side_ == Side.Upper && x > xExtreme_)) ? valueOnBoundary_ : value;
