@@ -52,6 +52,26 @@ namespace QLNet
          blackVolatility_.registerWith( update );
       }
 
+      public GeneralizedBlackScholesProcess(Handle<Quote> x0, Handle<YieldTermStructure> dividendTS,
+        Handle<YieldTermStructure> riskFreeTS, Handle<BlackVolTermStructure> blackVolTS,
+        RelinkableHandle<LocalVolTermStructure> localVolTS, IDiscretization1D disc = null)
+          : base(disc ?? new EulerDiscretization())
+      {
+          x0_ = x0;
+          riskFreeRate_ = riskFreeTS;
+          dividendYield_ = dividendTS;
+          blackVolatility_ = blackVolTS;
+          localVolatility_ = localVolTS != null ? (localVolTS.empty() ? new RelinkableHandle<LocalVolTermStructure>() : localVolTS)
+                                                : new RelinkableHandle<LocalVolTermStructure>();
+          updated_ = localVolatility_.empty() ? false : true;
+
+          x0_.registerWith(update);
+          riskFreeRate_.registerWith(update);
+          dividendYield_.registerWith(update);
+          blackVolatility_.registerWith(update);
+          localVolatility_.registerWith(update);
+      }
+
       public override double x0()
       {
          return x0_.link.value();
@@ -326,5 +346,14 @@ namespace QLNet
          Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D d)
          : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, d)
       {}
+
+       public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
+         Handle<YieldTermStructure> domesticRiskFreeTS,
+         Handle<BlackVolTermStructure> blackVolTS,
+         RelinkableHandle<LocalVolTermStructure> localVolTS,
+         IDiscretization1D d = null)
+         : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, localVolTS, d)
+      {}
+
    }
 }
