@@ -55,28 +55,27 @@ namespace QLNet
         #endregion
 
         #region IMixedScheme interface
-        public void step(ref object o, double t)
+        public void step(ref object a, double t)
         {
-            Vector a = (Vector)o;
             Utils.QL_REQUIRE(t-dt_.Value > -1e-8, () => "a step towards negative time given");
 
             map_.setTime(Math.Max(0.0, t-dt_.Value), t);
             bcSet_.setTime(Math.Max(0.0, t - dt_.Value));
 
             bcSet_.applyBeforeApplying(map_);
-            Vector y = a + dt_.Value * map_.apply(a);
+            Vector y = (a as Vector) + dt_.Value * map_.apply(a as Vector);
             bcSet_.applyAfterApplying(y);
 
             Vector y0 = y;
 
             for (int i = 0; i < map_.size(); ++i)
             {
-                Vector rhs = y - theta_ * dt_.Value * map_.apply_direction(i, a);
+                Vector rhs = y - theta_ * dt_.Value * map_.apply_direction(i, a as Vector);
                 y = map_.solve_splitting(i, rhs, -theta_ * dt_.Value);
             }
 
             bcSet_.applyBeforeApplying(map_);
-            Vector yt = y0 + mu_ * dt_.Value * map_.apply(y - a);
+            Vector yt = y0 + mu_ * dt_.Value * map_.apply(y - (a as Vector));
             bcSet_.applyAfterApplying(yt);
 
             for (int i=0; i < map_.size(); ++i) {
@@ -85,7 +84,7 @@ namespace QLNet
             }
             bcSet_.applyAfterSolving(yt);
 
-            o = yt;
+            a = yt;
         }
 
         public void setStep(double dt)

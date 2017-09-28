@@ -52,61 +52,73 @@ namespace QLNet
                 {
                     // lower left corner
                     a00_[i] = a01_[i] = a02_[i] = a10_[i] = a20_[i] = 0.0;
-                    a21_[i] = a12_[i] = -(a11_[i] = a22_[i] = 1.0 / (hp_d0.Value * hp_d1.Value));
+                    a11_[i] = a22_[i] = 1.0 / (hp_d0.Value * hp_d1.Value);
+                    a21_[i] = a12_[i] = -a11_[i];
                 }
                 else if (c0 == layout.dim()[d0_] - 1 && c1 == 0)
                 {
                     // upper left corner
                     a22_[i] = a21_[i] = a20_[i] = a10_[i] = a00_[i] = 0.0;
-                    a11_[i] = a02_[i] = -(a01_[i] = a12_[i] = 1.0 / (hm_d0.Value * hp_d1.Value));
+                    a01_[i] = a12_[i] = 1.0 / (hm_d0.Value * hp_d1.Value);
+                    a11_[i] = a02_[i] = -a01_[i];
                 }
                 else if (c0 == 0 && c1 == layout.dim()[d1_] - 1)
                 {
                     // lower right corner
                     a00_[i] = a01_[i] = a02_[i] = a12_[i] = a22_[i] = 0.0;
-                    a20_[i] = a11_[i] = -(a10_[i] = a21_[i] = 1.0 / (hp_d0.Value * hm_d1.Value));
+                    a10_[i] = a21_[i] = 1.0 / (hp_d0.Value * hm_d1.Value);
+                    a20_[i] = a11_[i] = -a10_[i];
                 }
                 else if (c0 == layout.dim()[d0_] - 1 && c1 == layout.dim()[d1_] - 1)
                 {
                     // upper right corner
                     a20_[i] = a21_[i] = a22_[i] = a12_[i] = a02_[i] = 0.0;
-                    a10_[i] = a01_[i] = -(a00_[i] = a11_[i] = 1.0 / (hm_d0.Value * hm_d1.Value));
+                    a00_[i] = a11_[i] = 1.0 / (hm_d0.Value * hm_d1.Value);
+                    a10_[i] = a01_[i] = -a00_[i];
                 }
                 else if (c0 == 0)
                 {
                     // lower side
                     a00_[i] = a01_[i] = a02_[i] = 0.0;
-
-                    a20_[i] = -(a10_[i] = hp_d1.Value / (hp_d0.Value * phim1.Value));
-                    a11_[i] = -(a21_[i] = (hp_d1.Value - hm_d1.Value) / (hp_d0.Value * phi0.Value));
-                    a12_[i] = -(a22_[i] = hm_d1.Value / (hp_d0.Value * phip1.Value));
+                    a10_[i] = hp_d1.Value / (hp_d0.Value * phim1.Value);
+                    a20_[i] = -a10_[i];
+                    a21_[i] = (hp_d1.Value - hm_d1.Value) / (hp_d0.Value * phi0.Value);
+                    a11_[i] = -a21_[i];
+                    a22_[i] = hm_d1.Value / (hp_d0.Value * phip1.Value);
+                    a12_[i] = -a22_[i];
                 }
                 else if (c0 == layout.dim()[d0_] - 1)
                 {
                     // upper side
                     a20_[i] = a21_[i] = a22_[i] = 0.0;
-
-                    a10_[i] = -(a00_[i] = hp_d1.Value / (hm_d0.Value * phim1.Value));
-                    a01_[i] = -(a11_[i] = (hp_d1.Value - hm_d1.Value) / (hm_d0.Value * phi0.Value));
-                    a02_[i] = -(a12_[i] = hm_d1.Value / (hm_d0.Value * phip1.Value));
+                    a00_[i] = hp_d1.Value / (hm_d0.Value * phim1.Value);
+                    a10_[i] = -a00_[i];
+                    a11_[i] = (hp_d1.Value - hm_d1.Value) / (hm_d0.Value * phi0.Value);
+                    a01_[i] = -a11_[i];
+                    a12_[i] = hm_d1.Value / (hm_d0.Value * phip1.Value);
+                    a02_[i] = -a12_[i];
                 }
                 else if (c1 == 0)
                 {
                     // left side
                     a00_[i] = a10_[i] = a20_[i] = 0.0;
-
-                    a02_[i] = -(a01_[i] = hp_d0.Value / (zetam1.Value * hp_d1.Value));
-                    a11_[i] = -(a12_[i] = (hp_d0.Value - hm_d0.Value) / (zeta0.Value * hp_d1.Value));
-                    a21_[i] = -(a22_[i] = hm_d0.Value / (zetap1.Value * hp_d1.Value));
+                    a01_[i] = hp_d0.Value / (zetam1.Value * hp_d1.Value);
+                    a02_[i] = -a01_[i];
+                    a12_[i] = (hp_d0.Value - hm_d0.Value) / (zeta0.Value * hp_d1.Value);
+                    a11_[i] = -a12_[i];
+                    a22_[i] = hm_d0.Value / (zetap1.Value * hp_d1.Value);
+                    a21_[i] = -a22_[i];
                 }
                 else if (c1 == layout.dim()[d1_] - 1)
                 {
                     // right side
                     a22_[i] = a12_[i] = a02_[i] = 0.0;
-
-                    a01_[i] = -(a00_[i] = hp_d0.Value / (zetam1.Value * hm_d1.Value));
-                    a10_[i] = -(a11_[i] = (hp_d0.Value - hm_d0.Value) / (zeta0.Value * hm_d1.Value));
-                    a20_[i] = -(a21_[i] = hm_d0.Value / (zetap1.Value * hm_d1.Value));
+                    a00_[i] = hp_d0.Value / (zetam1.Value * hm_d1.Value);
+                    a01_[i] = -a00_[i];
+                    a11_[i] = (hp_d0.Value - hm_d0.Value) / (zeta0.Value * hm_d1.Value);
+                    a10_[i] = -a11_[i];
+                    a21_[i] = hm_d0.Value / (zetap1.Value * hm_d1.Value);
+                    a20_[i] = -a21_[i];
                 }
                 else
                 {

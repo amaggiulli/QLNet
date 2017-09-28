@@ -26,9 +26,6 @@ namespace QLNet
         from either TimeConstantOperator or TimeDependentOperator.
         Also, it must implement at least the following interface:
 
-        \code
-        typedef ... array_type;
-
         // copy constructor/assignment
         // (these will be provided by the compiler if none is defined)
         Operator(const Operator&);

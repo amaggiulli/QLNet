@@ -26,7 +26,7 @@ namespace QLNet
 {
     public static class GenericListUtils
     {
-        public static T accumulate<T>(this List<T> list, int first, int last, T init, Func<T, T, T> func)
+        public static T accumulate<T>(this IList<T> list, int first, int last, T init, Func<T, T, T> func)
         {
             T result = init;
             for (int i = first; i < last; i++)
@@ -37,7 +37,7 @@ namespace QLNet
             return result;
         }
 
-        public static int distance<T>(this List<T> list, T first, T last)
+        public static int distance<T>(this IList<T> list, T first, T last)
         {
             int iFirst = list.IndexOf(first);
             int iLast = list.IndexOf(last);
@@ -45,7 +45,7 @@ namespace QLNet
             return (Math.Abs(iLast - iFirst + 1) * (iLast < iFirst ? -1 : 1));
         }
 
-        public static void copy<T>(this List<T> input1, int first1, int last1, int first2, List<T> output)
+        public static void copy<T>(this IList<T> input1, int first1, int last1, int first2, IList<T> output)
         {
             int index = first2;
             for (int i = first1; i < last1; i++)
@@ -54,7 +54,7 @@ namespace QLNet
             }
         }
 
-        public static double inner_product(this List<double> input1, int first1, int last1, int first2, List<double> v, double init)
+        public static double inner_product(this IList<double> input1, int first1, int last1, int first2, IList<double> v, double init)
         {
             double sum = init;
             int index = first2;
@@ -65,7 +65,7 @@ namespace QLNet
             return sum;
         }
 
-        public static int inner_product(this List<int> input1, int first1, int last1, int first2, List<int> v, int init)
+        public static int inner_product(this IList<int> input1, int first1, int last1, int first2, IList<int> v, int init)
         {
             int sum = init;
             int index = first2;

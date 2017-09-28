@@ -62,7 +62,7 @@ namespace QLNet
 
     // NOTE: There is room for performance improvement especially in
     // the array manipulation
-    public class TRBDF2<Operator> : IMixedScheme where Operator : IOperator
+    public class Trbdf2<Operator> : IMixedScheme where Operator : IOperator
     {
         protected Operator L_, I_, implicitPart_, explicitBDF2PartFull_, explicitTrapezoidalPart_, explicitBDF2PartMid_;
         protected double dt_, alpha_;
@@ -70,8 +70,8 @@ namespace QLNet
         protected List<BoundaryCondition<IOperator>> bcs_;
 
         // constructors
-        public TRBDF2() { }  // required for generics
-        public TRBDF2(Operator L, List<BoundaryCondition<IOperator>> bcs)
+        public Trbdf2() { }  // required for generics
+        public Trbdf2(Operator L, List<BoundaryCondition<IOperator>> bcs)
         {
             L_ = (Operator)L.Clone();
             I_ = (Operator)L.identity(L.size());

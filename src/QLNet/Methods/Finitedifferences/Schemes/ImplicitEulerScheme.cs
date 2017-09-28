@@ -52,25 +52,24 @@ namespace QLNet
         #endregion
 
         #region IMixedScheme interface
-        public void step(ref object o, double t)
+        public void step(ref object a, double t)
         {
-            Vector a = (Vector)o;
             Utils.QL_REQUIRE(t-dt_.Value > -1e-8, () => "a step towards negative time given");
             map_.setTime(Math.Max(0.0, t-dt_.Value), t);
             bcSet_.setTime(Math.Max(0.0, t-dt_.Value));
 
-            bcSet_.applyBeforeSolving(map_, a);
+            bcSet_.applyBeforeSolving(map_, a as Vector);
 
             if (solverType_ == SolverType.BiCGstab) {
                 BiCGStabResult result =
-                    new BiCGStab(this.apply, Math.Max(10, a.Count), relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a, a);
+                    new BiCGStab(this.apply, Math.Max(10, (a as Vector).Count), relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
 
                 iterations_ += result.iterations;
                 a = result.x;
             }
             else if (solverType_ == SolverType.GMRES) {
                 GMRESResult result = 
-                    new GMRES(this.apply, Math.Max(10, a.Count) / 10, relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a, a);
+                    new GMRES(this.apply, Math.Max(10, (a as Vector).Count) / 10, relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
 
                 iterations_ += result.errors.Count;
                 a = result.x;
@@ -78,8 +77,7 @@ namespace QLNet
             else
                 Utils.QL_FAIL("unknown/illegal solver type");
         
-            bcSet_.applyAfterSolving(a);
-            o = a;
+            bcSet_.applyAfterSolving(a as Vector);
         }
 
         public void setStep(double dt)

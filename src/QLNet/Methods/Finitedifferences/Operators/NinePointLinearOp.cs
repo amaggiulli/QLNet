@@ -94,7 +94,6 @@ namespace QLNet
             a22_ = new InitializedList<double>(m.mesher_.layout().size());
             mesher_ = m.mesher_;
 
-            int size = mesher_.layout().size();
             m.i00_.copy(0, m.i00_.Count, 0, i00_);
             m.i10_.copy(0, m.i10_.Count, 0, i10_);
             m.i20_.copy(0, m.i20_.Count, 0, i20_);
@@ -114,36 +113,36 @@ namespace QLNet
             m.a22_.copy(0, m.a22_.Count, 0, a22_);
         }
 
-        public override Vector apply(Vector u)
+        public override Vector apply(Vector r)
         {
             FdmLinearOpLayout index=mesher_.layout();
-            Utils.QL_REQUIRE(u.size() == index.size(), () => "inconsistent length of r "
-                        + u.size() + " vs " + index.size());
+            Utils.QL_REQUIRE(r.size() == index.size(), () => "inconsistent length of r "
+                        + r.size() + " vs " + index.size());
 
-            Vector retVal = new Vector(u.size());
+            Vector retVal = new Vector(r.size());
 
             //#pragma omp parallel for
             for (int i=0; i < retVal.size(); ++i) {
-                retVal[i] =   a00_[i]*u[i00_[i]]
-                            + a01_[i]*u[i01_[i]]
-                            + a02_[i]*u[i02_[i]]
-                            + a10_[i]*u[i10_[i]]
-                            + a11_[i]*u[i]
-                            + a12_[i]*u[i12_[i]]
-                            + a20_[i]*u[i20_[i]]
-                            + a21_[i]*u[i21_[i]]
-                            + a22_[i]*u[i22_[i]];
+                retVal[i] =   a00_[i]*r[i00_[i]]
+                            + a01_[i]*r[i01_[i]]
+                            + a02_[i]*r[i02_[i]]
+                            + a10_[i]*r[i10_[i]]
+                            + a11_[i]*r[i]
+                            + a12_[i]*r[i12_[i]]
+                            + a20_[i]*r[i20_[i]]
+                            + a21_[i]*r[i21_[i]]
+                            + a22_[i]*[i22_[i]];
             }
             return retVal;
         }
-        public NinePointLinearOp mult(Vector u)
+        public NinePointLinearOp mult(Vector r)
         {
             NinePointLinearOp retVal = new NinePointLinearOp(d0_, d1_, mesher_);
             int size = mesher_.layout().size();
 
             //#pragma omp parallel for
             for (int i=0; i < size; ++i) {
-                double s = u[i];
+                double s = r[i];
                 retVal.a11_[i]=a11_[i]*s; retVal.a00_[i]=a00_[i]*s;
                 retVal.a01_[i]=a01_[i]*s; retVal.a02_[i]=a02_[i]*s;
                 retVal.a10_[i]=a10_[i]*s; retVal.a20_[i]=a20_[i]*s;
@@ -193,8 +192,8 @@ namespace QLNet
         #region IOperator interface
         public override int size() { return 0; }
         public override IOperator identity(int size) { return null; }
-        public override Vector applyTo(Vector v) { return null; }
-        public override Vector solveFor(Vector rhs) { return null; }
+        public override Vector applyTo(Vector v) { return new Vector(); }
+        public override Vector solveFor(Vector rhs) { return new Vector(); }
 
         public override IOperator multiply(double a, IOperator D) { return null; }
         public override IOperator add(IOperator A, IOperator B) { return null; }
