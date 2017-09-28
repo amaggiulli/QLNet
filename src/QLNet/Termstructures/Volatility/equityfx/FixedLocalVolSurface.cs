@@ -30,12 +30,12 @@ namespace QLNet
         public static Date time2Date(Date referenceDate, DayCounter dc, double t) {
             t-=1e4*Const.QL_EPSILON; // add a small buffer for rounding errors
             Date d = new Date(referenceDate);
-            while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Years)) < t) ;
-            d -= new Period(1, TimeUnit.Years);
-            while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Months)) < t) ;
-            d -= new Period(1, TimeUnit.Months);
-            while(dc.yearFraction(referenceDate, d++) < t);
-            return d;
+         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Years)) < t);
+         d -= new Period(1, TimeUnit.Years);
+         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Months)) < t);
+         d -= new Period(1, TimeUnit.Months);
+         while (dc.yearFraction(referenceDate, d++) < t);
+         return d;
         }
     }
 
@@ -150,41 +150,39 @@ namespace QLNet
             notifyObservers();
         }
 
-        protected override double localVolImpl(double t, double underlyingLevel)
+        protected override double localVolImpl(double t, double strike)
         {
             t = Math.Min(times_.Last(), Math.Max(t, times_.First()));
 
             int idx = times_.BinarySearch(t);
-
             if (idx < 0)
-                idx = ~idx;
+               idx = ~idx;
 
             if (idx == times_.Count)
-                idx--;
-
+               idx--;
             if (Utils.close_enough(t, times_[idx]))
             {
                 if (strikes_[idx].First() < strikes_[idx].Last())
-                    return localVolInterpol_[idx].value(underlyingLevel, true);
+                    return localVolInterpol_[idx].value(strike, true);
                 else
                     return localVolMatrix_[localVolMatrix_.rows() / 2, idx];
             }
             else
             {
-                double earlierStrike = underlyingLevel, laterStrike = underlyingLevel;
+                double earlierStrike = strike, laterStrike = strike;
                 if (lowerExtrapolation_ == Extrapolation.ConstantExtrapolation)
                 {
-                    if (underlyingLevel < strikes_[idx - 1].First())
+                    if (strike < strikes_[idx - 1].First())
                         earlierStrike = strikes_[idx - 1].First();
-                    if (underlyingLevel < strikes_[idx].First())
+                    if (strike < strikes_[idx].First())
                         laterStrike = strikes_[idx].First();
                 }
 
                 if (upperExtrapolation_ == Extrapolation.ConstantExtrapolation)
                 {
-                    if (underlyingLevel > strikes_[idx - 1].Last())
+                    if (strike > strikes_[idx - 1].Last())
                         earlierStrike = strikes_[idx - 1].Last();
-                    if (underlyingLevel > strikes_[idx].Last())
+                    if (strike > strikes_[idx].Last())
                         laterStrike = strikes_[idx].Last();
                 }
 
