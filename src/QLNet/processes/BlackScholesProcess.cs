@@ -63,7 +63,7 @@ namespace QLNet
           blackVolatility_ = blackVolTS;
           localVolatility_ = localVolTS != null ? (localVolTS.empty() ? new RelinkableHandle<LocalVolTermStructure>() : localVolTS)
                                                 : new RelinkableHandle<LocalVolTermStructure>();
-          updated_ = localVolatility_.empty() ? false : true;
+          updated_ = !localVolatility_.empty();
 
           x0_.registerWith(update);
           riskFreeRate_.registerWith(update);

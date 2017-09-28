@@ -52,10 +52,10 @@ namespace QLNet
             illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
         }
 
-        protected override double localVolImpl(double t, double s) {
+        protected override double localVolImpl(double t, double underlyingLevel) {
             double vol;
             try {
-                vol = base.localVolImpl(t, s);
+                vol = base.localVolImpl(t, underlyingLevel);
             } catch {
                 vol = illegalLocalVolOverwrite_;
             }

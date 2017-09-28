@@ -150,7 +150,7 @@ namespace QLNet
             notifyObservers();
         }
 
-        protected override double localVolImpl(double t, double strike)
+        protected override double localVolImpl(double t, double underlyingLevel)
         {
             t = Math.Min(times_.Last(), Math.Max(t, times_.First()));
 
@@ -165,26 +165,26 @@ namespace QLNet
             if (Utils.close_enough(t, times_[idx]))
             {
                 if (strikes_[idx].First() < strikes_[idx].Last())
-                    return localVolInterpol_[idx].value(strike, true);
+                    return localVolInterpol_[idx].value(underlyingLevel, true);
                 else
                     return localVolMatrix_[localVolMatrix_.rows() / 2, idx];
             }
             else
             {
-                double earlierStrike = strike, laterStrike = strike;
+                double earlierStrike = underlyingLevel, laterStrike = underlyingLevel;
                 if (lowerExtrapolation_ == Extrapolation.ConstantExtrapolation)
                 {
-                    if (strike < strikes_[idx - 1].First())
+                    if (underlyingLevel < strikes_[idx - 1].First())
                         earlierStrike = strikes_[idx - 1].First();
-                    if (strike < strikes_[idx].First())
+                    if (underlyingLevel < strikes_[idx].First())
                         laterStrike = strikes_[idx].First();
                 }
 
                 if (upperExtrapolation_ == Extrapolation.ConstantExtrapolation)
                 {
-                    if (strike > strikes_[idx - 1].Last())
+                    if (underlyingLevel > strikes_[idx - 1].Last())
                         earlierStrike = strikes_[idx - 1].Last();
-                    if (strike > strikes_[idx].Last())
+                    if (underlyingLevel > strikes_[idx].Last())
                         laterStrike = strikes_[idx].Last();
                 }
 
