@@ -60,6 +60,11 @@ namespace QLNet {
             double dt = (from - to) / steps, t = from;
             evolver_.setStep(dt);
 
+            if (!stoppingTimes_.empty() && stoppingTimes_.Last() == from)
+            {
+                if (condition != null)
+                    condition.applyTo(o, from);
+            }
             for (int i=0; i<steps; ++i, t -= dt) {
                 double now = t, next = t - dt;
                 bool hit = false;

@@ -181,6 +181,16 @@ namespace QLNet
          return operValue(v1, value, (x, y) => x - y);
       }
 
+      public static Vector operator +(double value, Vector v1)
+      {
+          return operValue(v1, value, (x, y) => x + y);
+      }
+
+      public static Vector operator -(double value, Vector v1)
+      {
+          return operValue(v1, value, (x, y) => y - x);
+      }
+
       public static Vector operator *(double value, Vector v1)
       {
          return operValue(v1, value, (x, y) => x * y);
@@ -236,6 +246,11 @@ namespace QLNet
          return v1 * v2;
       }
 
+      public static double Norm2(Vector v)
+      {
+          return Math.Sqrt(v * v);
+      }
+
       public static Vector DirectMultiply(Vector v1, Vector v2)
       {
          return operVector(v1, v2, (x, y) => x * y);
@@ -253,6 +268,13 @@ namespace QLNet
          Vector result = new Vector(v.size());
          result.ForEach((i, x) => result[i] = Math.Abs(v[i]));
          return result;
+      }
+
+      public static Vector Exp(Vector v)
+      {
+          Vector result = new Vector(v.size());
+          result.ForEach((i, x) => result[i] = Math.Exp(v[i]));
+          return result;
       }
 
       public void swap(int i1, int i2)

@@ -49,6 +49,12 @@ namespace QLNet {
         public StrikedTypePayoff(Option.Type type, double strike) : base(type) {
             strike_ = strike;
         }
+
+        public StrikedTypePayoff(Payoff p)
+            : base((p as StrikedTypePayoff).type_)
+        {
+            strike_ = (p as StrikedTypePayoff).strike_;
+        }
         
         // Payoff interface
         public override string description() {

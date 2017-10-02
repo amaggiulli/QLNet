@@ -29,7 +29,7 @@ namespace QLNet
        algebra. As such, it is <b>not</b> meant to be used as a
        container.
    */
-   public struct Matrix
+   public class Matrix
    {
       #region properties
 
@@ -97,6 +97,9 @@ namespace QLNet
       #endregion
 
       #region Constructors
+
+      //! creates an empty matrix
+      public Matrix() { }
 
       //! creates a matrix with the given dimensions
       public Matrix(int rows, int columns)

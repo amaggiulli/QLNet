@@ -98,10 +98,10 @@ namespace QLNet
          evaluations_ += increase;
       }
 
-      private double? absoluteAccuracy_;
-      private double absoluteError_;
-      private int maxEvaluations_;
-      private int evaluations_;
+      protected double? absoluteAccuracy_;
+      protected double absoluteError_;
+      protected int maxEvaluations_;
+      protected int evaluations_;
 
 
    }

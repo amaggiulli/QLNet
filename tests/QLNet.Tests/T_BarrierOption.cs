@@ -1,4 +1,5 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+//  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 //  
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
@@ -399,19 +400,18 @@ namespace TestSuite
                                  expected, calculated, error, values[i].tol);
                }
 
-               // TODO FdBlackScholesBarrierEngine
-               //engine = new FdBlackScholesBarrierEngine(stochProcess, 200, 400);
-               //barrierOption.setPricingEngine(engine);
+               engine = new FdBlackScholesBarrierEngine(stochProcess, 200, 400);
+               barrierOption.setPricingEngine(engine);
 
-               //calculated = barrierOption.NPV();
-               //expected = values[i].result;
-               //error = Math.Abs(calculated-expected);
-               //if (error>5.0e-3) {
-               //   REPORT_FAILURE("fd value", values[i].barrierType, values[i].barrier,
-               //                  values[i].rebate, payoff, exercise, values[i].s,
-               //                  values[i].q, values[i].r, today, values[i].v,
-               //                  expected, calculated, error, values[i].tol);
-               //}
+               calculated = barrierOption.NPV();
+               expected = values[i].result;
+               error = Math.Abs(calculated-expected);
+               if (error>5.0e-3) {
+                  REPORT_FAILURE("fd value", values[i].barrierType, values[i].barrier,
+                                 values[i].rebate, payoff, exercise, values[i].s,
+                                 values[i].q, values[i].r, today, values[i].v,
+                                 expected, calculated, error, values[i].tol);
+               }
             }
 
             engine = new BinomialBarrierEngine(
@@ -657,6 +657,11 @@ namespace TestSuite
          }
       }
 
+      #if NET40 || NET45
+          [TestMethod()]
+      #else
+          [Fact]
+      #endif
       public void testLocalVolAndHestonComparison() 
       {
          // Testing local volatility and Heston FD engines for barrier options
@@ -718,7 +723,7 @@ namespace TestSuite
             }
     
          BlackVarianceSurface volTS = new BlackVarianceSurface(settlementDate, calendar,
-            dates,strikes, blackVolMatrix,dayCounter);
+            dates.GetRange(1, dates.Count - 1),strikes, blackVolMatrix,dayCounter);
          volTS.setInterpolation<Bicubic>();
          GeneralizedBlackScholesProcess localVolProcess = new BlackScholesMertonProcess(s0, qTS, rTS, 
             new Handle<BlackVolTermStructure>(volTS));
@@ -736,8 +741,7 @@ namespace TestSuite
          // TODO FdHestonBarrierEngine
          //IPricingEngine fdHestonEngine = new FdHestonBarrierEngine(hestonModel, 100, 400, 50);
 
-         // TODO FdBlackScholesBarrierEngine
-         //IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess,100, 400, 0,FdmSchemeDesc.Douglas(), true, 0.35);
+         IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess,100, 400, 0,new FdmSchemeDesc().Douglas(), true, 0.35);
     
          double strike  = s0.link.value();
          double barrier = 3000;
@@ -752,16 +756,16 @@ namespace TestSuite
 
          // TODO FdHestonBarrierEngine
          //barrierOption.setPricingEngine(fdHestonEngine);
-         double expectedHestonNPV = 111.5;
-         double calculatedHestonNPV = barrierOption.NPV();
+         //double expectedHestonNPV = 111.5;
+         //double calculatedHestonNPV = barrierOption.NPV();
 
-         // TODO FdBlackScholesBarrierEngine
-         //barrierOption.setPricingEngine(fdLocalVolEngine);
+         barrierOption.setPricingEngine(fdLocalVolEngine);
          double expectedLocalVolNPV = 132.8;
          double calculatedLocalVolNPV = barrierOption.NPV();
     
          double tol = 0.01;
-    
+
+         /* TODO FdHestonBarrierEngine
          if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV) 
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "
@@ -770,7 +774,7 @@ namespace TestSuite
                         + "\n    maturity:   " + exDate
                         + "\n    calculated: " + calculatedHestonNPV
                         + "\n    expected:   " + expectedHestonNPV);
-         }
+         }*/
          if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol*expectedLocalVolNPV) 
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "

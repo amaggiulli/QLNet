@@ -74,16 +74,16 @@ namespace QLNet {
 
         protected override double localVolImpl(double t, double underlyingLevel) {
 
-            double forwardValue = underlying_.link.value() *
-                (dividendTS_.link.discount(t, true)/
-                 riskFreeTS_.link.discount(t, true));
+            double dr = riskFreeTS_.currentLink().discount(t, true);
+            double dq = dividendTS_.currentLink().discount(t, true);
+            double forwardValue = underlying_.currentLink().value() * dq / dr;
 
             // strike derivatives
             double strike, y, dy, strikep, strikem;
             double w, wp, wm, dwdy, d2wdy2;
             strike = underlyingLevel;
             y = Math.Log(strike/forwardValue);
-            dy = y.IsNotEqual(0.0) ? y*0.000001 : 0.000001;
+            dy = ((Math.Abs(y) > 0.001) ? y*0.0001 : 0.000001);
             strikep=strike*Math.Exp(dy);
             strikem=strike/Math.Exp(dy);
             w  = blackTS_.link.blackVariance(t, strike,  true);
@@ -96,15 +96,27 @@ namespace QLNet {
             double dt, wpt, wmt, dwdt;
             if (t.IsEqual(0.0)) {
                 dt = 0.0001;
-                wpt = blackTS_.link.blackVariance(t+dt, strike, true);
+                double drpt = riskFreeTS_.currentLink().discount(t + dt, true);
+                double dqpt = dividendTS_.currentLink().discount(t + dt, true);
+                double strikept = strike * dr * dqpt / (drpt * dq);
+
+                wpt = blackTS_.link.blackVariance(t + dt, strikept, true);
 
                 Utils.QL_REQUIRE(wpt>=w,()=> 
                   "decreasing variance at strike " + strike + " between time " + t + " and time " + (t+dt));
                 dwdt = (wpt-w)/dt;
             } else {
                 dt = Math.Min(0.0001, t/2.0);
-                wpt = blackTS_.link.blackVariance(t+dt, strike, true);
-                wmt = blackTS_.link.blackVariance(t-dt, strike, true);
+                double drpt = riskFreeTS_.currentLink().discount(t + dt, true);
+                double drmt = riskFreeTS_.currentLink().discount(t - dt, true);
+                double dqpt = dividendTS_.currentLink().discount(t + dt, true);
+                double dqmt = dividendTS_.currentLink().discount(t - dt, true);
+
+                double strikept = strike * dr * dqpt / (drpt * dq);
+                double strikemt = strike * dr * dqmt / (drmt * dq);
+
+                wpt = blackTS_.link.blackVariance(t + dt, strikept, true);
+                wmt = blackTS_.link.blackVariance(t - dt, strikemt, true);
                 Utils.QL_REQUIRE(wpt>=w,()=> 
                   "decreasing variance at strike " + strike + " between time " + t + " and time " + (t+dt));
                 Utils.QL_REQUIRE(w>=wmt,()=> 

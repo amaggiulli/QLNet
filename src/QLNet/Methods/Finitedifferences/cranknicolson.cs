@@ -35,7 +35,8 @@ namespace QLNet {
         public CrankNicolson(Operator L, List<BoundaryCondition<IOperator>> bcs)
             : base(L, 0.5, bcs) { }
 
-        public IMixedScheme factory(object L, object bcs) {
+        public IMixedScheme factory(object L, object bcs, object[] additionalFields = null)
+        {
             return new CrankNicolson<Operator>((Operator)L, (List<BoundaryCondition<IOperator>>)bcs);
         }
     }
