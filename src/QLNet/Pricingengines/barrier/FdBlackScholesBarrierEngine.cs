@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2008 Andreas Gaida
- Copyright (C) 2008 Ralph Schreyer
- Copyright (C) 2008 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,189 +19,177 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file fdblackscholesbarrierengine.hpp
-    \brief Finite-Differences Black Scholes barrier option engine
-*/
 
 namespace QLNet
 {
-    //! Finite-Differences Black Scholes barrier option engine
+   /// <summary>
+   /// Finite-Differences Black Scholes barrier option engine
+   /// </summary>
+   public class FdBlackScholesBarrierEngine : DividendBarrierOption.Engine
+   {
+      // Constructor
+      public FdBlackScholesBarrierEngine(
+         GeneralizedBlackScholesProcess process,
+         int tGrid = 100, int xGrid = 100, int dampingSteps = 0,
+         FdmSchemeDesc schemeDesc = null,
+         bool localVol = false,
+         double? illegalLocalVolOverwrite = null)
+      {
+         process_ = process;
+         tGrid_ = tGrid;
+         xGrid_ = xGrid;
+         dampingSteps_ = dampingSteps;
+         schemeDesc_ = schemeDesc == null ? new FdmSchemeDesc().Douglas() : schemeDesc;
+         localVol_ = localVol;
+         illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
 
-    /*!
-        \ingroup barrierengines
+         process_.registerWith(update);
+      }
 
-        \test the correctness of the returned value is tested by
-              reproducing results available in web/literature
-              and comparison with Black pricing.
-    */
-    public class FdBlackScholesBarrierEngine : DividendBarrierOption.Engine
-    {
-        // Constructor
-        public FdBlackScholesBarrierEngine(
-                GeneralizedBlackScholesProcess process,
-                int tGrid = 100, int xGrid = 100, int dampingSteps = 0,
-                FdmSchemeDesc schemeDesc = null,
-                bool localVol = false, 
-                double? illegalLocalVolOverwrite = null)
-        {
-            process_ = process;
-            tGrid_ = tGrid;
-            xGrid_ = xGrid;
-            dampingSteps_ = dampingSteps;
-            schemeDesc_ = schemeDesc == null ? new FdmSchemeDesc().Douglas() : schemeDesc;
-            localVol_ = localVol;
-            illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
+      public override void calculate()
+      {
+         // 1. Mesher
+         StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
+         double maturity = process_.time(arguments_.exercise.lastDate());
 
-            process_.registerWith(update);
-        }
+         double? xMin = null;
+         double? xMax = null;
+         if (arguments_.barrierType == Barrier.Type.DownIn
+             || arguments_.barrierType == Barrier.Type.DownOut)
+         {
+            xMin = Math.Log(arguments_.barrier.Value);
+         }
+         if (arguments_.barrierType == Barrier.Type.UpIn
+             || arguments_.barrierType == Barrier.Type.UpOut)
+         {
+            xMax = Math.Log(arguments_.barrier.Value);
+         }
 
-        public override void calculate()
-        {
-            // 1. Mesher
-            StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
-            double maturity = process_.time(arguments_.exercise.lastDate());
+         Fdm1dMesher equityMesher =
+            new FdmBlackScholesMesher(xGrid_, process_, maturity,
+               payoff.strike(), xMin, xMax);
 
-            double? xMin = null;
-            double? xMax = null;
-            if (arguments_.barrierType == Barrier.Type.DownIn
-                || arguments_.barrierType == Barrier.Type.DownOut)
-            {
-                xMin = Math.Log(arguments_.barrier.Value);
-            }
-            if (arguments_.barrierType == Barrier.Type.UpIn
-                || arguments_.barrierType == Barrier.Type.UpOut)
-            {
-                xMax = Math.Log(arguments_.barrier.Value);
-            }
+         FdmMesher mesher =
+            new FdmMesherComposite(equityMesher);
 
-            Fdm1dMesher equityMesher =
-                new FdmBlackScholesMesher(xGrid_, process_, maturity,
-                                          payoff.strike(), xMin, xMax);
+         // 2. Calculator
+         FdmInnerValueCalculator calculator =
+            new FdmLogInnerValue(payoff, mesher, 0);
 
-            FdmMesher mesher =
-                new FdmMesherComposite(equityMesher);
+         // 3. Step conditions
+         List<IStepCondition<Vector>> stepConditions = new List<IStepCondition<Vector>>();
+         List<List<double>> stoppingTimes = new List<List<double>>();
 
-            // 2. Calculator
-            FdmInnerValueCalculator calculator =
-                new FdmLogInnerValue(payoff, mesher, 0);
+         // 3.1 Step condition if discrete dividends
+         FdmDividendHandler dividendCondition =
+            new FdmDividendHandler(arguments_.cashFlow, mesher,
+               process_.riskFreeRate().currentLink().referenceDate(),
+               process_.riskFreeRate().currentLink().dayCounter(), 0);
 
-            // 3. Step conditions
-            List<IStepCondition<Vector>> stepConditions = new List<IStepCondition<Vector>>();
-            List<List<double>> stoppingTimes = new List<List<double>>();
+         if (!arguments_.cashFlow.empty())
+         {
+            stepConditions.Add(dividendCondition);
+            stoppingTimes.Add(dividendCondition.dividendTimes());
+         }
 
-            // 3.1 Step condition if discrete dividends
-            FdmDividendHandler dividendCondition =
-                new FdmDividendHandler(arguments_.cashFlow, mesher,
-                                       process_.riskFreeRate().currentLink().referenceDate(),
-                                       process_.riskFreeRate().currentLink().dayCounter(), 0);
+         Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European,
+            () => "only european style option are supported");
 
-            if (!arguments_.cashFlow.empty())
-            {
-                stepConditions.Add(dividendCondition);
-                stoppingTimes.Add(dividendCondition.dividendTimes());
-            }
+         FdmStepConditionComposite conditions =
+            new FdmStepConditionComposite(stoppingTimes, stepConditions);
 
-            Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European,
-                       () => "only european style option are supported");
+         // 4. Boundary conditions
+         FdmBoundaryConditionSet boundaries = new FdmBoundaryConditionSet();
+         if (arguments_.barrierType == Barrier.Type.DownIn
+             || arguments_.barrierType == Barrier.Type.DownOut)
+         {
+            boundaries.Add(
+               new FdmDirichletBoundary(mesher, arguments_.rebate.Value, 0,
+                  FdmDirichletBoundary.Side.Lower));
+         }
 
-            FdmStepConditionComposite conditions =
-                new FdmStepConditionComposite(stoppingTimes, stepConditions);
+         if (arguments_.barrierType == Barrier.Type.UpIn
+             || arguments_.barrierType == Barrier.Type.UpOut)
+         {
+            boundaries.Add(
+               new FdmDirichletBoundary(mesher, arguments_.rebate.Value, 0,
+                  FdmDirichletBoundary.Side.Upper));
+         }
 
-            // 4. Boundary conditions
-            FdmBoundaryConditionSet boundaries = new FdmBoundaryConditionSet();
-            if (arguments_.barrierType == Barrier.Type.DownIn
-                || arguments_.barrierType == Barrier.Type.DownOut)
-            {
-                boundaries.Add(
-                    new FdmDirichletBoundary(mesher, arguments_.rebate.Value, 0,
-                                             FdmDirichletBoundary.Side.Lower));
+         // 5. Solver
+         FdmSolverDesc solverDesc = new FdmSolverDesc();
+         solverDesc.mesher = mesher;
+         solverDesc.bcSet = boundaries;
+         solverDesc.condition = conditions;
+         solverDesc.calculator = calculator;
+         solverDesc.maturity = maturity;
+         solverDesc.dampingSteps = dampingSteps_;
+         solverDesc.timeSteps = tGrid_;
 
-            }
+         FdmBlackScholesSolver solver =
+            new FdmBlackScholesSolver(
+               new Handle<GeneralizedBlackScholesProcess>(process_),
+               payoff.strike(), solverDesc, schemeDesc_,
+               localVol_, illegalLocalVolOverwrite_);
 
-            if (arguments_.barrierType == Barrier.Type.UpIn
-                || arguments_.barrierType == Barrier.Type.UpOut)
-            {
-                boundaries.Add(
-                    new FdmDirichletBoundary(mesher, arguments_.rebate.Value, 0,
-                                             FdmDirichletBoundary.Side.Upper));
-            }
+         double spot = process_.x0();
+         results_.value = solver.valueAt(spot);
+         results_.delta = solver.deltaAt(spot);
+         results_.gamma = solver.gammaAt(spot);
+         results_.theta = solver.thetaAt(spot);
 
-            // 5. Solver
-            FdmSolverDesc solverDesc = new FdmSolverDesc();
-            solverDesc.mesher = mesher;
-            solverDesc.bcSet = boundaries;
-            solverDesc.condition = conditions;
-            solverDesc.calculator = calculator;
-            solverDesc.maturity = maturity;
-            solverDesc.dampingSteps = dampingSteps_;
-            solverDesc.timeSteps = tGrid_;
+         // 6. Calculate vanilla option and rebate for in-barriers
+         if (arguments_.barrierType == Barrier.Type.DownIn
+             || arguments_.barrierType == Barrier.Type.UpIn)
+         {
+            // Cast the payoff
+            StrikedTypePayoff castedPayoff = arguments_.payoff as StrikedTypePayoff;
 
-            FdmBlackScholesSolver solver =
-                new FdmBlackScholesSolver(
-                                   new Handle<GeneralizedBlackScholesProcess>(process_),
-                                   payoff.strike(), solverDesc, schemeDesc_,
-                                   localVol_, illegalLocalVolOverwrite_);
+            // Calculate the vanilla option
+            DividendVanillaOption vanillaOption =
+               new DividendVanillaOption(castedPayoff, arguments_.exercise,
+                  dividendCondition.dividendDates(),
+                  dividendCondition.dividends());
 
-            double spot = process_.x0();
-            results_.value = solver.valueAt(spot);
-            results_.delta = solver.deltaAt(spot);
-            results_.gamma = solver.gammaAt(spot);
-            results_.theta = solver.thetaAt(spot);
+            vanillaOption.setPricingEngine(
+               new FdBlackScholesVanillaEngine(
+                  process_, tGrid_, xGrid_,
+                  0, // dampingSteps
+                  schemeDesc_, localVol_, illegalLocalVolOverwrite_));
 
-            // 6. Calculate vanilla option and rebate for in-barriers
-            if (arguments_.barrierType == Barrier.Type.DownIn
-                || arguments_.barrierType == Barrier.Type.UpIn)
-            {
-                // Cast the payoff
-                StrikedTypePayoff castedPayoff = arguments_.payoff as StrikedTypePayoff;
+            // Calculate the rebate value
+            DividendBarrierOption rebateOption =
+               new DividendBarrierOption(arguments_.barrierType,
+                  arguments_.barrier.Value,
+                  arguments_.rebate.Value,
+                  castedPayoff, arguments_.exercise,
+                  dividendCondition.dividendDates(),
+                  dividendCondition.dividends());
 
-                // Calculate the vanilla option
-                DividendVanillaOption vanillaOption =
-                     new DividendVanillaOption(castedPayoff, arguments_.exercise,
-                                               dividendCondition.dividendDates(),
-                                               dividendCondition.dividends());
+            int min_grid_size = 50;
+            int rebateDampingSteps
+               = (dampingSteps_ > 0) ? Math.Min(1, dampingSteps_ / 2) : 0;
 
-                vanillaOption.setPricingEngine(
-                    new FdBlackScholesVanillaEngine(
-                            process_, tGrid_, xGrid_,
-                            0, // dampingSteps
-                            schemeDesc_, localVol_, illegalLocalVolOverwrite_));
+            rebateOption.setPricingEngine(new FdBlackScholesRebateEngine(
+               process_, tGrid_, Math.Max(min_grid_size, xGrid_ / 5),
+               rebateDampingSteps, schemeDesc_, localVol_,
+               illegalLocalVolOverwrite_));
 
-                // Calculate the rebate value
-                DividendBarrierOption rebateOption =
-                    new DividendBarrierOption(arguments_.barrierType,
-                                              arguments_.barrier.Value,
-                                              arguments_.rebate.Value,
-                                              castedPayoff, arguments_.exercise,
-                                              dividendCondition.dividendDates(),
-                                              dividendCondition.dividends());
+            results_.value = vanillaOption.NPV() + rebateOption.NPV()
+                             - results_.value;
+            results_.delta = vanillaOption.delta() + rebateOption.delta()
+                             - results_.delta;
+            results_.gamma = vanillaOption.gamma() + rebateOption.gamma()
+                             - results_.gamma;
+            results_.theta = vanillaOption.theta() + rebateOption.theta()
+                             - results_.theta;
+         }
+      }
 
-                int min_grid_size = 50;
-                int rebateDampingSteps
-                    = (dampingSteps_ > 0) ? Math.Min(1, dampingSteps_ / 2) : 0;
-
-                rebateOption.setPricingEngine(new FdBlackScholesRebateEngine(
-                                                    process_, tGrid_, Math.Max(min_grid_size, xGrid_ / 5),
-                                                    rebateDampingSteps, schemeDesc_, localVol_,
-                                                    illegalLocalVolOverwrite_));
-
-                results_.value = vanillaOption.NPV() + rebateOption.NPV()
-                                                        - results_.value;
-                results_.delta = vanillaOption.delta() + rebateOption.delta()
-                                                        - results_.delta;
-                results_.gamma = vanillaOption.gamma() + rebateOption.gamma()
-                                                        - results_.gamma;
-                results_.theta = vanillaOption.theta() + rebateOption.theta()
-                                                        - results_.theta;
-            }
-        }
-
-        protected GeneralizedBlackScholesProcess process_;
-        protected int tGrid_, xGrid_, dampingSteps_;
-        protected FdmSchemeDesc schemeDesc_;
-        protected bool localVol_;
-        protected double? illegalLocalVolOverwrite_;
-    }
+      protected GeneralizedBlackScholesProcess process_;
+      protected int tGrid_, xGrid_, dampingSteps_;
+      protected FdmSchemeDesc schemeDesc_;
+      protected bool localVol_;
+      protected double? illegalLocalVolOverwrite_;
+   }
 }

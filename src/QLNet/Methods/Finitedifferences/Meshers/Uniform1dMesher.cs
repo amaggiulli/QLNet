@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2008 Andreas Gaida
- Copyright (C) 2008 Ralph Schreyer
- Copyright (C) 2008 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,34 +16,30 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-/*! \file uniform1dmesher.hpp
-    \brief One-dimensional simple uniform grid mesher
-*/
 
 namespace QLNet
 {
-    public class Uniform1dMesher : Fdm1dMesher
-    {
-        public Uniform1dMesher(double start, double end, int size)
-            : base(size)
-        {
-            Utils.QL_REQUIRE(end > start, () => "end must be large than start");
+   /// <summary>
+   ///  One-dimensional simple uniform grid mesher
+   /// </summary>
+   public class Uniform1dMesher : Fdm1dMesher
+   {
+      public Uniform1dMesher(double start, double end, int size)
+         : base(size)
+      {
+         Utils.QL_REQUIRE(end > start, () => "end must be large than start");
 
-            double dx = (end - start) / (size - 1);
+         double dx = (end - start) / (size - 1);
 
-            for (int i = 0; i < size - 1; ++i)
-            {
-                locations_[i] = start + i * dx;
-                dplus_[i] = dminus_[i + 1] = dx;
-            }
+         for (int i = 0; i < size - 1; ++i)
+         {
+            locations_[i] = start + i * dx;
+            dplus_[i] = dminus_[i + 1] = dx;
+         }
 
-            locations_[locations_.Count - 1] = end;
-            dplus_[dplus_.Count - 1] = null;
-            dminus_[0] = null;
-        }
-    }
+         locations_[locations_.Count - 1] = end;
+         dplus_[dplus_.Count - 1] = null;
+         dminus_[0] = null;
+      }
+   }
 }

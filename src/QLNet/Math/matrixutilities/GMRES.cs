@@ -1,5 +1,4 @@
 ﻿/*
- Copyright (C) 2017 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,10 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/*! \file gmres.hpp
-    \brief generalized minimal residual method
-*/
-
 namespace QLNet
 {
     /*! References:
@@ -43,146 +38,161 @@ namespace QLNet
         http://bilder.buecher.de/zusatz/12/12950/12950560_lese_1.pdf
     */
 
-    public struct GMRESResult
-    {
-        public GMRESResult(List<double> e, Vector xx)
-        {
-            errors = e;
-            x = xx;
-        }
+   public struct GMRESResult
+   {
+      public GMRESResult(List<double> e, Vector xx)
+      {
+         errors = e;
+         x = xx;
+      }
 
-        public List<double> errors;
-        public Vector x;
-    }
+      private List<double> errors;
+      private Vector x;
 
-    public class GMRES
-    {
-        public delegate Vector MatrixMult(Vector x);
+      public List<double> Errors { get { return errors; } set { errors = value; } }
+      public Vector X { get { return x; } set { x = value; } }
+   }
 
-        public GMRES(MatrixMult A, int maxIter, double relTol,
-                     MatrixMult preConditioner = null)
-        {
-            Utils.QL_REQUIRE(maxIter_ > 0, () => "maxIter must be greater then zero");
+   /// <summary>
+   /// Generalized minimal residual method
+   /// </summary>
+   public class GMRES
+   {
+      public delegate Vector MatrixMult(Vector x);
 
-            A_ = A;
-            M_ = preConditioner;
-            maxIter_ = maxIter;
-            relTol_ = relTol;
-        }
+      public GMRES(MatrixMult A, int maxIter, double relTol,
+         MatrixMult preConditioner = null)
+      {
+         Utils.QL_REQUIRE(maxIter_ > 0, () => "maxIter must be greater then zero");
 
-        public GMRESResult solve(Vector b, Vector x0 = null)
-        {
-            GMRESResult result = solveImpl(b, x0);
+         A_ = A;
+         M_ = preConditioner;
+         maxIter_ = maxIter;
+         relTol_ = relTol;
+      }
 
-            Utils.QL_REQUIRE(result.errors.Last() < relTol_, () => "could not converge");
+      public GMRESResult solve(Vector b, Vector x0 = null)
+      {
+         GMRESResult result = solveImpl(b, x0);
 
+         Utils.QL_REQUIRE(result.Errors.Last() < relTol_, () => "could not converge");
+
+         return result;
+      }
+
+      public GMRESResult solveWithRestart(int restart, Vector b, Vector x0 = null)
+      {
+         GMRESResult result = solveImpl(b, x0);
+
+         List<double> errors = result.Errors;
+
+         for (int i = 0; i < restart - 1 && result.Errors.Last() >= relTol_; ++i)
+         {
+            result = solveImpl(b, result.X);
+            errors.AddRange(result.Errors);
+         }
+
+         Utils.QL_REQUIRE(errors.Last() < relTol_, () => "could not converge");
+
+         result.Errors = errors;
+         return result;
+      }
+
+      protected GMRESResult solveImpl(Vector b, Vector x0)
+      {
+         double bn = Vector.Norm2(b);
+         GMRESResult result;
+         if (bn.IsEqual(0.0))
+         {
+            result = new GMRESResult(new InitializedList<double>(1, 0.0), b);
             return result;
-        }
+         }
 
-        public GMRESResult solveWithRestart(int restart, Vector b, Vector x0 = null)
-        {
-            GMRESResult result = solveImpl(b, x0);
+         Vector x = !x0.empty() ? x0 : new Vector(b.size(), 0.0);
+         Vector r = b - A_(x);
 
-            List<double> errors = result.errors;
-
-            for (int i=0; i < restart-1 && result.errors.Last() >= relTol_;++i) {
-                result = solveImpl(b, result.x);
-                errors.AddRange(result.errors);
-            }
-
-            Utils.QL_REQUIRE(errors.Last() < relTol_, () => "could not converge");
-
-            result.errors = errors;
+         double g = Vector.Norm2(r);
+         if (g / bn < relTol_)
+         {
+            result = new GMRESResult(new InitializedList<double>(1, g / bn), x);
             return result;
-        }
+         }
 
-        protected GMRESResult solveImpl(Vector b, Vector x0)
-        {
-            double bn = Vector.Norm2(b);
-            GMRESResult result;
-            if (bn == 0.0) {
-                result = new GMRESResult(new InitializedList<double>(1, 0.0), b);
-                return result;
+         List<Vector> v = new InitializedList<Vector>(1, r / g);
+         List<Vector> h = new InitializedList<Vector>(1, new Vector(maxIter_, 0.0));
+         List<double> c = new List<double>(maxIter_ + 1),
+            s = new List<double>(maxIter_ + 1),
+            z = new List<double>(maxIter_ + 1);
+
+         z[0] = g;
+
+         List<double> errors = new InitializedList<double>(1, g / bn);
+
+         for (int j = 0; j < maxIter_ && errors.Last() >= relTol_; ++j)
+         {
+            h.Add(new Vector(maxIter_, 0.0));
+            Vector w = A_((M_ != null) ? M_(v[j]) : v[j]);
+
+            for (int i = 0; i <= j; ++i)
+            {
+               h[i][j] = Vector.DotProduct(w, v[i]);
+               w -= h[i][j] * v[i];
             }
 
-            Vector x = ((!x0.empty()) ? x0 : new Vector(b.size(), 0.0));
-            Vector r = b - A_(x);
+            h[j + 1][j] = Vector.Norm2(w);
 
-            double g = Vector.Norm2(r);
-            if (g/bn < relTol_) {
-                result = new GMRESResult(new InitializedList<double>(1, g/bn), x);
-                return result;
+            if (h[j + 1][j] < Const.QL_EPSILON * Const.QL_EPSILON)
+               break;
+
+            v.Add(w / h[j + 1][j]);
+
+            for (int i = 0; i < j; ++i)
+            {
+               double h0 = c[i] * h[i][j] + s[i] * h[i + 1][j];
+               double h1 = -s[i] * h[i][j] + c[i] * h[i + 1][j];
+
+               h[i][j] = h0;
+               h[i + 1][j] = h1;
             }
 
-            List<Vector> v = new InitializedList<Vector>(1, r/g);
-            List<Vector> h = new InitializedList<Vector>(1, new Vector(maxIter_, 0.0));
-            List<double> c = new List<double>(maxIter_+1), s= new List<double>(maxIter_+1), z= new List<double>(maxIter_+1);
+            double nu = Math.Sqrt((h[j][j]) * (h[j][j])
+                                  + (h[j + 1][j]) * (h[j + 1][j]));
 
-            z[0] = g;
+            c[j] = h[j][j] / nu;
+            s[j] = h[j + 1][j] / nu;
 
-            List<double> errors = new InitializedList<double>(1, g/bn);
+            h[j][j] = nu;
+            h[j + 1][j] = 0.0;
 
-            for (int j=0; j < maxIter_ && errors.Last() >= relTol_; ++j) {
-                h.Add(new Vector(maxIter_, 0.0));
-                Vector w = A_((M_ != null)? M_(v[j]) : v[j]);
+            z[j + 1] = -s[j] * z[j];
+            z[j] = c[j] * z[j];
 
-                for (int i=0; i <= j; ++i) {
-                    h[i][j] = Vector.DotProduct(w, v[i]);
-                    w -= h[i][j] * v[i];
-                }
+            errors.Add(Math.Abs(z[j + 1] / bn));
+         }
 
-                h[j+1][j] = Vector.Norm2(w);
+         int k = v.Count - 1;
 
-                if (h[j+1][j] < Const.QL_EPSILON*Const.QL_EPSILON)
-                    break;
+         Vector y = new Vector(k, 0.0);
+         y[k - 1] = z[k - 1] / h[k - 1][k - 1];
 
-                v.Add(w / h[j+1][j]);
+         for (int i = k - 2; i >= 0; --i)
+         {
+            y[i] = (z[i] - h[i].inner_product(
+                       i + 1, k, i + 1, y, 0.0)) / h[i][i];
+         }
 
-                for (int i=0; i < j; ++i) {
-                    double h0 = c[i]*h[i][j] + s[i]*h[i+1][j];
-                    double h1 =-s[i]*h[i][j] + c[i]*h[i+1][j];
+         Vector xm = new Vector(x.Count, 0.0);
+         for (int i = 0; i < x.Count; i++)
+            xm[i] = v[i].inner_product(0, k, 0, y, 0.0);
 
-                    h[i][j]   = h0;
-                    h[i+1][j] = h1;
-                }
+         xm = x + ((M_ != null) ? M_(xm) : xm);
 
-                double nu = Math.Sqrt(  (h[j][j])*(h[j][j])
-                                          + (h[j+1][j])*(h[j+1][j]) );
+         result = new GMRESResult(errors, xm);
+         return result;
+      }
 
-                c[j] = h[j][j]/nu;
-                s[j] = h[j+1][j]/nu;
-
-                h[j][j]   = nu;
-                h[j+1][j] = 0.0;
-
-                z[j+1] = -s[j]*z[j];
-                z[j] = c[j] * z[j];
-
-                errors.Add(Math.Abs(z[j+1]/bn));
-            }
-
-            int k = v.Count-1;
-
-            Vector y = new Vector(k, 0.0);
-            y[k-1]=z[k-1]/h[k-1][k-1];
-
-            for (int i=k-2; i >= 0; --i) {
-                y[i] = (z[i] - h[i].inner_product(
-                     i+1, k, i+1, y, 0.0))/h[i][i];
-            }
-
-            Vector xm = new Vector(x.Count, 0.0);
-            for (int i = 0; i < x.Count; i++)
-                xm[i] = v[i].inner_product(0, k, 0, y, 0.0);
-
-            xm = x + ((M_ != null)? M_(xm) : xm);
-
-            result = new GMRESResult(errors, xm);
-            return result;
-        }
-
-        protected MatrixMult A_, M_;
-        protected int maxIter_;
-        protected double relTol_;
-    }
+      protected MatrixMult A_, M_;
+      protected int maxIter_;
+      protected double relTol_;
+   }
 }

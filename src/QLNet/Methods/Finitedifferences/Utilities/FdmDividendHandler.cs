@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2008 Andreas Gaida
- Copyright (C) 2008 Ralph Schreyer
- Copyright (C) 2008, 2009 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,95 +19,115 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file fdmdividendhandler.hpp
-    \brief dividend handler for fdm method for one equity direction
-*/
 
 namespace QLNet
 {
-    public class FdmDividendHandler : IStepCondition<Vector>
-    {
-        public FdmDividendHandler(DividendSchedule schedule,
-                                  FdmMesher mesher,
-                                  Date referenceDate,
-                                  DayCounter dayCounter,
-                                  int equityDirection)
-        {
-            x_ = new Vector(mesher.layout().dim()[equityDirection]);
-            mesher_ = mesher;
-            equityDirection_ = equityDirection;
+   /// <summary>
+   /// dividend handler for fdm method for one equity direction
+   /// </summary>
+   public class FdmDividendHandler : IStepCondition<Vector>
+   {
+      public FdmDividendHandler(DividendSchedule schedule,
+         FdmMesher mesher,
+         Date referenceDate,
+         DayCounter dayCounter,
+         int equityDirection)
+      {
+         x_ = new Vector(mesher.layout().dim()[equityDirection]);
+         mesher_ = mesher;
+         equityDirection_ = equityDirection;
 
-            dividends_ = new List<double>();
-            dividendDates_ = new List<Date>();
-            dividendTimes_ = new List<double>();
+         dividends_ = new List<double>();
+         dividendDates_ = new List<Date>();
+         dividendTimes_ = new List<double>();
 
-            foreach (Dividend iter in schedule) {
-                 dividends_.Add(iter.amount());
-                 dividendDates_.Add(iter.date());
-                 dividendTimes_.Add(
-                         dayCounter.yearFraction(referenceDate, iter.date()));
-             }
-      
-             Vector tmp = mesher_.locations(equityDirection);
-             int spacing = mesher_.layout().spacing()[equityDirection];
-             for (int i = 0; i < x_.size(); ++i) {
-                 x_[i] = Math.Exp(tmp[i*spacing]);
-             }
-        }
+         foreach (Dividend iter in schedule)
+         {
+            dividends_.Add(iter.amount());
+            dividendDates_.Add(iter.date());
+            dividendTimes_.Add(
+               dayCounter.yearFraction(referenceDate, iter.date()));
+         }
 
-        public void applyTo(object o, double t)
-        {
-            Vector a = (Vector)o;
-            Vector aCopy = new Vector(a);
+         Vector tmp = mesher_.locations(equityDirection);
+         int spacing = mesher_.layout().spacing()[equityDirection];
+         for (int i = 0; i < x_.size(); ++i)
+         {
+            x_[i] = Math.Exp(tmp[i * spacing]);
+         }
+      }
 
-            int iter = dividendTimes_.BinarySearch(t);
+      public void applyTo(object o, double t)
+      {
+         Vector a = (Vector) o;
+         Vector aCopy = new Vector(a);
 
-            if (iter != dividendTimes_.Count) {
-                double dividend = dividends_[iter];
+         int iter = dividendTimes_.BinarySearch(t);
 
-                if (mesher_.layout().dim().Count == 1) {
-                    LinearInterpolation interp = new LinearInterpolation(x_, x_.Count, aCopy);
-                    for (int k=0; k<x_.size(); ++k) {
-                        a[k] = interp.value(Math.Max(x_[0], x_[k]-dividend), true);
-                    }
-                }
-                else {
-                    Vector tmp = new Vector(x_.size());
-                    int xSpacing = mesher_.layout().spacing()[equityDirection_];
-                
-                    for (int i=0; i<mesher_.layout().dim().Count; ++i) {
-                        if (i!=equityDirection_) {
-                            int ySpacing = mesher_.layout().spacing()[i];
-                            for (int j=0; j<mesher_.layout().dim()[i]; ++j) {
-                                for (int k=0; k<x_.size(); ++k) {
-                                    int index = j*ySpacing + k*xSpacing;
-                                    tmp[k] = aCopy[index];
-                                }
-                                LinearInterpolation interp = new LinearInterpolation(x_, x_.Count, tmp);
-                                for (int k=0; k<x_.size(); ++k) {
-                                    int index = j*ySpacing + k*xSpacing;
-                                    a[index] = interp.value(
-                                            Math.Max(x_[0], x_[k]-dividend), true);
-                                }
-                            }
-                        }
-                    }
-                }
+         if (iter != dividendTimes_.Count)
+         {
+            double dividend = dividends_[iter];
+
+            if (mesher_.layout().dim().Count == 1)
+            {
+               LinearInterpolation interp = new LinearInterpolation(x_, x_.Count, aCopy);
+               for (int k = 0; k < x_.size(); ++k)
+               {
+                  a[k] = interp.value(Math.Max(x_[0], x_[k] - dividend), true);
+               }
             }
-        }
- 
-        public List<double> dividendTimes() { return dividendTimes_; }
-        public List<Date> dividendDates() { return dividendDates_; }
-        public List<double> dividends() { return dividends_; }
+            else
+            {
+               Vector tmp = new Vector(x_.size());
+               int xSpacing = mesher_.layout().spacing()[equityDirection_];
 
-        protected Vector x_; // grid-equity values in physical units
+               for (int i = 0; i < mesher_.layout().dim().Count; ++i)
+               {
+                  if (i != equityDirection_)
+                  {
+                     int ySpacing = mesher_.layout().spacing()[i];
+                     for (int j = 0; j < mesher_.layout().dim()[i]; ++j)
+                     {
+                        for (int k = 0; k < x_.size(); ++k)
+                        {
+                           int index = j * ySpacing + k * xSpacing;
+                           tmp[k] = aCopy[index];
+                        }
+                        LinearInterpolation interp = new LinearInterpolation(x_, x_.Count, tmp);
+                        for (int k = 0; k < x_.size(); ++k)
+                        {
+                           int index = j * ySpacing + k * xSpacing;
+                           a[index] = interp.value(
+                              Math.Max(x_[0], x_[k] - dividend), true);
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
 
-        protected List<double> dividendTimes_;
-        protected List<Date> dividendDates_;
-        protected List<double> dividends_;
-        protected FdmMesher mesher_;
-        protected int equityDirection_;
-    }
+      public List<double> dividendTimes()
+      {
+         return dividendTimes_;
+      }
+
+      public List<Date> dividendDates()
+      {
+         return dividendDates_;
+      }
+
+      public List<double> dividends()
+      {
+         return dividends_;
+      }
+
+      protected Vector x_; // grid-equity values in physical units
+
+      protected List<double> dividendTimes_;
+      protected List<Date> dividendDates_;
+      protected List<double> dividends_;
+      protected FdmMesher mesher_;
+      protected int equityDirection_;
+   }
 }

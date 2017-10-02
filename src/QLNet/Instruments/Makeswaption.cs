@@ -17,14 +17,11 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-
 namespace QLNet
 {
-/*! \file makeswaption.hpp
-    \brief Helper class to instantiate standard market swaption.
-*/
-
+   /// <summary>
+   /// Helper class to instantiate standard market swaption.
+   /// </summary>
    public class MakeSwaption
    {
       public MakeSwaption(SwapIndex swapIndex, Period optionTenor, double? strike = null)

@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2008 Andreas Gaida
- Copyright (C) 2008 Ralph Schreyer
- Copyright (C) 2008 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,80 +19,85 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file hundsdorferscheme.hpp
-    \brief Hundsdorfer operator splitting
-*/
 
 namespace QLNet
 {
-    public class HundsdorferScheme : IMixedScheme, ISchemeFactory
-    {
-        public HundsdorferScheme() { }
-        public HundsdorferScheme(double theta, double mu,
-                                 FdmLinearOpComposite map,
-                                 List<BoundaryCondition<FdmLinearOp>> bcSet = null)
-        {
-            dt_ = null;
-            theta_ = theta;
-            mu_ = mu;
-            map_ = map;
-            bcSet_ = new BoundaryConditionSchemeHelper(bcSet);
-        }
+   /// <summary>
+   /// Hundsdorfer operator splitting
+   /// </summary>
+   public class HundsdorferScheme : IMixedScheme, ISchemeFactory
+   {
+      public HundsdorferScheme()
+      { }
 
-        #region ISchemeFactory
-        public IMixedScheme factory(object L, object bcs, object[] additionalInputs = null)
-        {
-            double? theta = additionalInputs[0] as double?;
-            double? mu = additionalInputs[1] as double?;
-            return new HundsdorferScheme(theta.Value, mu.Value,
-                                         L as FdmLinearOpComposite, bcs as List<BoundaryCondition<FdmLinearOp>>);
-        }
-        #endregion
+      public HundsdorferScheme(double theta, double mu,
+         FdmLinearOpComposite map,
+         List<BoundaryCondition<FdmLinearOp>> bcSet = null)
+      {
+         dt_ = null;
+         theta_ = theta;
+         mu_ = mu;
+         map_ = map;
+         bcSet_ = new BoundaryConditionSchemeHelper(bcSet);
+      }
 
-        #region IMixedScheme interface
-        public void step(ref object a, double t)
-        {
-            Utils.QL_REQUIRE(t-dt_.Value > -1e-8, () => "a step towards negative time given");
+      #region ISchemeFactory
 
-            map_.setTime(Math.Max(0.0, t-dt_.Value), t);
-            bcSet_.setTime(Math.Max(0.0, t - dt_.Value));
+      public IMixedScheme factory(object L, object bcs, object[] additionalInputs = null)
+      {
+         double? theta = additionalInputs[0] as double?;
+         double? mu = additionalInputs[1] as double?;
+         return new HundsdorferScheme(theta.Value, mu.Value,
+            L as FdmLinearOpComposite, bcs as List<BoundaryCondition<FdmLinearOp>>);
+      }
 
-            bcSet_.applyBeforeApplying(map_);
-            Vector y = (a as Vector) + dt_.Value * map_.apply(a as Vector);
-            bcSet_.applyAfterApplying(y);
+      #endregion
 
-            Vector y0 = y;
+      #region IMixedScheme interface
 
-            for (int i = 0; i < map_.size(); ++i)
-            {
-                Vector rhs = y - theta_ * dt_.Value * map_.apply_direction(i, a as Vector);
-                y = map_.solve_splitting(i, rhs, -theta_ * dt_.Value);
-            }
+      public void step(ref object a, double t)
+      {
+         Utils.QL_REQUIRE(t - dt_.Value > -1e-8, () => "a step towards negative time given");
 
-            bcSet_.applyBeforeApplying(map_);
-            Vector yt = y0 + mu_ * dt_.Value * map_.apply(y - (a as Vector));
-            bcSet_.applyAfterApplying(yt);
+         map_.setTime(Math.Max(0.0, t - dt_.Value), t);
+         bcSet_.setTime(Math.Max(0.0, t - dt_.Value));
 
-            for (int i=0; i < map_.size(); ++i) {
-                Vector rhs = yt - theta_ * dt_.Value * map_.apply_direction(i, y);
-                yt = map_.solve_splitting(i, rhs, -theta_ * dt_.Value);
-            }
-            bcSet_.applyAfterSolving(yt);
+         bcSet_.applyBeforeApplying(map_);
+         Vector y = (a as Vector) + dt_.Value * map_.apply(a as Vector);
+         bcSet_.applyAfterApplying(y);
 
-            a = yt;
-        }
+         Vector y0 = y;
 
-        public void setStep(double dt)
-        {
-            dt_ = dt;
-        }
-        #endregion
+         for (int i = 0; i < map_.size(); ++i)
+         {
+            Vector rhs = y - theta_ * dt_.Value * map_.apply_direction(i, a as Vector);
+            y = map_.solve_splitting(i, rhs, -theta_ * dt_.Value);
+         }
 
-        protected double? dt_;
-        protected double theta_, mu_;
-        protected FdmLinearOpComposite map_;
-        protected BoundaryConditionSchemeHelper bcSet_;
-    }
+         bcSet_.applyBeforeApplying(map_);
+         Vector yt = y0 + mu_ * dt_.Value * map_.apply(y - (a as Vector));
+         bcSet_.applyAfterApplying(yt);
+
+         for (int i = 0; i < map_.size(); ++i)
+         {
+            Vector rhs = yt - theta_ * dt_.Value * map_.apply_direction(i, y);
+            yt = map_.solve_splitting(i, rhs, -theta_ * dt_.Value);
+         }
+         bcSet_.applyAfterSolving(yt);
+
+         a = yt;
+      }
+
+      public void setStep(double dt)
+      {
+         dt_ = dt;
+      }
+
+      #endregion
+
+      protected double? dt_;
+      protected double theta_, mu_;
+      protected FdmLinearOpComposite map_;
+      protected BoundaryConditionSchemeHelper bcSet_;
+   }
 }

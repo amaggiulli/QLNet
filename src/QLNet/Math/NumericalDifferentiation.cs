@@ -1,5 +1,4 @@
 ﻿/*
- Copyright (C) 2015 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,26 +18,20 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-
-/*! \file numericaldifferentiation.hpp
-    \brief numerical differentiation of arbitrary order
-           and on irregular grids
-*/
 
 
 namespace QLNet
 {
-    //! Numerical Differentiation on arbitrarily spaced grids
-
-    /*! References:
-
-        B. Fornberg, 1988. Generation of Finite Difference Formulas
-        on Arbitrarily Spaced Grids,
-        http://amath.colorado.edu/faculty/fornberg/Docs/MathComp_88_FD_formulas.pdf
-    */
-    public class NumericalDifferentiation
+   /// <summary>
+   /// Numerical Differentiation on arbitrarily spaced grids
+   /// <remarks>
+   /// References:
+   /// B. Fornberg, 1988. Generation of Finite Difference Formulas
+   /// on Arbitrarily Spaced Grids,
+   /// http://amath.colorado.edu/faculty/fornberg/Docs/MathComp_88_FD_formulas.pdf
+   /// </remarks>
+   /// </summary>
+   public class NumericalDifferentiation
     {
         public enum Scheme { Central, Backward, Forward };
 
@@ -77,7 +70,7 @@ namespace QLNet
         public Vector offsets() { return offsets_; }
         public Vector weights() { return w_; }
 
-        // This is a C++ implementation of the algorithm/pseudo code in
+        // This is a C# implementation of the algorithm/pseudo code in
         // B. Fornberg, 1998. Calculation of Weights
         //                    in Finite Difference Formulas
         // https://amath.colorado.edu/faculty/fornberg/Docs/sirev_cl.pdf

@@ -26,7 +26,7 @@ namespace QLNet
        whether it is single- or multi-asset, or whether it should use
        pseudo-random or low-discrepancy numbers for path
        generation. Such decisions are grouped in trait classes so as
-       to be orthogonal---see mctraits.hpp for examples.
+       to be orthogonal---see mctraits for examples.
 
        The constructor accepts two safe references, i.e. two smart
        pointers, one to a path generator and the other to a path

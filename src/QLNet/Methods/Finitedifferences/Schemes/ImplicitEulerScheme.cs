@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2009 Andreas Gaida
- Copyright (C) 2009 Ralph Schreyer
- Copyright (C) 2009, 2017 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -64,15 +61,15 @@ namespace QLNet
                 BiCGStabResult result =
                     new BiCGStab(this.apply, Math.Max(10, (a as Vector).Count), relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
 
-                iterations_ += result.iterations;
-                a = result.x;
+                iterations_ += result.Iterations;
+                a = result.X;
             }
             else if (solverType_ == SolverType.GMRES) {
                 GMRESResult result = 
                     new GMRES(this.apply, Math.Max(10, (a as Vector).Count) / 10, relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
 
-                iterations_ += result.errors.Count;
-                a = result.x;
+                iterations_ += result.Errors.Count;
+                a = result.X;
             }
             else
                 Utils.QL_FAIL("unknown/illegal solver type");

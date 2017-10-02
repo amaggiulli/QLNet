@@ -1,5 +1,4 @@
 ﻿/*
- Copyright (C) 2010 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -18,62 +17,66 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file fdmbermudanstepcondition.hpp
-    \brief bermudan step condition for multi dimensional problems
-*/
 
 namespace QLNet
 {
-    public class FdmBermudanStepCondition : IStepCondition<Vector>
-    {
-        public FdmBermudanStepCondition(List<Date> exerciseDates,
-                                        Date referenceDate,
-                                        DayCounter dayCounter,
-                                        FdmMesher mesher,
-                                        FdmInnerValueCalculator calculator)
-        {
-            mesher_ = mesher;
-            calculator_ = calculator;
+   /// <summary>
+   /// bermudan step condition for multi dimensional problems
+   /// </summary>
+   public class FdmBermudanStepCondition : IStepCondition<Vector>
+   {
+      public FdmBermudanStepCondition(List<Date> exerciseDates,
+         Date referenceDate,
+         DayCounter dayCounter,
+         FdmMesher mesher,
+         FdmInnerValueCalculator calculator)
+      {
+         mesher_ = mesher;
+         calculator_ = calculator;
 
-            exerciseTimes_ = new List<double>();
-            foreach (Date iter in exerciseDates) {
-                exerciseTimes_.Add(
-                                 dayCounter.yearFraction(referenceDate, iter));
+         exerciseTimes_ = new List<double>();
+         foreach (Date iter in exerciseDates)
+         {
+            exerciseTimes_.Add(
+               dayCounter.yearFraction(referenceDate, iter));
+         }
+      }
+
+      public void applyTo(object o, double t)
+      {
+         Vector a = (Vector) o;
+         if (exerciseTimes_.BinarySearch(t) != exerciseTimes_.Count)
+         {
+            FdmLinearOpLayout layout = mesher_.layout();
+            FdmLinearOpIterator endIter = layout.end();
+
+            int dims = layout.dim().Count;
+            Vector locations = new Vector(dims);
+
+            for (FdmLinearOpIterator iter = layout.begin();
+               iter != endIter;
+               ++iter)
+            {
+               for (int i = 0; i < dims; ++i)
+                  locations[i] = mesher_.location(iter, i);
+
+               double innerValue = calculator_.innerValue(iter, t);
+               if (innerValue > a[iter.index()])
+               {
+                  a[iter.index()] = innerValue;
+               }
             }
-        }
+         }
+      }
 
-        public void applyTo(object o, double t)
-        {
-            Vector a = (Vector)o;
-            if (exerciseTimes_.BinarySearch(t) != exerciseTimes_.Count) {
-            
-                FdmLinearOpLayout layout = mesher_.layout();
-                FdmLinearOpIterator endIter = layout.end();
+      public List<double> exerciseTimes()
+      {
+         return exerciseTimes_;
+      }
 
-                int dims = layout.dim().Count;
-                Vector locations = new Vector(dims);
-
-                for (FdmLinearOpIterator iter = layout.begin(); iter != endIter;
-                    ++iter) {
-                    for (int i=0; i < dims; ++i)
-                        locations[i] = mesher_.location(iter, i);
-
-                    double innerValue = calculator_.innerValue(iter, t);
-                    if (innerValue > a[iter.index()]) {
-                        a[iter.index()] = innerValue;
-                    }
-                }
-            }
-        }
-
-        public List<double> exerciseTimes() { return exerciseTimes_; }
-
-        protected List<double> exerciseTimes_;
-        protected FdmMesher mesher_;
-        protected FdmInnerValueCalculator calculator_;
-    }
+      protected List<double> exerciseTimes_;
+      protected FdmMesher mesher_;
+      protected FdmInnerValueCalculator calculator_;
+   }
 }

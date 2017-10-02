@@ -23,76 +23,83 @@ using System.Linq;
 
 namespace QLNet
 {
-/*! \file treeswapengine.hpp
-    \brief Numerical lattice engine for swaps
-*/
-    public class TreeVanillaSwapEngine
-    : LatticeShortRateModelEngine<VanillaSwap.Arguments,
-                                  VanillaSwap.Results>
-    {
-       
-        private Handle<YieldTermStructure> termStructure_;
+   /// <summary>
+   /// Numerical lattice engine for swaps
+   /// </summary>
+   public class TreeVanillaSwapEngine : LatticeShortRateModelEngine<VanillaSwap.Arguments,VanillaSwap.Results>
+   {
+      private Handle<YieldTermStructure> termStructure_;
 
-        /* Constructors
-            \note the term structure is only needed when the short-rate
-                  model cannot provide one itself.
-        */
+      /* Constructors
+          \note the term structure is only needed when the short-rate
+                model cannot provide one itself.
+      */
 
-        public TreeVanillaSwapEngine(ShortRateModel model,
-                           int timeSteps,
-                           Handle<YieldTermStructure> termStructure)
-            : base(model, timeSteps){
-            termStructure_ = termStructure;
-            termStructure_.registerWith(update);
-        }
+      public TreeVanillaSwapEngine(ShortRateModel model,
+         int timeSteps,
+         Handle<YieldTermStructure> termStructure)
+         : base(model, timeSteps)
+      {
+         termStructure_ = termStructure;
+         termStructure_.registerWith(update);
+      }
 
-        public TreeVanillaSwapEngine(ShortRateModel model,
-                           TimeGrid timeGrid,
-                           Handle<YieldTermStructure> termStructure)
-            : base(model, timeGrid){
-            termStructure_=termStructure;
-            termStructure_.registerWith(update);
-        }
-        
-        public override void calculate(){
-            if(base.model_==null)
-               throw new ArgumentException("no model specified");
+      public TreeVanillaSwapEngine(ShortRateModel model,
+         TimeGrid timeGrid,
+         Handle<YieldTermStructure> termStructure)
+         : base(model, timeGrid)
+      {
+         termStructure_ = termStructure;
+         termStructure_.registerWith(update);
+      }
 
-            Date referenceDate;
-            DayCounter dayCounter;
+      public override void calculate()
+      {
+         if (base.model_ == null)
+            throw new ArgumentException("no model specified");
 
-            ITermStructureConsistentModel tsmodel =
-                (ITermStructureConsistentModel)base.model_.link;
-            try {
-                if (tsmodel!=null) {
-                    referenceDate = tsmodel.termStructure().link.referenceDate();
-                    dayCounter = tsmodel.termStructure().link.dayCounter();
-                } else {
-                    referenceDate = termStructure_.link.referenceDate();
-                    dayCounter = termStructure_.link.dayCounter();
-                }
+         Date referenceDate;
+         DayCounter dayCounter;
+
+         ITermStructureConsistentModel tsmodel =
+            (ITermStructureConsistentModel) base.model_.link;
+         try
+         {
+            if (tsmodel != null)
+            {
+               referenceDate = tsmodel.termStructure().link.referenceDate();
+               dayCounter = tsmodel.termStructure().link.dayCounter();
             }
-            catch{
-                referenceDate = termStructure_.link.referenceDate();
-                dayCounter = termStructure_.link.dayCounter();
+            else
+            {
+               referenceDate = termStructure_.link.referenceDate();
+               dayCounter = termStructure_.link.dayCounter();
             }
+         }
+         catch
+         {
+            referenceDate = termStructure_.link.referenceDate();
+            dayCounter = termStructure_.link.dayCounter();
+         }
 
-            DiscretizedSwap swap = new DiscretizedSwap(arguments_, referenceDate, dayCounter);
-            List<double> times = swap.mandatoryTimes();
-            Lattice lattice ;
+         DiscretizedSwap swap = new DiscretizedSwap(arguments_, referenceDate, dayCounter);
+         List<double> times = swap.mandatoryTimes();
+         Lattice lattice;
 
-            if (lattice_!=null) {
-                lattice = lattice_;
-            } else {
-               TimeGrid timeGrid = new TimeGrid( times, times.Count, timeSteps_ );
-                lattice = model_.link.tree(timeGrid);
-            }
+         if (lattice_ != null)
+         {
+            lattice = lattice_;
+         }
+         else
+         {
+            TimeGrid timeGrid = new TimeGrid(times, times.Count, timeSteps_);
+            lattice = model_.link.tree(timeGrid);
+         }
 
-            swap.initialize(lattice, times.Last());
-            swap.rollback(0.0);
+         swap.initialize(lattice, times.Last());
+         swap.rollback(0.0);
 
-            results_.value = swap.presentValue();
-        }
-      
-    }
+         results_.value = swap.presentValue();
+      }
+   }
 }

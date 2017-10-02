@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2009 Andreas Gaida
- Copyright (C) 2009 Ralph Schreyer
- Copyright (C) 2009 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,8 +18,6 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace QLNet
 {
@@ -68,7 +63,7 @@ namespace QLNet
         }
 
         protected FdmSchemeType type_;
-        public double theta_, mu_;
+        private double theta_, mu_;
 
         // some default scheme descriptions
         public FdmSchemeDesc Douglas() { return new FdmSchemeDesc(FdmSchemeType.DouglasType, 0.5, 0.0); }

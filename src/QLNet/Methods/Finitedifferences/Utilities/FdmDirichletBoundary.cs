@@ -1,7 +1,4 @@
 ﻿/*
- Copyright (C) 2008 Andreas Gaida
- Copyright (C) 2008 Ralph Schreyer
- Copyright (C) 2008 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,58 +17,74 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file fdmdirichletboundary.hpp
-    \brief Dirichlet boundary conditions for differential operators
-*/
 
 namespace QLNet
 {
-    public class FdmDirichletBoundary : BoundaryCondition<FdmLinearOp>
-    {
-        public FdmDirichletBoundary(FdmMesher mesher,
-                             double valueOnBoundary, int direction, Side side)
-        {
-            side_ = side;
-            valueOnBoundary_ = valueOnBoundary;
-            indices_ = new FdmIndicesOnBoundary(mesher.layout(),
-                                                direction, side).getIndices();
-            if (side_ == Side.Lower)
-            {
-                xExtreme_ = mesher.locations(direction)[0];
-            }
-            else if (side_ == Side.Upper)
-            {
-                xExtreme_ = mesher
-                    .locations(direction)[mesher.layout().dim()[direction] - 1];
-            }
-            else
-            {
-                Utils.QL_FAIL("internal error");
-            }
-        }
+   /// <summary>
+   /// Dirichlet boundary conditions for differential operators
+   /// </summary>
+   public class FdmDirichletBoundary : BoundaryCondition<FdmLinearOp>
+   {
+      public FdmDirichletBoundary(FdmMesher mesher,
+         double valueOnBoundary, int direction, Side side)
+      {
+         side_ = side;
+         valueOnBoundary_ = valueOnBoundary;
+         indices_ = new FdmIndicesOnBoundary(mesher.layout(),
+            direction, side).getIndices();
+         if (side_ == Side.Lower)
+         {
+            xExtreme_ = mesher.locations(direction)[0];
+         }
+         else if (side_ == Side.Upper)
+         {
+            xExtreme_ = mesher
+               .locations(direction)[mesher.layout().dim()[direction] - 1];
+         }
+         else
+         {
+            Utils.QL_FAIL("internal error");
+         }
+      }
 
-        public override void applyBeforeApplying(IOperator o) { return; }
-        public override void applyBeforeSolving(IOperator o, Vector v) { return; }
-        public override void applyAfterApplying(Vector v) {
-            foreach (int iter in indices_)
-                v[iter] = valueOnBoundary_;
-        }
-        public override void applyAfterSolving(Vector v) {
-            this.applyAfterApplying(v);
-        }
-        public override void setTime(double t) { return; }
-        public double applyAfterApplying(double x, double value) {
-            return ((side_ == Side.Lower && x < xExtreme_)
-                || (side_ == Side.Upper && x > xExtreme_)) ? valueOnBoundary_ : value;
-        }
+      public override void applyBeforeApplying(IOperator o)
+      {
+         return;
+      }
 
-        protected Side side_;  
-        protected double valueOnBoundary_;
-        protected List<int> indices_;
-        protected double xExtreme_;
-    }
+      public override void applyBeforeSolving(IOperator o, Vector v)
+      {
+         return;
+      }
+
+      public override void applyAfterApplying(Vector v)
+      {
+         foreach (int iter in indices_)
+            v[iter] = valueOnBoundary_;
+      }
+
+      public override void applyAfterSolving(Vector v)
+      {
+         this.applyAfterApplying(v);
+      }
+
+      public override void setTime(double t)
+      {
+         return;
+      }
+
+      public double applyAfterApplying(double x, double value)
+      {
+         return ((side_ == Side.Lower && x < xExtreme_)
+                 || (side_ == Side.Upper && x > xExtreme_))
+            ? valueOnBoundary_
+            : value;
+      }
+
+      protected Side side_;
+      protected double valueOnBoundary_;
+      protected List<int> indices_;
+      protected double xExtreme_;
+   }
 }

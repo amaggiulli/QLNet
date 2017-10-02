@@ -1,6 +1,4 @@
 ﻿/*
- Copyright (C) 2015 Johannes Goettker-Schnetmann
- Copyright (C) 2015 Klaus Spanderen
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
  
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
