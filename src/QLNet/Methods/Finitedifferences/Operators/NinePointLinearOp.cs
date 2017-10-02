@@ -131,7 +131,7 @@ namespace QLNet
                             + a12_[i]*r[i12_[i]]
                             + a20_[i]*r[i20_[i]]
                             + a21_[i]*r[i21_[i]]
-                            + a22_[i]*[i22_[i]];
+                            + a22_[i]*r[i22_[i]];
             }
             return retVal;
         }
