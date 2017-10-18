@@ -94,7 +94,7 @@ namespace TestSuite {
         }
 
         public static double relativeError(double x1, double x2, double reference) {
-            if (reference != 0.0)
+            if (reference.IsNotEqual(0.0))
                 return Math.Abs(x1 - x2) / reference;
             else
                 // fall back to absolute error
