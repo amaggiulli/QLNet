@@ -266,7 +266,49 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
+#else
+       [Fact]
+#endif
+      public void testCDS2015Convention()
+      {
+         // Testing CDS2015 semi-annual rolling convention
+         //From September 20th 2016 to March 19th 2017 of the next Year,
+         //end date is December 20th 2021 for a 5 year Swap
+         Schedule s1 = new  MakeSchedule().from(new Date(12, Month.December, 2016))
+                                          .to(new Date(12, Month.December, 2016) + new Period(5, TimeUnit.Years))
+                                          .withCalendar(new WeekendsOnly())
+                                          .withTenor(new Period(3 , TimeUnit.Months))
+                                          .withConvention(BusinessDayConvention.ModifiedFollowing)
+                                          .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+                                          .withRule(DateGeneration.Rule.CDS2015).value();
+         QAssert.IsTrue(s1.startDate() == new Date(20, Month.September, 2016));
+         QAssert.IsTrue(s1.endDate() == new Date(20, Month.December, 2021));
+         Schedule s2 = new MakeSchedule().from(new Date(1, Month.March, 2017))
+                                         .to(new Date(1, Month.March, 2017) + new Period(5, TimeUnit.Years))
+                                         .withCalendar(new WeekendsOnly())
+                                         .withTenor(new Period(3 , TimeUnit.Months))
+                                         .withConvention(BusinessDayConvention.ModifiedFollowing)
+                                         .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+                                         .withRule(DateGeneration.Rule.CDS2015).value();
+         QAssert.IsTrue(s2.startDate() == new Date(20, Month.December, 2016));
+         QAssert.IsTrue(s2.endDate() == new Date(20, Month.December, 2021));
+         //From March 20th 2017 to September 19th 2017
+         //end date is June 20th 2022 for a 5 year Swap
+         Schedule s3 = new MakeSchedule().from(new Date(20, Month.March, 2017))
+                                         .to(new Date(20, Month.March, 2017) + new Period(5, TimeUnit.Years))
+                                         .withCalendar(new WeekendsOnly())
+                                         .withTenor(new Period(3 , TimeUnit.Months))
+                                         .withConvention(BusinessDayConvention.ModifiedFollowing)
+                                         .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+                                         .withRule(DateGeneration.Rule.CDS2015).value();
+         QAssert.IsTrue(s3.startDate() == new Date(20, Month.March, 2017));
+         QAssert.IsTrue(s3.endDate() == new Date(20, Month.June, 2022));
+
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
 #else
        [Fact]
 #endif
