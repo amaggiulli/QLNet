@@ -105,11 +105,6 @@ namespace QLNet {
 
       public Date initialDate(YieldTermStructure c) { return traits_.initialDate(c); }
       public double initialValue(YieldTermStructure c) { return traits_.initialValue(c); }
-      public bool dummyInitialValue() { return traits_.dummyInitialValue(); }
-      public double initialGuess() { return traits_.initialGuess(); }
-      public double guess(YieldTermStructure c, Date d) { return traits_.guess(c, d); }
-      public double minValueAfter(int s, List<double> l) { return traits_.minValueAfter(s, l); }
-      public double maxValueAfter(int s, List<double> l) { return traits_.maxValueAfter(s, l); }
       public void updateGuess(List<double> data, double discount, int i) { traits_.updateGuess(data, discount, i); }
       public int maxIterations() { return traits_.maxIterations(); }
 
