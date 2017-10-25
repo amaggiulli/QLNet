@@ -1283,6 +1283,9 @@
     <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs">
       <Link>Pricingengines\barrier\AnalyticBinaryBarrierEngine.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticDoubleBarrierBinaryEngine.cs">
+      <Link>Pricingengines\barrier\AnalyticDoubleBarrierBinaryEngine.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\AnalyticDoubleBarrierEngine.cs">
       <Link>Pricingengines\barrier\AnalyticDoubleBarrierEngine.cs</Link>
     </Compile>
@@ -1291,6 +1294,12 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\DiscretizedBarrierOption.cs">
       <Link>Pricingengines\barrier\DiscretizedBarrierOption.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\BinomialDoubleBarrierEngine.cs">
+      <Link>Pricingengines\barrier\BinomialDoubleBarrierEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\DiscretizedDoubleBarrierOption.cs">
+      <Link>Pricingengines\barrier\DiscretizedDoubleBarrierOption.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesBarrierEngine.cs">
       <Link>Pricingengines\barrier\FdBlackScholesBarrierEngine.cs</Link>
