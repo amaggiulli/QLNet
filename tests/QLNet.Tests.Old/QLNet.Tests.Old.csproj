@@ -97,6 +97,7 @@
     <Compile Include="..\QLNet.Tests\T_DigitalCoupon.cs" />
     <Compile Include="..\QLNet.Tests\T_DigitalOption.cs" />
     <Compile Include="..\QLNet.Tests\T_DoubleBarrierOption.cs" />
+    <Compile Include="..\QLNet.Tests\T_DoubleBinaryOption.cs" />
     <Compile Include="..\QLNet.Tests\T_ForwardOption.cs" />
     <Compile Include="..\QLNet.Tests\T_Functions.cs" />
     <Compile Include="..\QLNet.Tests\T_HestonModel.cs" />
