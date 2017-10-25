@@ -507,6 +507,9 @@
     <Compile Include="..\QLNet\Instruments\MakeOIS.cs">
       <Link>Instruments\MakeOIS.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Instruments\MakeCDS.cs">
+      <Link>Instruments\MakeCDS.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Instruments\Makeswaption.cs">
       <Link>Instruments\Makeswaption.cs</Link>
     </Compile>
@@ -605,8 +608,14 @@
     <Compile Include="..\QLNet\Math\Comparison.cs">
       <Link>Math\Comparison.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Math\NumericalDifferentiation.cs">
+      <Link>Math\NumericalDifferentiation.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Math\integrals\GaussLobattoIntegral.cs">
       <Link>Math\integrals\GaussLobattoIntegral.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\integrals\DiscreteIntegrals.cs">
+      <Link>Math\integrals\DiscreteIntegrals.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\Interpolations\Abcdinterpolation.cs">
       <Link>Math\Interpolations\Abcdinterpolation.cs</Link>
@@ -727,6 +736,18 @@
     </Compile>
     <Compile Include="..\QLNet\Math\matrixutilities\TqrEigenDecomposition.cs">
       <Link>Math\matrixutilities\TqrEigenDecomposition.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\matrixutilities\BiCGStab.cs">
+      <Link>Math\matrixutilities\BiCGStab.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\matrixutilities\GMRES.cs">
+      <Link>Math\matrixutilities\GMRES.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\ODE\AdaptiveRungeKutta.cs">
+      <Link>Math\ODE\AdaptiveRungeKutta.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\matrixutilities\SparseMatrix.cs">
+      <Link>Math\matrixutilities\SparseMatrix.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\linearleastsquaresregression.cs">
       <Link>Math\linearleastsquaresregression.cs</Link>
@@ -924,11 +945,29 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\cranknicolson.cs">
       <Link>Methods\Finitedifferences\cranknicolson.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\DPlus.cs">
+      <Link>Methods\Finitedifferences\DPlus.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\DMinus.cs">
+      <Link>Methods\Finitedifferences\DMinus.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\ExplicitEuler.cs">
+      <Link>Methods\Finitedifferences\ExplicitEuler.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\ImplicitEuler.cs">
+      <Link>Methods\Finitedifferences\ImplicitEuler.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\TRBDF2.cs">
+      <Link>Methods\Finitedifferences\TRBDF2.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\DPlusDMinus.cs">
       <Link>Methods\Finitedifferences\DPlusDMinus.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\dzero.cs">
       <Link>Methods\Finitedifferences\dzero.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\ZeroCondition.cs">
+      <Link>Methods\Finitedifferences\ZeroCondition.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\finitedifferencemodel.cs">
       <Link>Methods\Finitedifferences\finitedifferencemodel.cs</Link>
@@ -959,6 +998,123 @@
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\TridiagonalOperator.cs">
       <Link>Methods\Finitedifferences\TridiagonalOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\Concentrating1dMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\Concentrating1dMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\Fdm1dMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\Fdm1dMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmMesherComposite.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmMesherComposite.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\Uniform1dMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\Uniform1dMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\UniformGridMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\UniformGridMesher.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmLinearOp.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmLinearOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmLinearOpComposite.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmLinearOpComposite.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmLinearOpIterator.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmLinearOpIterator.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmLinearOpLayout.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmLinearOpLayout.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FirstDerivativeOp.cs">
+      <Link>Methods\Finitedifferences\Operators\FirstDerivativeOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\NinePointLinearOp.cs">
+      <Link>Methods\Finitedifferences\Operators\NinePointLinearOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\SecondDerivativeOp.cs">
+      <Link>Methods\Finitedifferences\Operators\SecondDerivativeOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\SecondOrderMixedDerivativeOp.cs">
+      <Link>Methods\Finitedifferences\Operators\SecondOrderMixedDerivativeOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\TripleBandLinearOp.cs">
+      <Link>Methods\Finitedifferences\Operators\TripleBandLinearOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\BoundaryConditionSchemeHelper.cs">
+      <Link>Methods\Finitedifferences\Schemes\BoundaryConditionSchemeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\CraigSneydScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\CraigSneydScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\DouglasScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\DouglasScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\ExplicitEulerScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\ExplicitEulerScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\HundsdorferScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\HundsdorferScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\ImplicitEulerScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\ImplicitEulerScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\ModifiedCraigSneydScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\ModifiedCraigSneydScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmBackwardSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\FdmBackwardSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmSolverDesc.cs">
+      <Link>Methods\Solvers\FdmSolverDesc.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs">
+      <Link>Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmBermudanStepCondition.cs">
+      <Link>Methods\Finitedifferences\StepConditions\FdmBermudanStepCondition.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmSnapshotCondition.cs">
+      <Link>Methods\Finitedifferences\StepConditions\FdmSnapshotCondition.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmStepConditionComposite.cs">
+      <Link>Methods\Finitedifferences\StepConditions\FdmStepConditionComposite.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmBoundaryConditionSet.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmBoundaryConditionSet.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmDirichletBoundary.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmDirichletBoundary.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmDividendHandler.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmDividendHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmIndicesOnBoundary.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmIndicesOnBoundary.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmInnerValueCalculator.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmInnerValueCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmMesherIntegral.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmMesherIntegral.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\ListUtils.cs">
+      <Link>Methods\Finitedifferences\Utilities\ListUtils.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\lattices\binominaltree.cs">
       <Link>Methods\lattices\binominaltree.cs</Link>
@@ -1136,6 +1292,12 @@
     <Compile Include="..\QLNet\Pricingengines\barrier\DiscretizedBarrierOption.cs">
       <Link>Pricingengines\barrier\DiscretizedBarrierOption.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesBarrierEngine.cs">
+      <Link>Pricingengines\barrier\FdBlackScholesBarrierEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesRebateEngine.cs">
+      <Link>Pricingengines\barrier\FdBlackScholesRebateEngine.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\VannaVolgaBarrierEngine.cs">
       <Link>Pricingengines\barrier\VannaVolgaBarrierEngine.cs</Link>
     </Compile>
@@ -1201,6 +1363,9 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\credit\IntegralCdsEngine.cs">
       <Link>Pricingengines\credit\IntegralCdsEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\credit\IsdaCdsEngine.cs">
+      <Link>Pricingengines\credit\IsdaCdsEngine.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\credit\MidPointCdsEngine.cs">
       <Link>Pricingengines\credit\MidPointCdsEngine.cs</Link>
@@ -1309,6 +1474,9 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\vanilla\discretizedvanillaoption.cs">
       <Link>Pricingengines\vanilla\discretizedvanillaoption.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FdBlackScholesVanillaEngine.cs">
+      <Link>Pricingengines\vanilla\FdBlackScholesVanillaEngine.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\vanilla\FDAmericanEngine.cs">
       <Link>Pricingengines\vanilla\FDAmericanEngine.cs</Link>
@@ -1439,8 +1607,14 @@
     <Compile Include="..\QLNet\Termstructures\Credit\InterpolatedHazardRateCurve.cs">
       <Link>Termstructures\Credit\InterpolatedHazardRateCurve.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Credit\InterpolatedSurvivalProbabilityCurve.cs">
+      <Link>Termstructures\Credit\InterpolatedSurvivalProbabilityCurve.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\ProbabilityTraits.cs">
       <Link>Termstructures\Credit\ProbabilityTraits.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Termstructures\Credit\SurvivalProbabilityStructure.cs">
+      <Link>Termstructures\Credit\SurvivalProbabilityStructure.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Curve.cs">
       <Link>Termstructures\Curve.cs</Link>
@@ -1606,6 +1780,12 @@
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\LocalVolTermStructure.cs">
       <Link>Termstructures\Volatility\equityfx\LocalVolTermStructure.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\FixedLocalVolSurface.cs">
+      <Link>Termstructures\Volatility\equityfx\FixedLocalVolSurface.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Termstructures\Volatility\equityfx\NoExceptLocalVolSurface.cs">
+      <Link>Termstructures\Volatility\equityfx\NoExceptLocalVolSurface.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Volatility\FlatSmileSection.cs">
       <Link>Termstructures\Volatility\FlatSmileSection.cs</Link>
