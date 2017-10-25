@@ -83,7 +83,7 @@ namespace QLNet
    {
       // properties
       private List<InterestRate> couponRates_ = new List<InterestRate>();
-      private DayCounter firstPeriodDC_ = null;
+      private DayCounter firstPeriodDC_ , lastPeriodDC_ ;
       private Calendar calendar_;
 		private Period exCouponPeriod_;
       private   Calendar exCouponCalendar_;
@@ -151,6 +151,12 @@ namespace QLNet
       public FixedRateLeg withFirstPeriodDayCounter(DayCounter dayCounter) 
       {
          firstPeriodDC_ = dayCounter;
+         return this;
+      }
+
+      public FixedRateLeg withLastPeriodDayCounter(DayCounter dayCounter)
+      {
+         lastPeriodDC_ = dayCounter;
          return this;
       }
 
@@ -243,17 +249,23 @@ namespace QLNet
 																			exCouponEndOfMonth_);
 				 }
 
-             if ((N - 2) < couponRates_.Count) rate = couponRates_[N - 2];
-             else                              rate = couponRates_.Last();
-             if ((N - 2) < notionals_.Count)   nominal = notionals_[N - 2];
-             else                              nominal = notionals_.Last();
+             if ((N - 2) < couponRates_.Count)
+               rate = couponRates_[N - 2];
+             else
+               rate = couponRates_.Last();
+             if ((N - 2) < notionals_.Count)
+               nominal = notionals_[N - 2];
+             else
+               nominal = notionals_.Last();
 
-             if (schedule_.isRegular(N-1))
-                leg.Add( new FixedRateCoupon( paymentDate, nominal, rate, start, end, start, end, exCouponDate ) );
+            InterestRate r = new InterestRate(rate.rate(),
+               lastPeriodDC_ == null ?rate.dayCounter() :lastPeriodDC_ , rate.compounding(), rate.frequency() );
+            if (schedule_.isRegular(N-1))
+                leg.Add( new FixedRateCoupon( paymentDate, nominal, r, start, end, start, end, exCouponDate ) );
              else {
                  Date refer = start + schedule_.tenor();
                  refer = schCalendar.adjust(refer, schedule_.businessDayConvention());
-                 leg.Add( new FixedRateCoupon( paymentDate, nominal, rate, start, end, start, refer, exCouponDate ) );
+                 leg.Add( new FixedRateCoupon( paymentDate, nominal, r, start, end, start, refer, exCouponDate ) );
              }
          }
          return leg;

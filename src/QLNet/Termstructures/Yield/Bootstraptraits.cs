@@ -28,26 +28,16 @@ namespace QLNet
 	{
 		Date initialDate( T c );		// start of curve data
 		double initialValue( T c );   // value at reference date
-		bool dummyInitialValue();     // true if the initialValue is just a dummy value
-		double initialGuess();        // initial guess
-		double guess( T c, Date d );	// further guesses
-		// possible constraints based on previous values
-		double minValueAfter( int s, List<double> l );
-		double maxValueAfter( int i, List<double> data );
-		// update with new guess
-		void updateGuess( List<double> data, double discount, int i );
+      double guess(int i, InterpolatedCurve c, bool validData, int first);    // possible constraints based on previous values
+      double minValueAfter(int i, InterpolatedCurve c, bool validData, int first);
+      double maxValueAfter(int i, InterpolatedCurve c, bool validData, int first);     // update with new guess
+      void updateGuess( List<double> data, double discount, int i );
 		int maxIterations();                          // upper bound for convergence loop
 
 		//
 		double discountImpl( Interpolation i, double t );
 		double zeroYieldImpl( Interpolation i, double t );
 		double forwardImpl( Interpolation i, double t );
-
-		double guess( int i, InterpolatedCurve c, bool validData, int first );
-
-		double minValueAfter( int i, InterpolatedCurve c, bool validData, int first );
-		double maxValueAfter( int i, InterpolatedCurve c, bool validData, int first );
-
 	}
 
 	public class Discount : ITraits<YieldTermStructure>
@@ -56,21 +46,6 @@ namespace QLNet
 		const double avgRate = 0.05;
 		public Date initialDate( YieldTermStructure c ) { return c.referenceDate(); }   // start of curve data
 		public double initialValue( YieldTermStructure c ) { return 1; }    // value at reference date
-		public bool dummyInitialValue() { return false; }   // true if the initialValue is just a dummy value
-		public double initialGuess() { return 1.0 / ( 1.0 + avgRate * 0.25 ); }   // initial guess
-		public double guess( YieldTermStructure c, Date d ) { return c.discount( d, true ); }  // further guesses
-		// possible constraints based on previous values
-		public double minValueAfter( int s, List<double> l )
-		{
-			// replace with Epsilon
-			return Const.QL_EPSILON;
-		}
-		public double maxValueAfter( int i, List<double> data )
-		{
-			// discount are not required to be decreasing--all bets are off.
-			// We choose as max a value very unlikely to be exceeded.
-			return 3.0;
-		}
 		// update with new guess
 		public void updateGuess( List<double> data, double discount, int i ) { data[i] = discount; }
 		public int maxIterations() { return 100; }   // upper bound for convergence loop
@@ -92,7 +67,6 @@ namespace QLNet
 			double r = -System.Math.Log( c.data()[i - 1] ) / c.times()[i - 1];
 			return System.Math.Exp( -r * c.times()[i] );
 		}
-
 		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
 			if ( validData )
@@ -106,7 +80,6 @@ namespace QLNet
 			double dt = c.times()[i] - c.times()[i - 1];
 			return c.data()[i - 1] * System.Math.Exp( -maxRate * dt );
 		}
-
 		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
 
@@ -119,10 +92,7 @@ namespace QLNet
 #endif
 
 		}
-
-
-
-	}
+ }
 
 	//! Zero-curve traits
 	public class ZeroYield : ITraits<YieldTermStructure>
@@ -132,29 +102,6 @@ namespace QLNet
 
 		public Date initialDate( YieldTermStructure c ) { return c.referenceDate(); }   // start of curve data
 		public double initialValue( YieldTermStructure c ) { return avgRate; }    // value at reference date
-		public bool dummyInitialValue() { return true; }   // true if the initialValue is just a dummy value
-		public double initialGuess() { return avgRate; }   // initial guess
-		public double guess( YieldTermStructure c, Date d )
-		{
-			return c.zeroRate( d, c.dayCounter(), Compounding.Continuous, Frequency.Annual, true ).rate();
-		}  // further guesses
-		// possible constraints based on previous values
-		public double minValueAfter( int s, List<double> l )
-		{
-#if QL_NEGATIVE_RATES
-            // no constraints.
-            // We choose as min a value very unlikely to be exceeded.
-            return -3.0;
-#else
-			return Const.QL_EPSILON;
-#endif
-		}
-		public double maxValueAfter( int i, List<double> data )
-		{
-			// no constraints.
-			// We choose as max a value very unlikely to be exceeded.
-			return 3.0;
-		}
 		// update with new guess
 		public void updateGuess( List<double> data, double rate, int i )
 		{
@@ -172,8 +119,6 @@ namespace QLNet
 		public double zeroYieldImpl( Interpolation i, double t ) { return i.value( t, true ); }
 		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 
-
-
 		public double guess( int i, InterpolatedCurve c, bool validData, int f )
 		{
 
@@ -186,7 +131,6 @@ namespace QLNet
 			// extrapolate
 			return zeroYieldImpl( c.interpolation_, c.times()[i] );
 		}
-
 		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
 			if ( validData )
@@ -210,7 +154,6 @@ namespace QLNet
 
 
 		}
-
 		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int f )
 		{
 
@@ -228,7 +171,7 @@ namespace QLNet
 
 
 		}
-	}
+   }
 
 	//! Forward-curve traits
 	public class ForwardRate : ITraits<YieldTermStructure>
@@ -238,21 +181,6 @@ namespace QLNet
 
 		public Date initialDate( YieldTermStructure c ) { return c.referenceDate(); }   // start of curve data
 		public double initialValue( YieldTermStructure c ) { return avgRate; } // dummy value at reference date
-		public bool dummyInitialValue() { return true; }    // true if the initialValue is just a dummy value
-		public double initialGuess() { return avgRate; } // initial guess
-		// further guesses
-		public double guess( YieldTermStructure c, Date d )
-		{
-			return c.forwardRate( d, d, c.dayCounter(), Compounding.Continuous, Frequency.Annual, true ).rate();
-		}
-		// possible constraints based on previous values
-		public double minValueAfter( int v, List<double> l ) { return Const.QL_EPSILON; }
-		public double maxValueAfter( int v, List<double> l )
-		{
-			// no constraints.
-			// We choose as max a value very unlikely to be exceeded.
-			return 3;
-		}
 		// update with new guess
 		public void updateGuess( List<double> data, double forward, int i )
 		{
@@ -329,5 +257,5 @@ namespace QLNet
 			return maxRate;
 
 		}
-	}
+   }
 }

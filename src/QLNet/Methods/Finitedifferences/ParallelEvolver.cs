@@ -70,7 +70,7 @@ namespace QLNet {
             }
         }
 
-        public IMixedScheme factory(object L, object bcs) {
+        public IMixedScheme factory(object L, object bcs, object[] additionalFields = null) {
             return new ParallelEvolver<Evolver>((List<IOperator>)L, (BoundaryConditionSet)bcs);
         }
     }

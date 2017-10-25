@@ -22,80 +22,90 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QLNet {
-   //! Payment schedule
+namespace QLNet
+{
+   /// <summary>
+   /// Payment schedule
+   /// </summary>
    public class Schedule
    {
 
-      #region Properties
 
-      private Period tenor_;
-      private Calendar calendar_;
-      private BusinessDayConvention convention_;
-      private BusinessDayConvention? terminationDateConvention_;
-      private DateGeneration.Rule? rule_;
-      private bool? endOfMonth_;
-      private Date firstDate_, nextToLastDate_;
-      private List<Date> dates_ = new List<Date>();
-      private IList<bool> isRegular_ = new List<bool>();
-
-      #endregion
 
       #region Constructors
 
       public Schedule() { }
-
-      public Schedule(List<Date> dates, Calendar calendar = null, BusinessDayConvention convention = BusinessDayConvention.Unadjusted,
-                      BusinessDayConvention? terminationDateConvention = null, Period tenor = null, DateGeneration.Rule? rule = null,
-                      bool? endOfMonth = null, IList<bool> isRegular = null)
+      /// <summary>
+      /// constructor that takes any list of dates, and optionally
+      ///  meta information that can be used by client classes. Note
+      /// that neither the list of dates nor the meta information is
+      /// checked for plausibility in any sense.
+      /// </summary>
+      /// <param name="dates"></param>
+      /// <param name="calendar"></param>
+      /// <param name="convention"></param>
+      /// <param name="terminationDateConvention"></param>
+      /// <param name="tenor"></param>
+      /// <param name="rule"></param>
+      /// <param name="endOfMonth"></param>
+      /// <param name="isRegular"></param>
+      public Schedule(List<Date> dates,
+                      Calendar calendar = null,
+                      BusinessDayConvention convention = BusinessDayConvention.Unadjusted,
+                      BusinessDayConvention? terminationDateConvention = null,
+                      Period tenor = null,
+                      DateGeneration.Rule? rule = null,
+                      bool? endOfMonth = null,
+                      IList<bool> isRegular = null)
       {
-         if (calendar == null)
-            calendar_ = new NullCalendar();
-         else
-            calendar_ = calendar;
+         calendar_ = calendar ?? new NullCalendar();
+         isRegular_ = isRegular ?? new List<bool>();
 
          tenor_ = tenor;
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
-         endOfMonth_ = (tenor != null && tenor < new Period(1, TimeUnit.Months)) ? false : endOfMonth;
+         endOfMonth_ = (tenor != null && !allowsEndOfMonth(tenor)) ? false : endOfMonth;
          dates_ = dates;
 
-         if (isRegular == null)
-            isRegular_ = new List<bool>();
-         else
-            isRegular_ = isRegular;
-
-         Utils.QL_REQUIRE(
-             isRegular_.Count == 0 || isRegular_.Count == dates.Count - 1,
-             () => string.Format("isRegular size ({0}) must be zero or equal to the number of dates minus 1 ({1})", isRegular_.Count, dates.Count - 1));
+         Utils.QL_REQUIRE( isRegular_.Count == 0 || isRegular_.Count == dates.Count - 1,()=>
+            string.Format("isRegular size ({0}) must be zero or equal to the number of dates minus 1 ({1})", isRegular_.Count, dates.Count - 1));
       }
 
-
-      public Schedule(Date effectiveDate, Date terminationDate, Period tenor, Calendar calendar,
-                      BusinessDayConvention convention, BusinessDayConvention terminationDateConvention,
-                      DateGeneration.Rule rule, bool endOfMonth, Date firstDate = null, Date nextToLastDate = null)
+      /// <summary>
+      /// rule based constructor
+      /// </summary>
+      /// <param name="effectiveDate"></param>
+      /// <param name="terminationDate"></param>
+      /// <param name="tenor"></param>
+      /// <param name="calendar"></param>
+      /// <param name="convention"></param>
+      /// <param name="terminationDateConvention"></param>
+      /// <param name="rule"></param>
+      /// <param name="endOfMonth"></param>
+      /// <param name="firstDate"></param>
+      /// <param name="nextToLastDate"></param>
+      public Schedule(Date effectiveDate,
+                      Date terminationDate,
+                      Period tenor,
+                      Calendar calendar,
+                      BusinessDayConvention convention,
+                      BusinessDayConvention terminationDateConvention,
+                      DateGeneration.Rule rule,
+                      bool endOfMonth,
+                      Date firstDate = null,
+                      Date nextToLastDate = null)
       {
-         // first save the properties
+
+         calendar_ = calendar ?? new NullCalendar();
+         firstDate_ = firstDate == effectiveDate ? null : firstDate;
+         nextToLastDate_ = nextToLastDate == terminationDate ? null : nextToLastDate;
+
          tenor_ = tenor;
-         if ( calendar == null )
-            calendar_ = new NullCalendar();
-         else
-            calendar_ = calendar;
          convention_ = convention;
          terminationDateConvention_ = terminationDateConvention;
          rule_ = rule;
-         endOfMonth_ = (tenor != null && tenor < new Period(1, TimeUnit.Months)) ? false : endOfMonth;
-
-         if ( firstDate == effectiveDate )
-            firstDate_ = null;
-         else
-            firstDate_ = firstDate;
-
-          if ( nextToLastDate == terminationDate )
-            nextToLastDate_ = null;
-         else
-            nextToLastDate_ = nextToLastDate;
+         endOfMonth_ = allowsEndOfMonth(tenor) && endOfMonth;
 
          // sanity checks
           Utils.QL_REQUIRE( terminationDate != null, () => "null termination date" );
@@ -114,8 +124,8 @@ namespace QLNet {
             }
             else
             {
-                y = (terminationDate - evalDate)/366 + 1;
-                effectiveDate = terminationDate - new Period(y,TimeUnit.Years);
+               y = (terminationDate - evalDate) / 366 + 1;
+               effectiveDate = terminationDate - new Period(y , TimeUnit.Years);
             }
          }
          else
@@ -152,6 +162,7 @@ namespace QLNet {
                case DateGeneration.Rule.TwentiethIMM:
                case DateGeneration.Rule.OldCDS:
                case DateGeneration.Rule.CDS:
+               case DateGeneration.Rule.CDS2015:
                   Utils.QL_FAIL("first date incompatible with " + rule_.Value + " date generation rule");
                   break;
                default:
@@ -180,6 +191,7 @@ namespace QLNet {
                case DateGeneration.Rule.TwentiethIMM:
                case DateGeneration.Rule.OldCDS:
                case DateGeneration.Rule.CDS:
+               case DateGeneration.Rule.CDS2015:
                   Utils.QL_FAIL("next to last date incompatible with " + rule_.Value + " date generation rule");
                   break;
                default:
@@ -258,13 +270,15 @@ namespace QLNet {
             case DateGeneration.Rule.ThirdWednesday:
             case DateGeneration.Rule.OldCDS:
             case DateGeneration.Rule.CDS:
+            case DateGeneration.Rule.CDS2015:
                Utils.QL_REQUIRE( !endOfMonth, () => "endOfMonth convention incompatible with " + rule_.Value + " date generation rule" );
                goto case DateGeneration.Rule.Forward;			// fall through
 
             case DateGeneration.Rule.Forward:
-               if (rule_.Value == DateGeneration.Rule.CDS)
+               if (rule_.Value == DateGeneration.Rule.CDS ||
+                   rule_.Value == DateGeneration.Rule.CDS2015)
                {
-                  dates_.Add(previousTwentieth(effectiveDate, DateGeneration.Rule.CDS));
+                  dates_.Add(previousTwentieth(effectiveDate, rule_.Value));
                }
                else
                {
@@ -285,7 +299,8 @@ namespace QLNet {
                else if (rule_.Value == DateGeneration.Rule.Twentieth ||
                         rule_.Value == DateGeneration.Rule.TwentiethIMM ||
                         rule_.Value == DateGeneration.Rule.OldCDS ||
-                        rule_.Value == DateGeneration.Rule.CDS)
+                        rule_.Value == DateGeneration.Rule.CDS ||
+                        rule_.Value == DateGeneration.Rule.CDS2015)
                {
                   Date next20th = nextTwentieth(effectiveDate, rule_.Value);
                   if (rule_ == DateGeneration.Rule.OldCDS)
@@ -309,6 +324,12 @@ namespace QLNet {
                exitDate = terminationDate;
                if (nextToLastDate_ != null)
                   exitDate = nextToLastDate_;
+               if (rule_ == DateGeneration.Rule.CDS2015
+               && nextTwentieth(terminationDate, rule_.Value) == terminationDate
+               && terminationDate.month() % 2 == 1)
+               {
+                  exitDate = nextTwentieth(terminationDate + 1, rule_.Value);
+               }
                while (true)
                {
                   Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_.Value);
@@ -345,6 +366,15 @@ namespace QLNet {
                   {
                      dates_.Add(nextTwentieth(terminationDate, rule_.Value));
                      isRegular_.Add(true);
+                  }
+                  else if (rule_ == DateGeneration.Rule.CDS2015)
+                  {
+                     Date tentativeTerminationDate = nextTwentieth(terminationDate, rule_.Value);
+                     if (tentativeTerminationDate.month() % 2 == 0)
+                     {
+                        dates_.Add(tentativeTerminationDate);
+                        isRegular_.Add(true);
+                     }
                   }
                   else
                   {
@@ -403,10 +433,8 @@ namespace QLNet {
             // termination date is NOT adjusted as per ISDA specifications, unless otherwise specified in the
             // confirmation of the deal or unless we're creating a CDS schedule
             if (terminationDateConvention_.Value != BusinessDayConvention.Unadjusted
-                || rule_.Value == DateGeneration.Rule.Twentieth
-                || rule_.Value == DateGeneration.Rule.TwentiethIMM
-                || rule_.Value == DateGeneration.Rule.OldCDS
-                || rule_.Value == DateGeneration.Rule.CDS)
+                && rule_.Value != DateGeneration.Rule.CDS
+                && rule_.Value != DateGeneration.Rule.CDS2015)
                dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
          }
 
@@ -444,6 +472,8 @@ namespace QLNet {
       }
       #endregion
 
+
+
       // Date access
       public int size() { return dates_.Count; }
       public Date this[int i]
@@ -480,7 +510,6 @@ namespace QLNet {
          Utils.QL_REQUIRE( i <= isRegular_.Count && i > 0, () => "index (" + i + ") must be in [1, " + isRegular_.Count + "]" );
          return isRegular_[i - 1];
       }
-
       public IList<bool> isRegular()
       {
          Utils.QL_REQUIRE(isRegular_.Count > 0, () => "full interface (isRegular) not available");
@@ -551,15 +580,18 @@ namespace QLNet {
 
          return result;
       }
+      public int Count { get { return dates_.Count; } }
 
-      Date nextTwentieth(Date d, DateGeneration.Rule rule)
+
+      private Date nextTwentieth(Date d, DateGeneration.Rule rule)
       {
          Date result = new Date(20, d.month(), d.year());
          if (result < d)
             result += new Period(1, TimeUnit.Months);
          if (rule == DateGeneration.Rule.TwentiethIMM ||
              rule == DateGeneration.Rule.OldCDS ||
-             rule == DateGeneration.Rule.CDS)
+             rule == DateGeneration.Rule.CDS ||
+             rule == DateGeneration.Rule.CDS2015)
          {
             int m = result.month();
             if (m % 3 != 0)
@@ -570,14 +602,15 @@ namespace QLNet {
          }
          return result;
       }
-      Date previousTwentieth(Date d, DateGeneration.Rule rule)
+      private Date previousTwentieth(Date d, DateGeneration.Rule rule)
       {
          Date result = new Date(20, d.month(), d.year());
          if (result > d)
             result -= new Period(1, TimeUnit.Months);
          if (rule == DateGeneration.Rule.TwentiethIMM ||
              rule == DateGeneration.Rule.OldCDS ||
-             rule == DateGeneration.Rule.CDS)
+             rule == DateGeneration.Rule.CDS ||
+             rule == DateGeneration.Rule.CDS2015)
          {
             int m = result.month();
             if (m % 3 != 0)
@@ -588,153 +621,168 @@ namespace QLNet {
          }
          return result;
       }
+      private bool allowsEndOfMonth(Period tenor)
+      {
+         return (tenor.units() == TimeUnit.Months || tenor.units() == TimeUnit.Years)
+                && tenor >= new Period(1,TimeUnit.Months);
+      }
 
-      public int Count { get { return dates_.Count; } }
+      private Period tenor_;
+      private Calendar calendar_;
+      private BusinessDayConvention convention_;
+      private BusinessDayConvention? terminationDateConvention_;
+      private DateGeneration.Rule? rule_;
+      private bool? endOfMonth_;
+      private Date firstDate_, nextToLastDate_;
+      private List<Date> dates_ = new List<Date>();
+      private IList<bool> isRegular_ = new List<bool>();
 
    }
 
-    //! helper class
-    /*! This class provides a more comfortable interface to the argument list of Schedule's constructor. */
-    public class MakeSchedule {
-        private Calendar calendar_;
-        private Date effectiveDate_, terminationDate_;
-        private Period tenor_;
-        private BusinessDayConvention? convention_, terminationDateConvention_;
-        private DateGeneration.Rule rule_;
-        private bool endOfMonth_;
-        private Date firstDate_, nextToLastDate_;
+   /// <summary>
+   /// This class provides a more comfortable interface to the argument list of Schedule's constructor.
+   /// </summary>
+   public class MakeSchedule
+   {
+      public MakeSchedule() { rule_ = DateGeneration.Rule.Backward; endOfMonth_ = false; }
 
-        public MakeSchedule() { rule_ = DateGeneration.Rule.Backward; endOfMonth_ = false; }
+      public MakeSchedule from(Date effectiveDate)
+      {
+         effectiveDate_ = effectiveDate;
+         return this;
+      }
 
-        public MakeSchedule from(Date effectiveDate)
-        {
-           effectiveDate_ = effectiveDate;
-           return this;
-        }
+      public MakeSchedule to(Date terminationDate)
+      {
+         terminationDate_ = terminationDate;
+         return this;
+      }
 
-        public MakeSchedule to(Date terminationDate)
-        {
-           terminationDate_ = terminationDate;
-           return this;
-        }
+      public MakeSchedule withTenor(Period tenor)
+      {
+         tenor_ = tenor;
+         return this;
+      }
 
-        public MakeSchedule withTenor(Period tenor)
-        {
-           tenor_ = tenor;
-           return this;
-        }
+      public MakeSchedule withFrequency(Frequency frequency)
+      {
+         tenor_ = new Period(frequency);
+         return this;
+      }
 
-        public MakeSchedule withFrequency(Frequency frequency)
-        {
-           tenor_ = new Period(frequency);
-           return this;
-        }
+      public MakeSchedule withCalendar(Calendar calendar)
+      {
+         calendar_ = calendar;
+         return this;
+      }
 
-        public MakeSchedule withCalendar(Calendar calendar)
-        {
-           calendar_ = calendar;
-           return this;
-        }
+      public MakeSchedule withConvention(BusinessDayConvention conv)
+      {
+         convention_ = conv;
+         return this;
+      }
 
-        public MakeSchedule withConvention(BusinessDayConvention conv)
-        {
-           convention_ = conv;
-           return this;
-        }
+      public MakeSchedule withTerminationDateConvention(BusinessDayConvention conv)
+      {
+         terminationDateConvention_ = conv;
+         return this;
+      }
 
-        public MakeSchedule withTerminationDateConvention(BusinessDayConvention conv)
-        {
-           terminationDateConvention_ = conv;
-           return this;
-        }
+      public MakeSchedule withRule(DateGeneration.Rule r)
+      {
+         rule_ = r;
+         return this;
+      }
 
-        public MakeSchedule withRule(DateGeneration.Rule r)
-        {
-           rule_ = r;
-           return this;
-        }
+      public MakeSchedule forwards()
+      {
+         rule_ = DateGeneration.Rule.Forward;
+         return this;
+      }
 
-        public MakeSchedule forwards()
-        {
-           rule_ = DateGeneration.Rule.Forward;
-           return this;
-        }
+      public MakeSchedule backwards()
+      {
+         rule_ = DateGeneration.Rule.Backward;
+         return this;
+      }
 
-        public MakeSchedule backwards()
-        {
-           rule_ = DateGeneration.Rule.Backward;
-           return this;
-        }
+      public MakeSchedule endOfMonth(bool flag = true)
+      {
+         endOfMonth_ = flag;
+         return this;
+      }
 
-        public MakeSchedule endOfMonth(bool flag = true)
-        {
-           endOfMonth_ = flag;
-           return this;
-        }
+      public MakeSchedule withFirstDate(Date d)
+      {
+         firstDate_ = d;
+         return this;
+      }
 
-        public MakeSchedule withFirstDate(Date d)
-        {
-           firstDate_ = d;
-           return this;
-        }
+      public MakeSchedule withNextToLastDate(Date d)
+      {
+         nextToLastDate_ = d;
+         return this;
+      }
 
-        public MakeSchedule withNextToLastDate(Date d)
-        {
-           nextToLastDate_ = d;
-           return this;
-        }
+      public Schedule value()
+      {
 
-        public Schedule value()
-        {
+         // check for mandatory arguments
+         Utils.QL_REQUIRE(effectiveDate_ != null,()=> "effective date not provided");
+         Utils.QL_REQUIRE(terminationDate_ != null,()=> "termination date not provided");
+         Utils.QL_REQUIRE((object)tenor_ != null,()=> "tenor/frequency not provided");
 
-           // check for mandatory arguments
-           Utils.QL_REQUIRE(effectiveDate_ != null,()=> "effective date not provided");
-           Utils.QL_REQUIRE(terminationDate_ != null,()=> "termination date not provided");
-           Utils.QL_REQUIRE((object)tenor_ != null,()=> "tenor/frequency not provided");
+         // if no calendar was set...
+         if (calendar_ == null)
+         {
+            // ...we use a null one.
+            calendar_ = new NullCalendar();
+         }
 
-           // if no calendar was set...
-           if (calendar_ == null)
-           {
-               // ...we use a null one.
-               calendar_ = new NullCalendar();
-           }
+         // set dynamic defaults:
+         BusinessDayConvention convention;
+         // if a convention was set, we use it.
+         if (convention_ != null )
+         {
+            convention = convention_.Value;
+         }
+         else
+         {
+            if (!calendar_.empty())
+            {
+               // ...if we set a calendar, we probably want it to be used;
+               convention = BusinessDayConvention.Following;
+            }
+            else
+            {
+               // if not, we don't care.
+               convention = BusinessDayConvention.Unadjusted;
+            }
+         }
 
-           // set dynamic defaults:
-           BusinessDayConvention convention;
-           // if a convention was set, we use it.
-           if (convention_ != null )
-           {
-              convention = convention_.Value;
-           }
-           else
-           {
-              if (!calendar_.empty())
-              {
-                 // ...if we set a calendar, we probably want it to be used;
-                 convention = BusinessDayConvention.Following;
-              }
-              else
-              {
-                 // if not, we don't care.
-                 convention = BusinessDayConvention.Unadjusted;
-              }
-           }
+         BusinessDayConvention terminationDateConvention;
+         // if set explicitly, we use it;
+         if (terminationDateConvention_ != null )
+         {
+            terminationDateConvention = terminationDateConvention_.Value;
+         }
+         else
+         {
+            // Unadjusted as per ISDA specification
+            terminationDateConvention = convention;
+         }
 
-           BusinessDayConvention terminationDateConvention;
-           // if set explicitly, we use it;
-           if (terminationDateConvention_ != null )
-           {
-              terminationDateConvention = terminationDateConvention_.Value;
-           }
-           else
-           {
-              // Unadjusted as per ISDA specification
-              terminationDateConvention = convention;
-           }
+         return new Schedule(effectiveDate_, terminationDate_, tenor_, calendar_,
+                              convention, terminationDateConvention,
+                              rule_, endOfMonth_, firstDate_, nextToLastDate_);
+      }
 
-            return new Schedule(effectiveDate_, terminationDate_, tenor_, calendar_,
-                                convention, terminationDateConvention,
-                                rule_, endOfMonth_, firstDate_, nextToLastDate_);
-        }
-    }
+      private Calendar calendar_;
+      private Date effectiveDate_, terminationDate_;
+      private Period tenor_;
+      private BusinessDayConvention? convention_, terminationDateConvention_;
+      private DateGeneration.Rule rule_;
+      private bool endOfMonth_;
+      private Date firstDate_, nextToLastDate_;
+   }
 }

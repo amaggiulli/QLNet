@@ -24,7 +24,7 @@ namespace QLNet {
     //! Single-asset vanilla option (no barriers) with discrete dividends
     /*! \ingroup instruments */
     public class DividendVanillaOption : OneAssetOption {
-        private List<Dividend> cashFlow_;
+        private DividendSchedule cashFlow_;
 
         public DividendVanillaOption(StrikedTypePayoff payoff, Exercise exercise,
                                      List<Date> dividendDates, List<double> dividends)   
@@ -39,7 +39,6 @@ namespace QLNet {
         public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process,
 				 double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
 		  {
-
 					 Utils.QL_REQUIRE(!isExpired(),()=> "option expired");
 
 					 SimpleQuote volQuote = new SimpleQuote();
@@ -81,7 +80,7 @@ namespace QLNet {
        //! %Arguments for dividend vanilla option calculation
        public new class Arguments : OneAssetOption.Arguments
        {
-          public List<Dividend> cashFlow { get; set; }
+          public DividendSchedule cashFlow { get; set; }
 
           public override void validate()
           {

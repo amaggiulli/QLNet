@@ -28,14 +28,6 @@ namespace QLNet
 	{
 		#region InflationTraits
 
-		public bool dummyInitialValue() { return traits_.dummyInitialValue(); }
-		public double initialGuess() { return traits_.initialGuess(); }
-
-		public double minValueAfter( int s, List<double> l ) { return traits_.minValueAfter( s, l ); }
-		public double maxValueAfter( int s, List<double> l ) { return traits_.maxValueAfter( s, l ); }
-
-		public double guess( ZeroInflationTermStructure c, Date d ) { return traits_.guess( c, d ); }
-
 		public Date initialDate( ZeroInflationTermStructure c ) { return traits_.initialDate( c ); }
 		public double initialValue( ZeroInflationTermStructure c ) { return traits_.initialValue( c ); }
 		public double guess( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.guess( i, c, validData, first ); }

@@ -95,33 +95,7 @@ namespace QLNet
 		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 
 		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-
-		double ITraits<ZeroInflationTermStructure>.initialGuess()
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<ZeroInflationTermStructure>.guess( ZeroInflationTermStructure c, Date d )
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<ZeroInflationTermStructure>.minValueAfter( int s, List<double> l )
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<ZeroInflationTermStructure>.maxValueAfter( int i, List<double> data )
-		{
-			throw new NotImplementedException();
-		}
-
-		bool ITraits<ZeroInflationTermStructure>.dummyInitialValue()
-		{
-			throw new NotImplementedException();
-		}
-
-	}
+   }
 
 	public class YoYInflationTraits : ITraits<YoYInflationTermStructure>
 	{
@@ -193,37 +167,6 @@ namespace QLNet
 		public double discountImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
 		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-
-		double ITraits<YoYInflationTermStructure>.initialGuess()
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<YoYInflationTermStructure>.guess( YoYInflationTermStructure c, Date d )
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<YoYInflationTermStructure>.minValueAfter( int s, List<double> l )
-		{
-			throw new NotImplementedException();
-		}
-
-		double ITraits<YoYInflationTermStructure>.maxValueAfter( int i, List<double> data )
-		{
-			throw new NotImplementedException();
-		}
-
-		void ITraits<YoYInflationTermStructure>.updateGuess( List<double> data, double discount, int i )
-		{
-			data[i] = discount;
-		}
-
-		bool ITraits<YoYInflationTermStructure>.dummyInitialValue()
-		{
-			throw new NotImplementedException();
-		}
-
-	}
+   }
 
 }

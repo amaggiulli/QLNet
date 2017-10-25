@@ -34,7 +34,7 @@ namespace QLNet
         - <tt>M[i][j]</tt> contains the volatility corresponding
           to the <tt>i</tt>-th option and <tt>j</tt>-th tenor.
     */
-    public class SwaptionVolatilityMatrix :  SwaptionVolatilityDiscrete
+    public class SwaptionVolatilityMatrix : SwaptionVolatilityDiscrete
     {
         //! floating reference date, floating market data
         public SwaptionVolatilityMatrix(
@@ -42,14 +42,14 @@ namespace QLNet
                     BusinessDayConvention bdc,
                     List<Period> optionTenors,
                     List<Period> swapTenors,
-                    List<List<Handle<Quote> > > vols,
+                    List<List<Handle<Quote>>> vols,
                     DayCounter dayCounter,
                     bool flatExtrapolation = false,
                     VolatilityType type = VolatilityType.ShiftedLognormal,
                     List<List<double>> shifts = null)
             : base(optionTenors, swapTenors, 0, calendar, bdc, dayCounter)
         {
-            volHandles_= vols;
+            volHandles_ = vols;
             shiftValues_ = shifts;
             volatilities_ = new Matrix(vols.Count, vols.First().Count);
             shifts_ = new Matrix(vols.Count, vols.First().Count, 0.0);
@@ -94,7 +94,7 @@ namespace QLNet
                                 shifts_);
             }
         }
-        
+
         //! fixed reference date, floating market data
         public SwaptionVolatilityMatrix(
                     Date referenceDate,
@@ -102,7 +102,7 @@ namespace QLNet
                     BusinessDayConvention bdc,
                     List<Period> optionTenors,
                     List<Period> swapTenors,
-                    List<List<Handle<Quote> > > vols,
+                    List<List<Handle<Quote>>> vols,
                     DayCounter dayCounter,
                     bool flatExtrapolation = false,
                     VolatilityType type = VolatilityType.ShiftedLognormal,
@@ -111,7 +111,7 @@ namespace QLNet
         {
             volHandles_ = vols;
             shiftValues_ = shifts;
-            volatilities_ = new Matrix(vols.Count, vols.First().Count );
+            volatilities_ = new Matrix(vols.Count, vols.First().Count);
             shifts_ = new Matrix(vols.Count, vols.First().Count, 0.0);
             volatilityType_ = type;
             checkInputs(volatilities_.rows(), volatilities_.columns(), shifts_.rows(), shifts_.columns());
@@ -154,7 +154,7 @@ namespace QLNet
                                 shifts_);
             }
         }
-        
+
         //! floating reference date, fixed market data
         public SwaptionVolatilityMatrix(
                     Calendar calendar,
@@ -165,25 +165,26 @@ namespace QLNet
                     DayCounter dayCounter,
                     bool flatExtrapolation = false,
                     VolatilityType type = VolatilityType.ShiftedLognormal,
-                    Matrix shifts = new Matrix())
+                    Matrix shifts = null)
 
             : base(optionTenors, swapTenors, 0, calendar, bdc, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
             shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            shifts_ = new Matrix(vols.rows(), vols.columns(), 0.0);
+            shifts_ = shifts ?? new Matrix(vols.rows(), vols.columns(), 0.0);
             volatilityType_ = type;
             checkInputs(volatilities_.rows(), volatilities_.columns(), shifts_.rows(), shifts_.columns());
 
             // fill dummy handles to allow generic handle-based
             // computations later on
-            for (int i=0; i<vols.rows(); ++i) {
+            for (int i = 0; i < vols.rows(); ++i)
+            {
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
                 shiftValues_[i] = new InitializedList<double>(vols.columns());
-                for (int j=0; j<vols.columns(); ++j)
+                for (int j = 0; j < vols.columns(); ++j)
                     volHandles_[i][j] = new Handle<Quote>((new
-                        SimpleQuote(vols[i,j])));
+                        SimpleQuote(vols[i, j])));
             }
 
             if (flatExtrapolation)
@@ -209,7 +210,7 @@ namespace QLNet
                                 shifts_);
             }
         }
-        
+
         //! fixed reference date, fixed market data
         public SwaptionVolatilityMatrix(
                     Date referenceDate,
@@ -221,14 +222,14 @@ namespace QLNet
                     DayCounter dayCounter,
                     bool flatExtrapolation = false,
                     VolatilityType type = VolatilityType.ShiftedLognormal,
-                    Matrix shifts = new Matrix())
+                    Matrix shifts = null)
             : base(optionTenors, swapTenors, referenceDate, calendar, bdc, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
             shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
-            checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            shifts_ = shifts ?? new Matrix(vols.rows(), vols.columns(), 0.0);
+            checkInputs(vols.rows(), vols.columns(), shifts_.rows(), shifts_.columns());
             volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
@@ -241,7 +242,7 @@ namespace QLNet
                 {
                     volHandles_[i][j] = new Handle<Quote>((new
                         SimpleQuote(vols[i, j])));
-                    shiftValues_[i][j] = shifts.rows() > 0 ? shifts[i, j] : 0.0;
+                    shiftValues_[i][j] = shifts_.rows() > 0 ? shifts_[i, j] : 0.0;
                 }
             }
 
@@ -277,26 +278,27 @@ namespace QLNet
                                  DayCounter dayCounter,
                                  bool flatExtrapolation = false,
                                  VolatilityType type = VolatilityType.ShiftedLognormal,
-                                 Matrix shifts = new Matrix())
+                                 Matrix shifts = null)
             : base(optionDates, swapTenors, today, new Calendar(), BusinessDayConvention.Following, dayCounter)
         {
             volHandles_ = new InitializedList<List<Handle<Quote>>>(vols.rows());
             shiftValues_ = new InitializedList<List<double>>(vols.rows());
             volatilities_ = new Matrix(vols.rows(), vols.columns());
-            shifts_ = new Matrix(shifts.rows(), shifts.columns(), 0.0);
-            checkInputs(vols.rows(), vols.columns(), shifts.rows(), shifts.columns());
+            shifts_ = shifts ?? new Matrix(vols.rows(), vols.columns(), 0.0);
+            checkInputs(vols.rows(), vols.columns(), shifts_.rows(), shifts_.columns());
             volatilityType_ = type;
 
             // fill dummy handles to allow generic handle-based
             // computations later on
-            for (int i = 0; i < vols.rows(); ++i){
+            for (int i = 0; i < vols.rows(); ++i)
+            {
                 volHandles_[i] = new InitializedList<Handle<Quote>>(vols.columns());
                 shiftValues_[i] = new InitializedList<double>(vols.columns());
                 for (int j = 0; j < vols.columns(); ++j)
                 {
                     volHandles_[i][j] = new Handle<Quote>((new
                         SimpleQuote(vols[i, j])));
-                    shiftValues_[i][j] = shifts.rows() > 0 ? shifts[i, j] : 0.0;
+                    shiftValues_[i][j] = shifts_.rows() > 0 ? shifts_[i, j] : 0.0;
                 }
             }
 
@@ -326,7 +328,7 @@ namespace QLNet
 
         // LazyObject interface
         //verifier protected QL public!!
-        protected override void performCalculations() 
+        protected override void performCalculations()
         {
             base.performCalculations();
 
@@ -343,35 +345,41 @@ namespace QLNet
         }
 
         // TermStructure interface
-        public override Date maxDate()  {
+        public override Date maxDate()
+        {
             return optionDates_.Last();
         }
 
         // VolatilityTermStructure interface
-        public override double minStrike()  {
+        public override double minStrike()
+        {
             return double.MinValue;
         }
 
-        public override double maxStrike()  {
+        public override double maxStrike()
+        {
             return double.MaxValue;
         }
 
         // SwaptionVolatilityStructure interface
-        public override Period maxSwapTenor()  {
+        public override Period maxSwapTenor()
+        {
             return swapTenors_.Last();
         }
 
         // Other inspectors
         //! returns the lower indexes of surrounding volatility matrix corners
-        public KeyValuePair<int,int> locate(  Date optionDate,
-                                              Period swapTenor)  {
+        public KeyValuePair<int, int> locate(Date optionDate,
+                                              Period swapTenor)
+        {
             return locate(timeFromReference(optionDate),
                           swapLength(swapTenor));
         }
 
         //! returns the lower indexes of surrounding volatility matrix corners
-        public KeyValuePair<int,int> locate(  double optionTime,
-                                              double swapLength)  {
+        public KeyValuePair<int, int> locate(double optionTime,
+                                              double swapLength)
+        {
             return new KeyValuePair<int, int>(interpolation_.locateY(optionTime),
                                   interpolation_.locateX(swapLength));
         }
@@ -385,16 +393,17 @@ namespace QLNet
         #region protected
         // defining the following method would break CMS test suite
         // to be further investigated
-        protected override SmileSection smileSectionImpl(double optionTime, double swapLength) 
+        protected override SmileSection smileSectionImpl(double optionTime, double swapLength)
         {
             double atmVol = volatilityImpl(optionTime, swapLength, 0.05);
             double shift = interpolationShifts_.value(optionTime, swapLength, true);
             return (SmileSection)new FlatSmileSection(optionTime, atmVol, dayCounter(), null, volatilityType(), shift);
 
-        } 
+        }
 
-        protected override double volatilityImpl(double optionTime,double swapLength,
-                                                double strike) {
+        protected override double volatilityImpl(double optionTime, double swapLength,
+                                                double strike)
+        {
             calculate();
             return interpolation_.value(swapLength, optionTime, true);
         }
@@ -405,19 +414,19 @@ namespace QLNet
             double tmp = interpolationShifts_.value(swapLength, optionTime, true);
             return tmp;
         }
-        #endregion 
+        #endregion
 
         #region private
         private void checkInputs(int volRows,
                                  int volsColumns,
                                  int shiftRows,
-                                 int shiftsColumns) 
+                                 int shiftsColumns)
         {
-            Utils.QL_REQUIRE(nOptionTenors_ == volRows,()=>
-               "mismatch between number of option dates (" + nOptionTenors_ + ") and number of rows (" + 
+            Utils.QL_REQUIRE(nOptionTenors_ == volRows, () =>
+               "mismatch between number of option dates (" + nOptionTenors_ + ") and number of rows (" +
                volRows + ") in the vol matrix");
-            Utils.QL_REQUIRE(nSwapTenors_ == volsColumns,()=>
-                "mismatch between number of swap tenors (" + nSwapTenors_ + ") and number of rows (" + 
+            Utils.QL_REQUIRE(nSwapTenors_ == volsColumns, () =>
+                "mismatch between number of swap tenors (" + nSwapTenors_ + ") and number of rows (" +
                 volsColumns + ") in the vol matrix");
 
             if (shiftRows == 0 && shiftsColumns == 0)

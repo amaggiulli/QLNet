@@ -50,10 +50,9 @@ namespace CallableBonds
          Console.WriteLine("Pricing a callable fixed rate bond using");
          Console.WriteLine("Hull White model w/ reversion parameter = 0.03");
          Console.WriteLine("BAC4.65 09/15/12  ISIN: US06060WBJ36");
-         Console.WriteLine("roughly five year tenor, ");
-         Console.WriteLine("quarterly coupon and call dates");
-         Console.WriteLine("reference date is : " + today );
-
+         Console.WriteLine("roughly five year tenor, quarterly coupon and call dates");
+         Console.WriteLine("reference date is : " + today.ToLongDateString() );
+         Console.WriteLine("");
          /* Bloomberg OAS1: "N" model (Hull White)
            varying volatility parameter
 
@@ -138,16 +137,15 @@ namespace CallableBonds
 
          Console.WriteLine("sigma/vol (%) = {0:0.00}", (100.0 * sigma));
 
-         Console.WriteLine("QuantLib price/yld (%)  ");
-         Console.WriteLine(  "{0:0.00} / {1:0.00} ", callableBond.cleanPrice() ,
-                                                     100.0 * callableBond.yield(bondDayCounter,
-                                                                                Compounding.Compounded,
-                                                                                frequency,
-                                                                                accuracy,
-                                                                                maxIterations));
-         Console.WriteLine("Bloomberg price/yld (%) ");
-         Console.WriteLine("96.50 / 5.47");
-
+         Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
+            callableBond.cleanPrice() ,
+            100.0 * callableBond.yield(bondDayCounter,
+            Compounding.Compounded,
+            frequency,
+            accuracy,
+            maxIterations));
+         Console.WriteLine("Bloomberg price/yld (%) 96,50 / 5,47");
+         Console.WriteLine("");
          //
 
          sigma = .01;
@@ -160,16 +158,16 @@ namespace CallableBonds
 
          callableBond.setPricingEngine(engine1);
 
-         Console.WriteLine("QuantLib price/yld (%)  ");
-         Console.WriteLine(  "{0:0.00} / {1:0.00} ", callableBond.cleanPrice() ,
-                                                     100.0 * callableBond.yield(bondDayCounter,
-                                                                                Compounding.Compounded,
-                                                                                frequency,
-                                                                                accuracy,
-                                                                                maxIterations));
+         Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
+            callableBond.cleanPrice() ,
+            100.0 * callableBond.yield(bondDayCounter,
+            Compounding.Compounded,
+            frequency,
+            accuracy,
+            maxIterations));
 
-         Console.WriteLine("Bloomberg price/yld (%) ");
-         Console.WriteLine("95.68 / 5.66");
+         Console.WriteLine("Bloomberg price/yld (%)  95,68 / 5,66");
+         Console.WriteLine("");
 
          //
 
@@ -183,17 +181,16 @@ namespace CallableBonds
 
          callableBond.setPricingEngine(engine2);
 
-         Console.WriteLine("QuantLib price/yld (%)  ");
-         Console.WriteLine("{0:0.00} / {1:0.00} ", callableBond.cleanPrice(),
-                                                     100.0 * callableBond.yield(bondDayCounter,
-                                                                                Compounding.Compounded,
-                                                                                frequency,
-                                                                                accuracy,
-                                                                                maxIterations));
+         Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
+            callableBond.cleanPrice(),
+            100.0 * callableBond.yield(bondDayCounter,
+            Compounding.Compounded,
+            frequency,
+            accuracy,
+            maxIterations));
 
-         Console.WriteLine("Bloomberg price/yld (%) ");
-         Console.WriteLine("92.34 / 6.49");
-
+         Console.WriteLine("Bloomberg price/yld (%) 92,34 / 6,49");
+         Console.WriteLine("");
          //
 
          sigma = .06;
@@ -206,17 +203,16 @@ namespace CallableBonds
 
          callableBond.setPricingEngine(engine3);
 
-         Console.WriteLine("QuantLib price/yld (%)  ");
-         Console.WriteLine("{0:0.00} / {1:0.00} ", callableBond.cleanPrice(),
-                                                     100.0 * callableBond.yield(bondDayCounter,
-                                                                                Compounding.Compounded,
-                                                                                frequency,
-                                                                                accuracy,
-                                                                                maxIterations));
+         Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
+            callableBond.cleanPrice(),
+            100.0 * callableBond.yield(bondDayCounter,
+            Compounding.Compounded,
+            frequency,
+            accuracy,
+            maxIterations));
 
-         Console.WriteLine("Bloomberg price/yld (%) ");
-         Console.WriteLine("87.16 / 7.83");
-
+         Console.WriteLine("Bloomberg price/yld (%) 87,16 / 7,83");
+         Console.WriteLine("");
          //
 
          sigma = .12;
@@ -229,16 +225,15 @@ namespace CallableBonds
 
          callableBond.setPricingEngine(engine4);
 
-         Console.WriteLine("QuantLib price/yld (%)  ");
-         Console.WriteLine("{0:0.00} / {1:0.00} ", callableBond.cleanPrice(),
-                                                     100.0 * callableBond.yield(bondDayCounter,
-                                                                                Compounding.Compounded,
-                                                                                frequency,
-                                                                                accuracy,
-                                                                                maxIterations));
+         Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
+            callableBond.cleanPrice(),
+            100.0 * callableBond.yield(bondDayCounter,
+            Compounding.Compounded,
+            frequency,
+            accuracy,
+            maxIterations));
 
-         Console.WriteLine("Bloomberg price/yld (%) ");
-         Console.WriteLine("77.31 / 10.65");
+         Console.WriteLine("Bloomberg price/yld (%) 77,31 / 10,65");
       }
    }
 }
