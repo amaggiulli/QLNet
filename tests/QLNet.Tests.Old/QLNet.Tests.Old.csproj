@@ -129,6 +129,7 @@
     <Compile Include="..\QLNet.Tests\T_DayCounters.cs" />
     <Compile Include="..\QLNet.Tests\T_EuropeanOption.cs" />
     <Compile Include="..\QLNet.Tests\T_ExchangeRate.cs" />
+    <Compile Include="..\QLNet.Tests\T_FdmLinearOp.cs" />
     <Compile Include="..\QLNet.Tests\T_Instruments.cs" />
     <Compile Include="..\QLNet.Tests\T_InterestRate.cs" />
     <Compile Include="..\QLNet.Tests\T_Interpolations.cs" />
