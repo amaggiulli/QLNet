@@ -1005,6 +1005,9 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\Fdm1dMesher.cs">
       <Link>Methods\Finitedifferences\Meshers\Fdm1dMesher.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmSimpleProcess1dMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmSimpleProcess1dMesher.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs">
       <Link>Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs</Link>
     </Compile>
@@ -1022,6 +1025,9 @@
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs">
       <Link>Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmHullWhiteOp.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmHullWhiteOp.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmLinearOp.cs">
       <Link>Methods\Finitedifferences\Operators\FdmLinearOp.cs</Link>
@@ -1080,8 +1086,11 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmHullWhiteSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\FdmHullWhiteSolver.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmSolverDesc.cs">
-      <Link>Methods\Solvers\FdmSolverDesc.cs</Link>
+      <Link>Methods\Finitedifferences\Solvers\FdmSolverDesc.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs">
       <Link>Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs</Link>
@@ -1109,6 +1118,12 @@
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmInnerValueCalculator.cs">
       <Link>Methods\Finitedifferences\Utilities\FdmInnerValueCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmAffineModelSwapInnerValue.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmAffineModelSwapInnerValue.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmAffineModelTermStructure.cs">
+      <Link>Methods\Finitedifferences\Utilities\FdmAffineModelTermStructure.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Utilities\FdmMesherIntegral.cs">
       <Link>Methods\Finitedifferences\Utilities\FdmMesherIntegral.cs</Link>
@@ -1477,6 +1492,9 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\vanilla\FdBlackScholesVanillaEngine.cs">
       <Link>Pricingengines\vanilla\FdBlackScholesVanillaEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\vanilla\FdHullWhiteSwaptionEngine.cs">
+      <Link>Pricingengines\vanilla\FdHullWhiteSwaptionEngine.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\vanilla\FDAmericanEngine.cs">
       <Link>Pricingengines\vanilla\FDAmericanEngine.cs</Link>
