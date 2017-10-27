@@ -46,7 +46,7 @@ namespace QLNet
       public void applyTo(object o, double t)
       {
          Vector a = (Vector) o;
-         if (exerciseTimes_.BinarySearch(t) > 0)
+         if (exerciseTimes_.BinarySearch(t) >= 0)
          {
             FdmLinearOpLayout layout = mesher_.layout();
             FdmLinearOpIterator endIter = layout.end();
