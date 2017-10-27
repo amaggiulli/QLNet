@@ -100,7 +100,7 @@ namespace QLNet
             return innerValue(iter, t);
         }
 
-        Vector getState(ModelType model, double t, FdmLinearOpIterator iter) 
+        public Vector getState(ModelType model, double t, FdmLinearOpIterator iter) 
         {
             if (model.GetType().Equals(typeof(HullWhite)))
             {
@@ -117,7 +117,7 @@ namespace QLNet
                 return retVal;
             }
             else
-                return null;
+                return new Vector();
         }
 
         protected RelinkableHandle<YieldTermStructure> disTs_ = new RelinkableHandle<YieldTermStructure>(), fwdTs_ = new RelinkableHandle<YieldTermStructure>();
