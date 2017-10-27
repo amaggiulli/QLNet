@@ -25,9 +25,9 @@ namespace QLNet
    /// <summary>
    /// One-dimensional grid mesher
    /// </summary>
-   public class FdmSimpleProcess1dMesher : Fdm1dMesher
+    public class FdmSimpleProcess1DMesher : Fdm1dMesher
    {
-       public FdmSimpleProcess1dMesher(int size, 
+        public FdmSimpleProcess1DMesher(int size, 
                                        StochasticProcess1D process,
                                        double maturity, int tAvgSteps = 10, 
                                        double epsilon = 0.0001,
@@ -59,7 +59,7 @@ namespace QLNet
                 locations_[i] += process.evolve(0, process.x0(), t, 
                                                 new InverseCumulativeNormal().value(p));
             }
-            locations_[locations_.Count() - 1] += qMax;
+            locations_[locations_.Count - 1] += qMax;
         }
         locations_ = locations_.Select(x => x / tAvgSteps).ToList();
         for (int i=0; i < size-1; ++i) 
