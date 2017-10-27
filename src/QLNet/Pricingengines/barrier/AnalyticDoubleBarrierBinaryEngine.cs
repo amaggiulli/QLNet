@@ -45,9 +45,9 @@ namespace QLNet
     */
 
     // calc helper object 
-    public class AnalyticDoubleBarrierBinaryEngine_helper
+    public class AnalyticDoubleBarrierBinaryEngineHelper
     {
-        public AnalyticDoubleBarrierBinaryEngine_helper(
+        public AnalyticDoubleBarrierBinaryEngineHelper(
              GeneralizedBlackScholesProcess process,
              CashOrNothingPayoff payoff,
              DoubleBarrierOption.Arguments arguments)
@@ -95,7 +95,7 @@ namespace QLNet
             double tot = 0, term = 0;
             for (int i = 1 ; i < maxIteration ; ++i)
             {
-               double term1 = (lo_alpha-Math.Pow(-1.0, (int)i)*hi_alpha) /
+               double term1 = (lo_alpha-Math.Pow(-1.0, i)*hi_alpha) /
                                   (Math.Pow(alpha,2)+Math.Pow(i*Const.M_PI/Z, 2));
                double term2 = Math.Sin(i*Const.M_PI/Z * Math.Log(spot/barrier_lo));
                double term3 = Math.Exp(-0.5*(Math.Pow(i*Const.M_PI/Z,2)-beta)*variance);
@@ -172,7 +172,7 @@ namespace QLNet
         protected GeneralizedBlackScholesProcess process_;
         protected CashOrNothingPayoff payoff_;
         protected DoubleBarrierOption.Arguments arguments_;
-    };
+    }
     public class AnalyticDoubleBarrierBinaryEngine : DoubleBarrierOption.Engine
     {
         public AnalyticDoubleBarrierBinaryEngine(GeneralizedBlackScholesProcess process)
@@ -298,7 +298,7 @@ namespace QLNet
                     break;
             }
 
-            AnalyticDoubleBarrierBinaryEngine_helper helper = new AnalyticDoubleBarrierBinaryEngine_helper(process_,
+            AnalyticDoubleBarrierBinaryEngineHelper helper = new AnalyticDoubleBarrierBinaryEngineHelper(process_,
                                                                     payoff, arguments_);
             switch (barrierType)
             {
