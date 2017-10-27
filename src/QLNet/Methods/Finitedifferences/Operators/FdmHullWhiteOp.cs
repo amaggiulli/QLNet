@@ -66,15 +66,15 @@ namespace QLNet
                 return retVal;
             } 
         }
-        public override Vector solve_splitting(int direction, Vector r, double dt) { 
+        public override Vector solve_splitting(int direction, Vector r, double s) { 
             if (direction == direction_)
-                return mapT_.solve_splitting(r, dt, 1.0);
+                return mapT_.solve_splitting(r, s, 1.0);
             else {
                 Vector retVal = new Vector(r.size(), 0.0);
                 return retVal;
             }
         }
-        public override Vector preconditioner(Vector r, double dt) { return solve_splitting(direction_, r, dt); }
+        public override Vector preconditioner(Vector r, double s) { return solve_splitting(direction_, r, s); }
 
         public override List<SparseMatrix> toMatrixDecomp()
         {
@@ -84,8 +84,8 @@ namespace QLNet
 
         #region IOperator interface
         public override IOperator identity(int size) { return null; }
-        public override Vector applyTo(Vector v) { return null; }
-        public override Vector solveFor(Vector rhs) { return null; }
+        public override Vector applyTo(Vector v) { return new Vector(); }
+        public override Vector solveFor(Vector rhs) { return new Vector(); }
 
         public override IOperator multiply(double a, IOperator D) { return null; }
         public override IOperator add(IOperator A, IOperator B) { return null; }
