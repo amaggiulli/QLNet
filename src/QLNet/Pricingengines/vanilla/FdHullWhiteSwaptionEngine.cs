@@ -52,8 +52,8 @@ namespace QLNet
 
             OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(model_.currentLink().a(), model_.currentLink().sigma());
 
-            Fdm1dMesher shortRateMesher = 
-                new FdmSimpleProcess1dMesher(xGrid_, process, maturity,1,invEps_);
+            Fdm1dMesher shortRateMesher =
+                new FdmSimpleProcess1DMesher(xGrid_, process, maturity, 1, invEps_);
 
             FdmMesher mesher = new FdmMesherComposite(shortRateMesher);
 
