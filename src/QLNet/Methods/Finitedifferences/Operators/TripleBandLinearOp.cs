@@ -65,12 +65,12 @@ namespace QLNet
         public TripleBandLinearOp(TripleBandLinearOp m)
         {
             direction_ = m.direction_;
-            i0_ = new List<int>(m.mesher_.layout().size());
-            i2_ = new List<int>(m.mesher_.layout().size());
-            reverseIndex_ = new List<int>(m.mesher_.layout().size());
-            lower_ = new List<double>(m.mesher_.layout().size());
-            diag_ = new List<double>(m.mesher_.layout().size());
-            upper_ = new List<double>(m.mesher_.layout().size());
+            i0_ = new InitializedList<int>(m.mesher_.layout().size());
+            i2_ = new InitializedList<int>(m.mesher_.layout().size());
+            reverseIndex_ = new InitializedList<int>(m.mesher_.layout().size());
+            lower_ = new InitializedList<double>(m.mesher_.layout().size());
+            diag_ = new InitializedList<double>(m.mesher_.layout().size());
+            upper_ = new InitializedList<double>(m.mesher_.layout().size());
             mesher_ = m.mesher_;
 
             int len = m.mesher_.layout().size();
