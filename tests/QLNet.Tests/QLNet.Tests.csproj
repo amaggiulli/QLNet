@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.9.2</VersionPrefix>
+    <VersionPrefix>1.10.0</VersionPrefix>
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>QLNet.Tests</AssemblyName>
     <PackageId>QLNet.Tests</PackageId>
