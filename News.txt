@@ -1,28 +1,48 @@
-QLNet 1.9.2 
+QLNet 1.10.0 
 =========================
 
-QLNet 1.9.2 stable version.
+QLNet 1.10.0 stable version.
 
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
+ENGINES
+
++ Added DiscountingLoanEngine
++ Updated Swaption Engine
++ Added IsdaCdsEngine, InterpolatedSurvivalProbabilityCurve and SurvivalProbabilityStructure with test
++ Added AnalyticDoubleBarrierBinaryEngine and BinomialDoubleBarrierEngine
++ Added HW swaption engine
+
 FRAMEWORK
 
-+ Fixed floating point numbers equality.
-+ Added FastActivator to avoid new() on generic classes
-+ Project updated to Visual Studio 2017 new .csproj model.
-+ General project refactoring
-+ Removed "System.Exception" thrown by user code.
++ Updated documentation to standard XML format
++ Updated to net standard 2.0
++ Several bug fixes 
 
 TERMSTRUCTURES
 
-+ Added HestonBlackVolSurface 
++ Added Interpolated YoY Inflation Curve
++ Added normal volatility interpolation  to SABR
 
-INDEXES
+TIME
 
-+ Fixed inflation index reference period
+ + Updated Schedule for CDS2015 with test.
+ + Updated Actual360 daycounter to include/exclude last day
 
 INSTRUMENTS
 
-+ Added normal implied vol cap floor
-+ Added Bachelier volatility for CapFloor
++ Add gearing interface for CMS and Floating legs
++ Swaption instrument update
++ Updated bonds constructors
++ Added Finite differences method
++ Updated CreditDefaultSwap + helper
+
+MATH
+
++ Add SVI Interpolation class
++ Add shift to SABR & XABR
+
+CASHFLOWS
+
++ Added LastPeriodDayCounter to FixedRateCoupon

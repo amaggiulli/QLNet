@@ -144,7 +144,8 @@ namespace QLNet
                                 OptimizationMethod optMethod = null,
                                 double errorAccept = 0.0020,
                                 bool useMaxError = false,
-                                int maxGuesses = 50)
+                                int maxGuesses = 50,
+                                List<double?> addParams = null)
         {
 
             impl_ = new XABRInterpolationImpl<SVISpecs>(
@@ -152,7 +153,7 @@ namespace QLNet
                     new List<double?>() { a, b, sigma, rho, m },
                     new List<bool>() { aIsFixed, bIsFixed, sigmaIsFixed, rhoIsFixed, mIsFixed },
                     vegaWeighted, endCriteria, optMethod, errorAccept, useMaxError,
-                    maxGuesses);
+                    maxGuesses, addParams);
             coeffs_ = (impl_ as XABRInterpolationImpl<SVISpecs>).coeff_;
         }
         public double expiry() { return coeffs_.t_; }
@@ -178,7 +179,7 @@ namespace QLNet
                     bool vegaWeighted = false,
                     EndCriteria endCriteria = null,
                     OptimizationMethod optMethod = null,
-                    double errorAccept = 0.0020, bool useMaxError = false, int maxGuesses = 50)
+                    double errorAccept = 0.0020, bool useMaxError = false, int maxGuesses = 50, List<double?> addParams = null)
         {
             t_ = t;
             forward_ = forward;
@@ -198,6 +199,7 @@ namespace QLNet
             errorAccept_ = errorAccept;
             useMaxError_ = useMaxError;
             maxGuesses_ = maxGuesses;
+            addParams_ = addParams;
         }
 
         public Interpolation interpolate(List<double> xBegin, int xEnd, List<double> yBegin)
@@ -207,7 +209,6 @@ namespace QLNet
                    endCriteria_, optMethod_, errorAccept_, useMaxError_, maxGuesses_);
         }
         public const bool global = true;
-
 
         private double t_;
         private double forward_;
@@ -219,5 +220,6 @@ namespace QLNet
         private double errorAccept_;
         private bool useMaxError_;
         private int maxGuesses_;
+        private List<double?> addParams_;
     }
 }
