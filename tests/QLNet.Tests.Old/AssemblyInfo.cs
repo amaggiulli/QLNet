@@ -35,5 +35,5 @@ using Xunit;
 //
 // È possibile specificare tutti i valori oppure impostare i valori predefiniti per i numeri relativi alla build e alla revisione 
 // utilizzando l'asterisco (*) come descritto di seguito:
-[assembly: AssemblyVersion( "1.9.2.0" )]
-[assembly: AssemblyFileVersion( "1.9.2.0" )]
+[assembly: AssemblyVersion( "1.10.0.0" )]
+[assembly: AssemblyFileVersion( "1.10.0.0" )]
