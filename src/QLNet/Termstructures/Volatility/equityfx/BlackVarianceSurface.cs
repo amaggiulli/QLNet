@@ -47,7 +47,9 @@ namespace QLNet
       private Date maxDate_;
       private List<double> strikes_;
       private List<double> times_;
+      private List<Date> dates_;
       private Matrix variances_;
+      private Matrix volatilities_;
       private Interpolation2D varianceSurface_;
       private Extrapolation lowerExtrapolation_, upperExtrapolation_;
 
@@ -65,6 +67,13 @@ namespace QLNet
       {
          return strikes_.Last();
       }
+
+      //public accessors
+      public virtual List<double> strikes() { return strikes_; }
+      public virtual List<double> times() { return times_; }
+      public virtual List<Date> dates() { return dates_; }
+      public virtual Matrix volatilities() { return volatilities_; }
+      public virtual Matrix variances() { return variances_; }
 
       // required for Handle
       public BlackVarianceSurface() { }
@@ -84,6 +93,8 @@ namespace QLNet
          strikes_ = strikes;
          lowerExtrapolation_ = lowerExtrapolation;
          upperExtrapolation_ = upperExtrapolation;
+         dates_ = dates;
+         volatilities_ = blackVolMatrix;
 
          Utils.QL_REQUIRE(dates.Count == blackVolMatrix.columns(), () =>
            "mismatch between date vector and vol matrix colums");
