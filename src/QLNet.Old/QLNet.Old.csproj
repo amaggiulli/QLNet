@@ -1081,7 +1081,7 @@
       <Link>Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmSolverDesc.cs">
-      <Link>Methods\Solvers\FdmSolverDesc.cs</Link>
+      <Link>Methods\Finitedifferences\Solvers\FdmSolverDesc.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs">
       <Link>Methods\Finitedifferences\StepConditions\FdmAmericanStepCondition.cs</Link>
