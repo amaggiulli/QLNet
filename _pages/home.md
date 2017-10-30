@@ -12,14 +12,14 @@ excerpt: 'A financial library written in C#.<br /> <small><a href="https://githu
 feature_row:
   - image_path: /assets/images/qlnet-quality-feature.png
     alt: "Quality"
-    title: "Continuos code quality "
+    title: "Continuous code quality "
     excerpt: "Source code is continuously analyzed to detect bugs, vulnerabilities and code smells. Every update is tested with more than 300 unit test ."
     url: "/docs/configuration/"
     btn_label: "Learn More"
   - image_path: /assets/images/qlnet-run-feature.png
     alt: "Run everywhere"
     title: "Run everywhere"
-    excerpt: "QLNet is compiled for .NET 4.0 , 4.5 and .NET Standard. This way the library can be used on Windows,Linux and Mac. And it's fast !"
+    excerpt: "QLNet is compiled for .NET 4.0 , 4.5 and .NET Standard. This way the library can be used on Windows ,Linux and Mac. And it's fast !"
     url: "/docs/layouts/"
     btn_label: "Learn More"
   - image_path: /assets/images/qlnet-free-feature.png
