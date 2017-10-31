@@ -127,6 +127,11 @@ namespace QLNet
                y = (terminationDate - evalDate) / 366 + 1;
                effectiveDate = terminationDate - new Period(y , TimeUnit.Years);
             }
+            // More accurate , is the previous coupon date
+            if (effectiveDate > evalDate)
+               effectiveDate = effectiveDate - new Period(tenor_.length(), TimeUnit.Months);
+            else if (effectiveDate + new Period(tenor_.length(), TimeUnit.Months) < evalDate)
+               effectiveDate = effectiveDate + new Period(tenor_.length(), TimeUnit.Months);
          }
          else
             Utils.QL_REQUIRE( effectiveDate != null, () => "null effective date" );
