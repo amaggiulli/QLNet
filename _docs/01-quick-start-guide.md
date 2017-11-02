@@ -44,7 +44,7 @@ there you can find a build dll ready to use or source code ( zip or tar.gz ).
 {: .notice--warning}
 
 <figure>
-  <img src="{{ '/assets/images/latest_release.jpg' | absolute_url }}" alt="QLNet latest release">
+  <img src="{{ '/assets/images/latest_release.JPG' | absolute_url }}" alt="QLNet latest release">
 </figure>
 
 ### Source code Method
