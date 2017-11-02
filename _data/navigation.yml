@@ -1,14 +1,41 @@
 # main links
 main:
   - title: "Quick-Start Guide"
-    url: https://amaggiulli.github.io/QLNet/docs/quick-start-guide/
+    url: /docs/quick-start-guide/
   - title: "News"
     url: /news/
   - title: "Blog"
     url: /year-archive/
   - title: "About"
-    url: https://amaggiulli.github.io/QLNet/about/
+    url: /about/
   # - title: "Sample Collections"
   #   url: /collection-archive/
   # - title: "Sitemap"
   #   url: /sitemap/
+
+ # documentation links
+docs:
+  - title: Getting Started
+    children:
+      - title: "Quick-Start Guide"
+        url: /docs/quick-start-guide/
+  - title: Customization
+    children:
+      - title: "Configuration"
+        url: /docs/configuration/
+  - title: Content
+    children:
+      - title: "Working with Posts"
+        url: /docs/posts/
+  - title: Meta
+    children:
+      - title: "History"
+        url: /docs/history/
+      - title: "Contributing"
+        url: /docs/contributing/
+      - title: "Old 2.2 Docs"
+        url: /docs/docs-2-2/
+      - title: "License"
+        url: /docs/license/
+      - title: "Terms &amp; Privacy Policy"
+        url: /terms/
