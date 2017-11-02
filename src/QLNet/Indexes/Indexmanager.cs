@@ -63,7 +63,7 @@ namespace QLNet {
 
         //! clears the historical fixings of the index
         public void clearHistory(string name) {
-           data_.Remove(name.ToUpper());
+           data_.Remove(name);
         }
 
         //! clears all stored fixings
