@@ -23,19 +23,3 @@ docs:
     children:
       - title: "Configuration"
         url: /docs/configuration/
-  - title: Content
-    children:
-      - title: "Working with Posts"
-        url: /docs/posts/
-  - title: Meta
-    children:
-      - title: "History"
-        url: /docs/history/
-      - title: "Contributing"
-        url: /docs/contributing/
-      - title: "Old 2.2 Docs"
-        url: /docs/docs-2-2/
-      - title: "License"
-        url: /docs/license/
-      - title: "Terms &amp; Privacy Policy"
-        url: /terms/
