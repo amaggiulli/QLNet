@@ -32,7 +32,24 @@ namespace QLNet
          tenor_ = tenor;
          overnightIndex_ = overnightIndex;
          overnightIndex_.registerWith(update);
+         fixedFrequency_ = Frequency.Annual;
+         oisFrequency_ = Frequency.Annual;
+
          initializeDates();
+      }
+
+      public OISRateHelper(int settlementDays,
+                          Period tenor, // swap maturity
+                          Handle<Quote> fixedRate,
+                          OvernightIndex overnightIndex,
+                          Frequency fixedLegFrequency,
+                          Frequency overnightLegFrequency)
+          : this(settlementDays, tenor, fixedRate, overnightIndex)
+      {
+          fixedFrequency_ = fixedLegFrequency;
+          oisFrequency_ = overnightLegFrequency;
+
+          initializeDates();
       }
 
       public OvernightIndexedSwap swap() { return swap_; }
@@ -46,6 +63,8 @@ namespace QLNet
          OvernightIndex clonedOvernightIndex = clonedIborIndex as OvernightIndex;
 
          swap_ = new MakeOIS(tenor_, clonedOvernightIndex, 0.0)
+                     .withPaymentFrequency(fixedFrequency_)
+                     .withOisPaymentFrequency(oisFrequency_)
                      .withSettlementDays(settlementDays_)
                      .withDiscountingTermStructure(termStructureHandle_);
          
@@ -71,6 +90,7 @@ namespace QLNet
 
       protected int settlementDays_;
       protected Period tenor_;
+      protected Frequency fixedFrequency_, oisFrequency_;
       protected OvernightIndex overnightIndex_;
       protected OvernightIndexedSwap swap_;
       protected RelinkableHandle<YieldTermStructure> termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
