@@ -35,7 +35,7 @@ namespace QLNet
       private Date effectiveDate_, terminationDate_;
       private Calendar calendar_;
 
-      private Frequency paymentFrequency_;
+      private Frequency paymentFrequency_, oisFrequency_;
       DateGeneration.Rule rule_;
       private bool endOfMonth_, isDefaultEOM_;
 
@@ -47,7 +47,7 @@ namespace QLNet
 
       private IPricingEngine engine_;
 
-      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex,double? fixedRate = null , Period fwdStart = null )
+      public MakeOIS(Period swapTenor, OvernightIndex overnightIndex, double? fixedRate = null, Period fwdStart = null )
       {
          swapTenor_=swapTenor;
          overnightIndex_ = overnightIndex;
@@ -56,6 +56,7 @@ namespace QLNet
          settlementDays_ = 2;
          calendar_ = overnightIndex.fixingCalendar();
          paymentFrequency_ = Frequency.Annual;
+         oisFrequency_ = Frequency.Annual;
          rule_ = DateGeneration.Rule.Backward;
          // any value here for endOfMonth_ would not be actually used
          isDefaultEOM_ = true;
@@ -100,16 +101,33 @@ namespace QLNet
       public MakeOIS withPaymentFrequency(Frequency f)
       {
          paymentFrequency_ = f;
-         if (paymentFrequency_== Frequency.Once)
-            rule_ = DateGeneration.Rule.Zero;
+         if (paymentFrequency_ == Frequency.Once)
+         {
+             oisFrequency_ = f;
+             rule_ = DateGeneration.Rule.Zero;
+         }
          return this;
+      }
+
+      public MakeOIS withOisPaymentFrequency(Frequency f)
+      {
+          oisFrequency_ = f;
+          if (oisFrequency_ == Frequency.Once)
+          {
+              paymentFrequency_ = f;
+              rule_ = DateGeneration.Rule.Zero;
+          }
+          return this;
       }
 
       public MakeOIS withRule(DateGeneration.Rule r) 
       {
          rule_ = r;
-         if (r==DateGeneration.Rule.Zero)
-            paymentFrequency_ = Frequency.Once;
+         if (r == DateGeneration.Rule.Zero)
+         {
+             paymentFrequency_ = Frequency.Once;
+             oisFrequency_ = Frequency.Once;
+         }
          return this;
       }
 
@@ -191,7 +209,7 @@ namespace QLNet
 
 
 
-         Schedule schedule = new Schedule( startDate, endDate,
+         Schedule fixedSchedule = new Schedule( startDate, endDate,
                           new Period( paymentFrequency_ ),
                           calendar_,
                           BusinessDayConvention.ModifiedFollowing,
@@ -199,13 +217,21 @@ namespace QLNet
                           rule_,
                           usedEndOfMonth );
 
+         Schedule oisSchedule = new Schedule(startDate, endDate,
+                         new Period( oisFrequency_ ),
+                         calendar_,
+                         BusinessDayConvention.ModifiedFollowing,
+                         BusinessDayConvention.ModifiedFollowing,
+                         rule_,
+                         usedEndOfMonth);
+
          double? usedFixedRate = fixedRate_;
          if ( fixedRate_ == null )
          {
             OvernightIndexedSwap temp = new OvernightIndexedSwap( type_, nominal_,
-                                            schedule,
+                                            fixedSchedule,
                                             0.0, // fixed rate
-                                            fixedDayCount_,
+                                            fixedDayCount_, nominal_, oisSchedule,
                                             overnightIndex_, overnightSpread_ );
             if ( engine_ == null )
             {
@@ -223,8 +249,9 @@ namespace QLNet
          }
 
          OvernightIndexedSwap ois = new OvernightIndexedSwap( type_, nominal_,
-                                  schedule,
+                                  fixedSchedule,
                                   usedFixedRate.Value, fixedDayCount_,
+                                  nominal_, oisSchedule,
                                   overnightIndex_, overnightSpread_ );
 
          if ( engine_ == null )
