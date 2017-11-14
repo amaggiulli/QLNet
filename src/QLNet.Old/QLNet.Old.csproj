@@ -2066,6 +2066,7 @@
     </Compile>
     <Compile Include="..\QLNet\Types.cs" />
     <Compile Include="..\QLNet\Utils.cs" />
+    <Compile Include="..\QLNet\Math\Optimization\SimulatedAnnealing.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
