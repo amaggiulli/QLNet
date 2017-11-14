@@ -18,13 +18,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
+using System.Linq;
+
 namespace QLNet
 {
    //!  Cost function abstract class for optimization problem
    public abstract class CostFunction
    {
       //! method to overload to compute the cost function value in x
-      public abstract double value( Vector x );
+      public virtual double value(Vector x)
+      {
+          Vector v = Vector.Sqrt(x);
+          return Math.Sqrt(v.Sum(a => a) / Convert.ToDouble(v.size()));
+      }
       //! method to overload to compute the cost function values in x
       public abstract Vector values( Vector x );
 

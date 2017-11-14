@@ -66,13 +66,23 @@ namespace QLNet
       //! Returns upper bound for given parameters
       public virtual Vector upperBound(Vector parameters) 
       {
-         return impl_.upperBound( parameters ); 
+         Vector result = impl_.upperBound( parameters );
+         Utils.QL_REQUIRE(parameters.size() == result.size(), () =>
+                "upper bound size (" + result.size()
+                                     + ") not equal to params size ("
+                                     + parameters.size() + ")");
+         return result;
       }
       
       //! Returns lower bound for given parameters
       public virtual Vector lowerBound(Vector parameters) 
       {
-         return impl_.lowerBound( parameters );  // 
+          Vector result = impl_.lowerBound(parameters);
+          Utils.QL_REQUIRE(parameters.size() == result.size(), () =>
+                 "lower bound size (" + result.size()
+                                      + ") not equal to params size ("
+                                      + parameters.size() + ")");
+          return result;
       }
    }
 

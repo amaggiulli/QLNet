@@ -50,6 +50,7 @@ namespace QLNet {
             costFunction_ = costFunction;
             constraint_ = constraint;
             currentValue_ = initialValue.Clone();
+            Utils.QL_REQUIRE(!constraint.empty(), () => "empty constraint given");
         }
 
         /*! \warning it does not reset the current minumum to any initial value
