@@ -93,12 +93,7 @@ namespace QLNet
       // returns K(||X-Y||) where X,Y are vectors
       private double kernelAbs(Vector X, Vector Y)
       {
-         return kernel_.value( vecNorm( X - Y ) );
-      }
-
-      private double vecNorm(Vector X)
-      {
-         return Math.Sqrt(Vector.DotProduct(X,X));
+         return kernel_.value( Vector.Norm2( X - Y ) );
       }
 
       private double gammaFunc(Vector X)
