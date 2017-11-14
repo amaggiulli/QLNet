@@ -641,6 +641,9 @@
     <Compile Include="..\QLNet\Math\Optimization\CostFunction.cs">
       <Link>Math\Optimization\CostFunction.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Math\Optimization\SimulatedAnnealing.cs">
+      <Link>Math\Optimization\SimulatedAnnealing.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Math\Distributions\binomialdistribution.cs">
       <Link>Math\Distributions\binomialdistribution.cs</Link>
     </Compile>
@@ -2066,7 +2069,6 @@
     </Compile>
     <Compile Include="..\QLNet\Types.cs" />
     <Compile Include="..\QLNet\Utils.cs" />
-    <Compile Include="..\QLNet\Math\Optimization\SimulatedAnnealing.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
