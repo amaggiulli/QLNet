@@ -75,7 +75,7 @@ namespace QLNet
             rng_ = rng;
         }
 
-        override public EndCriteria.Type minimize(Problem P, EndCriteria ec)
+        override public EndCriteria.Type minimize(Problem P, EndCriteria endCriteria)
         {
             int stationaryStateIterations_ = 0;
             EndCriteria.Type ecType = EndCriteria.Type.None;
@@ -147,15 +147,12 @@ namespace QLNet
                         }
                     }
 
-                    // rtol_ = 2.0 * std::fabs(yhi_ - ylo_) /
-                    //         (std::fabs(yhi_) + std::fabs(ylo_));
-                    // check rtol against some ftol... // NR end criterion in f(x)
-
                     // GSL end criterion in x (cf. above)
-                    if (ec.checkStationaryPoint(simplexSize(), 0.0,
+                    if (endCriteria.checkStationaryPoint(simplexSize(), 0.0,
                                                 ref stationaryStateIterations_,
                                                 ref ecType) ||
-                        ec.checkMaxIterations(iteration_, ref ecType)) {
+                        endCriteria.checkMaxIterations(iteration_, ref ecType))
+                    {
                         // no matter what, we return the best ever point !
                         P.setCurrentValue(pb_);
                         P.setFunctionValue(yb_);
