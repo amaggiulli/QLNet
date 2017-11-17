@@ -641,8 +641,8 @@
     <Compile Include="..\QLNet\Math\Optimization\CostFunction.cs">
       <Link>Math\Optimization\CostFunction.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Math\Optimization\SimulatedAnnealing.cs">
-      <Link>Math\Optimization\SimulatedAnnealing.cs</Link>
+    <Compile Include="..\QLNet\Math\Optimization\DifferentialEvolution.cs">
+      <Link>Math\Optimization\DifferentialEvolution.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\Distributions\binomialdistribution.cs">
       <Link>Math\Distributions\binomialdistribution.cs</Link>
