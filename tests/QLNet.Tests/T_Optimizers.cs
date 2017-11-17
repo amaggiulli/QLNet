@@ -129,6 +129,113 @@ namespace TestSuite {
             optimizationMethod.minimize(problem, endCriteria);
         }
 
+#if NET40 || NET45
+    [TestMethod()]
+#else
+    [Fact]
+#endif
+    public void testDifferentialEvolution() {
+        //BOOST_TEST_MESSAGE("Testing differential evolution...");
+
+        /* Note:
+        *
+        * The "ModFourthDeJong" doesn't have a well defined optimum because
+        * of its noisy part. It just has to be <= 15 in our example.
+        * The concrete value might differ for a different input and
+        * different random numbers.
+        *
+        * The "Griewangk" function is an example where the adaptive
+        * version of DifferentialEvolution turns out to be more successful.
+        */
+
+        DifferentialEvolution.Configuration conf =
+            new DifferentialEvolution.Configuration()
+                .withStepsizeWeight(0.4)
+                .withBounds()
+                .withCrossoverProbability(0.35)
+                .withPopulationMembers(500)
+                .withStrategy(DifferentialEvolution.Strategy.BestMemberWithJitter)
+                .withCrossoverType(DifferentialEvolution.CrossoverType.Normal)
+                .withAdaptiveCrossover()
+                .withSeed(3242);
+
+        DifferentialEvolution.Configuration conf2 =
+            new DifferentialEvolution.Configuration()
+                .withStepsizeWeight(1.8)
+                .withBounds()
+                .withCrossoverProbability(0.9)
+                .withPopulationMembers(1000)
+                .withStrategy(DifferentialEvolution.Strategy.Rand1SelfadaptiveWithRotation)
+                .withCrossoverType(DifferentialEvolution.CrossoverType.Normal)
+                .withAdaptiveCrossover()
+                .withSeed(3242);
+        DifferentialEvolution deOptim2 = new DifferentialEvolution(conf2);
+
+        List<DifferentialEvolution> diffEvolOptimisers = new List<DifferentialEvolution>();
+        diffEvolOptimisers.Add(new DifferentialEvolution(conf));
+        diffEvolOptimisers.Add(new DifferentialEvolution(conf));
+        diffEvolOptimisers.Add(new DifferentialEvolution(conf));
+        diffEvolOptimisers.Add(new DifferentialEvolution(conf));
+        diffEvolOptimisers.Add(deOptim2);
+
+        List<CostFunction> costFunctions = new List<CostFunction>();
+        costFunctions.Add(new FirstDeJong());
+        costFunctions.Add(new SecondDeJong());
+        costFunctions.Add(new ModThirdDeJong());
+        costFunctions.Add(new ModFourthDeJong());
+        costFunctions.Add(new Griewangk());
+
+        List<BoundaryConstraint> constraints = new List<BoundaryConstraint>();
+        constraints.Add(new BoundaryConstraint(-10.0, 10.0));
+        constraints.Add(new BoundaryConstraint(-10.0, 10.0));
+        constraints.Add(new BoundaryConstraint(-10.0, 10.0));
+        constraints.Add(new BoundaryConstraint(-10.0, 10.0));
+        constraints.Add(new BoundaryConstraint(-600.0, 600.0));
+
+        List<Vector> initialValues = new List<Vector>();
+        initialValues.Add(new Vector(3, 5.0));
+        initialValues.Add(new Vector(2, 5.0));
+        initialValues.Add(new Vector(5, 5.0));
+        initialValues.Add(new Vector(30, 5.0));
+        initialValues.Add(new Vector(10, 100.0));
+
+        List<EndCriteria> endCriteria = new List<EndCriteria>();
+        endCriteria.Add(new EndCriteria(100, 10, 1e-10, 1e-8, null));
+        endCriteria.Add(new EndCriteria(100, 10, 1e-10, 1e-8, null));
+        endCriteria.Add(new EndCriteria(100, 10, 1e-10, 1e-8, null));
+        endCriteria.Add(new EndCriteria(500, 100, 1e-10, 1e-8, null));
+        endCriteria.Add(new EndCriteria(1000, 800, 1e-12, 1e-10, null));
+
+        List<double> minima = new List<double>();
+        minima.Add(0.0);
+        minima.Add(0.0);
+        minima.Add(0.0);
+        minima.Add(10.9639796558);
+        minima.Add(0.0);
+
+        for (int i = 0; i < costFunctions.Count; ++i) {
+            Problem problem = new Problem(costFunctions[i], constraints[i], initialValues[i]);
+            diffEvolOptimisers[i].minimize(problem, endCriteria[i]);
+
+            if (i != 3) {
+                // stable
+                if (Math.Abs(problem.functionValue() - minima[i]) > 1e-8) {
+                    QAssert.Fail("costFunction # " + i
+                                + "\ncalculated: " + problem.functionValue()
+                                + "\nexpected:   " + minima[i]);
+                }
+            } else {
+                // this case is unstable due to randomness; we're good as
+                // long as the result is below 15
+                if (problem.functionValue() > 15) {
+                    QAssert.Fail("costFunction # " + i
+                                + "\ncalculated: " + problem.functionValue()
+                                + "\nexpected:   " + "less than 15");
+                }
+            }
+        }
+    }
+
 
         // Set up, for each cost function, all the ingredients for optimization:
         // constraint, initial guess, end criteria, optimization methods.
@@ -310,5 +417,91 @@ namespace TestSuite {
         }
     }
 
+    class FirstDeJong : CostFunction 
+    {
+        public override Vector values(Vector x) 
+        {
+            Vector retVal = new Vector(x.size(), value(x));
+            return retVal;
+        }
+        public override double value(Vector x) 
+        {
+            return Vector.DotProduct(x, x);
+        }
+    }
 
+    class SecondDeJong : CostFunction 
+    {
+        public override Vector values(Vector x) 
+        {
+            Vector retVal = new Vector(x.size(), value(x));
+            return retVal;
+        }
+        public override double value(Vector x) 
+        {
+            return  100.0 * (x[0] * x[0] - x[1]) * (x[0] * x[0] - x[1])
+                  + (1.0 - x[0]) * (1.0 - x[0]);
+        }
+    }
+
+    class ModThirdDeJong : CostFunction 
+    {
+        public override Vector values(Vector x) 
+        {
+            Vector retVal = new Vector(x.size(), value(x));
+            return retVal;
+        }
+        public override double value(Vector x) 
+        {
+            double fx = 0.0;
+            for (int i=0; i < x.size(); ++i) {
+                fx += Math.Floor(x[i]) * Math.Floor(x[i]);
+            }
+            return fx;
+        }
+    }
+
+    class ModFourthDeJong : CostFunction 
+    {
+        public ModFourthDeJong()
+        {
+            uniformRng_ = new MersenneTwisterUniformRng(4711);
+        }
+
+        public override Vector values(Vector x) 
+        {
+            Vector retVal = new Vector(x.size(), value(x));
+            return retVal;
+        }
+        public override double value(Vector x) 
+        {
+            double fx = 0.0;
+            for (int i=0; i < x.size(); ++i) {
+                fx += (i + 1.0) * Math.Pow(x[i], 4.0) + uniformRng_.nextReal();
+            }
+            return fx;
+        }
+        MersenneTwisterUniformRng uniformRng_;
+    }
+
+    class Griewangk : CostFunction 
+    {
+        public override Vector values(Vector x) 
+        {
+            Vector retVal = new Vector(x.size(), value(x));
+            return retVal;
+        }
+        public override double value(Vector x) 
+        {
+            double fx = 0.0;
+            for (int i=0; i < x.size(); ++i) {
+                fx += x[i] * x[i] / 4000.0;
+            }
+            double p = 1.0;
+            for (int i=0; i<x.size(); ++i) {
+                p *= Math.Cos(x[i] / Math.Sqrt(i + 1.0));
+            }
+            return fx - p + 1.0;
+        }
+    }
 }
