@@ -204,41 +204,6 @@ namespace QLNet
             List<Candidate> population = new InitializedList<Candidate>(configuration().populationMembers);
             population.ForEach((ii, vv) => population[ii] = new Candidate(P.currentValue().size()));
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             fillInitialPopulation(population, P);
 
             //original quantlib use partial_sort as only first elements is needed
@@ -282,6 +247,10 @@ namespace QLNet
             // use initial values provided by the user
             population.First().values = p.currentValue().Clone();
             population.First().cost = p.costFunction().value(population.First().values);
+
+            if (Double.IsNaN(population.First().cost))
+                population.First().cost = Double.MaxValue;
+
             // rest of the initial population is random
             for (int j = 1; j < population.Count; ++j)
             {
@@ -291,6 +260,9 @@ namespace QLNet
                     population[j].values[i] = l + (u - l) * rng_.nextReal();
                 }
                 population[j].cost = p.costFunction().value(population[j].values);
+
+                if (Double.IsNaN(population[j].cost))
+                    population[j].cost = Double.MaxValue;
             }
         }
 
@@ -570,6 +542,9 @@ namespace QLNet
                 // evaluate objective function as soon as possible to avoid unnecessary loops
                 try {
                     population[popIter].cost = costFunction.value(population[popIter].values);
+
+                    if (Double.IsNaN(population[popIter].cost))
+                        population[popIter].cost = Double.MaxValue;
                 } catch {
                     population[popIter].cost = Double.MaxValue;
                 }
