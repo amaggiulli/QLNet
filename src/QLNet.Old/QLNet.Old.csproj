@@ -1911,6 +1911,9 @@
     <Compile Include="..\QLNet\Time\Calendars\bespokecalendar.cs">
       <Link>Time\Calendars\bespokecalendar.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Time\Calendars\botswana.cs">
+      <Link>Time\Calendars\botswana.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Time\Calendars\brazil.cs">
       <Link>Time\Calendars\brazil.cs</Link>
     </Compile>
