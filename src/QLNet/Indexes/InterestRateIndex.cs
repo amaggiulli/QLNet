@@ -136,8 +136,8 @@ namespace QLNet
       public virtual double? pastFixing(Date fixingDate)
       {
          Utils.QL_REQUIRE( isValidFixingDate( fixingDate ),()=> fixingDate + " is not a valid fixing date" );
-         if (timeSeries().value().ContainsKey(fixingDate))
-            return timeSeries().value()[fixingDate];
+         if (timeSeries().ContainsKey(fixingDate))
+            return timeSeries()[fixingDate];
          else
             return null;
       }
