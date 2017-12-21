@@ -63,17 +63,16 @@ namespace QLNet
 
       public class Candidate : ICloneable
       {
-         public Vector values;
-         public double cost;
+         public Vector values { get; set; }
+         public double cost { get; set; }
 
-         public Candidate(int size)
+         public Candidate(int size )
          {
             values = new Vector(size, 0.0);
             cost = 0.0;
          }
 
-         public Candidate() : this(0)
-         { }
+         public Candidate() : this(0) {}
 
          public object Clone()
          {
@@ -98,12 +97,14 @@ namespace QLNet
 
       public class Configuration
       {
-         public Strategy strategy;
-         public CrossoverType crossoverType;
-         public int populationMembers;
-         public double stepsizeWeight, crossoverProbability;
-         public ulong seed;
-         public bool applyBounds, crossoverIsAdaptive;
+         public Strategy strategy { get; set; }
+         public CrossoverType crossoverType { get; set; }
+         public int populationMembers { get; set; }
+         public double stepsizeWeight { get; set; }
+         public double crossoverProbability{ get; set; }
+         public ulong seed { get; set; }
+         public bool applyBounds { get; set; }
+         public bool crossoverIsAdaptive;
 
          public Configuration()
          {
@@ -197,7 +198,7 @@ namespace QLNet
 
          //original quantlib use partial_sort as only first elements is needed
          double fxOld = population.Min(x => x.cost);
-         bestMemberEver_ = (Candidate) population.Where(x => x.cost == fxOld).First().Clone();
+         bestMemberEver_ = (Candidate) population.First(x => x.cost.IsEqual(fxOld)).Clone();
          int iteration = 0, stationaryPointIteration = 0;
 
          // main loop - calculate consecutive emerging populations
@@ -206,8 +207,7 @@ namespace QLNet
             calculateNextGeneration(population, P.costFunction());
 
             double fxNew = population.Min(x => x.cost);
-            Candidate tmp = (Candidate) population.Where(x => x.cost == fxNew).First().Clone();
-            ;
+            Candidate tmp = (Candidate) population.First(x => x.cost.IsEqual(fxNew)).Clone();
 
             if (fxNew < bestMemberEver_.cost)
                bestMemberEver_ = tmp;
