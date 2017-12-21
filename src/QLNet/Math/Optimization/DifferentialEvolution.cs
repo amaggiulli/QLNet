@@ -104,7 +104,7 @@ namespace QLNet
          public double crossoverProbability{ get; set; }
          public ulong seed { get; set; }
          public bool applyBounds { get; set; }
-         public bool crossoverIsAdaptive;
+         public bool crossoverIsAdaptive { get; set; }
 
          public Configuration()
          {
