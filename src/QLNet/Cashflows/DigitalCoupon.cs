@@ -263,7 +263,7 @@ namespace QLNet
          if (fixingDate == today)
          {
             // might have been fixed
-            double? pastFixing = IndexManager.instance().getHistory((underlying_.index()).name()).value()[fixingDate];
+            double? pastFixing = IndexManager.instance().getHistory((underlying_.index()).name())[fixingDate];
             if (pastFixing != null)
             {
                return underlyingRate + callCsi_ * callPayoff() + putCsi_ * putPayoff();

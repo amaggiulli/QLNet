@@ -44,7 +44,7 @@ namespace QLNet
       public abstract double fixing( Date fixingDate, bool forecastTodaysFixing = false);
       
       // Returns the fixing TimeSeries
-      public ObservableValue<TimeSeries<double?>> timeSeries() { return IndexManager.instance().getHistory( name() ); }
+      public TimeSeries<double?> timeSeries() { return IndexManager.instance().getHistory( name() ); }
       
       // Check if index allows for native fixings.
       // If this returns false, calls to addFixing and similar methods will raise an exception.
@@ -63,20 +63,20 @@ namespace QLNet
       public void addFixings(TimeSeries<double?> source, bool forceOverwrite = false )
       {
          checkNativeFixingsAllowed();
-         ObservableValue<TimeSeries<double?>> target = IndexManager.instance().getHistory( name() );
+         TimeSeries<double?> target = IndexManager.instance().getHistory( name() );
          foreach ( Date d in source.Keys )
          {
             if ( isValidFixingDate( d ) )
-               if ( !target.value().ContainsKey( d ) )
-                  target.value().Add( d, source[d] );
+               if ( !target.ContainsKey( d ) )
+                  target.Add( d, source[d] );
                else
                   if ( forceOverwrite )
-                     target.value()[d] = source[d];
-                  else if ( Utils.close( target.value()[d].GetValueOrDefault(), source[d].GetValueOrDefault() ) )
+                     target[d] = source[d];
+                  else if ( Utils.close( target[d].GetValueOrDefault(), source[d].GetValueOrDefault() ) )
                      continue;
                   else
                      throw new ArgumentException( "Duplicated fixing provided: " + d + ", " + source[d] +
-                                                 " while " + target.value()[d] + " value is already present" );
+                                                 " while " + target[d] + " value is already present" );
             else
                throw new ArgumentException( "Invalid fixing provided: " + d.DayOfWeek + " " + d + ", " + source[d] );
          }

@@ -49,7 +49,7 @@ namespace QLNet
          while (fixingDates[i]<today && i<n) 
          {
             // rate must have been fixed
-            double? pastFixing = IndexManager.instance().getHistory(index.name()).value()[fixingDates[i]];
+            double? pastFixing = IndexManager.instance().getHistory(index.name())[fixingDates[i]];
 
             Utils.QL_REQUIRE(pastFixing != null,()=> "Missing " + index.name() + " fixing for " + fixingDates[i].ToString());
 
@@ -63,7 +63,7 @@ namespace QLNet
             // might have been fixed
             try 
             {
-               double? pastFixing = IndexManager.instance().getHistory(index.name()).value()[fixingDates[i]];
+               double? pastFixing = IndexManager.instance().getHistory(index.name())[fixingDates[i]];
                      
                if (pastFixing!=null) 
                {

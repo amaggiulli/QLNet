@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -1913,6 +1913,9 @@
     </Compile>
     <Compile Include="..\QLNet\Time\Calendars\bespokecalendar.cs">
       <Link>Time\Calendars\bespokecalendar.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Time\Calendars\botswana.cs">
+      <Link>Time\Calendars\botswana.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Time\Calendars\brazil.cs">
       <Link>Time\Calendars\brazil.cs</Link>

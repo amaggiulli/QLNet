@@ -33,7 +33,7 @@ namespace QLNet
             for (int i = 0; i < vertices.Count; ++i)
             {
                 Vector temp = vertices[i] - center;
-                result += Math.Sqrt(Vector.DotProduct(temp, temp));
+                result += Vector.Norm2(temp);
             }
             return result / (double)(vertices.Count);
         }
