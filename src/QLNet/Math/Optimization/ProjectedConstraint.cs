@@ -44,12 +44,12 @@ namespace QLNet
             
          public Vector upperBound(Vector parameters) 
          {
-            return constraint_.upperBound(projection_.include(parameters));
+             return projection_.project(constraint_.upperBound(projection_.include(parameters)));
          }
             
          public Vector lowerBound(Vector parameters) 
          {
-            return constraint_.lowerBound(projection_.include(parameters));
+            return projection_.project(constraint_.lowerBound(projection_.include(parameters)));
          }
 
           private Constraint constraint_;
