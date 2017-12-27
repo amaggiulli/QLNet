@@ -571,21 +571,39 @@ namespace QLNet
       public new class Arguments : Swap.Arguments
       {
          public Arguments()  { type = VanillaSwap.Type.Receiver;}
-         public VanillaSwap.Type type;
-         public List<double> nominal1, nominal2;
-          
-         public List<Date> leg1ResetDates, leg1FixingDates, leg1PayDates;
-         public List<Date> leg2ResetDates, leg2FixingDates, leg2PayDates;
-          
-         public List<double> leg1Spreads, leg2Spreads, leg1Gearings, leg2Gearings;
-         public List<double?> leg1CappedRates, leg1FlooredRates, leg2CappedRates,leg2FlooredRates;
-          
-         public List<double?> leg1Coupons, leg2Coupons;
-         public List<double> leg1AccrualTimes, leg2AccrualTimes;
-          
-         public InterestRateIndex index1, index2;
-          
-         public List<bool> leg1IsRedemptionFlow, leg2IsRedemptionFlow;
+         public VanillaSwap.Type type { get; set; }
+         public List<double> nominal1 { get; set; }
+         public List<double> nominal2 { get; set; }
+
+         public List<Date> leg1ResetDates { get; set; }
+         public List<Date> leg1FixingDates { get; set; }
+         public List<Date> leg1PayDates { get; set; }
+
+         public List<Date> leg2ResetDates { get; set; }
+         public List<Date> leg2FixingDates { get; set; }
+         public List<Date> leg2PayDates { get; set; }
+
+         public List<double> leg1Spreads { get; set; }
+         public List<double> leg2Spreads { get; set; }
+         public List<double> leg1Gearings { get; set; }
+         public List<double> leg2Gearings { get; set; }
+
+         public List<double?> leg1CappedRates { get; set; }
+         public List<double?> leg1FlooredRates { get; set; }
+         public List<double?> leg2CappedRates { get; set; }
+         public List<double?> leg2FlooredRates { get; set; }
+
+         public List<double?> leg1Coupons { get; set; }
+         public List<double?> leg2Coupons { get; set; }
+
+         public List<double> leg1AccrualTimes { get; set; }
+         public List<double> leg2AccrualTimes { get; set; }
+
+         public InterestRateIndex index1 { get; set; }
+         public InterestRateIndex index2 { get; set; }
+
+         public List<bool> leg1IsRedemptionFlow { get; set; }
+         public List<bool> leg2IsRedemptionFlow { get; set; }
          
          public override void validate()
          {
