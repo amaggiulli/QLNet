@@ -58,7 +58,8 @@ namespace QLNet
                         BusinessDayConvention fixedLegConvention,
                         DayCounter fixedLegDayCounter,
                         IborIndex iborIndex,
-                        Handle<YieldTermStructure> discountingTermStructure )
+                        Handle<YieldTermStructure> discountingTermStructure ) : 
+          base(familyName, tenor, settlementDays, currency, calendar, fixedLegDayCounter)
       {
          tenor_ = tenor;
          iborIndex_ = iborIndex;

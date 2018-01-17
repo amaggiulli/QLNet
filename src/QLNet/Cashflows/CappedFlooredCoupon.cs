@@ -18,34 +18,21 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
-
-   //! Capped and/or floored floating-rate coupon
-   //    ! The payoff \f$ P \f$ of a capped floating-rate coupon is:
-   //        \f[ P = N \times T \times \min(a L + b, C). \f]
-   //        The payoff of a floored floating-rate coupon is:
-   //        \f[ P = N \times T \times \max(a L + b, F). \f]
-   //        The payoff of a collared floating-rate coupon is:
-   //        \f[ P = N \times T \times \min(\max(a L + b, F), C). \f]
-   //
-   //        where \f$ N \f$ is the notional, \f$ T \f$ is the accrual
-   //        time, \f$ L \f$ is the floating rate, \f$ a \f$ is its
-   //        gearing, \f$ b \f$ is the spread, and \f$ C \f$ and \f$ F \f$
-   //        the strikes.
-   //
-   //        They can be decomposed in the following manner.
-   //        Decomposition of a capped floating rate coupon:
-   //        \f[
-   //        R = \min(a L + b, C) = (a L + b) + \min(C - b - \xi |a| L, 0)
-   //        \f]
-   //        where \f$ \xi = sgn(a) \f$. Then:
-   //        \f[
-   //        R = (a L + b) + |a| \min(\frac{C - b}{|a|} - \xi L, 0)
-   //        \f]
-   //    
+   /// <summary>
+   /// Capped and/or floored floating-rate coupon
+   /// <remarks>
+   /// The payoff P of a capped floating-rate coupon is: P=N×T×min(aL+b,C).
+   /// The payoff of a floored floating-rate coupon is:  P=N×T×max(aL+b,F).
+   /// The payoff of a collared floating-rate coupon is: P=N×T×min(max(aL+b,F),C).
+   /// where N is the notional, T is the accrual time, L is the floating rate, a is its gearing, b is the spread, and C and F the strikes.
+   /// They can be decomposed in the following manner. Decomposition of a capped floating rate coupon: 
+   /// R=min(aL+b,C)=(aL+b)+min(C?b??|a|L,0)
+   /// where ?=sgn(a). Then: R=(aL+b)+|a|min(C?b|a|??L,0)
+   /// </remarks>
+   /// </summary>
    public class CappedFlooredCoupon : FloatingRateCoupon
    {
       // data

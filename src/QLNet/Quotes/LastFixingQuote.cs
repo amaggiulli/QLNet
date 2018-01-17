@@ -42,12 +42,12 @@ namespace QLNet
 
       public override bool isValid()
       {
-        return index_.timeSeries().value().Count > 0;
+        return index_.timeSeries().Count > 0;
       }
 
       public Date referenceDate()  
       {
-         return index_.timeSeries().value().Keys.Last(); // must be tested
+         return index_.timeSeries().Keys.Last(); // must be tested
       }
 
       public void update()

@@ -208,11 +208,9 @@ namespace TestSuite
                 Date startDate = calendar.advance(settlement,start[i],TimeUnit.Months);
                 if (startDate < today) {
                     Date fixingDate = calendar.advance(startDate,-2,TimeUnit.Days);
-                    //TimeSeries<double> pastFixings;
-                    ObservableValue<TimeSeries<double?>> pastFixings = new ObservableValue<TimeSeries<double?>>();
-                    pastFixings.value()[fixingDate] = 0.03;
-                    IndexManager.instance().setHistory(euribor.name(),
-                                                        pastFixings);
+                    TimeSeries<double?> pastFixings = new TimeSeries<double?>();
+                    pastFixings[fixingDate] = 0.03;
+                    IndexManager.instance().setHistory(euribor.name(),pastFixings);
                 }
 
                 for (int j=0; j<length.Length; j++) {

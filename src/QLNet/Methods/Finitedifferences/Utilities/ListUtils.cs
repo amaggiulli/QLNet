@@ -75,5 +75,37 @@ namespace QLNet
             }
             return sum;
         }
+
+        static readonly Random generator = new Random(1);
+
+        public static void Shuffle<T>(this IList<T> sequence)
+        {
+            // The simplest and most efficient way to return a random subet is to perform
+            // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
+            // a full shuffle, it would be wasteful in the cases where subsetSize is shorter
+            // than the length of the sequence.
+            // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+
+            var m = 0;                // keeps track of count items shuffled
+            var w = sequence.Count;  // upper bound of shrinking swap range
+            var g = w - 1;            // used to compute the second swap index
+
+            // perform in-place, partial Fisher-Yates shuffle
+            while (m < w)
+            {
+                var k = g - generator.Next(w);
+                var tmp = sequence[k];
+                sequence[k] = sequence[m];
+                sequence[m] = tmp;
+                ++m;
+                --w;
+            }
+        }
+        public static IList<T> Clone<T>(this IList<T> input) where T : ICloneable, new()
+        {
+            IList<T> c = new InitializedList<T>(input.Count);
+            c.ForEach((ii, vv) => c[ii] = (T)input[ii].Clone());
+            return c;
+        }
     }
 }
