@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -104,7 +105,8 @@ namespace QLNet
                                     List<bool> paramIsFixed, bool vegaWeighted,
                                     EndCriteria endCriteria,
                                     OptimizationMethod optMethod,
-                                    double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null, XABRConstraint constraint = null)
+                                    double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null, 
+                                    Constraint constraint = null )
          : base( xBegin, size, yBegin )
       {
           // XABRCoeffHolder<Model>(t, forward, params, paramIsFixed),
@@ -121,9 +123,9 @@ namespace QLNet
          if (optMethod_ == null)
             optMethod_ = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
          if (constraint_ == null)
-             constraint_ = new NoXABRConstraint();
-         if (endCriteria_ == null) 
-            endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
+             constraint_ = new NoConstraint();
+         if (endCriteria_ == null)
+             endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
 
          coeff_ = new XABRCoeffHolder<Model>(t, forward, _params, paramIsFixed, addParams);
          this.coeff_.weights_ = new InitializedList<double>( size, 1.0 / size );
@@ -196,6 +198,7 @@ namespace QLNet
                                                                                   coeff_.paramIsFixed_);
 
                 Vector projectedGuess = new Vector(rainedXABRError.project(inversedTransformatedGuess));
+
                 constraint_.config(rainedXABRError, coeff_, forward_);
                 Problem problem = new Problem(rainedXABRError, constraint_, projectedGuess);
                 tmpEndCriteria = optMethod_.minimize(problem, endCriteria_);
@@ -299,16 +302,11 @@ namespace QLNet
          }
 
          private XABRInterpolationImpl<Model> xabr_;
-
-         public override CostFunction factory(CalibratedModel model, List<CalibrationHelper> instruments, List<double> weights, Projection projection)
-         {
-             throw new NotImplementedException();
-         }
       }
 
       private EndCriteria endCriteria_;
       private OptimizationMethod optMethod_;
-      private XABRConstraint constraint_;
+      private Constraint constraint_;
       private double errorAccept_;
       private bool useMaxError_;
       private int maxGuesses_;
@@ -317,34 +315,34 @@ namespace QLNet
       public XABRCoeffHolder<Model> coeff_ { get; set; }
    }
 
-   public class XABRConstraint : Constraint
-   {
-       public XABRConstraint() : base(null) { }
-       public XABRConstraint(IConstraint impl)
+    public class XABRConstraint : Constraint
+    {
+        public XABRConstraint() : base( null ) { }
+        public XABRConstraint(IConstraint impl)
            : base(impl)
-       { }
+        { }
 
-       public virtual void config<Model>(ProjectedCostFunction costFunction, XABRCoeffHolder<Model> coeff, double forward)
-           where Model : IModel, new()
-       { }
-   }
+        public virtual void config<Model>(ProjectedCostFunction costFunction, XABRCoeffHolder<Model> coeff, double forward)
+            where Model : IModel, new()
+        { }
+    }
 
-   //! No constraint
-   public class NoXABRConstraint : XABRConstraint
-   {
-       private class Impl : IConstraint
-       {
-           public bool test(Vector v) { return true; }
-           public Vector upperBound(Vector parameters)
-           {
-               return new Vector(parameters.size(), Double.MaxValue);
-           }
+    //! No constraint
+    public class NoXABRConstraint : XABRConstraint
+    {
+        private class Impl : IConstraint
+        {
+            public bool test(Vector v) { return true; }
+            public Vector upperBound(Vector parameters)
+            {
+                return new Vector(parameters.size(), Double.MaxValue);
+            }
 
-           public Vector lowerBound(Vector parameters)
-           {
-               return new Vector(parameters.size(), Double.MinValue);
-           }
-       }
-       public NoXABRConstraint() : base(new Impl()) { }
-   };
+            public Vector lowerBound(Vector parameters)
+            {
+                return new Vector(parameters.size(), Double.MinValue);
+            }
+        }
+        public NoXABRConstraint() : base(new Impl()) { }
+    };
 }
