@@ -69,6 +69,7 @@ namespace QLNet
          discount_ = discountingTermStructure;
 
          iborIndex_.registerWith( update );
+         discount_.registerWith( update );
       }
 
       // InterestRateIndex interface
