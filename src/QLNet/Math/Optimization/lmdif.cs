@@ -333,7 +333,7 @@ namespace QLNet {
             */
             iflag = 2;
             if ( jacFcn != null ) // use user supplied jacobian calculation
-               jacFcn( m, n, x, iflag );
+                fjac = jacFcn(m, n, x, iflag);
             else
                fdjac2( m, n, x, fvec, fjac, ldfjac, iflag, epsfcn, ref wa4, fcn );
             nfev += n;
