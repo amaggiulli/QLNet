@@ -102,6 +102,8 @@ namespace QLNet
          foreach (var cf in legs_[1])
             cf.registerWith(update);
 
+         iborIndex_.registerWith(update);
+
          switch (type_)
          {
             case Type.Payer:
