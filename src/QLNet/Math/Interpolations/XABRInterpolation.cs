@@ -332,7 +332,7 @@ namespace QLNet
     {
         private class Impl : IConstraint
         {
-            public bool test(Vector v) { return true; }
+            public bool test(Vector param) { return true; }
             public Vector upperBound(Vector parameters)
             {
                 return new Vector(parameters.size(), Double.MaxValue);
