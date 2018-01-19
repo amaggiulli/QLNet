@@ -106,7 +106,7 @@ namespace QLNet
                                     EndCriteria endCriteria,
                                     OptimizationMethod optMethod,
                                     double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null, 
-                                    Constraint constraint = null )
+                                    XABRConstraint constraint = null )
          : base( xBegin, size, yBegin )
       {
           // XABRCoeffHolder<Model>(t, forward, params, paramIsFixed),
@@ -123,7 +123,7 @@ namespace QLNet
          if (optMethod_ == null)
             optMethod_ = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
          if (constraint_ == null)
-             constraint_ = new NoConstraint();
+             constraint_ = new NoXABRConstraint();
          if (endCriteria_ == null)
              endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
 
@@ -306,7 +306,7 @@ namespace QLNet
 
       private EndCriteria endCriteria_;
       private OptimizationMethod optMethod_;
-      private Constraint constraint_;
+      private XABRConstraint constraint_;
       private double errorAccept_;
       private bool useMaxError_;
       private int maxGuesses_;
