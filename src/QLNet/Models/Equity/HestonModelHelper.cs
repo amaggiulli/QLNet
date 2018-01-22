@@ -92,8 +92,9 @@ namespace QLNet
       }
 
       public double maturity()  { calculate(); return tau_; }
+      public double strike() { return strikePrice_; }
+      public Option.Type optionType() { return type_; }
       
-   
       private Period maturity_;
       private Calendar calendar_;
       private Handle<Quote> s0_;
