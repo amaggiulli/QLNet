@@ -314,10 +314,10 @@ namespace QLNet {
                return new CalibrationFunction(model, instruments, weights, projection);
            }
 
-           private CalibratedModel model_;
-           private List<CalibrationHelper> instruments_;
-           private List<double> weights_;
-           private Projection projection_;
+           protected CalibratedModel model_;
+           protected List<CalibrationHelper> instruments_;
+           protected List<double> weights_;
+           protected Projection projection_;
 
         }
 
