@@ -21,15 +21,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 #if NET40 || NET45
-   using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
-namespace TestSuite {
-    public struct AmericanOptionData {
+namespace TestSuite
+{
+   public struct AmericanOptionData
+   {
       public Option.Type type;
       public double strike;
       public double s; // spot
@@ -49,7 +55,7 @@ namespace TestSuite {
                          double result_)
       {
          type = type_;
-         strike= strike_;
+         strike = strike_;
          s = s_;
          q = q_;
          r = r_;
@@ -58,17 +64,20 @@ namespace TestSuite {
          result = result_;
       }
    }
-    #if NET40 || NET45
-    [TestClass()]
-    #endif
-    public class T_AmericanOption {
 
-            /* The data below are from
-           An Approximate Formula for Pricing American Options
-           Journal of Derivatives Winter 1999
-           Ju, N.
-        */
-        AmericanOptionData[] juValues = new AmericanOptionData[] {
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
+   public class T_AmericanOption
+   {
+      /* The data below are from
+     An Approximate Formula for Pricing American Options
+     Journal of Derivatives Winter 1999
+     Ju, N.
+  */
+
+      private AmericanOptionData[] juValues = new AmericanOptionData[] {
             //        type, strike,   spot,    q,    r,    t,     vol,   value, tol
             // These values are from Exhibit 3 - Short dated Put Options
             new AmericanOptionData( Option.Type.Put, 35.00,   40.00,  0.0,  0.0488, 0.0833,  0.2,  0.006 ),
@@ -135,24 +144,26 @@ namespace TestSuite {
             new AmericanOptionData( Option.Type.Call, 100.00,  110.00,  0.03,  0.07, 3.0,  0.3,  30.028 ),
             new AmericanOptionData( Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177 )
         };
-        
-#if NET40 || NET45  
-        [TestMethod()]
+
+#if NET40 || NET45
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-        public void testBaroneAdesiWhaleyValues() {
-            // ("Testing Barone-Adesi and Whaley approximation for American options...");
+      public void testBaroneAdesiWhaleyValues()
+      {
+         // ("Testing Barone-Adesi and Whaley approximation for American options...");
 
-            /* The data below are from
-               "Option pricing formulas", E.G. Haug, McGraw-Hill 1998 pag 24
+         /* The data below are from
+            "Option pricing formulas", E.G. Haug, McGraw-Hill 1998 pag 24
 
-               The following values were replicated only up to the second digit
-               by the VB code provided by Haug, which was used as base for the
-               C++ implementation
+            The following values were replicated only up to the second digit
+            by the VB code provided by Haug, which was used as base for the
+            C++ implementation
 
-            */
-            AmericanOptionData[] values = {
+         */
+         AmericanOptionData[] values = {
                 new AmericanOptionData(Option.Type.Call, 100.00,  90.00, 0.10, 0.10, 0.10, 0.15,  0.0206) ,
                 new AmericanOptionData(Option.Type.Call, 100.00, 100.00, 0.10, 0.10, 0.10, 0.15,  1.8771) ,
                 new AmericanOptionData(Option.Type.Call, 100.00, 110.00, 0.10, 0.10, 0.10, 0.15, 10.0089) ,
@@ -191,59 +202,62 @@ namespace TestSuite {
                 new AmericanOptionData(Option.Type.Put,  100.00, 110.00, 0.10, 0.10, 0.50, 0.35,  5.8823),
                 new AmericanOptionData(Option.Type.Put,  100.00, 100.00, 0.00, 0.00, 0.50, 0.15,  4.22949)};
 
-            Date today = Date.Today;
-            DayCounter dc = new Actual360();
-            SimpleQuote spot = new SimpleQuote(0.0);
-            SimpleQuote qRate = new SimpleQuote(0.0);
-            YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+         Date today = Date.Today;
+         DayCounter dc = new Actual360();
+         SimpleQuote spot = new SimpleQuote(0.0);
+         SimpleQuote qRate = new SimpleQuote(0.0);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
 
-            SimpleQuote rRate = new SimpleQuote(0.0);
-            YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
-            SimpleQuote vol = new SimpleQuote(0.0);
-            BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+         SimpleQuote rRate = new SimpleQuote(0.0);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol = new SimpleQuote(0.0);
+         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-            double tolerance = 3.0e-3;
+         double tolerance = 3.0e-3;
 
-            for (int i=0; i<values.Length; i++) {
+         for (int i = 0; i < values.Length; i++)
+         {
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
+            Exercise exercise = new AmericanExercise(today, exDate);
 
-                StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
-                Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
-                Exercise exercise = new AmericanExercise(today, exDate);
+            spot.setValue(values[i].s);
+            qRate.setValue(values[i].q);
+            rRate.setValue(values[i].r);
+            vol.setValue(values[i].v);
 
-                spot .setValue(values[i].s);
-                qRate.setValue(values[i].q);
-                rRate.setValue(values[i].r);
-                vol  .setValue(values[i].v);
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                          new Handle<YieldTermStructure>(qTS),
+                                          new Handle<YieldTermStructure>(rTS),
+                                          new Handle<BlackVolTermStructure>(volTS));
 
-                BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                              new Handle<YieldTermStructure>(qTS),
-                                              new Handle<YieldTermStructure>(rTS),
-                                              new Handle<BlackVolTermStructure>(volTS));
+            IPricingEngine engine = new BaroneAdesiWhaleyApproximationEngine(stochProcess);
 
-                IPricingEngine engine = new BaroneAdesiWhaleyApproximationEngine(stochProcess);
+            VanillaOption option = new VanillaOption(payoff, exercise);
+            option.setPricingEngine(engine);
 
-                VanillaOption option = new VanillaOption(payoff, exercise);
-                option.setPricingEngine(engine);
-
-                double calculated = option.NPV();
-                double error = Math.Abs(calculated-values[i].result);
-                if (error > tolerance) {
-                    REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
-                                   values[i].r, today, values[i].v, values[i].result,
-                                   calculated, error, tolerance);
-                }
+            double calculated = option.NPV();
+            double error = Math.Abs(calculated - values[i].result);
+            if (error > tolerance)
+            {
+               REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
+                              values[i].r, today, values[i].v, values[i].result,
+                              calculated, error, tolerance);
             }
-        }
+         }
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-        public void testBjerksundStenslandValues() {
-            // ("Testing Bjerksund and Stensland approximation for American options...");
+      public void testBjerksundStenslandValues()
+      {
+         // ("Testing Bjerksund and Stensland approximation for American options...");
 
-            AmericanOptionData[] values = new AmericanOptionData[] {
+         AmericanOptionData[] values = new AmericanOptionData[] {
                 //      type, strike,   spot,    q,    r,    t,  vol,   value, tol
                 // from "Option pricing formulas", Haug, McGraw-Hill 1998, pag 27
               new AmericanOptionData(Option.Type.Call,  40.00,  42.00, 0.08, 0.04, 0.75, 0.35,  5.2704),
@@ -262,7 +276,184 @@ namespace TestSuite {
               new AmericanOptionData( Option.Type.Put, 100, 110, 0.05, 0.05, 1.0, 10, 94.89543 )
             };
 
+         Date today = Date.Today;
+         DayCounter dc = new Actual360();
+         SimpleQuote spot = new SimpleQuote(0.0);
+         SimpleQuote qRate = new SimpleQuote(0.0);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+
+         SimpleQuote rRate = new SimpleQuote(0.0);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol = new SimpleQuote(0.0);
+         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+
+         double tolerance = 5.0e-5;
+
+         for (int i = 0; i < values.Length; i++)
+         {
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
+            Exercise exercise = new AmericanExercise(today, exDate);
+
+            spot.setValue(values[i].s);
+            qRate.setValue(values[i].q);
+            rRate.setValue(values[i].r);
+            vol.setValue(values[i].v);
+
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                          new Handle<YieldTermStructure>(qTS),
+                                          new Handle<YieldTermStructure>(rTS),
+                                          new Handle<BlackVolTermStructure>(volTS));
+
+            IPricingEngine engine = new BjerksundStenslandApproximationEngine(stochProcess);
+
+            VanillaOption option = new VanillaOption(payoff, exercise);
+            option.setPricingEngine(engine);
+
+            double calculated = option.NPV();
+            double error = Math.Abs(calculated - values[i].result);
+            if (error > tolerance)
+            {
+               REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
+                              values[i].r, today, values[i].v, values[i].result,
+                              calculated, error, tolerance);
+            }
+         }
+      }
+
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
+       [Fact]
+#endif
+      public void testJuValues()
+      {
+         // ("Testing Ju approximation for American options...");
+
+         Date today = Date.Today;
+         DayCounter dc = new Actual360();
+         SimpleQuote spot = new SimpleQuote(0.0);
+         SimpleQuote qRate = new SimpleQuote(0.0);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+
+         SimpleQuote rRate = new SimpleQuote(0.0);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol = new SimpleQuote(0.0);
+         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+
+         double tolerance = 1.0e-3;
+
+         for (int i = 0; i < juValues.Length; i++)
+         {
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(juValues[i].type, juValues[i].strike);
+            Date exDate = today + Convert.ToInt32(juValues[i].t * 360 + 0.5);
+            Exercise exercise = new AmericanExercise(today, exDate);
+
+            spot.setValue(juValues[i].s);
+            qRate.setValue(juValues[i].q);
+            rRate.setValue(juValues[i].r);
+            vol.setValue(juValues[i].v);
+
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                          new Handle<YieldTermStructure>(qTS),
+                                          new Handle<YieldTermStructure>(rTS),
+                                          new Handle<BlackVolTermStructure>(volTS));
+
+            IPricingEngine engine = new JuQuadraticApproximationEngine(stochProcess);
+
+            VanillaOption option = new VanillaOption(payoff, exercise);
+            option.setPricingEngine(engine);
+
+            double calculated = option.NPV();
+            double error = Math.Abs(calculated - juValues[i].result);
+            if (error > tolerance)
+            {
+               REPORT_FAILURE("value", payoff, exercise, juValues[i].s, juValues[i].q,
+                              juValues[i].r, today, juValues[i].v, juValues[i].result,
+                              calculated, error, tolerance);
+            }
+         }
+      }
+
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
+       [Fact]
+#endif
+      public void testFdValues()
+      {
+         //("Testing finite-difference engine for American options...");
+
+         Date today = Date.Today;
+         DayCounter dc = new Actual360();
+         SimpleQuote spot = new SimpleQuote(0.0);
+         SimpleQuote qRate = new SimpleQuote(0.0);
+         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+
+         SimpleQuote rRate = new SimpleQuote(0.0);
+         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         SimpleQuote vol = new SimpleQuote(0.0);
+         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+
+         double tolerance = 8.0e-2;
+
+         for (int i = 0; i < juValues.Length; i++)
+         {
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(juValues[i].type, juValues[i].strike);
+            Date exDate = today + Convert.ToInt32(juValues[i].t * 360 + 0.5);
+            Exercise exercise = new AmericanExercise(today, exDate);
+
+            spot.setValue(juValues[i].s);
+            qRate.setValue(juValues[i].q);
+            rRate.setValue(juValues[i].r);
+            vol.setValue(juValues[i].v);
+
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                          new Handle<YieldTermStructure>(qTS),
+                                          new Handle<YieldTermStructure>(rTS),
+                                          new Handle<BlackVolTermStructure>(volTS));
+
+            IPricingEngine engine = new FDAmericanEngine(stochProcess, 100, 100);
+
+            VanillaOption option = new VanillaOption(payoff, exercise);
+            option.setPricingEngine(engine);
+
+            double calculated = option.NPV();
+            double error = Math.Abs(calculated - juValues[i].result);
+            if (error > tolerance)
+            {
+               REPORT_FAILURE("value", payoff, exercise, juValues[i].s, juValues[i].q,
+                              juValues[i].r, today, juValues[i].v, juValues[i].result,
+                              calculated, error, tolerance);
+            }
+         }
+      }
+
+      public void testFdGreeks<Engine>() where Engine : IFDEngine, new()
+      {
+         using (SavedSettings backup = new SavedSettings())
+         {
+            Dictionary<string, double> calculated = new Dictionary<string, double>(),
+                expected = new Dictionary<string, double>(),
+                tolerance = new Dictionary<string, double>();
+
+            tolerance.Add("delta", 7.0e-4);
+            tolerance.Add("gamma", 2.0e-4);
+            //tolerance["theta"]  = 1.0e-4;
+
+            Option.Type[] types = new Option.Type[] { Option.Type.Call, Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+            double[] underlyings = { 100.0 };
+            double[] qRates = { 0.04, 0.05, 0.06 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            int[] years = { 1, 2 };
+            double[] vols = { 0.11, 0.50, 1.20 };
+
             Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
             DayCounter dc = new Actual360();
             SimpleQuote spot = new SimpleQuote(0.0);
             SimpleQuote qRate = new SimpleQuote(0.0);
@@ -273,344 +464,177 @@ namespace TestSuite {
             SimpleQuote vol = new SimpleQuote(0.0);
             BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-            double tolerance = 5.0e-5;
+            for (int i = 0; i < types.Length; i++)
+            {
+               for (int j = 0; j < strikes.Length; j++)
+               {
+                  for (int k = 0; k < years.Length; k++)
+                  {
+                     Date exDate = today + new Period(years[k], TimeUnit.Years);
+                     Exercise exercise = new AmericanExercise(today, exDate);
+                     StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+                     BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                   new Handle<YieldTermStructure>(qTS),
+                                                   new Handle<YieldTermStructure>(rTS),
+                                                   new Handle<BlackVolTermStructure>(volTS));
 
-            for (int i=0; i<values.Length; i++) {
+                     IPricingEngine engine = FastActivator<Engine>.Create().factory(stochProcess);
 
-                StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
-                Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
-                Exercise exercise = new AmericanExercise(today, exDate);
+                     VanillaOption option = new VanillaOption(payoff, exercise);
+                     option.setPricingEngine(engine);
 
-                spot .setValue(values[i].s);
-                qRate.setValue(values[i].q);
-                rRate.setValue(values[i].r);
-                vol  .setValue(values[i].v);
+                     for (int l = 0; l < underlyings.Length; l++)
+                     {
+                        for (int m = 0; m < qRates.Length; m++)
+                        {
+                           for (int n = 0; n < rRates.Length; n++)
+                           {
+                              for (int p = 0; p < vols.Length; p++)
+                              {
+                                 double u = underlyings[l];
+                                 double q = qRates[m],
+                                      r = rRates[n];
+                                 double v = vols[p];
+                                 spot.setValue(u);
+                                 qRate.setValue(q);
+                                 rRate.setValue(r);
+                                 vol.setValue(v);
 
-                BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                              new Handle<YieldTermStructure>(qTS),
-                                              new Handle<YieldTermStructure>(rTS),
-                                              new Handle<BlackVolTermStructure>(volTS));
+                                 double value = option.NPV();
+                                 calculated.Add("delta", option.delta());
+                                 calculated.Add("gamma", option.gamma());
+                                 //calculated["theta"]  = option.theta();
 
-                IPricingEngine engine = new BjerksundStenslandApproximationEngine(stochProcess);
+                                 if (value > spot.value() * 1.0e-5)
+                                 {
+                                    // perturb spot and get delta and gamma
+                                    double du = u * 1.0e-4;
+                                    spot.setValue(u + du);
+                                    double value_p = option.NPV(),
+                                         delta_p = option.delta();
+                                    spot.setValue(u - du);
+                                    double value_m = option.NPV(),
+                                         delta_m = option.delta();
+                                    spot.setValue(u);
+                                    expected.Add("delta", (value_p - value_m) / (2 * du));
+                                    expected.Add("gamma", (delta_p - delta_m) / (2 * du));
 
-                VanillaOption option = new VanillaOption(payoff, exercise);
-                option.setPricingEngine(engine);
+                                    /*
+                                    // perturb date and get theta
+                                    Time dT = dc.yearFraction(today-1, today+1);
+                                    Settings::instance().setEvaluationDate(today-1);
+                                    value_m = option.NPV();
+                                    Settings::instance().setEvaluationDate(today+1);
+                                    value_p = option.NPV();
+                                    Settings::instance().setEvaluationDate(today);
+                                    expected["theta"] = (value_p - value_m)/dT;
+                                    */
 
-                double calculated = option.NPV();
-                double error = Math.Abs(calculated-values[i].result);
-                if (error > tolerance) {
-                    REPORT_FAILURE("value", payoff, exercise, values[i].s, values[i].q,
-                                   values[i].r, today, values[i].v, values[i].result,
-                                   calculated, error, tolerance);
-                }
+                                    // compare
+                                    foreach (string greek in calculated.Keys)
+                                    {
+                                       double expct = expected[greek],
+                                           calcl = calculated[greek],
+                                           tol = tolerance[greek];
+                                       double error = Utilities.relativeError(expct, calcl, u);
+                                       if (error > tol)
+                                       {
+                                          REPORT_FAILURE(greek, payoff, exercise,
+                                                         u, q, r, today, v,
+                                                         expct, calcl, error, tol);
+                                       }
+                                    }
+                                 }
+                                 calculated.Clear();
+                                 expected.Clear();
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
             }
-        }
+         }
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-        public void testJuValues() {
-
-            // ("Testing Ju approximation for American options...");
-
-            Date today = Date.Today;
-            DayCounter dc = new Actual360();
-            SimpleQuote spot = new SimpleQuote(0.0);
-            SimpleQuote qRate = new SimpleQuote(0.0);
-            YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
-
-            SimpleQuote rRate = new SimpleQuote(0.0);
-            YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
-            SimpleQuote vol = new SimpleQuote(0.0);
-            BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
-
-            double tolerance = 1.0e-3;
-
-            for (int i = 0; i < juValues.Length; i++) {
-
-                StrikedTypePayoff payoff = new PlainVanillaPayoff(juValues[i].type, juValues[i].strike);
-                Date exDate = today + Convert.ToInt32(juValues[i].t*360+0.5);
-                Exercise exercise = new AmericanExercise(today, exDate);
-
-                spot .setValue(juValues[i].s);
-                qRate.setValue(juValues[i].q);
-                rRate.setValue(juValues[i].r);
-                vol  .setValue(juValues[i].v);
-
-                BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                              new Handle<YieldTermStructure>(qTS),
-                                              new Handle<YieldTermStructure>(rTS),
-                                              new Handle<BlackVolTermStructure>(volTS));
-
-                IPricingEngine engine = new JuQuadraticApproximationEngine(stochProcess);
-
-                VanillaOption option = new VanillaOption(payoff, exercise);
-                option.setPricingEngine(engine);
-
-                double calculated = option.NPV();
-                double error = Math.Abs(calculated - juValues[i].result);
-                if (error > tolerance) {
-                    REPORT_FAILURE("value", payoff, exercise, juValues[i].s, juValues[i].q,
-                                   juValues[i].r, today, juValues[i].v, juValues[i].result,
-                                   calculated, error, tolerance);
-                }
-            }
-        }
+      public void testFdAmericanGreeks()
+      {
+         //("Testing finite-differences American option greeks...");
+         testFdGreeks<FDAmericanEngine>();
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-        public void testFdValues() {
+      public void testFdShoutGreeks()
+      {
+         // ("Testing finite-differences shout option greeks...");
+         testFdGreeks<FDShoutEngine>();
+      }
 
-            //("Testing finite-difference engine for American options...");
-
-            Date today = Date.Today;
-            DayCounter dc = new Actual360();
-            SimpleQuote spot = new SimpleQuote(0.0);
-            SimpleQuote qRate = new SimpleQuote(0.0);
-            YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
-
-            SimpleQuote rRate = new SimpleQuote(0.0);
-            YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
-            SimpleQuote vol = new SimpleQuote(0.0);
-            BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
-
-            double tolerance = 8.0e-2;
-
-            for (int i = 0; i < juValues.Length; i++) {
-
-                StrikedTypePayoff payoff = new PlainVanillaPayoff(juValues[i].type, juValues[i].strike);
-                Date exDate = today + Convert.ToInt32(juValues[i].t*360+0.5);
-                Exercise exercise = new AmericanExercise(today, exDate);
-
-                spot .setValue(juValues[i].s);
-                qRate.setValue(juValues[i].q);
-                rRate.setValue(juValues[i].r);
-                vol  .setValue(juValues[i].v);
-
-                BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                              new Handle<YieldTermStructure>(qTS),
-                                              new Handle<YieldTermStructure>(rTS),
-                                              new Handle<BlackVolTermStructure>(volTS));
-
-                IPricingEngine engine = new FDAmericanEngine(stochProcess, 100,100);
-
-                VanillaOption option = new VanillaOption(payoff, exercise);
-                option.setPricingEngine(engine);
-
-                double calculated = option.NPV();
-                double error = Math.Abs(calculated - juValues[i].result);
-                if (error > tolerance) {
-                    REPORT_FAILURE("value", payoff, exercise, juValues[i].s, juValues[i].q,
-                                   juValues[i].r, today, juValues[i].v, juValues[i].result,
-                                   calculated, error, tolerance);
-                }
-            }
-        }
-
-        public void testFdGreeks<Engine>() where Engine : IFDEngine, new()
-        {
-           using ( SavedSettings backup = new SavedSettings() )
-           {
-
-              Dictionary<string, double> calculated = new Dictionary<string, double>(),
-                  expected = new Dictionary<string, double>(),
-                  tolerance = new Dictionary<string, double>();
-
-              tolerance.Add( "delta", 7.0e-4 );
-              tolerance.Add( "gamma", 2.0e-4 );
-              //tolerance["theta"]  = 1.0e-4;
-
-              Option.Type[] types = new Option.Type[] { Option.Type.Call, Option.Type.Put };
-              double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-              double[] underlyings = { 100.0 };
-              double[] qRates = { 0.04, 0.05, 0.06 };
-              double[] rRates = { 0.01, 0.05, 0.15 };
-              int[] years = { 1, 2 };
-              double[] vols = { 0.11, 0.50, 1.20 };
-
-              Date today = Date.Today;
-              Settings.setEvaluationDate( today );
-
-              DayCounter dc = new Actual360();
-              SimpleQuote spot = new SimpleQuote( 0.0 );
-              SimpleQuote qRate = new SimpleQuote( 0.0 );
-              YieldTermStructure qTS = Utilities.flatRate( today, qRate, dc );
-
-              SimpleQuote rRate = new SimpleQuote( 0.0 );
-              YieldTermStructure rTS = Utilities.flatRate( today, rRate, dc );
-              SimpleQuote vol = new SimpleQuote( 0.0 );
-              BlackVolTermStructure volTS = Utilities.flatVol( today, vol, dc );
-
-              for ( int i = 0; i < types.Length; i++ )
-              {
-                 for ( int j = 0; j < strikes.Length; j++ )
-                 {
-                    for ( int k = 0; k < years.Length; k++ )
-                    {
-                       Date exDate = today + new Period( years[k], TimeUnit.Years );
-                       Exercise exercise = new AmericanExercise( today, exDate );
-                       StrikedTypePayoff payoff = new PlainVanillaPayoff( types[i], strikes[j] );
-                       BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess( new Handle<Quote>( spot ),
-                                                     new Handle<YieldTermStructure>( qTS ),
-                                                     new Handle<YieldTermStructure>( rTS ),
-                                                     new Handle<BlackVolTermStructure>( volTS ) );
-
-                       IPricingEngine engine = FastActivator<Engine>.Create().factory( stochProcess );
-
-                       VanillaOption option = new VanillaOption( payoff, exercise );
-                       option.setPricingEngine( engine );
-
-                       for ( int l = 0; l < underlyings.Length; l++ )
-                       {
-                          for ( int m = 0; m < qRates.Length; m++ )
-                          {
-                             for ( int n = 0; n < rRates.Length; n++ )
-                             {
-                                for ( int p = 0; p < vols.Length; p++ )
-                                {
-                                   double u = underlyings[l];
-                                   double q = qRates[m],
-                                        r = rRates[n];
-                                   double v = vols[p];
-                                   spot.setValue( u );
-                                   qRate.setValue( q );
-                                   rRate.setValue( r );
-                                   vol.setValue( v );
-
-                                   double value = option.NPV();
-                                   calculated.Add( "delta", option.delta() );
-                                   calculated.Add( "gamma", option.gamma() );
-                                   //calculated["theta"]  = option.theta();
-
-                                   if ( value > spot.value() * 1.0e-5 )
-                                   {
-                                      // perturb spot and get delta and gamma
-                                      double du = u * 1.0e-4;
-                                      spot.setValue( u + du );
-                                      double value_p = option.NPV(),
-                                           delta_p = option.delta();
-                                      spot.setValue( u - du );
-                                      double value_m = option.NPV(),
-                                           delta_m = option.delta();
-                                      spot.setValue( u );
-                                      expected.Add( "delta", ( value_p - value_m ) / ( 2 * du ) );
-                                      expected.Add( "gamma", ( delta_p - delta_m ) / ( 2 * du ) );
-
-                                      /*
-                                      // perturb date and get theta
-                                      Time dT = dc.yearFraction(today-1, today+1);
-                                      Settings::instance().setEvaluationDate(today-1);
-                                      value_m = option.NPV();
-                                      Settings::instance().setEvaluationDate(today+1);
-                                      value_p = option.NPV();
-                                      Settings::instance().setEvaluationDate(today);
-                                      expected["theta"] = (value_p - value_m)/dT;
-                                      */
-
-                                      // compare
-                                      foreach ( string greek in calculated.Keys )
-                                      {
-                                         double expct = expected[greek],
-                                             calcl = calculated[greek],
-                                             tol = tolerance[greek];
-                                         double error = Utilities.relativeError( expct, calcl, u );
-                                         if ( error > tol )
-                                         {
-                                            REPORT_FAILURE( greek, payoff, exercise,
-                                                           u, q, r, today, v,
-                                                           expct, calcl, error, tol );
-                                         }
-                                      }
-                                   }
-                                   calculated.Clear();
-                                   expected.Clear();
-                                }
-                             }
-                          }
-                       }
-                    }
-                 }
-              }
-           }
-        }
+      private void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
+      Date today, double v, double expected, double calculated, double error, double tolerance)
+      {
+         QAssert.Fail(exercise + " "
+                + payoff.optionType() + " option with "
+                + payoff + " payoff:\n"
+                + "    spot value:       " + s + "\n"
+                + "    strike:           " + payoff.strike() + "\n"
+                + "    dividend yield:   " + q + "\n"
+                + "    risk-free rate:   " + r + "\n"
+                + "    reference date:   " + today + "\n"
+                + "    maturity:         " + exercise.lastDate() + "\n"
+                + "    volatility:       " + v + "\n\n"
+                + "    expected " + greekName + ":   " + expected + "\n"
+                + "    calculated " + greekName + ": " + calculated + "\n"
+                + "    error:            " + error + "\n"
+                + "    tolerance:        " + tolerance);
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-        public void testFdAmericanGreeks() {
-            //("Testing finite-differences American option greeks...");
-            testFdGreeks<FDAmericanEngine>();
-        }
+      public void testFdImpliedVol()
+      {
+         var settlementDate = new Date(26, 2, 2015);
+         Settings.setEvaluationDate(settlementDate);
 
-#if NET40 || NET45
-        [TestMethod()]
-#else
-       [Fact]
-#endif
-        public void testFdShoutGreeks() {
-            // ("Testing finite-differences shout option greeks...");
-            testFdGreeks<FDShoutEngine>();
-        }
+         var calendar = new TARGET();
+         var dayCounter = new Actual365Fixed();
 
-        void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
-        Date today, double v, double expected, double calculated, double error, double tolerance) {
-            QAssert.Fail(exercise + " "
-                   + payoff.optionType() + " option with "
-                   + payoff + " payoff:\n"
-                   + "    spot value:       " + s + "\n"
-                   + "    strike:           " + payoff.strike() + "\n"
-                   + "    dividend yield:   " + q + "\n"
-                   + "    risk-free rate:   " + r + "\n"
-                   + "    reference date:   " + today + "\n"
-                   + "    maturity:         " + exercise.lastDate() + "\n"
-                   + "    volatility:       " + v + "\n\n"
-                   + "    expected " + greekName + ":   " + expected + "\n"
-                   + "    calculated " + greekName + ": " + calculated + "\n"
-                   + "    error:            " + error + "\n"
-                   + "    tolerance:        " + tolerance);
-        }
+         const double volatility = 0.5;
+         var underlyingQuote = new Handle<Quote>(new SimpleQuote(3227));
+         var flatTermStructure = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0.05, dayCounter));
+         var flatDividendYield = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0, dayCounter));
+         var flatVolatility = new Handle<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, volatility, dayCounter));
+         var process = new BlackScholesMertonProcess(underlyingQuote, flatDividendYield, flatTermStructure, flatVolatility);
+         var exercise = new AmericanExercise(new Date(1, 12, 2015));
+         var pricingEngine = new FDDividendAmericanEngine(process);
+         var payoff = new PlainVanillaPayoff(Option.Type.Put, 3200);
+         var dividendDates = new[] { new Date(1, 3, 2015) };
+         var dividendAmounts = new[] { 10d };
+         var option = new DividendVanillaOption(payoff, exercise, dividendDates.ToList(), dividendAmounts.ToList());
+         option.setPricingEngine(pricingEngine);
 
-#if NET40 || NET45
-        [TestMethod()]
-#else
-       [Fact]
-#endif
-        public void testFdImpliedVol()
-        {
-            var settlementDate = new Date(26, 2, 2015);
-            Settings.setEvaluationDate(settlementDate);
+         var npv = option.NPV();
+         var impliedVol = option.impliedVolatility(npv, process);
 
-            var calendar = new TARGET();
-            var dayCounter = new Actual365Fixed();
+         const double tolerance = 3.0e-3;
 
-            const double volatility = 0.5;
-            var underlyingQuote = new Handle<Quote>(new SimpleQuote(3227));
-            var flatTermStructure = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0.05, dayCounter));
-            var flatDividendYield = new Handle<YieldTermStructure>(new FlatForward(settlementDate, 0, dayCounter));
-            var flatVolatility = new Handle<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, volatility, dayCounter));
-            var process = new BlackScholesMertonProcess(underlyingQuote, flatDividendYield, flatTermStructure, flatVolatility);
-            var exercise = new AmericanExercise(new Date(1, 12, 2015));
-            var pricingEngine = new FDDividendAmericanEngine(process);
-            var payoff = new PlainVanillaPayoff(Option.Type.Put, 3200);
-            var dividendDates = new[] { new Date(1, 3, 2015) };
-            var dividendAmounts = new[] {10d};
-            var option = new DividendVanillaOption(payoff, exercise, dividendDates.ToList(), dividendAmounts.ToList());
-            option.setPricingEngine(pricingEngine);
-
-            var npv = option.NPV();
-            var impliedVol = option.impliedVolatility(npv, process);
-
-            const double tolerance = 3.0e-3;
-
-            if (Math.Abs(impliedVol - volatility) > tolerance)
-                QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
-        }
+         if (Math.Abs(impliedVol - volatility) > tolerance)
+            QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
+      }
    }
 }

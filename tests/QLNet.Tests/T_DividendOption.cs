@@ -18,10 +18,13 @@
 */
 
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -29,6 +32,7 @@ using System.Collections.Generic;
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_DividendOption
@@ -220,7 +224,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -389,7 +394,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -489,7 +495,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -649,7 +656,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -759,7 +767,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -782,7 +791,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -805,7 +815,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -825,7 +836,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif

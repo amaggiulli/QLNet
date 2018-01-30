@@ -1,30 +1,35 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_CPISwap
@@ -34,7 +39,7 @@ namespace TestSuite
          public Date date;
          public double rate;
 
-         public Datum( Date d, double r )
+         public Datum(Date d, double r)
          {
             date = d;
             rate = r;
@@ -43,26 +48,27 @@ namespace TestSuite
 
       private class CommonVars
       {
-         private List<BootstrapHelper<ZeroInflationTermStructure>> makeHelpers( Datum[] iiData, int N,
+         private List<BootstrapHelper<ZeroInflationTermStructure>> makeHelpers(Datum[] iiData, int N,
                                            ZeroInflationIndex ii, Period observationLag,
                                            Calendar calendar,
                                            BusinessDayConvention bdc,
-                                           DayCounter dc )
+                                           DayCounter dc)
          {
             List<BootstrapHelper<ZeroInflationTermStructure>> instruments = new List<BootstrapHelper<ZeroInflationTermStructure>>();
-            for ( int i = 0; i < N; i++ )
+            for (int i = 0; i < N; i++)
             {
                Date maturity = iiData[i].date;
-               Handle<Quote> quote = new Handle<Quote>( new SimpleQuote( iiData[i].rate / 100.0 ) );
-               BootstrapHelper<ZeroInflationTermStructure> anInstrument = new ZeroCouponInflationSwapHelper( quote, observationLag, maturity,
-                         calendar, bdc, dc, ii );
-               instruments.Add( anInstrument );
+               Handle<Quote> quote = new Handle<Quote>(new SimpleQuote(iiData[i].rate / 100.0));
+               BootstrapHelper<ZeroInflationTermStructure> anInstrument = new ZeroCouponInflationSwapHelper(quote, observationLag, maturity,
+                         calendar, bdc, dc, ii);
+               instruments.Add(anInstrument);
             }
             return instruments;
          }
 
          // common data
          public int length;
+
          public Date startDate;
          public double volatility;
 
@@ -87,7 +93,6 @@ namespace TestSuite
          public RelinkableHandle<ZeroInflationTermStructure> cpiUK;
          public RelinkableHandle<ZeroInflationTermStructure> hcpi;
 
-
          // cleanup
 
          public SavedSettings backup;
@@ -105,7 +110,7 @@ namespace TestSuite
             zciisR = new List<double>();
             hii = new RelinkableHandle<ZeroInflationIndex>();
 
-            nominals = new InitializedList<double>( 1, 1000000 );
+            nominals = new InitializedList<double>(1, 1000000);
             // option variables
             frequency = Frequency.Annual;
             // usual setup
@@ -113,24 +118,24 @@ namespace TestSuite
             length = 7;
             calendar = new UnitedKingdom();
             convention = BusinessDayConvention.ModifiedFollowing;
-            Date today = new Date( 25, Month.November, 2009 );
-            evaluationDate = calendar.adjust( today );
-            Settings.setEvaluationDate( evaluationDate );
+            Date today = new Date(25, Month.November, 2009);
+            evaluationDate = calendar.adjust(today);
+            Settings.setEvaluationDate(evaluationDate);
             settlementDays = 0;
             fixingDays = 0;
-            settlement = calendar.advance( today, settlementDays, TimeUnit.Days );
+            settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
             startDate = settlement;
             dcZCIIS = new ActualActual();
             dcNominal = new ActualActual();
 
             // uk rpi index
             //      fixing data
-            Date from = new Date( 20, Month.July, 2007 );
-            Date to = new Date( 20, Month.November, 2009 );
-            Schedule rpiSchedule = new MakeSchedule().from( from ).to( to )
-            .withTenor( new Period( 1, TimeUnit.Months ) )
-            .withCalendar( new UnitedKingdom() )
-            .withConvention( BusinessDayConvention.ModifiedFollowing ).value();
+            Date from = new Date(20, Month.July, 2007);
+            Date to = new Date(20, Month.November, 2009);
+            Schedule rpiSchedule = new MakeSchedule().from(from).to(to)
+            .withTenor(new Period(1, TimeUnit.Months))
+            .withCalendar(new UnitedKingdom())
+            .withConvention(BusinessDayConvention.ModifiedFollowing).value();
             double[] fixData = {
                   206.1, 207.3, 208.0, 208.9, 209.7, 210.9,
                 209.8, 211.4, 212.1, 214.0, 215.1, 216.8,
@@ -142,13 +147,13 @@ namespace TestSuite
             // link from cpi index to cpi TS
             bool interp = false;// this MUST be false because the observation lag is only 2 months
             // for ZCIIS; but not for contract if the contract uses a bigger lag.
-            ii = new UKRPI( interp, hcpi );
-            for ( int i = 0; i < rpiSchedule.Count; i++ )
+            ii = new UKRPI(interp, hcpi);
+            for (int i = 0; i < rpiSchedule.Count; i++)
             {
-               ii.addFixing( rpiSchedule[i], fixData[i], true );// force overwrite in case multiple use
+               ii.addFixing(rpiSchedule[i], fixData[i], true);// force overwrite in case multiple use
             }
 
-            Datum[] nominalData = 
+            Datum[] nominalData =
             {
                new Datum( new Date(26, Month.November, 2009), 0.475 ),
                new Datum( new Date(2, Month.December, 2009), 0.47498 ),
@@ -156,7 +161,7 @@ namespace TestSuite
                new Datum( new Date(25, Month.February, 2010), 0.59955) ,
                new Datum( new Date(18, Month.March, 2010), 0.65361),
                new Datum( new Date(25, Month.May, 2010), 0.82830 ),
-               new Datum( new Date(17, Month.June, 2010), 0.7 ),  
+               new Datum( new Date(17, Month.June, 2010), 0.7 ),
                new Datum( new Date(16, Month.September, 2010), 0.78960),
                new Datum( new Date(16, Month.December, 2010), 0.93762 ),
                new Datum( new Date(17, Month.March, 2011), 1.12037 ),
@@ -179,26 +184,25 @@ namespace TestSuite
                new Datum( new Date(25, Month.November, 2059), 3.80849),
                new Datum( new Date(25, Month.November, 2069), 3.72677),
                new Datum( new Date(27, Month.November, 2079), 3.63082 )
-
             };
             int nominalDataLength = 30 - 1;
 
             List<Date> nomD = new List<Date>();
             List<double> nomR = new List<double>();
-            for ( int i = 0; i < nominalDataLength; i++ )
+            for (int i = 0; i < nominalDataLength; i++)
             {
-               nomD.Add( nominalData[i].date );
-               nomR.Add( nominalData[i].rate / 100.0 );
+               nomD.Add(nominalData[i].date);
+               nomR.Add(nominalData[i].rate / 100.0);
             }
-            YieldTermStructure nominal = new InterpolatedZeroCurve<Linear>( nomD, nomR, dcNominal );
-            nominalUK.linkTo( nominal );
+            YieldTermStructure nominal = new InterpolatedZeroCurve<Linear>(nomD, nomR, dcNominal);
+            nominalUK.linkTo(nominal);
 
             // now build the zero inflation curve
-            observationLag = new Period( 2, TimeUnit.Months );
-            contractObservationLag = new Period( 3, TimeUnit.Months );
+            observationLag = new Period(2, TimeUnit.Months);
+            contractObservationLag = new Period(3, TimeUnit.Months);
             contractObservationInterpolation = InterpolationType.Flat;
 
-            Datum[] zciisData = 
+            Datum[] zciisData =
             {
                new Datum( new Date(25, Month.November, 2010), 3.0495 ),
                new Datum( new Date(25, Month.November, 2011), 2.93 ),
@@ -219,37 +223,37 @@ namespace TestSuite
                new Datum( new Date(25, Month.November, 2059), 3.714 )
             };
             zciisDataLength = 17;
-            for ( int i = 0; i < zciisDataLength; i++ )
+            for (int i = 0; i < zciisDataLength; i++)
             {
-               zciisD.Add( zciisData[i].date );
-               zciisR.Add( zciisData[i].rate );
+               zciisD.Add(zciisData[i].date);
+               zciisR.Add(zciisData[i].rate);
             }
 
             // now build the helpers ...
-            List<BootstrapHelper<ZeroInflationTermStructure>> helpers = makeHelpers( zciisData, zciisDataLength, ii,
-               observationLag, calendar, convention, dcZCIIS );
+            List<BootstrapHelper<ZeroInflationTermStructure>> helpers = makeHelpers(zciisData, zciisDataLength, ii,
+               observationLag, calendar, convention, dcZCIIS);
 
             // we can use historical or first ZCIIS for this
             // we know historical is WAY off market-implied, so use market implied flat.
             double baseZeroRate = zciisData[0].rate / 100.0;
             PiecewiseZeroInflationCurve<Linear> pCPIts = new PiecewiseZeroInflationCurve<Linear>(
                evaluationDate, calendar, dcZCIIS, observationLag, ii.frequency(), ii.interpolated(), baseZeroRate,
-               new Handle<YieldTermStructure>( nominalUK ), helpers );
+               new Handle<YieldTermStructure>(nominalUK), helpers);
             pCPIts.recalculate();
-            cpiUK.linkTo( pCPIts );
+            cpiUK.linkTo(pCPIts);
 
             // make sure that the index has the latest zero inflation term structure
-            hcpi.linkTo( pCPIts );
-
+            hcpi.linkTo(pCPIts);
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void consistency() 
+      public void consistency()
       {
          // check inflation leg vs calculation directly from inflation TS
          CommonVars common = new CommonVars();
@@ -263,7 +267,7 @@ namespace TestSuite
          DayCounter floatDayCount = new Actual365Fixed();
          BusinessDayConvention floatPaymentConvention = BusinessDayConvention.ModifiedFollowing;
          int fixingDays = 0;
-         IborIndex floatIndex = new GBPLibor(new Period(6,TimeUnit.Months),common.nominalUK);
+         IborIndex floatIndex = new GBPLibor(new Period(6, TimeUnit.Months), common.nominalUK);
 
          // fixed x inflation leg
          double fixedRate = 0.1;//1% would be 0.01
@@ -279,16 +283,15 @@ namespace TestSuite
          Date startDate = new Date(2, Month.October, 2007);
          Date endDate = new Date(2, Month.October, 2052);
          Schedule floatSchedule = new MakeSchedule().from(startDate).to(endDate)
-         .withTenor(new Period(6,TimeUnit.Months))
+         .withTenor(new Period(6, TimeUnit.Months))
          .withCalendar(new UnitedKingdom())
          .withConvention(floatPaymentConvention)
          .backwards().value();
          Schedule fixedSchedule = new MakeSchedule().from(startDate).to(endDate)
-         .withTenor(new Period(6,TimeUnit.Months))
+         .withTenor(new Period(6, TimeUnit.Months))
          .withCalendar(new UnitedKingdom())
          .withConvention(BusinessDayConvention.Unadjusted)
          .backwards().value();
-
 
          CPISwap zisV = new CPISwap(type, nominal, subtractInflationNominal,
                      spread, floatDayCount, floatSchedule,
@@ -298,21 +301,21 @@ namespace TestSuite
                      fixedIndex, observationInterpolation);
          Date asofDate = Settings.evaluationDate();
 
-         double[] floatFix = {0.06255,0.05975,0.0637,0.018425,0.0073438,-1,-1};
-         double[] cpiFix = {211.4,217.2,211.4,213.4,-2,-2};
-         for(int i=0;i<floatSchedule.Count; i++)
+         double[] floatFix = { 0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1 };
+         double[] cpiFix = { 211.4, 217.2, 211.4, 213.4, -2, -2 };
+         for (int i = 0; i < floatSchedule.Count; i++)
          {
-            if (floatSchedule[i] < common.evaluationDate) 
+            if (floatSchedule[i] < common.evaluationDate)
             {
-               floatIndex.addFixing(floatSchedule[i], floatFix[i],true);//true=overwrite
+               floatIndex.addFixing(floatSchedule[i], floatFix[i], true);//true=overwrite
             }
 
             CPICoupon zic = zisV.cpiLeg()[i] as CPICoupon;
-            if (zic != null) 
+            if (zic != null)
             {
-               if (zic.fixingDate() < (common.evaluationDate - new Period(1,TimeUnit.Months))) 
+               if (zic.fixingDate() < (common.evaluationDate - new Period(1, TimeUnit.Months)))
                {
-                  fixedIndex.addFixing(zic.fixingDate(), cpiFix[i],true);
+                  fixedIndex.addFixing(zic.fixingDate(), cpiFix[i], true);
                }
             }
          }
@@ -325,57 +328,58 @@ namespace TestSuite
          // get float+spread & fixed*inflation leg prices separately
          double testInfLegNPV = 0.0;
          double diff;
-         for(int i=0;i<zisV.leg(0).Count; i++)
+         for (int i = 0; i < zisV.leg(0).Count; i++)
          {
             Date zicPayDate = (zisV.leg(0))[i].date();
-            if(zicPayDate > asofDate) 
+            if (zicPayDate > asofDate)
             {
-               testInfLegNPV += (zisV.leg(0))[i].amount()*common.nominalUK.link.discount(zicPayDate);
+               testInfLegNPV += (zisV.leg(0))[i].amount() * common.nominalUK.link.discount(zicPayDate);
             }
 
             CPICoupon zicV = zisV.cpiLeg()[i] as CPICoupon;
             if (zicV != null)
             {
-               diff = Math.Abs( zicV.rate() - (fixedRate*(zicV.indexFixing()/baseCPI)) );
-               QAssert.IsTrue(diff<1e-8, "failed "+i+"th coupon reconstruction as "
-                           + (fixedRate*(zicV.indexFixing()/baseCPI)) + " vs rate = "
-                           +zicV.rate() + ", with difference: " + diff);
+               diff = Math.Abs(zicV.rate() - (fixedRate * (zicV.indexFixing() / baseCPI)));
+               QAssert.IsTrue(diff < 1e-8, "failed " + i + "th coupon reconstruction as "
+                           + (fixedRate * (zicV.indexFixing() / baseCPI)) + " vs rate = "
+                           + zicV.rate() + ", with difference: " + diff);
             }
          }
 
          double error = Math.Abs(testInfLegNPV - zisV.legNPV(0).Value);
-         QAssert.IsTrue( error < 1e-5, "failed manual inf leg NPV calc vs pricing engine: " + testInfLegNPV + " vs " + 
+         QAssert.IsTrue(error < 1e-5, "failed manual inf leg NPV calc vs pricing engine: " + testInfLegNPV + " vs " +
             zisV.legNPV(0));
 
-         diff = Math.Abs(1-zisV.NPV()/4191660.0);
-         #if QL_USE_INDEXED_COUPON
+         diff = Math.Abs(1 - zisV.NPV() / 4191660.0);
+#if QL_USE_INDEXED_COUPON
          double max_diff = 1e-5;
-         #else
+#else
          double max_diff = 3e-5;
-         #endif
-         QAssert.IsTrue( diff < max_diff, "failed stored consistency value test, ratio = " + diff );
+#endif
+         QAssert.IsTrue(diff < max_diff, "failed stored consistency value test, ratio = " + diff);
 
          // remove circular refernce
          common.hcpi.linkTo(null);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void zciisconsistency() 
+      public void zciisconsistency()
       {
          CommonVars common = new CommonVars();
 
          ZeroCouponInflationSwap.Type ztype = ZeroCouponInflationSwap.Type.Payer;
-         double  nominal = 1000000.0;
+         double nominal = 1000000.0;
          Date startDate = new Date(common.evaluationDate);
          Date endDate = new Date(25, Month.November, 2059);
          Calendar cal = new UnitedKingdom();
          BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
          DayCounter dummyDC = null, dc = new ActualActual();
-         Period observationLag = new Period(2,TimeUnit.Months);
+         Period observationLag = new Period(2, TimeUnit.Months);
 
          double quote = 0.03714;
          ZeroCouponInflationSwap zciis = new ZeroCouponInflationSwap(ztype, nominal, startDate, endDate, cal,
@@ -385,7 +389,7 @@ namespace TestSuite
          DiscountingSwapEngine dse = new DiscountingSwapEngine(common.nominalUK);
 
          zciis.setPricingEngine(dse);
-         QAssert.IsTrue(Math.Abs(zciis.NPV())<1e-3,"zciis does not reprice to zero");
+         QAssert.IsTrue(Math.Abs(zciis.NPV()) < 1e-3, "zciis does not reprice to zero");
 
          List<Date> oneDate = new List<Date>();
          oneDate.Add(endDate);
@@ -393,9 +397,9 @@ namespace TestSuite
 
          CPISwap.Type stype = CPISwap.Type.Payer;
          double inflationNominal = nominal;
-         double floatNominal = inflationNominal * Math.Pow(1.0+quote,50);
+         double floatNominal = inflationNominal * Math.Pow(1.0 + quote, 50);
          bool subtractInflationNominal = true;
-         double dummySpread=0.0, dummyFixedRate=0.0;
+         double dummySpread = 0.0, dummyFixedRate = 0.0;
          int fixingDays = 0;
          Date baseDate = startDate - observationLag;
          double baseCPI = common.ii.fixing(baseDate);
@@ -408,24 +412,25 @@ namespace TestSuite
                   common.ii, InterpolationType.AsIndex, inflationNominal);
 
          cS.setPricingEngine(dse);
-         QAssert.IsTrue(Math.Abs(cS.NPV())<1e-3,"CPISwap as ZCIIS does not reprice to zero");
+         QAssert.IsTrue(Math.Abs(cS.NPV()) < 1e-3, "CPISwap as ZCIIS does not reprice to zero");
 
-         for (int i=0; i<2; i++)
+         for (int i = 0; i < 2; i++)
          {
             double cs = cS.legNPV(i).GetValueOrDefault();
             double z = zciis.legNPV(i).GetValueOrDefault();
-            QAssert.IsTrue(Math.Abs(cs - z)<1e-3, "zciis leg does not equal CPISwap leg");
+            QAssert.IsTrue(Math.Abs(cs - z) < 1e-3, "zciis leg does not equal CPISwap leg");
          }
          // remove circular refernce
          common.hcpi.linkTo(null);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void cpibondconsistency() 
+      public void cpibondconsistency()
       {
          CommonVars common = new CommonVars();
 
@@ -439,7 +444,7 @@ namespace TestSuite
          DayCounter floatDayCount = new Actual365Fixed();
          BusinessDayConvention floatPaymentConvention = BusinessDayConvention.ModifiedFollowing;
          int fixingDays = 0;
-         IborIndex floatIndex = new GBPLibor(new Period(6,TimeUnit.Months),common.nominalUK);
+         IborIndex floatIndex = new GBPLibor(new Period(6, TimeUnit.Months), common.nominalUK);
 
          // fixed x inflation leg
          double fixedRate = 0.1;//1% would be 0.01
@@ -455,12 +460,12 @@ namespace TestSuite
          Date startDate = new Date(2, Month.October, 2007);
          Date endDate = new Date(2, Month.October, 2052);
          Schedule floatSchedule = new MakeSchedule().from(startDate).to(endDate)
-         .withTenor(new Period(6,TimeUnit.Months))
+         .withTenor(new Period(6, TimeUnit.Months))
          .withCalendar(new UnitedKingdom())
          .withConvention(floatPaymentConvention)
          .backwards().value();
          Schedule fixedSchedule = new MakeSchedule().from(startDate).to(endDate)
-         .withTenor(new Period(6,TimeUnit.Months))
+         .withTenor(new Period(6, TimeUnit.Months))
          .withCalendar(new UnitedKingdom())
          .withConvention(BusinessDayConvention.Unadjusted)
          .backwards().value();
@@ -472,21 +477,21 @@ namespace TestSuite
                      fixedPaymentConvention, contractObservationLag,
                      fixedIndex, observationInterpolation);
 
-         double[] floatFix = {0.06255,0.05975,0.0637,0.018425,0.0073438,-1,-1};
-         double[] cpiFix = {211.4,217.2,211.4,213.4,-2,-2};
-         for(int i=0;i<floatSchedule.Count; i++)
+         double[] floatFix = { 0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1 };
+         double[] cpiFix = { 211.4, 217.2, 211.4, 213.4, -2, -2 };
+         for (int i = 0; i < floatSchedule.Count; i++)
          {
-            if (floatSchedule[i] < common.evaluationDate) 
+            if (floatSchedule[i] < common.evaluationDate)
             {
-               floatIndex.addFixing(floatSchedule[i], floatFix[i],true);//true=overwrite
+               floatIndex.addFixing(floatSchedule[i], floatFix[i], true);//true=overwrite
             }
 
             CPICoupon zic = zisV.cpiLeg()[i] as CPICoupon;
-            if (zic != null ) 
+            if (zic != null)
             {
-               if (zic.fixingDate() < (common.evaluationDate - new Period(1,TimeUnit.Months))) 
+               if (zic.fixingDate() < (common.evaluationDate - new Period(1, TimeUnit.Months)))
                {
-                  fixedIndex.addFixing(zic.fixingDate(), cpiFix[i],true);
+                  fixedIndex.addFixing(zic.fixingDate(), cpiFix[i], true);
                }
             }
          }
@@ -497,7 +502,7 @@ namespace TestSuite
          zisV.setPricingEngine(dse);
 
          // now do the bond equivalent
-         List<double> fixedRates = new InitializedList<double>(1,fixedRate);
+         List<double> fixedRates = new InitializedList<double>(1, fixedRate);
          int settlementDays = 1;// cannot be zero!
          bool growthOnly = true;
          CPIBond cpiB = new CPIBond(settlementDays, nominal, growthOnly,
@@ -508,10 +513,10 @@ namespace TestSuite
          DiscountingBondEngine dbe = new DiscountingBondEngine(common.nominalUK);
          cpiB.setPricingEngine(dbe);
 
-         QAssert.IsTrue(Math.Abs(cpiB.NPV() - zisV.legNPV(0).GetValueOrDefault())<1e-5,
+         QAssert.IsTrue(Math.Abs(cpiB.NPV() - zisV.legNPV(0).GetValueOrDefault()) < 1e-5,
             "cpi bond does not equal equivalent cpi swap leg");
          // remove circular refernce
          common.hcpi.linkTo(null);
-   }
+      }
    }
 }

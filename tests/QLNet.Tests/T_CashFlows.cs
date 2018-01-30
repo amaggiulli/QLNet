@@ -18,10 +18,13 @@
 */
 
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -29,6 +32,7 @@ using System.Collections.Generic;
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_CashFlows
@@ -59,7 +63,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -179,7 +184,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -212,7 +218,7 @@ namespace TestSuite
             Date endDate = new Date(20, Month.December, 2013);
             double spread = 0.0115;
             IborCouponPricer pricer = new BlackIborCouponPricer(vol);
-            FloatingRateCoupon coupon = new FloatingRateCoupon( payDate, 100, startDate, endDate, 2,
+            FloatingRateCoupon coupon = new FloatingRateCoupon(payDate, 100, startDate, endDate, 2,
                                        index3m, 1.0, spread / 100);
             coupon.setPricer(pricer);
 
@@ -229,7 +235,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -265,7 +272,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif

@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -19,49 +19,61 @@
 
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_Swaps : IDisposable
    {
       #region Initialize&Cleanup
+
       private SavedSettings backup;
-      #if NET40 || NET45
+#if NET40 || NET45
+
       [TestInitialize]
       public void testInitialize()
       {
-      #else
+#else
       public T_Swaps()
       {
-      #endif
+#endif
          backup = new SavedSettings();
       }
-      #if NET40 || NET45
+
+#if NET40 || NET45
+
       [TestCleanup]
-      #endif
+#endif
       public void testCleanup()
       {
          Dispose();
       }
+
       public void Dispose()
       {
          backup.Dispose();
       }
-      #endregion
 
-      class CommonVars
+      #endregion Initialize&Cleanup
+
+      private class CommonVars
       {
          // global data
          public Date today, settlement;
+
          public VanillaSwap.Type type;
          public double nominal;
          public Calendar calendar;
@@ -109,7 +121,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -126,7 +139,6 @@ namespace TestSuite
          {
             for (int j = 0; j < spreads.Length; j++)
             {
-
                VanillaSwap swap = vars.makeSwap(lengths[i], 0.0, spreads[j]);
                swap = vars.makeSwap(lengths[i], swap.fairRate(), spreads[j]);
                if (Math.Abs(swap.NPV()) > 1.0e-10)
@@ -140,8 +152,10 @@ namespace TestSuite
             }
          }
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -157,7 +171,6 @@ namespace TestSuite
          {
             for (int j = 0; j < rates.Length; j++)
             {
-
                VanillaSwap swap = vars.makeSwap(lengths[i], rates[j], 0.0);
                swap = vars.makeSwap(lengths[i], rates[j], swap.fairSpread());
                if (Math.Abs(swap.NPV()) > 1.0e-10)
@@ -171,8 +184,10 @@ namespace TestSuite
             }
          }
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -189,7 +204,6 @@ namespace TestSuite
          {
             for (int j = 0; j < spreads.Length; j++)
             {
-
                // store the results for different rates...
                List<double> swap_values = new List<double>();
                for (int k = 0; k < rates.Length; k++)
@@ -213,8 +227,10 @@ namespace TestSuite
             }
          }
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -231,7 +247,6 @@ namespace TestSuite
          {
             for (int j = 0; j < rates.Length; j++)
             {
-
                // store the results for different rates...
                List<double> swap_values = new List<double>();
                for (int k = 0; k < spreads.Length; k++)
@@ -255,8 +270,10 @@ namespace TestSuite
             }
          }
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -317,8 +334,10 @@ namespace TestSuite
                         + "    expected:   " + storedValue + "\n"
                         + "    calculated: " + swap.NPV());
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -344,59 +363,59 @@ namespace TestSuite
                         + "    calculated: " + swap.NPV() + "\n"
                         + "    expected:   " + cachedNPV);
       }
+
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
       public void testFixing()
       {
-         Date tradeDate = new Date( 17, Month.April, 2015 );
+         Date tradeDate = new Date(17, Month.April, 2015);
          Calendar calendar = new UnitedKingdom();
-         Date settlementDate = calendar.advance( tradeDate, 2, TimeUnit.Days, BusinessDayConvention.Following );
-         Date maturityDate = calendar.advance( settlementDate, 5, TimeUnit.Years, BusinessDayConvention.Following );
+         Date settlementDate = calendar.advance(tradeDate, 2, TimeUnit.Days, BusinessDayConvention.Following);
+         Date maturityDate = calendar.advance(settlementDate, 5, TimeUnit.Years, BusinessDayConvention.Following);
 
-         Date valueDate = new Date( 20, Month.April, 2015 );
-         Settings.setEvaluationDate( valueDate );
+         Date valueDate = new Date(20, Month.April, 2015);
+         Settings.setEvaluationDate(valueDate);
 
          List<Date> dates = new List<Date>();
-         dates.Add( valueDate );
-         dates.Add( valueDate + new Period( 1, TimeUnit.Years ) );
-         dates.Add( valueDate + new Period( 2, TimeUnit.Years ) );
-         dates.Add( valueDate + new Period( 5, TimeUnit.Years ) );
-         dates.Add( valueDate + new Period( 10, TimeUnit.Years ) );
-         dates.Add( valueDate + new Period( 20, TimeUnit.Years ) );
+         dates.Add(valueDate);
+         dates.Add(valueDate + new Period(1, TimeUnit.Years));
+         dates.Add(valueDate + new Period(2, TimeUnit.Years));
+         dates.Add(valueDate + new Period(5, TimeUnit.Years));
+         dates.Add(valueDate + new Period(10, TimeUnit.Years));
+         dates.Add(valueDate + new Period(20, TimeUnit.Years));
 
          List<double> rates = new List<double>();
-         rates.Add( 0.01 );
-         rates.Add( 0.01 );
-         rates.Add( 0.01 );
-         rates.Add( 0.01 );
-         rates.Add( 0.01 );
-         rates.Add( 0.01 );
+         rates.Add(0.01);
+         rates.Add(0.01);
+         rates.Add(0.01);
+         rates.Add(0.01);
+         rates.Add(0.01);
+         rates.Add(0.01);
 
          var discountCurveHandle = new RelinkableHandle<YieldTermStructure>();
          var forecastCurveHandle = new RelinkableHandle<YieldTermStructure>();
-         GBPLibor index = new GBPLibor( new Period( 6, TimeUnit.Months ), forecastCurveHandle );
-         InterpolatedZeroCurve<Linear> zeroCurve = new InterpolatedZeroCurve<Linear>( dates, rates, new Actual360(), new Linear() );
-         var fixedSchedule = new Schedule( settlementDate, maturityDate, new Period( 1, TimeUnit.Years ), calendar, BusinessDayConvention.Following, BusinessDayConvention.Following, DateGeneration.Rule.Forward, false );
-         var floatSchedule = new Schedule( settlementDate, maturityDate, index.tenor(), calendar, BusinessDayConvention.Following, BusinessDayConvention.Following, DateGeneration.Rule.Forward, false );
-         VanillaSwap swap = new VanillaSwap( VanillaSwap.Type.Payer, 1000000, fixedSchedule, 0.01, new Actual360(), floatSchedule, index, 0, new Actual360() );
-         discountCurveHandle.linkTo( zeroCurve );
-         forecastCurveHandle.linkTo( zeroCurve );
-         var swapEngine = new DiscountingSwapEngine( discountCurveHandle, false, null );
-         swap.setPricingEngine( swapEngine );
+         GBPLibor index = new GBPLibor(new Period(6, TimeUnit.Months), forecastCurveHandle);
+         InterpolatedZeroCurve<Linear> zeroCurve = new InterpolatedZeroCurve<Linear>(dates, rates, new Actual360(), new Linear());
+         var fixedSchedule = new Schedule(settlementDate, maturityDate, new Period(1, TimeUnit.Years), calendar, BusinessDayConvention.Following, BusinessDayConvention.Following, DateGeneration.Rule.Forward, false);
+         var floatSchedule = new Schedule(settlementDate, maturityDate, index.tenor(), calendar, BusinessDayConvention.Following, BusinessDayConvention.Following, DateGeneration.Rule.Forward, false);
+         VanillaSwap swap = new VanillaSwap(VanillaSwap.Type.Payer, 1000000, fixedSchedule, 0.01, new Actual360(), floatSchedule, index, 0, new Actual360());
+         discountCurveHandle.linkTo(zeroCurve);
+         forecastCurveHandle.linkTo(zeroCurve);
+         var swapEngine = new DiscountingSwapEngine(discountCurveHandle, false, null);
+         swap.setPricingEngine(swapEngine);
 
          try
          {
             double npv = swap.NPV();
          }
-         catch ( Exception ex )
+         catch (Exception ex)
          {
-            QAssert.Fail( ex.Message );
+            QAssert.Fail(ex.Message);
          }
       }
-
    }
-
 }

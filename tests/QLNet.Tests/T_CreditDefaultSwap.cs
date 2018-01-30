@@ -18,10 +18,13 @@
 */
 
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -29,12 +32,14 @@ using System.Collections.Generic;
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_CreditDefaultSwap
    {
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -44,7 +49,6 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-
             // Initialize curves
             Settings.setEvaluationDate(new Date(9, Month.June, 2006));
             Date today = Settings.evaluationDate();
@@ -140,7 +144,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -150,7 +155,6 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-
             Settings.setEvaluationDate(new Date(9, Month.June, 2006));
             Date evalDate = Settings.evaluationDate();
             Calendar calendar = new UnitedStates();
@@ -279,7 +283,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -289,7 +294,6 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-
             // Initialize curves
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
@@ -383,7 +387,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -393,7 +398,6 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-
             // Initialize curves
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
@@ -451,7 +455,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -539,6 +544,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
+
       [TestMethod()]
 #else
        [Fact]
@@ -552,7 +558,6 @@ namespace TestSuite
          Date tradeDate = new Date(21, Month.May, 2009);
          Settings.setEvaluationDate(tradeDate);
 
-
          //build an ISDA compliant yield curve
          //data comes from Markit published rates
          List<RateHelper> isdaRateHelpers = new List<RateHelper>();
@@ -564,10 +569,10 @@ namespace TestSuite
                                 0.014,
                                 0.015488};
 
-         for (int i = 0; i < dep_tenors.Length ; i++)
+         for (int i = 0; i < dep_tenors.Length; i++)
          {
-            isdaRateHelpers.Add( new DepositRateHelper(dep_quotes[i], new Period(dep_tenors[i] , TimeUnit.Months), 2,
-               new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing,false, new Actual360())
+            isdaRateHelpers.Add(new DepositRateHelper(dep_quotes[i], new Period(dep_tenors[i], TimeUnit.Months), 2,
+               new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360())
                 );
          }
          int[] swap_tenors = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30 };
@@ -586,19 +591,18 @@ namespace TestSuite
                                  0.037246,
                                  0.037605};
 
-         IborIndex isda_ibor = new IborIndex("IsdaIbor", new Period(3 , TimeUnit.Months), 2, new USDCurrency(),
-            new WeekendsOnly(),BusinessDayConvention.ModifiedFollowing, false, new Actual360());
-         for (int i = 0; i < swap_tenors.Length ; i++)
+         IborIndex isda_ibor = new IborIndex("IsdaIbor", new Period(3, TimeUnit.Months), 2, new USDCurrency(),
+            new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360());
+         for (int i = 0; i < swap_tenors.Length; i++)
          {
-            isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i] ,TimeUnit.Years),
-               new WeekendsOnly(),Frequency.Semiannual,BusinessDayConvention.ModifiedFollowing, new Thirty360(),
+            isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i], TimeUnit.Years),
+               new WeekendsOnly(), Frequency.Semiannual, BusinessDayConvention.ModifiedFollowing, new Thirty360(),
                isda_ibor));
          }
 
          RelinkableHandle<YieldTermStructure> discountCurve = new RelinkableHandle<YieldTermStructure>();
          discountCurve.linkTo(new PiecewiseYieldCurve<Discount, LogLinear>(0, new WeekendsOnly(), isdaRateHelpers,
             new Actual365Fixed()));
-
 
          RelinkableHandle<DefaultProbabilityTermStructure> probabilityCurve = new RelinkableHandle<DefaultProbabilityTermStructure>();
          Date[] termDates = { new Date(20, Month.June, 2010),
@@ -640,13 +644,12 @@ namespace TestSuite
 
          int l = 0;
 
-         for (int i = 0; i < termDates.Length ; i++)
+         for (int i = 0; i < termDates.Length; i++)
          {
             for (int j = 0; j < 2; j++)
             {
                for (int k = 0; k < 2; k++)
                {
-
                   CreditDefaultSwap quotedTrade = new MakeCreditDefaultSwap(termDates[i], spreads[j])
                       .withNominal(10000000.0).value();
 
@@ -657,7 +660,7 @@ namespace TestSuite
                                                           1e-10,
                                                           PricingModel.ISDA);
 
-                  probabilityCurve.linkTo( new FlatHazardRate(0, new WeekendsOnly(), h, new Actual365Fixed()));
+                  probabilityCurve.linkTo(new FlatHazardRate(0, new WeekendsOnly(), h, new Actual365Fixed()));
 
                   IsdaCdsEngine engine = new IsdaCdsEngine(probabilityCurve, recoveries[k], discountCurve);
 
@@ -673,11 +676,9 @@ namespace TestSuite
                   QAssert.IsTrue(calculated <= tolerance);
 
                   l++;
-
                }
             }
          }
       }
-
    }
 }

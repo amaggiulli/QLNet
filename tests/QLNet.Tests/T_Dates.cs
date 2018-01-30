@@ -1,41 +1,48 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_Dates
    {
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -48,50 +55,49 @@ namespace TestSuite
             QAssert.Fail("Empty EBC date vector");
 
          int n = ECB.nextDates(Date.minDate()).Count;
-    
+
          if (n != knownDates.Count)
-            QAssert.Fail("NextDates(minDate) returns "  + n +
+            QAssert.Fail("NextDates(minDate) returns " + n +
                    " instead of " + knownDates.Count + " dates");
 
          Date previousEcbDate = Date.minDate(),
          currentEcbDate, ecbDateMinusOne;
-         
-         for (int i=0; i<knownDates.Count; ++i) 
+
+         for (int i = 0; i < knownDates.Count; ++i)
          {
-
             currentEcbDate = knownDates[i];
-         
-            if (!ECB.isECBdate(currentEcbDate))
-               QAssert.Fail( currentEcbDate + " fails isECBdate check");
 
-            ecbDateMinusOne = currentEcbDate-1;
+            if (!ECB.isECBdate(currentEcbDate))
+               QAssert.Fail(currentEcbDate + " fails isECBdate check");
+
+            ecbDateMinusOne = currentEcbDate - 1;
             if (ECB.isECBdate(ecbDateMinusOne))
                QAssert.Fail(ecbDateMinusOne + " fails isECBdate check");
 
-            if (ECB.nextDate(ecbDateMinusOne)!=currentEcbDate)
+            if (ECB.nextDate(ecbDateMinusOne) != currentEcbDate)
                QAssert.Fail("Next EBC date following " + ecbDateMinusOne +
                      " must be " + currentEcbDate);
 
-            if (ECB.nextDate(previousEcbDate)!=currentEcbDate)
+            if (ECB.nextDate(previousEcbDate) != currentEcbDate)
                QAssert.Fail("Next EBC date following " + previousEcbDate +
                      " must be " + currentEcbDate);
 
             previousEcbDate = currentEcbDate;
          }
-         
+
          Date knownDate = knownDates.First();
          ECB.removeDate(knownDate);
          if (ECB.isECBdate(knownDate))
             QAssert.Fail("Unable to remove an EBC date");
-    
+
          ECB.addDate(knownDate);
          if (!ECB.isECBdate(knownDate))
             QAssert.Fail("Unable to add an EBC date");
-
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -166,7 +172,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -270,11 +277,11 @@ namespace TestSuite
                           + "    cloned date:   " + s + "\n"
                           + "    serial number: " + serial);
          }
-
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -296,58 +303,57 @@ namespace TestSuite
 
          Date counter = Date.minDate();
          // 10 years of futures must not exceed Date::maxDate
-         Date last = Date.maxDate() - new Period(121 , TimeUnit.Months);
+         Date last = Date.maxDate() - new Period(121, TimeUnit.Months);
          Date asx;
 
-         while (counter <= last) 
+         while (counter <= last)
          {
             asx = ASX.nextDate(counter, false);
 
             // check that asx is greater than counter
             if (asx <= counter)
-               QAssert.Fail( asx.weekday() + " " + asx
+               QAssert.Fail(asx.weekday() + " " + asx
                             + " is not greater than "
                             + counter.weekday() + " " + counter);
 
             // check that asx is an ASX date
             if (!ASX.isASXdate(asx, false))
-               QAssert.Fail( asx.weekday() + " " + asx
+               QAssert.Fail(asx.weekday() + " " + asx
                             + " is not an ASX date (calculated from "
                             + counter.weekday() + " " + counter + ")");
 
             // check that asx is <= to the next ASX date in the main cycle
             if (asx > ASX.nextDate(counter, true))
-               QAssert.Fail( asx.weekday() + " " + asx
+               QAssert.Fail(asx.weekday() + " " + asx
                            + " is not less than or equal to the next future in the main cycle "
                            + ASX.nextDate(counter, true));
 
-
             // check that for every date ASXdate is the inverse of ASXcode
             if (ASX.date(ASX.code(asx), counter) != asx)
-               QAssert.Fail( ASX.code(asx)
+               QAssert.Fail(ASX.code(asx)
                             + " at calendar day " + counter
                             + " is not the ASX code matching " + asx);
 
             // check that for every date the 120 ASX codes refer to future dates
-            for (int i = 0; i<120; ++i) 
+            for (int i = 0; i < 120; ++i)
             {
-               if (ASX.date(ASXcodes[i], counter)<counter)
-                  QAssert.Fail( ASX.date(ASXcodes[i], counter)
+               if (ASX.date(ASXcodes[i], counter) < counter)
+                  QAssert.Fail(ASX.date(ASXcodes[i], counter)
                                + " is wrong for " + ASXcodes[i]
                                + " at reference date " + counter);
             }
 
             counter = counter + 1;
          }
-
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testIntraday() 
+      public void testIntraday()
       {
          // Testing intraday information of dates
 
@@ -357,27 +363,25 @@ namespace TestSuite
          QAssert.IsTrue(d1.month() == (int)Month.February, "failed to reproduce month");
          QAssert.IsTrue(d1.Day == 12, "failed to reproduce day");
          QAssert.IsTrue(d1.hours == 10, "failed to reproduce hour of day");
-         QAssert.IsTrue(d1.minutes == 45,"failed to reproduce minute of hour");
-         QAssert.IsTrue(d1.seconds == 12,"failed to reproduce second of minute");
-         QAssert.IsTrue(d1.milliseconds == 234, "failed to reproduce number of milliseconds" );
+         QAssert.IsTrue(d1.minutes == 45, "failed to reproduce minute of hour");
+         QAssert.IsTrue(d1.seconds == 12, "failed to reproduce second of minute");
+         QAssert.IsTrue(d1.milliseconds == 234, "failed to reproduce number of milliseconds");
 
-         QAssert.IsTrue(d1.fractionOfSecond == 0.234,"failed to reproduce fraction of second");
-
+         QAssert.IsTrue(d1.fractionOfSecond == 0.234, "failed to reproduce fraction of second");
 
          Date d2 = new Date(28, Month.February, 2015, 4, 52, 57, 999);
          QAssert.IsTrue(d2.year() == 2015, "failed to reproduce year");
          QAssert.IsTrue(d2.month() == (int)Month.February, "failed to reproduce month");
          QAssert.IsTrue(d2.Day == 28, "failed to reproduce day");
          QAssert.IsTrue(d2.hours == 4, "failed to reproduce hour of day");
-         QAssert.IsTrue(d2.minutes == 52,"failed to reproduce minute of hour");
-         QAssert.IsTrue(d2.seconds == 57,"failed to reproduce second of minute");
-         QAssert.IsTrue( d2.milliseconds == 999, "failed to reproduce number of milliseconds" );
+         QAssert.IsTrue(d2.minutes == 52, "failed to reproduce minute of hour");
+         QAssert.IsTrue(d2.seconds == 57, "failed to reproduce second of minute");
+         QAssert.IsTrue(d2.milliseconds == 999, "failed to reproduce number of milliseconds");
 
          // test daysBetween when d2 time part is earlier in the day than d1 time part.
-         d1 = new Date( new DateTime( 2016, 1, 1, 18, 0, 0 ) );
-         d2 = new Date( new DateTime( 2016, 1, 2, 0, 0, 0 ) );
-         QAssert.IsTrue( Date.daysBetween(d1, d2) == 0.25, "failed daysBetween" );
+         d1 = new Date(new DateTime(2016, 1, 1, 18, 0, 0));
+         d2 = new Date(new DateTime(2016, 1, 2, 0, 0, 0));
+         QAssert.IsTrue(Date.daysBetween(d1, d2) == 0.25, "failed daysBetween");
       }
-
    }
 }

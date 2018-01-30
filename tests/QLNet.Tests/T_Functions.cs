@@ -1,70 +1,78 @@
 ﻿/*
  Copyright (C) 2008, 2015  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 using System.Numerics;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_Functions
    {
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testFactorial() 
+      public void testFactorial()
       {
          // Testing factorial numbers
 
          double expected = 1.0;
          double calculated = Factorial.get(0);
-         if (calculated!=expected)
+         if (calculated != expected)
             QAssert.Fail("Factorial(0) = " + calculated);
 
-         for (uint i=1; i<171; ++i) 
+         for (uint i = 1; i < 171; ++i)
          {
             expected *= i;
             calculated = Factorial.get(i);
-            if (Math.Abs(calculated-expected)/expected > 1.0e-9)
+            if (Math.Abs(calculated - expected) / expected > 1.0e-9)
                QAssert.Fail("Factorial(" + i + ")" +
                            "\n calculated: " + calculated +
                            "\n   expected: " + expected +
                            "\n rel. error: " +
-                           Math.Abs(calculated-expected)/expected);
+                           Math.Abs(calculated - expected) / expected);
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testGammaFunction() 
+      public void testGammaFunction()
       {
          // Testing Gamma function
 
@@ -75,25 +83,26 @@ namespace TestSuite
                         + "    calculated: " + calculated + "\n"
                         + "    expected:   " + expected);
 
-         for (int i=2; i<9000; i++) 
+         for (int i = 2; i < 9000; i++)
          {
-            expected  += Math.Log(i);
-            calculated = GammaFunction.logValue((i+1));
-            if (Math.Abs(calculated-expected)/expected > 1.0e-9)
+            expected += Math.Log(i);
+            calculated = GammaFunction.logValue((i + 1));
+            if (Math.Abs(calculated - expected) / expected > 1.0e-9)
                QAssert.Fail("GammaFunction(" + i + ")\n"
                            + "    calculated: " + calculated + "\n"
                            + "    expected:   " + expected + "\n"
                            + "    rel. error: "
-                           + Math.Abs(calculated-expected)/expected);
+                           + Math.Abs(calculated - expected) / expected);
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testGammaValues() 
+      public void testGammaValues()
       {
          // Testing Gamma values
 
@@ -111,31 +120,31 @@ namespace TestSuite
                new double[3] {-21.5, 1.318444918321553e-20, 1e6}
          };
 
-         for (int i=0; i < tasks.Length; ++i) 
+         for (int i = 0; i < tasks.Length; ++i)
          {
             double x = tasks[i][0];
             double expected = tasks[i][1];
             double calculated = GammaFunction.value(x);
-            double tol = tasks[i][2] * Const.QL_EPSILON*Math.Abs(expected);
+            double tol = tasks[i][2] * Const.QL_EPSILON * Math.Abs(expected);
 
-            if (Math.Abs(calculated - expected) > tol) 
+            if (Math.Abs(calculated - expected) > tol)
             {
                QAssert.Fail("GammaFunction(" + x + ")\n"
                            + "    calculated: " + calculated + "\n"
                            + "    expected:   " + expected + "\n"
                            + "    rel. error: "
-                           + Math.Abs(calculated-expected)/expected);
-           
+                           + Math.Abs(calculated - expected) / expected);
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testModifiedBesselFunctions() 
+      public void testModifiedBesselFunctions()
       {
          // Testing modified Bessel function of first and second kind
 
@@ -153,19 +162,20 @@ namespace TestSuite
             new double[4] {-10.0001, 1.1, 13857.7715614282552, 69288858.9474423379}
          };
 
-         for (int i=0; i < r.Length; ++i) 
+         for (int i = 0; i < r.Length; ++i)
          {
             double nu = r[i][0];
-            double x  = r[i][1];
+            double x = r[i][1];
             double expected_i = r[i][2];
             double expected_k = r[i][3];
-            double tol_i = 5e4 * Const.QL_EPSILON*Math.Abs(expected_i);
-            double tol_k = 5e4 * Const.QL_EPSILON*Math.Abs(expected_k);
+            double tol_i = 5e4 * Const.QL_EPSILON * Math.Abs(expected_i);
+            double tol_k = 5e4 * Const.QL_EPSILON * Math.Abs(expected_k);
 
             double calculated_i = Utils.modifiedBesselFunction_i(nu, x);
             double calculated_k = Utils.modifiedBesselFunction_k(nu, x);
 
-            if (Math.Abs(expected_i - calculated_i) > tol_i) {
+            if (Math.Abs(expected_i - calculated_i) > tol_i)
+            {
                QAssert.Fail("failed to reproduce modified Bessel "
                            + "function of first kind"
                            + "\n order     : " + nu
@@ -173,7 +183,8 @@ namespace TestSuite
                            + "\n calculated: " + calculated_i
                            + "\n expected  : " + expected_i);
             }
-            if (Math.Abs(expected_k - calculated_k) > tol_k) {
+            if (Math.Abs(expected_k - calculated_k) > tol_k)
+            {
                QAssert.Fail("failed to reproduce modified Bessel "
                            + "function of second kind"
                            + "\n order     : " + nu
@@ -203,20 +214,20 @@ namespace TestSuite
             new double[7] { 1.2, 9.0, 9.0, -621.7335051293694,  618.1455736670332, -4.480795479964915e-05, -3.489034389148745e-08}
          };
 
-         for (int i=0; i < c.Length; ++i) 
+         for (int i = 0; i < c.Length; ++i)
          {
             double nu = c[i][0];
-            Complex z  = new Complex(c[i][1], c[i][2]);
-            Complex expected_i = new Complex(c[i][3],c[i][4]);
-            Complex expected_k = new Complex(c[i][5],c[i][6]);
+            Complex z = new Complex(c[i][1], c[i][2]);
+            Complex expected_i = new Complex(c[i][3], c[i][4]);
+            Complex expected_k = new Complex(c[i][5], c[i][6]);
 
-            double tol_i = 5e4*Const.QL_EPSILON*Complex.Abs(expected_i);
-            double tol_k = 1e6*Const.QL_EPSILON*Complex.Abs(expected_k);
+            double tol_i = 5e4 * Const.QL_EPSILON * Complex.Abs(expected_i);
+            double tol_k = 1e6 * Const.QL_EPSILON * Complex.Abs(expected_k);
 
-            Complex calculated_i= Utils.modifiedBesselFunction_i(nu, z);
-            Complex calculated_k= Utils.modifiedBesselFunction_k(nu, z);
+            Complex calculated_i = Utils.modifiedBesselFunction_i(nu, z);
+            Complex calculated_k = Utils.modifiedBesselFunction_k(nu, z);
 
-            if (Complex.Abs(expected_i - calculated_i) > tol_i) 
+            if (Complex.Abs(expected_i - calculated_i) > tol_i)
             {
                QAssert.Fail("failed to reproduce modified Bessel "
                            + "function of first kind"
@@ -225,64 +236,66 @@ namespace TestSuite
                            + "\n calculated: " + calculated_i
                            + "\n expected  : " + expected_i);
             }
-            
-            if (   Complex.Abs(expected_k) > 1e-4 // do not check small values
-               && Complex.Abs(expected_k - calculated_k) > tol_k) 
+
+            if (Complex.Abs(expected_k) > 1e-4 // do not check small values
+               && Complex.Abs(expected_k - calculated_k) > tol_k)
             {
                QAssert.Fail("failed to reproduce modified Bessel "
                            + "function of second kind"
                            + "\n order     : " + nu
                            + "\n argument  : " + z
-                           + "\n diff      : " + (calculated_k-expected_k)
+                           + "\n diff      : " + (calculated_k - expected_k)
                            + "\n calculated: " + calculated_k
                            + "\n expected  : " + expected_k);
             }
          }
-         }
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testWeightedModifiedBesselFunctions() 
+      public void testWeightedModifiedBesselFunctions()
       {
          // Testing weighted modified Bessel functions
          double nu = -5.0;
-         while (nu <= 5.0) 
+         while (nu <= 5.0)
          {
             double x = 0.1;
-            while (x <= 15.0) 
+            while (x <= 15.0)
             {
                double vi = Utils.modifiedBesselFunction_i_exponentiallyWeighted(nu, x);
                double wi = Utils.modifiedBesselFunction_i(nu, x) * Math.Exp(-x);
                double vk = Utils.modifiedBesselFunction_k_exponentiallyWeighted(nu, x);
-               double wk = Const.M_PI_2 * (Utils.modifiedBesselFunction_i(-nu,x)*Math.Exp(-x)-
-                                    Utils.modifiedBesselFunction_i(nu,x)*Math.Exp(-x)) / Math.Sin(Const.M_PI*nu);
+               double wk = Const.M_PI_2 * (Utils.modifiedBesselFunction_i(-nu, x) * Math.Exp(-x) -
+                                    Utils.modifiedBesselFunction_i(nu, x) * Math.Exp(-x)) / Math.Sin(Const.M_PI * nu);
                if (Math.Abs((vi - wi) / (Math.Max(Math.Exp(x), 1.0) * vi)) > 1E3 * Const.QL_EPSILON)
-                     QAssert.Fail("failed to verify exponentially weighted"
-                                 + "modified Bessel function of first kind"
-                                 + "\n order      : " + nu + "\n argument   : "
-                                 + x + "\n calcuated  : " + vi
-                                 + "\n expecetd   : " + wi);
+                  QAssert.Fail("failed to verify exponentially weighted"
+                              + "modified Bessel function of first kind"
+                              + "\n order      : " + nu + "\n argument   : "
+                              + x + "\n calcuated  : " + vi
+                              + "\n expecetd   : " + wi);
 
                if (Math.Abs((vk - wk) / (Math.Max(Math.Exp(x), 1.0) * vk)) > 1E3 * Const.QL_EPSILON)
-                     QAssert.Fail("failed to verify exponentially weighted"
-                                 + "modified Bessel function of second kind"
-                                 + "\n order      : " + nu + "\n argument   : "
-                                 + x + "\n calcuated  : " + vk
-                                 + "\n expecetd   : " + wk);
+                  QAssert.Fail("failed to verify exponentially weighted"
+                              + "modified Bessel function of second kind"
+                              + "\n order      : " + nu + "\n argument   : "
+                              + x + "\n calcuated  : " + vk
+                              + "\n expecetd   : " + wk);
                x += 0.5;
             }
             nu += 0.5;
          }
          nu = -5.0;
-         while (nu <= 5.0) 
+         while (nu <= 5.0)
          {
             double x = -5.0;
-            while (x <= 5.0) {
+            while (x <= 5.0)
+            {
                double y = -5.0;
-               while (y <= 5.0) 
+               while (y <= 5.0)
                {
                   Complex z = new Complex(x, y);
                   Complex vi = Utils.modifiedBesselFunction_i_exponentiallyWeighted(nu, z);
@@ -311,8 +324,6 @@ namespace TestSuite
             }
             nu += 0.5;
          }
-         
       }
-
    }
 }
