@@ -1,5 +1,6 @@
 ﻿/*
- Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2018  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -42,7 +43,8 @@ namespace QLNet
 
       double eps2();
 
-      void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams);
+      void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r,
+         List<double?> addParams);
 
       IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams);
 
@@ -53,7 +55,8 @@ namespace QLNet
 
    public class XABRCoeffHolder<Model> where Model : IModel, new()
    {
-      public XABRCoeffHolder(double t, double forward, List<double?> _params, List<bool> paramIsFixed, List<double?> addParams)
+      public XABRCoeffHolder(double t, double forward, List<double?> _params, List<bool> paramIsFixed,
+         List<double?> addParams)
       {
          t_ = t;
          forward_ = forward;
@@ -91,16 +94,22 @@ namespace QLNet
 
       /*! Expiry, Forward */
       public double t_ { get; set; }
+
       public double forward_ { get; set; }
+
       /*! Parameters */
       public List<double?> params_ { get; set; }
       public List<bool> paramIsFixed_ { get; set; }
       public List<double?> addParams_ { get; set; }
+
       public List<double> weights_ { get; set; }
+
       /*! Interpolation results */
       public double? error_ { get; set; }
       public double? maxError_ { get; set; }
+
       public EndCriteria.Type XABREndCriteria_ { get; set; }
+
       /*! Model instance (if required) */
       public IWrapper modelInstance_ { get; set; }
       public IModel model_ { get; set; }
@@ -110,36 +119,30 @@ namespace QLNet
    public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new()
    {
       public XABRInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, double t,
-                                    double forward, List<double?> _params,
-                                    List<bool> paramIsFixed, bool vegaWeighted,
-                                    EndCriteria endCriteria,
-                                    OptimizationMethod optMethod,
-                                    double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null)
+         double forward, List<double?> _params,
+         List<bool> paramIsFixed, bool vegaWeighted,
+         EndCriteria endCriteria,
+         OptimizationMethod optMethod,
+         double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null,
+         XABRConstraint constraint = null)
          : base(xBegin, size, yBegin)
       {
-         // XABRCoeffHolder<Model>(t, forward, params, paramIsFixed),
-         endCriteria_ = endCriteria;
-         optMethod_ = optMethod;
+         endCriteria_ = endCriteria ?? new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
+         optMethod_ = optMethod ?? new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
          errorAccept_ = errorAccept;
          useMaxError_ = useMaxError;
          maxGuesses_ = maxGuesses;
          forward_ = forward;
          vegaWeighted_ = vegaWeighted;
+         constraint_ = constraint ?? new NoXABRConstraint();
 
-         // if no optimization method or endCriteria is provided, we provide one
-         if (optMethod_ == null)
-            optMethod_ = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
-         if (endCriteria_ == null)
-         {
-            endCriteria_ = new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
-         }
          coeff_ = new XABRCoeffHolder<Model>(t, forward, _params, paramIsFixed, addParams);
-         this.coeff_.weights_ = new InitializedList<double>(size, 1.0 / size);
+         coeff_.weights_ = new InitializedList<double>(size, 1.0 / size);
       }
 
       public override void update()
       {
-         this.coeff_.updateModelInstance();
+         coeff_.updateModelInstance();
 
          // we should also check that y contains positive values only
 
@@ -151,8 +154,8 @@ namespace QLNet
 
             for (int i = 0; i < xBegin_.Count; i++)
             {
-               double stdDev = Math.Sqrt((yBegin_[i]) * (yBegin_[i]) * this.coeff_.t_);
-               coeff_.weights_.Add(coeff_.model_.weight(xBegin_[i], forward_, stdDev, this.coeff_.addParams_));
+               double stdDev = Math.Sqrt((yBegin_[i]) * (yBegin_[i]) * coeff_.t_);
+               coeff_.weights_.Add(coeff_.model_.weight(xBegin_[i], forward_, stdDev, coeff_.addParams_));
                weightsSum += coeff_.weights_.Last();
             }
 
@@ -169,67 +172,68 @@ namespace QLNet
             coeff_.XABREndCriteria_ = EndCriteria.Type.None;
             return;
          }
-         else
+
+         XABRError costFunction = new XABRError(this);
+
+         Vector guess = new Vector(coeff_.model_.dimension());
+         for (int i = 0; i < guess.size(); ++i)
+            guess[i] = coeff_.params_[i].GetValueOrDefault();
+
+         int iterations = 0;
+         int freeParameters = 0;
+         double bestError = double.MaxValue;
+         Vector bestParameters = new Vector();
+         for (int i = 0; i < coeff_.model_.dimension(); ++i)
+            if (!coeff_.paramIsFixed_[i])
+               ++freeParameters;
+         HaltonRsg halton = new HaltonRsg(freeParameters, 42);
+         EndCriteria.Type tmpEndCriteria;
+         double tmpInterpolationError;
+
+         do
          {
-            XABRError costFunction = new XABRError(this);
-
-            Vector guess = new Vector(coeff_.model_.dimension());
-            for (int i = 0; i < guess.size(); ++i)
-               guess[i] = coeff_.params_[i].Value;
-
-            int iterations = 0;
-            int freeParameters = 0;
-            double bestError = double.MaxValue;
-            Vector bestParameters = new Vector();
-            for (int i = 0; i < coeff_.model_.dimension(); ++i)
-               if (!coeff_.paramIsFixed_[i])
-                  ++freeParameters;
-            HaltonRsg halton = new HaltonRsg(freeParameters, 42);
-            EndCriteria.Type tmpEndCriteria;
-            double tmpInterpolationError;
-
-            do
+            if (iterations > 0)
             {
-               if (iterations > 0)
-               {
-                  Sample<List<double>> s = halton.nextSequence();
-                  coeff_.model_.guess(guess, coeff_.paramIsFixed_, forward_, coeff_.t_, s.value, coeff_.addParams_);
-                  for (int i = 0; i < coeff_.paramIsFixed_.Count; ++i)
-                     if (coeff_.paramIsFixed_[i])
-                        guess[i] = coeff_.params_[i].Value;
-               }
+               Sample<List<double>> s = halton.nextSequence();
+               coeff_.model_.guess(guess, coeff_.paramIsFixed_, forward_, coeff_.t_, s.value, coeff_.addParams_);
+               for (int i = 0; i < coeff_.paramIsFixed_.Count; ++i)
+                  if (coeff_.paramIsFixed_[i])
+                     guess[i] = coeff_.params_[i].GetValueOrDefault();
+            }
 
-               Vector inversedTransformatedGuess = new Vector(coeff_.model_.inverse(guess, coeff_.paramIsFixed_, coeff_.params_, forward_));
+            Vector inversedTransformatedGuess =
+               new Vector(coeff_.model_.inverse(guess, coeff_.paramIsFixed_, coeff_.params_, forward_));
 
-               ProjectedCostFunction rainedXABRError = new ProjectedCostFunction(costFunction, inversedTransformatedGuess,
-                                                                                 coeff_.paramIsFixed_);
+            ProjectedCostFunction rainedXABRError = new ProjectedCostFunction(costFunction,
+               inversedTransformatedGuess,
+               coeff_.paramIsFixed_);
 
-               Vector projectedGuess = new Vector(rainedXABRError.project(inversedTransformatedGuess));
+            Vector projectedGuess = new Vector(rainedXABRError.project(inversedTransformatedGuess));
 
-               NoConstraint raint = new NoConstraint();
-               Problem problem = new Problem(rainedXABRError, raint, projectedGuess);
-               tmpEndCriteria = optMethod_.minimize(problem, endCriteria_);
-               Vector projectedResult = new Vector(problem.currentValue());
-               Vector transfResult = new Vector(rainedXABRError.include(projectedResult));
-               Vector result = coeff_.model_.direct(transfResult, coeff_.paramIsFixed_, coeff_.params_, forward_);
-               tmpInterpolationError = useMaxError_ ? interpolationMaxError()
-                                                    : interpolationError();
+            constraint_.config(rainedXABRError, coeff_, forward_);
+            Problem problem = new Problem(rainedXABRError, constraint_, projectedGuess);
+            tmpEndCriteria = optMethod_.minimize(problem, endCriteria_);
+            Vector projectedResult = new Vector(problem.currentValue());
+            Vector transfResult = new Vector(rainedXABRError.include(projectedResult));
+            Vector result = coeff_.model_.direct(transfResult, coeff_.paramIsFixed_, coeff_.params_, forward_);
+            tmpInterpolationError = useMaxError_
+               ? interpolationMaxError()
+               : interpolationError();
 
-               if (tmpInterpolationError < bestError)
-               {
-                  bestError = tmpInterpolationError;
-                  bestParameters = result;
-                  coeff_.XABREndCriteria_ = tmpEndCriteria;
-               }
-            } while (++iterations < maxGuesses_ &&
-                     tmpInterpolationError > errorAccept_);
+            if (tmpInterpolationError < bestError)
+            {
+               bestError = tmpInterpolationError;
+               bestParameters = result;
+               coeff_.XABREndCriteria_ = tmpEndCriteria;
+            }
+         } while (++iterations < maxGuesses_ &&
+                  tmpInterpolationError > errorAccept_);
 
-            for (int i = 0; i < bestParameters.size(); ++i)
-               coeff_.params_[i] = bestParameters[i];
+         for (int i = 0; i < bestParameters.size(); ++i)
+            coeff_.params_[i] = bestParameters[i];
 
-            coeff_.error_ = interpolationError();
-            coeff_.maxError_ = interpolationMaxError();
-         }
+         coeff_.error_ = interpolationError();
+         coeff_.maxError_ = interpolationMaxError();
       }
 
       public override double value(double x)
@@ -237,11 +241,23 @@ namespace QLNet
          return coeff_.modelInstance_.volatility(x);
       }
 
-      public override double primitive(double d) { Utils.QL_FAIL("XABR primitive not implemented"); return 0; }
+      public override double primitive(double d)
+      {
+         Utils.QL_FAIL("XABR primitive not implemented");
+         return 0;
+      }
 
-      public override double derivative(double d) { Utils.QL_FAIL("XABR derivative not implemented"); return 0; }
+      public override double derivative(double d)
+      {
+         Utils.QL_FAIL("XABR derivative not implemented");
+         return 0;
+      }
 
-      public override double secondDerivative(double d) { Utils.QL_FAIL("XABR secondDerivative not implemented"); return 0; }
+      public override double secondDerivative(double d)
+      {
+         Utils.QL_FAIL("XABR secondDerivative not implemented");
+         return 0;
+      }
 
       // calculate total squared weighted difference (L2 norm)
       public double interpolationSquaredError()
@@ -252,6 +268,7 @@ namespace QLNet
             error = (value(xBegin_[i]) - yBegin_[i]);
             totalError += error * error * (coeff_.weights_[i]);
          }
+
          return totalError;
       }
 
@@ -288,7 +305,10 @@ namespace QLNet
 
       private class XABRError : CostFunction
       {
-         public XABRError(XABRInterpolationImpl<Model> xabr) { xabr_ = xabr; }
+         public XABRError(XABRInterpolationImpl<Model> xabr)
+         {
+            xabr_ = xabr;
+         }
 
          public override double value(Vector x)
          {
@@ -313,11 +333,52 @@ namespace QLNet
 
       private EndCriteria endCriteria_;
       private OptimizationMethod optMethod_;
+      private XABRConstraint constraint_;
       private double errorAccept_;
       private bool useMaxError_;
       private int maxGuesses_;
       private double forward_;
       private bool vegaWeighted_;
       public XABRCoeffHolder<Model> coeff_ { get; set; }
+   }
+
+   public class XABRConstraint : Constraint
+   {
+      public XABRConstraint() : base(null)
+      { }
+
+      public XABRConstraint(IConstraint impl)
+         : base(impl)
+      { }
+
+      public virtual void config<Model>(ProjectedCostFunction costFunction, XABRCoeffHolder<Model> coeff,
+         double forward)
+         where Model : IModel, new()
+      { }
+   }
+
+   //! No constraint
+   public class NoXABRConstraint : XABRConstraint
+   {
+      private class Impl : IConstraint
+      {
+         public bool test(Vector param)
+         {
+            return true;
+         }
+
+         public Vector upperBound(Vector parameters)
+         {
+            return new Vector(parameters.size(), Double.MaxValue);
+         }
+
+         public Vector lowerBound(Vector parameters)
+         {
+            return new Vector(parameters.size(), Double.MinValue);
+         }
+      }
+
+      public NoXABRConstraint() : base(new Impl())
+      { }
    }
 }
