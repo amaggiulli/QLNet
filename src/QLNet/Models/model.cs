@@ -122,7 +122,8 @@ namespace QLNet {
                               EndCriteria endCriteria,
                               Constraint additionalConstraint = null, 
                               List<double> weights = null,
-                              List<bool> fixParameters = null) 
+                              List<bool> fixParameters = null,
+                              CalibrationFunction calibrationFunction = null) 
         {
            if ( weights == null ) weights = new List<double>();
            if ( additionalConstraint == null ) additionalConstraint = new Constraint();
@@ -141,7 +142,8 @@ namespace QLNet {
             Vector prms = parameters();
             List<bool> all = new InitializedList<bool>(prms.size(), false);
             Projection proj = new Projection(prms,fixParameters ?? all);
-            CalibrationFunction f = new CalibrationFunction(this,instruments,w,proj);
+            CostFunction f = calibrationFunction == null ? new CalibrationFunction(this, instruments, w, proj)
+                                                         : calibrationFunction.factory(this, instruments, w, proj);
             ProjectedConstraint pc = new ProjectedConstraint(c,proj);
             Problem prob = new Problem(f, pc, proj.project(prms));
             shortRateEndCriteria_ = method.minimize(prob, endCriteria);
@@ -262,8 +264,11 @@ namespace QLNet {
         }
 
         //! Calibration cost function class
-        private class CalibrationFunction : CostFunction
+        public class CalibrationFunction : CostFunction
         {
+           //factory purpose
+           public CalibrationFunction() { }
+
            public CalibrationFunction( CalibratedModel model, 
                                        List<CalibrationHelper> instruments, 
                                        List<double> weights,
@@ -304,10 +309,15 @@ namespace QLNet {
 
            public override double finiteDifferenceEpsilon() { return 1e-6; }
 
-           private CalibratedModel model_;
-           private List<CalibrationHelper> instruments_;
-           private List<double> weights_;
-           private Projection projection_;
+           public virtual CalibrationFunction factory(CalibratedModel model, List<CalibrationHelper> instruments, List<double> weights, Projection projection)
+           {
+               return new CalibrationFunction(model, instruments, weights, projection);
+           }
+
+           protected CalibratedModel model_;
+           protected List<CalibrationHelper> instruments_;
+           protected List<double> weights_;
+           protected Projection projection_;
 
         }
 
