@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    //! %callability leaving to the holder the possibility to convert
-   class SoftCallability : Callability
+   internal class SoftCallability : Callability
    {
       public SoftCallability(Callability.Price price, Date date, double trigger)
          : base(price, Callability.Type.Call, date)
@@ -74,7 +74,7 @@ namespace QLNet
                base.validate();
 
                Utils.QL_REQUIRE(conversionRatio != null, () => "null conversion ratio");
-               Utils.QL_REQUIRE(conversionRatio > 0.0, 
+               Utils.QL_REQUIRE(conversionRatio > 0.0,
                   () => "positive conversion ratio required: " + conversionRatio + " not allowed");
 
                Utils.QL_REQUIRE(redemption != null, () => "null redemption");
@@ -91,7 +91,7 @@ namespace QLNet
                Utils.QL_REQUIRE(callabilityDates.Count == callabilityTriggers.Count,
                   () => "different number of callability dates and triggers");
 
-               Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, 
+               Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count,
                   () => "different number of coupon dates and amounts");
             }
          }
@@ -108,7 +108,7 @@ namespace QLNet
             Date issueDate,
             int settlementDays,
             double redemption)
-            : base( new PlainVanillaPayoff(Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
+            : base(new PlainVanillaPayoff(Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
                     exercise)
          {
             bond_ = bond;
@@ -146,12 +146,12 @@ namespace QLNet
             else
                moreArgs.callabilityTypes.Clear();
 
-            if (moreArgs.callabilityPrices == null )
+            if (moreArgs.callabilityPrices == null)
                moreArgs.callabilityPrices = new List<double>();
             else
                moreArgs.callabilityPrices.Clear();
 
-            if (moreArgs.callabilityTriggers == null )
+            if (moreArgs.callabilityTriggers == null)
                moreArgs.callabilityTriggers = new List<double?>();
             else
                moreArgs.callabilityTriggers.Clear();
@@ -365,7 +365,7 @@ namespace QLNet
             .withNotionals(100.0)
             .withPaymentAdjustment(schedule.businessDayConvention());
 
-         addRedemptionsToCashflows(new List<double>() {redemption});
+         addRedemptionsToCashflows(new List<double>() { redemption });
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
@@ -410,7 +410,7 @@ namespace QLNet
             .withNotionals(100.0)
             .withPaymentAdjustment(schedule.businessDayConvention());
 
-         addRedemptionsToCashflows(new List<double> {redemption});
+         addRedemptionsToCashflows(new List<double> { redemption });
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 

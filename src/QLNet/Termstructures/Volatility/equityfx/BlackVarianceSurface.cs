@@ -55,6 +55,7 @@ namespace QLNet
 
       // TermStructure interface
       public override DayCounter dayCounter() { return dayCounter_; }
+
       public override Date maxDate()
       {
          return maxDate_;
@@ -70,9 +71,13 @@ namespace QLNet
 
       //public accessors
       public virtual List<double> strikes() { return strikes_; }
+
       public virtual List<double> times() { return times_; }
+
       public virtual List<Date> dates() { return dates_; }
+
       public virtual Matrix volatilities() { return volatilities_; }
+
       public virtual Matrix variances() { return variances_; }
 
       // required for Handle
@@ -137,7 +142,7 @@ namespace QLNet
 
          if (t <= times_.Last())
             return varianceSurface_.value(t, strike, true);
-         else 
+         else
             return varianceSurface_.value(times_.Last(), strike, true) * t / times_.Last();
       }
 

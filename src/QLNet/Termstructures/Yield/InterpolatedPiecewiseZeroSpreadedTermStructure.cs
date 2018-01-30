@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -66,9 +67,13 @@ namespace QLNet
       protected Interpolation interpolator_;
 
       public override DayCounter dayCounter() { return originalCurve_.link.dayCounter(); }
+
       public override Calendar calendar() { return originalCurve_.link.calendar(); }
+
       public override int settlementDays() { return originalCurve_.link.settlementDays(); }
+
       public override Date referenceDate() { return originalCurve_.link.referenceDate(); }
+
       public override Date maxDate() { return originalCurve_.link.maxDate() < dates_.Last() ? originalCurve_.link.maxDate() : dates_.Last(); }
 
       protected override double zeroYieldImpl(double t)
@@ -120,7 +125,7 @@ namespace QLNet
       }
    }
 
-   public class PiecewiseZeroSpreadedTermStructure: InterpolatedPiecewiseZeroSpreadedTermStructure<Linear>
+   public class PiecewiseZeroSpreadedTermStructure : InterpolatedPiecewiseZeroSpreadedTermStructure<Linear>
    {
       public PiecewiseZeroSpreadedTermStructure(Handle<YieldTermStructure> h,
                                                 List<Handle<Quote>> spreads,

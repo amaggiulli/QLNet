@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,27 +23,29 @@ namespace QLNet
    /*! This class is purely abstract and defines the interface of concrete
        structures which will be derived from this one.
    */
-   public abstract class CapFloorTermVolatilityStructure : VolatilityTermStructure 
+
+   public abstract class CapFloorTermVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors
+
       /*! \warning term structures initialized by means of this
                    constructor must manage their own reference date
                    by overriding the referenceDate() method.
       */
 
       protected CapFloorTermVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
-         :base(bdc, dc) {}
-      
+         : base(bdc, dc) { }
+
       //! initialize with a fixed reference date
-      protected CapFloorTermVolatilityStructure(Date referenceDate,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
-         : base(referenceDate, cal, bdc, dc) {}
-      
+      protected CapFloorTermVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
+         : base(referenceDate, cal, bdc, dc) { }
+
       //! calculate the reference date based on the global evaluation date
       protected CapFloorTermVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(settlementDays, cal, bdc, dc) {}
-      
-      #endregion
-      
+         : base(settlementDays, cal, bdc, dc) { }
+
+      #endregion Constructors
+
       #region Volatility
 
       //! returns the volatility for a given cap/floor length and strike rate
@@ -59,7 +61,7 @@ namespace QLNet
          double t = timeFromReference(end);
          return volatility(t, strike, extrapolate);
       }
-      
+
       //! returns the volatility for a given end time and strike rate
       public double volatility(double t, double strike, bool extrapolate = false)
       {
@@ -68,8 +70,8 @@ namespace QLNet
          return volatilityImpl(t, strike);
       }
 
-      #endregion
-      
+      #endregion Volatility
+
       //! implements the actual volatility calculation in derived classes
       protected abstract double volatilityImpl(double length, double strike);
    }

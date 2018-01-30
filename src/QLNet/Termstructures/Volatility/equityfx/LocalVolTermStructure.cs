@@ -1,35 +1,35 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
-
-namespace QLNet 
+namespace QLNet
 {
    /*! This abstract class defines the interface of concrete
        local-volatility term structures which will be derived from this one.
 
        Volatilities are assumed to be expressed on an annual basis.
    */
-   public abstract class LocalVolTermStructure : VolatilityTermStructure 
+
+   public abstract class LocalVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
+
       //! default constructor
       /*! \warning term structures initialized by means of this
                    constructor must manage their own reference date
@@ -37,19 +37,19 @@ namespace QLNet
       */
 
       protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
-         :base(bdc, dc) {}
-      
+         : base(bdc, dc) { }
+
       //! initialize with a fixed reference date
-      protected LocalVolTermStructure(Date referenceDate,Calendar cal = null,
-         BusinessDayConvention bdc = BusinessDayConvention.Following,DayCounter dc = null)
-         :base(referenceDate, cal, bdc, dc) {}
-      
+      protected LocalVolTermStructure(Date referenceDate, Calendar cal = null,
+         BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
+         : base(referenceDate, cal, bdc, dc) { }
+
       //! calculate the reference date based on the global evaluation date
-      protected LocalVolTermStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc = BusinessDayConvention.Following,
+      protected LocalVolTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
          DayCounter dc = null)
-         :base(settlementDays, cal, bdc, dc) {}
-      
-      #endregion
+         : base(settlementDays, cal, bdc, dc) { }
+
+      #endregion Constructors
 
       #region Local Volatility
 
@@ -75,11 +75,10 @@ namespace QLNet
           range check has already been performed; therefore, they must
           assume that extrapolation is required.
       */
-      
+
       //! local vol calculation
       protected abstract double localVolImpl(double t, double strike);
 
-      #endregion
+      #endregion Local Volatility
    }
-
 }

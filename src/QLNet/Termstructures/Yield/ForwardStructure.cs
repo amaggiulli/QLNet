@@ -1,25 +1,26 @@
 ﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 
-namespace QLNet 
+namespace QLNet
 {
    //! %Forward-rate term structure
    /*! This abstract class acts as an adapter to YieldTermStructure allowing
@@ -31,23 +32,24 @@ namespace QLNet
 
        \ingroup yieldtermstructures
    */
-   public abstract class ForwardRateStructure : YieldTermStructure 
+
+   public abstract class ForwardRateStructure : YieldTermStructure
    {
       #region Constructors
 
       protected ForwardRateStructure(DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(dc, jumps, jumpDates) {}
+         : base(dc, jumps, jumpDates) { }
 
-      protected ForwardRateStructure(Date refDate,Calendar cal = null,DayCounter dc = null,
+      protected ForwardRateStructure(Date refDate, Calendar cal = null, DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-           : base(refDate, cal, dc, jumps, jumpDates) {}
+           : base(refDate, cal, dc, jumps, jumpDates) { }
 
-      protected ForwardRateStructure(int settlDays,Calendar cal,DayCounter dc = null,
+      protected ForwardRateStructure(int settlDays, Calendar cal, DayCounter dc = null,
             List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(settlDays, cal, dc, jumps, jumpDates) {}
-      
-      #endregion
+         : base(settlDays, cal, dc, jumps, jumpDates) { }
+
+      #endregion Constructors
 
       #region Calculations
 
@@ -58,6 +60,7 @@ namespace QLNet
 
       //! instantaneous forward-rate calculation
       protected abstract double forwardImpl(double s);
+
       /*! Returns the zero yield rate for the given date calculating it
           from the instantaneous forward rate \f$ f(t) \f$ as
           \f[
@@ -69,6 +72,7 @@ namespace QLNet
                    Derived classes should override it if a more efficient
                    implementation is available.
       */
+
       protected virtual double zeroYieldImpl(double t)
       {
          if (t.IsEqual(0.0))
@@ -83,23 +87,23 @@ namespace QLNet
          return (sum * dt / t);
       }
 
-      #endregion
+      #endregion Calculations
 
       #region YieldTermStructure implementation
+
       /*! Returns the discount factor for the given date calculating it
           from the zero rate as \f$ d(t) = \exp \left( -z(t) t \right) \f$
       */
+
       protected override double discountImpl(double t)
       {
          if (t.IsEqual(0.0))     // this acts as a safe guard in cases where
             return 1.0;   // zeroYieldImpl(0.0) would throw.
 
-        double r = zeroYieldImpl(t);
-        return Math.Exp(-r*t);
+         double r = zeroYieldImpl(t);
+         return Math.Exp(-r * t);
       }
 
-      #endregion
-    }
-
-
+      #endregion YieldTermStructure implementation
+   }
 }

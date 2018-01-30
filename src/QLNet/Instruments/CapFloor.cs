@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -42,33 +42,32 @@ namespace QLNet
    public class CapFloor : Instrument
    {
       #region Private Attributes
-      
+
       private CapFloorType type_;
       private List<CashFlow> floatingLeg_;
       private List<double> capRates_;
       private List<double> floorRates_;
 
-      #endregion
+      #endregion Private Attributes
 
       #region Constructors
 
       public CapFloor(CapFloorType type, List<CashFlow> floatingLeg, List<double> capRates, List<double> floorRates)
       {
-
          type_ = type;
          floatingLeg_ = new List<CashFlow>(floatingLeg);
          capRates_ = new List<double>(capRates);
-         floorRates_ = new List<double>(floorRates); 
+         floorRates_ = new List<double>(floorRates);
 
-         if (type_ == CapFloorType.Cap || type_ == CapFloorType.Collar) 
+         if (type_ == CapFloorType.Cap || type_ == CapFloorType.Collar)
          {
-            if (capRates_.Count == 0 )
+            if (capRates_.Count == 0)
                throw new ArgumentException("no cap rates given");
 
             while (capRates_.Count < floatingLeg_.Count)
-                capRates_.Add(capRates_.Last());
+               capRates_.Add(capRates_.Last());
          }
-         if (type_ == CapFloorType.Floor || type_ == CapFloorType.Collar) 
+         if (type_ == CapFloorType.Floor || type_ == CapFloorType.Collar)
          {
             if (floorRates_.Count == 0)
                throw new ArgumentException("no floor rates given");
@@ -81,35 +80,32 @@ namespace QLNet
             floatingLeg_[i].registerWith(update);
 
          Settings.registerWith(update);
-
       }
-      public CapFloor(CapFloorType type,List<CashFlow> floatingLeg,List<double> strikes)
-      {
 
+      public CapFloor(CapFloorType type, List<CashFlow> floatingLeg, List<double> strikes)
+      {
          type_ = type;
          floatingLeg_ = new List<CashFlow>(floatingLeg);
- 
-         if ( strikes.Count == 0 )
+
+         if (strikes.Count == 0)
             throw new ArgumentException("no strikes given");
 
-         if (type_ == CapFloorType.Cap) 
+         if (type_ == CapFloorType.Cap)
          {
             capRates_ = new List<double>(strikes);
 
             while (capRates_.Count < floatingLeg_.Count)
                capRates_.Add(capRates_.Last());
-
-         } 
-         else if (type_ == CapFloorType.Floor) 
+         }
+         else if (type_ == CapFloorType.Floor)
          {
             floorRates_ = new List<double>(strikes);
 
-            while ( floorRates_.Count < floatingLeg_.Count )
+            while (floorRates_.Count < floatingLeg_.Count)
                floorRates_.Add(floorRates_.Last());
-         } 
+         }
          else
             throw new ArgumentException("only Cap/Floor types allowed in this constructor");
-
 
          for (int i = 0; i < floatingLeg_.Count; i++)
             floatingLeg_[i].registerWith(update);
@@ -117,11 +113,11 @@ namespace QLNet
          Settings.registerWith(update);
       }
 
-      #endregion
+      #endregion Constructors
 
       #region Instrument interface
 
-      public override bool isExpired() 
+      public override bool isExpired()
       {
          Date today = Settings.evaluationDate();
          foreach (var cf in floatingLeg_)
@@ -129,16 +125,16 @@ namespace QLNet
 
          return true;
       }
-      public override void setupArguments(IPricingEngineArguments args) 
+
+      public override void setupArguments(IPricingEngineArguments args)
       {
          CapFloor.Arguments arguments = args as CapFloor.Arguments;
 
          if (arguments == null) throw new ArgumentException("wrong argument type");
 
-
          int n = floatingLeg_.Count;
 
-         arguments.startDates = new InitializedList<Date>(n) ;
+         arguments.startDates = new InitializedList<Date>(n);
          arguments.fixingDates = new InitializedList<Date>(n);
          arguments.endDates = new InitializedList<Date>(n);
          arguments.accrualTimes = new InitializedList<double>(n);
@@ -153,11 +149,11 @@ namespace QLNet
 
          Date today = Settings.evaluationDate();
 
-         for (int i=0; i<n; ++i) 
+         for (int i = 0; i < n; ++i)
          {
             FloatingRateCoupon coupon = floatingLeg_[i] as FloatingRateCoupon;
 
-            if ( coupon == null ) 
+            if (coupon == null)
                throw new ArgumentException("non-FloatingRateCoupon given");
 
             arguments.startDates[i] = coupon.accrualStartDate();
@@ -168,12 +164,12 @@ namespace QLNet
             arguments.accrualTimes[i] = coupon.accrualPeriod();
 
             // this is passed explicitly for precision...
-            if (arguments.endDates[i] >= today) 
-            { 
+            if (arguments.endDates[i] >= today)
+            {
                // ...but only if needed
                arguments.forwards[i] = coupon.adjustedFixing;
-            } 
-            else 
+            }
+            else
             {
                arguments.forwards[i] = null;
             }
@@ -185,57 +181,61 @@ namespace QLNet
             arguments.spreads[i] = spread;
 
             if (type_ == CapFloorType.Cap || type_ == CapFloorType.Collar)
-                arguments.capRates[i] = (capRates_[i]-spread)/gearing;
+               arguments.capRates[i] = (capRates_[i] - spread) / gearing;
             else
-                arguments.capRates[i] = null;
+               arguments.capRates[i] = null;
 
             if (type_ == CapFloorType.Floor || type_ == CapFloorType.Collar)
-                arguments.floorRates[i] = (floorRates_[i]-spread)/gearing;
+               arguments.floorRates[i] = (floorRates_[i] - spread) / gearing;
             else
-                arguments.floorRates[i] = null;
+               arguments.floorRates[i] = null;
          }
       }
 
-      #endregion
+      #endregion Instrument interface
 
       #region Inspectors
 
       public CapFloorType getType() { return type_; }
+
       public List<double> capRates() { return capRates_; }
+
       public List<double> floorRates() { return floorRates_; }
+
       public List<CashFlow> floatingLeg() { return floatingLeg_; }
 
-      public Date startDate() {return CashFlows.startDate(floatingLeg_);}
-      public Date maturityDate() {return CashFlows.maturityDate(floatingLeg_);}
-      
-      public FloatingRateCoupon lastFloatingRateCoupon() 
+      public Date startDate() { return CashFlows.startDate(floatingLeg_); }
+
+      public Date maturityDate() { return CashFlows.maturityDate(floatingLeg_); }
+
+      public FloatingRateCoupon lastFloatingRateCoupon()
       {
          CashFlow lastCF = floatingLeg_.Last();
          FloatingRateCoupon lastFloatingCoupon = lastCF as FloatingRateCoupon;
          return lastFloatingCoupon;
       }
 
-      public CapFloor optionlet(int i) 
+      public CapFloor optionlet(int i)
       {
-         if ( i >= floatingLeg().Count )
-            throw new ArgumentException( i + " optionlet does not exist, only " +
+         if (i >= floatingLeg().Count)
+            throw new ArgumentException(i + " optionlet does not exist, only " +
                                          floatingLeg().Count);
 
-        List<CashFlow> cf = new List<CashFlow>();
-        cf.Add(floatingLeg()[i]);
+         List<CashFlow> cf = new List<CashFlow>();
+         cf.Add(floatingLeg()[i]);
 
-        List<double> cap = new List<double>() ;
-        List<double> floor = new List<double>() ;
+         List<double> cap = new List<double>();
+         List<double> floor = new List<double>();
 
-        if (getType() == CapFloorType.Cap || getType() == CapFloorType.Collar)
+         if (getType() == CapFloorType.Cap || getType() == CapFloorType.Collar)
             cap.Add(capRates()[i]);
-        if (getType() == CapFloorType.Floor || getType() == CapFloorType.Collar)
+         if (getType() == CapFloorType.Floor || getType() == CapFloorType.Collar)
             floor.Add(floorRates()[i]);
 
-        return new CapFloor(getType(), cf, cap, floor);
+         return new CapFloor(getType(), cf, cap, floor);
       }
 
-      public double atmRate(YieldTermStructure discountCurve) 
+      public double atmRate(YieldTermStructure discountCurve)
       {
          bool includeSettlementDateFlows = false;
          Date settlementDate = discountCurve.referenceDate();
@@ -253,7 +253,6 @@ namespace QLNet
                                   1.0e-7, 4.0, VolatilityType.ShiftedLognormal, 0.0);
       }
 
-
       public double impliedVolatility(
                               double targetValue,
                               Handle<YieldTermStructure> discountCurve,
@@ -263,10 +262,10 @@ namespace QLNet
                               double minVol,
                               double maxVol,
                               VolatilityType type,
-                              double displacement) 
+                              double displacement)
       {
          calculate();
-         if (isExpired()) 
+         if (isExpired())
             throw new ArgumentException("instrument expired");
 
          ImpliedVolHelper f = new ImpliedVolHelper(this, discountCurve, targetValue, displacement, type);
@@ -275,7 +274,7 @@ namespace QLNet
          return solver.solve(f, accuracy, guess, minVol, maxVol);
       }
 
-      #endregion
+      #endregion Inspectors
 
       #region Pricing
 
@@ -292,25 +291,26 @@ namespace QLNet
          public List<double> gearings { get; set; }
          public List<double> spreads { get; set; }
          public List<double> nominals { get; set; }
-         public void validate() 
+
+         public void validate()
          {
             if (endDates.Count != startDates.Count)
-               throw new ArgumentException( "number of start dates (" + startDates.Count
+               throw new ArgumentException("number of start dates (" + startDates.Count
                                             + ") different from that of end dates ("
                                             + endDates.Count + ")");
 
             if (accrualTimes.Count != startDates.Count)
-               throw new ArgumentException( "number of start dates (" + startDates.Count
+               throw new ArgumentException("number of start dates (" + startDates.Count
                                             + ") different from that of  accrual times  ("
                                             + accrualTimes.Count + ")");
 
-            if (capRates.Count != startDates.Count && type!= CapFloorType.Floor)
-               throw new ArgumentException( "number of start dates (" + startDates.Count
+            if (capRates.Count != startDates.Count && type != CapFloorType.Floor)
+               throw new ArgumentException("number of start dates (" + startDates.Count
                                             + ") different from that of  of cap rates  ("
                                             + capRates.Count + ")");
 
-            if (floorRates.Count != startDates.Count && type!= CapFloorType.Cap)
-               throw new ArgumentException( "number of start dates (" + startDates.Count
+            if (floorRates.Count != startDates.Count && type != CapFloorType.Cap)
+               throw new ArgumentException("number of start dates (" + startDates.Count
                                             + ") different from that of  of floor rates  ("
                                             + floorRates.Count + ")");
 
@@ -333,46 +333,46 @@ namespace QLNet
                throw new ArgumentException("number of start dates (" + startDates.Count
                                             + ") different from that of forwards ("
                                             + forwards.Count + ")");
-
-        }
+         }
       }
 
-      #endregion
+      #endregion Pricing
    }
 
    /// <summary>
    /// Concrete cap class
    /// \ingroup instruments
    /// </summary>
-   public class Cap : CapFloor 
+   public class Cap : CapFloor
    {
-      public Cap(List<CashFlow> floatingLeg,List<double> exerciseRates)
-         : base(CapFloorType.Cap, floatingLeg, exerciseRates, new List<double>()) {}
+      public Cap(List<CashFlow> floatingLeg, List<double> exerciseRates)
+         : base(CapFloorType.Cap, floatingLeg, exerciseRates, new List<double>()) { }
    };
 
    /// <summary>
    /// Concrete floor class
-   /// \ingroup instruments 
+   /// \ingroup instruments
    /// </summary>
-   public class Floor : CapFloor 
-    {
-      public Floor(List<CashFlow> floatingLeg,List<double> exerciseRates)
-        : base(CapFloorType.Floor, floatingLeg,new List<double>(), exerciseRates) {}
-    };
+   public class Floor : CapFloor
+   {
+      public Floor(List<CashFlow> floatingLeg, List<double> exerciseRates)
+        : base(CapFloorType.Floor, floatingLeg, new List<double>(), exerciseRates) { }
+   };
 
    /// <summary>
    /// Concrete collar class
    /// \ingroup instruments
    /// </summary>
-   public class Collar : CapFloor 
-    {
-      public Collar(List<CashFlow> floatingLeg,List<double> capRates, List<double> floorRates)
+   public class Collar : CapFloor
+   {
+      public Collar(List<CashFlow> floatingLeg, List<double> capRates, List<double> floorRates)
           : base(CapFloorType.Collar, floatingLeg, capRates, floorRates) { }
-    };
+   };
 
    //! base class for cap/floor engines
-   public abstract class CapFloorEngine 
-        : GenericEngine<CapFloor.Arguments, CapFloor.Results> {};
+   public abstract class CapFloorEngine
+        : GenericEngine<CapFloor.Arguments, CapFloor.Results>
+   { };
 
    public class ImpliedVolHelper : ISolver1d
    {
@@ -396,44 +396,43 @@ namespace QLNet
 
          switch (type)
          {
-             case VolatilityType.ShiftedLognormal:
-                engine_ = (IPricingEngine)new BlackCapFloorEngine(discountCurve_, h, new Actual365Fixed(), displacement);
-                break;
+            case VolatilityType.ShiftedLognormal:
+               engine_ = (IPricingEngine)new BlackCapFloorEngine(discountCurve_, h, new Actual365Fixed(), displacement);
+               break;
 
-             case VolatilityType.Normal:
-                engine_ = (IPricingEngine)new BachelierCapFloorEngine(discountCurve_, h, new Actual365Fixed());
-                break;
+            case VolatilityType.Normal:
+               engine_ = (IPricingEngine)new BachelierCapFloorEngine(discountCurve_, h, new Actual365Fixed());
+               break;
 
-             default:
-                Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
-                break;
+            default:
+               Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
+               break;
          }
-         
+
          cap.setupArguments(engine_.getArguments());
          results_ = engine_.getResults() as Instrument.Results;
-
       }
 
       public override double value(double x)
       {
-         if (x.IsNotEqual(vol_.value())) 
+         if (x.IsNotEqual(vol_.value()))
          {
             vol_.setValue(x);
             engine_.calculate();
          }
 
-         return results_.value.Value -targetValue_;
+         return results_.value.Value - targetValue_;
       }
 
-      public override double derivative(double x) 
+      public override double derivative(double x)
       {
-         if (x.IsNotEqual(vol_.value())) 
+         if (x.IsNotEqual(vol_.value()))
          {
             vol_.setValue(x);
             engine_.calculate();
          }
-         Utils.QL_REQUIRE( results_.additionalResults.Keys.Contains("vega"),()=> "vega not provided");
-         return (double) results_.additionalResults["vega"];
+         Utils.QL_REQUIRE(results_.additionalResults.Keys.Contains("vega"), () => "vega not provided");
+         return (double)results_.additionalResults["vega"];
       }
    }
 }

@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,8 +58,6 @@ namespace QLNet
             }
          }
 
-
-
          Utils.QL_REQUIRE(this.data_.Count == dates_.Count, () =>
                   "indices/dates count mismatch: "
                   + this.data_.Count + " vs " + dates_.Count);
@@ -84,12 +83,17 @@ namespace QLNet
       }
 
       #region InterpolatedCurve
+
       public List<double> times_ { get; set; }
+
       public virtual List<double> times() { return this.times_; }
 
       public List<Date> dates_ { get; set; }
+
       public virtual List<Date> dates() { return dates_; }
+
       public Date maxDate_ { get; set; }
+
       public override Date maxDate()
       {
          Date d;
@@ -105,7 +109,9 @@ namespace QLNet
       }
 
       public List<double> data_ { get; set; }
+
       public List<double> forwards() { return this.data_; }
+
       public virtual List<double> data() { return forwards(); }
 
       public Interpolation interpolation_ { get; set; }
@@ -132,7 +138,8 @@ namespace QLNet
          copy.setupInterpolation();
          return copy;
       }
-      #endregion
+
+      #endregion InterpolatedCurve
 
       // InflationTermStructure interface
       public override Date baseDate()
@@ -157,6 +164,7 @@ namespace QLNet
           (or can't) provide the points for interpolation on
           construction.
       */
+
       protected InterpolatedZeroInflationCurve(Date referenceDate,
                                      Calendar calendar,
                                      DayCounter dayCounter,
@@ -166,10 +174,9 @@ namespace QLNet
                                      double baseZeroRate,
                                      Handle<YieldTermStructure> yTS,
                                      Interpolator interpolator = default(Interpolator))
-         : base( referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS )
+         : base(referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS)
       {
          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
-
    }
 }

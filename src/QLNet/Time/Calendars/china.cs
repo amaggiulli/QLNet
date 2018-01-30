@@ -2,18 +2,18 @@
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -50,6 +50,7 @@ namespace QLNet
 
        \ingroup calendars
    */
+
    public class China : Calendar
    {
       public enum Market
@@ -58,20 +59,21 @@ namespace QLNet
          IB      //!< Interbank calendar
       };
 
-      public China( Market market = Market.SSE )
+      public China(Market market = Market.SSE)
       {
-
          // all calendar instances on the same market share the same implementation instance
-         switch ( market )
+         switch (market)
          {
             case Market.SSE:
                calendar_ = SseImpl.Singleton;
                break;
+
             case Market.IB:
                calendar_ = IbImpl.Singleton;
                break;
+
             default:
-               Utils.QL_FAIL( "unknown market" );
+               Utils.QL_FAIL("unknown market");
                break;
          }
       }
@@ -79,110 +81,111 @@ namespace QLNet
       private class SseImpl : Calendar
       {
          public static readonly SseImpl Singleton = new SseImpl();
+
          private SseImpl() { }
+
          public override string name() { return "Shanghai stock exchange"; }
 
-         public override bool isWeekend( DayOfWeek w )
+         public override bool isWeekend(DayOfWeek w)
          {
             return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday;
          }
 
-         public override bool isBusinessDay( Date date )
+         public override bool isBusinessDay(Date date)
          {
             DayOfWeek w = date.DayOfWeek;
             int d = date.Day;
             Month m = (Month)date.Month;
             int y = date.Year;
 
-            if ( isWeekend( w )
-               // New Year's Day
-                || ( d == 1 && m == Month.January )
-                || ( y == 2005 && d == 3 && m == Month.January )
-                || ( y == 2006 && ( d == 2 || d == 3 ) && m == Month.January )
-                || ( y == 2007 && d <= 3 && m == Month.January )
-                || ( y == 2007 && d == 31 && m == Month.December )
-                || ( y == 2009 && d == 2 && m == Month.January )
-                || ( y == 2011 && d == 3 && m == Month.January )
-                || ( y == 2012 && ( d == 2 || d == 3 ) && m == Month.January )
-                || ( y == 2013 && d <= 3 && m == Month.January )
-                || ( y == 2014 && d == 1 && m == Month.January )
-                || ( y == 2015 && d <= 3 && m == Month.January )
-               // Chinese New Year
-                || ( y == 2004 && d >= 19 && d <= 28 && m == Month.January )
-                || ( y == 2005 && d >= 7 && d <= 15 && m == Month.February )
-                || ( y == 2006 && ( ( d >= 26 && m == Month.January ) ||
-                                  ( d <= 3 && m == Month.February ) ) )
-                || ( y == 2007 && d >= 17 && d <= 25 && m == Month.February )
-                || ( y == 2008 && d >= 6 && d <= 12 && m == Month.February )
-                || ( y == 2009 && d >= 26 && d <= 30 && m == Month.January )
-                || ( y == 2010 && d >= 15 && d <= 19 && m == Month.February )
-                || ( y == 2011 && d >= 2 && d <= 8 && m == Month.February )
-                || ( y == 2012 && d >= 23 && d <= 28 && m == Month.January )
-                || ( y == 2013 && d >= 11 && d <= 15 && m == Month.February )
-                || ( y == 2014 && d >= 31 && m == Month.January )
-                || ( y == 2014 && d <= 6 && m == Month.February )
-                || ( y == 2015 && d >= 18 && d <= 24 && m == Month.February )
-                || ( y == 2016 && d >= 8 && d <= 12 && m == Month.February )
-               // Ching Ming Festival
-                || ( y <= 2008 && d == 4 && m == Month.April )
-                || ( y == 2009 && d == 6 && m == Month.April )
-                || ( y == 2010 && d == 5 && m == Month.April )
-                || ( y == 2011 && d >= 3 && d <= 5 && m == Month.April )
-                || ( y == 2012 && d >= 2 && d <= 4 && m == Month.April )
-                || ( y == 2013 && d >= 4 && d <= 5 && m == Month.April )
-                || ( y == 2014 && d == 7 && m == Month.April )
-                || ( y == 2015 && d >= 5 && d <= 6 && m == Month.April )
-                || ( y == 2016 && d == 4 && m == Month.April )
-               // Labor Day
-                || ( y <= 2007 && d >= 1 && d <= 7 && m == Month.May )
-                || ( y == 2008 && d >= 1 && d <= 2 && m == Month.May )
-                || ( y == 2009 && d == 1 && m == Month.May )
-                || ( y == 2010 && d == 3 && m == Month.May )
-                || ( y == 2011 && d == 2 && m == Month.May )
-                || ( y == 2012 && ( ( d == 30 && m == Month.April ) ||
-                                  ( d == 1 && m == Month.May ) ) )
-                || ( y == 2013 && ( ( d >= 29 && m == Month.April ) ||
-                                  ( d == 1 && m == Month.May ) ) )
-                || ( y == 2014 && d >= 1 && d <= 3 && m == Month.May )
-                || ( y == 2015 && d == 1 && m == Month.May )
-                || ( y == 2016 && d >= 1 && d <= 2 && m == Month.May )
-               // Tuen Ng Festival
-                || ( y <= 2008 && d == 9 && m == Month.June )
-                || ( y == 2009 && ( d == 28 || d == 29 ) && m == Month.May )
-                || ( y == 2010 && d >= 14 && d <= 16 && m == Month.June )
-                || ( y == 2011 && d >= 4 && d <= 6 && m == Month.June )
-                || ( y == 2012 && d >= 22 && d <= 24 && m == Month.June )
-                || ( y == 2013 && d >= 10 && d <= 12 && m == Month.June )
-                || ( y == 2014 && d == 2 && m == Month.June )
-                || ( y == 2015 && d == 22 && m == Month.June )
-                || ( y == 2016 && d >= 9 && d <= 10 && m == Month.June )
-               // Mid-Autumn Festival
-                || ( y <= 2008 && d == 15 && m == Month.September )
-                || ( y == 2010 && d >= 22 && d <= 24 && m == Month.September )
-                || ( y == 2011 && d >= 10 && d <= 12 && m == Month.September )
-                || ( y == 2012 && d == 30 && m == Month.September )
-                || ( y == 2013 && d >= 19 && d <= 20 && m == Month.September )
-                || ( y == 2014 && d == 8 && m == Month.September )
-                || ( y == 2015 && d == 27 && m == Month.September )
-                || ( y == 2016 && d >= 15 && d <= 16 && m == Month.September )
-               // National Day
-                || ( y <= 2007 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2008 && ( ( d >= 29 && m == Month.September ) ||
-                                  ( d <= 3 && m == Month.October ) ) )
-                || ( y == 2009 && d >= 1 && d <= 8 && m == Month.October )
-                || ( y == 2010 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2011 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2012 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2013 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2014 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2015 && d >= 1 && d <= 7 && m == Month.October )
-                || ( y == 2016 && d >= 3 && d <= 7 && m == Month.October )
-               // 70th anniversary of the victory of anti-Japaneses war
-                || ( y == 2015 && d >= 3 && d <= 4 && m == Month.September )
+            if (isWeekend(w)
+                // New Year's Day
+                || (d == 1 && m == Month.January)
+                || (y == 2005 && d == 3 && m == Month.January)
+                || (y == 2006 && (d == 2 || d == 3) && m == Month.January)
+                || (y == 2007 && d <= 3 && m == Month.January)
+                || (y == 2007 && d == 31 && m == Month.December)
+                || (y == 2009 && d == 2 && m == Month.January)
+                || (y == 2011 && d == 3 && m == Month.January)
+                || (y == 2012 && (d == 2 || d == 3) && m == Month.January)
+                || (y == 2013 && d <= 3 && m == Month.January)
+                || (y == 2014 && d == 1 && m == Month.January)
+                || (y == 2015 && d <= 3 && m == Month.January)
+                // Chinese New Year
+                || (y == 2004 && d >= 19 && d <= 28 && m == Month.January)
+                || (y == 2005 && d >= 7 && d <= 15 && m == Month.February)
+                || (y == 2006 && ((d >= 26 && m == Month.January) ||
+                                  (d <= 3 && m == Month.February)))
+                || (y == 2007 && d >= 17 && d <= 25 && m == Month.February)
+                || (y == 2008 && d >= 6 && d <= 12 && m == Month.February)
+                || (y == 2009 && d >= 26 && d <= 30 && m == Month.January)
+                || (y == 2010 && d >= 15 && d <= 19 && m == Month.February)
+                || (y == 2011 && d >= 2 && d <= 8 && m == Month.February)
+                || (y == 2012 && d >= 23 && d <= 28 && m == Month.January)
+                || (y == 2013 && d >= 11 && d <= 15 && m == Month.February)
+                || (y == 2014 && d >= 31 && m == Month.January)
+                || (y == 2014 && d <= 6 && m == Month.February)
+                || (y == 2015 && d >= 18 && d <= 24 && m == Month.February)
+                || (y == 2016 && d >= 8 && d <= 12 && m == Month.February)
+                // Ching Ming Festival
+                || (y <= 2008 && d == 4 && m == Month.April)
+                || (y == 2009 && d == 6 && m == Month.April)
+                || (y == 2010 && d == 5 && m == Month.April)
+                || (y == 2011 && d >= 3 && d <= 5 && m == Month.April)
+                || (y == 2012 && d >= 2 && d <= 4 && m == Month.April)
+                || (y == 2013 && d >= 4 && d <= 5 && m == Month.April)
+                || (y == 2014 && d == 7 && m == Month.April)
+                || (y == 2015 && d >= 5 && d <= 6 && m == Month.April)
+                || (y == 2016 && d == 4 && m == Month.April)
+                // Labor Day
+                || (y <= 2007 && d >= 1 && d <= 7 && m == Month.May)
+                || (y == 2008 && d >= 1 && d <= 2 && m == Month.May)
+                || (y == 2009 && d == 1 && m == Month.May)
+                || (y == 2010 && d == 3 && m == Month.May)
+                || (y == 2011 && d == 2 && m == Month.May)
+                || (y == 2012 && ((d == 30 && m == Month.April) ||
+                                  (d == 1 && m == Month.May)))
+                || (y == 2013 && ((d >= 29 && m == Month.April) ||
+                                  (d == 1 && m == Month.May)))
+                || (y == 2014 && d >= 1 && d <= 3 && m == Month.May)
+                || (y == 2015 && d == 1 && m == Month.May)
+                || (y == 2016 && d >= 1 && d <= 2 && m == Month.May)
+                // Tuen Ng Festival
+                || (y <= 2008 && d == 9 && m == Month.June)
+                || (y == 2009 && (d == 28 || d == 29) && m == Month.May)
+                || (y == 2010 && d >= 14 && d <= 16 && m == Month.June)
+                || (y == 2011 && d >= 4 && d <= 6 && m == Month.June)
+                || (y == 2012 && d >= 22 && d <= 24 && m == Month.June)
+                || (y == 2013 && d >= 10 && d <= 12 && m == Month.June)
+                || (y == 2014 && d == 2 && m == Month.June)
+                || (y == 2015 && d == 22 && m == Month.June)
+                || (y == 2016 && d >= 9 && d <= 10 && m == Month.June)
+                // Mid-Autumn Festival
+                || (y <= 2008 && d == 15 && m == Month.September)
+                || (y == 2010 && d >= 22 && d <= 24 && m == Month.September)
+                || (y == 2011 && d >= 10 && d <= 12 && m == Month.September)
+                || (y == 2012 && d == 30 && m == Month.September)
+                || (y == 2013 && d >= 19 && d <= 20 && m == Month.September)
+                || (y == 2014 && d == 8 && m == Month.September)
+                || (y == 2015 && d == 27 && m == Month.September)
+                || (y == 2016 && d >= 15 && d <= 16 && m == Month.September)
+                // National Day
+                || (y <= 2007 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2008 && ((d >= 29 && m == Month.September) ||
+                                  (d <= 3 && m == Month.October)))
+                || (y == 2009 && d >= 1 && d <= 8 && m == Month.October)
+                || (y == 2010 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2011 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2012 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2013 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2014 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2015 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2016 && d >= 3 && d <= 7 && m == Month.October)
+                // 70th anniversary of the victory of anti-Japaneses war
+                || (y == 2015 && d >= 3 && d <= 4 && m == Month.September)
                 )
                return false;
             return true;
-
          }
       }
 
@@ -192,15 +195,15 @@ namespace QLNet
 
          public IbImpl()
          {
-            sseImpl = new China( Market.SSE );
+            sseImpl = new China(Market.SSE);
          }
 
          public override string name() { return "China inter bank market"; }
 
-         public override bool isWeekend( DayOfWeek w ) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
-         public override bool isBusinessDay( Date date )
-         {
+         public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
 
+         public override bool isBusinessDay(Date date)
+         {
             List<Date> working_weekends = new List<Date>{
             // 2005
             new Date(5, Month.February, 2005),
@@ -296,14 +299,10 @@ namespace QLNet
         };
 
             // If it is already a SSE business day, it must be a IB business day
-            return sseImpl.isBusinessDay( date ) || working_weekends.Contains( date );
-
+            return sseImpl.isBusinessDay(date) || working_weekends.Contains(date);
          }
 
          private Calendar sseImpl;
-
       };
-
    }
 }
-

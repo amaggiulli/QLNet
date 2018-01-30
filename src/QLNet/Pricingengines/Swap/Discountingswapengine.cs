@@ -1,34 +1,35 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet 
+namespace QLNet
 {
-   public class DiscountingSwapEngine : Swap.SwapEngine 
+   public class DiscountingSwapEngine : Swap.SwapEngine
    {
       private Handle<YieldTermStructure> discountCurve_;
       private bool? includeSettlementDateFlows_;
       private Date settlementDate_, npvDate_;
 
-      public DiscountingSwapEngine(Handle<YieldTermStructure> discountCurve,bool? includeSettlementDateFlows = null,
-                                   Date settlementDate = null, Date npvDate = null) 
+      public DiscountingSwapEngine(Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null,
+                                   Date settlementDate = null, Date npvDate = null)
       {
          discountCurve_ = discountCurve;
          discountCurve_.registerWith(update);
@@ -38,9 +39,9 @@ namespace QLNet
       }
 
       // Instrument interface
-      public override void calculate() 
+      public override void calculate()
       {
-         Utils.QL_REQUIRE( !discountCurve_.empty(), () => "discounting term structure handle is empty" );
+         Utils.QL_REQUIRE(!discountCurve_.empty(), () => "discounting term structure handle is empty");
 
          results_.value = results_.cash = 0;
          results_.errorEstimate = null;
@@ -48,36 +49,36 @@ namespace QLNet
          Date refDate = discountCurve_.link.referenceDate();
 
          Date settlementDate = settlementDate_;
-         if (settlementDate_== null ) 
+         if (settlementDate_ == null)
          {
             settlementDate = refDate;
-         } 
-         else 
+         }
+         else
          {
-            Utils.QL_REQUIRE( settlementDate >= refDate, () =>
-                       "settlement date (" + settlementDate + ") before " +
-                       "discount curve reference date (" + refDate + ")");
+            Utils.QL_REQUIRE(settlementDate >= refDate, () =>
+                      "settlement date (" + settlementDate + ") before " +
+                      "discount curve reference date (" + refDate + ")");
          }
 
          results_.valuationDate = npvDate_;
-         if (npvDate_== null ) 
+         if (npvDate_ == null)
          {
             results_.valuationDate = refDate;
-         } 
-         else 
+         }
+         else
          {
-            Utils.QL_REQUIRE( npvDate_ >= refDate, () =>
-                       "npv date (" + npvDate_  + ") before "+
-                       "discount curve reference date (" + refDate + ")");
+            Utils.QL_REQUIRE(npvDate_ >= refDate, () =>
+                      "npv date (" + npvDate_ + ") before " +
+                      "discount curve reference date (" + refDate + ")");
          }
 
          results_.npvDateDiscount = discountCurve_.link.discount(results_.valuationDate);
-         
+
          int n = arguments_.legs.Count;
-         
+
          results_.legNPV = new InitializedList<double?>(n);
-         results_.legBPS= new InitializedList<double?>(n);
-         results_.startDiscounts= new InitializedList<double?>(n);
+         results_.legBPS = new InitializedList<double?>(n);
+         results_.startDiscounts = new InitializedList<double?>(n);
          results_.endDiscounts = new InitializedList<double?>(n);
 
          bool includeRefDateFlows =
@@ -85,9 +86,9 @@ namespace QLNet
             includeSettlementDateFlows_.Value :
             Settings.includeReferenceDateEvents;
 
-         for (int i=0; i< n; ++i) 
+         for (int i = 0; i < n; ++i)
          {
-            try 
+            try
             {
                YieldTermStructure discount_ref = discountCurve_.currentLink();
                double npv = 0, bps = 0;
@@ -98,36 +99,35 @@ namespace QLNet
                                   results_.valuationDate,
                                   out npv,
                                   out bps);
-                results_.legNPV[i] = npv *arguments_.payer[i];
-                results_.legBPS[i] = bps *arguments_.payer[i];
+               results_.legNPV[i] = npv * arguments_.payer[i];
+               results_.legBPS[i] = bps * arguments_.payer[i];
 
-                if ( !arguments_.legs[i].empty() )
-                {
-                   Date d1 = CashFlows.startDate( arguments_.legs[i] );
-                   if ( d1 >= refDate )
-                      results_.startDiscounts[i] = discountCurve_.link.discount( d1 );
-                   else
-                      results_.startDiscounts[i] = null;
+               if (!arguments_.legs[i].empty())
+               {
+                  Date d1 = CashFlows.startDate(arguments_.legs[i]);
+                  if (d1 >= refDate)
+                     results_.startDiscounts[i] = discountCurve_.link.discount(d1);
+                  else
+                     results_.startDiscounts[i] = null;
 
-                   Date d2 = CashFlows.maturityDate( arguments_.legs[i] );
-                   if ( d2 >= refDate )
-                      results_.endDiscounts[i] = discountCurve_.link.discount( d2 );
-                   else
-                      results_.endDiscounts[i] = null;
-                }
-                else
-                {
-                   results_.startDiscounts[i] = null;
-                   results_.endDiscounts[i] = null;
-                }
-
-            } 
-            catch (Exception e) 
+                  Date d2 = CashFlows.maturityDate(arguments_.legs[i]);
+                  if (d2 >= refDate)
+                     results_.endDiscounts[i] = discountCurve_.link.discount(d2);
+                  else
+                     results_.endDiscounts[i] = null;
+               }
+               else
+               {
+                  results_.startDiscounts[i] = null;
+                  results_.endDiscounts[i] = null;
+               }
+            }
+            catch (Exception e)
             {
-                Utils.QL_FAIL( (i+1) + " leg: " + e.Message);
+               Utils.QL_FAIL((i + 1) + " leg: " + e.Message);
             }
             results_.value += results_.legNPV[i];
          }
       }
-    }
+   }
 }

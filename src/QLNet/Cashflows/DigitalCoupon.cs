@@ -2,27 +2,27 @@
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
 {
-
    //! Digital-payoff coupon
    //    ! Implementation of a floating-rate coupon with digital call/put option.
    //        Payoffs:
@@ -38,7 +38,7 @@ namespace QLNet
    //        where csi=+1 or csi=-1.
    //        The evaluation of the coupon is made using the call/put spread
    //        replication method.
-   //    
+   //
    //    ! \ingroup instruments
    //
    //        \test
@@ -64,7 +64,7 @@ namespace QLNet
    //          of the call-put parity relation.
    //        - the correctness of the returned value is tested by the relationship
    //          between prices in case of different replication types.
-   //    
+   //
    public class DigitalCoupon : FloatingRateCoupon
    {
       // need by CashFlowVectors
@@ -72,15 +72,15 @@ namespace QLNet
 
       //! Constructors
       //! general constructor
-      public DigitalCoupon(FloatingRateCoupon underlying, 
+      public DigitalCoupon(FloatingRateCoupon underlying,
                            double? callStrike = null,
-                           Position.Type callPosition = Position.Type.Long, 
-                           bool isCallATMIncluded = false, 
-                           double? callDigitalPayoff = null, 
+                           Position.Type callPosition = Position.Type.Long,
+                           bool isCallATMIncluded = false,
+                           double? callDigitalPayoff = null,
                            double? putStrike = null,
-                           Position.Type putPosition = Position.Type.Long, 
-                           bool isPutATMIncluded = false, 
-                           double? putDigitalPayoff = null, 
+                           Position.Type putPosition = Position.Type.Long,
+                           bool isPutATMIncluded = false,
+                           double? putDigitalPayoff = null,
                            DigitalReplication replication = null)
          : base(underlying.date(), underlying.nominal(), underlying.accrualStartDate(), underlying.accrualEndDate(), underlying.fixingDays, underlying.index(), underlying.gearing(), underlying.spread(), underlying.referencePeriodStart, underlying.referencePeriodEnd, underlying.dayCounter(), underlying.isInArrears())
       {
@@ -101,31 +101,32 @@ namespace QLNet
          hasCallStrike_ = false;
          replicationType_ = replication.replicationType();
 
-
-         Utils.QL_REQUIRE(replication.gap() > 0.0,()=> "Non positive epsilon not allowed");
+         Utils.QL_REQUIRE(replication.gap() > 0.0, () => "Non positive epsilon not allowed");
 
          if (putStrike == null)
-            Utils.QL_REQUIRE(putDigitalPayoff == null,()=> "Put Cash rate non allowed if put strike is null");
+            Utils.QL_REQUIRE(putDigitalPayoff == null, () => "Put Cash rate non allowed if put strike is null");
 
          if (callStrike == null)
-            Utils.QL_REQUIRE(callDigitalPayoff == null,()=> "Call Cash rate non allowed if call strike is null");
+            Utils.QL_REQUIRE(callDigitalPayoff == null, () => "Call Cash rate non allowed if call strike is null");
 
          if (callStrike != null)
          {
-            Utils.QL_REQUIRE(callStrike >= 0.0,()=> "negative call strike not allowed");
+            Utils.QL_REQUIRE(callStrike >= 0.0, () => "negative call strike not allowed");
 
             hasCallStrike_ = true;
             callStrike_ = callStrike.GetValueOrDefault();
-            Utils.QL_REQUIRE(callStrike_ >= replication.gap() / 2.0,()=> "call strike < eps/2");
+            Utils.QL_REQUIRE(callStrike_ >= replication.gap() / 2.0, () => "call strike < eps/2");
 
             switch (callPosition)
             {
                case Position.Type.Long:
                   callCsi_ = 1.0;
                   break;
+
                case Position.Type.Short:
                   callCsi_ = -1.0;
                   break;
+
                default:
                   Utils.QL_FAIL("unsupported position type");
                   break;
@@ -138,7 +139,7 @@ namespace QLNet
          }
          if (putStrike != null)
          {
-            Utils.QL_REQUIRE(putStrike >= 0.0,()=> "negative put strike not allowed");
+            Utils.QL_REQUIRE(putStrike >= 0.0, () => "negative put strike not allowed");
             hasPutStrike_ = true;
             putStrike_ = putStrike.GetValueOrDefault();
             switch (putPosition)
@@ -146,9 +147,11 @@ namespace QLNet
                case Position.Type.Long:
                   putCsi_ = 1.0;
                   break;
+
                case Position.Type.Short:
                   putCsi_ = -1.0;
                   break;
+
                default:
                   Utils.QL_FAIL("unsupported position type");
                   break;
@@ -165,6 +168,7 @@ namespace QLNet
             case Replication.Type.Central:
                // do nothing
                break;
+
             case Replication.Type.Sub:
                if (hasCallStrike_)
                {
@@ -174,10 +178,12 @@ namespace QLNet
                         callLeftEps_ = 0.0;
                         callRightEps_ = replication.gap();
                         break;
+
                      case Position.Type.Short:
                         callLeftEps_ = replication.gap();
                         callRightEps_ = 0.0;
                         break;
+
                      default:
                         Utils.QL_FAIL("unsupported position type");
                         break;
@@ -191,16 +197,19 @@ namespace QLNet
                         putLeftEps_ = replication.gap();
                         putRightEps_ = 0.0;
                         break;
+
                      case Position.Type.Short:
                         putLeftEps_ = 0.0;
                         putRightEps_ = replication.gap();
                         break;
+
                      default:
                         Utils.QL_FAIL("unsupported position type");
                         break;
                   }
                }
                break;
+
             case Replication.Type.Super:
                if (hasCallStrike_)
                {
@@ -210,10 +219,12 @@ namespace QLNet
                         callLeftEps_ = replication.gap();
                         callRightEps_ = 0.0;
                         break;
+
                      case Position.Type.Short:
                         callLeftEps_ = 0.0;
                         callRightEps_ = replication.gap();
                         break;
+
                      default:
                         Utils.QL_FAIL("unsupported position type");
                         break;
@@ -227,16 +238,19 @@ namespace QLNet
                         putLeftEps_ = 0.0;
                         putRightEps_ = replication.gap();
                         break;
+
                      case Position.Type.Short:
                         putLeftEps_ = replication.gap();
                         putRightEps_ = 0.0;
                         break;
+
                      default:
                         Utils.QL_FAIL("unsupported position type");
                         break;
                   }
                }
                break;
+
             default:
                Utils.QL_FAIL("unsupported position type");
                break;
@@ -248,8 +262,7 @@ namespace QLNet
       // Coupon interface
       public override double rate()
       {
-
-         Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
+         Utils.QL_REQUIRE(underlying_.pricer() != null, () => "pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
          Date today = Settings.evaluationDate();
@@ -273,10 +286,12 @@ namespace QLNet
          }
          return underlyingRate + callCsi_ * callOptionRate() + putCsi_ * putOptionRate();
       }
+
       public override double convexityAdjustment()
       {
          return underlying_.convexityAdjustment();
       }
+
       // Digital inspectors
       public double? callStrike()
       {
@@ -285,6 +300,7 @@ namespace QLNet
 
          return null;
       }
+
       public double? putStrike()
       {
          if (hasPut())
@@ -292,6 +308,7 @@ namespace QLNet
 
          return null;
       }
+
       public double? callDigitalPayoff()
       {
          if (isCallCashOrNothing_)
@@ -299,6 +316,7 @@ namespace QLNet
 
          return null;
       }
+
       public double? putDigitalPayoff()
       {
          if (isPutCashOrNothing_)
@@ -306,36 +324,42 @@ namespace QLNet
 
          return null;
       }
+
       public bool hasPut()
       {
          return hasPutStrike_;
       }
+
       public bool hasCall()
       {
          return hasCallStrike_;
       }
+
       public bool hasCollar()
       {
          return (hasCallStrike_ && hasPutStrike_);
       }
+
       public bool isLongPut()
       {
          return putCsi_.IsEqual(1.0);
       }
+
       public bool isLongCall()
       {
          return callCsi_.IsEqual(1.0);
       }
+
       public FloatingRateCoupon underlying()
       {
          return underlying_;
       }
+
       //        ! Returns the call option rate
       //           (multiplied by: nominal*accrualperiod*discount is the NPV of the option)
-      //        
+      //
       public double callOptionRate()
       {
-
          double callOptionRate = 0.0;
          if (hasCallStrike_)
          {
@@ -355,12 +379,12 @@ namespace QLNet
          }
          return callOptionRate;
       }
+
       //        ! Returns the put option rate
       //           (multiplied by: nominal*accrualperiod*discount is the NPV of the option)
-      //        
+      //
       public double putOptionRate()
       {
-
          double putOptionRate = 0.0;
          if (hasPutStrike_)
          {
@@ -400,35 +424,52 @@ namespace QLNet
 
       // Data members
       protected FloatingRateCoupon underlying_;
+
       //! strike rate for the the call option
       protected double callStrike_;
+
       //! strike rate for the the put option
       protected double putStrike_;
+
       //! multiplicative factor of call payoff
       protected double callCsi_;
+
       //! multiplicative factor of put payoff
       protected double putCsi_;
+
       //! inclusion flag og the call payoff if the call option ends at-the-money
       protected bool isCallATMIncluded_;
+
       //! inclusion flag og the put payoff if the put option ends at-the-money
       protected bool isPutATMIncluded_;
+
       //! digital call option type: if true, cash-or-nothing, if false asset-or-nothing
       protected bool isCallCashOrNothing_;
+
       //! digital put option type: if true, cash-or-nothing, if false asset-or-nothing
       protected bool isPutCashOrNothing_;
+
       //! digital call option payoff rate, if any
       protected double callDigitalPayoff_;
+
       //! digital put option payoff rate, if any
       protected double putDigitalPayoff_;
+
       //! the left and right gaps applied in payoff replication for call
       protected double callLeftEps_;
+
       protected double callRightEps_;
+
       //! the left and right gaps applied in payoff replication for puf
       protected double putLeftEps_;
+
       protected double putRightEps_;
+
       //!
       protected bool hasPutStrike_;
+
       protected bool hasCallStrike_;
+
       //! Type of replication
       protected Replication.Type replicationType_;
 
@@ -451,6 +492,7 @@ namespace QLNet
          }
          return payoff;
       }
+
       private double putPayoff()
       {
          // to use only if index has fixed
@@ -474,7 +516,5 @@ namespace QLNet
          }
          return payoff;
       }
-
    }
-
 }

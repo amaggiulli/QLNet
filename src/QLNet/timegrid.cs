@@ -1,23 +1,22 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -139,7 +138,7 @@ namespace QLNet
             if (periodEnd.IsNotEqual(0.0))
             {
                // the nearest integer
-               int nSteps = (int) ((periodEnd - periodBegin) / dtMax + 0.5);
+               int nSteps = (int)((periodEnd - periodBegin) / dtMax + 0.5);
                // at least one time step!
                nSteps = (nSteps != 0 ? nSteps : 1);
                dt = (periodEnd - periodBegin) / nSteps;
@@ -162,12 +161,12 @@ namespace QLNet
          {
             return i;
          }
-         Utils.QL_REQUIRE(t >= times_.First(),()=> 
-            "using inadequate time grid: all nodes are later than the required time t = "
-            + t + " (earliest node is t1 = " + times_.First() + ")");
-         Utils.QL_REQUIRE(t <= times_.Last(),()=> 
-            "using inadequate time grid: all nodes are earlier than the required time t = " 
-            + t + " (latest node is t1 = " + times_.Last() + ")");
+         Utils.QL_REQUIRE(t >= times_.First(), () =>
+             "using inadequate time grid: all nodes are later than the required time t = "
+             + t + " (earliest node is t1 = " + times_.First() + ")");
+         Utils.QL_REQUIRE(t <= times_.Last(), () =>
+             "using inadequate time grid: all nodes are earlier than the required time t = "
+             + t + " (latest node is t1 = " + times_.Last() + ")");
          int j, k;
          if (t > times_[i])
          {
@@ -190,9 +189,9 @@ namespace QLNet
          int result = times_.BinarySearch(t);
          if (result < 0)
             //Lower_bound is a version of binary search: it attempts to find the element value in an ordered range [first, last)
-            // [1]. Specifically, it returns the first position where value could be inserted without violating the ordering. 
+            // [1]. Specifically, it returns the first position where value could be inserted without violating the ordering.
             // [2] The first version of lower_bound uses operator< for comparison, and the second uses the function object comp.
-            // lower_bound returns the furthermost iterator i in [first, last) such that, for every iterator j in [first, i), *j < value. 
+            // lower_bound returns the furthermost iterator i in [first, last) such that, for every iterator j in [first, i), *j < value.
             result = ~result;
 
          if (result == 0)

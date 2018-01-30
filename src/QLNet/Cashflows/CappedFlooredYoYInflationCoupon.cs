@@ -1,22 +1,21 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
 
 namespace QLNet
 {
@@ -55,13 +54,14 @@ namespace QLNet
        R = (a L + b) + |a| \min(\frac{C - b}{|a|} - \xi L, 0)
        \f]
     */
+
    public class CappedFlooredYoYInflationCoupon : YoYInflationCoupon
    {
       // we may watch an underlying coupon ...
       public CappedFlooredYoYInflationCoupon(YoYInflationCoupon underlying,
                                              double? cap = null,
                                              double? floor = null)
-         :base(underlying.date(),
+         : base(underlying.date(),
                underlying.nominal(),
                underlying.accrualStartDate(),
                underlying.accrualEndDate(),
@@ -73,7 +73,7 @@ namespace QLNet
                underlying.spread(),
                underlying.referencePeriodStart,
                underlying.referencePeriodEnd)
-   
+
       {
          underlying_ = underlying;
          isFloored_ = false;
@@ -82,7 +82,6 @@ namespace QLNet
          underlying.registerWith(update);
       }
 
-      
       // ... or not
       public CappedFlooredYoYInflationCoupon(Date paymentDate,
                                              double nominal,
@@ -99,11 +98,11 @@ namespace QLNet
                                              Date refPeriodStart = null,
                                              Date refPeriodEnd = null)
         : base(paymentDate, nominal, startDate, endDate,
-               fixingDays, index, observationLag,  dayCounter,
+               fixingDays, index, observationLag, dayCounter,
                gearing, spread, refPeriodStart, refPeriodEnd)
       {
          isFloored_ = false;
-         isCapped_ = false; 
+         isCapped_ = false;
          setCommon(cap, floor);
       }
 
@@ -113,66 +112,70 @@ namespace QLNet
       {
          double swapletRate = underlying_ != null ? underlying_.rate() : base.rate();
 
-         if(isFloored_ || isCapped_) 
+         if (isFloored_ || isCapped_)
          {
-            if (underlying_ != null) 
+            if (underlying_ != null)
             {
-               Utils.QL_REQUIRE( underlying_.pricer() != null, () => "pricer not set" );
-            } 
-            else 
-            {
-               Utils.QL_REQUIRE( pricer_ != null, () => "pricer not set" );
+               Utils.QL_REQUIRE(underlying_.pricer() != null, () => "pricer not set");
             }
-        }
+            else
+            {
+               Utils.QL_REQUIRE(pricer_ != null, () => "pricer not set");
+            }
+         }
 
-        double floorletRate = 0.0;
-        if(isFloored_) 
-        {
-           floorletRate =
-            underlying_ != null?
-            underlying_.pricer().floorletRate(effectiveFloor()) :
-            pricer().floorletRate(effectiveFloor())
-            ;
-        }
-        double capletRate = 0.0;
-        if(isCapped_) {
+         double floorletRate = 0.0;
+         if (isFloored_)
+         {
+            floorletRate =
+             underlying_ != null ?
+             underlying_.pricer().floorletRate(effectiveFloor()) :
+             pricer().floorletRate(effectiveFloor())
+             ;
+         }
+         double capletRate = 0.0;
+         if (isCapped_)
+         {
             capletRate =
             underlying_ != null ?
             underlying_.pricer().capletRate(effectiveCap()) :
             pricer().capletRate(effectiveCap())
             ;
-        }
+         }
 
-        return swapletRate + floorletRate - capletRate;
-
+         return swapletRate + floorletRate - capletRate;
       }
+
       //! cap
-      public double? cap() 
+      public double? cap()
       {
-         if ( (gearing_ > 0) && isCapped_)
+         if ((gearing_ > 0) && isCapped_)
             return cap_;
 
-         if ( (gearing_ < 0) && isFloored_)
+         if ((gearing_ < 0) && isFloored_)
             return floor_;
 
          return null;
       }
+
       //! floor
-      public double? floor() 
+      public double? floor()
       {
-         if ( (gearing_ > 0) && isFloored_)
+         if ((gearing_ > 0) && isFloored_)
             return floor_;
 
-         if ( (gearing_ < 0) && isCapped_)
+         if ((gearing_ < 0) && isCapped_)
             return cap_;
 
          return null;
       }
+
       //! effective cap of fixing
-      public double effectiveCap() 
+      public double effectiveCap()
       {
-         return  (cap_ - spread())/gearing();
+         return (cap_ - spread()) / gearing();
       }
+
       //! effective floor of fixing
       public double effectiveFloor()
       {
@@ -180,13 +183,13 @@ namespace QLNet
       }
 
       public bool isCapped() { return isCapped_; }
+
       public bool isFloored() { return isFloored_; }
 
-    
-      public void setPricer(YoYInflationCouponPricer pricer) 
+      public void setPricer(YoYInflationCouponPricer pricer)
       {
          base.setPricer(pricer);
-         if (underlying_ != null ) underlying_.setPricer(pricer);
+         if (underlying_ != null) underlying_.setPricer(pricer);
       }
 
       protected virtual void setCommon(double? cap, double? floor)
@@ -223,14 +226,14 @@ namespace QLNet
 
          if (isCapped_ && isFloored_)
          {
-            Utils.QL_REQUIRE(cap >= floor,()=> "cap level (" + cap + ") less than floor level (" + floor + ")");
+            Utils.QL_REQUIRE(cap >= floor, () => "cap level (" + cap + ") less than floor level (" + floor + ")");
          }
-
       }
 
       // data, we only use underlying_ if it was constructed that way,
       // generally we use the shared_ptr conversion to boolean to test
       protected YoYInflationCoupon underlying_;
+
       protected bool isFloored_, isCapped_;
       protected double cap_, floor_;
    }

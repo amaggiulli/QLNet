@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -35,6 +35,7 @@ namespace QLNet
        \bug fair prices are not calculated correctly when using
             indexed coupons.
    */
+
    public class AssetSwap : Swap
    {
       public AssetSwap(bool payBondCoupon,
@@ -70,11 +71,11 @@ namespace QLNet
          Date finalDate = schedule.calendar().adjust(schedule.endDate(), paymentAdjustment);
          Date adjBondMaturityDate = schedule.calendar().adjust(bond_.maturityDate(), paymentAdjustment);
 
-         Utils.QL_REQUIRE( finalDate == adjBondMaturityDate, () =>
-                          "adjusted schedule end date (" +
-                          finalDate +
-                          ") must be equal to adjusted bond maturity date (" +
-                          adjBondMaturityDate + ")");
+         Utils.QL_REQUIRE(finalDate == adjBondMaturityDate, () =>
+                         "adjusted schedule end date (" +
+                         finalDate +
+                         ") must be equal to adjusted bond maturity date (" +
+                         adjBondMaturityDate + ")");
 
          // bondCleanPrice must be the (forward) clean price
          // at the floating schedule start date
@@ -114,7 +115,7 @@ namespace QLNet
                legs_[0].Add(c);
          }
 
-         Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg to start with" );
+         Utils.QL_REQUIRE(!legs_[0].empty(), () => "empty bond leg to start with");
 
          // special flows
          if (parSwap_)
@@ -136,7 +137,7 @@ namespace QLNet
             legs_[1].Add(finalCashFlow);
          }
 
-         Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg" );
+         Utils.QL_REQUIRE(!legs_[0].empty(), () => "empty bond leg");
 
          foreach (CashFlow c in legs_[0])
             c.registerWith(update);
@@ -183,14 +184,14 @@ namespace QLNet
          if (dealMaturity == null)
             dealMaturity = bond_.maturityDate();
 
-         Utils.QL_REQUIRE( dealMaturity <= tempSch.dates().Last(), () =>
-                     "deal maturity " + dealMaturity +
-                     " cannot be later than (adjusted) bond maturity " +
-                     tempSch.dates().Last());
-         Utils.QL_REQUIRE( dealMaturity > tempSch.dates()[0], () =>
-                     "deal maturity " + dealMaturity +
-                     " must be later than swap start date " +
-                     tempSch.dates()[0]);
+         Utils.QL_REQUIRE(dealMaturity <= tempSch.dates().Last(), () =>
+                    "deal maturity " + dealMaturity +
+                    " cannot be later than (adjusted) bond maturity " +
+                    tempSch.dates().Last());
+         Utils.QL_REQUIRE(dealMaturity > tempSch.dates()[0], () =>
+                    "deal maturity " + dealMaturity +
+                    " must be later than swap start date " +
+                    tempSch.dates()[0]);
 
          // the following might become an input parameter
          BusinessDayConvention paymentAdjustment = BusinessDayConvention.Following;
@@ -228,7 +229,6 @@ namespace QLNet
          foreach (CashFlow c in legs_[1])
             c.registerWith(update);
 
-
          List<CashFlow> bondLeg = bond_.cashflows();
          // skip bond redemption
          int i;
@@ -255,7 +255,7 @@ namespace QLNet
          CashFlow nonParRepaymentFlow = new SimpleCashFlow(nonParRepayment_, finalDate);
          legs_[0].Add(nonParRepaymentFlow);
 
-         Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg to start with" );
+         Utils.QL_REQUIRE(!legs_[0].empty(), () => "empty bond leg to start with");
 
          // special flows
          if (parSwap_)
@@ -277,7 +277,7 @@ namespace QLNet
             legs_[1].Add(finalCashFlow);
          }
 
-         Utils.QL_REQUIRE( !legs_[0].empty(), () => "empty bond leg" );
+         Utils.QL_REQUIRE(!legs_[0].empty(), () => "empty bond leg");
 
          foreach (CashFlow c in legs_[0])
             c.registerWith(update);
@@ -292,7 +292,6 @@ namespace QLNet
             payer_[0] = +1.0;
             payer_[1] = -1.0;
          }
-
       }
 
       // results
@@ -319,14 +318,14 @@ namespace QLNet
       public double floatingLegBPS()
       {
          calculate();
-         Utils.QL_REQUIRE( legBPS_.Count > 1 && legBPS_[1] != null, () => "floating-leg BPS not available" );
+         Utils.QL_REQUIRE(legBPS_.Count > 1 && legBPS_[1] != null, () => "floating-leg BPS not available");
          return legBPS_[1].GetValueOrDefault();
       }
 
       public double floatingLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE( legNPV_.Count > 1 && legNPV_[1] != null, () => "floating-leg NPV not available" );
+         Utils.QL_REQUIRE(legNPV_.Count > 1 && legNPV_[1] != null, () => "floating-leg NPV not available");
          return legNPV_[1].GetValueOrDefault();
       }
 
@@ -339,7 +338,7 @@ namespace QLNet
          }
          else
          {
-            Utils.QL_REQUIRE( startDiscounts_[1] != null, () => "fair clean price not available for seasoned deal" );
+            Utils.QL_REQUIRE(startDiscounts_[1] != null, () => "fair clean price not available for seasoned deal");
             double notional = bond_.notional(upfrontDate_);
             if (parSwap_)
             {
@@ -367,7 +366,7 @@ namespace QLNet
          }
          else
          {
-            Utils.QL_REQUIRE( endDiscounts_[1] != null, () => "fair non par repayment not available for expired leg" );
+            Utils.QL_REQUIRE(endDiscounts_[1] != null, () => "fair non par repayment not available for expired leg");
             double notional = bond_.notional(upfrontDate_);
             fairNonParRepayment_ = nonParRepayment_ - payer_[0] *
                 NPV_ * npvDateDiscount_ / endDiscounts_[1] / (notional / 100.0);
@@ -377,13 +376,21 @@ namespace QLNet
 
       // inspectors
       public bool parSwap() { return parSwap_; }
+
       public double spread() { return spread_; }
+
       public double cleanPrice() { return bondCleanPrice_; }
+
       public double nonParRepayment() { return nonParRepayment_; }
+
       public Bond bond() { return bond_; }
+
       public bool payBondCoupon() { return payer_[0].IsEqual(-1.0); }
+
       public List<CashFlow> bondLeg() { return legs_[0]; }
+
       public List<CashFlow> floatingLeg() { return legs_[1]; }
+
       // other
       public override void setupArguments(IPricingEngineArguments args)
       {
@@ -399,7 +406,7 @@ namespace QLNet
          arguments.fixedResetDates = arguments.fixedPayDates = new List<Date>(fixedCoupons.Count);
          arguments.fixedCoupons = new List<double>(fixedCoupons.Count);
 
-         for (int i=0; i<fixedCoupons.Count; ++i) 
+         for (int i = 0; i < fixedCoupons.Count; ++i)
          {
             FixedRateCoupon coupon = fixedCoupons[i] as FixedRateCoupon;
 
@@ -415,7 +422,7 @@ namespace QLNet
          arguments.floatingAccrualTimes = new List<double>(floatingCoupons.Count);
          arguments.floatingSpreads = new List<double>(floatingCoupons.Count);
 
-         for (int i=0; i<floatingCoupons.Count; ++i) 
+         for (int i = 0; i < floatingCoupons.Count; ++i)
          {
             FloatingRateCoupon coupon = floatingCoupons[i] as FloatingRateCoupon;
 
@@ -425,24 +432,24 @@ namespace QLNet
             arguments.floatingAccrualTimes[i] = coupon.accrualPeriod();
             arguments.floatingSpreads[i] = coupon.spread();
          }
-
       }
+
       public override void fetchResults(IPricingEngineResults r)
       {
          base.fetchResults(r);
          AssetSwap.Results results = r as AssetSwap.Results;
-         if (results != null) 
+         if (results != null)
          {
             fairSpread_ = results.fairSpread;
-            fairCleanPrice_= results.fairCleanPrice;
-            fairNonParRepayment_= results.fairNonParRepayment;
-         } 
-         else 
+            fairCleanPrice_ = results.fairCleanPrice;
+            fairNonParRepayment_ = results.fairNonParRepayment;
+         }
+         else
          {
             fairSpread_ = null;
             fairCleanPrice_ = null;
             fairNonParRepayment_ = null;
-        }
+         }
       }
 
       protected override void setupExpired()
@@ -452,13 +459,16 @@ namespace QLNet
          fairCleanPrice_ = null;
          fairNonParRepayment_ = null;
       }
+
       private Bond bond_;
       private double bondCleanPrice_, nonParRepayment_;
       private double spread_;
       private bool parSwap_;
       private Date upfrontDate_;
+
       // results
       private double? fairSpread_;
+
       private double? fairCleanPrice_, fairNonParRepayment_;
 
       //! %Arguments for asset swap calculation
@@ -472,26 +482,27 @@ namespace QLNet
          public List<Date> floatingFixingDates { get; set; }
          public List<Date> floatingPayDates { get; set; }
          public List<double> floatingSpreads { get; set; }
+
          public override void validate()
          {
-            Utils.QL_REQUIRE( fixedResetDates.Count == fixedPayDates.Count, () =>
-                        "number of fixed start dates different from " +
-                        "number of fixed payment dates");
-            Utils.QL_REQUIRE( fixedPayDates.Count == fixedCoupons.Count, () =>
-                        "number of fixed payment dates different from " +
-                        "number of fixed coupon amounts");
-            Utils.QL_REQUIRE( floatingResetDates.Count == floatingPayDates.Count, () =>
-                        "number of floating start dates different from " +
-                        "number of floating payment dates");
-            Utils.QL_REQUIRE( floatingFixingDates.Count == floatingPayDates.Count, () =>
-                        "number of floating fixing dates different from " +
-                        "number of floating payment dates");
-            Utils.QL_REQUIRE( floatingAccrualTimes.Count == floatingPayDates.Count, () =>
-                        "number of floating accrual times different from " +
-                        "number of floating payment dates");
-            Utils.QL_REQUIRE( floatingSpreads.Count == floatingPayDates.Count, () =>
-                        "number of floating spreads different from " +
-                        "number of floating payment dates");
+            Utils.QL_REQUIRE(fixedResetDates.Count == fixedPayDates.Count, () =>
+                       "number of fixed start dates different from " +
+                       "number of fixed payment dates");
+            Utils.QL_REQUIRE(fixedPayDates.Count == fixedCoupons.Count, () =>
+                       "number of fixed payment dates different from " +
+                       "number of fixed coupon amounts");
+            Utils.QL_REQUIRE(floatingResetDates.Count == floatingPayDates.Count, () =>
+                       "number of floating start dates different from " +
+                       "number of floating payment dates");
+            Utils.QL_REQUIRE(floatingFixingDates.Count == floatingPayDates.Count, () =>
+                       "number of floating fixing dates different from " +
+                       "number of floating payment dates");
+            Utils.QL_REQUIRE(floatingAccrualTimes.Count == floatingPayDates.Count, () =>
+                       "number of floating accrual times different from " +
+                       "number of floating payment dates");
+            Utils.QL_REQUIRE(floatingSpreads.Count == floatingPayDates.Count, () =>
+                       "number of floating spreads different from " +
+                       "number of floating payment dates");
          }
       }
 
@@ -501,6 +512,7 @@ namespace QLNet
          public double? fairSpread { get; set; }
          public double? fairCleanPrice { get; set; }
          public double? fairNonParRepayment { get; set; }
+
          public override void reset()
          {
             base.reset();
@@ -509,7 +521,5 @@ namespace QLNet
             fairNonParRepayment = null;
          }
       }
-
-
    }
 }

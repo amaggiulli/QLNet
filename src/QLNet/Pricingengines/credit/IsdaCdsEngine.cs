@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,18 +21,20 @@ namespace QLNet
 {
    public class IsdaCdsEngine : CreditDefaultSwap.Engine
    {
-
       public enum NumericalFix
       {
          None,  // as in [1] footnote 26 (i.e. 10^{-50} is added to
+
                 // denominators $f_i+h_i$$)
          Taylor // as in [2] i.e. for $f_i+h_i < 10^{-4}$ a Taylor expansion
+
                 // is used to avoid zero denominators
       }
 
       public enum AccrualBias
       {
          HalfDayBias, // as in [1] formula (50), second (error) term is
+
                       // included
          NoBias       // as in [1], but second term in formula (50) is not included
       }
@@ -78,6 +80,7 @@ namespace QLNet
       }
 
       public Handle<YieldTermStructure> isdaRateCurve() { return discountCurve_; }
+
       public Handle<DefaultProbabilityTermStructure> isdaCreditCurve() { return probability_; }
 
       public override void calculate()
@@ -96,7 +99,7 @@ namespace QLNet
 
          Actual365Fixed dc = new Actual365Fixed();
          Actual360 dc1 = new Actual360();
-         Actual360 dc2 = new Actual360(true); 
+         Actual360 dc2 = new Actual360(true);
 
          Date evalDate = Settings.evaluationDate();
 
@@ -127,15 +130,15 @@ namespace QLNet
          // collect nodes from both curves and sort them
          List<Date> yDates = new List<Date>(), cDates = new List<Date>();
 
-         var castY1 =  discountCurve_.link as PiecewiseYieldCurve<Discount, LogLinear>;
+         var castY1 = discountCurve_.link as PiecewiseYieldCurve<Discount, LogLinear>;
          var castY2 = discountCurve_.link as InterpolatedForwardCurve<BackwardFlat>;
          var castY3 = discountCurve_.link as InterpolatedForwardCurve<ForwardFlat>;
-         var castY4 =  discountCurve_.link as FlatForward;
-         if ( castY1 != null)
+         var castY4 = discountCurve_.link as FlatForward;
+         if (castY1 != null)
          {
             if (castY1.dates() != null) yDates = castY1.dates();
          }
-         else if ( castY2 != null)
+         else if (castY2 != null)
          {
             yDates = castY2.dates();
          }
@@ -143,7 +146,7 @@ namespace QLNet
          {
             yDates = castY3.dates();
          }
-         else if ( castY4 != null)
+         else if (castY4 != null)
          {
          }
          else
@@ -151,19 +154,19 @@ namespace QLNet
             Utils.QL_FAIL("Yield curve must be flat forward interpolated");
          }
 
-         var castC1 =  probability_.link as InterpolatedSurvivalProbabilityCurve<LogLinear>;
+         var castC1 = probability_.link as InterpolatedSurvivalProbabilityCurve<LogLinear>;
          var castC2 = probability_.link as InterpolatedHazardRateCurve<BackwardFlat>;
          var castC3 = probability_.link as FlatHazardRate;
 
-         if ( castC1 != null)
+         if (castC1 != null)
          {
             cDates = castC1.dates();
          }
-         else if ( castC2 != null )
+         else if (castC2 != null)
          {
             cDates = castC2.dates();
          }
-         else if ( castC3 != null )
+         else if (castC3 != null)
          {
          }
          else
@@ -270,7 +273,7 @@ namespace QLNet
                {
                   foreach (Date node in nodes)
                   {
-                     if ( node > start && node < end)
+                     if (node > start && node < end)
                      {
                         localNodes.Add(node);
                      }
@@ -373,7 +376,7 @@ namespace QLNet
 
          results_.errorEstimate = null;
 
-         if (results_.couponLegNPV.IsNotEqual( 0.0))
+         if (results_.couponLegNPV.IsNotEqual(0.0))
          {
             results_.fairSpread =
                 -results_.defaultLegNPV * arguments_.spread /
@@ -409,7 +412,7 @@ namespace QLNet
             results_.couponLegBPS = null;
          }
 
-         if (arguments_.upfront != null  && arguments_.upfront.IsNotEqual(0.0))
+         if (arguments_.upfront != null && arguments_.upfront.IsNotEqual(0.0))
          {
             results_.upfrontBPS =
                 results_.upfrontNPV * basisPoint / (arguments_.upfront);
@@ -429,4 +432,3 @@ namespace QLNet
       private ForwardsInCouponPeriod forwardsInCouponPeriod_;
    };
 }
-

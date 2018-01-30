@@ -30,7 +30,7 @@ namespace QLNet
 
       public Handle() : this(default(T)) { }
 
-      public Handle(T h ) : this(h, true) { }
+      public Handle(T h) : this(h, true) { }
 
       public Handle(T h, bool registerAsObserver)
       {
@@ -47,7 +47,7 @@ namespace QLNet
       {
          get
          {
-            Utils.QL_REQUIRE(!empty(),()=> "empty Handle cannot be dereferenced");
+            Utils.QL_REQUIRE(!empty(), () => "empty Handle cannot be dereferenced");
             return link_.currentLink();
          }
       }
@@ -105,7 +105,7 @@ namespace QLNet
                h_ = h;
                isObserver_ = registerAsObserver;
 
-               if ( isObserver_)
+               if (isObserver_)
                {
                   h_.registerWith(update);
                }
@@ -149,7 +149,7 @@ namespace QLNet
    {
       public RelinkableHandle() : base(default(T), true) { }
 
-      public RelinkableHandle(T h ) : base(h, true) { }
+      public RelinkableHandle(T h) : base(h, true) { }
 
       public RelinkableHandle(T h, bool registerAsObserver) : base(h, registerAsObserver) { }
 

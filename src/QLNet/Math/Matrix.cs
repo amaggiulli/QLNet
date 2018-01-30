@@ -1,26 +1,26 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QLNet
 {
@@ -29,6 +29,7 @@ namespace QLNet
        algebra. As such, it is <b>not</b> meant to be used as a
        container.
    */
+
    public class Matrix
    {
       #region properties
@@ -94,7 +95,7 @@ namespace QLNet
          return new Vector(data_.Skip(start).Take(length).ToList());
       }
 
-      #endregion
+      #endregion properties
 
       #region Constructors
 
@@ -121,16 +122,17 @@ namespace QLNet
 
       public Matrix(Matrix from)
       {
-         data_ = !from.empty() ? (double[]) from.data_.Clone() : null;
+         data_ = !from.empty() ? (double[])from.data_.Clone() : null;
          rows_ = from.rows_;
          columns_ = from.columns_;
       }
 
-      #endregion
+      #endregion Constructors
 
       #region Algebraic operators
 
       /*! \pre all matrices involved in an algebraic expression must have the same size. */
+
       public static Matrix operator +(Matrix m1, Matrix m2)
       {
          return operMatrix(ref m1, ref m2, (x, y) => x + y);
@@ -168,8 +170,8 @@ namespace QLNet
 
          Matrix result = new Matrix(m1.rows_, m1.columns_);
          for (int i = 0; i < m1.rows_; i++)
-         for (int j = 0; j < m1.columns_; j++)
-            result[i, j] = func(m1[i, j], m2[i, j]);
+            for (int j = 0; j < m1.columns_; j++)
+               result[i, j] = func(m1[i, j], m2[i, j]);
          return result;
       }
 
@@ -177,8 +179,8 @@ namespace QLNet
       {
          Matrix result = new Matrix(m1.rows_, m1.columns_);
          for (int i = 0; i < m1.rows_; i++)
-         for (int j = 0; j < m1.columns_; j++)
-            result[i, j] = func(m1[i, j], value);
+            for (int j = 0; j < m1.columns_; j++)
+               result[i, j] = func(m1[i, j], value);
          return result;
       }
 
@@ -194,6 +196,7 @@ namespace QLNet
       }
 
       /*! \relates Matrix */
+
       public static Vector operator *(Matrix m, Vector v)
       {
          Utils.QL_REQUIRE(v.Count == m.columns(), () => "vectors and matrices with different sizes ("
@@ -206,6 +209,7 @@ namespace QLNet
       }
 
       /*! \relates Matrix */
+
       public static Matrix operator *(Matrix m1, Matrix m2)
       {
          Utils.QL_REQUIRE(m1.columns() == m2.rows(), () => "matrices with different sizes (" +
@@ -213,19 +217,19 @@ namespace QLNet
                                                            m2.rows() + "x" + m2.columns() + ") cannot be multiplied");
          Matrix result = new Matrix(m1.rows(), m2.columns());
          for (int i = 0; i < result.rows(); i++)
-         for (int j = 0; j < result.columns(); j++)
-            result[i, j] = m1.row(i) * m2.column(j);
+            for (int j = 0; j < result.columns(); j++)
+               result[i, j] = m1.row(i) * m2.column(j);
          return result;
       }
 
-      #endregion
+      #endregion Algebraic operators
 
       public static Matrix transpose(Matrix m)
       {
          Matrix result = new Matrix(m.columns(), m.rows());
          for (int i = 0; i < m.rows(); i++)
-         for (int j = 0; j < m.columns(); j++)
-            result[j, i] = m[i, j];
+            for (int j = 0; j < m.columns(); j++)
+               result[j, i] = m[i, j];
          return result;
       }
 
@@ -235,8 +239,8 @@ namespace QLNet
          int n = m.rows();
          Matrix result = new Matrix(n, n);
          for (int i = 0; i < n; ++i)
-         for (int j = 0; j < n; ++j)
-            result[i, j] = m[i, j];
+            for (int j = 0; j < n; ++j)
+               result[i, j] = m[i, j];
 
          Matrix lum;
          int[] perm;
@@ -251,7 +255,7 @@ namespace QLNet
                else
                   b[j] = 0.0;
 
-            double[] x = Helper(lum, b); // 
+            double[] x = Helper(lum, b); //
             for (int j = 0; j < n; ++j)
                result[j, i] = x[j];
          }
@@ -272,16 +276,15 @@ namespace QLNet
          // Make a copy of Matrix m into result Matrix lu
          lum = new Matrix(n, n);
          for (int i = 0; i < n; ++i)
-         for (int j = 0; j < n; ++j)
-            lum[i, j] = m[i, j];
-
+            for (int j = 0; j < n; ++j)
+               lum[i, j] = m[i, j];
 
          // make perm[]
          perm = new int[n];
          for (int i = 0; i < n; ++i)
             perm[i] = i;
 
-         for (int j = 0; j < n - 1; ++j) // process by column. note n-1 
+         for (int j = 0; j < n - 1; ++j) // process by column. note n-1
          {
             double max = Math.Abs(lum[j, j]);
             int piv = j;
@@ -360,8 +363,8 @@ namespace QLNet
          Matrix result = new Matrix(size1, size2);
 
          for (int i = 0; i < v1begin.Count; i++)
-         for (int j = 0; j < v2begin.Count; j++)
-            result[i, j] = v1begin[i] * v2begin[j];
+            for (int j = 0; j < v2begin.Count; j++)
+               result[i, j] = v1begin[i] * v2begin[j];
          return result;
       }
 

@@ -17,6 +17,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,23 +26,29 @@ namespace QLNet
    public class InterpolatedForwardCurve<Interpolator> : ForwardRateStructure, InterpolatedCurve
        where Interpolator : class, IInterpolationFactory, new()
    {
-
       #region InterpolatedCurve
+
       public List<double> times_ { get; set; }
+
       public List<double> times() { return this.times_; }
 
       public List<Date> dates_ { get; set; }
+
       public List<Date> dates() { return dates_; }
+
       public Date maxDate_ { get; set; }
+
       public override Date maxDate()
       {
-         if ( maxDate_ != null )
+         if (maxDate_ != null)
             return maxDate_;
          return dates_.Last();
       }
 
       public List<double> data_ { get; set; }
+
       public List<double> forwards() { return this.data_; }
+
       public List<double> data() { return forwards(); }
 
       public Interpolation interpolation_ { get; set; }
@@ -68,7 +75,8 @@ namespace QLNet
          copy.setupInterpolation();
          return copy;
       }
-      #endregion
+
+      #endregion InterpolatedCurve
 
       public InterpolatedForwardCurve(DayCounter dayCounter,
                                       List<Handle<Quote>> jumps = null,
@@ -185,7 +193,6 @@ namespace QLNet
          interpolation_.update();
       }
 
-
       protected override double forwardImpl(double t)
       {
          if (t <= this.times_.Last())
@@ -194,6 +201,7 @@ namespace QLNet
          // flat fwd extrapolation
          return this.data_.Last();
       }
+
       protected override double zeroYieldImpl(double t)
       {
          if (t.IsEqual(0.0))

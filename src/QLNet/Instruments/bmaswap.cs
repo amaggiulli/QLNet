@@ -1,128 +1,144 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
+
 using System.Collections.Generic;
 
-namespace QLNet {
-    //! swap paying Libor against BMA coupons
-    public class BMASwap : Swap {
-        public enum Type { Receiver = -1, Payer = 1 };
-        
-        private Type type_;
-        public Type type() { return type_; }
+namespace QLNet
+{
+   //! swap paying Libor against BMA coupons
+   public class BMASwap : Swap
+   {
+      public enum Type { Receiver = -1, Payer = 1 };
 
-        private double nominal_;
-        public double nominal() { return nominal_; }
+      private Type type_;
 
-        private double liborFraction_;
-        public double liborFraction() { return liborFraction_; }
+      public Type type() { return type_; }
 
-        private double liborSpread_;
-        public double liborSpread() { return liborSpread_; }
+      private double nominal_;
 
+      public double nominal() { return nominal_; }
 
-        public BMASwap(Type type, double nominal,
-                // Libor leg
-                Schedule liborSchedule, double liborFraction, double liborSpread, IborIndex liborIndex, DayCounter liborDayCount,
-                // BMA leg
-                Schedule bmaSchedule, BMAIndex bmaIndex, DayCounter bmaDayCount)
-            : base(2) {
-            type_ = type;
-            nominal_ = nominal;
-            liborFraction_ = liborFraction;
-            liborSpread_ = liborSpread;
+      private double liborFraction_;
 
-            BusinessDayConvention convention = liborSchedule.businessDayConvention();
+      public double liborFraction() { return liborFraction_; }
 
-            legs_[0] = new IborLeg(liborSchedule, liborIndex)
-                        .withPaymentDayCounter(liborDayCount)
-                        .withFixingDays(liborIndex.fixingDays())
-                        .withGearings(liborFraction)
-                        .withSpreads(liborSpread)
-                        .withNotionals(nominal)
-                        .withPaymentAdjustment(convention);
+      private double liborSpread_;
 
-            legs_[1] = new AverageBMALeg(bmaSchedule, bmaIndex)
-                        .withPaymentDayCounter(bmaDayCount)
-                        .withNotionals(nominal)
-                        .withPaymentAdjustment(bmaSchedule.businessDayConvention());
+      public double liborSpread() { return liborSpread_; }
 
-            for (int j=0; j<2; ++j) {
-                for (int i=0; i<legs_[j].Count; i++)
-                    legs_[j][i].registerWith(update);
-            }
+      public BMASwap(Type type, double nominal,
+              // Libor leg
+              Schedule liborSchedule, double liborFraction, double liborSpread, IborIndex liborIndex, DayCounter liborDayCount,
+              // BMA leg
+              Schedule bmaSchedule, BMAIndex bmaIndex, DayCounter bmaDayCount)
+          : base(2)
+      {
+         type_ = type;
+         nominal_ = nominal;
+         liborFraction_ = liborFraction;
+         liborSpread_ = liborSpread;
 
-            switch (type_) {
-                case Type.Payer:
-                    payer_[0] = +1.0;
-                    payer_[1] = -1.0;
-                    break;
-                case Type.Receiver:
-                    payer_[0] = -1.0;
-                    payer_[1] = +1.0;
-                    break;
-                default:
-                    Utils.QL_FAIL("Unknown BMA-swap type");
-                    break;
-            }
-        }
+         BusinessDayConvention convention = liborSchedule.businessDayConvention();
 
+         legs_[0] = new IborLeg(liborSchedule, liborIndex)
+                     .withPaymentDayCounter(liborDayCount)
+                     .withFixingDays(liborIndex.fixingDays())
+                     .withGearings(liborFraction)
+                     .withSpreads(liborSpread)
+                     .withNotionals(nominal)
+                     .withPaymentAdjustment(convention);
 
-        public List<CashFlow> liborLeg() { return legs_[0]; }
-        public List<CashFlow> bmaLeg() { return legs_[1]; }
+         legs_[1] = new AverageBMALeg(bmaSchedule, bmaIndex)
+                     .withPaymentDayCounter(bmaDayCount)
+                     .withNotionals(nominal)
+                     .withPaymentAdjustment(bmaSchedule.businessDayConvention());
 
-        public double liborLegBPS() {
-            calculate();
-            Utils.QL_REQUIRE(legBPS_[0] != null,()=> "result not available");
-            return legBPS_[0].GetValueOrDefault();
-        }
+         for (int j = 0; j < 2; ++j)
+         {
+            for (int i = 0; i < legs_[j].Count; i++)
+               legs_[j][i].registerWith(update);
+         }
 
-        public double liborLegNPV() {
-            calculate();
-            Utils.QL_REQUIRE(legNPV_[0] != null,()=> "result not available");
-            return legNPV_[0].GetValueOrDefault();
-        }
+         switch (type_)
+         {
+            case Type.Payer:
+               payer_[0] = +1.0;
+               payer_[1] = -1.0;
+               break;
 
-        public double fairLiborFraction() {
-            const double basisPoint = 1.0e-4;
+            case Type.Receiver:
+               payer_[0] = -1.0;
+               payer_[1] = +1.0;
+               break;
 
-            double spreadNPV = (liborSpread_/basisPoint)*liborLegBPS();
-            double pureLiborNPV = liborLegNPV() - spreadNPV;
-            Utils.QL_REQUIRE(pureLiborNPV.IsNotEqual(0.0),()=> "result not available (null libor NPV)");
-            return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
-        }
+            default:
+               Utils.QL_FAIL("Unknown BMA-swap type");
+               break;
+         }
+      }
 
-        public double fairLiborSpread() {
-            const double basisPoint = 1.0e-4;
-            return liborSpread_ - NPV()/(liborLegBPS()/basisPoint);
-        }
+      public List<CashFlow> liborLeg() { return legs_[0]; }
 
-        public double bmaLegBPS() {
-            calculate();
-            Utils.QL_REQUIRE(legBPS_[1] != null,()=> "result not available");
-            return legBPS_[1].GetValueOrDefault();
-        }
-        
-        public double bmaLegNPV() {
-            calculate();
-            Utils.QL_REQUIRE(legNPV_[1] != null,()=> "result not available");
-            return legNPV_[1].GetValueOrDefault();
-        }
-    }
+      public List<CashFlow> bmaLeg() { return legs_[1]; }
+
+      public double liborLegBPS()
+      {
+         calculate();
+         Utils.QL_REQUIRE(legBPS_[0] != null, () => "result not available");
+         return legBPS_[0].GetValueOrDefault();
+      }
+
+      public double liborLegNPV()
+      {
+         calculate();
+         Utils.QL_REQUIRE(legNPV_[0] != null, () => "result not available");
+         return legNPV_[0].GetValueOrDefault();
+      }
+
+      public double fairLiborFraction()
+      {
+         const double basisPoint = 1.0e-4;
+
+         double spreadNPV = (liborSpread_ / basisPoint) * liborLegBPS();
+         double pureLiborNPV = liborLegNPV() - spreadNPV;
+         Utils.QL_REQUIRE(pureLiborNPV.IsNotEqual(0.0), () => "result not available (null libor NPV)");
+         return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
+      }
+
+      public double fairLiborSpread()
+      {
+         const double basisPoint = 1.0e-4;
+         return liborSpread_ - NPV() / (liborLegBPS() / basisPoint);
+      }
+
+      public double bmaLegBPS()
+      {
+         calculate();
+         Utils.QL_REQUIRE(legBPS_[1] != null, () => "result not available");
+         return legBPS_[1].GetValueOrDefault();
+      }
+
+      public double bmaLegNPV()
+      {
+         calculate();
+         Utils.QL_REQUIRE(legNPV_[1] != null, () => "result not available");
+         return legNPV_[1].GetValueOrDefault();
+      }
+   }
 }

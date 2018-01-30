@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -41,11 +41,12 @@ namespace QLNet
       private double float1Spread_, float2Spread_;
       private DayCounter float1DayCount_, float2DayCount_;
 
-      IPricingEngine engine_;
-
+      private IPricingEngine engine_;
 
       public MakeBasisSwap(Period swapTenor, IborIndex index1, IborIndex index2) :
-         this(swapTenor, index1, index2, new Period(0, TimeUnit.Days)) { }
+         this(swapTenor, index1, index2, new Period(0, TimeUnit.Days))
+      { }
+
       public MakeBasisSwap(Period swapTenor, IborIndex index1, IborIndex index2, Period forwardStart)
       {
          swapTenor_ = swapTenor;
@@ -72,21 +73,25 @@ namespace QLNet
       }
 
       public MakeBasisSwap receiveFixed() { return receiveFixed(true); }
+
       public MakeBasisSwap receiveFixed(bool flag)
       {
          type_ = flag ? BasisSwap.Type.Receiver : BasisSwap.Type.Payer;
          return this;
       }
+
       public MakeBasisSwap withType(BasisSwap.Type type)
       {
          type_ = type;
          return this;
       }
+
       public MakeBasisSwap withNominal(double n)
       {
          nominal_ = n;
          return this;
       }
+
       public MakeBasisSwap withEffectiveDate(Date effectiveDate)
       {
          effectiveDate_ = effectiveDate;
@@ -107,7 +112,7 @@ namespace QLNet
       }
 
       public MakeBasisSwap withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure1,
-                                                        Handle<YieldTermStructure> discountingTermStructure2)  
+                                                        Handle<YieldTermStructure> discountingTermStructure2)
       {
          engine_ = new DiscountingBasisSwapEngine(discountingTermStructure1, discountingTermStructure2);
          return this;
@@ -118,48 +123,56 @@ namespace QLNet
          float1Tenor_ = t;
          return this;
       }
+
       public MakeBasisSwap withFloating1Calendar(Calendar cal)
       {
          float1Calendar_ = cal;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegConvention(BusinessDayConvention bdc)
       {
          float1Convention_ = bdc;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegTerminationDateConvention(BusinessDayConvention bdc)
       {
          float1TerminationDateConvention_ = bdc;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegRule(DateGeneration.Rule r)
       {
          float1Rule_ = r;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegEndOfMonth() { return withFloating1LegEndOfMonth(true); }
+
       public MakeBasisSwap withFloating1LegEndOfMonth(bool flag)
       {
          float1EndOfMonth_ = flag;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegFirstDate(Date d)
       {
          float1FirstDate_ = d;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegNextToLastDate(Date d)
       {
          float1NextToLastDate_ = d;
          return this;
       }
+
       public MakeBasisSwap withFloating1LegDayCount(DayCounter dc)
       {
          float1DayCount_ = dc;
          return this;
       }
-
 
       // *****
 
@@ -168,56 +181,66 @@ namespace QLNet
          float2Tenor_ = t;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegCalendar(Calendar cal)
       {
          float2Calendar_ = cal;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegConvention(BusinessDayConvention bdc)
       {
          float2Convention_ = bdc;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegTerminationDateConvention(BusinessDayConvention bdc)
       {
          float2TerminationDateConvention_ = bdc;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegRule(DateGeneration.Rule r)
       {
          float2Rule_ = r;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegEndOfMonth() { return withFloating2LegEndOfMonth(true); }
+
       public MakeBasisSwap withFloating2LegEndOfMonth(bool flag)
       {
          float2EndOfMonth_ = flag;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegFirstDate(Date d)
       {
          float2FirstDate_ = d;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegNextToLastDate(Date d)
       {
          float2NextToLastDate_ = d;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegDayCount(DayCounter dc)
       {
          float2DayCount_ = dc;
          return this;
       }
+
       public MakeBasisSwap withFloating2LegSpread(double sp)
       {
          float2Spread_ = sp;
          return this;
       }
 
-
       // swap creator
       public static implicit operator BasisSwap(MakeBasisSwap o) { return o.value(); }
+
       public BasisSwap value()
       {
          Date startDate;
@@ -238,7 +261,6 @@ namespace QLNet
          else
             endDate = startDate + swapTenor_;
 
-
          Schedule float1Schedule = new Schedule(startDate, endDate,
                                 float1Tenor_, float1Calendar_,
                                 float1Convention_, float1TerminationDateConvention_,
@@ -251,9 +273,8 @@ namespace QLNet
                                 float2Rule_, float2EndOfMonth_,
                                 float2FirstDate_, float2NextToLastDate_);
 
-
-         BasisSwap swap = new BasisSwap(type_, nominal_, 
-                                        float1Schedule, iborIndex1_, float1Spread_,float1DayCount_,
+         BasisSwap swap = new BasisSwap(type_, nominal_,
+                                        float1Schedule, iborIndex1_, float1Spread_, float1DayCount_,
                                         float2Schedule, iborIndex2_, float2Spread_, float2DayCount_);
          swap.setPricingEngine(engine_);
          return swap;

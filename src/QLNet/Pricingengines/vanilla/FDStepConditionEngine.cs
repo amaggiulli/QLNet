@@ -1,109 +1,116 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 
-namespace QLNet {
-    //! Finite-differences pricing engine for American-style vanilla options
-    public class FDStepConditionEngine : FDConditionEngineTemplate {
-        protected TridiagonalOperator controlOperator_;
-        protected List<BoundaryCondition<IOperator>> controlBCs_;
-        protected SampledCurve controlPrices_;
+namespace QLNet
+{
+   //! Finite-differences pricing engine for American-style vanilla options
+   public class FDStepConditionEngine : FDConditionEngineTemplate
+   {
+      protected TridiagonalOperator controlOperator_;
+      protected List<BoundaryCondition<IOperator>> controlBCs_;
+      protected SampledCurve controlPrices_;
 
-        // required for generics
-        public FDStepConditionEngine() { }
-        // required for template inheritance
-        public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
-                                                int timeSteps, int gridPoints, bool timeDependent) {
-            return new FDStepConditionEngine(process, timeSteps, gridPoints, timeDependent);
-        }
+      // required for generics
+      public FDStepConditionEngine() { }
 
-        //public FDStepConditionEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
-        //     bool timeDependent = false)
-        public FDStepConditionEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-            : base(process, timeSteps, gridPoints, timeDependent) {
-            controlBCs_ = new InitializedList<BoundaryCondition<IOperator>>(2);
-            controlPrices_ = new SampledCurve(gridPoints);
-        }
+      // required for template inheritance
+      public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
+                                              int timeSteps, int gridPoints, bool timeDependent)
+      {
+         return new FDStepConditionEngine(process, timeSteps, gridPoints, timeDependent);
+      }
 
-        public override void calculate(IPricingEngineResults r) {
-            OneAssetOption.Results results = r as OneAssetOption.Results;
-            setGridLimits();
-            initializeInitialCondition();
-            initializeOperator();
-            initializeBoundaryConditions();
-            initializeStepCondition();
+      //public FDStepConditionEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
+      //     bool timeDependent = false)
+      public FDStepConditionEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+          : base(process, timeSteps, gridPoints, timeDependent)
+      {
+         controlBCs_ = new InitializedList<BoundaryCondition<IOperator>>(2);
+         controlPrices_ = new SampledCurve(gridPoints);
+      }
 
-            List<IOperator> operatorSet = new List<IOperator>();
-            List<Vector> arraySet = new List<Vector>();
-            BoundaryConditionSet bcSet = new BoundaryConditionSet();
-            StepConditionSet<Vector> conditionSet = new StepConditionSet<Vector>();
+      public override void calculate(IPricingEngineResults r)
+      {
+         OneAssetOption.Results results = r as OneAssetOption.Results;
+         setGridLimits();
+         initializeInitialCondition();
+         initializeOperator();
+         initializeBoundaryConditions();
+         initializeStepCondition();
 
-            prices_ = (SampledCurve)intrinsicValues_.Clone();
+         List<IOperator> operatorSet = new List<IOperator>();
+         List<Vector> arraySet = new List<Vector>();
+         BoundaryConditionSet bcSet = new BoundaryConditionSet();
+         StepConditionSet<Vector> conditionSet = new StepConditionSet<Vector>();
 
-            controlPrices_ = (SampledCurve)intrinsicValues_.Clone();
-            controlOperator_ = (TridiagonalOperator)finiteDifferenceOperator_.Clone();
-            controlBCs_[0] = BCs_[0];
-            controlBCs_[1] = BCs_[1];
+         prices_ = (SampledCurve)intrinsicValues_.Clone();
 
-            operatorSet.Add(finiteDifferenceOperator_);
-            operatorSet.Add(controlOperator_);
+         controlPrices_ = (SampledCurve)intrinsicValues_.Clone();
+         controlOperator_ = (TridiagonalOperator)finiteDifferenceOperator_.Clone();
+         controlBCs_[0] = BCs_[0];
+         controlBCs_[1] = BCs_[1];
 
-            arraySet.Add(prices_.values());
-            arraySet.Add(controlPrices_.values());
+         operatorSet.Add(finiteDifferenceOperator_);
+         operatorSet.Add(controlOperator_);
 
-            bcSet.Add(BCs_);
-            bcSet.Add(controlBCs_);
+         arraySet.Add(prices_.values());
+         arraySet.Add(controlPrices_.values());
 
-            conditionSet.Add(stepCondition_);
-            conditionSet.Add(new NullCondition<Vector>());
+         bcSet.Add(BCs_);
+         bcSet.Add(controlBCs_);
 
-            var model = new FiniteDifferenceModel<ParallelEvolver<CrankNicolson<TridiagonalOperator>>>(operatorSet, bcSet);
+         conditionSet.Add(stepCondition_);
+         conditionSet.Add(new NullCondition<Vector>());
 
-            object temp = arraySet;
-            model.rollback(ref temp, getResidualTime(), 0.0, timeSteps_, conditionSet);
-            arraySet = (List<Vector>)temp;
+         var model = new FiniteDifferenceModel<ParallelEvolver<CrankNicolson<TridiagonalOperator>>>(operatorSet, bcSet);
 
-            prices_.setValues(arraySet[0]);
-            controlPrices_.setValues(arraySet[1]);
+         object temp = arraySet;
+         model.rollback(ref temp, getResidualTime(), 0.0, timeSteps_, conditionSet);
+         arraySet = (List<Vector>)temp;
 
-            StrikedTypePayoff striked_payoff = payoff_ as StrikedTypePayoff;
-            Utils.QL_REQUIRE(striked_payoff != null,()=> "non-striked payoff given");
+         prices_.setValues(arraySet[0]);
+         controlPrices_.setValues(arraySet[1]);
 
-            double variance = process_.blackVolatility().link.blackVariance(exerciseDate_, striked_payoff.strike());
-            double dividendDiscount = process_.dividendYield().link.discount(exerciseDate_);
-            double riskFreeDiscount = process_.riskFreeRate().link.discount(exerciseDate_);
-            double spot = process_.stateVariable().link.value();
-            double forwardPrice = spot * dividendDiscount / riskFreeDiscount;
+         StrikedTypePayoff striked_payoff = payoff_ as StrikedTypePayoff;
+         Utils.QL_REQUIRE(striked_payoff != null, () => "non-striked payoff given");
 
-            BlackCalculator black = new BlackCalculator(striked_payoff, forwardPrice, Math.Sqrt(variance), riskFreeDiscount);
+         double variance = process_.blackVolatility().link.blackVariance(exerciseDate_, striked_payoff.strike());
+         double dividendDiscount = process_.dividendYield().link.discount(exerciseDate_);
+         double riskFreeDiscount = process_.riskFreeRate().link.discount(exerciseDate_);
+         double spot = process_.stateVariable().link.value();
+         double forwardPrice = spot * dividendDiscount / riskFreeDiscount;
 
-            results.value = prices_.valueAtCenter()
-                - controlPrices_.valueAtCenter()
-                + black.value();
-            results.delta = prices_.firstDerivativeAtCenter()
-                - controlPrices_.firstDerivativeAtCenter()
-                + black.delta(spot);
-            results.gamma = prices_.secondDerivativeAtCenter()
-                - controlPrices_.secondDerivativeAtCenter()
-                + black.gamma(spot);
-            results.additionalResults["priceCurve"] = prices_;
-        } 
-    }
+         BlackCalculator black = new BlackCalculator(striked_payoff, forwardPrice, Math.Sqrt(variance), riskFreeDiscount);
+
+         results.value = prices_.valueAtCenter()
+             - controlPrices_.valueAtCenter()
+             + black.value();
+         results.delta = prices_.firstDerivativeAtCenter()
+             - controlPrices_.firstDerivativeAtCenter()
+             + black.delta(spot);
+         results.gamma = prices_.secondDerivativeAtCenter()
+             - controlPrices_.secondDerivativeAtCenter()
+             + black.gamma(spot);
+         results.additionalResults["priceCurve"] = prices_;
+      }
+   }
 }

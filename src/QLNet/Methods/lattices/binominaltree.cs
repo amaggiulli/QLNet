@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -31,8 +31,11 @@ namespace QLNet
    public interface ITree
    {
       int size(int i);
+
       int descendant(int x, int index, int branch);
+
       double underlying(int i, int index);
+
       double probability(int x, int y, int z);
    }
 
@@ -51,7 +54,7 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       protected BinomialTree()
-      {}
+      { }
 
       protected BinomialTree(StochasticProcess1D process, double end, int steps)
          : base(steps + 1)
@@ -72,6 +75,7 @@ namespace QLNet
       }
 
       public abstract double underlying(int i, int index);
+
       public abstract double probability(int x, int y, int z);
    }
 
@@ -84,11 +88,11 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public EqualProbabilitiesBinomialTree()
-      {}
+      { }
 
       public EqualProbabilitiesBinomialTree(StochasticProcess1D process, double end, int steps)
          : base(process, end, steps)
-      {}
+      { }
 
       public override double underlying(int i, int index)
       {
@@ -112,11 +116,11 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public EqualJumpsBinomialTree()
-      {}
+      { }
 
       public EqualJumpsBinomialTree(StochasticProcess1D process, double end, int steps)
          : base(process, end, steps)
-      {}
+      { }
 
       public override double underlying(int i, int index)
       {
@@ -138,7 +142,7 @@ namespace QLNet
    {
       // parameterless constructor is requried for generics
       public JarrowRudd()
-      {}
+      { }
 
       public JarrowRudd(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, steps)
@@ -160,7 +164,7 @@ namespace QLNet
    {
       // parameterless constructor is requried for generics
       public CoxRossRubinstein()
-      {}
+      { }
 
       public CoxRossRubinstein(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, steps)
@@ -187,7 +191,7 @@ namespace QLNet
    {
       // parameterless constructor is requried for generics
       public AdditiveEQPBinomialTree()
-      {}
+      { }
 
       public AdditiveEQPBinomialTree(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, steps)
@@ -209,7 +213,7 @@ namespace QLNet
    {
       // parameterless constructor is requried for generics
       public Trigeorgis()
-      {}
+      { }
 
       public Trigeorgis(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, steps)
@@ -237,7 +241,7 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public Tian()
-      {}
+      { }
 
       public Tian(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, steps)
@@ -280,7 +284,7 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public LeisenReimer()
-      {}
+      { }
 
       public LeisenReimer(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, (steps % 2 != 0 ? steps : steps + 1))
@@ -319,7 +323,7 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public Joshi4()
-      {}
+      { }
 
       public Joshi4(StochasticProcess1D process, double end, int steps, double strike)
          : base(process, end, (steps % 2 != 0 ? steps : steps + 1))

@@ -5,17 +5,18 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 
@@ -27,18 +28,20 @@ namespace QLNet
       public enum Type { Receiver = -1, Payer = 1 };
 
       private Type type_;
-      private double spread1_,spread2_;
+      private double spread1_, spread2_;
       private double nominal_;
 
       private Schedule floating1Schedule_;
+
       public Schedule floating1Schedule() { return floating1Schedule_; }
 
       private DayCounter floating1DayCount_;
 
       private Schedule floating2Schedule_;
+
       public Schedule floating2Schedule() { return floating2Schedule_; }
 
-      private IborIndex iborIndex1_,iborIndex2_;
+      private IborIndex iborIndex1_, iborIndex2_;
       private DayCounter floating2DayCount_;
       private BusinessDayConvention paymentConvention_;
       private int longNo_, shortNo_;
@@ -49,7 +52,9 @@ namespace QLNet
                          Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
                          Schedule float2Schedule, IborIndex iborIndex2, double spread2, DayCounter float2DayCount)
          : this(type, nominal, float1Schedule, iborIndex1, spread1, float1DayCount,
-                               float2Schedule, iborIndex2, spread2, float2DayCount, null) { }
+                               float2Schedule, iborIndex2, spread2, float2DayCount, null)
+      { }
+
       public BasisSwap(Type type, double nominal,
                          Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
                          Schedule float2Schedule, IborIndex iborIndex2, double spread2, DayCounter float2DayCount,
@@ -89,7 +94,6 @@ namespace QLNet
          foreach (var cf in floating2Leg)
             cf.registerWith(update);
 
-
          legs_[0] = floating1Leg;
          legs_[1] = floating2Leg;
          if (type_ == Type.Payer)
@@ -112,7 +116,6 @@ namespace QLNet
          }
       }
 
-
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
@@ -123,7 +126,6 @@ namespace QLNet
 
          arguments.type = type_;
          arguments.nominal = nominal_;
-
 
          List<CashFlow> floating1Coupons = floating1Leg();
 
@@ -182,7 +184,6 @@ namespace QLNet
          }
       }
 
-
       ///////////////////////////////////////////////////
       // results
       public double floating1LegBPS()
@@ -191,6 +192,7 @@ namespace QLNet
          if (legBPS_[0] == null) throw new ArgumentException("result not available");
          return legBPS_[0].GetValueOrDefault();
       }
+
       public double floating1LegNPV()
       {
          calculate();
@@ -204,6 +206,7 @@ namespace QLNet
          if (legBPS_[1] == null) throw new ArgumentException("result not available");
          return legBPS_[1].GetValueOrDefault();
       }
+
       public double floating2LegNPV()
       {
          calculate();
@@ -211,27 +214,31 @@ namespace QLNet
          return legNPV_[1].GetValueOrDefault();
       }
 
-      public IborIndex iborIndex1() {return iborIndex1_;}
+      public IborIndex iborIndex1() { return iborIndex1_; }
+
       public IborIndex iborIndex2() { return iborIndex2_; }
+
       public double spread1 { get { return spread1_; } }
       public double spread2 { get { return spread2_; } }
       public double nominal { get { return nominal_; } }
       public Type swapType { get { return type_; } }
+
       public List<CashFlow> floating1Leg() { return legs_[0]; }
+
       public List<CashFlow> floating2Leg() { return legs_[1]; }
 
       public double fairLongSpread()
       {
-          calculate();
-          if (fairLongSpread_ == null) throw new ArgumentException("result not available");
-          return fairLongSpread_.GetValueOrDefault();
+         calculate();
+         if (fairLongSpread_ == null) throw new ArgumentException("result not available");
+         return fairLongSpread_.GetValueOrDefault();
       }
-      
+
       public double fairShortSpread()
       {
-          calculate();
-          if (fairShortSpread_ == null) throw new ArgumentException("result not available");
-          return fairShortSpread_.GetValueOrDefault();
+         calculate();
+         if (fairShortSpread_ == null) throw new ArgumentException("result not available");
+         return fairShortSpread_.GetValueOrDefault();
       }
 
       protected override void setupExpired()
@@ -258,7 +265,7 @@ namespace QLNet
          }
 
          // Long fair spread should be fine - no averaging or compounding
-         if (fairLongSpread_ == null && legBPS_[longNo_] != null) 
+         if (fairLongSpread_ == null && legBPS_[longNo_] != null)
          {
             fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / basisPoint);
          }
@@ -273,6 +280,7 @@ namespace QLNet
 
       //results
       private double? fairLongSpread_;
+
       private double? fairShortSpread_;
 
       //! %Arguments for simple swap calculation
@@ -299,7 +307,6 @@ namespace QLNet
          public List<Date> floating2FixingDates { get; set; }
          public List<double> floating2Spreads { get; set; }
 
-
          public Arguments()
          {
             type = Type.Receiver;
@@ -320,7 +327,6 @@ namespace QLNet
             if (floating2PayDates.Count != floating2Coupons.Count)
                throw new ArgumentException("number of floating2 payment dates different from number of floating2 coupon amounts");
 
-
             if (floating1FixingDates.Count != floating1PayDates.Count)
                throw new ArgumentException("number of floating1 fixing dates different from number of floating1 payment dates");
             if (floating1AccrualTimes.Count != floating1PayDates.Count)
@@ -334,7 +340,6 @@ namespace QLNet
                throw new ArgumentException("number of floating2 accrual Times different from number of floating2 payment dates");
             if (floating2Spreads.Count != floating2PayDates.Count)
                throw new ArgumentException("number of floating2 spreads different from number of floating2 payment dates");
-
          }
       }
 
@@ -343,6 +348,7 @@ namespace QLNet
       {
          public double? fairLongSpread { get; set; }
          public double? fairShortSpread { get; set; }
+
          public override void reset()
          {
             base.reset();
