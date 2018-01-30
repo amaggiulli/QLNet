@@ -32,12 +32,12 @@ namespace QLNet {
         public FDAmericanEngine() { }
 
         public FDAmericanEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100  , int gridPoints = 100 , 
-			  bool timeDependent = false) 
+           bool timeDependent = false) 
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
-		  public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
-		  {
-			  return new FDAmericanEngine(process, timeSteps, gridPoints);
+        public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
+        {
+           return new FDAmericanEngine(process, timeSteps, gridPoints);
         }
     }
 }

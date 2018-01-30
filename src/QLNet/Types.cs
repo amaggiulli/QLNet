@@ -143,10 +143,10 @@ namespace QLNet
      public enum Type { Simple, Macaulay, Modified }
    }
 
-	public struct Position
+   public struct Position
    {
-	   public enum Type { Long, Short }
-	}
+      public enum Type { Long, Short }
+   }
 
    public enum InterestRateType { Fixed, Floating }
    //! Interest rate coumpounding rule
@@ -157,8 +157,8 @@ namespace QLNet
       Continuous = 2,      //!< \f$ e^{rt} \f$
       SimpleThenCompounded //!< Simple up to the first period then Compounded
    }
-	
-	public enum Month
+   
+   public enum Month
    {
       January   = 1,
       February  = 2,
@@ -185,7 +185,7 @@ namespace QLNet
       Dec = 12
    }
 
-	public enum BusinessDayConvention
+   public enum BusinessDayConvention
    {
       // ISDA
       Following,          /*!< Choose the first business day after

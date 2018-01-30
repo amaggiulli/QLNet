@@ -20,28 +20,28 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-	public interface Curve<T> : ITraits<T>, InterpolatedCurve
-	{
-		#region ITraits
+   public interface Curve<T> : ITraits<T>, InterpolatedCurve
+   {
+      #region ITraits
 
-		//protected 
-		ITraits<T> traits_ { get; }
-		#endregion
+      //protected 
+      ITraits<T> traits_ { get; }
+      #endregion
 
-		#region InterpolatedCurve
-		#endregion
+      #region InterpolatedCurve
+      #endregion
 
-		List<BootstrapHelper<T>> instruments_ { get; }
-		void setTermStructure( BootstrapHelper<T> helper );
+      List<BootstrapHelper<T>> instruments_ { get; }
+      void setTermStructure( BootstrapHelper<T> helper );
 
-		double accuracy_ { get; }
-		bool moving_ { get; }
+      double accuracy_ { get; }
+      bool moving_ { get; }
 
-		void registerWith( BootstrapHelper<T> helper );
-		Date initialDate();
+      void registerWith( BootstrapHelper<T> helper );
+      Date initialDate();
 
-		double timeFromReference( Date d );
-		double initialValue();
-	}
+      double timeFromReference( Date d );
+      double initialValue();
+   }
 
 }

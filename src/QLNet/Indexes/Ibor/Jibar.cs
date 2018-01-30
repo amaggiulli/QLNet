@@ -19,21 +19,21 @@
 
 namespace QLNet {
 
-	//! %JIBAR rate
+   //! %JIBAR rate
 //    ! Johannesburg Interbank Agreed Rate
 //
 //        \todo check settlement days and day-count convention.
 //    
-	public class Jibar : IborIndex
-	{
+   public class Jibar : IborIndex
+   {
         public Jibar(Period tenor)
             : base("Jibar", tenor, 0, new ZARCurrency(), new SouthAfrica(), BusinessDayConvention.ModifiedFollowing, false, new Actual365Fixed(), new Handle<YieldTermStructure>())
         {
         }
         public Jibar(Period tenor, Handle<YieldTermStructure> h)
             : base("Jibar", tenor, 0, new ZARCurrency(), new SouthAfrica(), BusinessDayConvention.ModifiedFollowing, false, new Actual365Fixed(), h)
-		{
-		}
-	}
+      {
+      }
+   }
 
 }

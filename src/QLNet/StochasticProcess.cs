@@ -132,7 +132,7 @@ namespace QLNet {
         public virtual void update() {
             notifyObservers();
         }
-	    #endregion   
+       #endregion   
     }
 
     //! 1-dimensional stochastic process

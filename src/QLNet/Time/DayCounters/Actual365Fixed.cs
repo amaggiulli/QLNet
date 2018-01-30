@@ -20,7 +20,7 @@
 namespace QLNet
 {
     /* "Actual/365 (Fixed)" day count convention, also know as "Act/365 (Fixed)", "A/365 (Fixed)", or "A/365F".
-	   According to ISDA, "Actual/365" (without "Fixed") is an alias for "Actual/Actual (ISDA)" (see ActualActual.)
+      According to ISDA, "Actual/365" (without "Fixed") is an alias for "Actual/Actual (ISDA)" (see ActualActual.)
      * If Actual/365 is not explicitly specified as fixed in an instrument specification, 
      * you might want to double-check its meaning.   */
     public class Actual365Fixed : DayCounter

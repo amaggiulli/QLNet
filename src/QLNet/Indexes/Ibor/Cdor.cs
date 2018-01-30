@@ -19,7 +19,7 @@
 
 namespace QLNet {
 
-	//! %CDOR rate
+   //! %CDOR rate
 //    ! Canadian Dollar Offered Rate fixed by IDA.
 //
 //        \warning This is the rate fixed in Canada by IDA. Use CADLibor
@@ -28,8 +28,8 @@ namespace QLNet {
 //        \todo check settlement days, end-of-month adjustment,
 //              and day-count convention.
 //    
-	public class Cdor : IborIndex
-	{
+   public class Cdor : IborIndex
+   {
         public Cdor(Period tenor)
             : base("CDOR", tenor, 2, new CADCurrency(), new Canada(), BusinessDayConvention.ModifiedFollowing, false, new Actual360(), new Handle<YieldTermStructure>())
         {
@@ -37,7 +37,7 @@ namespace QLNet {
 
         public Cdor(Period tenor, Handle<YieldTermStructure> h)
             : base("CDOR", tenor, 2, new CADCurrency(), new Canada(), BusinessDayConvention.ModifiedFollowing, false, new Actual360(), h)
-		{
-		}
-	}
+      {
+      }
+   }
 }

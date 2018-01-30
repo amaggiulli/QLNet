@@ -83,29 +83,29 @@ namespace QLNet
       public override void setTermStructure(ZeroInflationTermStructure z)
       {
 
-			base.setTermStructure( z );
+         base.setTermStructure( z );
 
-			// set up a new ZCIIS
-			// but this one does NOT own its inflation term structure
-			bool own = false;
-			double K = quote().link.value();
+         // set up a new ZCIIS
+         // but this one does NOT own its inflation term structure
+         bool own = false;
+         double K = quote().link.value();
 
-			// The effect of the new inflation term structure is
-			// felt via the effect on the inflation index
-			Handle<ZeroInflationTermStructure> zits = new Handle<ZeroInflationTermStructure>( z, own );
+         // The effect of the new inflation term structure is
+         // felt via the effect on the inflation index
+         Handle<ZeroInflationTermStructure> zits = new Handle<ZeroInflationTermStructure>( z, own );
 
-			ZeroInflationIndex new_zii = zii_.clone( zits );
+         ZeroInflationIndex new_zii = zii_.clone( zits );
 
-			double nominal = 1000000.0;   // has to be something but doesn't matter what
-			Date start = z.nominalTermStructure().link.referenceDate();
-			zciis_ = new ZeroCouponInflationSwap(
-										ZeroCouponInflationSwap.Type.Payer,
-										nominal, start, maturity_,
-										calendar_, paymentConvention_, dayCounter_, K, // fixed side & fixed rate
-										new_zii, swapObsLag_ );
-			// Because very simple instrument only takes
-			// standard discounting swap engine.
-			zciis_.setPricingEngine( new DiscountingSwapEngine( z.nominalTermStructure() ) );
+         double nominal = 1000000.0;   // has to be something but doesn't matter what
+         Date start = z.nominalTermStructure().link.referenceDate();
+         zciis_ = new ZeroCouponInflationSwap(
+                              ZeroCouponInflationSwap.Type.Payer,
+                              nominal, start, maturity_,
+                              calendar_, paymentConvention_, dayCounter_, K, // fixed side & fixed rate
+                              new_zii, swapObsLag_ );
+         // Because very simple instrument only takes
+         // standard discounting swap engine.
+         zciis_.setPricingEngine( new DiscountingSwapEngine( z.nominalTermStructure() ) );
       }
 
       public override double impliedQuote() 
@@ -127,33 +127,33 @@ namespace QLNet
       protected ZeroCouponInflationSwap zciis_;
    }
 
-	//! Year-on-year inflation-swap bootstrap helper
+   //! Year-on-year inflation-swap bootstrap helper
    public class YearOnYearInflationSwapHelper  : BootstrapHelper<YoYInflationTermStructure> 
-	{
-		public YearOnYearInflationSwapHelper( Handle<Quote> quote,
-												  Period swapObsLag,
-												  Date maturity,
-												  Calendar calendar,
-												  BusinessDayConvention paymentConvention,
-												  DayCounter dayCounter,
-												  YoYInflationIndex yii )
-			: base( quote )
-		{
-			swapObsLag_= swapObsLag; 
-			maturity_ = maturity;
-			calendar_= calendar;
-			paymentConvention_= paymentConvention;
-			dayCounter_= dayCounter;
-			yii_ = yii;
+   {
+      public YearOnYearInflationSwapHelper( Handle<Quote> quote,
+                                      Period swapObsLag,
+                                      Date maturity,
+                                      Calendar calendar,
+                                      BusinessDayConvention paymentConvention,
+                                      DayCounter dayCounter,
+                                      YoYInflationIndex yii )
+         : base( quote )
+      {
+         swapObsLag_= swapObsLag; 
+         maturity_ = maturity;
+         calendar_= calendar;
+         paymentConvention_= paymentConvention;
+         dayCounter_= dayCounter;
+         yii_ = yii;
 
-			if (yii_.interpolated()) 
-			{
+         if (yii_.interpolated()) 
+         {
             // if interpolated then simple
             earliestDate_ = maturity_ - swapObsLag_;
             latestDate_ = maturity_ - swapObsLag_;
-			} 
-			else 
-			{
+         } 
+         else 
+         {
             // but if NOT interpolated then the value is valid
             // for every day in an inflation period so you actually
             // get an extended validity, however for curve building
@@ -169,7 +169,7 @@ namespace QLNet
         // is compatible with the availability lag of the index AND
         // it's interpolation (assuming the start day is spot)
         if (yii_.interpolated()) 
-		  {
+        {
             Period pShift = new Period(yii_.frequency());
             Utils.QL_REQUIRE( swapObsLag_ - pShift > yii_.availabilityLag(), () =>
                        "inconsistency between swap observation of index "
@@ -181,11 +181,11 @@ namespace QLNet
         }
 
         Settings.registerWith(update);
-		}
+      }
 
-		public override void setTermStructure( YoYInflationTermStructure y )
-		{
-			base.setTermStructure(y);
+      public override void setTermStructure( YoYInflationTermStructure y )
+      {
+         base.setTermStructure(y);
 
         // set up a new YYIIS
         // but this one does NOT own its inflation term structure
@@ -212,40 +212,40 @@ namespace QLNet
 
         double nominal = 1000000.0;   // has to be something but doesn't matter what
         yyiis_ = new YearOnYearInflationSwap(YearOnYearInflationSwap.Type.Payer,
-				nominal,
-				fixedSchedule,
-				fixedRate,
-				dayCounter_,
-				yoySchedule,
-				new_yii,
-				swapObsLag_,
-				spread,
-				dayCounter_,
-				calendar_,  // inflation index does not have a calendar
-				paymentConvention_);
+            nominal,
+            fixedSchedule,
+            fixedRate,
+            dayCounter_,
+            yoySchedule,
+            new_yii,
+            swapObsLag_,
+            spread,
+            dayCounter_,
+            calendar_,  // inflation index does not have a calendar
+            paymentConvention_);
 
 
         // Because very simple instrument only takes
         // standard discounting swap engine.
         yyiis_.setPricingEngine(new DiscountingSwapEngine(y.nominalTermStructure()));
-		}
+      }
 
-		public override double impliedQuote()
-		{
-			// what does the term structure imply?
-			// in this case just the same value ... trivial case
-			// (would not be so for an inflation-linked bond)
-			yyiis_.recalculate();
-			return yyiis_.fairRate();
-		}
+      public override double impliedQuote()
+      {
+         // what does the term structure imply?
+         // in this case just the same value ... trivial case
+         // (would not be so for an inflation-linked bond)
+         yyiis_.recalculate();
+         return yyiis_.fairRate();
+      }
 
-		protected Period swapObsLag_;
-		protected Date maturity_;
-		protected Calendar calendar_;
-		protected BusinessDayConvention paymentConvention_;
-		protected DayCounter dayCounter_;
-		protected YoYInflationIndex yii_;
-		protected YearOnYearInflationSwap yyiis_;
+      protected Period swapObsLag_;
+      protected Date maturity_;
+      protected Calendar calendar_;
+      protected BusinessDayConvention paymentConvention_;
+      protected DayCounter dayCounter_;
+      protected YoYInflationIndex yii_;
+      protected YearOnYearInflationSwap yyiis_;
     }
 
 }

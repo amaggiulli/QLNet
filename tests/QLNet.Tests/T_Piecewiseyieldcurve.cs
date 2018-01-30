@@ -253,11 +253,11 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<Discount, LogCubic, IterativeBootstrapForYield>( vars,
+            testCurveConsistency<Discount, LogCubic, IterativeBootstrapForYield>( vars,
                         new LogCubic(CubicInterpolation.DerivativeApprox.Spline, true,
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
-				testBMACurveConsistency<Discount, LogCubic, IterativeBootstrapForYield>( vars,
+            testBMACurveConsistency<Discount, LogCubic, IterativeBootstrapForYield>( vars,
                         new LogCubic(CubicInterpolation.DerivativeApprox.Spline, true,
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
@@ -273,8 +273,8 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>( vars );
         }
 
 #if NET40 || NET45
@@ -287,8 +287,8 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>( vars );
         }
 #if NET40 || NET45
         [TestMethod()]
@@ -298,16 +298,16 @@ namespace TestSuite {
         public void testLogLinearZeroConsistency() {
             // "Testing consistency of piecewise-log-linear zero-yield curve...");
 
-			  // if rates can be negative it makes no sense to interpolate loglinearly
-			  if ( Utils.is_QL_NEGATIVE_RATES() )
-				return;
-			  else
-			  {
+           // if rates can be negative it makes no sense to interpolate loglinearly
+           if ( Utils.is_QL_NEGATIVE_RATES() )
+            return;
+           else
+           {
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
-			  }
+            testCurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<ZeroYield, LogLinear, IterativeBootstrapForYield>( vars );
+           }
         }
 
 #if NET40 || NET45
@@ -320,8 +320,8 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>( vars );
         }
 
 #if NET40 || NET45
@@ -335,12 +335,12 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ZeroYield, Cubic, IterativeBootstrapForYield>(
+            testCurveConsistency<ZeroYield, Cubic, IterativeBootstrapForYield>(
                            vars,
                            new Cubic(CubicInterpolation.DerivativeApprox.Spline, true,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
-				testBMACurveConsistency<ZeroYield, Cubic, IterativeBootstrapForYield>(
+            testBMACurveConsistency<ZeroYield, Cubic, IterativeBootstrapForYield>(
                            vars,
                            new Cubic(CubicInterpolation.DerivativeApprox.Spline, true,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
@@ -357,8 +357,8 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>( vars );
         }
 
 #if NET40 || NET45
@@ -372,8 +372,8 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ForwardRate, BackwardFlat, IterativeBootstrapForYield>( vars );
-				testBMACurveConsistency<ForwardRate, BackwardFlat, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<ForwardRate, BackwardFlat, IterativeBootstrapForYield>( vars );
+            testBMACurveConsistency<ForwardRate, BackwardFlat, IterativeBootstrapForYield>( vars );
         }
 
         //[TestMethod()]
@@ -383,12 +383,12 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ForwardRate, Cubic, IterativeBootstrapForYield>(
+            testCurveConsistency<ForwardRate, Cubic, IterativeBootstrapForYield>(
                            vars,
                            new Cubic(CubicInterpolation.DerivativeApprox.Spline, true,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
-				testBMACurveConsistency<ForwardRate, Cubic, IterativeBootstrapForYield>(
+            testBMACurveConsistency<ForwardRate, Cubic, IterativeBootstrapForYield>(
                            vars,
                            new Cubic(CubicInterpolation.DerivativeApprox.Spline, true,
                                  CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
@@ -405,7 +405,7 @@ namespace TestSuite {
 
             CommonVars vars = new CommonVars();
 
-				testCurveConsistency<ForwardRate, ConvexMonotone, IterativeBootstrapForYield>( vars );
+            testCurveConsistency<ForwardRate, ConvexMonotone, IterativeBootstrapForYield>( vars );
             testBMACurveConsistency<ForwardRate,ConvexMonotone,IterativeBootstrapForYield>(vars);
         }
 
@@ -418,8 +418,8 @@ namespace TestSuite {
             //"Testing consistency of local-bootstrap algorithm...");
 
             CommonVars vars = new CommonVars();
-				testCurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-7 );
-				testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-9 );
+            testCurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-7 );
+            testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>( vars, new ConvexMonotone(), 1.0e-9 );
         }
 
 #if NET40 || NET45
@@ -677,18 +677,18 @@ namespace TestSuite {
 
 
         public void testCurveConsistency<T, I, B>(CommonVars vars)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new() { testCurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-9 ); }
+           where B : IBootStrap<PiecewiseYieldCurve>, new() { testCurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-9 ); }
         public void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new() { testCurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-9 ); }
+           where B : IBootStrap<PiecewiseYieldCurve>, new() { testCurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-9 ); }
         public void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new()
-		  {
+           where B : IBootStrap<PiecewiseYieldCurve>, new()
+        {
 
             vars.termStructure = new PiecewiseYieldCurve<T, I, B>(vars.settlement, vars.instruments,
                                     new Actual360(), new List<Handle<Quote>>(), new List<Date>(), 1.0e-12, interpolator);
@@ -786,18 +786,18 @@ namespace TestSuite {
         }
 
         public void testBMACurveConsistency<T, I, B>(CommonVars vars)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new() { testBMACurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-7 ); }
+           where B : IBootStrap<PiecewiseYieldCurve>, new() { testBMACurveConsistency<T, I, B>( vars, FastActivator<I>.Create(), 1.0e-7 ); }
         public void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new() { testBMACurveConsistency<T, I, B>( vars, interpolator, 1.0e-7 ); }
+           where B : IBootStrap<PiecewiseYieldCurve>, new() { testBMACurveConsistency<T, I, B>( vars, interpolator, 1.0e-7 ); }
         public void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
            where I : IInterpolationFactory, new()
-			  where B : IBootStrap<PiecewiseYieldCurve>, new()
-		  {
+           where B : IBootStrap<PiecewiseYieldCurve>, new()
+        {
 
             // readjust settlement
             vars.calendar = new JointCalendar(new BMAIndex().fixingCalendar(),
@@ -879,12 +879,12 @@ namespace TestSuite {
         }
 
         public void testCurveCopy<T, I>(CommonVars vars)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
             where I : IInterpolationFactory, new() {
             testCurveCopy<T, I>(vars, FastActivator<I>.Create());
         }
         public void testCurveCopy<T, I>(CommonVars vars, I interpolator)
-			  where T : ITraits<YieldTermStructure>, new()
+           where T : ITraits<YieldTermStructure>, new()
             where I : IInterpolationFactory, new() {
 
             PiecewiseYieldCurve<T,I> curve = new PiecewiseYieldCurve<T,I>(vars.settlement, vars.instruments,

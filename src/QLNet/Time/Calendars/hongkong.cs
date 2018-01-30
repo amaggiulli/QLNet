@@ -202,36 +202,36 @@ namespace QLNet {
 
 
                 if (y == 2011) {
-	  	             if (// Lunar New Year
+                     if (// Lunar New Year
                        ((d == 3 || d == 4) && m == Month.February)
-	  	                 // Ching Ming Festival
+                         // Ching Ming Festival
                        || (d == 5 && m == Month.April)
-	  	                 // Buddha's birthday
+                         // Buddha's birthday
                        || (d == 10 && m == Month.May)
-	  	                 // Tuen NG festival
+                         // Tuen NG festival
                        || (d == 6 && m == Month.June)
-	  	                 // Mid-autumn festival
+                         // Mid-autumn festival
                        || (d == 13 && m == Month.September)
-	  	                 // Chung Yeung festival
+                         // Chung Yeung festival
                        || (d == 5 && m == Month.October)
-	  	                 // Second day after Christmas
+                         // Second day after Christmas
                        || (d == 27 && m == Month.December))
-	  	             return false;
-	  	         }
-	  	 
-	  	         if (y == 2012) {
-	  	             if (// Lunar New Year
+                     return false;
+                 }
+         
+                 if (y == 2012) {
+                     if (// Lunar New Year
                        (d >= 23 && d <= 25 && m == Month.January)
-	  	                 // Ching Ming Festival
+                         // Ching Ming Festival
                        || (d == 4 && m == Month.April)
-	  	                 // Buddha's birthday
+                         // Buddha's birthday
                        || (d == 10 && m == Month.May)
-	  	                 // Mid-autumn festival
+                         // Mid-autumn festival
                        || (d == 1 && m == Month.October)
-	  	                 // Chung Yeung festival
+                         // Chung Yeung festival
                        || (d == 23 && m == Month.October))
-	  	             return false;
-	  	         }
+                     return false;
+                 }
 
                if (y == 2013) {
                   if (// Lunar New Year

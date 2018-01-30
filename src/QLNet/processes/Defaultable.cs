@@ -27,53 +27,53 @@ namespace QLNet {
         public abstract double hazardRate(double t, double underlying);
     }
 
-	public class NegativePowerDefaultIntensity : Defaultable
-	{
-		private double alpha_;
-		private double p_;
-		private double recovery_;
-		public NegativePowerDefaultIntensity(double alpha, double p) : this(alpha, p, 0.0)
-		{
-		}
+   public class NegativePowerDefaultIntensity : Defaultable
+   {
+      private double alpha_;
+      private double p_;
+      private double recovery_;
+      public NegativePowerDefaultIntensity(double alpha, double p) : this(alpha, p, 0.0)
+      {
+      }
 
-		public NegativePowerDefaultIntensity(double alpha, double p, double recovery)
-		{
-			alpha_ = alpha;
-			p_ = p;
-			recovery_ = recovery;
-		}
-		public override double hazardRate(double t, double s)
-		{
-			if (s <= 0.0)
-			   return 0.0;
+      public NegativePowerDefaultIntensity(double alpha, double p, double recovery)
+      {
+         alpha_ = alpha;
+         p_ = p;
+         recovery_ = recovery;
+      }
+      public override double hazardRate(double t, double s)
+      {
+         if (s <= 0.0)
+            return 0.0;
 
-			return alpha_ * Math.Pow(s, -p_);
-		}
+         return alpha_ * Math.Pow(s, -p_);
+      }
         public override double defaultRecovery(double t, double s)
-		{
-			return recovery_;
-		}
-	}
+      {
+         return recovery_;
+      }
+   }
 
-	public class ConstantDefaultIntensity : Defaultable
-	{
-		private double constant_;
-		private double recovery_;
-		public ConstantDefaultIntensity(double constant) : this(constant, 0.0)
-		{
-		}
-		public ConstantDefaultIntensity(double constant, double recovery)
-		{
-			constant_ = constant;
-			recovery_ = recovery;
-		}
+   public class ConstantDefaultIntensity : Defaultable
+   {
+      private double constant_;
+      private double recovery_;
+      public ConstantDefaultIntensity(double constant) : this(constant, 0.0)
+      {
+      }
+      public ConstantDefaultIntensity(double constant, double recovery)
+      {
+         constant_ = constant;
+         recovery_ = recovery;
+      }
         public override double hazardRate(double t, double s)
-		{
-			return constant_;
-		}
+      {
+         return constant_;
+      }
         public override double defaultRecovery(double t, double s)
-		{
-			return recovery_;
-		}
-	}
+      {
+         return recovery_;
+      }
+   }
 }

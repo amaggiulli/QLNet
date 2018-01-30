@@ -33,7 +33,7 @@ namespace QLNet {
         public Period(Frequency f) {
             switch (f) {
                 case Frequency.NoFrequency:
-                    unit_ = TimeUnit.Days;	// same as Period()
+                    unit_ = TimeUnit.Days;   // same as Period()
                     length_ = 0;
                     break;
                 case Frequency.Once:
@@ -97,7 +97,7 @@ namespace QLNet {
         }
 
         public Frequency frequency() {
-            int length = System.Math.Abs(length_);	// unsigned version
+            int length = System.Math.Abs(length_);   // unsigned version
 
             if (length == 0)
             {

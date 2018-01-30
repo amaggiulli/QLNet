@@ -37,7 +37,7 @@ namespace QLNet {
         public TARGET() : base(Impl.Singleton) {}
 
         class Impl : Calendar.WesternImpl {
-	        internal static readonly Impl Singleton = new Impl();
+           internal static readonly Impl Singleton = new Impl();
             private Impl() {}
 
             public override string name() { return "TARGET calendar"; }

@@ -234,29 +234,29 @@ namespace QLNet {
                 }
 
                if (y == 2011) {
- 	  	             if (// Mahashivratri
+                      if (// Mahashivratri
                        (d == 2 && m == Month.March)
- 	  	                 // Ram Navmi
+                          // Ram Navmi
                        || (d == 12 && m == Month.April)
- 	  	                 // Ramzan Id
+                          // Ramzan Id
                        || (d == 31 && m == Month.August)
- 	  	                 // Ganesh Chaturthi
+                          // Ganesh Chaturthi
                        || (d == 1 && m == Month.September)
- 	  	                 // Dasara
+                          // Dasara
                        || (d == 6 && m == Month.October)
- 	  	                 // Laxmi Puja
+                          // Laxmi Puja
                        || (d == 26 && m == Month.October)
- 	  	                 // Diwali - Balipratipada
+                          // Diwali - Balipratipada
                        || (d == 27 && m == Month.October)
- 	  	                 // Bakri Id
+                          // Bakri Id
                        || (d == 7 && m == Month.November)
- 	  	                 // Gurunanak Jayanti
+                          // Gurunanak Jayanti
                        || (d == 10 && m == Month.November)
- 	  	                 // Moharram
+                          // Moharram
                        || (d == 6 && m == Month.December)
- 	  	                 )
- 	  	                 return false;
- 	  	         }
+                          )
+                          return false;
+                  }
 
                if (y == 2012) {
                   if (// Mahashivratri

@@ -101,14 +101,14 @@ namespace QLNet
           throw new ArgumentException(message);
        }
 
-		 public static bool is_QL_NEGATIVE_RATES()
-		 {
-			 #if QL_NEGATIVE_RATES
-				return true;
-			 #else
-			    return false;
-		    #endif
-		 }
+       public static bool is_QL_NEGATIVE_RATES()
+       {
+          #if QL_NEGATIVE_RATES
+            return true;
+          #else
+             return false;
+          #endif
+       }
 
        public static MethodInfo GetMethodInfo(Object t, String function ,  Type[] types = null )
        {

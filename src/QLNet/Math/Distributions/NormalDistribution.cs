@@ -329,7 +329,7 @@ namespace QLNet {
             r = Math.Exp( -ax*ax-0.5625 +R/S);
             if(x>=0) return one-r/ax; else return  r/ax-one;
         }
- 	    #endregion
+        #endregion
     }
 
 

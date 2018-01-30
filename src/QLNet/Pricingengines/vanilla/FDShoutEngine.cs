@@ -31,12 +31,12 @@ namespace QLNet {
         public FDShoutEngine() { }
 
         public FDShoutEngine(GeneralizedBlackScholesProcess process, int timeSteps , int gridPoints , 
-			  bool timeDependent = false)
+           bool timeDependent = false)
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
-		  public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100 )
-		  {
-			  return new FDShoutEngine(process, timeSteps, gridPoints);
+        public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100 )
+        {
+           return new FDShoutEngine(process, timeSteps, gridPoints);
         }
     }
 }

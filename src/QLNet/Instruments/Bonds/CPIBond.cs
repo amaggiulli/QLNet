@@ -42,7 +42,7 @@ namespace QLNet
                 Calendar paymentCalendar = null,
                 Period exCouponPeriod = null,
                 Calendar exCouponCalendar = null,
-					 BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                 bool exCouponEndOfMonth = false)                
             :base(settlementDays, paymentCalendar ?? schedule.calendar(), issueDate)
         {

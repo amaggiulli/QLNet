@@ -24,38 +24,38 @@ using System.Linq;
 
 namespace QLNet {
     // this is an abstract class to give access to all properties and methods of PiecewiseYieldCurve and avoiding generics
-	public class PiecewiseYieldCurve : YieldTermStructure, Curve<YieldTermStructure>
-	{
-		# region new fields: Curve
+   public class PiecewiseYieldCurve : YieldTermStructure, Curve<YieldTermStructure>
+   {
+      # region new fields: Curve
 
-		public double initialValue() { return _traits_.initialValue( this ); }
-		public Date initialDate() { return _traits_.initialDate( this ); }
-		public void registerWith( BootstrapHelper<YieldTermStructure> helper )
-		{
-			helper.registerWith( this.update );
-		}
-		public new bool moving_
-		{
-			get { return base.moving_; }
-			set { base.moving_ = value; }
-		}
-		public void setTermStructure( BootstrapHelper<YieldTermStructure> helper )
-		{
-			helper.setTermStructure( this );
-		}
-		protected ITraits<YieldTermStructure> _traits_ = null;//todo define with the trait for yield curve
-		public ITraits<YieldTermStructure> traits_
-		{
-			get
-			{
-				return _traits_;
-			}
-		}
-		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.minValueAfter( i, c, validData, first ); }
-		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.maxValueAfter( i, c, validData, first ); }
-		public double guess( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.guess( i, c, validData, first ); }
+      public double initialValue() { return _traits_.initialValue( this ); }
+      public Date initialDate() { return _traits_.initialDate( this ); }
+      public void registerWith( BootstrapHelper<YieldTermStructure> helper )
+      {
+         helper.registerWith( this.update );
+      }
+      public new bool moving_
+      {
+         get { return base.moving_; }
+         set { base.moving_ = value; }
+      }
+      public void setTermStructure( BootstrapHelper<YieldTermStructure> helper )
+      {
+         helper.setTermStructure( this );
+      }
+      protected ITraits<YieldTermStructure> _traits_ = null;//todo define with the trait for yield curve
+      public ITraits<YieldTermStructure> traits_
+      {
+         get
+         {
+            return _traits_;
+         }
+      }
+      public double minValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.minValueAfter( i, c, validData, first ); }
+      public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.maxValueAfter( i, c, validData, first ); }
+      public double guess( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.guess( i, c, validData, first ); }
 
-		# endregion
+      # endregion
 
       #region InterpolatedCurve
       public List<double> times_ { get; set; }
@@ -122,27 +122,27 @@ namespace QLNet {
       #endregion
 
       #region Properties
-		
-		protected double _accuracy_;
-		public double accuracy_
-		{
-			get { return _accuracy_; }
-			set { _accuracy_ = value; }
-		}
+      
+      protected double _accuracy_;
+      public double accuracy_
+      {
+         get { return _accuracy_; }
+         set { _accuracy_ = value; }
+      }
 
-		protected List<RateHelper> _instruments_ = new List<RateHelper>();
-		public List<BootstrapHelper<YieldTermStructure>> instruments_
-		{
-			get
-			{
-				//todo edem 
-				List<BootstrapHelper<YieldTermStructure>> instruments = new List<BootstrapHelper<YieldTermStructure>>();
-				_instruments_.ForEach((i, x) => instruments.Add( x ) );
-				return instruments;
-			}
-		}
+      protected List<RateHelper> _instruments_ = new List<RateHelper>();
+      public List<BootstrapHelper<YieldTermStructure>> instruments_
+      {
+         get
+         {
+            //todo edem 
+            List<BootstrapHelper<YieldTermStructure>> instruments = new List<BootstrapHelper<YieldTermStructure>>();
+            _instruments_.ForEach((i, x) => instruments.Add( x ) );
+            return instruments;
+         }
+      }
 
-		protected IBootStrap<PiecewiseYieldCurve> bootstrap_;
+      protected IBootStrap<PiecewiseYieldCurve> bootstrap_;
 
       #endregion
 
@@ -150,21 +150,21 @@ namespace QLNet {
       // two constructors to forward down the ctor chain
       public PiecewiseYieldCurve(Date referenceDate, Calendar cal, DayCounter dc, 
          List<Handle<Quote>> jumps = null, List<Date> jumpDates = null) : base(referenceDate, cal, dc,jumps,jumpDates) 
-		{}
+      {}
       public PiecewiseYieldCurve(int settlementDays, Calendar cal, DayCounter dc,
          List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(settlementDays, cal, dc,jumps,jumpDates) 
-		{}
-		public PiecewiseYieldCurve()
-			: base()
-		{}
-	}
+      {}
+      public PiecewiseYieldCurve()
+         : base()
+      {}
+   }
 
-	public class PiecewiseYieldCurve<Traits, Interpolator, BootStrap> : PiecewiseYieldCurve
-		where Traits : ITraits<YieldTermStructure>, new()
+   public class PiecewiseYieldCurve<Traits, Interpolator, BootStrap> : PiecewiseYieldCurve
+      where Traits : ITraits<YieldTermStructure>, new()
       where Interpolator : IInterpolationFactory, new()
-		where BootStrap : IBootStrap<PiecewiseYieldCurve>, new()
-	{
+      where BootStrap : IBootStrap<PiecewiseYieldCurve>, new()
+   {
 
       #region Constructors
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments, DayCounter dayCounter)
@@ -218,21 +218,21 @@ namespace QLNet {
 
       // observer interface
       public override void update() 
-		{
+      {
          base.update();
          // LazyObject::update();        // we do it in the TermStructure 
       }
 
       protected override void performCalculations() 
-		{
+      {
          // just delegate to the bootstrapper
          bootstrap_.calculate();
       }
-	}
+   }
 
     // Allows for optional 3rd generic parameter defaulted to IterativeBootstrap
-	public class PiecewiseYieldCurve<Traits, Interpolator> : PiecewiseYieldCurve<Traits, Interpolator, IterativeBootstrapForYield>
-		where Traits : ITraits<YieldTermStructure>, new()
+   public class PiecewiseYieldCurve<Traits, Interpolator> : PiecewiseYieldCurve<Traits, Interpolator, IterativeBootstrapForYield>
+      where Traits : ITraits<YieldTermStructure>, new()
         where Interpolator : IInterpolationFactory, new() {
 
         public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments, DayCounter dayCounter)

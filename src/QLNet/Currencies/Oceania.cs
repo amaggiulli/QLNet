@@ -19,26 +19,26 @@
 
 namespace QLNet {
 
-	//! Australian dollar
+   //! Australian dollar
 //    ! The ISO three-letter code is AUD; the numeric code is 36.
 //        It is divided into 100 cents.
 //
 //        \ingroup currencies
 //    
-	public class AUDCurrency : Currency
-	{
+   public class AUDCurrency : Currency
+   {
         public AUDCurrency() : base("Australian dollar", "AUD", 36, "A$", "", 100, new Rounding(), "%3% %1$.2f") { }
-	}
+   }
 
-	//! New Zealand dollar
+   //! New Zealand dollar
 //    ! The ISO three-letter code is NZD; the numeric code is 554.
 //        It is divided in 100 cents.
 //
 //        \ingroup currencies
 //    
-	public class NZDCurrency : Currency
-	{
+   public class NZDCurrency : Currency
+   {
         public NZDCurrency() : base("New Zealand dollar", "NZD", 554, "NZ$", "", 100, new Rounding(), "%3% %1$.2f") { }
-	}
+   }
 
 }

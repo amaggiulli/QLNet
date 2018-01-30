@@ -37,34 +37,34 @@ namespace QLNet {
                      calculation.
         */
         public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process,
-				 double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
-		  {
-					 Utils.QL_REQUIRE(!isExpired(),()=> "option expired");
+             double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
+        {
+                Utils.QL_REQUIRE(!isExpired(),()=> "option expired");
 
-					 SimpleQuote volQuote = new SimpleQuote();
+                SimpleQuote volQuote = new SimpleQuote();
 
-					 GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
+                GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
 
-					 // engines are built-in for the time being
-					 IPricingEngine engine = null;
-					 switch (exercise_.type())
-					 {
-						 case Exercise.Type.European:
-							engine = new AnalyticDividendEuropeanEngine(newProcess);
-							break;
-						 case Exercise.Type.American:
-							engine = new FDDividendAmericanEngine(newProcess);
-							break;
-						 case Exercise.Type.Bermudan:
-							 Utils.QL_FAIL("engine not available for Bermudan option with dividends");
-					       break;
-						 default:
-							 Utils.QL_FAIL("unknown exercise type");
-					       break;
-					 }
+                // engines are built-in for the time being
+                IPricingEngine engine = null;
+                switch (exercise_.type())
+                {
+                   case Exercise.Type.European:
+                     engine = new AnalyticDividendEuropeanEngine(newProcess);
+                     break;
+                   case Exercise.Type.American:
+                     engine = new FDDividendAmericanEngine(newProcess);
+                     break;
+                   case Exercise.Type.Bermudan:
+                      Utils.QL_FAIL("engine not available for Bermudan option with dividends");
+                      break;
+                   default:
+                      Utils.QL_FAIL("unknown exercise type");
+                      break;
+                }
 
-					 return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
-																			maxEvaluations, minVol, maxVol);
+                return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
+                                                         maxEvaluations, minVol, maxVol);
         }
 
 

@@ -185,7 +185,7 @@ namespace QLNet
                 factor *= 0.5;
             } while (!P.constraint().test(pTry) && Math.Abs(factor) > Const.QL_EPSILON);
             if (Math.Abs(factor) <= Const.QL_EPSILON) {
-        	    return values_[iHighest];
+               return values_[iHighest];
             }
             factor *= 2.0;
             double vTry = P.value(pTry);

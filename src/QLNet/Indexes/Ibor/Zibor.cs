@@ -19,7 +19,7 @@
 
 namespace QLNet {
 
-	//! %CHF %ZIBOR rate
+   //! %CHF %ZIBOR rate
 //    ! Zurich Interbank Offered Rate.
 //
 //        \warning This is the rate fixed in Zurich by BBA. Use CHFLibor if
@@ -28,16 +28,16 @@ namespace QLNet {
 //        \todo check settlement days, end-of-month adjustment,
 //              and day-count convention.
 //    
-	public class Zibor : IborIndex
-	{
+   public class Zibor : IborIndex
+   {
         public Zibor(Period tenor)
             : base("Zibor", tenor, 2, new CHFCurrency(), new Switzerland(), BusinessDayConvention.ModifiedFollowing, false, new Actual360(), new Handle<YieldTermStructure>())
         {
         }
         public Zibor(Period tenor, Handle<YieldTermStructure> h)
             : base("Zibor", tenor, 2, new CHFCurrency(), new Switzerland(), BusinessDayConvention.ModifiedFollowing, false, new Actual360(), h)
-		{
-		}
-	}
+      {
+      }
+   }
 
 }

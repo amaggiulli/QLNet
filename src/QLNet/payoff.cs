@@ -19,8 +19,8 @@
 using System;
 
 namespace QLNet {
-	//! Abstract base class for option payoffs
-	public class Payoff {
+   //! Abstract base class for option payoffs
+   public class Payoff {
         // Payoff interface
         /*! \warning This method is used for output and comparison between
                 payoffs. It is <b>not</b> meant to be used for writing
@@ -36,5 +36,5 @@ namespace QLNet {
             else
                 Utils.QL_FAIL("not an event visitor");
         }
-	}
+   }
 }

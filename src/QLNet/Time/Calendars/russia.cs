@@ -35,7 +35,7 @@ namespace QLNet
    <li>Russia Day, June 12th (possibly moved to Monday)</li>
    <li>Unity Day, November 4th (possibly moved to Monday)</li>
    </ul>
- 	
+    
    Holidays for the Moscow Exchange (MOEX) taken from
    <http://moex.com/s726> and related pages.  These holidays are
    <em>not</em> consistent year-to-year, may or may not correlate
@@ -86,28 +86,28 @@ namespace QLNet
             int em = easterMonday(y);
 
             if (isWeekend(w)
- 	            // New Year's holidays
- 	            || (d >= 1 && d <= 8 && m == Month.January)
- 	            // Defender of the Fatherland Day (possibly moved to Monday)
- 	            || ((d == 23 || ((d == 24 || d == 25) && w == DayOfWeek.Monday)) &&
- 	            m == Month.February)
- 	            // International Women's Day (possibly moved to Monday)
- 	            || ((d == 8 || ((d == 9 || d == 10) && w == DayOfWeek.Monday)) &&
- 	            m == Month.March)
- 	            // Labour Day (possibly moved to Monday)
- 	            || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) &&
- 	            m == Month.May)
- 	            // Victory Day (possibly moved to Monday)
- 	            || ((d == 9 || ((d == 10 || d == 11) && w == DayOfWeek.Monday)) &&
- 	            m == Month.May)
- 	            // Russia Day (possibly moved to Monday)
- 	            || ((d == 12 || ((d == 13 || d == 14) && w == DayOfWeek.Monday)) &&
- 	            m == Month.June)
- 	            // Unity Day (possibly moved to Monday)
- 	            || ((d == 4 || ((d == 5 || d == 6) && w == DayOfWeek.Monday)) &&
- 	            m == Month.November))
- 	            return false;
- 	            
+                // New Year's holidays
+                || (d >= 1 && d <= 8 && m == Month.January)
+                // Defender of the Fatherland Day (possibly moved to Monday)
+                || ((d == 23 || ((d == 24 || d == 25) && w == DayOfWeek.Monday)) &&
+                m == Month.February)
+                // International Women's Day (possibly moved to Monday)
+                || ((d == 8 || ((d == 9 || d == 10) && w == DayOfWeek.Monday)) &&
+                m == Month.March)
+                // Labour Day (possibly moved to Monday)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) &&
+                m == Month.May)
+                // Victory Day (possibly moved to Monday)
+                || ((d == 9 || ((d == 10 || d == 11) && w == DayOfWeek.Monday)) &&
+                m == Month.May)
+                // Russia Day (possibly moved to Monday)
+                || ((d == 12 || ((d == 13 || d == 14) && w == DayOfWeek.Monday)) &&
+                m == Month.June)
+                // Unity Day (possibly moved to Monday)
+                || ((d == 4 || ((d == 5 || d == 6) && w == DayOfWeek.Monday)) &&
+                m == Month.November))
+                return false;
+                
             return true;
          }
       }

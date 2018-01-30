@@ -58,19 +58,19 @@ namespace QLNet
       //! returns the amount of the cash flow
       //! The amount is not discounted, i.e., it is the actual  amount paid at the cash flow date.
       public abstract double amount();
-		//! returns the date that the cash flow trades exCoupon
-		public virtual Date exCouponDate() {return null;}
+      //! returns the date that the cash flow trades exCoupon
+      public virtual Date exCouponDate() {return null;}
       //! returns true if the cashflow is trading ex-coupon on the refDate
-		public bool tradingExCoupon(Date refDate = null)
-		{
-			Date ecd = exCouponDate();
-			if (ecd == null)
-				return false;
+      public bool tradingExCoupon(Date refDate = null)
+      {
+         Date ecd = exCouponDate();
+         if (ecd == null)
+            return false;
 
         Date ref_ = refDate ?? Settings.evaluationDate();
 
         return ecd <= ref_;
-		}
+      }
          
       #endregion
       

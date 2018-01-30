@@ -972,35 +972,35 @@ namespace TestSuite
             Exercise exercise = new EuropeanExercise(exDate);
 
             Handle<DeltaVolQuote> volAtmQuote = new Handle<DeltaVolQuote>(
-					new DeltaVolQuote( new Handle<Quote>(volAtm),
-							             DeltaVolQuote.DeltaType.Fwd,
-							             values[i].t,
-							             DeltaVolQuote.AtmType.AtmDeltaNeutral));
+               new DeltaVolQuote( new Handle<Quote>(volAtm),
+                                  DeltaVolQuote.DeltaType.Fwd,
+                                  values[i].t,
+                                  DeltaVolQuote.AtmType.AtmDeltaNeutral));
 
             Handle<DeltaVolQuote> vol25PutQuote = new Handle<DeltaVolQuote>(
-				   new DeltaVolQuote( -0.25,
-							             new Handle<Quote>(vol25Put),
-							             values[i].t,
-							             DeltaVolQuote.DeltaType.Fwd));
+               new DeltaVolQuote( -0.25,
+                                  new Handle<Quote>(vol25Put),
+                                  values[i].t,
+                                  DeltaVolQuote.DeltaType.Fwd));
 
             Handle<DeltaVolQuote> vol25CallQuote = new Handle<DeltaVolQuote>(
-				   new DeltaVolQuote( 0.25,
-							             new Handle<Quote>(vol25Call),
-							             values[i].t,
-							             DeltaVolQuote.DeltaType.Fwd));
+               new DeltaVolQuote( 0.25,
+                                  new Handle<Quote>(vol25Call),
+                                  values[i].t,
+                                  DeltaVolQuote.DeltaType.Fwd));
 
             BarrierOption barrierOption = new BarrierOption(values[i].barrierType,values[i].barrier,values[i].rebate,
                payoff,exercise);
 
             double bsVanillaPrice = Utils.blackFormula(values[i].type, values[i].strike,
                spot.value()*qTS.discount(values[i].t)/rTS.discount(values[i].t),
-				   values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
+               values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
             IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine( volAtmQuote, vol25PutQuote, vol25CallQuote,
-				   new Handle<Quote> (spot),
-				   new Handle<YieldTermStructure> (rTS),
-				   new Handle<YieldTermStructure> (qTS),
-				   true,
-				   bsVanillaPrice);
+               new Handle<Quote> (spot),
+               new Handle<YieldTermStructure> (rTS),
+               new Handle<YieldTermStructure> (qTS),
+               true,
+               bsVanillaPrice);
             barrierOption.setPricingEngine(vannaVolgaEngine);
 
             double calculated = barrierOption.NPV();

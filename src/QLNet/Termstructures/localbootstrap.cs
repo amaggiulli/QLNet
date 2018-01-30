@@ -24,20 +24,20 @@ using System.Linq;
 
 namespace QLNet 
 {
-	public class LocalBootstrapForYield : LocalBootstrap<PiecewiseYieldCurve, YieldTermStructure>
-	{}
+   public class LocalBootstrapForYield : LocalBootstrap<PiecewiseYieldCurve, YieldTermStructure>
+   {}
 
     // penalty function class for solving using a multi-dimensional solver
-	public class PenaltyFunction<T, U> : CostFunction
-		where T : Curve<U>, new()
-		where U : TermStructure
-	{
+   public class PenaltyFunction<T, U> : CostFunction
+      where T : Curve<U>, new()
+      where U : TermStructure
+   {
         private T curve_;
         private int initialIndex_;
         private int localisation_, start_, end_;
-		  private List<BootstrapHelper<U>> rateHelpers_;
+        private List<BootstrapHelper<U>> rateHelpers_;
 
-		  public PenaltyFunction( T curve, int initialIndex, List<BootstrapHelper<U>> rateHelpers, int start, int end )
+        public PenaltyFunction( T curve, int initialIndex, List<BootstrapHelper<U>> rateHelpers, int start, int end )
         {
             curve_ = curve;
             initialIndex_ = initialIndex;
@@ -88,7 +88,7 @@ namespace QLNet
     public class LocalBootstrap <T,U>:IBootStrap<T>
         where T : Curve<U>, new()
         where U : TermStructure
-	 {      
+    {      
         private bool validCurve_;
         private T ts_; // yes, it is a workaround
         int localisation_;
@@ -110,7 +110,7 @@ namespace QLNet
             Utils.QL_REQUIRE(n > localisation_,()=> 
                "not enough instruments: " + n + " provided, " + localisation_ + " required.");
 
-				ts_.instruments_.ForEach((i, x) => ts_.registerWith( x ) ); 
+            ts_.instruments_.ForEach((i, x) => ts_.registerWith( x ) ); 
         }
 
         public void calculate() {
@@ -133,7 +133,7 @@ namespace QLNet
                "instrument " + i + " (maturity: " + ts_.instruments_[i].latestDate() + ") has an invalid quote");
 
             // setup instruments and register with them
-				ts_.instruments_.ForEach((x, j) => ts_.setTermStructure( j ) );
+            ts_.instruments_.ForEach((x, j) => ts_.setTermStructure( j ) );
 
             // set initial guess only if the current curve cannot be used as guess
             if (validCurve_) {
@@ -184,14 +184,14 @@ namespace QLNet
                                                 localisation_, ts_.interpolation_ as ConvexMonotoneInterpolation, nInsts + 1);
 
                 if (iInst >= localisation_) {
-						 startArray[localisation_ - dataAdjust] = ts_.guess( iInst, ts_, false, 0 );
+                   startArray[localisation_ - dataAdjust] = ts_.guess( iInst, ts_, false, 0 );
                 } else {
                     startArray[localisation_-dataAdjust] = ts_.data_[0];
                 }
 
-					 var currentCost = new PenaltyFunction<T, U>( ts_, initialDataPt, ts_.instruments_,
-																									 iInst - localisation_ + 1, iInst + 1 );
-					 Problem toSolve = new Problem( currentCost, solverConstraint, startArray );
+                var currentCost = new PenaltyFunction<T, U>( ts_, initialDataPt, ts_.instruments_,
+                                                                            iInst - localisation_ + 1, iInst + 1 );
+                Problem toSolve = new Problem( currentCost, solverConstraint, startArray );
                 EndCriteria.Type endType = solver.minimize(toSolve, endCriteria);
 
                 // check the end criteria
