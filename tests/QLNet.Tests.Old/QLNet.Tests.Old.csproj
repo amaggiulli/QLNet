@@ -148,11 +148,11 @@
     <Compile Include="..\QLNet.Tests\T_ShortRateModels.cs" />
     <Compile Include="..\QLNet.Tests\T_Solvers.cs" />
     <Compile Include="..\QLNet.Tests\T_Stats.cs" />
-    <Compile Include="..\QLNet.Tests\T_SVI.cs" />    
+    <Compile Include="..\QLNet.Tests\T_SVI.cs" />
     <Compile Include="..\QLNet.Tests\T_Swaps.cs" />
     <Compile Include="..\QLNet.Tests\T_SwaptionVolatilityCube.cs" />
     <Compile Include="..\QLNet.Tests\T_TermStructures.cs" />
-	  <Compile Include="..\QLNet.Tests\T_Vector.cs" />
+    <Compile Include="..\QLNet.Tests\T_Vector.cs" />
     <Compile Include="..\QLNet.Tests\Utilities.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModel.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModelProcess.cs" />
@@ -190,7 +190,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\QLNet.Tests\.editorconfig" />
+    <None Include="..\..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
