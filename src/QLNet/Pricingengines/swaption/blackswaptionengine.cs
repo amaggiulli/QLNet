@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -37,6 +37,7 @@ namespace QLNet
 
    /*! Generic Black-style-formula swaption engine
        This is the base class for the Black and Bachelier swaption engines */
+
    public class BlackStyleSwaptionEngine<Spec> : SwaptionEngine
       where Spec : ISwaptionEngineSpec, new()
    {
@@ -105,7 +106,7 @@ namespace QLNet
          List<CashFlow> fixedLeg = swap.fixedLeg();
          FixedRateCoupon firstCoupon = fixedLeg[0] as FixedRateCoupon;
 
-         Utils.QL_REQUIRE(firstCoupon!=null,()=> "wrong coupon type");
+         Utils.QL_REQUIRE(firstCoupon != null, () => "wrong coupon type");
 
          Utils.QL_REQUIRE(firstCoupon.accrualStartDate() >= exerciseDate,
             () => "swap start (" + firstCoupon.accrualStartDate() + ") before exercise date ("
@@ -138,28 +139,28 @@ namespace QLNet
          switch (arguments_.settlementType)
          {
             case Settlement.Type.Physical:
-            {
-               annuity = Math.Abs(swap.fixedLegBPS()) / basisPoint;
-               break;
-            }
+               {
+                  annuity = Math.Abs(swap.fixedLegBPS()) / basisPoint;
+                  break;
+               }
             case Settlement.Type.Cash:
-            {
-               DayCounter dayCount = firstCoupon.dayCounter();
+               {
+                  DayCounter dayCount = firstCoupon.dayCounter();
 
-               // we assume that the cash settlement date is equal
-               // to the swap start date
-               Date discountDate = model_ == CashAnnuityModel.DiscountCurve
-                  ? firstCoupon.accrualStartDate()
-                  : discountCurve_.link.referenceDate();
+                  // we assume that the cash settlement date is equal
+                  // to the swap start date
+                  Date discountDate = model_ == CashAnnuityModel.DiscountCurve
+                     ? firstCoupon.accrualStartDate()
+                     : discountCurve_.link.referenceDate();
 
-               double fixedLegCashBPS =
-                  CashFlows.bps(fixedLeg,
-                     new InterestRate(atmForward, dayCount, Compounding.Compounded, Frequency.Annual), false,
-                     discountDate);
+                  double fixedLegCashBPS =
+                     CashFlows.bps(fixedLeg,
+                        new InterestRate(atmForward, dayCount, Compounding.Compounded, Frequency.Annual), false,
+                        discountDate);
 
-               annuity = Math.Abs(fixedLegCashBPS / basisPoint) * discountCurve_.link.discount(discountDate);
-               break;
-            }
+                  annuity = Math.Abs(fixedLegCashBPS / basisPoint) * discountCurve_.link.discount(discountDate);
+                  break;
+               }
             default:
                Utils.QL_FAIL("unknown settlement type");
                break;

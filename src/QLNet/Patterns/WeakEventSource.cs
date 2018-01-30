@@ -109,11 +109,11 @@ namespace QLNet
          public WeakDelegate(Delegate handler)
          {
             _weakTarget = handler.Target != null ? new WeakReference(handler.Target) : null;
-            #if NET40 || NET45
-               _method = handler.Method;
-            #else
+#if NET40 || NET45
+            _method = handler.Method;
+#else
                _method = handler.GetMethodInfo();
-            #endif
+#endif
 
             _openHandler = _openHandlerCache.GetOrAdd(_method, CreateOpenHandler);
          }
@@ -133,14 +133,13 @@ namespace QLNet
 
          public bool IsMatch(Callback handler)
          {
-            #if NET40 || NET45
-               return _weakTarget.Target != null && ( ReferenceEquals( handler.Target, _weakTarget.Target )
-                                                                    && handler.Method.Equals( _method ) );
-            #else
+#if NET40 || NET45
+            return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
+                                                                 && handler.Method.Equals(_method));
+#else
                return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
                                                                   && handler.GetMethodInfo().Equals(_method));
-            #endif
-
+#endif
          }
       }
    }

@@ -1,21 +1,22 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
@@ -39,19 +40,28 @@ namespace QLNet
        We add the inverse prices so that conventional caps can be
        priced simply.
    */
-   public class InflationCouponPricer : IObserver,IObservable
+
+   public class InflationCouponPricer : IObserver, IObservable
    {
       // Interface
-      public virtual double swapletPrice() {return 0; }
+      public virtual double swapletPrice() { return 0; }
+
       public virtual double swapletRate() { return 0; }
+
       public virtual double capletPrice(double effectiveCap) { return 0; }
+
       public virtual double capletRate(double effectiveCap) { return 0; }
+
       public virtual double floorletPrice(double effectiveFloor) { return 0; }
+
       public virtual double floorletRate(double effectiveFloor) { return 0; }
-      public virtual void initialize(InflationCoupon i) {}
+
+      public virtual void initialize(InflationCoupon i) { }
 
       #region Observer & observable
+
       private readonly WeakEventSource eventSource = new WeakEventSource();
+
       public event Callback notifyObserversEvent
       {
          add { eventSource.Subscribe(value); }
@@ -59,7 +69,9 @@ namespace QLNet
       }
 
       public void registerWith(Callback handler) { notifyObserversEvent += handler; }
+
       public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+
       protected void notifyObservers()
       {
          eventSource.Raise();
@@ -67,17 +79,18 @@ namespace QLNet
 
       // observer interface
       public void update() { notifyObservers(); }
-      #endregion
+
+      #endregion Observer & observable
 
       protected Handle<YieldTermStructure> rateCurve_;
       protected Date paymentDate_;
-
    }
 
-    //! base pricer for capped/floored YoY inflation coupons
-    /*! \note this pricer can already do swaplets but to get
-              volatility-dependent coupons you need the descendents.
-    */
+   //! base pricer for capped/floored YoY inflation coupons
+   /*! \note this pricer can already do swaplets but to get
+             volatility-dependent coupons you need the descendents.
+   */
+
    public class YoYInflationCouponPricer : InflationCouponPricer
    {
       public YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
@@ -87,14 +100,14 @@ namespace QLNet
          if (!capletVol_.empty()) capletVol_.registerWith(update);
       }
 
-      public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility() 
+      public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility()
       {
          return capletVol_;
       }
 
       public virtual void setCapletVolatility(Handle<YoYOptionletVolatilitySurface> capletVol)
       {
-         Utils.QL_REQUIRE( !capletVol.empty() ,()=> "empty capletVol handle");
+         Utils.QL_REQUIRE(!capletVol.empty(), () => "empty capletVol handle");
 
          capletVol_ = capletVol;
          capletVol_.registerWith(update);
@@ -132,6 +145,7 @@ namespace QLNet
          double floorletPrice = optionletPrice(Option.Type.Put, effectiveFloor);
          return gearing_ * floorletPrice;
       }
+
       public override double floorletRate(double effectiveFloor)
       {
          return floorletPrice(effectiveFloor) /
@@ -154,44 +168,41 @@ namespace QLNet
          if (paymentDate_ > rateCurve_.link.referenceDate())
             discount_ = rateCurve_.link.discount(paymentDate_);
 
-         spreadLegValue_ = spread_ * coupon_.accrualPeriod()* discount_;
+         spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
       //! car replace this if really required
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
       {
-
          Date fixingDate = coupon_.fixingDate();
-         if (fixingDate <= Settings.evaluationDate()) 
+         if (fixingDate <= Settings.evaluationDate())
          {
             // the amount is determined
             double a, b;
-            if (optionType==Option.Type.Call) 
+            if (optionType == Option.Type.Call)
             {
-                a = coupon_.indexFixing();
-                b = effStrike;
-            } 
-            else 
-            {
-                a = effStrike;
-                b = coupon_.indexFixing();
+               a = coupon_.indexFixing();
+               b = effStrike;
             }
-            return Math.Max(a - b, 0.0)* coupon_.accrualPeriod()*discount_;
-        
-         } 
-         else 
+            else
+            {
+               a = effStrike;
+               b = coupon_.indexFixing();
+            }
+            return Math.Max(a - b, 0.0) * coupon_.accrualPeriod() * discount_;
+         }
+         else
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
-            Utils.QL_REQUIRE( !capletVolatility().empty() ,()=> "missing optionlet volatility");
+            Utils.QL_REQUIRE(!capletVolatility().empty(), () => "missing optionlet volatility");
 
-            double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate,effStrike));
+            double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate, effStrike));
 
             double fixing = optionletPriceImp(optionType,
                                               effStrike,
                                               adjustedFixing(),
                                               stdDev);
             return fixing * coupon_.accrualPeriod() * discount_;
-        
          }
       }
 
@@ -219,22 +230,22 @@ namespace QLNet
       }
 
       //! data
-      Handle<YoYOptionletVolatilitySurface> capletVol_;
-      YoYInflationCoupon coupon_;
-      double gearing_;
-      double spread_;
-      double discount_;
-      double spreadLegValue_;
+      private Handle<YoYOptionletVolatilitySurface> capletVol_;
+
+      private YoYInflationCoupon coupon_;
+      private double gearing_;
+      private double spread_;
+      private double discount_;
+      private double spreadLegValue_;
    }
 
    //! Black-formula pricer for capped/floored yoy inflation coupons
-   public class BlackYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class BlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
-    
       public BlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol)
          : base(capletVol)
-      {}
-       
+      { }
+
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)
       {
@@ -243,33 +254,31 @@ namespace QLNet
                                    forward,
                                    stdDev);
       }
-
-    }
+   }
 
    //! Unit-Displaced-Black-formula pricer for capped/floored yoy inflation coupons
-   public class UnitDisplacedBlackYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class UnitDisplacedBlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public UnitDisplacedBlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
-         : base(capletVol) 
-      {}
+         : base(capletVol)
+      { }
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                          double forward, double stdDev)
       {
-
          return Utils.blackFormula(optionType,
                                    effStrike + 1.0,
                                    forward + 1.0,
                                    stdDev);
       }
    }
-    
+
    //! Bachelier-formula pricer for capped/floored yoy inflation coupons
-   public class BachelierYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class BachelierYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public BachelierYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
-            : base(capletVol) 
-      {}
+            : base(capletVol)
+      { }
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                          double forward, double stdDev)
@@ -279,5 +288,5 @@ namespace QLNet
                                      forward,
                                      stdDev);
       }
-    };
+   };
 }

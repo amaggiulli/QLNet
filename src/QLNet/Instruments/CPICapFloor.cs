@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -41,6 +41,7 @@ namespace QLNet
     because we do not have that degree of generality.
 
    */
+
    public class CPICapFloor : Instrument
    {
       public class Arguments : IPricingEngineArguments
@@ -48,14 +49,14 @@ namespace QLNet
          public Option.Type type { get; set; }
          public double nominal { get; set; }
          public Date startDate { get; set; }
-         public Date fixDate{ get; set; }
-         public Date payDate{ get; set; }
+         public Date fixDate { get; set; }
+         public Date payDate { get; set; }
          public double baseCPI { get; set; }
          public Date maturity { get; set; }
          public Calendar fixCalendar { get; set; }
          public Calendar payCalendar { get; set; }
          public BusinessDayConvention fixConvention { get; set; }
-         public BusinessDayConvention payConvention{ get; set; }
+         public BusinessDayConvention payConvention { get; set; }
          public double strike { get; set; }
          public Handle<ZeroInflationIndex> infIndex { get; set; }
          public Period observationLag { get; set; }
@@ -67,12 +68,12 @@ namespace QLNet
          }
       }
 
-      public new class Results : Instrument.Results 
+      public new class Results : Instrument.Results
       {
-         public override void reset() { base.reset();}
+         public override void reset() { base.reset(); }
       }
 
-      public class Engine : GenericEngine<CPICapFloor.Arguments,CPICapFloor.Results> {}
+      public class Engine : GenericEngine<CPICapFloor.Arguments, CPICapFloor.Results> { }
 
       public CPICapFloor(Option.Type type,
                          double nominal,
@@ -88,59 +89,66 @@ namespace QLNet
                          Period observationLag,
                          InterpolationType observationInterpolation = InterpolationType.AsIndex)
       {
-         type_ = type; 
-         nominal_ = nominal; 
-         startDate_ = startDate; 
+         type_ = type;
+         nominal_ = nominal;
+         startDate_ = startDate;
          baseCPI_ = baseCPI;
-         maturity_ = maturity; 
-         fixCalendar_ = fixCalendar; 
+         maturity_ = maturity;
+         fixCalendar_ = fixCalendar;
          fixConvention_ = fixConvention;
-         payCalendar_ = payCalendar; 
+         payCalendar_ = payCalendar;
          payConvention_ = payConvention;
-         strike_ = strike; 
-         infIndex_ = infIndex; 
+         strike_ = strike;
+         infIndex_ = infIndex;
          observationLag_ = observationLag;
          observationInterpolation_ = observationInterpolation;
 
-         Utils.QL_REQUIRE(fixCalendar_ != null, ()=> "CPICapFloor: fixing calendar may not be null.");
-         Utils.QL_REQUIRE(payCalendar_ != null, ()=> "CPICapFloor: payment calendar may not be null.");
+         Utils.QL_REQUIRE(fixCalendar_ != null, () => "CPICapFloor: fixing calendar may not be null.");
+         Utils.QL_REQUIRE(payCalendar_ != null, () => "CPICapFloor: payment calendar may not be null.");
 
-         if (observationInterpolation_ == InterpolationType.Flat  ||
-             observationInterpolation_ == InterpolationType.AsIndex && !infIndex_.link.interpolated()) 
+         if (observationInterpolation_ == InterpolationType.Flat ||
+             observationInterpolation_ == InterpolationType.AsIndex && !infIndex_.link.interpolated())
          {
-            Utils.QL_REQUIRE(observationLag_ >= infIndex_.link.availabilityLag(),()=>
-                       "CPIcapfloor's observationLag must be at least availabilityLag of inflation index: "
-                       +"when the observation is effectively flat"
-                       + observationLag_ + " vs " + infIndex_.link.availabilityLag());
+            Utils.QL_REQUIRE(observationLag_ >= infIndex_.link.availabilityLag(), () =>
+                        "CPIcapfloor's observationLag must be at least availabilityLag of inflation index: "
+                        + "when the observation is effectively flat"
+                        + observationLag_ + " vs " + infIndex_.link.availabilityLag());
          }
          if (observationInterpolation_ == InterpolationType.Linear ||
-            (observationInterpolation_ == InterpolationType.AsIndex && infIndex_.link.interpolated())) 
+            (observationInterpolation_ == InterpolationType.AsIndex && infIndex_.link.interpolated()))
          {
-            Utils.QL_REQUIRE(observationLag_ > infIndex_.link.availabilityLag(),()=>
-                       "CPIcapfloor's observationLag must be greater then availabilityLag of inflation index: "
-                       +"when the observation is effectively linear"
-                       + observationLag_ + " vs " + infIndex_.link.availabilityLag());
+            Utils.QL_REQUIRE(observationLag_ > infIndex_.link.availabilityLag(), () =>
+                        "CPIcapfloor's observationLag must be greater then availabilityLag of inflation index: "
+                        + "when the observation is effectively linear"
+                        + observationLag_ + " vs " + infIndex_.link.availabilityLag());
          }
       }
 
       // Inspectors
-      public Option.Type type()  { return type_; }
+      public Option.Type type() { return type_; }
+
       public double nominal() { return nominal_; }
+
       //! \f$ K \f$ in the above formula.
       public double strike() { return strike_; }
+
       //! when you fix - but remember that there is an observation interpolation factor as well
-      public Date fixingDate() { return fixCalendar_.adjust( maturity_ - observationLag_, fixConvention_ ); }
-      public Date payDate() { return payCalendar_.adjust( maturity_, payConvention_ ); }
+      public Date fixingDate() { return fixCalendar_.adjust(maturity_ - observationLag_, fixConvention_); }
+
+      public Date payDate() { return payCalendar_.adjust(maturity_, payConvention_); }
+
       public Handle<ZeroInflationIndex> inflationIndex() { return infIndex_; }
+
       public Period observationLag() { return observationLag_; }
 
       // Instrument interface
-      public override bool isExpired() {return (Settings.evaluationDate() > maturity_);}
+      public override bool isExpired() { return (Settings.evaluationDate() > maturity_); }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          // correct PricingEngine?
          CPICapFloor.Arguments arguments = args as CPICapFloor.Arguments;
-         Utils.QL_REQUIRE( arguments != null,()=> "wrong argument type, not CPICapFloor.Arguments" );
+         Utils.QL_REQUIRE(arguments != null, () => "wrong argument type, not CPICapFloor.Arguments");
 
          // data move
          arguments.type = type_;
@@ -158,7 +166,6 @@ namespace QLNet
          arguments.infIndex = infIndex_;
          arguments.observationLag = observationLag_;
          arguments.observationInterpolation = observationInterpolation_;
-
       }
 
       protected Option.Type type_;
@@ -175,6 +182,4 @@ namespace QLNet
       protected Period observationLag_;
       protected InterpolationType observationInterpolation_;
    }
-
-
 }

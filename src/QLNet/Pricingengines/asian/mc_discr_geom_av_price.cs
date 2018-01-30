@@ -1,21 +1,22 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
@@ -53,13 +54,13 @@ namespace QLNet
       // conversion to pricing engine
       protected override PathPricer<IPath> pathPricer()
       {
-         PlainVanillaPayoff payoff = (PlainVanillaPayoff) (this.arguments_.payoff);
+         PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
          Utils.QL_REQUIRE(payoff != null, () => "non-plain payoff given");
 
-         EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
+         EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
-         return (PathPricer<IPath>) new GeometricAPOPathPricer(
+         return (PathPricer<IPath>)new GeometricAPOPathPricer(
             payoff.optionType(),
             payoff.strike(),
             this.process_.riskFreeRate().link.discount(
@@ -127,7 +128,7 @@ namespace QLNet
             }
             else
             {
-               averagePrice *= Math.Pow(product, 1.0 / (double) fixings);
+               averagePrice *= Math.Pow(product, 1.0 / (double)fixings);
                product = price;
             }
          }
@@ -226,7 +227,7 @@ namespace QLNet
       public IPricingEngine value()
       {
          Utils.QL_REQUIRE(steps_ != null, () => "max number of steps per year not given");
-         return (IPricingEngine) new MCDiscreteGeometricAPEngine<RNG, S>(process_,
+         return (IPricingEngine)new MCDiscreteGeometricAPEngine<RNG, S>(process_,
             steps_.Value,
             brownianBridge_,
             antithetic_, controlVariate_,
@@ -243,4 +244,3 @@ namespace QLNet
       private ulong seed_;
    }
 }
-

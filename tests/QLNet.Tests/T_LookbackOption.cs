@@ -1,34 +1,39 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
+#if NET40 || NET45
+
    [TestClass()]
-   #endif
+#endif
    public class T_LookbackOption
    {
-      void REPORT_FAILURE_FLOATING( string greekName,
+      private void REPORT_FAILURE_FLOATING(string greekName,
                            double minmax,
                            FloatingTypePayoff payoff,
                            Exercise exercise,
@@ -40,9 +45,9 @@ namespace TestSuite
                            double expected,
                            double calculated,
                            double error,
-                           double tolerance )
+                           double tolerance)
       {
-         QAssert.Fail( exercise.GetType() + " "
+         QAssert.Fail(exercise.GetType() + " "
                       + payoff.optionType() + " lookback option with "
                       + payoff + " payoff:\n"
                       + "    underlying value  " + s + "\n"
@@ -54,10 +59,10 @@ namespace TestSuite
                       + "    expected " + greekName + ":   " + expected + "\n"
                       + "    calculated " + greekName + ": " + calculated + "\n"
                       + "    error:            " + error + "\n"
-                      + "    tolerance:        " + tolerance );
+                      + "    tolerance:        " + tolerance);
       }
 
-      void REPORT_FAILURE_FIXED( string greekName,
+      private void REPORT_FAILURE_FIXED(string greekName,
                           double minmax,
                           StrikedTypePayoff payoff,
                           Exercise exercise,
@@ -69,9 +74,9 @@ namespace TestSuite
                           double expected,
                           double calculated,
                           double error,
-                          double tolerance )
+                          double tolerance)
       {
-         QAssert.Fail( exercise.GetType() + " "
+         QAssert.Fail(exercise.GetType() + " "
                       + payoff.optionType() + " lookback option with "
                       + payoff + " payoff:\n"
                       + "    underlying value  " + s + "\n"
@@ -84,13 +89,13 @@ namespace TestSuite
                       + "    expected " + greekName + ":   " + expected + "\n"
                       + "    calculated " + greekName + ": " + calculated + "\n"
                       + "    error:            " + error + "\n"
-                      + "    tolerance:        " + tolerance );
+                      + "    tolerance:        " + tolerance);
       }
 
-      class LookbackOptionData
+      private class LookbackOptionData
       {
-         public LookbackOptionData(Option.Type type_,double strike_,double minmax_,double s_,double q_,double r_,
-            double t_,double v_,double l_,double t1_,double result_,double tol_)
+         public LookbackOptionData(Option.Type type_, double strike_, double minmax_, double s_, double q_, double r_,
+            double t_, double v_, double l_, double t1_, double result_, double tol_)
          {
             type = type_;
             strike = strike_;
@@ -105,6 +110,7 @@ namespace TestSuite
             result = result_;
             tol = tol_;
          }
+
          public Option.Type type;
          public double strike;
          public double minmax;
@@ -116,18 +122,20 @@ namespace TestSuite
 
          //Partial-time lookback options:
          public double l;        // level above/below actual extremum
+
          public double t1;       // time to start of lookback period
 
          public double result;   // result
          public double tol;      // tolerance
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testAnalyticContinuousFloatingLookback() 
+#endif
+      public void testAnalyticContinuousFloatingLookback()
       {
          // Testing analytic continuous floating-strike lookback options
          LookbackOptionData[] values =
@@ -155,15 +163,15 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             FloatingTypePayoff payoff = new FloatingTypePayoff(values[i].type);
 
@@ -182,8 +190,9 @@ namespace TestSuite
 
             double calculated = option.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error>values[i].tol) {
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
+            {
                REPORT_FAILURE_FLOATING("value", values[i].minmax, payoff,
                                        exercise, values[i].s, values[i].q,
                                        values[i].r, today, values[i].v,
@@ -193,15 +202,16 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testAnalyticContinuousFixedLookback() 
+#endif
+      public void testAnalyticContinuousFixedLookback()
       {
          // Testing analytic continuous fixed-strike lookback options
-         LookbackOptionData[] values = 
+         LookbackOptionData[] values =
          {
             // data from "Option Pricing Formulas", Haug, 1998, pg.63-64
             //type,            strike, minmax,  s,     q,    r,    t,    v,    l, t1, result,  tol
@@ -242,7 +252,6 @@ namespace TestSuite
             new LookbackOptionData(  Option.Type.Put,    105,    100,     100.0, 0.00, 0.10, 1.00, 0.10, 0, 0,   8.3321, 1.0e-4),
             new LookbackOptionData(  Option.Type.Put,    105,    100,     100.0, 0.00, 0.10, 1.00, 0.20, 0, 0,  14.6536, 1.0e-4),
             new LookbackOptionData(  Option.Type.Put,    105,    100,     100.0, 0.00, 0.10, 1.00, 0.30, 0, 0,  20.9130, 1.0e-4)
-
          };
 
          DayCounter dc = new Actual360();
@@ -256,15 +265,15 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
@@ -277,13 +286,13 @@ namespace TestSuite
             IPricingEngine engine = new AnalyticContinuousFixedLookbackEngine(stochProcess);
 
             ContinuousFixedLookbackOption option = new ContinuousFixedLookbackOption(values[i].minmax,
-               payoff,exercise);
+               payoff, exercise);
             option.setPricingEngine(engine);
 
             double calculated = option.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error>values[i].tol) 
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
             {
                REPORT_FAILURE_FIXED("value", values[i].minmax, payoff, exercise,
                                     values[i].s, values[i].q, values[i].r, today,
@@ -291,18 +300,18 @@ namespace TestSuite
                                     values[i].tol);
             }
          }
-      
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testAnalyticContinuousPartialFloatingLookback() 
+#endif
+      public void testAnalyticContinuousPartialFloatingLookback()
       {
          // Testing analytic continuous partial floating-strike lookback options...");
-         LookbackOptionData[] values = 
+         LookbackOptionData[] values =
          {
             // data from "Option Pricing Formulas, Second Edition", Haug, 2006, pg.146
 
@@ -356,15 +365,15 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             FloatingTypePayoff payoff = new FloatingTypePayoff(values[i].type);
 
@@ -376,15 +385,15 @@ namespace TestSuite
 
             IPricingEngine engine = new AnalyticContinuousPartialFloatingLookbackEngine(stochProcess);
 
-            Date lookbackEnd = today + Convert.ToInt32(values[i].t1*360+0.5);
+            Date lookbackEnd = today + Convert.ToInt32(values[i].t1 * 360 + 0.5);
             ContinuousPartialFloatingLookbackOption option = new ContinuousPartialFloatingLookbackOption(
-               values[i].minmax,values[i].l,lookbackEnd,payoff,exercise);
+               values[i].minmax, values[i].l, lookbackEnd, payoff, exercise);
             option.setPricingEngine(engine);
 
             double calculated = option.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error>values[i].tol) 
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
             {
                REPORT_FAILURE_FLOATING("value", values[i].minmax, payoff,
                                        exercise, values[i].s, values[i].q,
@@ -395,15 +404,16 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testAnalyticContinuousPartialFixedLookback() 
+#endif
+      public void testAnalyticContinuousPartialFixedLookback()
       {
          // Testing analytic continuous fixed-strike lookback options
-         LookbackOptionData[] values = 
+         LookbackOptionData[] values =
          {
             // data from "Option Pricing Formulas, Second Edition", Haug, 2006, pg.148
             //type,         strike, minmax, s,    q,    r,    t,    v, l,   t1,  result,   tol
@@ -456,15 +466,15 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
@@ -476,15 +486,15 @@ namespace TestSuite
 
             IPricingEngine engine = new AnalyticContinuousPartialFixedLookbackEngine(stochProcess);
 
-            Date lookbackStart = today + Convert.ToInt32(values[i].t1*360+0.5);
+            Date lookbackStart = today + Convert.ToInt32(values[i].t1 * 360 + 0.5);
             ContinuousPartialFixedLookbackOption option = new ContinuousPartialFixedLookbackOption(lookbackStart,
-               payoff,exercise);
+               payoff, exercise);
             option.setPricingEngine(engine);
 
             double calculated = option.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error>values[i].tol) 
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
             {
                REPORT_FAILURE_FIXED("value", values[i].minmax, payoff, exercise,
                                     values[i].s, values[i].q, values[i].r, today,

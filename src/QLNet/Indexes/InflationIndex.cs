@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -35,13 +35,14 @@ namespace QLNet
           give the previous period's value)
           and enables storage of the most recent uninterpolated value.
       */
-      public InflationIndex( string familyName,
+
+      public InflationIndex(string familyName,
                              Region region,
                              bool revised,
                              bool interpolated,
                              Frequency frequency,
                              Period availabilitiyLag,
-                             Currency currency )
+                             Currency currency)
       {
          familyName_ = familyName;
          region_ = region;
@@ -50,23 +51,23 @@ namespace QLNet
          frequency_ = frequency;
          availabilityLag_ = availabilitiyLag;
          currency_ = currency;
-         name_ = region_.name() + " " + familyName_; 
-         Settings.registerWith( update );
-         IndexManager.instance().notifier( name() ).registerWith( update );
+         name_ = region_.name() + " " + familyName_;
+         Settings.registerWith(update);
+         IndexManager.instance().notifier(name()).registerWith(update);
       }
 
-
       // Index interface
-      public override string name() { return name_; } 
+      public override string name() { return name_; }
 
       /*! Inflation indices do not have fixing calendars.  An
           inflation index value is valid for every day (including
           weekends) of a calendar period.  I.e. it uses the
           NullCalendar as its fixing calendar.
       */
+
       public override Calendar fixingCalendar() { return new NullCalendar(); }
 
-      public override bool isValidFixingDate( Date fixingDate ) { return true; }
+      public override bool isValidFixingDate(Date fixingDate) { return true; }
 
       /*! Forecasting index values requires an inflation term
           structure.  The inflation term structure (ITS) defines the
@@ -79,27 +80,28 @@ namespace QLNet
           publication but the inflation swaps may take as their base
           the index 3 months before.
       */
-      public override double fixing( Date fixingDate, bool forecastTodaysFixing = false ) { return 0; }
+
+      public override double fixing(Date fixingDate, bool forecastTodaysFixing = false) { return 0; }
 
       /*! this method creates all the "fixings" for the relevant
           period of the index.  E.g. for monthly indices it will put
           the same value in every calendar day in the month.
       */
-      public override void addFixing( Date fixingDate, double fixing, bool forceOverwrite = false )
-      {
-         KeyValuePair<Date, Date> lim = Utils.inflationPeriod( fixingDate, frequency_ );
-         int n = lim.Value - lim.Key + 1;
-         List<Date> dates = new List<Date>( n );
-         List<double> rates = new List<double>( n );
 
-         for ( int i = 0; i < n; ++i )
+      public override void addFixing(Date fixingDate, double fixing, bool forceOverwrite = false)
+      {
+         KeyValuePair<Date, Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
+         int n = lim.Value - lim.Key + 1;
+         List<Date> dates = new List<Date>(n);
+         List<double> rates = new List<double>(n);
+
+         for (int i = 0; i < n; ++i)
          {
-            dates.Add( lim.Key + i );
-            rates.Add( fixing );
+            dates.Add(lim.Key + i);
+            rates.Add(fixing);
          }
 
-         base.addFixings( dates, rates, forceOverwrite );
-
+         base.addFixings(dates, rates, forceOverwrite);
       }
 
       // Observer interface
@@ -107,16 +109,22 @@ namespace QLNet
 
       // Inspectors
       public string familyName() { return familyName_; }
+
       public Region region() { return region_; }
+
       public bool revised() { return revised_; }
+
       /*! Forecasting index values using an inflation term structure
          uses the interpolation of the inflation term structure
          unless interpolation is set to false.  In this case the
          extrapolated values are constant within each period taking
          the mid-period extrapolated value.
       */
+
       public bool interpolated() { return interpolated_; }
+
       public Frequency frequency() { return frequency_; }
+
       /*! The availability lag describes when the index is
          <i>available</i>, not how it is used.  Specifically the
          fixing for, say, January, may only be available in April
@@ -124,7 +132,9 @@ namespace QLNet
          applicable for January as its January fixing (independent
          of the lag in availability).
       */
+
       public Period availabilityLag() { return availabilityLag_; }
+
       public Currency currency() { return currency_; }
 
       protected Date referenceDate_;
@@ -139,53 +149,53 @@ namespace QLNet
       private string name_;
    }
 
-
    //! Base class for zero inflation indices.
    public class ZeroInflationIndex : InflationIndex
    {
       //! Always use the evaluation date as the reference date
-      public ZeroInflationIndex( string familyName,
+      public ZeroInflationIndex(string familyName,
                                 Region region,
                                 bool revised,
                                 bool interpolated,
                                 Frequency frequency,
                                 Period availabilityLag,
                                 Currency currency,
-                                Handle<ZeroInflationTermStructure> ts = null )
-         : base( familyName, region, revised, interpolated,
-                     frequency, availabilityLag, currency )
+                                Handle<ZeroInflationTermStructure> ts = null)
+         : base(familyName, region, revised, interpolated,
+                     frequency, availabilityLag, currency)
       {
          zeroInflation_ = ts ?? new Handle<ZeroInflationTermStructure>();
-         zeroInflation_.registerWith( update );
+         zeroInflation_.registerWith(update);
       }
 
       /*! \warning the forecastTodaysFixing parameter (required by
                    the Index interface) is currently ignored.
       */
-      public override double fixing( Date aFixingDate, bool forecastTodaysFixing = false )
-      {
-         if ( !needsForecast( aFixingDate ) )
-         {
-            KeyValuePair<Date, Date> lim = Utils.inflationPeriod( aFixingDate, frequency_ );
-            Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).ContainsKey( lim.Key ), () =>
-               "Missing " + name() + " fixing for " + lim.Key );
 
-            double? pastFixing = IndexManager.instance().getHistory( name() )[lim.Key];
+      public override double fixing(Date aFixingDate, bool forecastTodaysFixing = false)
+      {
+         if (!needsForecast(aFixingDate))
+         {
+            KeyValuePair<Date, Date> lim = Utils.inflationPeriod(aFixingDate, frequency_);
+            Utils.QL_REQUIRE(IndexManager.instance().getHistory(name()).ContainsKey(lim.Key), () =>
+          "Missing " + name() + " fixing for " + lim.Key);
+
+            double? pastFixing = IndexManager.instance().getHistory(name())[lim.Key];
             double? theFixing = pastFixing;
-            if ( interpolated_ )
+            if (interpolated_)
             {
                // fixings stored on first day of every period
-               if ( aFixingDate == lim.Key )
+               if (aFixingDate == lim.Key)
                {
                   // we don't actually need the next fixing
                   theFixing = pastFixing;
                }
                else
                {
-                  Utils.QL_REQUIRE( IndexManager.instance().getHistory( name() ).ContainsKey( lim.Value + 1 ), () =>
-                     "Missing " + name() + " fixing for " + ( lim.Value + 1 ) );
+                  Utils.QL_REQUIRE(IndexManager.instance().getHistory(name()).ContainsKey(lim.Value + 1), () =>
+                "Missing " + name() + " fixing for " + (lim.Value + 1));
 
-                  double? pastFixing2 = IndexManager.instance().getHistory( name() )[lim.Value + 1];
+                  double? pastFixing2 = IndexManager.instance().getHistory(name())[lim.Value + 1];
 
                   // Use lagged period for interpolation
                   KeyValuePair<Date, Date> reference_period_lim = Utils.inflationPeriod(aFixingDate + zeroInflationTermStructure().link.observationLag(), frequency_);
@@ -199,21 +209,21 @@ namespace QLNet
          }
          else
          {
-            return forecastFixing( aFixingDate );
+            return forecastFixing(aFixingDate);
          }
       }
 
       // Other methods
       public Handle<ZeroInflationTermStructure> zeroInflationTermStructure() { return zeroInflation_; }
-      public ZeroInflationIndex clone( Handle<ZeroInflationTermStructure> h )
-      {
 
-         return new ZeroInflationIndex( familyName_, region_, revised_,
+      public ZeroInflationIndex clone(Handle<ZeroInflationTermStructure> h)
+      {
+         return new ZeroInflationIndex(familyName_, region_, revised_,
                                            interpolated_, frequency_,
-                                           availabilityLag_, currency_, h );
+                                           availabilityLag_, currency_, h);
       }
 
-      private bool needsForecast( Date fixingDate )
+      private bool needsForecast(Date fixingDate)
       {
          // Stored fixings are always non-interpolated.
          // If an interpolated fixing is required then
@@ -225,23 +235,23 @@ namespace QLNet
          Date today = Settings.evaluationDate();
          Date todayMinusLag = today - availabilityLag_;
 
-         Date historicalFixingKnown = Utils.inflationPeriod( todayMinusLag, frequency_ ).Key - 1;
+         Date historicalFixingKnown = Utils.inflationPeriod(todayMinusLag, frequency_).Key - 1;
          Date latestNeededDate = fixingDate;
 
-         if ( interpolated_ )
+         if (interpolated_)
          { // might need the next one too
-            KeyValuePair<Date, Date> p = Utils.inflationPeriod( fixingDate, frequency_ );
-            if ( fixingDate > p.Key )
-               latestNeededDate = latestNeededDate + new Period( frequency_ );
+            KeyValuePair<Date, Date> p = Utils.inflationPeriod(fixingDate, frequency_);
+            if (fixingDate > p.Key)
+               latestNeededDate = latestNeededDate + new Period(frequency_);
          }
 
-         if ( latestNeededDate <= historicalFixingKnown )
+         if (latestNeededDate <= historicalFixingKnown)
          {
             // the fixing date is well before the availability lag, so
             // we know that fixings were provided.
             return false;
          }
-         else if ( latestNeededDate > today )
+         else if (latestNeededDate > today)
          {
             // the fixing can't be available, no matter what's in the
             // time series
@@ -255,14 +265,15 @@ namespace QLNet
             return !timeSeries().ContainsKey(latestNeededDate);
          }
       }
-      private double forecastFixing( Date fixingDate )
+
+      private double forecastFixing(Date fixingDate)
       {
          // the term structure is relative to the fixing value at the base date.
          Date baseDate = zeroInflation_.link.baseDate();
-         Utils.QL_REQUIRE( !needsForecast( baseDate ), () => name() + " index fixing at base date is not available" );
-         double baseFixing = fixing( baseDate, false );
+         Utils.QL_REQUIRE(!needsForecast(baseDate), () => name() + " index fixing at base date is not available");
+         double baseFixing = fixing(baseDate, false);
          Date effectiveFixingDate;
-         if ( interpolated() )
+         if (interpolated())
          {
             effectiveFixingDate = fixingDate;
          }
@@ -270,7 +281,7 @@ namespace QLNet
          {
             // start of period is the convention
             // so it's easier to do linear interpolation on fixings
-            effectiveFixingDate = Utils.inflationPeriod( fixingDate, frequency() ).Key;
+            effectiveFixingDate = Utils.inflationPeriod(fixingDate, frequency()).Key;
          }
 
          // no observation lag because it is the fixing for the date
@@ -278,14 +289,14 @@ namespace QLNet
          // for each period, hence the t uses the effectiveFixingDate
          // However, it's slightly safe to get the zeroRate with the
          // fixingDate to avoid potential problems at the edges of periods
-         double t = zeroInflation_.link.dayCounter().yearFraction( baseDate, effectiveFixingDate );
+         double t = zeroInflation_.link.dayCounter().yearFraction(baseDate, effectiveFixingDate);
          bool forceLinearInterpolation = false;
-         double zero = zeroInflation_.link.zeroRate( fixingDate, new Period( 0, TimeUnit.Days ), forceLinearInterpolation );
+         double zero = zeroInflation_.link.zeroRate(fixingDate, new Period(0, TimeUnit.Days), forceLinearInterpolation);
          // Annual compounding is the convention for zero inflation rates (or quotes)
-         return baseFixing * Math.Pow( 1.0 + zero, t );
+         return baseFixing * Math.Pow(1.0 + zero, t);
       }
-      private Handle<ZeroInflationTermStructure> zeroInflation_;
 
+      private Handle<ZeroInflationTermStructure> zeroInflation_;
    }
 
    //! Base class for year-on-year inflation indices.
@@ -293,9 +304,10 @@ namespace QLNet
        "fake" indices that are defined as the ratio of an index at
        different time points.
    */
+
    public class YoYInflationIndex : InflationIndex
    {
-      public YoYInflationIndex( string familyName,
+      public YoYInflationIndex(string familyName,
                                 Region region,
                                 bool revised,
                                 bool interpolated,
@@ -303,46 +315,45 @@ namespace QLNet
                                 Frequency frequency,
                                 Period availabilityLag,
                                 Currency currency,
-                                Handle<YoYInflationTermStructure> yoyInflation = null )
-         : base( familyName, region, revised, interpolated, frequency, availabilityLag, currency )
+                                Handle<YoYInflationTermStructure> yoyInflation = null)
+         : base(familyName, region, revised, interpolated, frequency, availabilityLag, currency)
       {
          ratio_ = ratio;
          yoyInflation_ = yoyInflation ?? new Handle<YoYInflationTermStructure>();
-         yoyInflation_.registerWith( update );
+         yoyInflation_.registerWith(update);
       }
 
       // Index interface
       // The forecastTodaysFixing parameter (required by the Index interface) is currently ignored.
-      public override double fixing( Date fixingDate, bool forecastTodaysFixing = false )
+      public override double fixing(Date fixingDate, bool forecastTodaysFixing = false)
       {
          Date today = Settings.evaluationDate();
          Date todayMinusLag = today - availabilityLag_;
-         KeyValuePair<Date, Date> limm = Utils.inflationPeriod( todayMinusLag, frequency_ );
+         KeyValuePair<Date, Date> limm = Utils.inflationPeriod(todayMinusLag, frequency_);
          Date lastFix = limm.Key - 1;
 
          Date flatMustForecastOn = lastFix + 1;
-         Date interpMustForecastOn = lastFix + 1 - new Period( frequency_ );
+         Date interpMustForecastOn = lastFix + 1 - new Period(frequency_);
 
-
-         if ( interpolated() && fixingDate >= interpMustForecastOn )
+         if (interpolated() && fixingDate >= interpMustForecastOn)
          {
-            return forecastFixing( fixingDate );
+            return forecastFixing(fixingDate);
          }
 
-         if ( !interpolated() && fixingDate >= flatMustForecastOn )
+         if (!interpolated() && fixingDate >= flatMustForecastOn)
          {
-            return forecastFixing( fixingDate );
+            return forecastFixing(fixingDate);
          }
 
          // four cases with ratio() and interpolated()
-         if ( ratio() )
+         if (ratio())
          {
-            if ( interpolated() )
+            if (interpolated())
             {
                // IS ratio, IS interpolated
-               KeyValuePair<Date, Date> lim = Utils.inflationPeriod( fixingDate, frequency_ );
-               Date fixMinus1Y = new NullCalendar().advance( fixingDate, new Period( -1, TimeUnit.Years ), BusinessDayConvention.ModifiedFollowing );
-               KeyValuePair<Date, Date> limBef = Utils.inflationPeriod( fixMinus1Y, frequency_ );
+               KeyValuePair<Date, Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
+               Date fixMinus1Y = new NullCalendar().advance(fixingDate, new Period(-1, TimeUnit.Years), BusinessDayConvention.ModifiedFollowing);
+               KeyValuePair<Date, Date> limBef = Utils.inflationPeriod(fixMinus1Y, frequency_);
                double dp = lim.Value + 1 - lim.Key;
                double dpBef = limBef.Value + 1 - limBef.Key;
                double dl = fixingDate - lim.Key;
@@ -351,80 +362,78 @@ namespace QLNet
                // get the four relevant fixings
                // recall that they are stored flat for every day
                double? limFirstFix =
-               IndexManager.instance().getHistory( name() )[lim.Key];
-               Utils.QL_REQUIRE( limFirstFix != null ,()=> "Missing " + name() + " fixing for " + lim.Key );
+               IndexManager.instance().getHistory(name())[lim.Key];
+               Utils.QL_REQUIRE(limFirstFix != null, () => "Missing " + name() + " fixing for " + lim.Key);
                double? limSecondFix =
-               IndexManager.instance().getHistory( name() )[lim.Value + 1];
-               Utils.QL_REQUIRE( limSecondFix != null ,()=> "Missing " + name() + " fixing for " + lim.Value + 1 );
+               IndexManager.instance().getHistory(name())[lim.Value + 1];
+               Utils.QL_REQUIRE(limSecondFix != null, () => "Missing " + name() + " fixing for " + lim.Value + 1);
                double? limBefFirstFix =
-               IndexManager.instance().getHistory( name() )[limBef.Key];
-               Utils.QL_REQUIRE( limBefFirstFix != null ,()=> "Missing " + name() + " fixing for " + limBef.Key );
+               IndexManager.instance().getHistory(name())[limBef.Key];
+               Utils.QL_REQUIRE(limBefFirstFix != null, () => "Missing " + name() + " fixing for " + limBef.Key);
                double? limBefSecondFix =
-               IndexManager.instance().getHistory( name() )[limBef.Value + 1];
-               Utils.QL_REQUIRE( limBefSecondFix != null ,()=> "Missing " + name() + " fixing for " + limBef.Value + 1 );
+               IndexManager.instance().getHistory(name())[limBef.Value + 1];
+               Utils.QL_REQUIRE(limBefSecondFix != null, () => "Missing " + name() + " fixing for " + limBef.Value + 1);
 
-               double linearNow = limFirstFix.Value + ( limSecondFix.Value - limFirstFix.Value ) * dl / dp;
-               double linearBef = limBefFirstFix.Value + ( limBefSecondFix.Value - limBefFirstFix.Value ) * dlBef / dpBef;
+               double linearNow = limFirstFix.Value + (limSecondFix.Value - limFirstFix.Value) * dl / dp;
+               double linearBef = limBefFirstFix.Value + (limBefSecondFix.Value - limBefFirstFix.Value) * dlBef / dpBef;
                double wasYES = linearNow / linearBef - 1.0;
 
                return wasYES;
-
             }
             else
             {
                // IS ratio, NOT interpolated
-               double? pastFixing = IndexManager.instance().getHistory( name() )[fixingDate];
-               Utils.QL_REQUIRE( pastFixing != null , ()=> "Missing " + name() + " fixing for " + fixingDate );
-               Date previousDate = fixingDate - new Period( 1, TimeUnit.Years );
-               double? previousFixing = IndexManager.instance().getHistory( name() )[previousDate];
-               Utils.QL_REQUIRE( previousFixing != null,()=> "Missing " + name() + " fixing for " + previousDate );
+               double? pastFixing = IndexManager.instance().getHistory(name())[fixingDate];
+               Utils.QL_REQUIRE(pastFixing != null, () => "Missing " + name() + " fixing for " + fixingDate);
+               Date previousDate = fixingDate - new Period(1, TimeUnit.Years);
+               double? previousFixing = IndexManager.instance().getHistory(name())[previousDate];
+               Utils.QL_REQUIRE(previousFixing != null, () => "Missing " + name() + " fixing for " + previousDate);
                return pastFixing.Value / previousFixing.Value - 1.0;
             }
          }
          else
          {
             // NOT ratio
-            if ( interpolated() )
+            if (interpolated())
             {
                // NOT ratio, IS interpolated
-               KeyValuePair<Date, Date> lim = Utils.inflationPeriod( fixingDate, frequency_ );
+               KeyValuePair<Date, Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
                double dp = lim.Value + 1 - lim.Key;
                double dl = fixingDate - lim.Key;
-               double? limFirstFix = IndexManager.instance().getHistory( name() )[lim.Key];
-               Utils.QL_REQUIRE( limFirstFix != null,()=> "Missing " + name() + " fixing for " + lim.Key );
-               double? limSecondFix = IndexManager.instance().getHistory( name() )[lim.Value + 1];
-               Utils.QL_REQUIRE( limSecondFix != null ,()=> "Missing " + name() + " fixing for " + lim.Value + 1 );
-               double linearNow = limFirstFix.Value + ( limSecondFix.Value - limFirstFix.Value ) * dl / dp;
+               double? limFirstFix = IndexManager.instance().getHistory(name())[lim.Key];
+               Utils.QL_REQUIRE(limFirstFix != null, () => "Missing " + name() + " fixing for " + lim.Key);
+               double? limSecondFix = IndexManager.instance().getHistory(name())[lim.Value + 1];
+               Utils.QL_REQUIRE(limSecondFix != null, () => "Missing " + name() + " fixing for " + lim.Value + 1);
+               double linearNow = limFirstFix.Value + (limSecondFix.Value - limFirstFix.Value) * dl / dp;
                return linearNow;
-
             }
             else
             {
                // NOT ratio, NOT interpolated
                // so just flat
-               double? pastFixing = IndexManager.instance().getHistory( name() )[fixingDate];
-               Utils.QL_REQUIRE( pastFixing != null ,()=> "Missing " + name() + " fixing for " + fixingDate );
+               double? pastFixing = IndexManager.instance().getHistory(name())[fixingDate];
+               Utils.QL_REQUIRE(pastFixing != null, () => "Missing " + name() + " fixing for " + fixingDate);
                return pastFixing.Value;
-
             }
          }
       }
 
       // Other methods
       public bool ratio() { return ratio_; }
+
       public Handle<YoYInflationTermStructure> yoyInflationTermStructure() { return yoyInflation_; }
-      public YoYInflationIndex clone( Handle<YoYInflationTermStructure> h )
+
+      public YoYInflationIndex clone(Handle<YoYInflationTermStructure> h)
       {
-         return new YoYInflationIndex( familyName_, region_, revised_,
+         return new YoYInflationIndex(familyName_, region_, revised_,
                                       interpolated_, ratio_, frequency_,
-                                      availabilityLag_, currency_, h );
+                                      availabilityLag_, currency_, h);
       }
 
-
-      private double forecastFixing( Date fixingDate )
+      private double forecastFixing(Date fixingDate)
       {
          Date d;
-         if ( interpolated() )
+         if (interpolated())
          {
             d = fixingDate;
          }
@@ -432,11 +441,12 @@ namespace QLNet
          {
             // if the value is not interpolated use the starting value
             // by internal convention this will be consistent
-            KeyValuePair<Date, Date> lim = Utils.inflationPeriod( fixingDate, frequency_ );
+            KeyValuePair<Date, Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
             d = lim.Key;
          }
-         return yoyInflation_.link.yoyRate( d, new Period( 0, TimeUnit.Days ) );
+         return yoyInflation_.link.yoyRate(d, new Period(0, TimeUnit.Days));
       }
+
       private bool ratio_;
       private Handle<YoYInflationTermStructure> yoyInflation_;
    }

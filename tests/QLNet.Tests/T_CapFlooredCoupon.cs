@@ -1,38 +1,44 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
-      [TestClass()]
-   #endif
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
    public class T_CapFlooredCoupon
    {
       private class CommonVars
       {
          // global data
          public Date today, settlement, startDate;
+
          public Calendar calendar;
          public double nominal;
          public List<double> nominals;
@@ -40,24 +46,26 @@ namespace TestSuite
          public Frequency frequency;
          public IborIndex index;
          public int settlementDays, fixingDays;
-         public RelinkableHandle<YieldTermStructure> termStructure ;
+         public RelinkableHandle<YieldTermStructure> termStructure;
+
          //public List<double> caps;
          //public List<double> floors;
          public int length;
+
          public double volatility;
 
          // cleanup
-         SavedSettings backup;
+         private SavedSettings backup;
 
          // setup
-         public CommonVars() 
+         public CommonVars()
          {
             termStructure = new RelinkableHandle<YieldTermStructure>();
             backup = new SavedSettings();
             length = 20;           //years
             volatility = 0.20;
             nominal = 100.0;
-            nominals = new InitializedList<double>(length,nominal);
+            nominals = new InitializedList<double>(length, nominal);
             frequency = Frequency.Annual;
             index = new Euribor1Y(termStructure);
             calendar = index.fixingCalendar();
@@ -66,16 +74,16 @@ namespace TestSuite
             Settings.setEvaluationDate(today);
             settlementDays = 2;
             fixingDays = 2;
-            settlement = calendar.advance(today,settlementDays,TimeUnit.Days);
+            settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
             startDate = settlement;
-            termStructure.linkTo(Utilities.flatRate(settlement,0.05, new ActualActual(ActualActual.Convention.ISDA)));
+            termStructure.linkTo(Utilities.flatRate(settlement, 0.05, new ActualActual(ActualActual.Convention.ISDA)));
          }
 
          // utilities
-         public List<CashFlow> makeFixedLeg( Date sDate,int len) 
+         public List<CashFlow> makeFixedLeg(Date sDate, int len)
          {
-            Date endDate = calendar.advance( sDate, len, TimeUnit.Years, convention );
-            Schedule schedule = new Schedule( sDate, endDate, new Period( frequency ), calendar,
+            Date endDate = calendar.advance(sDate, len, TimeUnit.Years, convention);
+            Schedule schedule = new Schedule(sDate, endDate, new Period(frequency), calendar,
                convention, convention, DateGeneration.Rule.Forward, false);
             List<double> coupons = new InitializedList<double>(len, 0.0);
             return new FixedRateLeg(schedule)
@@ -83,11 +91,11 @@ namespace TestSuite
                .withNotionals(nominals);
          }
 
-         public List<CashFlow> makeFloatingLeg( Date sDate, int len, double gearing = 1.0, double spread = 0.0 ) 
+         public List<CashFlow> makeFloatingLeg(Date sDate, int len, double gearing = 1.0, double spread = 0.0)
          {
-            Date endDate = calendar.advance( sDate, len, TimeUnit.Years, convention );
-            Schedule schedule = new Schedule( sDate, endDate, new Period( frequency ), calendar,
-               convention,convention,DateGeneration.Rule.Forward,false);
+            Date endDate = calendar.advance(sDate, len, TimeUnit.Years, convention);
+            Schedule schedule = new Schedule(sDate, endDate, new Period(frequency), calendar,
+               convention, convention, DateGeneration.Rule.Forward, false);
             List<double> gearingVector = new InitializedList<double>(len, gearing);
             List<double> spreadVector = new InitializedList<double>(len, spread);
             return new IborLeg(schedule, index)
@@ -99,14 +107,14 @@ namespace TestSuite
                .withPaymentAdjustment(convention);
          }
 
-         public List<CashFlow> makeCapFlooredLeg( Date sDate, int len, List<double?> caps, List<double?> floors,
-            double volatility,double gearing = 1.0,double spread = 0.0) 
+         public List<CashFlow> makeCapFlooredLeg(Date sDate, int len, List<double?> caps, List<double?> floors,
+            double volatility, double gearing = 1.0, double spread = 0.0)
          {
-            Date endDate = calendar.advance( sDate, len, TimeUnit.Years, convention );
-            Schedule schedule = new Schedule( sDate, endDate, new Period( frequency ), calendar,
-               convention,convention,DateGeneration.Rule.Forward,false);
+            Date endDate = calendar.advance(sDate, len, TimeUnit.Years, convention);
+            Schedule schedule = new Schedule(sDate, endDate, new Period(frequency), calendar,
+               convention, convention, DateGeneration.Rule.Forward, false);
             Handle<OptionletVolatilityStructure> vol = new Handle<OptionletVolatilityStructure>(new
-               ConstantOptionletVolatility(0, calendar, BusinessDayConvention.Following, volatility,new Actual365Fixed()));
+               ConstantOptionletVolatility(0, calendar, BusinessDayConvention.Following, volatility, new Actual365Fixed()));
             IborCouponPricer pricer = new BlackIborCouponPricer(vol);
             List<double> gearingVector = new InitializedList<double>(len, gearing);
             List<double> spreadVector = new InitializedList<double>(len, spread);
@@ -124,44 +132,47 @@ namespace TestSuite
             return iborLeg;
          }
 
-         public IPricingEngine makeEngine(double vols) 
+         public IPricingEngine makeEngine(double vols)
          {
             Handle<Quote> vol = new Handle<Quote>(new SimpleQuote(vols));
             return new BlackCapFloorEngine(termStructure, vol);
          }
 
-         public CapFloor makeCapFloor(CapFloorType type,List<CashFlow> leg,double capStrike,
-            double floorStrike,double vol) 
+         public CapFloor makeCapFloor(CapFloorType type, List<CashFlow> leg, double capStrike,
+            double floorStrike, double vol)
          {
             CapFloor result = null;
-            switch (type) 
+            switch (type)
             {
                case CapFloorType.Cap:
                   result = new Cap(leg, new InitializedList<double>(1, capStrike));
                   break;
+
                case CapFloorType.Floor:
                   result = new Floor(leg, new InitializedList<double>(1, floorStrike));
                   break;
+
                case CapFloorType.Collar:
-                  result = new Collar(leg,new InitializedList<double>(1, capStrike),
+                  result = new Collar(leg, new InitializedList<double>(1, capStrike),
                      new InitializedList<double>(1, floorStrike));
                   break;
+
                default:
                   Utils.QL_FAIL("unknown cap/floor type");
                   break;
             }
             result.setPricingEngine(makeEngine(vol));
             return result;
-        }
-            
+         }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testLargeRates() 
+#endif
+      public void testLargeRates()
       {
          // Testing degenerate collared coupon
 
@@ -172,74 +183,75 @@ namespace TestSuite
             (depending on variance: option expiry and volatility)
          */
 
-         List<double?> caps = new InitializedList<double?>(vars.length,100.0);
-         List<double?> floors = new InitializedList<double?>(vars.length,0.0);
+         List<double?> caps = new InitializedList<double?>(vars.length, 100.0);
+         List<double?> floors = new InitializedList<double?>(vars.length, 0.0);
          double tolerance = 1e-10;
 
          // fixed leg with zero rate
-         List<CashFlow> fixedLeg = vars.makeFixedLeg(vars.startDate,vars.length);
-         List<CashFlow> floatLeg = vars.makeFloatingLeg(vars.startDate,vars.length);
-         List<CashFlow> collaredLeg = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors,vars.volatility);
+         List<CashFlow> fixedLeg = vars.makeFixedLeg(vars.startDate, vars.length);
+         List<CashFlow> floatLeg = vars.makeFloatingLeg(vars.startDate, vars.length);
+         List<CashFlow> collaredLeg = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors, vars.volatility);
 
          IPricingEngine engine = new DiscountingSwapEngine(vars.termStructure);
-         Swap vanillaLeg = new Swap(fixedLeg,floatLeg);
-         Swap collarLeg = new Swap(fixedLeg,collaredLeg);
+         Swap vanillaLeg = new Swap(fixedLeg, floatLeg);
+         Swap collarLeg = new Swap(fixedLeg, collaredLeg);
          vanillaLeg.setPricingEngine(engine);
          collarLeg.setPricingEngine(engine);
          double npvVanilla = vanillaLeg.NPV();
          double npvCollar = collarLeg.NPV();
-         if ( Math.Abs( npvVanilla - npvCollar ) > tolerance ) 
+         if (Math.Abs(npvVanilla - npvCollar) > tolerance)
          {
             QAssert.Fail("Lenght: " + vars.length + " y" + "\n" +
-                        "Volatility: " + vars.volatility*100 + "%\n" +
+                        "Volatility: " + vars.volatility * 100 + "%\n" +
                         "Notional: " + vars.nominal + "\n" +
                         "Vanilla floating leg NPV: " + vanillaLeg.NPV()
                         + "\n" +
                         "Collared floating leg NPV (strikes 0 and 100): "
                         + collarLeg.NPV()
                         + "\n" +
-                        "Diff: " + Math.Abs(vanillaLeg.NPV()-collarLeg.NPV()));
+                        "Diff: " + Math.Abs(vanillaLeg.NPV() - collarLeg.NPV()));
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testDecomposition() 
+#endif
+      public void testDecomposition()
       {
          // Testing collared coupon against its decomposition
 
          CommonVars vars = new CommonVars();
 
          double tolerance = 1e-12;
-         double npvVanilla,npvCappedLeg,npvFlooredLeg,npvCollaredLeg,npvCap,npvFloor,npvCollar;
+         double npvVanilla, npvCappedLeg, npvFlooredLeg, npvCollaredLeg, npvCap, npvFloor, npvCollar;
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         List<double?> caps = new InitializedList<double?>(vars.length,capstrike);
+         List<double?> caps = new InitializedList<double?>(vars.length, capstrike);
          List<double?> caps0 = new List<double?>();
-         List<double?> floors = new InitializedList<double?>(vars.length,floorstrike);
+         List<double?> floors = new InitializedList<double?>(vars.length, floorstrike);
          List<double?> floors0 = new List<double?>();
          double gearing_p = 0.5;
-         double spread_p =  0.002;
+         double spread_p = 0.002;
          double gearing_n = -1.5;
          double spread_n = 0.12;
          // fixed leg with zero rate
-         List<CashFlow> fixedLeg  = vars.makeFixedLeg(vars.startDate,vars.length);
+         List<CashFlow> fixedLeg = vars.makeFixedLeg(vars.startDate, vars.length);
          // floating leg with gearing=1 and spread=0
-         List<CashFlow> floatLeg  = vars.makeFloatingLeg(vars.startDate,vars.length);
+         List<CashFlow> floatLeg = vars.makeFloatingLeg(vars.startDate, vars.length);
          // floating leg with positive gearing (gearing_p) and spread<>0
-         List<CashFlow> floatLeg_p = vars.makeFloatingLeg(vars.startDate,vars.length,gearing_p,spread_p);
+         List<CashFlow> floatLeg_p = vars.makeFloatingLeg(vars.startDate, vars.length, gearing_p, spread_p);
          // floating leg with negative gearing (gearing_n) and spread<>0
-         List<CashFlow> floatLeg_n = vars.makeFloatingLeg(vars.startDate,vars.length,gearing_n,spread_n);
+         List<CashFlow> floatLeg_n = vars.makeFloatingLeg(vars.startDate, vars.length, gearing_n, spread_n);
          // Swap with null fixed leg and floating leg with gearing=1 and spread=0
-         Swap vanillaLeg = new Swap(fixedLeg,floatLeg);
+         Swap vanillaLeg = new Swap(fixedLeg, floatLeg);
          // Swap with null fixed leg and floating leg with positive gearing and spread<>0
-         Swap vanillaLeg_p = new Swap(fixedLeg,floatLeg_p);
+         Swap vanillaLeg_p = new Swap(fixedLeg, floatLeg_p);
          // Swap with null fixed leg and floating leg with negative gearing and spread<>0
-         Swap vanillaLeg_n = new Swap(fixedLeg,floatLeg_n);
+         Swap vanillaLeg_n = new Swap(fixedLeg, floatLeg_n);
 
          IPricingEngine engine = new DiscountingSwapEngine(vars.termStructure);
          vanillaLeg.setPricingEngine(engine);
@@ -254,22 +266,22 @@ namespace TestSuite
          */
 
          // Case gearing = 1 and spread = 0
-         List<CashFlow> cappedLeg = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors0,vars.volatility);
-         Swap capLeg = new Swap(fixedLeg,cappedLeg);
+         List<CashFlow> cappedLeg = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors0, vars.volatility);
+         Swap capLeg = new Swap(fixedLeg, cappedLeg);
          capLeg.setPricingEngine(engine);
          Cap cap = new Cap(floatLeg, new InitializedList<double>(1, capstrike));
          cap.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg.NPV();
          npvCappedLeg = capLeg.NPV();
          npvCap = cap.NPV();
-         error = Math.Abs(npvCappedLeg - (npvVanilla-npvCap));
-         if (error>tolerance) 
+         error = Math.Abs(npvCappedLeg - (npvVanilla - npvCap));
+         if (error > tolerance)
          {
-            QAssert.Fail("\nCapped Leg: gearing=1, spread=0%, strike=" + capstrike*100 +
+            QAssert.Fail("\nCapped Leg: gearing=1, spread=0%, strike=" + capstrike * 100 +
                         "%\n" +
                         "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
                         "  Floating Leg NPV - Cap NPV: " + (npvVanilla - npvCap) + "\n" +
-                        "  Diff: " + error );
+                        "  Diff: " + error);
          }
 
          /* gearing = 1 and spread = 0
@@ -280,21 +292,21 @@ namespace TestSuite
                   = VanillaFloatingLeg + Put
          */
 
-         List<CashFlow> flooredLeg = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps0,floors,vars.volatility);
-         Swap floorLeg = new Swap(fixedLeg,flooredLeg);
+         List<CashFlow> flooredLeg = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps0, floors, vars.volatility);
+         Swap floorLeg = new Swap(fixedLeg, flooredLeg);
          floorLeg.setPricingEngine(engine);
          Floor floor = new Floor(floatLeg, new InitializedList<double>(1, floorstrike));
          floor.setPricingEngine(vars.makeEngine(vars.volatility));
          npvFlooredLeg = floorLeg.NPV();
          npvFloor = floor.NPV();
-         error = Math.Abs(npvFlooredLeg-(npvVanilla + npvFloor));
-         if (error>tolerance) 
+         error = Math.Abs(npvFlooredLeg - (npvVanilla + npvFloor));
+         if (error > tolerance)
          {
-            QAssert.Fail("Floored Leg: gearing=1, spread=0%, strike=" + floorstrike *100 +
+            QAssert.Fail("Floored Leg: gearing=1, spread=0%, strike=" + floorstrike * 100 +
                         "%\n" +
                         "  Floored Floating Leg NPV: " + npvFlooredLeg + "\n" +
                         "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor) + "\n" +
-                        "  Diff: " + error );
+                        "  Diff: " + error);
          }
 
          /* gearing = 1 and spread = 0
@@ -303,22 +315,22 @@ namespace TestSuite
                   = VanillaFloatingLeg - Collar
          */
 
-         List<CashFlow> collaredLeg = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors,vars.volatility);
-         Swap collarLeg = new Swap(fixedLeg,collaredLeg);
+         List<CashFlow> collaredLeg = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors, vars.volatility);
+         Swap collarLeg = new Swap(fixedLeg, collaredLeg);
          collarLeg.setPricingEngine(engine);
-         Collar collar = new Collar(floatLeg,new InitializedList<double>(1, capstrike), 
+         Collar collar = new Collar(floatLeg, new InitializedList<double>(1, capstrike),
             new InitializedList<double>(1, floorstrike));
          collar.setPricingEngine(vars.makeEngine(vars.volatility));
          npvCollaredLeg = collarLeg.NPV();
          npvCollar = collar.NPV();
-         error = Math.Abs(npvCollaredLeg -(npvVanilla - npvCollar));
-         if (error>tolerance) 
+         error = Math.Abs(npvCollaredLeg - (npvVanilla - npvCollar));
+         if (error > tolerance)
          {
             QAssert.Fail("\nCollared Leg: gearing=1, spread=0%, strike=" +
-                        floorstrike*100 + "% and " + capstrike*100 + "%\n" +
+                        floorstrike * 100 + "% and " + capstrike * 100 + "%\n" +
                         "  Collared Floating Leg NPV: " + npvCollaredLeg + "\n" +
                         "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar) + "\n" +
-                        "  Diff: " + error );
+                        "  Diff: " + error);
          }
 
          /* gearing = a and spread = b
@@ -335,53 +347,53 @@ namespace TestSuite
          */
 
          // Positive gearing
-         List<CashFlow> cappedLeg_p = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors0,
-            vars.volatility,gearing_p,spread_p);
-         Swap capLeg_p = new Swap(fixedLeg,cappedLeg_p);
+         List<CashFlow> cappedLeg_p = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors0,
+            vars.volatility, gearing_p, spread_p);
+         Swap capLeg_p = new Swap(fixedLeg, cappedLeg_p);
          capLeg_p.setPricingEngine(engine);
-         Cap cap_p = new Cap(floatLeg_p, new InitializedList<double>(1,capstrike));
+         Cap cap_p = new Cap(floatLeg_p, new InitializedList<double>(1, capstrike));
          cap_p.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_p.NPV();
          npvCappedLeg = capLeg_p.NPV();
          npvCap = cap_p.NPV();
-         error = Math.Abs(npvCappedLeg - (npvVanilla-npvCap));
-         if (error>tolerance) 
+         error = Math.Abs(npvCappedLeg - (npvVanilla - npvCap));
+         if (error > tolerance)
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_p + ", " +
-                        "spread= " + spread_p *100 +
-                        "%, strike=" + capstrike*100  + "%, " +
-                        "effective strike= " + (capstrike-spread_p)/gearing_p*100 +
+                        "spread= " + spread_p * 100 +
+                        "%, strike=" + capstrike * 100 + "%, " +
+                        "effective strike= " + (capstrike - spread_p) / gearing_p * 100 +
                         "%\n" +
                         "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
                         "  Vanilla Leg NPV: " + npvVanilla + "\n" +
                         "  Cap NPV: " + npvCap + "\n" +
                         "  Floating Leg NPV - Cap NPV: " + (npvVanilla - npvCap) + "\n" +
-                        "  Diff: " + error );
+                        "  Diff: " + error);
          }
 
          // Negative gearing
-         List<CashFlow> cappedLeg_n = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors0,
-            vars.volatility,gearing_n,spread_n);
-         Swap capLeg_n = new Swap(fixedLeg,cappedLeg_n);
+         List<CashFlow> cappedLeg_n = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors0,
+            vars.volatility, gearing_n, spread_n);
+         Swap capLeg_n = new Swap(fixedLeg, cappedLeg_n);
          capLeg_n.setPricingEngine(engine);
-         Floor floor_n = new Floor(floatLeg, new InitializedList<double>(1,(capstrike-spread_n)/gearing_n));
+         Floor floor_n = new Floor(floatLeg, new InitializedList<double>(1, (capstrike - spread_n) / gearing_n));
          floor_n.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_n.NPV();
          npvCappedLeg = capLeg_n.NPV();
          npvFloor = floor_n.NPV();
-         error = Math.Abs(npvCappedLeg - (npvVanilla+ gearing_n*npvFloor));
-         if (error>tolerance) 
+         error = Math.Abs(npvCappedLeg - (npvVanilla + gearing_n * npvFloor));
+         if (error > tolerance)
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
-                        "spread= " + spread_n *100 +
-                        "%, strike=" + capstrike*100  + "%, " +
-                        "effective strike= " + (capstrike-spread_n)/gearing_n*100 +
+                        "spread= " + spread_n * 100 +
+                        "%, strike=" + capstrike * 100 + "%, " +
+                        "effective strike= " + (capstrike - spread_n) / gearing_n * 100 +
                         "%\n" +
                         "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
                         "  npv Vanilla: " + npvVanilla + "\n" +
                         "  npvFloor: " + npvFloor + "\n" +
-                        "  Floating Leg NPV - Cap NPV: " + (npvVanilla + gearing_n*npvFloor) + "\n" +
-                        "  Diff: " + error );
+                        "  Floating Leg NPV - Cap NPV: " + (npvVanilla + gearing_n * npvFloor) + "\n" +
+                        "  Diff: " + error);
          }
 
          /* gearing = a and spread = b
@@ -398,49 +410,49 @@ namespace TestSuite
          */
 
          // Positive gearing
-         List<CashFlow> flooredLeg_p1 = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps0,floors,
-            vars.volatility,gearing_p,spread_p);
-         Swap floorLeg_p1 = new Swap(fixedLeg,flooredLeg_p1);
+         List<CashFlow> flooredLeg_p1 = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps0, floors,
+            vars.volatility, gearing_p, spread_p);
+         Swap floorLeg_p1 = new Swap(fixedLeg, flooredLeg_p1);
          floorLeg_p1.setPricingEngine(engine);
-         Floor floor_p1 = new Floor(floatLeg_p, new InitializedList<double>(1,floorstrike));
+         Floor floor_p1 = new Floor(floatLeg_p, new InitializedList<double>(1, floorstrike));
          floor_p1.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_p.NPV();
          npvFlooredLeg = floorLeg_p1.NPV();
          npvFloor = floor_p1.NPV();
-         error = Math.Abs(npvFlooredLeg - (npvVanilla+npvFloor));
-         if (error>tolerance) 
+         error = Math.Abs(npvFlooredLeg - (npvVanilla + npvFloor));
+         if (error > tolerance)
          {
             QAssert.Fail("\nFloored Leg: gearing=" + gearing_p + ", "
-                           + "spread= " + spread_p *100+ "%, strike=" + floorstrike *100 + "%, "
-                           + "effective strike= " + (floorstrike-spread_p)/gearing_p*100
+                           + "spread= " + spread_p * 100 + "%, strike=" + floorstrike * 100 + "%, "
+                           + "effective strike= " + (floorstrike - spread_p) / gearing_p * 100
                            + "%\n" +
-                           "  Floored Floating Leg NPV: "    + npvFlooredLeg
+                           "  Floored Floating Leg NPV: " + npvFlooredLeg
                            + "\n" +
                            "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor)
                            + "\n" +
-                           "  Diff: " + error );
+                           "  Diff: " + error);
          }
          // Negative gearing
-         List<CashFlow> flooredLeg_n = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps0,floors,
-            vars.volatility,gearing_n,spread_n);
-         Swap floorLeg_n = new Swap(fixedLeg,flooredLeg_n);
+         List<CashFlow> flooredLeg_n = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps0, floors,
+            vars.volatility, gearing_n, spread_n);
+         Swap floorLeg_n = new Swap(fixedLeg, flooredLeg_n);
          floorLeg_n.setPricingEngine(engine);
-         Cap cap_n = new Cap(floatLeg, new InitializedList<double>(1,(floorstrike-spread_n)/gearing_n));
+         Cap cap_n = new Cap(floatLeg, new InitializedList<double>(1, (floorstrike - spread_n) / gearing_n));
          cap_n.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_n.NPV();
          npvFlooredLeg = floorLeg_n.NPV();
          npvCap = cap_n.NPV();
-         error = Math.Abs(npvFlooredLeg - (npvVanilla - gearing_n*npvCap));
-         if (error>tolerance) 
+         error = Math.Abs(npvFlooredLeg - (npvVanilla - gearing_n * npvCap));
+         if (error > tolerance)
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
-                        "spread= " + spread_n *100 +
-                        "%, strike=" + floorstrike*100  + "%, " +
-                        "effective strike= " + (floorstrike-spread_n)/gearing_n*100 +
+                        "spread= " + spread_n * 100 +
+                        "%, strike=" + floorstrike * 100 + "%, " +
+                        "effective strike= " + (floorstrike - spread_n) / gearing_n * 100 +
                         "%\n" +
                         "  Capped Floating Leg NPV: " + npvFlooredLeg + "\n" +
-                        "  Floating Leg NPV - Cap NPV: " + (npvVanilla - gearing_n*npvCap) + "\n" +
-                        "  Diff: " + error );
+                        "  Floating Leg NPV - Cap NPV: " + (npvVanilla - gearing_n * npvCap) + "\n" +
+                        "  Diff: " + error);
          }
          /* gearing = a and spread = b
             COLLARED coupon - Decomposition of payoff
@@ -451,58 +463,58 @@ namespace TestSuite
                Payoff = VanillaFloatingLeg + Collar(|a|*rate+b, caprate, floorrate)
          */
          // Positive gearing
-         List<CashFlow> collaredLeg_p = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors,
-            vars.volatility,gearing_p,spread_p);
-         Swap collarLeg_p1 = new Swap(fixedLeg,collaredLeg_p);
+         List<CashFlow> collaredLeg_p = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors,
+            vars.volatility, gearing_p, spread_p);
+         Swap collarLeg_p1 = new Swap(fixedLeg, collaredLeg_p);
          collarLeg_p1.setPricingEngine(engine);
-         Collar collar_p = new Collar(floatLeg_p,new InitializedList<double>(1,capstrike),
-            new InitializedList<double>(1,floorstrike));
+         Collar collar_p = new Collar(floatLeg_p, new InitializedList<double>(1, capstrike),
+            new InitializedList<double>(1, floorstrike));
          collar_p.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_p.NPV();
          npvCollaredLeg = collarLeg_p1.NPV();
          npvCollar = collar_p.NPV();
          error = Math.Abs(npvCollaredLeg - (npvVanilla - npvCollar));
-         if (error>tolerance) 
+         if (error > tolerance)
          {
             QAssert.Fail("\nCollared Leg: gearing=" + gearing_p + ", "
-                           + "spread= " + spread_p*100 + "%, strike="
-                           + floorstrike*100 + "% and " + capstrike*100
+                           + "spread= " + spread_p * 100 + "%, strike="
+                           + floorstrike * 100 + "% and " + capstrike * 100
                            + "%, "
-                           + "effective strike=" + (floorstrike-spread_p)/gearing_p*100
-                           +  "% and " + (capstrike-spread_p)/gearing_p*100
+                           + "effective strike=" + (floorstrike - spread_p) / gearing_p * 100
+                           + "% and " + (capstrike - spread_p) / gearing_p * 100
                            + "%\n" +
-                           "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                           "  Collared Floating Leg NPV: " + npvCollaredLeg
                            + "\n" +
                            "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar)
                            + "\n" +
-                           "  Diff: " + error );
+                           "  Diff: " + error);
          }
          // Negative gearing
-         List<CashFlow> collaredLeg_n = vars.makeCapFlooredLeg(vars.startDate,vars.length,caps,floors,
-            vars.volatility,gearing_n,spread_n);
-         Swap collarLeg_n1 = new Swap(fixedLeg,collaredLeg_n);
+         List<CashFlow> collaredLeg_n = vars.makeCapFlooredLeg(vars.startDate, vars.length, caps, floors,
+            vars.volatility, gearing_n, spread_n);
+         Swap collarLeg_n1 = new Swap(fixedLeg, collaredLeg_n);
          collarLeg_n1.setPricingEngine(engine);
-         Collar collar_n = new Collar(floatLeg,new InitializedList<double>(1,(floorstrike-spread_n)/gearing_n),
-            new InitializedList<double>(1,(capstrike-spread_n)/gearing_n));
+         Collar collar_n = new Collar(floatLeg, new InitializedList<double>(1, (floorstrike - spread_n) / gearing_n),
+            new InitializedList<double>(1, (capstrike - spread_n) / gearing_n));
          collar_n.setPricingEngine(vars.makeEngine(vars.volatility));
          npvVanilla = vanillaLeg_n.NPV();
          npvCollaredLeg = collarLeg_n1.NPV();
          npvCollar = collar_n.NPV();
-         error = Math.Abs(npvCollaredLeg - (npvVanilla - gearing_n*npvCollar));
-         if (error>tolerance) 
+         error = Math.Abs(npvCollaredLeg - (npvVanilla - gearing_n * npvCollar));
+         if (error > tolerance)
          {
             QAssert.Fail("\nCollared Leg: gearing=" + gearing_n + ", "
-                           + "spread= " + spread_n*100 + "%, strike="
-                           + floorstrike*100 + "% and " + capstrike*100
+                           + "spread= " + spread_n * 100 + "%, strike="
+                           + floorstrike * 100 + "% and " + capstrike * 100
                            + "%, "
-                           + "effective strike=" + (floorstrike-spread_n)/gearing_n*100
-                           +  "% and " + (capstrike-spread_n)/gearing_n*100
+                           + "effective strike=" + (floorstrike - spread_n) / gearing_n * 100
+                           + "% and " + (capstrike - spread_n) / gearing_n * 100
                            + "%\n" +
-                           "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                           "  Collared Floating Leg NPV: " + npvCollaredLeg
                            + "\n" +
-                           "  Floating Leg NPV - Collar NPV: " + (npvVanilla - gearing_n*npvCollar)
+                           "  Floating Leg NPV - Collar NPV: " + (npvVanilla - gearing_n * npvCollar)
                            + "\n" +
-                           "  Diff: " + error );
+                           "  Diff: " + error);
          }
       }
    }

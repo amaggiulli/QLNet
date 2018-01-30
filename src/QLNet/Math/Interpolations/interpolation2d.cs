@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,141 +40,158 @@ namespace QLNet
    }
 
    public abstract class Interpolation2D : Extrapolator/*, IValue */
-    {
-        protected Impl impl_;
+   {
+      protected Impl impl_;
 
-       public double xMin(){return impl_.xMin();}
+      public double xMin() { return impl_.xMin(); }
 
-        public double xMax(){return impl_.xMax();}
+      public double xMax() { return impl_.xMax(); }
 
-        public List<double> xValues() {return impl_.xValues();}
+      public List<double> xValues() { return impl_.xValues(); }
 
-        public int locateX(double x) {return impl_.locateX(x);}
+      public int locateX(double x) { return impl_.locateX(x); }
 
-        public double yMin() {return impl_.yMin();}
+      public double yMin() { return impl_.yMin(); }
 
-        public double yMax() {return impl_.yMax();}
+      public double yMax() { return impl_.yMax(); }
 
-        public List<double> yValues() {return impl_.yValues();}
+      public List<double> yValues() { return impl_.yValues(); }
 
-        public int locateY(double y) {return impl_.locateY(y);}
+      public int locateY(double y) { return impl_.locateY(y); }
 
-        public Matrix zData() {return impl_.zData();}
+      public Matrix zData() { return impl_.zData(); }
 
-        public bool isInRange(double x, double y){return impl_.isInRange(x,y);}
+      public bool isInRange(double x, double y) { return impl_.isInRange(x, y); }
 
-        public override void update(){impl_.calculate();}
+      public override void update() { impl_.calculate(); }
 
-        // main method to derive an interpolated point
-        public double value(double x, double y) { return value(x, y, false); }
+      // main method to derive an interpolated point
+      public double value(double x, double y) { return value(x, y, false); }
 
-        public double value(double x, double y, bool allowExtrapolation){
-            checkRange(x, y, allowExtrapolation);
-            return impl_.value(x, y);
-        }
+      public double value(double x, double y, bool allowExtrapolation)
+      {
+         checkRange(x, y, allowExtrapolation);
+         return impl_.value(x, y);
+      }
 
-        protected  void checkRange(double x, double y, bool extrapolate) {
-            if (!(extrapolate || allowsExtrapolation() || impl_.isInRange(x,y)))
-                throw new ArgumentException("interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
-                                               +  "] X [" + x +  impl_.yMin() + ", " + impl_.yMax()
-                                               + "]: extrapolation at (" +x+", "+y+ " not allowed");
-        }
+      protected void checkRange(double x, double y, bool extrapolate)
+      {
+         if (!(extrapolate || allowsExtrapolation() || impl_.isInRange(x, y)))
+            throw new ArgumentException("interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
+                                           + "] X [" + x + impl_.yMin() + ", " + impl_.yMax()
+                                           + "]: extrapolation at (" + x + ", " + y + " not allowed");
+      }
 
-        //! abstract base class for 2-D interpolation implementations
-        protected interface Impl //: IValue
-        {
-           void calculate();
-           double xMin();
-           double xMax();
-           List<double> xValues();
-           int locateX(double x);
-           double yMin();
-           double yMax();
-           List<double> yValues();
-           int locateY(double y);
-           Matrix zData();
-           bool isInRange(double x,double y);
-           double value(double x, double y);
-        }
+      //! abstract base class for 2-D interpolation implementations
+      protected interface Impl //: IValue
+      {
+         void calculate();
 
-        public abstract class templateImpl : Impl
-        {
-           protected List<double> xBegin_;
-           protected List<double> yBegin_;
-           protected int xSize_;
-           protected int ySize_;
-           protected Matrix zData_;
+         double xMin();
 
-           // this method should be used for initialisation
-           protected templateImpl( List<double> xBegin, int xSize,
-                                   List<double> yBegin, int ySize,
-                                   Matrix zData) {
-               xBegin_ = xBegin;
-               xSize_ = xSize;
-               yBegin_ = yBegin;
-               ySize_ = ySize;
-               zData_ = zData;
+         double xMax();
 
-               if (xSize < 2)
-                   throw new ArgumentException("not enough points to interpolate: at least 2 required, "
-                                               + xSize + " provided");
-               if (ySize < 2)
-                   throw new ArgumentException("not enough points to interpolate: at least 2 required, "
-                                               + ySize + " provided");
-           }
+         List<double> xValues();
 
-           public double xMin() { return xBegin_.First(); }
+         int locateX(double x);
 
-           public double xMax() { return xBegin_[xSize_ - 1]; }
+         double yMin();
 
-           public List<double> xValues() { return xBegin_.GetRange(0, xSize_); }
+         double yMax();
 
-           public double yMin() { return yBegin_.First(); }
+         List<double> yValues();
 
-           public double yMax() { return yBegin_[ySize_ - 1]; }
+         int locateY(double y);
 
-           public List<double> yValues() { return yBegin_.GetRange(0, ySize_); }
+         Matrix zData();
 
-           public Matrix zData() {return zData_;}
+         bool isInRange(double x, double y);
 
-           public bool isInRange(double x, double y) {
-               double x1 = xMin(), x2 = xMax();
-               bool xIsInrange = (x >= x1 && x <= x2) || Utils.close(x, x1) || Utils.close(x, x2);
-               if (!xIsInrange) return false;
+         double value(double x, double y);
+      }
 
-               double y1 = yMin(), y2 = yMax();
-               return (y >= y1 && y <= y2) || Utils.close(y, y1) || Utils.close(y, y2);
-           }
+      public abstract class templateImpl : Impl
+      {
+         protected List<double> xBegin_;
+         protected List<double> yBegin_;
+         protected int xSize_;
+         protected int ySize_;
+         protected Matrix zData_;
 
-           public int locateX(double x) {
-               int result = xBegin_.BinarySearch(x);
-               if (result < 0)
-                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy
-                   // without violating the sequence's ordering
-                   // if BinarySearch does not find value the value, the index of the next larger item is returned
-                   result = ~result - 1;
+         // this method should be used for initialisation
+         protected templateImpl(List<double> xBegin, int xSize,
+                                 List<double> yBegin, int ySize,
+                                 Matrix zData)
+         {
+            xBegin_ = xBegin;
+            xSize_ = xSize;
+            yBegin_ = yBegin;
+            ySize_ = ySize;
+            zData_ = zData;
 
-               // impose limits. we need the one before last at max or the first at min
-               result = Math.Max(Math.Min(result, xSize_ - 2), 0);
-               return result;
-           }
+            if (xSize < 2)
+               throw new ArgumentException("not enough points to interpolate: at least 2 required, "
+                                           + xSize + " provided");
+            if (ySize < 2)
+               throw new ArgumentException("not enough points to interpolate: at least 2 required, "
+                                           + ySize + " provided");
+         }
 
-           public int locateY(double y) {
-               int result = yBegin_.BinarySearch(y);
-               if (result < 0)
-                   // The upper_bound() algorithm finds the last position in a sequence that value can occupy
-                   // without violating the sequence's ordering
-                   // if BinarySearch does not find value the value, the index of the next larger item is returned
-                   result = ~result - 1;
+         public double xMin() { return xBegin_.First(); }
 
-               // impose limits. we need the one before last at max or the first at min
-               result = Math.Max(Math.Min(result, ySize_ - 2), 0);
-               return result;
-           }
+         public double xMax() { return xBegin_[xSize_ - 1]; }
 
-           public abstract double value(double x, double y);
-           public abstract void calculate();
+         public List<double> xValues() { return xBegin_.GetRange(0, xSize_); }
 
-       }
-    }
+         public double yMin() { return yBegin_.First(); }
+
+         public double yMax() { return yBegin_[ySize_ - 1]; }
+
+         public List<double> yValues() { return yBegin_.GetRange(0, ySize_); }
+
+         public Matrix zData() { return zData_; }
+
+         public bool isInRange(double x, double y)
+         {
+            double x1 = xMin(), x2 = xMax();
+            bool xIsInrange = (x >= x1 && x <= x2) || Utils.close(x, x1) || Utils.close(x, x2);
+            if (!xIsInrange) return false;
+
+            double y1 = yMin(), y2 = yMax();
+            return (y >= y1 && y <= y2) || Utils.close(y, y1) || Utils.close(y, y2);
+         }
+
+         public int locateX(double x)
+         {
+            int result = xBegin_.BinarySearch(x);
+            if (result < 0)
+               // The upper_bound() algorithm finds the last position in a sequence that value can occupy
+               // without violating the sequence's ordering
+               // if BinarySearch does not find value the value, the index of the next larger item is returned
+               result = ~result - 1;
+
+            // impose limits. we need the one before last at max or the first at min
+            result = Math.Max(Math.Min(result, xSize_ - 2), 0);
+            return result;
+         }
+
+         public int locateY(double y)
+         {
+            int result = yBegin_.BinarySearch(y);
+            if (result < 0)
+               // The upper_bound() algorithm finds the last position in a sequence that value can occupy
+               // without violating the sequence's ordering
+               // if BinarySearch does not find value the value, the index of the next larger item is returned
+               result = ~result - 1;
+
+            // impose limits. we need the one before last at max or the first at min
+            result = Math.Max(Math.Min(result, ySize_ - 2), 0);
+            return result;
+         }
+
+         public abstract double value(double x, double y);
+
+         public abstract void calculate();
+      }
+   }
 }

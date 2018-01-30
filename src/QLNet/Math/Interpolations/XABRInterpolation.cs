@@ -6,13 +6,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -32,17 +32,24 @@ namespace QLNet
    public interface IModel
    {
       void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams);
+
       double dilationFactor();
+
       int dimension();
+
       Vector direct(Vector x, List<bool> b, List<double?> c, double d);
+
       double eps1();
+
       double eps2();
 
       void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r,
          List<double?> addParams);
 
       IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams);
+
       Vector inverse(Vector y, List<bool> b, List<double?> c, double d);
+
       double weight(double strike, double forward, double stdDev, List<double?> addParams);
    }
 
@@ -373,5 +380,5 @@ namespace QLNet
 
       public NoXABRConstraint() : base(new Impl())
       { }
-    }
+   }
 }

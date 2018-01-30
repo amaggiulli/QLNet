@@ -1,16 +1,16 @@
 ﻿//  Copyright (C) 2015 Thema Consulting SA
 //  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -18,32 +18,35 @@ using System;
 
 namespace QLNet
 {
-    //! Pricing engine for double barrier options using binomial trees
-    /*! \ingroup barrierengines
+   //! Pricing engine for double barrier options using binomial trees
+   /*! \ingroup barrierengines
 
-        \note This engine requires a the discretized option classes. 
-        By default uses a standard binomial implementation, but it can
-        also work with DiscretizedDermanKaniDoubleBarrierOption to
-        implement a Derman-Kani optimization.
+       \note This engine requires a the discretized option classes.
+       By default uses a standard binomial implementation, but it can
+       also work with DiscretizedDermanKaniDoubleBarrierOption to
+       implement a Derman-Kani optimization.
 
-        \test the correctness of the returned values is tested by
-              checking it against analytic results.
-    */
-   public class BinomialDoubleBarrierEngine : DoubleBarrierOption.Engine 
+       \test the correctness of the returned values is tested by
+             checking it against analytic results.
+   */
+
+   public class BinomialDoubleBarrierEngine : DoubleBarrierOption.Engine
    {
-      public delegate ITree GetTree( StochasticProcess1D process, double end, int steps, double strike );
-      public delegate DiscretizedAsset GetAsset( DoubleBarrierOption.Arguments args, StochasticProcess process, TimeGrid grid = null );
+      public delegate ITree GetTree(StochasticProcess1D process, double end, int steps, double strike);
+
+      public delegate DiscretizedAsset GetAsset(DoubleBarrierOption.Arguments args, StochasticProcess process, TimeGrid grid = null);
 
       /*! \param maxTimeSteps is used to limit timeSteps when using Boyle-Lau
-                   optimization. If zero (the default) the maximum number of 
+                   optimization. If zero (the default) the maximum number of
                    steps is calculated by an heuristic: anything when < 1000,
                    otherwise no more than 5*timeSteps.
                    If maxTimeSteps is equal to timeSteps Boyle-Lau is disabled.
-                   Likewise if the lattice is not CoxRossRubinstein Boyle-Lau is 
+                   Likewise if the lattice is not CoxRossRubinstein Boyle-Lau is
                    disabled and maxTimeSteps ignored.
       */
-      public BinomialDoubleBarrierEngine(GetTree getTree, GetAsset getAsset, 
-         GeneralizedBlackScholesProcess process, int timeSteps, int maxTimeSteps = 0 )
+
+      public BinomialDoubleBarrierEngine(GetTree getTree, GetAsset getAsset,
+         GeneralizedBlackScholesProcess process, int timeSteps, int maxTimeSteps = 0)
       {
          process_ = process;
          timeSteps_ = timeSteps;
@@ -51,28 +54,28 @@ namespace QLNet
          getTree_ = getTree;
          getAsset_ = getAsset;
 
-         Utils.QL_REQUIRE(timeSteps>0,()=>
-            "timeSteps must be positive, " + timeSteps + " not allowed");
-         Utils.QL_REQUIRE(maxTimeSteps==0 || maxTimeSteps>=timeSteps,()=>
-            "maxTimeSteps must be zero or greater than or equal to timeSteps, " + maxTimeSteps + " not allowed");
-         if (maxTimeSteps_== 0)
-               maxTimeSteps_ = Math.Max( 1000, timeSteps_*5);
+         Utils.QL_REQUIRE(timeSteps > 0, () =>
+               "timeSteps must be positive, " + timeSteps + " not allowed");
+         Utils.QL_REQUIRE(maxTimeSteps == 0 || maxTimeSteps >= timeSteps, () =>
+                 "maxTimeSteps must be zero or greater than or equal to timeSteps, " + maxTimeSteps + " not allowed");
+         if (maxTimeSteps_ == 0)
+            maxTimeSteps_ = Math.Max(1000, timeSteps_ * 5);
          process_.registerWith(update);
       }
 
       public override void calculate()
       {
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          Calendar volcal = process_.blackVolatility().link.calendar();
 
          double s0 = process_.stateVariable().link.value();
-         Utils.QL_REQUIRE(s0 > 0.0,()=> "negative or null underlying given");
+         Utils.QL_REQUIRE(s0 > 0.0, () => "negative or null underlying given");
          double v = process_.blackVolatility().link.blackVol(arguments_.exercise.lastDate(), s0);
          Date maturityDate = arguments_.exercise.lastDate();
-         double r = process_.riskFreeRate().link.zeroRate(maturityDate,rfdc, Compounding.Continuous, Frequency.NoFrequency).value();
-         double q = process_.dividendYield().link.zeroRate(maturityDate,divdc, Compounding.Continuous, Frequency.NoFrequency).value();
+         double r = process_.riskFreeRate().link.zeroRate(maturityDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).value();
+         double q = process_.dividendYield().link.zeroRate(maturityDate, divdc, Compounding.Continuous, Frequency.NoFrequency).value();
          Date referenceDate = process_.riskFreeRate().link.referenceDate();
 
          // binomial trees with constant coefficient
@@ -81,7 +84,7 @@ namespace QLNet
          Handle<BlackVolTermStructure> flatVol = new Handle<BlackVolTermStructure>(new BlackConstantVol(referenceDate, volcal, v, voldc));
 
          StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
-         Utils.QL_REQUIRE(payoff != null,()=> "non-striked payoff given");
+         Utils.QL_REQUIRE(payoff != null, () => "non-striked payoff given");
 
          double maturity = rfdc.yearFraction(referenceDate, maturityDate);
 
@@ -94,18 +97,18 @@ namespace QLNet
 
          BlackScholesLattice<ITree> lattice = new BlackScholesLattice<ITree>(tree, r, maturity, timeSteps_);
 
-         DiscretizedAsset option = getAsset_( arguments_, process_, grid );
+         DiscretizedAsset option = getAsset_(arguments_, process_, grid);
          option.initialize(lattice, maturity);
 
          // Partial derivatives calculated from various points in the
-         // binomial tree 
+         // binomial tree
          // (see J.C.Hull, "Options, Futures and other derivatives", 6th edition, pp 397/398)
 
          // Rollback to third-last step, and get underlying prices (s2) &
          // option values (p2) at this point
          option.rollback(grid[2]);
          Vector va2 = new Vector(option.values());
-         Utils.QL_REQUIRE(va2.size() == 3,()=> "Expect 3 nodes in grid at second step");
+         Utils.QL_REQUIRE(va2.size() == 3, () => "Expect 3 nodes in grid at second step");
          double p2u = va2[2]; // up
          double p2m = va2[1]; // mid
          double p2d = va2[0]; // down (low)
@@ -114,15 +117,15 @@ namespace QLNet
          double s2d = lattice.underlying(2, 0); // down (low) price
 
          // calculate gamma by taking the first derivate of the two deltas
-         double delta2u = (p2u - p2m)/(s2u-s2m);
-         double delta2d = (p2m-p2d)/(s2m-s2d);
-         double gamma = (delta2u - delta2d) / ((s2u-s2d)/2);
+         double delta2u = (p2u - p2m) / (s2u - s2m);
+         double delta2d = (p2m - p2d) / (s2m - s2d);
+         double gamma = (delta2u - delta2d) / ((s2u - s2d) / 2);
 
          // Rollback to second-last step, and get option values (p1) at
          // this point
          option.rollback(grid[1]);
          Vector va = new Vector(option.values());
-         Utils.QL_REQUIRE(va.size() == 2,()=> "Expect 2 nodes in grid at first step");
+         Utils.QL_REQUIRE(va.size() == 2, () => "Expect 2 nodes in grid at first step");
          double p1u = va[1];
          double p1d = va[0];
          double s1u = lattice.underlying(1, 1); // up (high) price
@@ -149,6 +152,5 @@ namespace QLNet
       private int maxTimeSteps_;
       private GetTree getTree_;
       private GetAsset getAsset_;
-
    }
 }

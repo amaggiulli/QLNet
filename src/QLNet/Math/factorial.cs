@@ -1,46 +1,58 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
-namespace QLNet {
-    //! %Factorial numbers calculator
-    /*! \test the correctness of the returned value is tested by
-              checking it against numerical calculations.
-    */
-    public static class Factorial {
-        public static double get(uint i) {
-            if (i<=tabulated) {
-                return firstFactorials[i];
-            } else {
-                return Math.Exp(GammaFunction.logValue(i+1));
-            }
-        }
+namespace QLNet
+{
+   //! %Factorial numbers calculator
+   /*! \test the correctness of the returned value is tested by
+             checking it against numerical calculations.
+   */
 
-        public static double ln(int i) {
-            if (i<=tabulated) {
-                return Math.Log(firstFactorials[i]);
-            } else {
-                return GammaFunction.logValue(i+1);
-            }
-        }
+   public static class Factorial
+   {
+      public static double get(uint i)
+      {
+         if (i <= tabulated)
+         {
+            return firstFactorials[i];
+         }
+         else
+         {
+            return Math.Exp(GammaFunction.logValue(i + 1));
+         }
+      }
 
-        static double[] firstFactorials = {
+      public static double ln(int i)
+      {
+         if (i <= tabulated)
+         {
+            return Math.Log(firstFactorials[i]);
+         }
+         else
+         {
+            return GammaFunction.logValue(i + 1);
+         }
+      }
+
+      private static double[] firstFactorials = {
                                    1.0,                                   1.0,
                                    2.0,                                   6.0,
                                   24.0,                                 120.0,
@@ -57,6 +69,6 @@ namespace QLNet {
          403291461126605635584000000.0,       10888869450418352160768000000.0
         };
 
-        static int tabulated = firstFactorials.Length - 1;
-    }
+      private static int tabulated = firstFactorials.Length - 1;
+   }
 }

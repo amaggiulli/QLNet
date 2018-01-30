@@ -10,9 +10,13 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
   </PropertyGroup>
- 
+
   <ItemGroup>
     <ProjectReference Include="..\QLNet\QLNet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

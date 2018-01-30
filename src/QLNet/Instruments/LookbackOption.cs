@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -17,76 +17,81 @@
 namespace QLNet
 {
    //! Continuous-floating lookback option
-   public class ContinuousFloatingLookbackOption : OneAssetOption 
+   public class ContinuousFloatingLookbackOption : OneAssetOption
    {
       //! %Arguments for continuous fixed lookback option calculation
-      public new class Arguments :  OneAssetOption.Arguments 
+      public new class Arguments : OneAssetOption.Arguments
       {
          public double? minmax { get; set; }
+
          public override void validate()
          {
             base.validate();
 
-            Utils.QL_REQUIRE(minmax != null,()=> "null prior extremum");
-            Utils.QL_REQUIRE(minmax >= 0.0,()=> "nonnegative prior extremum required: " + minmax + " not allowed");
+            Utils.QL_REQUIRE(minmax != null, () => "null prior extremum");
+            Utils.QL_REQUIRE(minmax >= 0.0, () => "nonnegative prior extremum required: " + minmax + " not allowed");
          }
       }
 
       //! %Continuous floating lookback %engine base class
       public new class Engine : GenericEngine<ContinuousFloatingLookbackOption.Arguments,
-                                          ContinuousFloatingLookbackOption.Results> 
-      {}
-      public ContinuousFloatingLookbackOption( double minmax, TypePayoff payoff, Exercise exercise )
-         :base(payoff, exercise)
+                                          ContinuousFloatingLookbackOption.Results>
+      { }
+
+      public ContinuousFloatingLookbackOption(double minmax, TypePayoff payoff, Exercise exercise)
+         : base(payoff, exercise)
       {
          minmax_ = minmax;
       }
 
-      public override void setupArguments(IPricingEngineArguments args )
+      public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
 
          ContinuousFloatingLookbackOption.Arguments moreArgs = args as ContinuousFloatingLookbackOption.Arguments;
-         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
          moreArgs.minmax = minmax_;
       }
-       
+
       // arguments
       protected double? minmax_;
-    }
+   }
 
    //! Continuous-fixed lookback option
-   public class ContinuousFixedLookbackOption : OneAssetOption 
+   public class ContinuousFixedLookbackOption : OneAssetOption
    {
       //! %Arguments for continuous fixed lookback option calculation
-      public new class Arguments : OneAssetOption.Arguments 
+      public new class Arguments : OneAssetOption.Arguments
       {
          public double? minmax { get; set; }
+
          public override void validate()
          {
             base.validate();
 
-            Utils.QL_REQUIRE(minmax != null,()=> "null prior extremum");
-            Utils.QL_REQUIRE(minmax >= 0.0,()=> "nonnegative prior extremum required: "
-                   + minmax + " not allowed");
+            Utils.QL_REQUIRE(minmax != null, () => "null prior extremum");
+            Utils.QL_REQUIRE(minmax >= 0.0, () => "nonnegative prior extremum required: "
+                    + minmax + " not allowed");
          }
       }
 
       //! %Continuous fixed lookback %engine base class
       public new class Engine : GenericEngine<ContinuousFixedLookbackOption.Arguments,
-                                          ContinuousFixedLookbackOption.Results> 
-      {}
-      public ContinuousFixedLookbackOption( double minmax, StrikedTypePayoff payoff, Exercise exercise )
-         :base(payoff, exercise)
+                                          ContinuousFixedLookbackOption.Results>
+      { }
+
+      public ContinuousFixedLookbackOption(double minmax, StrikedTypePayoff payoff, Exercise exercise)
+         : base(payoff, exercise)
       {
          minmax_ = minmax;
       }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
 
          ContinuousFixedLookbackOption.Arguments moreArgs = args as ContinuousFixedLookbackOption.Arguments;
-         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
          moreArgs.minmax = minmax_;
       }
 
@@ -107,64 +112,66 @@ namespace QLNet
       (1994).
 
    */
-   public class ContinuousPartialFloatingLookbackOption : ContinuousFloatingLookbackOption 
+
+   public class ContinuousPartialFloatingLookbackOption : ContinuousFloatingLookbackOption
    {
       //! %Arguments for continuous partial floating lookback option calculation
-      public new class Arguments: ContinuousFloatingLookbackOption.Arguments 
+      public new class Arguments : ContinuousFloatingLookbackOption.Arguments
       {
          public double lambda { get; set; }
          public Date lookbackPeriodEnd { get; set; }
+
          public override void validate()
          {
             base.validate();
 
             EuropeanExercise europeanExercise = exercise as EuropeanExercise;
-            Utils.QL_REQUIRE(lookbackPeriodEnd <= europeanExercise.lastDate(), ()=>
+            Utils.QL_REQUIRE(lookbackPeriodEnd <= europeanExercise.lastDate(), () =>
                "lookback start date must be earlier than exercise date");
-        
+
             FloatingTypePayoff floatingTypePayoff = payoff as FloatingTypePayoff;
-        
-            if (floatingTypePayoff.optionType() == Option.Type.Call) 
+
+            if (floatingTypePayoff.optionType() == Option.Type.Call)
             {
-               Utils.QL_REQUIRE(lambda >= 1.0,()=>
-                       "lambda should be greater than or equal to 1 for calls");
+               Utils.QL_REQUIRE(lambda >= 1.0, () =>
+                        "lambda should be greater than or equal to 1 for calls");
             }
-            
-            if (floatingTypePayoff.optionType() == Option.Type.Put) 
+
+            if (floatingTypePayoff.optionType() == Option.Type.Put)
             {
-               Utils.QL_REQUIRE(lambda <= 1.0,()=>
-                       "lambda should be smaller than or equal to 1 for puts");
+               Utils.QL_REQUIRE(lambda <= 1.0, () =>
+                        "lambda should be smaller than or equal to 1 for puts");
             }
          }
       }
 
       //! %Continuous partial floating lookback %engine base class
-      public new class Engine: GenericEngine<ContinuousPartialFloatingLookbackOption.Arguments,
-                                         ContinuousPartialFloatingLookbackOption.Results> 
-      {}
+      public new class Engine : GenericEngine<ContinuousPartialFloatingLookbackOption.Arguments,
+                                         ContinuousPartialFloatingLookbackOption.Results>
+      { }
 
-      public ContinuousPartialFloatingLookbackOption( double minmax, double lambda,
-         Date lookbackPeriodEnd,TypePayoff payoff,Exercise exercise)
-         :base(minmax, payoff, exercise)
+      public ContinuousPartialFloatingLookbackOption(double minmax, double lambda,
+         Date lookbackPeriodEnd, TypePayoff payoff, Exercise exercise)
+         : base(minmax, payoff, exercise)
       {
          lambda_ = lambda;
          lookbackPeriodEnd_ = lookbackPeriodEnd;
       }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
 
          ContinuousPartialFloatingLookbackOption.Arguments moreArgs = args as ContinuousPartialFloatingLookbackOption.Arguments;
-         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
          moreArgs.lambda = lambda_;
          moreArgs.lookbackPeriodEnd = lookbackPeriodEnd_;
       }
-   
+
       protected double lambda_;
       protected Date lookbackPeriodEnd_;
    }
 
-       
    //! Continuous-partial-fixed lookback option
    /*! From http://help.rmetrics.org/fExoticOptions/LookbackOptions.html :
 
@@ -184,40 +191,44 @@ namespace QLNet
       (1994).
 
    */
-   public class ContinuousPartialFixedLookbackOption : ContinuousFixedLookbackOption 
+
+   public class ContinuousPartialFixedLookbackOption : ContinuousFixedLookbackOption
    {
       //! %Arguments for continuous partial fixed lookback option calculation
-      public new class Arguments : ContinuousFixedLookbackOption.Arguments 
+      public new class Arguments : ContinuousFixedLookbackOption.Arguments
       {
          public Date lookbackPeriodStart { get; set; }
+
          public override void validate()
          {
             base.validate();
 
             EuropeanExercise europeanExercise = exercise as EuropeanExercise;
-            Utils.QL_REQUIRE(lookbackPeriodStart <= europeanExercise.lastDate(), ()=>
+            Utils.QL_REQUIRE(lookbackPeriodStart <= europeanExercise.lastDate(), () =>
                "lookback start date must be earlier than exercise date");
          }
       }
+
       //! %Continuous partial fixed lookback %engine base class
       public new class Engine : GenericEngine<ContinuousPartialFixedLookbackOption.Arguments,
-                                          ContinuousPartialFixedLookbackOption.Results> 
-      {}
-      public ContinuousPartialFixedLookbackOption(Date lookbackPeriodStart,StrikedTypePayoff payoff,Exercise exercise)
-         :base(0, payoff, exercise)
+                                          ContinuousPartialFixedLookbackOption.Results>
+      { }
+
+      public ContinuousPartialFixedLookbackOption(Date lookbackPeriodStart, StrikedTypePayoff payoff, Exercise exercise)
+         : base(0, payoff, exercise)
       {
          lookbackPeriodStart_ = lookbackPeriodStart;
       }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
 
          ContinuousPartialFixedLookbackOption.Arguments moreArgs = args as ContinuousPartialFixedLookbackOption.Arguments;
-         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
+         Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
          moreArgs.lookbackPeriodStart = lookbackPeriodStart_;
       }
-   
+
       protected Date lookbackPeriodStart_;
    }
-
 }

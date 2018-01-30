@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -33,12 +33,13 @@ namespace QLNet
 
        \ingroup callablebondengines
    */
-   public class BlackCallableFixedRateBondEngine : CallableFixedRateBond.Engine 
+
+   public class BlackCallableFixedRateBondEngine : CallableFixedRateBond.Engine
    {
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableFixedRateBondEngine(Handle<Quote> fwdYieldVol, Handle<YieldTermStructure> discountCurve)
       {
-         volatility_ = new Handle<CallableBondVolatilityStructure>( new CallableBondConstantVolatility(0, new NullCalendar(),
+         volatility_ = new Handle<CallableBondVolatilityStructure>(new CallableBondConstantVolatility(0, new NullCalendar(),
                                                                                                fwdYieldVol,
                                                                                                new Actual365Fixed()));
          discountCurve_ = discountCurve;
@@ -46,6 +47,7 @@ namespace QLNet
          volatility_.registerWith(update);
          discountCurve_.registerWith(update);
       }
+
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableFixedRateBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
                                               Handle<YieldTermStructure> discountCurve)
@@ -59,19 +61,19 @@ namespace QLNet
       public override void calculate()
       {
          // validate args for Black engine
-         Utils.QL_REQUIRE( arguments_.putCallSchedule.Count == 1, () => "Must have exactly one call/put date to use Black Engine" );
+         Utils.QL_REQUIRE(arguments_.putCallSchedule.Count == 1, () => "Must have exactly one call/put date to use Black Engine");
 
          Date settle = arguments_.settlementDate;
          Date exerciseDate = arguments_.callabilityDates[0];
-         Utils.QL_REQUIRE( exerciseDate >= settle, () => "must have exercise Date >= settlement Date" );
+         Utils.QL_REQUIRE(exerciseDate >= settle, () => "must have exercise Date >= settlement Date");
 
          List<CashFlow> fixedLeg = arguments_.cashflows;
 
          double value = CashFlows.npv(fixedLeg, discountCurve_, false, settle);
 
-         double npv = CashFlows.npv(fixedLeg, discountCurve_,false,  discountCurve_.link.referenceDate());
+         double npv = CashFlows.npv(fixedLeg, discountCurve_, false, discountCurve_.link.referenceDate());
 
-         double fwdCashPrice = (value - spotIncome())/
+         double fwdCashPrice = (value - spotIncome()) /
                               discountCurve_.link.discount(exerciseDate);
 
          double cashStrike = arguments_.callabilityPrices[0];
@@ -87,20 +89,23 @@ namespace QLNet
          double embeddedOptionValue = Utils.blackFormula(type,
                                                          cashStrike,
                                                          fwdCashPrice,
-                                                         priceVol*Math.Sqrt(exerciseTime));
+                                                         priceVol * Math.Sqrt(exerciseTime));
 
-         if (type == Option.Type.Call) 
+         if (type == Option.Type.Call)
          {
             results_.value = npv - embeddedOptionValue;
             results_.settlementValue = value - embeddedOptionValue;
-         } else {
+         }
+         else
+         {
             results_.value = npv + embeddedOptionValue;
             results_.settlementValue = value + embeddedOptionValue;
          }
       }
-      
+
       private Handle<CallableBondVolatilityStructure> volatility_;
       private Handle<YieldTermStructure> discountCurve_;
+
       // present value of all coupons paid during the life of option
       private double spotIncome()
       {
@@ -131,7 +136,7 @@ namespace QLNet
          }
          return income / discountCurve_.link.discount(settlement);
       }
-      
+
       // converts the yield volatility into a forward price volatility
       private double forwardPriceVolatility()
       {
@@ -140,7 +145,7 @@ namespace QLNet
          List<CashFlow> fixedLeg = arguments_.cashflows;
 
          // value of bond cash flows at option maturity
-         double fwdNpv = CashFlows.npv(fixedLeg, discountCurve_,false, exerciseDate);
+         double fwdNpv = CashFlows.npv(fixedLeg, discountCurve_, false, exerciseDate);
 
          DayCounter dayCounter = arguments_.paymentDayCounter;
          Frequency frequency = arguments_.frequency;
@@ -161,7 +166,7 @@ namespace QLNet
 
          double fwdDur = CashFlows.duration(fixedLeg,
                                             fwdRate,
-                                            Duration.Type.Modified,false,
+                                            Duration.Type.Modified, false,
                                             exerciseDate);
 
          double cashStrike = arguments_.callabilityPrices[0];
@@ -172,9 +177,9 @@ namespace QLNet
          double maturityTime = dayCounter.yearFraction(referenceDate,
                                                       bondMaturity);
          double yieldVol = volatility_.link.volatility(exerciseTime,
-                                                       maturityTime-exerciseTime,
+                                                       maturityTime - exerciseTime,
                                                        cashStrike);
-         double fwdPriceVol = yieldVol*fwdDur*fwdYtm;
+         double fwdPriceVol = yieldVol * fwdDur * fwdYtm;
          return fwdPriceVol;
       }
    }
@@ -189,16 +194,16 @@ namespace QLNet
 
        \ingroup callablebondengines
    */
+
    public class BlackCallableZeroCouponBondEngine : BlackCallableFixedRateBondEngine
    {
-
       //! volatility is the quoted fwd yield volatility, not price vol
-      public BlackCallableZeroCouponBondEngine(Handle<Quote> fwdYieldVol,Handle<YieldTermStructure> discountCurve)
-      : base(fwdYieldVol, discountCurve) {}
+      public BlackCallableZeroCouponBondEngine(Handle<Quote> fwdYieldVol, Handle<YieldTermStructure> discountCurve)
+      : base(fwdYieldVol, discountCurve) { }
 
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableZeroCouponBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
                                                Handle<YieldTermStructure> discountCurve)
-      : base(yieldVolStructure, discountCurve) {}
+      : base(yieldVolStructure, discountCurve) { }
    }
 }

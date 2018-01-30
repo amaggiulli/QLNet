@@ -1,44 +1,50 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_Stats
    {
-
-      double[] data = { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
-      double[] weights = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
+      private double[] data = { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
+      private double[] weights = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -49,7 +55,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -62,13 +69,13 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
       public void testConvergenceStatistics()
       {
-
          //("Testing convergence statistics...");
 
          checkConvergence<IncrementalStatistics>("IncrementalStatistics");
@@ -76,11 +83,12 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
-      public void testIncrementalStatistics() 
+      public void testIncrementalStatistics()
       {
          // Testing incremental statistics
 
@@ -88,37 +96,36 @@ namespace TestSuite
 
          IncrementalStatistics stat = new IncrementalStatistics();
 
-         for ( int i = 0; i < 500000; ++i )
+         for (int i = 0; i < 500000; ++i)
          {
-            double x = 2.0 * ( mt.nextReal() - 0.5 ) * 1234.0;
+            double x = 2.0 * (mt.nextReal() - 0.5) * 1234.0;
             double w = mt.nextReal();
-            stat.add( x, w );
+            stat.add(x, w);
          }
 
-         if ( stat.samples() != 500000 )
-            QAssert.Fail( "stat.samples()  (" + stat.samples() + ") can not be reproduced against cached result (" + 500000 + ")" );
+         if (stat.samples() != 500000)
+            QAssert.Fail("stat.samples()  (" + stat.samples() + ") can not be reproduced against cached result (" + 500000 + ")");
 
-         TEST_INC_STAT( stat.weightSum(), 2.5003623600676749e+05 );
-         TEST_INC_STAT( stat.mean(), 4.9122325964293845e-01 );
-         TEST_INC_STAT( stat.variance(), 5.0706503959683329e+05 );
-         TEST_INC_STAT( stat.standardDeviation(), 7.1208499464378076e+02 );
-         TEST_INC_STAT( stat.errorEstimate(), 1.0070402569876076e+00 );
-         TEST_INC_STAT( stat.skewness(), -1.7360169326720038e-03 );
-         TEST_INC_STAT( stat.kurtosis(), -1.1990742562085395e+00 );
-         TEST_INC_STAT( stat.min(), -1.2339945045639761e+03 );
-         TEST_INC_STAT( stat.max(), 1.2339958308008499e+03 );
-         TEST_INC_STAT( stat.downsideVariance(), 5.0786776146975247e+05 );
-         TEST_INC_STAT( stat.downsideDeviation(), 7.1264841364431061e+02 );
-
+         TEST_INC_STAT(stat.weightSum(), 2.5003623600676749e+05);
+         TEST_INC_STAT(stat.mean(), 4.9122325964293845e-01);
+         TEST_INC_STAT(stat.variance(), 5.0706503959683329e+05);
+         TEST_INC_STAT(stat.standardDeviation(), 7.1208499464378076e+02);
+         TEST_INC_STAT(stat.errorEstimate(), 1.0070402569876076e+00);
+         TEST_INC_STAT(stat.skewness(), -1.7360169326720038e-03);
+         TEST_INC_STAT(stat.kurtosis(), -1.1990742562085395e+00);
+         TEST_INC_STAT(stat.min(), -1.2339945045639761e+03);
+         TEST_INC_STAT(stat.max(), 1.2339958308008499e+03);
+         TEST_INC_STAT(stat.downsideVariance(), 5.0786776146975247e+05);
+         TEST_INC_STAT(stat.downsideDeviation(), 7.1264841364431061e+02);
 
          // This is a test for numerical stability, actual implementation fails
 
-         //InverseCumulativeRng<MersenneTwisterUniformRng,InverseCumulativeNormal> normal_gen = 
+         //InverseCumulativeRng<MersenneTwisterUniformRng,InverseCumulativeNormal> normal_gen =
          //   new InverseCumulativeRng<MersenneTwisterUniformRng, InverseCumulativeNormal>(mt);
 
          //IncrementalStatistics stat2 = new IncrementalStatistics();
 
-         //for (int i = 0; i < 500000; ++i) 
+         //for (int i = 0; i < 500000; ++i)
          //{
          //   double x = normal_gen.next().value * 1E-1 + 1E8;
          //   double w = 1.0;
@@ -129,16 +136,15 @@ namespace TestSuite
 
          //if(Math.Abs( stat2.variance() - 1E-2 ) > tol)
          //   QAssert.Fail("variance (" + stat2.variance() + ") out of expected range " + 1E-2 + " +- " + tol);
-
       }
 
       public void TEST_INC_STAT(double expr, double expected)
       {
-         if (!Utils.close_enough(expr, expected))                                         
-            QAssert.Fail(  " (" + expr + ") can not be reproduced against cached result ("+ expected + ")");
-         
-      }                                 
-      void check<S>(string name) where S : IGeneralStatistics, new()
+         if (!Utils.close_enough(expr, expected))
+            QAssert.Fail(" (" + expr + ") can not be reproduced against cached result (" + expected + ")");
+      }
+
+      private void check<S>(string name) where S : IGeneralStatistics, new()
       {
          S s = FastActivator<S>.Create();
 
@@ -211,9 +217,8 @@ namespace TestSuite
                        + "    expected:   " + expected);
       }
 
-      void checkSequence<S>(string name, int dimension) where S : IGeneralStatistics, new()
+      private void checkSequence<S>(string name, int dimension) where S : IGeneralStatistics, new()
       {
-
          GenericSequenceStatistics<S> ss = new GenericSequenceStatistics<S>(dimension);
          int i;
          for (i = 0; i < data.Length; i++)
@@ -324,9 +329,8 @@ namespace TestSuite
          }
       }
 
-      void checkConvergence<S>(string name) where S : IGeneralStatistics, new()
+      private void checkConvergence<S>(string name) where S : IGeneralStatistics, new()
       {
-
          ConvergenceStatistics<S> stats = new ConvergenceStatistics<S>();
 
          stats.add(1.0);

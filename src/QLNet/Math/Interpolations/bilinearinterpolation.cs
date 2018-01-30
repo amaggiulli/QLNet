@@ -32,7 +32,7 @@ namespace QLNet
       }
 
       public override void calculate()
-      {}
+      { }
 
       public override double value(double x, double y)
       {
@@ -62,7 +62,7 @@ namespace QLNet
          List<double> yBegin, int ySize,
          Matrix zData)
       {
-         impl_ = (Interpolation2D.Impl) (
+         impl_ = (Interpolation2D.Impl)(
             new BilinearInterpolationImpl(xBegin, xSize,
                yBegin, ySize, zData));
       }

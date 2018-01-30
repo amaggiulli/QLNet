@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -30,10 +30,10 @@ namespace QLNet
                                first part of the range, and the second
                                interpolation over the second part. */
    }
-   
-   public class MixedInterpolationImpl<Interpolator1,Interpolator2> : Interpolation.templateImpl
-      where Interpolator1 : IInterpolationFactory,new()
-      where Interpolator2 : IInterpolationFactory,new()
+
+   public class MixedInterpolationImpl<Interpolator1, Interpolator2> : Interpolation.templateImpl
+      where Interpolator1 : IInterpolationFactory, new()
+      where Interpolator2 : IInterpolationFactory, new()
    {
       public MixedInterpolationImpl(List<double> xBegin, int xEnd,
                                     List<double> yBegin, int n,
@@ -47,77 +47,78 @@ namespace QLNet
       {
          n_ = n;
 
-         xBegin2_ = xBegin.GetRange( n_, xBegin.Count);
-         yBegin2_ = yBegin.GetRange( n_, yBegin.Count );
+         xBegin2_ = xBegin.GetRange(n_, xBegin.Count);
+         yBegin2_ = yBegin.GetRange(n_, yBegin.Count);
 
-         Utils.QL_REQUIRE( xBegin2_.Count < size_,()=> "too large n (" + n + ") for " + size_ + "-element x sequence");
+         Utils.QL_REQUIRE(xBegin2_.Count < size_, () => "too large n (" + n + ") for " + size_ + "-element x sequence");
 
-         switch (behavior) 
+         switch (behavior)
          {
             case Behavior.ShareRanges:
-               interpolation1_ = factory1.interpolate(xBegin_,size_,yBegin_);
-               interpolation2_ = factory2.interpolate(xBegin_,size_,yBegin_);
+               interpolation1_ = factory1.interpolate(xBegin_, size_, yBegin_);
+               interpolation2_ = factory2.interpolate(xBegin_, size_, yBegin_);
                break;
+
             case Behavior.SplitRanges:
-               interpolation1_ = factory1.interpolate(xBegin_,xBegin2_.Count+1,yBegin_);
-               interpolation2_ = factory2.interpolate(xBegin2_,size_,yBegin2_);
+               interpolation1_ = factory1.interpolate(xBegin_, xBegin2_.Count + 1, yBegin_);
+               interpolation2_ = factory2.interpolate(xBegin2_, size_, yBegin2_);
                break;
+
             default:
                Utils.QL_FAIL("unknown mixed-interpolation behavior: " + behavior);
                break;
          }
-   }
+      }
 
-
-      public override void update() 
+      public override void update()
       {
          interpolation1_.update();
          interpolation2_.update();
       }
-            
-      public override double value(double x) 
+
+      public override double value(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (x < (xBegin2_.First()))
             return interpolation1_.value(x, true);
          return interpolation2_.value(x, true);
       }
 
-      public override double primitive(double x) 
+      public override double primitive(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (x < (xBegin2_.First()))
             return interpolation1_.primitive(x, true);
          return interpolation2_.primitive(x, true) -
             interpolation2_.primitive(xBegin2_.First(), true) +
-            interpolation1_.primitive( xBegin2_.First(), true );
+            interpolation1_.primitive(xBegin2_.First(), true);
       }
 
-      public override double derivative(double x) 
+      public override double derivative(double x)
       {
-         if ( x < ( xBegin2_.First() ) )
+         if (x < (xBegin2_.First()))
             return interpolation1_.derivative(x, true);
          return interpolation2_.derivative(x, true);
-      }  
-            
-      public override double secondDerivative(double x) 
+      }
+
+      public override double secondDerivative(double x)
       {
-         if ( x < ( xBegin2_.First() ) )
+         if (x < (xBegin2_.First()))
             return interpolation1_.secondDerivative(x, true);
          return interpolation2_.secondDerivative(x, true);
       }
 
       public int switchIndex() { return n_; }
-          
+
       private List<double> xBegin2_;
       private List<double> yBegin2_;
       private int n_;
       private Interpolation interpolation1_, interpolation2_;
-        
    }
- 
+
    //! mixed linear/cubic interpolation between discrete points
-   public class MixedLinearCubicInterpolation : Interpolation 
+   public class MixedLinearCubicInterpolation : Interpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
+
       public MixedLinearCubicInterpolation(List<double> xBegin, int xEnd,
                                            List<double> yBegin, int n,
                                            Behavior behavior,
@@ -126,18 +127,19 @@ namespace QLNet
                                            CubicInterpolation.BoundaryCondition leftC,
                                            double leftConditionValue,
                                            CubicInterpolation.BoundaryCondition rightC,
-                                           double rightConditionValue) 
+                                           double rightConditionValue)
       {
-            impl_ = new MixedInterpolationImpl<Linear, Cubic>(xBegin, xEnd, yBegin, n, behavior,
-                    new Linear(),
-                    new Cubic(da, monotonic,leftC, leftConditionValue,rightC, rightConditionValue));
-            impl_.update();
-        }
-    }
-       
+         impl_ = new MixedInterpolationImpl<Linear, Cubic>(xBegin, xEnd, yBegin, n, behavior,
+                 new Linear(),
+                 new Cubic(da, monotonic, leftC, leftConditionValue, rightC, rightConditionValue));
+         impl_.update();
+      }
+   }
+
    //! mixed linear/cubic interpolation factory and traits
    /*! \ingroup interpolations */
-   public class MixedLinearCubic 
+
+   public class MixedLinearCubic
    {
       public MixedLinearCubic(int n,
                               Behavior behavior,
@@ -148,19 +150,19 @@ namespace QLNet
                               CubicInterpolation.BoundaryCondition rightCondition = CubicInterpolation.BoundaryCondition.SecondDerivative,
                               double rightConditionValue = 0.0)
       {
-         n_ = n; 
-         behavior_ = behavior; 
-         da_ = da; 
+         n_ = n;
+         behavior_ = behavior;
+         da_ = da;
          monotonic_ = monotonic;
-         leftType_ = leftCondition; 
+         leftType_ = leftCondition;
          rightType_ = rightCondition;
          leftValue_ = leftConditionValue;
          rightValue_ = rightConditionValue;
-         global  = true;
+         global = true;
          requiredPoints = 3;
       }
 
-      public Interpolation interpolate(List<double> xBegin, int xEnd,List<double> yBegin) 
+      public Interpolation interpolate(List<double> xBegin, int xEnd, List<double> yBegin)
       {
          return new MixedLinearCubicInterpolation(xBegin, xEnd,
                                                   yBegin, n_, behavior_,
@@ -170,7 +172,8 @@ namespace QLNet
       }
 
       // fix below
-      public bool global { get; set; } 
+      public bool global { get; set; }
+
       public int requiredPoints { get; set; }
 
       private int n_;
@@ -183,76 +186,81 @@ namespace QLNet
 
    // convenience classes
 
-   public class MixedLinearCubicNaturalSpline : MixedLinearCubicInterpolation 
+   public class MixedLinearCubicNaturalSpline : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearCubicNaturalSpline(List<double> xBegin, int xEnd,List<double> yBegin, int n,
+
+      public MixedLinearCubicNaturalSpline(List<double> xBegin, int xEnd, List<double> yBegin, int n,
          Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.Spline, false,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
 
-   public class MixedLinearMonotonicCubicNaturalSpline : MixedLinearCubicInterpolation 
+   public class MixedLinearMonotonicCubicNaturalSpline : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int  xEnd,List<double> yBegin, int n,
+
+      public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int xEnd, List<double> yBegin, int n,
          Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.Spline, true,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
 
-   public class MixedLinearKrugerCubic : MixedLinearCubicInterpolation 
+   public class MixedLinearKrugerCubic : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearKrugerCubic(List<double> xBegin, int xEnd,List<double> yBegin, int n,
+
+      public MixedLinearKrugerCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
          Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.Kruger, false,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
 
-   public class MixedLinearFritschButlandCubic : MixedLinearCubicInterpolation 
+   public class MixedLinearFritschButlandCubic : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearFritschButlandCubic(List<double> xBegin, int xEnd,List<double> yBegin, int n,
-         Behavior behavior = Behavior.ShareRanges )
+
+      public MixedLinearFritschButlandCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
+         Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.FritschButland, false,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
 
-   public class MixedLinearParabolic : MixedLinearCubicInterpolation 
+   public class MixedLinearParabolic : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearParabolic(List<double> xBegin, int xEnd,List<double> yBegin, int n,
+
+      public MixedLinearParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
          Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.Parabolic, false,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
 
-   public class MixedLinearMonotonicParabolic : MixedLinearCubicInterpolation 
+   public class MixedLinearMonotonicParabolic : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearMonotonicParabolic(List<double> xBegin, int xEnd,List<double> yBegin, int n,
-         Behavior behavior =  Behavior.ShareRanges)
+
+      public MixedLinearMonotonicParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
+         Behavior behavior = Behavior.ShareRanges)
       : base(xBegin, xEnd, yBegin, n, behavior,
              CubicInterpolation.DerivativeApprox.Parabolic, true,
              CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
-             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0) 
-      {}
+             CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
+      { }
    }
-
 }

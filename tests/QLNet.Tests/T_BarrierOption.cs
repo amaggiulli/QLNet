@@ -1,52 +1,57 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 //  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
-      [TestClass()]
-   #endif
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
    public class T_BarrierOption
    {
-      private void REPORT_FAILURE( string greekName,
-                                   Barrier.Type barrierType, 
-                                   double  barrier,
+      private void REPORT_FAILURE(string greekName,
+                                   Barrier.Type barrierType,
+                                   double barrier,
                                    double rebate,
                                    StrikedTypePayoff payoff,
                                    Exercise exercise,
-                                   double s, 
-                                   double q, 
+                                   double s,
+                                   double q,
                                    double r,
-                                   Date today, 
-                                   double v, 
-                                   double expected, 
-                                   double calculated, 
-                                   double error, 
-                                   double tolerance )
+                                   Date today,
+                                   double v,
+                                   double expected,
+                                   double calculated,
+                                   double error,
+                                   double tolerance)
       {
-         QAssert.Fail( barrierType + " "
+         QAssert.Fail(barrierType + " "
                   + exercise + " "
                   + payoff.optionType() + " option with "
                   + payoff + " payoff:\n"
@@ -62,10 +67,10 @@ namespace TestSuite
                   + "    expected " + greekName + ":   " + expected + "\n"
                   + "    calculated " + greekName + ": " + calculated + "\n"
                   + "    error:            " + error + "\n"
-                  + "    tolerance:        " + tolerance );
+                  + "    tolerance:        " + tolerance);
       }
 
-      private void REPORT_FX_FAILURE( string greekName,
+      private void REPORT_FX_FAILURE(string greekName,
                              Barrier.Type barrierType,
                              double barrier,
                              double rebate,
@@ -82,9 +87,9 @@ namespace TestSuite
                              double expected,
                              double calculated,
                              double error,
-                             double tolerance )
+                             double tolerance)
       {
-         QAssert.Fail( barrierType + " "
+         QAssert.Fail(barrierType + " "
                   + exercise + " "
                   + payoff.optionType() + " option with "
                   + payoff + " payoff:\n"
@@ -96,22 +101,22 @@ namespace TestSuite
                   + "    risk-free rate:   " + r + "\n"
                   + "    reference date:   " + today + "\n"
                   + "    maturity:         " + exercise.lastDate() + "\n"
-                  + "    25PutVol:         " +  vol25Put + "\n" 
-                  + "    atmVol:           " + atmVol + "\n" 
-                  + "    25CallVol:        " + vol25Call + "\n" 
+                  + "    25PutVol:         " + vol25Put + "\n"
+                  + "    atmVol:           " + atmVol + "\n"
+                  + "    25CallVol:        " + vol25Call + "\n"
                   + "    volatility:       " + v + "\n\n"
                   + "    expected " + greekName + ":   " + expected + "\n"
                   + "    calculated " + greekName + ": " + calculated + "\n"
                   + "    error:            " + error + "\n"
-                  + "    tolerance:        " + tolerance );
+                  + "    tolerance:        " + tolerance);
       }
 
       private struct BarrierOptionData
       {
-         public BarrierOptionData(Barrier.Type type_,double volatility_,double strike_,double barrier_,double callValue_,
+         public BarrierOptionData(Barrier.Type type_, double volatility_, double strike_, double barrier_, double callValue_,
             double putValue_)
          {
-            type=type_;
+            type = type_;
             volatility = volatility_;
             strike = strike_;
             barrier = barrier_;
@@ -129,8 +134,8 @@ namespace TestSuite
 
       private struct NewBarrierOptionData
       {
-         public NewBarrierOptionData( Barrier.Type barrierType_,double barrier_,double rebate_,Option.Type type_,
-            Exercise.Type exType_,double strike_,double s_,double q_,double r_,double t_,double v_,double result_,
+         public NewBarrierOptionData(Barrier.Type barrierType_, double barrier_, double rebate_, Option.Type type_,
+            Exercise.Type exType_, double strike_, double s_, double q_, double r_, double t_, double v_, double result_,
             double tol_)
          {
             barrierType = barrierType_;
@@ -139,13 +144,13 @@ namespace TestSuite
             type = type_;
             exType = exType_;
             strike = strike_;
-            s = s_;        
-            q = q_;        
-            r = r_;        
-            t = t_;        
-            v = v_;        
-            result = result_;   
-            tol = tol_;      
+            s = s_;
+            q = q_;
+            r = r_;
+            t = t_;
+            v = v_;
+            result = result_;
+            tol = tol_;
          }
 
          public Barrier.Type barrierType;
@@ -203,12 +208,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testHaugValues() 
+#endif
+      public void testHaugValues()
       {
          // Testing barrier options against Haug's values
          Exercise.Type european = Exercise.Type.European;
@@ -257,7 +263,6 @@ namespace TestSuite
             new NewBarrierOptionData( Barrier.Type.UpIn,      105.0,    3.0, Option.Type.Call, european,   90, 100.0, 0.04, 0.08, 0.50, 0.30, 15.2098, 1.0e-4),
             new NewBarrierOptionData( Barrier.Type.UpIn,      105.0,    3.0, Option.Type.Call, european,  100, 100.0, 0.04, 0.08, 0.50, 0.30,  9.7278, 1.0e-4),
             new NewBarrierOptionData( Barrier.Type.UpIn,      105.0,    3.0, Option.Type.Call, european,  110, 100.0, 0.04, 0.08, 0.50, 0.30,  5.8350, 1.0e-4),
-
 
             //     barrierType, barrier, rebate,         type, exercise, strk,     s,    q,    r,    t,    v,  result, tol
             new NewBarrierOptionData( Barrier.Type.DownOut,    95.0,    3.0,  Option.Type.Put, european,   90, 100.0, 0.04, 0.08, 0.50, 0.25,  2.2798, 1.0e-4 ),
@@ -322,7 +327,7 @@ namespace TestSuite
             new NewBarrierOptionData( Barrier.Type.UpOut,     105.0,    0.0,  Option.Type.Put, american,  100, 100.0, 0.04, 0.08, 0.50, 0.25,  3.3001, 1.0e-4 ),
             new NewBarrierOptionData( Barrier.Type.UpOut,     105.0,    0.0,  Option.Type.Put, american,  110, 100.0, 0.04, 0.08, 0.50, 0.25, 10.0000, 1.0e-4 ),
 
-            // some american in-options - results (roughly) verified with other numerical methods 
+            // some american in-options - results (roughly) verified with other numerical methods
             //     barrierType, barrier, rebate,         type, exercise, strk,     s,    q,    r,    t,    v,  result, tol
             new NewBarrierOptionData( Barrier.Type.DownIn,     95.0,    3.0, Option.Type.Call, american,   90, 100.0, 0.04, 0.08, 0.50, 0.25,  7.7615, 1.0e-4),
             new NewBarrierOptionData( Barrier.Type.DownIn,     95.0,    3.0, Option.Type.Call, american,  100, 100.0, 0.04, 0.08, 0.50, 0.25,  4.0118, 1.0e-4),
@@ -340,9 +345,7 @@ namespace TestSuite
             //    barrierType, barrier, rebate,         type, strike,     s,    q,    r,    t,    v,  result, tol
             // { Barrier::DownOut,    45.0,    0.0,  Option::Put,     50,  50.0,-0.05, 0.10, 0.25, 0.50,   4.032, 1.0e-3 },
             // { Barrier::DownOut,    45.0,    0.0,  Option::Put,     50,  50.0,-0.05, 0.10, 1.00, 0.50,   5.477, 1.0e-3 }
-
          };
-
 
          DayCounter dc = new Actual360();
          Date today = Date.Today;
@@ -355,19 +358,19 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i< values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
-            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type,values[i].strike);
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
-            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess( new Handle<Quote>(spot),
-               new Handle<YieldTermStructure>(qTS),new Handle<YieldTermStructure>(rTS),
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+               new Handle<YieldTermStructure>(qTS), new Handle<YieldTermStructure>(rTS),
                new Handle<BlackVolTermStructure>(volTS));
 
             Exercise exercise;
@@ -376,14 +379,14 @@ namespace TestSuite
             else
                exercise = new AmericanExercise(exDate);
 
-            BarrierOption barrierOption = new BarrierOption(values[i].barrierType,values[i].barrier,values[i].rebate,
-               payoff,exercise);
+            BarrierOption barrierOption = new BarrierOption(values[i].barrierType, values[i].barrier, values[i].rebate,
+               payoff, exercise);
 
             IPricingEngine engine;
             double calculated;
             double expected;
             double error;
-            if (values[i].exType == Exercise.Type.European) 
+            if (values[i].exType == Exercise.Type.European)
             {
                // these engines support only european options
                engine = new AnalyticBarrierEngine(stochProcess);
@@ -392,8 +395,9 @@ namespace TestSuite
 
                calculated = barrierOption.NPV();
                expected = values[i].result;
-               error = Math.Abs(calculated-expected);
-               if (error>values[i].tol) {
+               error = Math.Abs(calculated - expected);
+               if (error > values[i].tol)
+               {
                   REPORT_FAILURE("value", values[i].barrierType, values[i].barrier,
                                  values[i].rebate, payoff, exercise, values[i].s,
                                  values[i].q, values[i].r, today, values[i].v,
@@ -405,8 +409,9 @@ namespace TestSuite
 
                calculated = barrierOption.NPV();
                expected = values[i].result;
-               error = Math.Abs(calculated-expected);
-               if (error>5.0e-3) {
+               error = Math.Abs(calculated - expected);
+               if (error > 5.0e-3)
+               {
                   REPORT_FAILURE("fd value", values[i].barrierType, values[i].barrier,
                                  values[i].rebate, payoff, exercise, values[i].s,
                                  values[i].q, values[i].r, today, values[i].v,
@@ -416,52 +421,53 @@ namespace TestSuite
 
             engine = new BinomialBarrierEngine(
                (d, end, steps, strike) => new CoxRossRubinstein(d, end, steps, strike),
-               (args, process, grid) => new DiscretizedBarrierOption(args, process, grid), 
-               stochProcess, 400 );
+               (args, process, grid) => new DiscretizedBarrierOption(args, process, grid),
+               stochProcess, 400);
             barrierOption.setPricingEngine(engine);
 
             calculated = barrierOption.NPV();
             expected = values[i].result;
-            error = Math.Abs(calculated-expected);
+            error = Math.Abs(calculated - expected);
             double tol = 1.1e-2;
-            if (error>tol) {
+            if (error > tol)
+            {
                REPORT_FAILURE("Binomial (Boyle-lau) value", values[i].barrierType, values[i].barrier,
                               values[i].rebate, payoff, exercise, values[i].s,
                               values[i].q, values[i].r, today, values[i].v,
                               expected, calculated, error, tol);
             }
 
-            // Note: here, to test Derman convergence, we force maxTimeSteps to 
+            // Note: here, to test Derman convergence, we force maxTimeSteps to
             // timeSteps, effectively disabling Boyle-Lau barrier adjustment.
             // Production code should always enable Boyle-Lau. In most cases it
             // gives very good convergence with only a modest timeStep increment.
 
-
             engine = new BinomialBarrierEngine(
-               ( d, end, steps, strike ) => new CoxRossRubinstein( d, end, steps, strike ),
-               ( args, process, grid ) => new DiscretizedDermanKaniBarrierOption( args, process, grid ),
-               stochProcess, 400 );
-            barrierOption.setPricingEngine( engine );
+               (d, end, steps, strike) => new CoxRossRubinstein(d, end, steps, strike),
+               (args, process, grid) => new DiscretizedDermanKaniBarrierOption(args, process, grid),
+               stochProcess, 400);
+            barrierOption.setPricingEngine(engine);
             calculated = barrierOption.NPV();
             expected = values[i].result;
-            error = Math.Abs( calculated - expected );
+            error = Math.Abs(calculated - expected);
             tol = 4e-2;
-            if ( error > tol )
+            if (error > tol)
             {
-               REPORT_FAILURE( "Binomial (Derman) value", values[i].barrierType, values[i].barrier,
+               REPORT_FAILURE("Binomial (Derman) value", values[i].barrierType, values[i].barrier,
                               values[i].rebate, payoff, exercise, values[i].s,
                               values[i].q, values[i].r, today, values[i].v,
-                              expected, calculated, error, tol );
+                              expected, calculated, error, tol);
             }
          }
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testBabsiriValues() 
+#endif
+      public void testBabsiriValues()
       {
          // Testing barrier options against Babsiri's values
 
@@ -502,14 +508,14 @@ namespace TestSuite
          SimpleQuote volatility = new SimpleQuote(0.10);
          BlackVolTermStructure volTS = Utilities.flatVol(today, volatility, dc);
 
-         Date exDate = today+360;
+         Date exDate = today + 360;
          Exercise exercise = new EuropeanExercise(exDate);
 
-         for (int i=0; i< values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             volatility.setValue(values[i].volatility);
 
-            StrikedTypePayoff callPayoff = new PlainVanillaPayoff(Option.Type.Call,values[i].strike);
+            StrikedTypePayoff callPayoff = new PlainVanillaPayoff(Option.Type.Call, values[i].strike);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(underlying),
@@ -517,17 +523,16 @@ namespace TestSuite
                new Handle<YieldTermStructure>(rTS),
                new Handle<BlackVolTermStructure>(volTS));
 
-
             IPricingEngine engine = new AnalyticBarrierEngine(stochProcess);
 
             // analytic
-            BarrierOption barrierCallOption = new BarrierOption(values[i].type,values[i].barrier,rebate,callPayoff,exercise);
+            BarrierOption barrierCallOption = new BarrierOption(values[i].type, values[i].barrier, rebate, callPayoff, exercise);
             barrierCallOption.setPricingEngine(engine);
             double calculated = barrierCallOption.NPV();
             double expected = values[i].callValue;
-            double error = Math.Abs(calculated-expected);
+            double error = Math.Abs(calculated - expected);
             double maxErrorAllowed = 1.0e-5;
-            if (error>maxErrorAllowed) 
+            if (error > maxErrorAllowed)
             {
                REPORT_FAILURE("value", values[i].type, values[i].barrier,
                               rebate, callPayoff, exercise, underlyingPrice,
@@ -556,20 +561,18 @@ namespace TestSuite
             //                  expected, calculated, error,
             //                  maxMcRelativeErrorAllowed);
             //}
-
          }
-   
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testBeagleholeValues() 
+#endif
+      public void testBeagleholeValues()
       {
          // Testing barrier options against Beaglehole's values
-
 
          /*
             Data from
@@ -601,15 +604,14 @@ namespace TestSuite
          SimpleQuote volatility = new SimpleQuote(0.10);
          BlackVolTermStructure volTS = Utilities.flatVol(today, volatility, dc);
 
-
-         Date exDate = today+360;
+         Date exDate = today + 360;
          Exercise exercise = new EuropeanExercise(exDate);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             volatility.setValue(values[i].volatility);
 
-            StrikedTypePayoff callPayoff = new PlainVanillaPayoff(Option.Type.Call,values[i].strike);
+            StrikedTypePayoff callPayoff = new PlainVanillaPayoff(Option.Type.Call, values[i].strike);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(underlying),
@@ -619,13 +621,13 @@ namespace TestSuite
 
             IPricingEngine engine = new AnalyticBarrierEngine(stochProcess);
 
-            BarrierOption barrierCallOption = new BarrierOption(values[i].type,values[i].barrier,rebate,callPayoff,exercise);
+            BarrierOption barrierCallOption = new BarrierOption(values[i].type, values[i].barrier, rebate, callPayoff, exercise);
             barrierCallOption.setPricingEngine(engine);
             double calculated = barrierCallOption.NPV();
             double expected = values[i].callValue;
             double maxErrorAllowed = 1.0e-3;
-            double error = Math.Abs(calculated-expected);
-            if (error > maxErrorAllowed) 
+            double error = Math.Abs(calculated - expected);
+            if (error > maxErrorAllowed)
             {
                REPORT_FAILURE("value", values[i].type, values[i].barrier,
                               rebate, callPayoff, exercise, underlyingPrice,
@@ -646,7 +648,7 @@ namespace TestSuite
             //barrierCallOption.setPricingEngine(mcEngine);
             //calculated = barrierCallOption.NPV();
             //error = Math.Abs(calculated-expected)/expected;
-            //if (error>maxMcRelativeErrorAllowed) 
+            //if (error>maxMcRelativeErrorAllowed)
             //{
             //   REPORT_FAILURE("value", values[i].type, values[i].barrier,
             //                  rebate, callPayoff, exercise, underlyingPrice,
@@ -657,12 +659,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-          [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
           [Fact]
-      #endif
-      public void testLocalVolAndHestonComparison() 
+#endif
+      public void testLocalVolAndHestonComparison()
       {
          // Testing local volatility and Heston FD engines for barrier options
          SavedSettings backup = new SavedSettings();
@@ -674,25 +677,25 @@ namespace TestSuite
          Calendar calendar = new TARGET();
 
          int[] t = { 13, 41, 75, 165, 256, 345, 524, 703 };
-         double[] r = { 0.0357,0.0349,0.0341,0.0355,0.0359,0.0368,0.0386,0.0401 };
+         double[] r = { 0.0357, 0.0349, 0.0341, 0.0355, 0.0359, 0.0368, 0.0386, 0.0401 };
 
          List<double> rates = new InitializedList<double>(1, 0.0357);
          List<Date> dates = new InitializedList<Date>(1, settlementDate);
-         for (int i = 0; i < 8; ++i) 
+         for (int i = 0; i < 8; ++i)
          {
             dates.Add(settlementDate + t[i]);
             rates.Add(r[i]);
          }
-         
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>( new InterpolatedZeroCurve<Linear>(dates, rates, dayCounter));
+
+         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(new InterpolatedZeroCurve<Linear>(dates, rates, dayCounter));
          Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(settlementDate, 0.0, dayCounter));
 
          Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(4500.00));
-    
+
          double[] tmp = { 100 ,500 ,2000,3400,3600,3800,4000,4200,4400,4500,
                           4600,4800,5000,5200,5400,5600,7500,10000,20000,30000 };
          List<double> strikes = new List<double>(tmp);
-    
+
          double[] v =
          { 1.015873, 1.015873, 1.015873, 0.89729, 0.796493, 0.730914, 0.631335, 0.568895,
             0.711309, 0.711309, 0.711309, 0.641309, 0.635593, 0.583653, 0.508045, 0.463182,
@@ -714,45 +717,45 @@ namespace TestSuite
             0.423432, 0.406891, 0.373720, 0.314667, 0.281009, 0.263281, 0.246451, 0.242166,
             0.453704, 0.453704, 0.453704, 0.381255, 0.334578, 0.305527, 0.268909, 0.251367,
             0.517748, 0.517748, 0.517748, 0.416577, 0.364770, 0.331595, 0.287423, 0.264285 };
-    
-         Matrix blackVolMatrix = new Matrix(strikes.Count, dates.Count-1);
-         for (int i=0; i < strikes.Count; ++i)
-            for (int j=1; j < dates.Count; ++j) 
+
+         Matrix blackVolMatrix = new Matrix(strikes.Count, dates.Count - 1);
+         for (int i = 0; i < strikes.Count; ++i)
+            for (int j = 1; j < dates.Count; ++j)
             {
-               blackVolMatrix[i,j-1] = v[i*(dates.Count-1)+j-1];
+               blackVolMatrix[i, j - 1] = v[i * (dates.Count - 1) + j - 1];
             }
-    
+
          BlackVarianceSurface volTS = new BlackVarianceSurface(settlementDate, calendar,
-            dates.GetRange(1, dates.Count - 1),strikes, blackVolMatrix,dayCounter);
+            dates.GetRange(1, dates.Count - 1), strikes, blackVolMatrix, dayCounter);
          volTS.setInterpolation<Bicubic>();
-         GeneralizedBlackScholesProcess localVolProcess = new BlackScholesMertonProcess(s0, qTS, rTS, 
+         GeneralizedBlackScholesProcess localVolProcess = new BlackScholesMertonProcess(s0, qTS, rTS,
             new Handle<BlackVolTermStructure>(volTS));
-    
-         double v0    = 0.195662;
+
+         double v0 = 0.195662;
          double kappa = 5.6628;
          double theta = 0.0745911;
          double sigma = 1.1619;
-         double rho   = -0.511493;
+         double rho = -0.511493;
 
-         HestonProcess hestonProcess = new HestonProcess(rTS, qTS, s0, v0,kappa, theta, sigma, rho);
+         HestonProcess hestonProcess = new HestonProcess(rTS, qTS, s0, v0, kappa, theta, sigma, rho);
 
-         HestonModel hestonModel =  new HestonModel(hestonProcess);
+         HestonModel hestonModel = new HestonModel(hestonProcess);
 
          // TODO FdHestonBarrierEngine
          //IPricingEngine fdHestonEngine = new FdHestonBarrierEngine(hestonModel, 100, 400, 50);
 
-         IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess,100, 400, 0,new FdmSchemeDesc().Douglas(), true, 0.35);
-    
-         double strike  = s0.link.value();
+         IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess, 100, 400, 0, new FdmSchemeDesc().Douglas(), true, 0.35);
+
+         double strike = s0.link.value();
          double barrier = 3000;
-         double rebate  = 100;
-         Date exDate  = settlementDate + new Period(20, TimeUnit.Months);
-    
+         double rebate = 100;
+         Date exDate = settlementDate + new Period(20, TimeUnit.Months);
+
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, strike);
 
          Exercise exercise = new EuropeanExercise(exDate);
 
-         BarrierOption barrierOption = new BarrierOption(Barrier.Type.DownOut,barrier, rebate, payoff, exercise);
+         BarrierOption barrierOption = new BarrierOption(Barrier.Type.DownOut, barrier, rebate, payoff, exercise);
 
          // TODO FdHestonBarrierEngine
          //barrierOption.setPricingEngine(fdHestonEngine);
@@ -762,11 +765,11 @@ namespace TestSuite
          barrierOption.setPricingEngine(fdLocalVolEngine);
          double expectedLocalVolNPV = 132.8;
          double calculatedLocalVolNPV = barrierOption.NPV();
-    
+
          double tol = 0.01;
 
          /* TODO FdHestonBarrierEngine
-         if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV) 
+         if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV)
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "
                         + "\n    strike:     " + payoff.strike()
@@ -775,7 +778,7 @@ namespace TestSuite
                         + "\n    calculated: " + calculatedHestonNPV
                         + "\n    expected:   " + expectedHestonNPV);
          }*/
-         if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol*expectedLocalVolNPV) 
+         if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol * expectedLocalVolNPV)
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "
                         + "\n    strike:     " + payoff.strike()
@@ -786,18 +789,18 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testVannaVolgaSimpleBarrierValues() 
+#endif
+      public void testVannaVolgaSimpleBarrierValues()
       {
          // Testing barrier FX options against Vanna/Volga values
          SavedSettings backup = new SavedSettings();
 
          BarrierFxOptionData[] values = {
-
             //barrierType,barrier,rebate,type,strike,s,q,r,t,vol25Put,volAtm,vol25Call,vol, result, tol
             new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.13321,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.11638,0.148127, 1.0e-4),
             new BarrierFxOptionData( Barrier.Type.UpOut,1.5,0,     Option.Type.Call,1.22687,1.30265,0.0003541,0.0033871,1,0.10087,0.08925,0.08463,0.10088,0.075943, 1.0e-4),
@@ -942,7 +945,6 @@ namespace TestSuite
             new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.32238,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09444,0.07554, 1.0e-4),
             new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.44298,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09197,0.15479, 1.0e-4),
             new BarrierFxOptionData( Barrier.Type.DownIn,1.3,0,   Option.Type.Put,1.56345,1.30265,0.0009418,0.0039788,2,0.10891,0.09525,0.09197,0.09261,0.25754, 1.0e-4),
-
          };
 
          DayCounter dc = new Actual365Fixed();
@@ -958,7 +960,7 @@ namespace TestSuite
          SimpleQuote volAtm = new SimpleQuote(0.0);
          SimpleQuote vol25Call = new SimpleQuote(0.0);
 
-         for (int i=0; i< values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
@@ -967,48 +969,48 @@ namespace TestSuite
             volAtm.setValue(values[i].volAtm);
             vol25Call.setValue(values[i].vol25Call);
 
-            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type,values[i].strike);
-            Date exDate = today + (int)(values[i].t*365+0.5);
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
+            Date exDate = today + (int)(values[i].t * 365 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
             Handle<DeltaVolQuote> volAtmQuote = new Handle<DeltaVolQuote>(
-					new DeltaVolQuote( new Handle<Quote>(volAtm),
-							             DeltaVolQuote.DeltaType.Fwd,
-							             values[i].t,
-							             DeltaVolQuote.AtmType.AtmDeltaNeutral));
+                    new DeltaVolQuote(new Handle<Quote>(volAtm),
+                                         DeltaVolQuote.DeltaType.Fwd,
+                                         values[i].t,
+                                         DeltaVolQuote.AtmType.AtmDeltaNeutral));
 
             Handle<DeltaVolQuote> vol25PutQuote = new Handle<DeltaVolQuote>(
-				   new DeltaVolQuote( -0.25,
-							             new Handle<Quote>(vol25Put),
-							             values[i].t,
-							             DeltaVolQuote.DeltaType.Fwd));
+                   new DeltaVolQuote(-0.25,
+                                         new Handle<Quote>(vol25Put),
+                                         values[i].t,
+                                         DeltaVolQuote.DeltaType.Fwd));
 
             Handle<DeltaVolQuote> vol25CallQuote = new Handle<DeltaVolQuote>(
-				   new DeltaVolQuote( 0.25,
-							             new Handle<Quote>(vol25Call),
-							             values[i].t,
-							             DeltaVolQuote.DeltaType.Fwd));
+                   new DeltaVolQuote(0.25,
+                                         new Handle<Quote>(vol25Call),
+                                         values[i].t,
+                                         DeltaVolQuote.DeltaType.Fwd));
 
-            BarrierOption barrierOption = new BarrierOption(values[i].barrierType,values[i].barrier,values[i].rebate,
-               payoff,exercise);
+            BarrierOption barrierOption = new BarrierOption(values[i].barrierType, values[i].barrier, values[i].rebate,
+               payoff, exercise);
 
             double bsVanillaPrice = Utils.blackFormula(values[i].type, values[i].strike,
-               spot.value()*qTS.discount(values[i].t)/rTS.discount(values[i].t),
-				   values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
-            IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine( volAtmQuote, vol25PutQuote, vol25CallQuote,
-				   new Handle<Quote> (spot),
-				   new Handle<YieldTermStructure> (rTS),
-				   new Handle<YieldTermStructure> (qTS),
-				   true,
-				   bsVanillaPrice);
+               spot.value() * qTS.discount(values[i].t) / rTS.discount(values[i].t),
+                   values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
+            IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
+                   new Handle<Quote>(spot),
+                   new Handle<YieldTermStructure>(rTS),
+                   new Handle<YieldTermStructure>(qTS),
+                   true,
+                   bsVanillaPrice);
             barrierOption.setPricingEngine(vannaVolgaEngine);
 
             double calculated = barrierOption.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error>values[i].tol) 
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
             {
-               REPORT_FX_FAILURE( "value", values[i].barrierType, values[i].barrier,
+               REPORT_FX_FAILURE("value", values[i].barrierType, values[i].barrier,
                                   values[i].rebate, payoff, exercise, values[i].s,
                                   values[i].q, values[i].r, today, values[i].vol25Put,
                                   values[i].volAtm, values[i].vol25Call, values[i].v,

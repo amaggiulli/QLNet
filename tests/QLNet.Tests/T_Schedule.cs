@@ -16,22 +16,28 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_Schedule
    {
-      void check_dates(Schedule s, List<Date> expected)
+      private void check_dates(Schedule s, List<Date> expected)
       {
          if (s.Count != expected.Count)
          {
@@ -43,13 +49,13 @@ namespace TestSuite
             if (s[i] != expected[i])
             {
                QAssert.Fail("expected " + expected[i] + " at index " + i + ", " + "found " + s[i]);
-
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -79,7 +85,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -125,13 +132,13 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
       public void testDatesPastEndDateWithEomAdjustment()
       {
-
          Schedule s = new MakeSchedule().from(new Date(28, Month.March, 2013))
                            .to(new Date(30, Month.March, 2015))
                            .withCalendar(new TARGET())
@@ -152,7 +159,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -184,9 +192,9 @@ namespace TestSuite
             QAssert.Fail("last period should be regular");
       }
 
-
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -213,7 +221,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -240,7 +249,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -266,6 +276,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
+
       [TestMethod()]
 #else
        [Fact]
@@ -275,10 +286,10 @@ namespace TestSuite
          // Testing CDS2015 semi-annual rolling convention
          //From September 20th 2016 to March 19th 2017 of the next Year,
          //end date is December 20th 2021 for a 5 year Swap
-         Schedule s1 = new  MakeSchedule().from(new Date(12, Month.December, 2016))
+         Schedule s1 = new MakeSchedule().from(new Date(12, Month.December, 2016))
                                           .to(new Date(12, Month.December, 2016) + new Period(5, TimeUnit.Years))
                                           .withCalendar(new WeekendsOnly())
-                                          .withTenor(new Period(3 , TimeUnit.Months))
+                                          .withTenor(new Period(3, TimeUnit.Months))
                                           .withConvention(BusinessDayConvention.ModifiedFollowing)
                                           .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
                                           .withRule(DateGeneration.Rule.CDS2015).value();
@@ -287,7 +298,7 @@ namespace TestSuite
          Schedule s2 = new MakeSchedule().from(new Date(1, Month.March, 2017))
                                          .to(new Date(1, Month.March, 2017) + new Period(5, TimeUnit.Years))
                                          .withCalendar(new WeekendsOnly())
-                                         .withTenor(new Period(3 , TimeUnit.Months))
+                                         .withTenor(new Period(3, TimeUnit.Months))
                                          .withConvention(BusinessDayConvention.ModifiedFollowing)
                                          .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
                                          .withRule(DateGeneration.Rule.CDS2015).value();
@@ -298,16 +309,16 @@ namespace TestSuite
          Schedule s3 = new MakeSchedule().from(new Date(20, Month.March, 2017))
                                          .to(new Date(20, Month.March, 2017) + new Period(5, TimeUnit.Years))
                                          .withCalendar(new WeekendsOnly())
-                                         .withTenor(new Period(3 , TimeUnit.Months))
+                                         .withTenor(new Period(3, TimeUnit.Months))
                                          .withConvention(BusinessDayConvention.ModifiedFollowing)
                                          .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
                                          .withRule(DateGeneration.Rule.CDS2015).value();
          QAssert.IsTrue(s3.startDate() == new Date(20, Month.March, 2017));
          QAssert.IsTrue(s3.endDate() == new Date(20, Month.June, 2022));
-
       }
 
 #if NET40 || NET45
+
       [TestMethod()]
 #else
        [Fact]
@@ -325,14 +336,14 @@ namespace TestSuite
          // schedule without any additional information
          Schedule schedule1 = new Schedule(dates);
          if (schedule1.Count != dates.Count)
-            QAssert.Fail( "schedule1 has size " + schedule1.Count + ", expected " + dates.Count );
+            QAssert.Fail("schedule1 has size " + schedule1.Count + ", expected " + dates.Count);
          for (int i = 0; i < dates.Count; ++i)
             if (schedule1[i] != dates[i])
-               QAssert.Fail("schedule1 has "+schedule1[i]+" at position "+i+", expected "+ dates[i]);
+               QAssert.Fail("schedule1 has " + schedule1[i] + " at position " + i + ", expected " + dates[i]);
          if (schedule1.calendar() != new NullCalendar())
-            QAssert.Fail("schedule1 has calendar "+schedule1.calendar().name()+", expected null calendar");
+            QAssert.Fail("schedule1 has calendar " + schedule1.calendar().name() + ", expected null calendar");
          if (schedule1.businessDayConvention() != BusinessDayConvention.Unadjusted)
-            QAssert.Fail( "schedule1 has convention " + schedule1.businessDayConvention() + ", expected unadjusted" );
+            QAssert.Fail("schedule1 has convention " + schedule1.businessDayConvention() + ", expected unadjusted");
 
          // schedule with metadata
          List<bool> regular = new List<bool>();
@@ -344,17 +355,17 @@ namespace TestSuite
                             DateGeneration.Rule.Backward, true, regular);
          for (int i = 1; i < dates.Count; ++i)
             if (schedule2.isRegular(i) != regular[i - 1])
-               QAssert.Fail( "schedule2 has a " + ( schedule2.isRegular( i ) ? "regular" : "irregular" ) + " period at position " + i + ", expected " + ( regular[i - 1] ? "regular" : "irregular" ) );
+               QAssert.Fail("schedule2 has a " + (schedule2.isRegular(i) ? "regular" : "irregular") + " period at position " + i + ", expected " + (regular[i - 1] ? "regular" : "irregular"));
          if (schedule2.calendar() != new TARGET())
-            QAssert.Fail( "schedule1 has calendar " + schedule2.calendar().name() + ", expected TARGET" );
+            QAssert.Fail("schedule1 has calendar " + schedule2.calendar().name() + ", expected TARGET");
          if (schedule2.businessDayConvention() != BusinessDayConvention.Following)
-            QAssert.Fail( "schedule2 has convention " + schedule2.businessDayConvention() + ", expected Following" );
+            QAssert.Fail("schedule2 has convention " + schedule2.businessDayConvention() + ", expected Following");
          if (schedule2.terminationDateBusinessDayConvention() != BusinessDayConvention.ModifiedPreceding)
-            QAssert.Fail( "schedule2 has convention " + schedule2.terminationDateBusinessDayConvention() + ", expected Modified Preceding" );
+            QAssert.Fail("schedule2 has convention " + schedule2.terminationDateBusinessDayConvention() + ", expected Modified Preceding");
          if (schedule2.tenor() != new Period(1, TimeUnit.Years))
-            QAssert.Fail( "schedule2 has tenor " + schedule2.tenor() + ", expected 1Y" );
+            QAssert.Fail("schedule2 has tenor " + schedule2.tenor() + ", expected 1Y");
          if (schedule2.rule() != DateGeneration.Rule.Backward)
-            QAssert.Fail( "schedule2 has rule " + schedule2.rule() + ", expected Backward" );
+            QAssert.Fail("schedule2 has rule " + schedule2.rule() + ", expected Backward");
          if (schedule2.endOfMonth() != true)
             QAssert.Fail("schedule2 has end of month flag false, expected true");
       }

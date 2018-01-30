@@ -1,21 +1,22 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
@@ -61,7 +62,7 @@ namespace QLNet
          TrinomialTree trinomial = new TrinomialTree(numericDynamics.process(), grid);
          ShortRateTree numericTree = new ShortRateTree(trinomial, numericDynamics, grid);
          TermStructureFittingParameter.NumericalImpl impl =
-            (TermStructureFittingParameter.NumericalImpl) phi.implementation();
+            (TermStructureFittingParameter.NumericalImpl)phi.implementation();
          impl.reset();
          for (int i = 0; i < (grid.size() - 1); i++)
          {
@@ -118,6 +119,7 @@ namespace QLNet
           \note t and T should be expressed in yearfraction using
                 deposit day counter, F_quoted is futures' market price.
       */
+
       public static double convexityBias(double futuresPrice,
          double t,
          double T,
@@ -197,6 +199,7 @@ namespace QLNet
           \f]
           where \f$ f(t) \f$ is the instantaneous forward rate at \f$ t \f$.
       */
+
       public class FittingParameter : TermStructureFittingParameter
       {
          private new class Impl : Parameter.Impl
@@ -236,6 +239,6 @@ namespace QLNet
 
       public Handle<YieldTermStructure> termStructure_ { get; set; }
 
-      #endregion
+      #endregion ITermStructureConsistentModel
    }
 }

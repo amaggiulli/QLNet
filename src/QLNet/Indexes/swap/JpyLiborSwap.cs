@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -33,7 +33,8 @@ namespace QLNet
                 new Period(6, TimeUnit.Months), // fixedLegTenor
                 BusinessDayConvention.ModifiedFollowing, // fixedLegConvention
                 new ActualActual(ActualActual.Convention.ISDA), // fixedLegDaycounter
-                new JPYLibor(new Period(6, TimeUnit.Months), h)) { }
+                new JPYLibor(new Period(6, TimeUnit.Months), h))
+      { }
    }
 
    public class JpyLiborSwapIsdaFixPm : SwapIndex
@@ -50,6 +51,7 @@ namespace QLNet
                 new Period(6, TimeUnit.Months), // fixedLegTenor
                 BusinessDayConvention.ModifiedFollowing, // fixedLegConvention
                 new ActualActual(ActualActual.Convention.ISDA), // fixedLegDaycounter
-                new JPYLibor(new Period(6, TimeUnit.Months), h)) { }
+                new JPYLibor(new Period(6, TimeUnit.Months), h))
+      { }
    }
 }

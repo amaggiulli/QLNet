@@ -1,22 +1,21 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QLNet
 {
@@ -47,9 +46,11 @@ namespace QLNet
        and swap settlement date are outside the scope of the
        instrument.
    */
+
    public class CPISwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 };
+
       public new class Arguments : Swap.Arguments
       {
          public Arguments()
@@ -57,16 +58,16 @@ namespace QLNet
             type = Type.Receiver;
             nominal = null;
          }
-         
+
          public Type type { get; set; }
          public double? nominal { get; set; }
-
       }
 
       public new class Results : Swap.Results
       {
          public double? fairRate { get; set; }
          public double? fairSpread { get; set; }
+
          public override void reset()
          {
             base.reset();
@@ -75,8 +76,8 @@ namespace QLNet
          }
       }
 
-      public class Engine :  GenericEngine<CPISwap.Arguments,CPISwap.Results> 
-      {}
+      public class Engine : GenericEngine<CPISwap.Arguments, CPISwap.Results>
+      { }
 
       public CPISwap(Type type,
                      double nominal,
@@ -97,29 +98,29 @@ namespace QLNet
                      Period observationLag,
                      ZeroInflationIndex fixedIndex,
                      InterpolationType observationInterpolation = InterpolationType.AsIndex,
-                     double? inflationNominal = null ) 
-         :base(2)
+                     double? inflationNominal = null)
+         : base(2)
       {
-         type_ = type; 
-         nominal_ = nominal; 
+         type_ = type;
+         nominal_ = nominal;
          subtractInflationNominal_ = subtractInflationNominal;
-         spread_ = spread; 
-         floatDayCount_ = floatDayCount; 
+         spread_ = spread;
+         floatDayCount_ = floatDayCount;
          floatSchedule_ = floatSchedule;
-         floatPaymentRoll_ = floatPaymentRoll; 
+         floatPaymentRoll_ = floatPaymentRoll;
          fixingDays_ = fixingDays;
          floatIndex_ = floatIndex;
-         fixedRate_ = fixedRate; 
-         baseCPI_ = baseCPI; 
-         fixedDayCount_ = fixedDayCount; 
+         fixedRate_ = fixedRate;
+         baseCPI_ = baseCPI;
+         fixedDayCount_ = fixedDayCount;
          fixedSchedule_ = fixedSchedule;
-         fixedPaymentRoll_ = fixedPaymentRoll; 
+         fixedPaymentRoll_ = fixedPaymentRoll;
          fixedIndex_ = fixedIndex;
          observationLag_ = observationLag;
          observationInterpolation_ = observationInterpolation;
 
-         Utils.QL_REQUIRE(floatSchedule_.Count>0,()=> "empty float schedule");
-         Utils.QL_REQUIRE(fixedSchedule_.Count>0,()=> "empty fixed schedule");
+         Utils.QL_REQUIRE(floatSchedule_.Count > 0, () => "empty float schedule");
+         Utils.QL_REQUIRE(fixedSchedule_.Count > 0, () => "empty fixed schedule");
          // todo if roll!=unadjusted then need calendars ...
 
          inflationNominal_ = inflationNominal ?? nominal_;
@@ -137,20 +138,20 @@ namespace QLNet
          else
             floatingLeg = new List<CashFlow>();
 
-         if (floatSchedule_.Count==1 ||
+         if (floatSchedule_.Count == 1 ||
             !subtractInflationNominal_ ||
-            (subtractInflationNominal && Math.Abs(nominal_-inflationNominal_)>0.00001)
+            (subtractInflationNominal && Math.Abs(nominal_ - inflationNominal_) > 0.00001)
             )
          {
             Date payNotional;
-            if (floatSchedule_.Count==1) 
-            { 
+            if (floatSchedule_.Count == 1)
+            {
                // no coupons
                payNotional = floatSchedule_[0];
                payNotional = floatSchedule_.calendar().adjust(payNotional, floatPaymentRoll_);
-            } 
-            else 
-            { 
+            }
+            else
+            {
                // use the pay date of the last coupon
                payNotional = floatingLeg.Last().date();
             }
@@ -180,19 +181,17 @@ namespace QLNet
             {
                cashFlow.registerWith(update);
             }
-
          }
 
          legs_[0] = cpiLeg;
          legs_[1] = floatingLeg;
 
-
-         if (type_==Type.Payer) 
+         if (type_ == Type.Payer)
          {
             payer_[0] = 1.0;
             payer_[1] = -1.0;
-         } 
-         else 
+         }
+         else
          {
             payer_[0] = -1.0;
             payer_[1] = 1.0;
@@ -204,57 +203,75 @@ namespace QLNet
       public virtual double floatLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[1] != null,()=> "result not available");
-         return legNPV_[1].GetValueOrDefault();   
+         Utils.QL_REQUIRE(legNPV_[1] != null, () => "result not available");
+         return legNPV_[1].GetValueOrDefault();
       }
 
       public virtual double fairSpread()
       {
          calculate();
-         Utils.QL_REQUIRE(fairSpread_ != null,()=> "result not available");
+         Utils.QL_REQUIRE(fairSpread_ != null, () => "result not available");
          return fairSpread_.GetValueOrDefault();
       }
+
       // fixed rate x inflation
       public virtual double fixedLegNPV()
       {
          calculate();
-         Utils.QL_REQUIRE(legNPV_[0] != null,()=> "result not available");
+         Utils.QL_REQUIRE(legNPV_[0] != null, () => "result not available");
          return legNPV_[0].GetValueOrDefault();
       }
+
       public virtual double fairRate()
       {
          calculate();
-         Utils.QL_REQUIRE(fairRate_ != null,()=> "result not available");
+         Utils.QL_REQUIRE(fairRate_ != null, () => "result not available");
          return fairRate_.GetValueOrDefault();
       }
 
       // inspectors
-      public virtual Type type() {return type_; }
-      public virtual double nominal() {return nominal_;}
-      public virtual bool subtractInflationNominal() {return subtractInflationNominal_;}
+      public virtual Type type() { return type_; }
+
+      public virtual double nominal() { return nominal_; }
+
+      public virtual bool subtractInflationNominal() { return subtractInflationNominal_; }
 
       // float+spread
-      public virtual double spread() {return spread_; }
-      public virtual DayCounter floatDayCount() {return floatDayCount_;}
-      public virtual Schedule floatSchedule() {return floatSchedule_;}
-      public virtual BusinessDayConvention floatPaymentRoll() {return floatPaymentRoll_;}
-      public virtual int fixingDays() { return fixingDays_;}
-      public virtual IborIndex floatIndex() {return floatIndex_;}
+      public virtual double spread() { return spread_; }
+
+      public virtual DayCounter floatDayCount() { return floatDayCount_; }
+
+      public virtual Schedule floatSchedule() { return floatSchedule_; }
+
+      public virtual BusinessDayConvention floatPaymentRoll() { return floatPaymentRoll_; }
+
+      public virtual int fixingDays() { return fixingDays_; }
+
+      public virtual IborIndex floatIndex() { return floatIndex_; }
 
       // fixed rate x inflation
-      public virtual double fixedRate() {return fixedRate_;}
-      public virtual double baseCPI() {return baseCPI_;}
-      public virtual DayCounter fixedDayCount() {return fixedDayCount_; }
-      public virtual Schedule fixedSchedule() {return fixedSchedule_; }
-      public virtual BusinessDayConvention fixedPaymentRoll() {return fixedPaymentRoll_;}
-      public virtual Period observationLag() {return observationLag_; }
-      public virtual ZeroInflationIndex fixedIndex() {return fixedIndex_;}
-      public virtual InterpolationType observationInterpolation() {return observationInterpolation_;}
-      public virtual double inflationNominal() {return inflationNominal_;}
+      public virtual double fixedRate() { return fixedRate_; }
+
+      public virtual double baseCPI() { return baseCPI_; }
+
+      public virtual DayCounter fixedDayCount() { return fixedDayCount_; }
+
+      public virtual Schedule fixedSchedule() { return fixedSchedule_; }
+
+      public virtual BusinessDayConvention fixedPaymentRoll() { return fixedPaymentRoll_; }
+
+      public virtual Period observationLag() { return observationLag_; }
+
+      public virtual ZeroInflationIndex fixedIndex() { return fixedIndex_; }
+
+      public virtual InterpolationType observationInterpolation() { return observationInterpolation_; }
+
+      public virtual double inflationNominal() { return inflationNominal_; }
 
       // legs
-      public virtual List<CashFlow>  cpiLeg() {return legs_[0];}
-      public virtual List<CashFlow> floatLeg() {return legs_[1];}
+      public virtual List<CashFlow> cpiLeg() { return legs_[0]; }
+
+      public virtual List<CashFlow> floatLeg() { return legs_[1]; }
 
       // other
       public override void fetchResults(IPricingEngineResults r)
@@ -269,38 +286,38 @@ namespace QLNet
 
          CPISwap.Results results = r as CPISwap.Results;
 
-         if (results!=null) 
-         { 
+         if (results != null)
+         {
             // might be a swap engine, so no error is thrown
             fairRate_ = results.fairRate;
             fairSpread_ = results.fairSpread;
-         } 
-         else 
+         }
+         else
          {
             fairRate_ = null;
             fairSpread_ = null;
          }
 
-         if (fairRate_ == null) 
+         if (fairRate_ == null)
          {
             // calculate it from other results
             if (legBPS_[0] != null)
-               fairRate_ = fixedRate_ - NPV_/(legBPS_[0]/basisPoint);
+               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / basisPoint);
          }
-         if (fairSpread_ == null) 
+         if (fairSpread_ == null)
          {
             // ditto
             if (legBPS_[1] != null)
-               fairSpread_ = spread_ - NPV_/(legBPS_[1]/basisPoint);
+               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / basisPoint);
          }
       }
 
       protected override void setupExpired()
       {
-        base.setupExpired();
-        legBPS_[0] = legBPS_[1] = 0.0;
-        fairRate_ = null;
-        fairSpread_ = null;
+         base.setupExpired();
+         legBPS_[0] = legBPS_[1] = 0.0;
+         fairRate_ = null;
+         fairSpread_ = null;
       }
 
       private Type type_;
@@ -309,6 +326,7 @@ namespace QLNet
 
       // float+spread leg
       private double spread_;
+
       private DayCounter floatDayCount_;
       private Schedule floatSchedule_;
       private BusinessDayConvention floatPaymentRoll_;
@@ -317,6 +335,7 @@ namespace QLNet
 
       // fixed x inflation leg
       private double fixedRate_;
+
       private double baseCPI_;
       private DayCounter fixedDayCount_;
       private Schedule fixedSchedule_;
@@ -325,8 +344,10 @@ namespace QLNet
       private Period observationLag_;
       private InterpolationType observationInterpolation_;
       private double inflationNominal_;
+
       // results
       private double? fairSpread_;
+
       private double? fairRate_;
    }
 }

@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -31,7 +31,7 @@ namespace QLNet
       // need by CashFlowVectors
       public CmsSpreadCoupon() { }
 
-      public CmsSpreadCoupon( Date paymentDate,
+      public CmsSpreadCoupon(Date paymentDate,
                               double nominal,
                               Date startDate,
                               Date endDate,
@@ -43,7 +43,7 @@ namespace QLNet
                               Date refPeriodEnd = null,
                               DayCounter dayCounter = null,
                               bool isInArrears = false)
-         :base(paymentDate, nominal, startDate, endDate,
+         : base(paymentDate, nominal, startDate, endDate,
                              fixingDays, index, gearing, spread,
                              refPeriodStart, refPeriodEnd, dayCounter,
                              isInArrears)
@@ -52,7 +52,7 @@ namespace QLNet
       }
 
       // Inspectors
-      public SwapSpreadIndex swapSpreadIndex() {return index_;}
+      public SwapSpreadIndex swapSpreadIndex() { return index_; }
 
       private new SwapSpreadIndex index_;
    }
@@ -60,9 +60,9 @@ namespace QLNet
    public class CappedFlooredCmsSpreadCoupon : CappedFlooredCoupon
    {
       public CappedFlooredCmsSpreadCoupon()
-      {}
+      { }
 
-      public CappedFlooredCmsSpreadCoupon( Date paymentDate,
+      public CappedFlooredCmsSpreadCoupon(Date paymentDate,
                                            double nominal,
                                            Date startDate,
                                            Date endDate,
@@ -76,9 +76,9 @@ namespace QLNet
                                            Date refPeriodEnd = null,
                                            DayCounter dayCounter = null,
                                            bool isInArrears = false)
-         : base( new CmsSpreadCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
-            index, gearing, spread, refPeriodStart, refPeriodEnd,dayCounter, isInArrears), cap, floor)
-      {}
+         : base(new CmsSpreadCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
+            index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears), cap, floor)
+      { }
    }
 
    /// <summary>
@@ -86,7 +86,7 @@ namespace QLNet
    /// </summary>
    public class CmsSpreadLeg : FloatingLegBase
    {
-      public CmsSpreadLeg( Schedule schedule, SwapSpreadIndex swapSpreadIndex)
+      public CmsSpreadLeg(Schedule schedule, SwapSpreadIndex swapSpreadIndex)
       {
          schedule_ = schedule;
          swapSpreadIndex_ = swapSpreadIndex;
@@ -94,9 +94,10 @@ namespace QLNet
          inArrears_ = false;
          zeroPayments_ = false;
       }
+
       public override List<CashFlow> value()
       {
-         return CashFlowVectors.FloatingLeg<SwapSpreadIndex, CmsSpreadCoupon,CappedFlooredCmsSpreadCoupon>(
+         return CashFlowVectors.FloatingLeg<SwapSpreadIndex, CmsSpreadCoupon, CappedFlooredCmsSpreadCoupon>(
             notionals_, schedule_, swapSpreadIndex_, paymentDayCounter_,
             paymentAdjustment_, fixingDays_, gearings_, spreads_, caps_,
             floors_, inArrears_, zeroPayments_);
@@ -104,5 +105,4 @@ namespace QLNet
 
       private SwapSpreadIndex swapSpreadIndex_;
    }
-
 }

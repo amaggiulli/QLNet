@@ -1,36 +1,40 @@
 ﻿//  Copyright (C) 2015 Thema Consulting SA
 //  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
-using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
-      [TestClass()]
-   #endif
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
    public class T_DoubleBinaryOption
    {
-      private void REPORT_FAILURE( string greekName,
+      private void REPORT_FAILURE(string greekName,
                                    StrikedTypePayoff payoff,
                                    Exercise exercise,
                                    DoubleBarrier.Type barrierType,
@@ -44,15 +48,15 @@ namespace TestSuite
                                    double expected,
                                    double calculated,
                                    double error,
-                                   double tolerance )
+                                   double tolerance)
       {
-         QAssert.Fail( payoff.optionType() + " option with " 
+         QAssert.Fail(payoff.optionType() + " option with "
                   + barrierType + " barrier type:\n"
                   + "    barrier_lo:          " + barrier_lo + "\n"
                   + "    barrier_hi:          " + barrier_hi + "\n"
                   + payoff + " payoff:\n"
                   + exercise + " "
-                  + payoff.optionType() 
+                  + payoff.optionType()
                   + "    spot value: " + s + "\n"
                   + "    strike:           " + payoff.strike() + "\n"
                   + "    dividend yield:   " + q + "\n"
@@ -63,7 +67,7 @@ namespace TestSuite
                   + "    expected " + greekName + ":   " + expected + "\n"
                   + "    calculated " + greekName + ": " + calculated + "\n"
                   + "    error:            " + error + "\n"
-                  + "    tolerance:        " + tolerance );
+                  + "    tolerance:        " + tolerance);
       }
 
       private struct DoubleBinaryOptionData
@@ -97,16 +101,17 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testHaugValues() 
+#endif
+      public void testHaugValues()
       {
          // Testing cash-or-nothing double barrier options against Haug's values
 
-          DoubleBinaryOptionData[] values = {
+         DoubleBinaryOptionData[] values = {
             /* The data below are from
                 "Option pricing formulas 2nd Ed.", E.G. Haug, McGraw-Hill 2007 pag. 181
                 Note: book uses cost of carry b, instead of dividend rate q
@@ -215,22 +220,22 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.25);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             StrikedTypePayoff payoff = new CashOrNothingPayoff(Option.Type.Call, 0, values[i].cash);
 
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise;
-             if (values[i].barrierType == DoubleBarrier.Type.KIKO ||
-                 values[i].barrierType == DoubleBarrier.Type.KOKI)
-                 exercise = new AmericanExercise(today,exDate,true);
-             else
-                 exercise = new EuropeanExercise(exDate);
+            if (values[i].barrierType == DoubleBarrier.Type.KIKO ||
+                values[i].barrierType == DoubleBarrier.Type.KOKI)
+               exercise = new AmericanExercise(today, exDate, true);
+            else
+               exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(spot),
@@ -240,20 +245,21 @@ namespace TestSuite
 
             IPricingEngine engine = new AnalyticDoubleBarrierBinaryEngine(stochProcess);
 
-            DoubleBarrierOption opt = new DoubleBarrierOption(values[i].barrierType, 
-                                                              values[i].barrier_lo, 
-                                                              values[i].barrier_hi, 
-                                                              0, 
-                                                              payoff, 
+            DoubleBarrierOption opt = new DoubleBarrierOption(values[i].barrierType,
+                                                              values[i].barrier_lo,
+                                                              values[i].barrier_hi,
+                                                              0,
+                                                              payoff,
                                                               exercise);
 
             opt.setPricingEngine(engine);
 
             double calculated = opt.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-values[i].result);
-            if (error > values[i].tol) {
-               REPORT_FAILURE("value", payoff, exercise, values[i].barrierType, 
+            double error = Math.Abs(calculated - values[i].result);
+            if (error > values[i].tol)
+            {
+               REPORT_FAILURE("value", payoff, exercise, values[i].barrierType,
                               values[i].barrier_lo, values[i].barrier_hi, values[i].s,
                               values[i].q, values[i].r, today, values[i].v,
                               values[i].result, calculated, error, values[i].tol);
@@ -263,18 +269,19 @@ namespace TestSuite
             // checking with binomial engine
             engine = new BinomialDoubleBarrierEngine(
                                 (d, end, step, strike) => new CoxRossRubinstein(d, end, step, strike),
-                                (args, process, grid) => new DiscretizedDoubleBarrierOption(args, process, grid), 
+                                (args, process, grid) => new DiscretizedDoubleBarrierOption(args, process, grid),
                                 stochProcess, steps);
             opt.setPricingEngine(engine);
             calculated = opt.NPV();
             expected = values[i].result;
-            error = Math.Abs(calculated-expected);
+            error = Math.Abs(calculated - expected);
             double tol = 0.22;
-            if (error>tol) {
-                REPORT_FAILURE("Binomial value", payoff, exercise, values[i].barrierType, 
-                               values[i].barrier_lo, values[i].barrier_hi, values[i].s,
-                               values[i].q, values[i].r, today, values[i].v,
-                               values[i].result, calculated, error, tol);
+            if (error > tol)
+            {
+               REPORT_FAILURE("Binomial value", payoff, exercise, values[i].barrierType,
+                              values[i].barrier_lo, values[i].barrier_hi, values[i].s,
+                              values[i].q, values[i].r, today, values[i].v,
+                              values[i].result, calculated, error, tol);
             }
          }
       }

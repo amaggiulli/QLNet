@@ -16,6 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,6 +26,7 @@ namespace QLNet
    /*! \note The provided rates are not YY inflation-swap quotes.
        \ingroup inflationtermstructures
    */
+
    public class InterpolatedYoYInflationCurve<Interpolator> : YoYInflationTermStructure, InterpolatedCurve
       where Interpolator : class, IInterpolationFactory, new()
    {
@@ -48,7 +50,7 @@ namespace QLNet
          Handle<YieldTermStructure> yTS,
          List<Date> dates,
          List<double> rates,
-         Interpolator interpolator )
+         Interpolator interpolator)
          : base(referenceDate, calendar, dayCounter, rates[0], lag, frequency, indexIsInterpolated, yTS)
       {
          times_ = new List<double>();
@@ -93,12 +95,17 @@ namespace QLNet
       }
 
       #region InterpolatedCurve
+
       public List<double> times_ { get; set; }
+
       public virtual List<double> times() { return this.times_; }
 
       public List<Date> dates_ { get; set; }
+
       public virtual List<Date> dates() { return dates_; }
+
       public Date maxDate_ { get; set; }
+
       public override Date maxDate()
       {
          if (maxDate_ != null)
@@ -108,7 +115,9 @@ namespace QLNet
       }
 
       public List<double> data_ { get; set; }
+
       public List<double> forwards() { return this.data_; }
+
       public virtual List<double> data() { return forwards(); }
 
       public Interpolation interpolation_ { get; set; }
@@ -135,10 +144,11 @@ namespace QLNet
          copy.setupInterpolation();
          return copy;
       }
-      #endregion
 
+      #endregion InterpolatedCurve
 
       #region TermStructure
+
       public override Date baseDate()
       {
          // if indexIsInterpolated we fixed the dates in the constructor
@@ -156,6 +166,7 @@ namespace QLNet
       {
          return this.data_;
       }
-      #endregion
+
+      #endregion TermStructure
    }
 }

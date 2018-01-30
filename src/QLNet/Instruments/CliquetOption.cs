@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -30,26 +30,29 @@ namespace QLNet
 
        \ingroup instruments
    */
+
    public class CliquetOption : OneAssetOption
    {
-      public CliquetOption( PercentageStrikePayoff payoff, EuropeanExercise maturity,List<Date> resetDates)
-         :base(payoff,maturity)
+      public CliquetOption(PercentageStrikePayoff payoff, EuropeanExercise maturity, List<Date> resetDates)
+         : base(payoff, maturity)
       {
          resetDates_ = new List<Date>(resetDates);
       }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
-        // set accrued coupon, last fixing, caps, floors
+         // set accrued coupon, last fixing, caps, floors
          CliquetOption.Arguments moreArgs = args as CliquetOption.Arguments;
-         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong engine type");
+         Utils.QL_REQUIRE(moreArgs != null, () => "wrong engine type");
          moreArgs.resetDates = new List<Date>(resetDates_);
       }
+
       private List<Date> resetDates_;
 
       //! %Arguments for cliquet option calculation
       // should inherit from a strikeless version of VanillaOption::arguments
-      public new class Arguments : OneAssetOption.Arguments 
+      public new class Arguments : OneAssetOption.Arguments
       {
          public Arguments()
          {
@@ -60,23 +63,25 @@ namespace QLNet
             globalCap = null;
             globalFloor = null;
          }
+
          public override void validate()
          {
             PercentageStrikePayoff moneyness = payoff as PercentageStrikePayoff;
-            Utils.QL_REQUIRE(moneyness != null ,()=> "wrong payoff type");
-            Utils.QL_REQUIRE(moneyness.strike() > 0.0,()=> "negative or zero moneyness given");
-            Utils.QL_REQUIRE(accruedCoupon == null || accruedCoupon >= 0.0,()=> "negative accrued coupon");
-            Utils.QL_REQUIRE(localCap == null || localCap >= 0.0,()=> "negative local cap");
-            Utils.QL_REQUIRE(localFloor == null || localFloor >= 0.0,()=> "negative local floor");
-            Utils.QL_REQUIRE(globalCap == null || globalCap >= 0.0,()=> "negative global cap");
-            Utils.QL_REQUIRE(globalFloor == null || globalFloor >= 0.0,()=> "negative global floor");
-            Utils.QL_REQUIRE(!resetDates.empty(),()=> "no reset dates given");
-            for ( int i = 0; i < resetDates.Count; ++i )
+            Utils.QL_REQUIRE(moneyness != null, () => "wrong payoff type");
+            Utils.QL_REQUIRE(moneyness.strike() > 0.0, () => "negative or zero moneyness given");
+            Utils.QL_REQUIRE(accruedCoupon == null || accruedCoupon >= 0.0, () => "negative accrued coupon");
+            Utils.QL_REQUIRE(localCap == null || localCap >= 0.0, () => "negative local cap");
+            Utils.QL_REQUIRE(localFloor == null || localFloor >= 0.0, () => "negative local floor");
+            Utils.QL_REQUIRE(globalCap == null || globalCap >= 0.0, () => "negative global cap");
+            Utils.QL_REQUIRE(globalFloor == null || globalFloor >= 0.0, () => "negative global floor");
+            Utils.QL_REQUIRE(!resetDates.empty(), () => "no reset dates given");
+            for (int i = 0; i < resetDates.Count; ++i)
             {
-               Utils.QL_REQUIRE( exercise.lastDate() > resetDates[i], () => "reset date greater or equal to maturity" );
-               Utils.QL_REQUIRE( i == 0 || resetDates[i] > resetDates[i - 1], () => "unsorted reset dates" );
+               Utils.QL_REQUIRE(exercise.lastDate() > resetDates[i], () => "reset date greater or equal to maturity");
+               Utils.QL_REQUIRE(i == 0 || resetDates[i] > resetDates[i - 1], () => "unsorted reset dates");
             }
          }
+
          public double? accruedCoupon { get; set; }
          public double? lastFixing { get; set; }
          public double? localCap { get; set; }
@@ -87,8 +92,7 @@ namespace QLNet
       }
 
       //! Cliquet %engine base class
-      public new class Engine : GenericEngine<CliquetOption.Arguments,CliquetOption.Results>
-      {}
+      public new class Engine : GenericEngine<CliquetOption.Arguments, CliquetOption.Results>
+      { }
    }
-
 }

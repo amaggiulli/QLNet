@@ -1,38 +1,43 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 using System;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
-      [TestClass()]
+
+   [TestClass()]
 #endif
    public class T_BlackDeltaCalculator
    {
-      private int timeToDays( double t )
+      private int timeToDays(double t)
       {
          // FLOATING_POINT_EXCEPTION
-         return (int)( t * 360 + 0.5 );
+         return (int)(t * 360 + 0.5);
       }
 
       private struct DeltaData
@@ -46,7 +51,7 @@ namespace TestSuite
          public double strike;
          public double value;
 
-         public DeltaData(Option.Type ot, DeltaVolQuote.DeltaType dt, double spot, double dDf, double fDf, 
+         public DeltaData(Option.Type ot, DeltaVolQuote.DeltaType dt, double spot, double dDf, double fDf,
             double stdDev, double strike, double value) : this()
          {
             this.ot = ot;
@@ -72,7 +77,7 @@ namespace TestSuite
          public double result;   // expected result
          public double tol;      // tolerance
 
-         public EuropeanOptionData(Option.Type type, double strike, double s, double q, double r, double t, 
+         public EuropeanOptionData(Option.Type type, double strike, double s, double q, double r, double t,
             double v, double result, double tol) : this()
          {
             this.type = type;
@@ -87,11 +92,12 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
+#endif
       public void testDeltaValues()
       {
          // Testing delta calculator values
@@ -115,8 +121,8 @@ namespace TestSuite
             new DeltaData(Option.Type.Put,  DeltaVolQuote.DeltaType.PaSpot,   103.00,   0.99482, 0.98508,     0.07247845, 97.22,  -0.25)
          };
 
-         Option.Type                currOt;
-         DeltaVolQuote.DeltaType    currDt;
+         Option.Type currOt;
+         DeltaVolQuote.DeltaType currDt;
          double currSpot;
          double currdDf;
          double currfDf;
@@ -128,47 +134,47 @@ namespace TestSuite
          double error;
          double tolerance;
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-            currOt      =values[i].ot;
-            currDt      =values[i].dt;
-            currSpot    =values[i].spot;
-            currdDf     =values[i].dDf;
-            currfDf     =values[i].fDf;
-            currStdDev  =values[i].stdDev;
-            currStrike  =values[i].strike;
-            currDelta   =values[i].value;
+            currOt = values[i].ot;
+            currDt = values[i].dt;
+            currSpot = values[i].spot;
+            currdDf = values[i].dDf;
+            currfDf = values[i].fDf;
+            currStdDev = values[i].stdDev;
+            currStrike = values[i].strike;
+            currDelta = values[i].value;
 
-            BlackDeltaCalculator myCalc = new BlackDeltaCalculator(currOt, currDt, currSpot,currdDf, currfDf, currStdDev);
+            BlackDeltaCalculator myCalc = new BlackDeltaCalculator(currOt, currDt, currSpot, currdDf, currfDf, currStdDev);
 
-            tolerance=1.0e-3;
+            tolerance = 1.0e-3;
 
-            expected    =currDelta;
-            calculated  =myCalc.deltaFromStrike(currStrike);
-            error       =Math.Abs(calculated-expected);
+            expected = currDelta;
+            calculated = myCalc.deltaFromStrike(currStrike);
+            error = Math.Abs(calculated - expected);
 
-            if (error>tolerance) 
+            if (error > tolerance)
             {
                QAssert.Fail("\n Delta-from-strike calculation failed for delta. \n"
-                           + "Iteration: "+ i + "\n"
+                           + "Iteration: " + i + "\n"
                            + "Calculated Strike:" + calculated + "\n"
                            + "Expected   Strike:" + expected + "\n"
                            + "Error: " + error);
             }
 
-            tolerance=1.0e-2;
+            tolerance = 1.0e-2;
             // tolerance not that small, but sufficient for strikes in
             // particular since they might be results of a numerical
             // procedure
 
-            expected    =currStrike;
-            calculated  =myCalc.strikeFromDelta(currDelta);
-            error       =Math.Abs(calculated-expected);
+            expected = currStrike;
+            calculated = myCalc.strikeFromDelta(currDelta);
+            error = Math.Abs(calculated - expected);
 
-            if (error>tolerance) 
+            if (error > tolerance)
             {
                QAssert.Fail("\n Strike-from-delta calculation failed for delta. \n"
-                           + "Iteration: "+ i + "\n"
+                           + "Iteration: " + i + "\n"
                            + "Calculated Strike:" + calculated + "\n"
                            + "Expected   Strike:" + expected + "\n"
                            + "Error: " + error);
@@ -176,12 +182,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
-      public void testDeltaPriceConsistency() 
+#endif
+      public void testDeltaPriceConsistency()
       {
          // Testing premium-adjusted delta price consistency
 
@@ -220,18 +227,18 @@ namespace TestSuite
          new EuropeanOptionData( Option.Type.Put,   0.0000,  1.2212, 0.0000, 0.0000, 1.00, 0.133,  0.0, 0.0),
          };
 
-         DayCounter dc       = new Actual360();
-         Calendar calendar   = new TARGET();
-         Date today          = Date.Today;
+         DayCounter dc = new Actual360();
+         Calendar calendar = new TARGET();
+         Date today = Date.Today;
 
          // Start setup of market data
 
-         double discFor        =0.0;
-         double discDom        =0.0;
-         double implVol        =0.0;
-         double expectedVal    =0.0;
-         double calculatedVal  =0.0;
-         double error          =0.0;
+         double discFor = 0.0;
+         double discDom = 0.0;
+         double implVol = 0.0;
+         double expectedVal = 0.0;
+         double calculatedVal = 0.0;
+         double error = 0.0;
 
          SimpleQuote spotQuote = new SimpleQuote(0.0);
          Handle<Quote> spotHandle = new Handle<Quote>(spotQuote);
@@ -255,28 +262,27 @@ namespace TestSuite
          Exercise exercise;
          // Setup of market data finished
 
-         double tolerance=1.0e-10;
+         double tolerance = 1.0e-10;
 
-         for(int i=0; i<values.Length;++i)
+         for (int i = 0; i < values.Length; ++i)
          {
-
             payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
             exDate = today + timeToDays(values[i].t);
             exercise = new EuropeanExercise(exDate);
 
-            spotQuote   .setValue(values[i].s);
-            volQuote    .setValue(values[i].v);
-            rQuote      .setValue(values[i].r);
-            qQuote      .setValue(values[i].q);
+            spotQuote.setValue(values[i].s);
+            volQuote.setValue(values[i].v);
+            rQuote.setValue(values[i].r);
+            qQuote.setValue(values[i].q);
 
-            discDom =rTS.discount(exDate);
-            discFor =qTS.discount(exDate);
-            implVol =Math.Sqrt(volTS.blackVariance(exDate,0.0));
+            discDom = rTS.discount(exDate);
+            discFor = qTS.discount(exDate);
+            implVol = Math.Sqrt(volTS.blackVariance(exDate, 0.0));
 
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(values[i].type, DeltaVolQuote.DeltaType.PaSpot,
-               spotQuote.value(),discDom, discFor, implVol);
+               spotQuote.value(), discDom, discFor, implVol);
 
-            stochProcess= new BlackScholesMertonProcess(spotHandle,
+            stochProcess = new BlackScholesMertonProcess(spotHandle,
                new Handle<YieldTermStructure>(qTS),
                new Handle<YieldTermStructure>(rTS),
                new Handle<BlackVolTermStructure>(volTS));
@@ -286,41 +292,40 @@ namespace TestSuite
             EuropeanOption option = new EuropeanOption(payoff, exercise);
             option.setPricingEngine(engine);
 
-            calculatedVal=myCalc.deltaFromStrike(values[i].strike);
-            expectedVal=option.delta()-option.NPV()/spotQuote.value();
-            error=Math.Abs(expectedVal-calculatedVal);
+            calculatedVal = myCalc.deltaFromStrike(values[i].strike);
+            expectedVal = option.delta() - option.NPV() / spotQuote.value();
+            error = Math.Abs(expectedVal - calculatedVal);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
-               QAssert.Fail("\n Premium-adjusted spot delta test failed. \n" 
+               QAssert.Fail("\n Premium-adjusted spot delta test failed. \n"
                            + "Calculated Delta: " + calculatedVal + "\n"
                            + "Expected Value:   " + expectedVal + "\n"
-                           + "Error: "+ error);
+                           + "Error: " + error);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaFwd);
 
-            calculatedVal=myCalc.deltaFromStrike(values[i].strike);
-            expectedVal=expectedVal/discFor; // Premium adjusted Fwd Delta is PA spot without discount
-            error=Math.Abs(expectedVal-calculatedVal);
+            calculatedVal = myCalc.deltaFromStrike(values[i].strike);
+            expectedVal = expectedVal / discFor; // Premium adjusted Fwd Delta is PA spot without discount
+            error = Math.Abs(expectedVal - calculatedVal);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Premium-adjusted forward delta test failed. \n"
                            + "Calculated Delta: " + calculatedVal + "\n"
                            + "Expected Value:   " + expectedVal + "\n"
-                           + "Error: "+ error);
+                           + "Error: " + error);
             }
-
 
             // Test consistency with BlackScholes Calculator for Spot Delta
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Spot);
 
-            calculatedVal=myCalc.deltaFromStrike(values[i].strike);
-            expectedVal=option.delta();
-            error=Math.Abs(calculatedVal-expectedVal);
+            calculatedVal = myCalc.deltaFromStrike(values[i].strike);
+            expectedVal = option.delta();
+            error = Math.Abs(calculatedVal - expectedVal);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n spot delta in BlackDeltaCalculator differs from delta in BlackScholesCalculator. \n"
                            + "Calculated Value: " + calculatedVal + "\n"
@@ -330,11 +335,12 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
+#endif
       public void testPutCallParity()
       {
          // Testing put-call parity for deltas
@@ -402,15 +408,15 @@ namespace TestSuite
          Calendar calendar = new TARGET();
          Date today = Date.Today;
 
-         double discFor        =0.0;
-         double discDom        =0.0;
-         double implVol        =0.0;
-         double deltaCall      =0.0;
-         double deltaPut       =0.0;
-         double expectedDiff   =0.0;
-         double calculatedDiff =0.0;
-         double error          =0.0;
-         double forward        =0.0;
+         double discFor = 0.0;
+         double discDom = 0.0;
+         double implVol = 0.0;
+         double deltaCall = 0.0;
+         double deltaPut = 0.0;
+         double expectedDiff = 0.0;
+         double calculatedDiff = 0.0;
+         double error = 0.0;
+         double forward = 0.0;
 
          SimpleQuote spotQuote = new SimpleQuote(0.0);
 
@@ -430,9 +436,9 @@ namespace TestSuite
          Date exDate;
          Exercise exercise;
 
-         double tolerance=1.0e-10;
+         double tolerance = 1.0e-10;
 
-         for(int i=0; i<values.Length;++i)
+         for (int i = 0; i < values.Length; ++i)
          {
             payoff = new PlainVanillaPayoff(Option.Type.Call, values[i].strike);
             exDate = today + timeToDays(values[i].t);
@@ -442,24 +448,24 @@ namespace TestSuite
             volQuote.setValue(values[i].v);
             rQuote.setValue(values[i].r);
             qQuote.setValue(values[i].q);
-            discDom=rTS.discount(exDate);
-            discFor=qTS.discount(exDate);
-            implVol=Math.Sqrt(volTS.blackVariance(exDate,0.0));
-            forward=spotQuote.value()*discFor/discDom;
+            discDom = rTS.discount(exDate);
+            discFor = qTS.discount(exDate);
+            implVol = Math.Sqrt(volTS.blackVariance(exDate, 0.0));
+            forward = spotQuote.value() * discFor / discDom;
 
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(Option.Type.Call, DeltaVolQuote.DeltaType.Spot,
-               spotQuote.value(),discDom, discFor, implVol);
+               spotQuote.value(), discDom, discFor, implVol);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);
+            deltaCall = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);
+            deltaPut = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expectedDiff=discFor;
-            calculatedDiff=deltaCall-deltaPut;
-            error=Math.Abs(expectedDiff-calculatedDiff);
+            expectedDiff = discFor;
+            calculatedDiff = deltaCall - deltaPut;
+            error = Math.Abs(expectedDiff - calculatedDiff);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Put-call parity failed for spot delta. \n"
                            + "Calculated Call Delta: " + deltaCall + "\n"
@@ -469,36 +475,36 @@ namespace TestSuite
             }
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Fwd);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);
+            deltaCall = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);
+            deltaPut = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expectedDiff=1.0;
-            calculatedDiff=deltaCall-deltaPut;
-            error=Math.Abs(expectedDiff-calculatedDiff);
+            expectedDiff = 1.0;
+            calculatedDiff = deltaCall - deltaPut;
+            error = Math.Abs(expectedDiff - calculatedDiff);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Put-call parity failed for forward delta. \n"
                            + "Calculated Call Delta: " + deltaCall + "\n"
                            + "Calculated Put Delta:  " + deltaPut + "\n"
                            + "Expected Difference:   " + expectedDiff + "\n"
-                           + "Calculated Difference: " + calculatedDiff );
+                           + "Calculated Difference: " + calculatedDiff);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaSpot);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);
+            deltaCall = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);
+            deltaPut = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expectedDiff=discFor*values[i].strike/forward;
-            calculatedDiff=deltaCall-deltaPut;
-            error=Math.Abs(expectedDiff-calculatedDiff);
+            expectedDiff = discFor * values[i].strike / forward;
+            calculatedDiff = deltaCall - deltaPut;
+            error = Math.Abs(expectedDiff - calculatedDiff);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Put-call parity failed for premium-adjusted spot delta. \n"
                            + "Calculated Call Delta: " + deltaCall + "\n"
@@ -509,16 +515,16 @@ namespace TestSuite
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaFwd);
 
-            deltaCall=myCalc.deltaFromStrike(values[i].strike);
+            deltaCall = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Put);
-            deltaPut=myCalc.deltaFromStrike(values[i].strike);
+            deltaPut = myCalc.deltaFromStrike(values[i].strike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expectedDiff = values[i].strike/forward;
-            calculatedDiff=deltaCall-deltaPut;
-            error=Math.Abs(expectedDiff-calculatedDiff);
+            expectedDiff = values[i].strike / forward;
+            calculatedDiff = deltaCall - deltaPut;
+            error = Math.Abs(expectedDiff - calculatedDiff);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Put-call parity failed for premium-adjusted forward delta. \n"
                            + "Calculated Call Delta: " + deltaCall + "\n"
@@ -529,11 +535,12 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif
+#endif
       public void testAtmCalcs()
       {
          // Testing delta-neutral ATM quotations
@@ -560,7 +567,7 @@ namespace TestSuite
             new DeltaData(Option.Type.Call,  DeltaVolQuote.DeltaType.Spot,    103.00,   0.99482, 0.98508,     0.0,    101.0013,0.99482*0.5)
          };
 
-         DeltaVolQuote.DeltaType    currDt;
+         DeltaVolQuote.DeltaType currDt;
          double currSpot;
          double currdDf;
          double currfDf;
@@ -568,97 +575,95 @@ namespace TestSuite
          double expected;
          double calculated;
          double error;
-         double tolerance=1.0e-2; // not that small, but sufficient for strikes
+         double tolerance = 1.0e-2; // not that small, but sufficient for strikes
          double currAtmStrike;
          double currCallDelta;
          double currPutDelta;
          double currFwd;
 
-         for (int i=0; i< values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-
-            currDt      =values[i].dt;
-            currSpot    =values[i].spot;
-            currdDf     =values[i].dDf;
-            currfDf     =values[i].fDf;
-            currStdDev  =values[i].stdDev;
-            currFwd     =currSpot*currfDf/currdDf;
+            currDt = values[i].dt;
+            currSpot = values[i].spot;
+            currdDf = values[i].dDf;
+            currfDf = values[i].fDf;
+            currStdDev = values[i].stdDev;
+            currFwd = currSpot * currfDf / currdDf;
 
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(Option.Type.Call, currDt, currSpot, currdDf,
                currfDf, currStdDev);
 
-            currAtmStrike=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
-            currCallDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currAtmStrike = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
+            currCallDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Put);
-            currPutDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    =0.0;
-            calculated  =currCallDelta+currPutDelta;
-            error       =Math.Abs(calculated-expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Delta neutrality failed for spot delta in Delta Calculator. \n"
-                           + "Iteration: "+ i + "\n"
+                           + "Iteration: " + i + "\n"
                            + "Calculated Delta Sum: " + calculated + "\n"
                            + "Expected Delta Sum:   " + expected + "\n"
-                           + "Error: "                + error);
+                           + "Error: " + error);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Fwd);
-            currAtmStrike=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
-            currCallDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currAtmStrike = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
+            currCallDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Put);
-            currPutDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    =0.0;
-            calculated  =currCallDelta+currPutDelta;
-            error       =Math.Abs(calculated-expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Delta neutrality failed for forward delta in Delta Calculator. \n"
                            + "Iteration: " + i + "\n"
                            + "Calculated Delta Sum: " + calculated + "\n"
                            + "Expected Delta Sum:   " + expected + "\n"
-                           + "Error: "                + error);
+                           + "Error: " + error);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaSpot);
-            currAtmStrike=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
-            currCallDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currAtmStrike = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
+            currCallDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Put);
-            currPutDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    =0.0;
-            calculated  =currCallDelta+currPutDelta;
-            error       =Math.Abs(calculated-expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Delta neutrality failed for premium-adjusted spot delta in Delta Calculator. \n"
                            + "Iteration: " + i + "\n"
                            + "Calculated Delta Sum: " + calculated + "\n"
                            + "Expected Delta Sum:   " + expected + "\n"
-                           + "Error: "                + error);
+                           + "Error: " + error);
             }
 
-
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaFwd);
-            currAtmStrike=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
-            currCallDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currAtmStrike = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmDeltaNeutral);
+            currCallDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Put);
-            currPutDelta=myCalc.deltaFromStrike(currAtmStrike);
+            currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    =0.0;
-            calculated  =currCallDelta+currPutDelta;
-            error       =Math.Abs(calculated-expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Delta neutrality failed for premium-adjusted forward delta in Delta Calculator. \n"
                            + "Iteration: " + i + "\n"
@@ -668,11 +673,11 @@ namespace TestSuite
             }
 
             // Test ATM forward Calculations
-            calculated=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmFwd);
-            expected=currFwd;
-            error=Math.Abs(expected-calculated);
+            calculated = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmFwd);
+            expected = currFwd;
+            error = Math.Abs(expected - calculated);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Atm forward test failed. \n"
                            + "Calculated Value: " + calculated + "\n"
@@ -682,18 +687,18 @@ namespace TestSuite
 
             // Test ATM 0.50 delta calculations
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Fwd);
-            double atmFiftyStrike=myCalc.atmStrike(DeltaVolQuote.AtmType.AtmPutCall50);
-            calculated=Math.Abs(myCalc.deltaFromStrike(atmFiftyStrike));
-            expected=0.50;
-            error=Math.Abs(expected-calculated);
+            double atmFiftyStrike = myCalc.atmStrike(DeltaVolQuote.AtmType.AtmPutCall50);
+            calculated = Math.Abs(myCalc.deltaFromStrike(atmFiftyStrike));
+            expected = 0.50;
+            error = Math.Abs(expected - calculated);
 
-            if(error>tolerance)
+            if (error > tolerance)
             {
                QAssert.Fail("\n Atm 0.50 delta strike test failed. \n"
                            + "Iteration:" + i + "\n"
                            + "Calculated Value: " + calculated + "\n"
                            + "Expected   Value: " + expected + "\n"
-                           + "Error: "    + error);
+                           + "Error: " + error);
             }
          }
       }

@@ -28,6 +28,8 @@ Instead of a single master branch, this workflow uses two branches to record the
 The *master* branch stores the official release history, and the *develop* branch serves as an integration branch for features.
 The *develop* branch will also contain the complete history of the project.
 
+Before submitting a pull request, please read our full [contributing guidelines](CONTRIBUTING.md).
+
 ###### Features 
 
 To contribute features, you should clone the repository, create a tracking branch for develop and create the feature:

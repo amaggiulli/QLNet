@@ -1,35 +1,39 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
-using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
-      [TestClass()]
-   #endif
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
    public class T_BinaryOption
    {
-      private void REPORT_FAILURE( string greekName,
+      private void REPORT_FAILURE(string greekName,
                                    StrikedTypePayoff payoff,
                                    Exercise exercise,
                                    Barrier.Type barrierType,
@@ -42,14 +46,14 @@ namespace TestSuite
                                    double expected,
                                    double calculated,
                                    double error,
-                                   double tolerance )
+                                   double tolerance)
       {
-         QAssert.Fail( payoff.optionType() + " option with " 
+         QAssert.Fail(payoff.optionType() + " option with "
                   + barrierType + " barrier type:\n"
                   + "    barrier:          " + barrier + "\n"
                   + payoff + " payoff:\n"
                   + exercise + " "
-                  + payoff.optionType() 
+                  + payoff.optionType()
                   + "    spot value: " + s + "\n"
                   + "    strike:           " + payoff.strike() + "\n"
                   + "    dividend yield:   " + q + "\n"
@@ -60,7 +64,7 @@ namespace TestSuite
                   + "    expected " + greekName + ":   " + expected + "\n"
                   + "    calculated " + greekName + ": " + calculated + "\n"
                   + "    error:            " + error + "\n"
-                  + "    tolerance:        " + tolerance );
+                  + "    tolerance:        " + tolerance);
       }
 
       private struct BinaryOptionData
@@ -96,12 +100,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testCashOrNothingHaugValues() 
+#endif
+      public void testCashOrNothingHaugValues()
       {
          // Testing cash-or-nothing barrier options against Haug's values
 
@@ -112,9 +117,9 @@ namespace TestSuite
                q is the dividend rate, while the book gives b, the cost of carry (q=r-b)
             */
             //    barrierType, barrier,  cash,         type, strike,   spot,    q,    r,   t,  vol,   value, tol
-            new BinaryOptionData( Barrier.Type.DownIn,  100.00, 15.00, Option.Type.Call, 102.00, 105.00, 0.00, 0.10, 0.5, 0.20,  4.9289, 1e-4 ), 
+            new BinaryOptionData( Barrier.Type.DownIn,  100.00, 15.00, Option.Type.Call, 102.00, 105.00, 0.00, 0.10, 0.5, 0.20,  4.9289, 1e-4 ),
             new BinaryOptionData( Barrier.Type.DownIn,  100.00, 15.00, Option.Type.Call,  98.00, 105.00, 0.00, 0.10, 0.5, 0.20,  6.2150, 1e-4 ),
-            // following value is wrong in book. 
+            // following value is wrong in book.
             new BinaryOptionData( Barrier.Type.UpIn,    100.00, 15.00, Option.Type.Call, 102.00,  95.00, 0.00, 0.10, 0.5, 0.20,  5.8926, 1e-4 ),
             new BinaryOptionData( Barrier.Type.UpIn,    100.00, 15.00, Option.Type.Call,  98.00,  95.00, 0.00, 0.10, 0.5, 0.20,  7.4519, 1e-4 ),
             // 17,18
@@ -161,34 +166,35 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.25);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             StrikedTypePayoff payoff = new CashOrNothingPayoff(values[i].type, values[i].strike, values[i].cash);
 
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
-            Exercise amExercise = new AmericanExercise(today,exDate,true);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
+            Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(spot),
                new Handle<YieldTermStructure>(qTS),
                new Handle<YieldTermStructure>(rTS),
                new Handle<BlackVolTermStructure>(volTS));
-            
+
             IPricingEngine engine = new AnalyticBinaryBarrierEngine(stochProcess);
 
-            BarrierOption opt = new BarrierOption(values[i].barrierType,values[i].barrier, 0,payoff,amExercise);
+            BarrierOption opt = new BarrierOption(values[i].barrierType, values[i].barrier, 0, payoff, amExercise);
 
             opt.setPricingEngine(engine);
 
             double calculated = opt.NPV();
-            double error = Math.Abs(calculated-values[i].result);
-            if (error > values[i].tol) {
-               REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType, 
+            double error = Math.Abs(calculated - values[i].result);
+            if (error > values[i].tol)
+            {
+               REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType,
                               values[i].barrier, values[i].s,
                               values[i].q, values[i].r, today, values[i].v,
                               values[i].result, calculated, error, values[i].tol);
@@ -196,12 +202,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-              [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
              [Fact]
-      #endif
-      public void testAssetOrNothingHaugValues() 
+#endif
+      public void testAssetOrNothingHaugValues()
       {
          // Testing asset-or-nothing barrier options against Haug's values
 
@@ -219,7 +226,7 @@ namespace TestSuite
             // 19,20
             new BinaryOptionData( Barrier.Type.DownIn,  100.00,  0.00, Option.Type.Put,  102.00, 105.00, 0.00, 0.10, 0.5, 0.20, 27.5644, 1e-4 ),
             new BinaryOptionData( Barrier.Type.DownIn,  100.00,  0.00, Option.Type.Put,   98.00, 105.00, 0.00, 0.10, 0.5, 0.20, 18.9896, 1e-4 ),
-            // following value is wrong in book. 
+            // following value is wrong in book.
             new BinaryOptionData( Barrier.Type.UpIn,    100.00,  0.00, Option.Type.Put,  102.00,  95.00, 0.00, 0.10, 0.5, 0.20, 33.1723, 1e-4 ),
             new BinaryOptionData( Barrier.Type.UpIn,    100.00,  0.00, Option.Type.Put,   98.00,  95.00, 0.00, 0.10, 0.5, 0.20, 22.7755, 1e-4 ),
             // 23,24
@@ -245,39 +252,39 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.25);
          BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             StrikedTypePayoff payoff = new AssetOrNothingPayoff(values[i].type, values[i].strike);
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
-            Exercise amExercise = new AmericanExercise(today,exDate,true);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
+            Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(spot),
                new Handle<YieldTermStructure>(qTS),
                new Handle<YieldTermStructure>(rTS),
                new Handle<BlackVolTermStructure>(volTS));
-           
+
             IPricingEngine engine = new AnalyticBinaryBarrierEngine(stochProcess);
 
-            BarrierOption opt = new BarrierOption(values[i].barrierType,values[i].barrier, 0,payoff,amExercise);
+            BarrierOption opt = new BarrierOption(values[i].barrierType, values[i].barrier, 0, payoff, amExercise);
 
             opt.setPricingEngine(engine);
 
             double calculated = opt.NPV();
-            double error = Math.Abs(calculated-values[i].result);
-            if (error > values[i].tol) 
+            double error = Math.Abs(calculated - values[i].result);
+            if (error > values[i].tol)
             {
-               REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType, 
+               REPORT_FAILURE("value", payoff, amExercise, values[i].barrierType,
                               values[i].barrier, values[i].s,
                               values[i].q, values[i].r, today, values[i].v,
                               values[i].result, calculated, error, values[i].tol);
             }
          }
-      }  
+      }
    }
 }

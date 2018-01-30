@@ -5,293 +5,291 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace QLNet
 {
+   public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, Curve<YoYInflationTermStructure>
+   {
+      #region InflationTraits
 
-	public class PiecewiseYoYInflationCurve : YoYInflationTermStructure, Curve<YoYInflationTermStructure>
-	{
-		#region InflationTraits
+      public Date initialDate(YoYInflationTermStructure c) { return traits_.initialDate(c); }
 
-		public Date initialDate( YoYInflationTermStructure c ) { return traits_.initialDate( c ); }
-		public double initialValue( YoYInflationTermStructure c ) { return traits_.initialValue( c ); }
-		public double guess( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.guess( i, c, validData, first ); }
-		public double minValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.minValueAfter( i, c, validData, first ); }
-		public double maxValueAfter( int i, InterpolatedCurve c, bool validData, int first ) { return traits_.maxValueAfter( i, c, validData, first ); }
-		public void updateGuess( List<double> data, double discount, int i ) { traits_.updateGuess( data, discount, i ); }
-		public int maxIterations() { return traits_.maxIterations(); }
+      public double initialValue(YoYInflationTermStructure c) { return traits_.initialValue(c); }
 
-		#endregion
+      public double guess(int i, InterpolatedCurve c, bool validData, int first) { return traits_.guess(i, c, validData, first); }
 
-		#region InterpolatedCurve
+      public double minValueAfter(int i, InterpolatedCurve c, bool validData, int first) { return traits_.minValueAfter(i, c, validData, first); }
 
-		public List<double> times_ { get; set; }
-		public virtual List<double> times() { return this.times_; }
+      public double maxValueAfter(int i, InterpolatedCurve c, bool validData, int first) { return traits_.maxValueAfter(i, c, validData, first); }
 
-		public List<Date> dates_ { get; set; }
-		public virtual List<Date> dates() { return dates_; }
-        public Date maxDate_ { get; set; }
-        public override Date maxDate()
-        {
-           if ( maxDate_ != null )
-              return maxDate_;
+      public void updateGuess(List<double> data, double discount, int i) { traits_.updateGuess(data, discount, i); }
 
-           return dates_.Last();
-        }
+      public int maxIterations() { return traits_.maxIterations(); }
 
-		public List<double> data_ { get; set; }
-		public List<double> forwards() { return this.data_; }
-		public virtual List<double> data() { return forwards(); }
+      #endregion InflationTraits
 
-		public Interpolation interpolation_ { get; set; }
-		public IInterpolationFactory interpolator_ { get; set; }
+      #region InterpolatedCurve
 
-		public virtual Dictionary<Date, double> nodes()
-		{
-			Dictionary<Date, double> results = new Dictionary<Date, double>();
-			dates_.ForEach( ( i, x ) => results.Add( x, data_[i] ) );
-			return results;
-		}
+      public List<double> times_ { get; set; }
 
-		public void setupInterpolation()
-		{
-			interpolation_ = interpolator_.interpolate( times_, times_.Count, data_ );
-		}
+      public virtual List<double> times() { return this.times_; }
 
-		public object Clone()
-		{
-			InterpolatedCurve copy = this.MemberwiseClone() as InterpolatedCurve;
-			copy.times_ = new List<double>( times_ );
-			copy.data_ = new List<double>( data_ );
-			copy.interpolator_ = interpolator_;
-			copy.setupInterpolation();
-			return copy;
-		}
+      public List<Date> dates_ { get; set; }
 
-		#endregion
+      public virtual List<Date> dates() { return dates_; }
 
-		public List<double> rates()
-		{
-			return this.data_;
-		}
+      public Date maxDate_ { get; set; }
 
-		protected override double yoyRateImpl( double t )
-		{
-			return this.interpolation_.value( t, true );
-		}
+      public override Date maxDate()
+      {
+         if (maxDate_ != null)
+            return maxDate_;
 
+         return dates_.Last();
+      }
 
-		// these are dummy methods (for the sake of ITraits and should not be called directly
-		public double discountImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double zeroYieldImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
-		public double forwardImpl( Interpolation i, double t ) { throw new NotSupportedException(); }
+      public List<double> data_ { get; set; }
 
+      public List<double> forwards() { return this.data_; }
 
-		# region new fields: Curve
+      public virtual List<double> data() { return forwards(); }
 
-		public double initialValue() { return _traits_.initialValue( this ); }
-		public Date initialDate() { return _traits_.initialDate( this ); }
+      public Interpolation interpolation_ { get; set; }
+      public IInterpolationFactory interpolator_ { get; set; }
 
-		public void registerWith( BootstrapHelper<YoYInflationTermStructure> helper )
-		{
-			helper.registerWith( this.update );
-		}
+      public virtual Dictionary<Date, double> nodes()
+      {
+         Dictionary<Date, double> results = new Dictionary<Date, double>();
+         dates_.ForEach((i, x) => results.Add(x, data_[i]));
+         return results;
+      }
 
+      public void setupInterpolation()
+      {
+         interpolation_ = interpolator_.interpolate(times_, times_.Count, data_);
+      }
 
-		//public new bool moving_
-		public new bool moving_
-		{
-			get { return base.moving_; }
-			set { base.moving_ = value; }
-		}
+      public object Clone()
+      {
+         InterpolatedCurve copy = this.MemberwiseClone() as InterpolatedCurve;
+         copy.times_ = new List<double>(times_);
+         copy.data_ = new List<double>(data_);
+         copy.interpolator_ = interpolator_;
+         copy.setupInterpolation();
+         return copy;
+      }
 
+      #endregion InterpolatedCurve
 
+      public List<double> rates()
+      {
+         return this.data_;
+      }
 
+      protected override double yoyRateImpl(double t)
+      {
+         return this.interpolation_.value(t, true);
+      }
 
-		public void setTermStructure( BootstrapHelper<YoYInflationTermStructure> helper )
-		{
-			helper.setTermStructure( this );
-		}
+      // these are dummy methods (for the sake of ITraits and should not be called directly
+      public double discountImpl(Interpolation i, double t) { throw new NotSupportedException(); }
 
+      public double zeroYieldImpl(Interpolation i, double t) { throw new NotSupportedException(); }
 
-		protected ITraits<YoYInflationTermStructure> _traits_ = null;//todo define with the trait for yield curve
-		public ITraits<YoYInflationTermStructure> traits_
-		{
-			get
-			{
-				return _traits_;
-			}
-		}
+      public double forwardImpl(Interpolation i, double t) { throw new NotSupportedException(); }
 
+      #region new fields: Curve
 
+      public double initialValue() { return _traits_.initialValue(this); }
 
-		protected List<BootstrapHelper<YoYInflationTermStructure>> _instruments_ = new List<BootstrapHelper<YoYInflationTermStructure>>();
+      public Date initialDate() { return _traits_.initialDate(this); }
 
-		public List<BootstrapHelper<YoYInflationTermStructure>> instruments_
-		{
-			get
-			{
-				//todo edem 
-				List<BootstrapHelper<YoYInflationTermStructure>> instruments = new List<BootstrapHelper<YoYInflationTermStructure>>();
-				_instruments_.ForEach((i, x) => instruments.Add( x ) );
-				return instruments;
-			}
-		}
+      public void registerWith(BootstrapHelper<YoYInflationTermStructure> helper)
+      {
+         helper.registerWith(this.update);
+      }
 
-		protected IBootStrap<PiecewiseYoYInflationCurve> bootstrap_;
+      //public new bool moving_
+      public new bool moving_
+      {
+         get { return base.moving_; }
+         set { base.moving_ = value; }
+      }
 
+      public void setTermStructure(BootstrapHelper<YoYInflationTermStructure> helper)
+      {
+         helper.setTermStructure(this);
+      }
 
-		protected double _accuracy_;
-		public double accuracy_
-		{
-			get { return _accuracy_; }
-			set { _accuracy_ = value; }
-		}
+      protected ITraits<YoYInflationTermStructure> _traits_ = null;//todo define with the trait for yield curve
 
+      public ITraits<YoYInflationTermStructure> traits_
+      {
+         get
+         {
+            return _traits_;
+         }
+      }
 
-		public override Date baseDate()
-		{
-			// if indexIsInterpolated we fixed the dates in the constructor
-			return dates_.First();
-		}
+      protected List<BootstrapHelper<YoYInflationTermStructure>> _instruments_ = new List<BootstrapHelper<YoYInflationTermStructure>>();
 
+      public List<BootstrapHelper<YoYInflationTermStructure>> instruments_
+      {
+         get
+         {
+            //todo edem
+            List<BootstrapHelper<YoYInflationTermStructure>> instruments = new List<BootstrapHelper<YoYInflationTermStructure>>();
+            _instruments_.ForEach((i, x) => instruments.Add(x));
+            return instruments;
+         }
+      }
 
-		# endregion
+      protected IBootStrap<PiecewiseYoYInflationCurve> bootstrap_;
 
+      protected double _accuracy_;
 
+      public double accuracy_
+      {
+         get { return _accuracy_; }
+         set { _accuracy_ = value; }
+      }
 
+      public override Date baseDate()
+      {
+         // if indexIsInterpolated we fixed the dates in the constructor
+         return dates_.First();
+      }
 
-		public PiecewiseYoYInflationCurve( DayCounter dayCounter, double baseZeroRate, Period observationLag, Frequency frequency,
-													  bool indexIsInterpolated, Handle<YieldTermStructure> yTS )
-			: base( dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS ) { }
+      #endregion new fields: Curve
 
-		public PiecewiseYoYInflationCurve( Date referenceDate, Calendar calendar, DayCounter dayCounter, double baseZeroRate,
-													  Period observationLag, Frequency frequency, bool indexIsInterpolated,
-													  Handle<YieldTermStructure> yTS )
-			: base( referenceDate, calendar, dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS ) { }
+      public PiecewiseYoYInflationCurve(DayCounter dayCounter, double baseZeroRate, Period observationLag, Frequency frequency,
+                                                    bool indexIsInterpolated, Handle<YieldTermStructure> yTS)
+          : base(dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS) { }
 
-		public PiecewiseYoYInflationCurve( int settlementDays, Calendar calendar, DayCounter dayCounter, double baseZeroRate,
-													  Period observationLag, Frequency frequency, bool indexIsInterpolated,
-													  Handle<YieldTermStructure> yTS )
-			: base( settlementDays, calendar, dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS ) { }
+      public PiecewiseYoYInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, double baseZeroRate,
+                                                    Period observationLag, Frequency frequency, bool indexIsInterpolated,
+                                                    Handle<YieldTermStructure> yTS)
+          : base(referenceDate, calendar, dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS) { }
 
+      public PiecewiseYoYInflationCurve(int settlementDays, Calendar calendar, DayCounter dayCounter, double baseZeroRate,
+                                                    Period observationLag, Frequency frequency, bool indexIsInterpolated,
+                                                    Handle<YieldTermStructure> yTS)
+          : base(settlementDays, calendar, dayCounter, baseZeroRate, observationLag, frequency, indexIsInterpolated, yTS) { }
 
       public PiecewiseYoYInflationCurve()
          : base()
       { }
-	}
+   }
 
+   public class PiecewiseYoYInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseYoYInflationCurve
+       where Traits : ITraits<YoYInflationTermStructure>, new()
+       where Interpolator : IInterpolationFactory, new()
+       where Bootstrap : IBootStrap<PiecewiseYoYInflationCurve>, new()
+   {
+      public PiecewiseYoYInflationCurve(Date referenceDate,
+                  Calendar calendar,
+                  DayCounter dayCounter,
+                  Period lag,
+                  Frequency frequency,
+                  bool indexIsInterpolated,
+                  double baseZeroRate,
+                  Handle<YieldTermStructure> nominalTS,
+                  List<BootstrapHelper<YoYInflationTermStructure>> instruments,
+                  double accuracy = 1.0e-12,
+                  Interpolator i = default(Interpolator),
+                  Bootstrap bootstrap = default(Bootstrap))
+          : base(referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, nominalTS)
+      {
+         _instruments_ = instruments;
+         accuracy_ = accuracy;
+         if (bootstrap == null)
+            bootstrap_ = FastActivator<Bootstrap>.Create();
+         else
+            bootstrap_ = bootstrap;
 
-	public class PiecewiseYoYInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseYoYInflationCurve
-		where Traits : ITraits<YoYInflationTermStructure>, new()
-		where Interpolator : IInterpolationFactory, new()
-		where Bootstrap : IBootStrap<PiecewiseYoYInflationCurve>, new()
-	{
+         if (i == null)
+            interpolator_ = FastActivator<Interpolator>.Create();
+         else
+            interpolator_ = i;
 
-		public PiecewiseYoYInflationCurve( Date referenceDate,
-					Calendar calendar,
-					DayCounter dayCounter,
-					Period lag,
-					Frequency frequency,
-					bool indexIsInterpolated,
-					double baseZeroRate,
-					Handle<YieldTermStructure> nominalTS,
-					List<BootstrapHelper<YoYInflationTermStructure>> instruments,
-					double accuracy = 1.0e-12,
-					Interpolator i = default(Interpolator),
-					Bootstrap bootstrap = default(Bootstrap) )
-			: base( referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, nominalTS )
-		{
-			_instruments_ = instruments;
-			accuracy_ = accuracy;
-			if ( bootstrap == null )
-				bootstrap_ = FastActivator<Bootstrap>.Create();
-			else
-				bootstrap_ = bootstrap;
+         _traits_ = FastActivator<Traits>.Create();
+         bootstrap_.setup(this);
+      }
 
-			if ( i == null )
-				interpolator_ = FastActivator<Interpolator>.Create();
-			else
-				interpolator_ = i;
+      // Inflation interface
+      public override Date baseDate()
+      {
+         this.calculate();
+         return base.baseDate();
+      }
 
-			_traits_ = FastActivator<Traits>.Create();
-			bootstrap_.setup( this );
+      public override Date maxDate()
+      {
+         this.calculate();
+         return base.maxDate();
+      }
 
-		}
+      // Inspectors
+      public override List<double> times()
+      {
+         calculate();
+         return base.times();
+      }
 
-		// Inflation interface
-		public override Date baseDate()
-		{
-			this.calculate();
-			return base.baseDate();
-		}
-		public override Date maxDate()
-		{
-			this.calculate();
-			return base.maxDate();
-		}
-		// Inspectors
-		public override List<double> times()
-		{
-			calculate();
-			return base.times();
-		}
-		public override List<Date> dates()
-		{
-			calculate();
-			return base.dates();
-		}
-		public override List<double> data()
-		{
-			calculate();
-			return base.rates();
-		}
-		public override Dictionary<Date, double> nodes()
-		{
-			calculate();
-			return base.nodes();
-		}
+      public override List<Date> dates()
+      {
+         calculate();
+         return base.dates();
+      }
 
-		// methods
-		protected override void performCalculations() { bootstrap_.calculate(); }
-	}
+      public override List<double> data()
+      {
+         calculate();
+         return base.rates();
+      }
 
+      public override Dictionary<Date, double> nodes()
+      {
+         calculate();
+         return base.nodes();
+      }
 
-	// Allows for optional 3rd generic parameter defaulted to IterativeBootstrap
-	public class PiecewiseYoYInflationCurve<Interpolator> : PiecewiseYoYInflationCurve<Interpolator, IterativeBootstrapForYoYInflation, YoYInflationTraits>
-		where Interpolator : IInterpolationFactory, new()
-	{
-		public PiecewiseYoYInflationCurve( Date referenceDate,
-					Calendar calendar,
-					DayCounter dayCounter,
-					Period lag,
-					Frequency frequency,
-					bool indexIsInterpolated,
-					double baseZeroRate,
-					Handle<YieldTermStructure> nominalTS,
-					List<BootstrapHelper<YoYInflationTermStructure>> instruments,
-					double accuracy = 1.0e-12,
-					Interpolator i = default(Interpolator) )
-			: base( referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS,
-					instruments, accuracy, i ) { }
+      // methods
+      protected override void performCalculations() { bootstrap_.calculate(); }
+   }
 
-
-	}
-
-
+   // Allows for optional 3rd generic parameter defaulted to IterativeBootstrap
+   public class PiecewiseYoYInflationCurve<Interpolator> : PiecewiseYoYInflationCurve<Interpolator, IterativeBootstrapForYoYInflation, YoYInflationTraits>
+       where Interpolator : IInterpolationFactory, new()
+   {
+      public PiecewiseYoYInflationCurve(Date referenceDate,
+                  Calendar calendar,
+                  DayCounter dayCounter,
+                  Period lag,
+                  Frequency frequency,
+                  bool indexIsInterpolated,
+                  double baseZeroRate,
+                  Handle<YieldTermStructure> nominalTS,
+                  List<BootstrapHelper<YoYInflationTermStructure>> instruments,
+                  double accuracy = 1.0e-12,
+                  Interpolator i = default(Interpolator))
+          : base(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS,
+                  instruments, accuracy, i)
+      { }
+   }
 }
-

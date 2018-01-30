@@ -1,33 +1,34 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
 {
-    public class GammaDistribution
+   public class GammaDistribution
    {
       private double a_;
 
       public GammaDistribution(double a)
       {
          a_ = a;
-         Utils.QL_REQUIRE(a > 0.0,()=> "invalid parameter for gamma distribution");
+         Utils.QL_REQUIRE(a > 0.0, () => "invalid parameter for gamma distribution");
       }
 
       public double value(double x)
@@ -92,16 +93,16 @@ namespace QLNet
 
    public static class GammaFunction
    {
-      const double c1_ = 76.18009172947146;
-      const double c2_ = -86.50532032941677;
-      const double c3_ = 24.01409824083091;
-      const double c4_ = -1.231739572450155;
-      const double c5_ = 0.1208650973866179e-2;
-      const double c6_ = -0.5395239384953e-5;
+      private const double c1_ = 76.18009172947146;
+      private const double c2_ = -86.50532032941677;
+      private const double c3_ = 24.01409824083091;
+      private const double c4_ = -1.231739572450155;
+      private const double c5_ = 0.1208650973866179e-2;
+      private const double c6_ = -0.5395239384953e-5;
 
       public static double logValue(double x)
       {
-         Utils.QL_REQUIRE(x > 0.0,()=> "positive argument required");
+         Utils.QL_REQUIRE(x > 0.0, () => "positive argument required");
 
          double temp = x + 5.5;
          temp -= (x + 0.5) * Math.Log(temp);

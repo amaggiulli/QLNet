@@ -1,59 +1,64 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   #if NET40 || NET45
-      [TestClass()]
-   #endif
+#if NET40 || NET45
+
+   [TestClass()]
+#endif
    public class T_ForwardOption
    {
-      void REPORT_FAILURE( string greekName, 
-                           StrikedTypePayoff payoff, 
-                           Exercise exercise, 
-                           double s, 
-                           double q, 
+      private void REPORT_FAILURE(string greekName,
+                           StrikedTypePayoff payoff,
+                           Exercise exercise,
+                           double s,
+                           double q,
                            double r,
-                           Date today, 
+                           Date today,
                            double v,
-                           double moneyness, 
-                           Date reset, 
-                           double expected, 
-                           double calculated, 
-                           double error, 
+                           double moneyness,
+                           Date reset,
+                           double expected,
+                           double calculated,
+                           double error,
                            double tolerance)
       {
-         QAssert.Fail("Forward " +exercise + " "
+         QAssert.Fail("Forward " + exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
                       + "    spot value:       " + s + "\n"
                       + "    strike:           " + payoff.strike() + "\n"
-                      + "    moneyness:        " + moneyness + "\n" 
+                      + "    moneyness:        " + moneyness + "\n"
                       + "    dividend yield:   " + q + "\n"
                       + "    risk-free rate:   " + r + "\n"
                       + "    reference date:   " + today + "\n"
-                      + "    reset date:       " + reset + "\n" 
+                      + "    reset date:       " + reset + "\n"
                       + "    maturity:         " + exercise.lastDate() + "\n"
                       + "    volatility:       " + v + "\n\n"
                       + "    expected " + greekName + ":   " + expected + "\n"
@@ -62,11 +67,10 @@ namespace TestSuite
                       + "    tolerance:        " + tolerance);
       }
 
-
       public class ForwardOptionData
       {
-         public ForwardOptionData(Option.Type type_,double moneyness_,double s_,double q_,double r_,double start_,
-                                  double t_,double v_,double result_,double tol_)
+         public ForwardOptionData(Option.Type type_, double moneyness_, double s_, double q_, double r_, double start_,
+                                  double t_, double v_, double result_, double tol_)
          {
             type = type_;
             moneyness = moneyness_;
@@ -91,13 +95,14 @@ namespace TestSuite
          public double result;     // expected result
          public double tol;        // tolerance
       }
-      
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testValues() 
+#endif
+      public void testValues()
       {
          // Testing forward option values...
 
@@ -125,31 +130,30 @@ namespace TestSuite
          Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(today, vol, dc));
 
          BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-            new Handle<YieldTermStructure>(qTS),new Handle<YieldTermStructure>(rTS),            
+            new Handle<YieldTermStructure>(qTS), new Handle<YieldTermStructure>(rTS),
             new Handle<BlackVolTermStructure>(volTS));
 
-         IPricingEngine engine = new ForwardVanillaEngine( stochProcess, process => new AnalyticEuropeanEngine(process)); // AnalyticEuropeanEngine
+         IPricingEngine engine = new ForwardVanillaEngine(stochProcess, process => new AnalyticEuropeanEngine(process)); // AnalyticEuropeanEngine
 
-         for (int i=0; i< values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
-
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, 0.0);
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
-            Date reset = today + Convert.ToInt32(values[i].start*360+0.5);
+            Date reset = today + Convert.ToInt32(values[i].start * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
-            ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset,payoff, exercise);
+            ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset, payoff, exercise);
             option.setPricingEngine(engine);
 
             double calculated = option.NPV();
-            double error = Math.Abs(calculated-values[i].result);
+            double error = Math.Abs(calculated - values[i].result);
             double tolerance = 1e-4;
-            if (error>tolerance) 
+            if (error > tolerance)
             {
                REPORT_FAILURE("value", payoff, exercise, values[i].s,
                               values[i].q, values[i].r, today,
@@ -160,12 +164,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif 
-      public void testPerformanceValues() 
+#endif
+      public void testPerformanceValues()
       {
          // Testing forward performance option values...
 
@@ -190,31 +195,31 @@ namespace TestSuite
          SimpleQuote vol = new SimpleQuote(0.0);
          Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(today, vol, dc));
 
-         BlackScholesMertonProcess stochProcess= new BlackScholesMertonProcess(new Handle<Quote>(spot),
-            new Handle<YieldTermStructure>(qTS),new Handle<YieldTermStructure>(rTS),
+         BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+            new Handle<YieldTermStructure>(qTS), new Handle<YieldTermStructure>(rTS),
             new Handle<BlackVolTermStructure>(volTS));
 
-         IPricingEngine engine = new ForwardPerformanceVanillaEngine( stochProcess, process => new AnalyticEuropeanEngine( process ) ); // AnalyticEuropeanEngine
+         IPricingEngine engine = new ForwardPerformanceVanillaEngine(stochProcess, process => new AnalyticEuropeanEngine(process)); // AnalyticEuropeanEngine
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, 0.0);
-            Date exDate = today + Convert.ToInt32(values[i].t*360+0.5);
+            Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
-            Date reset = today + Convert.ToInt32(values[i].start*360+0.5);
+            Date reset = today + Convert.ToInt32(values[i].start * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
-            ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset,payoff, exercise);
+            ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset, payoff, exercise);
             option.setPricingEngine(engine);
 
             double calculated = option.NPV();
-            double error = Math.Abs(calculated-values[i].result);
+            double error = Math.Abs(calculated - values[i].result);
             double tolerance = 1e-4;
-            if (error>tolerance) 
+            if (error > tolerance)
             {
                REPORT_FAILURE("value", payoff, exercise, values[i].s,
                               values[i].q, values[i].r, today,
@@ -225,17 +230,17 @@ namespace TestSuite
          }
       }
 
-      private void testForwardGreeks(Type engine_type) 
+      private void testForwardGreeks(Type engine_type)
       {
-         Dictionary<String,double> calculated = new Dictionary<string, double>(), 
-                                   expected = new Dictionary<string, double>(), 
+         Dictionary<String, double> calculated = new Dictionary<string, double>(),
+                                   expected = new Dictionary<string, double>(),
                                    tolerance = new Dictionary<string, double>();
-         tolerance["delta"]   = 1.0e-5;
-         tolerance["gamma"]   = 1.0e-5;
-         tolerance["theta"]   = 1.0e-5;
-         tolerance["rho"]     = 1.0e-5;
-         tolerance["divRho"]  = 1.0e-5;
-         tolerance["vega"]    = 1.0e-5;
+         tolerance["delta"] = 1.0e-5;
+         tolerance["gamma"] = 1.0e-5;
+         tolerance["theta"] = 1.0e-5;
+         tolerance["rho"] = 1.0e-5;
+         tolerance["divRho"] = 1.0e-5;
+         tolerance["vega"] = 1.0e-5;
 
          Option.Type[] types = { Option.Type.Call, Option.Type.Put };
          double[] moneyness = { 0.9, 1.0, 1.1 };
@@ -260,35 +265,34 @@ namespace TestSuite
 
          BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), qTS, rTS, volTS);
 
-         IPricingEngine engine = engine_type == typeof( ForwardVanillaEngine ) ? new ForwardVanillaEngine( stochProcess, process => new AnalyticEuropeanEngine( process ) ) :
-                                                                               new ForwardPerformanceVanillaEngine( stochProcess, process => new AnalyticEuropeanEngine( process ) );
+         IPricingEngine engine = engine_type == typeof(ForwardVanillaEngine) ? new ForwardVanillaEngine(stochProcess, process => new AnalyticEuropeanEngine(process)) :
+                                                                               new ForwardPerformanceVanillaEngine(stochProcess, process => new AnalyticEuropeanEngine(process));
 
-         for (int i=0; i<types.Length; i++) 
+         for (int i = 0; i < types.Length; i++)
          {
-            for (int j=0; j<moneyness.Length; j++) 
+            for (int j = 0; j < moneyness.Length; j++)
             {
-               for (int k=0; k<lengths.Length; k++) 
+               for (int k = 0; k < lengths.Length; k++)
                {
-                  for (int h=0; h<startMonths.Length; h++) 
+                  for (int h = 0; h < startMonths.Length; h++)
                   {
-
-                     Date exDate = today + new Period(lengths[k],TimeUnit.Years);
+                     Date exDate = today + new Period(lengths[k], TimeUnit.Years);
                      Exercise exercise = new EuropeanExercise(exDate);
 
-                     Date reset = today + new Period(startMonths[h],TimeUnit.Months);
+                     Date reset = today + new Period(startMonths[h], TimeUnit.Months);
 
                      StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], 0.0);
 
-                     ForwardVanillaOption option = new ForwardVanillaOption(moneyness[j], reset,payoff, exercise);
+                     ForwardVanillaOption option = new ForwardVanillaOption(moneyness[j], reset, payoff, exercise);
                      option.setPricingEngine(engine);
 
-                     for (int l=0; l<underlyings.Length; l++) 
+                     for (int l = 0; l < underlyings.Length; l++)
                      {
-                        for (int m=0; m<qRates.Length; m++) 
+                        for (int m = 0; m < qRates.Length; m++)
                         {
-                           for (int n=0; n<rRates.Length; n++) 
+                           for (int n = 0; n < rRates.Length; n++)
                            {
-                              for (int p=0; p<vols.Length; p++) 
+                              for (int p = 0; p < vols.Length; p++)
                               {
                                  double u = underlyings[l];
                                  double q = qRates[m],
@@ -300,72 +304,72 @@ namespace TestSuite
                                  vol.setValue(v);
 
                                  double value = option.NPV();
-                                 calculated["delta"]   = option.delta();
-                                 calculated["gamma"]   = option.gamma();
-                                 calculated["theta"]   = option.theta();
-                                 calculated["rho"]     = option.rho();
-                                 calculated["divRho"]  = option.dividendRho();
-                                 calculated["vega"]    = option.vega();
+                                 calculated["delta"] = option.delta();
+                                 calculated["gamma"] = option.gamma();
+                                 calculated["theta"] = option.theta();
+                                 calculated["rho"] = option.rho();
+                                 calculated["divRho"] = option.dividendRho();
+                                 calculated["vega"] = option.vega();
 
-                                 if (value > spot.value()*1.0e-5) 
+                                 if (value > spot.value() * 1.0e-5)
                                  {
                                     // perturb spot and get delta and gamma
-                                    double du = u*1.0e-4;
-                                    spot.setValue(u+du);
+                                    double du = u * 1.0e-4;
+                                    spot.setValue(u + du);
                                     double value_p = option.NPV(),
                                            delta_p = option.delta();
-                                    spot.setValue(u-du);
+                                    spot.setValue(u - du);
                                     double value_m = option.NPV(),
                                            delta_m = option.delta();
                                     spot.setValue(u);
-                                    expected["delta"] = (value_p - value_m)/(2*du);
-                                    expected["gamma"] = (delta_p - delta_m)/(2*du);
+                                    expected["delta"] = (value_p - value_m) / (2 * du);
+                                    expected["gamma"] = (delta_p - delta_m) / (2 * du);
 
                                     // perturb rates and get rho and dividend rho
-                                    double dr = r*1.0e-4;
-                                    rRate.setValue(r+dr);
+                                    double dr = r * 1.0e-4;
+                                    rRate.setValue(r + dr);
                                     value_p = option.NPV();
-                                    rRate.setValue(r-dr);
+                                    rRate.setValue(r - dr);
                                     value_m = option.NPV();
                                     rRate.setValue(r);
-                                    expected["rho"] = (value_p - value_m)/(2*dr);
+                                    expected["rho"] = (value_p - value_m) / (2 * dr);
 
-                                    double dq = q*1.0e-4;
-                                    qRate.setValue(q+dq);
+                                    double dq = q * 1.0e-4;
+                                    qRate.setValue(q + dq);
                                     value_p = option.NPV();
-                                    qRate.setValue(q-dq);
+                                    qRate.setValue(q - dq);
                                     value_m = option.NPV();
                                     qRate.setValue(q);
-                                    expected["divRho"] = (value_p - value_m)/(2*dq);
+                                    expected["divRho"] = (value_p - value_m) / (2 * dq);
 
                                     // perturb volatility and get vega
-                                    double dv = v*1.0e-4;
-                                    vol.setValue(v+dv);
+                                    double dv = v * 1.0e-4;
+                                    vol.setValue(v + dv);
                                     value_p = option.NPV();
-                                    vol.setValue(v-dv);
+                                    vol.setValue(v - dv);
                                     value_m = option.NPV();
                                     vol.setValue(v);
-                                    expected["vega"] = (value_p - value_m)/(2*dv);
+                                    expected["vega"] = (value_p - value_m) / (2 * dv);
 
                                     // perturb date and get theta
-                                    double dT = dc.yearFraction(today-1, today+1);
-                                    Settings.setEvaluationDate(today-1);
+                                    double dT = dc.yearFraction(today - 1, today + 1);
+                                    Settings.setEvaluationDate(today - 1);
                                     value_m = option.NPV();
-                                    Settings.setEvaluationDate(today+1);
+                                    Settings.setEvaluationDate(today + 1);
                                     value_p = option.NPV();
                                     Settings.setEvaluationDate(today);
-                                    expected["theta"] = (value_p - value_m)/dT;
+                                    expected["theta"] = (value_p - value_m) / dT;
 
                                     // compare
                                     //std::map<std::string,double>::iterator it;
                                     foreach (KeyValuePair<string, double> it in calculated)
                                     {
                                        String greek = it.Key;
-                                       double expct = expected  [greek],
+                                       double expct = expected[greek],
                                               calcl = calculated[greek],
-                                              tol   = tolerance [greek];
-                                       double error = Utilities.relativeError(expct,calcl,u);
-                                       if (error>tol) 
+                                              tol = tolerance[greek];
+                                       double error = Utilities.relativeError(expct, calcl, u);
+                                       if (error > tol)
                                        {
                                           REPORT_FAILURE(greek, payoff, exercise,
                                                           u, q, r, today, v,
@@ -384,12 +388,13 @@ namespace TestSuite
          }
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testGreeks() 
+#endif
+      public void testGreeks()
       {
          // Testing forward option greeks
          SavedSettings backup = new SavedSettings();
@@ -397,12 +402,13 @@ namespace TestSuite
          testForwardGreeks(typeof(ForwardVanillaEngine));
       }
 
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testPerformanceGreeks() 
+#endif
+      public void testPerformanceGreeks()
       {
          // Testing forward performance option greeks
          SavedSettings backup = new SavedSettings();
@@ -410,20 +416,21 @@ namespace TestSuite
          testForwardGreeks(typeof(ForwardPerformanceVanillaEngine));
       }
 
-      class TestBinomialEngine : BinomialVanillaEngine<CoxRossRubinstein>
+      private class TestBinomialEngine : BinomialVanillaEngine<CoxRossRubinstein>
       {
-         public TestBinomialEngine(GeneralizedBlackScholesProcess process):
+         public TestBinomialEngine(GeneralizedBlackScholesProcess process) :
          base(process, 300) // fixed steps
-         {}
+         { }
       }
 
       // verify than if engine
-      #if NET40 || NET45
-         [TestMethod()]
-      #else
+#if NET40 || NET45
+
+      [TestMethod()]
+#else
          [Fact]
-      #endif   
-      public void testGreeksInitialization() 
+#endif
+      public void testGreeksInitialization()
       {
          // Testing forward option greeks initialization
          DayCounter dc = new Actual360();
@@ -436,15 +443,15 @@ namespace TestSuite
          Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
          SimpleQuote rRate = new SimpleQuote(0.01);
          Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol=new SimpleQuote(0.11);
+         SimpleQuote vol = new SimpleQuote(0.11);
          Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
 
          BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), qTS, rTS, volTS);
 
-         IPricingEngine engine = new ForwardVanillaEngine( stochProcess, process => new TestBinomialEngine( process ) );
-         Date exDate = today + new Period(1,TimeUnit.Years);
+         IPricingEngine engine = new ForwardVanillaEngine(stochProcess, process => new TestBinomialEngine(process));
+         Date exDate = today + new Period(1, TimeUnit.Years);
          Exercise exercise = new EuropeanExercise(exDate);
-         Date reset = today + new Period(6,TimeUnit.Months);
+         Date reset = today + new Period(6, TimeUnit.Months);
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 0.0);
 
          ForwardVanillaOption option = new ForwardVanillaOption(0.9, reset, payoff, exercise);
@@ -459,27 +466,27 @@ namespace TestSuite
          {
             delta = ctrloption.delta();
          }
-         catch (Exception) 
+         catch (Exception)
          {
             // if normal option can't calculate delta,
             // nor should forward
             try
             {
-               delta   = option.delta();
+               delta = option.delta();
             }
-            catch (Exception) 
+            catch (Exception)
             {
                delta = null;
             }
-            Utils.QL_REQUIRE(delta == null,()=> "Forward delta invalid");
+            Utils.QL_REQUIRE(delta == null, () => "Forward delta invalid");
          }
 
-         double? rho  = 0;
+         double? rho = 0;
          try
          {
             rho = ctrloption.rho();
          }
-         catch (Exception) 
+         catch (Exception)
          {
             // if normal option can't calculate rho,
             // nor should forward
@@ -487,11 +494,11 @@ namespace TestSuite
             {
                rho = option.rho();
             }
-            catch (Exception) 
+            catch (Exception)
             {
                rho = null;
             }
-            Utils.QL_REQUIRE(rho == null,()=> "Forward rho invalid");
+            Utils.QL_REQUIRE(rho == null, () => "Forward rho invalid");
          }
 
          double? divRho = 0;
@@ -499,7 +506,7 @@ namespace TestSuite
          {
             divRho = ctrloption.dividendRho();
          }
-         catch (Exception) 
+         catch (Exception)
          {
             // if normal option can't calculate divRho,
             // nor should forward
@@ -507,11 +514,11 @@ namespace TestSuite
             {
                divRho = option.dividendRho();
             }
-            catch (Exception) 
+            catch (Exception)
             {
                divRho = null;
             }
-            Utils.QL_REQUIRE(divRho == null,()=> "Forward dividendRho invalid");
+            Utils.QL_REQUIRE(divRho == null, () => "Forward dividendRho invalid");
          }
 
          double? vega = 0;
@@ -519,7 +526,7 @@ namespace TestSuite
          {
             vega = ctrloption.vega();
          }
-         catch (Exception) 
+         catch (Exception)
          {
             // if normal option can't calculate vega,
             // nor should forward
@@ -527,11 +534,11 @@ namespace TestSuite
             {
                vega = option.vega();
             }
-            catch (Exception) 
+            catch (Exception)
             {
                vega = null;
             }
-            Utils.QL_REQUIRE(vega == null,()=> "Forward vega invalid");
+            Utils.QL_REQUIRE(vega == null, () => "Forward vega invalid");
          }
       }
    }

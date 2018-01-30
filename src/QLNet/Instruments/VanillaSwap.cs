@@ -1,22 +1,23 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- * 
+ *
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 using System.Collections.Generic;
 
@@ -29,8 +30,8 @@ namespace QLNet
                  NPV and therefore affect the fair-rate and
                  fair-spread calculation. This might not be what you
                  want.
-     
-   \test  
+
+   \test
    - the correctness of the returned value is tested by checking
    - that the price of a swap paying the fair fixed rate is null.
    - that the price of a swap receiving the fair floating-rate spread is null.
@@ -38,6 +39,7 @@ namespace QLNet
    - that the price of a swap increases with the received floating-rate spread.
    - the correctness of the returned value is tested by checking it against a known good value.
 */
+
    public class VanillaSwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 };
@@ -48,21 +50,27 @@ namespace QLNet
       private double nominal_;
 
       private Schedule fixedSchedule_;
+
       public Schedule fixedSchedule() { return fixedSchedule_; }
 
       private DayCounter fixedDayCount_;
+
       public DayCounter fixedDayCount() { return fixedDayCount_; }
 
       private Schedule floatingSchedule_;
+
       public Schedule floatingSchedule() { return floatingSchedule_; }
 
       private IborIndex iborIndex_;
       private DayCounter floatingDayCount_;
+
       public DayCounter floatingDayCount() { return floatingDayCount_; }
+
       private BusinessDayConvention paymentConvention_;
 
       // results
       private double? fairRate_;
+
       private double? fairSpread_;
 
       // constructor
@@ -94,7 +102,7 @@ namespace QLNet
 
          legs_[1] = new IborLeg(floatSchedule, iborIndex)
                                      .withPaymentDayCounter(floatingDayCount)
-            //.withFixingDays(iborIndex.fixingDays())
+                                     //.withFixingDays(iborIndex.fixingDays())
                                      .withSpreads(spread)
                                      .withNotionals(nominal)
                                      .withPaymentAdjustment(paymentConvention_);
@@ -108,10 +116,12 @@ namespace QLNet
                payer_[0] = -1.0;
                payer_[1] = +1.0;
                break;
+
             case Type.Receiver:
                payer_[0] = +1.0;
                payer_[1] = -1.0;
                break;
+
             default:
                Utils.QL_FAIL("Unknown vanilla-swap type");
                break;
@@ -173,7 +183,6 @@ namespace QLNet
          }
       }
 
-
       ///////////////////////////////////////////////////
       // results
       public double fairRate()
@@ -196,6 +205,7 @@ namespace QLNet
          if (legBPS_[0] == null) throw new ArgumentException("result not available");
          return legBPS_[0].GetValueOrDefault();
       }
+
       public double fixedLegNPV()
       {
          calculate();
@@ -209,6 +219,7 @@ namespace QLNet
          if (legBPS_[1] == null) throw new ArgumentException("result not available");
          return legBPS_[1].GetValueOrDefault();
       }
+
       public double floatingLegNPV()
       {
          calculate();
@@ -225,9 +236,10 @@ namespace QLNet
       public double spread { get { return spread_; } }
       public double nominal { get { return nominal_; } }
       public Type swapType { get { return type_; } }
-      public List<CashFlow> fixedLeg() { return legs_[0]; }
-      public List<CashFlow> floatingLeg() { return legs_[1]; }
 
+      public List<CashFlow> fixedLeg() { return legs_[0]; }
+
+      public List<CashFlow> floatingLeg() { return legs_[1]; }
 
       protected override void setupExpired()
       {
@@ -267,7 +279,6 @@ namespace QLNet
                fairSpread_ = spread_ - NPV_.GetValueOrDefault() / (legBPS_[1] / basisPoint);
          }
       }
-
 
       //! %Arguments for simple swap calculation
       public new class Arguments : Swap.Arguments
@@ -319,6 +330,7 @@ namespace QLNet
       {
          public double? fairRate { get; set; }
          public double? fairSpread { get; set; }
+
          public override void reset()
          {
             base.reset();

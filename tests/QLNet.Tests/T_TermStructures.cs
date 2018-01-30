@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,48 +20,60 @@
 
 using System;
 using System.Collections.Generic;
+
 #if NET40 || NET45
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 #else
    using Xunit;
 #endif
+
 using QLNet;
 
 namespace TestSuite
 {
 #if NET40 || NET45
+
    [TestClass()]
 #endif
    public class T_TermStructures : IDisposable
    {
       #region Initialize&Cleanup
+
       private SavedSettings backup;
-      #if NET40 || NET45
+#if NET40 || NET45
+
       [TestInitialize]
       public void testInitialize()
       {
-      #else
+#else
       public T_TermStructures()
       {
-      #endif
+#endif
          backup = new SavedSettings();
       }
-      #if NET40 || NET45
+
+#if NET40 || NET45
+
       [TestCleanup]
-      #endif
+#endif
       public void testCleanup()
       {
          Dispose();
       }
+
       public void Dispose()
       {
          backup.Dispose();
       }
-      #endregion
+
+      #endregion Initialize&Cleanup
 
       public class CommonVars
       {
          #region Values
+
          public struct Datum
          {
             public int n;
@@ -84,10 +96,12 @@ namespace TestSuite
                 new Datum { n = 20, units = TimeUnit.Years, rate = 5.89 },
                 new Datum { n = 30, units = TimeUnit.Years, rate = 5.96 }
             };
-         #endregion
+
+         #endregion Values
 
          // common data
          public Calendar calendar;
+
          public int settlementDays;
          public YieldTermStructure termStructure;
          public YieldTermStructure dummyTermStructure;
@@ -124,7 +138,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -160,7 +175,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -185,7 +201,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -207,7 +224,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -235,7 +253,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -260,7 +279,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -284,7 +304,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -310,7 +331,8 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+
+      [TestMethod()]
 #else
        [Fact]
 #endif
@@ -319,7 +341,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          // Create the interpolated curve
-         var refDate = new Date( 1, 10, 2015 );
+         var refDate = new Date(1, 10, 2015);
          var dates = new List<Date>()
          {
             new Date(30, 12, 2015),
@@ -358,12 +380,12 @@ namespace TestSuite
             0.01403893
          };
 
-         var curve = new InterpolatedZeroCurve<Linear>( dates,
+         var curve = new InterpolatedZeroCurve<Linear>(dates,
             yields,
-            new ActualActual( ActualActual.Convention.ISMA ),
+            new ActualActual(ActualActual.Convention.ISMA),
             new Linear(),
             Compounding.Continuous,
-            Frequency.Annual, refDate );
+            Frequency.Annual, refDate);
 
          Dictionary<Date, double> tenors2 = new Dictionary<Date, double>
          {
@@ -387,12 +409,12 @@ namespace TestSuite
          // Make sure the points come back as expected
          var tenors = new[] { 0.25, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 15.0, 20.0, 30.0 };
 
-         for ( int i = 0; i < tenors.Length; i++ )
+         for (int i = 0; i < tenors.Length; i++)
          {
-            var test = curve.interpolation_.value( tenors[i],true );
-            QAssert.AreEqual( yields[i], test );
+            var test = curve.interpolation_.value(tenors[i], true);
+            QAssert.AreEqual(yields[i], test);
          }
-         QAssert.AreNotEqual( yields[0], curve.interpolation_.value( 0.0,true ) );
-        }
+         QAssert.AreNotEqual(yields[0], curve.interpolation_.value(0.0, true));
+      }
    }
 }
