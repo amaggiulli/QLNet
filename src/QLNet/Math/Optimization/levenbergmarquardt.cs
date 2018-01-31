@@ -96,6 +96,14 @@ namespace QLNet
          if ( useCostFunctionsJacobian_ ) 
             j = jacFcn;
 
+         // requirements; check here to get more detailed error messages.
+         Utils.QL_REQUIRE(n > 0, () => "no variables given");
+         Utils.QL_REQUIRE(m >= n,() => $"less functions ({m}) than available variables ({n})");
+         Utils.QL_REQUIRE(endCriteria.functionEpsilon() >= 0.0, () => "negative f tolerance");
+         Utils.QL_REQUIRE(xtol_ >= 0.0, () => "negative x tolerance");
+         Utils.QL_REQUIRE(gtol_ >= 0.0, () => "negative g tolerance");
+         Utils.QL_REQUIRE(endCriteria.maxIterations() > 0, () => "null number of evaluations");
+
          MINPACK.lmdif( m, n, xx, ref fvec,
                                   endCriteria.functionEpsilon(),
                                   xtol_,
