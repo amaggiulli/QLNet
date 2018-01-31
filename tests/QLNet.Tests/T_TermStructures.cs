@@ -343,12 +343,10 @@ namespace TestSuite
       {
          // Testing composite zero yield structures...
 
-         using (var backup = new SavedSettings())
-         {
-            Settings.setEvaluationDate(new Date(10, Month.Nov, 2017));
+         Settings.setEvaluationDate(new Date(10, Month.Nov, 2017));
 
-            // First curve
-            var dates = new List<Date>
+         // First curve
+         var dates = new List<Date>
             {
                new Date(10, Month.Nov, 2017),
                new Date(13, Month.Nov, 2017),
@@ -369,7 +367,7 @@ namespace TestSuite
                new Date(31, Month.Dec, 2141)
             };
 
-            var rates = new List<double> {
+         var rates = new List<double> {
                0.0655823213132524,
                0.0655823213132524,
                0.0699455024156877,
@@ -389,82 +387,81 @@ namespace TestSuite
                0.0506086995288751
             };
 
-            var termStructure1 = new InterpolatedForwardCurve<BackwardFlat>(dates, rates, new Actual365Fixed(), new NullCalendar());
+         var termStructure1 = new InterpolatedForwardCurve<BackwardFlat>(dates, rates, new Actual365Fixed(), new NullCalendar());
 
-            // Second curve
-            dates = new List<Date>();
-            rates = new List<double>();
+         // Second curve
+         dates = new List<Date>();
+         rates = new List<double>();
 
-            dates.Add(new Date(10, Month.Nov, 2017));
-            dates.Add(new Date(13, Month.Nov, 2017));
-            dates.Add(new Date(11, Month.Dec, 2017));
-            dates.Add(new Date(12, Month.Feb, 2018));
-            dates.Add(new Date(10, Month.May, 2018));
-            dates.Add(new Date(31, Month.Jan, 2022));
-            dates.Add(new Date(7, Month.Dec, 2023));
-            dates.Add(new Date(31, Month.Jan, 2025));
-            dates.Add(new Date(31, Month.Mar, 2028));
-            dates.Add(new Date(7, Month.Dec, 2033));
-            dates.Add(new Date(1, Month.Feb, 2038));
-            dates.Add(new Date(2, Month.Apr, 2046));
-            dates.Add(new Date(2, Month.Jan, 2051));
-            dates.Add(new Date(31, Month.Dec, 2141));
+         dates.Add(new Date(10, Month.Nov, 2017));
+         dates.Add(new Date(13, Month.Nov, 2017));
+         dates.Add(new Date(11, Month.Dec, 2017));
+         dates.Add(new Date(12, Month.Feb, 2018));
+         dates.Add(new Date(10, Month.May, 2018));
+         dates.Add(new Date(31, Month.Jan, 2022));
+         dates.Add(new Date(7, Month.Dec, 2023));
+         dates.Add(new Date(31, Month.Jan, 2025));
+         dates.Add(new Date(31, Month.Mar, 2028));
+         dates.Add(new Date(7, Month.Dec, 2033));
+         dates.Add(new Date(1, Month.Feb, 2038));
+         dates.Add(new Date(2, Month.Apr, 2046));
+         dates.Add(new Date(2, Month.Jan, 2051));
+         dates.Add(new Date(31, Month.Dec, 2141));
 
-            rates.Add(0.056656806197189);
-            rates.Add(0.056656806197189);
-            rates.Add(0.0419541633454473);
-            rates.Add(0.0286681050019797);
-            rates.Add(0.0148840226959593);
-            rates.Add(0.0246680238374363);
-            rates.Add(0.0255349067810599);
-            rates.Add(0.0298907184711927);
-            rates.Add(0.0263943927922053);
-            rates.Add(0.0291924526539802);
-            rates.Add(0.0270049276163556);
-            rates.Add(0.028775807327614);
-            rates.Add(0.0293567711641792);
-            rates.Add(0.010518655099659);
+         rates.Add(0.056656806197189);
+         rates.Add(0.056656806197189);
+         rates.Add(0.0419541633454473);
+         rates.Add(0.0286681050019797);
+         rates.Add(0.0148840226959593);
+         rates.Add(0.0246680238374363);
+         rates.Add(0.0255349067810599);
+         rates.Add(0.0298907184711927);
+         rates.Add(0.0263943927922053);
+         rates.Add(0.0291924526539802);
+         rates.Add(0.0270049276163556);
+         rates.Add(0.028775807327614);
+         rates.Add(0.0293567711641792);
+         rates.Add(0.010518655099659);
 
-            var termStructure2 = new InterpolatedForwardCurve<BackwardFlat>(dates, rates, new Actual365Fixed(), new NullCalendar());
+         var termStructure2 = new InterpolatedForwardCurve<BackwardFlat>(dates, rates, new Actual365Fixed(), new NullCalendar());
 
-            var compoundCurve = new CompositeZeroYieldStructure
-            (
-               new Handle<YieldTermStructure>(termStructure1),
-               new Handle<YieldTermStructure>(termStructure2),
-               sub
-            );
+         var compoundCurve = new CompositeZeroYieldStructure
+         (
+            new Handle<YieldTermStructure>(termStructure1),
+            new Handle<YieldTermStructure>(termStructure2),
+            sub
+         );
 
-            // Expected values
-            dates = new List<Date>();
-            rates = new List<double>();
+         // Expected values
+         dates = new List<Date>();
+         rates = new List<double>();
 
-            dates.Add(new Date(10, Month.Nov, 2017));
-            dates.Add(new Date(15, Month.Dec, 2017));
-            dates.Add(new Date(15, Month.Jun, 2018));
-            dates.Add(new Date(15, Month.Sep, 2029));
-            dates.Add(new Date(15, Month.Sep, 2038));
-            dates.Add(new Date(15, Month.Mar, 2046));
-            dates.Add(new Date(15, Month.Dec, 2141));
+         dates.Add(new Date(10, Month.Nov, 2017));
+         dates.Add(new Date(15, Month.Dec, 2017));
+         dates.Add(new Date(15, Month.Jun, 2018));
+         dates.Add(new Date(15, Month.Sep, 2029));
+         dates.Add(new Date(15, Month.Sep, 2038));
+         dates.Add(new Date(15, Month.Mar, 2046));
+         dates.Add(new Date(15, Month.Dec, 2141));
 
-            rates.Add(0.00892551511527986);
-            rates.Add(0.0278755322562788);
-            rates.Add(0.0512001768603456);
-            rates.Add(0.0729941474263546);
-            rates.Add(0.0778333309498459);
-            rates.Add(0.0828451659139004);
-            rates.Add(0.0503573807521742);
+         rates.Add(0.00892551511527986);
+         rates.Add(0.0278755322562788);
+         rates.Add(0.0512001768603456);
+         rates.Add(0.0729941474263546);
+         rates.Add(0.0778333309498459);
+         rates.Add(0.0828451659139004);
+         rates.Add(0.0503573807521742);
 
-            double tolerance = 1.0e-10;
-            for (var i = 0; i < dates.Count; ++i)
-            {
-               double actual = compoundCurve.zeroRate(dates[i], new Actual365Fixed(), Compounding.Continuous).rate();
-               double expected = rates[i];
+         double tolerance = 1.0e-10;
+         for (var i = 0; i < dates.Count; ++i)
+         {
+            double actual = compoundCurve.zeroRate(dates[i], new Actual365Fixed(), Compounding.Continuous).rate();
+            double expected = rates[i];
 
-               QAssert.IsTrue(Math.Abs(actual - expected) <= tolerance,
-                      "unable to reproduce zero yield rate from composite input curve\n"
-                      + "    calculated: " + actual + "\n"
-                      + "    expected:   " + expected);
-            }
+            QAssert.IsTrue(Math.Abs(actual - expected) <= tolerance,
+                   "unable to reproduce zero yield rate from composite input curve\n"
+                   + "    calculated: " + actual + "\n"
+                   + "    expected:   " + expected);
          }
       }
 

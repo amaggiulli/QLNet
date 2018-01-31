@@ -23,11 +23,11 @@ namespace QLNet
 {
    public class CompositeZeroYieldStructure : ZeroYieldStructure
    {
-      private Handle<YieldTermStructure> curve1_;
-      private Handle<YieldTermStructure> curve2_;
-      private Compounding comp_;
-      private Frequency freq_;
-      private Func<double, double, double> f_;
+      private readonly Handle<YieldTermStructure> curve1_;
+      private readonly Handle<YieldTermStructure> curve2_;
+      private readonly Compounding comp_;
+      private readonly Frequency freq_;
+      private readonly Func<double, double, double> f_;
 
       public CompositeZeroYieldStructure(Handle<YieldTermStructure> h1,
                                          Handle<YieldTermStructure> h2,
