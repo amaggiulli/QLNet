@@ -191,21 +191,21 @@ namespace QLNet {
                 }
 
                 if (y == 2011) {
- 	  	             if (// Spring Festival
+                      if (// Spring Festival
                           (d >= 2 && d <= 7 && m == Month.February)
- 	  	                 // Children's Day
+                          // Children's Day
                        || (d == 4 && m == Month.April)
- 	  	                 // Tomb Sweeping Day
+                          // Tomb Sweeping Day
                        || (d == 5 && m == Month.April)
- 	  	                 // Labour Day
+                          // Labour Day
                        || (d == 2 && m == Month.May)
- 	  	                 // Dragon Boat Festival
+                          // Dragon Boat Festival
                        || (d == 6 && m == Month.June)
- 	  	                 // Mid-Autumn Festival
+                          // Mid-Autumn Festival
                        || (d == 12 && m == Month.September)
- 	  	                 )
- 	  	                 return false;
- 	  	         }
+                          )
+                          return false;
+                  }
         
                if (y == 2012) {
                   if (// Spring Festival

@@ -474,13 +474,13 @@ namespace Bonds {
 
             Console.WriteLine("Previous coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                                 "N/A",
-										  fixedRateBond.previousCouponRate(),
-										  floatingRateBond.previousCouponRate());
+                                fixedRateBond.previousCouponRate(),
+                                floatingRateBond.previousCouponRate());
 
             Console.WriteLine("Next coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                               "N/A",
-										fixedRateBond.nextCouponRate(),
-										floatingRateBond.nextCouponRate());
+                              fixedRateBond.nextCouponRate(),
+                              floatingRateBond.nextCouponRate());
 
             Console.WriteLine("Yield".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
                               zeroCouponBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),

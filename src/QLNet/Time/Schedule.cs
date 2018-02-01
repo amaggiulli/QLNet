@@ -277,7 +277,7 @@ namespace QLNet
             case DateGeneration.Rule.CDS:
             case DateGeneration.Rule.CDS2015:
                Utils.QL_REQUIRE( !endOfMonth, () => "endOfMonth convention incompatible with " + rule_.Value + " date generation rule" );
-               goto case DateGeneration.Rule.Forward;			// fall through
+               goto case DateGeneration.Rule.Forward;         // fall through
 
             case DateGeneration.Rule.Forward:
                if (rule_.Value == DateGeneration.Rule.CDS ||

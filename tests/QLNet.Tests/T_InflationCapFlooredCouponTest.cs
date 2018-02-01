@@ -31,7 +31,7 @@ namespace TestSuite
    [TestClass()]
 #endif
    public class T_InflationCapFlooredCouponTest : IDisposable
-	{
+   {
       #region Initialize&Cleanup
       private SavedSettings backup;
       #if NET40 || NET45
@@ -57,10 +57,10 @@ namespace TestSuite
       }
       #endregion
 
-		class CommonVars
-		{
-		   // common data
-		   public int length;
+      class CommonVars
+      {
+         // common data
+         public int length;
          public Date startDate;
          public double volatility;
 
@@ -129,22 +129,22 @@ namespace TestSuite
             Period observationLag = new Period(2,TimeUnit.Months);
 
             Datum[] yyData =  {
-						new Datum( new Date(13, Month.August, 2008), 2.95 ),
-						new Datum( new Date(13, Month.August, 2009), 2.95 ),
-						new Datum( new Date(13, Month.August, 2010), 2.93 ),
-						new Datum( new Date(15, Month.August, 2011), 2.955 ),
-						new Datum( new Date(13, Month.August, 2012), 2.945 ),
-						new Datum( new Date(13, Month.August, 2013), 2.985 ),
-						new Datum( new Date(13, Month.August, 2014), 3.01 ),
-						new Datum( new Date(13, Month.August, 2015), 3.035 ),
-						new Datum( new Date(13, Month.August, 2016), 3.055 ),  // note that
-						new Datum( new Date(13, Month.August, 2017), 3.075 ),  // some dates will be on
-						new Datum( new Date(13, Month.August, 2019), 3.105 ),  // holidays but the payment
-						new Datum( new Date(15, Month.August, 2022), 3.135 ),  // calendar will roll them
-						new Datum( new Date(13, Month.August, 2027), 3.155 ),
-						new Datum( new Date(13, Month.August, 2032), 3.145 ),
-						new Datum( new Date(13, Month.August, 2037), 3.145 )
-				};
+                  new Datum( new Date(13, Month.August, 2008), 2.95 ),
+                  new Datum( new Date(13, Month.August, 2009), 2.95 ),
+                  new Datum( new Date(13, Month.August, 2010), 2.93 ),
+                  new Datum( new Date(15, Month.August, 2011), 2.955 ),
+                  new Datum( new Date(13, Month.August, 2012), 2.945 ),
+                  new Datum( new Date(13, Month.August, 2013), 2.985 ),
+                  new Datum( new Date(13, Month.August, 2014), 3.01 ),
+                  new Datum( new Date(13, Month.August, 2015), 3.035 ),
+                  new Datum( new Date(13, Month.August, 2016), 3.055 ),  // note that
+                  new Datum( new Date(13, Month.August, 2017), 3.075 ),  // some dates will be on
+                  new Datum( new Date(13, Month.August, 2019), 3.105 ),  // holidays but the payment
+                  new Datum( new Date(15, Month.August, 2022), 3.135 ),  // calendar will roll them
+                  new Datum( new Date(13, Month.August, 2027), 3.155 ),
+                  new Datum( new Date(13, Month.August, 2032), 3.145 ),
+                  new Datum( new Date(13, Month.August, 2037), 3.145 )
+            };
 
             // now build the helpers ...
             List<BootstrapHelper<YoYInflationTermStructure> > helpers =
@@ -185,7 +185,7 @@ namespace TestSuite
             .withNotionals(nominals)
             .withPaymentAdjustment(convention);
         }
-		
+      
          public List<CashFlow> makeFixedLeg(Date startDate,int length) 
          {
             Date endDate = calendar.advance(startDate, length, TimeUnit.Years, convention);
@@ -324,10 +324,10 @@ namespace TestSuite
         }
 
          private List<BootstrapHelper<YoYInflationTermStructure>> makeHelpers( Datum[] iiData, int N,
-														YoYInflationIndex ii, Period observationLag,
-														Calendar calendar,
-														BusinessDayConvention bdc,
-														DayCounter dc )
+                                          YoYInflationIndex ii, Period observationLag,
+                                          Calendar calendar,
+                                          BusinessDayConvention bdc,
+                                          DayCounter dc )
          {
 
             List<BootstrapHelper<YoYInflationTermStructure>> instruments = 

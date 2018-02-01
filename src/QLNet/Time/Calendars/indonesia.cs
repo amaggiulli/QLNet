@@ -238,20 +238,20 @@ namespace QLNet {
                 }
 
                 if (y == 2011) {
- 	  	             if (// Chinese New Year
+                      if (// Chinese New Year
                           (d == 3 && m == Month.February)
- 	  	                 // Birthday of the prophet Muhammad SAW
+                          // Birthday of the prophet Muhammad SAW
                        || (d == 15 && m == Month.February)
- 	  	                 // Birth of Buddha
+                          // Birth of Buddha
                        || (d == 17 && m == Month.May)
- 	  	                 // Isra' Mi'raj of the prophet Muhammad SAW
+                          // Isra' Mi'raj of the prophet Muhammad SAW
                        || (d == 29 && m == Month.June)
- 	  	                 // Ied Fitr
+                          // Ied Fitr
                        || (d >= 29 && m == Month.August)
                        || (d <= 2 && m == Month.September)
- 	  	                 // Public Holiday
+                          // Public Holiday
                        || (d == 26 && m == Month.December)
- 	  	                 )
+                          )
                       return false;
                 }
 

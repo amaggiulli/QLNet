@@ -49,7 +49,7 @@ namespace QLNet {
             double variance = smile_.variance(strike);
             return deflator * Utils.blackFormula(optionType, strike, forwardValue_, Math.Sqrt(variance));
         }
-	}
+   }
 
     public abstract class GFunction {
         public abstract double value(double x);
@@ -128,7 +128,7 @@ namespace QLNet {
 
                 return A1 * B + AA * B1 - n / q_ * (C1 * D + C * D1);
             }
-		}
+      }
 
         //===========================================================================//
         //                              GFunctionExactYield                          //
@@ -455,7 +455,7 @@ namespace QLNet {
                 return 2.0 * derZ_derX(calibratedShift) / derRs_derX(calibratedShift) + Rs * der2Z_derX2(calibratedShift) / Math.Pow(derRs_derX(calibratedShift), 2.0) - Rs * derZ_derX(calibratedShift) * der2Rs_derX2(calibratedShift) / Math.Pow(derRs_derX(calibratedShift), 3.0);
             }
         }
-	}
+   }
 
 
     //===========================================================================//

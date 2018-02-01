@@ -19,8 +19,8 @@ using System;
 namespace QLNet
 {
 
-	public partial class Utils
-	{
+   public partial class Utils
+   {
       /*! Black 1976 formula
         \warning instead of volatility it uses standard deviation,
                  i.e. volatility*sqrt(timeToMaturity)

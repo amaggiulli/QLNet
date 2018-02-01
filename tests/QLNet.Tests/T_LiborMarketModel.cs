@@ -300,7 +300,7 @@ namespace TestSuite
                             new SwaptionHelper(maturity, len, swaptionVol, index,
                                                index.tenor(), dayCounter,
                                                index.dayCounter(),
-															  termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError );
+                                               termStructure, CalibrationHelper.CalibrationErrorType.ImpliedVolError );
 
                         swaptionHelper.setPricingEngine(new LfmSwaptionEngine(model,termStructure));
 

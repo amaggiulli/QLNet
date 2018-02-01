@@ -82,8 +82,8 @@ namespace QLNet
                else 
                {
                   // up-and-out cash-(at-expiry)-or-nothing option
-				      eta = -1.0;
-				      phi = -1.0;
+                  eta = -1.0;
+                  phi = -1.0;
                }
                break;
             case Option.Type.Put:
@@ -97,8 +97,8 @@ namespace QLNet
                else 
                {
                   // down-and-out cash-(at-expiry)-or-nothing option
-				      eta =  1.0;
-				      phi =  1.0;
+                  eta =  1.0;
+                  phi =  1.0;
                }
                break;
             default:
@@ -157,18 +157,18 @@ namespace QLNet
                }
                break;
             case Option.Type.Put:
-   				if (strike_>=spot_) 
+               if (strike_>=spot_) 
                {
                   if (knock_in_) 
                   {
-					      // down-and-in cash-(at-expiry)-or-nothing option
-					      // a.k.a. american put with cash-or-nothing payoff
+                     // down-and-in cash-(at-expiry)-or-nothing option
+                     // a.k.a. american put with cash-or-nothing payoff
                      cum_d1_ = 0.5;
                      cum_d2_ = 0.5;
                   } 
                   else 
                   {
-					      // down-and-out cash-(at-expiry)-or-nothing option
+                     // down-and-out cash-(at-expiry)-or-nothing option
                      // already knocked out
                      cum_d1_ = 0.0;
                      cum_d2_ = 0.0;

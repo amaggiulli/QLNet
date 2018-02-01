@@ -21,32 +21,32 @@
 
 namespace QLNet {
 
-	//! Digital option replication strategy
+   //! Digital option replication strategy
 //    ! Specification of replication strategies used to price
 //        the embedded digital option in a digital coupon.
 //    
-	public struct Replication
-	{
-		public enum Type
-		{
-			Sub,
-			Central,
-			Super
-		}
-	}
+   public struct Replication
+   {
+      public enum Type
+      {
+         Sub,
+         Central,
+         Super
+      }
+   }
 
-	public class DigitalReplication
-	{
+   public class DigitalReplication
+   {
       private double gap_;
       private Replication.Type replicationType_;
 
       public DigitalReplication(Replication.Type t = Replication.Type.Central, double gap = 1e-4)
-		{
+      {
          gap_ = gap;
-			replicationType_ = t;
-		}
+         replicationType_ = t;
+      }
 
       public Replication.Type replicationType() { return replicationType_; }
       public double gap() { return gap_; }
-	}
+   }
 }

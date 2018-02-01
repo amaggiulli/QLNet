@@ -36,9 +36,9 @@ namespace QLNet
       public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule,List<double> coupons, 
                            DayCounter accrualDayCounter, BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
                            double redemption = 100, Date issueDate = null,Calendar paymentCalendar = null,
-			                  Period exCouponPeriod = null,
+                           Period exCouponPeriod = null,
                            Calendar exCouponCalendar = null,
-									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                           BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                            bool exCouponEndOfMonth = false)
          : base(settlementDays, paymentCalendar ?? schedule.calendar(), 
                 issueDate) 
@@ -49,10 +49,10 @@ namespace QLNet
 
          cashflows_ = new FixedRateLeg(schedule)
             .withCouponRates(coupons, accrualDayCounter)
-				.withExCouponPeriod(exCouponPeriod,
-										  exCouponCalendar,
-										  exCouponConvention,
-										  exCouponEndOfMonth)
+            .withExCouponPeriod(exCouponPeriod,
+                                exCouponCalendar,
+                                exCouponConvention,
+                                exCouponEndOfMonth)
             .withPaymentCalendar(calendar_)
             .withNotionals(faceAmount)
             .withPaymentAdjustment(paymentConvention); 
@@ -81,9 +81,9 @@ namespace QLNet
                            DateGeneration.Rule rule = DateGeneration.Rule.Backward,
                            bool endOfMonth = false,
                            Calendar paymentCalendar = null,
-									Period exCouponPeriod = null,
+                           Period exCouponPeriod = null,
                            Calendar exCouponCalendar = null,
-									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                           BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                            bool exCouponEndOfMonth = false)
          : base(settlementDays, paymentCalendar ?? calendar, 
                 issueDate) 
@@ -129,10 +129,10 @@ namespace QLNet
             
          cashflows_ = new FixedRateLeg(schedule)
             .withCouponRates(coupons, accrualDayCounter)
-				.withExCouponPeriod(exCouponPeriod,
-										  exCouponCalendar,
-										  exCouponConvention,
-										  exCouponEndOfMonth)
+            .withExCouponPeriod(exCouponPeriod,
+                                exCouponCalendar,
+                                exCouponConvention,
+                                exCouponEndOfMonth)
             .withPaymentCalendar(calendar_)
             .withNotionals(faceAmount)
             .withPaymentAdjustment(paymentConvention);
@@ -152,10 +152,10 @@ namespace QLNet
                            double redemption = 100,
                            Date issueDate = null,
                            Calendar paymentCalendar = null,
-			                  Period exCouponPeriod = null,
-									Calendar exCouponCalendar = null,
-									BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
-									bool exCouponEndOfMonth = false)
+                           Period exCouponPeriod = null,
+                           Calendar exCouponCalendar = null,
+                           BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+                           bool exCouponEndOfMonth = false)
 
          : base(settlementDays,paymentCalendar ?? schedule.calendar(),
                 issueDate)
@@ -167,10 +167,10 @@ namespace QLNet
 
         cashflows_ = new FixedRateLeg(schedule)
                     .withCouponRates(coupons)
-						  .withExCouponPeriod(exCouponPeriod,
-										  exCouponCalendar,
-										  exCouponConvention,
-										  exCouponEndOfMonth)
+                    .withExCouponPeriod(exCouponPeriod,
+                                exCouponCalendar,
+                                exCouponConvention,
+                                exCouponEndOfMonth)
                     .withPaymentCalendar(calendar_)
                     .withNotionals(faceAmount)
                     .withPaymentAdjustment(paymentConvention);

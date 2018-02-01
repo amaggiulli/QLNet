@@ -19,37 +19,37 @@
 
 namespace QLNet
 {
-	public class MidPointCdsEngine : CreditDefaultSwap.Engine
-	{
-		const double basisPoint = 1.0e-4;
+   public class MidPointCdsEngine : CreditDefaultSwap.Engine
+   {
+      const double basisPoint = 1.0e-4;
 
-		public MidPointCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
-										  double recoveryRate,
-										  Handle<YieldTermStructure> discountCurve,
-										  bool? includeSettlementDateFlows = null)
-		{
-			probability_ = probability;
-			recoveryRate_ = recoveryRate;
+      public MidPointCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
+                                double recoveryRate,
+                                Handle<YieldTermStructure> discountCurve,
+                                bool? includeSettlementDateFlows = null)
+      {
+         probability_ = probability;
+         recoveryRate_ = recoveryRate;
          discountCurve_ = discountCurve;
-			includeSettlementDateFlows_ = includeSettlementDateFlows;
+         includeSettlementDateFlows_ = includeSettlementDateFlows;
 
-			probability_.registerWith(update);
-			discountCurve_.registerWith(update);
-		}
+         probability_.registerWith(update);
+         discountCurve_.registerWith(update);
+      }
 
-		public override void calculate()
-		{
+      public override void calculate()
+      {
          Utils.QL_REQUIRE( !discountCurve_.empty(), () => "no discount term structure set" );
          Utils.QL_REQUIRE( !probability_.empty(), () => "no probability term structure set" );
 
-			Date today = Settings.evaluationDate();
-			Date settlementDate = discountCurve_.link.referenceDate();
+         Date today = Settings.evaluationDate();
+         Date settlementDate = discountCurve_.link.referenceDate();
 
-			// Upfront Flow NPV. Either we are on-the-run (no flow)
-			// or we are forward start
-			double upfPVO1 = 0.0;
-			if (!arguments_.upfrontPayment.hasOccurred( settlementDate, includeSettlementDateFlows_)) 
-			{
+         // Upfront Flow NPV. Either we are on-the-run (no flow)
+         // or we are forward start
+         double upfPVO1 = 0.0;
+         if (!arguments_.upfrontPayment.hasOccurred( settlementDate, includeSettlementDateFlows_)) 
+         {
             // date determining the probability survival so we have to pay
             //   the upfront (did not knock out)
             Date effectiveUpfrontDate =  arguments_.protectionStart > probability_.link.referenceDate() ?
@@ -62,11 +62,11 @@ namespace QLNet
         results_.couponLegNPV  = 0.0;
         results_.defaultLegNPV = 0.0;
         for (int i=0; i<arguments_.leg.Count; ++i) 
-		  {
+        {
             if (arguments_.leg[i].hasOccurred(settlementDate, includeSettlementDateFlows_))
                 continue;
 
-				FixedRateCoupon coupon = arguments_.leg[i] as FixedRateCoupon;
+            FixedRateCoupon coupon = arguments_.leg[i] as FixedRateCoupon;
 
             // In order to avoid a few switches, we calculate the NPV
             // of both legs as a positive quantity. We'll give them
@@ -93,15 +93,15 @@ namespace QLNet
                 discountCurve_.link.discount(paymentDate);
             // ...possibly including accrual in case of default.
             if (arguments_.settlesAccrual) 
-				{
+            {
                 if (arguments_.paysAtDefaultTime) 
-					 {
+                {
                     results_.couponLegNPV +=
                         P * coupon.accruedAmount(defaultDate) *
                         discountCurve_.link.discount(defaultDate);
                 } 
-					 else 
-					 {
+                else 
+                {
                     // pays at the end
                     results_.couponLegNPV +=
                         P * coupon.amount() *
@@ -114,12 +114,12 @@ namespace QLNet
                                                   arguments_.notional.Value,
                                                   recoveryRate_);
             if (arguments_.paysAtDefaultTime) 
-				{
+            {
                 results_.defaultLegNPV +=
                     P * claim * discountCurve_.link.discount(defaultDate);
             } 
-				else 
-				{
+            else 
+            {
                 results_.defaultLegNPV +=
                     P * claim * discountCurve_.link.discount(paymentDate);
             }
@@ -127,7 +127,7 @@ namespace QLNet
 
         double upfrontSign = 1.0;
         switch (arguments_.side) 
-		  {
+        {
           case Protection.Side.Seller:
             results_.defaultLegNPV *= -1.0;
             break;
@@ -138,7 +138,7 @@ namespace QLNet
             break;
           default:
             Utils.QL_FAIL("unknown protection side");
-				break;
+            break;
         }
 
         results_.value = results_.defaultLegNPV+results_.couponLegNPV+results_.upfrontNPV;
@@ -153,19 +153,19 @@ namespace QLNet
 
         double upfrontSensitivity = upfPVO1 * arguments_.notional.Value;
         if (upfrontSensitivity.IsNotEqual(0.0)) 
-		  {
+        {
             results_.fairUpfront =
                 -upfrontSign*(results_.defaultLegNPV + results_.couponLegNPV)
                 / upfrontSensitivity;
         } 
-		  else 
-		  {
+        else 
+        {
             results_.fairUpfront = null;
         }
 
 
         if (arguments_.spread.IsNotEqual(0.0)) 
-		  {
+        {
             results_.couponLegBPS =
                 results_.couponLegNPV*basisPoint/arguments_.spread.Value;
         } else {
@@ -173,21 +173,21 @@ namespace QLNet
         }
 
         if (arguments_.upfront.HasValue && arguments_.upfront.IsNotEqual(0.0)) 
-		  {
+        {
             results_.upfrontBPS =
                 results_.upfrontNPV*basisPoint/(arguments_.upfront.Value);
         } 
-		  else 
-		  {
+        else 
+        {
             results_.upfrontBPS =null;
         }
     }
 
-		
+      
  
        private Handle<DefaultProbabilityTermStructure> probability_;
        private double recoveryRate_;
        private Handle<YieldTermStructure> discountCurve_;
        private bool? includeSettlementDateFlows_;
-	}
+   }
 }

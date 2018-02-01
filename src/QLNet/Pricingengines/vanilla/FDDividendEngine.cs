@@ -26,7 +26,7 @@ namespace QLNet {
               sophisticated to distinguish between fixed dividends and fractional dividends
     */
     public abstract class FDDividendEngineBase : FDMultiPeriodEngine {
-		 // required for generics
+       // required for generics
        protected FDDividendEngineBase() { }
 
         //public FDDividendEngineBase(GeneralizedBlackScholesProcess process,
@@ -34,14 +34,14 @@ namespace QLNet {
        protected FDDividendEngineBase(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
 
-		  public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
-													 int timeSteps, int gridPoints, bool timeDependent)
-		  {
-			  return factory2(process, timeSteps, gridPoints, timeDependent);
-		  }
+        public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
+                                        int timeSteps, int gridPoints, bool timeDependent)
+        {
+           return factory2(process, timeSteps, gridPoints, timeDependent);
+        }
 
-		  public abstract FDVanillaEngine factory2(GeneralizedBlackScholesProcess process,
-													 int timeSteps, int gridPoints, bool timeDependent);
+        public abstract FDVanillaEngine factory2(GeneralizedBlackScholesProcess process,
+                                        int timeSteps, int gridPoints, bool timeDependent);
 
         public override void setupArguments(IPricingEngineArguments a) {
             DividendVanillaOption.Arguments args = a as DividendVanillaOption.Arguments;
@@ -81,16 +81,16 @@ namespace QLNet {
        with the analytic version.
     */
     public class FDDividendEngineMerton73 : FDDividendEngineBase {
-		 // required for generics
-		 public FDDividendEngineMerton73() { }
+       // required for generics
+       public FDDividendEngineMerton73() { }
 
         public FDDividendEngineMerton73(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
 
-		  public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-		  {
-			  throw new NotImplementedException();
-		  }
+        public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+        {
+           throw new NotImplementedException();
+        }
         // The value of the x axis is the NPV of the underlying minus the
         // value of the paid dividends.
 
@@ -126,8 +126,8 @@ namespace QLNet {
             stepCondition_.applyTo(prices_.values(), getDividendTime(step));
         }
 
-		 
-	 }
+       
+    }
 
 
     //! Finite-differences engine for dividend options using shifted dividends
@@ -142,10 +142,10 @@ namespace QLNet {
         public FDDividendEngineShiftScale(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
             : base(process, timeSteps, gridPoints, timeDependent) {}
 
-		  public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-		  {
-			  throw new NotImplementedException();
-		  }
+        public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+        {
+           throw new NotImplementedException();
+        }
 
         protected override void setGridLimits() {
             double underlying = process_.stateVariable().link.value();
@@ -191,20 +191,20 @@ namespace QLNet {
         }
     }
 
-	// Use Merton73 engine as default.
+   // Use Merton73 engine as default.
    public class FDDividendEngine : FDDividendEngineMerton73 
-	{
+   {
 
-		public FDDividendEngine()
-		{}
+      public FDDividendEngine()
+      {}
 
       public FDDividendEngine( GeneralizedBlackScholesProcess process, int timeSteps = 100,int gridPoints = 100,
                                bool timeDependent = false) : base(process, timeSteps,gridPoints, timeDependent) 
-		{}
+      {}
 
-		public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-		{
-			return new FDDividendEngine(process, timeSteps, gridPoints, timeDependent);
-		}
+      public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
+      {
+         return new FDDividendEngine(process, timeSteps, gridPoints, timeDependent);
+      }
     }
 }

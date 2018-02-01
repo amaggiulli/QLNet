@@ -29,38 +29,38 @@ namespace TestSuite
 #if NET40 || NET45
    [TestClass()]
 #endif
-	public class T_BlackFormula
-	{
+   public class T_BlackFormula
+   {
 #if NET40 || NET45
         [TestMethod()]
 #else
        [Fact]
 #endif
-		public void testBachelierImpliedVol()
-		{
-			// Testing Bachelier implied vol...
+      public void testBachelierImpliedVol()
+      {
+         // Testing Bachelier implied vol...
 
-			double forward = 1.0;
-			double bpvol = 0.01;
-			double tte = 10.0;
-			double stdDev = bpvol*Math.Sqrt(tte);
-			Option.Type optionType = Option.Type.Call;
-			double discount = 0.95;
+         double forward = 1.0;
+         double bpvol = 0.01;
+         double tte = 10.0;
+         double stdDev = bpvol*Math.Sqrt(tte);
+         Option.Type optionType = Option.Type.Call;
+         double discount = 0.95;
 
-			double[] d = {-3.0, -2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0, 3.0};
-			for(int i=0;i<d.Length;++i)
-			{
-				double strike = forward - d[i] * bpvol * Math.Sqrt(tte);
-				double callPrem = Utils.bachelierBlackFormula(optionType, strike, forward, stdDev, discount);
-				double impliedBpVol = Utils.bachelierBlackFormulaImpliedVol(optionType,strike, forward, tte, callPrem, discount);
+         double[] d = {-3.0, -2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0, 3.0};
+         for(int i=0;i<d.Length;++i)
+         {
+            double strike = forward - d[i] * bpvol * Math.Sqrt(tte);
+            double callPrem = Utils.bachelierBlackFormula(optionType, strike, forward, stdDev, discount);
+            double impliedBpVol = Utils.bachelierBlackFormulaImpliedVol(optionType,strike, forward, tte, callPrem, discount);
 
-				if (Math.Abs(bpvol-impliedBpVol)>1.0e-12)
-				{
-					QAssert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol );
-				}
-			}
-			return;
-		}
+            if (Math.Abs(bpvol-impliedBpVol)>1.0e-12)
+            {
+               QAssert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol );
+            }
+         }
+         return;
+      }
       
       #if NET40 || NET45
         [TestMethod()]
@@ -129,5 +129,5 @@ namespace TestSuite
             }
          }
       }
-	}
+   }
 }

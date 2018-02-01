@@ -19,17 +19,17 @@
 
 namespace QLNet {
 
-	//! Placeholder for enumerated barrier types
-	public struct Barrier
-	{
-		public enum Type
-		{
-			DownIn,
-			UpIn,
-			DownOut,
-			UpOut,
+   //! Placeholder for enumerated barrier types
+   public struct Barrier
+   {
+      public enum Type
+      {
+         DownIn,
+         UpIn,
+         DownOut,
+         UpOut,
             NULL
-		}
-	}
+      }
+   }
 
 }

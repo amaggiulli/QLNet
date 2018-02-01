@@ -20,15 +20,15 @@
 namespace QLNet {
 
 
-	//! Placeholder for enumerated averaging types
-	public struct Average
-	{
-		public enum Type
-		{
-			Arithmetic,
-			Geometric,
+   //! Placeholder for enumerated averaging types
+   public struct Average
+   {
+      public enum Type
+      {
+         Arithmetic,
+         Geometric,
             NULL
-		}
-	}
+      }
+   }
 
 }

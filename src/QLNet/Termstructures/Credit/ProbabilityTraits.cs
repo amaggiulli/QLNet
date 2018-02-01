@@ -25,7 +25,7 @@ namespace QLNet
    /// <summary>
    /// Survival-Probability-curve traits
    /// </summary>
-	public class SurvivalProbability : ITraits<DefaultProbabilityTermStructure>
+   public class SurvivalProbability : ITraits<DefaultProbabilityTermStructure>
    {
       const double avgHazardRate = 0.01;
       const double maxHazardRate = 1.0;
@@ -38,7 +38,7 @@ namespace QLNet
       public double discountImpl(Interpolation i, double t) { return i.value(t, true); }
       public double zeroYieldImpl(Interpolation i, double t) { throw new NotSupportedException(); }
       public double forwardImpl(Interpolation i, double t) { throw new NotSupportedException(); }
-		
+      
       public double guess(int i, InterpolatedCurve c, bool validData, int f)
       {
          if (validData) // previous iteration value

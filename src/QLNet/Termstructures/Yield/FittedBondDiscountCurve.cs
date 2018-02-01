@@ -234,8 +234,8 @@ namespace QLNet
             public override double value(Vector x)
             {
                double squaredError = 0.0;
-		         Vector vals = values(x);
-		         for (int i = 0; i<vals.size(); ++i) 
+               Vector vals = values(x);
+               for (int i = 0; i<vals.size(); ++i) 
                {
                   squaredError += vals[i];
                }
@@ -295,14 +295,14 @@ namespace QLNet
          public double minimumCostValue() { return costValue_;}
          //! clone of the current object
          public virtual FittingMethod clone() { throw new NotImplementedException(); }
-		   //! return whether there is a constraint at zero
-		   public bool constrainAtZero() {return constrainAtZero_;}
-		   //! return weights being used
-		   public Vector weights() {return weights_;}
-		   //! return optimization method being used
-		   public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
-		   //! open discountFunction to public
-		   public double discount(Vector x, double t) {return discountFunction(x, t);}
+         //! return whether there is a constraint at zero
+         public bool constrainAtZero() {return constrainAtZero_;}
+         //! return weights being used
+         public Vector weights() {return weights_;}
+         //! return optimization method being used
+         public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
+         //! open discountFunction to public
+         public double discount(Vector x, double t) {return discountFunction(x, t);}
       
          //! constructor
          protected FittingMethod(bool constrainAtZero = true, 
@@ -399,26 +399,26 @@ namespace QLNet
                x = curve_.guessSolution_;
             }
 
-		      if(curve_.maxEvaluations_ == 0)
-		      {
-			      //Don't calculate, simply use given parameters to provide a fitted curve.
-			      //This turns the fittedbonddiscountcurve into an evaluator of the parametric
-			      //curve, for example allowing to use the parameters for a credit spread curve
-			      //calculated with bonds in one currency to be coupled to a discount curve in 
-			      //another currency. 
-			      return;
-		      }
-		
+            if(curve_.maxEvaluations_ == 0)
+            {
+               //Don't calculate, simply use given parameters to provide a fitted curve.
+               //This turns the fittedbonddiscountcurve into an evaluator of the parametric
+               //curve, for example allowing to use the parameters for a credit spread curve
+               //calculated with bonds in one currency to be coupled to a discount curve in 
+               //another currency. 
+               return;
+            }
+      
             //workaround for backwards compatibility
             OptimizationMethod optimization = optimizationMethod_;
             if(optimization == null)
             {
-		         optimization = new Simplex(curve_.simplexLambda_);
-		      }
-	
+               optimization = new Simplex(curve_.simplexLambda_);
+            }
+   
             Problem problem = new Problem(costFunction, constraint, x);
 
-		      double rootEpsilon = curve_.accuracy_;
+            double rootEpsilon = curve_.accuracy_;
             double functionEpsilon =  curve_.accuracy_;
             double gradientNormEpsilon = curve_.accuracy_;
 

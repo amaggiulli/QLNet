@@ -60,7 +60,7 @@ namespace QLNet
 
       public override bool Equals(object o)
       {
-			return name() == ( (Region)o ).name();
+         return name() == ( (Region)o ).name();
       }
 
       public override int GetHashCode()
@@ -116,18 +116,18 @@ namespace QLNet
    {
       public USRegion()
       {
-			Data USdata = new Data( "USA", "US" );
-			data_ = USdata;
+         Data USdata = new Data( "USA", "US" );
+         data_ = USdata;
       }
    }
 
-	//! South Africa as geographical/economic region
+   //! South Africa as geographical/economic region
    public class ZARegion : Region
    {
       public ZARegion()
       {
          Data ZAdata = new Data("South Africa", "ZA");
          data_ = ZAdata;
-	   }
+      }
    }
 }

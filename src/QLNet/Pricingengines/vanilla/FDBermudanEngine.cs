@@ -26,7 +26,7 @@ namespace QLNet {
 
         // constructor
         public FDBermudanEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100, 
-			  bool timeDependent = false)
+           bool timeDependent = false)
             : base(process, timeSteps, gridPoints, timeDependent) { }
 
         public void calculate() {

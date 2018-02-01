@@ -255,7 +255,7 @@ namespace QLNet
        public double fixedRate{ get; set; }
     }
 
-	 public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { };
+    public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { };
 
    }
 }

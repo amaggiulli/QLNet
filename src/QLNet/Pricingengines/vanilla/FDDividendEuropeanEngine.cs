@@ -19,19 +19,19 @@
 
 namespace QLNet
 {
-	public class FDDividendEuropeanEngine : FDEngineAdapter<FDDividendEngine, DividendVanillaOption.Engine>, IFDEngine
-	{
-		public FDDividendEuropeanEngine()
-		{}
+   public class FDDividendEuropeanEngine : FDEngineAdapter<FDDividendEngine, DividendVanillaOption.Engine>, IFDEngine
+   {
+      public FDDividendEuropeanEngine()
+      {}
 
-		public FDDividendEuropeanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
-				bool timeDependent = false)
-			: base(process, timeSteps, gridPoints, timeDependent) { }
+      public FDDividendEuropeanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
+            bool timeDependent = false)
+         : base(process, timeSteps, gridPoints, timeDependent) { }
 
 
-		public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
-		{
-			return new FDDividendEuropeanEngine(process, timeSteps, gridPoints);
-		}
-	}
+      public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
+      {
+         return new FDDividendEuropeanEngine(process, timeSteps, gridPoints);
+      }
+   }
 }

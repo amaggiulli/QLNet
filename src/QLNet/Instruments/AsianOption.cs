@@ -21,121 +21,121 @@ using System.Collections.Generic;
 
 namespace QLNet {
 
-	//! Continuous-averaging Asian option
+   //! Continuous-averaging Asian option
 //    ! \todo add running average
 //
 //        \ingroup instruments
 //    
-	public class ContinuousAveragingAsianOption : OneAssetOption
-	{
-		public new class Arguments : OneAssetOption.Arguments
-		{
-			public Arguments()
-			{
+   public class ContinuousAveragingAsianOption : OneAssetOption
+   {
+      public new class Arguments : OneAssetOption.Arguments
+      {
+         public Arguments()
+         {
                 averageType = Average.Type.NULL;
-			}
-			public override void validate()
-			{
-				base.validate();
+         }
+         public override void validate()
+         {
+            base.validate();
             Utils.QL_REQUIRE(averageType != Average.Type.NULL,()=> "unspecified average type");
-			}
-			public Average.Type averageType { get; set; }
-		}
+         }
+         public Average.Type averageType { get; set; }
+      }
 
- 	    public new class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results> 
+        public new class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results> 
         {
         }
 
-		public ContinuousAveragingAsianOption(Average.Type averageType, StrikedTypePayoff payoff, Exercise exercise) : base(payoff, exercise)
-		{
-			averageType_ = averageType;
-		}
+      public ContinuousAveragingAsianOption(Average.Type averageType, StrikedTypePayoff payoff, Exercise exercise) : base(payoff, exercise)
+      {
+         averageType_ = averageType;
+      }
         public override void setupArguments(IPricingEngineArguments args)
-		{
-	
-			base.setupArguments(args);
-	
-			ContinuousAveragingAsianOption.Arguments moreArgs = args as ContinuousAveragingAsianOption.Arguments;
-			Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
-			moreArgs.averageType = averageType_;
-		}
-		protected Average.Type averageType_;
-	}
+      {
+   
+         base.setupArguments(args);
+   
+         ContinuousAveragingAsianOption.Arguments moreArgs = args as ContinuousAveragingAsianOption.Arguments;
+         Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
+         moreArgs.averageType = averageType_;
+      }
+      protected Average.Type averageType_;
+   }
 
-	//! Discrete-averaging Asian option
-	//! \ingroup instruments 
-	public class DiscreteAveragingAsianOption : OneAssetOption
-	{
-		public new class Arguments : OneAssetOption.Arguments
-		{
+   //! Discrete-averaging Asian option
+   //! \ingroup instruments 
+   public class DiscreteAveragingAsianOption : OneAssetOption
+   {
+      public new class Arguments : OneAssetOption.Arguments
+      {
          public Arguments()
-			{
-				averageType = Average.Type.NULL;
-				runningAccumulator = null;
+         {
+            averageType = Average.Type.NULL;
+            runningAccumulator = null;
             pastFixings = null;
-			}
-			public override void validate()
-			{
-				base.validate();
+         }
+         public override void validate()
+         {
+            base.validate();
 
             Utils.QL_REQUIRE(averageType != Average.Type.NULL,()=> "unspecified average type");
             Utils.QL_REQUIRE(pastFixings != null,()=> "null past-fixing number");
             Utils.QL_REQUIRE(runningAccumulator != null,()=> "null running product");
 
-				switch (averageType)
-				{
-					case Average.Type.Arithmetic:
+            switch (averageType)
+            {
+               case Average.Type.Arithmetic:
                   Utils.QL_REQUIRE(runningAccumulator >= 0.0,()=>
                      "non negative running sum required: " + runningAccumulator + " not allowed");
-						break;
-					case Average.Type.Geometric:
+                  break;
+               case Average.Type.Geometric:
                   Utils.QL_REQUIRE(runningAccumulator > 0.0,()=>
                      "positive running product required: " + runningAccumulator + " not allowed");
-						break;
-					default:
+                  break;
+               default:
                   Utils.QL_FAIL("invalid average type");
-				      break;
-				}
-		
-				// check fixingTimes_ here
-			}
-			public Average.Type averageType { get; set; }
+                  break;
+            }
+      
+            // check fixingTimes_ here
+         }
+         public Average.Type averageType { get; set; }
          public double? runningAccumulator { get; set; }
          public int? pastFixings { get; set; }
          public List<Date> fixingDates { get; set; }
       }
 
- 	    public new class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results> 
+        public new class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results> 
         {
         }
 
         public DiscreteAveragingAsianOption(Average.Type averageType, double? runningAccumulator, int? pastFixings, List<Date> fixingDates, StrikedTypePayoff payoff, Exercise exercise)
             : base(payoff, exercise)
-		{
-			averageType_ = averageType;
-			runningAccumulator_ = runningAccumulator;
-			pastFixings_ = pastFixings;
-			fixingDates_ = fixingDates;
+      {
+         averageType_ = averageType;
+         runningAccumulator_ = runningAccumulator;
+         pastFixings_ = pastFixings;
+         fixingDates_ = fixingDates;
 
          fixingDates_.Sort();
-		}
+      }
 
         public override void setupArguments(IPricingEngineArguments args)
-		{
-	
-			base.setupArguments(args);
-	
-			DiscreteAveragingAsianOption.Arguments moreArgs = args as DiscreteAveragingAsianOption.Arguments;
+      {
+   
+         base.setupArguments(args);
+   
+         DiscreteAveragingAsianOption.Arguments moreArgs = args as DiscreteAveragingAsianOption.Arguments;
          Utils.QL_REQUIRE(moreArgs != null,()=> "wrong argument type");
 
-			moreArgs.averageType = averageType_;
-			moreArgs.runningAccumulator = runningAccumulator_;
-			moreArgs.pastFixings = pastFixings_;
-			moreArgs.fixingDates = fixingDates_;
-		}
-		protected Average.Type averageType_;
-		protected double? runningAccumulator_;
+         moreArgs.averageType = averageType_;
+         moreArgs.runningAccumulator = runningAccumulator_;
+         moreArgs.pastFixings = pastFixings_;
+         moreArgs.fixingDates = fixingDates_;
+      }
+      protected Average.Type averageType_;
+      protected double? runningAccumulator_;
         protected int? pastFixings_;
         protected List<Date> fixingDates_;
-	}
+   }
 }

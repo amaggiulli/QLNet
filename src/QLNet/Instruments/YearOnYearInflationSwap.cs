@@ -38,148 +38,148 @@ namespace QLNet
              w.r.t. Schedules etc.
    */
    public class YearOnYearInflationSwap : Swap 
-	{
-		const double basisPoint = 1.0e-4;
-		public enum Type { Receiver = -1, Payer = 1 };
-		public YearOnYearInflationSwap(
-						  Type type,
-						  double nominal,
-						  Schedule fixedSchedule,
-						  double fixedRate,
-						  DayCounter fixedDayCount,
-						  Schedule yoySchedule,
-						  YoYInflationIndex yoyIndex,
-						  Period observationLag,
-						  double spread,
-						  DayCounter yoyDayCount,
-						  Calendar paymentCalendar,    // inflation index does not have a calendar
-						  BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing )
-			: base( 2 )
-		{
-			type_ = type; 
-			nominal_ = nominal;
-			fixedSchedule_ = fixedSchedule; 
-			fixedRate_ = fixedRate;
-			fixedDayCount_ = fixedDayCount;
-			yoySchedule_ = yoySchedule; 
-			yoyIndex_ = yoyIndex;
-			observationLag_ = observationLag;
-			spread_ = spread;
-			yoyDayCount_ = yoyDayCount; 
-			paymentCalendar_ = paymentCalendar;
-			paymentConvention_ = paymentConvention;
+   {
+      const double basisPoint = 1.0e-4;
+      public enum Type { Receiver = -1, Payer = 1 };
+      public YearOnYearInflationSwap(
+                    Type type,
+                    double nominal,
+                    Schedule fixedSchedule,
+                    double fixedRate,
+                    DayCounter fixedDayCount,
+                    Schedule yoySchedule,
+                    YoYInflationIndex yoyIndex,
+                    Period observationLag,
+                    double spread,
+                    DayCounter yoyDayCount,
+                    Calendar paymentCalendar,    // inflation index does not have a calendar
+                    BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing )
+         : base( 2 )
+      {
+         type_ = type; 
+         nominal_ = nominal;
+         fixedSchedule_ = fixedSchedule; 
+         fixedRate_ = fixedRate;
+         fixedDayCount_ = fixedDayCount;
+         yoySchedule_ = yoySchedule; 
+         yoyIndex_ = yoyIndex;
+         observationLag_ = observationLag;
+         spread_ = spread;
+         yoyDayCount_ = yoyDayCount; 
+         paymentCalendar_ = paymentCalendar;
+         paymentConvention_ = paymentConvention;
 
-			// N.B. fixed leg gets its calendar from the schedule!
-			List<CashFlow> fixedLeg = new FixedRateLeg( fixedSchedule_ )
-			.withCouponRates( fixedRate_, fixedDayCount_ ) // Simple compounding by default
-			.withNotionals( nominal_ )
-			.withPaymentAdjustment( paymentConvention_ );
+         // N.B. fixed leg gets its calendar from the schedule!
+         List<CashFlow> fixedLeg = new FixedRateLeg( fixedSchedule_ )
+         .withCouponRates( fixedRate_, fixedDayCount_ ) // Simple compounding by default
+         .withNotionals( nominal_ )
+         .withPaymentAdjustment( paymentConvention_ );
 
-			List<CashFlow> yoyLeg = new yoyInflationLeg( yoySchedule_, paymentCalendar_, yoyIndex_, observationLag_ )
-			.withSpreads( spread_ )
-			.withPaymentDayCounter( yoyDayCount_ )
-			.withNotionals( nominal_ )
-			.withPaymentAdjustment( paymentConvention_ );
+         List<CashFlow> yoyLeg = new yoyInflationLeg( yoySchedule_, paymentCalendar_, yoyIndex_, observationLag_ )
+         .withSpreads( spread_ )
+         .withPaymentDayCounter( yoyDayCount_ )
+         .withNotionals( nominal_ )
+         .withPaymentAdjustment( paymentConvention_ );
 
          yoyLeg.ForEach((i, x) =>  x.registerWith( update ) );
-			
+         
 
-			legs_[0] = fixedLeg;
-			legs_[1] = yoyLeg;
-			if ( type_ == Type.Payer )
-			{
-				payer_[0] = -1.0;
-				payer_[1] = +1.0;
-			}
-			else
-			{
-				payer_[0] = +1.0;
-				payer_[1] = -1.0;
-			}
+         legs_[0] = fixedLeg;
+         legs_[1] = yoyLeg;
+         if ( type_ == Type.Payer )
+         {
+            payer_[0] = -1.0;
+            payer_[1] = +1.0;
+         }
+         else
+         {
+            payer_[0] = +1.0;
+            payer_[1] = -1.0;
+         }
 
-		}
+      }
       // results
-		public virtual double fixedLegNPV()
-		{
-			calculate();
+      public virtual double fixedLegNPV()
+      {
+         calculate();
          Utils.QL_REQUIRE( legNPV_[0] != null, () => "result not available" );
-			return legNPV_[0].Value;
-		}
-		public virtual double fairRate()
-		{
-			calculate();
+         return legNPV_[0].Value;
+      }
+      public virtual double fairRate()
+      {
+         calculate();
          Utils.QL_REQUIRE( fairRate_ != null, () => "result not available" );
-			return fairRate_.Value;
-		}
+         return fairRate_.Value;
+      }
 
-		public virtual double yoyLegNPV()
-		{
-			calculate();
+      public virtual double yoyLegNPV()
+      {
+         calculate();
          Utils.QL_REQUIRE( legNPV_[1] != null, () => "result not available" );
-			return legNPV_[1].Value;
-		}
-		public virtual double fairSpread()
-		{
-			calculate();
+         return legNPV_[1].Value;
+      }
+      public virtual double fairSpread()
+      {
+         calculate();
          Utils.QL_REQUIRE( fairSpread_ != null, () => "result not available" );
-			return fairSpread_.Value;
-		}
+         return fairSpread_.Value;
+      }
       // inspectors
       public virtual Type type() {return type_;}
       public virtual double nominal() { return nominal_;}
 
       public virtual Schedule fixedSchedule() {return fixedSchedule_;}
       public virtual double fixedRate() {return fixedRate_;}
-		public virtual DayCounter fixedDayCount() { return fixedDayCount_; }
+      public virtual DayCounter fixedDayCount() { return fixedDayCount_; }
 
-		public virtual Schedule yoySchedule() { return yoySchedule_; }
-		public virtual YoYInflationIndex yoyInflationIndex() { return yoyIndex_; }
+      public virtual Schedule yoySchedule() { return yoySchedule_; }
+      public virtual YoYInflationIndex yoyInflationIndex() { return yoyIndex_; }
       public virtual Period observationLag() { return observationLag_; }
-		public virtual double spread() { return spread_; }
-		public virtual DayCounter yoyDayCount() { return yoyDayCount_; }
+      public virtual double spread() { return spread_; }
+      public virtual DayCounter yoyDayCount() { return yoyDayCount_; }
 
       public virtual Calendar paymentCalendar() { return paymentCalendar_; }
-		public virtual BusinessDayConvention paymentConvention() { return paymentConvention_; }
+      public virtual BusinessDayConvention paymentConvention() { return paymentConvention_; }
 
-		public virtual List<CashFlow> fixedLeg() { return legs_[0]; }
-		public virtual List<CashFlow> yoyLeg() { return legs_[1]; }
+      public virtual List<CashFlow> fixedLeg() { return legs_[0]; }
+      public virtual List<CashFlow> yoyLeg() { return legs_[1]; }
 
       // other
-		public override void setupArguments( IPricingEngineArguments args )
-		{
-			base.setupArguments(args);
+      public override void setupArguments( IPricingEngineArguments args )
+      {
+         base.setupArguments(args);
 
-			YearOnYearInflationSwap.Arguments arguments = args as YearOnYearInflationSwap.Arguments;
+         YearOnYearInflationSwap.Arguments arguments = args as YearOnYearInflationSwap.Arguments;
 
-			if (arguments == null)  // it's a swap engine...
+         if (arguments == null)  // it's a swap engine...
             return;
 
-			arguments.type = type_;
-			arguments.nominal = nominal_;
+         arguments.type = type_;
+         arguments.nominal = nominal_;
 
-			List<CashFlow> fixedCoupons = fixedLeg();
+         List<CashFlow> fixedCoupons = fixedLeg();
 
-			arguments.fixedResetDates = arguments.fixedPayDates = new List<Date>(fixedCoupons.Count);
-			arguments.fixedCoupons = new List<double>(fixedCoupons.Count);
+         arguments.fixedResetDates = arguments.fixedPayDates = new List<Date>(fixedCoupons.Count);
+         arguments.fixedCoupons = new List<double>(fixedCoupons.Count);
 
-			for (int i=0; i<fixedCoupons.Count; ++i) 
-			{
-				FixedRateCoupon coupon = fixedCoupons[i] as FixedRateCoupon;
+         for (int i=0; i<fixedCoupons.Count; ++i) 
+         {
+            FixedRateCoupon coupon = fixedCoupons[i] as FixedRateCoupon;
 
             arguments.fixedPayDates.Add(coupon.date());
             arguments.fixedResetDates.Add(coupon.accrualStartDate());
             arguments.fixedCoupons.Add(coupon.amount());
-			}
+         }
 
-			List<CashFlow> yoyCoupons = yoyLeg();
+         List<CashFlow> yoyCoupons = yoyLeg();
 
-			arguments.yoyResetDates = arguments.yoyPayDates = arguments.yoyFixingDates =new List<Date>(yoyCoupons.Count);
-			arguments.yoyAccrualTimes = new List<double>(yoyCoupons.Count);
-			arguments.yoySpreads = new List<double>(yoyCoupons.Count);
-			arguments.yoyCoupons = new List<double?>(yoyCoupons.Count);
-			for (int i=0; i<yoyCoupons.Count; ++i) 
-			{
-				YoYInflationCoupon coupon = yoyCoupons[i] as YoYInflationCoupon;
+         arguments.yoyResetDates = arguments.yoyPayDates = arguments.yoyFixingDates =new List<Date>(yoyCoupons.Count);
+         arguments.yoyAccrualTimes = new List<double>(yoyCoupons.Count);
+         arguments.yoySpreads = new List<double>(yoyCoupons.Count);
+         arguments.yoyCoupons = new List<double?>(yoyCoupons.Count);
+         for (int i=0; i<yoyCoupons.Count; ++i) 
+         {
+            YoYInflationCoupon coupon = yoyCoupons[i] as YoYInflationCoupon;
 
             arguments.yoyResetDates.Add(coupon.accrualStartDate());
             arguments.yoyPayDates.Add(coupon.date());
@@ -188,59 +188,59 @@ namespace QLNet
             arguments.yoyAccrualTimes.Add(coupon.accrualPeriod());
             arguments.yoySpreads.Add(coupon.spread());
             try 
-				{
-					arguments.yoyCoupons.Add(coupon.amount());
+            {
+               arguments.yoyCoupons.Add(coupon.amount());
             } 
-				catch (Exception ) {
+            catch (Exception ) {
                 arguments.yoyCoupons.Add(null);
             }
         }
 
-		}
-		public override void fetchResults( IPricingEngineResults r )
-		{
-			// copy from VanillaSwap
-			// works because similarly simple instrument
-			// that we always expect to be priced with a swap engine
+      }
+      public override void fetchResults( IPricingEngineResults r )
+      {
+         // copy from VanillaSwap
+         // works because similarly simple instrument
+         // that we always expect to be priced with a swap engine
 
-			base.fetchResults(r);
+         base.fetchResults(r);
 
-			YearOnYearInflationSwap.Results results = r as YearOnYearInflationSwap.Results;
-			if (results != null) 
-			{ 
-				// might be a swap engine, so no error is thrown
-				fairRate_ = results.fairRate;
-				fairSpread_ = results.fairSpread;
-			} 
-			else 
-			{
-				fairRate_ = null;
-				fairSpread_ = null;
-			}
+         YearOnYearInflationSwap.Results results = r as YearOnYearInflationSwap.Results;
+         if (results != null) 
+         { 
+            // might be a swap engine, so no error is thrown
+            fairRate_ = results.fairRate;
+            fairSpread_ = results.fairSpread;
+         } 
+         else 
+         {
+            fairRate_ = null;
+            fairSpread_ = null;
+         }
 
         if (fairRate_ == null) 
-		  {
+        {
             // calculate it from other results
             if (legBPS_[0] != null)
                 fairRate_ = fixedRate_ - NPV_/(legBPS_[0]/basisPoint);
         }
         if (fairSpread_ == null) 
-		  {
+        {
             // ditto
             if (legBPS_[1] != null)
                 fairSpread_ = spread_ - NPV_/(legBPS_[1]/basisPoint);
         }
 
-		}
+      }
 
 
-		protected override void setupExpired()
-		{
-			base.setupExpired();
-			legBPS_[0] = legBPS_[1] = 0.0;
-			fairRate_ = null;
-			fairSpread_ = null;
-		}
+      protected override void setupExpired()
+      {
+         base.setupExpired();
+         legBPS_[0] = legBPS_[1] = 0.0;
+         fairRate_ = null;
+         fairSpread_ = null;
+      }
       private Type type_;
       private double nominal_;
       private Schedule fixedSchedule_;
@@ -257,16 +257,16 @@ namespace QLNet
       private double? fairRate_;
       private double? fairSpread_;
 
-		//! %Arguments for YoY swap calculation
-		public new class Arguments : Swap.Arguments
-		{
-			public Arguments()
-			{
-				type = Type.Receiver;
-				nominal = null ;
-			}
+      //! %Arguments for YoY swap calculation
+      public new class Arguments : Swap.Arguments
+      {
+         public Arguments()
+         {
+            type = Type.Receiver;
+            nominal = null ;
+         }
 
-			public Type type { get; set; }
+         public Type type { get; set; }
          public double? nominal { get; set; }
 
          public List<Date> fixedResetDates { get; set; }
@@ -280,8 +280,8 @@ namespace QLNet
          public List<double> yoySpreads { get; set; }
          public List<double?> yoyCoupons { get; set; }
          public override void validate()
-			{
-				base.validate();
+         {
+            base.validate();
             Utils.QL_REQUIRE( nominal != null, () => "nominal null or not set" );
             Utils.QL_REQUIRE( fixedResetDates.Count == fixedPayDates.Count, () =>
                    "number of fixed start dates different from number of fixed payment dates");
@@ -297,23 +297,23 @@ namespace QLNet
                    "number of yoy spreads different from number of yoy payment dates");
             Utils.QL_REQUIRE( yoyPayDates.Count == yoyCoupons.Count, () =>
                    "number of yoy payment dates different from number of yoy coupon amounts");
-			}
-		}
+         }
+      }
 
-		//! %Results from YoY swap calculation
-		public new class Results : Swap.Results
-		{
-			public double? fairRate { get; set; }
+      //! %Results from YoY swap calculation
+      public new class Results : Swap.Results
+      {
+         public double? fairRate { get; set; }
          public double? fairSpread { get; set; }
          public override void reset()
-			{
-				base.reset();
-				fairRate = null;
-				fairSpread = null;
-			}
-		}
+         {
+            base.reset();
+            fairRate = null;
+            fairSpread = null;
+         }
+      }
 
-		public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> {};
+      public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> {};
 
-	}
+   }
 }

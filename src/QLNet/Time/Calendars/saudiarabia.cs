@@ -72,7 +72,7 @@ namespace QLNet {
                     || (d >= 14 && d <= 18 && m == Month.November && y==2005)
                     || (d >= 25 && m == Month.August && y == 2011)
                     || (d <= 2 && m == Month.September && y == 2011)
- 	  	              // other one-shot holidays
+                       // other one-shot holidays
                     || (d == 26 && m == Month.February && y == 2011)
                     || (d == 19 && m == Month.March && y == 2011)
                     )

@@ -56,10 +56,10 @@ namespace QLNet
             if (primeNumbers_.empty()) 
                 primeNumbers_.AddRange(firstPrimes);
 
-			while (primeNumbers_.Count<=absoluteIndex)
+         while (primeNumbers_.Count<=absoluteIndex)
                 nextPrimeNumber();
             
-			return primeNumbers_[absoluteIndex];
+         return primeNumbers_[absoluteIndex];
         }
 
         private static ulong nextPrimeNumber()

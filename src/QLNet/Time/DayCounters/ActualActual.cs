@@ -22,11 +22,11 @@ namespace QLNet
 {
     //! Actual/Actual day count
     /*! The day count can be calculated according to:
-	        - the ISDA convention, also known as "Actual/Actual (Historical)", "Actual/Actual", "Act/Act", 
+           - the ISDA convention, also known as "Actual/Actual (Historical)", "Actual/Actual", "Act/Act", 
               and according to ISDA also "Actual/365", "Act/365", and "A/365"
-	        - the ISMA and US Treasury convention, also known as "Actual/Actual (Bond)";
-	        - the AFB convention, also known as "Actual/Actual (Euro)".
-	For more details, refer to http://www.isda.org/publications/pdf/Day-Count-Fracation1999.pdf  */
+           - the ISMA and US Treasury convention, also known as "Actual/Actual (Bond)";
+           - the AFB convention, also known as "Actual/Actual (Euro)".
+   For more details, refer to http://www.isda.org/publications/pdf/Day-Count-Fracation1999.pdf  */
     public class ActualActual : DayCounter
     {
         public enum Convention { ISMA, Bond, ISDA, Historical, Actual365, AFB, Euro };
@@ -96,7 +96,7 @@ namespace QLNet
                     {
                         // here refPeriodStart is the last (maybe notional) payment date.
                         // refPeriodStart <= d1 <= d2 <= refPeriodEnd
-                        // [maybe the equality should be enforced, since	refPeriodStart < d1 <= d2 < refPeriodEnd	could give wrong results] ???
+                        // [maybe the equality should be enforced, since   refPeriodStart < d1 <= d2 < refPeriodEnd   could give wrong results] ???
                        return period * Date.daysBetween( d1, d2 ) / Date.daysBetween( refPeriodStart, refPeriodEnd );
                     }
                     else

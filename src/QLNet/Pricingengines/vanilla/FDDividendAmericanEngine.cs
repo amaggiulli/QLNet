@@ -20,7 +20,7 @@
 
 namespace QLNet
 {
-	//! Finite-differences pricing engine for dividend American options
+   //! Finite-differences pricing engine for dividend American options
    /*! \ingroup vanillaengines
 
        \test
@@ -30,20 +30,20 @@ namespace QLNet
          dividends is tested.
    */
    public class FDDividendAmericanEngine: FDEngineAdapter<FDAmericanCondition<FDDividendEngine>,DividendVanillaOption.Engine>,
- 		IFDEngine
-	{
-		public FDDividendAmericanEngine()
-		{}
+       IFDEngine
+   {
+      public FDDividendAmericanEngine()
+      {}
 
-		public FDDividendAmericanEngine( GeneralizedBlackScholesProcess process,int timeSteps=100, int gridPoints=100,
+      public FDDividendAmericanEngine( GeneralizedBlackScholesProcess process,int timeSteps=100, int gridPoints=100,
              bool timeDependent = false)
         : base(process, timeSteps, gridPoints,timeDependent) 
-		{}
+      {}
 
-		public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
-		{
-			return new FDDividendAmericanEngine(process, timeSteps, gridPoints);
-		}
+      public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100 , int gridPoints = 100)
+      {
+         return new FDDividendAmericanEngine(process, timeSteps, gridPoints);
+      }
     
-	}
+   }
 }
