@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,7 +21,7 @@ using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -34,22 +34,22 @@ namespace TestSuite
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-      #if NET40 || NET45
+#if NET40 || NET45
       [TestInitialize]
       public void testInitialize()
       {
-      #else
+#else
       public T_EuropeanOption()
       {
-      #endif
+#endif
          backup = new SavedSettings();
       }
-      #if NET40 || NET45
+#if NET40 || NET45
       [TestCleanup]
-      #endif
+#endif
       public void testCleanup()
       {
-        Dispose();
+         Dispose();
       }
       public void Dispose()
       {
@@ -68,9 +68,9 @@ namespace TestSuite
 
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testJRBinomialEngines()
       {
@@ -86,9 +86,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testCRRBinomialEngines()
       {
@@ -104,9 +104,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testEQPBinomialEngines()
       {
@@ -122,9 +122,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testTGEOBinomialEngines()
       {
@@ -140,9 +140,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testTIANBinomialEngines()
       {
@@ -158,9 +158,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testLRBinomialEngines()
       {
@@ -176,9 +176,9 @@ namespace TestSuite
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testJOSHIBinomialEngines()
       {
@@ -196,9 +196,9 @@ namespace TestSuite
 
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdEngines()
       {
@@ -227,7 +227,7 @@ namespace TestSuite
 
 
       VanillaOption makeOption(StrikedTypePayoff payoff, Exercise exercise, Quote u, YieldTermStructure q,
-                 YieldTermStructure r, BlackVolTermStructure vol, EngineType engineType, int binomialSteps, int samples)
+                               YieldTermStructure r, BlackVolTermStructure vol, EngineType engineType, int binomialSteps, int samples)
       {
 
          GeneralizedBlackScholesProcess stochProcess = makeProcess(u, q, r, vol);
@@ -327,10 +327,10 @@ namespace TestSuite
                   StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
                   // reference option
                   VanillaOption refOption = makeOption(payoff, exercise, spot, qTS, rTS, volTS,
-                                            EngineType.Analytic, 0, 0);
+                                                       EngineType.Analytic, 0, 0);
                   // option to check
                   VanillaOption option = makeOption(payoff, exercise, spot, qTS, rTS, volTS,
-                                 engine, binomialSteps, samples);
+                                                    engine, binomialSteps, samples);
 
                   for (int l = 0; l < underlyings.Length; l++)
                   {
@@ -342,7 +342,7 @@ namespace TestSuite
                            {
                               double u = underlyings[l];
                               double q = qRates[m],
-                                   r = rRates[n];
+                                     r = rRates[n];
                               double v = vols[p];
                               spot.setValue(u);
                               qRate.setValue(q);
@@ -368,8 +368,8 @@ namespace TestSuite
                               foreach (string greek in calculated.Keys)
                               {
                                  double expct = expected[greek],
-                                      calcl = calculated[greek],
-                                      tol = tolerance[greek];
+                                        calcl = calculated[greek],
+                                        tol = tolerance[greek];
                                  double error = Utilities.relativeError(expct, calcl, u);
                                  if (error > tol)
                                  {
@@ -390,22 +390,22 @@ namespace TestSuite
 
 
       void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q, double r,
-              Date today, double v, double expected, double calculated, double error, double tolerance)
+                          Date today, double v, double expected, double calculated, double error, double tolerance)
       {
          QAssert.Fail(exercise + " "
-                + payoff.optionType() + " option with "
-                + payoff + " payoff:\n"
-                + "    spot value:       " + s + "\n"
-                + "    strike:           " + payoff.strike() + "\n"
-                + "    dividend yield:   " + q + "\n"
-                + "    risk-free rate:   " + r + "\n"
-                + "    reference date:   " + today + "\n"
-                + "    maturity:         " + exercise.lastDate() + "\n"
-                + "    volatility:       " + v + "\n\n"
-                + "    expected " + greekName + ":   " + expected + "\n"
-                + "    calculated " + greekName + ": " + calculated + "\n"
-                + "    error:            " + error + "\n"
-                + "    tolerance:        " + tolerance);
+                      + payoff.optionType() + " option with "
+                      + payoff + " payoff:\n"
+                      + "    spot value:       " + s + "\n"
+                      + "    strike:           " + payoff.strike() + "\n"
+                      + "    dividend yield:   " + q + "\n"
+                      + "    risk-free rate:   " + r + "\n"
+                      + "    reference date:   " + today + "\n"
+                      + "    maturity:         " + exercise.lastDate() + "\n"
+                      + "    volatility:       " + v + "\n\n"
+                      + "    expected " + greekName + ":   " + expected + "\n"
+                      + "    calculated " + greekName + ": " + calculated + "\n"
+                      + "    error:            " + error + "\n"
+                      + "    tolerance:        " + tolerance);
       }
    }
 }
