@@ -99,7 +99,7 @@ namespace QLNet
        still considered experimental */
    public class BlackIborCouponPricer : IborCouponPricer
    {
-      public enum TimingAdjustment { Black76, BivariateLognormal };
+      public enum TimingAdjustment { Black76, BivariateLognormal }
       public BlackIborCouponPricer(Handle<OptionletVolatilityStructure> v = null,
                                    TimingAdjustment timingAdjustment  = TimingAdjustment.Black76,
                                    Handle<Quote> correlation = null)

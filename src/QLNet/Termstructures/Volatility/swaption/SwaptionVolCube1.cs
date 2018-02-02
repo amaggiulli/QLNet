@@ -298,7 +298,7 @@ namespace QLNet
          private bool extrapolation_;
          private bool backwardFlat_;
          private List< Interpolation2D > interpolators_;
-      };
+      }
 
       public SwaptionVolCube1x(Handle<SwaptionVolatilityStructure> atmVolStructure,
                                List<Period> optionTenors,

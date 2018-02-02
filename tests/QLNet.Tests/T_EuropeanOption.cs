@@ -64,7 +64,7 @@ namespace TestSuite
          FiniteDifferences,
          Integral,
          PseudoMonteCarlo, QuasiMonteCarlo
-      };
+      }
 
 
 #if NET40 || NET45

@@ -44,7 +44,7 @@ namespace QLNet
       public enum Branches
       {
          branches = 2
-      };
+      }
 
       protected double x0_, driftPerStep_;
       protected double dt_;

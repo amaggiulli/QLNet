@@ -29,7 +29,7 @@ namespace QLNet
    For more details, refer to http://www.isda.org/publications/pdf/Day-Count-Fracation1999.pdf  */
    public class ActualActual : DayCounter
    {
-      public enum Convention { ISMA, Bond, ISDA, Historical, Actual365, AFB, Euro };
+      public enum Convention { ISMA, Bond, ISDA, Historical, Actual365, AFB, Euro }
 
       public ActualActual() : base(ISDA_Impl.Singleton) { }
       public ActualActual(Convention c) : base(conventions(c)) { }
@@ -150,7 +150,7 @@ namespace QLNet
                return sum;
             }
          }
-      };
+      }
 
       private class ISDA_Impl : DayCounter
       {
@@ -177,7 +177,7 @@ namespace QLNet
             sum += Date.daysBetween(new Date(1, Month.January, y2), d2) / dib2;
             return sum;
          }
-      };
+      }
 
       private class AFB_Impl : DayCounter
       {
@@ -226,7 +226,7 @@ namespace QLNet
 
             return sum + Date.daysBetween(d1, newD2) / den;
          }
-      };
+      }
 
    }
 }

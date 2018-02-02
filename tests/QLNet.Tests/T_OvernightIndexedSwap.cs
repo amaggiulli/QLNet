@@ -64,7 +64,7 @@ namespace TestSuite
          public int n;
          public TimeUnit unit;
          public double rate;
-      };
+      }
 
       public struct FraDatum
       {
@@ -80,7 +80,7 @@ namespace TestSuite
             rate = rate_;
          }
 
-      };
+      }
 
       public struct SwapDatum
       {
@@ -100,7 +100,7 @@ namespace TestSuite
             rate = rate_;
          }
 
-      };
+      }
 
       Datum[] depositData = new Datum[]
       {

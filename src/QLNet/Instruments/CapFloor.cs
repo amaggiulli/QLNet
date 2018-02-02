@@ -350,7 +350,7 @@ namespace QLNet
    {
       public Cap(List<CashFlow> floatingLeg, List<double> exerciseRates)
          : base(CapFloorType.Cap, floatingLeg, exerciseRates, new List<double>()) {}
-   };
+   }
 
    /// <summary>
    /// Concrete floor class
@@ -360,7 +360,7 @@ namespace QLNet
    {
       public Floor(List<CashFlow> floatingLeg, List<double> exerciseRates)
          : base(CapFloorType.Floor, floatingLeg, new List<double>(), exerciseRates) {}
-   };
+   }
 
    /// <summary>
    /// Concrete collar class
@@ -370,11 +370,11 @@ namespace QLNet
    {
       public Collar(List<CashFlow> floatingLeg, List<double> capRates, List<double> floorRates)
          : base(CapFloorType.Collar, floatingLeg, capRates, floorRates) { }
-   };
+   }
 
    //! base class for cap/floor engines
    public abstract class CapFloorEngine
-      : GenericEngine<CapFloor.Arguments, CapFloor.Results> {};
+      : GenericEngine<CapFloor.Arguments, CapFloor.Results> {}
 
    public class ImpliedVolHelper : ISolver1d
    {

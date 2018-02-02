@@ -26,7 +26,7 @@ namespace QLNet
       //! amount to be paid upon callability
       public class Price
       {
-         public enum Type { Dirty, Clean };
+         public enum Type { Dirty, Clean }
 
          public Price()
          {
@@ -49,10 +49,10 @@ namespace QLNet
 
          private double? amount_;
          private Type type_;
-      };
+      }
 
       //! type of the callability
-      public enum Type { Call, Put };
+      public enum Type { Call, Put }
 
       public Callability(Price price, Type type, Date date)
       {

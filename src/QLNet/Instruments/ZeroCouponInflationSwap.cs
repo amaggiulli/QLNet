@@ -54,7 +54,7 @@ namespace QLNet
    public class ZeroCouponInflationSwap : Swap
    {
 
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       /* Generally inflation indices are available with a lag of 1month
          and then observed with a lag of 2-3 months depending whether
@@ -255,7 +255,7 @@ namespace QLNet
          public double fixedRate { get; set; }
       }
 
-      public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { };
+      public class Engine : GenericEngine<ZeroCouponInflationSwap.Arguments, ZeroCouponInflationSwap.Results> { }
 
    }
 }

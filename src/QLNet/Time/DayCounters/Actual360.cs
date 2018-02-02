@@ -24,7 +24,7 @@ namespace QLNet
    /*! Actual/360 day count convention, also known as "Act/360", or "A/360". */
    public class Actual360 : DayCounter
    {
-      public enum Actual360Convention { excludeLastDay, includeLastDay };
+      public enum Actual360Convention { excludeLastDay, includeLastDay }
 
       public Actual360(bool c = false) : base(conventions(c)) { }
 

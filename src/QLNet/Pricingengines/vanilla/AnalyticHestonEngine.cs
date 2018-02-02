@@ -240,7 +240,7 @@ namespace QLNet
 
       }
 
-      public enum ComplexLogFormula { Gatheral, BranchCorrection };
+      public enum ComplexLogFormula { Gatheral, BranchCorrection }
 
       // Simple to use constructor: Using adaptive
       // Gauss-Lobatto integration and Gatheral's version of complex log.

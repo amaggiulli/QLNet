@@ -86,5 +86,5 @@ namespace QLNet
 
       public Vector logGridArray() { return transformedGridArray();}
       public double logGrid(int i) { return transformedGrid(i);}
-   };
+   }
 }

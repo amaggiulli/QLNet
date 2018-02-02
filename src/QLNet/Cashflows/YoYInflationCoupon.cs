@@ -95,5 +95,5 @@ namespace QLNet
                                                 observationLag_);
       }
 
-   };
+   }
 }

@@ -27,7 +27,7 @@ namespace QLNet
    */
    public class HybridHestonHullWhiteProcess : StochasticProcess
    {
-      public enum Discretization { Euler, BSMHullWhite };
+      public enum Discretization { Euler, BSMHullWhite }
 
       public HybridHestonHullWhiteProcess(HestonProcess hestonProcess,
                                           HullWhiteForwardProcess hullWhiteProcess,

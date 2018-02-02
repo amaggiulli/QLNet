@@ -28,7 +28,7 @@ namespace QLNet
       {
          Monomial, Laguerre, Hermite, Hyperbolic,
          Legendre, Chebyshev, Chebyshev2th
-      };
+      }
 
       public static List<Func<double, double>> pathBasisSystem(int order, PolynomType polynomType)
       {

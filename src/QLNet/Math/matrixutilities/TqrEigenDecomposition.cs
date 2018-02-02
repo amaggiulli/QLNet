@@ -208,5 +208,5 @@ namespace QLNet
       private int iter_;
       private Vector d_;
       private Matrix ev_;
-   };
+   }
 }

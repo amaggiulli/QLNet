@@ -49,7 +49,7 @@ namespace QLNet
    */
    public class CPISwap : Swap
    {
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
       public new class Arguments : Swap.Arguments
       {
          public Arguments()

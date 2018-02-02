@@ -170,5 +170,5 @@ namespace QLNet
                return 0;
          }
       }
-   };
+   }
 }

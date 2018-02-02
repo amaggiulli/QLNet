@@ -286,5 +286,5 @@ namespace QLNet
                                             forward,
                                             stdDev);
       }
-   };
+   }
 }

@@ -44,7 +44,7 @@ namespace QLNet
       {
          SwapRate,
          DiscountCurve
-      };
+      }
 
       public BlackStyleSwaptionEngine(Handle<YieldTermStructure> discountCurve,
                                       double vol,

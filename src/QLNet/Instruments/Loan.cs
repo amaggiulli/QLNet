@@ -25,7 +25,7 @@ namespace QLNet
 {
    public class Loan : Instrument
    {
-      public enum Type { Deposit = -1, Loan = 1 };
+      public enum Type { Deposit = -1, Loan = 1 }
       public enum Amortising
       {
          Bullet = 1,

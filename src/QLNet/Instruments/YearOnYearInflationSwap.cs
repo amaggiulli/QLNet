@@ -40,7 +40,7 @@ namespace QLNet
    public class YearOnYearInflationSwap : Swap
    {
       const double basisPoint = 1.0e-4;
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
       public YearOnYearInflationSwap(
          Type type,
          double nominal,
@@ -314,7 +314,7 @@ namespace QLNet
          }
       }
 
-      public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> {};
+      public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> {}
 
    }
 }

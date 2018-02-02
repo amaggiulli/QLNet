@@ -88,8 +88,8 @@ namespace QLNet
                return false;
             return true;
          }
-      };
-   };
+      }
+   }
 
 }
 

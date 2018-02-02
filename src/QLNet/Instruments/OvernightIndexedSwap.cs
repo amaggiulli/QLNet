@@ -35,7 +35,7 @@ namespace QLNet
       private OvernightIndex overnightIndex_;
       private double spread_;
 
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       public OvernightIndexedSwap(Type type,
                                   double nominal,

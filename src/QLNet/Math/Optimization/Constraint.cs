@@ -103,7 +103,7 @@ namespace QLNet
          }
       }
       public NoConstraint() : base(new Impl()) { }
-   };
+   }
 
    //! %Constraint imposing positivity to all arguments
    public class PositiveConstraint : Constraint

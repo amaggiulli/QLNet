@@ -62,7 +62,7 @@ namespace QLNet
          // no extra results set yet
       }
       //! base class for callable fixed rate bond engine
-      public new class Engine :  GenericEngine<CallableBond.Arguments, CallableBond.Results> {};
+      public new class Engine :  GenericEngine<CallableBond.Arguments, CallableBond.Results> {}
 
       // Inspectors
       //! return the bond's put/call schedule

@@ -66,7 +66,7 @@ namespace QLNet
       {
          Settlement,     //!< generic settlement calendar
          Exchange        //!< Milan stock-exchange calendar
-      };
+      }
 
       public Italy() : this(Market.Settlement) { }
       public Italy(Market m)
@@ -168,7 +168,7 @@ namespace QLNet
                return false;
             return true;
          }
-      };
-   };
+      }
+   }
 
 }

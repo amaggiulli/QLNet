@@ -51,7 +51,7 @@ namespace TestSuite
          return "Mersenne Twister";
       }
 
-   };
+   }
 
    public class SobolFactory : IRNGFactory
    {
@@ -102,7 +102,7 @@ namespace TestSuite
       }
 
       private SobolRsg.DirectionIntegers unit_;
-   };
+   }
 
    public class HaltonFactory : IRNGFactory
    {
@@ -128,7 +128,7 @@ namespace TestSuite
       }
 
       private bool start_, shift_;
-   };
+   }
 
    #endregion
 

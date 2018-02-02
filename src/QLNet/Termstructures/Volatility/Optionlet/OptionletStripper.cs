@@ -22,7 +22,7 @@ namespace QLNet
    /*! StrippedOptionletBase specialization. It's up to derived
         classes to implement LazyObject::performCalculations
     */
-   public enum VolatilityType { ShiftedLognormal, Normal };
+   public enum VolatilityType { ShiftedLognormal, Normal }
    public class OptionletStripper : StrippedOptionletBase
    {
       // StrippedOptionletBase interface

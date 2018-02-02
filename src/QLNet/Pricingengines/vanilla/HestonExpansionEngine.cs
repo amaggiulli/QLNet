@@ -33,7 +33,7 @@ namespace QLNet
    public class HestonExpansionEngine : GenericModelEngine<HestonModel, VanillaOption.Arguments,
       VanillaOption.Results>
    {
-      public enum HestonExpansionFormula { LPP2, LPP3, Forde };
+      public enum HestonExpansionFormula { LPP2, LPP3, Forde }
 
       public HestonExpansionEngine(HestonModel model, HestonExpansionFormula formula)
          : base(model)

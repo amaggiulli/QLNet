@@ -342,5 +342,5 @@ namespace QLNet
          return result;
       }
 
-   };
+   }
 }

@@ -116,7 +116,7 @@ namespace QLNet
          Xetra,                  //!< Xetra
          Eurex,                  //!< Eurex
          Euwax                   //!< Euwax
-      };
+      }
 
       public Germany() : this(Market.FrankfurtStockExchange) { }
       public Germany(Market m)
@@ -293,7 +293,7 @@ namespace QLNet
                return false;
             return true;
          }
-      };
+      }
       class Euwax : Calendar.WesternImpl
       {
          public static readonly Euwax Singleton = new Euwax();
@@ -330,6 +330,6 @@ namespace QLNet
                return false;
             return true;
          }
-      };
+      }
    }
 }

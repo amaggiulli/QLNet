@@ -428,6 +428,6 @@ namespace QLNet
       private NumericalFix numericalFix_;
       private AccrualBias accrualBias_;
       private ForwardsInCouponPeriod forwardsInCouponPeriod_;
-   };
+   }
 }
 

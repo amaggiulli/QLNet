@@ -24,7 +24,7 @@ namespace QLNet
    //! Basis swap. Simple Libor swap vs Libor swap
    public class BasisSwap : Swap
    {
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       private Type type_;
       private double spread1_, spread2_;

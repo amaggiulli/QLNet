@@ -61,7 +61,7 @@ namespace QLNet
          BEJ,  //!< Jakarta stock exchange (merged into IDX)
          JSX,  //!< Jakarta stock exchange (merged into IDX)
          IDX   //!< Indonesia stock exchange
-      };
+      }
 
       public Indonesia() : this(Market.IDX) { }
       public Indonesia(Market m)

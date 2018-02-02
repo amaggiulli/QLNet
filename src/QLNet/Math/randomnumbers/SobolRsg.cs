@@ -112,7 +112,7 @@ namespace QLNet
          Unit, Jaeckel, SobolLevitan, SobolLevitanLemieux,
          JoeKuoD5, JoeKuoD6, JoeKuoD7,
          Kuo, Kuo2, Kuo3
-      };
+      }
 
       // required for generics
       public SobolRsg() { }

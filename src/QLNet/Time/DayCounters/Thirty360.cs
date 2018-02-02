@@ -33,7 +33,7 @@ namespace QLNet
    public class Thirty360 : DayCounter
    {
 
-      public enum Thirty360Convention { USA, BondBasis, European, EurobondBasis, Italian };
+      public enum Thirty360Convention { USA, BondBasis, European, EurobondBasis, Italian }
 
       public Thirty360() : base(US_Impl.Singleton) { }
       public Thirty360(Thirty360Convention c) : base(conventions(c)) { }
@@ -77,7 +77,7 @@ namespace QLNet
          }
 
          public override double yearFraction(Date d1, Date d2, Date d3, Date d4) { return dayCount(d1, d2) / 360.0; }
-      };
+      }
 
       private class EU_Impl : DayCounter
       {
@@ -95,7 +95,7 @@ namespace QLNet
          }
 
          public override double yearFraction(Date d1, Date d2, Date d3, Date d4) { return dayCount(d1, d2) / 360.0; }
-      };
+      }
 
       private class IT_Impl : DayCounter
       {
@@ -118,7 +118,7 @@ namespace QLNet
          }
 
          public override double yearFraction(Date d1, Date d2, Date d3, Date d4) { return dayCount(d1, d2) / 360.0; }
-      };
+      }
 
    }
 }

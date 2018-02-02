@@ -50,5 +50,5 @@ namespace QLNet
       public YYUKRPIr(bool interpolated, Handle<YoYInflationTermStructure> ts)
          : base("YYR_RPI", new UKRegion(), false, interpolated, true, Frequency.Monthly,
                 new Period(1, TimeUnit.Months), new GBPCurrency(), ts) {}
-   };
+   }
 }

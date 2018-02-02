@@ -44,7 +44,7 @@ namespace TestSuite
       public void lower() { up_ = false; }
       public bool isUp() { return up_; }
       public void update() { raise(); }
-   };
+   }
 
    public static class Utilities
    {
@@ -168,7 +168,7 @@ namespace TestSuite
    public class IndexHistoryCleaner : IDisposable
    {
       public void Dispose() { IndexManager.instance().clearHistories(); }
-   };
+   }
 
    public static partial class QAssert
    {

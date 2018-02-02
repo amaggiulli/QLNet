@@ -40,7 +40,7 @@ namespace QLNet
    */
    public class VanillaSwap : Swap
    {
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       private Type type_;
       private double fixedRate_;

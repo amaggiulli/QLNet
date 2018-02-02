@@ -152,7 +152,7 @@ namespace QLNet
          impl_ = new KernelInterpolationImpl<IKernelFunction>(xBegin, size, yBegin, kernel);
          impl_.update();
       }
-   };
+   }
 
 
 }

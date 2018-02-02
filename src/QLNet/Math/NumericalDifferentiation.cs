@@ -33,7 +33,7 @@ namespace QLNet
    /// </summary>
    public class NumericalDifferentiation
    {
-      public enum Scheme { Central, Backward, Forward };
+      public enum Scheme { Central, Backward, Forward }
 
       public NumericalDifferentiation(Func<double, double> f,
                                       int orderOfDerivative,

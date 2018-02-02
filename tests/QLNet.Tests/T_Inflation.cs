@@ -38,7 +38,7 @@ namespace TestSuite
          date = d;
          rate = r;
       }
-   };
+   }
 
    //===========================================================================================
    // zero inflation tests, index, termstructure, and swaps

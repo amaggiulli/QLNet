@@ -67,7 +67,7 @@ namespace QLNet
       {
          Settlement,       //!< generic settlement calendar
          TSX               //!< Toronto stock exchange calendar
-      };
+      }
 
       public Canada() : this(Market.Settlement) { }
       public Canada(Market m)

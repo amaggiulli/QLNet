@@ -72,7 +72,7 @@ namespace QLNet
          impl_ = new LinearInterpolationImpl(xBegin, size, yBegin);
          impl_.update();
       }
-   };
+   }
 
    //! %Linear-interpolation factory and traits
    public class Linear : IInterpolationFactory
@@ -83,5 +83,5 @@ namespace QLNet
       }
       public bool global { get { return false; } }
       public int requiredPoints { get { return 2; } }
-   };
+   }
 }

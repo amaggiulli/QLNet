@@ -36,7 +36,7 @@ namespace TestSuite
       {
          public override double value(double x) { return x * x - 1.0; }
          public override double derivative(double x) { return 2.0 * x; }
-      };
+      }
 
       public void test(Solver1D solver, string name)
       {

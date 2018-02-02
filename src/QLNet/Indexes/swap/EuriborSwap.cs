@@ -152,5 +152,5 @@ namespace QLNet
                 new Euribor(new Period(3, TimeUnit.Months), forwarding),
                 discounting) {}
 
-   };
+   }
 }

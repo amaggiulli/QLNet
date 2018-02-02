@@ -23,7 +23,7 @@ namespace QLNet
 {
    public class TrinomialTree : Tree<TrinomialTree>
    {
-      public enum Branches { branches = 3 };
+      public enum Branches { branches = 3 }
       private  List<Branching> branchings_;
       protected double x0_;
       protected List<double> dx_;

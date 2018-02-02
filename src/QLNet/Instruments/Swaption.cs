@@ -25,7 +25,7 @@ namespace QLNet
    //! %settlement information
    public struct Settlement
    {
-      public enum Type { Physical, Cash };
+      public enum Type { Physical, Cash }
    }
 
    //! %Swaption class

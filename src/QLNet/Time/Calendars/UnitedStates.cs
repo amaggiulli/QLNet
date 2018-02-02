@@ -175,7 +175,7 @@ namespace QLNet
          NYSE,           //!< New York stock exchange calendar
          GovernmentBond, //!< government-bond calendar
          NERC            //!< off-peak days for NERC
-      };
+      }
 
       public UnitedStates() : this(Market.Settlement) { }
       public UnitedStates(Market m) : base()

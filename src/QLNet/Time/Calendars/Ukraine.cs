@@ -59,7 +59,7 @@ namespace QLNet
       }
 
       public enum Market { USE    //!< Ukrainian stock exchange
-                         };
+                         }
 
       class Impl : Calendar.OrthodoxImpl
       {
@@ -102,6 +102,6 @@ namespace QLNet
                return false;
             return true;
          }
-      };
+      }
    }
 }

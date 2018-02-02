@@ -197,5 +197,5 @@ namespace QLNet
       }
 
 
-   };
+   }
 }

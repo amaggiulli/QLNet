@@ -94,7 +94,7 @@ namespace QLNet
             return 2;
          }
       }
-   };
+   }
 
    //! %log-linear interpolation between discrete points
    public class LogLinearInterpolation : Interpolation

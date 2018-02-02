@@ -37,7 +37,7 @@ namespace QLNet
 
       protected Tl tree1_;
       protected Tl tree2_;
-      public enum Branches { branches = 3 };
+      public enum Branches { branches = 3 }
       //// smelly
 
       public override Vector grid(double t) {  throw new NotImplementedException("not implemented"); }

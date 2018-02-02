@@ -138,7 +138,7 @@ namespace QLNet
       private int? steps_, stepsPerYear_, samples_, maxSamples_;
       private double? tolerance_;
       private ulong seed_;
-   };
+   }
 
 
    public class EuropeanHestonPathPricer : PathPricer<IPath>

@@ -55,7 +55,7 @@ namespace TestSuite
             precision = _precision;
          }
 
-      };
+      }
 
 
 #if NET40 || NET45

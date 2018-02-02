@@ -238,7 +238,7 @@ namespace QLNet
       // is used multiple time to forecast changing fixing
       protected new OvernightIndexedSwap lastSwap_;
       protected new Date lastFixingDate_;
-   };
+   }
 
 
 }

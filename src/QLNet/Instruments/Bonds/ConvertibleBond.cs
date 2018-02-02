@@ -333,7 +333,7 @@ namespace QLNet
                               dayCounter, schedule,
                               issueDate, settlementDays, redemption);
       }
-   };
+   }
 
    //! convertible fixed-coupon bond
    /*! \warning Most methods inherited from Bond (such as yield or
@@ -373,7 +373,7 @@ namespace QLNet
                               dayCounter, schedule,
                               issueDate, settlementDays, redemption);
       }
-   };
+   }
 
    //! convertible floating-rate bond
    /*! \warning Most methods inherited from Bond (such as yield or

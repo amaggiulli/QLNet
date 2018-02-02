@@ -30,7 +30,7 @@ namespace QLNet
          J = 4, K = 5, M = 6,
          N = 7, Q = 8, U = 9,
          V = 10, X = 11, Z = 12
-      };
+      }
 
       //! returns whether or not the given date is an ASX date
       public static bool isASXdate(Date date, bool mainCycle = true)

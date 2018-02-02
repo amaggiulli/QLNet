@@ -283,8 +283,8 @@ namespace QLNet
 
             return true;
          }
-      };
+      }
 
-   };
+   }
 
 }

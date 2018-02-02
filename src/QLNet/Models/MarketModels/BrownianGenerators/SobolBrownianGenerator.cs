@@ -216,5 +216,5 @@ namespace QLNet
       private SobolBrownianGenerator.Ordering ordering_;
       private ulong seed_;
       private SobolRsg.DirectionIntegers integers_;
-   };
+   }
 }

@@ -56,7 +56,7 @@ namespace QLNet
       {
          SSE,    //!< Shanghai stock exchange
          IB      //!< Interbank calendar
-      };
+      }
 
       public China(Market market = Market.SSE)
       {
@@ -303,7 +303,7 @@ namespace QLNet
 
          private Calendar sseImpl;
 
-      };
+      }
 
    }
 }

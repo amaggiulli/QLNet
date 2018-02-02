@@ -23,7 +23,7 @@ namespace QLNet
    public class MultiAssetOption : Option
    {
       public class Engine : GenericEngine<MultiAssetOption.Arguments, MultiAssetOption.Results>
-      {};
+      {}
 
       public new class Results : Instrument.Results
       {

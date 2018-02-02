@@ -24,7 +24,7 @@ namespace QLNet
    //! swap paying Libor against BMA coupons
    public class BMASwap : Swap
    {
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       private Type type_;
       public Type type() { return type_; }

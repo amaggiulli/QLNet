@@ -24,7 +24,7 @@ namespace QLNet
    public class BoundaryCondition<Operator> where Operator : IOperator
    {
       //! \todo Generalize for n-dimensional conditions
-      public enum Side { None, Upper, Lower };
+      public enum Side { None, Upper, Lower }
 
       // interface
       /*! This method modifies an operator \f$ L \f$ before it is

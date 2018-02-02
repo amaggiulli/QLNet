@@ -465,7 +465,7 @@ namespace QLNet
          ConstantGradient,
          QuadraticMinimum,
          QuadraticMaximum
-      };
+      }
 
       public ConvexMonotoneImpl(List<double> xBegin, int size, List<double> yBegin,
                                 double quadraticity, double monotonicity, bool forcePositive, bool constantLastPeriod,

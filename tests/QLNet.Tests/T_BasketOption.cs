@@ -33,7 +33,7 @@ namespace TestSuite
 #endif
    public class T_BasketOption
    {
-      public enum BasketType { MinBasket, MaxBasket, SpreadBasket };
+      public enum BasketType { MinBasket, MaxBasket, SpreadBasket }
       public struct BasketOptionTwoData
       {
          public BasketOptionTwoData(BasketType _basketType, Option.Type _type, double _strike, double _s1, double _s2, double _q1,
@@ -70,7 +70,7 @@ namespace TestSuite
          public double rho;
          public double result;
          public double tol;
-      };
+      }
       public BasketPayoff basketTypeToPayoff(BasketType basketType, Payoff p)
       {
          switch (basketType)

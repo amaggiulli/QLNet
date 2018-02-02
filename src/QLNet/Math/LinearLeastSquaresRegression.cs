@@ -158,5 +158,5 @@ namespace QLNet
 
          return retVal;
       }
-   };
+   }
 }

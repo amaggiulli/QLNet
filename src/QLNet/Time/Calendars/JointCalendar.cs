@@ -31,7 +31,7 @@ namespace QLNet
                                   for any of the given calendars */
          JoinBusinessDays /*!< A date is a business day for the joint calendar if it is a business day
                                   for any of the given calendars */
-      };
+      }
 
       private class Impl : Calendar
       {

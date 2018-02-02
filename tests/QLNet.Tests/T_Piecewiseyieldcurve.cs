@@ -41,7 +41,7 @@ namespace TestSuite
             public int n;
             public TimeUnit units;
             public double rate;
-         };
+         }
          public struct BondDatum
          {
             public int n;
@@ -50,7 +50,7 @@ namespace TestSuite
             public Frequency frequency;
             public double coupon;
             public double price;
-         };
+         }
 
          public Datum[] depositData = new Datum[]
          {

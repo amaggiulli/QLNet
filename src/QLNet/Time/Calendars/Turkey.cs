@@ -173,7 +173,7 @@ namespace QLNet
             }
             return true;
          }
-      };
+      }
    }
 }
 
