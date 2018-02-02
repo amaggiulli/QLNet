@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -28,10 +28,10 @@ namespace QLNet
    public class FdmDividendHandler : IStepCondition<Vector>
    {
       public FdmDividendHandler(DividendSchedule schedule,
-         FdmMesher mesher,
-         Date referenceDate,
-         DayCounter dayCounter,
-         int equityDirection)
+                                FdmMesher mesher,
+                                Date referenceDate,
+                                DayCounter dayCounter,
+                                int equityDirection)
       {
          x_ = new Vector(mesher.layout().dim()[equityDirection]);
          mesher_ = mesher;
@@ -98,7 +98,7 @@ namespace QLNet
                         {
                            int index = j * ySpacing + k * xSpacing;
                            a[index] = interp.value(
-                              Math.Max(x_[0], x_[k] - dividend), true);
+                                         Math.Max(x_[0], x_[k] - dividend), true);
                         }
                      }
                   }

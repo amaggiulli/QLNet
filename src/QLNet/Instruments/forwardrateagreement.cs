@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -75,10 +75,10 @@ namespace QLNet
       protected IborIndex index_;
 
       public ForwardRateAgreement(Date valueDate, Date maturityDate, Position.Type type, double strikeForwardRate,
-         double notionalAmount, IborIndex index, Handle<YieldTermStructure> discountCurve)
+                                  double notionalAmount, IborIndex index, Handle<YieldTermStructure> discountCurve)
          : base(
-            index.dayCounter(), index.fixingCalendar(), index.businessDayConvention(), index.fixingDays(), new Payoff(),
-            valueDate, maturityDate, discountCurve)
+              index.dayCounter(), index.fixingCalendar(), index.businessDayConvention(), index.fixingDays(), new Payoff(),
+              valueDate, maturityDate, discountCurve)
       {
          fraType_ = type;
          notionalAmount_ = notionalAmount;
@@ -88,7 +88,7 @@ namespace QLNet
 
          // do I adjust this ?
          Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
-         forwardRate_ = new InterestRate(index.fixing(fixingDate), index.dayCounter(), Compounding.Simple,Frequency.Once);
+         forwardRate_ = new InterestRate(index.fixing(fixingDate), index.dayCounter(), Compounding.Simple, Frequency.Once);
          strikeForwardRate_ = new InterestRate(strikeForwardRate, index.dayCounter(), Compounding.Simple, Frequency.Once);
          double strike = notionalAmount_ * strikeForwardRate_.compoundFactor(valueDate_, maturityDate_);
          payoff_ = new ForwardTypePayoff(fraType_, strike);
@@ -143,7 +143,7 @@ namespace QLNet
       {
          Date fixingDate = calendar_.advance(valueDate_, -settlementDays_, TimeUnit.Days);
          forwardRate_ = new InterestRate(index_.fixing(fixingDate), index_.dayCounter(),
-            Compounding.Simple, Frequency.Once);
+                                         Compounding.Simple, Frequency.Once);
          underlyingSpotValue_ = spotValue();
          underlyingIncome_ = 0.0;
          base.performCalculations();

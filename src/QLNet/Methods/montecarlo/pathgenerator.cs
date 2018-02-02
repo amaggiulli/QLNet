@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -53,7 +53,7 @@ namespace QLNet
          temp_ = new InitializedList<double>(dimension_);
          bb_ = new BrownianBridge(timeGrid_);
          Utils.QL_REQUIRE(dimension_ == timeSteps, () =>
-            "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + timeSteps + ")");
+                          "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + timeSteps + ")");
       }
 
       public PathGenerator(StochasticProcess process, TimeGrid timeGrid, GSG generator, bool brownianBridge)
@@ -68,7 +68,7 @@ namespace QLNet
          bb_ = new BrownianBridge(timeGrid_);
 
          Utils.QL_REQUIRE(dimension_ == timeGrid_.size() - 1, () =>
-            "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
+                          "sequence generator dimensionality (" + dimension_ + ") != timeSteps (" + (timeGrid_.size() - 1) + ")");
       }
 
       public Sample<IPath> next()
@@ -85,8 +85,8 @@ namespace QLNet
       {
          Sample<List<double>> sequence_ =
             antithetic
-               ? generator_.lastSequence()
-               : generator_.nextSequence();
+            ? generator_.lastSequence()
+            : generator_.nextSequence();
 
          if (brownianBridge_)
          {
@@ -107,9 +107,9 @@ namespace QLNet
             double t = timeGrid_[i - 1];
             double dt = timeGrid_.dt(i - 1);
             path[i] = process_.evolve(t, path[i - 1], dt,
-               antithetic
-                  ? -temp_[i - 1]
-                  : temp_[i - 1]);
+                                      antithetic
+                                      ? -temp_[i - 1]
+                                      : temp_[i - 1]);
          }
          return next_;
       }

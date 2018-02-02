@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,12 +23,12 @@ namespace QLNet
 {
    public enum AmortizingMethod
    {
-       EffectiveInterestRate
+      EffectiveInterestRate
    }
 
    public class AmortizingBond : Bond
    {
-         
+
       public AmortizingBond(double FaceValue,
                             double MarketValue,
                             double CouponRate,
@@ -62,10 +62,10 @@ namespace QLNet
          else
             _yield = gYield;
 
-         // We can have several method here 
+         // We can have several method here
          //  Straight-Line Amortization , Effective Interest Rate, Rule 78
          // for now we start with Effective Interest Rate.
-         switch ( _method )
+         switch (_method)
          {
             case AmortizingMethod.EffectiveInterestRate:
                addEffectiveInterestRateAmortizing();
@@ -86,8 +86,8 @@ namespace QLNet
 
          // Amortizing Schedule
          Schedule schedule = new Schedule(_tradeDate, _maturityDate, new Period(_payFrequency),
-                                           _calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                           DateGeneration.Rule.Backward, false);
+                                          _calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                          DateGeneration.Rule.Backward, false);
          double currentNominal = _marketValue;
          Date prevDate = _tradeDate;
          Date actualDate = _tradeDate;
@@ -98,11 +98,11 @@ namespace QLNet
             actualDate = schedule[i];
             InterestRate rate = new InterestRate(_yield, _dCounter, Compounding.Simple, Frequency.Annual);
             InterestRate rate2 = new InterestRate(_couponRate, _dCounter, Compounding.Simple, Frequency.Annual);
-            FixedRateCoupon r,r2;
+            FixedRateCoupon r, r2;
             if (i > 1)
             {
-               r = new FixedRateCoupon( actualDate, currentNominal, rate, prevDate, actualDate, prevDate, actualDate );
-               r2 = new FixedRateCoupon( actualDate, currentNominal, rate2, prevDate, actualDate, prevDate, actualDate, null, _originalPayment );
+               r = new FixedRateCoupon(actualDate, currentNominal, rate, prevDate, actualDate, prevDate, actualDate);
+               r2 = new FixedRateCoupon(actualDate, currentNominal, rate2, prevDate, actualDate, prevDate, actualDate, null, _originalPayment);
             }
 
             else
@@ -111,12 +111,12 @@ namespace QLNet
                Period p1 = new Period(_payFrequency);
                Date testDate = nullCalendar.advance(actualDate, -1 * p1);
 
-               r = new FixedRateCoupon( actualDate, currentNominal, rate, testDate, actualDate, prevDate, actualDate );
-               r2 = new FixedRateCoupon( actualDate, currentNominal, rate2, testDate, actualDate, prevDate, actualDate, null, _originalPayment );
+               r = new FixedRateCoupon(actualDate, currentNominal, rate, testDate, actualDate, prevDate, actualDate);
+               r2 = new FixedRateCoupon(actualDate, currentNominal, rate2, testDate, actualDate, prevDate, actualDate, null, _originalPayment);
             }
 
-            double amort = Math.Round(Math.Abs(_originalPayment - r.amount()),2);
-          
+            double amort = Math.Round(Math.Abs(_originalPayment - r.amount()), 2);
+
             AmortizingPayment p = new AmortizingPayment(amort, actualDate);
             if (_isPremium)
                currentNominal -= Math.Abs(amort);
@@ -144,10 +144,10 @@ namespace QLNet
          Date lastDate = _tradeDate;
          foreach (CashFlow c in cashflows_)
          {
-            if ( c.date() <= d )
+            if (c.date() <= d)
             {
                lastDate = c.date();
-               if ( c is QLNet.AmortizingPayment )
+               if (c is QLNet.AmortizingPayment)
                   totAmortized += (c as QLNet.AmortizingPayment).amount();
             }
             else
@@ -155,18 +155,18 @@ namespace QLNet
          }
 
 
-         if (lastDate < d )
+         if (lastDate < d)
          {
             // lastDate < d let calculate last interest
 
             // Base Interest
-            InterestRate r1 = new InterestRate(_couponRate,_dCounter,Compounding.Simple,_payFrequency);
-            FixedRateCoupon c1 = new FixedRateCoupon( d, _faceValue,r1, lastDate, d );
+            InterestRate r1 = new InterestRate(_couponRate, _dCounter, Compounding.Simple, _payFrequency);
+            FixedRateCoupon c1 = new FixedRateCoupon(d, _faceValue, r1, lastDate, d);
             double baseInterest = c1.amount();
 
-            // 
-            InterestRate r2 = new InterestRate(_yield,_dCounter,Compounding.Simple,_payFrequency);
-            FixedRateCoupon c2 = new FixedRateCoupon( d, _marketValue,r2, lastDate, d );
+            //
+            InterestRate r2 = new InterestRate(_yield, _dCounter, Compounding.Simple, _payFrequency);
+            FixedRateCoupon c2 = new FixedRateCoupon(d, _marketValue, r2, lastDate, d);
             double yieldInterest = c2.amount();
 
             totAmortized += Math.Abs(baseInterest - yieldInterest);
@@ -174,9 +174,9 @@ namespace QLNet
 
 
          if (_isPremium)
-               return (_marketValue - totAmortized);
-            else
-               return (_marketValue  + totAmortized);
+            return (_marketValue - totAmortized);
+         else
+            return (_marketValue  + totAmortized);
 
       }
 
@@ -187,24 +187,24 @@ namespace QLNet
          // We create a bond cashflow from issue to maturity just
          // to calculate effective rate ( the rate that discount _marketValue )
          Schedule schedule = new Schedule(_issueDate, _maturityDate, new Period(_payFrequency),
-                                           _calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                           DateGeneration.Rule.Backward, false);
+                                          _calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                          DateGeneration.Rule.Backward, false);
 
 
          List<CashFlow> cashflows = new FixedRateLeg(schedule)
-            .withCouponRates(_couponRate, _dCounter)
-            .withPaymentCalendar(_calendar)
-            .withNotionals(_faceValue)
-            .withPaymentAdjustment(BusinessDayConvention.Unadjusted);
+         .withCouponRates(_couponRate, _dCounter)
+         .withPaymentCalendar(_calendar)
+         .withNotionals(_faceValue)
+         .withPaymentAdjustment(BusinessDayConvention.Unadjusted);
 
          // Add single redemption for yield calculation
-         Redemption r = new Redemption(_faceValue , _maturityDate);
-         cashflows.Add( r );
+         Redemption r = new Redemption(_faceValue, _maturityDate);
+         cashflows.Add(r);
 
          // Calculate Amortizing Yield ( Effective Rate )
          Date testDate = CashFlows.previousCashFlowDate(cashflows, false, _tradeDate);
          return CashFlows.yield(cashflows, _marketValue, _dCounter, Compounding.Simple, _payFrequency,
-                                  false, testDate);
+                                false, testDate);
       }
 
       // temporary testing function

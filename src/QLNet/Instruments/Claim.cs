@@ -27,8 +27,14 @@ namespace QLNet
 
       public event Callback notifyObserversEvent
       {
-         add { eventSource.Subscribe(value); }
-         remove { eventSource.Unsubscribe(value); }
+         add
+         {
+            eventSource.Subscribe(value);
+         }
+         remove
+         {
+            eventSource.Unsubscribe(value);
+         }
       }
 
       public void registerWith(Callback handler) { notifyObserversEvent += handler; }

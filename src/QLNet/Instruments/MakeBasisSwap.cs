@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -107,7 +107,7 @@ namespace QLNet
       }
 
       public MakeBasisSwap withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure1,
-                                                        Handle<YieldTermStructure> discountingTermStructure2)  
+                                                        Handle<YieldTermStructure> discountingTermStructure2)
       {
          engine_ = new DiscountingBasisSwapEngine(discountingTermStructure1, discountingTermStructure2);
          return this;
@@ -240,20 +240,20 @@ namespace QLNet
 
 
          Schedule float1Schedule = new Schedule(startDate, endDate,
-                                float1Tenor_, float1Calendar_,
-                                float1Convention_, float1TerminationDateConvention_,
-                                float1Rule_, float1EndOfMonth_,
-                                float1FirstDate_, float1NextToLastDate_);
+                                                float1Tenor_, float1Calendar_,
+                                                float1Convention_, float1TerminationDateConvention_,
+                                                float1Rule_, float1EndOfMonth_,
+                                                float1FirstDate_, float1NextToLastDate_);
 
          Schedule float2Schedule = new Schedule(startDate, endDate,
-                                float2Tenor_, float2Calendar_,
-                                float2Convention_, float2TerminationDateConvention_,
-                                float2Rule_, float2EndOfMonth_,
-                                float2FirstDate_, float2NextToLastDate_);
+                                                float2Tenor_, float2Calendar_,
+                                                float2Convention_, float2TerminationDateConvention_,
+                                                float2Rule_, float2EndOfMonth_,
+                                                float2FirstDate_, float2NextToLastDate_);
 
 
-         BasisSwap swap = new BasisSwap(type_, nominal_, 
-                                        float1Schedule, iborIndex1_, float1Spread_,float1DayCount_,
+         BasisSwap swap = new BasisSwap(type_, nominal_,
+                                        float1Schedule, iborIndex1_, float1Spread_, float1DayCount_,
                                         float2Schedule, iborIndex2_, float2Spread_, float2DayCount_);
          swap.setPricingEngine(engine_);
          return swap;

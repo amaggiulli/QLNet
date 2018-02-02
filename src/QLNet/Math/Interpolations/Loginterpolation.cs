@@ -1,17 +1,17 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace QLNet
 {
    public class LogInterpolationImpl<Interpolator> : Interpolation.templateImpl
-      where Interpolator : IInterpolationFactory, new()
+      where Interpolator : IInterpolationFactory, new ()
    {
       private List<double> logY_;
       private Interpolation interpolation_;
@@ -43,7 +43,7 @@ namespace QLNet
       {
          for (int i = 0; i < size_; ++i)
          {
-            Utils.QL_REQUIRE(yBegin_[i] > 0.0,()=> "invalid value (" + yBegin_[i] + ") at index " + i);
+            Utils.QL_REQUIRE(yBegin_[i] > 0.0, () => "invalid value (" + yBegin_[i] + ") at index " + i);
             logY_[i] = Math.Log(yBegin_[i]);
          }
          interpolation_.update();
@@ -81,12 +81,18 @@ namespace QLNet
 
       public bool global
       {
-         get { return false; }
+         get
+         {
+            return false;
+         }
       }
 
       public int requiredPoints
       {
-         get { return 2; }
+         get
+         {
+            return 2;
+         }
       }
    };
 
@@ -128,17 +134,23 @@ namespace QLNet
       public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin)
       {
          return new LogCubicInterpolation(xBegin, size, yBegin, da_, monotonic_,
-            leftType_, leftValue_, rightType_, rightValue_);
+                                          leftType_, leftValue_, rightType_, rightValue_);
       }
 
       public bool global
       {
-         get { return true; }
+         get
+         {
+            return true;
+         }
       }
 
       public int requiredPoints
       {
-         get { return 2; }
+         get
+         {
+            return 2;
+         }
       }
    }
 
@@ -148,15 +160,15 @@ namespace QLNet
       /*! \pre the \f$ x \f$ values must be sorted. */
 
       public LogCubicInterpolation(List<double> xBegin, int size, List<double> yBegin,
-         CubicInterpolation.DerivativeApprox da,
-         bool monotonic,
-         CubicInterpolation.BoundaryCondition leftC,
-         double leftConditionValue,
-         CubicInterpolation.BoundaryCondition rightC,
-         double rightConditionValue)
+                                   CubicInterpolation.DerivativeApprox da,
+                                   bool monotonic,
+                                   CubicInterpolation.BoundaryCondition leftC,
+                                   double leftConditionValue,
+                                   CubicInterpolation.BoundaryCondition rightC,
+                                   double rightConditionValue)
       {
          impl_ = new LogInterpolationImpl<Cubic>(xBegin, size, yBegin,
-            new Cubic(da, monotonic, leftC, leftConditionValue, rightC, rightConditionValue));
+                                                 new Cubic(da, monotonic, leftC, leftConditionValue, rightC, rightConditionValue));
          impl_.update();
       }
    }

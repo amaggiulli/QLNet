@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -42,11 +42,11 @@ namespace QLNet
          next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
 
          Utils.QL_REQUIRE(generator_.dimension() == process.factors() * (times.size() - 1), () =>
-            "dimension (" + generator_.dimension()
-            + ") is not equal to ("
-            + process.factors() + " * " + (times.size() - 1)
-            + ") the number of factors "
-            + "times the number of time steps");
+                          "dimension (" + generator_.dimension()
+                          + ") is not equal to ("
+                          + process.factors() + " * " + (times.size() - 1)
+                          + ") the number of factors "
+                          + "times the number of time steps");
          Utils.QL_REQUIRE(times.size() > 1, () => "no times given");
       }
 
@@ -70,8 +70,8 @@ namespace QLNet
 
          Sample<List<double>> sequence_ =
             antithetic
-               ? generator_.lastSequence()
-               : generator_.nextSequence();
+            ? generator_.lastSequence()
+            : generator_.nextSequence();
 
          int m = process_.size();
          int n = process_.factors();

@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,12 +21,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   
+
    public class DiscretizedCallableFixedRateBond : DiscretizedAsset
    {
       public DiscretizedCallableFixedRateBond(CallableBond.Arguments args,
-                                               Date referenceDate,
-                                               DayCounter dayCounter)
+                                              Date referenceDate,
+                                              DayCounter dayCounter)
       {
          arguments_ = args;
          redemptionTime_ = dayCounter.yearFraction(referenceDate, args.redemptionDate);
@@ -35,7 +35,7 @@ namespace QLNet
             couponTimes_.Add(dayCounter.yearFraction(referenceDate, args.couponDates[i]));
 
          for (int i = 0; i < args.callabilityDates.Count ; ++i)
-            callabilityTimes_.Add( dayCounter.yearFraction(referenceDate, args.callabilityDates[i]));
+            callabilityTimes_.Add(dayCounter.yearFraction(referenceDate, args.callabilityDates[i]));
 
          // similar to the tree swaption engine, we collapse similar coupon
          // and exercise dates to avoid mispricing. Delete if unnecessary.
@@ -121,17 +121,17 @@ namespace QLNet
       private void applyCallability(int i)
       {
          int j;
-         switch (arguments_.putCallSchedule[i].type() ) 
+         switch (arguments_.putCallSchedule[i].type())
          {
             case Callability.Type.Call:
-               for (j=0; j<values_.size(); j++) 
+               for (j = 0; j < values_.size(); j++)
                {
                   values_[j] = Math.Min(arguments_.callabilityPrices[i], values_[j]);
                }
                break;
 
             case Callability.Type.Put:
-               for (j=0; j<values_.size(); j++) 
+               for (j = 0; j < values_.size(); j++)
                {
                   values_[j] = Math.Max(values_[j], arguments_.callabilityPrices[i]);
                }
@@ -142,7 +142,7 @@ namespace QLNet
                break;
          }
       }
-      
+
       private void addCoupon(int i)
       {
          values_ += arguments_.couponAmounts[i];
@@ -150,8 +150,8 @@ namespace QLNet
 
       private bool withinNextWeek(double t1, double t2)
       {
-         double dt = 1.0/52;
-         return t1 <= t2 && t2 <= t1+dt;
+         double dt = 1.0 / 52;
+         return t1 <= t2 && t2 <= t1 + dt;
       }
 
    }

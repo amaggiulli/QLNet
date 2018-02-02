@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -34,9 +34,9 @@ namespace QLNet
    public class HullWhite : Vasicek, ITermStructureConsistentModel
    {
       public HullWhite(Handle<YieldTermStructure> termStructure,
-         double a, double sigma)
+                       double a, double sigma)
          : base(termStructure.link.forwardRate(0.0, 0.0, Compounding.Continuous, Frequency.NoFrequency).rate(),
-            a, 0.0, sigma, 0.0)
+                a, 0.0, sigma, 0.0)
       {
          this.termStructure_ = termStructure;
          b_ = arguments_[1] = new NullParameter(); //to change
@@ -46,7 +46,7 @@ namespace QLNet
       }
 
       public HullWhite(Handle<YieldTermStructure> termStructure,
-         double a)
+                       double a)
          : this(termStructure, a, 0.01)
       { }
 
@@ -89,9 +89,9 @@ namespace QLNet
       }
 
       public override double discountBondOption(Option.Type type,
-         double strike,
-         double maturity,
-         double bondMaturity)
+                                                double strike,
+                                                double maturity,
+                                                double bondMaturity)
       {
          double _a = a();
          double v;
@@ -119,10 +119,10 @@ namespace QLNet
                 deposit day counter, F_quoted is futures' market price.
       */
       public static double convexityBias(double futuresPrice,
-         double t,
-         double T,
-         double sigma,
-         double a)
+                                         double t,
+                                         double T,
+                                         double sigma,
+                                         double a)
       {
          Utils.QL_REQUIRE(futuresPrice >= 0.0, () => "negative futures price (" + futuresPrice + ") not allowed");
          Utils.QL_REQUIRE(t >= 0.0, () => "negative t (" + t + ") not allowed");
@@ -205,7 +205,7 @@ namespace QLNet
             private double a_, sigma_;
 
             public Impl(Handle<YieldTermStructure> termStructure,
-               double a, double sigma)
+                        double a, double sigma)
             {
                termStructure_ = termStructure;
                a_ = a;
@@ -222,7 +222,7 @@ namespace QLNet
          }
 
          public FittingParameter(Handle<YieldTermStructure> termStructure,
-            double a, double sigma)
+                                 double a, double sigma)
             : base(new FittingParameter.Impl(termStructure, a, sigma))
          { }
       }

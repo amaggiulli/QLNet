@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -40,15 +40,15 @@ namespace QLNet
          bdc_ = bdc;
       }
       //! initialize with a fixed reference date
-      protected CallableBondVolatilityStructure( Date referenceDate, Calendar calendar = null, DayCounter dc = null,
-                                              BusinessDayConvention bdc = BusinessDayConvention.Following)
+      protected CallableBondVolatilityStructure(Date referenceDate, Calendar calendar = null, DayCounter dc = null,
+                                                BusinessDayConvention bdc = BusinessDayConvention.Following)
          : base(referenceDate, calendar ?? new Calendar(), dc ?? new DayCounter())
       {
          bdc_ = bdc;
       }
       //! calculate the reference date based on the global evaluation date
       protected CallableBondVolatilityStructure(int settlementDays, Calendar calendar, DayCounter dc = null,
-                                              BusinessDayConvention bdc = BusinessDayConvention.Following)
+                                                BusinessDayConvention bdc = BusinessDayConvention.Following)
          : base(settlementDays, calendar, dc ?? new DayCounter())
       {
          bdc_ = bdc;
@@ -77,9 +77,9 @@ namespace QLNet
       {
          double vol =  volatility(optionDate, bondTenor, strike, extrapolate);
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);
-         return vol*vol*p.Key;
+         return vol * vol * p.Key;
       }
-      public virtual SmileSection smileSection(Date optionDate, Period bondTenor)  
+      public virtual SmileSection smileSection(Date optionDate, Period bondTenor)
       {
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);
          return smileSectionImpl(p.Key, p.Value);
@@ -121,11 +121,11 @@ namespace QLNet
       public virtual KeyValuePair<double, double> convertDates(Date optionDate, Period bondTenor)
       {
          Date end = optionDate + bondTenor;
-         Utils.QL_REQUIRE( end > optionDate, () =>
-                   "negative bond tenor (" + bondTenor + ") given");
-        double optionTime = timeFromReference(optionDate);
-        double timeLength = dayCounter().yearFraction(optionDate, end);
-        return new KeyValuePair<double,double>(optionTime, timeLength);
+         Utils.QL_REQUIRE(end > optionDate, () =>
+                          "negative bond tenor (" + bondTenor + ") given");
+         double optionTime = timeFromReference(optionDate);
+         double timeLength = dayCounter().yearFraction(optionDate, end);
+         return new KeyValuePair<double, double>(optionTime, timeLength);
       }
       //! the business day convention used for option date calculation
       public virtual BusinessDayConvention businessDayConvention() { return bdc_; }
@@ -133,8 +133,8 @@ namespace QLNet
       public Date optionDateFromTenor(Period optionTenor)
       {
          return calendar().advance(referenceDate(),
-                                  optionTenor,
-                                  businessDayConvention());
+                                   optionTenor,
+                                   businessDayConvention());
       }
 
       //! return smile section
@@ -142,7 +142,7 @@ namespace QLNet
 
       //! implements the actual volatility calculation in derived classes
       protected abstract double volatilityImpl(double optionTime, double bondLength, double strike);
-      protected virtual double volatilityImpl(Date optionDate, Period bondTenor, double strike) 
+      protected virtual double volatilityImpl(Date optionDate, Period bondTenor, double strike)
       {
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);
          return volatilityImpl(p.Key, p.Value, strike);
@@ -150,31 +150,31 @@ namespace QLNet
       protected void checkRange(double optionTime, double bondLength, double k, bool extrapolate)
       {
          base.checkRange(optionTime, extrapolate);
-         Utils.QL_REQUIRE( bondLength >= 0.0, () =>
-                   "negative bondLength (" + bondLength + ") given");
+         Utils.QL_REQUIRE(bondLength >= 0.0, () =>
+                          "negative bondLength (" + bondLength + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   bondLength <= maxBondLength(), () =>
-                   "bondLength (" + bondLength + ") is past max curve bondLength ("
-                   + maxBondLength() + ")");
+                          bondLength <= maxBondLength(), () =>
+                          "bondLength (" + bondLength + ") is past max curve bondLength ("
+                          + maxBondLength() + ")");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   ( k >= minStrike() && k <= maxStrike() ), () =>
-                   "strike (" + k + ") is outside the curve domain ["
-                   + minStrike() + "," + maxStrike()+ "]");
+                          (k >= minStrike() && k <= maxStrike()), () =>
+                          "strike (" + k + ") is outside the curve domain ["
+                          + minStrike() + "," + maxStrike() + "]");
       }
       protected void checkRange(Date optionDate, Period bondTenor, double k, bool extrapolate)
       {
          base.checkRange(timeFromReference(optionDate),
-                                  extrapolate);
-         Utils.QL_REQUIRE( bondTenor.length() > 0, () =>
-                   "negative bond tenor (" + bondTenor + ") given");
+                         extrapolate);
+         Utils.QL_REQUIRE(bondTenor.length() > 0, () =>
+                          "negative bond tenor (" + bondTenor + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   bondTenor <= maxBondTenor(), () =>
-                   "bond tenor (" + bondTenor + ") is past max tenor ("
-                   + maxBondTenor() + ")");
+                          bondTenor <= maxBondTenor(), () =>
+                          "bond tenor (" + bondTenor + ") is past max tenor ("
+                          + maxBondTenor() + ")");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||
-                   ( k >= minStrike() && k <= maxStrike() ), () =>
-                   "strike (" + k + ") is outside the curve domain ["
-                   + minStrike() + "," + maxStrike()+ "]");
+                          (k >= minStrike() && k <= maxStrike()), () =>
+                          "strike (" + k + ") is outside the curve domain ["
+                          + minStrike() + "," + maxStrike() + "]");
       }
 
       private BusinessDayConvention bdc_;

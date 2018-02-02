@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -34,7 +34,7 @@ namespace QLNet
          ShortRateDynamics dyn = dynamics();
          TrinomialTree tree1 = new TrinomialTree(dyn.xProcess(), grid);
          TrinomialTree tree2 = new TrinomialTree(dyn.yProcess(), grid);
-         return (Lattice) (new ShortRateTree(tree1, tree2, dyn));
+         return (Lattice)(new ShortRateTree(tree1, tree2, dyn));
       }
 
       //! Class describing the dynamics of the two state variables
@@ -48,8 +48,8 @@ namespace QLNet
          public double correlation_ { get; set; }
 
          protected ShortRateDynamics(StochasticProcess1D xProcess,
-            StochasticProcess1D yProcess,
-            double correlation)
+                                     StochasticProcess1D yProcess,
+                                     double correlation)
          {
             xProcess_ = xProcess;
             yProcess_ = yProcess;
@@ -92,8 +92,8 @@ namespace QLNet
 
          //! Plain tree build-up from short-rate dynamics
          public ShortRateTree(TrinomialTree tree1,
-            TrinomialTree tree2,
-            ShortRateDynamics dynamics)
+                              TrinomialTree tree2,
+                              ShortRateDynamics dynamics)
             : base(tree1, tree2, dynamics.correlation())
          {
             dynamics_ = dynamics;

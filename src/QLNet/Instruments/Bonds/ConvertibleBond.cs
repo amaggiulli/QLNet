@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -60,7 +60,7 @@ namespace QLNet
             public List<Date> callabilityDates { get; set; }
             public List<Callability.Type> callabilityTypes { get; set; }
             public List<double> callabilityPrices { get; set; }
-            public List<double?> callabilityTriggers { get; set; }
+            public List < double? > callabilityTriggers { get; set; }
             public List<Date> couponDates { get; set; }
             public List<double> couponAmounts { get; set; }
             public Date issueDate { get; set; }
@@ -74,8 +74,8 @@ namespace QLNet
                base.validate();
 
                Utils.QL_REQUIRE(conversionRatio != null, () => "null conversion ratio");
-               Utils.QL_REQUIRE(conversionRatio > 0.0, 
-                  () => "positive conversion ratio required: " + conversionRatio + " not allowed");
+               Utils.QL_REQUIRE(conversionRatio > 0.0,
+                                () => "positive conversion ratio required: " + conversionRatio + " not allowed");
 
                Utils.QL_REQUIRE(redemption != null, () => "null redemption");
                Utils.QL_REQUIRE(redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed");
@@ -85,31 +85,31 @@ namespace QLNet
                Utils.QL_REQUIRE(settlementDays != null, () => "null settlement days");
 
                Utils.QL_REQUIRE(callabilityDates.Count == callabilityTypes.Count,
-                  () => "different number of callability dates and types");
+                                () => "different number of callability dates and types");
                Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count,
-                  () => "different number of callability dates and prices");
+                                () => "different number of callability dates and prices");
                Utils.QL_REQUIRE(callabilityDates.Count == callabilityTriggers.Count,
-                  () => "different number of callability dates and triggers");
+                                () => "different number of callability dates and triggers");
 
-               Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, 
-                  () => "different number of coupon dates and amounts");
+               Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count,
+                                () => "different number of coupon dates and amounts");
             }
          }
 
          public option(ConvertibleBond bond,
-            Exercise exercise,
-            double conversionRatio,
-            DividendSchedule dividends,
-            CallabilitySchedule callability,
-            Handle<Quote> creditSpread,
-            List<CashFlow> cashflows,
-            DayCounter dayCounter,
-            Schedule schedule,
-            Date issueDate,
-            int settlementDays,
-            double redemption)
-            : base( new PlainVanillaPayoff(Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
-                    exercise)
+                       Exercise exercise,
+                       double conversionRatio,
+                       DividendSchedule dividends,
+                       CallabilitySchedule callability,
+                       Handle<Quote> creditSpread,
+                       List<CashFlow> cashflows,
+                       DayCounter dayCounter,
+                       Schedule schedule,
+                       Date issueDate,
+                       int settlementDays,
+                       double redemption)
+            : base(new PlainVanillaPayoff(Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
+                   exercise)
          {
             bond_ = bond;
             conversionRatio_ = conversionRatio;
@@ -146,13 +146,13 @@ namespace QLNet
             else
                moreArgs.callabilityTypes.Clear();
 
-            if (moreArgs.callabilityPrices == null )
+            if (moreArgs.callabilityPrices == null)
                moreArgs.callabilityPrices = new List<double>();
             else
                moreArgs.callabilityPrices.Clear();
 
-            if (moreArgs.callabilityTriggers == null )
-               moreArgs.callabilityTriggers = new List<double?>();
+            if (moreArgs.callabilityTriggers == null)
+               moreArgs.callabilityTriggers = new List < double? >();
             else
                moreArgs.callabilityTriggers.Clear();
 
@@ -258,14 +258,14 @@ namespace QLNet
       }
 
       protected ConvertibleBond(Exercise exercise,
-         double conversionRatio,
-         DividendSchedule dividends,
-         CallabilitySchedule callability,
-         Handle<Quote> creditSpread,
-         Date issueDate,
-         int settlementDays,
-         Schedule schedule,
-         double redemption)
+                                double conversionRatio,
+                                DividendSchedule dividends,
+                                CallabilitySchedule callability,
+                                Handle<Quote> creditSpread,
+                                Date issueDate,
+                                int settlementDays,
+                                Schedule schedule,
+                                double redemption)
          : base(settlementDays, schedule.calendar(), issueDate)
       {
          conversionRatio_ = conversionRatio;
@@ -278,10 +278,10 @@ namespace QLNet
          if (!callability.empty())
          {
             Utils.QL_REQUIRE(callability.Last().date() <= maturityDate_, () =>
-               "last callability date ("
-               + callability.Last().date()
-               + ") later than maturity ("
-               + maturityDate_.ToShortDateString() + ")");
+                             "last callability date ("
+                             + callability.Last().date()
+                             + ") later than maturity ("
+                             + maturityDate_.ToShortDateString() + ")");
          }
 
          creditSpread.registerWith(update);
@@ -311,18 +311,18 @@ namespace QLNet
    public class ConvertibleZeroCouponBond : ConvertibleBond
    {
       public ConvertibleZeroCouponBond(Exercise exercise,
-         double conversionRatio,
-         DividendSchedule dividends,
-         CallabilitySchedule callability,
-         Handle<Quote> creditSpread,
-         Date issueDate,
-         int settlementDays,
-         DayCounter dayCounter,
-         Schedule schedule,
-         double redemption = 100)
+                                       double conversionRatio,
+                                       DividendSchedule dividends,
+                                       CallabilitySchedule callability,
+                                       Handle<Quote> creditSpread,
+                                       Date issueDate,
+                                       int settlementDays,
+                                       DayCounter dayCounter,
+                                       Schedule schedule,
+                                       double redemption = 100)
          : base(
-            exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
-            redemption)
+              exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
+              redemption)
       {
          cashflows_ = new List<CashFlow>();
 
@@ -330,8 +330,8 @@ namespace QLNet
          setSingleRedemption(100.0, redemption, maturityDate_);
 
          option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
-            dayCounter, schedule,
-            issueDate, settlementDays, redemption);
+                              dayCounter, schedule,
+                              issueDate, settlementDays, redemption);
       }
    };
 
@@ -345,33 +345,33 @@ namespace QLNet
    public class ConvertibleFixedCouponBond : ConvertibleBond
    {
       public ConvertibleFixedCouponBond(Exercise exercise,
-         double conversionRatio,
-         DividendSchedule dividends,
-         CallabilitySchedule callability,
-         Handle<Quote> creditSpread,
-         Date issueDate,
-         int settlementDays,
-         List<double> coupons,
-         DayCounter dayCounter,
-         Schedule schedule,
-         double redemption = 100)
+                                        double conversionRatio,
+                                        DividendSchedule dividends,
+                                        CallabilitySchedule callability,
+                                        Handle<Quote> creditSpread,
+                                        Date issueDate,
+                                        int settlementDays,
+                                        List<double> coupons,
+                                        DayCounter dayCounter,
+                                        Schedule schedule,
+                                        double redemption = 100)
          : base(
-            exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
-            redemption)
+              exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
+              redemption)
       {
          // !!! notional forcibly set to 100
          cashflows_ = new FixedRateLeg(schedule)
-            .withCouponRates(coupons, dayCounter)
-            .withNotionals(100.0)
-            .withPaymentAdjustment(schedule.businessDayConvention());
+         .withCouponRates(coupons, dayCounter)
+         .withNotionals(100.0)
+         .withPaymentAdjustment(schedule.businessDayConvention());
 
          addRedemptionsToCashflows(new List<double>() {redemption});
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
          option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
-            dayCounter, schedule,
-            issueDate, settlementDays, redemption);
+                              dayCounter, schedule,
+                              issueDate, settlementDays, redemption);
       }
    };
 
@@ -385,38 +385,38 @@ namespace QLNet
    public class ConvertibleFloatingRateBond : ConvertibleBond
    {
       public ConvertibleFloatingRateBond(Exercise exercise,
-         double conversionRatio,
-         DividendSchedule dividends,
-         CallabilitySchedule callability,
-         Handle<Quote> creditSpread,
-         Date issueDate,
-         int settlementDays,
-         IborIndex index,
-         int fixingDays,
-         List<double> spreads,
-         DayCounter dayCounter,
-         Schedule schedule,
-         double redemption = 100)
+                                         double conversionRatio,
+                                         DividendSchedule dividends,
+                                         CallabilitySchedule callability,
+                                         Handle<Quote> creditSpread,
+                                         Date issueDate,
+                                         int settlementDays,
+                                         IborIndex index,
+                                         int fixingDays,
+                                         List<double> spreads,
+                                         DayCounter dayCounter,
+                                         Schedule schedule,
+                                         double redemption = 100)
          : base(
-            exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
-            redemption)
+              exercise, conversionRatio, dividends, callability, creditSpread, issueDate, settlementDays, schedule,
+              redemption)
 
       {
          // !!! notional forcibly set to 100
          cashflows_ = new IborLeg(schedule, index)
-            .withPaymentDayCounter(dayCounter)
-            .withFixingDays(fixingDays)
-            .withSpreads(spreads)
-            .withNotionals(100.0)
-            .withPaymentAdjustment(schedule.businessDayConvention());
+         .withPaymentDayCounter(dayCounter)
+         .withFixingDays(fixingDays)
+         .withSpreads(spreads)
+         .withNotionals(100.0)
+         .withPaymentAdjustment(schedule.businessDayConvention());
 
          addRedemptionsToCashflows(new List<double> {redemption});
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
          option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
-            dayCounter, schedule,
-            issueDate, settlementDays, redemption);
+                              dayCounter, schedule,
+                              issueDate, settlementDays, redemption);
       }
    }
 }

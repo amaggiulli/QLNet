@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -25,15 +25,15 @@ namespace QLNet
       public enum NumericalFix
       {
          None,  // as in [1] footnote 26 (i.e. 10^{-50} is added to
-                // denominators $f_i+h_i$$)
+         // denominators $f_i+h_i$$)
          Taylor // as in [2] i.e. for $f_i+h_i < 10^{-4}$ a Taylor expansion
-                // is used to avoid zero denominators
+         // is used to avoid zero denominators
       }
 
       public enum AccrualBias
       {
          HalfDayBias, // as in [1] formula (50), second (error) term is
-                      // included
+         // included
          NoBias       // as in [1], but second term in formula (50) is not included
       }
 
@@ -41,7 +41,7 @@ namespace QLNet
       {
          Flat, // as in [1], formula (52), second (error) term is included
          Piecewise // as in [1], but second term in formula (52) is not
-                   // included
+         // included
       }
 
       /*! Constructor where the client code is responsible for providing a
@@ -58,12 +58,12 @@ namespace QLNet
       */
 
       public IsdaCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
-                            double recoveryRate,
-                            Handle<YieldTermStructure> discountCurve,
-                            bool? includeSettlementDateFlows = null,
-                            NumericalFix numericalFix = NumericalFix.Taylor,
-                            AccrualBias accrualBias = AccrualBias.HalfDayBias,
-                            ForwardsInCouponPeriod forwardsInCouponPeriod = ForwardsInCouponPeriod.Piecewise)
+                           double recoveryRate,
+                           Handle<YieldTermStructure> discountCurve,
+                           bool? includeSettlementDateFlows = null,
+                           NumericalFix numericalFix = NumericalFix.Taylor,
+                           AccrualBias accrualBias = AccrualBias.HalfDayBias,
+                           ForwardsInCouponPeriod forwardsInCouponPeriod = ForwardsInCouponPeriod.Piecewise)
       {
          probability_ = probability;
          recoveryRate_ = recoveryRate;
@@ -83,12 +83,12 @@ namespace QLNet
       public override void calculate()
       {
          Utils.QL_REQUIRE(numericalFix_ == NumericalFix.None || numericalFix_ == NumericalFix.Taylor, () =>
-             "numerical fix must be None or Taylor");
+                          "numerical fix must be None or Taylor");
          Utils.QL_REQUIRE(accrualBias_ == AccrualBias.HalfDayBias || accrualBias_ == AccrualBias.NoBias, () =>
-             "accrual bias must be HalfDayBias or NoBias");
+                          "accrual bias must be HalfDayBias or NoBias");
          Utils.QL_REQUIRE(forwardsInCouponPeriod_ == ForwardsInCouponPeriod.Flat ||
                           forwardsInCouponPeriod_ == ForwardsInCouponPeriod.Piecewise, () =>
-             "forwards in coupon period must be Flat or Piecewise");
+                          "forwards in coupon period must be Flat or Piecewise");
 
          // it would be possible to handle the cases which are excluded below,
          // but the ISDA engine is not explicitly specified to handle them,
@@ -96,7 +96,7 @@ namespace QLNet
 
          Actual365Fixed dc = new Actual365Fixed();
          Actual360 dc1 = new Actual360();
-         Actual360 dc2 = new Actual360(true); 
+         Actual360 dc2 = new Actual360(true);
 
          Date evalDate = Settings.evaluationDate();
 
@@ -106,20 +106,20 @@ namespace QLNet
          Utils.QL_REQUIRE(!discountCurve_.empty(), () => "no discount term structure set");
          Utils.QL_REQUIRE(!probability_.empty(), () => "no probability term structure set");
          Utils.QL_REQUIRE(discountCurve_.link.dayCounter() == dc, () =>
-             "yield term structure day counter (" + discountCurve_.link.dayCounter() + ") should be Act/365(Fixed)");
+                          "yield term structure day counter (" + discountCurve_.link.dayCounter() + ") should be Act/365(Fixed)");
          Utils.QL_REQUIRE(probability_.link.dayCounter() == dc, () =>
-             "probability term structure day counter (" + probability_.link.dayCounter() + ") should be "
-             + "Act/365(Fixed)");
+                          "probability term structure day counter (" + probability_.link.dayCounter() + ") should be "
+                          + "Act/365(Fixed)");
          Utils.QL_REQUIRE(discountCurve_.link.referenceDate() == evalDate, () =>
-             "yield term structure reference date (" + discountCurve_.link.referenceDate()
-             + " should be evaluation date (" + evalDate + ")");
+                          "yield term structure reference date (" + discountCurve_.link.referenceDate()
+                          + " should be evaluation date (" + evalDate + ")");
          Utils.QL_REQUIRE(probability_.link.referenceDate() == evalDate, () =>
-             "probability term structure reference date (" + probability_.link.referenceDate()
-             + " should be evaluation date (" + evalDate + ")");
+                          "probability term structure reference date (" + probability_.link.referenceDate()
+                          + " should be evaluation date (" + evalDate + ")");
          Utils.QL_REQUIRE(arguments_.settlesAccrual, () => "ISDA engine not compatible with non accrual paying CDS");
          Utils.QL_REQUIRE(arguments_.paysAtDefaultTime, () => "ISDA engine not compatible with end period payment");
          Utils.QL_REQUIRE((arguments_.claim as FaceValueClaim) != null, () =>
-           "ISDA engine not compatible with non face value claim");
+                          "ISDA engine not compatible with non face value claim");
 
          Date maturity = arguments_.maturity;
          Date effectiveProtectionStart = Date.Max(arguments_.protectionStart, evalDate + 1);
@@ -131,11 +131,12 @@ namespace QLNet
          var castY2 = discountCurve_.link as InterpolatedForwardCurve<BackwardFlat>;
          var castY3 = discountCurve_.link as InterpolatedForwardCurve<ForwardFlat>;
          var castY4 =  discountCurve_.link as FlatForward;
-         if ( castY1 != null)
+         if (castY1 != null)
          {
-            if (castY1.dates() != null) yDates = castY1.dates();
+            if (castY1.dates() != null)
+               yDates = castY1.dates();
          }
-         else if ( castY2 != null)
+         else if (castY2 != null)
          {
             yDates = castY2.dates();
          }
@@ -143,7 +144,7 @@ namespace QLNet
          {
             yDates = castY3.dates();
          }
-         else if ( castY4 != null)
+         else if (castY4 != null)
          {
          }
          else
@@ -155,15 +156,15 @@ namespace QLNet
          var castC2 = probability_.link as InterpolatedHazardRateCurve<BackwardFlat>;
          var castC3 = probability_.link as FlatHazardRate;
 
-         if ( castC1 != null)
+         if (castC1 != null)
          {
             cDates = castC1.dates();
          }
-         else if ( castC2 != null )
+         else if (castC2 != null)
          {
             cDates = castC2.dates();
          }
-         else if ( castC3 != null )
+         else if (castC3 != null)
          {
          }
          else
@@ -211,9 +212,9 @@ namespace QLNet
             {
                double fhphhq = fhphh * fhphh;
                protectionNpv +=
-                   P0 * Q0 * hhat * (1.0 - 0.5 * fhphh + 1.0 / 6.0 * fhphhq -
-                                     1.0 / 24.0 * fhphhq * fhphh +
-                                     1.0 / 120 * fhphhq * fhphhq);
+                  P0 * Q0 * hhat * (1.0 - 0.5 * fhphh + 1.0 / 6.0 * fhphhq -
+                                    1.0 / 24.0 * fhphhq * fhphh +
+                                    1.0 / 120 * fhphhq * fhphhq);
             }
             else
             {
@@ -237,8 +238,8 @@ namespace QLNet
             Utils.QL_REQUIRE(coupon.dayCounter() == dc ||
                              coupon.dayCounter() == dc1 ||
                              coupon.dayCounter() == dc2, () =>
-                "ISDA engine requires a coupon day counter Act/365Fixed "
-                            + "or Act/360 (" + coupon.dayCounter() + ")");
+                             "ISDA engine requires a coupon day counter Act/365Fixed "
+                             + "or Act/360 (" + coupon.dayCounter() + ")");
 
             // premium coupons
 
@@ -249,15 +250,15 @@ namespace QLNet
                double x3 = probability_.link.survivalProbability(coupon.date() - 1);
 
                premiumNpv +=
-                   coupon.amount() *
-                   discountCurve_.link.discount(coupon.date()) *
-                   probability_.link.survivalProbability(coupon.date() - 1);
+                  coupon.amount() *
+                  discountCurve_.link.discount(coupon.date()) *
+                  probability_.link.survivalProbability(coupon.date() - 1);
             }
 
             // default accruals
 
             if (!new simple_event(coupon.accrualEndDate())
-                     .hasOccurred(effectiveProtectionStart, false))
+                .hasOccurred(effectiveProtectionStart, false))
             {
                Date start = Date.Max(coupon.accrualStartDate(), effectiveProtectionStart) - 1;
                Date end = coupon.date() - 1;
@@ -270,7 +271,7 @@ namespace QLNet
                {
                   foreach (Date node in nodes)
                   {
-                     if ( node > start && node < end)
+                     if (node > start && node < end)
                      {
                         localNodes.Add(node);
                      }
@@ -302,21 +303,21 @@ namespace QLNet
                      // code ?
                      double fhphhq = fhphh * fhphh;
                      defaultAccrThisNode +=
-                         hhat * P0 * Q0 *
-                         ((t0 - tstart) *
-                              (1.0 - 0.5 * fhphh + 1.0 / 6.0 * fhphhq -
-                               1.0 / 24.0 * fhphhq * fhphh) +
-                          (t1 - t0) *
-                              (0.5 - 1.0 / 3.0 * fhphh + 1.0 / 8.0 * fhphhq -
-                               1.0 / 30.0 * fhphhq * fhphh));
+                        hhat * P0 * Q0 *
+                        ((t0 - tstart) *
+                         (1.0 - 0.5 * fhphh + 1.0 / 6.0 * fhphhq -
+                          1.0 / 24.0 * fhphhq * fhphh) +
+                         (t1 - t0) *
+                         (0.5 - 1.0 / 3.0 * fhphh + 1.0 / 8.0 * fhphhq -
+                          1.0 / 30.0 * fhphhq * fhphh));
                   }
                   else
                   {
                      defaultAccrThisNode +=
-                         (hhat / (fhphh + nFix)) *
-                         ((t1 - t0) * ((P0 * Q0 - P1 * Q1) / (fhphh + nFix) -
-                                       P1 * Q1) +
-                          (t0 - tstart) * (P0 * Q0 - P1 * Q1));
+                        (hhat / (fhphh + nFix)) *
+                        ((t1 - t0) * ((P0 * Q0 - P1 * Q1) / (fhphh + nFix) -
+                                      P1 * Q1) +
+                         (t0 - tstart) * (P0 * Q0 - P1 * Q1));
                   }
 
                   t0 = t1;
@@ -335,10 +336,10 @@ namespace QLNet
          double upfPVO1 = 0.0;
          results_.upfrontNPV = 0.0;
          if (!arguments_.upfrontPayment.hasOccurred(
-                 evalDate, includeSettlementDateFlows_))
+                evalDate, includeSettlementDateFlows_))
          {
             upfPVO1 =
-                discountCurve_.link.discount(arguments_.upfrontPayment.date());
+               discountCurve_.link.discount(arguments_.upfrontPayment.date());
             if (arguments_.upfrontPayment.amount().IsNotEqual(0.0))
             {
                results_.upfrontNPV = upfPVO1 * arguments_.upfrontPayment.amount();
@@ -351,8 +352,8 @@ namespace QLNet
              !arguments_.accrualRebate.hasOccurred(evalDate, includeSettlementDateFlows_))
          {
             results_.accrualRebateNPV =
-                discountCurve_.link.discount(arguments_.accrualRebate.date()) *
-                arguments_.accrualRebate.amount();
+               discountCurve_.link.discount(arguments_.accrualRebate.date()) *
+               arguments_.accrualRebate.amount();
          }
 
          double upfrontSign = 1;
@@ -373,11 +374,11 @@ namespace QLNet
 
          results_.errorEstimate = null;
 
-         if (results_.couponLegNPV.IsNotEqual( 0.0))
+         if (results_.couponLegNPV.IsNotEqual(0.0))
          {
             results_.fairSpread =
-                -results_.defaultLegNPV * arguments_.spread /
-                (results_.couponLegNPV + results_.accrualRebateNPV);
+               -results_.defaultLegNPV * arguments_.spread /
+               (results_.couponLegNPV + results_.accrualRebateNPV);
          }
          else
          {
@@ -388,9 +389,9 @@ namespace QLNet
          if (upfrontSensitivity.IsNotEqual(0.0))
          {
             results_.fairUpfront =
-                -upfrontSign * (results_.defaultLegNPV + results_.couponLegNPV +
-                                results_.accrualRebateNPV) /
-                upfrontSensitivity;
+               -upfrontSign * (results_.defaultLegNPV + results_.couponLegNPV +
+                               results_.accrualRebateNPV) /
+               upfrontSensitivity;
          }
          else
          {
@@ -402,7 +403,7 @@ namespace QLNet
          if (arguments_.spread.IsNotEqual(0.0))
          {
             results_.couponLegBPS =
-                results_.couponLegNPV * basisPoint / arguments_.spread;
+               results_.couponLegNPV * basisPoint / arguments_.spread;
          }
          else
          {
@@ -412,7 +413,7 @@ namespace QLNet
          if (arguments_.upfront != null  && arguments_.upfront.IsNotEqual(0.0))
          {
             results_.upfrontBPS =
-                results_.upfrontNPV * basisPoint / (arguments_.upfront);
+               results_.upfrontNPV * basisPoint / (arguments_.upfront);
          }
          else
          {

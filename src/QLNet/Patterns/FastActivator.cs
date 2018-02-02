@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,10 +20,10 @@ using System.Reflection.Emit;
 
 namespace QLNet
 {
-   // Base on Sergey Teplyakov code 
+   // Base on Sergey Teplyakov code
    // https://blogs.msdn.microsoft.com/seteplia/2017/02/01/dissecting-the-new-constraint-in-c-a-perfect-example-of-a-leaky-abstraction/
    //
-   public static class FastActivator<T> where T : new()
+   public static class FastActivator<T> where T : new ()
    {
       /// <summary>
       /// Extremely fast generic factory method that returns an instance
@@ -34,26 +34,26 @@ namespace QLNet
 
    public static class DynamicModuleLambdaCompiler
    {
-      public static Func<T> GenerateFactory<T>() where T : new()
+      public static Func<T> GenerateFactory<T>() where T : new ()
       {
          Expression<Func<T>> expr = () => new T();
          NewExpression newExpr = (NewExpression)expr.Body;
 
-         #if NET40 || NET45
+#if NET40 || NET45
          var method = new DynamicMethod(
-             name: "lambda",
-             returnType: newExpr.Type,
-             parameterTypes: new Type[0],
-             m: typeof(DynamicModuleLambdaCompiler).Module,
-             skipVisibility: true);
-         #else
+            name: "lambda",
+            returnType: newExpr.Type,
+            parameterTypes: new Type[0],
+            m: typeof(DynamicModuleLambdaCompiler).Module,
+            skipVisibility: true);
+#else
          var method = new DynamicMethod(
-             name: "lambda",
-             returnType: newExpr.Type,
-             parameterTypes: new Type[0],
-             m: typeof(DynamicModuleLambdaCompiler).GetTypeInfo().Module,
-             skipVisibility: true);
-         #endif
+            name: "lambda",
+            returnType: newExpr.Type,
+            parameterTypes: new Type[0],
+            m: typeof(DynamicModuleLambdaCompiler).GetTypeInfo().Module,
+            skipVisibility: true);
+#endif
 
          ILGenerator ilGen = method.GetILGenerator();
          // Constructor for value types could be null

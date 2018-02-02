@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -30,12 +30,12 @@ namespace QLNet
        Reuters page ISDAFIX.
 
    */
-   public class ChfLiborSwapIsdaFix : SwapIndex 
+   public class ChfLiborSwapIsdaFix : SwapIndex
    {
       public ChfLiborSwapIsdaFix(Period tenor)
          : this(tenor, new Handle<YieldTermStructure>()) { }
 
-      public ChfLiborSwapIsdaFix(Period tenor,Handle<YieldTermStructure> h)
+      public ChfLiborSwapIsdaFix(Period tenor, Handle<YieldTermStructure> h)
          : base("ChfLiborSwapIsdaFix", // familyName
                 tenor,
                 2, // settlementDays
@@ -45,7 +45,7 @@ namespace QLNet
                 BusinessDayConvention.ModifiedFollowing, // fixedLegConvention
                 new Thirty360(Thirty360.Thirty360Convention.BondBasis), // fixedLegDaycounter
                 tenor > new Period(1, TimeUnit.Years) ?
-                    new CHFLibor(new Period(6, TimeUnit.Months), h) :
-                    new CHFLibor(new Period(3, TimeUnit.Months), h)) { }
-    };
+                new CHFLibor(new Period(6, TimeUnit.Months), h) :
+                new CHFLibor(new Period(3, TimeUnit.Months), h)) { }
+   };
 }

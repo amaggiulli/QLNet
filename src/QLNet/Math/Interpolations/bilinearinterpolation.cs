@@ -24,8 +24,8 @@ namespace QLNet
    public class BilinearInterpolationImpl : Interpolation2D.templateImpl
    {
       public BilinearInterpolationImpl(List<double> xBegin, int xSize,
-         List<double> yBegin, int ySize,
-         Matrix zData)
+                                       List<double> yBegin, int ySize,
+                                       Matrix zData)
          : base(xBegin, xSize, yBegin, ySize, zData)
       {
          calculate();
@@ -59,12 +59,12 @@ namespace QLNet
       /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
 
       public BilinearInterpolation(List<double> xBegin, int xSize,
-         List<double> yBegin, int ySize,
-         Matrix zData)
+                                   List<double> yBegin, int ySize,
+                                   Matrix zData)
       {
-         impl_ = (Interpolation2D.Impl) (
-            new BilinearInterpolationImpl(xBegin, xSize,
-               yBegin, ySize, zData));
+         impl_ = (Interpolation2D.Impl)(
+                    new BilinearInterpolationImpl(xBegin, xSize,
+                                                  yBegin, ySize, zData));
       }
    }
 
@@ -72,8 +72,8 @@ namespace QLNet
    public class Bilinear : IInterpolationFactory2D
    {
       public Interpolation2D interpolate(List<double> xBegin, int xSize,
-         List<double> yBegin, int ySize,
-         Matrix zData)
+                                         List<double> yBegin, int ySize,
+                                         Matrix zData)
       {
          return new BilinearInterpolation(xBegin, xSize, yBegin, ySize, zData);
       }

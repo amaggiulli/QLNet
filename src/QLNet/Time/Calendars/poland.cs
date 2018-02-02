@@ -7,13 +7,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,8 +21,9 @@
 
 using System;
 
-namespace QLNet {
-    //! Polish calendar
+namespace QLNet
+{
+   //! Polish calendar
    /*! Holidays:
        <ul>
        <li>Saturdays</li>
@@ -42,48 +43,51 @@ namespace QLNet {
 
        \ingroup calendars
    */
-   public class Poland : Calendar {
-        public Poland() : base(Impl.Singleton) { }
+   public class Poland : Calendar
+   {
+      public Poland() : base(Impl.Singleton) { }
 
-        class Impl : Calendar.WesternImpl {
-            public static readonly Impl Singleton = new Impl();
-            private Impl() { }
-          
-            public override string name() { return "Poland"; }
-            public override bool isBusinessDay(Date date) {
-                DayOfWeek w = date.DayOfWeek;
-                int d = date.Day, dd = date.DayOfYear;
-                Month m = (Month)date.Month;
-                int y = date.Year;
-                int em = easterMonday(y);
+      class Impl : Calendar.WesternImpl
+      {
+         public static readonly Impl Singleton = new Impl();
+         private Impl() { }
 
-                if (isWeekend(w)
-                    // Easter Monday
-                    || (dd == em)
-                    // Corpus Christi
-                    || (dd == em+59)
-                    // New Year's Day
-                    || (d == 1  && m == Month.January)
-                    // Epiphany
-                    || (d == 6 && m == Month.January && y >= 2011)
-                    // May Day
-                    || (d == 1  && m == Month.May)
-                    // Constitution Day
-                    || (d == 3  && m == Month.May)
-                    // Assumption of the Blessed Virgin Mary
-                    || (d == 15  && m == Month.August)
-                    // All Saints Day
-                    || (d == 1  && m == Month.November)
-                    // Independence Day
-                    || (d ==11  && m == Month.November)
-                    // Christmas
-                    || (d == 25 && m == Month.December)
-                    // 2nd Day of Christmas
-                    || (d == 26 && m == Month.December))
-                    return false;
-                return true;
-            }
-        }
-    }
+         public override string name() { return "Poland"; }
+         public override bool isBusinessDay(Date date)
+         {
+            DayOfWeek w = date.DayOfWeek;
+            int d = date.Day, dd = date.DayOfYear;
+            Month m = (Month)date.Month;
+            int y = date.Year;
+            int em = easterMonday(y);
+
+            if (isWeekend(w)
+                // Easter Monday
+                || (dd == em)
+                // Corpus Christi
+                || (dd == em + 59)
+                // New Year's Day
+                || (d == 1  && m == Month.January)
+                // Epiphany
+                || (d == 6 && m == Month.January && y >= 2011)
+                // May Day
+                || (d == 1  && m == Month.May)
+                // Constitution Day
+                || (d == 3  && m == Month.May)
+                // Assumption of the Blessed Virgin Mary
+                || (d == 15  && m == Month.August)
+                // All Saints Day
+                || (d == 1  && m == Month.November)
+                // Independence Day
+                || (d == 11  && m == Month.November)
+                // Christmas
+                || (d == 25 && m == Month.December)
+                // 2nd Day of Christmas
+                || (d == 26 && m == Month.December))
+               return false;
+            return true;
+         }
+      }
+   }
 }
 

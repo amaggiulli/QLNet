@@ -26,29 +26,29 @@ namespace QLNet
        \ingroup inflationtermstructures
    */
    public class InterpolatedYoYInflationCurve<Interpolator> : YoYInflationTermStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public InterpolatedYoYInflationCurve(Date referenceDate,
-         Calendar calendar,
-         DayCounter dayCounter,
-         Period lag,
-         Frequency frequency,
-         bool indexIsInterpolated,
-         Handle<YieldTermStructure> yTS,
-         List<Date> dates,
-         List<double> rates)
+                                           Calendar calendar,
+                                           DayCounter dayCounter,
+                                           Period lag,
+                                           Frequency frequency,
+                                           bool indexIsInterpolated,
+                                           Handle<YieldTermStructure> yTS,
+                                           List<Date> dates,
+                                           List<double> rates)
          : this(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, yTS, dates, rates, FastActivator<Interpolator>.Create()) { }
 
       public InterpolatedYoYInflationCurve(Date referenceDate,
-         Calendar calendar,
-         DayCounter dayCounter,
-         Period lag,
-         Frequency frequency,
-         bool indexIsInterpolated,
-         Handle<YieldTermStructure> yTS,
-         List<Date> dates,
-         List<double> rates,
-         Interpolator interpolator )
+                                           Calendar calendar,
+                                           DayCounter dayCounter,
+                                           Period lag,
+                                           Frequency frequency,
+                                           bool indexIsInterpolated,
+                                           Handle<YieldTermStructure> yTS,
+                                           List<Date> dates,
+                                           List<double> rates,
+                                           Interpolator interpolator)
          : base(referenceDate, calendar, dayCounter, rates[0], lag, frequency, indexIsInterpolated, yTS)
       {
          times_ = new List<double>();
@@ -62,12 +62,12 @@ namespace QLNet
          // period
          KeyValuePair<Date, Date> lim = Utils.inflationPeriod(yTS.link.referenceDate() - this.observationLag(), frequency);
          Utils.QL_REQUIRE(lim.Key <= dates_[0] && dates_[0] <= lim.Value, () =>
-            "first data date is not in base period, date: " + dates_[0]
-            + " not within [" + lim.Key + "," + lim.Value + "]");
+                          "first data date is not in base period, date: " + dates_[0]
+                          + " not within [" + lim.Key + "," + lim.Value + "]");
 
          Utils.QL_REQUIRE(this.data_.Count == dates_.Count, () =>
-            "indices/dates count mismatch: "
-            + this.data_.Count + " vs " + dates_.Count);
+                          "indices/dates count mismatch: "
+                          + this.data_.Count + " vs " + dates_.Count);
 
          this.times_ = new InitializedList<double>(dates_.Count);
          this.times_[0] = timeFromReference(dates_[0]);
@@ -84,8 +84,8 @@ namespace QLNet
             this.times_[i] = timeFromReference(dates_[i]);
 
             Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]), () =>
-               "two dates correspond to the same time " +
-               "under this curve's day count convention");
+                             "two dates correspond to the same time " +
+                             "under this curve's day count convention");
          }
 
          this.interpolation_ = this.interpolator_.interpolate(times_, times_.Count, data_);

@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Discretized asset class used by numerical 
+   //! Discretized asset class used by numerical
    public abstract class DiscretizedAsset
    {
       private Lattice method_;
@@ -55,13 +55,13 @@ namespace QLNet
       }
 
       /* High-level interface
-      
+
                   Users of discretized assets should use these methods in
                   order to initialize, evolve and take the present value of
                   the assets.  They call the corresponding methods in the
                   Lattice interface, to which we refer for
                   documentation.
-      
+
               */
 
       public void initialize(Lattice method, double t)
@@ -219,7 +219,7 @@ namespace QLNet
       public override void reset(int size)
       {
          Utils.QL_REQUIRE(method() == underlying_.method(),
-            () => "option and underlying were initialized on different methods");
+                          () => "option and underlying were initialized on different methods");
          values_ = new Vector(size, 0.0);
          adjustValues();
       }

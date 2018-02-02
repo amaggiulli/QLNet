@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -29,17 +29,17 @@ namespace QLNet
       public override List<double> optionletStrikes(int i)
       {
          calculate();
-         Utils.QL_REQUIRE( i < optionletStrikes_.Count,()=>
-                    "index (" + i + ") must be less than optionletStrikes size (" + optionletStrikes_.Count + ")" );
+         Utils.QL_REQUIRE(i < optionletStrikes_.Count, () =>
+                          "index (" + i + ") must be less than optionletStrikes size (" + optionletStrikes_.Count + ")");
          return optionletStrikes_[i];
       }
 
       public override List<double> optionletVolatilities(int i)
       {
          calculate();
-         Utils.QL_REQUIRE( i < optionletVolatilities_.Count,()=>
-                    "index (" + i + ") must be less than optionletVolatilities size (" +
-                    optionletVolatilities_.Count + ")" );
+         Utils.QL_REQUIRE(i < optionletVolatilities_.Count, () =>
+                          "index (" + i + ") must be less than optionletVolatilities size (" +
+                          optionletVolatilities_.Count + ")");
          return optionletVolatilities_[i];
       }
 
@@ -82,63 +82,63 @@ namespace QLNet
       public override double displacement() { return displacement_; }
       public override VolatilityType volatilityType() { return volatilityType_; }
 
-      protected OptionletStripper( CapFloorTermVolSurface termVolSurface, IborIndex iborIndex,
-                                   Handle<YieldTermStructure> discount = null,
-                                   VolatilityType type = VolatilityType.ShiftedLognormal,
-                                   double displacement = 0.0)
+      protected OptionletStripper(CapFloorTermVolSurface termVolSurface, IborIndex iborIndex,
+                                  Handle<YieldTermStructure> discount = null,
+                                  VolatilityType type = VolatilityType.ShiftedLognormal,
+                                  double displacement = 0.0)
       {
          termVolSurface_ = termVolSurface;
          iborIndex_ = iborIndex;
          discount_ = discount ?? new Handle<YieldTermStructure>();
-         nStrikes_ = termVolSurface.strikes().Count; 
+         nStrikes_ = termVolSurface.strikes().Count;
          volatilityType_ = type;
          displacement_ = displacement;
 
-                 
-         if (volatilityType_ ==  VolatilityType.Normal) 
+
+         if (volatilityType_ ==  VolatilityType.Normal)
          {
-            Utils.QL_REQUIRE(displacement_.IsEqual(0.0),()=>
-                       "non-null displacement is not allowed with Normal model");
-        }
+            Utils.QL_REQUIRE(displacement_.IsEqual(0.0), () =>
+                             "non-null displacement is not allowed with Normal model");
+         }
 
-        termVolSurface.registerWith(update);
-        iborIndex_.registerWith( update );
-        discount_.registerWith( update );
-        Settings.registerWith(update);
+         termVolSurface.registerWith(update);
+         iborIndex_.registerWith(update);
+         discount_.registerWith(update);
+         Settings.registerWith(update);
 
-        Period indexTenor = iborIndex_.tenor();
-        Period maxCapFloorTenor = termVolSurface.optionTenors().Last();
+         Period indexTenor = iborIndex_.tenor();
+         Period maxCapFloorTenor = termVolSurface.optionTenors().Last();
 
-        // optionlet tenors and capFloor lengths
-        optionletTenors_.Add(indexTenor);
-        capFloorLengths_.Add(optionletTenors_.Last()+indexTenor);
-        Utils.QL_REQUIRE(maxCapFloorTenor>=capFloorLengths_.Last(),()=>
-                         "too short (" + maxCapFloorTenor + ") capfloor term vol termVolSurface");
-        Period nextCapFloorLength = capFloorLengths_.Last()+indexTenor;
-        while (nextCapFloorLength<=maxCapFloorTenor) 
-        {
-           optionletTenors_.Add(capFloorLengths_.Last());
-           capFloorLengths_.Add(nextCapFloorLength);
-           nextCapFloorLength += indexTenor;
-        }
-        nOptionletTenors_ = optionletTenors_.Count;
+         // optionlet tenors and capFloor lengths
+         optionletTenors_.Add(indexTenor);
+         capFloorLengths_.Add(optionletTenors_.Last() + indexTenor);
+         Utils.QL_REQUIRE(maxCapFloorTenor >= capFloorLengths_.Last(), () =>
+                          "too short (" + maxCapFloorTenor + ") capfloor term vol termVolSurface");
+         Period nextCapFloorLength = capFloorLengths_.Last() + indexTenor;
+         while (nextCapFloorLength <= maxCapFloorTenor)
+         {
+            optionletTenors_.Add(capFloorLengths_.Last());
+            capFloorLengths_.Add(nextCapFloorLength);
+            nextCapFloorLength += indexTenor;
+         }
+         nOptionletTenors_ = optionletTenors_.Count;
 
-        optionletVolatilities_ = new InitializedList<List<double>>( nOptionletTenors_) ; 
-        for ( int x = 0 ; x < nOptionletTenors_; x++)
-        {
-           optionletVolatilities_[x] = new InitializedList<double>(nStrikes_);
-        }
-        optionletStrikes_ = new InitializedList<List<double>>( nOptionletTenors_ ) ; 
-        for ( int x = 0; x < nOptionletTenors_; x++ )
-        {
-           optionletStrikes_[x] = new List<double>( termVolSurface.strikes() );
-        }
+         optionletVolatilities_ = new InitializedList<List<double>>(nOptionletTenors_) ;
+         for (int x = 0 ; x < nOptionletTenors_; x++)
+         {
+            optionletVolatilities_[x] = new InitializedList<double>(nStrikes_);
+         }
+         optionletStrikes_ = new InitializedList<List<double>>(nOptionletTenors_) ;
+         for (int x = 0; x < nOptionletTenors_; x++)
+         {
+            optionletStrikes_[x] = new List<double>(termVolSurface.strikes());
+         }
 
-        optionletDates_ = new InitializedList<Date>(nOptionletTenors_);
-        optionletTimes_ = new InitializedList<double>(nOptionletTenors_);
-        atmOptionletRate_ = new InitializedList<double>(nOptionletTenors_);
-        optionletPaymentDates_ = new InitializedList<Date>(nOptionletTenors_);
-        optionletAccrualPeriods_ = new InitializedList<double>(nOptionletTenors_);
+         optionletDates_ = new InitializedList<Date>(nOptionletTenors_);
+         optionletTimes_ = new InitializedList<double>(nOptionletTenors_);
+         atmOptionletRate_ = new InitializedList<double>(nOptionletTenors_);
+         optionletPaymentDates_ = new InitializedList<Date>(nOptionletTenors_);
+         optionletAccrualPeriods_ = new InitializedList<double>(nOptionletTenors_);
 
       }
       protected CapFloorTermVolSurface termVolSurface_;

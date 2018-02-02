@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -54,14 +54,26 @@ namespace QLNet
 
       public double this[int i, int j]
       {
-         get { return data_[i * columns_ + j]; }
-         set { data_[i * columns_ + j] = value; }
+         get
+         {
+            return data_[i * columns_ + j];
+         }
+         set
+         {
+            data_[i * columns_ + j] = value;
+         }
       }
 
       public double this[int i]
       {
-         get { return data_[i]; }
-         set { data_[i] = value; }
+         get
+         {
+            return data_[i];
+         }
+         set
+         {
+            data_[i] = value;
+         }
       }
 
       public Vector row(int r)
@@ -164,12 +176,12 @@ namespace QLNet
       private static Matrix operMatrix(ref Matrix m1, ref Matrix m2, Func<double, double, double> func)
       {
          Utils.QL_REQUIRE(m1.rows_ == m2.rows_ && m1.columns_ == m2.columns_, () =>
-            "operation on matrices with different sizes");
+                          "operation on matrices with different sizes");
 
          Matrix result = new Matrix(m1.rows_, m1.columns_);
          for (int i = 0; i < m1.rows_; i++)
-         for (int j = 0; j < m1.columns_; j++)
-            result[i, j] = func(m1[i, j], m2[i, j]);
+            for (int j = 0; j < m1.columns_; j++)
+               result[i, j] = func(m1[i, j], m2[i, j]);
          return result;
       }
 
@@ -177,16 +189,16 @@ namespace QLNet
       {
          Matrix result = new Matrix(m1.rows_, m1.columns_);
          for (int i = 0; i < m1.rows_; i++)
-         for (int j = 0; j < m1.columns_; j++)
-            result[i, j] = func(m1[i, j], value);
+            for (int j = 0; j < m1.columns_; j++)
+               result[i, j] = func(m1[i, j], value);
          return result;
       }
 
       public static Vector operator *(Vector v, Matrix m)
       {
          Utils.QL_REQUIRE(v.Count == m.rows(), () => "vectors and matrices with different sizes ("
-                                                     + v.Count + ", " + m.rows() + "x" + m.columns() +
-                                                     ") cannot be multiplied");
+                          + v.Count + ", " + m.rows() + "x" + m.columns() +
+                          ") cannot be multiplied");
          Vector result = new Vector(m.columns());
          for (int i = 0; i < result.Count; i++)
             result[i] = v * m.column(i);
@@ -197,8 +209,8 @@ namespace QLNet
       public static Vector operator *(Matrix m, Vector v)
       {
          Utils.QL_REQUIRE(v.Count == m.columns(), () => "vectors and matrices with different sizes ("
-                                                        + v.Count + ", " + m.rows() + "x" + m.columns() +
-                                                        ") cannot be multiplied");
+                          + v.Count + ", " + m.rows() + "x" + m.columns() +
+                          ") cannot be multiplied");
          Vector result = new Vector(m.rows());
          for (int i = 0; i < result.Count; i++)
             result[i] = m.row(i) * v;
@@ -209,12 +221,12 @@ namespace QLNet
       public static Matrix operator *(Matrix m1, Matrix m2)
       {
          Utils.QL_REQUIRE(m1.columns() == m2.rows(), () => "matrices with different sizes (" +
-                                                           m1.rows() + "x" + m1.columns() + ", " +
-                                                           m2.rows() + "x" + m2.columns() + ") cannot be multiplied");
+                          m1.rows() + "x" + m1.columns() + ", " +
+                          m2.rows() + "x" + m2.columns() + ") cannot be multiplied");
          Matrix result = new Matrix(m1.rows(), m2.columns());
          for (int i = 0; i < result.rows(); i++)
-         for (int j = 0; j < result.columns(); j++)
-            result[i, j] = m1.row(i) * m2.column(j);
+            for (int j = 0; j < result.columns(); j++)
+               result[i, j] = m1.row(i) * m2.column(j);
          return result;
       }
 
@@ -224,8 +236,8 @@ namespace QLNet
       {
          Matrix result = new Matrix(m.columns(), m.rows());
          for (int i = 0; i < m.rows(); i++)
-         for (int j = 0; j < m.columns(); j++)
-            result[j, i] = m[i, j];
+            for (int j = 0; j < m.columns(); j++)
+               result[j, i] = m[i, j];
          return result;
       }
 
@@ -235,8 +247,8 @@ namespace QLNet
          int n = m.rows();
          Matrix result = new Matrix(n, n);
          for (int i = 0; i < n; ++i)
-         for (int j = 0; j < n; ++j)
-            result[i, j] = m[i, j];
+            for (int j = 0; j < n; ++j)
+               result[i, j] = m[i, j];
 
          Matrix lum;
          int[] perm;
@@ -251,7 +263,7 @@ namespace QLNet
                else
                   b[j] = 0.0;
 
-            double[] x = Helper(lum, b); // 
+            double[] x = Helper(lum, b); //
             for (int j = 0; j < n; ++j)
                result[j, i] = x[j];
          }
@@ -272,8 +284,8 @@ namespace QLNet
          // Make a copy of Matrix m into result Matrix lu
          lum = new Matrix(n, n);
          for (int i = 0; i < n; ++i)
-         for (int j = 0; j < n; ++j)
-            lum[i, j] = m[i, j];
+            for (int j = 0; j < n; ++j)
+               lum[i, j] = m[i, j];
 
 
          // make perm[]
@@ -281,7 +293,7 @@ namespace QLNet
          for (int i = 0; i < n; ++i)
             perm[i] = i;
 
-         for (int j = 0; j < n - 1; ++j) // process by column. note n-1 
+         for (int j = 0; j < n - 1; ++j) // process by column. note n-1
          {
             double max = Math.Abs(lum[j, j]);
             int piv = j;
@@ -360,8 +372,8 @@ namespace QLNet
          Matrix result = new Matrix(size1, size2);
 
          for (int i = 0; i < v1begin.Count; i++)
-         for (int j = 0; j < v2begin.Count; j++)
-            result[i, j] = v1begin[i] * v2begin[j];
+            for (int j = 0; j < v2begin.Count; j++)
+               result[i, j] = v1begin[i] * v2begin[j];
          return result;
       }
 

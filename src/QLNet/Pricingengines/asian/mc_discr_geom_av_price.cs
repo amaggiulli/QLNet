@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -33,8 +33,8 @@ namespace QLNet
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteGeometricAPEngine<RNG, S>
       : MCDiscreteAveragingAsianEngine<RNG, S>
-      where RNG : IRSG, new()
-      where S : IGeneralStatistics, new()
+        where RNG : IRSG, new ()
+        where S : IGeneralStatistics, new ()
    {
       public MCDiscreteGeometricAPEngine(
          GeneralizedBlackScholesProcess process,
@@ -47,25 +47,25 @@ namespace QLNet
          int maxSamples,
          ulong seed)
          : base(process, maxTimeStepPerYear, brownianBridge, antitheticVariate,
-            controlVariate, requiredSamples, requiredTolerance, maxSamples, seed)
+                controlVariate, requiredSamples, requiredTolerance, maxSamples, seed)
       { }
 
       // conversion to pricing engine
       protected override PathPricer<IPath> pathPricer()
       {
-         PlainVanillaPayoff payoff = (PlainVanillaPayoff) (this.arguments_.payoff);
+         PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
          Utils.QL_REQUIRE(payoff != null, () => "non-plain payoff given");
 
          EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
          return (PathPricer<IPath>) new GeometricAPOPathPricer(
-            payoff.optionType(),
-            payoff.strike(),
-            this.process_.riskFreeRate().link.discount(
-               this.timeGrid().Last()),
-            this.arguments_.runningAccumulator.GetValueOrDefault(),
-            this.arguments_.pastFixings.GetValueOrDefault());
+                   payoff.optionType(),
+                   payoff.strike(),
+                   this.process_.riskFreeRate().link.discount(
+                      this.timeGrid().Last()),
+                   this.arguments_.runningAccumulator.GetValueOrDefault(),
+                   this.arguments_.pastFixings.GetValueOrDefault());
       }
    }
 
@@ -77,10 +77,10 @@ namespace QLNet
       private int pastFixings_;
 
       public GeometricAPOPathPricer(Option.Type type,
-         double strike,
-         double discount,
-         double runningProduct,
-         int pastFixings)
+                                    double strike,
+                                    double discount,
+                                    double runningProduct,
+                                    int pastFixings)
       {
          payoff_ = new PlainVanillaPayoff(type, strike);
          discount_ = discount;
@@ -90,15 +90,15 @@ namespace QLNet
       }
 
       public GeometricAPOPathPricer(Option.Type type,
-         double strike,
-         double discount,
-         double runningProduct)
+                                    double strike,
+                                    double discount,
+                                    double runningProduct)
          : this(type, strike, discount, runningProduct, 0)
       { }
 
       public GeometricAPOPathPricer(Option.Type type,
-         double strike,
-         double discount)
+                                    double strike,
+                                    double discount)
          : this(type, strike, discount, 1.0, 0)
       { }
 
@@ -138,8 +138,8 @@ namespace QLNet
 
    //<class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCDiscreteGeometricAPEngine<RNG, S>
-      where RNG : IRSG, new()
-      where S : Statistics, new()
+      where RNG : IRSG, new ()
+      where S : Statistics, new ()
    {
       public MakeMCDiscreteGeometricAPEngine(GeneralizedBlackScholesProcess process)
       {
@@ -183,7 +183,7 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(samples_ == null, () => "number of samples already set");
          Utils.QL_REQUIRE(FastActivator<RNG>.Create().allowsErrorEstimate != 0, () =>
-            "chosen random generator policy " + "does not allow an error estimate");
+                          "chosen random generator policy " + "does not allow an error estimate");
          tolerance_ = tolerance;
          return this;
       }
@@ -227,12 +227,12 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(steps_ != null, () => "max number of steps per year not given");
          return (IPricingEngine) new MCDiscreteGeometricAPEngine<RNG, S>(process_,
-            steps_.Value,
-            brownianBridge_,
-            antithetic_, controlVariate_,
-            samples_.Value, tolerance_.Value,
-            maxSamples_.Value,
-            seed_);
+                                                                         steps_.Value,
+                                                                         brownianBridge_,
+                                                                         antithetic_, controlVariate_,
+                                                                         samples_.Value, tolerance_.Value,
+                                                                         maxSamples_.Value,
+                                                                         seed_);
       }
 
       private GeneralizedBlackScholesProcess process_;

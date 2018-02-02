@@ -22,14 +22,14 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedZeroInflationCurve<Interpolator> : ZeroInflationTermStructure, InterpolatedCurve
-       where Interpolator : class, IInterpolationFactory, new()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
                                             Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,
                                             List<Date> dates, List<double> rates,
                                             Interpolator interpolator = default(Interpolator))
          : base(referenceDate, calendar, dayCounter, rates[0],
-                                 lag, frequency, indexIsInterpolated, yTS)
+                lag, frequency, indexIsInterpolated, yTS)
       {
          times_ = new List<double>();
          dates_ = dates;
@@ -43,8 +43,8 @@ namespace QLNet
          // period
          KeyValuePair<Date, Date> lim = Utils.inflationPeriod(yTS.link.referenceDate() - this.observationLag(), frequency);
          Utils.QL_REQUIRE(lim.Key <= dates_[0] && dates_[0] <= lim.Value, () =>
-                  "first data date is not in base period, date: " + dates_[0]
-                  + " not within [" + lim.Key + "," + lim.Value + "]");
+                          "first data date is not in base period, date: " + dates_[0]
+                          + " not within [" + lim.Key + "," + lim.Value + "]");
 
          // by convention, if the index is not interpolated we pull all the dates
          // back to the start of their inflationPeriods
@@ -60,8 +60,8 @@ namespace QLNet
 
 
          Utils.QL_REQUIRE(this.data_.Count == dates_.Count, () =>
-                  "indices/dates count mismatch: "
-                  + this.data_.Count + " vs " + dates_.Count);
+                          "indices/dates count mismatch: "
+                          + this.data_.Count + " vs " + dates_.Count);
 
          this.times_ = new InitializedList<double>(dates_.Count);
          this.times_[0] = timeFromReference(dates_[0]);
@@ -75,8 +75,8 @@ namespace QLNet
             // this can be negative
             this.times_[i] = timeFromReference(dates_[i]);
             Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]), () =>
-               "two dates correspond to the same time " +
-               "under this curve's day count convention");
+                             "two dates correspond to the same time " +
+                             "under this curve's day count convention");
          }
 
          this.interpolation_ = this.interpolator_.interpolate(times_, times_.Count, data_);
@@ -158,15 +158,15 @@ namespace QLNet
           construction.
       */
       protected InterpolatedZeroInflationCurve(Date referenceDate,
-                                     Calendar calendar,
-                                     DayCounter dayCounter,
-                                     Period lag,
-                                     Frequency frequency,
-                                     bool indexIsInterpolated,
-                                     double baseZeroRate,
-                                     Handle<YieldTermStructure> yTS,
-                                     Interpolator interpolator = default(Interpolator))
-         : base( referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS )
+                                               Calendar calendar,
+                                               DayCounter dayCounter,
+                                               Period lag,
+                                               Frequency frequency,
+                                               bool indexIsInterpolated,
+                                               double baseZeroRate,
+                                               Handle<YieldTermStructure> yTS,
+                                               Interpolator interpolator = default(Interpolator))
+         : base(referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, yTS)
       {
          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }

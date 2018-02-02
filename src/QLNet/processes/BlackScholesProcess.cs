@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -36,9 +36,9 @@ namespace QLNet
    public class GeneralizedBlackScholesProcess : StochasticProcess1D
    {
 
-      public GeneralizedBlackScholesProcess( Handle<Quote> x0, Handle<YieldTermStructure> dividendTS,
-         Handle<YieldTermStructure> riskFreeTS, Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D disc = null )
-         : base( disc ?? new EulerDiscretization() )
+      public GeneralizedBlackScholesProcess(Handle<Quote> x0, Handle<YieldTermStructure> dividendTS,
+                                            Handle<YieldTermStructure> riskFreeTS, Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D disc = null)
+         : base(disc ?? new EulerDiscretization())
       {
          x0_ = x0;
          riskFreeRate_ = riskFreeTS;
@@ -46,30 +46,30 @@ namespace QLNet
          blackVolatility_ = blackVolTS;
          updated_ = false;
 
-         x0_.registerWith( update );
-         riskFreeRate_.registerWith( update );
-         dividendYield_.registerWith( update );
-         blackVolatility_.registerWith( update );
+         x0_.registerWith(update);
+         riskFreeRate_.registerWith(update);
+         dividendYield_.registerWith(update);
+         blackVolatility_.registerWith(update);
       }
 
       public GeneralizedBlackScholesProcess(Handle<Quote> x0, Handle<YieldTermStructure> dividendTS,
-        Handle<YieldTermStructure> riskFreeTS, Handle<BlackVolTermStructure> blackVolTS,
-        RelinkableHandle<LocalVolTermStructure> localVolTS, IDiscretization1D disc = null)
-          : base(disc ?? new EulerDiscretization())
+                                            Handle<YieldTermStructure> riskFreeTS, Handle<BlackVolTermStructure> blackVolTS,
+                                            RelinkableHandle<LocalVolTermStructure> localVolTS, IDiscretization1D disc = null)
+         : base(disc ?? new EulerDiscretization())
       {
-          x0_ = x0;
-          riskFreeRate_ = riskFreeTS;
-          dividendYield_ = dividendTS;
-          blackVolatility_ = blackVolTS;
-          localVolatility_ = localVolTS != null ? (localVolTS.empty() ? new RelinkableHandle<LocalVolTermStructure>() : localVolTS)
-                                                : new RelinkableHandle<LocalVolTermStructure>();
-          updated_ = !localVolatility_.empty();
+         x0_ = x0;
+         riskFreeRate_ = riskFreeTS;
+         dividendYield_ = dividendTS;
+         blackVolatility_ = blackVolTS;
+         localVolatility_ = localVolTS != null ? (localVolTS.empty() ? new RelinkableHandle<LocalVolTermStructure>() : localVolTS)
+                            : new RelinkableHandle<LocalVolTermStructure>();
+         updated_ = !localVolatility_.empty();
 
-          x0_.registerWith(update);
-          riskFreeRate_.registerWith(update);
-          dividendYield_.registerWith(update);
-          blackVolatility_.registerWith(update);
-          localVolatility_.registerWith(update);
+         x0_.registerWith(update);
+         riskFreeRate_.registerWith(update);
+         dividendYield_.registerWith(update);
+         blackVolatility_.registerWith(update);
+         localVolatility_.registerWith(update);
       }
 
       public override double x0()
@@ -78,96 +78,96 @@ namespace QLNet
       }
 
       /*! \todo revise extrapolation */
-      public override double drift( double t, double x )
+      public override double drift(double t, double x)
       {
-         double sigma = diffusion( t, x );
+         double sigma = diffusion(t, x);
          // we could be more anticipatory if we know the right dt for which the drift will be used
          double t1 = t + 0.0001;
-         return riskFreeRate_.link.forwardRate( t, t1, Compounding.Continuous, Frequency.NoFrequency, true ).rate()
-                - dividendYield_.link.forwardRate( t, t1, Compounding.Continuous, Frequency.NoFrequency, true ).rate()
+         return riskFreeRate_.link.forwardRate(t, t1, Compounding.Continuous, Frequency.NoFrequency, true).rate()
+                - dividendYield_.link.forwardRate(t, t1, Compounding.Continuous, Frequency.NoFrequency, true).rate()
                 - 0.5 * sigma * sigma;
       }
 
       /*! \todo revise extrapolation */
-      public override double diffusion( double t, double x )
+      public override double diffusion(double t, double x)
       {
-         return localVolatility().link.localVol( t, x, true );
+         return localVolatility().link.localVol(t, x, true);
       }
 
-      public override double apply( double x0, double dx )
+      public override double apply(double x0, double dx)
       {
-         return x0 * Math.Exp( dx );
+         return x0 * Math.Exp(dx);
       }
 
       /*! \warning raises a "not implemented" exception.  It should
              be rewritten to return the expectation E(S) of
              the process, not exp(E(log S)).
       */
-      public override double expectation( double t0, double x0, double dt )
+      public override double expectation(double t0, double x0, double dt)
       {
          localVolatility(); // trigger update
-         if ( isStrikeIndependent_ )
+         if (isStrikeIndependent_)
          {
             // exact value for curves
             return x0 *
-                   Math.Exp( dt * ( riskFreeRate_.link.forwardRate( t0, t0 + dt, Compounding.Continuous,
-                                                        Frequency.NoFrequency, true ).value() -
-                             dividendYield_.link.forwardRate(
-                                 t0, t0 + dt, Compounding.Continuous, Frequency.NoFrequency, true ).value() ) );
+                   Math.Exp(dt * (riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous,
+                                                                 Frequency.NoFrequency, true).value() -
+                                  dividendYield_.link.forwardRate(
+                                     t0, t0 + dt, Compounding.Continuous, Frequency.NoFrequency, true).value()));
          }
          else
          {
-            Utils.QL_FAIL( "not implemented" );
+            Utils.QL_FAIL("not implemented");
             return 0;
          }
       }
       public override double stdDeviation(double t0, double x0, double dt)
       {
          localVolatility(); // trigger update
-         if(isStrikeIndependent_) 
+         if (isStrikeIndependent_)
          {
             // exact value for curves
-            return Math.Sqrt(variance(t0,x0,dt));
+            return Math.Sqrt(variance(t0, x0, dt));
          }
          else
          {
-            return discretization_.diffusion(this,t0,x0,dt);
+            return discretization_.diffusion(this, t0, x0, dt);
          }
-      }  
+      }
       public override double variance(double t0, double x0, double dt)
       {
          localVolatility(); // trigger update
-         if ( isStrikeIndependent_ )
+         if (isStrikeIndependent_)
          {
             // exact value for curves
-            return blackVolatility_.link.blackVariance( t0 + dt, 0.01 ) -
-                   blackVolatility_.link.blackVariance( t0, 0.01 );
+            return blackVolatility_.link.blackVariance(t0 + dt, 0.01) -
+                   blackVolatility_.link.blackVariance(t0, 0.01);
          }
          else
          {
-            return discretization_.variance( this, t0, x0, dt );
+            return discretization_.variance(this, t0, x0, dt);
          }
       }
       public override double evolve(double t0, double x0, double dt, double dw)
       {
          localVolatility(); // trigger update
-         if (isStrikeIndependent_) 
+         if (isStrikeIndependent_)
          {
             // exact value for curves
             double var = variance(t0, x0, dt);
             double drift = (riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous,
-                                                     Frequency.NoFrequency, true).value() -
-                          dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous,
-                                                      Frequency.NoFrequency, true).value()) *
-                             dt - 0.5 * var;
+                                                           Frequency.NoFrequency, true).value() -
+                            dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous,
+                                                            Frequency.NoFrequency, true).value()) *
+                           dt - 0.5 * var;
             return apply(x0, Math.Sqrt(var) * dw + drift);
-         } 
+         }
          else
-            return apply(x0, discretization_.drift(this, t0, x0, dt) + stdDeviation(t0, x0, dt) * dw);      
+            return apply(x0, discretization_.drift(this, t0, x0, dt) + stdDeviation(t0, x0, dt) * dw);
       }
-      public override double time( Date d )
+      public override double time(Date d)
       {
-         return riskFreeRate_.link.dayCounter().yearFraction( riskFreeRate_.link.referenceDate(), d );
+         return riskFreeRate_.link.dayCounter().yearFraction(riskFreeRate_.link.referenceDate(), d);
       }
       public override void update()
       {
@@ -192,35 +192,35 @@ namespace QLNet
       }
       public Handle<LocalVolTermStructure> localVolatility()
       {
-         if ( !updated_ )
+         if (!updated_)
          {
             isStrikeIndependent_ = true;
 
             // constant Black vol?
             BlackConstantVol constVol = blackVolatility().link as BlackConstantVol;
-            if ( constVol != null )
+            if (constVol != null)
             {
                // ok, the local vol is constant too.
-               localVolatility_.linkTo( new LocalConstantVol( constVol.referenceDate(),
-                  constVol.blackVol( 0.0, x0_.link.value() ),
-                  constVol.dayCounter() ) );
+               localVolatility_.linkTo(new LocalConstantVol(constVol.referenceDate(),
+                                                            constVol.blackVol(0.0, x0_.link.value()),
+                                                            constVol.dayCounter()));
                updated_ = true;
                return localVolatility_;
             }
 
             // ok, so it's not constant. Maybe it's strike-independent?
             BlackVarianceCurve volCurve = blackVolatility().link as BlackVarianceCurve;
-            if ( volCurve != null )
+            if (volCurve != null)
             {
                // ok, we can use the optimized algorithm
-               localVolatility_.linkTo( new LocalVolCurve( new Handle<BlackVarianceCurve>( volCurve ) ) );
+               localVolatility_.linkTo(new LocalVolCurve(new Handle<BlackVarianceCurve>(volCurve)));
                updated_ = true;
                return localVolatility_;
             }
 
             // ok, so it's strike-dependent. Never mind.
-            localVolatility_.linkTo( new LocalVolSurface( blackVolatility_, riskFreeRate_, dividendYield_,
-               x0_.link.value() ) );
+            localVolatility_.linkTo(new LocalVolSurface(blackVolatility_, riskFreeRate_, dividendYield_,
+                                                        x0_.link.value()));
             updated_ = true;
             isStrikeIndependent_ = false;
             return localVolatility_;
@@ -230,7 +230,7 @@ namespace QLNet
             return localVolatility_;
          }
       }
-      
+
       private Handle<Quote> x0_;
       private Handle<YieldTermStructure> riskFreeRate_, dividendYield_;
       private Handle<BlackVolTermStructure> blackVolatility_;
@@ -250,19 +250,19 @@ namespace QLNet
    public class BlackScholesProcess : GeneralizedBlackScholesProcess
    {
       public BlackScholesProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS)
+                                 Handle<YieldTermStructure> riskFreeTS,
+                                 Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, riskFreeTS, blackVolTS, new EulerDiscretization())
       {}
 
       public BlackScholesProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS,
-         IDiscretization1D d)
+                                 Handle<YieldTermStructure> riskFreeTS,
+                                 Handle<BlackVolTermStructure> blackVolTS,
+                                 IDiscretization1D d)
          : base(x0,
-            // no dividend yield
-            new Handle<YieldTermStructure>(new FlatForward(0, new NullCalendar(), 0.0, new Actual365Fixed())),
-            riskFreeTS, blackVolTS, d)
+                // no dividend yield
+                new Handle<YieldTermStructure>(new FlatForward(0, new NullCalendar(), 0.0, new Actual365Fixed())),
+                riskFreeTS, blackVolTS, d)
       {}
    }
 
@@ -280,17 +280,17 @@ namespace QLNet
    public class BlackScholesMertonProcess : GeneralizedBlackScholesProcess
    {
       public BlackScholesMertonProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> dividendTS,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS)
+                                       Handle<YieldTermStructure> dividendTS,
+                                       Handle<YieldTermStructure> riskFreeTS,
+                                       Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, dividendTS, riskFreeTS, blackVolTS, new EulerDiscretization())
       {}
 
       public BlackScholesMertonProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> dividendTS,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS,
-         IDiscretization1D d)
+                                       Handle<YieldTermStructure> dividendTS,
+                                       Handle<YieldTermStructure> riskFreeTS,
+                                       Handle<BlackVolTermStructure> blackVolTS,
+                                       IDiscretization1D d)
          : base(x0, dividendTS, riskFreeTS, blackVolTS, d)
       {}
    }
@@ -308,15 +308,15 @@ namespace QLNet
    public class BlackProcess : GeneralizedBlackScholesProcess
    {
       public BlackProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS)
+                          Handle<YieldTermStructure> riskFreeTS,
+                          Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, riskFreeTS, blackVolTS, new EulerDiscretization())
       {}
 
       public BlackProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> riskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS,
-         IDiscretization1D d)
+                          Handle<YieldTermStructure> riskFreeTS,
+                          Handle<BlackVolTermStructure> blackVolTS,
+                          IDiscretization1D d)
          : base(x0, riskFreeTS, riskFreeTS, blackVolTS, d)
       {}
    }
@@ -335,23 +335,23 @@ namespace QLNet
    public class GarmanKohlagenProcess : GeneralizedBlackScholesProcess
    {
       public GarmanKohlagenProcess(Handle<Quote> x0,
-         Handle<YieldTermStructure> foreignRiskFreeTS,
-         Handle<YieldTermStructure> domesticRiskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS)
+                                   Handle<YieldTermStructure> foreignRiskFreeTS,
+                                   Handle<YieldTermStructure> domesticRiskFreeTS,
+                                   Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, new EulerDiscretization())
       {}
 
       public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
-         Handle<YieldTermStructure> domesticRiskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D d)
+                                   Handle<YieldTermStructure> domesticRiskFreeTS,
+                                   Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D d)
          : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, d)
       {}
 
-       public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
-         Handle<YieldTermStructure> domesticRiskFreeTS,
-         Handle<BlackVolTermStructure> blackVolTS,
-         RelinkableHandle<LocalVolTermStructure> localVolTS,
-         IDiscretization1D d = null)
+      public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
+                                   Handle<YieldTermStructure> domesticRiskFreeTS,
+                                   Handle<BlackVolTermStructure> blackVolTS,
+                                   RelinkableHandle<LocalVolTermStructure> localVolTS,
+                                   IDiscretization1D d = null)
          : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, localVolTS, d)
       {}
 

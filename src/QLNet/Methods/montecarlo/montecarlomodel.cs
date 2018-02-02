@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -38,9 +38,9 @@ namespace QLNet
    */
    public class MonteCarloModel<MC, RNG, S> where S : IGeneralStatistics
    {
-      public MonteCarloModel( IPathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer, 
-         S sampleAccumulator,bool antitheticVariate, PathPricer<IPath> cvPathPricer = null, 
-         double cvOptionValue = 0,IPathGenerator<IRNG> cvPathGenerator = null)
+      public MonteCarloModel(IPathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer,
+                             S sampleAccumulator, bool antitheticVariate, PathPricer<IPath> cvPathPricer = null,
+                             double cvOptionValue = 0, IPathGenerator<IRNG> cvPathGenerator = null)
       {
          pathGenerator_ = pathGenerator;
          pathPricer_ = pathPricer;
@@ -49,53 +49,53 @@ namespace QLNet
          cvPathPricer_ = cvPathPricer;
          cvOptionValue_ = cvOptionValue;
          cvPathGenerator_ = cvPathGenerator;
-         if ( cvPathPricer_ == null )
+         if (cvPathPricer_ == null)
             isControlVariate_ = false;
          else
             isControlVariate_ = true;
       }
 
-      public void addSamples( int samples )
+      public void addSamples(int samples)
       {
-         for ( int j = 1; j <= samples; j++ )
+         for (int j = 1; j <= samples; j++)
          {
 
             Sample<IPath> path = pathGenerator_.next();
-            double price = pathPricer_.value( path.value );
+            double price = pathPricer_.value(path.value);
 
-            if ( isControlVariate_ )
+            if (isControlVariate_)
             {
-               if ( cvPathGenerator_ == null )
+               if (cvPathGenerator_ == null)
                {
-                  price += cvOptionValue_ - cvPathPricer_.value( path.value );
+                  price += cvOptionValue_ - cvPathPricer_.value(path.value);
                }
                else
                {
                   Sample<IPath> cvPath = cvPathGenerator_.next();
-                  price += cvOptionValue_ - cvPathPricer_.value( cvPath.value );
+                  price += cvOptionValue_ - cvPathPricer_.value(cvPath.value);
                }
             }
 
-            if ( isAntitheticVariate_ )
+            if (isAntitheticVariate_)
             {
                path = pathGenerator_.antithetic();
-               double price2 = pathPricer_.value( path.value );
-               if ( isControlVariate_ )
+               double price2 = pathPricer_.value(path.value);
+               if (isControlVariate_)
                {
-                  if ( cvPathGenerator_ == null )
-                     price2 += cvOptionValue_ - cvPathPricer_.value( path.value );
+                  if (cvPathGenerator_ == null)
+                     price2 += cvOptionValue_ - cvPathPricer_.value(path.value);
                   else
                   {
                      Sample<IPath> cvPath = cvPathGenerator_.antithetic();
-                     price2 += cvOptionValue_ - cvPathPricer_.value( cvPath.value );
+                     price2 += cvOptionValue_ - cvPathPricer_.value(cvPath.value);
                   }
                }
 
-               sampleAccumulator_.add( ( price + price2 ) / 2.0, path.weight );
+               sampleAccumulator_.add((price + price2) / 2.0, path.weight);
             }
             else
             {
-               sampleAccumulator_.add( price, path.weight );
+               sampleAccumulator_.add(price, path.weight);
             }
          }
       }

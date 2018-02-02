@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure                                 
+   public abstract class SwaptionVolatilityDiscrete : SwaptionVolatilityStructure
    {
       protected int nOptionTenors_;
       protected List<Period> optionTenors_;
@@ -60,7 +60,7 @@ namespace QLNet
          checkSwapTenors();
          initializeSwapLengths();
 
-         optionInterpolator_ = new LinearInterpolation(optionTimes_,optionTimes_.Count,optionDatesAsReal_);
+         optionInterpolator_ = new LinearInterpolation(optionTimes_, optionTimes_.Count, optionDatesAsReal_);
          optionInterpolator_.update();
          optionInterpolator_.enableExtrapolation();
          evaluationDate_ = Settings.evaluationDate();
@@ -90,7 +90,7 @@ namespace QLNet
          checkSwapTenors();
          initializeSwapLengths();
 
-         optionInterpolator_ = new LinearInterpolation(optionTimes_,optionTimes_.Count,optionDatesAsReal_);
+         optionInterpolator_ = new LinearInterpolation(optionTimes_, optionTimes_.Count, optionDatesAsReal_);
 
          optionInterpolator_.update();
          optionInterpolator_.enableExtrapolation();
@@ -119,7 +119,7 @@ namespace QLNet
          checkSwapTenors();
          initializeSwapLengths();
 
-         optionInterpolator_ = new LinearInterpolation(optionTimes_,optionTimes_.Count,optionDatesAsReal_);
+         optionInterpolator_ = new LinearInterpolation(optionTimes_, optionTimes_.Count, optionDatesAsReal_);
          optionInterpolator_.update();
          optionInterpolator_.enableExtrapolation();
       }
@@ -187,31 +187,31 @@ namespace QLNet
 
       private void checkOptionDates()
       {
-         Utils.QL_REQUIRE(optionDates_[0] > referenceDate(),()=>
-           "first option date (" + optionDates_[0] + ") must be greater than reference date (" + referenceDate() + ")");
+         Utils.QL_REQUIRE(optionDates_[0] > referenceDate(), () =>
+                          "first option date (" + optionDates_[0] + ") must be greater than reference date (" + referenceDate() + ")");
          for (int i = 1; i < nOptionTenors_; ++i)
          {
-            Utils.QL_REQUIRE(optionDates_[i] > optionDates_[i - 1],()=>
-              "non increasing option dates: " + i + " is " + optionDates_[i - 1] + ", " + i + 1 + " is " + optionDates_[i]);
+            Utils.QL_REQUIRE(optionDates_[i] > optionDates_[i - 1], () =>
+                             "non increasing option dates: " + i + " is " + optionDates_[i - 1] + ", " + i + 1 + " is " + optionDates_[i]);
          }
       }
 
       private void checkOptionTenors()
       {
-         Utils.QL_REQUIRE(optionTenors_[0] > new Period(0, TimeUnit.Days),()=> 
-            "first option tenor is negative (" + optionTenors_[0] + ")");
+         Utils.QL_REQUIRE(optionTenors_[0] > new Period(0, TimeUnit.Days), () =>
+                          "first option tenor is negative (" + optionTenors_[0] + ")");
          for (int i = 1; i < nOptionTenors_; ++i)
-            Utils.QL_REQUIRE(optionTenors_[i] > optionTenors_[i - 1],()=>
-               "non increasing option tenor: " + i + " is " + optionTenors_[i - 1] + ", " + i + 1 + " is " + optionTenors_[i]);
+            Utils.QL_REQUIRE(optionTenors_[i] > optionTenors_[i - 1], () =>
+                             "non increasing option tenor: " + i + " is " + optionTenors_[i - 1] + ", " + i + 1 + " is " + optionTenors_[i]);
       }
 
       private void checkSwapTenors()
       {
-         Utils.QL_REQUIRE(swapTenors_[0] > new Period(0, TimeUnit.Days),()=> 
-            "first swap tenor is negative (" + swapTenors_[0] + ")");
+         Utils.QL_REQUIRE(swapTenors_[0] > new Period(0, TimeUnit.Days), () =>
+                          "first swap tenor is negative (" + swapTenors_[0] + ")");
          for (int i = 1; i < nSwapTenors_; ++i)
-            Utils.QL_REQUIRE(swapTenors_[i] > swapTenors_[i - 1],()=>
-               "non increasing swap tenor: " + i + " is " + swapTenors_[i - 1] + ", " + i + 1 + " is " + swapTenors_[i]);
+            Utils.QL_REQUIRE(swapTenors_[i] > swapTenors_[i - 1], () =>
+                             "non increasing swap tenor: " + i + " is " + swapTenors_[i - 1] + ", " + i + 1 + " is " + swapTenors_[i]);
       }
 
       private void initializeOptionDatesAndTimes()
@@ -219,7 +219,7 @@ namespace QLNet
          for (int i = 0; i < nOptionTenors_; ++i)
          {
             optionDates_[i] = optionDateFromTenor(optionTenors_[i]);
-            optionDatesAsReal_[i] = (double) (optionDates_[i].serialNumber());
+            optionDatesAsReal_[i] = (double)(optionDates_[i].serialNumber());
          }
          initializeOptionTimes();
       }

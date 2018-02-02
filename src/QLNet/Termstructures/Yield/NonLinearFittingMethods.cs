@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -28,12 +28,12 @@ namespace QLNet
    */
    public class ExponentialSplinesFitting : FittedBondDiscountCurve.FittingMethod
    {
-      public ExponentialSplinesFitting( bool constrainAtZero = true,
-                                        Vector weights = null,
-                                        OptimizationMethod optimizationMethod = null)
-         :base(constrainAtZero, weights, optimizationMethod)
+      public ExponentialSplinesFitting(bool constrainAtZero = true,
+                                       Vector weights = null,
+                                       OptimizationMethod optimizationMethod = null)
+         : base(constrainAtZero, weights, optimizationMethod)
       {}
-       
+
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
          return MemberwiseClone() as FittedBondDiscountCurve.FittingMethod;
@@ -45,27 +45,27 @@ namespace QLNet
       {
          double d = 0.0;
          int N = size();
-         double kappa = x[N-1];
+         double kappa = x[N - 1];
          double coeff = 0;
 
-         if (!constrainAtZero_) 
+         if (!constrainAtZero_)
          {
-            for (int i=0; i<N-1; ++i) 
+            for (int i = 0; i < N - 1; ++i)
             {
-               d += x[i]* Math.Exp(-kappa * (i+1) * t);
+               d += x[i] * Math.Exp(-kappa * (i + 1) * t);
             }
-         } 
-         else 
+         }
+         else
          {
             //  notation:
             //  d(t) = coeff* exp(-kappa*1*t) + x[0]* exp(-kappa*2*t) +
             //  x[1]* exp(-kappa*3*t) + ..+ x[7]* exp(-kappa*9*t)
-            for (int i=0; i<N-1; i++) 
+            for (int i = 0; i < N - 1; i++)
             {
-               d += x[i]* Math.Exp(-kappa * (i+2) * t);
+               d += x[i] * Math.Exp(-kappa * (i + 2) * t);
                coeff += x[i];
             }
-            coeff = 1.0- coeff;
+            coeff = 1.0 - coeff;
             d += coeff * Math.Exp(-kappa * t);
          }
          return d;
@@ -82,10 +82,10 @@ namespace QLNet
        See: Nelson, C. and A. Siegel (1985): "Parsimonious modeling of yield
        curves for US Treasury bills." NBER Working Paper Series, no 1594.
    */
-   public class NelsonSiegelFitting :  FittedBondDiscountCurve.FittingMethod 
+   public class NelsonSiegelFitting :  FittedBondDiscountCurve.FittingMethod
    {
       public NelsonSiegelFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
-         :base(true, weights, optimizationMethod)
+         : base(true, weights, optimizationMethod)
       {}
 
       public override FittedBondDiscountCurve.FittingMethod clone()
@@ -97,13 +97,13 @@ namespace QLNet
 
       internal override double discountFunction(Vector x, double t)
       {
-         double kappa = x[size()-1];
-         double zeroRate = x[0] + (x[1] + x[2])*
-                          (1.0 - Math.Exp(-kappa*t))/
-                          ((kappa+Const.QL_EPSILON)*(t+Const.QL_EPSILON)) -
-                          (x[2])*Math.Exp(-kappa*t);
-        double d = Math.Exp(-zeroRate * t) ;
-        return d;
+         double kappa = x[size() - 1];
+         double zeroRate = x[0] + (x[1] + x[2]) *
+                           (1.0 - Math.Exp(-kappa * t)) /
+                           ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
+                           (x[2]) * Math.Exp(-kappa * t);
+         double d = Math.Exp(-zeroRate * t) ;
+         return d;
       }
    }
 
@@ -114,10 +114,10 @@ namespace QLNet
        interest rates: Sweden 1992-4.
        Discussion paper, Centre for Economic Policy Research(1051).
    */
-   public class SvenssonFitting : FittedBondDiscountCurve.FittingMethod 
+   public class SvenssonFitting : FittedBondDiscountCurve.FittingMethod
    {
       public SvenssonFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
-         :base(true, weights, optimizationMethod)
+         : base(true, weights, optimizationMethod)
       {}
 
       public override FittedBondDiscountCurve.FittingMethod clone()
@@ -129,18 +129,18 @@ namespace QLNet
 
       internal override double discountFunction(Vector x, double t)
       {
-         double kappa = x[size()-2];
-         double kappa_1 = x[size()-1];
+         double kappa = x[size() - 2];
+         double kappa_1 = x[size() - 1];
 
-         double zeroRate = x[0] + (x[1] + x[2])*
-                           (1.0 - Math.Exp(-kappa*t))/
-                           ((kappa+Const.QL_EPSILON)*(t+Const.QL_EPSILON)) -
-                           (x[2])*Math.Exp(-kappa*t) +
-                           x[3]* (((1.0 - Math.Exp(-kappa_1*t))/((kappa_1+Const.QL_EPSILON)*(t+Const.QL_EPSILON)))- Math.Exp(-kappa_1*t));
-        double d = Math.Exp(-zeroRate * t) ;
-        return d;
+         double zeroRate = x[0] + (x[1] + x[2]) *
+                           (1.0 - Math.Exp(-kappa * t)) /
+                           ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
+                           (x[2]) * Math.Exp(-kappa * t) +
+                           x[3] * (((1.0 - Math.Exp(-kappa_1 * t)) / ((kappa_1 + Const.QL_EPSILON) * (t + Const.QL_EPSILON))) - Math.Exp(-kappa_1 * t));
+         double d = Math.Exp(-zeroRate * t) ;
+         return d;
       }
-    
+
    }
 
    //! CubicSpline B-splines fitting method
@@ -162,38 +162,38 @@ namespace QLNet
                  N. Webber, "Interest Rate Modelling" John Wiley,
                  2000, pp. 440.
    */
-   public class CubicBSplinesFitting : FittedBondDiscountCurve.FittingMethod 
+   public class CubicBSplinesFitting : FittedBondDiscountCurve.FittingMethod
    {
-      public CubicBSplinesFitting( List<double> knots, bool constrainAtZero = true, Vector weights = null,
-         OptimizationMethod optimizationMethod = null)
-         :base(constrainAtZero, weights, optimizationMethod)
+      public CubicBSplinesFitting(List<double> knots, bool constrainAtZero = true, Vector weights = null,
+                                  OptimizationMethod optimizationMethod = null)
+         : base(constrainAtZero, weights, optimizationMethod)
       {
-         splines_ = new BSpline(3, knots.Count-5, knots);
+         splines_ = new BSpline(3, knots.Count - 5, knots);
 
-         Utils.QL_REQUIRE(knots.Count >= 8,()=> "At least 8 knots are required" );
+         Utils.QL_REQUIRE(knots.Count >= 8, () => "At least 8 knots are required");
          int basisFunctions = knots.Count - 4;
 
-         if (constrainAtZero) 
+         if (constrainAtZero)
          {
-            size_ = basisFunctions-1;
+            size_ = basisFunctions - 1;
 
             // Note: A small but nonzero N_th basis function at t=0 may
             // lead to an ill conditioned problem
             N_ = 1;
 
-            Utils.QL_REQUIRE(Math.Abs(splines_.value(N_, 0.0)) > Const.QL_EPSILON,()=>
-               "N_th cubic B-spline must be nonzero at t=0");
-         } 
-         else 
+            Utils.QL_REQUIRE(Math.Abs(splines_.value(N_, 0.0)) > Const.QL_EPSILON, () =>
+                             "N_th cubic B-spline must be nonzero at t=0");
+         }
+         else
          {
             size_ = basisFunctions;
             N_ = 0;
          }
 
       }
-      
+
       //! cubic B-spline basis functions
-      public double basisFunction( int i, double t ) { return splines_.value( i, t ); }
+      public double basisFunction(int i, double t) { return splines_.value(i, t); }
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
          return MemberwiseClone() as FittedBondDiscountCurve.FittingMethod;
@@ -205,37 +205,37 @@ namespace QLNet
       {
          double d = 0.0;
 
-         if ( !constrainAtZero_ )
+         if (!constrainAtZero_)
          {
-            for ( int i = 0; i < size_; ++i )
+            for (int i = 0; i < size_; ++i)
             {
-               d += x[i] * splines_.value( i, t );
+               d += x[i] * splines_.value(i, t);
             }
          }
          else
          {
             double T = 0.0;
             double sum = 0.0;
-            for ( int i = 0; i < size_; ++i )
+            for (int i = 0; i < size_; ++i)
             {
-               if ( i < N_ )
+               if (i < N_)
                {
-                  d += x[i] * splines_.value( i, t );
-                  sum += x[i] * splines_.value( i, T );
+                  d += x[i] * splines_.value(i, t);
+                  sum += x[i] * splines_.value(i, T);
                }
                else
                {
-                  d += x[i] * splines_.value( i + 1, t );
-                  sum += x[i] * splines_.value( i + 1, T );
+                  d += x[i] * splines_.value(i + 1, t);
+                  sum += x[i] * splines_.value(i + 1, T);
                }
             }
             double coeff = 1.0 - sum;
-            coeff /= splines_.value( N_, T );
-            d += coeff * splines_.value( N_, t );
+            coeff /= splines_.value(N_, T);
+            d += coeff * splines_.value(N_, t);
          }
 
          return d;
-   
+
       }
 
       private BSpline splines_;
@@ -245,17 +245,17 @@ namespace QLNet
    }
 
    //! Simple polynomial fitting method
-   /*  
+   /*
          This is a simple/crude, but fast and robust, means of fitting
          a yield curve.
    */
-   public class SimplePolynomialFitting : FittedBondDiscountCurve.FittingMethod 
+   public class SimplePolynomialFitting : FittedBondDiscountCurve.FittingMethod
    {
-      public SimplePolynomialFitting( int degree,
-                                      bool constrainAtZero = true,
-                                      Vector weights = null,
-                                      OptimizationMethod optimizationMethod = null)
-         :base(constrainAtZero, weights, optimizationMethod)
+      public SimplePolynomialFitting(int degree,
+                                     bool constrainAtZero = true,
+                                     Vector weights = null,
+                                     OptimizationMethod optimizationMethod = null)
+         : base(constrainAtZero, weights, optimizationMethod)
       {
          size_ = constrainAtZero ? degree : degree + 1;
       }
@@ -270,16 +270,16 @@ namespace QLNet
       {
          double d = 0.0;
 
-         if (!constrainAtZero_) 
+         if (!constrainAtZero_)
          {
-            for (int i=0; i<size_; ++i)
-               d += x[i] * BernsteinPolynomial.get( (uint)i, (uint)i, t );
-         } 
-         else 
+            for (int i = 0; i < size_; ++i)
+               d += x[i] * BernsteinPolynomial.get((uint)i, (uint)i, t);
+         }
+         else
          {
             d = 1.0;
-            for (int i=0; i<size_; ++i)
-               d += x[i] * BernsteinPolynomial.get( (uint)i + 1, (uint)i + 1, t );
+            for (int i = 0; i < size_; ++i)
+               d += x[i] * BernsteinPolynomial.get((uint)i + 1, (uint)i + 1, t);
          }
          return d;
       }
@@ -290,18 +290,18 @@ namespace QLNet
    //! Spread fitting method helper
    /*  Fits a spread curve on top of a discount function according to given parametric method
    */
-   public class SpreadFittingMethod : FittedBondDiscountCurve.FittingMethod 
+   public class SpreadFittingMethod : FittedBondDiscountCurve.FittingMethod
    {
-      public SpreadFittingMethod( FittedBondDiscountCurve.FittingMethod method, Handle<YieldTermStructure> discountCurve )
-         :base(method != null ? method.constrainAtZero() : true, 
-               method != null ? method.weights() : null, 
-					method != null ? method.optimizationMethod() : null)
+      public SpreadFittingMethod(FittedBondDiscountCurve.FittingMethod method, Handle<YieldTermStructure> discountCurve)
+         : base(method != null ? method.constrainAtZero() : true,
+                method != null ? method.weights() : null,
+                method != null ? method.optimizationMethod() : null)
       {
          method_ = method;
          discountingCurve_ = discountCurve;
 
-         Utils.QL_REQUIRE( method != null,()=> "Fitting method is empty" );
-         Utils.QL_REQUIRE( !discountingCurve_.empty(),()=> "Discounting curve cannot be empty" );
+         Utils.QL_REQUIRE(method != null, () => "Fitting method is empty");
+         Utils.QL_REQUIRE(!discountingCurve_.empty(), () => "Discounting curve cannot be empty");
       }
 
       public override FittedBondDiscountCurve.FittingMethod clone()
@@ -312,32 +312,32 @@ namespace QLNet
       internal override void init()
       {
          //In case discount curve has a different reference date,
-		   //discount to this curve's reference date
-		   if (curve_.referenceDate() != discountingCurve_.link.referenceDate())
+         //discount to this curve's reference date
+         if (curve_.referenceDate() != discountingCurve_.link.referenceDate())
          {
-			   rebase_ = discountingCurve_.link.discount(curve_.referenceDate());
-		   }  
-		   else
+            rebase_ = discountingCurve_.link.discount(curve_.referenceDate());
+         }
+         else
          {
-			   rebase_ = 1.0;
-		   }
+            rebase_ = 1.0;
+         }
 
-		   //Call regular init
-		   base.init();
+         //Call regular init
+         base.init();
       }
 
       public override int size() { return method_.size(); }
 
       internal override double discountFunction(Vector x, double t)
       {
-         return method_.discount( x, t ) * discountingCurve_.link.discount( t, true ) / rebase_;
+         return method_.discount(x, t) * discountingCurve_.link.discount(t, true) / rebase_;
       }
-		// underlying parametric method
+      // underlying parametric method
       private FittedBondDiscountCurve.FittingMethod method_;
       // adjustment in case underlying discount curve has different reference date
       private double rebase_;
       // discount curve from on top of which the spread will be calculated
       private Handle<YieldTermStructure> discountingCurve_;
-    
+
    }
 }

@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -63,8 +63,8 @@ namespace QLNet
 
       protected List<double> gearings_;
       protected List<double> spreads_;
-      protected List<double?> caps_ = new List<double?>();
-      protected List<double?> floors_ = new List<double?>();
+      protected List < double? > caps_ = new List < double? >();
+      protected List < double? > floors_ = new List < double? >();
       protected bool inArrears_;
       protected bool zeroPayments_;
 
@@ -113,11 +113,11 @@ namespace QLNet
 
       public FloatingLegBase withCaps(double? cap)
       {
-         caps_ = new List<double?>() {cap};
+         caps_ = new List < double? >() {cap};
          return this;
       }
 
-      public FloatingLegBase withCaps(List<double?> caps)
+      public FloatingLegBase withCaps(List < double? > caps)
       {
          caps_ = caps;
          return this;
@@ -125,11 +125,11 @@ namespace QLNet
 
       public FloatingLegBase withFloors(double? floor)
       {
-         floors_ = new List<double?>() {floor};
+         floors_ = new List < double? >() {floor};
          return this;
       }
 
-      public FloatingLegBase withFloors(List<double?> floors)
+      public FloatingLegBase withFloors(List < double? > floors)
       {
          floors_ = floors;
          return this;
@@ -207,12 +207,12 @@ namespace QLNet
 
       public yoyInflationLegBase withCaps(double cap)
       {
-         caps_ = new List<double?>();
+         caps_ = new List < double? >();
          caps_.Add(cap);
          return this;
       }
 
-      public yoyInflationLegBase withCaps(List<double?> caps)
+      public yoyInflationLegBase withCaps(List < double? > caps)
       {
          caps_ = caps;
          return this;
@@ -220,12 +220,12 @@ namespace QLNet
 
       public yoyInflationLegBase withFloors(double floor)
       {
-         floors_ = new List<double?>();
+         floors_ = new List < double? >();
          floors_.Add(floor);
          return this;
       }
 
-      public yoyInflationLegBase withFloors(List<double?> floors)
+      public yoyInflationLegBase withFloors(List < double? > floors)
       {
          floors_ = floors;
          return this;
@@ -237,9 +237,9 @@ namespace QLNet
       protected List<int> fixingDays_;
       protected List<double> gearings_;
       protected List<double> spreads_;
-      protected List<double?> caps_, floors_;
+      protected List < double? > caps_, floors_;
 
-    }
+   }
 
    public abstract class CPILegBase : RateLegBase
    {
@@ -251,7 +251,7 @@ namespace QLNet
 
       public CPILegBase withFixedRates(double fixedRate)
       {
-         fixedRates_ = new List<double>() { fixedRate }; 
+         fixedRates_ = new List<double>() { fixedRate };
          return this;
       }
 
@@ -279,7 +279,7 @@ namespace QLNet
          return this;
       }
 
-       
+
       public CPILegBase withFixingDays(int fixingDays)
       {
          fixingDays_ = new List<int>() { fixingDays };
@@ -306,11 +306,11 @@ namespace QLNet
 
       public CPILegBase withCaps(double cap)
       {
-         caps_ = new List<double?>() { cap };
+         caps_ = new List < double? >() { cap };
          return this;
       }
 
-      public CPILegBase withCaps(List<double?> cap)
+      public CPILegBase withCaps(List < double? > cap)
       {
          caps_ = cap;
          return this;
@@ -318,11 +318,11 @@ namespace QLNet
 
       public CPILegBase withFloors(double floors)
       {
-         floors_ = new List<double?>() { floors };
+         floors_ = new List < double? >() { floors };
          return this;
       }
 
-      public CPILegBase withFloors(List<double?> floors)
+      public CPILegBase withFloors(List < double? > floors)
       {
          floors_ = floors;
          return this;
@@ -345,9 +345,9 @@ namespace QLNet
       protected InterpolationType observationInterpolation_;
       protected bool subtractInflationNominal_;
       protected List<double> spreads_;
-      protected List<double?> caps_, floors_;
+      protected List < double? > caps_, floors_;
       protected Calendar paymentCalendar_;
-    
+
       protected Period exCouponPeriod_;
       protected Calendar exCouponCalendar_;
       protected BusinessDayConvention exCouponAdjustment_;

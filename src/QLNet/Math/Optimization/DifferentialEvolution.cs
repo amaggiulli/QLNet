@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -66,7 +66,7 @@ namespace QLNet
          public Vector values { get; set; }
          public double cost { get; set; }
 
-         public Candidate(int size )
+         public Candidate(int size)
          {
             values = new Vector(size, 0.0);
             cost = 0.0;
@@ -101,7 +101,7 @@ namespace QLNet
          public CrossoverType crossoverType { get; set; }
          public int populationMembers { get; set; }
          public double stepsizeWeight { get; set; }
-         public double crossoverProbability{ get; set; }
+         public double crossoverProbability { get; set; }
          public ulong seed { get; set; }
          public bool applyBounds { get; set; }
          public bool crossoverIsAdaptive { get; set; }
@@ -127,8 +127,8 @@ namespace QLNet
          public Configuration withCrossoverProbability(double p)
          {
             Utils.QL_REQUIRE(p >= 0.0 && p <= 1.0,
-               () => "Crossover probability (" + p
-                                               + ") must be in [0,1] range");
+                             () => "Crossover probability (" + p
+                             + ") must be in [0,1] range");
             crossoverProbability = p;
             return this;
          }
@@ -155,8 +155,8 @@ namespace QLNet
          public Configuration withStepsizeWeight(double w)
          {
             Utils.QL_REQUIRE(w >= 0 && w <= 2.0,
-               () => "Step size weight (" + w
-                                          + ") must be in [0,2] range");
+                             () => "Step size weight (" + w
+                             + ") must be in [0,2] range");
             stepsizeWeight = w;
             return this;
          }
@@ -187,9 +187,9 @@ namespace QLNet
          upperBound_ = P.constraint().upperBound(P.currentValue());
          lowerBound_ = P.constraint().lowerBound(P.currentValue());
          currGenSizeWeights_ = new Vector(configuration().populationMembers,
-            configuration().stepsizeWeight);
+                                          configuration().stepsizeWeight);
          currGenCrossover_ = new Vector(configuration().populationMembers,
-            configuration().crossoverProbability);
+                                        configuration().crossoverProbability);
 
          List<Candidate> population = new InitializedList<Candidate>(configuration().populationMembers);
          population.ForEach((ii, vv) => population[ii] = new Candidate(P.currentValue().size()));
@@ -213,7 +213,7 @@ namespace QLNet
                bestMemberEver_ = tmp;
 
             if (endCriteria.checkStationaryFunctionValue(fxOld, fxNew, ref stationaryPointIteration,
-               ref ecType))
+                                                         ref ecType))
                break;
             fxOld = fxNew;
          }
@@ -234,7 +234,7 @@ namespace QLNet
       protected Candidate bestMemberEver_;
       protected MersenneTwisterUniformRng rng_;
 
-      protected void fillInitialPopulation(List<Candidate> population,Problem p)
+      protected void fillInitialPopulation(List<Candidate> population, Problem p)
       {
          // use initial values provided by the user
          population.First().values = p.currentValue().Clone();
@@ -260,8 +260,8 @@ namespace QLNet
       }
 
       protected void getCrossoverMask(List<Vector> crossoverMask,
-         List<Vector> invCrossoverMask,
-         Vector mutationProbabilities)
+                                      List<Vector> invCrossoverMask,
+                                      Vector mutationProbabilities)
       {
          for (int cmIter = 0; cmIter < crossoverMask.Count; cmIter++)
          {
@@ -283,7 +283,7 @@ namespace QLNet
          List<Candidate> population)
       {
          Vector mutationProbabilities = currGenCrossover_.Clone();
-         
+
          switch (configuration().crossoverType)
          {
             case CrossoverType.Normal:
@@ -298,7 +298,7 @@ namespace QLNet
                {
                   mutationProbabilities[coIter] =
                      (1.0 - Math.Pow(currGenCrossover_[coIter],
-                         population.First().values.size()))
+                                     population.First().values.size()))
                      / (population.First().values.size()
                         * (1.0 - currGenCrossover_[coIter]));
                }
@@ -340,7 +340,7 @@ namespace QLNet
       }
 
       protected void calculateNextGeneration(List<Candidate> population,
-         CostFunction costFunction)
+                                             CostFunction costFunction)
       {
          List<Candidate> mirrorPopulation = null;
          List<Candidate> oldPopulation = (List<Candidate>) population.Clone();
@@ -363,7 +363,7 @@ namespace QLNet
                                                * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
                }
             }
-               break;
+            break;
 
             case Strategy.BestMemberWithJitter:
             {
@@ -388,7 +388,7 @@ namespace QLNet
                mirrorPopulation = new InitializedList<Candidate>(population.Count);
                mirrorPopulation.ForEach((ii, vv) => mirrorPopulation[ii] = (Candidate) bestMemberEver_.Clone());
             }
-               break;
+            break;
 
             case Strategy.CurrentToBest2Diffs:
             {
@@ -407,7 +407,7 @@ namespace QLNet
 
                mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
             }
-               break;
+            break;
 
             case Strategy.Rand1DiffWithPerVectorDither:
             {
@@ -425,10 +425,10 @@ namespace QLNet
                {
                   population[popIter].values = population[popIter].values
                                                + Vector.DirectMultiply(FWeight,
-                                                  shuffledPop1[popIter].values - shuffledPop2[popIter].values);
+                                                                       shuffledPop1[popIter].values - shuffledPop2[popIter].values);
                }
             }
-               break;
+            break;
 
             case Strategy.Rand1DiffWithDither:
             {
@@ -447,7 +447,7 @@ namespace QLNet
                                                             shuffledPop2[popIter].values);
                }
             }
-               break;
+            break;
 
             case Strategy.EitherOrWithOptimalRecombination:
             {
@@ -475,11 +475,11 @@ namespace QLNet
                      population[popIter].values = oldPopulation[popIter].values
                                                   + K
                                                   * (shuffledPop1[popIter].values - shuffledPop2[popIter].values
-                                                                                  - 2.0 * population[popIter].values);
+                                                     - 2.0 * population[popIter].values);
                   }
                }
             }
-               break;
+            break;
 
             case Strategy.Rand1SelfadaptiveWithRotation:
             {
@@ -506,7 +506,7 @@ namespace QLNet
                   }
                }
             }
-               break;
+            break;
 
             default:
                Utils.QL_FAIL("Unknown strategy ("
@@ -516,7 +516,7 @@ namespace QLNet
 
          // in order to avoid unnecessary copying we use the same population object for mutants
          crossover(oldPopulation, population, population, mirrorPopulation,
-            costFunction);
+                   costFunction);
       }
 
       protected Vector rotateArray(Vector inputVector)
@@ -527,10 +527,10 @@ namespace QLNet
       }
 
       protected void crossover(List<Candidate> oldPopulation,
-         List<Candidate> population,
-         List<Candidate> mutantPopulation,
-         List<Candidate> mirrorPopulation,
-         CostFunction costFunction)
+                               List<Candidate> population,
+                               List<Candidate> mutantPopulation,
+                               List<Candidate> mirrorPopulation,
+                               CostFunction costFunction)
       {
          if (configuration().crossoverIsAdaptive)
          {
@@ -552,7 +552,7 @@ namespace QLNet
          {
             population[popIter].values = Vector.DirectMultiply(oldPopulation[popIter].values, invCrossoverMask[popIter])
                                          + Vector.DirectMultiply(mutantPopulation[popIter].values,
-                                            crossoverMask[popIter]);
+                                                                 crossoverMask[popIter]);
             // immediately apply bounds if specified
             if (configuration().applyBounds)
             {

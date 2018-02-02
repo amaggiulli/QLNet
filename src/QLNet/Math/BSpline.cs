@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -41,38 +41,38 @@ namespace QLNet
          n_ = n;
          knots_ = knots;
 
-         Utils.QL_REQUIRE( p >= 1,()=> "lowest degree B-spline has p = 1" );
-         Utils.QL_REQUIRE( n >= 1,()=> "number of control points n+1 >= 2" );
-         Utils.QL_REQUIRE( p <= n,()=> "must have p <= n" );
+         Utils.QL_REQUIRE(p >= 1, () => "lowest degree B-spline has p = 1");
+         Utils.QL_REQUIRE(n >= 1, () => "number of control points n+1 >= 2");
+         Utils.QL_REQUIRE(p <= n, () => "must have p <= n");
 
-         Utils.QL_REQUIRE( knots.Count == p + n + 2,()=> "number of knots must equal p+n+2" );
+         Utils.QL_REQUIRE(knots.Count == p + n + 2, () => "number of knots must equal p+n+2");
 
-         for ( int i = 0; i < knots.Count - 1; ++i )
+         for (int i = 0; i < knots.Count - 1; ++i)
          {
-            Utils.QL_REQUIRE( knots[i] <= knots[i + 1],()=> "knots points must be nondecreasing" );
+            Utils.QL_REQUIRE(knots[i] <= knots[i + 1], () => "knots points must be nondecreasing");
          }
       }
 
       public double value(int i, double x)
       {
-         Utils.QL_REQUIRE( i <= n_,()=> "i must not be greater than n" );
-         return N( i, p_, x );
+         Utils.QL_REQUIRE(i <= n_, () => "i must not be greater than n");
+         return N(i, p_, x);
       }
 
       // recursive definition of N, the B-spline basis function
       private double N(int i, int p, double x)
       {
-         if (p==0) 
+         if (p == 0)
          {
-            return (knots_[i] <= x && x < knots_[i+1]) ? 1.0 : 0.0;
-         } 
-         else 
+            return (knots_[i] <= x && x < knots_[i + 1]) ? 1.0 : 0.0;
+         }
+         else
          {
-            return ((x - knots_[i])/(knots_[i+p] - knots_[i]))*N(i,p-1,x) +
-                ((knots_[i+p+1]-x)/(knots_[i+p+1]-knots_[i+1]))* N(i+1,p-1,x);
-        }
-      
-      }   
+            return ((x - knots_[i]) / (knots_[i + p] - knots_[i])) * N(i, p - 1, x) +
+                   ((knots_[i + p + 1] - x) / (knots_[i + p + 1] - knots_[i + 1])) * N(i + 1, p - 1, x);
+         }
+
+      }
 
       // e.g. p_=2 is a quadratic B-spline, p_=3 is a cubic B-Spline, etc.
       private int p_;
