@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -30,8 +30,8 @@ namespace QLNet
    */
    public class ImpliedVolTermStructure : BlackVarianceTermStructure
    {
-      public ImpliedVolTermStructure( Handle<BlackVolTermStructure> originalTS, Date referenceDate )
-         :base(referenceDate)
+      public ImpliedVolTermStructure(Handle<BlackVolTermStructure> originalTS, Date referenceDate)
+         : base(referenceDate)
       {
          originalTS_ = originalTS;
          originalTS_.registerWith(update);
@@ -43,25 +43,25 @@ namespace QLNet
       public override double minStrike() { return originalTS_.link.minStrike(); }
       public override double maxStrike() { return originalTS_.link.maxStrike(); }
       // Visitability
-      public virtual void accept( IAcyclicVisitor v )
+      public virtual void accept(IAcyclicVisitor v)
       {
-         if ( v != null )
-            v.visit( this );
+         if (v != null)
+            v.visit(this);
          else
-            Utils.QL_FAIL( "not an event visitor" );
+            Utils.QL_FAIL("not an event visitor");
       }
       protected override double blackVarianceImpl(double t, double strike)
       {
          /* timeShift (and/or variance) variance at evaluation date
            cannot be cached since the original curve could change
            between invocations of this method */
-         double timeShift = dayCounter().yearFraction( originalTS_.link.referenceDate(),referenceDate() );
+         double timeShift = dayCounter().yearFraction(originalTS_.link.referenceDate(), referenceDate());
          /* t is relative to the current reference date
             and needs to be converted to the time relative
             to the reference date of the original curve */
-         return originalTS_.link.blackForwardVariance( timeShift,timeShift + t,strike,true );
+         return originalTS_.link.blackForwardVariance(timeShift, timeShift + t, strike, true);
       }
-      
+
       private Handle<BlackVolTermStructure> originalTS_;
 
    }

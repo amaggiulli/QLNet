@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -25,7 +25,7 @@ namespace QLNet
    //! %settlement information
    public struct Settlement
    {
-      public enum Type { Physical, Cash };
+      public enum Type { Physical, Cash }
    }
 
    //! %Swaption class
@@ -61,7 +61,7 @@ namespace QLNet
       private VanillaSwap swap_;
       private Settlement.Type settlementType_;
 
-      public Swaption(VanillaSwap swap,Exercise exercise)
+      public Swaption(VanillaSwap swap, Exercise exercise)
          : base(new Payoff(), exercise)
       {
          settlementType_ = Settlement.Type.Physical;
@@ -69,7 +69,7 @@ namespace QLNet
          swap_.registerWith(update);
       }
 
-      public Swaption(VanillaSwap swap,Exercise exercise,Settlement.Type delivery)
+      public Swaption(VanillaSwap swap, Exercise exercise, Settlement.Type delivery)
          : base(new Payoff(), exercise)
       {
          settlementType_ = delivery;
@@ -177,19 +177,20 @@ namespace QLNet
          // at first ImpliedVolHelper::operator()(Volatility x) call
          vol_ = new SimpleQuote(-1.0);
          Handle<Quote> h = new Handle<Quote>(vol_);
-         switch (type) {
+         switch (type)
+         {
             case VolatilityType.ShiftedLognormal:
-                engine_ = new BlackSwaptionEngine(discountCurve_, h, new Actual365Fixed(), displacement);
-                break;
+               engine_ = new BlackSwaptionEngine(discountCurve_, h, new Actual365Fixed(), displacement);
+               break;
             case VolatilityType.Normal:
-                engine_ = new BachelierSwaptionEngine(discountCurve_, h, new Actual365Fixed());
-                break;
+               engine_ = new BachelierSwaptionEngine(discountCurve_, h, new Actual365Fixed());
+               break;
             default:
-                Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
-                break;
+               Utils.QL_FAIL("unknown VolatilityType (" + type.ToString() + ")");
+               break;
          }
          swaption.setupArguments(engine_.getArguments());
-         results_ = engine_.getResults() as Instrument.Results; 
+         results_ = engine_.getResults() as Instrument.Results;
       }
 
       public override double value(double x)
@@ -209,7 +210,7 @@ namespace QLNet
             vol_.setValue(x);
             engine_.calculate();
          }
-         Utils.QL_REQUIRE(results_.additionalResults.Keys.Contains("vega"),()=> "vega not provided");
+         Utils.QL_REQUIRE(results_.additionalResults.Keys.Contains("vega"), () => "vega not provided");
          return (double)results_.additionalResults["vega"];
       }
    }

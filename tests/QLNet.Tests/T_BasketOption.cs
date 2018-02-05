@@ -1,16 +1,16 @@
 ﻿/*
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,7 +21,7 @@ using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -33,26 +33,26 @@ namespace TestSuite
 #endif
    public class T_BasketOption
    {
-      public enum BasketType { MinBasket, MaxBasket, SpreadBasket };
+      public enum BasketType { MinBasket, MaxBasket, SpreadBasket }
       public struct BasketOptionTwoData
       {
-         public BasketOptionTwoData( BasketType _basketType,Option.Type _type,double _strike,double _s1,double _s2,double _q1,
-                                     double _q2,double _r,double _t,double _v1,double _v2,double _rho,double _result,double _tol)
+         public BasketOptionTwoData(BasketType _basketType, Option.Type _type, double _strike, double _s1, double _s2, double _q1,
+                                    double _q2, double _r, double _t, double _v1, double _v2, double _rho, double _result, double _tol)
          {
-                     
-            basketType=_basketType;
-            type= _type;
-            strike=_strike;
-            s1=_s1;
-            s2=_s2;
-            q1=_q1;
-            q2=_q2;
+
+            basketType = _basketType;
+            type = _type;
+            strike = _strike;
+            s1 = _s1;
+            s2 = _s2;
+            q1 = _q1;
+            q2 = _q2;
             r = _r;
             t = _t; // years
-            v1=_v1;
-            v2=_v2;
-            rho=_rho;
-            result= _result;
+            v1 = _v1;
+            v2 = _v2;
+            rho = _rho;
+            result = _result;
             tol = _tol;
          }
 
@@ -70,66 +70,67 @@ namespace TestSuite
          public double rho;
          public double result;
          public double tol;
-      };
-      public BasketPayoff basketTypeToPayoff(BasketType basketType,Payoff p) 
+      }
+      public BasketPayoff basketTypeToPayoff(BasketType basketType, Payoff p)
       {
-        switch (basketType) {
-          case BasketType.MinBasket:
-            return new MinBasketPayoff(p);
-          case BasketType.MaxBasket:
-            return new MaxBasketPayoff(p);
-          case BasketType.SpreadBasket:
-            return new SpreadBasketPayoff(p);
-        }
-        Utils.QL_FAIL("unknown basket option type");
+         switch (basketType)
+         {
+            case BasketType.MinBasket:
+               return new MinBasketPayoff(p);
+            case BasketType.MaxBasket:
+               return new MaxBasketPayoff(p);
+            case BasketType.SpreadBasket:
+               return new SpreadBasketPayoff(p);
+         }
+         Utils.QL_FAIL("unknown basket option type");
          return null;
       }
-      public string basketTypeToString(BasketType basketType) 
+      public string basketTypeToString(BasketType basketType)
       {
-        switch (basketType) 
-        {
-           case BasketType.MinBasket:
-            return "MinBasket";
-           case BasketType.MaxBasket:
-            return "MaxBasket";
-           case BasketType.SpreadBasket:
-            return "Spread";
-        }
-        Utils.QL_FAIL("unknown basket option type");
-        return String.Empty;
+         switch (basketType)
+         {
+            case BasketType.MinBasket:
+               return "MinBasket";
+            case BasketType.MaxBasket:
+               return "MaxBasket";
+            case BasketType.SpreadBasket:
+               return "Spread";
+         }
+         Utils.QL_FAIL("unknown basket option type");
+         return String.Empty;
       }
-      public void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise, 
-                              double s1, double s2, double q1, double q2, double r, Date today, double v1, double v2, double rho, 
-                              double expected, double calculated, double error, double tolerance) 
+      public void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise,
+                                   double s1, double s2, double q1, double q2, double r, Date today, double v1, double v2, double rho,
+                                   double expected, double calculated, double error, double tolerance)
       {
-         QAssert.Fail( Utilities.exerciseTypeToString(exercise) + " " 
-                      + payoff.optionType() + " option on " 
-                      + basketTypeToString(basketType) 
-                      + " with " + Utilities.payoffTypeToString(payoff) + " payoff:\n" 
-                      + "1st underlying value: " + s1 + "\n" 
-                      + "2nd underlying value: " + s2 + "\n" 
-                      + "              strike: " + payoff.strike() + "\n" 
-                      + "  1st dividend yield: " + q1 + "\n" 
-                      + "  2nd dividend yield: " + q2 + "\n" 
-                      + "      risk-free rate: " + r + "\n" 
-                      + "      reference date: " + today + "\n" 
-                      + "            maturity: " + exercise.lastDate() + "\n" 
-                      + "1st asset volatility: " + v1 + "\n" 
-                      + "2nd asset volatility: " + v2 + "\n" 
-                      + "         correlation: " + rho + "\n\n" 
-                      + "    expected   " + greekName + ": " + expected + "\n" 
+         QAssert.Fail(Utilities.exerciseTypeToString(exercise) + " "
+                      + payoff.optionType() + " option on "
+                      + basketTypeToString(basketType)
+                      + " with " + Utilities.payoffTypeToString(payoff) + " payoff:\n"
+                      + "1st underlying value: " + s1 + "\n"
+                      + "2nd underlying value: " + s2 + "\n"
+                      + "              strike: " + payoff.strike() + "\n"
+                      + "  1st dividend yield: " + q1 + "\n"
+                      + "  2nd dividend yield: " + q2 + "\n"
+                      + "      risk-free rate: " + r + "\n"
+                      + "      reference date: " + today + "\n"
+                      + "            maturity: " + exercise.lastDate() + "\n"
+                      + "1st asset volatility: " + v1 + "\n"
+                      + "2nd asset volatility: " + v2 + "\n"
+                      + "         correlation: " + rho + "\n\n"
+                      + "    expected   " + greekName + ": " + expected + "\n"
                       + "    calculated " + greekName + ": " + calculated + "\n"
-                      + "    error:            " + error + "\n" 
+                      + "    error:            " + error + "\n"
                       + "    tolerance:        " + tolerance);
 
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
-      public void testEuroTwoValues() 
+      public void testEuroTwoValues()
       {
          // Testing two-asset European basket options...
 
@@ -140,7 +141,7 @@ namespace TestSuite
             "Option pricing formulas", E.G. Haug, McGraw-Hill 1998 pag 56-58
             European two asset max basket options
          */
-         BasketOptionTwoData[] values = 
+         BasketOptionTwoData[] values =
          {
             // basketType,   optionType, strike,    s1,    s2,   q1,   q2,    r,    t,   v1,   v2,  rho, result, tol
             // data from http://www.maths.ox.ac.uk/~firth/computing/excel.shtml
@@ -204,20 +205,20 @@ namespace TestSuite
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.1, 0.20, 0.25, -0.5, 5.4061, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.1, 0.20, 0.25,  0.0, 4.3451, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.1, 0.20, 0.25,  0.5, 2.9723, 1.0e-3),
-            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.20, -0.5,10.7517, 1.0e-3),
+            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.20, -0.5, 10.7517, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.20,  0.0, 8.7020, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.20,  0.5, 6.0257, 1.0e-3),
-            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.25, 0.20, -0.5,12.1941, 1.0e-3),
+            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.25, 0.20, -0.5, 12.1941, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.25, 0.20,  0.0, 9.9340, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.25, 0.20,  0.5, 7.0067, 1.0e-3),
-            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.25, -0.5,12.1483, 1.0e-3),
+            new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.25, -0.5, 12.1483, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.25,  0.0, 9.8780, 1.0e-3),
             new BasketOptionTwoData(BasketType.SpreadBasket, Option.Type.Call, 3.0,  122.0, 120.0, 0.0, 0.0, 0.10,  0.5, 0.20, 0.25,  0.5, 6.9284, 1.0e-3)
          };
 
          DayCounter dc = new Actual360();
-         
-         
+
+
          Date today = Date.Today;
 
          SimpleQuote spot1 = new SimpleQuote(0.0);
@@ -239,50 +240,50 @@ namespace TestSuite
          //double mcRelativeErrorTolerance = 0.01;
          //double fdRelativeErrorTolerance = 0.01;
 
-         for (int i=0; i<values.Length; i++) 
+         for (int i = 0; i < values.Length; i++)
          {
 
             PlainVanillaPayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
-            Date exDate = today + (int)(values[i].t*360+0.5);
+            Date exDate = today + (int)(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
             spot1 .setValue(values[i].s1);
             spot2 .setValue(values[i].s2);
             qRate1.setValue(values[i].q1);
             qRate2.setValue(values[i].q2);
-            rRate .setValue(values[i].r );
+            rRate .setValue(values[i].r);
             vol1  .setValue(values[i].v1);
             vol2  .setValue(values[i].v2);
 
-        
+
             IPricingEngine analyticEngine = null;
             GeneralizedBlackScholesProcess p1 = null, p2 = null;
-        
-            switch(values[i].basketType) 
+
+            switch (values[i].basketType)
             {
-               case BasketType.MaxBasket: 
+               case BasketType.MaxBasket:
                case BasketType.MinBasket:
-                  p1 = new BlackScholesMertonProcess( new Handle<Quote>(spot1),
-                                                      new Handle<YieldTermStructure>(qTS1),
-                                                      new Handle<YieldTermStructure>(rTS),
-                                                      new Handle<BlackVolTermStructure>(volTS1));
-                  p2 = new BlackScholesMertonProcess( new Handle<Quote>(spot2),
-                                                      new Handle<YieldTermStructure>(qTS2),
-                                                      new Handle<YieldTermStructure>(rTS),
-                                                      new Handle<BlackVolTermStructure>(volTS2));
-                  analyticEngine= new StulzEngine(p1, p2, values[i].rho);
+                  p1 = new BlackScholesMertonProcess(new Handle<Quote>(spot1),
+                                                     new Handle<YieldTermStructure>(qTS1),
+                                                     new Handle<YieldTermStructure>(rTS),
+                                                     new Handle<BlackVolTermStructure>(volTS1));
+                  p2 = new BlackScholesMertonProcess(new Handle<Quote>(spot2),
+                                                     new Handle<YieldTermStructure>(qTS2),
+                                                     new Handle<YieldTermStructure>(rTS),
+                                                     new Handle<BlackVolTermStructure>(volTS2));
+                  analyticEngine = new StulzEngine(p1, p2, values[i].rho);
                   break;
-          
+
                case BasketType.SpreadBasket:
-                  p1 = new BlackProcess( new Handle<Quote>(spot1),
-                                         new Handle<YieldTermStructure>(rTS),
-                                         new Handle<BlackVolTermStructure>(volTS1));
-                  p2 = new BlackProcess( new Handle<Quote>(spot2),
-                                         new Handle<YieldTermStructure>(rTS),
-                                         new Handle<BlackVolTermStructure>(volTS2));
-              
-                  analyticEngine= new KirkEngine((BlackProcess)p1, (BlackProcess)p2, values[i].rho);
+                  p1 = new BlackProcess(new Handle<Quote>(spot1),
+                                        new Handle<YieldTermStructure>(rTS),
+                                        new Handle<BlackVolTermStructure>(volTS1));
+                  p2 = new BlackProcess(new Handle<Quote>(spot2),
+                                        new Handle<YieldTermStructure>(rTS),
+                                        new Handle<BlackVolTermStructure>(volTS2));
+
+                  analyticEngine = new KirkEngine((BlackProcess)p1, (BlackProcess)p2, values[i].rho);
                   break;
 
                default:
@@ -293,65 +294,66 @@ namespace TestSuite
 
             List<StochasticProcess1D> procs = new List<StochasticProcess1D> {p1, p2};
 
-            Matrix correlationMatrix = new Matrix(2,2, values[i].rho);
-            for (int j=0; j < 2; j++) 
+            Matrix correlationMatrix = new Matrix(2, 2, values[i].rho);
+            for (int j = 0; j < 2; j++)
             {
-               correlationMatrix[j,j] = 1.0;
+               correlationMatrix[j, j] = 1.0;
             }
 
-            StochasticProcessArray process = new StochasticProcessArray(procs,correlationMatrix);
+            StochasticProcessArray process = new StochasticProcessArray(procs, correlationMatrix);
 
             //IPricingEngine mcEngine = MakeMCEuropeanBasketEngine<PseudoRandom, Statistics>(process)
             //                           .withStepsPerYear(1)
             //                           .withSamples(10000)
             //                           .withSeed(42);
 
-            
+
 
             //IPricingEngine fdEngine = new Fd2dBlackScholesVanillaEngine(p1, p2, values[i].rho, 50, 50, 15);
-        
-            BasketOption basketOption = new BasketOption(basketTypeToPayoff(values[i].basketType,payoff),exercise);
+
+            BasketOption basketOption = new BasketOption(basketTypeToPayoff(values[i].basketType, payoff), exercise);
 
             // analytic engine
             basketOption.setPricingEngine(analyticEngine);
             double calculated = basketOption.NPV();
             double expected = values[i].result;
-            double error = Math.Abs(calculated-expected);
-            if (error > values[i].tol) {
+            double error = Math.Abs(calculated - expected);
+            if (error > values[i].tol)
+            {
                REPORT_FAILURE_2("value", values[i].basketType, payoff, exercise,
-                                 values[i].s1, values[i].s2, values[i].q1,
-                                 values[i].q2, values[i].r, today, values[i].v1,
-                                 values[i].v2, values[i].rho, values[i].result,
-                                 calculated, error, values[i].tol);
+                                values[i].s1, values[i].s2, values[i].q1,
+                                values[i].q2, values[i].r, today, values[i].v1,
+                                values[i].v2, values[i].rho, values[i].result,
+                                calculated, error, values[i].tol);
             }
 
-           // // fd engine
-           // basketOption.setPricingEngine(fdEngine);
-           // calculated = basketOption.NPV();
-           // double relError = relativeError(calculated, expected, expected);
-           // if (relError > mcRelativeErrorTolerance ) 
-           // {
-           //    REPORT_FAILURE_2("FD value", values[i].basketType, payoff,
-           //                      exercise, values[i].s1, values[i].s2,
-           //                      values[i].q1, values[i].q2, values[i].r,
-           //                      today, values[i].v1, values[i].v2, values[i].rho,
-           //                      values[i].result, calculated, relError,
-           //                      fdRelativeErrorTolerance);
-           // }
+            // // fd engine
+            // basketOption.setPricingEngine(fdEngine);
+            // calculated = basketOption.NPV();
+            // double relError = relativeError(calculated, expected, expected);
+            // if (relError > mcRelativeErrorTolerance )
+            // {
+            //    REPORT_FAILURE_2("FD value", values[i].basketType, payoff,
+            //                      exercise, values[i].s1, values[i].s2,
+            //                      values[i].q1, values[i].q2, values[i].r,
+            //                      today, values[i].v1, values[i].v2, values[i].rho,
+            //                      values[i].result, calculated, relError,
+            //                      fdRelativeErrorTolerance);
+            // }
 
-           //// mc engine
-           //basketOption.setPricingEngine(mcEngine);
-           //calculated = basketOption.NPV();
-           //relError = relativeError(calculated, expected, values[i].s1);
-           //if (relError > mcRelativeErrorTolerance ) 
-           //{
-           //    REPORT_FAILURE_2("MC value", values[i].basketType, payoff,
-           //                     exercise, values[i].s1, values[i].s2,
-           //                     values[i].q1, values[i].q2, values[i].r,
-           //                     today, values[i].v1, values[i].v2, values[i].rho,
-           //                     values[i].result, calculated, relError,
-           //                     mcRelativeErrorTolerance);
-           //}
+            //// mc engine
+            //basketOption.setPricingEngine(mcEngine);
+            //calculated = basketOption.NPV();
+            //relError = relativeError(calculated, expected, values[i].s1);
+            //if (relError > mcRelativeErrorTolerance )
+            //{
+            //    REPORT_FAILURE_2("MC value", values[i].basketType, payoff,
+            //                     exercise, values[i].s1, values[i].s2,
+            //                     values[i].q1, values[i].q2, values[i].r,
+            //                     today, values[i].v1, values[i].v2, values[i].rho,
+            //                     values[i].result, calculated, relError,
+            //                     mcRelativeErrorTolerance);
+            //}
          }
       }
    }

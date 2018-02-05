@@ -1,17 +1,17 @@
 /*
  Copyright (C) 2008 Andrea Maggiulli
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,7 +21,7 @@ using System;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -55,55 +55,56 @@ namespace TestSuite
             precision = _precision;
          }
 
-      };
+      }
 
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testConversions()
       {
-         InterestRateData[] cases = {
-         // data from "Option Pricing Formulas", Haug, pag.181-182
-         // Rate,Compounding,        Frequency,   Time, Compounding2,      Frequency2,  Rate2, precision
-         new InterestRateData(0.0800, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Continuous, Frequency.Annual,     0.0792, 4),
-         new InterestRateData(0.1200, Compounding.Continuous, Frequency.Annual,    1.00, Compounding.Compounded, Frequency.Annual,     0.1275, 4),
-         new InterestRateData(0.0800, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Compounded, Frequency.Annual,     0.0824, 4),
-         new InterestRateData(0.0700, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Compounded, Frequency.Semiannual, 0.0706, 4),
-         // undocumented, but reasonable :)
-         new InterestRateData(0.0100, Compounding.Compounded, Frequency.Annual,            1.00,   Compounding.Simple,     Frequency.Annual,           0.0100, 4),
-         new InterestRateData(0.0200, Compounding.Simple,     Frequency.Annual,            1.00,   Compounding.Compounded, Frequency.Annual,           0.0200, 4),
-         new InterestRateData(0.0300, Compounding.Compounded, Frequency.Semiannual,        0.50,   Compounding.Simple,     Frequency.Annual,           0.0300, 4),
-         new InterestRateData(0.0400, Compounding.Simple,     Frequency.Annual,            0.50,   Compounding.Compounded, Frequency.Semiannual,       0.0400, 4),
-         new InterestRateData(0.0500, Compounding.Compounded, Frequency.EveryFourthMonth,  1.0/3,  Compounding.Simple,     Frequency.Annual,           0.0500, 4),
-         new InterestRateData(0.0600, Compounding.Simple,     Frequency.Annual,            1.0/3,  Compounding.Compounded, Frequency.EveryFourthMonth, 0.0600, 4),
-         new InterestRateData(0.0500, Compounding.Compounded, Frequency.Quarterly,         0.25,   Compounding.Simple,     Frequency.Annual,           0.0500, 4),
-         new InterestRateData(0.0600, Compounding.Simple,     Frequency.Annual,            0.25,   Compounding.Compounded, Frequency.Quarterly,        0.0600, 4),
-         new InterestRateData(0.0700, Compounding.Compounded, Frequency.Bimonthly,         1.0/6,  Compounding.Simple,     Frequency.Annual,           0.0700, 4),
-         new InterestRateData(0.0800, Compounding.Simple,     Frequency.Annual,            1.0/6,  Compounding.Compounded, Frequency.Bimonthly,        0.0800, 4),
-         new InterestRateData(0.0900, Compounding.Compounded, Frequency.Monthly,           1.0/12, Compounding.Simple,     Frequency.Annual,           0.0900, 4),
-         new InterestRateData(0.1000, Compounding.Simple,     Frequency.Annual,            1.0/12, Compounding.Compounded, Frequency.Monthly,          0.1000, 4),
+         InterestRateData[] cases =
+         {
+            // data from "Option Pricing Formulas", Haug, pag.181-182
+            // Rate,Compounding,        Frequency,   Time, Compounding2,      Frequency2,  Rate2, precision
+            new InterestRateData(0.0800, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Continuous, Frequency.Annual,     0.0792, 4),
+            new InterestRateData(0.1200, Compounding.Continuous, Frequency.Annual,    1.00, Compounding.Compounded, Frequency.Annual,     0.1275, 4),
+            new InterestRateData(0.0800, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Compounded, Frequency.Annual,     0.0824, 4),
+            new InterestRateData(0.0700, Compounding.Compounded, Frequency.Quarterly, 1.00, Compounding.Compounded, Frequency.Semiannual, 0.0706, 4),
+            // undocumented, but reasonable :)
+            new InterestRateData(0.0100, Compounding.Compounded, Frequency.Annual,            1.00,   Compounding.Simple,     Frequency.Annual,           0.0100, 4),
+            new InterestRateData(0.0200, Compounding.Simple,     Frequency.Annual,            1.00,   Compounding.Compounded, Frequency.Annual,           0.0200, 4),
+            new InterestRateData(0.0300, Compounding.Compounded, Frequency.Semiannual,        0.50,   Compounding.Simple,     Frequency.Annual,           0.0300, 4),
+            new InterestRateData(0.0400, Compounding.Simple,     Frequency.Annual,            0.50,   Compounding.Compounded, Frequency.Semiannual,       0.0400, 4),
+            new InterestRateData(0.0500, Compounding.Compounded, Frequency.EveryFourthMonth,  1.0 / 3,  Compounding.Simple,     Frequency.Annual,           0.0500, 4),
+            new InterestRateData(0.0600, Compounding.Simple,     Frequency.Annual,            1.0 / 3,  Compounding.Compounded, Frequency.EveryFourthMonth, 0.0600, 4),
+            new InterestRateData(0.0500, Compounding.Compounded, Frequency.Quarterly,         0.25,   Compounding.Simple,     Frequency.Annual,           0.0500, 4),
+            new InterestRateData(0.0600, Compounding.Simple,     Frequency.Annual,            0.25,   Compounding.Compounded, Frequency.Quarterly,        0.0600, 4),
+            new InterestRateData(0.0700, Compounding.Compounded, Frequency.Bimonthly,         1.0 / 6,  Compounding.Simple,     Frequency.Annual,           0.0700, 4),
+            new InterestRateData(0.0800, Compounding.Simple,     Frequency.Annual,            1.0 / 6,  Compounding.Compounded, Frequency.Bimonthly,        0.0800, 4),
+            new InterestRateData(0.0900, Compounding.Compounded, Frequency.Monthly,           1.0 / 12, Compounding.Simple,     Frequency.Annual,           0.0900, 4),
+            new InterestRateData(0.1000, Compounding.Simple,     Frequency.Annual,            1.0 / 12, Compounding.Compounded, Frequency.Monthly,          0.1000, 4),
 
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Annual,     0.0300, 4),
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Semiannual, 0.0300, 4),
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Quarterly,  0.0300, 4),
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.50, Compounding.Simple,     Frequency.Annual,     0.0300, 4),
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.50, Compounding.Simple,     Frequency.Semiannual, 0.0300, 4),
-         new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.75, Compounding.Compounded, Frequency.Semiannual, 0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Annual,     0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Semiannual, 0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.25, Compounding.Simple,     Frequency.Quarterly,  0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.50, Compounding.Simple,     Frequency.Annual,     0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.50, Compounding.Simple,     Frequency.Semiannual, 0.0300, 4),
+            new InterestRateData(0.0300, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.75, Compounding.Compounded, Frequency.Semiannual, 0.0300, 4),
 
-         new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple, Frequency.Semiannual, 0.25, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4),
 
-         new InterestRateData(0.0400, Compounding.Compounded, Frequency.Quarterly,  0.50, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.50, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.50, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Compounded, Frequency.Quarterly,  0.50, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.50, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.50, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4),
 
-         new InterestRateData(0.0400, Compounding.Compounded, Frequency.Quarterly,  0.75, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Compounded, Frequency.Semiannual, 0.75, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
-         new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.75, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4)
+            new InterestRateData(0.0400, Compounding.Compounded, Frequency.Quarterly,  0.75, Compounding.SimpleThenCompounded, Frequency.Quarterly,  0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Compounded, Frequency.Semiannual, 0.75, Compounding.SimpleThenCompounded, Frequency.Semiannual, 0.0400, 4),
+            new InterestRateData(0.0400, Compounding.Simple,     Frequency.Semiannual, 0.75, Compounding.SimpleThenCompounded, Frequency.Annual,     0.0400, 4)
          };
 
          Rounding roundingPrecision;
@@ -119,10 +120,10 @@ namespace TestSuite
          double error;
          double disc;
 
-         for (int i = 0; i < cases.Length-1 ; i++)
+         for (int i = 0; i < cases.Length - 1 ; i++)
          {
             ir = new InterestRate(cases[i].r, new Actual360(), cases[i].comp, cases[i].freq);
-            d2 = d1 + new Period((int)(360 * cases[i].t + 0.5) ,TimeUnit.Days);
+            d2 = d1 + new Period((int)(360 * cases[i].t + 0.5), TimeUnit.Days);
             roundingPrecision = new Rounding(cases[i].precision);
 
             // check that the compound factor is the inverse of the discount factor
@@ -149,7 +150,7 @@ namespace TestSuite
             // check that the equivalent rate with *same* daycounter,
             // compounding, and frequency is the *same* rate
             //r2 = ir.equivalentRate(d1, d2, ir.dayCounter(), ir.compounding(), ir.frequency()).rate();
-            r2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(),d1, d2).value();
+            r2 = ir.equivalentRate(ir.dayCounter(), ir.compounding(), ir.frequency(), d1, d2).value();
             error = Math.Abs(ir.rate() - r2);
             if (error > 1e-15)
                QAssert.Fail("original rate: " + ir + " equivalent rate: " + r2 + " error: " + error);

@@ -2,18 +2,18 @@
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -38,7 +38,7 @@ namespace QLNet
    //        where csi=+1 or csi=-1.
    //        The evaluation of the coupon is made using the call/put spread
    //        replication method.
-   //    
+   //
    //    ! \ingroup instruments
    //
    //        \test
@@ -64,7 +64,7 @@ namespace QLNet
    //          of the call-put parity relation.
    //        - the correctness of the returned value is tested by the relationship
    //          between prices in case of different replication types.
-   //    
+   //
    public class DigitalCoupon : FloatingRateCoupon
    {
       // need by CashFlowVectors
@@ -72,19 +72,20 @@ namespace QLNet
 
       //! Constructors
       //! general constructor
-      public DigitalCoupon(FloatingRateCoupon underlying, 
+      public DigitalCoupon(FloatingRateCoupon underlying,
                            double? callStrike = null,
-                           Position.Type callPosition = Position.Type.Long, 
-                           bool isCallATMIncluded = false, 
-                           double? callDigitalPayoff = null, 
+                           Position.Type callPosition = Position.Type.Long,
+                           bool isCallATMIncluded = false,
+                           double? callDigitalPayoff = null,
                            double? putStrike = null,
-                           Position.Type putPosition = Position.Type.Long, 
-                           bool isPutATMIncluded = false, 
-                           double? putDigitalPayoff = null, 
+                           Position.Type putPosition = Position.Type.Long,
+                           bool isPutATMIncluded = false,
+                           double? putDigitalPayoff = null,
                            DigitalReplication replication = null)
-         : base(underlying.date(), underlying.nominal(), underlying.accrualStartDate(), underlying.accrualEndDate(), underlying.fixingDays, underlying.index(), underlying.gearing(), underlying.spread(), underlying.referencePeriodStart, underlying.referencePeriodEnd, underlying.dayCounter(), underlying.isInArrears())
+      : base(underlying.date(), underlying.nominal(), underlying.accrualStartDate(), underlying.accrualEndDate(), underlying.fixingDays, underlying.index(), underlying.gearing(), underlying.spread(), underlying.referencePeriodStart, underlying.referencePeriodEnd, underlying.dayCounter(), underlying.isInArrears())
       {
-         if (replication == null) replication = new DigitalReplication();
+         if (replication == null)
+            replication = new DigitalReplication();
 
          underlying_ = underlying;
          callCsi_ = 0.0;
@@ -102,21 +103,21 @@ namespace QLNet
          replicationType_ = replication.replicationType();
 
 
-         Utils.QL_REQUIRE(replication.gap() > 0.0,()=> "Non positive epsilon not allowed");
+         Utils.QL_REQUIRE(replication.gap() > 0.0, () => "Non positive epsilon not allowed");
 
          if (putStrike == null)
-            Utils.QL_REQUIRE(putDigitalPayoff == null,()=> "Put Cash rate non allowed if put strike is null");
+            Utils.QL_REQUIRE(putDigitalPayoff == null, () => "Put Cash rate non allowed if put strike is null");
 
          if (callStrike == null)
-            Utils.QL_REQUIRE(callDigitalPayoff == null,()=> "Call Cash rate non allowed if call strike is null");
+            Utils.QL_REQUIRE(callDigitalPayoff == null, () => "Call Cash rate non allowed if call strike is null");
 
          if (callStrike != null)
          {
-            Utils.QL_REQUIRE(callStrike >= 0.0,()=> "negative call strike not allowed");
+            Utils.QL_REQUIRE(callStrike >= 0.0, () => "negative call strike not allowed");
 
             hasCallStrike_ = true;
             callStrike_ = callStrike.GetValueOrDefault();
-            Utils.QL_REQUIRE(callStrike_ >= replication.gap() / 2.0,()=> "call strike < eps/2");
+            Utils.QL_REQUIRE(callStrike_ >= replication.gap() / 2.0, () => "call strike < eps/2");
 
             switch (callPosition)
             {
@@ -138,7 +139,7 @@ namespace QLNet
          }
          if (putStrike != null)
          {
-            Utils.QL_REQUIRE(putStrike >= 0.0,()=> "negative put strike not allowed");
+            Utils.QL_REQUIRE(putStrike >= 0.0, () => "negative put strike not allowed");
             hasPutStrike_ = true;
             putStrike_ = putStrike.GetValueOrDefault();
             switch (putPosition)
@@ -249,7 +250,7 @@ namespace QLNet
       public override double rate()
       {
 
-         Utils.QL_REQUIRE(underlying_.pricer()!=null,()=> "pricer not set");
+         Utils.QL_REQUIRE(underlying_.pricer() != null, () => "pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
          Date today = Settings.evaluationDate();
@@ -332,7 +333,7 @@ namespace QLNet
       }
       //        ! Returns the call option rate
       //           (multiplied by: nominal*accrualperiod*discount is the NPV of the option)
-      //        
+      //
       public double callOptionRate()
       {
 
@@ -357,7 +358,7 @@ namespace QLNet
       }
       //        ! Returns the put option rate
       //           (multiplied by: nominal*accrualperiod*discount is the NPV of the option)
-      //        
+      //
       public double putOptionRate()
       {
 

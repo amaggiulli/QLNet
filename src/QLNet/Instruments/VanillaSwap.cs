@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- * 
+ *
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -29,18 +29,18 @@ namespace QLNet
                  NPV and therefore affect the fair-rate and
                  fair-spread calculation. This might not be what you
                  want.
-     
-   \test  
+
+   \test
    - the correctness of the returned value is tested by checking
    - that the price of a swap paying the fair fixed rate is null.
    - that the price of a swap receiving the fair floating-rate spread is null.
    - that the price of a swap decreases with the paid fixed rate.
    - that the price of a swap increases with the received floating-rate spread.
    - the correctness of the returned value is tested by checking it against a known good value.
-*/
+   */
    public class VanillaSwap : Swap
    {
-      public enum Type { Receiver = -1, Payer = 1 };
+      public enum Type { Receiver = -1, Payer = 1 }
 
       private Type type_;
       private double fixedRate_;
@@ -69,8 +69,8 @@ namespace QLNet
       public VanillaSwap(Type type, double nominal,
                          Schedule fixedSchedule, double fixedRate, DayCounter fixedDayCount,
                          Schedule floatSchedule, IborIndex iborIndex, double spread, DayCounter floatingDayCount,
-                         BusinessDayConvention? paymentConvention = null) :
-         base(2)
+                         BusinessDayConvention ? paymentConvention = null) :
+      base(2)
       {
          type_ = type;
          nominal_ = nominal;
@@ -88,16 +88,16 @@ namespace QLNet
             paymentConvention_ = floatingSchedule_.businessDayConvention();
 
          legs_[0] = new FixedRateLeg(fixedSchedule)
-                                     .withCouponRates(fixedRate, fixedDayCount)
-                                     .withPaymentAdjustment(paymentConvention_)
-                                     .withNotionals(nominal);
+         .withCouponRates(fixedRate, fixedDayCount)
+         .withPaymentAdjustment(paymentConvention_)
+         .withNotionals(nominal);
 
          legs_[1] = new IborLeg(floatSchedule, iborIndex)
-                                     .withPaymentDayCounter(floatingDayCount)
-            //.withFixingDays(iborIndex.fixingDays())
-                                     .withSpreads(spread)
-                                     .withNotionals(nominal)
-                                     .withPaymentAdjustment(paymentConvention_);
+         .withPaymentDayCounter(floatingDayCount)
+         //.withFixingDays(iborIndex.fixingDays())
+         .withSpreads(spread)
+         .withNotionals(nominal)
+         .withPaymentAdjustment(paymentConvention_);
 
          foreach (var cf in legs_[1])
             cf.registerWith(update);
@@ -179,40 +179,46 @@ namespace QLNet
       public double fairRate()
       {
          calculate();
-         if (fairRate_ == null) throw new ArgumentException("result not available");
+         if (fairRate_ == null)
+            throw new ArgumentException("result not available");
          return fairRate_.GetValueOrDefault();
       }
 
       public double fairSpread()
       {
          calculate();
-         if (fairSpread_ == null) throw new ArgumentException("result not available");
+         if (fairSpread_ == null)
+            throw new ArgumentException("result not available");
          return fairSpread_.GetValueOrDefault();
       }
 
       public double fixedLegBPS()
       {
          calculate();
-         if (legBPS_[0] == null) throw new ArgumentException("result not available");
+         if (legBPS_[0] == null)
+            throw new ArgumentException("result not available");
          return legBPS_[0].GetValueOrDefault();
       }
       public double fixedLegNPV()
       {
          calculate();
-         if (legNPV_[0] == null) throw new ArgumentException("result not available");
+         if (legNPV_[0] == null)
+            throw new ArgumentException("result not available");
          return legNPV_[0].GetValueOrDefault();
       }
 
       public double floatingLegBPS()
       {
          calculate();
-         if (legBPS_[1] == null) throw new ArgumentException("result not available");
+         if (legBPS_[1] == null)
+            throw new ArgumentException("result not available");
          return legBPS_[1].GetValueOrDefault();
       }
       public double floatingLegNPV()
       {
          calculate();
-         if (legNPV_[1] == null) throw new ArgumentException("result not available");
+         if (legNPV_[1] == null)
+            throw new ArgumentException("result not available");
          return legNPV_[1].GetValueOrDefault();
       }
 
@@ -244,7 +250,8 @@ namespace QLNet
          VanillaSwap.Results results = r as VanillaSwap.Results;
 
          if (results != null)
-         { // might be a swap engine, so no error is thrown
+         {
+            // might be a swap engine, so no error is thrown
             fairRate_ = results.fairRate;
             fairSpread_ = results.fairSpread;
          }
@@ -296,7 +303,8 @@ namespace QLNet
          {
             base.validate();
 
-            if (nominal.IsEqual(default(double))) throw new ArgumentException("nominal null or not set");
+            if (nominal.IsEqual(default(double)))
+               throw new ArgumentException("nominal null or not set");
             if (fixedResetDates.Count != fixedPayDates.Count)
                throw new ArgumentException("number of fixed start dates different from number of fixed payment dates");
             if (fixedPayDates.Count != fixedCoupons.Count)

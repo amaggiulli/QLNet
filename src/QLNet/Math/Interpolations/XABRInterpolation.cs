@@ -6,13 +6,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -31,25 +31,25 @@ namespace QLNet
 
    public interface IModel
    {
-      void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams);
+      void defaultValues(List < double? > param, List<bool> b, double forward, double expiryTime, List < double? > addParams);
       double dilationFactor();
       int dimension();
-      Vector direct(Vector x, List<bool> b, List<double?> c, double d);
+      Vector direct(Vector x, List<bool> b, List < double? > c, double d);
       double eps1();
       double eps2();
 
       void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r,
-         List<double?> addParams);
+                 List < double? > addParams);
 
-      IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams);
-      Vector inverse(Vector y, List<bool> b, List<double?> c, double d);
-      double weight(double strike, double forward, double stdDev, List<double?> addParams);
+      IWrapper instance(double t, double forward, List < double? > param, List < double? > addParams);
+      Vector inverse(Vector y, List<bool> b, List < double? > c, double d);
+      double weight(double strike, double forward, double stdDev, List < double? > addParams);
    }
 
-   public class XABRCoeffHolder<Model> where Model : IModel, new()
+   public class XABRCoeffHolder<Model> where Model : IModel, new ()
    {
-      public XABRCoeffHolder(double t, double forward, List<double?> _params, List<bool> paramIsFixed,
-         List<double?> addParams)
+      public XABRCoeffHolder(double t, double forward, List < double? > _params, List<bool> paramIsFixed,
+                             List < double? > addParams)
       {
          t_ = t;
          forward_ = forward;
@@ -64,10 +64,10 @@ namespace QLNet
 
          Utils.QL_REQUIRE(t > 0.0, () => "expiry time must be positive: " + t + " not allowed");
          Utils.QL_REQUIRE(_params.Count == model_.dimension(), () =>
-            "wrong number of parameters (" + _params.Count + "), should be " + model_.dimension());
+                          "wrong number of parameters (" + _params.Count + "), should be " + model_.dimension());
          Utils.QL_REQUIRE(paramIsFixed.Count == model_.dimension(), () =>
-            "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be " +
-            model_.dimension());
+                          "wrong number of fixed parameters flags (" + paramIsFixed.Count + "), should be " +
+                          model_.dimension());
 
          for (int i = 0; i < _params.Count; ++i)
          {
@@ -91,9 +91,9 @@ namespace QLNet
       public double forward_ { get; set; }
 
       /*! Parameters */
-      public List<double?> params_ { get; set; }
+      public List < double? > params_ { get; set; }
       public List<bool> paramIsFixed_ { get; set; }
-      public List<double?> addParams_ { get; set; }
+      public List < double? > addParams_ { get; set; }
 
       public List<double> weights_ { get; set; }
 
@@ -109,16 +109,16 @@ namespace QLNet
    }
 
    //template <class I1, class I2, typename Model>
-   public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new()
+   public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new ()
    {
       public XABRInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, double t,
-         double forward, List<double?> _params,
-         List<bool> paramIsFixed, bool vegaWeighted,
-         EndCriteria endCriteria,
-         OptimizationMethod optMethod,
-         double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null,
-         XABRConstraint constraint = null)
-         : base(xBegin, size, yBegin)
+                                   double forward, List < double? > _params,
+                                   List<bool> paramIsFixed, bool vegaWeighted,
+                                   EndCriteria endCriteria,
+                                   OptimizationMethod optMethod,
+                                   double errorAccept, bool useMaxError, int maxGuesses, List < double? > addParams = null,
+                                   XABRConstraint constraint = null)
+      : base(xBegin, size, yBegin)
       {
          endCriteria_ = endCriteria ?? new EndCriteria(60000, 100, 1e-8, 1e-8, 1e-8);
          optMethod_ = optMethod ?? new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
@@ -198,8 +198,8 @@ namespace QLNet
                new Vector(coeff_.model_.inverse(guess, coeff_.paramIsFixed_, coeff_.params_, forward_));
 
             ProjectedCostFunction rainedXABRError = new ProjectedCostFunction(costFunction,
-               inversedTransformatedGuess,
-               coeff_.paramIsFixed_);
+                                                                              inversedTransformatedGuess,
+                                                                              coeff_.paramIsFixed_);
 
             Vector projectedGuess = new Vector(rainedXABRError.project(inversedTransformatedGuess));
 
@@ -210,8 +210,8 @@ namespace QLNet
             Vector transfResult = new Vector(rainedXABRError.include(projectedResult));
             Vector result = coeff_.model_.direct(transfResult, coeff_.paramIsFixed_, coeff_.params_, forward_);
             tmpInterpolationError = useMaxError_
-               ? interpolationMaxError()
-               : interpolationError();
+                                    ? interpolationMaxError()
+                                    : interpolationError();
 
             if (tmpInterpolationError < bestError)
             {
@@ -219,8 +219,9 @@ namespace QLNet
                bestParameters = result;
                coeff_.XABREndCriteria_ = tmpEndCriteria;
             }
-         } while (++iterations < maxGuesses_ &&
-                  tmpInterpolationError > errorAccept_);
+         }
+         while (++iterations < maxGuesses_ &&
+                tmpInterpolationError > errorAccept_);
 
          for (int i = 0; i < bestParameters.size(); ++i)
             coeff_.params_[i] = bestParameters[i];
@@ -345,8 +346,8 @@ namespace QLNet
       { }
 
       public virtual void config<Model>(ProjectedCostFunction costFunction, XABRCoeffHolder<Model> coeff,
-         double forward)
-         where Model : IModel, new()
+                                        double forward)
+      where Model : IModel, new ()
       { }
    }
 
@@ -373,5 +374,5 @@ namespace QLNet
 
       public NoXABRConstraint() : base(new Impl())
       { }
-    }
+   }
 }

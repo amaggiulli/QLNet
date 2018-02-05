@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,19 +20,20 @@ using System;
 
 namespace QLNet
 {
-    public class GammaDistribution
+   public class GammaDistribution
    {
       private double a_;
 
       public GammaDistribution(double a)
       {
          a_ = a;
-         Utils.QL_REQUIRE(a > 0.0,()=> "invalid parameter for gamma distribution");
+         Utils.QL_REQUIRE(a > 0.0, () => "invalid parameter for gamma distribution");
       }
 
       public double value(double x)
       {
-         if (x <= 0.0) return 0.0;
+         if (x <= 0.0)
+            return 0.0;
 
          double gln = GammaFunction.logValue(a_);
 
@@ -61,9 +62,11 @@ namespace QLNet
                double an = -1.0 * n * (n - a_);
                b += 2.0;
                d = an * d + b;
-               if (Math.Abs(d) < Const.QL_EPSILON) d = Const.QL_EPSILON;
+               if (Math.Abs(d) < Const.QL_EPSILON)
+                  d = Const.QL_EPSILON;
                c = b + an / c;
-               if (Math.Abs(c) < Const.QL_EPSILON) c = Const.QL_EPSILON;
+               if (Math.Abs(c) < Const.QL_EPSILON)
+                  c = Const.QL_EPSILON;
                d = 1.0 / d;
                double del = d * c;
                h *= del;
@@ -101,7 +104,7 @@ namespace QLNet
 
       public static double logValue(double x)
       {
-         Utils.QL_REQUIRE(x > 0.0,()=> "positive argument required");
+         Utils.QL_REQUIRE(x > 0.0, () => "positive argument required");
 
          double temp = x + 5.5;
          temp -= (x + 0.5) * Math.Log(temp);

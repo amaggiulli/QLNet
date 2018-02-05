@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,87 +24,87 @@ namespace QLNet
    */
    public class MakeCms
    {
-      public MakeCms( Period swapTenor,
-                      SwapIndex swapIndex,
-                      IborIndex iborIndex,
-                      double iborSpread = 0.0,
-                      Period forwardStart = null,
-                      Date maturityDate = null)
+      public MakeCms(Period swapTenor,
+                     SwapIndex swapIndex,
+                     IborIndex iborIndex,
+                     double iborSpread = 0.0,
+                     Period forwardStart = null,
+                     Date maturityDate = null)
       {
-         swapTenor_ = swapTenor; 
+         swapTenor_ = swapTenor;
          swapIndex_ = swapIndex;
-         iborIndex_ = iborIndex; 
+         iborIndex_ = iborIndex;
          iborSpread_ = iborSpread;
          iborCap_ = null;
          iborFloor_ = null;
-         useAtmSpread_ = false; 
-         forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
-         cmsSpread_ = 0.0; 
+         useAtmSpread_ = false;
+         forwardStart_ = forwardStart ?? new Period(0, TimeUnit.Days);
+         cmsSpread_ = 0.0;
          cmsGearing_ = 1.0;
-         cmsCap_ = null; 
+         cmsCap_ = null;
          cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex.fixingCalendar();
-         payCms_ = true; 
+         payCms_ = true;
          nominal_ = 1.0;
          maturityDate_ = maturityDate;
-         cmsTenor_ = new Period(3,TimeUnit.Months); 
+         cmsTenor_ = new Period(3, TimeUnit.Months);
          floatTenor_ = iborIndex.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
          cmsTerminationDateConvention_ = BusinessDayConvention.ModifiedFollowing;
          floatConvention_ = iborIndex.businessDayConvention();
          floatTerminationDateConvention_ = iborIndex.businessDayConvention();
-         cmsRule_ = DateGeneration.Rule.Backward; 
+         cmsRule_ = DateGeneration.Rule.Backward;
          floatRule_ = DateGeneration.Rule.Backward;
-         cmsEndOfMonth_ = false; 
+         cmsEndOfMonth_ = false;
          floatEndOfMonth_ = false;
-         cmsFirstDate_ = null; 
+         cmsFirstDate_ = null;
          cmsNextToLastDate_ = null;
-         floatFirstDate_ = null; 
+         floatFirstDate_ = null;
          floatNextToLastDate_ = null;
          cmsDayCount_ = new Actual360();
          floatDayCount_ = iborIndex.dayCounter();
          engine_ = new DiscountingSwapEngine(swapIndex.forwardingTermStructure());
       }
 
-      public MakeCms( Period swapTenor,
-                      SwapIndex swapIndex,
-                      double iborSpread = 0.0,
-                      Period forwardStart = null,
-                      Date maturityDate = null)
+      public MakeCms(Period swapTenor,
+                     SwapIndex swapIndex,
+                     double iborSpread = 0.0,
+                     Period forwardStart = null,
+                     Date maturityDate = null)
       {
-         swapTenor_ = swapTenor; 
+         swapTenor_ = swapTenor;
          swapIndex_ = swapIndex;
-         iborIndex_ = swapIndex.iborIndex(); 
+         iborIndex_ = swapIndex.iborIndex();
          iborSpread_ = iborSpread;
          iborCap_ = null;
          iborFloor_ = null;
-         useAtmSpread_ = false; 
-         forwardStart_ = forwardStart ?? new Period(0,TimeUnit.Days);
-         cmsSpread_ = 0.0; 
+         useAtmSpread_ = false;
+         forwardStart_ = forwardStart ?? new Period(0, TimeUnit.Days);
+         cmsSpread_ = 0.0;
          cmsGearing_ = 1.0;
-         cmsCap_ = null; 
+         cmsCap_ = null;
          cmsFloor_ = null;
          effectiveDate_ = null;
          cmsCalendar_ = swapIndex.fixingCalendar();
          floatCalendar_ = iborIndex_.fixingCalendar();
-         payCms_ = true; 
+         payCms_ = true;
          nominal_ = 1.0;
          maturityDate_ = maturityDate;
-         cmsTenor_ = new Period(3,TimeUnit.Months); 
+         cmsTenor_ = new Period(3, TimeUnit.Months);
          floatTenor_ = iborIndex_.tenor();
          cmsConvention_ = BusinessDayConvention.ModifiedFollowing;
          cmsTerminationDateConvention_ = BusinessDayConvention.ModifiedFollowing;
          floatConvention_ = iborIndex_.businessDayConvention();
          floatTerminationDateConvention_ = iborIndex_.businessDayConvention();
-         cmsRule_ = DateGeneration.Rule.Backward; 
+         cmsRule_ = DateGeneration.Rule.Backward;
          floatRule_ = DateGeneration.Rule.Backward;
-         cmsEndOfMonth_ = false; 
+         cmsEndOfMonth_ = false;
          floatEndOfMonth_ = false;
-         cmsFirstDate_ = null; 
+         cmsFirstDate_ = null;
          cmsNextToLastDate_ = null;
-         floatFirstDate_ = null; 
+         floatFirstDate_ = null;
          floatNextToLastDate_ = null;
          cmsDayCount_ = new Actual360();
          floatDayCount_ = iborIndex_.dayCounter();
@@ -116,89 +116,89 @@ namespace QLNet
          Date startDate;
          if (effectiveDate_ != null)
             startDate = effectiveDate_;
-         else 
+         else
          {
             int fixingDays = iborIndex_.fixingDays();
             Date refDate = Settings.evaluationDate();
             // if the evaluation date is not a business day
             // then move to the next business day
             refDate = floatCalendar_.adjust(refDate);
-            Date spotDate = floatCalendar_.advance(refDate, new Period(fixingDays,TimeUnit.Days));
-            startDate = spotDate+forwardStart_;
-        }
+            Date spotDate = floatCalendar_.advance(refDate, new Period(fixingDays, TimeUnit.Days));
+            startDate = spotDate + forwardStart_;
+         }
 
-        Date terminationDate = maturityDate_ == null ? startDate + swapTenor_ : maturityDate_;
+         Date terminationDate = maturityDate_ == null ? startDate + swapTenor_ : maturityDate_;
 
-        Schedule cmsSchedule = new Schedule(startDate, terminationDate,
-                                            cmsTenor_, cmsCalendar_,
-                                            cmsConvention_,
-                                            cmsTerminationDateConvention_,
-                                            cmsRule_, cmsEndOfMonth_,
-                                            cmsFirstDate_, cmsNextToLastDate_);
+         Schedule cmsSchedule = new Schedule(startDate, terminationDate,
+                                             cmsTenor_, cmsCalendar_,
+                                             cmsConvention_,
+                                             cmsTerminationDateConvention_,
+                                             cmsRule_, cmsEndOfMonth_,
+                                             cmsFirstDate_, cmsNextToLastDate_);
 
-        Schedule floatSchedule = new Schedule(startDate, terminationDate,
-                                              floatTenor_, floatCalendar_,
-                                              floatConvention_,
-                                              floatTerminationDateConvention_,
-                                              floatRule_ , floatEndOfMonth_,
-                                              floatFirstDate_, floatNextToLastDate_);
+         Schedule floatSchedule = new Schedule(startDate, terminationDate,
+                                               floatTenor_, floatCalendar_,
+                                               floatConvention_,
+                                               floatTerminationDateConvention_,
+                                               floatRule_, floatEndOfMonth_,
+                                               floatFirstDate_, floatNextToLastDate_);
 
          List<CashFlow> cmsLeg = new CmsLeg(cmsSchedule, swapIndex_)
-            .withPaymentDayCounter(cmsDayCount_)
-            .withFixingDays(swapIndex_.fixingDays())
-            .withGearings(cmsGearing_)
-            .withSpreads(cmsSpread_)
-            .withCaps(cmsCap_)
-            .withFloors(cmsFloor_)
-            .withNotionals(nominal_)
-            .withPaymentAdjustment(cmsConvention_);
+         .withPaymentDayCounter(cmsDayCount_)
+         .withFixingDays(swapIndex_.fixingDays())
+         .withGearings(cmsGearing_)
+         .withSpreads(cmsSpread_)
+         .withCaps(cmsCap_)
+         .withFloors(cmsFloor_)
+         .withNotionals(nominal_)
+         .withPaymentAdjustment(cmsConvention_);
 
          if (couponPricer_ != null)
             Utils.setCouponPricer(cmsLeg, couponPricer_);
 
          double? usedSpread = iborSpread_;
-         if (useAtmSpread_) 
+         if (useAtmSpread_)
          {
-            Utils.QL_REQUIRE(!iborIndex_.forwardingTermStructure().empty(),()=>
-                       "null term structure set to this instance of " + iborIndex_.name());
-            Utils.QL_REQUIRE(!swapIndex_.forwardingTermStructure().empty(),()=>
-                       "null term structure set to this instance of " + swapIndex_.name());
-            Utils.QL_REQUIRE(couponPricer_ != null,()=> "no CmsCouponPricer set (yet)");
+            Utils.QL_REQUIRE(!iborIndex_.forwardingTermStructure().empty(), () =>
+                             "null term structure set to this instance of " + iborIndex_.name());
+            Utils.QL_REQUIRE(!swapIndex_.forwardingTermStructure().empty(), () =>
+                             "null term structure set to this instance of " + swapIndex_.name());
+            Utils.QL_REQUIRE(couponPricer_ != null, () => "no CmsCouponPricer set (yet)");
             List<CashFlow> fLeg = new IborLeg(floatSchedule, iborIndex_)
-               .withPaymentDayCounter(floatDayCount_)
-               .withFixingDays(iborIndex_.fixingDays())
-               .withCaps(iborCap_)
-               .withFloors(iborFloor_)
-               .withNotionals(nominal_)
-               .withPaymentAdjustment(floatConvention_);
+            .withPaymentDayCounter(floatDayCount_)
+            .withFixingDays(iborIndex_.fixingDays())
+            .withCaps(iborCap_)
+            .withFloors(iborFloor_)
+            .withNotionals(nominal_)
+            .withPaymentAdjustment(floatConvention_);
 
             if (iborCouponPricer_ != null)
-                Utils.setCouponPricer(fLeg, iborCouponPricer_);
+               Utils.setCouponPricer(fLeg, iborCouponPricer_);
 
             Swap temp = new Swap(cmsLeg, fLeg);
             temp.setPricingEngine(engine_);
 
-            double? npv = temp.legNPV(0)+temp.legNPV(1);
+            double? npv = temp.legNPV(0) + temp.legNPV(1);
 
-            usedSpread = -npv/temp.legBPS(1)*1e-4;
-         } 
-         else 
+            usedSpread = -npv / temp.legBPS(1) * 1e-4;
+         }
+         else
          {
-            Utils.QL_REQUIRE(usedSpread.HasValue,()=>"null spread set");
+            Utils.QL_REQUIRE(usedSpread.HasValue, () => "null spread set");
          }
 
          List<CashFlow> floatLeg = new IborLeg(floatSchedule, iborIndex_)
-            .withSpreads(usedSpread.Value)
-            .withPaymentDayCounter(floatDayCount_)
-            .withFixingDays(iborIndex_.fixingDays())
-            .withGearings(iborGearing_)
-            .withCaps(iborCap_)
-            .withFloors(iborFloor_)
-            .withPaymentAdjustment(floatConvention_)
-            .withNotionals(nominal_);
+         .withSpreads(usedSpread.Value)
+         .withPaymentDayCounter(floatDayCount_)
+         .withFixingDays(iborIndex_.fixingDays())
+         .withGearings(iborGearing_)
+         .withCaps(iborCap_)
+         .withFloors(iborFloor_)
+         .withPaymentAdjustment(floatConvention_)
+         .withNotionals(nominal_);
 
          if (iborCouponPricer_ != null)
-             Utils.setCouponPricer(floatLeg, iborCouponPricer_);
+            Utils.setCouponPricer(floatLeg, iborCouponPricer_);
 
          Swap swap;
          if (payCms_)
@@ -219,7 +219,7 @@ namespace QLNet
          nominal_ = n;
          return this;
       }
-      public MakeCms withEffectiveDate( Date effectiveDate )
+      public MakeCms withEffectiveDate(Date effectiveDate)
       {
          effectiveDate_ = effectiveDate;
          return this;
@@ -229,7 +229,7 @@ namespace QLNet
          cmsTenor_ = t;
          return this;
       }
-      public MakeCms withCmsLegCalendar( Calendar cal)
+      public MakeCms withCmsLegCalendar(Calendar cal)
       {
          cmsCalendar_ = cal;
          return this;
@@ -239,7 +239,7 @@ namespace QLNet
          cmsConvention_ = bdc;
          return this;
       }
-      public MakeCms withCmsLegTerminationDateConvention( BusinessDayConvention bdc )
+      public MakeCms withCmsLegTerminationDateConvention(BusinessDayConvention bdc)
       {
          cmsTerminationDateConvention_ = bdc;
          return this;
@@ -254,27 +254,27 @@ namespace QLNet
          cmsEndOfMonth_ = flag;
          return this;
       }
-      public MakeCms withCmsLegFirstDate( Date d)
+      public MakeCms withCmsLegFirstDate(Date d)
       {
          cmsFirstDate_ = d;
          return this;
       }
-      public MakeCms withCmsLegNextToLastDate( Date d)
+      public MakeCms withCmsLegNextToLastDate(Date d)
       {
          cmsNextToLastDate_ = d;
          return this;
       }
-      public MakeCms withCmsLegDayCount( DayCounter dc)
+      public MakeCms withCmsLegDayCount(DayCounter dc)
       {
          cmsDayCount_ = dc;
          return this;
       }
-      public MakeCms withFloatingLegTenor( Period t)
+      public MakeCms withFloatingLegTenor(Period t)
       {
          floatTenor_ = t;
          return this;
       }
-      public MakeCms withFloatingLegCalendar( Calendar cal)
+      public MakeCms withFloatingLegCalendar(Calendar cal)
       {
          floatCalendar_ = cal;
          return this;
@@ -284,7 +284,7 @@ namespace QLNet
          floatConvention_ = bdc;
          return this;
       }
-      public MakeCms withFloatingLegTerminationDateConvention( BusinessDayConvention bdc)
+      public MakeCms withFloatingLegTerminationDateConvention(BusinessDayConvention bdc)
       {
          floatTerminationDateConvention_ = bdc;
          return this;
@@ -299,75 +299,75 @@ namespace QLNet
          floatEndOfMonth_ = flag;
          return this;
       }
-      public MakeCms withFloatingLegFirstDate( Date d)
+      public MakeCms withFloatingLegFirstDate(Date d)
       {
          floatFirstDate_ = d;
          return this;
       }
-      public MakeCms withFloatingLegNextToLastDate( Date d)
+      public MakeCms withFloatingLegNextToLastDate(Date d)
       {
          floatNextToLastDate_ = d;
          return this;
       }
-      public MakeCms withFloatingLegDayCount( DayCounter dc)
+      public MakeCms withFloatingLegDayCount(DayCounter dc)
       {
          floatDayCount_ = dc;
          return this;
       }
       public MakeCms withFloatingCouponPricer(IborCouponPricer couponPricer)
       {
-          iborCouponPricer_ = couponPricer;
-          return this;
+         iborCouponPricer_ = couponPricer;
+         return this;
       }
       public MakeCms withFloatingLegGearing(double iborGearing)
       {
-          iborGearing_ = iborGearing;
-          return this;
+         iborGearing_ = iborGearing;
+         return this;
       }
       public MakeCms withAtmSpread(bool flag = true)
       {
          useAtmSpread_ = flag;
          return this;
       }
-      public MakeCms withDiscountingTermStructure( Handle<YieldTermStructure> discountingTermStructure)
+      public MakeCms withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure)
       {
          engine_ = new DiscountingSwapEngine(discountingTermStructure);
          return this;
       }
-       public MakeCms withCmsCouponPricer( CmsCouponPricer couponPricer)
+      public MakeCms withCmsCouponPricer(CmsCouponPricer couponPricer)
       {
          couponPricer_ = couponPricer;
          return this;
       }
       public MakeCms withCmsGearing(double cmsGearing)
       {
-          cmsGearing_ = cmsGearing;
-          return this;
+         cmsGearing_ = cmsGearing;
+         return this;
       }
       public MakeCms withCmsSpread(double cmsSpread)
       {
-          cmsSpread_ = cmsSpread;
-          return this;
+         cmsSpread_ = cmsSpread;
+         return this;
       }
       public MakeCms withCmsCap(double? cmsCap)
       {
-          cmsCap_ = cmsCap;
-          return this;
+         cmsCap_ = cmsCap;
+         return this;
       }
       public MakeCms withCmsFloor(double? cmsFloor)
       {
-          cmsFloor_ = cmsFloor;
-          return this;
+         cmsFloor_ = cmsFloor;
+         return this;
       }
       public MakeCms withIborCap(double? iborCap)
       {
-          iborCap_ = iborCap;
-          return this;
+         iborCap_ = iborCap;
+         return this;
       }
       public MakeCms withIborFloor(double? iborFloor)
       {
-          iborFloor_ = iborFloor;
-          return this;
+         iborFloor_ = iborFloor;
+         return this;
       }
 
       private Period swapTenor_;

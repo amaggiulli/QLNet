@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -39,7 +39,7 @@ namespace QLNet
        We add the inverse prices so that conventional caps can be
        priced simply.
    */
-   public class InflationCouponPricer : IObserver,IObservable
+   public class InflationCouponPricer : IObserver, IObservable
    {
       // Interface
       public virtual double swapletPrice() {return 0; }
@@ -54,8 +54,14 @@ namespace QLNet
       private readonly WeakEventSource eventSource = new WeakEventSource();
       public event Callback notifyObserversEvent
       {
-         add { eventSource.Subscribe(value); }
-         remove { eventSource.Unsubscribe(value); }
+         add
+         {
+            eventSource.Subscribe(value);
+         }
+         remove
+         {
+            eventSource.Unsubscribe(value);
+         }
       }
 
       public void registerWith(Callback handler) { notifyObserversEvent += handler; }
@@ -74,27 +80,28 @@ namespace QLNet
 
    }
 
-    //! base pricer for capped/floored YoY inflation coupons
-    /*! \note this pricer can already do swaplets but to get
-              volatility-dependent coupons you need the descendents.
-    */
+   //! base pricer for capped/floored YoY inflation coupons
+   /*! \note this pricer can already do swaplets but to get
+             volatility-dependent coupons you need the descendents.
+   */
    public class YoYInflationCouponPricer : InflationCouponPricer
    {
       public YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
       {
          capletVol_ = capletVol ?? new Handle<YoYOptionletVolatilitySurface>();
 
-         if (!capletVol_.empty()) capletVol_.registerWith(update);
+         if (!capletVol_.empty())
+            capletVol_.registerWith(update);
       }
 
-      public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility() 
+      public virtual Handle<YoYOptionletVolatilitySurface> capletVolatility()
       {
          return capletVol_;
       }
 
       public virtual void setCapletVolatility(Handle<YoYOptionletVolatilitySurface> capletVol)
       {
-         Utils.QL_REQUIRE( !capletVol.empty() ,()=> "empty capletVol handle");
+         Utils.QL_REQUIRE(!capletVol.empty(), () => "empty capletVol handle");
 
          capletVol_ = capletVol;
          capletVol_.registerWith(update);
@@ -154,7 +161,7 @@ namespace QLNet
          if (paymentDate_ > rateCurve_.link.referenceDate())
             discount_ = rateCurve_.link.discount(paymentDate_);
 
-         spreadLegValue_ = spread_ * coupon_.accrualPeriod()* discount_;
+         spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
       //! car replace this if really required
@@ -162,43 +169,43 @@ namespace QLNet
       {
 
          Date fixingDate = coupon_.fixingDate();
-         if (fixingDate <= Settings.evaluationDate()) 
+         if (fixingDate <= Settings.evaluationDate())
          {
             // the amount is determined
             double a, b;
-            if (optionType==Option.Type.Call) 
+            if (optionType == Option.Type.Call)
             {
-                a = coupon_.indexFixing();
-                b = effStrike;
-            } 
-            else 
-            {
-                a = effStrike;
-                b = coupon_.indexFixing();
+               a = coupon_.indexFixing();
+               b = effStrike;
             }
-            return Math.Max(a - b, 0.0)* coupon_.accrualPeriod()*discount_;
-        
-         } 
-         else 
+            else
+            {
+               a = effStrike;
+               b = coupon_.indexFixing();
+            }
+            return Math.Max(a - b, 0.0) * coupon_.accrualPeriod() * discount_;
+
+         }
+         else
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
-            Utils.QL_REQUIRE( !capletVolatility().empty() ,()=> "missing optionlet volatility");
+            Utils.QL_REQUIRE(!capletVolatility().empty(), () => "missing optionlet volatility");
 
-            double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate,effStrike));
+            double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate, effStrike));
 
             double fixing = optionletPriceImp(optionType,
                                               effStrike,
                                               adjustedFixing(),
                                               stdDev);
             return fixing * coupon_.accrualPeriod() * discount_;
-        
+
          }
       }
 
       //! usually only need implement this (of course they may need
       //! to re-implement initialize too ...)
       protected virtual double optionletPriceImp(Option.Type t, double strike,
-                                       double forward, double stdDev)
+                                                 double forward, double stdDev)
       {
          Utils.QL_FAIL("you must implement this to get a vol-dependent price");
          return 0;
@@ -228,13 +235,13 @@ namespace QLNet
    }
 
    //! Black-formula pricer for capped/floored yoy inflation coupons
-   public class BlackYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class BlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
-    
+
       public BlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol)
          : base(capletVol)
       {}
-       
+
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)
       {
@@ -244,17 +251,17 @@ namespace QLNet
                                    stdDev);
       }
 
-    }
+   }
 
    //! Unit-Displaced-Black-formula pricer for capped/floored yoy inflation coupons
-   public class UnitDisplacedBlackYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class UnitDisplacedBlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public UnitDisplacedBlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
-         : base(capletVol) 
+         : base(capletVol)
       {}
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
-                                         double forward, double stdDev)
+                                                  double forward, double stdDev)
       {
 
          return Utils.blackFormula(optionType,
@@ -263,21 +270,21 @@ namespace QLNet
                                    stdDev);
       }
    }
-    
+
    //! Bachelier-formula pricer for capped/floored yoy inflation coupons
-   public class BachelierYoYInflationCouponPricer : YoYInflationCouponPricer 
+   public class BachelierYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public BachelierYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
-            : base(capletVol) 
+         : base(capletVol)
       {}
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
-                                         double forward, double stdDev)
+                                                  double forward, double stdDev)
       {
          return Utils.bachelierBlackFormula(optionType,
-                                     effStrike,
-                                     forward,
-                                     stdDev);
+                                            effStrike,
+                                            forward,
+                                            stdDev);
       }
-    };
+   }
 }

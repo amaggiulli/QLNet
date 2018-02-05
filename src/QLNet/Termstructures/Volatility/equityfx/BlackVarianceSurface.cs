@@ -97,11 +97,11 @@ namespace QLNet
          volatilities_ = blackVolMatrix;
 
          Utils.QL_REQUIRE(dates.Count == blackVolMatrix.columns(), () =>
-           "mismatch between date vector and vol matrix colums");
+                          "mismatch between date vector and vol matrix colums");
          Utils.QL_REQUIRE(strikes_.Count == blackVolMatrix.rows(), () =>
-                    "mismatch between money-strike vector and vol matrix rows");
+                          "mismatch between money-strike vector and vol matrix rows");
          Utils.QL_REQUIRE(dates[0] >= referenceDate, () =>
-                    "cannot have dates[0] < referenceDate");
+                          "cannot have dates[0] < referenceDate");
 
          int i, j;
          times_ = new InitializedList<double>(dates.Count + 1);
@@ -115,7 +115,7 @@ namespace QLNet
          {
             times_[j] = timeFromReference(dates[j - 1]);
             Utils.QL_REQUIRE(times_[j] > times_[j - 1],
-                       () => "dates must be sorted unique!");
+                             () => "dates must be sorted unique!");
             for (i = 0; i < blackVolMatrix.rows(); i++)
             {
                variances_[i, j] = times_[j] * blackVolMatrix[i, j - 1] * blackVolMatrix[i, j - 1];
@@ -128,7 +128,8 @@ namespace QLNet
 
       protected override double blackVarianceImpl(double t, double strike)
       {
-         if (t.IsEqual(0.0)) return 0.0;
+         if (t.IsEqual(0.0))
+            return 0.0;
          // enforce constant extrapolation when required
          if (strike < strikes_.First() && lowerExtrapolation_ == Extrapolation.ConstantExtrapolation)
             strike = strikes_.First();
@@ -137,16 +138,16 @@ namespace QLNet
 
          if (t <= times_.Last())
             return varianceSurface_.value(t, strike, true);
-         else 
+         else
             return varianceSurface_.value(times_.Last(), strike, true) * t / times_.Last();
       }
 
-      public void setInterpolation<Interpolator>() where Interpolator : IInterpolationFactory2D, new()
+      public void setInterpolation<Interpolator>() where Interpolator : IInterpolationFactory2D, new ()
       {
          setInterpolation<Interpolator>(FastActivator<Interpolator>.Create());
       }
 
-      public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory2D, new()
+      public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory2D, new ()
       {
          varianceSurface_ = i.interpolate(times_, times_.Count, strikes_, strikes_.Count, variances_);
          varianceSurface_.update();

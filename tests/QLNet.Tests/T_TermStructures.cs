@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #else
-   using Xunit;
+using Xunit;
 #endif
 
 using QLNet;
@@ -84,21 +84,23 @@ namespace TestSuite
             public double rate;
          }
 
-         public Datum[] depositData = new Datum[] {
-                new Datum { n = 1, units = TimeUnit.Months, rate = 4.581 },
-                new Datum { n = 2, units = TimeUnit.Months, rate = 4.573 },
-                new Datum { n = 3, units = TimeUnit.Months, rate = 4.557 },
-                new Datum { n = 6, units = TimeUnit.Months, rate = 4.496 },
-                new Datum { n = 9, units = TimeUnit.Months, rate = 4.490 }
-            };
+         public Datum[] depositData = new Datum[]
+         {
+            new Datum { n = 1, units = TimeUnit.Months, rate = 4.581 },
+            new Datum { n = 2, units = TimeUnit.Months, rate = 4.573 },
+            new Datum { n = 3, units = TimeUnit.Months, rate = 4.557 },
+            new Datum { n = 6, units = TimeUnit.Months, rate = 4.496 },
+            new Datum { n = 9, units = TimeUnit.Months, rate = 4.490 }
+         };
 
-         public Datum[] swapData = new Datum[] {
-                new Datum { n =  1, units = TimeUnit.Years, rate = 4.54 },
-                new Datum { n =  5, units = TimeUnit.Years, rate = 4.99 },
-                new Datum { n = 10, units = TimeUnit.Years, rate = 5.47 },
-                new Datum { n = 20, units = TimeUnit.Years, rate = 5.89 },
-                new Datum { n = 30, units = TimeUnit.Years, rate = 5.96 }
-            };
+         public Datum[] swapData = new Datum[]
+         {
+            new Datum { n =  1, units = TimeUnit.Years, rate = 4.54 },
+            new Datum { n =  5, units = TimeUnit.Years, rate = 4.99 },
+            new Datum { n = 10, units = TimeUnit.Years, rate = 5.47 },
+            new Datum { n = 20, units = TimeUnit.Years, rate = 5.89 },
+            new Datum { n = 30, units = TimeUnit.Years, rate = 5.96 }
+         };
 
          #endregion Values
 
@@ -125,7 +127,7 @@ namespace TestSuite
             for (int i = 0; i < deposits; i++)
             {
                instruments.Add(new DepositRateHelper(depositData[i].rate / 100, new Period(depositData[i].n, depositData[i].units),
-                               settlementDays, calendar, BusinessDayConvention.ModifiedFollowing, true, new Actual360()));
+                                                     settlementDays, calendar, BusinessDayConvention.ModifiedFollowing, true, new Actual360()));
             }
 
             IborIndex index = new IborIndex("dummy", new Period(6, TimeUnit.Months), settlementDays, new Currency(),
@@ -133,7 +135,7 @@ namespace TestSuite
             for (int i = 0; i < swaps; ++i)
             {
                instruments.Add(new SwapRateHelper(swapData[i].rate / 100, new Period(swapData[i].n, swapData[i].units),
-                               calendar, Frequency.Annual, BusinessDayConvention.Unadjusted, new Thirty360(), index));
+                                                  calendar, Frequency.Annual, BusinessDayConvention.Unadjusted, new Thirty360(), index));
             }
             termStructure = new PiecewiseYieldCurve<Discount, LogLinear>(settlement, instruments, new Actual360());
             dummyTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(settlement, instruments, new Actual360());
@@ -144,7 +146,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testReferenceChange()
       {
@@ -172,8 +174,8 @@ namespace TestSuite
          {
             if (!Utils.close(expected[i], calculated[i]))
                QAssert.Fail("\n  Discount at " + days[i] + " days:\n"
-                           + "    before date change: " + expected[i] + "\n"
-                           + "    after date change:  " + calculated[i]);
+                            + "    before date change: " + expected[i] + "\n"
+                            + "    after date change:  " + calculated[i]);
          }
       }
 
@@ -181,7 +183,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testImplied()
       {
@@ -199,15 +201,15 @@ namespace TestSuite
          double impliedDiscount = implied.discount(testDate);
          if (Math.Abs(discount - baseDiscount * impliedDiscount) > tolerance)
             QAssert.Fail("unable to reproduce discount from implied curve\n"
-                + "    calculated: " + baseDiscount * impliedDiscount + "\n"
-                + "    expected:   " + discount);
+                         + "    calculated: " + baseDiscount * impliedDiscount + "\n"
+                         + "    expected:   " + discount);
       }
 
 #if NET40 || NET45
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testImpliedObs()
       {
@@ -230,7 +232,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFSpreaded()
       {
@@ -247,19 +249,19 @@ namespace TestSuite
          double forward = vars.termStructure.forwardRate(testDate, testDate, tsdc, Compounding.Continuous,
                                                          Frequency.NoFrequency).rate();
          double spreadedForward = spreaded.forwardRate(testDate, testDate, sprdc, Compounding.Continuous,
-                                                         Frequency.NoFrequency).rate();
+                                                       Frequency.NoFrequency).rate();
          if (Math.Abs(forward - (spreadedForward - me.value())) > tolerance)
             QAssert.Fail("unable to reproduce forward from spreaded curve\n"
-                + "    calculated: "
-                + (spreadedForward - me.value()) + "\n"
-                + "    expected:   " + forward);
+                         + "    calculated: "
+                         + (spreadedForward - me.value()) + "\n"
+                         + "    expected:   " + forward);
       }
 
 #if NET40 || NET45
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFSpreadedObs()
       {
@@ -285,7 +287,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testZSpreaded()
       {
@@ -302,15 +304,15 @@ namespace TestSuite
          double spreadedZero = spreaded.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          if (Math.Abs(zero - (spreadedZero - me.value())) > tolerance)
             QAssert.Fail("unable to reproduce zero yield from spreaded curve\n"
-                        + "    calculated: " + (spreadedZero - me.value()) + "\n"
-                        + "    expected:   " + zero);
+                         + "    calculated: " + (spreadedZero - me.value()) + "\n"
+                         + "    expected:   " + zero);
       }
 
 #if NET40 || NET45
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testZSpreadedObs()
       {
@@ -337,7 +339,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testCompositeZeroYieldStructures()
       {
@@ -347,45 +349,46 @@ namespace TestSuite
 
          // First curve
          var dates = new List<Date>
-            {
-               new Date(10, Month.Nov, 2017),
-               new Date(13, Month.Nov, 2017),
-               new Date(12, Month.Feb, 2018),
-               new Date(10, Month.May, 2018),
-               new Date(10, Month.Aug, 2018),
-               new Date(12, Month.Nov, 2018),
-               new Date(21, Month.Dec, 2018),
-               new Date(15, Month.Jan, 2020),
-               new Date(31, Month.Mar, 2021),
-               new Date(28, Month.Feb, 2023),
-               new Date(21, Month.Dec, 2026),
-               new Date(31, Month.Jan, 2030),
-               new Date(28, Month.Feb, 2031),
-               new Date(31, Month.Mar, 2036),
-               new Date(28, Month.Feb, 2041),
-               new Date(28, Month.Feb, 2048),
-               new Date(31, Month.Dec, 2141)
-            };
+         {
+            new Date(10, Month.Nov, 2017),
+            new Date(13, Month.Nov, 2017),
+            new Date(12, Month.Feb, 2018),
+            new Date(10, Month.May, 2018),
+            new Date(10, Month.Aug, 2018),
+            new Date(12, Month.Nov, 2018),
+            new Date(21, Month.Dec, 2018),
+            new Date(15, Month.Jan, 2020),
+            new Date(31, Month.Mar, 2021),
+            new Date(28, Month.Feb, 2023),
+            new Date(21, Month.Dec, 2026),
+            new Date(31, Month.Jan, 2030),
+            new Date(28, Month.Feb, 2031),
+            new Date(31, Month.Mar, 2036),
+            new Date(28, Month.Feb, 2041),
+            new Date(28, Month.Feb, 2048),
+            new Date(31, Month.Dec, 2141)
+         };
 
-         var rates = new List<double> {
-               0.0655823213132524,
-               0.0655823213132524,
-               0.0699455024156877,
-               0.0799107139233497,
-               0.0813931951022577,
-               0.0841615820666691,
-               0.0501297919004145,
-               0.0823483583439658,
-               0.0860720030924466,
-               0.0922887604375688,
-               0.10588902278996,
-               0.117021968693922,
-               0.109824660896137,
-               0.109231572878364,
-               0.119218123236241,
-               0.128647300167664,
-               0.0506086995288751
-            };
+         var rates = new List<double>
+         {
+            0.0655823213132524,
+            0.0655823213132524,
+            0.0699455024156877,
+            0.0799107139233497,
+            0.0813931951022577,
+            0.0841615820666691,
+            0.0501297919004145,
+            0.0823483583439658,
+            0.0860720030924466,
+            0.0922887604375688,
+            0.10588902278996,
+            0.117021968693922,
+            0.109824660896137,
+            0.109231572878364,
+            0.119218123236241,
+            0.128647300167664,
+            0.0506086995288751
+         };
 
          var termStructure1 = new InterpolatedForwardCurve<BackwardFlat>(dates, rates, new Actual365Fixed(), new NullCalendar());
 
@@ -459,9 +462,9 @@ namespace TestSuite
             double expected = rates[i];
 
             QAssert.IsTrue(Math.Abs(actual - expected) <= tolerance,
-                   "unable to reproduce zero yield rate from composite input curve\n"
-                   + "    calculated: " + actual + "\n"
-                   + "    expected:   " + expected);
+                           "unable to reproduce zero yield rate from composite input curve\n"
+                           + "    calculated: " + actual + "\n"
+                           + "    expected:   " + expected);
          }
       }
 
@@ -469,7 +472,7 @@ namespace TestSuite
 
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testInterpolatedZeroCurveWithRefDateAndTenorDates()
       {
@@ -480,47 +483,47 @@ namespace TestSuite
          var dates = new List<Date>()
          {
             new Date(30, 12, 2015),
-            new Date(30, 3, 2016),
-            new Date(30, 9, 2016),
-            new Date(29, 9, 2017),
-            new Date(28, 9, 2018),
-            new Date(30, 9, 2019),
-            new Date(30, 9, 2020),
-            new Date(30, 9, 2021),
-            new Date(30, 9, 2022),
-            new Date(29, 9, 2023),
-            new Date(30, 9, 2024),
-            new Date(30, 9, 2025),
-            new Date(30, 9, 2030),
-            new Date(28, 9, 2035),
-            new Date(29, 9, 2045),
+                new Date(30, 3, 2016),
+                new Date(30, 9, 2016),
+                new Date(29, 9, 2017),
+                new Date(28, 9, 2018),
+                new Date(30, 9, 2019),
+                new Date(30, 9, 2020),
+                new Date(30, 9, 2021),
+                new Date(30, 9, 2022),
+                new Date(29, 9, 2023),
+                new Date(30, 9, 2024),
+                new Date(30, 9, 2025),
+                new Date(30, 9, 2030),
+                new Date(28, 9, 2035),
+                new Date(29, 9, 2045),
          };
 
          var yields = new List<double>()
          {
             -0.002558362,
-            -0.002478462,
-            -0.00248845,
-            -0.002498437,
-            -0.00196903,
-            -0.001219628,
-            -0.000209989,
-            0.000940221,
-            0.00220121,
-            0.003493045,
-            0.004785712,
-            0.00602906,
-            0.010909594,
-            0.013132837,
-            0.01403893
-         };
+               -0.002478462,
+               -0.00248845,
+               -0.002498437,
+               -0.00196903,
+               -0.001219628,
+               -0.000209989,
+               0.000940221,
+               0.00220121,
+               0.003493045,
+               0.004785712,
+               0.00602906,
+               0.010909594,
+               0.013132837,
+               0.01403893
+            };
 
          var curve = new InterpolatedZeroCurve<Linear>(dates,
-            yields,
-            new ActualActual(ActualActual.Convention.ISMA),
-            new Linear(),
-            Compounding.Continuous,
-            Frequency.Annual, refDate);
+                                                       yields,
+                                                       new ActualActual(ActualActual.Convention.ISMA),
+                                                       new Linear(),
+                                                       Compounding.Continuous,
+                                                       Frequency.Annual, refDate);
 
          Dictionary<Date, double> tenors2 = new Dictionary<Date, double>
          {

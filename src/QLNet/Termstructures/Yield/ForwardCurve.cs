@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedForwardCurve<Interpolator> : ForwardRateStructure, InterpolatedCurve
-       where Interpolator : class, IInterpolationFactory, new()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
 
       #region InterpolatedCurve
@@ -35,7 +35,7 @@ namespace QLNet
       public Date maxDate_ { get; set; }
       public override Date maxDate()
       {
-         if ( maxDate_ != null )
+         if (maxDate_ != null)
             return maxDate_;
          return dates_.Last();
       }
@@ -161,23 +161,23 @@ namespace QLNet
       private void initialize()
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,
-            () => "not enough input dates givesn");
+                          () => "not enough input dates givesn");
          Utils.QL_REQUIRE(this.data_.Count == this.dates_.Count,
-            () => "dates/data count mismatch");
+                          () => "dates/data count mismatch");
 
          times_ = new InitializedList<double>(dates_.Count);
          times_[0] = 0.0;
          for (int i = 1; i < dates_.Count; i++)
          {
             Utils.QL_REQUIRE(dates_[i] > dates_[i - 1],
-               () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+                             () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
             times_[i] = dayCounter().yearFraction(dates_[0], dates_[i]);
             Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]),
-               () => "two dates correspond to the same time " +
-                     "under this curve's day count convention");
+                             () => "two dates correspond to the same time " +
+                             "under this curve's day count convention");
 
 #if !QL_NEGATIVE_RATES
-            Utils.QL_REQUIRE(this.data_[i] >= 0.0, () => "negative forward" );
+            Utils.QL_REQUIRE(this.data_[i] >= 0.0, () => "negative forward");
 #endif
          }
 
@@ -207,7 +207,7 @@ namespace QLNet
          else
          {
             integral = this.interpolation_.primitive(this.times_.Last(), true)
-               + this.data_.Last() * (t - this.times_.Last());
+                       + this.data_.Last() * (t - this.times_.Last());
          }
 
          return integral / t;

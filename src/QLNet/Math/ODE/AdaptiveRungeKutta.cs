@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <http://qlnet.sourceforge.net/License.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -42,8 +42,8 @@ namespace QLNet
       */
 
       public AdaptiveRungeKutta(double eps = 1.0e-6,
-         double h1 = 1.0e-4,
-         double hmin = 0.0)
+                                double h1 = 1.0e-4,
+                                double hmin = 0.0)
       {
          eps_ = eps;
          h1_ = h1;
@@ -87,9 +87,9 @@ namespace QLNet
           \rightarrow K^n \f$ as \f$ f'(x) = F(x,f(x)) \f$, $K=R,
           C$ */
       public List<double> value(OdeFct ode,
-         List<double> y1,
-         double x1,
-         double x2)
+                                List<double> y1,
+                                double x1,
+                                double x2)
       {
          int n = y1.Count;
          List<double> y = new List<double>(y1);
@@ -121,23 +121,23 @@ namespace QLNet
       }
 
       public double value(OdeFct1d ode,
-         double y1,
-         double x1,
-         double x2)
+                          double y1,
+                          double x1,
+                          double x2)
       {
          return value(new OdeFctWrapper(ode).value,
-            new InitializedList<double>(1, y1), x1, x2)[0];
+                      new InitializedList<double>(1, y1), x1, x2)[0];
       }
 
       protected void rkqs(List<double> y,
-         List<double> dydx,
-         ref double x,
-         double htry,
-         double eps,
-         List<double> yScale,
-         ref double hdid,
-         ref double hnext,
-         OdeFct derivs)
+                          List<double> dydx,
+                          ref double x,
+                          double htry,
+                          double eps,
+                          List<double> yScale,
+                          ref double hdid,
+                          ref double hnext,
+                          OdeFct derivs)
       {
          int n = y.Count;
          double errmax, xnew;
@@ -185,20 +185,20 @@ namespace QLNet
       }
 
       protected void rkck(List<double> y,
-         List<double> dydx,
-         ref double x,
-         double h,
-         ref List<double> yout,
-         ref List<double> yerr,
-         OdeFct derivs)
+                          List<double> dydx,
+                          ref double x,
+                          double h,
+                          ref List<double> yout,
+                          ref List<double> yerr,
+                          OdeFct derivs)
       {
          int n = y.Count;
          List<double> ak2 = new List<double>(n),
-            ak3 = new List<double>(n),
-            ak4 = new List<double>(n),
-            ak5 = new List<double>(n),
-            ak6 = new List<double>(n),
-            ytemp = new List<double>(n);
+         ak3 = new List<double>(n),
+         ak4 = new List<double>(n),
+         ak5 = new List<double>(n),
+         ak6 = new List<double>(n),
+         ytemp = new List<double>(n);
 
          // first step
          for (int i = 0; i < n; i++)
@@ -237,41 +237,41 @@ namespace QLNet
       protected double eps_, h1_, hmin_;
 
       protected double a2,
-         a3,
-         a4,
-         a5,
-         a6,
-         b21,
-         b31,
-         b32,
-         b41,
-         b42,
-         b43,
-         b51,
-         b52,
-         b53,
-         b54,
-         b61,
-         b62,
-         b63,
-         b64,
-         b65,
-         c1,
-         c3,
-         c4,
-         c6,
-         dc1,
-         dc3,
-         dc4,
-         dc5,
-         dc6;
+                a3,
+                a4,
+                a5,
+                a6,
+                b21,
+                b31,
+                b32,
+                b41,
+                b42,
+                b43,
+                b51,
+                b52,
+                b53,
+                b54,
+                b61,
+                b62,
+                b63,
+                b64,
+                b65,
+                c1,
+                c3,
+                c4,
+                c6,
+                dc1,
+                dc3,
+                dc4,
+                dc5,
+                dc6;
 
       protected const double ADAPTIVERK_MAXSTP = 10000.0,
-         ADAPTIVERK_TINY = 1.0E-30,
-         ADAPTIVERK_SAFETY = 0.9,
-         ADAPTIVERK_PGROW = -0.2,
-         ADAPTIVERK_PSHRINK = -0.25,
-         ADAPTIVERK_ERRCON = 1.89E-4;
+                             ADAPTIVERK_TINY = 1.0E-30,
+                             ADAPTIVERK_SAFETY = 0.9,
+                             ADAPTIVERK_PGROW = -0.2,
+                             ADAPTIVERK_PSHRINK = -0.25,
+                             ADAPTIVERK_ERRCON = 1.89E-4;
 
       public class OdeFctWrapper
       {

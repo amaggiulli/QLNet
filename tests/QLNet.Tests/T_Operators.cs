@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
+ copy of the license along with this program; if not, license is
  available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,7 +20,7 @@ using System;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -34,9 +34,9 @@ namespace TestSuite
       public const double average = 0.0, sigma = 1.0;
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testOperatorConsistency()
       {
@@ -47,16 +47,16 @@ namespace TestSuite
          CumulativeNormalDistribution cum = new CumulativeNormalDistribution(average, sigma);
 
          double xMin = average - 4 * sigma,
-              xMax = average + 4 * sigma;
+                xMax = average + 4 * sigma;
          int N = 10001;
          double h = (xMax - xMin) / (N - 1);
 
          Vector x = new Vector(N),
-             y = new Vector(N),
-             yi = new Vector(N),
-             yd = new Vector(N),
-             temp = new Vector(N),
-             diff = new Vector(N);
+         y = new Vector(N),
+         yi = new Vector(N),
+         yd = new Vector(N),
+         temp = new Vector(N),
+         diff = new Vector(N);
 
          for (int i = 0; i < N; i++)
             x[i] = xMin + h * i;
@@ -98,9 +98,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testBSMOperatorConsistency()
       {
@@ -132,10 +132,10 @@ namespace TestSuite
          YieldTermStructure rTS = Utilities.flatRate(today, r, dc);
          BlackVolTermStructure volTS = Utilities.flatVol(today, sigma, dc);
          GeneralizedBlackScholesProcess stochProcess = new GeneralizedBlackScholesProcess(
-                                                        new Handle<Quote>(spot),
-                                                        new Handle<YieldTermStructure>(qTS),
-                                                        new Handle<YieldTermStructure>(rTS),
-                                                        new Handle<BlackVolTermStructure>(volTS));
+            new Handle<Quote>(spot),
+            new Handle<YieldTermStructure>(qTS),
+            new Handle<YieldTermStructure>(rTS),
+            new Handle<BlackVolTermStructure>(volTS));
          BSMOperator op1 = new BSMOperator(grid, stochProcess, residualTime);
          PdeOperator<PdeBSM> op2 = new PdeOperator<PdeBSM>(grid, stochProcess, residualTime);
 
@@ -151,15 +151,15 @@ namespace TestSuite
                 Math.Abs(uderror[i]) > tolerance)
             {
                QAssert.Fail("inconsistency between BSM operators:\n"
-                          + i + " row:\n"
-                          + "expected:   "
-                          + refer.lowerDiagonal()[i] + ", "
-                          + refer.diagonal()[i] + ", "
-                          + refer.upperDiagonal()[i] + "\n"
-                          + "calculated: "
-                          + op1.lowerDiagonal()[i] + ", "
-                          + op1.diagonal()[i] + ", "
-                          + op1.upperDiagonal()[i]);
+                            + i + " row:\n"
+                            + "expected:   "
+                            + refer.lowerDiagonal()[i] + ", "
+                            + refer.diagonal()[i] + ", "
+                            + refer.upperDiagonal()[i] + "\n"
+                            + "calculated: "
+                            + op1.lowerDiagonal()[i] + ", "
+                            + op1.diagonal()[i] + ", "
+                            + op1.upperDiagonal()[i]);
             }
          }
          lderror = refer.lowerDiagonal() - op2.lowerDiagonal();
@@ -173,15 +173,15 @@ namespace TestSuite
                 Math.Abs(uderror[i]) > tolerance)
             {
                QAssert.Fail("inconsistency between BSM operators:\n"
-                          + i + " row:\n"
-                          + "expected:   "
-                          + refer.lowerDiagonal()[i] + ", "
-                          + refer.diagonal()[i] + ", "
-                          + refer.upperDiagonal()[i] + "\n"
-                          + "calculated: "
-                          + op2.lowerDiagonal()[i] + ", "
-                          + op2.diagonal()[i] + ", "
-                          + op2.upperDiagonal()[i]);
+                            + i + " row:\n"
+                            + "expected:   "
+                            + refer.lowerDiagonal()[i] + ", "
+                            + refer.diagonal()[i] + ", "
+                            + refer.upperDiagonal()[i] + "\n"
+                            + "calculated: "
+                            + op2.lowerDiagonal()[i] + ", "
+                            + op2.diagonal()[i] + ", "
+                            + op2.upperDiagonal()[i]);
             }
          }
       }
