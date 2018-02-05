@@ -86,14 +86,13 @@ included in the project:
 2. If you cloned a while ago, get the latest changes from upstream:
 
    ```bash
-   git checkout master
-   git pull upstream master
+   git checkout develop
+   git pull upstream develop
    ```
 
 3. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix:
 
    ```bash
-   git checkout -b develop origin/develop
    git checkout -b some-feature develop
    ```
 
