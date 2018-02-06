@@ -372,18 +372,6 @@ namespace TestSuite
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.1,    1.5,    0.0, Option.Type.Put,   1.38843,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08463,    0.06049, 1.0e-4),
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.1,    1.5,    0.0, Option.Type.Put,   1.46047,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08412,    0.11103, 1.0e-4),
 
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Call,   1.13321,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.11638,   0.14486, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Call,   1.22687,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.10088,   0.07534, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Call,   1.31179,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08925,   0.02707, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Call,   1.38843,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08463,   0.00536, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Call,   1.46047,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08412,   4.14862e-005, 1.0e-4),
-
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Put,   1.13321,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.11638,    0.00095, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Put,   1.22687,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.10088,    0.00437, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Put,   1.31179,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08925,    0.02224, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Put,   1.38843,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08463,    0.06021, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.1,    1.5,    0.0, Option.Type.Put,   1.46047,    1.30265, 0.0003541, 0.0033871, 1.0, 0.10087,   0.08925, 0.08463,   0.08412,    0.11100, 1.0e-4),
-
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Call,   1.06145,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.12511,   0.19981, 1.0e-4),
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Call,   1.19545,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.10890,   0.10389, 1.0e-4),
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Call,   1.32238,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09444,   0.03555, 1.0e-4),
@@ -395,18 +383,6 @@ namespace TestSuite
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Put,   1.32238,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09444,    0.03173, 1.0e-4),
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Put,   1.44298,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09197,    0.09346, 1.0e-4),
             new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockOut,    1.0,    1.6,    0.0, Option.Type.Put,   1.56345,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09261,    0.17704, 1.0e-4),
-
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Call,   1.06145,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.12511,   0.20202, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Call,   1.19545,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.10890,   0.10521, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Call,   1.32238,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09444,   0.03589, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Call,   1.44298,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09197,   0.00601, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Call,   1.56345,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09261,   0.00000, 1.0e-4),
-
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Put,   1.06145,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.12511,    0.00153, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Put,   1.19545,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.10890,    0.00578, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Put,   1.32238,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09444,    0.03218, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Put,   1.44298,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09197,    0.09325, 1.0e-4),
-            new DoubleBarrierFxOptionData(DoubleBarrier.Type.KnockIn,     1.0,    1.6,    0.0, Option.Type.Put,   1.56345,    1.30265, 0.0009418, 0.0039788, 2.0, 0.10891,   0.09525, 0.09197,   0.09261,    0.17804, 1.0e-4)
 
          };
 
@@ -425,81 +401,89 @@ namespace TestSuite
 
          for (int i = 0; i < values.Length; i++)
          {
-            spot.setValue(values[i].s);
-            qRate.setValue(values[i].q);
-            rRate.setValue(values[i].r);
-            vol25Put.setValue(values[i].vol25Put);
-            volAtm.setValue(values[i].volAtm);
-            vol25Call.setValue(values[i].vol25Call);
-
-            StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
-
-            Date exDate = today + (int)(values[i].t * 365 + 0.5);
-            Exercise exercise = new EuropeanExercise(exDate);
-
-            Handle<DeltaVolQuote> volAtmQuote = new Handle<DeltaVolQuote>(
-               new DeltaVolQuote(new Handle<Quote>(volAtm), DeltaVolQuote.DeltaType.Fwd, values[i].t,
-                                 DeltaVolQuote.AtmType.AtmDeltaNeutral));
-
-            //always delta neutral atm
-            Handle<DeltaVolQuote> vol25PutQuote = new Handle<DeltaVolQuote>(new DeltaVolQuote(-0.25,
-                                                                            new Handle<Quote>(vol25Put), values[i].t, DeltaVolQuote.DeltaType.Fwd));
-
-            Handle<DeltaVolQuote> vol25CallQuote = new Handle<DeltaVolQuote>(new DeltaVolQuote(0.25,
-                                                                             new Handle<Quote>(vol25Call), values[i].t, DeltaVolQuote.DeltaType.Fwd));
-
-            DoubleBarrierOption doubleBarrierOption = new DoubleBarrierOption(values[i].barrierType,
-                                                                              values[i].barrier1, values[i].barrier2, values[i].rebate, payoff, exercise);
-
-            double bsVanillaPrice = Utils.blackFormula(values[i].type, values[i].strike,
-                                                       spot.value() * qTS.discount(values[i].t) / rTS.discount(values[i].t),
-                                                       values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
-
-            IPricingEngine vannaVolgaEngine;
-
-            vannaVolgaEngine = new VannaVolgaDoubleBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
-                                                                 new Handle<Quote>(spot),
-                                                                 new Handle<YieldTermStructure>(rTS),
-                                                                 new Handle<YieldTermStructure>(qTS),
-                                                                 (process, series) => new WulinYongDoubleBarrierEngine(process, series),
-            true,
-            bsVanillaPrice);
-            doubleBarrierOption.setPricingEngine(vannaVolgaEngine);
-
-            double calculated = doubleBarrierOption.NPV();
-            double expected = values[i].result;
-            double error = Math.Abs(calculated - expected);
-            if (error > values[i].tol)
+            for (int j = 0; j <= 1; j++)
             {
-               REPORT_FAILURE_VANNAVOLGA("value", values[i].barrierType,
-                                         values[i].barrier1, values[i].barrier2,
-                                         values[i].rebate, payoff, exercise, values[i].s,
-                                         values[i].q, values[i].r, today, values[i].vol25Put,
-                                         values[i].volAtm, values[i].vol25Call, values[i].v,
-                                         expected, calculated, error, values[i].tol);
-            }
+               DoubleBarrier.Type barrierType = (DoubleBarrier.Type) j ;
+               spot.setValue(values[i].s);
+               qRate.setValue(values[i].q);
+               rRate.setValue(values[i].r);
+               vol25Put.setValue(values[i].vol25Put);
+               volAtm.setValue(values[i].volAtm);
+               vol25Call.setValue(values[i].vol25Call);
 
-            vannaVolgaEngine = new VannaVolgaDoubleBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
-                                                                 new Handle<Quote> (spot),
-                                                                 new Handle<YieldTermStructure> (rTS),
-                                                                 new Handle<YieldTermStructure> (qTS),
-                                                                 (process, series) => new AnalyticDoubleBarrierEngine(process, series),
-            true,
-            bsVanillaPrice);
-            doubleBarrierOption.setPricingEngine(vannaVolgaEngine);
+               StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
-            calculated = doubleBarrierOption.NPV();
-            expected = values[i].result;
-            error = Math.Abs(calculated - expected);
-            double maxtol = 5.0e-3; // different engines have somewhat different results
-            if (error > maxtol)
-            {
-               REPORT_FAILURE_VANNAVOLGA("value", values[i].barrierType,
-                                         values[i].barrier1, values[i].barrier2,
-                                         values[i].rebate, payoff, exercise, values[i].s,
-                                         values[i].q, values[i].r, today, values[i].vol25Put,
-                                         values[i].volAtm, values[i].vol25Call, values[i].v,
-                                         expected, calculated, error, values[i].tol);
+               Date exDate = today + (int)(values[i].t * 365 + 0.5);
+               Exercise exercise = new EuropeanExercise(exDate);
+
+               Handle<DeltaVolQuote> volAtmQuote = new Handle<DeltaVolQuote>(
+                  new DeltaVolQuote(new Handle<Quote>(volAtm), DeltaVolQuote.DeltaType.Fwd, values[i].t,
+                                    DeltaVolQuote.AtmType.AtmDeltaNeutral));
+
+               //always delta neutral atm
+               Handle<DeltaVolQuote> vol25PutQuote = new Handle<DeltaVolQuote>(new DeltaVolQuote(-0.25,
+                                                                               new Handle<Quote>(vol25Put), values[i].t, DeltaVolQuote.DeltaType.Fwd));
+
+               Handle<DeltaVolQuote> vol25CallQuote = new Handle<DeltaVolQuote>(new DeltaVolQuote(0.25,
+                                                                                new Handle<Quote>(vol25Call), values[i].t, DeltaVolQuote.DeltaType.Fwd));
+
+               DoubleBarrierOption doubleBarrierOption = new DoubleBarrierOption(barrierType,
+                                                                                 values[i].barrier1, values[i].barrier2, values[i].rebate, payoff, exercise);
+
+               double bsVanillaPrice = Utils.blackFormula(values[i].type, values[i].strike,
+                                                          spot.value() * qTS.discount(values[i].t) / rTS.discount(values[i].t),
+                                                          values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
+
+               IPricingEngine vannaVolgaEngine;
+
+               vannaVolgaEngine = new VannaVolgaDoubleBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
+                                                                    new Handle<Quote>(spot),
+                                                                    new Handle<YieldTermStructure>(rTS),
+                                                                    new Handle<YieldTermStructure>(qTS),
+                                                                    (process, series) => new WulinYongDoubleBarrierEngine(process, series),
+               true,
+               bsVanillaPrice);
+               doubleBarrierOption.setPricingEngine(vannaVolgaEngine);
+
+               double expected = 0;
+               if (barrierType == DoubleBarrier.Type.KnockOut)
+                  expected = values[i].result;
+               else if (barrierType == DoubleBarrier.Type.KnockIn)
+                  expected = (bsVanillaPrice - values[i].result);
+
+               double calculated = doubleBarrierOption.NPV();
+               double error = Math.Abs(calculated - expected);
+               if (error > values[i].tol)
+               {
+                  REPORT_FAILURE_VANNAVOLGA("value", values[i].barrierType,
+                                            values[i].barrier1, values[i].barrier2,
+                                            values[i].rebate, payoff, exercise, values[i].s,
+                                            values[i].q, values[i].r, today, values[i].vol25Put,
+                                            values[i].volAtm, values[i].vol25Call, values[i].v,
+                                            expected, calculated, error, values[i].tol);
+               }
+
+               vannaVolgaEngine = new VannaVolgaDoubleBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
+                                                                    new Handle<Quote>(spot),
+                                                                    new Handle<YieldTermStructure>(rTS),
+                                                                    new Handle<YieldTermStructure>(qTS),
+                                                                    (process, series) => new AnalyticDoubleBarrierEngine(process, series),
+               true,
+               bsVanillaPrice);
+               doubleBarrierOption.setPricingEngine(vannaVolgaEngine);
+
+               calculated = doubleBarrierOption.NPV();
+               error = Math.Abs(calculated - expected);
+               double maxtol = 5.0e-3; // different engines have somewhat different results
+               if (error > maxtol)
+               {
+                  REPORT_FAILURE_VANNAVOLGA("value", values[i].barrierType,
+                                            values[i].barrier1, values[i].barrier2,
+                                            values[i].rebate, payoff, exercise, values[i].s,
+                                            values[i].q, values[i].r, today, values[i].vol25Put,
+                                            values[i].volAtm, values[i].vol25Call, values[i].v,
+                                            expected, calculated, error, values[i].tol);
+               }
             }
          }
       }
