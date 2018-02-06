@@ -47,6 +47,10 @@ namespace QLNet
          swapTenor_ = swapTenor;
          volatilityStructure_ = volatilityStructure;
          smile_ = volatilityStructure_.smileSection(expiryDate_, swapTenor_);
+
+         Utils.QL_REQUIRE(volatilityStructure.volatilityType() == VolatilityType.ShiftedLognormal &&
+                          Utils.close_enough(volatilityStructure.shift(expiryDate, swapTenor), 0.0), () =>
+                          "BlackVanillaOptionPricer: zero-shift lognormal volatility required");
       }
 
       public override double value(double strike, Option.Type optionType, double deflator)
