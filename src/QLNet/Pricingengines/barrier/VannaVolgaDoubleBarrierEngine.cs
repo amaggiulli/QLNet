@@ -123,7 +123,7 @@ namespace QLNet
          StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
          Utils.QL_REQUIRE(payoff != null, () => "invalid payoff");
          double strikeVol = interpolation.value(payoff.strike());
-         //vannila option price
+         // Vanilla option price
          double vanillaOption = Utils.blackFormula(payoff.optionType(), payoff.strike(),
                                                    x0Quote.link.value() * foreignTS_.link.discount(T_) / domesticTS_.link.discount(T_),
                                                    strikeVol * Math.Sqrt(T_),
@@ -153,7 +153,7 @@ namespace QLNet
             //only calculate out barrier option price
             // in barrier price = vanilla - out barrier
             DoubleBarrierOption doubleBarrierOption = new DoubleBarrierOption(
-               arguments_.barrierType,
+               DoubleBarrier.Type.KnockOut,
                arguments_.barrier_lo.GetValueOrDefault(),
                arguments_.barrier_hi.GetValueOrDefault(),
                arguments_.rebate.GetValueOrDefault(),

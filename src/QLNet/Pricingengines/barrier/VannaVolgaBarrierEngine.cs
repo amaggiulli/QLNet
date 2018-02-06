@@ -60,6 +60,12 @@ namespace QLNet
 
       public override void calculate()
       {
+         Utils.QL_REQUIRE(arguments_.barrierType == Barrier.Type.UpIn ||
+                          arguments_.barrierType == Barrier.Type.UpOut ||
+                          arguments_.barrierType == Barrier.Type.DownIn ||
+                          arguments_.barrierType == Barrier.Type.DownOut, () =>
+                          "Invalid barrier type");
+
          double sigmaShift_vega = 0.0001;
          double sigmaShift_volga = 0.0001;
          double spotShift_delta = 0.0001 * spotFX_.link.value();
@@ -111,7 +117,7 @@ namespace QLNet
          StrikedTypePayoff payoff = arguments_.payoff as StrikedTypePayoff;
          double strikeVol = interpolation.value(payoff.strike());
 
-         //vannila option price
+         // Vanilla option price
          double vanillaOption = Utils.blackFormula(payoff.optionType(), payoff.strike(),
                                                    x0Quote.link.value() * foreignTS_.link.discount(T_) / domesticTS_.link.discount(T_),
                                                    strikeVol * Math.Sqrt(T_),
@@ -154,17 +160,17 @@ namespace QLNet
             //set up BS barrier option pricing
             //only calculate out barrier option price
             // in barrier price = vanilla - out barrier
-            Barrier.Type barrierTyp;
+            Barrier.Type barrierType;
             if (arguments_.barrierType == Barrier.Type.UpOut)
-               barrierTyp = arguments_.barrierType;
+               barrierType = arguments_.barrierType;
             else if (arguments_.barrierType == Barrier.Type.UpIn)
-               barrierTyp = Barrier.Type.UpOut;
+               barrierType = Barrier.Type.UpOut;
             else if (arguments_.barrierType == Barrier.Type.DownOut)
-               barrierTyp = arguments_.barrierType;
+               barrierType = arguments_.barrierType;
             else
-               barrierTyp = Barrier.Type.DownOut;
+               barrierType = Barrier.Type.DownOut;
 
-            BarrierOption barrierOption = new BarrierOption(barrierTyp,
+            BarrierOption barrierOption = new BarrierOption(barrierType,
                                                             arguments_.barrier.GetValueOrDefault(),
                                                             arguments_.rebate.GetValueOrDefault(),
                                                             (StrikedTypePayoff)arguments_.payoff,
