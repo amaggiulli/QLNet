@@ -120,4 +120,4 @@ If you decide to fix an issue, please be sure to check the comment thread in cas
 If somebody claims an issue but doesn’t follow up for more than two weeks, it’s fine to take over it but you should still leave a comment.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project
-owners to license your work under the terms of the [MIT License](LICENSE.txt).
+owners to license your work under the terms of the [BSD3 License](https://github.com/amaggiulli/QLNet/blob/develop/LICENSE).
