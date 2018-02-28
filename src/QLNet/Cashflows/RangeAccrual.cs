@@ -46,7 +46,7 @@ namespace QLNet
          Utils.QL_REQUIRE(observationsSchedule_.startDate() == startDate, () => "incompatible start date");
          Utils.QL_REQUIRE(observationsSchedule_.endDate() == endDate, () => "incompatible end date");
 
-         observationDates_ = observationsSchedule_.dates();
+         observationDates_ = new List<Date>(observationsSchedule_.dates());
          observationDates_.RemoveAt(observationDates_.Count - 1); //remove end date
          observationDates_.RemoveAt(0);                         //remove start date
          observationsNo_ = observationDates_.Count;

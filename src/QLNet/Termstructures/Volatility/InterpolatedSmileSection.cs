@@ -44,6 +44,8 @@ namespace QLNet
 
          atmLevel_.registerWith(update);
          // check strikes!!!!!!!!!!!!!!!!!!!!
+         if (interpolator == null)
+            interpolator = FastActivator<Interpolator>.Create();
          interpolation_ = interpolator.interpolate(strikes_, strikes_.Count, vols_);
       }
 
@@ -69,6 +71,8 @@ namespace QLNet
 
          atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
          // check strikes!!!!!!!!!!!!!!!!!!!!
+         if (interpolator == null)
+            interpolator = FastActivator<Interpolator>.Create();
          interpolation_ = interpolator.interpolate(strikes_, strikes_.Count, vols_);
       }
 
@@ -93,6 +97,8 @@ namespace QLNet
             stdDevHandles_[i].registerWith(update);
          atmLevel_.registerWith(update);
          // check strikes!!!!!!!!!!!!!!!!!!!!
+         if (interpolator == null)
+            interpolator = FastActivator<Interpolator>.Create();
          interpolation_ = interpolator.interpolate(strikes_, strikes_.Count, vols_);
       }
 
@@ -106,6 +112,7 @@ namespace QLNet
                                       double shift = 0.0)
          : base(d, dc ?? new Actual365Fixed(), referenceDate, VolatilityType.ShiftedLognormal, shift)
       {
+         exerciseTimeSquareRoot_ = Math.Sqrt(exerciseTime());
          strikes_ = strikes;
          stdDevHandles_ = new InitializedList<Handle<Quote>>(stdDevs.Count);
          vols_ = new InitializedList<double>(stdDevs.Count);
@@ -116,6 +123,9 @@ namespace QLNet
             stdDevHandles_[i] = new Handle<Quote>(new SimpleQuote(stdDevs[i]));
          atmLevel_ = new Handle<Quote>(new SimpleQuote(atmLevel));
          // check strikes!!!!!!!!!!!!!!!!!!!!
+         if (interpolator == null)
+            interpolator = FastActivator<Interpolator>.Create();
+
          interpolation_ = interpolator.interpolate(strikes_, strikes_.Count, vols_);
       }
 
