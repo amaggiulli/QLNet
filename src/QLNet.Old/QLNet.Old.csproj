@@ -551,8 +551,8 @@
     <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarparam.cs">
       <Link>legacy\libormarketmodels\lfmcovarparam.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarproxy.cs">
-      <Link>legacy\libormarketmodels\lfmcovarproxy.cs</Link>
+    <Compile Include="..\QLNet\legacy\libormarketmodels\LfmCovarianceProxy.cs">
+      <Link>legacy\libormarketmodels\LfmCovarianceProxy.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\legacy\libormarketmodels\lfmhullwhiteparam.cs">
       <Link>legacy\libormarketmodels\lfmhullwhiteparam.cs</Link>
