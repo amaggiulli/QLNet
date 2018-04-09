@@ -69,6 +69,27 @@ namespace QLNet
       }
 
       /// <summary>
+      /// Returns the history of the index fixings if the index exists
+      /// A return value indicates whether the index exists.
+      /// </summary>
+      /// <param name="name">The index name</param>
+      /// <param name="history">The history of the index. Populated with null if the index does not exist</param>
+      /// <returns>true if the index exists; otherwise, false.</returns>
+      public bool tryGetHistory(string name, out TimeSeries < double? > history)
+      {
+         if (hasHistory(name))
+         {
+            history = getHistory(name);
+            return true;
+         }
+         else
+         {
+            history = null;
+            return false;
+         }
+      }
+
+      /// <summary>
       /// stores the historical fixings of the index
       /// </summary>
       /// <param name="name"></param>
