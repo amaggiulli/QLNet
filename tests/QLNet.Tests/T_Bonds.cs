@@ -1328,6 +1328,25 @@ namespace TestSuite
                                        expectedPrice, calculatedPrice));
          }
       }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testWeightedAverageLife()
+      {
+         // Test against know data
+         DateTime today = new Date(5, Month.Jun, 2018);
+         List<double> amounts = new List<double> { 5080, 35255, 8335 };
+         List < DateTime > schedule = new List<DateTime> { new Date(1, 8, 2035),
+                 new Date(1, 8, 2036), new Date(1, 8, 2037)
+         };
+
+         DateTime wal = BondFunctions.WeightedAverageLife(today, amounts, schedule);
+         QAssert.IsTrue(wal == new DateTime(2036, 08, 25));
+      }
+
    }
 
 }

@@ -17,6 +17,10 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace QLNet
 {
    //! Bond adapters of CashFlows functions
@@ -431,6 +435,33 @@ namespace QLNet
                                   false, settlementDate, settlementDate,
                                   accuracy, maxIterations, guess);
       }
+      #endregion
+
+      #region Raw Functions
+
+      public static DateTime WeightedAverageLife(DateTime today, List<double> amounts, List<DateTime> schedule)
+      {
+         Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
+         double totAmount = amounts.Sum();
+
+         if (totAmount.IsEqual(0))
+            return today;
+
+         double wal = 0;
+         DayCounter dc = new Actual365Fixed();
+
+         for (int x = 0; x < amounts.Count; x++)
+         {
+            double per = amounts[x] / totAmount;
+            double years = dc.yearFraction(today, schedule[x]);
+            double yearw = years * per;
+            wal += yearw;
+         }
+
+         return today.AddDays(wal * 365).Date;
+
+      }
+
       #endregion
 
    }
