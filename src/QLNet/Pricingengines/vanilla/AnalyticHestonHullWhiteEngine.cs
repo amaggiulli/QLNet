@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
-//  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//  copy of the license along with this program; if not, license is
+//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -19,7 +19,7 @@ using System.Numerics;
 namespace QLNet
 {
    //! Analytic Heston engine incl. stochastic interest rates
-   /*! 
+   /*!
        References:
 
        Karel in't Hout, Joris Bierkens, Antoine von der Ploeg,
@@ -39,12 +39,12 @@ namespace QLNet
    */
    public class AnalyticHestonHullWhiteEngine : AnalyticHestonEngine
    {
-      
+
       // see AnalticHestonEninge for usage of different constructors
-      public AnalyticHestonHullWhiteEngine( HestonModel hestonModel,
-                                            HullWhite hullWhiteModel,
-                                            int integrationOrder = 144)
-         :base(hestonModel, integrationOrder)
+      public AnalyticHestonHullWhiteEngine(HestonModel hestonModel,
+                                           HullWhite hullWhiteModel,
+                                           int integrationOrder = 144)
+         : base(hestonModel, integrationOrder)
       {
          hullWhiteModel_ = hullWhiteModel;
 
@@ -52,15 +52,15 @@ namespace QLNet
          hullWhiteModel_.registerWith(update);
       }
 
-      public AnalyticHestonHullWhiteEngine( HestonModel hestonModel,
-                                            HullWhite hullWhiteModel,
-                                            double relTolerance, int maxEvaluations)
-         :base(hestonModel, relTolerance, maxEvaluations)
+      public AnalyticHestonHullWhiteEngine(HestonModel hestonModel,
+                                           HullWhite hullWhiteModel,
+                                           double relTolerance, int maxEvaluations)
+         : base(hestonModel, relTolerance, maxEvaluations)
       {
          hullWhiteModel_ = hullWhiteModel;
 
          update();
-         hullWhiteModel_.registerWith( update );
+         hullWhiteModel_.registerWith(update);
       }
 
       public void setupArguments(VanillaOption.Arguments args)
@@ -78,15 +78,15 @@ namespace QLNet
       public override void calculate()
       {
          double t = model_.link.process().time(arguments_.exercise.lastDate());
-         if (a_*t > Math.Pow(Const.QL_EPSILON, 0.25)) 
+         if (a_ * t > Math.Pow(Const.QL_EPSILON, 0.25))
          {
-            m_ = sigma_*sigma_/(2*a_*a_)
-                *(t+2/a_*Math.Exp(-a_*t)-1/(2*a_)*Math.Exp(-2*a_*t)-3/(2*a_));
+            m_ = sigma_ * sigma_ / (2 * a_ * a_)
+                 * (t + 2 / a_ * Math.Exp(-a_ * t) - 1 / (2 * a_) * Math.Exp(-2 * a_ * t) - 3 / (2 * a_));
          }
-         else 
+         else
          {
             // low-a algebraic limit
-            m_ = 0.5*sigma_*sigma_*t*t*t*(1/3.0-0.25*a_*t+7/60.0*a_*a_*t*t);
+            m_ = 0.5 * sigma_ * sigma_ * t * t * t * (1 / 3.0 - 0.25 * a_ * t + 7 / 60.0 * a_ * a_ * t * t);
          }
 
          base.calculate();
@@ -94,7 +94,7 @@ namespace QLNet
 
       protected override Complex addOnTerm(double u, double t, int j)
       {
-         return new Complex(-m_*u*u, u*(m_-2*m_*(j-1)));
+         return new Complex(-m_ * u * u, u * (m_ - 2 * m_ * (j - 1)));
       }
 
       protected HullWhite hullWhiteModel_;

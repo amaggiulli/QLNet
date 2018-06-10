@@ -6,13 +6,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -72,8 +72,8 @@ namespace QLNet
 
          //! Plain tree build-up from short-rate dynamics
          public ShortRateTree(TrinomialTree tree,
-            ShortRateDynamics dynamics,
-            TimeGrid timeGrid)
+                              ShortRateDynamics dynamics,
+                              TimeGrid timeGrid)
             : base(timeGrid, tree.size(1))
          {
             tree_ = tree;
@@ -81,8 +81,8 @@ namespace QLNet
          }
 
          //! Tree build-up + numerical fitting to term-structure
-         public ShortRateTree(TrinomialTree tree,ShortRateDynamics dynamics,TermStructureFittingParameter.NumericalImpl theta,
-            TimeGrid timeGrid)
+         public ShortRateTree(TrinomialTree tree, ShortRateDynamics dynamics, TermStructureFittingParameter.NumericalImpl theta,
+                              TimeGrid timeGrid)
             : base(timeGrid, tree.size(1))
          {
             tree_ = tree;
@@ -142,9 +142,9 @@ namespace QLNet
             private ShortRateTree tree_;
 
             public Helper(int i,
-               double discountBondPrice,
-               TermStructureFittingParameter.NumericalImpl theta,
-               ShortRateTree tree)
+                          double discountBondPrice,
+                          TermStructureFittingParameter.NumericalImpl theta,
+                          ShortRateTree tree)
             {
                size_ = tree.size(i);
                i_ = i;
@@ -175,8 +175,8 @@ namespace QLNet
       {}
 
       public virtual double discountBond(double now,
-         double maturity,
-         Vector factors)
+                                         double maturity,
+                                         Vector factors)
       {
          return discountBond(now, maturity, factors[0]);
       }
@@ -194,9 +194,9 @@ namespace QLNet
       }
 
       public virtual double discountBondOption(Option.Type type,
-         double strike,
-         double maturity,
-         double bondMaturity)
+                                               double strike,
+                                               double maturity,
+                                               double bondMaturity)
       {
          throw new NotImplementedException();
       }

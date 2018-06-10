@@ -551,8 +551,8 @@
     <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarparam.cs">
       <Link>legacy\libormarketmodels\lfmcovarparam.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarproxy.cs">
-      <Link>legacy\libormarketmodels\lfmcovarproxy.cs</Link>
+    <Compile Include="..\QLNet\legacy\libormarketmodels\LfmCovarianceProxy.cs">
+      <Link>legacy\libormarketmodels\LfmCovarianceProxy.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\legacy\libormarketmodels\lfmhullwhiteparam.cs">
       <Link>legacy\libormarketmodels\lfmhullwhiteparam.cs</Link>
@@ -640,6 +640,9 @@
     </Compile>
     <Compile Include="..\QLNet\Math\Optimization\CostFunction.cs">
       <Link>Math\Optimization\CostFunction.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Math\Optimization\DifferentialEvolution.cs">
+      <Link>Math\Optimization\DifferentialEvolution.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\Distributions\binomialdistribution.cs">
       <Link>Math\Distributions\binomialdistribution.cs</Link>
@@ -1598,6 +1601,9 @@
     <Compile Include="..\QLNet\processes\stochasticprocessarray.cs">
       <Link>processes\stochasticprocessarray.cs</Link>
     </Compile>
+    <Compile Include="..\QLNet\Termstructures\Yield\CompositeZeroYieldStructure.cs">
+      <Link>Termstructures\Yield\CompositeZeroYieldStructure.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="..\QLNet\Quotes\CompositeQuote.cs">
       <Link>Quotes\CompositeQuote.cs</Link>
@@ -1910,6 +1916,9 @@
     </Compile>
     <Compile Include="..\QLNet\Time\Calendars\bespokecalendar.cs">
       <Link>Time\Calendars\bespokecalendar.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Time\Calendars\botswana.cs">
+      <Link>Time\Calendars\botswana.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Time\Calendars\brazil.cs">
       <Link>Time\Calendars\brazil.cs</Link>

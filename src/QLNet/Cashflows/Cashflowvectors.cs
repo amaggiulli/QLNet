@@ -2,18 +2,18 @@
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -45,27 +45,27 @@ namespace QLNet
          List<int> fixingDays,
          List<double> gearings,
          List<double> spreads,
-         List<double?> caps,
-         List<double?> floors,
+         List < double? > caps,
+         List < double? > floors,
          bool isInArrears,
          bool isZero)
-         where InterestRateIndexType : InterestRateIndex, new()
-         where FloatingCouponType : FloatingRateCoupon, new()
-         where CappedFlooredCouponType : CappedFlooredCoupon, new()
+      where InterestRateIndexType : InterestRateIndex, new ()
+      where FloatingCouponType : FloatingRateCoupon, new ()
+      where CappedFlooredCouponType : CappedFlooredCoupon, new ()
       {
          int n = schedule.Count;
 
-         Utils.QL_REQUIRE(!nominals.empty(),()=> "no notional given");
-         Utils.QL_REQUIRE(nominals.Count <= n,()=> "too many nominals (" + nominals.Count + "), only " + n + " required");
+         Utils.QL_REQUIRE(!nominals.empty(), () => "no notional given");
+         Utils.QL_REQUIRE(nominals.Count <= n, () => "too many nominals (" + nominals.Count + "), only " + n + " required");
          if (gearings != null)
-            Utils.QL_REQUIRE(gearings.Count <= n,()=> "too many gearings (" + gearings.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(gearings.Count <= n, () => "too many gearings (" + gearings.Count + "), only " + n + " required");
          if (spreads != null)
-            Utils.QL_REQUIRE(spreads.Count <= n,()=> "too many spreads (" + spreads.Count + "), only " + n + " required");
-         if (caps!=null)
-            Utils.QL_REQUIRE(caps.Count <= n,()=> "too many caps (" + caps.Count + "), only " + n + " required");
-         if ( floors != null )
-            Utils.QL_REQUIRE(floors.Count <= n,()=> "too many floors (" + floors.Count + "), only " + n + " required");
-         Utils.QL_REQUIRE(!isZero || !isInArrears,()=> "in-arrears and zero features are not compatible");
+            Utils.QL_REQUIRE(spreads.Count <= n, () => "too many spreads (" + spreads.Count + "), only " + n + " required");
+         if (caps != null)
+            Utils.QL_REQUIRE(caps.Count <= n, () => "too many caps (" + caps.Count + "), only " + n + " required");
+         if (floors != null)
+            Utils.QL_REQUIRE(floors.Count <= n, () => "too many floors (" + floors.Count + "), only " + n + " required");
+         Utils.QL_REQUIRE(!isZero || !isInArrears, () => "in-arrears and zero features are not compatible");
 
          List<CashFlow> leg = new List<CashFlow>();
 
@@ -98,28 +98,28 @@ namespace QLNet
                if (Utils.noOption(caps, floors, i))
                {
                   leg.Add(FastActivator<FloatingCouponType>.Create().factory(
-                     Utils.Get(nominals, i),
-                     paymentDate, start, end,
-                     Utils.Get(fixingDays, i, index.fixingDays()),
-                     index,
-                     Utils.Get(gearings, i, 1),
-                     Utils.Get(spreads, i),
-                     refStart, refEnd, paymentDayCounter,
-                     isInArrears));
+                             Utils.Get(nominals, i),
+                             paymentDate, start, end,
+                             Utils.Get(fixingDays, i, index.fixingDays()),
+                             index,
+                             Utils.Get(gearings, i, 1),
+                             Utils.Get(spreads, i),
+                             refStart, refEnd, paymentDayCounter,
+                             isInArrears));
                }
                else
                {
                   leg.Add(FastActivator<CappedFlooredCouponType>.Create().factory(
-                     Utils.Get(nominals, i),
-                     paymentDate, start, end,
-                     Utils.Get(fixingDays, i, index.fixingDays()),
-                     index,
-                     Utils.Get(gearings, i, 1),
-                     Utils.Get(spreads, i),
-                     Utils.toNullable(Utils.Get(caps, i, Double.MinValue)),
-                     Utils.toNullable(Utils.Get(floors, i, Double.MinValue)),
-                     refStart, refEnd, paymentDayCounter,
-                     isInArrears));
+                             Utils.Get(nominals, i),
+                             paymentDate, start, end,
+                             Utils.Get(fixingDays, i, index.fixingDays()),
+                             index,
+                             Utils.Get(gearings, i, 1),
+                             Utils.Get(spreads, i),
+                             Utils.toNullable(Utils.Get(caps, i, Double.MinValue)),
+                             Utils.toNullable(Utils.Get(floors, i, Double.MinValue)),
+                             refStart, refEnd, paymentDayCounter,
+                             isInArrears));
                }
             }
          }
@@ -145,21 +145,21 @@ namespace QLNet
          bool isPutATMIncluded,
          List<double> putDigitalPayoffs,
          DigitalReplication replication)
-         where InterestRateIndexType : InterestRateIndex, new()
-         where FloatingCouponType : FloatingRateCoupon, new()
-         where DigitalCouponType : DigitalCoupon, new()
+      where InterestRateIndexType : InterestRateIndex, new ()
+         where FloatingCouponType : FloatingRateCoupon, new ()
+         where DigitalCouponType : DigitalCoupon, new ()
       {
          int n = schedule.Count;
-         Utils.QL_REQUIRE(!nominals.empty(),()=> "no notional given");
-         Utils.QL_REQUIRE(nominals.Count <= n,()=> "too many nominals (" + nominals.Count + "), only " + n + " required");
-         if (gearings != null )
-            Utils.QL_REQUIRE(gearings.Count <= n,()=> "too many gearings (" + gearings.Count + "), only " + n + " required");
-         if (spreads != null )
-            Utils.QL_REQUIRE(spreads.Count <= n,()=> "too many spreads (" + spreads.Count + "), only " + n + " required");
-         if (callStrikes != null )
-            Utils.QL_REQUIRE(callStrikes.Count <= n,()=> "too many nominals (" + callStrikes.Count + "), only " + n + " required");
-         if (putStrikes != null )
-            Utils.QL_REQUIRE(putStrikes.Count <= n,()=> "too many nominals (" + putStrikes.Count + "), only " + n + " required");
+         Utils.QL_REQUIRE(!nominals.empty(), () => "no notional given");
+         Utils.QL_REQUIRE(nominals.Count <= n, () => "too many nominals (" + nominals.Count + "), only " + n + " required");
+         if (gearings != null)
+            Utils.QL_REQUIRE(gearings.Count <= n, () => "too many gearings (" + gearings.Count + "), only " + n + " required");
+         if (spreads != null)
+            Utils.QL_REQUIRE(spreads.Count <= n, () => "too many spreads (" + spreads.Count + "), only " + n + " required");
+         if (callStrikes != null)
+            Utils.QL_REQUIRE(callStrikes.Count <= n, () => "too many nominals (" + callStrikes.Count + "), only " + n + " required");
+         if (putStrikes != null)
+            Utils.QL_REQUIRE(putStrikes.Count <= n, () => "too many nominals (" + putStrikes.Count + "), only " + n + " required");
 
          List<CashFlow> leg = new List<CashFlow>();
 
@@ -196,26 +196,26 @@ namespace QLNet
             {
                // floating digital coupon
                FloatingCouponType underlying = FastActivator<FloatingCouponType>.Create().factory(
-                  Utils.Get(nominals, i, 1.0),
-                  paymentDate, start, end,
-                  Utils.Get(fixingDays, i, index.fixingDays()),
-                  index,
-                  Utils.Get(gearings, i, 1.0),
-                  Utils.Get(spreads, i, 0.0),
-                  refStart, refEnd,
-                  paymentDayCounter, isInArrears) as FloatingCouponType;
+                                                  Utils.Get(nominals, i, 1.0),
+                                                  paymentDate, start, end,
+                                                  Utils.Get(fixingDays, i, index.fixingDays()),
+                                                  index,
+                                                  Utils.Get(gearings, i, 1.0),
+                                                  Utils.Get(spreads, i, 0.0),
+                                                  refStart, refEnd,
+                                                  paymentDayCounter, isInArrears) as FloatingCouponType;
 
                DigitalCouponType digitalCoupon = FastActivator<DigitalCouponType>.Create().factory(
-                  underlying,
-                  Utils.toNullable(Utils.Get(callStrikes, i, Double.MinValue)),
-                  callPosition,
-                  isCallATMIncluded,
-                  Utils.toNullable(Utils.Get(callDigitalPayoffs, i, Double.MinValue)),
-                  Utils.toNullable(Utils.Get(putStrikes, i, Double.MinValue)),
-                  putPosition,
-                  isPutATMIncluded,
-                  Utils.toNullable(Utils.Get(putDigitalPayoffs, i, Double.MinValue)),
-                  replication) as DigitalCouponType;
+                                                    underlying,
+                                                    Utils.toNullable(Utils.Get(callStrikes, i, Double.MinValue)),
+                                                    callPosition,
+                                                    isCallATMIncluded,
+                                                    Utils.toNullable(Utils.Get(callDigitalPayoffs, i, Double.MinValue)),
+                                                    Utils.toNullable(Utils.Get(putStrikes, i, Double.MinValue)),
+                                                    putPosition,
+                                                    isPutATMIncluded,
+                                                    Utils.toNullable(Utils.Get(putDigitalPayoffs, i, Double.MinValue)),
+                                                    replication) as DigitalCouponType;
 
                leg.Add(digitalCoupon);
             }
@@ -248,9 +248,9 @@ namespace QLNet
             refEnd = end = schedule.date(i + 1);
             paymentDate = calendar.adjust(end, paymentAdjustment);
             if (i == 0 && !schedule.isRegular(i + 1))
-               refStart = calendar.adjust(end - schedule.tenor(),paymentAdjustment);
+               refStart = calendar.adjust(end - schedule.tenor(), paymentAdjustment);
             if (i == n - 1 && !schedule.isRegular(i + 1))
-               refEnd = calendar.adjust(start + schedule.tenor(),paymentAdjustment);
+               refEnd = calendar.adjust(start + schedule.tenor(), paymentAdjustment);
 
             leg.Add(new OvernightIndexedCoupon(paymentDate,
                                                Utils.Get(nominals, i),
@@ -271,8 +271,8 @@ namespace QLNet
                                                    List<double> gearings_,
                                                    List<double> spreads_,
                                                    DayCounter paymentDayCounter_,
-                                                   List<double?> caps_,
-                                                   List<double?> floors_,
+                                                   List < double? > caps_,
+                                                   List < double? > floors_,
                                                    Calendar paymentCalendar_,
                                                    List<int> fixingDays_,
                                                    Period observationLag_)
@@ -280,15 +280,15 @@ namespace QLNet
          int n = schedule_.Count - 1;
 
          Utils.QL_REQUIRE(!notionals_.empty(), () => "no notional given");
-         Utils.QL_REQUIRE(notionals_.Count <= n,()=> "too many nominals (" + notionals_.Count + "), only " + n + " required");
+         Utils.QL_REQUIRE(notionals_.Count <= n, () => "too many nominals (" + notionals_.Count + "), only " + n + " required");
          if (gearings_ != null)
-            Utils.QL_REQUIRE(gearings_.Count <= n,()=> "too many gearings (" + gearings_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(gearings_.Count <= n, () => "too many gearings (" + gearings_.Count + "), only " + n + " required");
          if (spreads_ != null)
-            Utils.QL_REQUIRE(spreads_.Count <= n,()=> "too many spreads (" + spreads_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(spreads_.Count <= n, () => "too many spreads (" + spreads_.Count + "), only " + n + " required");
          if (caps_ != null)
-            Utils.QL_REQUIRE(caps_.Count <= n,()=> "too many caps (" + caps_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(caps_.Count <= n, () => "too many caps (" + caps_.Count + "), only " + n + " required");
          if (floors_ != null)
-            Utils.QL_REQUIRE(floors_.Count <= n,()=> "too many floors (" + floors_.Count + "), only " + n + " required");
+            Utils.QL_REQUIRE(floors_.Count <= n, () => "too many floors (" + floors_.Count + "), only " + n + " required");
 
 
          List<CashFlow> leg = new List<CashFlow>(n);
@@ -316,7 +316,7 @@ namespace QLNet
             {
                // fixed coupon
                leg.Add(new FixedRateCoupon(paymentDate, Utils.Get(notionals_, i, 1.0),
-                                           Utils.effectiveFixedRate(spreads_, caps_,floors_, i),
+                                           Utils.effectiveFixedRate(spreads_, caps_, floors_, i),
                                            paymentDayCounter_,
                                            start, end, refStart, refEnd));
             }
@@ -347,18 +347,18 @@ namespace QLNet
                {
                   // cap/floorlet
                   leg.Add(new CappedFlooredYoYInflationCoupon(
-                     paymentDate,
-                     Utils.Get(notionals_, i, 1.0),
-                     start, end,
-                     Utils.Get(fixingDays_, i, 0),
-                     index_,
-                     observationLag_,
-                     paymentDayCounter_,
-                     Utils.Get(gearings_, i, 1.0),
-                     Utils.Get(spreads_, i, 0.0),
-                     Utils.toNullable(Utils.Get(caps_, i, Double.MinValue)),
-                     Utils.toNullable(Utils.Get(floors_, i, Double.MinValue)),
-                     refStart, refEnd));
+                             paymentDate,
+                             Utils.Get(notionals_, i, 1.0),
+                             start, end,
+                             Utils.Get(fixingDays_, i, 0),
+                             index_,
+                             observationLag_,
+                             paymentDayCounter_,
+                             Utils.Get(gearings_, i, 1.0),
+                             Utils.Get(spreads_, i, 0.0),
+                             Utils.toNullable(Utils.Get(caps_, i, Double.MinValue)),
+                             Utils.toNullable(Utils.Get(floors_, i, Double.MinValue)),
+                             refStart, refEnd));
                }
             }
          }

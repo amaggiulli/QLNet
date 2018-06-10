@@ -1,17 +1,17 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -26,11 +26,11 @@ namespace QLNet
    */
    public class USDLibor : Libor
    {
-      public USDLibor( Period tenor ) : this( tenor, new Handle<YieldTermStructure>() ) 
+      public USDLibor(Period tenor) : this(tenor, new Handle<YieldTermStructure>())
       {}
 
-      public USDLibor( Period tenor, Handle<YieldTermStructure> h )
-         : base( "USDLibor", tenor, 2, new USDCurrency(), new UnitedStates( UnitedStates.Market.Settlement ), new Actual360(), h ) 
+      public USDLibor(Period tenor, Handle<YieldTermStructure> h)
+         : base("USDLibor", tenor, 2, new USDCurrency(), new UnitedStates(UnitedStates.Market.Settlement), new Actual360(), h)
       {}
 
    }
@@ -38,10 +38,10 @@ namespace QLNet
    //! base class for the one day deposit ICE %USD %LIBOR indexes
    public class DailyTenorUSDLibor : DailyTenorLibor
    {
-      public DailyTenorUSDLibor( int settlementDays ) : this( settlementDays, new Handle<YieldTermStructure>() ) 
+      public DailyTenorUSDLibor(int settlementDays) : this(settlementDays, new Handle<YieldTermStructure>())
       {}
-      public DailyTenorUSDLibor( int settlementDays, Handle<YieldTermStructure> h )
-         : base( "USDLibor", settlementDays, new USDCurrency(), new UnitedStates( UnitedStates.Market.Settlement ), new Actual360(), h ) 
+      public DailyTenorUSDLibor(int settlementDays, Handle<YieldTermStructure> h)
+         : base("USDLibor", settlementDays, new USDCurrency(), new UnitedStates(UnitedStates.Market.Settlement), new Actual360(), h)
       {}
 
    }
@@ -49,10 +49,10 @@ namespace QLNet
    //! Overnight %USD %Libor index
    public class USDLiborON : DailyTenorUSDLibor
    {
-      public USDLiborON() : this( new Handle<YieldTermStructure>() ) 
+      public USDLiborON() : this(new Handle<YieldTermStructure>())
       {}
 
-      public USDLiborON( Handle<YieldTermStructure> h ) : base( 0, h ) 
+      public USDLiborON(Handle<YieldTermStructure> h) : base(0, h)
       {}
 
    }

@@ -6,7 +6,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -22,7 +22,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedPiecewiseZeroSpreadedTermStructure<Interpolator> : ZeroYieldStructure
-      where Interpolator : class, IInterpolationFactory, new()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public InterpolatedPiecewiseZeroSpreadedTermStructure(Handle<YieldTermStructure> h,
                                                             List<Handle<Quote>> spreads,

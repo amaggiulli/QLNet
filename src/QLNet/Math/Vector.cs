@@ -2,18 +2,18 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Andrea Maggiulli
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- * 
+ *
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -51,7 +51,7 @@ namespace QLNet
       {}
 
       /// <summary>
-      /// Creates the vector and fills it according to 
+      /// Creates the vector and fills it according to
       /// <para>Vector[0] = value</para>
       /// Vector[i]=Vector[i-1]+increment
       /// </summary>
@@ -108,12 +108,16 @@ namespace QLNet
       /// </returns>
       public bool Equals(Vector other)
       {
-         if (other == null) return false;
-         if (ReferenceEquals(this, other)) return true;
-         if (Count != other.Count) return false;
+         if (other == null)
+            return false;
+         if (ReferenceEquals(this, other))
+            return true;
+         if (Count != other.Count)
+            return false;
 
          for (int i = 0; i < Count; i++)
-            if (other[i].IsNotEqual(this[i])) return false;
+            if (other[i].IsNotEqual(this[i]))
+               return false;
 
          return true;
       }
@@ -183,12 +187,12 @@ namespace QLNet
 
       public static Vector operator +(double value, Vector v1)
       {
-          return operValue(v1, value, (x, y) => x + y);
+         return operValue(v1, value, (x, y) => x + y);
       }
 
       public static Vector operator -(double value, Vector v1)
       {
-          return operValue(v1, value, (x, y) => y - x);
+         return operValue(v1, value, (x, y) => y - x);
       }
 
       public static Vector operator *(double value, Vector v1)
@@ -209,7 +213,7 @@ namespace QLNet
       internal static Vector operVector(Vector v1, Vector v2, Func<double, double, double> func)
       {
          Utils.QL_REQUIRE(v1.Count == v2.Count, () =>
-            "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+                          "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
          Vector temp = new Vector(v1.Count);
          for (int i = 0; i < v1.Count; i++)
@@ -228,7 +232,7 @@ namespace QLNet
       public static double operator *(Vector v1, Vector v2)
       {
          Utils.QL_REQUIRE(v1.Count == v2.Count, () =>
-            "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
+                          "operation on vectors with different sizes (" + v1.Count + ", " + v2.Count);
 
          double result = 0;
          for (int i = 0; i < v1.Count; i++)
@@ -248,7 +252,7 @@ namespace QLNet
 
       public static double Norm2(Vector v)
       {
-          return Math.Sqrt(v * v);
+         return Math.Sqrt(v * v);
       }
 
       public static Vector DirectMultiply(Vector v1, Vector v2)
@@ -272,9 +276,9 @@ namespace QLNet
 
       public static Vector Exp(Vector v)
       {
-          Vector result = new Vector(v.size());
-          result.ForEach((i, x) => result[i] = Math.Exp(v[i]));
-          return result;
+         Vector result = new Vector(v.size());
+         result.ForEach((i, x) => result[i] = Math.Exp(v[i]));
+         return result;
       }
 
       public void swap(int i1, int i2)

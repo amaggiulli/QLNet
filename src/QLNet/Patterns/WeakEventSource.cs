@@ -7,7 +7,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -47,9 +47,9 @@ namespace QLNet
       public void Subscribe(Callback handler)
       {
          var weakHandlers = handler
-             .GetInvocationList()
-             .Select(d => new WeakDelegate(d))
-             .ToList();
+                            .GetInvocationList()
+                            .Select(d => new WeakDelegate(d))
+                            .ToList();
 
          lock (_handlers)
          {
@@ -75,7 +75,7 @@ namespace QLNet
 
          // ReSharper disable once StaticMemberInGenericType (by design)
          private static readonly ConcurrentDictionary<MethodInfo, OpenEventHandler> _openHandlerCache =
-             new ConcurrentDictionary<MethodInfo, OpenEventHandler>();
+            new ConcurrentDictionary<MethodInfo, OpenEventHandler>();
 
          private static OpenEventHandler CreateOpenHandler(MethodInfo method)
          {
@@ -84,18 +84,18 @@ namespace QLNet
             if (method.IsStatic)
             {
                var expr = Expression.Lambda<OpenEventHandler>(
-                   Expression.Call(
-                       method),
-                   target);
+                             Expression.Call(
+                                method),
+                             target);
                return expr.Compile();
             }
             else
             {
                var expr = Expression.Lambda<OpenEventHandler>(
-                   Expression.Call(
-                       Expression.Convert(target, method.DeclaringType),
-                       method),
-                   target);
+                             Expression.Call(
+                                Expression.Convert(target, method.DeclaringType),
+                                method),
+                             target);
                return expr.Compile();
             }
          }
@@ -109,11 +109,11 @@ namespace QLNet
          public WeakDelegate(Delegate handler)
          {
             _weakTarget = handler.Target != null ? new WeakReference(handler.Target) : null;
-            #if NET40 || NET45
-               _method = handler.Method;
-            #else
-               _method = handler.GetMethodInfo();
-            #endif
+#if NET40 || NET45
+            _method = handler.Method;
+#else
+            _method = handler.GetMethodInfo();
+#endif
 
             _openHandler = _openHandlerCache.GetOrAdd(_method, CreateOpenHandler);
          }
@@ -133,13 +133,13 @@ namespace QLNet
 
          public bool IsMatch(Callback handler)
          {
-            #if NET40 || NET45
-               return _weakTarget.Target != null && ( ReferenceEquals( handler.Target, _weakTarget.Target )
-                                                                    && handler.Method.Equals( _method ) );
-            #else
-               return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
-                                                                  && handler.GetMethodInfo().Equals(_method));
-            #endif
+#if NET40 || NET45
+            return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
+                                                  && handler.Method.Equals(_method));
+#else
+            return _weakTarget.Target != null && (ReferenceEquals(handler.Target, _weakTarget.Target)
+                                                  && handler.GetMethodInfo().Equals(_method));
+#endif
 
          }
       }

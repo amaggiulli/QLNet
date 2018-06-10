@@ -1,17 +1,17 @@
 /*
  Copyright (C) 2008 Andrea Maggiulli
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,9 +24,9 @@ namespace QLNet
        It is divided in 100 paisa.
           \ingroup currencies
    */
-   public class BDTCurrency : Currency 
+   public class BDTCurrency : Currency
    {
-      public BDTCurrency() : base("Bangladesh taka", "BDT", 50,"Bt", "", 100,new Rounding(), "%3% %1$.2f"){}
+      public BDTCurrency() : base("Bangladesh taka", "BDT", 50, "Bt", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Chinese yuan
@@ -35,9 +35,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class CNYCurrency : Currency 
+   public class CNYCurrency : Currency
    {
-     public CNYCurrency() :base("Chinese yuan", "CNY", 156, "Y", "", 100, new Rounding(), "%3% %1$.2f"){}
+      public CNYCurrency() : base("Chinese yuan", "CNY", 156, "Y", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Hong Kong dollar
@@ -46,20 +46,20 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class HKDCurrency : Currency 
+   public class HKDCurrency : Currency
    {
-      public HKDCurrency() : base( "Hong Kong dollar", "HKD", 344, "HK$", "", 100, new Rounding(), "%3% %1$.2f" ) { }
+      public HKDCurrency() : base("Hong Kong dollar", "HKD", 344, "HK$", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Indonesian Rupiah
-    /*! The ISO three-letter code is IDR; the numeric code is 360.
-        It is divided in 100 sen.
+   /*! The ISO three-letter code is IDR; the numeric code is 360.
+       It is divided in 100 sen.
 
-        \ingroup currencies
+       \ingroup currencies
    */
-   public class IDRCurrency : Currency 
+   public class IDRCurrency : Currency
    {
-      public IDRCurrency():base("Indonesian Rupiah", "IDR", 360,"Rp", "", 100,new Rounding(),"%3% %1$.2f") { }
+      public IDRCurrency(): base("Indonesian Rupiah", "IDR", 360, "Rp", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Israeli shekel
@@ -68,9 +68,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class ILSCurrency : Currency 
+   public class ILSCurrency : Currency
    {
-      public ILSCurrency() : base( "Israeli shekel", "ILS", 376, "NIS", "", 100, new Rounding(), "%1$.2f %3%" ) { }
+      public ILSCurrency() : base("Israeli shekel", "ILS", 376, "NIS", "", 100, new Rounding(), "%1$.2f %3%") { }
    }
 
    //! Indian rupee
@@ -79,10 +79,10 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class INRCurrency : Currency 
+   public class INRCurrency : Currency
    {
       public INRCurrency()
-         : base( "Indian rupee", "INR", 356, "Rs", "", 100,new Rounding(), "%3% %1$.2f" ) { }
+         : base("Indian rupee", "INR", 356, "Rs", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Iraqi dinar
@@ -91,10 +91,10 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class IQDCurrency : Currency 
+   public class IQDCurrency : Currency
    {
       public IQDCurrency()
-         : base( "Iraqi dinar", "IQD", 368,"ID", "", 1000,new Rounding(), "%2% %1$.3f" ) { }
+         : base("Iraqi dinar", "IQD", 368, "ID", "", 1000, new Rounding(), "%2% %1$.3f") { }
    }
 
    //! Iranian rial
@@ -103,9 +103,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class IRRCurrency : Currency 
+   public class IRRCurrency : Currency
    {
-      public IRRCurrency() : base( "Iranian rial", "IRR", 364, "Rls", "", 1,new Rounding(), "%3% %1$.2f" ) { }
+      public IRRCurrency() : base("Iranian rial", "IRR", 364, "Rls", "", 1, new Rounding(), "%3% %1$.2f") { }
    }
 
    /// <summary>
@@ -124,9 +124,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class KRWCurrency : Currency 
+   public class KRWCurrency : Currency
    {
-      public KRWCurrency() : base( "South-Korean won", "KRW", 410, "W", "", 100,new Rounding(), "%3% %1$.0f" ) { }
+      public KRWCurrency() : base("South-Korean won", "KRW", 410, "W", "", 100, new Rounding(), "%3% %1$.0f") { }
    }
 
    //! Kuwaiti dinar
@@ -135,20 +135,20 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class KWDCurrency : Currency 
+   public class KWDCurrency : Currency
    {
-      public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414,"KD", "", 1000,new Rounding(),"%3% %1$.3f"){}
+      public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414, "KD", "", 1000, new Rounding(), "%3% %1$.3f") {}
    }
 
    //! Malaysian Ringgit
-    /*! The ISO three-letter code is MYR; the numeric code is 458.
-        It is divided in 100 sen.
+   /*! The ISO three-letter code is MYR; the numeric code is 458.
+       It is divided in 100 sen.
 
-        \ingroup currencies
+       \ingroup currencies
    */
-   public class MYRCurrency : Currency 
+   public class MYRCurrency : Currency
    {
-      public MYRCurrency() : base("Malaysian Ringgit","MYR", 458,"RM", "", 100,new Rounding(),"%3% %1$.2f"){}
+      public MYRCurrency() : base("Malaysian Ringgit", "MYR", 458, "RM", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Nepal rupee
@@ -157,9 +157,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class NPRCurrency : Currency 
+   public class NPRCurrency : Currency
    {
-      public NPRCurrency() : base("Nepal rupee", "NPR", 524, "NRs", "", 100, new Rounding(),"%3% %1$.2f"){}
+      public NPRCurrency() : base("Nepal rupee", "NPR", 524, "NRs", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Pakistani rupee
@@ -168,9 +168,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class PKRCurrency : Currency 
+   public class PKRCurrency : Currency
    {
-      public PKRCurrency() : base("Pakistani rupee", "PKR", 586, "Rs", "", 100,new Rounding(),"%3% %1$.2f"){}
+      public PKRCurrency() : base("Pakistani rupee", "PKR", 586, "Rs", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Saudi riyal
@@ -179,9 +179,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class SARCurrency : Currency 
+   public class SARCurrency : Currency
    {
-      public SARCurrency() : base("Saudi riyal", "SAR", 682, "SRls", "", 100,new Rounding(),"%3% %1$.2f"){}
+      public SARCurrency() : base("Saudi riyal", "SAR", 682, "SRls", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! %Singapore dollar
@@ -190,9 +190,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class SGDCurrency : Currency 
+   public class SGDCurrency : Currency
    {
-      public SGDCurrency() : base("Singapore dollar", "SGD", 702, "S$", "", 100, new Rounding(),"%3% %1$.2f"){}
+      public SGDCurrency() : base("Singapore dollar", "SGD", 702, "S$", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
    //! Thai baht
@@ -201,9 +201,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class THBCurrency : Currency 
+   public class THBCurrency : Currency
    {
-      public THBCurrency() : base("Thai baht", "THB", 764, "Bht", "", 100,new Rounding(), "%1$.2f %3%"){}
+      public THBCurrency() : base("Thai baht", "THB", 764, "Bht", "", 100, new Rounding(), "%1$.2f %3%") {}
    }
 
    //! %Taiwan dollar
@@ -212,9 +212,9 @@ namespace QLNet
 
       \ingroup currencies
    */
-   public class TWDCurrency : Currency 
+   public class TWDCurrency : Currency
    {
-      public TWDCurrency() : base( "Taiwan dollar", "TWD", 901, "NT$", "", 100, new Rounding(), "%3% %1$.2f" ) { }
+      public TWDCurrency() : base("Taiwan dollar", "TWD", 901, "NT$", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Vietnamese Dong
@@ -223,8 +223,8 @@ namespace QLNet
 
        \ingroup currencies
    */
-   public class VNDCurrency : Currency 
+   public class VNDCurrency : Currency
    {
-      public VNDCurrency() : base("Vietnamese Dong", "VND", 704,"", "", 100,new Rounding(),"%1$.0f %3%") {}
+      public VNDCurrency() : base("Vietnamese Dong", "VND", 704, "", "", 100, new Rounding(), "%1$.0f %3%") {}
    }
 }

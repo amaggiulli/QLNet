@@ -1,12 +1,12 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
 
- This file is part of QLNet Project http://www.qlnet.org
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://trac2.assembla.com/QLNet/wiki/License>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -29,10 +29,10 @@ namespace CallableBonds
    {
 
       static YieldTermStructure flatRate(Date today,
-                                  double forward,
-                                  DayCounter dc,
-                                  Compounding compounding,
-                                  Frequency frequency)
+                                         double forward,
+                                         DayCounter dc,
+                                         Compounding compounding,
+                                         Frequency frequency)
 
       {
          return new FlatForward(today, forward, dc, compounding, frequency);
@@ -43,7 +43,7 @@ namespace CallableBonds
       {
          // boost::timer timer;
 
-         Date today = new Date(16,Month.October,2007);
+         Date today = new Date(16, Month.October, 2007);
          Settings.setEvaluationDate(today);
 
          Console.WriteLine();
@@ -51,7 +51,7 @@ namespace CallableBonds
          Console.WriteLine("Hull White model w/ reversion parameter = 0.03");
          Console.WriteLine("BAC4.65 09/15/12  ISIN: US06060WBJ36");
          Console.WriteLine("roughly five year tenor, quarterly coupon and call dates");
-         Console.WriteLine("reference date is : " + today.ToLongDateString() );
+         Console.WriteLine("reference date is : " + today.ToLongDateString());
          Console.WriteLine("");
          /* Bloomberg OAS1: "N" model (Hull White)
            varying volatility parameter
@@ -66,34 +66,34 @@ namespace CallableBonds
 
          double bbCurveRate = 0.055;
          DayCounter bbDayCounter = new ActualActual(ActualActual.Convention.Bond);
-         InterestRate bbIR = new InterestRate(bbCurveRate,bbDayCounter,Compounding.Compounded ,Frequency.Semiannual);
+         InterestRate bbIR = new InterestRate(bbCurveRate, bbDayCounter, Compounding.Compounded, Frequency.Semiannual);
 
-         Handle<YieldTermStructure> termStructure = new Handle<YieldTermStructure>(flatRate( today,
-                                                              bbIR.rate(),
-                                                              bbIR.dayCounter(),
-                                                              bbIR.compounding(),
-                                                              bbIR.frequency()));
+         Handle<YieldTermStructure> termStructure = new Handle<YieldTermStructure>(flatRate(today,
+                                                                                   bbIR.rate(),
+                                                                                   bbIR.dayCounter(),
+                                                                                   bbIR.compounding(),
+                                                                                   bbIR.frequency()));
          // set up the call schedule
 
          CallabilitySchedule callSchedule = new CallabilitySchedule();
          double callPrice = 100.0;
          int numberOfCallDates = 24;
-         Date callDate = new Date(15,Month.September,2006);
+         Date callDate = new Date(15, Month.September, 2006);
 
-         for (int i=0; i< numberOfCallDates; i++)
+         for (int i = 0; i < numberOfCallDates; i++)
          {
             Calendar nullCalendar = new NullCalendar();
 
             Callability.Price myPrice = new Callability.Price(callPrice, Callability.Price.Type.Clean);
-            callSchedule.Add( new Callability(myPrice,Callability.Type.Call, callDate ));
+            callSchedule.Add(new Callability(myPrice, Callability.Type.Call, callDate));
             callDate = nullCalendar.advance(callDate, 3, TimeUnit.Months);
          }
 
          // set up the callable bond
 
-         Date dated = new Date(16,Month.September,2004);
+         Date dated = new Date(16, Month.September, 2004);
          Date issue = dated;
-         Date maturity = new Date(15,Month.September,2012);
+         Date maturity = new Date(15, Month.September, 2012);
          int settlementDays = 3;  // Bloomberg OAS1 settle is Oct 19, 2007
          Calendar bondCalendar = new UnitedStates(UnitedStates.Market.GovernmentBond);
          double coupon = .0465;
@@ -112,9 +112,9 @@ namespace CallableBonds
          BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
          BusinessDayConvention paymentConvention = BusinessDayConvention.Unadjusted;
 
-         Schedule sch = new Schedule( dated, maturity, new Period(frequency), bondCalendar,
-                                      accrualConvention, accrualConvention,
-                                      DateGeneration.Rule.Backward, false);
+         Schedule sch = new Schedule(dated, maturity, new Period(frequency), bondCalendar,
+                                     accrualConvention, accrualConvention,
+                                     DateGeneration.Rule.Backward, false);
 
          int maxIterations = 1000;
          double accuracy = 1e-8;
@@ -125,25 +125,25 @@ namespace CallableBonds
 
          double sigma = Const.QL_EPSILON; // core dumps if zero on Cygwin
 
-         ShortRateModel hw0 = new HullWhite(termStructure,reversionParameter,sigma);
+         ShortRateModel hw0 = new HullWhite(termStructure, reversionParameter, sigma);
 
          IPricingEngine engine0 = new TreeCallableFixedRateBondEngine(hw0, gridIntervals, termStructure);
 
-         CallableFixedRateBond callableBond = new CallableFixedRateBond( settlementDays, faceAmount, sch,
-                                                                         new InitializedList<double>(1, coupon),
-                                                                         bondDayCounter, paymentConvention,
-                                                                         redemption, issue, callSchedule);
+         CallableFixedRateBond callableBond = new CallableFixedRateBond(settlementDays, faceAmount, sch,
+                                                                        new InitializedList<double>(1, coupon),
+                                                                        bondDayCounter, paymentConvention,
+                                                                        redemption, issue, callSchedule);
          callableBond.setPricingEngine(engine0);
 
          Console.WriteLine("sigma/vol (%) = {0:0.00}", (100.0 * sigma));
 
          Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
-            callableBond.cleanPrice() ,
-            100.0 * callableBond.yield(bondDayCounter,
-            Compounding.Compounded,
-            frequency,
-            accuracy,
-            maxIterations));
+                           callableBond.cleanPrice(),
+                           100.0 * callableBond.yield(bondDayCounter,
+                                                      Compounding.Compounded,
+                                                      frequency,
+                                                      accuracy,
+                                                      maxIterations));
          Console.WriteLine("Bloomberg price/yld (%) 96,50 / 5,47");
          Console.WriteLine("");
          //
@@ -152,19 +152,19 @@ namespace CallableBonds
 
          Console.WriteLine("sigma/vol (%) = {0:0.00}", (100.0 * sigma));
 
-         ShortRateModel hw1 = new HullWhite(termStructure,reversionParameter,sigma);
+         ShortRateModel hw1 = new HullWhite(termStructure, reversionParameter, sigma);
 
-         IPricingEngine engine1 = new TreeCallableFixedRateBondEngine(hw1,gridIntervals,termStructure);
+         IPricingEngine engine1 = new TreeCallableFixedRateBondEngine(hw1, gridIntervals, termStructure);
 
          callableBond.setPricingEngine(engine1);
 
          Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
-            callableBond.cleanPrice() ,
-            100.0 * callableBond.yield(bondDayCounter,
-            Compounding.Compounded,
-            frequency,
-            accuracy,
-            maxIterations));
+                           callableBond.cleanPrice(),
+                           100.0 * callableBond.yield(bondDayCounter,
+                                                      Compounding.Compounded,
+                                                      frequency,
+                                                      accuracy,
+                                                      maxIterations));
 
          Console.WriteLine("Bloomberg price/yld (%)  95,68 / 5,66");
          Console.WriteLine("");
@@ -182,12 +182,12 @@ namespace CallableBonds
          callableBond.setPricingEngine(engine2);
 
          Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
-            callableBond.cleanPrice(),
-            100.0 * callableBond.yield(bondDayCounter,
-            Compounding.Compounded,
-            frequency,
-            accuracy,
-            maxIterations));
+                           callableBond.cleanPrice(),
+                           100.0 * callableBond.yield(bondDayCounter,
+                                                      Compounding.Compounded,
+                                                      frequency,
+                                                      accuracy,
+                                                      maxIterations));
 
          Console.WriteLine("Bloomberg price/yld (%) 92,34 / 6,49");
          Console.WriteLine("");
@@ -204,12 +204,12 @@ namespace CallableBonds
          callableBond.setPricingEngine(engine3);
 
          Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
-            callableBond.cleanPrice(),
-            100.0 * callableBond.yield(bondDayCounter,
-            Compounding.Compounded,
-            frequency,
-            accuracy,
-            maxIterations));
+                           callableBond.cleanPrice(),
+                           100.0 * callableBond.yield(bondDayCounter,
+                                                      Compounding.Compounded,
+                                                      frequency,
+                                                      accuracy,
+                                                      maxIterations));
 
          Console.WriteLine("Bloomberg price/yld (%) 87,16 / 7,83");
          Console.WriteLine("");
@@ -226,12 +226,12 @@ namespace CallableBonds
          callableBond.setPricingEngine(engine4);
 
          Console.WriteLine("QLNet price/yld (%)  {0:0.00} / {1:0.00} ",
-            callableBond.cleanPrice(),
-            100.0 * callableBond.yield(bondDayCounter,
-            Compounding.Compounded,
-            frequency,
-            accuracy,
-            maxIterations));
+                           callableBond.cleanPrice(),
+                           100.0 * callableBond.yield(bondDayCounter,
+                                                      Compounding.Compounded,
+                                                      frequency,
+                                                      accuracy,
+                                                      maxIterations));
 
          Console.WriteLine("Bloomberg price/yld (%) 77,31 / 10,65");
       }

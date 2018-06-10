@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -54,69 +54,71 @@ namespace QLNet
       protected double spread_;
       protected InterpolationType observationInterpolation_;
 
-      protected override bool checkPricerImpl(InflationCouponPricer pricer) 
+      protected override bool checkPricerImpl(InflationCouponPricer pricer)
       {
          CPICouponPricer p = pricer as CPICouponPricer;
-         return ( p != null );
+         return (p != null);
       }
-      
+
       // use to calculate for fixing date, allows change of
       // interpolation w.r.t. index.  Can also be used ahead of time
       protected double indexFixing(Date d)
       {
          // you may want to modify the interpolation of the index
-        // this gives you the chance
+         // this gives you the chance
 
-        double I1;
-        // what interpolation do we use? Index / flat / linear
-        if (observationInterpolation() == InterpolationType.AsIndex) 
-        {
-           I1 = cpiIndex().fixing(d);
-        } 
-        else 
-        {
+         double I1;
+         // what interpolation do we use? Index / flat / linear
+         if (observationInterpolation() == InterpolationType.AsIndex)
+         {
+            I1 = cpiIndex().fixing(d);
+         }
+         else
+         {
             // work out what it should be
-            KeyValuePair<Date,Date> dd = Utils.inflationPeriod(d, cpiIndex().frequency());
+            KeyValuePair<Date, Date> dd = Utils.inflationPeriod(d, cpiIndex().frequency());
             double indexStart = cpiIndex().fixing(dd.Key);
-            if (observationInterpolation() == InterpolationType.Linear) 
+            if (observationInterpolation() == InterpolationType.Linear)
             {
-                double indexEnd = cpiIndex().fixing(dd.Value + new Period(1,TimeUnit.Days));
-                // linear interpolation
-                I1 = indexStart + (indexEnd - indexStart) * (d - dd.Key)
-                / (double)((dd.Value + new Period(1, TimeUnit.Days)) - dd.Key); // can't get to next period's value within current period
-            } else {
-                // no interpolation, i.e. flat = constant, so use start-of-period value
-                I1 = indexStart;
+               double indexEnd = cpiIndex().fixing(dd.Value + new Period(1, TimeUnit.Days));
+               // linear interpolation
+               I1 = indexStart + (indexEnd - indexStart) * (d - dd.Key)
+                    / (double)((dd.Value + new Period(1, TimeUnit.Days)) - dd.Key); // can't get to next period's value within current period
+            }
+            else
+            {
+               // no interpolation, i.e. flat = constant, so use start-of-period value
+               I1 = indexStart;
             }
 
-        }
-        return I1;
+         }
+         return I1;
       }
-      
+
       public CPICoupon(double baseCPI, // user provided, could be arbitrary
-                        Date paymentDate,
-                        double nominal,
-                        Date startDate,
-                        Date endDate,
-                        int fixingDays,
-                        ZeroInflationIndex index,
-                        Period observationLag,
-                        InterpolationType observationInterpolation,
-                        DayCounter dayCounter,
-                        double fixedRate, // aka gearing
-                        double spread = 0.0,
-                        Date refPeriodStart = null,
-                        Date refPeriodEnd = null,
-                        Date exCouponDate = null)
-         :base(paymentDate, nominal, startDate, endDate, fixingDays, index, 
-               observationLag, dayCounter, refPeriodStart, refPeriodEnd, exCouponDate)
+                       Date paymentDate,
+                       double nominal,
+                       Date startDate,
+                       Date endDate,
+                       int fixingDays,
+                       ZeroInflationIndex index,
+                       Period observationLag,
+                       InterpolationType observationInterpolation,
+                       DayCounter dayCounter,
+                       double fixedRate, // aka gearing
+                       double spread = 0.0,
+                       Date refPeriodStart = null,
+                       Date refPeriodEnd = null,
+                       Date exCouponDate = null)
+         : base(paymentDate, nominal, startDate, endDate, fixingDays, index,
+                observationLag, dayCounter, refPeriodStart, refPeriodEnd, exCouponDate)
       {
 
          baseCPI_ = baseCPI;
          fixedRate_ = fixedRate;
          spread_ = spread;
          observationInterpolation_ = observationInterpolation;
-         Utils.QL_REQUIRE( Math.Abs( baseCPI_ ) > 1e-16, () => "|baseCPI_| < 1e-16, future divide-by-zero problem" );
+         Utils.QL_REQUIRE(Math.Abs(baseCPI_) > 1e-16, () => "|baseCPI_| < 1e-16, future divide-by-zero problem");
       }
 
       // Inspectors
@@ -156,20 +158,20 @@ namespace QLNet
                          bool growthOnly = false,
                          InterpolationType interpolation = InterpolationType.AsIndex,
                          Frequency frequency = Frequency.NoFrequency)
-      : base(notional, index, baseDate, fixingDate,paymentDate, growthOnly)
+         : base(notional, index, baseDate, fixingDate, paymentDate, growthOnly)
       {
-         baseFixing_= baseFixing;
-         interpolation_= interpolation;
-         frequency_=frequency;
+         baseFixing_ = baseFixing;
+         interpolation_ = interpolation;
+         frequency_ = frequency;
 
-         Utils.QL_REQUIRE(Math.Abs(baseFixing_) > 1e-16,()=> "|baseFixing|<1e-16, future divide-by-zero error");
+         Utils.QL_REQUIRE(Math.Abs(baseFixing_) > 1e-16, () => "|baseFixing|<1e-16, future divide-by-zero error");
 
          if (interpolation_ != InterpolationType.AsIndex)
          {
-            Utils.QL_REQUIRE( frequency_ != Frequency.NoFrequency,()=>"non-index interpolation w/o frequency");
+            Utils.QL_REQUIRE(frequency_ != Frequency.NoFrequency, () => "non-index interpolation w/o frequency");
          }
       }
-        
+
       //! value used on base date
       /*! This does not have to agree with index on that date. */
       public virtual double baseFixing() {return baseFixing_;}
@@ -188,54 +190,54 @@ namespace QLNet
 
       //! redefined to use baseFixing() and interpolation
       public override double amount()
-      { 
+      {
          double I0 = baseFixing();
          double I1;
 
          // what interpolation do we use? Index / flat / linear
-         if (interpolation() == InterpolationType.AsIndex ) 
+         if (interpolation() == InterpolationType.AsIndex)
          {
-               I1 = index().fixing(fixingDate());
-         } 
-         else 
+            I1 = index().fixing(fixingDate());
+         }
+         else
          {
-               // work out what it should be
-               KeyValuePair<Date,Date> dd = Utils.inflationPeriod(fixingDate(), frequency());
-               double indexStart = index().fixing(dd.Key);
-               if (interpolation() == InterpolationType.Linear)
-               {
-                  double indexEnd = index().fixing(dd.Value + new Period(1, TimeUnit.Days));
-                  // linear interpolation
-                  I1 = indexStart + (indexEnd - indexStart) * (fixingDate() - dd.Key)
-                  / ((dd.Value + new Period(1, TimeUnit.Days)) - dd.Key); // can't get to next period's value within current period
-               } 
-               else 
-               {
-                  // no interpolation, i.e. flat = constant, so use start-of-period value
-                  I1 = indexStart;
-               }
+            // work out what it should be
+            KeyValuePair<Date, Date> dd = Utils.inflationPeriod(fixingDate(), frequency());
+            double indexStart = index().fixing(dd.Key);
+            if (interpolation() == InterpolationType.Linear)
+            {
+               double indexEnd = index().fixing(dd.Value + new Period(1, TimeUnit.Days));
+               // linear interpolation
+               I1 = indexStart + (indexEnd - indexStart) * (fixingDate() - dd.Key)
+                    / ((dd.Value + new Period(1, TimeUnit.Days)) - dd.Key); // can't get to next period's value within current period
+            }
+            else
+            {
+               // no interpolation, i.e. flat = constant, so use start-of-period value
+               I1 = indexStart;
+            }
 
          }
 
          if (growthOnly())
-               return notional() * (I1 / I0 - 1.0);
+            return notional() * (I1 / I0 - 1.0);
          else
-               return notional() * (I1 / I0);
-        }
+            return notional() * (I1 / I0);
+      }
 
-        protected double baseFixing_;
-        protected InterpolationType interpolation_;
-        protected Frequency frequency_;
-    }
+      protected double baseFixing_;
+      protected InterpolationType interpolation_;
+      protected Frequency frequency_;
+   }
 
-    //! Helper class building a sequence of capped/floored CPI coupons.
-    /*! Also allowing for the inflated notional at the end...
-        especially if there is only one date in the schedule.
-        If a fixedRate is zero you get a FixedRateCoupon, otherwise
-        you get a ZeroInflationCoupon.
+   //! Helper class building a sequence of capped/floored CPI coupons.
+   /*! Also allowing for the inflated notional at the end...
+       especially if there is only one date in the schedule.
+       If a fixedRate is zero you get a FixedRateCoupon, otherwise
+       you get a ZeroInflationCoupon.
 
-        payoff is: spread + fixedRate x index
-    */
+       payoff is: spread + fixedRate x index
+   */
    public class CPILeg : CPILegBase
    {
       public CPILeg(Schedule schedule,
@@ -258,14 +260,14 @@ namespace QLNet
 
       public override List<CashFlow> value()
       {
-         Utils.QL_REQUIRE(!notionals_.empty(),()=> "no notional given");
+         Utils.QL_REQUIRE(!notionals_.empty(), () => "no notional given");
 
          int n = schedule_.Count - 1;
          List<CashFlow> leg = new List<CashFlow>(n + 1);
 
          if (n > 0)
          {
-            Utils.QL_REQUIRE(!fixedRates_.empty() || !spreads_.empty(),()=> "no fixedRates or spreads given");
+            Utils.QL_REQUIRE(!fixedRates_.empty() || !spreads_.empty(), () => "no fixedRates or spreads given");
 
             Date refStart, start, refEnd, end;
 
@@ -297,7 +299,7 @@ namespace QLNet
                if (Utils.Get(fixedRates_, i, 1.0).IsEqual(0.0))
                {
                   // fixed coupon
-                  leg.Add( new FixedRateCoupon( paymentDate,Utils.Get( notionals_, i, 0.0 ),
+                  leg.Add(new FixedRateCoupon(paymentDate, Utils.Get(notionals_, i, 0.0),
                                               Utils.effectiveFixedRate(spreads_, caps_, floors_, i),
                                               paymentDayCounter_, start, end, refStart, refEnd, exCouponDate));
                }
@@ -341,11 +343,11 @@ namespace QLNet
          Date pDate = paymentCalendar_.adjust(schedule_.date(n), paymentAdjustment_);
          Date fixingDate = pDate - observationLag_;
          CashFlow xnl = new CPICashFlow
-                           (Utils.Get(notionals_, n, 0.0), index_,
-                            new Date(), // is fake, i.e. you do not have one
-                            baseCPI_, fixingDate, pDate,
-                            subtractInflationNominal_, observationInterpolation_,
-                            index_.frequency());
+         (Utils.Get(notionals_, n, 0.0), index_,
+          new Date(), // is fake, i.e. you do not have one
+          baseCPI_, fixingDate, pDate,
+          subtractInflationNominal_, observationInterpolation_,
+          index_.frequency());
 
          leg.Add(xnl);
 
