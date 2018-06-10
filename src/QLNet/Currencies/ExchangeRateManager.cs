@@ -2,18 +2,18 @@
  Copyright (C) 2008 Andrea Maggiulli
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -33,7 +33,10 @@ namespace QLNet
 
       public static ExchangeRateManager Instance
       {
-         get { return instance_ ?? (instance_ = new ExchangeRateManager()); }
+         get
+         {
+            return instance_ ?? (instance_ = new ExchangeRateManager());
+         }
       }
 
       private ExchangeRateManager()
@@ -60,33 +63,53 @@ namespace QLNet
       private void addKnownRates()
       {
          // currencies obsoleted by Euro
-         add(new ExchangeRate(new EURCurrency(), new ATSCurrency(), 13.7603), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new BEFCurrency(), 40.3399), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new DEMCurrency(), 1.95583), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new ESPCurrency(), 166.386), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new FIMCurrency(), 5.94573), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new FRFCurrency(), 6.55957), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new GRDCurrency(), 340.750), new Date(1, Month.January, 2001),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new IEPCurrency(), 0.787564), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new ITLCurrency(), 1936.27), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new LUFCurrency(), 40.3399), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new NLGCurrency(), 2.20371), new Date(1, Month.January, 1999),Date.maxDate());
-         add(new ExchangeRate(new EURCurrency(), new PTECurrency(), 200.482), new Date(1, Month.January, 1999),Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new ATSCurrency(), 13.7603), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new BEFCurrency(), 40.3399), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new DEMCurrency(), 1.95583), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new ESPCurrency(), 166.386), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new FIMCurrency(), 5.94573), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new FRFCurrency(), 6.55957), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new GRDCurrency(), 340.750), new Date(1, Month.January, 2001), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new IEPCurrency(), 0.787564), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new ITLCurrency(), 1936.27), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new LUFCurrency(), 40.3399), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new NLGCurrency(), 2.20371), new Date(1, Month.January, 1999), Date.maxDate());
+         add
+            (new ExchangeRate(new EURCurrency(), new PTECurrency(), 200.482), new Date(1, Month.January, 1999), Date.maxDate());
          // other obsoleted currencies
-         add(new ExchangeRate(new TRYCurrency(), new TRLCurrency(), 1000000.0), new Date(1, Month.January, 2005),Date.maxDate());
-         add(new ExchangeRate(new RONCurrency(), new ROLCurrency(), 10000.0), new Date(1, Month.July, 2005),Date.maxDate());
-         add(new ExchangeRate(new PENCurrency(), new PEICurrency(), 1000000.0), new Date(1, Month.July, 1991),Date.maxDate());
-         add(new ExchangeRate(new PEICurrency(), new PEHCurrency(), 1000.0), new Date(1, Month.February, 1985),Date.maxDate());
+         add
+            (new ExchangeRate(new TRYCurrency(), new TRLCurrency(), 1000000.0), new Date(1, Month.January, 2005), Date.maxDate());
+         add
+            (new ExchangeRate(new RONCurrency(), new ROLCurrency(), 10000.0), new Date(1, Month.July, 2005), Date.maxDate());
+         add
+            (new ExchangeRate(new PENCurrency(), new PEICurrency(), 1000000.0), new Date(1, Month.July, 1991), Date.maxDate());
+         add
+            (new ExchangeRate(new PEICurrency(), new PEHCurrency(), 1000.0), new Date(1, Month.February, 1985), Date.maxDate());
       }
 
-      public void add(ExchangeRate rate)
+      public void add
+         (ExchangeRate rate)
       {
-         add(rate, Date.minDate(), Date.maxDate());
+         add
+            (rate, Date.minDate(), Date.maxDate());
       }
 
-      public void add(ExchangeRate rate, Date startDate)
+      public void add
+         (ExchangeRate rate, Date startDate)
       {
-         add(rate, startDate, Date.maxDate());
+         add
+            (rate, startDate, Date.maxDate());
       }
 
       // Add an exchange rate.
@@ -94,7 +117,8 @@ namespace QLNet
       // If two rates are given between the same currencies
       // and with overlapping date ranges, the latest one
       // added takes precedence during lookup.
-      private void add(ExchangeRate rate, Date startDate, Date endDate)
+      private void add
+         (ExchangeRate rate, Date startDate, Date endDate)
       {
          int k = hash(rate.source, rate.target);
          if (data_.ContainsKey(k))
@@ -111,12 +135,12 @@ namespace QLNet
       private int hash(Currency c1, Currency c2)
       {
          return Math.Min(c1.numericCode, c2.numericCode) * 1000
-              + Math.Max(c1.numericCode, c2.numericCode);
+                + Math.Max(c1.numericCode, c2.numericCode);
       }
 
       private bool hashes(int k, Currency c)
       {
-         if (c.numericCode == k % 1000 || 
+         if (c.numericCode == k % 1000 ||
              c.numericCode == k / 1000)
             return true;
          return false;

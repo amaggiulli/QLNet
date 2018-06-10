@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -30,7 +30,7 @@ namespace QLNet
    // Interpolation factory
    public interface IInterpolationFactory
    {
-      Interpolation interpolate( List<double> xBegin, int size, List<double> yBegin );
+      Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin);
       bool global { get; }
       int requiredPoints { get; }
    }
@@ -41,22 +41,22 @@ namespace QLNet
 
       public bool empty() { return impl_ == null; }
 
-      public double primitive( double x, bool allowExtrapolation = false )
+      public double primitive(double x, bool allowExtrapolation = false)
       {
-         checkRange( x, allowExtrapolation );
-         return impl_.primitive( x );
+         checkRange(x, allowExtrapolation);
+         return impl_.primitive(x);
       }
 
-      public double derivative( double x, bool allowExtrapolation = false )
+      public double derivative(double x, bool allowExtrapolation = false)
       {
-         checkRange( x, allowExtrapolation );
-         return impl_.derivative( x );
+         checkRange(x, allowExtrapolation);
+         return impl_.derivative(x);
       }
 
-      public double secondDerivative( double x, bool allowExtrapolation = false )
+      public double secondDerivative(double x, bool allowExtrapolation = false)
       {
-         checkRange( x, allowExtrapolation );
-         return impl_.secondDerivative( x );
+         checkRange(x, allowExtrapolation);
+         return impl_.secondDerivative(x);
       }
 
       public double xMin()
@@ -67,9 +67,9 @@ namespace QLNet
       {
          return impl_.xMax();
       }
-      bool isInRange( double x )
+      bool isInRange(double x)
       {
-         return impl_.isInRange( x );
+         return impl_.isInRange(x);
       }
       public override void update()
       {
@@ -77,18 +77,18 @@ namespace QLNet
       }
 
       // main method to derive an interpolated point
-      public double value( double x ) { return value( x, false ); }
-      public double value( double x, bool allowExtrapolation )
+      public double value(double x) { return value(x, false); }
+      public double value(double x, bool allowExtrapolation)
       {
-         checkRange( x, allowExtrapolation );
-         return impl_.value( x );
+         checkRange(x, allowExtrapolation);
+         return impl_.value(x);
       }
 
-      protected void checkRange( double x, bool extrap )
+      protected void checkRange(double x, bool extrap)
       {
-         if ( !( extrap || allowsExtrapolation() || isInRange( x ) ) )
-            throw new ArgumentException( "interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
-                                        + "]: extrapolation at " + x + " not allowed" );
+         if (!(extrap || allowsExtrapolation() || isInRange(x)))
+            throw new ArgumentException("interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
+                                        + "]: extrapolation at " + x + " not allowed");
       }
 
 
@@ -100,10 +100,10 @@ namespace QLNet
          double xMax();
          List<double> xValues();
          List<double> yValues();
-         bool isInRange( double d );
-         double primitive( double d );
-         double derivative( double d );
-         double secondDerivative( double d );
+         bool isInRange(double d);
+         double primitive(double d);
+         double derivative(double d);
+         double secondDerivative(double d);
       }
       public abstract class templateImpl : Impl
       {
@@ -112,46 +112,46 @@ namespace QLNet
          protected int size_;
 
          // this method should be used for initialisation
-         protected templateImpl( List<double> xBegin, int size, List<double> yBegin, int requiredPoints = 2 )
+         protected templateImpl(List<double> xBegin, int size, List<double> yBegin, int requiredPoints = 2)
          {
             xBegin_ = xBegin;
             yBegin_ = yBegin;
             size_ = size;
-            if ( size < requiredPoints )
-               throw new ArgumentException( "not enough points to interpolate: at least 2 required, "
-                                           + size + " provided" );
+            if (size < requiredPoints)
+               throw new ArgumentException("not enough points to interpolate: at least 2 required, "
+                                           + size + " provided");
          }
 
          public double xMin() { return xBegin_.First(); }
          public double xMax() { return xBegin_[size_ - 1]; }
-         public List<double> xValues() { return xBegin_.GetRange( 0, size_ ); }
-         public List<double> yValues() { return yBegin_.GetRange( 0, size_ ); }
+         public List<double> xValues() { return xBegin_.GetRange(0, size_); }
+         public List<double> yValues() { return yBegin_.GetRange(0, size_); }
 
-         public bool isInRange( double x )
+         public bool isInRange(double x)
          {
             double x1 = xMin(), x2 = xMax();
-            return ( x >= x1 && x <= x2 ) || Utils.close( x, x1 ) || Utils.close( x, x2 );
+            return (x >= x1 && x <= x2) || Utils.close(x, x1) || Utils.close(x, x2);
          }
 
-         protected int locate( double x )
+         protected int locate(double x)
          {
-            int result = xBegin_.BinarySearch( x );
-            if ( result < 0 )
-               // The upper_bound() algorithm finds the last position in a sequence that value can occupy 
+            int result = xBegin_.BinarySearch(x);
+            if (result < 0)
+               // The upper_bound() algorithm finds the last position in a sequence that value can occupy
                // without violating the sequence's ordering
                // if BinarySearch does not find value the value, the index of the next larger item is returned
                result = ~result - 1;
 
             // impose limits. we need the one before last at max or the first at min
-            result = Math.Max( Math.Min( result, size_ - 2 ), 0 );
+            result = Math.Max(Math.Min(result, size_ - 2), 0);
             return result;
          }
 
-         public abstract double value( double d );
+         public abstract double value(double d);
          public abstract void update();
-         public abstract double primitive( double d );
-         public abstract double derivative( double d );
-         public abstract double secondDerivative( double d );
+         public abstract double primitive(double d);
+         public abstract double derivative(double d);
+         public abstract double secondDerivative(double d);
       }
    }
 }

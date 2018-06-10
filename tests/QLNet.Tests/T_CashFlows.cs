@@ -6,7 +6,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -20,7 +20,7 @@
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 using System;
@@ -38,8 +38,8 @@ namespace TestSuite
          if ((!leg[n].hasOccurred(today + days)) != expected)
          {
             QAssert.Fail("cashflow at T+" + n + " "
-                    + (expected ? "not" : "") + "included"
-                    + " at T+" + days);
+                         + (expected ? "not" : "") + "included"
+                         + " at T+" + days);
          }
       }
 
@@ -51,17 +51,17 @@ namespace TestSuite
             if (Math.Abs(NPV - expected) > 1e-6)
             {
                QAssert.Fail("NPV mismatch:\n"
-                           + "    calculated: " + NPV + "\n"
-                           + "    expected: " + expected);
+                            + "    calculated: " + NPV + "\n"
+                            + "    expected: " + expected);
             }
          }
          while (false);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testSettings()
       {
@@ -179,9 +179,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testAccessViolation()
       {
@@ -212,8 +212,8 @@ namespace TestSuite
             Date endDate = new Date(20, Month.December, 2013);
             double spread = 0.0115;
             IborCouponPricer pricer = new BlackIborCouponPricer(vol);
-            FloatingRateCoupon coupon = new FloatingRateCoupon( payDate, 100, startDate, endDate, 2,
-                                       index3m, 1.0, spread / 100);
+            FloatingRateCoupon coupon = new FloatingRateCoupon(payDate, 100, startDate, endDate, 2,
+                                                               index3m, 1.0, spread / 100);
             coupon.setPricer(pricer);
 
             try
@@ -229,27 +229,27 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testDefaultSettlementDate()
       {
          // Testing default evaluation date in cashflows methods...
          Date today = Settings.evaluationDate();
          Schedule schedule = new
-            MakeSchedule()
-            .from(today - new Period(2, TimeUnit.Months)).to(today + new Period(4, TimeUnit.Months))
-            .withFrequency(Frequency.Semiannual)
-            .withCalendar(new TARGET())
-            .withConvention(BusinessDayConvention.Unadjusted)
-            .backwards().value();
+         MakeSchedule()
+         .from(today - new Period(2, TimeUnit.Months)).to(today + new Period(4, TimeUnit.Months))
+         .withFrequency(Frequency.Semiannual)
+         .withCalendar(new TARGET())
+         .withConvention(BusinessDayConvention.Unadjusted)
+         .backwards().value();
 
          List<CashFlow> leg = new FixedRateLeg(schedule)
-                  .withCouponRates(0.03, new Actual360())
-                  .withPaymentCalendar(new TARGET())
-                  .withNotionals(100.0)
-                  .withPaymentAdjustment(BusinessDayConvention.Following);
+         .withCouponRates(0.03, new Actual360())
+         .withPaymentCalendar(new TARGET())
+         .withNotionals(100.0)
+         .withPaymentAdjustment(BusinessDayConvention.Following);
 
          double accruedPeriod = CashFlows.accruedPeriod(leg, false);
          if (accruedPeriod == 0.0)
@@ -265,28 +265,28 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testNullFixingDays()
       {
          // Testing ibor leg construction with null fixing days...
          Date today = Settings.evaluationDate();
          Schedule schedule = new
-            MakeSchedule()
-            .from(today - new Period(2, TimeUnit.Months)).to(today + new Period(4, TimeUnit.Months))
-            .withFrequency(Frequency.Semiannual)
-            .withCalendar(new TARGET())
-            .withConvention(BusinessDayConvention.Following)
-            .backwards().value();
+         MakeSchedule()
+         .from(today - new Period(2, TimeUnit.Months)).to(today + new Period(4, TimeUnit.Months))
+         .withFrequency(Frequency.Semiannual)
+         .withCalendar(new TARGET())
+         .withConvention(BusinessDayConvention.Following)
+         .backwards().value();
 
          IborIndex index = new USDLibor(new Period(6, TimeUnit.Months));
          List<CashFlow> leg = new IborLeg(schedule, index)
-            // this can happen with default values, and caused an
-            // exception when the null was not managed properly
-            .withFixingDays(null)
-            .withNotionals(100.0);
+         // this can happen with default values, and caused an
+         // exception when the null was not managed properly
+         .withFixingDays(null)
+         .withNotionals(100.0);
       }
    }
 }

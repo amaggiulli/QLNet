@@ -6,7 +6,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -28,10 +28,10 @@ namespace QLNet
       private AnalyticHestonEngine.Integration integration_;
 
       public HestonBlackVolSurface(Handle<HestonModel> hestonModel)
-            : base(hestonModel.link.process().riskFreeRate().link.referenceDate(),
-                  new NullCalendar(),
-                  BusinessDayConvention.Following,
-                  hestonModel.link.process().riskFreeRate().link.dayCounter())
+         : base(hestonModel.link.process().riskFreeRate().link.referenceDate(),
+                new NullCalendar(),
+                BusinessDayConvention.Following,
+                hestonModel.link.process().riskFreeRate().link.dayCounter())
       {
          hestonModel_ = hestonModel;
          integration_ = AnalyticHestonEngine.Integration.gaussLaguerre(164);
@@ -68,8 +68,8 @@ namespace QLNet
          double spotPrice = process.s0().link.value();
 
          double fwd = spotPrice
-             * process.dividendYield().link.discount(t, true)
-             / process.riskFreeRate().link.discount(t, true);
+                      * process.dividendYield().link.discount(t, true)
+                      / process.riskFreeRate().link.discount(t, true);
 
          var payoff = new PlainVanillaPayoff(fwd > strike ? Option.Type.Put : Option.Type.Call, strike);
 
@@ -87,12 +87,13 @@ namespace QLNet
          int evaluations = 0;
 
          AnalyticHestonEngine.doCalculation(
-             df, div, spotPrice, strike, t,
-             kappa, theta, sigma, v0, rho,
-             payoff, integration_, cpxLogFormula,
-             hestonEnginePtr, ref npv, ref evaluations);
+            df, div, spotPrice, strike, t,
+            kappa, theta, sigma, v0, rho,
+            payoff, integration_, cpxLogFormula,
+            hestonEnginePtr, ref npv, ref evaluations);
 
-         if (npv <= 0.0) return Math.Sqrt(theta);
+         if (npv <= 0.0)
+            return Math.Sqrt(theta);
 
          Brent solver = new Brent();
          solver.setMaxEvaluations(10000);

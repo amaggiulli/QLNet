@@ -6,7 +6,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <http://qlnet.sourceforge.net/License.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -30,7 +30,7 @@ namespace QLNet
 
       public Handle() : this(default(T)) { }
 
-      public Handle(T h ) : this(h, true) { }
+      public Handle(T h) : this(h, true) { }
 
       public Handle(T h, bool registerAsObserver)
       {
@@ -47,7 +47,7 @@ namespace QLNet
       {
          get
          {
-            Utils.QL_REQUIRE(!empty(),()=> "empty Handle cannot be dereferenced");
+            Utils.QL_REQUIRE(!empty(), () => "empty Handle cannot be dereferenced");
             return link_.currentLink();
          }
       }
@@ -64,8 +64,10 @@ namespace QLNet
 
       public static bool operator ==(Handle<T> here, Handle<T> there)
       {
-         if (ReferenceEquals(here, there)) return true;
-         if ((object)here == null || (object)there == null) return false;
+         if (ReferenceEquals(here, there))
+            return true;
+         if ((object)here == null || (object)there == null)
+            return false;
          return here.Equals(there);
       }
 
@@ -105,7 +107,7 @@ namespace QLNet
                h_ = h;
                isObserver_ = registerAsObserver;
 
-               if ( isObserver_)
+               if (isObserver_)
                {
                   h_.registerWith(update);
                }
@@ -126,8 +128,14 @@ namespace QLNet
 
          public event Callback notifyObserversEvent
          {
-            add { eventSource.Subscribe(value); }
-            remove { eventSource.Unsubscribe(value); }
+            add
+            {
+               eventSource.Subscribe(value);
+            }
+            remove
+            {
+               eventSource.Unsubscribe(value);
+            }
          }
 
          public void registerWith(Callback handler) { notifyObserversEvent += handler; }
@@ -149,7 +157,7 @@ namespace QLNet
    {
       public RelinkableHandle() : base(default(T), true) { }
 
-      public RelinkableHandle(T h ) : base(h, true) { }
+      public RelinkableHandle(T h) : base(h, true) { }
 
       public RelinkableHandle(T h, bool registerAsObserver) : base(h, registerAsObserver) { }
 

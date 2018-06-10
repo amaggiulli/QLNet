@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -98,7 +98,10 @@ namespace QLNet
       public int Count { get { return backingDictionary_.Count; } }
       public bool IsReadOnly
       {
-         get { return false; }
+         get
+         {
+            return false;
+         }
       }
 
       public bool ContainsKey(Date key)
@@ -108,7 +111,7 @@ namespace QLNet
 
       public void Add(Date key, T value)
       {
-         backingDictionary_.Add(key,value);
+         backingDictionary_.Add(key, value);
       }
 
       public bool Remove(Date key)
@@ -131,7 +134,10 @@ namespace QLNet
             }
             return default(T);
          }
-         set { backingDictionary_[key] = value; }
+         set
+         {
+            backingDictionary_[key] = value;
+         }
       }
 
       public ICollection<Date> Keys { get { return backingDictionary_.Keys; } }
@@ -140,13 +146,13 @@ namespace QLNet
 
    public struct Duration
    {
-     public enum Type { Simple, Macaulay, Modified }
+      public enum Type { Simple, Macaulay, Modified }
    }
 
-	public struct Position
+   public struct Position
    {
-	   public enum Type { Long, Short }
-	}
+      public enum Type { Long, Short }
+   }
 
    public enum InterestRateType { Fixed, Floating }
    //! Interest rate coumpounding rule
@@ -157,8 +163,8 @@ namespace QLNet
       Continuous = 2,      //!< \f$ e^{rt} \f$
       SimpleThenCompounded //!< Simple up to the first period then Compounded
    }
-	
-	public enum Month
+
+   public enum Month
    {
       January   = 1,
       February  = 2,
@@ -185,7 +191,7 @@ namespace QLNet
       Dec = 12
    }
 
-	public enum BusinessDayConvention
+   public enum BusinessDayConvention
    {
       // ISDA
       Following,          /*!< Choose the first business day after
@@ -210,7 +216,7 @@ namespace QLNet
                                        end of month, in which case choose
                                        the first business day before the
                                        holiday. */
-      Nearest                      /*!< Choose the nearest business day 
+      Nearest                      /*!< Choose the nearest business day
                                        to the given holiday. If both the
                                        preceding and following business
                                        days are equally far away, default
@@ -257,7 +263,7 @@ namespace QLNet
                               date is also modified. */
          TwentiethIMM,   /*!< All dates but the effective date are taken to be the twentieth of an IMM
                               month (used for CDS schedules.)  The termination date is also modified. */
-         OldCDS,         /*!< Same as TwentiethIMM with unrestricted date ends and log/short stub 
+         OldCDS,         /*!< Same as TwentiethIMM with unrestricted date ends and log/short stub
                               coupon period (old CDS convention). */
          CDS,            /*!< Credit derivatives standard rule since 'Big Bang' changes in 2009.  */
          CDS2015         /*!< Credit derivatives standard rule since December 20th, 2015.  */

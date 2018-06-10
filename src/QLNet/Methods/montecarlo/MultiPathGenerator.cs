@@ -1,0 +1,107 @@
+﻿/*
+ Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+
+using System.Collections.Generic;
+
+namespace QLNet
+{
+   //! Generates a multipath from a random number generator.
+   /*! RSG is a sample generator which returns a random sequence.
+
+       \test the generated paths are checked against cached results
+   */
+
+   public class MultiPathGenerator<GSG> : IPathGenerator<GSG> where GSG : IRNG
+   {
+      private bool brownianBridge_;
+      private StochasticProcess process_;
+      private GSG generator_;
+      private Sample<IPath> next_;
+
+      public MultiPathGenerator(StochasticProcess process, TimeGrid times, GSG generator, bool brownianBridge)
+      {
+         brownianBridge_ = brownianBridge;
+         process_ = process;
+         generator_ = generator;
+         next_ = new Sample<IPath>(new MultiPath(process.size(), times), 1.0);
+
+         Utils.QL_REQUIRE(generator_.dimension() == process.factors() * (times.size() - 1), () =>
+                          "dimension (" + generator_.dimension()
+                          + ") is not equal to ("
+                          + process.factors() + " * " + (times.size() - 1)
+                          + ") the number of factors "
+                          + "times the number of time steps");
+         Utils.QL_REQUIRE(times.size() > 1, () => "no times given");
+      }
+
+      public Sample<IPath> next()
+      {
+         return next(false);
+      }
+
+      public Sample<IPath> antithetic()
+      {
+         return next(true);
+      }
+
+      private Sample<IPath> next(bool antithetic)
+      {
+         if (brownianBridge_)
+         {
+            Utils.QL_FAIL("Brownian bridge not supported");
+            return null;
+         }
+
+         Sample<List<double>> sequence_ =
+            antithetic
+            ? generator_.lastSequence()
+            : generator_.nextSequence();
+
+         int m = process_.size();
+         int n = process_.factors();
+
+         MultiPath path = (MultiPath) next_.value;
+
+         Vector asset = process_.initialValues();
+         for (int j = 0; j < m; j++)
+            path[j].setFront(asset[j]);
+
+         Vector temp;
+         next_.weight = sequence_.weight;
+
+         TimeGrid timeGrid = path[0].timeGrid();
+         double t, dt;
+         for (int i = 1; i < path.pathSize(); i++)
+         {
+            int offset = (i - 1) * n;
+            t = timeGrid[i - 1];
+            dt = timeGrid.dt(i - 1);
+            if (antithetic)
+               temp = -1 * new Vector(sequence_.value.GetRange(offset, n));
+            else
+               temp = new Vector(sequence_.value.GetRange(offset, n));
+
+            asset = process_.evolve(t, asset, dt, temp);
+            for (int j = 0; j < m; j++)
+               path[j][i] = asset[j];
+         }
+         return next_;
+      }
+   }
+}

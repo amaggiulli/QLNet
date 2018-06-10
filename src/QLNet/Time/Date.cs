@@ -2,18 +2,18 @@
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -29,8 +29,8 @@ namespace QLNet
 
       //! Default constructor returning a null date.
       public Date()
-      {} 
-      //! Constructor taking a serial number as given by Excel. 
+      {}
+      //! Constructor taking a serial number as given by Excel.
       // Serial numbers in Excel have a known problem with leap year 1900
       public Date(int serialNumber)
       {
@@ -45,7 +45,7 @@ namespace QLNet
          this(new DateTime(y, m, d))
       {}
 
-      public Date(int d, int m, int y, int h , int mi , int s , int ms ) : //! More traditional constructor.
+      public Date(int d, int m, int y, int h, int mi, int s, int ms) :     //! More traditional constructor.
          this(new DateTime(y, m, d, h, mi, s, ms))
       {}
 
@@ -88,8 +88,8 @@ namespace QLNet
       public int hours { get { return date.Hour; } }
       public int minutes { get { return date.Minute; } }
       public int seconds { get { return date.Second; } }
-      public int milliseconds { get { return date.Millisecond; } }      
-      public double fractionOfSecond { get { return (double)date.Millisecond/1000; } }
+      public int milliseconds { get { return date.Millisecond; } }
+      public double fractionOfSecond { get { return (double)date.Millisecond / 1000; } }
 
       public double fractionOfDay()
       {
@@ -107,7 +107,7 @@ namespace QLNet
          return new Date(31, 12, 2199);
       }
 
-      public static Date Today { get { return new Date( DateTime.Today ); } }
+      public static Date Today { get { return new Date(DateTime.Today); } }
 
       public static bool IsLeapYear(int y)
       {
@@ -144,8 +144,8 @@ namespace QLNet
       //! n-th given weekday in the given month and year, e.g., the 4th Thursday of March, 1998 was March 26th, 1998.
       public static Date nthWeekday(int nth, DayOfWeek dayOfWeek, int m, int y)
       {
-         Utils.QL_REQUIRE(nth > 0,()=> "zeroth day of week in a given (month, year) is undefined");
-         Utils.QL_REQUIRE(nth < 6,()=> "no more than 5 weekday in a given (month, year)");
+         Utils.QL_REQUIRE(nth > 0, () => "zeroth day of week in a given (month, year) is undefined");
+         Utils.QL_REQUIRE(nth < 6, () => "no more than 5 weekday in a given (month, year)");
          DayOfWeek first = new DateTime(y, m, 1).DayOfWeek;
          int skip = nth - (dayOfWeek >= first ? 1 : 0);
          return new Date(1, m, y) + (dayOfWeek - first + skip * 7);
@@ -259,8 +259,8 @@ namespace QLNet
       public static bool operator ==(Date d1, Date d2)
       {
          return ((Object)d1 == null || (Object)d2 == null) ?
-                   ((Object)d1 == null && (Object)d2 == null) :
-                   d1.date == d2.date;
+                ((Object)d1 == null && (Object)d2 == null) :
+                d1.date == d2.date;
       }
 
       public static bool operator !=(Date d1, Date d2)

@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
-//  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//  copy of the license along with this program; if not, license is
+//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -21,14 +21,14 @@ namespace QLNet
 {
    public class AbcdCalibration
    {
-      private class AbcdError : CostFunction 
+      private class AbcdError : CostFunction
       {
          public AbcdError(AbcdCalibration abcd)
          {
             abcd_ = abcd;
          }
 
-         public override double value(Vector x) 
+         public override double value(Vector x)
          {
             Vector y = abcd_.transformation_.direct(x);
             abcd_.a_ = y[0];
@@ -37,8 +37,8 @@ namespace QLNet
             abcd_.d_ = y[3];
             return abcd_.error();
          }
-         
-         public override Vector values(Vector x) 
+
+         public override Vector values(Vector x)
          {
             Vector y = abcd_.transformation_.direct(x);
             abcd_.a_ = y[0];
@@ -47,15 +47,15 @@ namespace QLNet
             abcd_.d_ = y[3];
             return abcd_.errors();
          }
-         
+
          private AbcdCalibration abcd_;
       }
-              
-      private class AbcdParametersTransformation : IParametersTransformation 
+
+      private class AbcdParametersTransformation : IParametersTransformation
       {
          public AbcdParametersTransformation()
          {
-            y_= new Vector(4); 
+            y_ = new Vector(4);
          }
          // to constrained <- from unconstrained
          public Vector direct(Vector x)
@@ -80,48 +80,48 @@ namespace QLNet
          private Vector y_;
       }
 
-            
+
       public AbcdCalibration() {}
 
       // to constrained <- from unconstrained
-      public AbcdCalibration( List<double> t,
-                              List<double> blackVols,
-                              double aGuess = -0.06,
-                              double bGuess =  0.17,
-                              double cGuess =  0.54,
-                              double dGuess =  0.17,
-                              bool aIsFixed = false,
-                              bool bIsFixed = false,
-                              bool cIsFixed = false,
-                              bool dIsFixed = false,
-                              bool vegaWeighted = false,
-                              EndCriteria endCriteria = null,
-                              OptimizationMethod method = null)
+      public AbcdCalibration(List<double> t,
+                             List<double> blackVols,
+                             double aGuess = -0.06,
+                             double bGuess =  0.17,
+                             double cGuess =  0.54,
+                             double dGuess =  0.17,
+                             bool aIsFixed = false,
+                             bool bIsFixed = false,
+                             bool cIsFixed = false,
+                             bool dIsFixed = false,
+                             bool vegaWeighted = false,
+                             EndCriteria endCriteria = null,
+                             OptimizationMethod method = null)
       {
-         aIsFixed_ = aIsFixed; 
+         aIsFixed_ = aIsFixed;
          bIsFixed_ = bIsFixed;
-         cIsFixed_ = cIsFixed; 
+         cIsFixed_ = cIsFixed;
          dIsFixed_ = dIsFixed;
          a_ = aGuess;
          b_ = bGuess;
          c_ = cGuess;
          d_ = dGuess;
-         abcdEndCriteria_ = QLNet.EndCriteria.Type.None; 
+         abcdEndCriteria_ = QLNet.EndCriteria.Type.None;
          endCriteria_ = endCriteria;
-         optMethod_ = method; 
-         weights_ = new InitializedList<double>(blackVols.Count, 1.0/blackVols.Count); 
+         optMethod_ = method;
+         weights_ = new InitializedList<double>(blackVols.Count, 1.0 / blackVols.Count);
          vegaWeighted_ = vegaWeighted;
          times_ = t;
          blackVols_ = blackVols;
 
-                 
+
          AbcdMathFunction.validate(aGuess, bGuess, cGuess, dGuess);
 
-         Utils.QL_REQUIRE(blackVols.Count == t.Count,()=>
-            "mismatch between number of times (" + t.Count + ") and blackVols (" + blackVols.Count + ")");
+         Utils.QL_REQUIRE(blackVols.Count == t.Count, () =>
+                          "mismatch between number of times (" + t.Count + ") and blackVols (" + blackVols.Count + ")");
 
          // if no optimization method or endCriteria is provided, we provide one
-         if (optMethod_ == null) 
+         if (optMethod_ == null)
          {
             double epsfcn = 1.0e-8;
             double xtol = 1.0e-8;
@@ -130,27 +130,27 @@ namespace QLNet
             optMethod_ = new LevenbergMarquardt(epsfcn, xtol, gtol, useCostFunctionsJacobian);
          }
 
-         if (endCriteria_ == null) 
+         if (endCriteria_ == null)
          {
             int maxIterations = 10000;
             int maxStationaryStateIterations = 1000;
             double rootEpsilon = 1.0e-8;
             double functionEpsilon = 0.3e-4;     // Why 0.3e-4 ?
             double gradientNormEpsilon = 0.3e-4; // Why 0.3e-4 ?
-            endCriteria_ = new EndCriteria(maxIterations, maxStationaryStateIterations,rootEpsilon, functionEpsilon, 
-               gradientNormEpsilon);
+            endCriteria_ = new EndCriteria(maxIterations, maxStationaryStateIterations, rootEpsilon, functionEpsilon,
+                                           gradientNormEpsilon);
          }
       }
-        
+
       //! adjustment factors needed to match Black vols
       public List<double> k(List<double> t, List<double> blackVols)
       {
-         Utils.QL_REQUIRE(blackVols.Count==t.Count,()=> 
-            "mismatch between number of times (" + t.Count + ") and blackVols (" + blackVols.Count + ")");
+         Utils.QL_REQUIRE(blackVols.Count == t.Count, () =>
+                          "mismatch between number of times (" + t.Count + ") and blackVols (" + blackVols.Count + ")");
          List<double> k = new InitializedList<double>(t.Count);
-         for (int i=0; i<t.Count ; i++) 
+         for (int i = 0; i < t.Count ; i++)
          {
-            k[i]=blackVols[i]/value(t[i]);
+            k[i] = blackVols[i] / value(t[i]);
          }
          return k;
       }
@@ -158,30 +158,30 @@ namespace QLNet
 
       public void compute()
       {
-         if (vegaWeighted_) 
+         if (vegaWeighted_)
          {
             double weightsSum = 0.0;
-            for (int i=0; i<times_.Count ; i++) 
+            for (int i = 0; i < times_.Count ; i++)
             {
-               double stdDev = Math.Sqrt(blackVols_[i]* blackVols_[i]* times_[i]);
+               double stdDev = Math.Sqrt(blackVols_[i] * blackVols_[i] * times_[i]);
                // when strike==forward, the blackFormulaStdDevDerivative becomes
-               weights_[i] = new CumulativeNormalDistribution().derivative(.5*stdDev);
+               weights_[i] = new CumulativeNormalDistribution().derivative(.5 * stdDev);
                weightsSum += weights_[i];
             }
             // weight normalization
-            for (int i=0; i<times_.Count ; i++) 
+            for (int i = 0; i < times_.Count ; i++)
             {
                weights_[i] /= weightsSum;
             }
 
          }
          // there is nothing to optimize
-         if (aIsFixed_ && bIsFixed_ && cIsFixed_ && dIsFixed_) 
+         if (aIsFixed_ && bIsFixed_ && cIsFixed_ && dIsFixed_)
          {
             abcdEndCriteria_ = QLNet.EndCriteria.Type.None;
             return;
-         }    
-         else 
+         }
+         else
          {
             AbcdError costFunction = new AbcdError(this);
             transformation_ = new AbcdParametersTransformation();
@@ -200,8 +200,8 @@ namespace QLNet
 
             Vector inversedTransformatedGuess = new Vector(transformation_.inverse(guess));
 
-            ProjectedCostFunction projectedAbcdCostFunction = new ProjectedCostFunction(costFunction,                            
-               inversedTransformatedGuess, parameterAreFixed);
+            ProjectedCostFunction projectedAbcdCostFunction = new ProjectedCostFunction(costFunction,
+                                                                                        inversedTransformatedGuess, parameterAreFixed);
 
             Vector projectedGuess = new Vector(projectedAbcdCostFunction.project(inversedTransformatedGuess));
 
@@ -221,45 +221,45 @@ namespace QLNet
       }
 
       //calibration results
-      public double value( double x ) { return abcdBlackVolatility( x, a_, b_, c_, d_ ); }
+      public double value(double x) { return abcdBlackVolatility(x, a_, b_, c_, d_); }
 
       public double error()
       {
          int n = times_.Count;
          double error, squaredError = 0.0;
-         for (int i=0; i<times_.Count ; i++) 
+         for (int i = 0; i < times_.Count ; i++)
          {
             error = (value(times_[i]) - blackVols_[i]);
             squaredError += error * error * weights_[i];
          }
-         return Math.Sqrt(n*squaredError/(n-1));
+         return Math.Sqrt(n * squaredError / (n - 1));
       }
 
       public double maxError()
       {
          double error, maxError = double.MinValue;
-         for (int i=0; i<times_.Count ; i++) 
+         for (int i = 0; i < times_.Count ; i++)
          {
             error = Math.Abs(value(times_[i]) - blackVols_[i]);
             maxError = Math.Max(maxError, error);
          }
-         return maxError;   
+         return maxError;
       }
 
       public Vector errors()
       {
          Vector results = new Vector(times_.Count);
-         for (int i=0; i<times_.Count ; i++) 
+         for (int i = 0; i < times_.Count ; i++)
          {
-            results[i] = (value(times_[i]) - blackVols_[i])* Math.Sqrt(weights_[i]);
+            results[i] = (value(times_[i]) - blackVols_[i]) * Math.Sqrt(weights_[i]);
          }
-         return results;   
+         return results;
       }
 
-      public double abcdBlackVolatility(double u, double a, double b, double c, double d) 
+      public double abcdBlackVolatility(double u, double a, double b, double c, double d)
       {
-         AbcdFunction model = new AbcdFunction(a,b,c,d);
-         return model.volatility(0.0,u,u);
+         AbcdFunction model = new AbcdFunction(a, b, c, d);
+         return model.volatility(0.0, u, u);
       }
 
       public EndCriteria.Type endCriteria() { return abcdEndCriteria_; }
@@ -271,7 +271,7 @@ namespace QLNet
       public bool bIsFixed_ { get; set; }
       public bool cIsFixed_ { get; set; }
       public bool dIsFixed_ { get; set; }
-      private double a_,b_, c_, d_;
+      private double a_, b_, c_, d_;
       public IParametersTransformation transformation_ { get; set; }
 
 

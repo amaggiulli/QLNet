@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -56,14 +56,14 @@ namespace QLNet
       /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
                   depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
                   \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
-      
+
                   This method contains a bracketing routine to which an initial guess must be supplied as well as a step used to
                   scan the range of the possible bracketing values.
               */
 
       public double solve(ISolver1d f, double accuracy, double guess, double step)
       {
-         Utils.QL_REQUIRE(accuracy > 0.0,()=> "accuracy (" + accuracy + ") must be positive");
+         Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
 
          // check whether we really want to use epsilon
          accuracy = Math.Max(accuracy, Const.QL_EPSILON);
@@ -96,8 +96,10 @@ namespace QLNet
          {
             if (fxMin_ * fxMax_ <= 0.0)
             {
-               if (Utils.close(fxMin_, 0.0)) return xMin_;
-               if (Utils.close(fxMax_, 0.0)) return xMax_;
+               if (Utils.close(fxMin_, 0.0))
+                  return xMin_;
+               if (Utils.close(fxMax_, 0.0))
+                  return xMax_;
                root_ = (xMax_ + xMin_) / 2.0;
                return solveImpl(f, accuracy);
             }
@@ -145,7 +147,7 @@ namespace QLNet
 
       public double solve(ISolver1d f, double accuracy, double guess, double xMin, double xMax)
       {
-         Utils.QL_REQUIRE(accuracy > 0.0,()=> "accuracy (" + accuracy + ") must be positive");
+         Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
 
          // check whether we really want to use epsilon
          accuracy = Math.Max(accuracy, Const.QL_EPSILON);
@@ -153,24 +155,26 @@ namespace QLNet
          xMin_ = xMin;
          xMax_ = xMax;
 
-         Utils.QL_REQUIRE(xMin_ < xMax_,()=> "invalid range: xMin_ (" + xMin_ + ") >= xMax_ (" + xMax_ + ")");
-         Utils.QL_REQUIRE(!lowerBoundEnforced_ || xMin_ >= lowerBound_,()=>
-            "xMin_ (" + xMin_ + ") < enforced low bound (" + lowerBound_ + ")");
-         Utils.QL_REQUIRE(!upperBoundEnforced_ || xMax_ <= upperBound_,()=>
-            "xMax_ (" + xMax_ + ") > enforced hi bound (" + upperBound_ + ")");
+         Utils.QL_REQUIRE(xMin_ < xMax_, () => "invalid range: xMin_ (" + xMin_ + ") >= xMax_ (" + xMax_ + ")");
+         Utils.QL_REQUIRE(!lowerBoundEnforced_ || xMin_ >= lowerBound_, () =>
+                          "xMin_ (" + xMin_ + ") < enforced low bound (" + lowerBound_ + ")");
+         Utils.QL_REQUIRE(!upperBoundEnforced_ || xMax_ <= upperBound_, () =>
+                          "xMax_ (" + xMax_ + ") > enforced hi bound (" + upperBound_ + ")");
 
          fxMin_ = f.value(xMin_);
-         if (Utils.close(fxMin_, 0.0)) return xMin_;
+         if (Utils.close(fxMin_, 0.0))
+            return xMin_;
 
          fxMax_ = f.value(xMax_);
-         if (Utils.close(fxMax_, 0.0)) return xMax_;
+         if (Utils.close(fxMax_, 0.0))
+            return xMax_;
 
          evaluationNumber_ = 2;
 
-         Utils.QL_REQUIRE(fxMin_ * fxMax_ < 0.0,()=> 
-            "root not bracketed: f[" + xMin_ + "," + xMax_ + "] -> [" + fxMin_ + "," + fxMax_ + "]");
-         Utils.QL_REQUIRE(guess > xMin_,()=> "guess (" + guess + ") < xMin_ (" + xMin_ + ")");
-         Utils.QL_REQUIRE(guess < xMax_,()=> "guess (" + guess + ") > xMax_ (" + xMax_ + ")");
+         Utils.QL_REQUIRE(fxMin_ * fxMax_ < 0.0, () =>
+                          "root not bracketed: f[" + xMin_ + "," + xMax_ + "] -> [" + fxMin_ + "," + fxMax_ + "]");
+         Utils.QL_REQUIRE(guess > xMin_, () => "guess (" + guess + ") < xMin_ (" + xMin_ + ")");
+         Utils.QL_REQUIRE(guess < xMax_, () => "guess (" + guess + ") > xMax_ (" + xMax_ + ")");
 
          root_ = guess;
 

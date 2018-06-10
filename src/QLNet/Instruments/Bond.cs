@@ -1,18 +1,18 @@
 /*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -54,10 +54,10 @@ namespace QLNet
             cashflows_.Sort();
             if (issueDate_ != null)
             {
-               Utils.QL_REQUIRE( issueDate_ < cashflows_[0].date(), () =>
-                           "issue date (" + issueDate_ +
-                           ") must be earlier than first payment date (" +
-                           cashflows_[0].date() + ")");
+               Utils.QL_REQUIRE(issueDate_ < cashflows_[0].date(), () =>
+                                "issue date (" + issueDate_ +
+                                ") must be earlier than first payment date (" +
+                                cashflows_[0].date() + ")");
             }
             maturityDate_ = coupons.Last().date();
             addRedemptionsToCashflows();
@@ -71,7 +71,7 @@ namespace QLNet
                    redemption. No other cash flow can have a date
                    later than the redemption date.
       */
-      public Bond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate, Date issueDate =null,
+      public Bond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate, Date issueDate = null,
                   List<CashFlow> cashflows = null)
       {
          settlementDays_ = settlementDays;
@@ -79,7 +79,7 @@ namespace QLNet
          if (cashflows == null)
             cashflows_ = new List<CashFlow>();
          else
-            cashflows_ = cashflows; 
+            cashflows_ = cashflows;
          maturityDate_ = maturityDate;
          issueDate_ = issueDate;
 
@@ -87,15 +87,15 @@ namespace QLNet
          {
             cashflows_.Sort(0, cashflows_.Count - 1, null);
 
-            if (maturityDate_ ==null)
-                maturityDate_ = CashFlows.maturityDate(cashflows_);
+            if (maturityDate_ == null)
+               maturityDate_ = CashFlows.maturityDate(cashflows_);
 
             if (issueDate_ != null)
             {
-               Utils.QL_REQUIRE( issueDate_ < cashflows_[0].date(), () =>
-                          "issue date (" + issueDate_ +
-                          ") must be earlier than first payment date (" +
-                          cashflows_[0].date() + ")");
+               Utils.QL_REQUIRE(issueDate_ < cashflows_[0].date(), () =>
+                                "issue date (" + issueDate_ +
+                                ") must be earlier than first payment date (" +
+                                cashflows_[0].date() + ")");
             }
 
             notionalSchedule_.Add(new Date());
@@ -106,7 +106,7 @@ namespace QLNet
 
             redemptions_.Add(cashflows.Last());
 
-            
+
          }
 
          Settings.registerWith(update);
@@ -126,7 +126,7 @@ namespace QLNet
       #endregion
 
       #region Inspectors
-      
+
       public int settlementDays() { return settlementDays_; }
       public Calendar calendar() { return calendar_; }
       public List<double> notionals() { return notionals_; }
@@ -163,10 +163,10 @@ namespace QLNet
       public List<CashFlow> cashflows() { return cashflows_; }
       //! returns just the redemption flows (not interest payments)
       public List<CashFlow> redemptions() { return redemptions_; }
-      // returns the redemption, if only one is defined 
+      // returns the redemption, if only one is defined
       public CashFlow redemption()
       {
-         Utils.QL_REQUIRE( redemptions_.Count == 1, () => "multiple redemption cash flows given" );
+         Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemption cash flows given");
          return redemptions_.Last();
       }
       public Date startDate() { return BondFunctions.startDate(this);}
@@ -189,7 +189,7 @@ namespace QLNet
       #endregion
 
       #region Calculations
-  
+
       //! theoretical clean price
       /*! The default bond settlement is used for calculation.
 
@@ -217,7 +217,7 @@ namespace QLNet
       public double settlementValue()
       {
          calculate();
-         Utils.QL_REQUIRE( settlementValue_ != null, () => "settlement value not provided" );
+         Utils.QL_REQUIRE(settlementValue_ != null, () => "settlement value not provided");
          return settlementValue_.Value;
       }
 
@@ -232,11 +232,11 @@ namespace QLNet
       public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
          double currentNotional = notional(settlementDate());
-         
+
          if (currentNotional.IsEqual(0.0))
             return 0.0;
 
-         return BondFunctions.yield(this, cleanPrice(), dc, comp, freq,settlementDate(), accuracy, maxEvaluations);
+         return BondFunctions.yield(this, cleanPrice(), dc, comp, freq, settlementDate(), accuracy, maxEvaluations);
       }
 
       //! clean price given a yield and settlement date
@@ -260,7 +260,7 @@ namespace QLNet
       //! yield given a (clean) price and settlement date
       /*! The default bond settlement is used if no date is given. */
       public double yield(double cleanPrice, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
-                          double accuracy = 1.0e-8, int maxEvaluations=100)
+                          double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
          double currentNotional = notional(settlement);
          if (currentNotional.IsEqual(0.0))
@@ -274,7 +274,7 @@ namespace QLNet
       public virtual double accruedAmount(Date settlement = null)
       {
          double currentNotional = notional(settlement);
-         
+
          if (currentNotional.IsEqual(0.0))
             return 0.0;
 
@@ -328,7 +328,7 @@ namespace QLNet
       public override void setupArguments(IPricingEngineArguments args)
       {
          Bond.Arguments arguments = args as Bond.Arguments;
-         Utils.QL_REQUIRE( arguments != null, () => "wrong argument type" );
+         Utils.QL_REQUIRE(arguments != null, () => "wrong argument type");
 
          arguments.settlementDate = settlementDate();
          arguments.cashflows = cashflows_;
@@ -340,7 +340,7 @@ namespace QLNet
          base.fetchResults(r);
 
          Bond.Results results = r as Bond.Results;
-         Utils.QL_REQUIRE( results != null, () => "wrong result type" );
+         Utils.QL_REQUIRE(results != null, () => "wrong result type");
 
          settlementValue_ = results.settlementValue;
       }
@@ -374,7 +374,7 @@ namespace QLNet
          {
             double R = i < redemptions.Count ? redemptions[i] :
                        !redemptions.empty() ? redemptions.Last() :
-                                              100.0;
+                       100.0;
             double amount = (R / 100.0) * (notionals_[i - 1] - notionals_[i]);
             CashFlow payment;
             if (i < notionalSchedule_.Count - 1)
@@ -387,7 +387,7 @@ namespace QLNet
          }
          // stable_sort now moves the AmortizingPayment and Redemptions to the right places
          // while ensuring that they follow coupons with the same date.
-         cashflows_ = cashflows_.OrderBy( x => x.date() ).ToList();
+         cashflows_ = cashflows_.OrderBy(x => x.date()).ToList();
       }
 
       /*! This method can be called by derived classes in order to
@@ -431,39 +431,39 @@ namespace QLNet
 
          Date lastPaymentDate = new Date();
          notionalSchedule_.Add(new Date());
-         for (int i=0; i<cashflows_.Count; ++i) 
+         for (int i = 0; i < cashflows_.Count; ++i)
          {
             Coupon coupon = cashflows_[i] as Coupon;
             if (coupon == null)
-                continue;
+               continue;
 
             double notional = coupon.nominal();
             // we add the notional only if it is the first one...
-            if (notionals_.empty()) 
+            if (notionals_.empty())
             {
                notionals_.Add(coupon.nominal());
                lastPaymentDate = coupon.date();
-            } 
-            else if (!Utils.close(notional, notionals_.Last())) 
-            {
-                // ...or if it has changed.
-               Utils.QL_REQUIRE( notional < notionals_.Last(), () => "increasing coupon notionals" );
-                notionals_.Add(coupon.nominal());
-                // in this case, we also add the last valid date for
-                // the previous one...
-                notionalSchedule_.Add(lastPaymentDate);
-                // ...and store the candidate for this one.
-                lastPaymentDate = coupon.date();
-            } 
-            else 
-            {
-                // otherwise, we just extend the valid range of dates
-                // for the current notional.
-                lastPaymentDate = coupon.date();
             }
-        
+            else if (!Utils.close(notional, notionals_.Last()))
+            {
+               // ...or if it has changed.
+               Utils.QL_REQUIRE(notional < notionals_.Last(), () => "increasing coupon notionals");
+               notionals_.Add(coupon.nominal());
+               // in this case, we also add the last valid date for
+               // the previous one...
+               notionalSchedule_.Add(lastPaymentDate);
+               // ...and store the candidate for this one.
+               lastPaymentDate = coupon.date();
+            }
+            else
+            {
+               // otherwise, we just extend the valid range of dates
+               // for the current notional.
+               lastPaymentDate = coupon.date();
+            }
+
          }
-         Utils.QL_REQUIRE( !notionals_.empty(), () => "no coupons provided" );
+         Utils.QL_REQUIRE(!notionals_.empty(), () => "no coupons provided");
          notionals_.Add(0.0);
          notionalSchedule_.Add(lastPaymentDate);
       }
@@ -501,10 +501,10 @@ namespace QLNet
 
          public virtual void validate()
          {
-            Utils.QL_REQUIRE( settlementDate != null, () => "no settlement date provided" );
-            Utils.QL_REQUIRE( !cashflows.empty(), () => "no cash flow provided" );
+            Utils.QL_REQUIRE(settlementDate != null, () => "no settlement date provided");
+            Utils.QL_REQUIRE(!cashflows.empty(), () => "no cash flow provided");
             for (int i = 0; i < cashflows.Count; ++i)
-               Utils.QL_REQUIRE( cashflows[i] != null, () => "null cash flow provided" );
+               Utils.QL_REQUIRE(cashflows[i] != null, () => "null cash flow provided");
          }
       }
    }
