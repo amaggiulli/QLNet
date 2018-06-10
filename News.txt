@@ -1,48 +1,44 @@
-QLNet 1.10.0 
+QLNet 1.11.0 
 =========================
 
-QLNet 1.10.0 stable version.
-
+QLNet 1.11.0 stable version includes 91 pull requests .
 The most notable changes are included below.
 A detailed list of changes is available in ChangeLog.txt.
 
 ENGINES
 
-+ Added DiscountingLoanEngine
-+ Updated Swaption Engine
-+ Added IsdaCdsEngine, InterpolatedSurvivalProbabilityCurve and SurvivalProbabilityStructure with test
-+ Added AnalyticDoubleBarrierBinaryEngine and BinomialDoubleBarrierEngine
-+ Added HW swaption engine
++ Added raw calculation for WeightedAverageLife given a list of dates and a list of amounts.
 
 FRAMEWORK
 
-+ Updated documentation to standard XML format
-+ Updated to net standard 2.0
-+ Several bug fixes 
++ Added Artistic Style 3.1 tool for formatting code.
++ Uniformed file names to CamelCase standard
 
 TERMSTRUCTURES
 
-+ Added Interpolated YoY Inflation Curve
-+ Added normal volatility interpolation  to SABR
++ Implement CompositeZeroYieldStructure
 
 TIME
 
- + Updated Schedule for CDS2015 with test.
- + Updated Actual360 daycounter to include/exclude last day
+ + Add Botswana calendar
 
 INSTRUMENTS
 
-+ Add gearing interface for CMS and Floating legs
-+ Swaption instrument update
-+ Updated bonds constructors
-+ Added Finite differences method
-+ Updated CreditDefaultSwap + helper
++ Added new instrument FloatFloatSwap, with CmsSpreadCoupon and SwapSpreadIndex.
++ Added Kirk Option Engine with test.
++ Fixed bug in Vanna-Volga method for double barrier knock in options.
 
 MATH
 
-+ Add SVI Interpolation class
-+ Add shift to SABR & XABR
++ Add Differential Evolution algorithm
++ Add a XABR Constraint class
++ Add LevenbergMarquardt precondition checks
+
+INDEXES
+
++ Updated day count convention and spot lag by CAD fixings.
 
 CASHFLOWS
 
-+ Added LastPeriodDayCounter to FixedRateCoupon
++ Updated BlackVanillaOptionPricer constructor, check volatility type and shift.
++ Added Range Accrual tests and fixed 2 bugs on RangeAccrual and InterpolatedSmileSection
