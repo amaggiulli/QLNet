@@ -206,7 +206,7 @@ namespace QLNet
 
          return CashFlows.accruedDays(bond.cashflows(), false, settlementDate);
       }
-      public static double accruedAmount(Bond bond, Date settlementDate = null)
+      public static double accruedAmount(Bond bond, Date settlementDate = null, Date accrualStartDate = null)
       {
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
@@ -215,7 +215,7 @@ namespace QLNet
                           "non tradable at " + settlementDate +
                           " (maturity being " + bond.maturityDate() + ")");
 
-         return CashFlows.accruedAmount(bond.cashflows(), false, settlementDate) * 100.0 / bond.notional(settlementDate);
+         return CashFlows.accruedAmount(bond.cashflows(), false, settlementDate, accrualStartDate) * 100.0 / bond.notional(settlementDate);
       }
 
       #endregion
