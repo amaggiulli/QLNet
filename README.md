@@ -15,13 +15,6 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=vulnerabilities)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&types=VULNERABILITY)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=code_smells)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&types=CODE_SMELL)
 [![Duplicated Lines](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures?id=QLNet-develop&metric=duplicated_lines_density)
-
-###### Issues
-
-[![Blocker Issues](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=blocker_violations)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&severities=BLOCKER)
-[![Critical Issues](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=critical_violations)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&severities=CRITICAL)
-[![Major Issues](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=major_violations)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&severities=MAJOR)
-[![Minor Issues](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=minor_violations)](https://sonarcloud.io/project/issues?id=QLNet-develop&resolved=false&severities=MINOR)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QLNet-develop)
 
 ## Development workflow 
