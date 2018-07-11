@@ -1,5 +1,5 @@
 # QLNet Appveyor builds
-init:
+- init:
   - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:feature/=%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
   - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
@@ -85,7 +85,7 @@ init:
   branches:
     only:
       - /feature/
-#  version: 1.11.1-appveyorscript.{build}
+  version: 1.11.1-{version}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2017
