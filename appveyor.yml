@@ -90,6 +90,11 @@
   clone_folder: c:\projects\qlnet_feature
   before_build:
     - cmd: dotnet restore qlnet.sln
+  build:
+    project: QLNet.sln
+    verbosity: minimal
+  after_build:
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
@@ -102,9 +107,6 @@
     do_not_increment_build_number: true
   nuget:
     disable_publish_on_pr: true
-  build:
-    project: QLNet.sln
-    verbosity: minimal
   test_script:
   - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_feature\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
 
