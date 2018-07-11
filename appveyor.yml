@@ -97,7 +97,7 @@
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
   artifacts:
     - path: src\qlnet\{version}
-    name: ng
+      name: ng
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
