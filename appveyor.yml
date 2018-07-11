@@ -96,7 +96,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
   artifacts:
-    - path: src\qlnet\QLNet.{version}
+    - path: src\qlnet\*.nupkg
       name: ng
   dotnet_csproj:
     patch: true
