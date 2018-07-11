@@ -87,6 +87,8 @@
   image: Visual Studio 2017
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
+  before_build:
+    - cmd: dotnet restore qlnet.sln
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
@@ -95,8 +97,6 @@
     assembly_version: '{version}'
     file_version: '{version}'
     informational_version: '{version}'
-  before_build:
-    - cmd: dotnet restore qlnet.sln
   pull_requests:
     do_not_increment_build_number: true
   nuget:
