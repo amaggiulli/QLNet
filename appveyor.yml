@@ -1,9 +1,5 @@
 # QLNet Appveyor builds
-init:
-  - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:feature/=%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-  - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
-for:
 # Configuration for "master" branch
 # build in Release mode and deploy to Nuget and GitHub
 -
@@ -85,12 +81,15 @@ for:
   branches:
     only:
       - /feature/
-  version: 1.11.1-{version}
+  version: 1.11.1-{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2017
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
+  init:
+    - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:feature/=%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
+    - cmd: appveyor UpdateBuild -Version "%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
   build:
