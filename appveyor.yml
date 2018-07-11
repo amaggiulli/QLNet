@@ -90,7 +90,7 @@
   before_build:
     - cmd: dotnet restore qlnet.sln
   dotnet_csproj:
-    patch: true
+    patch: false
     file: '**\*.csproj'
     version: '{version}'
     package_version: '{version}'
