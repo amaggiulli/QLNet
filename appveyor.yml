@@ -81,7 +81,7 @@
   branches:
     only:
       - /feature/
-  version: 1.11.1-{branch}.{build}
+  version: 1.11.1-appveyorscript.{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2017
@@ -90,7 +90,7 @@
   before_build:
     - cmd: dotnet restore qlnet.sln
   dotnet_csproj:
-    patch: false
+    patch: true
     file: '**\*.csproj'
     version: '{version}'
     package_version: '{version}'
