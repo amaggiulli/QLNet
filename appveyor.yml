@@ -96,7 +96,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
   artifacts:
-    - path: src\qlnet\{version}
+    - path: src\qlnet\QLNet.{version}
       name: ng
   dotnet_csproj:
     patch: true
@@ -116,6 +116,7 @@
         secure: HcilScZbZnJrCk5hoEPz9MSzKQanBzsQCfulI9gFpcT7wurwxIy3hwSwPfjXmr/v
       skip_symbols: true
       artifact: ng	
+  test: off 
 #  test_script:
 #  - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_feature\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
 
