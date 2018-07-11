@@ -6,6 +6,7 @@
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
     <PackageId>QLNet</PackageId>
+    <PackageVersion>1.11.1-preview</PackageVersion>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
     <Authors>Andrea Maggiulli</Authors>
