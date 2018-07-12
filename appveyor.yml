@@ -70,6 +70,14 @@
   artifacts:
     - path: src\qlnet\*.nupkg
       name: ng
+  dotnet_csproj:
+    patch: true
+    file: '**\*.csproj'
+    version: '{version}'
+    package_version: '{version}'
+    assembly_version: '{version}'
+    file_version: '{version}'
+    informational_version: '{version}'
   test_script:
     - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_develop\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
   deploy:
