@@ -77,8 +77,8 @@
       api_key:
         secure: HcilScZbZnJrCk5hoEPz9MSzKQanBzsQCfulI9gFpcT7wurwxIy3hwSwPfjXmr/v
       skip_symbols: true
-      artifact: ng	
-	  
+      artifact: ng
+
 # Configuration for "feature/*" branch
 # build in Debug mode, run tests , deploy to Sonar
 -
