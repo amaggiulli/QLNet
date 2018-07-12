@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.11.1.{build}
+  version: 1.11.2
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2017
@@ -66,10 +66,10 @@
     project: QLNet.sln
     verbosity: minimal
   after_build:
-    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./		
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
     - path: src\qlnet\*.nupkg
-      name: ng	
+      name: ng
   test_script:
     - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_develop\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
   deploy:
@@ -121,7 +121,7 @@
       api_key:
         secure: HcilScZbZnJrCk5hoEPz9MSzKQanBzsQCfulI9gFpcT7wurwxIy3hwSwPfjXmr/v
       skip_symbols: true
-      artifact: ng	
+      artifact: ng
   test: off 
 #  test_script:
 #  - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_feature\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
