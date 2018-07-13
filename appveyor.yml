@@ -93,8 +93,8 @@
   branches:
     only:
       - /feature/
-  version: 1.11.1-{build}
-  configuration: Release
+  version: 1.11.2-{build}
+  configuration: Debug
   platform: Any CPU
   image: Visual Studio 2017
   skip_tags: true
@@ -108,7 +108,7 @@
     project: QLNet.sln
     verbosity: minimal
   after_build:
-    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./	
   artifacts:
     - path: src\qlnet\*.nupkg
       name: ng
