@@ -20,12 +20,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
 #endif
 using QLNet;
+using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
@@ -1347,6 +1349,73 @@ namespace TestSuite
          QAssert.IsTrue(wal == new DateTime(2036, 08, 25));
       }
 
+      public enum CouponType
+      {
+         FixedRate,
+         AdjRate,
+         OIS,
+         ZeroCoupon
+      }
+#if NET40 || NET45
+      [DataTestMethod]
+      [DataRow(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
+      [DataRow(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
+      [DataRow(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
+      [DataRow(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
+      [DataRow(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
+      [DataRow(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
+      [DataRow(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
+      [DataRow(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
+      [DataRow(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
+      [DataRow(CouponType.FixedRate, 5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
+#else
+      [Theory]
+      [InlineData(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
+      [InlineData(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
+      [InlineData(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
+      [InlineData(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
+      [InlineData(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
+      [InlineData(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
+      [InlineData(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
+      [InlineData(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
+      [InlineData(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
+      [InlineData(CouponType.FixedRate, 5.375, "03/01/2018", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
+#endif
+      public void testAccruedInterest(CouponType couponType, double Coupon,
+                                      string AccrualDate, string MaturityDate, string SettlementDate, string FirstCouponDate,
+                                      double Price, double expectedAccruedInterest, double expectedYtm)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 1;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(6, TimeUnit.Days);
+         //Compounding comp = Compounding.Compounded;
+         //Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, new NullCalendar(),
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
+                                          firstCouponDate);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
+                                                                dc, BusinessDayConvention.Unadjusted, 100.0, null);
+
+         double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate, datedDate);
+         if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+      }
    }
 
 }

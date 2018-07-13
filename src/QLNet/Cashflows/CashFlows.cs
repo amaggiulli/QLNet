@@ -654,51 +654,15 @@ namespace QLNet
       }
       public static double accruedAmount(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null, Date accrualStartDate = null)
       {
-         double result = 0.0;
-
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
 
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null)
             return 0;
-
          Date paymentDate = cf.date();
+         double result = 0.0;
 
-         CashFlow cfStart = null;
-         Date endDate = paymentDate;
-
-         if (accrualStartDate != null)
-         {
-            cfStart = nextCashFlow(leg, includeSettlementDateFlows, accrualStartDate);
-
-            if (cfStart != null)
-               endDate = cfStart.date();
-         }
-
-         // More periods
-         if (endDate != paymentDate)
-         {
-            // First period
-            Coupon cp = cfStart as Coupon;
-            if (cp != null)
-               result += cp.accruedAmount(cp.accrualEndDate()) - cp.accruedAmount(accrualStartDate);
-
-
-            foreach (CashFlow x in leg.Where(x => x.date() <= paymentDate &&
-                                             x.date() > endDate))
-            {
-               cp = x as Coupon;
-               if (cp != null)
-                  if (x.date() < paymentDate)
-                     result += cp.accruedAmount(cp.accrualEndDate());
-                  else
-                     result += cp.accruedAmount(settlementDate);
-            }
-            return result;
-         }
-
-         // One period
          foreach (CashFlow x in leg.Where(x => x.date() == paymentDate))
          {
             Coupon cp = x as Coupon;
