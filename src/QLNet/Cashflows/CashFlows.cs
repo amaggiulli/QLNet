@@ -188,12 +188,12 @@ namespace QLNet
       }
 
       // helper function used to calculate Time-To-Discount for each stage when calculating discount factor stepwisely
-      public static double getStepwiseDiscountTime(CashFlow cashFlow,DayCounter dc,Date npvDate,Date lastDate)
+      public static double getStepwiseDiscountTime(CashFlow cashFlow, DayCounter dc, Date npvDate, Date lastDate)
       {
          Date cashFlowDate = cashFlow.date();
          Date refStartDate, refEndDate;
          Coupon coupon = cashFlow as Coupon;
-         if (coupon != null )
+         if (coupon != null)
          {
             refStartDate = coupon.referencePeriodStart;
             refEndDate = coupon.referencePeriodEnd;
@@ -204,7 +204,7 @@ namespace QLNet
             {
                // we don't have a previous coupon date,
                // so we fake it
-               refStartDate = cashFlowDate - new Period(1,TimeUnit.Years);
+               refStartDate = cashFlowDate - new Period(1, TimeUnit.Years);
             }
             else
             {
@@ -215,17 +215,17 @@ namespace QLNet
 
          }
 
-            if (coupon!=null && lastDate!=coupon.accrualStartDate())
-            {
-                double couponPeriod = dc.yearFraction(coupon.accrualStartDate(),cashFlowDate, refStartDate, refEndDate);
-                double accruedPeriod = dc.yearFraction(coupon.accrualStartDate(),lastDate, refStartDate, refEndDate);
-                return couponPeriod - accruedPeriod;
-            }
-            else
-            {
-                return dc.yearFraction(lastDate, cashFlowDate,refStartDate, refEndDate);
-            }
-        }
+         if (coupon != null && lastDate != coupon.accrualStartDate())
+         {
+            double couponPeriod = dc.yearFraction(coupon.accrualStartDate(), cashFlowDate, refStartDate, refEndDate);
+            double accruedPeriod = dc.yearFraction(coupon.accrualStartDate(), lastDate, refStartDate, refEndDate);
+            return couponPeriod - accruedPeriod;
+         }
+         else
+         {
+            return dc.yearFraction(lastDate, cashFlowDate, refStartDate, refEndDate);
+         }
+      }
 
 
       #endregion
