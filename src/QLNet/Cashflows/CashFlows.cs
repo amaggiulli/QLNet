@@ -89,7 +89,6 @@ namespace QLNet
          double dPdy = 0.0;
          double t = 0.0;
          Date lastDate = npvDate;
-         Date refStartDate, refEndDate;
 
          DayCounter dc = y.dayCounter();
          for (int i = 0; i < leg.Count; ++i)
@@ -102,34 +101,13 @@ namespace QLNet
             {
                c = 0.0;
             }
-            Date couponDate = leg[i].date();
-            Coupon coupon = leg[i] as Coupon;
-            if (coupon != null)
-            {
-               refStartDate = coupon.referencePeriodStart;
-               refEndDate = coupon.referencePeriodEnd;
-            }
-            else
-            {
-               if (lastDate == npvDate)
-               {
-                  // we don't have a previous coupon date,
-                  // so we fake it
-                  refStartDate = couponDate - new Period(1, TimeUnit.Years);
-               }
-               else
-               {
-                  refStartDate = lastDate;
-               }
-               refEndDate = couponDate;
-            }
 
-            t += dc.yearFraction(lastDate, couponDate, refStartDate, refEndDate);
+            t += getStepwiseDiscountTime(leg[i], dc, npvDate, lastDate);
             double B = y.discountFactor(t);
             P += c * B;
             dPdy += t * c * B;
 
-            lastDate = couponDate;
+            lastDate = leg[i].date();
          }
 
          if (P.IsEqual(0.0)) // no cashflows
@@ -154,7 +132,6 @@ namespace QLNet
          double r = y.rate();
          int N = (int)y.frequency();
          Date lastDate = npvDate;
-         Date refStartDate, refEndDate;
          DayCounter dc = y.dayCounter();
 
          for (int i = 0; i < leg.Count; ++i)
@@ -167,29 +144,8 @@ namespace QLNet
             {
                c = 0.0;
             }
-            Date couponDate = leg[i].date();
-            Coupon coupon = leg[i] as Coupon;
-            if (coupon != null)
-            {
-               refStartDate = coupon.referencePeriodStart;
-               refEndDate = coupon.referencePeriodEnd;
-            }
-            else
-            {
-               if (lastDate == npvDate)
-               {
-                  // we don't have a previous coupon date,
-                  // so we fake it
-                  refStartDate = couponDate - new Period(1, TimeUnit.Years);
-               }
-               else
-               {
-                  refStartDate = lastDate;
-               }
-               refEndDate = couponDate;
-            }
 
-            t += dc.yearFraction(lastDate, couponDate, refStartDate, refEndDate);
+            t += getStepwiseDiscountTime(leg[i], dc, npvDate, lastDate);
 
             double B = y.discountFactor(t);
             P += c * B;
@@ -214,7 +170,7 @@ namespace QLNet
                   Utils.QL_FAIL("unknown compounding convention (" + y.compounding() + ")");
                   break;
             }
-            lastDate = couponDate;
+            lastDate = leg[i].date();
          }
 
          if (P.IsEqual(0.0)) // no cashflows
@@ -230,6 +186,47 @@ namespace QLNet
          return (1.0 + y.rate() / (int)y.frequency()) *
                 modifiedDuration(leg, y, includeSettlementDateFlows, settlementDate, npvDate);
       }
+
+      // helper function used to calculate Time-To-Discount for each stage when calculating discount factor stepwisely
+      public static double getStepwiseDiscountTime(CashFlow cashFlow,DayCounter dc,Date npvDate,Date lastDate)
+      {
+         Date cashFlowDate = cashFlow.date();
+         Date refStartDate, refEndDate;
+         Coupon coupon = cashFlow as Coupon;
+         if (coupon != null )
+         {
+            refStartDate = coupon.referencePeriodStart;
+            refEndDate = coupon.referencePeriodEnd;
+         }
+         else
+         {
+            if (lastDate == npvDate)
+            {
+               // we don't have a previous coupon date,
+               // so we fake it
+               refStartDate = cashFlowDate - new Period(1,TimeUnit.Years);
+            }
+            else
+            {
+               refStartDate = lastDate;
+            }
+
+            refEndDate = cashFlowDate;
+
+         }
+
+            if (coupon!=null && lastDate!=coupon.accrualStartDate())
+            {
+                double couponPeriod = dc.yearFraction(coupon.accrualStartDate(),cashFlowDate, refStartDate, refEndDate);
+                double accruedPeriod = dc.yearFraction(coupon.accrualStartDate(),lastDate, refStartDate, refEndDate);
+                return couponPeriod - accruedPeriod;
+            }
+            else
+            {
+                return dc.yearFraction(lastDate, cashFlowDate,refStartDate, refEndDate);
+            }
+        }
+
 
       #endregion
 
@@ -660,6 +657,7 @@ namespace QLNet
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null)
             return 0;
+
          Date paymentDate = cf.date();
          double result = 0.0;
 
@@ -815,43 +813,22 @@ namespace QLNet
          double npv = 0.0;
          double discount = 1.0;
          Date lastDate = npvDate;
-         Date refStartDate, refEndDate;
+         DayCounter dc = yield.dayCounter();
 
          for (int i = 0; i < leg.Count; ++i)
          {
             if (leg[i].hasOccurred(settlementDate, includeSettlementDateFlows))
                continue;
 
-            Date couponDate = leg[i].date();
             double amount = leg[i].amount();
             if (leg[i].tradingExCoupon(settlementDate))
             {
                amount = 0.0;
             }
-            Coupon coupon = leg[i] as Coupon;
-            if (coupon != null)
-            {
-               refStartDate = coupon.referencePeriodStart;
-               refEndDate = coupon.referencePeriodEnd;
-            }
-            else
-            {
-               if (lastDate == npvDate)
-               {
-                  // we don't have a previous coupon date,
-                  // so we fake it
-                  refStartDate = couponDate - new Period(1, TimeUnit.Years);
-               }
-               else
-               {
-                  refStartDate = lastDate;
-               }
-               refEndDate = couponDate;
-            }
 
-            double b = yield.discountFactor(lastDate, couponDate, refStartDate, refEndDate);
+            double b = yield.discountFactor(getStepwiseDiscountTime(leg[i], dc, npvDate, lastDate));
             discount *= b;
-            lastDate = couponDate;
+            lastDate = leg[i].date();
 
             npv += amount * discount;
          }
@@ -1008,7 +985,7 @@ namespace QLNet
          double r = yield.rate();
          int N = (int)yield.frequency();
          Date lastDate = npvDate;
-         Date refStartDate, refEndDate;
+
 
          for (int i = 0; i < leg.Count; ++i)
          {
@@ -1020,30 +997,8 @@ namespace QLNet
             {
                c = 0.0;
             }
-            Date couponDate = leg[i].date();
-            Coupon coupon = leg[i] as Coupon;
-            if (coupon != null)
-            {
-               refStartDate = coupon.referencePeriodStart;
-               refEndDate = coupon.referencePeriodEnd;
-            }
-            else
-            {
-               if (lastDate == npvDate)
-               {
-                  // we don't have a previous coupon date,
-                  // so we fake it
-                  refStartDate = couponDate - new Period(1, TimeUnit.Years);
-               }
-               else
-               {
-                  refStartDate = lastDate;
-               }
-               refEndDate = couponDate;
-            }
 
-            t += dc.yearFraction(lastDate, couponDate,
-                                 refStartDate, refEndDate);
+            t += getStepwiseDiscountTime(leg[i], dc, npvDate, lastDate);
 
             double B = yield.discountFactor(t);
             P += c * B;
@@ -1068,7 +1023,7 @@ namespace QLNet
                   Utils.QL_FAIL("unknown compounding convention (" + yield.compounding() + ")");
                   break;
             }
-            lastDate = couponDate;
+            lastDate = leg[i].date(); ;
          }
 
          if (P.IsEqual(0.0))
