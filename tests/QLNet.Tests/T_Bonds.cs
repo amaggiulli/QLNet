@@ -1410,7 +1410,7 @@ namespace TestSuite
          CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
                                                                 dc, BusinessDayConvention.Unadjusted, 100.0, null);
 
-         double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate, datedDate);
+         double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
             QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest

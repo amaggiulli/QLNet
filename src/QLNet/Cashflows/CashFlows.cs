@@ -652,7 +652,7 @@ namespace QLNet
          }
          return 0;
       }
-      public static double accruedAmount(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null, Date accrualStartDate = null)
+      public static double accruedAmount(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
       {
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
