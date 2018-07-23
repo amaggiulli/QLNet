@@ -634,5 +634,53 @@ namespace TestSuite
          if (Math.Abs(impliedVol - volatility) > tolerance)
             QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
       }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testIssue211()
+      {
+         /*
+            Valuation date: 20 July 2018
+            Maturity date: 17 Aug 2018
+            Type: Call
+            Spot: 2900
+            Strike: 2800
+            Volatility: 20 %
+            Interest rate: 0 %
+            
+            Dividend(paid one day before expiry)
+            Date: 16 Aug 2018
+            Value: 40
+         */
+         var settlementDate = new Date(20, 7, 2018);
+         Settings.setEvaluationDate(settlementDate);
+
+         var calendar = new TARGET();
+         var dayCounter = new Actual365Fixed();
+
+         var spot = new Handle<Quote>(new SimpleQuote(2900));
+         var qRate = new Handle<Quote>(new SimpleQuote(0.0));
+         var rRate = new Handle<Quote>(new SimpleQuote(0.0));
+         var vol = new Handle<Quote>(new SimpleQuote(0.2));
+
+         var flatDividendYield = new Handle<YieldTermStructure>(new FlatForward(settlementDate, qRate, dayCounter));
+         var flatTermStructure = new Handle<YieldTermStructure>(new FlatForward(settlementDate, rRate, dayCounter));
+         var flatVolatility = new Handle<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, vol, dayCounter));
+         var process = new BlackScholesMertonProcess(spot, flatDividendYield, flatTermStructure, flatVolatility);
+         var exercise = new AmericanExercise(new Date(17, 8, 2018));
+         var pricingEngine = new FDDividendAmericanEngine(process);
+         var payoff = new PlainVanillaPayoff(Option.Type.Call, 2800);
+         var dividendDates = new[] { new Date(16, 8, 2018) };
+         var dividendAmounts = new[] { 40d };
+         var option = new DividendVanillaOption(payoff, exercise, dividendDates.ToList(), dividendAmounts.ToList());
+         option.setPricingEngine(pricingEngine);
+
+         var npv = option.NPV();
+      }
+
+
    }
 }
