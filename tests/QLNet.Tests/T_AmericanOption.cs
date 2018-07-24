@@ -640,7 +640,7 @@ namespace TestSuite
 #else
       [Fact]
 #endif
-      public void testIssue211()
+      public void testFDDividendAmericanEngine()
       {
          /*
             Valuation date: 20 July 2018
@@ -654,7 +654,10 @@ namespace TestSuite
             Dividend(paid one day before expiry)
             Date: 16 Aug 2018
             Value: 40
+
+            NPV = 124.37658
          */
+         var result = 124.37658;
          var settlementDate = new Date(20, 7, 2018);
          Settings.setEvaluationDate(settlementDate);
 
@@ -679,6 +682,12 @@ namespace TestSuite
          option.setPricingEngine(pricingEngine);
 
          var npv = option.NPV();
+
+         const double tolerance = 1.0e-5;
+
+         if (Math.Abs(npv - result) > tolerance)
+            QAssert.Fail(string.Format("NPV calculation failed. Expected {0}. Actual {1}", result, npv));
+
       }
 
 
