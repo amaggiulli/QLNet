@@ -43,11 +43,6 @@ namespace QLNet
       protected virtual void executeIntermediateStep(int step) { throw new NotSupportedException(); }
 
 
-      protected override void initializeStepCondition()
-      {
-         stepCondition_ = new NullCondition<Vector>();
-      }
-
       protected virtual void initializeModel()
       {
          model_ = new FiniteDifferenceModel<CrankNicolson<TridiagonalOperator>>(finiteDifferenceOperator_, BCs_);

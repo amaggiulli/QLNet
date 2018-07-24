@@ -29,7 +29,7 @@ namespace QLNet
       protected virtual void initializeStepCondition()
       {
          if (stepConditionImpl_ == null)
-            throw new NotSupportedException();
+            stepCondition_ = new NullCondition<Vector>();
          else
             stepCondition_ = stepConditionImpl_();
       }
