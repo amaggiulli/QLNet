@@ -1794,22 +1794,22 @@ namespace TestSuite
       [InlineData("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
       [InlineData("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
       [InlineData("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
-      //[InlineData("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]   
-      //[InlineData("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]    
-      //[InlineData("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]    
+      //[InlineData("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]
+      //[InlineData("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]
+      //[InlineData("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]
       //[InlineData("15147TDU9", "07/15/2035", 4, "07/10/2018", 105.591, 12.405, 10.7)]
       //[InlineData("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
       //[InlineData("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
       //[InlineData("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
 #endif
       public void testDurations(string Cusip, string MaturityDate, double Coupon,
-            string SettlementDate, double Price, double ExpectedModifiedDuration, double ExpectedOASDuration)
+                                string SettlementDate, double Price, double ExpectedModifiedDuration, double ExpectedOASDuration)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
          Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
 
-         // Divide number by 100 
+         // Divide number by 100
          Coupon = Coupon / 100;
          //ExpectedModifiedDuration = ExpectedModifiedDuration / 100;
 
@@ -1826,18 +1826,18 @@ namespace TestSuite
          DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
 
          FixedRateBond bond = new FixedRateBond(settlementDays, 100.0,
-         new Schedule(null, maturityDate, tenor, new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward,
-         false), new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted, 100.0, null, calendar, exCouponPeriod, calendar);
+                                                new Schedule(null, maturityDate, tenor, new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward,
+                                                             false), new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted, 100.0, null, calendar, exCouponPeriod, calendar);
 
          List<CashFlow> leg = bond.cashflows();
 
          double yield = bond.yield(Price, dc, comp, freq, settlementDate);
          double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, settlementDate);
-        
+
          if (Math.Abs(duration - ExpectedModifiedDuration) > 1e-3)
             QAssert.Fail("Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
-               + "\n    calculated: " + duration
-               + "\n    expected:   " + ExpectedModifiedDuration);
+                         + "\n    calculated: " + duration
+                         + "\n    expected:   " + ExpectedModifiedDuration);
       }
    }
 
