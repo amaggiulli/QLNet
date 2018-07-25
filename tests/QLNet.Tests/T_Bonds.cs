@@ -20,12 +20,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
 #endif
 using QLNet;
+using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
@@ -1347,6 +1349,496 @@ namespace TestSuite
          QAssert.IsTrue(wal == new DateTime(2036, 08, 25));
       }
 
+      public enum CouponType
+      {
+         FixedRate,
+         AdjRate,
+         OIS,
+         ZeroCoupon
+      }
+#if NET40 || NET45
+      [DataTestMethod]
+      [DataRow(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
+      [DataRow(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
+      [DataRow(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
+      [DataRow(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
+      [DataRow(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
+      [DataRow(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
+      [DataRow(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
+      [DataRow(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
+      [DataRow(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
+      [DataRow(CouponType.FixedRate, 5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
+#else
+      [Theory]
+      [InlineData(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
+      [InlineData(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
+      [InlineData(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
+      [InlineData(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
+      [InlineData(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
+      [InlineData(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
+      [InlineData(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
+      [InlineData(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
+      [InlineData(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
+      [InlineData(CouponType.FixedRate, 5.375, "03/01/2018", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
+#endif
+      public void testAccruedInterest(CouponType couponType, double Coupon,
+                                      string AccrualDate, string MaturityDate, string SettlementDate, string FirstCouponDate,
+                                      double Price, double expectedAccruedInterest, double expectedYtm)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 1;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(6, TimeUnit.Days);
+         //Compounding comp = Compounding.Compounded;
+         //Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, new NullCalendar(),
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
+                                          firstCouponDate);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
+                                                                dc, BusinessDayConvention.Unadjusted, 100.0, null);
+
+         double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
+         if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+      }
+
+      public struct test_case
+      {
+         public Date settlementDate;
+         public double testPrice;
+         public double accruedAmount;
+         public double NPV;
+         public double yield;
+         public double duration;
+         public double convexity;
+
+         public test_case(Date settlementDate, double testPrice, double accruedAmount, double nPV, double yield, double duration, double convexity)
+         {
+            this.settlementDate = settlementDate;
+            this.testPrice = testPrice;
+            this.accruedAmount = accruedAmount;
+            NPV = nPV;
+            this.yield = yield;
+            this.duration = duration;
+            this.convexity = convexity;
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testExCouponGilt()
+      {
+         // Testing ex-coupon UK Gilt price against market values
+
+         /* UK Gilts have an exCouponDate 7 business days before the coupon
+             is due (see <http://www.dmo.gov.uk/index.aspx?page=Gilts/Gilt_Faq>).
+             On the exCouponDate the bond still trades cum-coupon so we use
+             6 days below and UK calendar
+
+             Output verified with Bloomberg:
+
+             ISIN: GB0009997999
+             Issue Date: February 29th, 1996
+             Interest Accrue: February 29th, 1996
+             First Coupon: June 7th, 1996
+             Maturity: June 7th, 2021
+             coupon: 8
+             period: 6M
+
+             Settlement date: May 29th, 2013
+             Test Price : 103
+             Accrued : 38021.97802
+             NPV : 106.8021978
+             Yield : 7.495180593
+             Yield->NPV : 106.8021978
+             Yield->NPV->Price : 103
+             Mod duration : 5.676044458
+             Convexity : 0.4215314859
+             PV 0.01 : 0.0606214023
+
+             Settlement date: May 30th, 2013
+             Test Price : 103
+             Accrued : -1758.241758
+             NPV : 102.8241758
+             Yield : 7.496183543
+             Yield->NPV : 102.8241758
+             Yield->NPV->Price : 103
+             Mod duration : 5.892816328
+             Convexity : 0.4375621862
+             PV 0.01 : 0.06059239822
+
+             Settlement date: May 31st, 2013
+             Test Price : 103
+             Accrued : -1538.461538
+             NPV : 102.8461538
+             Yield : 7.495987492
+             Yield->NPV : 102.8461539
+             Yield->NPV->Price : 103
+             Mod duration : 5.890186028
+             Convexity : 0.4372394381
+             PV 0.01 : 0.06057829784
+         */
+
+
+         Calendar calendar = new UnitedKingdom();
+
+         int settlementDays = 3;
+
+         Date issueDate = new Date(29, Month.February, 1996);
+         Date startDate = new Date(29, Month.February, 1996);
+         Date firstCouponDate = new Date(07, Month.June, 1996);
+         Date maturityDate = new Date(07, Month.June, 2021);
+
+         double coupon = 0.08;
+
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(6, TimeUnit.Days);
+
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new ActualActual(ActualActual.Convention.ISMA);
+
+         FixedRateBond bond = new FixedRateBond(settlementDays, 100.0,
+                                                new Schedule(startDate, maturityDate, tenor,
+                                                             new NullCalendar(), BusinessDayConvention.Unadjusted,
+                                                             BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward,
+                                                             true, firstCouponDate), new InitializedList<double>(1, coupon),
+                                                dc, BusinessDayConvention.Unadjusted, 100.0,
+                                                issueDate, calendar, exCouponPeriod, calendar);
+
+         List<CashFlow> leg = bond.cashflows();
+
+         test_case[] cases =
+         {
+            new test_case(new Date(29, Month.May, 2013), 103.0, 3.8021978, 106.8021978, 0.0749518, 5.6760445, 42.1531486),
+            new test_case(new Date(30, Month.May, 2013), 103.0, -0.1758242, 102.8241758, 0.0749618, 5.8928163, 43.7562186),
+            new test_case(new Date(31, Month.May, 2013), 103.0, -0.1538462, 102.8461538, 0.0749599, 5.8901860, 43.7239438)
+         };
+
+         for (int i = 0; i < cases.Length; ++i)
+         {
+            double accrued = bond.accruedAmount(cases[i].settlementDate);
+            if (Math.Abs(accrued - cases[i].accruedAmount) > 1e-6)
+               QAssert.Fail("Failed to reproduce accrued amount at " + cases[i].settlementDate
+                            + "\n    calculated: " + accrued
+                            + "\n    expected:   " + cases[i].accruedAmount);
+
+            double npv = cases[i].testPrice + accrued;
+            if (Math.Abs(npv - cases[i].NPV) > 1e-6)
+               QAssert.Fail("Failed to reproduce NPV at " + cases[i].settlementDate
+                            + "\n    calculated: " + npv
+                            + "\n    expected:   " + cases[i].NPV);
+
+            double yield = CashFlows.yield(leg, npv, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(yield - cases[i].yield) > 1e-6)
+               QAssert.Fail("Failed to reproduce yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + yield
+                            + "\n    expected:   " + cases[i].yield);
+
+
+            double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, cases[i].settlementDate);
+            if (Math.Abs(duration - cases[i].duration) > 1e-6)
+               QAssert.Fail("Failed to reproduce duration at " + cases[i].settlementDate
+                            + "\n    calculated: " + duration
+                            + "\n    expected:   " + cases[i].duration);
+
+            double convexity = CashFlows.convexity(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(convexity - cases[i].convexity) > 1e-6)
+               QAssert.Fail("Failed to reproduce convexity at " + cases[i].settlementDate
+                            + "\n    calculated: " + convexity
+                            + "\n    expected:   " + cases[i].convexity);
+
+            double calcnpv = CashFlows.npv(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(calcnpv - cases[i].NPV) > 1e-6)
+               QAssert.Fail("Failed to reproduce NPV from yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + calcnpv
+                            + "\n    expected:   " + cases[i].NPV);
+
+            double calcprice = calcnpv - accrued;
+
+            if (Math.Abs(calcprice - cases[i].testPrice) > 1e-6)
+               QAssert.Fail("Failed to reproduce price from yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + calcprice
+                            + "\n    expected:   " + cases[i].testPrice);
+
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testExCouponAustralianBond()
+      {
+         // Testing ex-coupon Australian bond price against market values
+         /* Australian Government Bonds have an exCouponDate 7 calendar
+          days before the coupon is due.  On the exCouponDate the bond
+          trades ex-coupon so we use 7 days below and NullCalendar.
+          AGB accrued interest is rounded to 3dp.
+
+          Output verified with Bloomberg:
+
+          ISIN: AU300TB01208
+          Issue Date: June 10th, 2004
+          Interest Accrue: February 15th, 2004
+          First Coupon: August 15th, 2004
+          Maturity: February 15th, 2017
+          coupon: 6
+          period: 6M
+
+          Settlement date: August 7th, 2014
+          Test Price : 103
+          Accrued : 28670
+          NPV : 105.867
+          Yield : 4.723814867
+          Yield->NPV : 105.867
+          Yield->NPV->Price : 103
+          Mod duration : 2.262763296
+          Convexity : 0.0654870275
+          PV 0.01 : 0.02395519619
+
+          Settlement date: August 8th, 2014
+          Test Price : 103
+          Accrued : -1160
+          NPV : 102.884
+          Yield : 4.72354833
+          Yield->NPV : 102.884
+          Yield->NPV->Price : 103
+          Mod duration : 2.325360055
+          Convexity : 0.06725307785
+          PV 0.01 : 0.02392423439
+
+          Settlement date: August 11th, 2014
+          Test Price : 103
+          Accrued : -660
+          NPV : 102.934
+          Yield : 4.719277687
+          Yield->NPV : 102.934
+          Yield->NPV->Price : 103
+          Mod duration : 2.317320093
+          Convexity : 0.06684074058
+          PV 0.01 : 0.02385310264
+         */
+
+         Calendar calendar = new Australia();
+
+         int settlementDays = 3;
+
+         Date issueDate = new Date(10, Month.June, 2004);
+         Date startDate = new Date(15, Month.February, 2004);
+         Date firstCouponDate = new Date(15, Month.August, 2004);
+         Date maturityDate = new Date(15, Month.February, 2017);
+
+         double coupon = 0.06;
+
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(7, TimeUnit.Days);
+
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new ActualActual(ActualActual.Convention.ISMA);
+
+         FixedRateBond bond = new FixedRateBond(settlementDays, 100.0,
+                                                new Schedule(startDate, maturityDate, tenor, new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                                             DateGeneration.Rule.Forward, true, firstCouponDate),
+                                                new InitializedList<double>(1, coupon), dc, BusinessDayConvention.Unadjusted, 100.0, issueDate, calendar, exCouponPeriod, new NullCalendar());
+
+         List<CashFlow> leg = bond.cashflows();
+
+         test_case[] cases =
+         {
+            new test_case(new Date(7, Month.August, 2014), 103.0, 2.8670, 105.867, 0.04723, 2.26276, 6.54870),
+            new test_case(new Date(8, Month.August, 2014), 103.0, -0.1160, 102.884, 0.047235, 2.32536, 6.72531),
+            new test_case(new Date(11, Month.August, 2014), 103.0, -0.0660, 102.934, 0.04719, 2.31732, 6.68407)
+         };
+
+
+         for (int i = 0; i < cases.Length; ++i)
+         {
+            double accrued = bond.accruedAmount(cases[i].settlementDate);
+            if (Math.Abs(accrued - cases[i].accruedAmount) > 1e-3)
+               QAssert.Fail("Failed to reproduce accrued amount at " + cases[i].settlementDate
+                            + "\n    calculated: " + accrued
+                            + "\n    expected:   " + cases[i].accruedAmount);
+
+            double npv = cases[i].testPrice + accrued;
+            if (Math.Abs(npv - cases[i].NPV) > 1e-3)
+               QAssert.Fail("Failed to reproduce NPV at " + cases[i].settlementDate
+                            + "\n    calculated: " + npv
+                            + "\n    expected:   " + cases[i].NPV);
+
+
+            double yield = CashFlows.yield(leg, npv, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(yield - cases[i].yield) > 1e-3)
+               QAssert.Fail("Failed to reproduce yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + yield
+                            + "\n    expected:   " + cases[i].yield);
+
+            double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, cases[i].settlementDate);
+            if (Math.Abs(duration - cases[i].duration) > 1e-5)
+               QAssert.Fail("Failed to reproduce duration at " + cases[i].settlementDate
+                            + "\n    calculated: " + duration
+                            + "\n    expected:   " + cases[i].duration);
+
+            double convexity = CashFlows.convexity(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(convexity - cases[i].convexity) > 1e-4)
+               QAssert.Fail("Failed to reproduce convexity at " + cases[i].settlementDate
+                            + "\n    calculated: " + convexity
+                            + "\n    expected:   " + cases[i].convexity);
+
+            double calcnpv = CashFlows.npv(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
+            if (Math.Abs(calcnpv - cases[i].NPV) > 1e-3)
+               QAssert.Fail("Failed to reproduce NPV from yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + calcnpv
+                            + "\n    expected:   " + cases[i].NPV);
+
+            double calcprice = calcnpv - accrued;
+            if (Math.Abs(calcprice - cases[i].testPrice) > 1e-3)
+               QAssert.Fail("Failed to reproduce price from yield at " + cases[i].settlementDate
+                            + "\n    calculated: " + calcprice
+                            + "\n    expected:   " + cases[i].testPrice);
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testThirty360BondWithSettlementOn31st()
+      {
+         // Testing Thirty/360 bond with settlement on 31st of the month
+
+         // cusip 3130A0X70, data is from Bloomberg
+         Settings.setEvaluationDate(new Date(28, Month.July, 2017));
+
+         Date datedDate = new Date(13, Month.February, 2014);
+         Date settlement = new Date(31, Month.July, 2017);
+         Date maturity = new Date(13, Month.August, 2018);
+
+         DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.USA);
+         Compounding compounding = Compounding.Compounded;
+
+         Schedule fixedBondSchedule = new Schedule(datedDate, maturity, new Period(Frequency.Semiannual), new UnitedStates(UnitedStates.Market.GovernmentBond),
+                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward, false);
+
+         FixedRateBond fixedRateBond = new FixedRateBond(1, 100, fixedBondSchedule, new InitializedList<double>(1, 0.015), dayCounter,
+                                                         BusinessDayConvention.Unadjusted, 100.0);
+
+         double cleanPrice = 100;
+
+         double yield = BondFunctions.yield(fixedRateBond, cleanPrice, dayCounter, compounding, Frequency.Semiannual, settlement);
+         if (Math.Abs(yield - 0.015) > 1e-4)
+            QAssert.Fail("Failed to yield at " + settlement
+                         + "\n    calculated: " + yield
+                         + "\n    expected:   " + "0.015");
+
+         double duration = BondFunctions.duration(fixedRateBond, new InterestRate(yield, dayCounter, compounding, Frequency.Semiannual),
+                                                  Duration.Type.Macaulay, settlement);
+         if (Math.Abs(duration - 1.022) > 1e-3)
+            QAssert.Fail("Failed to reproduce duration at " + settlement
+                         + "\n    calculated: " + duration
+                         + "\n    expected:   " + "1.022");
+
+         double convexity = BondFunctions.convexity(fixedRateBond, new InterestRate(yield, dayCounter, compounding, Frequency.Semiannual), settlement) / 100;
+         if (Math.Abs(convexity - 0.015) > 1e-3)
+            QAssert.Fail("Failed to reproduce convexity at " + settlement
+                         + "\n    calculated: " + convexity
+                         + "\n    expected:   " + "0.015");
+
+         double accrued = BondFunctions.accruedAmount(fixedRateBond, settlement);
+         if (Math.Abs(accrued - 0.7) > 1e-6)
+            QAssert.Fail("Failed to reproduce accrued at " + settlement
+                         + "\n    calculated: " + accrued
+                         + "\n    expected:   " + "0.7");
+      }
+
+#if NET40 || NET45
+      [DataTestMethod()]
+      [DataRow("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
+      [DataRow("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
+      [DataRow("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
+      [DataRow("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
+      [DataRow("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
+      //[DataRow("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]   // 17.562 from calculation
+      //[DataRow("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]    // 11.946 from calculation
+      //[DataRow("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]    //  0.947 from calculation
+      //[DataRow("15147TDU9", "07/15/2035", 4, "07/10/2018", 105.591, 12.405, 10.7)]
+      //[DataRow("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
+      //[DataRow("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
+      //[DataRow("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
+
+#else
+      [Theory]
+      [InlineData("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
+      [InlineData("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
+      [InlineData("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
+      [InlineData("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
+      [InlineData("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
+      //[InlineData("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]
+      //[InlineData("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]
+      //[InlineData("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]
+      //[InlineData("15147TDU9", "07/15/2035", 4, "07/10/2018", 105.591, 12.405, 10.7)]
+      //[InlineData("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
+      //[InlineData("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
+      //[InlineData("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
+#endif
+      public void testDurations(string Cusip, string MaturityDate, double Coupon,
+                                string SettlementDate, double Price, double ExpectedModifiedDuration, double ExpectedOASDuration)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+
+         // Divide number by 100
+         Coupon = Coupon / 100;
+         //ExpectedModifiedDuration = ExpectedModifiedDuration / 100;
+
+
+         Calendar calendar = new TARGET();
+
+         int settlementDays = 1;
+
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(6, TimeUnit.Days);
+
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         FixedRateBond bond = new FixedRateBond(settlementDays, 100.0,
+                                                new Schedule(null, maturityDate, tenor, new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward,
+                                                             false), new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted, 100.0, null, calendar, exCouponPeriod, calendar);
+
+         List<CashFlow> leg = bond.cashflows();
+
+         double yield = bond.yield(Price, dc, comp, freq, settlementDate);
+         double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, settlementDate);
+
+         if (Math.Abs(duration - ExpectedModifiedDuration) > 1e-3)
+            QAssert.Fail("Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
+                         + "\n    calculated: " + duration
+                         + "\n    expected:   " + ExpectedModifiedDuration);
+      }
    }
 
 }

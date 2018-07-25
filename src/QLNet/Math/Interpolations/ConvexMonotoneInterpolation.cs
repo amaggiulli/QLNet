@@ -777,7 +777,7 @@ namespace QLNet
       {
          Dictionary<double, ISectionHelper> retArray = new Dictionary<double, ISectionHelper>(sectionHelpers_);
          if (constantLastPeriod_)
-            retArray.Remove(xBegin_.Last());
+            retArray.Remove(retArray.Keys.Last());
          return retArray;
       }
    }

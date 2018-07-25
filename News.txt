@@ -1,44 +1,15 @@
-QLNet 1.11.0 
+QLNet 1.11.2
 =========================
 
-QLNet 1.11.0 stable version includes 91 pull requests .
-The most notable changes are included below.
+QLNet 1.11.2 is a bug-fix release for version 1.11
 A detailed list of changes is available in ChangeLog.txt.
 
 ENGINES
 
-+ Added raw calculation for WeightedAverageLife given a list of dates and a list of amounts.
-
-FRAMEWORK
-
-+ Added Artistic Style 3.1 tool for formatting code.
-+ Uniformed file names to CamelCase standard
-
-TERMSTRUCTURES
-
-+ Implement CompositeZeroYieldStructure
-
-TIME
-
- + Add Botswana calendar
-
-INSTRUMENTS
-
-+ Added new instrument FloatFloatSwap, with CmsSpreadCoupon and SwapSpreadIndex.
-+ Added Kirk Option Engine with test.
-+ Fixed bug in Vanna-Volga method for double barrier knock in options.
-
-MATH
-
-+ Add Differential Evolution algorithm
-+ Add a XABR Constraint class
-+ Add LevenbergMarquardt precondition checks
-
-INDEXES
-
-+ Updated day count convention and spot lag by CAD fixings.
++ Fixed a bug int FDMultiPeriodEngine.Thanks to Jakub Pstrusiński.
 
 CASHFLOWS
 
-+ Updated BlackVanillaOptionPricer constructor, check volatility type and shift.
-+ Added Range Accrual tests and fixed 2 bugs on RangeAccrual and InterpolatedSmileSection
++ Fixed accrual calculation
++ Fixed yield calculation when settlement date falls on 31st
++ Added OAS calculation to callable bonds

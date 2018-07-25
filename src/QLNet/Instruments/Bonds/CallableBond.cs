@@ -16,66 +16,50 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace QLNet
 {
-   //! Callable bond base class
-   /*! Base callable bond class for fixed and zero coupon bonds.
-       Defines commonalities between fixed and zero coupon callable
-       bonds. At present, only European and Bermudan put/call schedules
-       supported (no American optionality), as defined by the Callability
-       class.
-
-       \todo models/shortrate/calibrationHelpers
-       \todo OAS/OAD
-       \todo floating rate callable bonds ?
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Callable bond base class
+   /// <remarks>
+   /// Base callable bond class for fixed and zero coupon bonds.
+   /// Defines commonalities between fixed and zero coupon callable
+   /// bonds. At present, only European and Bermudan put/call schedules
+   /// supported (no American optionality), as defined by the Callability
+   /// class.
+   /// </remarks>
+   /// </summary>
    public class CallableBond : Bond
    {
-      public new class Arguments : Bond.Arguments
-      {
-         public List<Date> couponDates { get; set; }
-         public List<double> couponAmounts { get; set; }
-         public double redemption { get; set; }
-         public Date redemptionDate { get; set; }
-         public DayCounter paymentDayCounter { get; set; }
-         public Frequency frequency { get; set; }
-         public CallabilitySchedule putCallSchedule { get; set; }
-         //! bond full/dirty/cash prices
-         public List<double> callabilityPrices { get; set; }
-         public List<Date> callabilityDates { get; set; }
-         public override void validate()
-         {
-            Utils.QL_REQUIRE(settlementDate != null, () => "null settlement date");
-            Utils.QL_REQUIRE(redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed");
-            Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices");
-            Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts");
-         }
-      }
-      //! results for a callable bond calculation
-      public new class Results : Bond.Results
-      {
-         // no extra results set yet
-      }
-      //! base class for callable fixed rate bond engine
-      public new class Engine :  GenericEngine<CallableBond.Arguments, CallableBond.Results> {}
 
-      // Inspectors
-      //! return the bond's put/call schedule
+      /// <summary>
+      /// Return the bond's put/call schedule
+      /// </summary>
+      /// <returns></returns>
       public CallabilitySchedule callability()
       {
          return putCallSchedule_;
       }
-      // Calculations
-      //! returns the Black implied forward yield volatility
-      /*! the forward yield volatility, see Hull, Fourth Edition,
-         Chapter 20, pg 536). Relevant only to European put/call
-         schedules
-      */
+
+      /// <summary>
+      /// Returns the Black implied forward yield volatility
+      /// <remarks>
+      /// the forward yield volatility, see Hull, Fourth Edition,
+      /// Chapter 20, pg 536). Relevant only to European put/call
+      /// schedules
+      /// </remarks>
+      /// </summary>
+      /// <param name="targetValue"></param>
+      /// <param name="discountCurve"></param>
+      /// <param name="accuracy"></param>
+      /// <param name="maxEvaluations"></param>
+      /// <param name="minVol"></param>
+      /// <param name="maxVol"></param>
+      /// <returns></returns>
       public double impliedVolatility(double targetValue,
                                       Handle<YieldTermStructure> discountCurve,
                                       double accuracy,
@@ -91,6 +75,155 @@ namespace QLNet
          Brent solver = new Brent();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
+      }
+
+      /// <summary>
+      /// Calculate the Option Adjusted Spread (OAS)
+      /// <remarks>
+      /// Calculates the spread that needs to be added to the the
+      /// reference curve so that the theoretical model value
+      /// matches the marketPrice.
+      /// </remarks>
+      /// </summary>
+      /// <param name="cleanPrice"></param>
+      /// <param name="engineTS"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <param name="settlement"></param>
+      /// <param name="accuracy"></param>
+      /// <param name="maxIterations"></param>
+      /// <param name="guess"></param>
+      /// <returns></returns>
+      public double OAS(double cleanPrice,
+                        Handle<YieldTermStructure> engineTS,
+                        DayCounter dayCounter,
+                        Compounding compounding,
+                        Frequency frequency,
+                        Date settlement = null,
+                        double accuracy = 1.0e-10,
+                        int maxIterations = 100,
+                        double guess = 0.0)
+      {
+         if (settlement == null)
+            settlement = settlementDate();
+
+         double dirtyPrice = cleanPrice + accruedAmount(settlement);
+
+         var f = new NpvSpreadHelper(this);
+         OasHelper obj = new OasHelper(f, dirtyPrice);
+
+         Brent solver = new Brent();
+         solver.setMaxEvaluations(maxIterations);
+
+         double step = 0.001;
+         double oas = solver.solve(obj, accuracy, guess, step);
+
+         return continuousToConv(oas,
+                                 this,
+                                 engineTS,
+                                 dayCounter,
+                                 compounding,
+                                 frequency);
+      }
+
+      /// <summary>
+      /// Calculate the clean price based on the given
+      /// option-adjust-spread (oas) over the given yield term
+      /// structure (engineTS)
+      /// </summary>
+      /// <param name="oas"></param>
+      /// <param name="engineTS"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <param name="settlement"></param>
+      /// <returns></returns>
+      public double cleanPriceOAS(double oas,
+                                  Handle<YieldTermStructure> engineTS,
+                                  DayCounter dayCounter,
+                                  Compounding compounding,
+                                  Frequency frequency,
+                                  Date settlement = null)
+      {
+         if (settlement == null)
+            settlement = settlementDate();
+
+         oas = convToContinuous(oas, this, engineTS, dayCounter, compounding, frequency);
+
+         var f = new NpvSpreadHelper(this);
+
+         double P = f.value(oas) - accruedAmount(settlement);
+
+         return P;
+      }
+
+      /// <summary>
+      /// Calculate the effective duration
+      /// <remarks>
+      /// Calculate the effective duration, i.e., the first
+      /// differential of the dirty price w.r.t. a parallel shift of
+      /// the yield term structure divided by current dirty price
+      /// </remarks>
+      /// </summary>
+      /// <param name="oas"></param>
+      /// <param name="engineTS"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <param name="bump"></param>
+      /// <returns></returns>
+      public double effectiveDuration(double oas,
+                                      Handle<YieldTermStructure> engineTS,
+                                      DayCounter dayCounter,
+                                      Compounding compounding,
+                                      Frequency frequency,
+                                      double bump = 2e-4)
+      {
+         double P = cleanPriceOAS(oas, engineTS, dayCounter, compounding, frequency);
+
+         double Ppp = cleanPriceOAS(oas + bump, engineTS, dayCounter, compounding, frequency);
+
+         double Pmm = cleanPriceOAS(oas - bump, engineTS, dayCounter, compounding, frequency);
+
+         if (P.IsEqual(0.0))
+            return 0;
+
+         return (Pmm - Ppp) / (2 * P * bump);
+      }
+
+      /// <summary>
+      /// Calculate the effective convexity
+      /// <remarks>
+      /// Calculate the effective convexity, i.e., the second
+      /// differential of the dirty price w.r.t. a parallel shift of
+      /// the yield term structure divided by current dirty price
+      /// </remarks>
+      /// </summary>
+      /// <param name="oas"></param>
+      /// <param name="engineTS"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <param name="bump"></param>
+      /// <returns></returns>
+      public double effectiveConvexity(double oas,
+                                       Handle<YieldTermStructure> engineTS,
+                                       DayCounter dayCounter,
+                                       Compounding compounding,
+                                       Frequency frequency,
+                                       double bump = 2e-4)
+      {
+         double P = cleanPriceOAS(oas, engineTS, dayCounter, compounding, frequency);
+
+         double Ppp = cleanPriceOAS(oas + bump, engineTS, dayCounter, compounding, frequency);
+
+         double Pmm = cleanPriceOAS(oas - bump, engineTS, dayCounter, compounding, frequency);
+
+         if (P.IsEqual(0.0))
+            return 0;
+
+         return (Ppp + Pmm - 2 * P) / (Math.Pow(bump, 2) * P);
       }
 
       protected CallableBond(int settlementDays,
@@ -121,13 +254,25 @@ namespace QLNet
       protected DayCounter paymentDayCounter_;
       protected Frequency frequency_;
       protected CallabilitySchedule putCallSchedule_;
-      //! must be set by derived classes for impliedVolatility() to work
+      //
+      /// <summary>
+      /// must be set by derived classes for impliedVolatility() to work
+      /// </summary>
       protected IPricingEngine blackEngine_;
-      //! Black fwd yield volatility quote handle to internal blackEngine_
+      //
+      /// <summary>
+      /// Black fwd yield volatility quote handle to internal blackEngine_
+      /// </summary>
       protected RelinkableHandle<Quote> blackVolQuote_ = new RelinkableHandle<Quote>();
-      //! Black fwd yield volatility quote handle to internal blackEngine_
+      //
+      /// <summary>
+      /// Black fwd yield volatility quote handle to internal blackEngine_
+      /// </summary>
       protected RelinkableHandle<YieldTermStructure> blackDiscountCurve_ = new RelinkableHandle<YieldTermStructure>();
-      //! helper class for Black implied volatility calculation
+      //
+      /// <summary>
+      /// helper class for Black implied volatility calculation
+      /// </summary>
       protected class ImpliedVolHelper : ISolver1d
       {
          public ImpliedVolHelper(CallableBond bond, double targetValue)
@@ -153,17 +298,167 @@ namespace QLNet
          private SimpleQuote vol_;
          private Instrument.Results results_;
       }
+
+      /// <summary>
+      /// Helper class for option adjusted spread calculations
+      /// </summary>
+      protected class NpvSpreadHelper
+      {
+         public NpvSpreadHelper(CallableBond bond)
+         {
+            bond_ = bond;
+            results_ = bond.engine_.getResults() as Instrument.Results;
+            bond.setupArguments(bond.engine_.getArguments());
+         }
+         public double value(double x)
+         {
+            CallableBond.Arguments args = bond_.engine_.getArguments() as CallableBond.Arguments;
+            // Pops the original value when function finishes
+            double originalSpread =  args.spread;
+            args.spread = x;
+            bond_.engine_.calculate();
+            args.spread = originalSpread;
+            return results_.value.Value;
+         }
+
+         private CallableBond bond_;
+         private Instrument.Results results_;
+      }
+
+      protected class OasHelper : ISolver1d
+      {
+         public OasHelper(NpvSpreadHelper npvhelper, double targetValue)
+         {
+            npvhelper_ = npvhelper;
+            targetValue_ = targetValue;
+
+         }
+
+         public override double value(double v)
+         {
+            return targetValue_ - npvhelper_.value(v);
+         }
+
+         private NpvSpreadHelper npvhelper_;
+         private double targetValue_;
+      }
+
+      public new class Arguments : Bond.Arguments
+      {
+         public List<Date> couponDates { get; set; }
+         public List<double> couponAmounts { get; set; }
+         public double redemption { get; set; }
+         public Date redemptionDate { get; set; }
+         public DayCounter paymentDayCounter { get; set; }
+         public Frequency frequency { get; set; }
+         public CallabilitySchedule putCallSchedule { get; set; }
+         //! bond full/dirty/cash prices
+         public List<double> callabilityPrices { get; set; }
+         public List<Date> callabilityDates { get; set; }
+         /// <summary>
+         /// Spread to apply to the valuation.
+         /// <remarks>
+         /// This is a continuously
+         /// componded rate added to the model. Currently only applied
+         /// by the TreeCallableFixedRateBondEngine
+         /// </remarks>
+         /// </summary>
+         public double spread { get; set; }
+
+         public override void validate()
+         {
+            Utils.QL_REQUIRE(settlementDate != null, () => "null settlement date");
+            Utils.QL_REQUIRE(redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed");
+            Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices");
+            Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts");
+         }
+      }
+
+      /// <summary>
+      /// results for a callable bond calculation
+      /// </summary>
+      public new class Results : Bond.Results
+      {
+         // no extra results set yet
+      }
+
+      /// <summary>
+      /// base class for callable fixed rate bond engine
+      /// </summary>
+      public new class Engine : GenericEngine<CallableBond.Arguments, CallableBond.Results> { }
+
+      /// <summary>
+      /// Convert a continuous spread to a conventional spread to a
+      /// reference yield curve
+      /// </summary>
+      /// <param name="oas"></param>
+      /// <param name="b"></param>
+      /// <param name="yts"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <returns></returns>
+      private double continuousToConv(double oas,
+                                      Bond b,
+                                      Handle<YieldTermStructure> yts,
+                                      DayCounter dayCounter,
+                                      Compounding compounding,
+                                      Frequency frequency)
+      {
+         double zz = yts.link.zeroRate(b.maturityDate(), dayCounter, Compounding.Continuous, Frequency.NoFrequency).value();
+
+         InterestRate baseRate = new InterestRate(zz, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+
+         InterestRate spreadedRate = new InterestRate(oas + zz, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+
+         double br = baseRate.equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
+
+         double sr = spreadedRate.equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
+
+         // Return the spread
+         return sr - br;
+      }
+
+      /// <summary>
+      /// Convert a conventional spread to a reference yield curve to a
+      /// continuous spread
+      /// </summary>
+      /// <param name="oas"></param>
+      /// <param name="b"></param>
+      /// <param name="yts"></param>
+      /// <param name="dayCounter"></param>
+      /// <param name="compounding"></param>
+      /// <param name="frequency"></param>
+      /// <returns></returns>
+      private double convToContinuous(double oas,
+                                      Bond b,
+                                      Handle<YieldTermStructure> yts,
+                                      DayCounter dayCounter,
+                                      Compounding compounding,
+                                      Frequency frequency)
+      {
+         double zz = yts.link.zeroRate(b.maturityDate(), dayCounter, compounding, frequency).value();
+
+         InterestRate baseRate = new InterestRate(zz, dayCounter, compounding, frequency);
+
+         InterestRate spreadedRate  = new InterestRate(oas + zz, dayCounter, compounding, frequency);
+
+         double br = baseRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency, yts.link.referenceDate(), b.maturityDate()).rate();
+
+         double sr = spreadedRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency, yts.link.referenceDate(), b.maturityDate()).rate();
+
+         // Return the spread
+         return sr - br;
+      }
+
+
+
+
    }
 
-   //! callable/puttable fixed rate bond
-   /*! Callable fixed rate bond class.
-
-      \ingroup instruments
-
-      <b> Example: </b>
-      \link CallableBonds.cpp
-      \endlink
-   */
+/// <summary>
+/// Callable fixed rate bond class.
+/// </summary>
    public class CallableFixedRateBond : CallableBond
    {
       public CallableFixedRateBond(int settlementDays,
@@ -256,13 +551,20 @@ namespace QLNet
             }
          }
       }
-      //! accrued interest used internally, where includeToday = false
-      /*! same as Bond::accruedAmount() but with enable early
-         payments true.  Forces accrued to be calculated in a
-         consistent way for future put/ call dates, which can be
-         problematic in lattice engines when option dates are also
-         coupon dates.
-      */
+
+      /// <summary>
+      /// accrued interest used internally
+      /// <remarks>
+      /// accrued interest used internally, where includeToday = false
+      /// same as Bond::accruedAmount() but with enable early
+      /// payments true.  Forces accrued to be calculated in a
+      /// consistent way for future put/ call dates, which can be
+      /// problematic in lattice engines when option dates are also
+      /// coupon dates.
+      /// </remarks>
+      /// </summary>
+      /// <param name="settlement"></param>
+      /// <returns></returns>
       private double accrued(Date settlement)
       {
          if (settlement == null)
@@ -287,11 +589,9 @@ namespace QLNet
       }
    }
 
-   //! callable/puttable zero coupon bond
-   /*! Callable zero coupon bond class.
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Callable zero coupon bond class.
+   /// </summary>
    public class CallableZeroCouponBond : CallableFixedRateBond
    {
       public CallableZeroCouponBond(int settlementDays,
