@@ -110,8 +110,8 @@ namespace QLNet
 
          double dirtyPrice = cleanPrice + accruedAmount(settlement);
 
-         var f = new NPVSpreadHelper(this);
-         OASHelper obj = new OASHelper(f, dirtyPrice);
+         var f = new NpvSpreadHelper(this);
+         OasHelper obj = new OasHelper(f, dirtyPrice);
 
          Brent solver = new Brent();
          solver.setMaxEvaluations(maxIterations);
@@ -151,7 +151,7 @@ namespace QLNet
 
          oas = convToContinuous(oas, this, engineTS, dayCounter, compounding, frequency);
 
-         var f = new NPVSpreadHelper(this);
+         var f = new NpvSpreadHelper(this);
 
          double P = f.value(oas) - accruedAmount(settlement);
 
@@ -302,9 +302,9 @@ namespace QLNet
       /// <summary>
       /// Helper class for option adjusted spread calculations
       /// </summary>
-      protected class NPVSpreadHelper
+      protected class NpvSpreadHelper
       {
-         public NPVSpreadHelper(CallableBond bond)
+         public NpvSpreadHelper(CallableBond bond)
          {
             bond_ = bond;
             results_ = bond.engine_.getResults() as Instrument.Results;
@@ -325,21 +325,21 @@ namespace QLNet
          private Instrument.Results results_;
       }
 
-      protected class OASHelper : ISolver1d
+      protected class OasHelper : ISolver1d
       {
-         public OASHelper(NPVSpreadHelper npvhelper, double targetValue)
+         public OasHelper(NpvSpreadHelper npvhelper, double targetValue)
          {
             npvhelper_ = npvhelper;
             targetValue_ = targetValue;
 
          }
 
-         public override double value(double x)
+         public override double value(double v)
          {
-            return targetValue_ - npvhelper_.value(x);
+            return targetValue_ - npvhelper_.value(v);
          }
 
-         private NPVSpreadHelper npvhelper_;
+         private NpvSpreadHelper npvhelper_;
          private double targetValue_;
       }
 
@@ -363,7 +363,7 @@ namespace QLNet
          /// by the TreeCallableFixedRateBondEngine
          /// </remarks>
          /// </summary>
-         public double spread;
+         public double spread { get; set; }
 
          public override void validate()
          {

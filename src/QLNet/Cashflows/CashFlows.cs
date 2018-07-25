@@ -1023,7 +1023,7 @@ namespace QLNet
                   Utils.QL_FAIL("unknown compounding convention (" + yield.compounding() + ")");
                   break;
             }
-            lastDate = leg[i].date(); ;
+            lastDate = leg[i].date();
          }
 
          if (P.IsEqual(0.0))
