@@ -650,7 +650,7 @@ namespace TestSuite
             Strike: 2800
             Volatility: 20 %
             Interest rate: 0 %
-            
+
             Dividend(paid one day before expiry)
             Date: 16 Aug 2018
             Value: 40

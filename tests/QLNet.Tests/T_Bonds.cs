@@ -1811,8 +1811,6 @@ namespace TestSuite
 
          // Divide number by 100
          Coupon = Coupon / 100;
-         //ExpectedModifiedDuration = ExpectedModifiedDuration / 100;
-
 
          Calendar calendar = new TARGET();
 
@@ -1824,15 +1822,16 @@ namespace TestSuite
          Compounding comp = Compounding.Compounded;
          Frequency freq = Frequency.Semiannual;
          DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+         Schedule sch = new Schedule(null, maturityDate, tenor,
+                                     new NullCalendar(), BusinessDayConvention.Unadjusted,
+                                     BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
 
-         FixedRateBond bond = new FixedRateBond(settlementDays, 100.0,
-                                                new Schedule(null, maturityDate, tenor, new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward,
-                                                             false), new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted, 100.0, null, calendar, exCouponPeriod, calendar);
-
-         List<CashFlow> leg = bond.cashflows();
+         FixedRateBond bond = new FixedRateBond(settlementDays, 100.0, sch,
+                                                new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted,
+                                                100.0, null, calendar, exCouponPeriod, calendar);
 
          double yield = bond.yield(Price, dc, comp, freq, settlementDate);
-         double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, settlementDate);
+         double duration = BondFunctions.duration(bond, yield, dc, comp, freq, Duration.Type.Modified, settlementDate);
 
          if (Math.Abs(duration - ExpectedModifiedDuration) > 1e-3)
             QAssert.Fail("Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
@@ -1840,5 +1839,4 @@ namespace TestSuite
                          + "\n    expected:   " + ExpectedModifiedDuration);
       }
    }
-
 }
