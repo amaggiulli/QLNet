@@ -67,6 +67,14 @@ namespace QLNet
          }
       }
 
+      public void Clear()
+      {
+         lock (_handlers)
+         {
+            _handlers.Clear();
+         }
+      }
+
       private class WeakDelegate
       {
          #region Open handler generation and cache
