@@ -110,6 +110,11 @@ namespace QLNet
       {
          eventSource.Raise();
       }
+
+      public static void clearObservers()
+      {
+         eventSource.Clear();
+      }
    }
 
    // helper class to temporarily and safely change the settings
