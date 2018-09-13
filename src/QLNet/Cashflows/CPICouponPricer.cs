@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2008, 2009 , 2010, 2011 , 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -28,22 +28,23 @@ namespace QLNet
    {
       public CPICouponPricer(Handle<CPIVolatilitySurface> capletVol = null)
       {
-         if ( capletVol == null ) 
+         if (capletVol == null)
             capletVol = new Handle<CPIVolatilitySurface>();
-        
-        capletVol_ = capletVol;
 
-        if( !capletVol_.empty() ) capletVol_.registerWith(update);
+         capletVol_ = capletVol;
+
+         if (!capletVol_.empty())
+            capletVol_.registerWith(update);
       }
 
-      public virtual Handle<CPIVolatilitySurface> capletVolatility() 
+      public virtual Handle<CPIVolatilitySurface> capletVolatility()
       {
          return capletVol_;
       }
 
       public virtual void setCapletVolatility(Handle<CPIVolatilitySurface> capletVol)
       {
-         Utils.QL_REQUIRE( !capletVol.empty(), () => "empty capletVol handle" );
+         Utils.QL_REQUIRE(!capletVol.empty(), () => "empty capletVol handle");
          capletVol_ = capletVol;
          capletVol_.registerWith(update);
       }
@@ -70,7 +71,7 @@ namespace QLNet
       }
       public override double capletRate(double effectiveCap)
       {
-         return capletPrice(effectiveCap)/(coupon_.accrualPeriod()*discount_);
+         return capletPrice(effectiveCap) / (coupon_.accrualPeriod() * discount_);
       }
       public override double floorletPrice(double effectiveFloor)
       {
@@ -79,17 +80,17 @@ namespace QLNet
       }
       public override double floorletRate(double effectiveFloor)
       {
-         return floorletPrice(effectiveFloor) / (coupon_.accrualPeriod()*discount_);
+         return floorletPrice(effectiveFloor) / (coupon_.accrualPeriod() * discount_);
       }
-      public override void initialize( InflationCoupon coupon)
+      public override void initialize(InflationCoupon coupon)
       {
          coupon_ = coupon as CPICoupon;
          gearing_ = coupon_.fixedRate();
          spread_ = coupon_.spread();
          paymentDate_ = coupon_.date();
          rateCurve_ = ((ZeroInflationIndex)coupon.index())
-            .zeroInflationTermStructure().link
-            .nominalTermStructure();
+                      .zeroInflationTermStructure().link
+                      .nominalTermStructure();
 
          // past or future fixing is managed in YoYInflationIndex::fixing()
          // use yield curve from index (which sets discount)
@@ -98,33 +99,33 @@ namespace QLNet
          if (paymentDate_ > rateCurve_.link.referenceDate())
             discount_ = rateCurve_.link.discount(paymentDate_);
 
-         spreadLegValue_ = spread_ * coupon_.accrualPeriod()* discount_;
+         spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
       //! can replace this if really required
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
       {
          Date fixingDate = coupon_.fixingDate();
-         if (fixingDate <= Settings.evaluationDate()) 
+         if (fixingDate <= Settings.evaluationDate())
          {
             // the amount is determined
             double a, b;
-            if (optionType==Option.Type.Call) 
+            if (optionType == Option.Type.Call)
             {
-                  a = coupon_.indexFixing();
-                  b = effStrike;
-            } 
-            else 
-            {
-                  a = effStrike;
-                  b = coupon_.indexFixing();
+               a = coupon_.indexFixing();
+               b = effStrike;
             }
-            return Math.Max(a - b, 0.0)* coupon_.accrualPeriod()*discount_;
-         } 
-         else 
+            else
+            {
+               a = effStrike;
+               b = coupon_.indexFixing();
+            }
+            return Math.Max(a - b, 0.0) * coupon_.accrualPeriod() * discount_;
+         }
+         else
          {
             // not yet determined, use Black/DD1/Bachelier/whatever from Impl
-            Utils.QL_REQUIRE( !capletVolatility().empty(), () => "missing optionlet volatility" );
+            Utils.QL_REQUIRE(!capletVolatility().empty(), () => "missing optionlet volatility");
             double stdDev = Math.Sqrt(capletVolatility().link.totalVariance(fixingDate, effStrike));
             double fixing = optionletPriceImp(optionType,
                                               effStrike,
@@ -145,7 +146,7 @@ namespace QLNet
       {
          if (fixing == null)
             fixing = coupon_.indexFixing() / coupon_.baseCPI();
-         
+
          // no adjustment
          return fixing.Value;
       }

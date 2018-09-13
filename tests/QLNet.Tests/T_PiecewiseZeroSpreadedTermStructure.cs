@@ -1,17 +1,17 @@
 ﻿/*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com) 
-  
+ Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -79,9 +79,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFlatInterpolationLeft()
       {
@@ -102,9 +102,9 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 6, TimeUnit.Months);
 
          ZeroYieldStructure spreadedTermStructure =
-             new PiecewiseZeroSpreadedTermStructure(
-                                new Handle<YieldTermStructure>(vars.termStructure),
-                                spreads, spreadDates);
+            new PiecewiseZeroSpreadedTermStructure(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
@@ -114,14 +114,14 @@ namespace TestSuite
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail("unable to reproduce interpolated rate\n"
-                        + "    calculated: " + interpolatedZeroRate + "\n"
-                        + "    expected: " + expectedRate);
+                         + "    calculated: " + interpolatedZeroRate + "\n"
+                         + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFlatInterpolationRight()
       {
@@ -142,9 +142,9 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 20, TimeUnit.Months);
 
          ZeroYieldStructure spreadedTermStructure =
-             new PiecewiseZeroSpreadedTermStructure(
-                                new Handle<YieldTermStructure>(vars.termStructure),
-                                spreads, spreadDates);
+            new PiecewiseZeroSpreadedTermStructure(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
          spreadedTermStructure.enableExtrapolation();
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
@@ -155,14 +155,14 @@ namespace TestSuite
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail("unable to reproduce interpolated rate\n"
-                        + "    calculated: " + interpolatedZeroRate + "\n"
-                        + "    expected: " + expectedRate);
+                         + "    calculated: " + interpolatedZeroRate + "\n"
+                         + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testLinearInterpolationMultipleSpreads()
       {
@@ -189,29 +189,29 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 120, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new PiecewiseZeroSpreadedTermStructure(
-                                new Handle<YieldTermStructure>(vars.termStructure),
-                                spreads, spreadDates);
+            new PiecewiseZeroSpreadedTermStructure(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
 
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             spread1.value();
+                               spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
+               "unable to reproduce interpolated rate\n"
 
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testLinearInterpolation()
       {
@@ -232,9 +232,9 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 120, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new InterpolatedPiecewiseZeroSpreadedTermStructure<Linear>(
-                             new Handle<YieldTermStructure>(vars.termStructure),
-                             spreads, spreadDates);
+            new InterpolatedPiecewiseZeroSpreadedTermStructure<Linear>(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          Date d0 = vars.calendar.advance(vars.today, 100, TimeUnit.Days);
          Date d1 = vars.calendar.advance(vars.today, 150, TimeUnit.Days);
@@ -250,15 +250,15 @@ namespace TestSuite
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testForwardFlatInterpolation()
       {
@@ -279,28 +279,28 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 100, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new InterpolatedPiecewiseZeroSpreadedTermStructure<ForwardFlat>(
-                             new Handle<YieldTermStructure>(vars.termStructure),
-                             spreads, spreadDates);
+            new InterpolatedPiecewiseZeroSpreadedTermStructure<ForwardFlat>(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
 
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             spread1.value();
+                               spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testBackwardFlatInterpolation()
       {
@@ -324,29 +324,29 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 110, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new InterpolatedPiecewiseZeroSpreadedTermStructure<BackwardFlat>(
-                             new Handle<YieldTermStructure>(vars.termStructure),
-                             spreads, spreadDates);
+            new InterpolatedPiecewiseZeroSpreadedTermStructure<BackwardFlat>(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
 
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             spread2.value();
+                               spread2.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
 
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testDefaultInterpolation()
       {
@@ -367,28 +367,28 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 100, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new PiecewiseZeroSpreadedTermStructure(
-                                    new Handle<YieldTermStructure>(vars.termStructure),
-                                    spreads, spreadDates);
+            new PiecewiseZeroSpreadedTermStructure(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
 
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             spread1.value();
+                               spread1.value();
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testSetInterpolationFactory()
       {
@@ -421,29 +421,29 @@ namespace TestSuite
                                    CubicInterpolation.BoundaryCondition.SecondDerivative, 0);
 
          spreadedTermStructure =
-             new InterpolatedPiecewiseZeroSpreadedTermStructure<Cubic>(
-                                    new Handle<YieldTermStructure>(vars.termStructure),
-                                    spreads, spreadDates, vars.compounding,
-                                    freq, vars.dayCount, factory);
+            new InterpolatedPiecewiseZeroSpreadedTermStructure<Cubic>(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates, vars.compounding,
+            freq, vars.dayCount, factory);
 
          double t = vars.dayCount.yearFraction(vars.today, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
 
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             0.026065770863;
+                               0.026065770863;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testMaxDate()
       {
@@ -462,9 +462,9 @@ namespace TestSuite
          spreadDates.Add(vars.calendar.advance(vars.today, 15, TimeUnit.Months));
 
          ZeroYieldStructure spreadedTermStructure =
-             new PiecewiseZeroSpreadedTermStructure(
-                             new Handle<YieldTermStructure>(vars.termStructure),
-                             spreads, spreadDates);
+            new PiecewiseZeroSpreadedTermStructure(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          Date maxDate = spreadedTermStructure.maxDate();
 
@@ -472,15 +472,15 @@ namespace TestSuite
 
          if (maxDate != expectedDate)
             QAssert.Fail(
-                "unable to reproduce max date\n"
-                + "    calculated: " + maxDate + "\n"
-                + "    expected: " + expectedDate);
+               "unable to reproduce max date\n"
+               + "    calculated: " + maxDate + "\n"
+               + "    expected: " + expectedDate);
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testQuoteChanging()
       {
@@ -501,21 +501,21 @@ namespace TestSuite
          Date interpolationDate = vars.calendar.advance(vars.today, 120, TimeUnit.Days);
 
          ZeroYieldStructure spreadedTermStructure =
-             new InterpolatedPiecewiseZeroSpreadedTermStructure<BackwardFlat>(
-                             new Handle<YieldTermStructure>(vars.termStructure),
-                             spreads, spreadDates);
+            new InterpolatedPiecewiseZeroSpreadedTermStructure<BackwardFlat>(
+            new Handle<YieldTermStructure>(vars.termStructure),
+            spreads, spreadDates);
 
          double t = vars.dayCount.yearFraction(vars.settlementDate, interpolationDate);
          double interpolatedZeroRate = spreadedTermStructure.zeroRate(t, vars.compounding).value();
          double tolerance = 1e-9;
          double expectedRate = vars.termStructure.zeroRate(t, vars.compounding).value() +
-                             0.03;
+                               0.03;
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
 
          spread2.setValue(0.025);
 
@@ -525,9 +525,9 @@ namespace TestSuite
 
          if (Math.Abs(interpolatedZeroRate - expectedRate) > tolerance)
             QAssert.Fail(
-                "unable to reproduce interpolated rate\n"
-                + "    calculated: " + interpolatedZeroRate + "\n"
-                + "    expected: " + expectedRate);
+               "unable to reproduce interpolated rate\n"
+               + "    calculated: " + interpolatedZeroRate + "\n"
+               + "    expected: " + expectedRate);
       }
    }
 }

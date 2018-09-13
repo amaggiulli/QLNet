@@ -6,7 +6,7 @@
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available online at <https://github.com/amaggiulli/qlnetLicense.html>.
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -20,7 +20,7 @@
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 using System;
@@ -38,26 +38,26 @@ namespace TestSuite
                                  double tolerance)
       {
          QAssert.Fail(exercise + " "
-                + payoff.optionType() + " option with "
-                + payoff + " payoff:\n"
-                + "    spot value:       " + s + "\n"
-                + "    strike:           " + payoff.strike() + "\n"
-                + "    dividend yield:   " + q + "\n"
-                + "    risk-free rate:   " + r + "\n"
-                + "    reference date:   " + today + "\n"
-                + "    maturity:         " + exercise.lastDate() + "\n"
-                + "    volatility:       " + v + "\n\n"
-                + "    expected " + greekName + ":   " + expected + "\n"
-                + "    calculated " + greekName + ": " + calculated + "\n"
-                + "    error:            " + error + "\n"
-                + "    tolerance:        " + tolerance);
+                      + payoff.optionType() + " option with "
+                      + payoff + " payoff:\n"
+                      + "    spot value:       " + s + "\n"
+                      + "    strike:           " + payoff.strike() + "\n"
+                      + "    dividend yield:   " + q + "\n"
+                      + "    risk-free rate:   " + r + "\n"
+                      + "    reference date:   " + today + "\n"
+                      + "    maturity:         " + exercise.lastDate() + "\n"
+                      + "    volatility:       " + v + "\n\n"
+                      + "    expected " + greekName + ":   " + expected + "\n"
+                      + "    calculated " + greekName + ": " + calculated + "\n"
+                      + "    error:            " + error + "\n"
+                      + "    tolerance:        " + tolerance);
       }
 
-      private void testFdGreeks<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new()
+      private void testFdGreeks<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new ()
       {
          Dictionary<string, double> calculated = new Dictionary<string, double>(),
-                                   expected = new Dictionary<string, double>(),
-                                   tolerance = new Dictionary<string, double>();
+         expected = new Dictionary<string, double>(),
+         tolerance = new Dictionary<string, double>();
          tolerance.Add("delta", 5.0e-3);
          tolerance.Add("gamma", 7.0e-3);
          // tolerance["theta"] = 1.0e-2;
@@ -86,8 +86,8 @@ namespace TestSuite
                List<Date> dividendDates = new List<Date>();
                List<double> dividends = new List<double>();
                for (Date d = today + new Period(3, TimeUnit.Months);
-                     d < exercise.lastDate();
-                     d += new Period(6, TimeUnit.Months))
+                    d < exercise.lastDate();
+                    d += new Period(6, TimeUnit.Months))
                {
                   dividendDates.Add(d);
                   dividends.Add(5.0);
@@ -173,7 +173,7 @@ namespace TestSuite
          }
       }
 
-      private void testFdDegenerate<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new()
+      private void testFdDegenerate<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new ()
       {
          DayCounter dc = new Actual360();
          SimpleQuote spot = new SimpleQuote(54.625);
@@ -213,16 +213,16 @@ namespace TestSuite
 
             if (Math.Abs(refValue - value) > tolerance)
                QAssert.Fail("NPV changed by null dividend :\n"
-                           + "    previous value: " + value + "\n"
-                           + "    current value:  " + refValue + "\n"
-                           + "    change:         " + (value - refValue));
+                            + "    previous value: " + value + "\n"
+                            + "    current value:  " + refValue + "\n"
+                            + "    change:         " + (value - refValue));
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testEuropeanValues()
       {
@@ -263,8 +263,8 @@ namespace TestSuite
                      List<Date> dividendDates = new List<Date>();
                      List<double> dividends = new List<double>();
                      for (Date d = today + new Period(3, TimeUnit.Months);
-                           d < exercise.lastDate();
-                           d += new Period(6, TimeUnit.Months))
+                          d < exercise.lastDate();
+                          d += new Period(6, TimeUnit.Months))
 
                      {
                         dividendDates.Add(d);
@@ -274,7 +274,7 @@ namespace TestSuite
                      StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
 
                      BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                                                  qTS, rTS, volTS);
+                                                                                            qTS, rTS, volTS);
 
                      IPricingEngine ref_engine = new AnalyticEuropeanEngine(stochProcess);
 
@@ -296,7 +296,7 @@ namespace TestSuite
                               {
                                  double u = underlyings[l];
                                  double q = qRates[m],
-                                 r = rRates[n];
+                                        r = rRates[n];
                                  double v = vols[p];
                                  spot.setValue(u);
                                  qRate.setValue(q);
@@ -360,7 +360,7 @@ namespace TestSuite
             StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 40.0);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                                                                                    qTS, rTS, volTS);
+                                                                                   qTS, rTS, volTS);
 
             IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
 
@@ -389,9 +389,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testEuropeanStartLimit()
       {
@@ -460,7 +460,7 @@ namespace TestSuite
                               {
                                  double u = underlyings[l];
                                  double q = qRates[m],
-                                       r = rRates[n];
+                                        r = rRates[n];
                                  double v = vols[p];
                                  spot.setValue(u);
                                  qRate.setValue(q);
@@ -489,9 +489,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testEuropeanGreeks()
       {
@@ -499,8 +499,8 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Dictionary<string, double> calculated = new Dictionary<string, double>(),
-                                      expected = new Dictionary<string, double>(),
-                                      tolerance = new Dictionary<string, double>();
+            expected = new Dictionary<string, double>(),
+            tolerance = new Dictionary<string, double>();
             tolerance["delta"] = 1.0e-5;
             tolerance["gamma"] = 1.0e-5;
             tolerance["theta"] = 1.0e-5;
@@ -567,7 +567,7 @@ namespace TestSuite
                               {
                                  double u = underlyings[l];
                                  double q = qRates[m],
-                                 r = rRates[n];
+                                        r = rRates[n];
                                  double v = vols[p];
                                  spot.setValue(u);
                                  qRate.setValue(q);
@@ -587,10 +587,10 @@ namespace TestSuite
                                     double du = u * 1.0e-4;
                                     spot.setValue(u + du);
                                     double value_p = option.NPV(),
-                                          delta_p = option.delta();
+                                           delta_p = option.delta();
                                     spot.setValue(u - du);
                                     double value_m = option.NPV(),
-                                          delta_m = option.delta();
+                                           delta_m = option.delta();
                                     spot.setValue(u);
                                     expected["delta"] = (value_p - value_m) / (2 * du);
                                     expected["gamma"] = (delta_p - delta_m) / (2 * du);
@@ -649,9 +649,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdEuropeanValues()
       {
@@ -759,9 +759,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdEuropeanGreeks()
       {
@@ -782,9 +782,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdAmericanGreeks()
       {
@@ -805,9 +805,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdEuropeanDegenerate()
       {
@@ -825,9 +825,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFdAmericanDegenerate()
       {

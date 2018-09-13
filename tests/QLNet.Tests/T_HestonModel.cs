@@ -4,7 +4,7 @@
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
 //  copy of the license along with this program; if not, license is
-//  available online at <http://qlnet.sourceforge.net/License.html>.
+//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
 //
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -35,7 +35,7 @@ namespace TestSuite
          public Handle<YieldTermStructure> riskFreeTS, dividendYield;
          public List<CalibrationHelper> options;
          public CalibrationMarketData(Handle<Quote> _s0, Handle<YieldTermStructure> _riskFreeTS,
-            Handle<YieldTermStructure> _dividendYield, List<CalibrationHelper> _options)
+                                      Handle<YieldTermStructure> _dividendYield, List<CalibrationHelper> _options)
          {
             s0 = _s0;
             riskFreeTS = _riskFreeTS;
@@ -58,7 +58,7 @@ namespace TestSuite
          Calendar calendar = new TARGET();
 
          int[] t = { 13, 41, 75, 165, 256, 345, 524, 703 };
-         double[] r = { 0.0357,0.0349,0.0341,0.0355,0.0359,0.0368,0.0386,0.0401 };
+         double[] r = { 0.0357, 0.0349, 0.0341, 0.0355, 0.0359, 0.0368, 0.0386, 0.0401 };
 
          List<Date> dates = new List<Date>();
          List<double> rates = new List<double>();
@@ -78,23 +78,26 @@ namespace TestSuite
          Handle<YieldTermStructure> dividendYield = new Handle<YieldTermStructure>(Utilities.flatRate(settlementDate, 0.0, dayCounter));
 
          double[] v =
-            { 0.6625,0.4875,0.4204,0.3667,0.3431,0.3267,0.3121,0.3121,
-            0.6007,0.4543,0.3967,0.3511,0.3279,0.3154,0.2984,0.2921,
-            0.5084,0.4221,0.3718,0.3327,0.3155,0.3027,0.2919,0.2889,
-            0.4541,0.3869,0.3492,0.3149,0.2963,0.2926,0.2819,0.2800,
-            0.4060,0.3607,0.3330,0.2999,0.2887,0.2811,0.2751,0.2775,
-            0.3726,0.3396,0.3108,0.2781,0.2788,0.2722,0.2661,0.2686,
-            0.3550,0.3277,0.3012,0.2781,0.2781,0.2661,0.2661,0.2681,
-            0.3428,0.3209,0.2958,0.2740,0.2688,0.2627,0.2580,0.2620,
-            0.3302,0.3062,0.2799,0.2631,0.2573,0.2533,0.2504,0.2544,
-            0.3343,0.2959,0.2705,0.2540,0.2504,0.2464,0.2448,0.2462,
-            0.3460,0.2845,0.2624,0.2463,0.2425,0.2385,0.2373,0.2422,
-            0.3857,0.2860,0.2578,0.2399,0.2357,0.2327,0.2312,0.2351,
-            0.3976,0.2860,0.2607,0.2356,0.2297,0.2268,0.2241,0.2320 };
+         {
+            0.6625, 0.4875, 0.4204, 0.3667, 0.3431, 0.3267, 0.3121, 0.3121,
+            0.6007, 0.4543, 0.3967, 0.3511, 0.3279, 0.3154, 0.2984, 0.2921,
+            0.5084, 0.4221, 0.3718, 0.3327, 0.3155, 0.3027, 0.2919, 0.2889,
+            0.4541, 0.3869, 0.3492, 0.3149, 0.2963, 0.2926, 0.2819, 0.2800,
+            0.4060, 0.3607, 0.3330, 0.2999, 0.2887, 0.2811, 0.2751, 0.2775,
+            0.3726, 0.3396, 0.3108, 0.2781, 0.2788, 0.2722, 0.2661, 0.2686,
+            0.3550, 0.3277, 0.3012, 0.2781, 0.2781, 0.2661, 0.2661, 0.2681,
+            0.3428, 0.3209, 0.2958, 0.2740, 0.2688, 0.2627, 0.2580, 0.2620,
+            0.3302, 0.3062, 0.2799, 0.2631, 0.2573, 0.2533, 0.2504, 0.2544,
+            0.3343, 0.2959, 0.2705, 0.2540, 0.2504, 0.2464, 0.2448, 0.2462,
+            0.3460, 0.2845, 0.2624, 0.2463, 0.2425, 0.2385, 0.2373, 0.2422,
+            0.3857, 0.2860, 0.2578, 0.2399, 0.2357, 0.2327, 0.2312, 0.2351,
+            0.3976, 0.2860, 0.2607, 0.2356, 0.2297, 0.2268, 0.2241, 0.2320
+         };
 
          Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(4468.17));
-         double[] strike = { 3400,3600,3800,4000,4200,4400,
-                             4500,4600,4800,5000,5200,5400,5600 };
+         double[] strike = { 3400, 3600, 3800, 4000, 4200, 4400,
+                             4500, 4600, 4800, 5000, 5200, 5400, 5600
+                           };
 
          List<CalibrationHelper> options = new List<CalibrationHelper>();
 
@@ -102,23 +105,23 @@ namespace TestSuite
          {
             for (int m = 0; m < 8; ++m)
             {
-               Handle<Quote> vol = new Handle<Quote>(new SimpleQuote(v[s*8+m]));
+               Handle<Quote> vol = new Handle<Quote>(new SimpleQuote(v[s * 8 + m]));
 
-               Period maturity = new Period((int)((t[m]+3)/7.0), TimeUnit.Weeks); // round to weeks
-               options.Add( new HestonModelHelper(maturity, calendar,s0, strike[s], vol,riskFreeTS, dividendYield,
-                                          CalibrationHelper.CalibrationErrorType.ImpliedVolError));
+               Period maturity = new Period((int)((t[m] + 3) / 7.0), TimeUnit.Weeks); // round to weeks
+               options.Add(new HestonModelHelper(maturity, calendar, s0, strike[s], vol, riskFreeTS, dividendYield,
+                                                 CalibrationHelper.CalibrationErrorType.ImpliedVolError));
             }
          }
 
-         CalibrationMarketData marketData = new CalibrationMarketData( s0, riskFreeTS, dividendYield, options );
+         CalibrationMarketData marketData = new CalibrationMarketData(s0, riskFreeTS, dividendYield, options);
 
          return marketData;
-    }
+      }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testBlackCalibration()
       {
@@ -158,26 +161,26 @@ namespace TestSuite
                for (double moneyness = -1.0; moneyness < 2.0; moneyness += 1.0)
                {
                   // FLOATING_POINT_EXCEPTION
-                  double tau = dayCounter.yearFraction( riskFreeTS.link.referenceDate(),
-                                                        calendar.advance(riskFreeTS.link.referenceDate(),
-                                                        optionMaturities[i]));
-                  double fwdPrice = s0.link.value()*dividendTS.link.discount(tau)
+                  double tau = dayCounter.yearFraction(riskFreeTS.link.referenceDate(),
+                                                       calendar.advance(riskFreeTS.link.referenceDate(),
+                                                                        optionMaturities[i]));
+                  double fwdPrice = s0.link.value() * dividendTS.link.discount(tau)
                                     / riskFreeTS.link.discount(tau);
                   double strikePrice = fwdPrice * Math.Exp(-moneyness * volatility * Math.Sqrt(tau));
 
-                  options.Add( new HestonModelHelper(optionMaturities[i], calendar,s0, strikePrice, vol,
-                     riskFreeTS, dividendTS));
+                  options.Add(new HestonModelHelper(optionMaturities[i], calendar, s0, strikePrice, vol,
+                                                    riskFreeTS, dividendTS));
                }
             }
 
             for (double sigma = 0.1; sigma < 0.7; sigma += 0.2)
             {
-               double v0=0.01;
-               double kappa=0.2;
-               double theta=0.02;
-               double rho=-0.75;
+               double v0 = 0.01;
+               double kappa = 0.2;
+               double theta = 0.02;
+               double rho = -0.75;
 
-               HestonProcess process = new HestonProcess(riskFreeTS, dividendTS,s0, v0, kappa, theta, sigma, rho);
+               HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, v0, kappa, theta, sigma, rho);
 
                HestonModel model = new HestonModel(process);
                IPricingEngine engine = new AnalyticHestonEngine(model, 96);
@@ -186,39 +189,39 @@ namespace TestSuite
                   options[i].setPricingEngine(engine);
 
                LevenbergMarquardt om = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
-               model.calibrate(options, om, new EndCriteria(400, 40, 1.0e-8,1.0e-8, 1.0e-8));
+               model.calibrate(options, om, new EndCriteria(400, 40, 1.0e-8, 1.0e-8, 1.0e-8));
 
                double tolerance = 3.0e-3;
 
                if (model.sigma() > tolerance)
                {
                   QAssert.Fail("Failed to reproduce expected sigma"
-                              + "\n    calculated: " + model.sigma()
-                              + "\n    expected:   " + 0.0
-                              + "\n    tolerance:  " + tolerance);
+                               + "\n    calculated: " + model.sigma()
+                               + "\n    expected:   " + 0.0
+                               + "\n    tolerance:  " + tolerance);
                }
 
-               if (Math.Abs(model.kappa() *(model.theta()-volatility*volatility)) > tolerance)
+               if (Math.Abs(model.kappa() * (model.theta() - volatility * volatility)) > tolerance)
                {
                   QAssert.Fail("Failed to reproduce expected theta"
-                              + "\n    calculated: " + model.theta()
-                              + "\n    expected:   " + volatility*volatility);
+                               + "\n    calculated: " + model.theta()
+                               + "\n    expected:   " + volatility * volatility);
                }
 
-               if (Math.Abs(model.v0()-volatility*volatility) > tolerance)
+               if (Math.Abs(model.v0() - volatility * volatility) > tolerance)
                {
                   QAssert.Fail("Failed to reproduce expected v0"
-                              + "\n    calculated: " + model.v0()
-                              + "\n    expected:   " + volatility*volatility);
+                               + "\n    calculated: " + model.v0()
+                               + "\n    expected:   " + volatility * volatility);
                }
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testDAXCalibration()
       {
@@ -252,21 +255,21 @@ namespace TestSuite
             for (int i = 0; i < options.Count; ++i)
                options[i].setPricingEngine(engine);
 
-            LevenbergMarquardt om = new LevenbergMarquardt(1e-8,1e-8,1e-8);
+            LevenbergMarquardt om = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
             model.calibrate(options, om, new EndCriteria(400, 40, 1.0e-8, 1.0e-8, 1.0e-8));
 
             double sse = 0;
-            for (int i = 0; i < 13*8; ++i)
+            for (int i = 0; i < 13 * 8; ++i)
             {
-               double diff = options[i].calibrationError()*100.0;
-               sse += diff*diff;
+               double diff = options[i].calibrationError() * 100.0;
+               sse += diff * diff;
             }
             double expected = 177.2; //see article by A. Sepp.
             if (Math.Abs(sse - expected) > 1.0)
             {
                QAssert.Fail("Failed to reproduce calibration error"
-                          + "\n    calculated: " + sse
-                          + "\n    expected:   " + expected);
+                            + "\n    calculated: " + sse
+                            + "\n    expected:   " + expected);
             }
          }
       }
@@ -339,9 +342,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testAnalyticVsCached()
       {
@@ -349,10 +352,10 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(27,Month.December,2004);
+            Date settlementDate = new Date(27, Month.December, 2004);
             Settings.setEvaluationDate(settlementDate);
             DayCounter dayCounter = new ActualActual();
-            Date exerciseDate = new Date(28,Month.March,2005);
+            Date exerciseDate = new Date(28, Month.March, 2005);
 
             StrikedTypePayoff payoff  = new PlainVanillaPayoff(Option.Type.Call, 1.05);
             Exercise exercise  = new EuropeanExercise(exerciseDate);
@@ -382,8 +385,8 @@ namespace TestSuite
             if (Math.Abs(calculated1 - expected1) > tolerance)
             {
                QAssert.Fail("Failed to reproduce cached analytic price"
-                           + "\n    calculated: " + calculated1
-                           + "\n    expected:   " + expected1);
+                            + "\n    calculated: " + calculated1
+                            + "\n    expected:   " + expected1);
             }
 
             // reference values from www.wilmott.com, technical forum
@@ -396,15 +399,15 @@ namespace TestSuite
             int i;
             for (i = 0; i < 6; ++i)
             {
-               Date exerciseDate2 = new Date(8 + i/3,Month.September,2005);
+               Date exerciseDate2 = new Date(8 + i / 3, Month.September, 2005);
 
-               StrikedTypePayoff payoff2 = new PlainVanillaPayoff(Option.Type.Call, K[i%3]);
+               StrikedTypePayoff payoff2 = new PlainVanillaPayoff(Option.Type.Call, K[i % 3]);
                Exercise exercise2 = new EuropeanExercise(exerciseDate2);
 
                Handle<YieldTermStructure> riskFreeTS2 = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, dayCounter));
                Handle<YieldTermStructure> dividendTS2 = new Handle<YieldTermStructure>(Utilities.flatRate(0.02, dayCounter));
 
-               double s = riskFreeTS2.link.discount(0.7)/dividendTS2.link.discount(0.7);
+               double s = riskFreeTS2.link.discount(0.7) / dividendTS2.link.discount(0.7);
                Handle<Quote> s02 = new Handle<Quote>(new SimpleQuote(s));
 
                HestonProcess process2 = new HestonProcess(riskFreeTS2, dividendTS2, s02, 0.09, 1.2, 0.08, 1.8, -0.45);
@@ -423,33 +426,33 @@ namespace TestSuite
 
             for (i = 0; i < 3; ++i)
             {
-               double interpolated = calculated2[i] + (calculated2[i + 3] - calculated2[i])/(t2 - t1)*(0.7 - t1);
+               double interpolated = calculated2[i] + (calculated2[i + 3] - calculated2[i]) / (t2 - t1) * (0.7 - t1);
 
-               if (Math.Abs(interpolated - expected2[i]) > 100*tolerance)
+               if (Math.Abs(interpolated - expected2[i]) > 100 * tolerance)
                {
                   QAssert.Fail("Failed to reproduce cached analytic prices:"
-                              + "\n    calculated: " + interpolated
-                              + "\n    expected:   " + expected2[i]);
+                               + "\n    calculated: " + interpolated
+                               + "\n    expected:   " + expected2[i]);
                }
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testMcVsCached()
       {
          // Testing Monte Carlo Heston engine against cached values
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(27,Month.December,2004);
+            Date settlementDate = new Date(27, Month.December, 2004);
             Settings.setEvaluationDate(settlementDate);
 
             DayCounter dayCounter = new ActualActual();
-            Date exerciseDate = new Date(28,Month.March,2005);
+            Date exerciseDate = new Date(28, Month.March, 2005);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, 1.05);
             Exercise exercise  = new EuropeanExercise(exerciseDate);
@@ -463,11 +466,11 @@ namespace TestSuite
 
             VanillaOption option = new VanillaOption(payoff, exercise);
 
-            IPricingEngine engine = new MakeMCEuropeanHestonEngine<PseudoRandom, Statistics>( process )
-               .withStepsPerYear(11)
-               .withAntitheticVariate()
-               .withSamples(50000)
-               .withSeed(1234).getAsPricingEngine();
+            IPricingEngine engine = new MakeMCEuropeanHestonEngine<PseudoRandom, Statistics>(process)
+            .withStepsPerYear(11)
+            .withAntitheticVariate()
+            .withSamples(50000)
+            .withSeed(1234).getAsPricingEngine();
 
             option.setPricingEngine(engine);
 
@@ -476,19 +479,19 @@ namespace TestSuite
             double errorEstimate = option.errorEstimate();
             double tolerance = 7.5e-4;
 
-            if (Math.Abs(calculated - expected) > 2.34*errorEstimate)
+            if (Math.Abs(calculated - expected) > 2.34 * errorEstimate)
             {
                QAssert.Fail("Failed to reproduce cached price"
-                           + "\n    calculated: " + calculated
-                           + "\n    expected:   " + expected
-                           + " +/- " + errorEstimate);
+                            + "\n    calculated: " + calculated
+                            + "\n    expected:   " + expected
+                            + " +/- " + errorEstimate);
             }
 
             if (errorEstimate > tolerance)
             {
                QAssert.Fail("failed to reproduce error estimate"
-                           + "\n    calculated: " + errorEstimate
-                           + "\n    expected:   " + tolerance);
+                            + "\n    calculated: " + errorEstimate
+                            + "\n    expected:   " + tolerance);
             }
          }
       }
@@ -496,168 +499,168 @@ namespace TestSuite
       //[TestMethod()]
       public void testFdBarrierVsCached()
       {
-      //  // Testing FD barrier Heston engine against cached values
+         //  // Testing FD barrier Heston engine against cached values
 
-      //   using (SavedSettings backup = new SavedSettings())
-      // {
+         //   using (SavedSettings backup = new SavedSettings())
+         // {
 
-      //   DayCounter dc = new Actual360();
-      //   Date today = Date.Today;
+         //   DayCounter dc = new Actual360();
+         //   Date today = Date.Today;
 
-      //   Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(100.0));
-      //   Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.08, dc));
-      //   Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.04, dc));
+         //   Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(100.0));
+         //   Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.08, dc));
+         //   Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, 0.04, dc));
 
-      //   Date exDate = today + (int)(0.5*360 + 0.5);
-      //   Exercise exercise  = new EuropeanExercise(exDate);
+         //   Date exDate = today + (int)(0.5*360 + 0.5);
+         //   Exercise exercise  = new EuropeanExercise(exDate);
 
-      //   StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 90.0);
+         //   StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 90.0);
 
-      //   HestonProcess process = new HestonProcess(rTS, qTS, s0, 0.25*0.25, 1.0, 0.25*0.25, 0.001, 0.0);
+         //   HestonProcess process = new HestonProcess(rTS, qTS, s0, 0.25*0.25, 1.0, 0.25*0.25, 0.001, 0.0);
 
-      //   IPricingEngine engine = new FdHestonBarrierEngine(new HestonModel(process),200, 400, 100);
+         //   IPricingEngine engine = new FdHestonBarrierEngine(new HestonModel(process),200, 400, 100);
 
-      //   BarrierOption option = new BarrierOption(Barrier.Type.DownOut,95.0,3.0,payoff,exercise);
-      //   option.setPricingEngine(engine);
+         //   BarrierOption option = new BarrierOption(Barrier.Type.DownOut,95.0,3.0,payoff,exercise);
+         //   option.setPricingEngine(engine);
 
-      //   double calculated = option.NPV();
-      //   double expected = 9.0246;
-      //   double error = Math.Abs(calculated - expected);
-      //   if (error > 1.0e-3)
-      //   {
-      //      QAssert.Fail("failed to reproduce cached price with FD Barrier engine"
-      //                 + "\n    calculated: " + calculated
-      //                 + "\n    expected:   " + expected
-      //                 + "\n    error:      " +  error);
-      //   }
+         //   double calculated = option.NPV();
+         //   double expected = 9.0246;
+         //   double error = Math.Abs(calculated - expected);
+         //   if (error > 1.0e-3)
+         //   {
+         //      QAssert.Fail("failed to reproduce cached price with FD Barrier engine"
+         //                 + "\n    calculated: " + calculated
+         //                 + "\n    expected:   " + expected
+         //                 + "\n    error:      " +  error);
+         //   }
 
-      //   option = new BarrierOption(Barrier.Type.DownIn, 95.0, 3.0, payoff, exercise);
-      //   option.setPricingEngine(engine);
+         //   option = new BarrierOption(Barrier.Type.DownIn, 95.0, 3.0, payoff, exercise);
+         //   option.setPricingEngine(engine);
 
-      //   calculated = option.NPV();
-      //   expected = 7.7627;
-      //   error = Math.Abs(calculated - expected);
-      //   if (error > 1.0e-3)
-      //   {
-      //      QAssert.Fail("failed to reproduce cached price with FD Barrier engine"
-      //                 + "\n    calculated: " + calculated
-      //                 + "\n    expected:   " + expected
-      //                 + "\n    error:      " + error);
-      //   }
-      //}
+         //   calculated = option.NPV();
+         //   expected = 7.7627;
+         //   error = Math.Abs(calculated - expected);
+         //   if (error > 1.0e-3)
+         //   {
+         //      QAssert.Fail("failed to reproduce cached price with FD Barrier engine"
+         //                 + "\n    calculated: " + calculated
+         //                 + "\n    expected:   " + expected
+         //                 + "\n    error:      " + error);
+         //   }
+         //}
       }
 
       //[TestMethod()]
       public void testFdVanillaVsCached()
       {
-      //   // Testing FD vanilla Heston engine against cached values
+         //   // Testing FD vanilla Heston engine against cached values
 
-      //   using (SavedSettings backup = new SavedSettings())
-      //{
+         //   using (SavedSettings backup = new SavedSettings())
+         //{
 
-      //   Date settlementDate = new Date(27,Month.December,2004);
-      //   Settings.setEvaluationDate(settlementDate);
+         //   Date settlementDate = new Date(27,Month.December,2004);
+         //   Settings.setEvaluationDate(settlementDate);
 
-      //   DayCounter dayCounter = new ActualActual();
-      //   Date exerciseDate = new Date(28,Month.March,2005);
+         //   DayCounter dayCounter = new ActualActual();
+         //   Date exerciseDate = new Date(28,Month.March,2005);
 
-      //   StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, 1.05);
-      //   Exercise exercise = new EuropeanExercise(exerciseDate);
+         //   StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, 1.05);
+         //   Exercise exercise = new EuropeanExercise(exerciseDate);
 
-      //   Handle<YieldTermStructure> riskFreeTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.7, dayCounter));
-      //   Handle<YieldTermStructure> dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.4, dayCounter));
+         //   Handle<YieldTermStructure> riskFreeTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.7, dayCounter));
+         //   Handle<YieldTermStructure> dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.4, dayCounter));
 
-      //   Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(1.05));
+         //   Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(1.05));
 
-      //   VanillaOption option = new VanillaOption(payoff, exercise);
+         //   VanillaOption option = new VanillaOption(payoff, exercise);
 
-      //   HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.3, 1.16, 0.2, 0.8, 0.8);
+         //   HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.3, 1.16, 0.2, 0.8, 0.8);
 
-      //   IPricingEngine engine = new FdHestonVanillaEngine(new HestonModel(process),100, 200, 100);
-      //   option.setPricingEngine(engine);
+         //   IPricingEngine engine = new FdHestonVanillaEngine(new HestonModel(process),100, 200, 100);
+         //   option.setPricingEngine(engine);
 
-      //   double expected = 0.06325;
-      //   double calculated = option.NPV();
-      //   double error = Math.Abs(calculated - expected);
-      //   double tolerance = 1.0e-4;
+         //   double expected = 0.06325;
+         //   double calculated = option.NPV();
+         //   double error = Math.Abs(calculated - expected);
+         //   double tolerance = 1.0e-4;
 
-      //   if (error > tolerance)
-      //   {
-      //      QAssert.Fail("failed to reproduce cached price with FD engine"
-      //                 + "\n    calculated: " + calculated
-      //                 + "\n    expected:   " + expected
-      //                 + "\n    error:      " +  error);
-      //   }
+         //   if (error > tolerance)
+         //   {
+         //      QAssert.Fail("failed to reproduce cached price with FD engine"
+         //                 + "\n    calculated: " + calculated
+         //                 + "\n    expected:   " + expected
+         //                 + "\n    error:      " +  error);
+         //   }
 
-      //   // Testing FD vanilla Heston engine for discrete dividends
+         //   // Testing FD vanilla Heston engine for discrete dividends
 
-      //   payoff = new PlainVanillaPayoff(Option.Type.Call, 95.0);
-      //   s0 = new Handle<Quote>(new SimpleQuote(100.0));
+         //   payoff = new PlainVanillaPayoff(Option.Type.Call, 95.0);
+         //   s0 = new Handle<Quote>(new SimpleQuote(100.0));
 
-      //   riskFreeTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, dayCounter));
-      //   dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.0, dayCounter));
+         //   riskFreeTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, dayCounter));
+         //   dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.0, dayCounter));
 
-      //   exerciseDate = new Date(28, Month.March, 2006);
-      //   exercise = new EuropeanExercise(exerciseDate);
+         //   exerciseDate = new Date(28, Month.March, 2006);
+         //   exercise = new EuropeanExercise(exerciseDate);
 
-      //   List<Date> dividendDates = new List<Date>();
-      //   List<double> dividends = new List<double>();
-      //   for (Date d = settlementDate + new Period(3,TimeUnit.Months);
-      //      d < exercise.lastDate();
-      //      d += new Period(6,TimeUnit.Months))
-      //   {
-      //      dividendDates.Add(d);
-      //      dividends.Add(1.0);
-      //   }
+         //   List<Date> dividendDates = new List<Date>();
+         //   List<double> dividends = new List<double>();
+         //   for (Date d = settlementDate + new Period(3,TimeUnit.Months);
+         //      d < exercise.lastDate();
+         //      d += new Period(6,TimeUnit.Months))
+         //   {
+         //      dividendDates.Add(d);
+         //      dividends.Add(1.0);
+         //   }
 
-      //   DividendVanillaOption divOption = new DividendVanillaOption(payoff, exercise,dividendDates, dividends);
-      //   process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.04, 1.0, 0.04, 0.001, 0.0);
-      //   engine = new FdHestonVanillaEngine(new HestonModel(process),200, 400, 100);
-      //   divOption.setPricingEngine(engine);
-      //   calculated = divOption.NPV();
-      //   // Value calculated with an independent FD framework, validated with
-      //   // an independent MC framework
-      //   expected = 12.946;
-      //   error = Math.Abs(calculated - expected);
-      //   tolerance = 5.0e-3;
+         //   DividendVanillaOption divOption = new DividendVanillaOption(payoff, exercise,dividendDates, dividends);
+         //   process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.04, 1.0, 0.04, 0.001, 0.0);
+         //   engine = new FdHestonVanillaEngine(new HestonModel(process),200, 400, 100);
+         //   divOption.setPricingEngine(engine);
+         //   calculated = divOption.NPV();
+         //   // Value calculated with an independent FD framework, validated with
+         //   // an independent MC framework
+         //   expected = 12.946;
+         //   error = Math.Abs(calculated - expected);
+         //   tolerance = 5.0e-3;
 
-      //   if (error > tolerance)
-      //   {
-      //      QAssert.Fail("failed to reproduce discrete dividend price with FD engine"
-      //                 + "\n    calculated: " + calculated
-      //                 + "\n    expected:   " + expected
-      //                 + "\n    error:      " +  error);
-      //   }
+         //   if (error > tolerance)
+         //   {
+         //      QAssert.Fail("failed to reproduce discrete dividend price with FD engine"
+         //                 + "\n    calculated: " + calculated
+         //                 + "\n    expected:   " + expected
+         //                 + "\n    error:      " +  error);
+         //   }
 
-      //   // Testing FD vanilla Heston engine for american exercise
+         //   // Testing FD vanilla Heston engine for american exercise
 
-      //   dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.03, dayCounter));
-      //   process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.04, 1.0, 0.04, 0.001, 0.0);
-      //   engine = new FdHestonVanillaEngine(new HestonModel(process),200, 400, 100);
-      //   payoff = new PlainVanillaPayoff(Option.Type.Put, 95.0);
-      //   exercise = new AmericanExercise(settlementDate, exerciseDate);
-      //   option = new VanillaOption(payoff, exercise);
-      //   option.setPricingEngine(engine);
-      //   calculated = option.NPV();
+         //   dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.03, dayCounter));
+         //   process = new HestonProcess(riskFreeTS, dividendTS, s0, 0.04, 1.0, 0.04, 0.001, 0.0);
+         //   engine = new FdHestonVanillaEngine(new HestonModel(process),200, 400, 100);
+         //   payoff = new PlainVanillaPayoff(Option.Type.Put, 95.0);
+         //   exercise = new AmericanExercise(settlementDate, exerciseDate);
+         //   option = new VanillaOption(payoff, exercise);
+         //   option.setPricingEngine(engine);
+         //   calculated = option.NPV();
 
-      //   Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(settlementDate, 0.2,
-      //      dayCounter));
-      //   BlackScholesMertonProcess ref_process = new BlackScholesMertonProcess(s0, dividendTS, riskFreeTS, volTS);
-      //   IPricingEngine ref_engine = new FDAmericanEngine<CrankNicolson>(ref_process, 200, 400);
-      //   option.setPricingEngine(ref_engine);
-      //   expected = option.NPV();
+         //   Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(settlementDate, 0.2,
+         //      dayCounter));
+         //   BlackScholesMertonProcess ref_process = new BlackScholesMertonProcess(s0, dividendTS, riskFreeTS, volTS);
+         //   IPricingEngine ref_engine = new FDAmericanEngine<CrankNicolson>(ref_process, 200, 400);
+         //   option.setPricingEngine(ref_engine);
+         //   expected = option.NPV();
 
-      //   error = Math.Abs(calculated - expected);
-      //   tolerance = 1.0e-3;
+         //   error = Math.Abs(calculated - expected);
+         //   tolerance = 1.0e-3;
 
-      //   if (error > tolerance)
-      //   {
-      //      QAssert.Fail("failed to reproduce american option price with FD engine"
-      //                 + "\n    calculated: " + calculated
-      //                 + "\n    expected:   " + expected
-      //                 + "\n    error:      " + error);
-      //   }
-      //}
+         //   if (error > tolerance)
+         //   {
+         //      QAssert.Fail("failed to reproduce american option price with FD engine"
+         //                 + "\n    calculated: " + calculated
+         //                 + "\n    expected:   " + expected
+         //                 + "\n    error:      " + error);
+         //   }
+         //}
       }
 
       // [TestMethod()]
@@ -784,9 +787,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testDifferentIntegrals()
       {
@@ -794,7 +797,7 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(27,Month.December,2004);
+            Date settlementDate = new Date(27, Month.December, 2004);
             Settings.setEvaluationDate(settlementDate);
 
             DayCounter dayCounter = new ActualActual();
@@ -802,15 +805,15 @@ namespace TestSuite
             Handle<YieldTermStructure> riskFreeTS  = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, dayCounter));
             Handle<YieldTermStructure> dividendTS = new Handle<YieldTermStructure>(Utilities.flatRate(0.03, dayCounter));
 
-            double[] strikes = {0.5,0.7,1.0,1.25,1.5,2.0};
-            int[] maturities = {1,2,3,12,60,120,360};
-            Option.Type[] types = { Option.Type.Put,Option.Type.Call};
+            double[] strikes = {0.5, 0.7, 1.0, 1.25, 1.5, 2.0};
+            int[] maturities = {1, 2, 3, 12, 60, 120, 360};
+            Option.Type[] types = { Option.Type.Put, Option.Type.Call};
 
-            HestonParameter equityfx = new HestonParameter(0.07,2.0,0.04,0.55,-0.8);
-            HestonParameter highCorr = new HestonParameter(0.07,1.0,0.04,0.55,0.995);
-            HestonParameter lowVolOfVol = new HestonParameter(0.07,1.0,0.04,0.025,-0.75);
-            HestonParameter highVolOfVol = new HestonParameter(0.07,1.0,0.04,5.0,-0.75);
-            HestonParameter kappaEqSigRho = new HestonParameter(0.07,0.4,0.04,0.5,0.8);
+            HestonParameter equityfx = new HestonParameter(0.07, 2.0, 0.04, 0.55, -0.8);
+            HestonParameter highCorr = new HestonParameter(0.07, 1.0, 0.04, 0.55, 0.995);
+            HestonParameter lowVolOfVol = new HestonParameter(0.07, 1.0, 0.04, 0.025, -0.75);
+            HestonParameter highVolOfVol = new HestonParameter(0.07, 1.0, 0.04, 5.0, -0.75);
+            HestonParameter kappaEqSigRho = new HestonParameter(0.07, 0.4, 0.04, 0.5, 0.8);
 
             List<HestonParameter> parameters = new List<HestonParameter>();
             parameters.Add(equityfx);
@@ -819,24 +822,24 @@ namespace TestSuite
             parameters.Add(highVolOfVol);
             parameters.Add(kappaEqSigRho);
 
-            double[] tol = {1e-3,1e-3,0.2,0.01,1e-3};
+            double[] tol = {1e-3, 1e-3, 0.2, 0.01, 1e-3};
             int count = 0;
             foreach (var iter in parameters)
             {
                Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(1.0));
-               HestonProcess process = new HestonProcess(riskFreeTS, dividendTS,s0, iter.v0, iter.kappa,
-                  iter.theta, iter.sigma, iter.rho);
+               HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, iter.v0, iter.kappa,
+                                                         iter.theta, iter.sigma, iter.rho);
 
                HestonModel model  = new HestonModel(process);
 
-               AnalyticHestonEngine lobattoEngine = new AnalyticHestonEngine(model, 1e-10,1000000);
+               AnalyticHestonEngine lobattoEngine = new AnalyticHestonEngine(model, 1e-10, 1000000);
                AnalyticHestonEngine laguerreEngine = new AnalyticHestonEngine(model, 128);
                AnalyticHestonEngine legendreEngine = new AnalyticHestonEngine(model,
-                  AnalyticHestonEngine.ComplexLogFormula.Gatheral, AnalyticHestonEngine.Integration.gaussLegendre(512));
+                                                                              AnalyticHestonEngine.ComplexLogFormula.Gatheral, AnalyticHestonEngine.Integration.gaussLegendre(512));
                AnalyticHestonEngine chebyshevEngine = new AnalyticHestonEngine(model,
-                  AnalyticHestonEngine.ComplexLogFormula.Gatheral,AnalyticHestonEngine.Integration.gaussChebyshev(512));
+                                                                               AnalyticHestonEngine.ComplexLogFormula.Gatheral, AnalyticHestonEngine.Integration.gaussChebyshev(512));
                AnalyticHestonEngine chebyshev2ndEngine = new AnalyticHestonEngine(model,
-                  AnalyticHestonEngine.ComplexLogFormula.Gatheral,AnalyticHestonEngine.Integration.gaussChebyshev2nd(512));
+                                                                                  AnalyticHestonEngine.ComplexLogFormula.Gatheral, AnalyticHestonEngine.Integration.gaussChebyshev2nd(512));
 
                double maxLegendreDiff = 0.0;
                double maxChebyshevDiff = 0.0;
@@ -871,20 +874,20 @@ namespace TestSuite
 
                         maxLaguerreDiff  = Math.Max(maxLaguerreDiff, Math.Abs(lobattoNPV - laguerre));
                         maxLegendreDiff  = Math.Max(maxLegendreDiff, Math.Abs(lobattoNPV - legendre));
-                        maxChebyshevDiff = Math.Max(maxChebyshevDiff,Math.Abs(lobattoNPV - chebyshev));
-                        maxChebyshev2ndDiff = Math.Max(maxChebyshev2ndDiff,Math.Abs(lobattoNPV - chebyshev2nd));
+                        maxChebyshevDiff = Math.Max(maxChebyshevDiff, Math.Abs(lobattoNPV - chebyshev));
+                        maxChebyshev2ndDiff = Math.Max(maxChebyshev2ndDiff, Math.Abs(lobattoNPV - chebyshev2nd));
                      }
                   }
                }
-               double maxDiff = Math.Max(Math.Max(Math.Max(maxLaguerreDiff, maxLegendreDiff),maxChebyshevDiff),
-                  maxChebyshev2ndDiff);
+               double maxDiff = Math.Max(Math.Max(Math.Max(maxLaguerreDiff, maxLegendreDiff), maxChebyshevDiff),
+                                         maxChebyshev2ndDiff);
 
                double tr = tol[count++];
                if (maxDiff > tr)
                {
                   QAssert.Fail("Failed to reproduce Heston pricing values within given tolerance"
-                  + "\n    maxDifference: " + maxDiff
-                  + "\n    tolerance:     " + tr);
+                               + "\n    maxDifference: " + maxDiff
+                               + "\n    tolerance:     " + tr);
                }
             }
          }
@@ -977,9 +980,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testAnalyticPiecewiseTimeDependent()
       {
@@ -987,10 +990,10 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(27,Month.December,2004);
+            Date settlementDate = new Date(27, Month.December, 2004);
             Settings.setEvaluationDate(settlementDate);
             DayCounter dayCounter = new ActualActual();
-            Date exerciseDate = new Date(28,Month.March,2005);
+            Date exerciseDate = new Date(28, Month.March, 2005);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 1.0);
             Exercise exercise = new EuropeanExercise(exerciseDate);
@@ -1002,32 +1005,32 @@ namespace TestSuite
             irates.Add(0.0);
             irates.Add(0.2);
             Handle<YieldTermStructure> riskFreeTS = new Handle<YieldTermStructure>(
-               new InterpolatedZeroCurve<Linear>( dates, irates, dayCounter ) );
+               new InterpolatedZeroCurve<Linear>(dates, irates, dayCounter));
 
             List<double> qrates = new List<double>();
             qrates.Add(0.0);
             qrates.Add(0.3);
             Handle<YieldTermStructure> dividendTS = new Handle<YieldTermStructure>(
-               new InterpolatedZeroCurve<Linear>( dates, qrates, dayCounter ) );
+               new InterpolatedZeroCurve<Linear>(dates, qrates, dayCounter));
 
 
             double v0 = 0.1;
             Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(1.0));
 
-            ConstantParameter theta = new ConstantParameter(0.09,new PositiveConstraint());
-            ConstantParameter kappa = new ConstantParameter(3.16,new PositiveConstraint());
-            ConstantParameter sigma = new ConstantParameter(4.40,new PositiveConstraint());
-            ConstantParameter rho = new ConstantParameter(-0.8,new BoundaryConstraint(-1.0, 1.0));
+            ConstantParameter theta = new ConstantParameter(0.09, new PositiveConstraint());
+            ConstantParameter kappa = new ConstantParameter(3.16, new PositiveConstraint());
+            ConstantParameter sigma = new ConstantParameter(4.40, new PositiveConstraint());
+            ConstantParameter rho = new ConstantParameter(-0.8, new BoundaryConstraint(-1.0, 1.0));
 
             PiecewiseTimeDependentHestonModel model = new PiecewiseTimeDependentHestonModel(riskFreeTS, dividendTS,
-                  s0, v0, theta, kappa,sigma, rho, new TimeGrid(20.0, 2));
+                                                                                            s0, v0, theta, kappa, sigma, rho, new TimeGrid(20.0, 2));
 
             VanillaOption option = new VanillaOption(payoff, exercise);
             option.setPricingEngine(new AnalyticPTDHestonEngine(model));
 
             double calculated = option.NPV();
             HestonProcess hestonProcess = new HestonProcess(riskFreeTS, dividendTS, s0, v0,
-                  kappa.value(0.0), theta.value(0.0), sigma.value(0.0), rho.value(0.0));
+                                                            kappa.value(0.0), theta.value(0.0), sigma.value(0.0), rho.value(0.0));
             HestonModel hestonModel = new HestonModel(hestonProcess);
             option.setPricingEngine(new AnalyticHestonEngine(hestonModel));
 
@@ -1036,16 +1039,16 @@ namespace TestSuite
             if (Math.Abs(calculated - expected) > 1e-12)
             {
                QAssert.Fail("failed to reproduce heston prices "
-                           + "\n    calculated: " + calculated
-                           + "\n    expected:   " + expected);
+                            + "\n    calculated: " + calculated
+                            + "\n    expected:   " + expected);
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testDAXCalibrationOfTimeDependentModel()
       {
@@ -1053,7 +1056,7 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(5,Month.July,2002);
+            Date settlementDate = new Date(5, Month.July, 2002);
             Settings.setEvaluationDate(settlementDate);
 
             CalibrationMarketData marketData = getDAXCalibrationMarketData();
@@ -1067,15 +1070,15 @@ namespace TestSuite
             List<double> modelTimes = new List<double>();
             modelTimes.Add(0.25);
             modelTimes.Add(10.0);
-            TimeGrid modelGrid = new TimeGrid(modelTimes,modelTimes.Count);
+            TimeGrid modelGrid = new TimeGrid(modelTimes, modelTimes.Count);
 
             double v0 = 0.1;
-            ConstantParameter sigma = new ConstantParameter(0.5,new PositiveConstraint());
-            ConstantParameter theta = new ConstantParameter(0.1,new PositiveConstraint());
-            ConstantParameter rho = new ConstantParameter(-0.5,new BoundaryConstraint(-1.0, 1.0));
+            ConstantParameter sigma = new ConstantParameter(0.5, new PositiveConstraint());
+            ConstantParameter theta = new ConstantParameter(0.1, new PositiveConstraint());
+            ConstantParameter rho = new ConstantParameter(-0.5, new BoundaryConstraint(-1.0, 1.0));
 
-            List<double> pTimes = new InitializedList<double>(1,0.25);
-            PiecewiseConstantParameter kappa = new PiecewiseConstantParameter(pTimes, new PositiveConstraint ());
+            List<double> pTimes = new InitializedList<double>(1, 0.25);
+            PiecewiseConstantParameter kappa = new PiecewiseConstantParameter(pTimes, new PositiveConstraint());
 
             for (int i = 0; i < pTimes.Count + 1; ++i)
             {
@@ -1083,36 +1086,36 @@ namespace TestSuite
             }
 
             PiecewiseTimeDependentHestonModel model = new PiecewiseTimeDependentHestonModel(riskFreeTS, dividendTS,
-                  s0, v0, theta, kappa,sigma, rho, modelGrid);
+                                                                                            s0, v0, theta, kappa, sigma, rho, modelGrid);
 
             IPricingEngine engine = new AnalyticPTDHestonEngine(model);
             for (int i = 0; i < options.Count; ++i)
                options[i].setPricingEngine(engine);
 
-            LevenbergMarquardt om = new LevenbergMarquardt(1e-8,1e-8,1e-8);
+            LevenbergMarquardt om = new LevenbergMarquardt(1e-8, 1e-8, 1e-8);
             model.calibrate(options, om, new EndCriteria(400, 40, 1.0e-8, 1.0e-8, 1.0e-8));
 
             double sse = 0;
-            for (int i = 0; i < 13*8; ++i)
+            for (int i = 0; i < 13 * 8; ++i)
             {
-               double diff = options[i].calibrationError()*100.0;
-               sse += diff*diff;
+               double diff = options[i].calibrationError() * 100.0;
+               sse += diff * diff;
             }
 
             double expected = 74.4;
             if (Math.Abs(sse - expected) > 1.0)
             {
                QAssert.Fail("Failed to reproduce calibration error"
-                           + "\n    calculated: " + sse
-                           + "\n    expected:   " + expected);
+                            + "\n    calculated: " + sse
+                            + "\n    expected:   " + expected);
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testAlanLewisReferencePrices()
       {
@@ -1125,10 +1128,10 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(5,Month.July,2002);
+            Date settlementDate = new Date(5, Month.July, 2002);
             Settings.setEvaluationDate(settlementDate);
 
-            Date maturityDate = new Date(5,Month.July,2003);
+            Date maturityDate = new Date(5, Month.July, 2003);
             Exercise exercise = new EuropeanExercise(maturityDate);
 
             DayCounter dayCounter = new Actual365Fixed();
@@ -1146,26 +1149,36 @@ namespace TestSuite
             HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, v0, kappa, theta, sigma, rho);
             HestonModel model = new HestonModel(process);
 
-            IPricingEngine laguerreEngine= new AnalyticHestonEngine(model, 128);
+            IPricingEngine laguerreEngine = new AnalyticHestonEngine(model, 128);
 
             IPricingEngine gaussLobattoEngine = new AnalyticHestonEngine(model, Const.QL_EPSILON, 100000);
 
-            double[] strikes = {80,90,100,110,120};
-            Option.Type[] types = {Option.Type.Put,Option.Type.Call};
-            IPricingEngine[] engines = {laguerreEngine,gaussLobattoEngine};
+            double[] strikes = {80, 90, 100, 110, 120};
+            Option.Type[] types = {Option.Type.Put, Option.Type.Call};
+            IPricingEngine[] engines = {laguerreEngine, gaussLobattoEngine};
 
             double[][] expectedResults =
             {
-               new double[2]{ 7.958878113256768285213263077598987193482161301733,
-                              26.774758743998854221382195325726949201687074848341},
-               new double[2]{ 12.017966707346304987709573290236471654992071308187,
-                              20.933349000596710388139445766564068085476194042256},
-               new double[2]{ 17.055270961270109413522653999411000974895436309183,
-                              16.070154917028834278213466703938231827658768230714},
-               new double[2]{ 23.017825898442800538908781834822560777763225722188,
-                              12.132211516709844867860534767549426052805766831181},
-               new double[2]{ 29.811026202682471843340682293165857439167301370697,
-                              9.024913483457835636553375454092357136489051667150}
+               new double[2]{
+                  7.958878113256768285213263077598987193482161301733,
+                  26.774758743998854221382195325726949201687074848341
+               },
+               new double[2]{
+                  12.017966707346304987709573290236471654992071308187,
+                  20.933349000596710388139445766564068085476194042256
+               },
+               new double[2]{
+                  17.055270961270109413522653999411000974895436309183,
+                  16.070154917028834278213466703938231827658768230714
+               },
+               new double[2]{
+                  23.017825898442800538908781834822560777763225722188,
+                  12.132211516709844867860534767549426052805766831181
+               },
+               new double[2]{
+                  29.811026202682471843340682293165857439167301370697,
+                  9.024913483457835636553375454092357136489051667150
+               }
             };
 
             double tol = 1e-12; // 3e-15 works on linux/ia32,
@@ -1190,15 +1203,15 @@ namespace TestSuite
 
                      double expected = expectedResults[i][j];
                      double calculated = option.NPV();
-                     double relError = Math.Abs(calculated - expected)/expected;
+                     double relError = Math.Abs(calculated - expected) / expected;
 
                      if (relError > tol)
                      {
                         QAssert.Fail("failed to reproduce Alan Lewis Reference prices "
-                                 + "\n    strike     : " + strike
-                                 + "\n    option type: " + type
-                                 + "\n    engine type: " + k
-                                 + "\n    rel. error : " + relError);
+                                     + "\n    strike     : " + strike
+                                     + "\n    option type: " + type
+                                     + "\n    engine type: " + k
+                                     + "\n    rel. error : " + relError);
                      }
                   }
                }
@@ -1207,20 +1220,20 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testExpansionOnAlanLewisReference()
       {
-        // Testing expansion on Alan Lewis reference prices
+         // Testing expansion on Alan Lewis reference prices
 
          using (SavedSettings backup = new SavedSettings())
          {
-            Date settlementDate = new Date(5,Month.July,2002);
+            Date settlementDate = new Date(5, Month.July, 2002);
             Settings.setEvaluationDate(settlementDate);
 
-            Date maturityDate = new Date(5,Month.July,2003);
+            Date maturityDate = new Date(5, Month.July, 2003);
             Exercise exercise = new EuropeanExercise(maturityDate);
 
             DayCounter dayCounter = new Actual365Fixed();
@@ -1235,32 +1248,42 @@ namespace TestSuite
             double kappa = 4.0;
             double theta = 0.25;
 
-            HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, v0,kappa, theta, sigma, rho);
+            HestonProcess process = new HestonProcess(riskFreeTS, dividendTS, s0, v0, kappa, theta, sigma, rho);
             HestonModel model = new HestonModel(process);
 
-            IPricingEngine lpp2Engine = new HestonExpansionEngine(model,HestonExpansionEngine.HestonExpansionFormula.LPP2);
+            IPricingEngine lpp2Engine = new HestonExpansionEngine(model, HestonExpansionEngine.HestonExpansionFormula.LPP2);
             //don't test Forde as it does not behave well on this example
-            IPricingEngine lpp3Engine = new HestonExpansionEngine(model,HestonExpansionEngine.HestonExpansionFormula.LPP3);
+            IPricingEngine lpp3Engine = new HestonExpansionEngine(model, HestonExpansionEngine.HestonExpansionFormula.LPP3);
 
-            double[] strikes = {80,90,100,110,120};
-            Option.Type[] types = {Option.Type.Put,Option.Type.Call};
-            IPricingEngine[] engines = {lpp2Engine,lpp3Engine};
+            double[] strikes = {80, 90, 100, 110, 120};
+            Option.Type[] types = {Option.Type.Put, Option.Type.Call};
+            IPricingEngine[] engines = {lpp2Engine, lpp3Engine};
 
             double[][] expectedResults =
             {
-               new double[2] {  7.958878113256768285213263077598987193482161301733,
-                               26.774758743998854221382195325726949201687074848341},
-               new double[2] { 12.017966707346304987709573290236471654992071308187,
-                               20.933349000596710388139445766564068085476194042256},
-               new double[2] { 17.055270961270109413522653999411000974895436309183,
-                               16.070154917028834278213466703938231827658768230714},
-               new double[2] { 23.017825898442800538908781834822560777763225722188,
-                               12.132211516709844867860534767549426052805766831181},
-               new double[2] { 29.811026202682471843340682293165857439167301370697,
-                                9.024913483457835636553375454092357136489051667150}
+               new double[2] {
+                  7.958878113256768285213263077598987193482161301733,
+                  26.774758743998854221382195325726949201687074848341
+               },
+               new double[2] {
+                  12.017966707346304987709573290236471654992071308187,
+                  20.933349000596710388139445766564068085476194042256
+               },
+               new double[2] {
+                  17.055270961270109413522653999411000974895436309183,
+                  16.070154917028834278213466703938231827658768230714
+               },
+               new double[2] {
+                  23.017825898442800538908781834822560777763225722188,
+                  12.132211516709844867860534767549426052805766831181
+               },
+               new double[2] {
+                  29.811026202682471843340682293165857439167301370697,
+                  9.024913483457835636553375454092357136489051667150
+               }
             };
 
-            double[] tol = {1.003e-2,3.645e-3};
+            double[] tol = {1.003e-2, 3.645e-3};
 
             for (int i = 0; i < strikes.Length; ++i)
             {
@@ -1281,15 +1304,15 @@ namespace TestSuite
 
                      double expected = expectedResults[i][j];
                      double calculated = option.NPV();
-                     double relError = Math.Abs(calculated - expected)/expected;
+                     double relError = Math.Abs(calculated - expected) / expected;
 
                      if (relError > tol[k])
                      {
-                        QAssert.Fail( "failed to reproduce Alan Lewis Reference prices "
-                                   + "\n    strike     : " + strike
-                                   + "\n    option type: " + type
-                                   + "\n    engine type: " + k
-                                   + "\n    rel. error : " + relError);
+                        QAssert.Fail("failed to reproduce Alan Lewis Reference prices "
+                                     + "\n    strike     : " + strike
+                                     + "\n    option type: " + type
+                                     + "\n    engine type: " + k
+                                     + "\n    rel. error : " + relError);
                      }
                   }
                }
@@ -1298,9 +1321,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testExpansionOnFordeReference()
       {
@@ -1315,80 +1338,100 @@ namespace TestSuite
             double kappa = 1.15;
             double theta = 0.04;
 
-            double[] terms = {0.1,1.0,5.0,10.0};
-            double[] strikes = {60,80,90,100,110,120,140};
+            double[] terms = {0.1, 1.0, 5.0, 10.0};
+            double[] strikes = {60, 80, 90, 100, 110, 120, 140};
 
             double[][] referenceVols =
             {
-               new double[7] { 0.27284673574924445,
-                               0.22360758200372477,
-                               0.21023988547031242,
-                               0.1990674789471587,
-                               0.19118230678920461,
-                               0.18721342919371017,
-                               0.1899869903378507 },
-               new double[7] { 0.25200775151345,
-                               0.2127275920953156,
-                               0.20286528150874591,
-                               0.19479398358151515,
-                               0.18872591728967686,
-                               0.18470857955411824,
-                               0.18204457060905446 },
-               new double[7] { 0.21637821506229973,
-                               0.20077227130455172,
-                               0.19721753043236154,
-                               0.1942233023784151,
-                               0.191693211401571,
-                               0.18955229722896752,
-                               0.18491727548069495 },
-               new double[7] { 0.20672925973965342,
-                               0.198583062164427,
-                               0.19668274423922746,
-                               0.1950420231354201,
-                               0.193610364344706,
-                               0.1923502827886502,
-                               0.18934360917857015 }
+               new double[7] {
+                  0.27284673574924445,
+                  0.22360758200372477,
+                  0.21023988547031242,
+                  0.1990674789471587,
+                  0.19118230678920461,
+                  0.18721342919371017,
+                  0.1899869903378507
+               },
+               new double[7] {
+                  0.25200775151345,
+                  0.2127275920953156,
+                  0.20286528150874591,
+                  0.19479398358151515,
+                  0.18872591728967686,
+                  0.18470857955411824,
+                  0.18204457060905446
+               },
+               new double[7] {
+                  0.21637821506229973,
+                  0.20077227130455172,
+                  0.19721753043236154,
+                  0.1942233023784151,
+                  0.191693211401571,
+                  0.18955229722896752,
+                  0.18491727548069495
+               },
+               new double[7] {
+                  0.20672925973965342,
+                  0.198583062164427,
+                  0.19668274423922746,
+                  0.1950420231354201,
+                  0.193610364344706,
+                  0.1923502827886502,
+                  0.18934360917857015
+               }
             };
 
             double[][] tol =
             {
-               new double[4] { 0.06,
-                               0.03,
-                               0.03,
-                               0.02 },
-               new double[4] { 0.15,
-                               0.08,
-                               0.04,
-                               0.02 },
-               new double[4] { 0.06,
-                               0.08,
-                               1.0,
-                               1.0 } //forde breaks down for long maturities
+               new double[4] {
+                  0.06,
+                  0.03,
+                  0.03,
+                  0.02
+               },
+               new double[4] {
+                  0.15,
+                  0.08,
+                  0.04,
+                  0.02
+               },
+               new double[4] {
+                  0.06,
+                  0.08,
+                  1.0,
+                  1.0
+               } //forde breaks down for long maturities
             };
 
             double[][] tolAtm =
             {
-               new double[4] { 4e-6,
-                               7e-4,
-                               2e-3,
-                               9e-4 },
-               new double[4] { 7e-6,
-                               4e-4,
-                               9e-4,
-                               4e-4 },
-               new double[4] { 4e-4,
-                               3e-2,
-                               0.28,
-                               1.0 }
+               new double[4] {
+                  4e-6,
+                  7e-4,
+                  2e-3,
+                  9e-4
+               },
+               new double[4] {
+                  7e-6,
+                  4e-4,
+                  9e-4,
+                  4e-4
+               },
+               new double[4] {
+                  4e-4,
+                  3e-2,
+                  0.28,
+                  1.0
+               }
             };
 
             for (int j = 0; j < terms.Length; ++j)
             {
                double term = terms[j];
-               HestonExpansion lpp2 = new LPP2HestonExpansion(kappa, theta, sigma,v0, rho, term);
-               HestonExpansion lpp3 = new LPP3HestonExpansion(kappa, theta, sigma,v0, rho, term);
-               HestonExpansion forde = new FordeHestonExpansion(kappa, theta, sigma,v0, rho, term);
-               HestonExpansion[] expansions = {lpp2,lpp3,forde};
+               HestonExpansion lpp2 = new LPP2HestonExpansion(kappa, theta, sigma, v0, rho, term);
+               HestonExpansion lpp3 = new LPP3HestonExpansion(kappa, theta, sigma, v0, rho, term);
+               HestonExpansion forde = new FordeHestonExpansion(kappa, theta, sigma, v0, rho, term);
+               HestonExpansion[] expansions = {lpp2, lpp3, forde};
 
                for (int i = 0; i < strikes.Length; ++i)
                {
@@ -1399,14 +1442,14 @@ namespace TestSuite
 
                      double expected = referenceVols[j][i];
                      double calculated = expansion.impliedVolatility(strike, forward);
-                     double relError = Math.Abs(calculated - expected)/expected;
+                     double relError = Math.Abs(calculated - expected) / expected;
                      double refTol = strike == forward ? tolAtm[k][j] : tol[k][j];
                      if (relError > refTol)
                      {
-                        QAssert.Fail( "failed to reproduce Forde reference vols "
-                                  + "\n    strike        : " + strike
-                                  + "\n    expansion type: " + k
-                                  + "\n    rel. error    : " + relError);
+                        QAssert.Fail("failed to reproduce Forde reference vols "
+                                     + "\n    strike        : " + strike
+                                     + "\n    expansion type: " + k
+                                     + "\n    rel. error    : " + relError);
                      }
                   }
                }

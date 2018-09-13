@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
- 
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -34,24 +34,25 @@ namespace QLNet
    public class Concentrating1dMesher : Fdm1dMesher
    {
       public Concentrating1dMesher(double start, double end, int size,
-         Pair<double?, double?> cPoints = null,
-         bool requireCPoint = false)
-         : base(size)
+                                   Pair < double?, double? > cPoints = null,
+                                   bool requireCPoint = false)
+      : base(size)
       {
          Utils.QL_REQUIRE(end > start, () => "end must be larger than start");
-         if ( cPoints == null ) cPoints = new Pair<double?, double?>();
+         if (cPoints == null)
+            cPoints = new Pair < double?, double? >();
 
          double? cPoint = cPoints.first;
-         double? density = cPoints.second == null ? null : cPoints.second * (end - start);
+         double ? density = cPoints.second == null ? null : cPoints.second * (end - start);
 
          Utils.QL_REQUIRE(cPoint == null || (cPoint >= start && cPoint <= end),
-            () => "cPoint must be between start and end");
+                          () => "cPoint must be between start and end");
          Utils.QL_REQUIRE(density == null || density > 0.0,
-            () => "density > 0 required");
+                          () => "density > 0 required");
          Utils.QL_REQUIRE(cPoint == null || density != null,
-            () => "density must be given if cPoint is given");
+                          () => "density must be given if cPoint is given");
          Utils.QL_REQUIRE(!requireCPoint || cPoint != null,
-            () => "cPoint is required in grid but not given");
+                          () => "cPoint is required in grid but not given");
 
          double dx = 1.0 / (size - 1);
 
@@ -72,7 +73,7 @@ namespace QLNet
                   double u0 =
                      Math.Max(
                         Math.Min(Convert.ToInt32(z0 * (size - 1) + 0.5),
-                           Convert.ToInt32(size) - 2),
+                                 Convert.ToInt32(size) - 2),
                         1) / (Convert.ToDouble(size - 1));
                   u.Add(u0);
                   z.Add(z0);
@@ -110,9 +111,9 @@ namespace QLNet
 
       public class OdeIntegrationFct
       {
-         public OdeIntegrationFct(List<double?> points,
-            List<double?> betas,
-            double tol)
+         public OdeIntegrationFct(List < double? > points,
+                                  List < double? > betas,
+                                  double tol)
          {
             rk_ = new AdaptiveRungeKutta(tol);
             points_ = points;
@@ -131,13 +132,13 @@ namespace QLNet
             for (int i = 0; i < points_.Count; ++i)
             {
                s += 1.0 / (betas_[i].GetValueOrDefault() + (y - points_[i].GetValueOrDefault()) *
-                  (y - points_[i].GetValueOrDefault()));
+                           (y - points_[i].GetValueOrDefault()));
             }
             return a / Math.Sqrt(s);
          }
 
          protected AdaptiveRungeKutta rk_;
-         protected List<double?> points_, betas_;
+         protected List < double? > points_, betas_;
       }
 
       public class OdeSolver : ISolver1d
@@ -178,14 +179,14 @@ namespace QLNet
       }
 
       public Concentrating1dMesher(double start, double end, int size,
-         List<Tuple<double?, double?, bool>> cPoints,
-         double tol = 1e-8)
-         : base(size)
+                                   List < Tuple < double?, double?, bool >> cPoints,
+                                   double tol = 1e-8)
+      : base(size)
       {
          Utils.QL_REQUIRE(end > start, () => "end must be larger than start");
 
-         List<double?> points = new List<double?>(), betas = new List<double?>();
-         foreach (Tuple<double?, double?, bool> iter in cPoints)
+         List < double? > points = new List < double? >(), betas = new List < double? >();
+         foreach (Tuple < double?, double?, bool > iter in cPoints)
          {
             points.Add(iter.Item1);
             betas.Add((iter.Item2 * (end - start)) * (iter.Item2 * (end - start)));
@@ -226,8 +227,8 @@ namespace QLNet
          LinearInterpolation odeSolution = new LinearInterpolation(x, x.Count, y);
 
          // ensure required points are part of the grid
-         List<Pair<double?, double?>> w =
-            new InitializedList<Pair<double?, double?>>(1, new Pair<double?, double?>(0.0, 0.0));
+         List < Pair < double?, double? >> w =
+            new InitializedList < Pair < double?, double? >> (1, new Pair < double?, double? >(0.0, 0.0));
 
          for (int i = 0; i < points.Count; ++i)
          {
@@ -239,10 +240,10 @@ namespace QLNet
                   new OdeSolver2(odeSolution.value, points[i].Value),
                   Const.QL_EPSILON, x[j], 0.5 / size);
 
-               w.Add(new Pair<double?, double?>(Math.Min(x[size - 2], x[j]), e));
+               w.Add(new Pair < double?, double? >(Math.Min(x[size - 2], x[j]), e));
             }
          }
-         w.Add(new Pair<double?, double?>(1.0, 1.0));
+         w.Add(new Pair < double?, double? >(1.0, 1.0));
          w = w.OrderBy(xx => xx.first).Distinct(new equal_on_first()).ToList();
 
          List<double> u = new List<double>(w.Count), z = new List<double>(w.Count);

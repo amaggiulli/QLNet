@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,7 +20,7 @@ using System;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -32,11 +32,11 @@ namespace TestSuite
    public class T_DefaultProbabilityCurves
    {
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
-      public void testDefaultProbability() 
+      public void testDefaultProbability()
       {
          // Testing default-probability structure...
 
@@ -53,7 +53,7 @@ namespace TestSuite
 
          FlatHazardRate flatHazardRate = new FlatHazardRate(startDate, hazardRateQuote, dayCounter);
 
-         for(int i=0; i<n; i++)
+         for (int i = 0; i < n; i++)
          {
             startDate = endDate;
             endDate = calendar.advance(endDate, 1, TimeUnit.Years);
@@ -67,7 +67,7 @@ namespace TestSuite
             double pBetween = pEnd - pStart;
 
             if (Math.Abs(pBetween - pBetweenComputed) > tolerance)
-               QAssert.Fail( "Failed to reproduce probability(d1, d2) "
+               QAssert.Fail("Failed to reproduce probability(d1, d2) "
                             + "for default probability structure\n"
                             + "    calculated probability: " + pBetweenComputed + "\n"
                             + "    expected probability:   " + pBetween);
@@ -78,28 +78,28 @@ namespace TestSuite
                flatHazardRate.defaultProbability(endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               QAssert.Fail( "single-time probability and single-date probability do not match\n"
-                           + "    time probability: " + timeProbability + "\n"
-                           + "    date probability: " + dateProbability);
+               QAssert.Fail("single-time probability and single-date probability do not match\n"
+                            + "    time probability: " + timeProbability + "\n"
+                            + "    date probability: " + dateProbability);
 
             double t1 = dayCounter.yearFraction(today, startDate);
             timeProbability = flatHazardRate.defaultProbability(t1, t2);
             dateProbability = flatHazardRate.defaultProbability(startDate, endDate);
 
             if (Math.Abs(timeProbability - dateProbability) > tolerance)
-               QAssert.Fail( "double-time probability and double-date probability do not match\n"
+               QAssert.Fail("double-time probability and double-date probability do not match\n"
                             + "    time probability: " + timeProbability + "\n"
                             + "    date probability: " + dateProbability);
-      
+
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
-      public void testFlatHazardRate() 
+      public void testFlatHazardRate()
       {
 
          // Testing flat hazard rate...
@@ -117,7 +117,7 @@ namespace TestSuite
 
          FlatHazardRate flatHazardRate = new FlatHazardRate(today, hazardRateQuote, dayCounter);
 
-         for(int i=0; i<n; i++)
+         for (int i = 0; i < n; i++)
          {
             endDate = calendar.advance(endDate, 1, TimeUnit.Years);
             double t = dayCounter.yearFraction(startDate, endDate);
@@ -125,18 +125,18 @@ namespace TestSuite
             double computedProbability = flatHazardRate.defaultProbability(t);
 
             if (Math.Abs(probability - computedProbability) > tolerance)
-               QAssert.Fail( "Failed to reproduce probability for flat hazard rate\n"
+               QAssert.Fail("Failed to reproduce probability for flat hazard rate\n"
                             + "    calculated probability: " + computedProbability + "\n"
                             + "    expected probability:   " + probability);
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
-      public void testFlatHazardConsistency() 
+      public void testFlatHazardConsistency()
       {
          // Testing piecewise-flat hazard-rate consistency...
          //testBootstrapFromSpread<HazardRate,BackwardFlat>();

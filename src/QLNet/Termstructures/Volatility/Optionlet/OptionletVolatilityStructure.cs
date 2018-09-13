@@ -1,30 +1,30 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-namespace QLNet 
+namespace QLNet
 {
    //! Optionlet (caplet/floorlet) volatility structure
    /*! This class is purely abstract and defines the interface of
       concrete structures which will be derived from this one.
    */
-   public abstract class OptionletVolatilityStructure : VolatilityTermStructure 
+   public abstract class OptionletVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors
       //! default constructor
@@ -34,17 +34,17 @@ namespace QLNet
       */
 
       protected OptionletVolatilityStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
-         DayCounter dc = null)
+                                             DayCounter dc = null)
          : base(bdc, dc) {}
 
       //! initialize with a fixed reference date
-      protected OptionletVolatilityStructure(Date referenceDate,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+      protected OptionletVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
-      
+
       //! calculate the reference date based on the global evaluation date
-      protected OptionletVolatilityStructure(int settlementDays,Calendar cal,BusinessDayConvention bdc,DayCounter dc = null)
+      protected OptionletVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
-      
+
       #endregion
 
       #region Volatility and Variance
@@ -55,7 +55,7 @@ namespace QLNet
          Date optionDate = optionDateFromTenor(optionTenor);
          return volatility(optionDate, strike, extrapolate);
       }
-      
+
       //! returns the volatility for a given option date and strike rate
       public double volatility(Date optionDate, double strike, bool extrapolate = false)
       {
@@ -63,7 +63,7 @@ namespace QLNet
          checkStrike(strike, extrapolate);
          return volatilityImpl(optionDate, strike);
       }
-      
+
       //! returns the volatility for a given option time and strike rate
       public double volatility(double optionTime, double strike, bool extrapolate = false)
       {
@@ -84,25 +84,25 @@ namespace QLNet
       {
          double v = volatility(optionDate, strike, extrapolate);
          double t = timeFromReference(optionDate);
-         return v*v*t;
+         return v * v * t;
       }
 
       //! returns the Black variance for a given option time and strike rate
       public double blackVariance(double optionTime,  double strike,  bool extrapolate = false)
       {
          double v = volatility(optionTime, strike, extrapolate);
-         return v*v*optionTime;
+         return v * v * optionTime;
       }
 
       //! returns the smile for a given option tenor
-      public SmileSection smileSection( Period optionTenor, bool extr = false)
+      public SmileSection smileSection(Period optionTenor, bool extr = false)
       {
          Date optionDate = optionDateFromTenor(optionTenor);
          return smileSection(optionDate, extrapolate);
       }
 
       //! returns the smile for a given option date
-      public SmileSection smileSection(Date optionDate,bool extr = false)
+      public SmileSection smileSection(Date optionDate, bool extr = false)
       {
          checkRange(optionDate, extrapolate);
          return smileSectionImpl(optionDate);
@@ -114,15 +114,15 @@ namespace QLNet
          checkRange(optionTime, extrapolate);
          return smileSectionImpl(optionTime);
       }
-      
+
       #endregion
-      
+
       public virtual double displacement() {return 0.0;}
       public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
 
       protected virtual SmileSection smileSectionImpl(Date optionDate)
       {
-          return smileSectionImpl(timeFromReference(optionDate));
+         return smileSectionImpl(timeFromReference(optionDate));
       }
 
       //! implements the actual smile calculation in derived classes
@@ -138,5 +138,5 @@ namespace QLNet
 
 
    }
-   
+
 }

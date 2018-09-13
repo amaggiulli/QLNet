@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <https://github.com/amaggiulli/qlnetLicense.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -22,7 +22,7 @@ using System.Collections.Generic;
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 
@@ -51,7 +51,7 @@ namespace TestSuite
          return "Mersenne Twister";
       }
 
-   };
+   }
 
    public class SobolFactory : IRNGFactory
    {
@@ -102,7 +102,7 @@ namespace TestSuite
       }
 
       private SobolRsg.DirectionIntegers unit_;
-   };
+   }
 
    public class HaltonFactory : IRNGFactory
    {
@@ -128,7 +128,7 @@ namespace TestSuite
       }
 
       private bool start_, shift_;
-   };
+   }
 
    #endregion
 
@@ -145,9 +145,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testPolynomialsModuloTwo()
       {
@@ -179,7 +179,7 @@ namespace TestSuite
                if (j != jj[i])
                {
                   QAssert.Fail("Only " + j + " polynomials in degree " + i + 1
-                              + " instead of " + jj[i]);
+                               + " instead of " + jj[i]);
                }
             }
             ++j; // Increase index of polynomial in degree i+1
@@ -189,9 +189,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testSobol()
       {
@@ -213,8 +213,8 @@ namespace TestSuite
             if (point.Count != dimensionality)
             {
                QAssert.Fail("Sobol sequence generator returns " +
-                           " a sequence of wrong dimensionality: " + point.Count
-                           + " instead of  " + dimensionality);
+                            " a sequence of wrong dimensionality: " + point.Count
+                            + " instead of  " + dimensionality);
             }
          }
 
@@ -228,7 +228,7 @@ namespace TestSuite
          for (int j = 1; j < 5; j++)
          {
             // five cycle
-            points = (int) (Utils.Pow(2.0, j) - 1); // base 2
+            points = (int)(Utils.Pow(2.0, j) - 1);  // base 2
             for (; k < points; k++)
             {
                point = rsg.nextSequence().value;
@@ -241,12 +241,12 @@ namespace TestSuite
                if (error > tolerance)
                {
                   QAssert.Fail(i + 1 + " dimension: "
-                     // + QL_FIXED
-                              + "mean (" + mean[i]
-                              + ") at the end of the " + j + 1
-                              + " cycle in Sobol sequence is not " + 0.5
-                     //+ QL_SCIENTIFIC
-                              + " (error = " + error + ")");
+                               // + QL_FIXED
+                               + "mean (" + mean[i]
+                               + ") at the end of the " + j + 1
+                               + " cycle in Sobol sequence is not " + 0.5
+                               //+ QL_SCIENTIFIC
+                               + " (error = " + error + ")");
                }
             }
          }
@@ -269,7 +269,7 @@ namespace TestSuite
 
          dimensionality = 1;
          rsg = new SobolRsg(dimensionality);
-         points = (int) (Utils.Pow(2.0, 5)) - 1; // five cycles
+         points = (int)(Utils.Pow(2.0, 5)) - 1;  // five cycles
          for (i = 0; i < points; i++)
          {
             point = rsg.nextSequence().value;
@@ -277,171 +277,171 @@ namespace TestSuite
             if (error > tolerance)
             {
                QAssert.Fail(i + 1 + " draw ("
-                  //+ QL_FIXED 
-                           + point[0]
-                           + ") in 1-D Sobol sequence is not in the "
-                           + "van der Corput sequence modulo two: "
-                           + "it should have been "
-                           + vanderCorputSequenceModuloTwo[i]
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            //+ QL_FIXED
+                            + point[0]
+                            + ") in 1-D Sobol sequence is not in the "
+                            + "van der Corput sequence modulo two: "
+                            + "it should have been "
+                            + vanderCorputSequenceModuloTwo[i]
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
          }
       }
 
-/*public void testFaure() {
+      /*public void testFaure() {
 
-    //("Testing Faure sequences...");
+          //("Testing Faure sequences...");
 
-    List<double> point;
-    double tolerance = 1.0e-15;
+          List<double> point;
+          double tolerance = 1.0e-15;
 
-    // testing "high" dimensionality
-    int dimensionality = PPMT_MAX_DIM;
-    FaureRsg rsg(dimensionality);
-    int points = 100, i;
-    for (i=0; i<points; i++) {
-        point = rsg.nextSequence().value;
-        if (point.size()!=dimensionality) {
-            QAssert.Fail("Faure sequence generator returns "
-                        " a sequence of wrong dimensionality: " + point.size()
-                        + " instead of  " + dimensionality);
-        }
-    }
+          // testing "high" dimensionality
+          int dimensionality = PPMT_MAX_DIM;
+          FaureRsg rsg(dimensionality);
+          int points = 100, i;
+          for (i=0; i<points; i++) {
+              point = rsg.nextSequence().value;
+              if (point.size()!=dimensionality) {
+                  QAssert.Fail("Faure sequence generator returns "
+                              " a sequence of wrong dimensionality: " + point.size()
+                              + " instead of  " + dimensionality);
+              }
+          }
 
-    // 1-dimension Faure (van der Corput sequence base 2)
-     double vanderCorputSequenceModuloTwo[] = {
-        // first cycle (zero excluded)
-        0.50000,
-        // second cycle
-        0.75000, 0.25000,
-        // third cycle
-        0.37500, 0.87500, 0.62500, 0.12500,
-        // fourth cycle
-        0.18750, 0.68750, 0.93750, 0.43750, 0.31250, 0.81250, 0.56250, 0.06250,
-        // fifth cycle
-        0.09375, 0.59375, 0.84375, 0.34375, 0.46875, 0.96875, 0.71875, 0.21875,
-        0.15625, 0.65625, 0.90625, 0.40625, 0.28125, 0.78125, 0.53125, 0.03125
-    };
-    dimensionality = 1;
-    rsg = FaureRsg(dimensionality);
-    points = int(std::pow(2.0, 5))-1; // five cycles
-    for (i=0; i<points; i++) {
-        point = rsg.nextSequence().value;
-        double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
-                        + QL_FIXED + point[0]
-                        + ") in 3-D Faure sequence should have been "
-                        + vanderCorputSequenceModuloTwo[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-    }
+          // 1-dimension Faure (van der Corput sequence base 2)
+           double vanderCorputSequenceModuloTwo[] = {
+              // first cycle (zero excluded)
+              0.50000,
+              // second cycle
+              0.75000, 0.25000,
+              // third cycle
+              0.37500, 0.87500, 0.62500, 0.12500,
+              // fourth cycle
+              0.18750, 0.68750, 0.93750, 0.43750, 0.31250, 0.81250, 0.56250, 0.06250,
+              // fifth cycle
+              0.09375, 0.59375, 0.84375, 0.34375, 0.46875, 0.96875, 0.71875, 0.21875,
+              0.15625, 0.65625, 0.90625, 0.40625, 0.28125, 0.78125, 0.53125, 0.03125
+          };
+          dimensionality = 1;
+          rsg = FaureRsg(dimensionality);
+          points = int(std::pow(2.0, 5))-1; // five cycles
+          for (i=0; i<points; i++) {
+              point = rsg.nextSequence().value;
+              double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                              + QL_FIXED + point[0]
+                              + ") in 3-D Faure sequence should have been "
+                              + vanderCorputSequenceModuloTwo[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+          }
 
-    // 2nd dimension of the 2-dimensional Faure sequence
-    // (shuffled van der Corput sequence base 2)
-    // checked with the code provided with "Economic generation of
-    // low-discrepancy sequences with a b-ary gray code", by E. Thiemard
-     double FaureDimensionTwoOfTwo[] = {
-        // first cycle (zero excluded)
-        0.50000,
-        // second cycle
-        0.25000, 0.75000,
-        // third cycle
-        0.37500, 0.87500, 0.12500, 0.62500,
-        // fourth cycle
-        0.31250, 0.81250, 0.06250, 0.56250, 0.18750, 0.68750, 0.43750, 0.93750,
-        // fifth cycle
-        0.46875, 0.96875, 0.21875, 0.71875, 0.09375, 0.59375, 0.34375, 0.84375,
-        0.15625, 0.65625, 0.40625, 0.90625, 0.28125, 0.78125, 0.03125, 0.53125
-    };
-    dimensionality = 2;
-    rsg = FaureRsg(dimensionality);
-    points = int(std::pow(2.0, 5))-1; // five cycles
-    for (i=0; i<points; i++) {
-        point = rsg.nextSequence().value;
-        double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
-                        + QL_FIXED + point[0]
-                        + ") in 3-D Faure sequence should have been "
-                        + vanderCorputSequenceModuloTwo[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-        error = std::fabs(point[1]-FaureDimensionTwoOfTwo[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
-                        + QL_FIXED + point[1]
-                        + ") in 3-D Faure sequence should have been "
-                        + FaureDimensionTwoOfTwo[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-    }
+          // 2nd dimension of the 2-dimensional Faure sequence
+          // (shuffled van der Corput sequence base 2)
+          // checked with the code provided with "Economic generation of
+          // low-discrepancy sequences with a b-ary gray code", by E. Thiemard
+           double FaureDimensionTwoOfTwo[] = {
+              // first cycle (zero excluded)
+              0.50000,
+              // second cycle
+              0.25000, 0.75000,
+              // third cycle
+              0.37500, 0.87500, 0.12500, 0.62500,
+              // fourth cycle
+              0.31250, 0.81250, 0.06250, 0.56250, 0.18750, 0.68750, 0.43750, 0.93750,
+              // fifth cycle
+              0.46875, 0.96875, 0.21875, 0.71875, 0.09375, 0.59375, 0.34375, 0.84375,
+              0.15625, 0.65625, 0.40625, 0.90625, 0.28125, 0.78125, 0.03125, 0.53125
+          };
+          dimensionality = 2;
+          rsg = FaureRsg(dimensionality);
+          points = int(std::pow(2.0, 5))-1; // five cycles
+          for (i=0; i<points; i++) {
+              point = rsg.nextSequence().value;
+              double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                              + QL_FIXED + point[0]
+                              + ") in 3-D Faure sequence should have been "
+                              + vanderCorputSequenceModuloTwo[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+              error = std::fabs(point[1]-FaureDimensionTwoOfTwo[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+                              + QL_FIXED + point[1]
+                              + ") in 3-D Faure sequence should have been "
+                              + FaureDimensionTwoOfTwo[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+          }
 
-    // 3-dimension Faure sequence (shuffled van der Corput sequence base 3)
-    // see "Monte Carlo Methods in Financial Engineering,"
-    // by Paul Glasserman, 2004 Springer Verlag, pag. 299
-     double FaureDimensionOneOfThree[] = {
-        // first cycle (zero excluded)
-        1.0/3,  2.0/3,
-        // second cycle
-        7.0/9,  1.0/9,  4.0/9,  5.0/9,  8.0/9,  2.0/9
-    };
-     double FaureDimensionTwoOfThree[] = {
-        // first cycle (zero excluded)
-        1.0/3,  2.0/3,
-        // second cycle
-        1.0/9,  4.0/9,  7.0/9,  2.0/9,  5.0/9,  8.0/9
-    };
-     double FaureDimensionThreeOfThree[] = {
-        // first cycle (zero excluded)
-        1.0/3,  2.0/3,
-        // second cycle
-        4.0/9,  7.0/9,  1.0/9,  8.0/9,  2.0/9,  5.0/9
-    };
+          // 3-dimension Faure sequence (shuffled van der Corput sequence base 3)
+          // see "Monte Carlo Methods in Financial Engineering,"
+          // by Paul Glasserman, 2004 Springer Verlag, pag. 299
+           double FaureDimensionOneOfThree[] = {
+              // first cycle (zero excluded)
+              1.0/3,  2.0/3,
+              // second cycle
+              7.0/9,  1.0/9,  4.0/9,  5.0/9,  8.0/9,  2.0/9
+          };
+           double FaureDimensionTwoOfThree[] = {
+              // first cycle (zero excluded)
+              1.0/3,  2.0/3,
+              // second cycle
+              1.0/9,  4.0/9,  7.0/9,  2.0/9,  5.0/9,  8.0/9
+          };
+           double FaureDimensionThreeOfThree[] = {
+              // first cycle (zero excluded)
+              1.0/3,  2.0/3,
+              // second cycle
+              4.0/9,  7.0/9,  1.0/9,  8.0/9,  2.0/9,  5.0/9
+          };
 
-    dimensionality = 3;
-    rsg = FaureRsg(dimensionality);
-    points = int(std::pow(3.0, 2))-1; // three cycles
-    for (i=0; i<points; i++) {
-        point = rsg.nextSequence().value;
-        double error = std::fabs(point[0]-FaureDimensionOneOfThree[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
-                        + QL_FIXED + point[0]
-                        + ") in 3-D Faure sequence should have been "
-                        + FaureDimensionOneOfThree[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-        error = std::fabs(point[1]-FaureDimensionTwoOfThree[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
-                        + QL_FIXED + point[1]
-                        + ") in 3-D Faure sequence should have been "
-                        + FaureDimensionTwoOfThree[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-        error = std::fabs(point[2]-FaureDimensionThreeOfThree[i]);
-        if (error > tolerance) {
-            QAssert.Fail(io::ordinal(i+1) + " draw, dimension 3 ("
-                        + QL_FIXED + point[2]
-                        + ") in 3-D Faure sequence should have been "
-                        + FaureDimensionThreeOfThree[i]
-                        + QL_SCIENTIFIC
-                        + " (error = " + error + ")");
-        }
-    }
-}*/
+          dimensionality = 3;
+          rsg = FaureRsg(dimensionality);
+          points = int(std::pow(3.0, 2))-1; // three cycles
+          for (i=0; i<points; i++) {
+              point = rsg.nextSequence().value;
+              double error = std::fabs(point[0]-FaureDimensionOneOfThree[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                              + QL_FIXED + point[0]
+                              + ") in 3-D Faure sequence should have been "
+                              + FaureDimensionOneOfThree[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+              error = std::fabs(point[1]-FaureDimensionTwoOfThree[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+                              + QL_FIXED + point[1]
+                              + ") in 3-D Faure sequence should have been "
+                              + FaureDimensionTwoOfThree[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+              error = std::fabs(point[2]-FaureDimensionThreeOfThree[i]);
+              if (error > tolerance) {
+                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 3 ("
+                              + QL_FIXED + point[2]
+                              + ") in 3-D Faure sequence should have been "
+                              + FaureDimensionThreeOfThree[i]
+                              + QL_SCIENTIFIC
+                              + " (error = " + error + ")");
+              }
+          }
+      }*/
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testHalton()
       {
@@ -461,9 +461,9 @@ namespace TestSuite
             if (point.Count != dimensionality)
             {
                QAssert.Fail("Halton sequence generator returns " +
-                           " a sequence of wrong dimensionality: " + point.Count
-                           + " instead of  " + dimensionality)
-                  ;
+                            " a sequence of wrong dimensionality: " + point.Count
+                            + " instead of  " + dimensionality)
+               ;
             }
          }
 
@@ -488,7 +488,7 @@ namespace TestSuite
 
          dimensionality = 1;
          rsg = new HaltonRsg(dimensionality, 0, false, false);
-         points = (int) (Math.Pow(2.0, 5)) - 1; // five cycles
+         points = (int)(Math.Pow(2.0, 5)) - 1;  // five cycles
          for (i = 0; i < points; i++)
          {
             point = rsg.nextSequence().value;
@@ -496,31 +496,31 @@ namespace TestSuite
             if (error > tolerance)
             {
                QAssert.Fail(i + 1 + " draw ("
-                           + /*QL_FIXED*/ +point[0]
-                           + ") in 1-D Halton sequence is not in the "
-                           + "van der Corput sequence modulo two: "
-                           + "it should have been "
-                           + vanderCorputSequenceModuloTwo[i]
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            + /*QL_FIXED*/ +point[0]
+                            + ") in 1-D Halton sequence is not in the "
+                            + "van der Corput sequence modulo two: "
+                            + "it should have been "
+                            + vanderCorputSequenceModuloTwo[i]
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
          }
 
          double[] vanderCorputSequenceModuloThree =
          {
             // first cycle (zero excluded)
-            1.0/3, 2.0/3,
+            1.0 / 3, 2.0 / 3,
             // second cycle
-            1.0/9, 4.0/9, 7.0/9, 2.0/9, 5.0/9, 8.0/9,
+            1.0 / 9, 4.0 / 9, 7.0 / 9, 2.0 / 9, 5.0 / 9, 8.0 / 9,
             // third cycle
-            1.0/27, 10.0/27, 19.0/27, 4.0/27, 13.0/27, 22.0/27,
-            7.0/27, 16.0/27, 25.0/27, 2.0/27, 11.0/27, 20.0/27,
-            5.0/27, 14.0/27, 23.0/27, 8.0/27, 17.0/27, 26.0/27
+            1.0 / 27, 10.0 / 27, 19.0 / 27, 4.0 / 27, 13.0 / 27, 22.0 / 27,
+            7.0 / 27, 16.0 / 27, 25.0 / 27, 2.0 / 27, 11.0 / 27, 20.0 / 27,
+            5.0 / 27, 14.0 / 27, 23.0 / 27, 8.0 / 27, 17.0 / 27, 26.0 / 27
          };
 
          dimensionality = 2;
          rsg = new HaltonRsg(dimensionality, 0, false, false);
-         points = (int) (Math.Pow(3.0, 3)) - 1; // three cycles of the higher dimension
+         points = (int)(Math.Pow(3.0, 3)) - 1;  // three cycles of the higher dimension
          for (i = 0; i < points; i++)
          {
             point = rsg.nextSequence().value;
@@ -528,25 +528,25 @@ namespace TestSuite
             if (error > tolerance)
             {
                QAssert.Fail("First component of " + i + 1
-                           + " draw (" + /*QL_FIXED*/ +point[0]
-                           + ") in 2-D Halton sequence is not in the "
-                           + "van der Corput sequence modulo two: "
-                           + "it should have been "
-                           + vanderCorputSequenceModuloTwo[i]
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            + " draw (" + /*QL_FIXED*/ +point[0]
+                            + ") in 2-D Halton sequence is not in the "
+                            + "van der Corput sequence modulo two: "
+                            + "it should have been "
+                            + vanderCorputSequenceModuloTwo[i]
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
             error = Math.Abs(point[1] - vanderCorputSequenceModuloThree[i]);
             if (error > tolerance)
             {
                QAssert.Fail("Second component of " + i + 1
-                           + " draw (" + /*QL_FIXED*/ +point[1]
-                           + ") in 2-D Halton sequence is not in the "
-                           + "van der Corput sequence modulo three: "
-                           + "it should have been "
-                           + vanderCorputSequenceModuloThree[i]
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            + " draw (" + /*QL_FIXED*/ +point[1]
+                            + ") in 2-D Halton sequence is not in the "
+                            + "van der Corput sequence modulo three: "
+                            + "it should have been "
+                            + vanderCorputSequenceModuloThree[i]
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
          }
 
@@ -560,7 +560,7 @@ namespace TestSuite
          for (j = 1; j < 5; j++)
          {
             // five cycle
-            points = (int) (Math.Pow(2.0, j)) - 1; // base 2
+            points = (int)(Math.Pow(2.0, j)) - 1;  // base 2
             for (; k < points; k++)
             {
                point = rsg.nextSequence().value;
@@ -571,10 +571,10 @@ namespace TestSuite
             if (error > tolerance)
             {
                QAssert.Fail("First dimension mean (" + /*QL_FIXED*/ +mean[0]
-                           + ") at the end of the " + j + 1
-                           + " cycle in Halton sequence is not " + 0.5
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            + ") at the end of the " + j + 1
+                            + " cycle in Halton sequence is not " + 0.5
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
          }
 
@@ -585,7 +585,7 @@ namespace TestSuite
          for (j = 1; j < 3; j++)
          {
             // three cycle
-            points = (int) (Math.Pow(3.0, j)) - 1; // base 3
+            points = (int)(Math.Pow(3.0, j)) - 1;  // base 3
             for (; k < points; k++)
             {
                point = rsg.nextSequence().value;
@@ -596,10 +596,10 @@ namespace TestSuite
             if (error > tolerance)
             {
                QAssert.Fail("Second dimension mean (" + /*QL_FIXED*/ +mean[1]
-                           + ") at the end of the " + j + 1
-                           + " cycle in Halton sequence is not " + 0.5
-                  //+ QL_SCIENTIFIC
-                           + " (error = " + error + ")");
+                            + ") at the end of the " + j + 1
+                            + " cycle in Halton sequence is not " + 0.5
+                            //+ QL_SCIENTIFIC
+                            + " (error = " + error + ")");
             }
          }
       }
@@ -627,7 +627,7 @@ namespace TestSuite
 
             for (j = jMin; j < jMin + sampleLoops; j++)
             {
-               int points = (int) (Utils.Pow(2.0, (int) (j))) - 1;
+               int points = (int)(Utils.Pow(2.0, (int)(j))) - 1;
                for (; k < points; k++)
                {
                   point = rsg.nextSequence().value;
@@ -636,13 +636,13 @@ namespace TestSuite
 
                discr = stat.discrepancy();
 
-               if (Math.Abs(discr - discrepancy[i][j - jMin]) > tolerance*discr)
+               if (Math.Abs(discr - discrepancy[i][j - jMin]) > tolerance * discr)
                {
                   QAssert.Fail(generatorFactory.name()
-                              + "discrepancy dimension " + dimensionality[i]
-                              + " at " + points + " samples is "
-                              + discr + " instead of "
-                              + discrepancy[i][j - jMin]);
+                               + "discrepancy dimension " + dimensionality[i]
+                               + " at " + points + " samples is "
+                               + discr + " instead of "
+                               + discrepancy[i][j - jMin]);
                }
             }
          }
@@ -663,9 +663,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new MersenneFactory(),
-            discrepancy /*,"MersenneDiscrepancy.txt",
+                                  discrepancy /*,"MersenneDiscrepancy.txt",
                                      "DiscrMersenneTwis"*/
-            );
+                                 );
       }
 
       #endregion
@@ -686,9 +686,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new HaltonFactory(false, false),
-            discrepancy /*,"PlainHaltonDiscrepancy.txt",
+                                  discrepancy /*,"PlainHaltonDiscrepancy.txt",
                                      "DiscrPlain_Halton"*/
-            );
+                                 );
       }
 
       public void testRandomStartHaltonDiscrepancy()
@@ -705,9 +705,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new HaltonFactory(true, false),
-            discrepancy /*,"RandomStartHaltonDiscrepancy.txt",
+                                  discrepancy /*,"RandomStartHaltonDiscrepancy.txt",
                                      "DiscrRStartHalton"*/
-            );
+                                 );
       }
 
       public void testRandomShiftHaltonDiscrepancy()
@@ -724,9 +724,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new HaltonFactory(false, true),
-            discrepancy /*,"RandomShiftHaltonDiscrepancy.txt",
+                                  discrepancy /*,"RandomShiftHaltonDiscrepancy.txt",
                                      "DiscrRShiftHalton"*/
-            );
+                                 );
       }
 
       public void testRandomStartRandomShiftHaltonDiscrepancy()
@@ -743,9 +743,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new HaltonFactory(true, true),
-            discrepancy /*,"RandomStartRandomShiftHaltonDiscrepancy.txt",
+                                  discrepancy /*,"RandomStartRandomShiftHaltonDiscrepancy.txt",
                                      "DiscrRStRShHalton"*/
-            );
+                                 );
       }
 
       //[TestMethod()]
@@ -774,7 +774,7 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new SobolFactory(SobolRsg.DirectionIntegers.Jaeckel),
-            discrepancy /*,"JackelSobolDiscrepancy.txt","DiscrJackel_Sobol"*/);
+                                  discrepancy /*,"JackelSobolDiscrepancy.txt","DiscrJackel_Sobol"*/);
       }
 
       public void testSobolLevitanSobolDiscrepancy()
@@ -791,8 +791,8 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new SobolFactory(SobolRsg.DirectionIntegers.SobolLevitan),
-            discrepancy
-            /*,"SobolLevitanSobolDiscrepancy.txt",                                                        "DiscrSobLev_Sobol"*/);
+                                  discrepancy
+                                  /*,"SobolLevitanSobolDiscrepancy.txt",                                                        "DiscrSobLev_Sobol"*/);
       }
 
       public void testSobolLevitanLemieuxSobolDiscrepancy()
@@ -809,10 +809,10 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new SobolFactory(SobolRsg.DirectionIntegers.SobolLevitanLemieux),
-            discrepancy /*,
+                                  discrepancy /*,
                                      "SobolLevitanLemieuxSobolDiscrepancy.txt",
                                      "DiscrSobLevLem_Sobol"*/
-            );
+                                 );
       }
 
       public void testUnitSobolDiscrepancy()
@@ -829,9 +829,9 @@ namespace TestSuite
          };
 
          testGeneratorDiscrepancy(new SobolFactory(SobolRsg.DirectionIntegers.Unit),
-            discrepancy /*,"UnitSobolDiscrepancy.txt",
+                                  discrepancy /*,"UnitSobolDiscrepancy.txt",
                                       "Discr__Unit_Sobol"*/
-            );
+                                 );
       }
 
       //[TestMethod()]
@@ -846,9 +846,9 @@ namespace TestSuite
       #endregion
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testSobolSkipping()
       {
@@ -891,12 +891,12 @@ namespace TestSuite
                         if (s1[n] != s2[n])
                         {
                            QAssert.Fail("Mismatch after skipping:"
-                                       + "\n  size:     " + dimensionality[j]
-                                       + "\n  integers: " + integers[i]
-                                       + "\n  skipped:  " + skip[k]
-                                       + "\n  at index: " + n
-                                       + "\n  expected: " + s1[n]
-                                       + "\n  found:    " + s2[n]);
+                                        + "\n  size:     " + dimensionality[j]
+                                        + "\n  integers: " + integers[i]
+                                        + "\n  skipped:  " + skip[k]
+                                        + "\n  at index: " + n
+                                        + "\n  expected: " + s1[n]
+                                        + "\n  found:    " + s2[n]);
                         }
                      }
                   }

@@ -1,18 +1,18 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,8 +24,8 @@ namespace QLNet
    //! Vanilla option (no discrete dividends, no barriers) on a single asset
    public class VanillaOption : OneAssetOption
    {
-      public VanillaOption( StrikedTypePayoff payoff, Exercise exercise ) 
-         : base( payoff, exercise ) {}
+      public VanillaOption(StrikedTypePayoff payoff, Exercise exercise)
+         : base(payoff, exercise) {}
 
       /*! \warning currently, this method returns the Black-Scholes
                implied volatility using analytic formulas for
@@ -45,39 +45,39 @@ namespace QLNet
                value lower than the intrinsic value in the case
                of American options.
       */
-      public double impliedVolatility( double targetValue, 
-                                       GeneralizedBlackScholesProcess process,
-                                       double accuracy = 1.0e-4, 
-                                       int maxEvaluations = 100, 
-                                       double minVol = 1.0e-7, 
-                                       double maxVol = 4.0)
+      public double impliedVolatility(double targetValue,
+                                      GeneralizedBlackScholesProcess process,
+                                      double accuracy = 1.0e-4,
+                                      int maxEvaluations = 100,
+                                      double minVol = 1.0e-7,
+                                      double maxVol = 4.0)
       {
 
-         Utils.QL_REQUIRE( !isExpired(),()=> "option expired" );
+         Utils.QL_REQUIRE(!isExpired(), () => "option expired");
 
          SimpleQuote volQuote = new SimpleQuote();
 
-         GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone( process, volQuote );
+         GeneralizedBlackScholesProcess newProcess = ImpliedVolatilityHelper.clone(process, volQuote);
 
          // engines are built-in for the time being
          IPricingEngine engine;
          switch (exercise_.type())
          {
             case Exercise.Type.European:
-               engine = new AnalyticEuropeanEngine( newProcess );
+               engine = new AnalyticEuropeanEngine(newProcess);
                break;
             case Exercise.Type.American:
-               engine = new FDAmericanEngine( newProcess );
+               engine = new FDAmericanEngine(newProcess);
                break;
             case Exercise.Type.Bermudan:
-               engine = new FDBermudanEngine( newProcess );
+               engine = new FDBermudanEngine(newProcess);
                break;
             default:
-               throw new ArgumentException( "unknown exercise type" );
+               throw new ArgumentException("unknown exercise type");
          }
 
-         return ImpliedVolatilityHelper.calculate( this, engine, volQuote, targetValue, accuracy,
-                                                  maxEvaluations, minVol, maxVol );
+         return ImpliedVolatilityHelper.calculate(this, engine, volQuote, targetValue, accuracy,
+                                                  maxEvaluations, minVol, maxVol);
       }
    }
 }

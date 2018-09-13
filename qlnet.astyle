@@ -1,0 +1,28 @@
+# QLNet Coding Style Options
+
+# braces and indent
+style=allman
+indent=spaces=3
+
+# indentation
+min-conditional-indent=0
+max-continuation-indent=80
+indent-classes
+indent-namespaces
+indent-switches
+
+# padding
+pad-oper
+pad-header
+unpad-paren
+align-pointer=type
+
+# formatting
+break-one-line-headers
+keep-one-line-blocks
+keep-one-line-statements
+convert-tabs
+
+# other options
+suffix=none
+exclude=obj

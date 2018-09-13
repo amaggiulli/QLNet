@@ -1,48 +1,15 @@
-QLNet 1.10.0 
+QLNet 1.11.2
 =========================
 
-QLNet 1.10.0 stable version.
-
-The most notable changes are included below.
+QLNet 1.11.2 is a bug-fix release for version 1.11
 A detailed list of changes is available in ChangeLog.txt.
 
 ENGINES
 
-+ Added DiscountingLoanEngine
-+ Updated Swaption Engine
-+ Added IsdaCdsEngine, InterpolatedSurvivalProbabilityCurve and SurvivalProbabilityStructure with test
-+ Added AnalyticDoubleBarrierBinaryEngine and BinomialDoubleBarrierEngine
-+ Added HW swaption engine
-
-FRAMEWORK
-
-+ Updated documentation to standard XML format
-+ Updated to net standard 2.0
-+ Several bug fixes 
-
-TERMSTRUCTURES
-
-+ Added Interpolated YoY Inflation Curve
-+ Added normal volatility interpolation  to SABR
-
-TIME
-
- + Updated Schedule for CDS2015 with test.
- + Updated Actual360 daycounter to include/exclude last day
-
-INSTRUMENTS
-
-+ Add gearing interface for CMS and Floating legs
-+ Swaption instrument update
-+ Updated bonds constructors
-+ Added Finite differences method
-+ Updated CreditDefaultSwap + helper
-
-MATH
-
-+ Add SVI Interpolation class
-+ Add shift to SABR & XABR
++ Fixed a bug int FDMultiPeriodEngine.Thanks to Jakub Pstrusiński.
 
 CASHFLOWS
 
-+ Added LastPeriodDayCounter to FixedRateCoupon
++ Fixed accrual calculation
++ Fixed yield calculation when settlement date falls on 31st
++ Added OAS calculation to callable bonds

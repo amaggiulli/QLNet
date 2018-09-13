@@ -1,17 +1,17 @@
 ﻿/*
  Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-  
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -28,7 +28,7 @@ namespace QLNet
    /// RNG.sample_type RNG.next();
    /// </summary>
    /// <typeparam name="RNG"></typeparam>
-   public class SimulatedAnnealing<RNG> : OptimizationMethod where RNG : class, IRNGTraits, new()
+   public class SimulatedAnnealing<RNG> : OptimizationMethod where RNG : class, IRNGTraits, new ()
    {
       public enum Scheme
       {
@@ -44,7 +44,7 @@ namespace QLNet
       /// <param name="epsilon"></param>
       /// <param name="m"></param>
       /// <param name="rng"></param>
-      public SimulatedAnnealing(double lambda, double T0,double epsilon, int m,RNG rng = default(RNG))
+      public SimulatedAnnealing(double lambda, double T0, double epsilon, int m, RNG rng = default(RNG))
       {
          scheme_ = Scheme.ConstantFactor;
          lambda_ = lambda;
@@ -61,14 +61,14 @@ namespace QLNet
       /// temperature times \f$ ( 1 - k/K )^\alpha \f$ with k being the total number
       /// of moves so far. After K moves the temperature is guaranteed to be
       /// zero, after that the optimization runs like a deterministic simplex
-      /// algorithm. 
+      /// algorithm.
       /// </summary>
       /// <param name="lambda"></param>
       /// <param name="T0"></param>
       /// <param name="K"></param>
       /// <param name="alpha"></param>
       /// <param name="rng"></param>
-      public SimulatedAnnealing(double lambda, double T0, int K,double alpha, RNG rng = default(RNG))
+      public SimulatedAnnealing(double lambda, double T0, int K, double alpha, RNG rng = default(RNG))
       {
          scheme_ = Scheme.ConstantBudget;
          lambda_ = lambda;
@@ -169,8 +169,8 @@ namespace QLNet
 
                // GSL end criterion in x (cf. above)
                if (endCriteria.checkStationaryPoint(simplexSize(), 0.0,
-                      ref stationaryStateIterations_,
-                      ref ecType) ||
+                                                    ref stationaryStateIterations_,
+                                                    ref ecType) ||
                    endCriteria.checkMaxIterations(iteration_, ref ecType))
                {
                   // no matter what, we return the best ever point !
@@ -220,8 +220,9 @@ namespace QLNet
                      iteration_ += 1;
                   }
                }
-            } while (iteration_ <
-                     iterationT_ + (scheme_ == Scheme.ConstantFactor ? m_ : 1));
+            }
+            while (iteration_ <
+                   iterationT_ + (scheme_ == Scheme.ConstantFactor ? m_ : 1));
 
             switch (scheme_)
             {
@@ -236,7 +237,8 @@ namespace QLNet
                      T_ = 0.0;
                   break;
             }
-         } while (true);
+         }
+         while (true);
       }
 
       protected Scheme scheme_;

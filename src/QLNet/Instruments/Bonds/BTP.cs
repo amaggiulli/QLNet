@@ -5,13 +5,13 @@
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
- copy of the license along with this program; if not, license is  
- available online at <http://qlnet.sourceforge.net/License.html>.
-  
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
  The QuantLib license is available online at http://quantlib.org/license.shtml.
- 
+
  This program is distributed in the hope that it will be useful, but WITHOUT
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -24,30 +24,30 @@ namespace QLNet
 {
    /*! Italian CCTEU (Certificato di credito del tesoro)
         Euribor6M indexed floating rate bond
-    
+
         \ingroup instruments
 
    */
-   public class CCTEU : FloatingRateBond 
+   public class CCTEU : FloatingRateBond
    {
-      public CCTEU(Date maturityDate,double spread,Handle<YieldTermStructure> fwdCurve = null,
-                   Date startDate = null,Date issueDate = null)
-         :base(2, 100.0,
-                       new Schedule(startDate,
-                                maturityDate, new Period(6,TimeUnit.Months),
-                                new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                DateGeneration.Rule.Backward, true),
-                       new Euribor6M(fwdCurve ?? new Handle<YieldTermStructure>() ),
-                       new Actual360(),
-                       BusinessDayConvention.Following,
-                       new Euribor6M().fixingDays(),
-                       new List<double>{1.0}, // gearing
-                       new List<double>{spread},
-                       new List<double?>(), // caps
-                       new List<double?>(), // floors
-                       false, // in arrears
-                       100.0, // redemption
-                       issueDate) {}
+      public CCTEU(Date maturityDate, double spread, Handle<YieldTermStructure> fwdCurve = null,
+                   Date startDate = null, Date issueDate = null)
+         : base(2, 100.0,
+                new Schedule(startDate,
+                             maturityDate, new Period(6, TimeUnit.Months),
+                             new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                             DateGeneration.Rule.Backward, true),
+                new Euribor6M(fwdCurve ?? new Handle<YieldTermStructure>()),
+                new Actual360(),
+                BusinessDayConvention.Following,
+                new Euribor6M().fixingDays(),
+                new List<double> {1.0}, // gearing
+      new List<double> {spread},
+      new List < double? >(), // caps
+      new List < double? >(), // floors
+      false, // in arrears
+      100.0, // redemption
+      issueDate) {}
 
       #region Bond interface
 
@@ -67,30 +67,30 @@ namespace QLNet
    /*! \ingroup instruments
 
    */
-   public class BTP : FixedRateBond 
+   public class BTP : FixedRateBond
    {
-      public BTP(Date maturityDate,double fixedRate,Date startDate = null,Date issueDate = null)
-         :base(2, 100.0,new Schedule(startDate,
-                             maturityDate, new Period(6,TimeUnit.Months),
-                             new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                             DateGeneration.Rule.Backward, true),
-                    new List<double>{fixedRate},
-                    new ActualActual(ActualActual.Convention.ISMA),
-                    BusinessDayConvention.ModifiedFollowing, 100.0, issueDate, new TARGET()) { }
+      public BTP(Date maturityDate, double fixedRate, Date startDate = null, Date issueDate = null)
+         : base(2, 100.0, new Schedule(startDate,
+                                       maturityDate, new Period(6, TimeUnit.Months),
+                                       new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                       DateGeneration.Rule.Backward, true),
+                new List<double> {fixedRate},
+      new ActualActual(ActualActual.Convention.ISMA),
+      BusinessDayConvention.ModifiedFollowing, 100.0, issueDate, new TARGET()) { }
 
       /*! constructor needed for legacy non-par redemption BTPs.
           As of today the only remaining one is IT123456789012
           that will redeem 99.999 on xx-may-2037 */
-      public BTP(Date maturityDate, double fixedRate, double redemption,Date startDate = null,Date issueDate = null)
-      :base(2, 100.0, new Schedule(startDate,
-                             maturityDate, new Period(6,TimeUnit.Months),
-                             new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                             DateGeneration.Rule.Backward, true),
-                    new List<double>{fixedRate},
-                    new ActualActual(ActualActual.Convention.ISMA),
-                    BusinessDayConvention.ModifiedFollowing, redemption, issueDate, new TARGET()) { }
+      public BTP(Date maturityDate, double fixedRate, double redemption, Date startDate = null, Date issueDate = null)
+         : base(2, 100.0, new Schedule(startDate,
+                                       maturityDate, new Period(6, TimeUnit.Months),
+                                       new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                       DateGeneration.Rule.Backward, true),
+                new List<double> {fixedRate},
+      new ActualActual(ActualActual.Convention.ISMA),
+      BusinessDayConvention.ModifiedFollowing, redemption, issueDate, new TARGET()) { }
       #region Bond interface
- 
+
       //! accrued amount at a given date
       /*! The default bond settlement is used if no date is given. */
       public override double accruedAmount(Date d = null)
@@ -98,7 +98,7 @@ namespace QLNet
          double result = base.accruedAmount(d);
          return new ClosestRounding(5).Round(result);
       }
-      
+
       #endregion
 
       //! BTP yield given a (clean) price and settlement date
@@ -108,11 +108,11 @@ namespace QLNet
       public double yield(double cleanPrice, Date settlementDate = null, double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
          return base.yield(cleanPrice, new ActualActual(ActualActual.Convention.ISMA),
-                           Compounding.Compounded, Frequency.Annual,settlementDate, accuracy, maxEvaluations);
+                           Compounding.Compounded, Frequency.Annual, settlementDate, accuracy, maxEvaluations);
       }
    }
 
-   public class RendistatoBasket :  IObserver,IObservable 
+   public class RendistatoBasket :  IObserver, IObservable
    {
 
       public RendistatoBasket(List<BTP> btps, List<double> outstandings, List<Handle<Quote>> cleanPriceQuotes)
@@ -121,46 +121,46 @@ namespace QLNet
          outstandings_ = outstandings;
          quotes_ = cleanPriceQuotes;
 
-         Utils.QL_REQUIRE( !btps_.empty(), () => "empty RendistatoCalculator Basket" );
+         Utils.QL_REQUIRE(!btps_.empty(), () => "empty RendistatoCalculator Basket");
          int k = btps_.Count;
 
-         Utils.QL_REQUIRE( outstandings_.Count == k, () =>
-                   "mismatch between number of BTPs (" + k +
-                   ") and number of outstandings (" +
-                   outstandings_.Count + ")");
-         Utils.QL_REQUIRE( quotes_.Count == k, () =>
-                   "mismatch between number of BTPs (" + k +
-                   ") and number of clean prices quotes (" +
-                   quotes_.Count + ")");
+         Utils.QL_REQUIRE(outstandings_.Count == k, () =>
+                          "mismatch between number of BTPs (" + k +
+                          ") and number of outstandings (" +
+                          outstandings_.Count + ")");
+         Utils.QL_REQUIRE(quotes_.Count == k, () =>
+                          "mismatch between number of BTPs (" + k +
+                          ") and number of clean prices quotes (" +
+                          quotes_.Count + ")");
 
          // require non-negative outstanding
-         for (int i=0; i<k; ++i) 
+         for (int i = 0; i < k; ++i)
          {
-            Utils.QL_REQUIRE( outstandings[i] >= 0, () =>
-                       "negative outstanding for " + i +
-                       " bond, maturity " + btps[i].maturityDate());
+            Utils.QL_REQUIRE(outstandings[i] >= 0, () =>
+                             "negative outstanding for " + i +
+                             " bond, maturity " + btps[i].maturityDate());
             // add check for prices ??
          }
 
          // TODO: filter out expired bonds, zero outstanding bond, etc
 
-         Utils.QL_REQUIRE( !btps_.empty(), () => "invalid bonds only in RendistatoCalculator Basket" );
+         Utils.QL_REQUIRE(!btps_.empty(), () => "invalid bonds only in RendistatoCalculator Basket");
          n_ = btps_.Count;
 
          outstanding_ = 0.0;
-         for (int i=0; i<n_; ++i)
+         for (int i = 0; i < n_; ++i)
             outstanding_ += outstandings[i];
 
          weights_ = new List<double>(n_);
-         for (int i=0; i<n_; ++i) 
+         for (int i = 0; i < n_; ++i)
          {
-            weights_.Add(outstandings[i]/outstanding_);
+            weights_.Add(outstandings[i] / outstanding_);
             quotes_[i].registerWith(update);
-        }
+         }
 
       }
       #region Inspectors
-      
+
       public int size() { return n_;}
       public List<BTP> btps() {return btps_;}
       public List<Handle<Quote>> cleanPriceQuotes() { return quotes_;}
@@ -174,8 +174,14 @@ namespace QLNet
       private readonly WeakEventSource eventSource = new WeakEventSource();
       public event Callback notifyObserversEvent
       {
-         add { eventSource.Subscribe(value); }
-         remove { eventSource.Unsubscribe(value); }
+         add
+         {
+            eventSource.Subscribe(value);
+         }
+         remove
+         {
+            eventSource.Unsubscribe(value);
+         }
       }
 
       public void registerWith(Callback handler) { notifyObserversEvent += handler; }
@@ -189,47 +195,47 @@ namespace QLNet
       public void update() { notifyObservers(); }
       #endregion
 
-      
+
       private   List<BTP> btps_;
       private   List<double> outstandings_;
       private   List<Handle<Quote> > quotes_;
       private   double outstanding_;
       private   int n_;
       private   List<double> weights_;
-    }
+   }
 
-   public class RendistatoCalculator : LazyObject 
+   public class RendistatoCalculator : LazyObject
    {
       public RendistatoCalculator(RendistatoBasket basket, Euribor euriborIndex, Handle<YieldTermStructure> discountCurve)
       {
          basket_ = basket;
          euriborIndex_ = euriborIndex;
          discountCurve_ = discountCurve;
-         yields_ = new InitializedList<double>(basket_.size(), 0.05); 
+         yields_ = new InitializedList<double>(basket_.size(), 0.05);
          durations_ = new List<double>(basket_.size());
          nSwaps_ = 15;  // TODO: generalize number of swaps and their lenghts
          swaps_ = new List<VanillaSwap>(nSwaps_);
          swapLenghts_ = new List<double>(nSwaps_);
-         swapBondDurations_ = new InitializedList<double?>(nSwaps_, null);
-         swapBondYields_ = new InitializedList<double?>(nSwaps_, 0.05);
-         swapRates_ = new InitializedList<double?>(nSwaps_, null);
+         swapBondDurations_ = new InitializedList < double? >(nSwaps_, null);
+         swapBondYields_ = new InitializedList < double? >(nSwaps_, 0.05);
+         swapRates_ = new InitializedList < double? >(nSwaps_, null);
 
          basket_.registerWith(update);
          euriborIndex_.registerWith(update);
          discountCurve_.registerWith(update);
 
          double dummyRate = 0.05;
-         for (int i=0; i<nSwaps_; ++i) 
+         for (int i = 0; i < nSwaps_; ++i)
          {
-            swapLenghts_[i] = (i+1);
-            swaps_[i] = new MakeVanillaSwap( new Period((int)swapLenghts_[i],TimeUnit.Years), 
-                                             euriborIndex_, dummyRate, new Period(1,TimeUnit.Days))
-                                             .withDiscountingTermStructure(discountCurve_);
+            swapLenghts_[i] = (i + 1);
+            swaps_[i] = new MakeVanillaSwap(new Period((int)swapLenghts_[i], TimeUnit.Years),
+                                            euriborIndex_, dummyRate, new Period(1, TimeUnit.Days))
+            .withDiscountingTermStructure(discountCurve_);
          }
       }
-      
+
       #region Calculations
-      
+
       public double yield()
       {
          double inner_product = 0;
@@ -254,17 +260,17 @@ namespace QLNet
       }
       // swaps
       public List<double> swapLengths() { return swapLenghts_; }
-      public List<double?> swapRates()
+      public List < double? > swapRates()
       {
          calculate();
          return swapRates_;
       }
-      public List<double?> swapYields()
+      public List < double? > swapYields()
       {
          calculate();
          return swapBondYields_;
       }
-      public List<double?> swapDurations()
+      public List < double? > swapDurations()
       {
          calculate();
          return swapBondDurations_;
@@ -272,7 +278,7 @@ namespace QLNet
       #endregion
 
       #region Equivalent Swap proxy
-      
+
       public VanillaSwap equivalentSwap()
       {
          calculate();
@@ -302,27 +308,27 @@ namespace QLNet
       {
          return yield() - equivalentSwapRate();
       }
-      
+
       #endregion
 
       #region LazyObject interface
-      
+
       protected override void performCalculations()
       {
          List<BTP> btps = basket_.btps();
          List<Handle<Quote> > quotes = basket_.cleanPriceQuotes();
          Date bondSettlementDate = btps[0].settlementDate();
-         for (int i=0; i<basket_.size(); ++i) 
+         for (int i = 0; i < basket_.size(); ++i)
          {
             yields_[i] = BondFunctions.yield(btps[i], quotes[i].link.value(),
-                                             new ActualActual(ActualActual.Convention.ISMA), 
+                                             new ActualActual(ActualActual.Convention.ISMA),
                                              Compounding.Compounded, Frequency.Annual,
                                              bondSettlementDate,
                                              // accuracy, maxIterations, guess
                                              1.0e-10, 100, yields_[i]);
 
-            durations_[i] = BondFunctions.duration(btps[i], yields_[i],new ActualActual(ActualActual.Convention.ISMA), 
-                                                   Compounding.Compounded, Frequency.Annual,Duration.Type.Modified, 
+            durations_[i] = BondFunctions.duration(btps[i], yields_[i], new ActualActual(ActualActual.Convention.ISMA),
+                                                   Compounding.Compounded, Frequency.Annual, Duration.Type.Modified,
                                                    bondSettlementDate);
          }
 
@@ -331,59 +337,59 @@ namespace QLNet
 
          int settlDays = 2;
          DayCounter fixedDayCount = swaps_[0].fixedDayCount();
-         equivalentSwapIndex_ = nSwaps_-1;
-         swapRates_[0]= swaps_[0].fairRate();
+         equivalentSwapIndex_ = nSwaps_ - 1;
+         swapRates_[0] = swaps_[0].fairRate();
          FixedRateBond swapBond = new FixedRateBond(settlDays,
                                                     100.0,      // faceAmount
                                                     swaps_[0].fixedSchedule(),
-                                                    new List<double>() { swapRates_[0].Value },
-                                                    fixedDayCount,
-                                                    BusinessDayConvention.Following, // paymentConvention
-                                                    100.0);    // redemption
+         new List<double>() { swapRates_[0].Value },
+         fixedDayCount,
+         BusinessDayConvention.Following, // paymentConvention
+         100.0);    // redemption
          swapBondYields_[0] = BondFunctions.yield(swapBond,
                                                   100.0, // floating leg NPV including end payment
-                                                  new ActualActual(ActualActual.Convention.ISMA), 
+                                                  new ActualActual(ActualActual.Convention.ISMA),
                                                   Compounding.Compounded, Frequency.Annual,
                                                   bondSettlementDate,
                                                   // accuracy, maxIterations, guess
                                                   1.0e-10, 100, swapBondYields_[0].Value);
 
          swapBondDurations_[0] = BondFunctions.duration(swapBond, swapBondYields_[0].Value,
-                                                        new ActualActual(ActualActual.Convention.ISMA), 
+                                                        new ActualActual(ActualActual.Convention.ISMA),
                                                         Compounding.Compounded, Frequency.Annual,
                                                         Duration.Type.Modified, bondSettlementDate);
-         for (int i=1; i<nSwaps_; ++i) 
+         for (int i = 1; i < nSwaps_; ++i)
          {
-            swapRates_[i]= swaps_[i].fairRate();
+            swapRates_[i] = swaps_[i].fairRate();
             FixedRateBond swapBond2 = new FixedRateBond(settlDays,
-                                                       100.0,      // faceAmount
-                                                       swaps_[i].fixedSchedule(),
-                                                       new List<double>(){swapRates_[i].Value},
-                                                       fixedDayCount,
-                                                       BusinessDayConvention.Following, // paymentConvention
-                                                       100.0);    // redemption
+                                                        100.0,      // faceAmount
+                                                        swaps_[i].fixedSchedule(),
+            new List<double>() {swapRates_[i].Value},
+            fixedDayCount,
+            BusinessDayConvention.Following, // paymentConvention
+            100.0);    // redemption
 
             swapBondYields_[i] = BondFunctions.yield(swapBond2, 100.0, // floating leg NPV including end payment
-                                                     new ActualActual(ActualActual.Convention.ISMA), 
+                                                     new ActualActual(ActualActual.Convention.ISMA),
                                                      Compounding.Compounded, Frequency.Annual,
                                                      bondSettlementDate,
                                                      // accuracy, maxIterations, guess
                                                      1.0e-10, 100, swapBondYields_[i].Value);
-            
+
             swapBondDurations_[i] = BondFunctions.duration(swapBond2, swapBondYields_[i].Value,
-                                                           new ActualActual(ActualActual.Convention.ISMA), 
+                                                           new ActualActual(ActualActual.Convention.ISMA),
                                                            Compounding.Compounded, Frequency.Annual,
                                                            Duration.Type.Modified, bondSettlementDate);
-            if (swapBondDurations_[i] > duration_) 
+            if (swapBondDurations_[i] > duration_)
             {
-                equivalentSwapIndex_ = i-1;
-                break; // exit the loop
+               equivalentSwapIndex_ = i - 1;
+               break; // exit the loop
             }
-        }
+         }
 
-        return;
+         return;
       }
-      
+
       #endregion
 
       private RendistatoBasket basket_;
@@ -398,33 +404,33 @@ namespace QLNet
       private int nSwaps_;
       private List<VanillaSwap> swaps_;
       private List<double> swapLenghts_;
-      private List<double?> swapBondDurations_;
-      private List<double?> swapBondYields_, swapRates_;
-    }
+      private List < double? > swapBondDurations_;
+      private List < double? > swapBondYields_, swapRates_;
+   }
 
    //! RendistatoCalculator equivalent swap lenth Quote adapter
-   public class RendistatoEquivalentSwapLengthQuote : Quote 
+   public class RendistatoEquivalentSwapLengthQuote : Quote
    {
       public RendistatoEquivalentSwapLengthQuote(RendistatoCalculator r) { r_ = r; }
       public override double value() { return r_.equivalentSwapLength(); }
       public override bool isValid()
       {
-         try 
+         try
          {
             value();
             return true;
-         } 
-         catch (Exception) 
+         }
+         catch (Exception)
          {
             return false;
          }
       }
-   
+
       private RendistatoCalculator r_;
    }
 
    //! RendistatoCalculator equivalent swap spread Quote adapter
-   public class RendistatoEquivalentSwapSpreadQuote : Quote 
+   public class RendistatoEquivalentSwapSpreadQuote : Quote
    {
       public RendistatoEquivalentSwapSpreadQuote(RendistatoCalculator r) { r_ = r; }
       public override double value() { return r_.equivalentSwapSpread(); }
