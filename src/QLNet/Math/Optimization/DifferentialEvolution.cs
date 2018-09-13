@@ -209,7 +209,8 @@ namespace QLNet
             double fxNew = population.Min(x => x.cost);
             Candidate tmp = (Candidate) population.First(x => x.cost.IsEqual(fxNew)).Clone();
 
-            if (fxNew < bestMemberEver_.cost)
+            if (fxNew < bestMemberEver_.cost
+                && P.constraint().test(tmp.values))
                bestMemberEver_ = tmp;
 
             if (endCriteria.checkStationaryFunctionValue(fxOld, fxNew, ref stationaryPointIteration,
