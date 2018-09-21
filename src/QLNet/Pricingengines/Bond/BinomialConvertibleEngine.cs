@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2018 Andrea Maggiulli (a.maggiulli@gmail.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -20,7 +20,7 @@ namespace QLNet
    /// Binomial Tsiveriotis-Fernandes engine for convertible bonds
    /// </summary>
    /// <typeparam name="T"></typeparam>
-   public class BinomialConvertibleEngine<T> : ConvertibleBond.option.Engine where T : ITree, ITreeFactory<T>, new()
+   public class BinomialConvertibleEngine<T> : ConvertibleBond.option.Engine where T : ITree, ITreeFactory<T>, new ()
    {
       public BinomialConvertibleEngine(GeneralizedBlackScholesProcess process, int timeSteps)
       {
@@ -45,7 +45,7 @@ namespace QLNet
          double q = process_.dividendYield().link.zeroRate(maturityDate, divdc, Compounding.Continuous, Frequency.NoFrequency).value();
          Date referenceDate = process_.riskFreeRate().link.referenceDate();
 
-         // substract dividends 
+         // substract dividends
 
          ConvertibleBond.option.Arguments args = arguments_ as ConvertibleBond.option.Arguments;
 
@@ -57,7 +57,7 @@ namespace QLNet
             Utils.QL_REQUIRE(s0 > 0.0, () => "negative value after substracting dividends");
          }
 
-         // binomial trees with constant coefficient 
+         // binomial trees with constant coefficient
 
          Handle<Quote> underlying = new Handle<Quote>(new SimpleQuote(s0));
          Handle<YieldTermStructure> flatRiskFree =
@@ -79,7 +79,7 @@ namespace QLNet
          double creditSpread = args.creditSpread.link.value();
 
          TsiveriotisFernandesLattice<T> lattice = new TsiveriotisFernandesLattice<T>(Tree, riskFreeRate,
-            maturity, timeSteps_, creditSpread, v, q);
+                                                                                     maturity, timeSteps_, creditSpread, v, q);
          DiscretizedConvertible convertible = new DiscretizedConvertible(args, bs, new TimeGrid(maturity, timeSteps_));
          convertible.initialize(lattice, maturity);
          convertible.rollback(0.0);
