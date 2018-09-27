@@ -506,11 +506,11 @@ namespace TestSuite
 
          Schedule sch =
             new Schedule(new Date(30, Month.November, 2004),
-                                     new Date(30, Month.November, 2008),
-                                     new Period(Frequency.Semiannual),
-                                     new UnitedStates(UnitedStates.Market.GovernmentBond),
-                                     BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
-                                     DateGeneration.Rule.Backward, false);
+                         new Date(30, Month.November, 2008),
+                         new Period(Frequency.Semiannual),
+                         new UnitedStates(UnitedStates.Market.GovernmentBond),
+                         BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
+                         DateGeneration.Rule.Backward, false);
 
          List<KeyValuePair<Date, double> > events = new List<KeyValuePair<Date, double>>();
          events.Add(new KeyValuePair<Date, double>(new Date(30, Month.November, 2008), 1000));

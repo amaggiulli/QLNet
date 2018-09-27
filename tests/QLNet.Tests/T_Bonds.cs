@@ -1056,7 +1056,7 @@ namespace TestSuite
          int i = 0;
          foreach (CashFlow c in cf)
          {
-            if (c is QLNet.FixedRateCoupon)
+            if (c is FixedRateCoupon)
             {
                FixedRateCoupon frc = c as FixedRateCoupon;
                QAssert.AreEqual(OutstandingBalance[i], frc.nominal(), 1, "Outstanding Balance " + i++ + "is different");
@@ -1067,7 +1067,7 @@ namespace TestSuite
          i = 0;
          foreach (CashFlow c in cf)
          {
-            if (c is QLNet.VoluntaryPrepay)
+            if (c is VoluntaryPrepay)
             {
                QAssert.AreEqual(Prepayments[i], c.amount(), 1, "Prepayments " + i++ + "is different");
             }
@@ -1077,7 +1077,7 @@ namespace TestSuite
          i = 0;
          foreach (CashFlow c in cf)
          {
-            if (c is QLNet.FixedRateCoupon)
+            if (c is FixedRateCoupon)
             {
                FixedRateCoupon frc = c as FixedRateCoupon;
                QAssert.AreEqual(NetInterest[i], frc.amount(), 1, "Net Interest " + i++ + "is different");
@@ -1088,7 +1088,7 @@ namespace TestSuite
          i = 0;
          foreach (CashFlow c in cf)
          {
-            if (c is QLNet.AmortizingPayment)
+            if (c is AmortizingPayment)
             {
                QAssert.AreEqual(ScheduledPrincipal[i], c.amount(), 1, "Scheduled Principal " + i++ + "is different");
             }
@@ -1318,8 +1318,7 @@ namespace TestSuite
                                  schedule.isRegular());
 
          FixedRateBond bond = new FixedRateBond(0, 100.0, schedule, new List<double>() {coupon}, dc,
-         BusinessDayConvention.Following, 100.0, issueDate, calendar, exCouponPeriod, calendar,
-         BusinessDayConvention.Unadjusted, false);
+         BusinessDayConvention.Following, 100.0, issueDate, calendar, exCouponPeriod, calendar);
 
          double calculatedPrice = BondFunctions.dirtyPrice(bond, yield, settlementDate);
          double expectedPrice = 95.75706;
@@ -1408,7 +1407,7 @@ namespace TestSuite
                                           firstCouponDate);
 
          CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
-                                                                dc, BusinessDayConvention.Unadjusted, 100.0, null);
+                                                                dc, BusinessDayConvention.Unadjusted);
 
          double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
@@ -1742,7 +1741,7 @@ namespace TestSuite
                                                    BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward, false);
 
          FixedRateBond fixedRateBond = new FixedRateBond(1, 100, fixedBondSchedule, new InitializedList<double>(1, 0.015), dayCounter,
-                                                         BusinessDayConvention.Unadjusted, 100.0);
+                                                         BusinessDayConvention.Unadjusted);
 
          double cleanPrice = 100;
 
@@ -1837,6 +1836,158 @@ namespace TestSuite
             QAssert.Fail("Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
                          + "\n    calculated: " + duration
                          + "\n    expected:   " + ExpectedModifiedDuration);
+      }
+
+      public struct SteppedCoupon
+      {
+         public Date StartDate;
+         public Date EnDate;
+         public double Rate;
+
+         public SteppedCoupon(Date startDate, Date enDate, double rate)
+         {
+            StartDate = startDate;
+            EnDate = enDate;
+            Rate = rate;
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod]
+#else
+      [Fact]
+#endif
+      public void testSteppedCoupon()
+      {
+         // Sample 1
+         double Coupon = 0.0;
+         string AccrualDate = "12/12/2012";
+         string MaturityDate = "08/01/2049";
+         string SettlementDate = "09/24/2018";
+         string FirstCouponDate = "02/01/2013";
+         double Price = 76.144;
+         double expectedAccruedInterest = 0.0;
+         double expectedYtm = 0.03265;
+
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 1;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Period exCouponPeriod = new Period(6, TimeUnit.Days);
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, calendar,
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
+                                          firstCouponDate);
+
+         CouponConversionSchedule steppedList = new CouponConversionSchedule
+         {
+            new CouponConversion(new Date(12, 12, 2012), 0),
+            new CouponConversion(new Date(01, 08, 2032), 0.0475)
+         };
+
+         List<double> coupons = Utils.CreateCouponSchedule(schedule, steppedList);
+
+         //FixedRateBond bond = new FixedRateBond(settlementDays, 100.0, schedule,
+         //                                       coupons, dc, BusinessDayConvention.Unadjusted,
+         //                                       100.0, null, calendar, exCouponPeriod, calendar);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, coupons,
+                                                                dc, BusinessDayConvention.Unadjusted);
+
+         double ytm = bond.yield(Price, dc, comp, freq, settlementDate);
+
+         if (Math.Abs(ytm - expectedYtm) > 1e-4)
+            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+                         + "\n    calculated: " + ytm
+                         + "\n    expected:   " + expectedYtm);
+
+         double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
+
+         if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+
+         // Sample 1 - change settlment date and price
+         // same results expected
+         SettlementDate = "09/20/2018";
+         Price = 76.119;
+         settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+
+         ytm = bond.yield(Price, dc, comp, freq, settlementDate);
+
+         if (Math.Abs(ytm - expectedYtm) > 1e-4)
+            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+                         + "\n    calculated: " + ytm
+                         + "\n    expected:   " + expectedYtm);
+
+         accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
+
+         if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+
+         // Sample 2
+         Coupon = 0.0;
+         AccrualDate = "08/14/2013";
+         MaturityDate = "08/01/2042";
+         SettlementDate = "09/25/2018";
+         FirstCouponDate = "02/01/2014";
+         Price = 85.439;
+         expectedAccruedInterest = 0.0;
+         expectedYtm = 0.04325;
+
+         // Convert dates
+         maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         schedule = new Schedule(datedDate, maturityDate, tenor, calendar,
+                                 BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
+                                 firstCouponDate);
+
+         steppedList = new CouponConversionSchedule
+         {
+            new CouponConversion(new Date(14, 8, 2013), 0.0),
+            new CouponConversion(new Date(01, 08, 2026), 0.0603)
+         };
+
+         coupons = Utils.CreateCouponSchedule(schedule, steppedList);
+
+         CallableFixedRateBond bond2 = new CallableFixedRateBond(settlementDays, 1000.0, schedule, coupons,
+                                                                 dc, BusinessDayConvention.Unadjusted);
+
+         ytm = bond2.yield(Price, dc, comp, freq, settlementDate);
+
+         if (Math.Abs(ytm - expectedYtm) > 1e-4)
+            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+                         + "\n    calculated: " + ytm
+                         + "\n    expected:   " + expectedYtm);
+
+         accruedInterest = CashFlows.accruedAmount(bond2.cashflows(), false, settlementDate);
+
+         if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
       }
    }
 }
