@@ -1,15 +1,16 @@
 ﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//
+//  Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
+//  
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is
-//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
-//
+//  copy of the license along with this program; if not, license is  
+//  available online at <http://qlnet.sourceforge.net/License.html>.
+//   
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//
+//  
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -70,17 +71,17 @@ namespace QLNet
    {
       // Constructors
       //! reference date based on current evaluation date
-      public FittedBondDiscountCurve(int settlementDays,
-                                     Calendar calendar,
-                                     List<BondHelper> bondHelpers,
-                                     DayCounter dayCounter,
-                                     FittingMethod fittingMethod,
-                                     double accuracy = 1.0e-10,
-                                     int maxEvaluations = 10000,
-                                     Vector guess = null,
-                                     double simplexLambda = 1.0,
-                                     int maxStationaryStateIterations = 100)
-         : base(settlementDays, calendar, dayCounter)
+      public FittedBondDiscountCurve( int settlementDays,
+                                      Calendar calendar,
+                                      List<BondHelper> bondHelpers,
+                                      DayCounter dayCounter,
+                                      FittingMethod fittingMethod,
+                                      double accuracy = 1.0e-10,
+                                      int maxEvaluations = 10000,
+                                      Vector guess = null,
+                                      double simplexLambda = 1.0,
+                                      int maxStationaryStateIterations = 100)
+         :base(settlementDays, calendar, dayCounter)
       {
          accuracy_ = accuracy;
          maxEvaluations_ = maxEvaluations;
@@ -95,16 +96,16 @@ namespace QLNet
       }
 
       //! curve reference date fixed for life of curve
-      public FittedBondDiscountCurve(Date referenceDate,
-                                     List<BondHelper> bondHelpers,
-                                     DayCounter dayCounter,
-                                     FittingMethod fittingMethod,
-                                     double accuracy = 1.0e-10,
-                                     int maxEvaluations = 10000,
-                                     Vector guess = null,
-                                     double simplexLambda = 1.0,
-                                     int maxStationaryStateIterations = 100)
-         : base(referenceDate, new Calendar(), dayCounter)
+      public FittedBondDiscountCurve( Date referenceDate,
+                                      List<BondHelper> bondHelpers,
+                                      DayCounter dayCounter,
+                                      FittingMethod fittingMethod,
+                                      double accuracy = 1.0e-10,
+                                      int maxEvaluations = 10000,
+                                      Vector guess = null,
+                                      double simplexLambda = 1.0,
+                                      int maxStationaryStateIterations = 100)
+         :base(referenceDate, new Calendar(), dayCounter)
       {
          accuracy_ = accuracy;
          maxEvaluations_ = maxEvaluations;
@@ -115,7 +116,7 @@ namespace QLNet
          fittingMethod_ = fittingMethod;
 
          fittingMethod_.curve_ = this;
-         setup();
+        setup();
       }
 
       // Inspectors
@@ -136,42 +137,42 @@ namespace QLNet
 
       private void setup()
       {
-         for (int i = 0; i < bondHelpers_.Count; ++i)
+         for (int i=0; i<bondHelpers_.Count; ++i)
             bondHelpers_[i].registerWith(update);
       }
 
       protected override void performCalculations()
-      {
-         Utils.QL_REQUIRE(!bondHelpers_.empty(), () => "no bondHelpers given");
+      {                 
+         Utils.QL_REQUIRE(!bondHelpers_.empty(),()=> "no bondHelpers given");
 
          maxDate_ = Date.minDate();
          Date refDate = referenceDate();
 
          // double check bond quotes still valid and/or instruments not expired
-         for (int i = 0; i < bondHelpers_.Count; ++i)
+         for (int i=0; i<bondHelpers_.Count; ++i) 
          {
             Bond bond = bondHelpers_[i].bond();
-            Utils.QL_REQUIRE(bondHelpers_[i].quote().link.isValid(), () =>
-                             (i + 1) + " bond (maturity: " +
-                             bond.maturityDate() + ") has an invalid price quote");
+            Utils.QL_REQUIRE(bondHelpers_[i].quote().link.isValid(),()=>
+                       (i+1) + " bond (maturity: " +
+                       bond.maturityDate() + ") has an invalid price quote");
             Date bondSettlement = bond.settlementDate();
-            Utils.QL_REQUIRE(bondSettlement >= refDate, () =>
-                             (i + 1) + " bond settlemente date (" +
-                             bondSettlement + ") before curve reference date (" +
-                             refDate + ")");
-            Utils.QL_REQUIRE(BondFunctions.isTradable(bond, bondSettlement), () =>
-                             (i + 1) + " bond non tradable at " +
-                             bondSettlement + " settlement date (maturity" +
-                             " being " + bond.maturityDate() + ")");
+            Utils.QL_REQUIRE(bondSettlement>=refDate,()=>
+                       (i+1) + " bond settlemente date (" +
+                       bondSettlement + ") before curve reference date (" +
+                       refDate + ")");
+            Utils.QL_REQUIRE(BondFunctions.isTradable(bond, bondSettlement),()=>
+                       (i+1) + " bond non tradable at " +
+                       bondSettlement + " settlement date (maturity" +
+                       " being " + bond.maturityDate() + ")");
             maxDate_ = Date.Max(maxDate_, bondHelpers_[i].pillarDate());
             bondHelpers_[i].setTermStructure(this);
          }
          fittingMethod_.init();
          fittingMethod_.calculate();
-
+   
       }
 
-      protected override double discountImpl(double t)
+      protected internal override double discountImpl(double t)
       {
          calculate();
          return fittingMethod_.discountFunction(fittingMethod_.solution_, t);
@@ -234,8 +235,8 @@ namespace QLNet
             public override double value(Vector x)
             {
                double squaredError = 0.0;
-               Vector vals = values(x);
-               for (int i = 0; i < vals.size(); ++i)
+		         Vector vals = values(x);
+		         for (int i = 0; i<vals.size(); ++i) 
                {
                   squaredError += vals[i];
                }
@@ -247,7 +248,7 @@ namespace QLNet
                DayCounter dc = fittingMethod_.curve_.dayCounter();
                int n = fittingMethod_.curve_.bondHelpers_.Count;
                Vector values = new Vector(n);
-               for (int i = 0; i < n; ++i)
+               for (int i=0; i<n; ++i) 
                {
                   BondHelper helper = fittingMethod_.curve_.bondHelpers_[i];
 
@@ -257,7 +258,7 @@ namespace QLNet
                   // CleanPrice_i = sum( cf_k * d(t_k) ) - accruedAmount
                   double modelPrice = 0.0;
                   List<CashFlow> cf = bond.cashflows();
-                  for (int k = firstCashFlow_[i]; k < cf.Count; ++k)
+                  for (int k=firstCashFlow_[i]; k<cf.Count; ++k) 
                   {
                      double tenor = dc.yearFraction(refDate, cf[k].date());
                      modelPrice += cf[k].amount() * fittingMethod_.discountFunction(x, tenor);
@@ -266,7 +267,7 @@ namespace QLNet
                      modelPrice -= bond.accruedAmount(bondSettlement);
 
                   // adjust price (NPV) for forward settlement
-                  if (bondSettlement != refDate)
+                  if (bondSettlement != refDate ) 
                   {
                      double tenor = dc.yearFraction(refDate, bondSettlement);
                      modelPrice /= fittingMethod_.discountFunction(x, tenor);
@@ -282,9 +283,9 @@ namespace QLNet
             private FittedBondDiscountCurve.FittingMethod fittingMethod_;
             internal List<int> firstCashFlow_;
 
-
+            
          }
-
+         
          //! total number of coefficients to fit/solve for
          public virtual int size() { throw new NotImplementedException(); }
          //! output array of results of optimization problem
@@ -295,17 +296,17 @@ namespace QLNet
          public double minimumCostValue() { return costValue_;}
          //! clone of the current object
          public virtual FittingMethod clone() { throw new NotImplementedException(); }
-         //! return whether there is a constraint at zero
-         public bool constrainAtZero() {return constrainAtZero_;}
-         //! return weights being used
-         public Vector weights() {return weights_;}
-         //! return optimization method being used
-         public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
-         //! open discountFunction to public
-         public double discount(Vector x, double t) {return discountFunction(x, t);}
-
+		   //! return whether there is a constraint at zero
+		   public bool constrainAtZero() {return constrainAtZero_;}
+		   //! return weights being used
+		   public Vector weights() {return weights_;}
+		   //! return optimization method being used
+		   public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
+		   //! open discountFunction to public
+		   public double discount(Vector x, double t) {return discountFunction(x, t);}
+      
          //! constructor
-         protected FittingMethod(bool constrainAtZero = true,
+         protected FittingMethod(bool constrainAtZero = true, 
                                  Vector weights = null,
                                  OptimizationMethod optimizationMethod = null)
          {
@@ -326,14 +327,14 @@ namespace QLNet
             costFunction_ = new FittingCost(this);
             costFunction_.firstCashFlow_ = new InitializedList<int>(n);
 
-            for (int i = 0; i < curve_.bondHelpers_.Count; ++i)
+            for (int i=0; i<curve_.bondHelpers_.Count; ++i) 
             {
                Bond bond = curve_.bondHelpers_[i].bond();
                List<CashFlow> cf = bond.cashflows();
                Date bondSettlement = bond.settlementDate();
-               for (int k = 0; k < cf.Count; ++k)
+               for (int k=0; k<cf.Count; ++k) 
                {
-                  if (!cf[k].hasOccurred(bondSettlement, false))
+                  if (!cf[k].hasOccurred(bondSettlement, false)) 
                   {
                      costFunction_.firstCashFlow_[i] = k;
                      break;
@@ -341,36 +342,36 @@ namespace QLNet
                }
             }
 
-            if (calculateWeights_)
+            if (calculateWeights_) 
             {
                //if (weights_.empty())
-               weights_ = new Vector(n);
+              weights_ = new Vector(n);
 
                double squaredSum = 0.0;
-               for (int i = 0; i < curve_.bondHelpers_.Count; ++i)
+               for (int i=0; i<curve_.bondHelpers_.Count; ++i) 
                {
                   Bond bond = curve_.bondHelpers_[i].bond();
 
                   double cleanPrice = curve_.bondHelpers_[i].quote().link.value();
 
                   Date bondSettlement = bond.settlementDate();
-                  double ytm = BondFunctions.yield(bond, cleanPrice, yieldDC, yieldComp, yieldFreq, bondSettlement);
+                  double ytm = BondFunctions.yield(bond, cleanPrice,yieldDC, yieldComp, yieldFreq, bondSettlement);
 
-                  double dur = BondFunctions.duration(bond, ytm, yieldDC, yieldComp, yieldFreq,
-                                                      Duration.Type.Modified, bondSettlement);
-                  weights_[i] = 1.0 / dur;
-                  squaredSum += weights_[i] * weights_[i];
+                  double dur = BondFunctions.duration(bond, ytm, yieldDC, yieldComp, yieldFreq, 
+                     Duration.Type.Modified, bondSettlement);
+                  weights_[i] = 1.0/dur;
+                  squaredSum += weights_[i]*weights_[i];
                }
                weights_ /= Math.Sqrt(squaredSum);
             }
 
-            Utils.QL_REQUIRE(weights_.size() == n, () =>
-                             "Given weights do not cover all boostrapping helpers");
-
+            Utils.QL_REQUIRE(weights_.size() == n,()=>
+               "Given weights do not cover all boostrapping helpers");
+   
          }
 
          //! discount function called by FittedBondDiscountCurve
-         internal virtual double discountFunction(Vector x, double t) { throw new NotImplementedException(); }
+         internal virtual double discountFunction( Vector x, double t ) { throw new NotImplementedException(); }
 
          //! constrains discount function to unity at \f$ T=0 \f$, if true
          protected bool constrainAtZero_;
@@ -385,7 +386,7 @@ namespace QLNet
          protected Vector guessSolution_;
          //! base class sets this cost function used in the optimization routine
          protected FittingCost costFunction_;
-
+      
          // curve optimization called here- adjust optimization parameters here
          internal void calculate()
          {
@@ -394,31 +395,31 @@ namespace QLNet
 
             // start with the guess solution, if it exists
             Vector x = new Vector(size(), 0.0);
-            if (!curve_.guessSolution_.empty())
+            if (!curve_.guessSolution_.empty()) 
             {
                x = curve_.guessSolution_;
             }
 
-            if (curve_.maxEvaluations_ == 0)
-            {
-               //Don't calculate, simply use given parameters to provide a fitted curve.
-               //This turns the fittedbonddiscountcurve into an evaluator of the parametric
-               //curve, for example allowing to use the parameters for a credit spread curve
-               //calculated with bonds in one currency to be coupled to a discount curve in
-               //another currency.
-               return;
-            }
-
+		      if(curve_.maxEvaluations_ == 0)
+		      {
+			      //Don't calculate, simply use given parameters to provide a fitted curve.
+			      //This turns the fittedbonddiscountcurve into an evaluator of the parametric
+			      //curve, for example allowing to use the parameters for a credit spread curve
+			      //calculated with bonds in one currency to be coupled to a discount curve in 
+			      //another currency. 
+			      return;
+		      }
+		
             //workaround for backwards compatibility
             OptimizationMethod optimization = optimizationMethod_;
-            if (optimization == null)
+            if(optimization == null)
             {
-               optimization = new Simplex(curve_.simplexLambda_);
-            }
-
+		         optimization = new Simplex(curve_.simplexLambda_);
+		      }
+	
             Problem problem = new Problem(costFunction, constraint, x);
 
-            double rootEpsilon = curve_.accuracy_;
+		      double rootEpsilon = curve_.accuracy_;
             double functionEpsilon =  curve_.accuracy_;
             double gradientNormEpsilon = curve_.accuracy_;
 
@@ -428,7 +429,7 @@ namespace QLNet
                                                       functionEpsilon,
                                                       gradientNormEpsilon);
 
-            optimization.minimize(problem, endCriteria);
+            optimization.minimize(problem,endCriteria);
             solution_ = problem.currentValue();
 
             numberOfIterations_ = problem.functionEvaluation();

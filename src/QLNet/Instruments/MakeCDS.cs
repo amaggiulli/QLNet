@@ -1,15 +1,15 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
-//
+//  
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is
-//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
-//
+//  copy of the license along with this program; if not, license is  
+//  available online at <http://qlnet.sourceforge.net/License.html>.
+//   
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//
+//  
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -23,10 +23,10 @@ namespace QLNet
    {
       public MakeCreditDefaultSwap(Period tenor, double couponRate)
       {
-         side_ = Protection.Side.Buyer;
+         side_ = CreditDefaultSwap.Protection.Side.Buyer;
          nominal_ = 1.0;
          tenor_ = tenor;
-         couponTenor_ = new Period(3, TimeUnit.Months);
+         couponTenor_ = new Period(3 , TimeUnit.Months);
          couponRate_ = couponRate;
          upfrontRate_ = 0.0;
          dayCounter_ = new Actual360();
@@ -34,7 +34,7 @@ namespace QLNet
       }
       public MakeCreditDefaultSwap(Date termDate, double couponRate)
       {
-         side_ = Protection.Side.Buyer;
+         side_ = CreditDefaultSwap.Protection.Side.Buyer;
          nominal_ = 1.0;
          termDate_ = termDate;
          couponTenor_ = new Period(3, TimeUnit.Months);
@@ -48,7 +48,7 @@ namespace QLNet
       {
          Date evaluation = Settings.evaluationDate();
          Date start = evaluation + 1;
-         Date upfrontDate = new WeekendsOnly().advance(evaluation, new Period(3, TimeUnit.Days));
+         Date upfrontDate = new WeekendsOnly().advance(evaluation, new Period(3 , TimeUnit.Days));
          Date end;
          if (tenor_ != null)
          {
@@ -60,11 +60,11 @@ namespace QLNet
          }
 
          Schedule schedule = new Schedule(start, end, couponTenor_, new WeekendsOnly(),
-                                          BusinessDayConvention.Following, BusinessDayConvention.Unadjusted, DateGeneration.Rule.CDS,
-                                          false, null, null);
+            BusinessDayConvention.Following,BusinessDayConvention.Unadjusted, DateGeneration.Rule.CDS,
+            false, null,null);
 
          CreditDefaultSwap cds = new CreditDefaultSwap(side_, nominal_, upfrontRate_, couponRate_, schedule,
-                                                       BusinessDayConvention.Following, dayCounter_, true, true, start, upfrontDate, null, lastPeriodDayCounter_);
+            BusinessDayConvention.Following,dayCounter_, true, true, start, upfrontDate, null,lastPeriodDayCounter_);
 
          cds.setPricingEngine(engine_);
          return cds;
@@ -75,7 +75,7 @@ namespace QLNet
          upfrontRate_ = upfrontRate;
          return this;
       }
-      public MakeCreditDefaultSwap withSide(Protection.Side side)
+      public MakeCreditDefaultSwap withSide(CreditDefaultSwap.Protection.Side side)
       {
          side_ = side;
          return this;
@@ -107,7 +107,7 @@ namespace QLNet
          return this;
       }
 
-      private Protection.Side side_;
+      private CreditDefaultSwap.Protection.Side side_;
       double nominal_;
       Period tenor_;
       Date termDate_;
