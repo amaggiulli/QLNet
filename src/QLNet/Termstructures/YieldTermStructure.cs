@@ -274,7 +274,7 @@ namespace QLNet
       //    must assume that extrapolation is required.
 
       //! discount factor calculation
-      protected internal abstract double discountImpl(double d);
+      protected internal abstract double discountImpl(double t);
       
       #endregion
       

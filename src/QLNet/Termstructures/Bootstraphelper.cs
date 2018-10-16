@@ -157,8 +157,7 @@ namespace QLNet {
             evaluationDate_ = Settings.evaluationDate();
         }
 
-        //! \name Observer interface
-        //@{
+        //Observer interface
         public override void update()
         {
             if (evaluationDate_ != Settings.evaluationDate()) {
@@ -167,7 +166,6 @@ namespace QLNet {
             }
             base.update();
         }
-        //@}
       protected virtual void initializeDates() { }
       protected Date evaluationDate_;
     };
