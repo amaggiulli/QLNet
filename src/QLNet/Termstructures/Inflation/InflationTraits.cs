@@ -47,7 +47,7 @@ namespace QLNet
 			return t.baseRate();
 		}
 
-        public double guess<C>(int i, C c, bool validData, int f) where C : Curve<ZeroInflationTermStructure>
+        public double guess<C>(int i, C c, bool validData, int first) where C : Curve<ZeroInflationTermStructure>
 		{
 			if ( validData ) // previous iteration value
 				return c.data()[i];
@@ -59,7 +59,7 @@ namespace QLNet
 			return avgInflation;
 		}
 
-        public double minValueAfter<C>(int i, C c, bool validData, int f) where C : Curve<ZeroInflationTermStructure>
+        public double minValueAfter<C>(int i, C c, bool validData, int first) where C : Curve<ZeroInflationTermStructure>
 		{
 			if ( validData )
 			{
@@ -69,7 +69,7 @@ namespace QLNet
 			return -maxInflation;
 		}
 
-        public double maxValueAfter<C>(int i, C c, bool validData, int f) where C : Curve<ZeroInflationTermStructure>
+        public double maxValueAfter<C>(int i, C c, bool validData, int first) where C : Curve<ZeroInflationTermStructure>
 		{
 			if ( validData )
 			{
@@ -129,7 +129,7 @@ namespace QLNet
 			return t.baseRate();
 		}
 
-		public double guess<C>( int i, C c, bool validData, int f ) where C : Curve<YoYInflationTermStructure>
+		public double guess<C>( int i, C c, bool validData, int first) where C : Curve<YoYInflationTermStructure>
 		{
 			if ( validData ) // previous iteration value
 				return c.data()[i];
@@ -141,7 +141,7 @@ namespace QLNet
 			return avgInflation;
 		}
 
-		public double minValueAfter<C>( int i, C c, bool validData, int f ) where C : Curve<YoYInflationTermStructure>
+		public double minValueAfter<C>( int i, C c, bool validData, int first) where C : Curve<YoYInflationTermStructure>
 		{
 			if ( validData )
 			{
@@ -151,7 +151,7 @@ namespace QLNet
 			return -maxInflation;
 		}
 
-        public double maxValueAfter<C>(int i, C c, bool validData, int f) where C : Curve<YoYInflationTermStructure>
+        public double maxValueAfter<C>(int i, C c, bool validData, int first) where C : Curve<YoYInflationTermStructure>
 		{
 			if ( validData )
 			{
