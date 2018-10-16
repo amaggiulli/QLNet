@@ -198,10 +198,10 @@ namespace QLNet
          interpolation_.update();
       }
 
-      protected internal override double discountImpl(double d)
+      protected internal override double discountImpl(double t)
       {
-         if (d <= this.times_.Last())
-            return interpolation_.value(d, true);
+         if (t <= this.times_.Last())
+            return interpolation_.value(t, true);
 
          // flat fwd extrapolation
          double tMax = this.times_.Last();

@@ -176,7 +176,7 @@ namespace QLNet
 		public void updateGuess( List<double> data, double discount, int i ) { data[i] = discount; }
 		public int maxIterations() { return 100; }                                              // upper bound for convergence loop
 
-        public double guess<C>(int i, C c, bool validData, int f) where C : Curve<YieldTermStructure>
+        public double guess<C>(int i, C c, bool validData, int first) where C : Curve<YieldTermStructure>
 		{
 			if ( validData ) // previous iteration value
 				return c.data()[i];
@@ -232,7 +232,7 @@ namespace QLNet
 		}
 		public int maxIterations() { return 100; }   // upper bound for convergence loop
 
-        public double guess<C>(int i, C c, bool validData, int f) where C : Curve<YieldTermStructure>
+        public double guess<C>(int i, C c, bool validData, int first) where C : Curve<YieldTermStructure>
 		{
 
 			if ( validData ) // previous iteration value
@@ -301,7 +301,7 @@ namespace QLNet
 		// upper bound for convergence loop
 		public int maxIterations() { return 100; }
 
-        public double guess<C>(int i, C c, bool validData, int f) where C : Curve<YieldTermStructure>
+        public double guess<C>(int i, C c, bool validData, int first) where C : Curve<YieldTermStructure>
 		{
 			if ( validData ) // previous iteration value
 				return c.data()[i];

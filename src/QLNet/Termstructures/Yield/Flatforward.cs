@@ -80,10 +80,10 @@ namespace QLNet
 		// TermStructure interface
         public override Date maxDate() { return Date.maxDate(); }
 
-        protected internal override double discountImpl(double d)
+        protected internal override double discountImpl(double t)
         {
             calculate();
-			return rate_.discountFactor(d);
+			return rate_.discountFactor(t);
 		}
   
 		protected override void performCalculations() {
