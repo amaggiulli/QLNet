@@ -1,12 +1,13 @@
 ﻿/*
  Copyright (C) 2015 Francois Botha
+ Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+ available online at <http://qlnet.sourceforge.net/License.html>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -22,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedPiecewiseZeroSpreadedTermStructure<Interpolator> : ZeroYieldStructure
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedPiecewiseZeroSpreadedTermStructure(Handle<YieldTermStructure> h,
                                                             List<Handle<Quote>> spreads,
@@ -71,7 +72,7 @@ namespace QLNet
       public override Date referenceDate() { return originalCurve_.link.referenceDate(); }
       public override Date maxDate() { return originalCurve_.link.maxDate() < dates_.Last() ? originalCurve_.link.maxDate() : dates_.Last(); }
 
-      protected override double zeroYieldImpl(double t)
+      protected internal override double zeroYieldImpl(double t)
       {
          double spread = calcSpread(t);
          InterestRate zeroRate = originalCurve_.link.zeroRate(t, compounding_, frequency_, true);

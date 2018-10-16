@@ -96,7 +96,7 @@ namespace QLNet
          }
       }
 
-      protected override double zeroYieldImpl(double t)
+      protected internal override double zeroYieldImpl(double t)
       {
          double zeroRate1 = curve1_.link.zeroRate(t, comp_, freq_, true).rate();
          double zeroRate2 = curve2_.link.zeroRate(t, comp_, freq_, true).rate();

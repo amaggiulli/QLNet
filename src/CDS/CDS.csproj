@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.11.0</VersionPrefix>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
+    <AssemblyName>CDS</AssemblyName>
+    <PackageId>CDS</PackageId>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\QLNet\QLNet.csproj" />
+  </ItemGroup>
+
+</Project>

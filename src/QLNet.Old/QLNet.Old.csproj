@@ -1252,8 +1252,8 @@
     <Compile Include="..\QLNet\Patterns\LazyObject.cs">
       <Link>Patterns\LazyObject.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Patterns\observablevalue.cs">
-      <Link>Patterns\observablevalue.cs</Link>
+    <Compile Include="..\QLNet\Patterns\ObservableValue.cs">
+      <Link>Patterns\ObservableValue.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Patterns\Observer.cs">
       <Link>Patterns\Observer.cs</Link>
@@ -1631,17 +1631,29 @@
     <Compile Include="..\QLNet\Termstructures\Bootstraphelper.cs">
       <Link>Termstructures\Bootstraphelper.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Termstructures\Credit\DefaultDensityStructure.cs">
+      <Link>Termstructures\Credit\DefaultDensityStructure.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Termstructures\Credit\DefaultProbabilityHelpers.cs">
+      <Link>Termstructures\Credit\DefaultProbabilityHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\FlatHazardRate.cs">
       <Link>Termstructures\Credit\FlatHazardRate.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\HazardRateStructure.cs">
       <Link>Termstructures\Credit\HazardRateStructure.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Termstructures\Credit\InterpolatedDefaultDensityCurve.cs">
+      <Link>Termstructures\Credit\InterpolatedDefaultDensityCurve.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\InterpolatedHazardRateCurve.cs">
       <Link>Termstructures\Credit\InterpolatedHazardRateCurve.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\InterpolatedSurvivalProbabilityCurve.cs">
       <Link>Termstructures\Credit\InterpolatedSurvivalProbabilityCurve.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Termstructures\Credit\PiecewiseDefaultCurve.cs">
+      <Link>Termstructures\Credit\PiecewiseDefaultCurve.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Termstructures\Credit\ProbabilityTraits.cs">
       <Link>Termstructures\Credit\ProbabilityTraits.cs</Link>

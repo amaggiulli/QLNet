@@ -1,13 +1,14 @@
 ﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
  copy of the license along with this program; if not, license is
- available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+ available online at <http://qlnet.sourceforge.net/License.html>.
 
  QLNet is a based on QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -23,7 +24,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedZeroCurve<Interpolator> : ZeroYieldStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+       where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve
@@ -32,10 +33,10 @@ namespace QLNet
 
       public List<Date> dates_ { get; set; }
       public List<Date> dates() { return dates_; }
-      public Date maxDate_ { get; set; }
+      public Date maxDate_{ get; set; }
       public override Date maxDate()
       {
-         if (maxDate_ != null)
+         if ( maxDate_ != null )
             return maxDate_;
 
          return dates_.Last();
@@ -140,7 +141,7 @@ namespace QLNet
                                    DayCounter dayCounter,
                                    Interpolator interpolator,
                                    Compounding compounding = Compounding.Continuous,
-                                   Frequency frequency = Frequency.Annual,
+                                   Frequency frequency = Frequency.Annual, 
                                    Date refDate = null)
          : base(refDate ?? dates[0], null, dayCounter)
       {
@@ -148,21 +149,21 @@ namespace QLNet
          dates_ = dates;
          data_ = yields;
          interpolator_ = interpolator;
-         initialize(compounding, frequency, refDate);
+         initialize( compounding, frequency, refDate );
       }
 
-      protected void initialize(Compounding compounding, Frequency frequency, Date refDate = null)
+      protected void initialize( Compounding compounding, Frequency frequency, Date refDate = null )
       {
          Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given");
          Utils.QL_REQUIRE(data_.Count == dates_.Count, () => "dates/yields count mismatch");
 
          times_ = new List<double>(dates_.Count);
          double offset = 0.0;
-         if (refDate != null)
+         if ( refDate != null )
          {
             offset = dayCounter().yearFraction(refDate, dates_[0]);
          }
-         times_.Add(offset);
+         times_.Add( offset );
 
          if (compounding != Compounding.Continuous)
          {
@@ -173,18 +174,18 @@ namespace QLNet
             InterestRate r = new InterestRate(data_[0], dayCounter(), compounding, frequency);
             data_[0] = r.equivalentRate(Compounding.Continuous, Frequency.NoFrequency, dt).value();
 #if !QL_NEGATIVE_RATES
-            Utils.QL_REQUIRE(data_[0] > 0.0, () => "non-positive yield");
+            Utils.QL_REQUIRE( data_[0] > 0.0, () => "non-positive yield" );
 #endif
          }
 
          for (int i = 1; i < dates_.Count; i++)
          {
             Utils.QL_REQUIRE(dates_[i] > dates_[i - 1], () => "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
-            times_.Add(dayCounter().yearFraction(refDate ?? dates_[0], dates_[i]));
-
-            Utils.QL_REQUIRE(!Utils.close(times_[i], times_[i - 1]), () =>
-                             "two dates correspond to the same time " +
-                             "under this curve's day count convention");
+            times_.Add( dayCounter().yearFraction( refDate ?? dates_[0], dates_[i] ) );
+      
+            Utils.QL_REQUIRE( !Utils.close( times_[i], times_[i - 1] ), () =>
+                       "two dates correspond to the same time " +
+                       "under this curve's day count convention");
 
             // adjusting zero rates to match continuous compounding
             if (compounding != Compounding.Continuous)
@@ -198,10 +199,10 @@ namespace QLNet
             // positive yields are not enough to ensure non-negative fwd rates
             // so here's a stronger requirement
             Utils.QL_REQUIRE(data_[i] * times_[i] - data_[i - 1] * times_[i - 1] >= 0.0,
-                             () => "negative forward rate implied by the zero yield " + data_[i] + " at " + dates_[i] +
-                             " (t=" + times_[i] + ") after the zero yield " +
-                             data_[i - 1] + " at " + dates_[i - 1] +
-                             " (t=" + times_[i - 1] + ")");
+                () => "negative forward rate implied by the zero yield " + data_[i] + " at " + dates_[i] +
+                " (t=" + times_[i] + ") after the zero yield " +
+                data_[i - 1] + " at " + dates_[i - 1] +
+                " (t=" + times_[i - 1] + ")");
 #endif
 
          }
@@ -210,7 +211,7 @@ namespace QLNet
          interpolation_.update();
       }
 
-      protected override double zeroYieldImpl(double t)
+      protected internal override double zeroYieldImpl(double t)
       {
          if (t <= times_.Last())
             return this.interpolation_.value(t, true);

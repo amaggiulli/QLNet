@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -725,15 +726,15 @@ namespace TestSuite
 
       public void testCurveConsistency<T, I, B>(CommonVars vars)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new () { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
       public void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new () { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
       public void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new ()
       {
 
@@ -838,15 +839,15 @@ namespace TestSuite
 
       public void testBMACurveConsistency<T, I, B>(CommonVars vars)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new () { testBMACurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-7); }
       public void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new () { testBMACurveConsistency<T, I, B>(vars, interpolator, 1.0e-7); }
       public void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
          where B : IBootStrap<PiecewiseYieldCurve>, new ()
       {
 
@@ -933,13 +934,13 @@ namespace TestSuite
 
       public void testCurveCopy<T, I>(CommonVars vars)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
       {
          testCurveCopy<T, I>(vars, FastActivator<I>.Create());
       }
       public void testCurveCopy<T, I>(CommonVars vars, I interpolator)
       where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+         where I : class, IInterpolationFactory, new ()
       {
 
          PiecewiseYieldCurve<T, I> curve = new PiecewiseYieldCurve<T, I>(vars.settlement, vars.instruments,

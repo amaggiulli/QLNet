@@ -120,7 +120,7 @@ namespace QLNet
 
          // lexical_cast causes compilation errors with x64
          int y = int.Parse(code.Substring(3, 2));
-         Date referenceDate = (refDate ?? new Date(Settings.evaluationDate()));
+         Date referenceDate = (refDate ?? new Date((Date)Settings.evaluationDate()));
          int referenceYear = (referenceDate.year() % 100);
          y += referenceDate.year() - referenceYear;
          if (y < Date.minDate().year())
