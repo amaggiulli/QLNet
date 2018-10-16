@@ -144,7 +144,7 @@ namespace QLNet
       public void updateGuess(List<double> data, double discount, int i) { data[i] = discount; }
       public int maxIterations() { return 50; }   // upper bound for convergence loop
 
-      public double guess<C>(int i, C c, bool validData, int f) where C : Curve<DefaultProbabilityTermStructure>
+      public double guess<C>(int i, C c, bool validData, int first) where C : Curve<DefaultProbabilityTermStructure>
       {
          if (validData) // previous iteration value
             return c.data()[i];
@@ -190,7 +190,7 @@ namespace QLNet
       {
          return avgHazardRate;
       }
-      public double guess<C>(int i, C c,bool validData,int f) where C : Curve<DefaultProbabilityTermStructure>
+      public double guess<C>(int i, C c,bool validData,int first) where C : Curve<DefaultProbabilityTermStructure>
       {
          if (validData) // previous iteration value
             return c.data()[i];
@@ -247,7 +247,7 @@ namespace QLNet
       {
          return avgHazardRate;
       }
-      public double guess<C>(int i,C c,bool validData,int f) where C : Curve<DefaultProbabilityTermStructure>
+      public double guess<C>(int i,C c,bool validData,int first) where C : Curve<DefaultProbabilityTermStructure>
       {
          if (validData) // previous iteration value
             return c.data()[i];

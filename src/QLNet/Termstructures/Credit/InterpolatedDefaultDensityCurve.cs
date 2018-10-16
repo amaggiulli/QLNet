@@ -164,7 +164,6 @@ namespace QLNet
                          + this.data_.Last()*(t - this.times_.Last());
             }
             double P = 1.0 - integral;
-            // QL_ENSURE(P >= 0.0, "negative survival probability");
             return Math.Max(P, 0.0);
         }
 

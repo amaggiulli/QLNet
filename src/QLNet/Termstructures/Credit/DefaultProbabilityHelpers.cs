@@ -166,8 +166,8 @@ namespace QLNet
             earliestDate_ = schedule_.dates().First();
             latestDate_   = calendar_.adjust(schedule_.dates().Last(),
                                              paymentConvention_);
-            /*if (model_ == CreditDefaultSwap.PricingModel.ISDA)
-                ++latestDate_;*/
+            if (model_ == CreditDefaultSwap.PricingModel.ISDA)
+                ++latestDate_;
         }
 
         protected virtual void resetEngine() { }
