@@ -21,7 +21,7 @@
 #if NET40 || NET45
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
-   using Xunit;
+using Xunit;
 #endif
 using QLNet;
 using System;
@@ -35,9 +35,9 @@ namespace TestSuite
    public class T_CreditDefaultSwap
    {
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testCachedValue()
       {
@@ -66,7 +66,7 @@ namespace TestSuite
             BusinessDayConvention convention = BusinessDayConvention.ModifiedFollowing;
 
             Schedule schedule = new Schedule(issueDate, maturity, new Period(frequency), calendar,
-                              convention, convention, DateGeneration.Rule.Forward, false);
+                                             convention, convention, DateGeneration.Rule.Forward, false);
 
             // Build the CDS
             double fixedRate = 0.0120;
@@ -75,7 +75,7 @@ namespace TestSuite
             double recoveryRate = 0.4;
 
             CreditDefaultSwap cds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, fixedRate,
-                                 schedule, convention, dayCount, true, true);
+                                                          schedule, convention, dayCount, true, true);
             cds.setPricingEngine(new MidPointCdsEngine(probabilityCurve, recoveryRate, discountCurve));
 
             double npv = 295.0153398;
@@ -98,7 +98,7 @@ namespace TestSuite
                   + "    expected fair rate:   " + fairRate);
 
             cds.setPricingEngine(new IntegralCdsEngine(new Period(1, TimeUnit.Days), probabilityCurve,
-                                                      recoveryRate, discountCurve));
+                                                       recoveryRate, discountCurve));
 
             calculatedNpv = cds.NPV();
             calculatedFairRate = cds.fairSpread();
@@ -141,9 +141,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testCachedMarketValue()
       {
@@ -255,7 +255,7 @@ namespace TestSuite
             double cdsNotional = 100.0;
 
             CreditDefaultSwap cds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, cdsNotional, fixedRate,
-                                 schedule, cdsConvention, dayCount, true, true);
+                                                          schedule, cdsConvention, dayCount, true, true);
             cds.setPricingEngine(new MidPointCdsEngine(piecewiseFlatHazardRate, recoveryRate, discountCurve));
 
             double calculatedNpv = cds.NPV();
@@ -274,15 +274,15 @@ namespace TestSuite
 
             if (Math.Abs(fairRate - calculatedFairRate) > tolerance)
                QAssert.Fail("Failed to reproduce the fair rate for the given credit-default swap\n"
-                  + "    computed fair rate:  " + calculatedFairRate + "\n"
-                  + "    Given fair rate:     " + fairRate);
+                            + "    computed fair rate:  " + calculatedFairRate + "\n"
+                            + "    Given fair rate:     " + fairRate);
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testImpliedHazardRate()
       {
@@ -313,8 +313,8 @@ namespace TestSuite
             RelinkableHandle<DefaultProbabilityTermStructure> probabilityCurve =
                new RelinkableHandle<DefaultProbabilityTermStructure>();
             probabilityCurve.linkTo(new InterpolatedHazardRateCurve<BackwardFlat>(dates,
-                                                                        hazardRates,
-                                                                        dayCounter));
+                                                                                  hazardRates,
+                                                                                  dayCounter));
 
             RelinkableHandle<YieldTermStructure> discountCurve = new RelinkableHandle<YieldTermStructure>();
             discountCurve.linkTo(new FlatForward(today, 0.03, new Actual360()));
@@ -333,33 +333,33 @@ namespace TestSuite
             {
                Date maturity = calendar.advance(issueDate, n, TimeUnit.Years);
                Schedule schedule = new Schedule(issueDate, maturity, new Period(frequency), calendar,
-                                 convention, convention,
-                                 DateGeneration.Rule.Forward, false);
+                                                convention, convention,
+                                                DateGeneration.Rule.Forward, false);
 
                CreditDefaultSwap cds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, fixedRate,
-                                    schedule, convention, cdsDayCount, true, true);
+                                                             schedule, convention, cdsDayCount, true, true);
                cds.setPricingEngine(new MidPointCdsEngine(probabilityCurve, recoveryRate, discountCurve));
 
                double NPV = cds.NPV();
                double flatRate = cds.impliedHazardRate(NPV, discountCurve,
-                                                      dayCounter,
-                                                      recoveryRate);
+                                                       dayCounter,
+                                                       recoveryRate);
 
                if (flatRate < h1 || flatRate > h2)
                {
                   QAssert.Fail("implied hazard rate outside expected range\n"
-                              + "    maturity: " + n + " years\n"
-                              + "    expected minimum: " + h1 + "\n"
-                              + "    expected maximum: " + h2 + "\n"
-                              + "    implied rate:     " + flatRate);
+                               + "    maturity: " + n + " years\n"
+                               + "    expected minimum: " + h1 + "\n"
+                               + "    expected maximum: " + h2 + "\n"
+                               + "    implied rate:     " + flatRate);
                }
 
                if (n > 6 && flatRate < latestRate)
                {
                   QAssert.Fail("implied hazard rate decreasing with swap maturity\n"
-                              + "    maturity: " + n + " years\n"
-                              + "    previous rate: " + latestRate + "\n"
-                              + "    implied rate:  " + flatRate);
+                               + "    maturity: " + n + " years\n"
+                               + "    previous rate: " + latestRate + "\n"
+                               + "    implied rate:  " + flatRate);
                }
 
                latestRate = flatRate;
@@ -368,7 +368,7 @@ namespace TestSuite
                probability.linkTo(new FlatHazardRate(today, new Handle<Quote>(new SimpleQuote(flatRate)), dayCounter));
 
                CreditDefaultSwap cds2 = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, fixedRate,
-                                       schedule, convention, cdsDayCount, true, true);
+                                                              schedule, convention, cdsDayCount, true, true);
                cds2.setPricingEngine(new MidPointCdsEngine(probability, recoveryRate, discountCurve));
 
                double NPV2 = cds2.NPV();
@@ -376,17 +376,17 @@ namespace TestSuite
                if (Math.Abs(NPV - NPV2) > tolerance)
                {
                   QAssert.Fail("failed to reproduce NPV with implied rate\n"
-                              + "    expected:   " + NPV + "\n"
-                              + "    calculated: " + NPV2);
+                               + "    expected:   " + NPV + "\n"
+                               + "    calculated: " + NPV2);
                }
             }
          }
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFairSpread()
       {
@@ -416,11 +416,11 @@ namespace TestSuite
 
             Schedule schedule =
                new MakeSchedule().from(issueDate)
-                              .to(maturity)
-                              .withFrequency(Frequency.Quarterly)
-                              .withCalendar(calendar)
-                              .withTerminationDateConvention(convention)
-                              .withRule(DateGeneration.Rule.TwentiethIMM).value();
+            .to(maturity)
+            .withFrequency(Frequency.Quarterly)
+            .withCalendar(calendar)
+            .withTerminationDateConvention(convention)
+            .withRule(DateGeneration.Rule.TwentiethIMM).value();
 
             // Build the CDS
             double fixedRate = 0.001;
@@ -431,13 +431,13 @@ namespace TestSuite
             IPricingEngine engine = new MidPointCdsEngine(probabilityCurve, recoveryRate, discountCurve);
 
             CreditDefaultSwap cds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, fixedRate,
-                                 schedule, convention, dayCount, true, true);
+                                                          schedule, convention, dayCount, true, true);
             cds.setPricingEngine(engine);
 
             double fairRate = cds.fairSpread();
 
             CreditDefaultSwap fairCds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, fairRate,
-                                    schedule, convention, dayCount, true, true);
+                                                              schedule, convention, dayCount, true, true);
             fairCds.setPricingEngine(engine);
 
             double fairNPV = fairCds.NPV();
@@ -452,9 +452,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-        [TestMethod()]
+      [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testFairUpfront()
       {
@@ -483,11 +483,11 @@ namespace TestSuite
 
             Schedule schedule =
                new MakeSchedule().from(issueDate)
-                                 .to(maturity)
-                                 .withFrequency(Frequency.Quarterly)
-                                 .withCalendar(calendar)
-                                 .withTerminationDateConvention(convention)
-                                 .withRule(DateGeneration.Rule.TwentiethIMM).value();
+            .to(maturity)
+            .withFrequency(Frequency.Quarterly)
+            .withCalendar(calendar)
+            .withTerminationDateConvention(convention)
+            .withRule(DateGeneration.Rule.TwentiethIMM).value();
 
             // Build the CDS
             double fixedRate = 0.05;
@@ -499,13 +499,13 @@ namespace TestSuite
             IPricingEngine engine = new MidPointCdsEngine(probabilityCurve, recoveryRate, discountCurve, true);
 
             CreditDefaultSwap cds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, upfront, fixedRate,
-                                 schedule, convention, dayCount, true, true);
+                                                          schedule, convention, dayCount, true, true);
             cds.setPricingEngine(engine);
 
             double fairUpfront = cds.fairUpfront();
 
             CreditDefaultSwap fairCds = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional,
-                                    fairUpfront, fixedRate, schedule, convention, dayCount, true, true);
+                                                              fairUpfront, fixedRate, schedule, convention, dayCount, true, true);
             fairCds.setPricingEngine(engine);
 
             double fairNPV = fairCds.NPV();
@@ -520,13 +520,13 @@ namespace TestSuite
             // same with null upfront to begin with
             upfront = 0.0;
             CreditDefaultSwap cds2 = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional, upfront, fixedRate,
-                                 schedule, convention, dayCount, true, true);
+                                                           schedule, convention, dayCount, true, true);
             cds2.setPricingEngine(engine);
 
             fairUpfront = cds2.fairUpfront();
 
             CreditDefaultSwap fairCds2 = new CreditDefaultSwap(CreditDefaultSwap.Protection.Side.Seller, notional,
-                                       fairUpfront, fixedRate, schedule, convention, dayCount, true, true);
+                                                               fairUpfront, fixedRate, schedule, convention, dayCount, true, true);
             fairCds2.setPricingEngine(engine);
 
             fairNPV = fairCds2.NPV();
@@ -542,7 +542,7 @@ namespace TestSuite
 #if NET40 || NET45
       [TestMethod()]
 #else
-       [Fact]
+      [Fact]
 #endif
       public void testIsdaEngine()
       {
@@ -563,13 +563,14 @@ namespace TestSuite
                                 0.007163,
                                 0.012413,
                                 0.014,
-                                0.015488};
+                                0.015488
+                               };
 
          for (int i = 0; i < dep_tenors.Length ; i++)
          {
-            isdaRateHelpers.Add( new DepositRateHelper(dep_quotes[i], new Period(dep_tenors[i] , TimeUnit.Months), 2,
-               new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing,false, new Actual360())
-                );
+            isdaRateHelpers.Add(new DepositRateHelper(dep_quotes[i], new Period(dep_tenors[i], TimeUnit.Months), 2,
+                                                      new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360())
+                               );
          }
          int[] swap_tenors = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30 };
          double[] swap_quotes = {0.011907,
@@ -585,51 +586,54 @@ namespace TestSuite
                                  0.036217,
                                  0.036981,
                                  0.037246,
-                                 0.037605};
+                                 0.037605
+                                };
 
-         IborIndex isda_ibor = new IborIndex("IsdaIbor", new Period(3 , TimeUnit.Months), 2, new USDCurrency(),
-            new WeekendsOnly(),BusinessDayConvention.ModifiedFollowing, false, new Actual360());
+         IborIndex isda_ibor = new IborIndex("IsdaIbor", new Period(3, TimeUnit.Months), 2, new USDCurrency(),
+                                             new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360());
          for (int i = 0; i < swap_tenors.Length ; i++)
          {
-            isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i] ,TimeUnit.Years),
-               new WeekendsOnly(),Frequency.Semiannual,BusinessDayConvention.ModifiedFollowing, new Thirty360(),
-               isda_ibor));
+            isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i], TimeUnit.Years),
+                                                   new WeekendsOnly(), Frequency.Semiannual, BusinessDayConvention.ModifiedFollowing, new Thirty360(),
+                                                   isda_ibor));
          }
 
          RelinkableHandle<YieldTermStructure> discountCurve = new RelinkableHandle<YieldTermStructure>();
          discountCurve.linkTo(new PiecewiseYieldCurve<Discount, LogLinear>(0, new WeekendsOnly(), isdaRateHelpers,
-            new Actual365Fixed()));
+                                                                           new Actual365Fixed()));
 
 
          RelinkableHandle<DefaultProbabilityTermStructure> probabilityCurve = new RelinkableHandle<DefaultProbabilityTermStructure>();
          Date[] termDates = { new Date(20, Month.June, 2010),
-                              new Date(20, Month.June, 2011),
-                              new Date(20, Month.June, 2012),
-                              new Date(20, Month.June, 2016),
-                              new Date(20, Month.June, 2019)};
+                 new Date(20, Month.June, 2011),
+                 new Date(20, Month.June, 2012),
+                 new Date(20, Month.June, 2016),
+                 new Date(20, Month.June, 2019)
+         };
          double[] spreads = { 0.001, 0.1 };
          double[] recoveries = { 0.2, 0.4 };
 
          double[] markitValues = {97798.29358, //0.001
                                   97776.11889, //0.001
-                                 -914971.5977, //0.1
-                                 -894985.6298, //0.1
+                                  -914971.5977, //0.1
+                                  -894985.6298, //0.1
                                   186921.3594, //0.001
                                   186839.8148, //0.001
-                                 -1646623.672, //0.1
-                                 -1579803.626, //0.1
+                                  -1646623.672, //0.1
+                                  -1579803.626, //0.1
                                   274298.9203,
                                   274122.4725,
-                                 -2279730.93,
-                                 -2147972.527,
+                                  -2279730.93,
+                                  -2147972.527,
                                   592420.2297,
                                   591571.2294,
-                                 -3993550.206,
-                                 -3545843.418,
+                                  -3993550.206,
+                                  -3545843.418,
                                   797501.1422,
                                   795915.9787,
-                                 -4702034.688,
-                                 -4042340.999};
+                                  -4702034.688,
+                                  -4042340.999
+                                 };
 #if !QL_USE_INDEXED_COUPON
          double tolerance = 1.0e-2; //TODO Check calculation , tolerance must be 1.0e-6;
 #else
@@ -649,22 +653,22 @@ namespace TestSuite
                {
 
                   CreditDefaultSwap quotedTrade = new MakeCreditDefaultSwap(termDates[i], spreads[j])
-                      .withNominal(10000000.0).value();
+                  .withNominal(10000000.0).value();
 
                   double h = quotedTrade.impliedHazardRate(0.0,
-                                                          discountCurve,
-                                                          new Actual365Fixed(),
-                                                          recoveries[k],
-                                                          1e-10,
-                                                          CreditDefaultSwap.PricingModel.ISDA);
+                                                           discountCurve,
+                                                           new Actual365Fixed(),
+                                                           recoveries[k],
+                                                           1e-10,
+                                                           CreditDefaultSwap.PricingModel.ISDA);
 
-                  probabilityCurve.linkTo( new FlatHazardRate(0, new WeekendsOnly(), h, new Actual365Fixed()));
+                  probabilityCurve.linkTo(new FlatHazardRate(0, new WeekendsOnly(), h, new Actual365Fixed()));
 
                   IsdaCdsEngine engine = new IsdaCdsEngine(probabilityCurve, recoveries[k], discountCurve);
 
                   CreditDefaultSwap conventionalTrade = new MakeCreditDefaultSwap(termDates[i], 0.01)
-                      .withNominal(10000000.0)
-                      .withPricingEngine(engine).value();
+                  .withNominal(10000000.0)
+                  .withPricingEngine(engine).value();
 
                   double x = conventionalTrade.notional().Value;
                   double y = conventionalTrade.fairUpfront();
