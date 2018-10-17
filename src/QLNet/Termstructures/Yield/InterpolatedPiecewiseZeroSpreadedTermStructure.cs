@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedPiecewiseZeroSpreadedTermStructure<Interpolator> : ZeroYieldStructure
-      where Interpolator : class, IInterpolationFactory, new()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public InterpolatedPiecewiseZeroSpreadedTermStructure(Handle<YieldTermStructure> h,
                                                             List<Handle<Quote>> spreads,
