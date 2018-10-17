@@ -98,7 +98,7 @@ namespace QLNet
 
       public static implicit operator T(ObservableValue<T> d)
       {
-        return d.value();
+         return d.value();
       }
-    }
+   }
 }
