@@ -1,16 +1,16 @@
 ﻿//  Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
 //  Copyright (C) 2018 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
-//  
+//
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is  
+//  copy of the license along with this program; if not, license is
 //  available online at <http://qlnet.sourceforge.net/License.html>.
-//   
+//
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
 //  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//  
+//
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
@@ -25,46 +25,46 @@ namespace QLNet
    /// </summary>
    /// <typeparam name="Interpolator"></typeparam>
    public class InterpolatedSurvivalProbabilityCurve<Interpolator> : SurvivalProbabilityStructure,
-       InterpolatedCurve where Interpolator : class, IInterpolationFactory, new()
+      InterpolatedCurve where Interpolator : class, IInterpolationFactory, new ()
    {
-      public InterpolatedSurvivalProbabilityCurve( List<Date> dates,
-                                                   List<double> probabilities,
-                                                   DayCounter dayCounter,
-                                                   Calendar calendar = null,
-                                                   List<Handle<Quote>> jumps = null,
-                                                   List<Date> jumpDates = null,
-                                                   Interpolator interpolator = default(Interpolator))
-         :base(dates[0], calendar, dayCounter, jumps, jumpDates)
+      public InterpolatedSurvivalProbabilityCurve(List<Date> dates,
+                                                  List<double> probabilities,
+                                                  DayCounter dayCounter,
+                                                  Calendar calendar = null,
+                                                  List<Handle<Quote>> jumps = null,
+                                                  List<Date> jumpDates = null,
+                                                  Interpolator interpolator = default(Interpolator))
+         : base(dates[0], calendar, dayCounter, jumps, jumpDates)
       {
          dates_ = dates;
          data_ = probabilities;
          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
 
-         Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints,()=> "not enough input dates given");
-         Utils.QL_REQUIRE(this.data_.Count == dates_.Count,()=> "dates/data count mismatch");
-         Utils.QL_REQUIRE(this.data_[0].IsEqual(1.0),()=> "the first probability must be == 1.0 to flag the corresponding date as reference date");
+         Utils.QL_REQUIRE(dates_.Count >= interpolator_.requiredPoints, () => "not enough input dates given");
+         Utils.QL_REQUIRE(this.data_.Count == dates_.Count, () => "dates/data count mismatch");
+         Utils.QL_REQUIRE(this.data_[0].IsEqual(1.0), () => "the first probability must be == 1.0 to flag the corresponding date as reference date");
 
          this.times_  = new InitializedList<double>(dates_.Count);
          this.times_[0] = 0.0;
          for (int i = 1; i < dates_.Count; ++i)
          {
-            Utils.QL_REQUIRE(dates_[i] > dates_[i - 1],()=>
-               "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
+            Utils.QL_REQUIRE(dates_[i] > dates_[i - 1], () =>
+                             "invalid date (" + dates_[i] + ", vs " + dates_[i - 1] + ")");
             this.times_[i] = dayCounter.yearFraction(dates_[0], dates_[i]);
-            Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]),()=>
-               "two dates correspond to the same time under this curve's day count convention");
-            Utils.QL_REQUIRE(this.data_[i] > 0.0,()=> "negative probability");
-            Utils.QL_REQUIRE(this.data_[i] <= this.data_[i - 1],()=>
-            "negative hazard rate implied by the survival probability " +
-               this.data_[i] + " at " + dates_[i] +
-               " (t=" + this.times_[i] + ") after the survival probability " +
-               this.data_[i - 1] + " at " + dates_[i - 1] +
-               " (t=" + this.times_[i - 1] + ")");
+            Utils.QL_REQUIRE(!Utils.close(this.times_[i], this.times_[i - 1]), () =>
+                             "two dates correspond to the same time under this curve's day count convention");
+            Utils.QL_REQUIRE(this.data_[i] > 0.0, () => "negative probability");
+            Utils.QL_REQUIRE(this.data_[i] <= this.data_[i - 1], () =>
+                             "negative hazard rate implied by the survival probability " +
+                             this.data_[i] + " at " + dates_[i] +
+                             " (t=" + this.times_[i] + ") after the survival probability " +
+                             this.data_[i - 1] + " at " + dates_[i - 1] +
+                             " (t=" + this.times_[i - 1] + ")");
          }
 
          this.interpolation_ = this.interpolator_.interpolate(this.times_,
-                                                               this.times_.Count,
-                                                               this.data_);
+                                                              this.times_.Count,
+                                                              this.data_);
          this.interpolation_.update();
 
       }
@@ -87,33 +87,33 @@ namespace QLNet
       }
 
       protected internal InterpolatedSurvivalProbabilityCurve(DayCounter dc,
-                                                      List<Handle<Quote>> jumps = null,
-                                                      List<Date> jumpDates = null,
-                                                      Interpolator interpolator = default(Interpolator))
-         :base(dc, jumps, jumpDates) 
+                                                              List<Handle<Quote>> jumps = null,
+                                                              List<Date> jumpDates = null,
+                                                              Interpolator interpolator = default(Interpolator))
+         : base(dc, jumps, jumpDates)
       {
-          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       protected internal InterpolatedSurvivalProbabilityCurve(Date referenceDate,
-                                                      DayCounter dc,
-                                                      List<Handle<Quote>> jumps = null,
-                                                      List<Date> jumpDates = null,
-                                                      Interpolator interpolator = default(Interpolator))
-         :base(referenceDate, new Calendar(), dc, jumps, jumpDates) 
+                                                              DayCounter dc,
+                                                              List<Handle<Quote>> jumps = null,
+                                                              List<Date> jumpDates = null,
+                                                              Interpolator interpolator = default(Interpolator))
+         : base(referenceDate, new Calendar(), dc, jumps, jumpDates)
       {
-          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       protected internal InterpolatedSurvivalProbabilityCurve(int settlementDays,
-                                                      Calendar cal,
-                                                      DayCounter dc,
-                                                      List<Handle<Quote>> jumps = null,
-                                                      List<Date> jumpDates = null,
-                                                      Interpolator interpolator = default(Interpolator))
-         :base(settlementDays, cal, dc, jumps, jumpDates)
+                                                              Calendar cal,
+                                                              DayCounter dc,
+                                                              List<Handle<Quote>> jumps = null,
+                                                              List<Date> jumpDates = null,
+                                                              Interpolator interpolator = default(Interpolator))
+         : base(settlementDays, cal, dc, jumps, jumpDates)
       {
-          interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
+         interpolator_ = interpolator ?? FastActivator<Interpolator>.Create();
       }
 
       /// <summary>
@@ -147,7 +147,7 @@ namespace QLNet
 
       protected internal override double hazardRateImpl(double t)
       {
-          throw new NotImplementedException();
+         throw new NotImplementedException();
       }
 
 
