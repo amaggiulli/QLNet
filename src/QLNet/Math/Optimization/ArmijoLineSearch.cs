@@ -85,7 +85,7 @@ namespace QLNet
 
                // Compute function value at the new point
                qt_ = P.value(xtd_);
-               P.gradient(gradient_, xtd_);
+               P.gradient(ref gradient_, xtd_);
                // and it squared norm
                maxIter = endCriteria.checkMaxIterations(loopNumber, ref ecType);
             }
@@ -97,7 +97,7 @@ namespace QLNet
             succeed_ = false;
 
          // Compute new gradient
-         P.gradient(gradient_, xtd_);
+         P.gradient(ref gradient_, xtd_);
          // and it squared norm
          qpt_ = Vector.DotProduct(gradient_, gradient_);
 

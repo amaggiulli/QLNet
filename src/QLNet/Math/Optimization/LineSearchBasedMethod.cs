@@ -52,7 +52,7 @@ namespace QLNet
          int sz = lineSearch_.searchDirection.size();
          Vector prevGradient = new Vector(sz), d = new Vector(sz), sddiff = new Vector(sz), direction = new Vector(sz);
          // Initialize cost function, gradient prevGradient and search direction
-         P.setFunctionValue(P.valueAndGradient(prevGradient, x_));
+         P.setFunctionValue(P.valueAndGradient(ref prevGradient, x_));
          P.setGradientNormValue(Vector.DotProduct(prevGradient, prevGradient));
          lineSearch_.searchDirection = prevGradient * -1;
 
