@@ -1,7 +1,7 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- *
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -80,18 +80,18 @@ namespace QLNet
 
       //! call cost function gradient computation and increment
       //  evaluation counter
-      public void gradient(Vector grad_f, Vector x)
+      public void gradient(ref Vector grad_f, Vector x)
       {
          ++gradientEvaluation_;
-         costFunction_.gradient(grad_f, x);
+         costFunction_.gradient(ref grad_f, x);
       }
 
       //! call cost function computation and it gradient
-      public double valueAndGradient(Vector grad_f, Vector x)
+      public double valueAndGradient(ref Vector grad_f, Vector x)
       {
          ++functionEvaluation_;
          ++gradientEvaluation_;
-         return costFunction_.valueAndGradient(grad_f, x);
+         return costFunction_.valueAndGradient(ref grad_f, x);
       }
 
       public void setCurrentValue(Vector currentValue)
