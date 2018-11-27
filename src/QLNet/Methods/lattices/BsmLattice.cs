@@ -97,8 +97,8 @@ namespace QLNet
       protected ITree tree_;
       protected double riskFreeRate_;
       protected double dt_;
-      private double discount_;
-      private double pd_, pu_;
+      protected double discount_;
+      protected double pd_, pu_;
 
    }
 }

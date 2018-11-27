@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repo", "src\Repo\Repo.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swap", "src\Swap\Swap.csproj", "{A653D5D9-660D-4DB2-938C-1676F5E35033}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvertibleBonds", "src\ConvertibleBonds\ConvertibleBonds.csproj", "{F0F89FDF-F7D9-46CA-9177-A06BA64E306F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{A653D5D9-660D-4DB2-938C-1676F5E35033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A653D5D9-660D-4DB2-938C-1676F5E35033}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A653D5D9-660D-4DB2-938C-1676F5E35033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0F89FDF-F7D9-46CA-9177-A06BA64E306F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0F89FDF-F7D9-46CA-9177-A06BA64E306F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0F89FDF-F7D9-46CA-9177-A06BA64E306F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0F89FDF-F7D9-46CA-9177-A06BA64E306F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,9 @@ Global
 		{683CF269-1F05-4C9B-9DCC-877977BC8C25} = {0E7C422B-F8C0-433E-9E54-D3D55968222D}
 		{40456B2A-0B05-4DF1-951E-504BB339452A} = {0E7C422B-F8C0-433E-9E54-D3D55968222D}
 		{A653D5D9-660D-4DB2-938C-1676F5E35033} = {0E7C422B-F8C0-433E-9E54-D3D55968222D}
+		{F0F89FDF-F7D9-46CA-9177-A06BA64E306F} = {0E7C422B-F8C0-433E-9E54-D3D55968222D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4B9C389-D195-4E74-9536-587E7D349B67}
 	EndGlobalSection
 EndGlobal

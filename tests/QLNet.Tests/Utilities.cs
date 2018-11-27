@@ -294,6 +294,18 @@ namespace TestSuite
       //   QAssert.IsTrue( condition, message, parameters );
       //}
 
+      /// <summary>
+      /// Verifies that an object reference is not null.
+      /// </summary>
+      /// <param name="obj">The object to be validated</param>
+      public static void Require(object obj)
+      {
+#if NET40 || NET45
+         Assert.IsNotNull(obj);
+#else
+         Assert.NotNull(obj);
+#endif
+      }
    }
 
    public struct SwaptionTenors

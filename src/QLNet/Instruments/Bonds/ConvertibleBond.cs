@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    //! %callability leaving to the holder the possibility to convert
-   class SoftCallability : Callability
+   public class SoftCallability : Callability
    {
       public SoftCallability(Callability.Price price, Date date, double trigger)
          : base(price, Callability.Type.Call, date)
@@ -44,9 +44,9 @@ namespace QLNet
    {
       public class option : OneAssetOption
       {
-         public class arguments : OneAssetOption.Arguments
+         public new class Arguments : OneAssetOption.Arguments
          {
-            public arguments()
+            public Arguments()
             {
                conversionRatio = null;
                settlementDays = null;
@@ -95,6 +95,8 @@ namespace QLNet
                                 () => "different number of coupon dates and amounts");
             }
          }
+         public new class Engine : GenericEngine<ConvertibleBond.option.Arguments,
+            ConvertibleBond.option.Results> {}
 
          public option(ConvertibleBond bond,
                        Exercise exercise,
@@ -128,7 +130,7 @@ namespace QLNet
          {
             base.setupArguments(args);
 
-            ConvertibleBond.option.arguments moreArgs = args as ConvertibleBond.option.arguments;
+            ConvertibleBond.option.Arguments moreArgs = args as Arguments;
             Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
 
             moreArgs.conversionRatio = conversionRatio_;
