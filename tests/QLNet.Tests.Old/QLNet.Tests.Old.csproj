@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props" Condition="Exists('..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -33,6 +34,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,16 +67,18 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-net45|AnyCPU'">
     <OutputPath>bin\Release\net45\</OutputPath>
     <DefineConstants>TRACE;QL_DOTNET_FRAMEWORK</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -133,6 +138,7 @@
     <Compile Include="..\QLNet.Tests\T_FdmLinearOp.cs" />
     <Compile Include="..\QLNet.Tests\T_Instruments.cs" />
     <Compile Include="..\QLNet.Tests\T_InterestRate.cs" />
+    <Compile Include="..\QLNet.Tests\T_FastFourierTransform.cs" />
     <Compile Include="..\QLNet.Tests\T_Interpolations.cs" />
     <Compile Include="..\QLNet.Tests\T_OvernightIndexedSwap.cs" />
     <Compile Include="..\QLNet.Tests\T_Piecewiseyieldcurve.cs" />
@@ -148,11 +154,11 @@
     <Compile Include="..\QLNet.Tests\T_ShortRateModels.cs" />
     <Compile Include="..\QLNet.Tests\T_Solvers.cs" />
     <Compile Include="..\QLNet.Tests\T_Stats.cs" />
-    <Compile Include="..\QLNet.Tests\T_SVI.cs" />    
+    <Compile Include="..\QLNet.Tests\T_SVI.cs" />
     <Compile Include="..\QLNet.Tests\T_Swaps.cs" />
     <Compile Include="..\QLNet.Tests\T_SwaptionVolatilityCube.cs" />
     <Compile Include="..\QLNet.Tests\T_TermStructures.cs" />
-	  <Compile Include="..\QLNet.Tests\T_Vector.cs" />
+    <Compile Include="..\QLNet.Tests\T_Vector.cs" />
     <Compile Include="..\QLNet.Tests\Utilities.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModel.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModelProcess.cs" />
@@ -191,8 +197,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\QLNet.Tests\.editorconfig" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
