@@ -109,14 +109,32 @@ namespace QLNet
          }
       }
 
-      public static void QL_REQUIRE(bool condition, Func<string> message)
+      public static void QL_REQUIRE(bool condition, Func<string> message, QLNetExceptionEnum exEnum = QLNetExceptionEnum.ArgumentException)
       {
          if (!condition)
-            throw new ArgumentException(message.Invoke());
+            switch (exEnum)
+            {
+               case QLNetExceptionEnum.ArgumentException:
+                  throw new ArgumentException(message.Invoke());
+               case QLNetExceptionEnum.NotTradableException:
+                  throw new NotTradableException(message.Invoke());
+               case QLNetExceptionEnum.RootNotBracketException:
+                  throw new RootNotBracketException(message.Invoke());
+
+            }
       }
-      public static void QL_FAIL(string message)
+
+      public static void QL_FAIL(string message, QLNetExceptionEnum exEnum = QLNetExceptionEnum.ArgumentException)
       {
-         throw new ArgumentException(message);
+         switch (exEnum)
+         {
+            case QLNetExceptionEnum.ArgumentException:
+               throw new ArgumentException(message);
+            case QLNetExceptionEnum.NotTradableException:
+               throw new NotTradableException(message);
+            case QLNetExceptionEnum.RootNotBracketException:
+               throw new RootNotBracketException(message);
+         }
       }
 
       public static bool is_QL_NEGATIVE_RATES()

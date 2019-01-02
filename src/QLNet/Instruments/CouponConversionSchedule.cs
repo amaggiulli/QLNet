@@ -37,7 +37,7 @@ namespace QLNet
    public static partial class Utils
    {
       public static List<double> CreateCouponSchedule(Schedule schedule,
-         CouponConversionSchedule couponConversionSchedule)
+                                                      CouponConversionSchedule couponConversionSchedule)
       {
          List<double> ret = new InitializedList<double>(schedule.Count);
          for (int i = 0 ; i < couponConversionSchedule.Count; i++)

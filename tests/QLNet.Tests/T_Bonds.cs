@@ -1989,5 +1989,63 @@ namespace TestSuite
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
       }
+
+#if NET40 || NET45
+      [DataTestMethod]
+      [DataRow(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [DataRow(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+#else
+      [Theory]
+      [InlineData(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+#endif
+      public void testQLNetExceptions(CouponType couponType, double Coupon,
+                                      string AccrualDate, string MaturityDate, string SettlementDate,
+                                      string FirstCouponDate, double Price)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 0;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, calendar,
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                          DateGeneration.Rule.Backward, false, firstCouponDate);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 100.0, schedule,
+                                                                new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted);
+
+         try
+         {
+            double ytm = BondFunctions.yield(bond, Price, dc, comp, freq, settlementDate);
+         }
+         catch (NotTradableException)
+         {
+            return;
+         }
+         catch (RootNotBracketException)
+         {
+            return;
+         }
+         catch (Exception)
+         {
+            QAssert.Fail("Failed to handle QLNet exception");
+            return;
+         }
+
+         QAssert.Fail("Failed to capture QLNet exception");
+      }
    }
 }

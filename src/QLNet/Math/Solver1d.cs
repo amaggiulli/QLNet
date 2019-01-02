@@ -132,7 +132,8 @@ namespace QLNet
          Utils.QL_FAIL("unable to bracket root in " + maxEvaluations_
                        + " function evaluations (last bracket attempt: " + "f[" + xMin_ + "," + xMax_ +
                        "] "
-                       + "-> [" + fxMin_ + "," + fxMax_ + "])");
+                       + "-> [" + fxMin_ + "," + fxMax_ + "])",
+                       QLNetExceptionEnum.RootNotBracketException);
          return 0;
       }
 
