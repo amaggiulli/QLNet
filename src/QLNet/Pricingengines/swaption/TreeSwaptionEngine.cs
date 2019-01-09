@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -73,8 +74,8 @@ namespace QLNet
       public override void calculate()
       {
 
-         Utils.QL_REQUIRE(arguments_.settlementType == Settlement.Type.Physical, () =>
-                          "cash-settled swaptions not priced with tree engine");
+         Utils.QL_REQUIRE(arguments_.settlementMethod != Settlement.Method.ParYieldCurve, () =>
+                          "cash-settled (ParYieldCurve) swaptions not priced with tree engine");
 
          Utils.QL_REQUIRE(model_ != null, () => "no model specified");
 
