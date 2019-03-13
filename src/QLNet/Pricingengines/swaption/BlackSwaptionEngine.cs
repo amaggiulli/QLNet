@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -44,7 +45,7 @@ namespace QLNet
       {
          SwapRate,
          DiscountCurve
-      }
+      };
 
       public BlackStyleSwaptionEngine(Handle<YieldTermStructure> discountCurve,
                                       double vol,
@@ -135,34 +136,33 @@ namespace QLNet
          // using the discounting curve
          swap.setPricingEngine(new DiscountingSwapEngine(discountCurve_, false));
          double annuity = 0;
-         switch (arguments_.settlementType)
+         if (arguments_.settlementType == Settlement.Type.Physical ||
+             (arguments_.settlementType == Settlement.Type.Cash &&
+              arguments_.settlementMethod == Settlement.Method.CollateralizedCashPrice))
          {
-            case Settlement.Type.Physical:
-            {
-               annuity = Math.Abs(swap.fixedLegBPS()) / basisPoint;
-               break;
-            }
-            case Settlement.Type.Cash:
-            {
-               DayCounter dayCount = firstCoupon.dayCounter();
+            annuity = Math.Abs(swap.fixedLegBPS()) / basisPoint;
+         }
+         else if (arguments_.settlementType == Settlement.Type.Cash &&
+                  arguments_.settlementMethod == Settlement.Method.ParYieldCurve)
+         {
+            DayCounter dayCount = firstCoupon.dayCounter();
 
-               // we assume that the cash settlement date is equal
-               // to the swap start date
-               Date discountDate = model_ == CashAnnuityModel.DiscountCurve
-                                   ? firstCoupon.accrualStartDate()
-                                   : discountCurve_.link.referenceDate();
+            // we assume that the cash settlement date is equal
+            // to the swap start date
+            Date discountDate = model_ == CashAnnuityModel.DiscountCurve
+                                ? firstCoupon.accrualStartDate()
+                                : discountCurve_.link.referenceDate();
 
-               double fixedLegCashBPS =
-                  CashFlows.bps(fixedLeg,
-                                new InterestRate(atmForward, dayCount, Compounding.Compounded, Frequency.Annual), false,
-                                discountDate);
+            double fixedLegCashBPS =
+               CashFlows.bps(fixedLeg,
+                             new InterestRate(atmForward, dayCount, Compounding.Compounded, Frequency.Annual), false,
+                             discountDate);
 
-               annuity = Math.Abs(fixedLegCashBPS / basisPoint) * discountCurve_.link.discount(discountDate);
-               break;
-            }
-            default:
-               Utils.QL_FAIL("unknown settlement type");
-               break;
+            annuity = Math.Abs(fixedLegCashBPS / basisPoint) * discountCurve_.link.discount(discountDate);
+         }
+         else
+         {
+            Utils.QL_FAIL("unknown settlement type");
          }
          results_.additionalResults["annuity"] = annuity;
 

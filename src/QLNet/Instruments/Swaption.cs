@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -25,7 +26,28 @@ namespace QLNet
    //! %settlement information
    public struct Settlement
    {
-      public enum Type { Physical, Cash }
+      public enum Type { Physical, Cash };
+      public enum Method { PhysicalOTC,
+                           PhysicalCleared,
+                           CollateralizedCashPrice,
+                           ParYieldCurve
+                         };
+
+      public static void checkTypeAndMethodConsistency(Type settlementType, Method settlementMethod)
+      {
+         if (settlementType == Type.Physical)
+         {
+            Utils.QL_REQUIRE(settlementMethod == Method.PhysicalOTC ||
+                             settlementMethod == Method.PhysicalCleared,
+                             () => "invalid settlement method for physical settlement");
+         }
+         if (settlementType == Type.Cash)
+         {
+            Utils.QL_REQUIRE(settlementMethod == Method.CollateralizedCashPrice ||
+                             settlementMethod == Method.ParYieldCurve,
+                             () => "invalid settlement method for cash settlement");
+         }
+      }
    }
 
    //! %Swaption class
@@ -60,19 +82,16 @@ namespace QLNet
       // arguments
       private VanillaSwap swap_;
       private Settlement.Type settlementType_;
+      private Settlement.Method settlementMethod_;
 
-      public Swaption(VanillaSwap swap, Exercise exercise)
-         : base(new Payoff(), exercise)
-      {
-         settlementType_ = Settlement.Type.Physical;
-         swap_ = swap;
-         swap_.registerWith(update);
-      }
-
-      public Swaption(VanillaSwap swap, Exercise exercise, Settlement.Type delivery)
+      public Swaption(VanillaSwap swap,
+                      Exercise exercise,
+                      Settlement.Type delivery = Settlement.Type.Physical,
+                      Settlement.Method settlementMethod = Settlement.Method.PhysicalOTC)
          : base(new Payoff(), exercise)
       {
          settlementType_ = delivery;
+         settlementMethod_ = settlementMethod;
          swap_ = swap;
          swap_.registerWith(update);
       }
@@ -92,6 +111,7 @@ namespace QLNet
             throw new ArgumentException("wrong argument type");
          arguments.swap = swap_;
          arguments.settlementType = settlementType_;
+         arguments.settlementMethod = settlementMethod_;
          arguments.exercise = exercise_;
       }
 
@@ -102,12 +122,19 @@ namespace QLNet
             throw new ArgumentException("vanilla swap not set");
          if (arguments.exercise == null)
             throw new ArgumentException("exercise not set");
+         Settlement.checkTypeAndMethodConsistency(arguments.settlementType,
+                                                  arguments.settlementMethod);
       }
 
       // Inspectors
       public Settlement.Type settlementType()
       {
          return settlementType_;
+      }
+
+      public Settlement.Method settlementMethod()
+      {
+         return settlementMethod_;
       }
 
       public VanillaSwap.Type type()
@@ -146,6 +173,7 @@ namespace QLNet
          public Exercise exercise { get; set; }
          public VanillaSwap swap { get; set; }
          public Settlement.Type settlementType { get; set; }
+         public Settlement.Method settlementMethod { get; set; }
          public Arguments()
          {
             settlementType = Settlement.Type.Physical;
