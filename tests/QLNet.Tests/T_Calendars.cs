@@ -1091,10 +1091,65 @@ namespace TestSuite
          expectedHol.Add(new Date(6, Month.Oct, 2016));
          expectedHol.Add(new Date(7, Month.Oct, 2016));
 
+         // China Shanghai Securities Exchange holiday list in the year 2017
+         expectedHol.Add(new Date(2, Month.Jan, 2017));
+         expectedHol.Add(new Date(27, Month.Jan, 2017));
+         expectedHol.Add(new Date(30, Month.Jan, 2017));
+         expectedHol.Add(new Date(31, Month.Jan, 2017));
+         expectedHol.Add(new Date(1, Month.Feb, 2017));
+         expectedHol.Add(new Date(2, Month.Feb, 2017));
+         expectedHol.Add(new Date(3, Month.April, 2017));
+         expectedHol.Add(new Date(4, Month.April, 2017));
+         expectedHol.Add(new Date(1, Month.May, 2017));
+         expectedHol.Add(new Date(29, Month.May, 2017));
+         expectedHol.Add(new Date(30, Month.May, 2017));
+         expectedHol.Add(new Date(2, Month.Oct, 2017));
+         expectedHol.Add(new Date(3, Month.Oct, 2017));
+         expectedHol.Add(new Date(4, Month.Oct, 2017));
+         expectedHol.Add(new Date(5, Month.Oct, 2017));
+         expectedHol.Add(new Date(6, Month.Oct, 2017));
+
+         // China Shanghai Securities Exchange holiday list in the year 2018
+         expectedHol.Add(new Date(1, Month.Jan, 2018));
+         expectedHol.Add(new Date(15, Month.Feb, 2018));
+         expectedHol.Add(new Date(16, Month.Feb, 2018));
+         expectedHol.Add(new Date(19, Month.Feb, 2018));
+         expectedHol.Add(new Date(20, Month.Feb, 2018));
+         expectedHol.Add(new Date(21, Month.Feb, 2018));
+         expectedHol.Add(new Date(5, Month.April, 2018));
+         expectedHol.Add(new Date(6, Month.April, 2018));
+         expectedHol.Add(new Date(30, Month.April, 2018));
+         expectedHol.Add(new Date(1, Month.May, 2018));
+         expectedHol.Add(new Date(18, Month.June, 2018));
+         expectedHol.Add(new Date(24, Month.September, 2018));
+         expectedHol.Add(new Date(1, Month.Oct, 2018));
+         expectedHol.Add(new Date(2, Month.Oct, 2018));
+         expectedHol.Add(new Date(3, Month.Oct, 2018));
+         expectedHol.Add(new Date(4, Month.Oct, 2018));
+         expectedHol.Add(new Date(5, Month.Oct, 2018));
+         expectedHol.Add(new Date(31, Month.December, 2018));
+
+         // China Shanghai Securities Exchange holiday list in the year 2019
+         expectedHol.Add(new Date(1, Month.Jan, 2019));
+         expectedHol.Add(new Date(4, Month.Feb, 2019));
+         expectedHol.Add(new Date(5, Month.Feb, 2019));
+         expectedHol.Add(new Date(6, Month.Feb, 2019));
+         expectedHol.Add(new Date(7, Month.Feb, 2019));
+         expectedHol.Add(new Date(8, Month.Feb, 2019));
+         expectedHol.Add(new Date(5, Month.April, 2019));
+         expectedHol.Add(new Date(1, Month.May, 2019));
+         expectedHol.Add(new Date(7, Month.June, 2019));
+         expectedHol.Add(new Date(13, Month.September, 2019));
+         expectedHol.Add(new Date(30, Month.September, 2019));
+         expectedHol.Add(new Date(1, Month.October, 2019));
+         expectedHol.Add(new Date(2, Month.October, 2019));
+         expectedHol.Add(new Date(3, Month.October, 2019));
+         expectedHol.Add(new Date(4, Month.October, 2019));
+
 
          Calendar c = new China(China.Market.SSE);
          List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2014),
-                                               new Date(31, Month.December, 2016));
+                                               new Date(31, Month.December, 2019));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -1140,9 +1195,31 @@ namespace TestSuite
          expectedWorkingWeekEnds.Add(new Date(8, Month.Oct, 2016));
          expectedWorkingWeekEnds.Add(new Date(9, Month.Oct, 2016));
 
+         // China Inter Bank working weekends list in the year 2017
+         expectedWorkingWeekEnds.Add(new Date(22, Month.Jan, 2017));
+         expectedWorkingWeekEnds.Add(new Date(4, Month.Feb, 2017));
+         expectedWorkingWeekEnds.Add(new Date(1, Month.April, 2017));
+         expectedWorkingWeekEnds.Add(new Date(27, Month.May, 2017));
+         expectedWorkingWeekEnds.Add(new Date(30, Month.Sep, 2017));
+
+         // China Inter Bank working weekends list in the year 2018
+         expectedWorkingWeekEnds.Add(new Date(11, Month.Feb, 2018));
+         expectedWorkingWeekEnds.Add(new Date(24, Month.Feb, 2018));
+         expectedWorkingWeekEnds.Add(new Date(8, Month.April, 2018));
+         expectedWorkingWeekEnds.Add(new Date(28, Month.April, 2018));
+         expectedWorkingWeekEnds.Add(new Date(29, Month.Sep, 2018));
+         expectedWorkingWeekEnds.Add(new Date(30, Month.Sep, 2018));
+         expectedWorkingWeekEnds.Add(new Date(29, Month.December, 2018));
+
+         // China Inter Bank working weekends list in the year 2019
+         expectedWorkingWeekEnds.Add(new Date(2, Month.Feb, 2019));
+         expectedWorkingWeekEnds.Add(new Date(3, Month.Feb, 2019));
+         expectedWorkingWeekEnds.Add(new Date(29, Month.September, 2019));
+         expectedWorkingWeekEnds.Add(new Date(12, Month.October, 2019));
+
          Calendar c = new China(China.Market.IB);
          Date start = new Date(1, Month.Jan, 2014);
-         Date end = new Date(31, Month.Dec, 2016);
+         Date end = new Date(31, Month.Dec, 2019);
 
          int k = 0;
 
