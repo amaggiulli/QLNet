@@ -142,7 +142,7 @@ namespace QLNet
          .withFixedLegConvention(bdc)
          .withFixedLegTerminationDateConvention(bdc)
          .withType(underlyingType_)
-         .withNominal(nominal_); ;
+         .withNominal(nominal_);
 
          Swaption swaption = new Swaption(underlyingSwap_, exercise_, delivery_, settlementMethod_);
          swaption.setPricingEngine(engine_);

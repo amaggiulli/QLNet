@@ -1220,8 +1220,12 @@ namespace TestSuite
          testDates.Add(new Date(17, Month.March, 2006));
          testDates.Add(new Date(15, Month.May, 2006));
          testDates.Add(new Date(26, Month.July, 2006));
+         testDates.Add(new Date(26, Month.July, 2006));
+         testDates.Add(new Date(27, Month.July, 2006));
+         testDates.Add(new Date(29, Month.July, 2006));
+         testDates.Add(new Date(29, Month.July, 2006));
 
-         long[] expected =
+         int[] expected =
          {
             1,
             321,
@@ -1233,7 +1237,71 @@ namespace TestSuite
             42,
             -38,
             38,
-            51
+            51,
+            0,
+            1,
+            2,
+            0
+         };
+
+         //exclude from, include to
+         int[] expected_include_to =
+         {
+            1,
+            321,
+            152,
+            251,
+            252,
+            10,
+            48,
+            42,
+            -38,
+            38,
+            51,
+            0,
+            1,
+            1,
+            0
+         };
+
+         //include both from and to
+         int[] expected_include_all =
+         {
+            2,
+            322,
+            153,
+            252,
+            253,
+            11,
+            49,
+            43,
+            -39,
+            39,
+            52,
+            1,
+            2,
+            2,
+            0
+         };
+
+         //exclude both from and to
+         int[] expected_exclude_all =
+         {
+            0,
+            320,
+            151,
+            250,
+            251,
+            9,
+            47,
+            41,
+            -37,
+            37,
+            50,
+            0,
+            0,
+            1,
+            0
          };
 
          Calendar calendar = new Brazil();
@@ -1247,6 +1315,36 @@ namespace TestSuite
                             + " to " + testDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i - 1]);
+            }
+            calculated = calendar.businessDaysBetween(testDates[i - 1],
+                                                      testDates[i], false, true);
+            if (calculated != expected_include_to[i - 1])
+            {
+               QAssert.Fail("from " + testDates[i - 1] + " excluded"
+                            + " to " + testDates[i] + " included:\n"
+                            + "    calculated: " + calculated + "\n"
+                            + "    expected:   " + expected_include_to[i - 1]);
+            }
+
+            calculated = calendar.businessDaysBetween(testDates[i - 1],
+                                                      testDates[i], true, true);
+            if (calculated != expected_include_all[i - 1])
+            {
+               QAssert.Fail("from " + testDates[i - 1] + " included"
+                            + " to " + testDates[i] + " included:\n"
+                            + "    calculated: " + calculated + "\n"
+                            + "    expected:   " + expected_include_all[i - 1]);
+            }
+
+            calculated = calendar.businessDaysBetween(testDates[i - 1],
+                                                      testDates[i], false, false);
+            if (calculated != expected_exclude_all[i - 1])
+            {
+               QAssert.Fail("from " + testDates[i - 1] + " excluded"
+                            + " to " + testDates[i] + " excluded:\n"
+                            + "    calculated: " + calculated + "\n"
+                            + "    expected:   " + expected_exclude_all[i - 1]);
+
             }
          }
       }
