@@ -60,6 +60,43 @@ namespace TestSuite
          public Date _refEnd;
          public double _result;
       }
+
+      private double actualActualDaycountComputation(Schedule schedule,
+                                                     Date start, Date end)
+      {
+
+         DayCounter daycounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+         double yearFraction = 0.0;
+
+         for (int i = 1; i < schedule.size() - 1; i++)
+         {
+            Date referenceStart = schedule.date(i);
+            Date referenceEnd = schedule.date(i + 1);
+            if (start < referenceEnd && end > referenceStart)
+            {
+               yearFraction += ISMAYearFractionWithReferenceDates(
+                                  daycounter,
+                                  (start > referenceStart) ? start : referenceStart,
+                                  (end < referenceEnd) ? end : referenceEnd,
+                                  referenceStart,
+                                  referenceEnd
+                               );
+            };
+         }
+         return yearFraction;
+      }
+
+      private double ISMAYearFractionWithReferenceDates(DayCounter dayCounter, Date start, Date end,
+                                                        Date refStart, Date refEnd)
+      {
+         double referenceDayCount = dayCounter.dayCount(refStart, refEnd);
+         // guess how many coupon periods per year:
+         int couponsPerYear = (int)(0.5 + 365.0 / referenceDayCount);
+         // the above is good enough for annual or semi annual payments.
+         return (dayCounter.dayCount(start, end))
+                / (referenceDayCount * couponsPerYear);
+      }
+
 #if NET40 || NET45
       [TestMethod()]
 #else
@@ -164,6 +201,309 @@ namespace TestSuite
                QAssert.Fail(dayCounter.name() + "period: " + d1 + " to " + d2 +
                             "    calculated: " + calculated + "    expected:   " + testCases[i]._result);
             }
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testActualActualWithSemiannualSchedule()
+      {
+
+         // Testing actual/actual with schedule for undefined semiannual reference periods
+
+         Calendar calendar = new UnitedStates();
+         Date fromDate = new Date(10, Month.January, 2017);
+         Date firstCoupon = new Date(31, Month.August, 2017);
+         Date quasiCoupon = new Date(28, Month.February, 2017);
+         Date quasiCoupon2 = new Date(31, Month.August, 2016);
+
+         Schedule schedule = new MakeSchedule()
+         .from(fromDate)
+         .withFirstDate(firstCoupon)
+         .to(new Date(28, Month.February, 2026))
+         .withFrequency(Frequency.Semiannual)
+         .withCalendar(calendar)
+         .withConvention(BusinessDayConvention.Unadjusted)
+         .backwards().endOfMonth(true).value();
+
+         Date testDate = schedule.date(1);
+         DayCounter dayCounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+         DayCounter dayCounterNoSchedule = new ActualActual(ActualActual.Convention.ISMA);
+
+         Date referencePeriodStart = schedule.date(1);
+         Date referencePeriodEnd = schedule.date(2);
+
+         // Test
+         QAssert.IsTrue(dayCounter.yearFraction(referencePeriodStart,
+                                                referencePeriodStart).IsEqual(0.0), "This should be zero.");
+
+         QAssert.IsTrue(dayCounterNoSchedule.yearFraction(referencePeriodStart,
+                                                          referencePeriodStart).IsEqual(0.0), "This should be zero");
+
+         QAssert.IsTrue(dayCounterNoSchedule.yearFraction(referencePeriodStart,
+                                                          referencePeriodStart, referencePeriodStart, referencePeriodStart).IsEqual(0.0),
+                        "This should be zero");
+
+         QAssert.IsTrue(dayCounter.yearFraction(referencePeriodStart,
+                                                referencePeriodEnd).IsEqual(0.5),
+                        "This should be exact using schedule; "
+                        + referencePeriodStart + " to " + referencePeriodEnd
+                        + "Should be 0.5");
+
+         QAssert.IsTrue(dayCounterNoSchedule.yearFraction(referencePeriodStart,
+                                                          referencePeriodEnd, referencePeriodStart, referencePeriodEnd).IsEqual(0.5),
+                        "This should be exact for explicit reference periods with no schedule");
+
+         while (testDate < referencePeriodEnd)
+         {
+            double difference =
+               dayCounter.yearFraction(testDate, referencePeriodEnd,
+                                       referencePeriodStart, referencePeriodEnd) -
+               dayCounter.yearFraction(testDate, referencePeriodEnd);
+            if (Math.Abs(difference) > 1.0e-10)
+            {
+               QAssert.Fail("Failed to correctly use the schedule to find the reference period for Act/Act");
+            }
+            testDate = calendar.advance(testDate, 1, TimeUnit.Days);
+         }
+
+         //Test long first coupon
+         double calculatedYearFraction =
+            dayCounter.yearFraction(fromDate, firstCoupon);
+         double expectedYearFraction =
+            0.5 + ((double)dayCounter.dayCount(fromDate, quasiCoupon))
+            / (2 * dayCounter.dayCount(quasiCoupon2, quasiCoupon));
+
+         QAssert.IsTrue(Math.Abs(calculatedYearFraction - expectedYearFraction) < 1.0e-10,
+                        "Failed to compute the expected year fraction " +
+                        "\n expected:   " + expectedYearFraction +
+                        "\n calculated: " + calculatedYearFraction);
+
+         // test multiple periods
+
+         schedule = new MakeSchedule()
+         .from(new Date(10, Month.January, 2017))
+         .withFirstDate(new Date(31, Month.August, 2017))
+         .to(new Date(28, Month.February, 2026))
+         .withFrequency(Frequency.Semiannual)
+         .withCalendar(calendar)
+         .withConvention(BusinessDayConvention.Unadjusted)
+         .backwards().endOfMonth(false).value();
+
+         Date periodStartDate = schedule.date(1);
+         Date periodEndDate = schedule.date(2);
+
+         dayCounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+
+         while (periodEndDate < schedule.date(schedule.size() - 2))
+         {
+            double expected =
+               actualActualDaycountComputation(schedule,
+                                               periodStartDate,
+                                               periodEndDate);
+            double calculated = dayCounter.yearFraction(periodStartDate,
+                                                        periodEndDate);
+
+            if (Math.Abs(expected - calculated) > 1e-8)
+            {
+               QAssert.Fail("Failed to compute the correct year fraction " +
+                            "given a schedule: " + periodStartDate +
+                            " to " + periodEndDate +
+                            "\n expected: " + expected +
+                            " calculated: " + calculated);
+            }
+            periodEndDate = calendar.advance(periodEndDate, 1, TimeUnit.Days);
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testActualActualWithAnnualSchedule()
+      {
+         // Testing actual/actual with schedule "for undefined annual reference periods
+
+         // Now do an annual schedule
+         Calendar calendar = new UnitedStates();
+         Schedule schedule = new MakeSchedule()
+         .from(new Date(10, Month.January, 2017))
+         .withFirstDate(new Date(31, Month.August, 2017))
+         .to(new Date(28, Month.February, 2026))
+         .withFrequency(Frequency.Annual)
+         .withCalendar(calendar)
+         .withConvention(BusinessDayConvention.Unadjusted)
+         .backwards().endOfMonth(false).value();
+
+         Date referencePeriodStart = schedule.date(1);
+         Date referencePeriodEnd = schedule.date(2);
+
+         Date testDate = schedule.date(1);
+         DayCounter dayCounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+
+         while (testDate < referencePeriodEnd)
+         {
+            double difference =
+               ISMAYearFractionWithReferenceDates(dayCounter,
+                                                  testDate, referencePeriodEnd,
+                                                  referencePeriodStart, referencePeriodEnd) -
+               dayCounter.yearFraction(testDate, referencePeriodEnd);
+            if (Math.Abs(difference) > 1.0e-10)
+            {
+               QAssert.Fail("Failed to correctly use the schedule " +
+                            "to find the reference period for Act/Act:\n"
+                            + testDate + " to " + referencePeriodEnd
+                            + "\n Ref: " + referencePeriodStart
+                            + " to " + referencePeriodEnd);
+            }
+            testDate = calendar.advance(testDate, 1, TimeUnit.Days);
+         }
+      }
+
+#if NET40 || NET45
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testActualActualWithSchedule()
+      {
+
+         // Testing actual/actual day counter with schedule
+
+         // long first coupon
+         Date issueDateExpected = new Date(17, Month.January, 2017);
+         Date firstCouponDateExpected = new Date(31, Month.August, 2017);
+
+         Schedule schedule =
+            new MakeSchedule()
+         .from(issueDateExpected)
+         .withFirstDate(firstCouponDateExpected)
+         .to(new Date(28, Month.February, 2026))
+         .withFrequency(Frequency.Semiannual)
+         .withCalendar(new Canada())
+         .withConvention(BusinessDayConvention.Unadjusted)
+         .backwards()
+         .endOfMonth().value();
+
+         Date issueDate = schedule.date(0);
+         Utils.QL_REQUIRE(issueDate == issueDateExpected, () =>
+                          "This is not the expected issue date " + issueDate
+                          + " expected " + issueDateExpected);
+         Date firstCouponDate = schedule.date(1);
+         Utils.QL_REQUIRE(firstCouponDate == firstCouponDateExpected, () =>
+                          "This is not the expected first coupon date " + firstCouponDate
+                          + " expected: " + firstCouponDateExpected);
+
+         //Make thw quasi coupon dates:
+         Date quasiCouponDate2 = schedule.calendar().advance(firstCouponDate,
+                                                             -schedule.tenor(),
+                                                             schedule.businessDayConvention(),
+                                                             schedule.endOfMonth());
+         Date quasiCouponDate1 = schedule.calendar().advance(quasiCouponDate2,
+                                                             -schedule.tenor(),
+                                                             schedule.businessDayConvention(),
+                                                             schedule.endOfMonth());
+
+         Date quasiCouponDate1Expected = new Date(31, Month.August, 2016);
+         Date quasiCouponDate2Expected = new Date(28, Month.February, 2017);
+
+         Utils.QL_REQUIRE(quasiCouponDate2 == quasiCouponDate2Expected, () =>
+                          "Expected " + quasiCouponDate2Expected
+                          + " as the later quasi coupon date but received "
+                          + quasiCouponDate2);
+         Utils.QL_REQUIRE(quasiCouponDate1 == quasiCouponDate1Expected, () =>
+                          "Expected " + quasiCouponDate1Expected
+                          + " as the earlier quasi coupon date but received "
+                          + quasiCouponDate1);
+
+         DayCounter dayCounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+
+         // full coupon
+         double t_with_reference = dayCounter.yearFraction(
+                                      issueDate, firstCouponDate,
+                                      quasiCouponDate2, firstCouponDate
+                                   );
+         double t_no_reference = dayCounter.yearFraction(
+                                    issueDate,
+                                    firstCouponDate
+                                 );
+         double t_total =
+            ISMAYearFractionWithReferenceDates(dayCounter,
+                                               issueDate, quasiCouponDate2,
+                                               quasiCouponDate1, quasiCouponDate2)
+            + 0.5;
+         double expected = 0.6160220994;
+
+
+         if (Math.Abs(t_total - expected) > 1.0e-10)
+         {
+            QAssert.Fail("Failed to reproduce expected time:\n"
+                         + "    calculated: " + t_total + "\n"
+                         + "    expected:   " + expected);
+         }
+         if (Math.Abs(t_with_reference - expected) > 1.0e-10)
+         {
+            QAssert.Fail("Failed to reproduce expected time:\n"
+                         + "    calculated: " + t_with_reference + "\n"
+                         + "    expected:   " + expected);
+         }
+         if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
+         {
+            QAssert.Fail("Should produce the same time whether or not references are present");
+         }
+
+         // settlement date in the first quasi-period
+         Date settlementDate = new Date(29, Month.January, 2017);
+
+         t_with_reference = ISMAYearFractionWithReferenceDates(
+                               dayCounter,
+                               issueDate, settlementDate,
+                               quasiCouponDate1, quasiCouponDate2
+                            );
+         t_no_reference = dayCounter.yearFraction(issueDate, settlementDate);
+         double t_expected_first_qp = 0.03314917127071823; //12.0/362
+         if (Math.Abs(t_with_reference - t_expected_first_qp) > 1.0e-10)
+         {
+            QAssert.Fail("Failed to reproduce expected time:\n"
+                         + "    calculated: " + t_no_reference + "\n"
+                         + "    expected:   " + t_expected_first_qp);
+         }
+         if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
+         {
+            QAssert.Fail("Should produce the same time whether or not references are present");
+         }
+         double t2 = dayCounter.yearFraction(settlementDate, firstCouponDate);
+         if (Math.Abs(t_expected_first_qp + t2 - expected) > 1.0e-10)
+         {
+            QAssert.Fail("Sum of quasiperiod2 split is not consistent");
+         }
+
+         // settlement date in the second quasi-period
+         settlementDate = new Date(29, Month.July, 2017);
+         t_no_reference = dayCounter.yearFraction(issueDate, settlementDate);
+         t_with_reference = ISMAYearFractionWithReferenceDates(
+                               dayCounter,
+                               issueDate, quasiCouponDate2,
+                               quasiCouponDate1, quasiCouponDate2
+                            ) + ISMAYearFractionWithReferenceDates(
+                               dayCounter,
+                               quasiCouponDate2, settlementDate,
+                               quasiCouponDate2, firstCouponDate
+                            );
+         if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
+         {
+            QAssert.Fail("These two cases should be identical");
+         }
+         t2 = dayCounter.yearFraction(settlementDate, firstCouponDate);
+         if (Math.Abs(t_total - (t_no_reference + t2)) > 1.0e-10)
+         {
+            QAssert.Fail("Failed to reproduce expected time:\n"
+                         + "    calculated: " + t_total + "\n"
+                         + "    expected:   " + t_no_reference + t2);
          }
       }
 
