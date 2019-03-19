@@ -317,11 +317,11 @@ namespace QLNet
                new Date(8, Month.October, 2016),
                new Date(9, Month.October, 2016),
                // 2017
-               new Date(22,Month.January,2017),
-               new Date(4,Month.February,2017),
-               new Date(1,Month.April,2017),
-               new Date(27,Month.May,2017),
-               new Date(30,Month.September,2017),
+               new Date(22, Month.January, 2017),
+               new Date(4, Month.February, 2017),
+               new Date(1, Month.April, 2017),
+               new Date(27, Month.May, 2017),
+               new Date(30, Month.September, 2017),
                // 2018
                new Date(11, Month.February, 2018),
                new Date(24, Month.February, 2018),

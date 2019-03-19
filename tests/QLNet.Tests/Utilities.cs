@@ -289,10 +289,6 @@ namespace TestSuite
          Assert.False(condition, message);
 #endif
       }
-      //public static void IsTrue( bool condition, string message, params object[] parameters )
-      //{
-      //   QAssert.IsTrue( condition, message, parameters );
-      //}
 
       /// <summary>
       /// Verifies that an object reference is not null.
@@ -306,6 +302,21 @@ namespace TestSuite
          Assert.NotNull(obj);
 #endif
       }
+
+      /// <summary>
+      /// Verifies an Action throw the specified Exception
+      /// </summary>
+      /// <typeparam name="T">The Exception</typeparam>
+      /// <param name="action">The Action</param>
+      public static void ThrowsException<T>(Action action) where T: SystemException
+      {
+#if NET40 || NET45
+         Assert.ThrowsException<T>(action);
+#else
+         Assert.ThrowsException<T>(action);
+#endif
+      }
+
    }
 
    public struct SwaptionTenors

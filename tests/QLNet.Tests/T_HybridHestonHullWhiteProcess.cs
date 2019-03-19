@@ -276,7 +276,7 @@ namespace TestSuite
          Date maturity = dates.Last() + new Period(10, TimeUnit.Years);
          dates.Add(maturity);
          rates.Add(0.04);
-         times.Add(dc.yearFraction(today, dates.Last()));
+         //times.Add(dc.yearFraction(today, dates.Last()));
 
          Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(100));
 
@@ -290,7 +290,7 @@ namespace TestSuite
 
          HybridHestonHullWhiteProcess jointProcess = new HybridHestonHullWhiteProcess(hestonProcess, hwProcess, -0.4);
 
-         TimeGrid grid = new TimeGrid(times, times.Count - 1);
+         TimeGrid grid = new TimeGrid(times);
 
          int factors = jointProcess.factors();
          int steps = grid.size() - 1;

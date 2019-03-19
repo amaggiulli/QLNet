@@ -287,7 +287,7 @@ namespace QLNet
 
             // Special closings
             if (// President Bush's Funeral
-               (y == 2018 && m == Month.December && d == 5) 
+               (y == 2018 && m == Month.December && d == 5)
                // Hurricane Sandy
                || (y == 2012 && m == Month.October && (d == 29 || d == 30))
                // President Ford's funeral
