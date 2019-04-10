@@ -101,8 +101,7 @@ namespace QLNet
          Utils.QL_REQUIRE(bondTenor.length() > 0, () =>
                           "bond tenor must be positive. "
                           + bondTenor + " is not allowed.");
-
-         maturityDate_ = startDate + bondTenor;
+         
          maturityDate_ = startDate + bondTenor;
          schedule_ = sinkingSchedule(startDate, bondTenor, sinkingFrequency, calendar);
          cashflows_ = new FixedRateLeg(schedule_)
