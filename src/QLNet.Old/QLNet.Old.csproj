@@ -407,8 +407,8 @@
     <Compile Include="..\QLNet\Instruments\Bonds\DiscretizedCallableFixedRateBond.cs">
       <Link>Instruments\Bonds\DiscretizedCallableFixedRateBond.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Instruments\Bonds\Fixedratebond.cs">
-      <Link>Instruments\Bonds\Fixedratebond.cs</Link>
+    <Compile Include="..\QLNet\Instruments\Bonds\FixedRateBond.cs">
+      <Link>Instruments\Bonds\FixedRateBond.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Instruments\Bonds\FloatingRateBond.cs">
       <Link>Instruments\Bonds\FloatingRateBond.cs</Link>
