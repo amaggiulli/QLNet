@@ -44,7 +44,7 @@ namespace CallableBonds
          // boost::timer timer;
 
          Date today = new Date(16, Month.October, 2007);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          Console.WriteLine();
          Console.WriteLine("Pricing a callable fixed rate bond using");

@@ -140,7 +140,7 @@ namespace TestSuite
 
          vars.today = new Date(15, Month.February, 2002);
 
-         Settings.setEvaluationDate(vars.today);
+         Settings.Instance.setEvaluationDate(vars.today);
 
          vars.settlement = new Date(19, Month.February, 2002);
          // flat yield term structure impling 1x5 swap at 5%

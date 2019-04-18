@@ -101,7 +101,7 @@ namespace TestSuite
 
          public CommonVars()
          {
-            Settings.setEvaluationDate(new Date(16, Month.September, 2015));
+            Settings.Instance.setEvaluationDate(new Date(16, Month.September, 2015));
             conventions.setConventions();
 
             // ATM swaptionvolmatrix
@@ -326,8 +326,8 @@ namespace TestSuite
                                             isParameterFixed,
                                             true);
 
-         Date referenceDate = Settings.evaluationDate();
-         Settings.setEvaluationDate(vars.conventions.calendar.advance(referenceDate, new Period(1, TimeUnit.Days),
+         Date referenceDate = Settings.Instance.evaluationDate();
+         Settings.Instance.setEvaluationDate(vars.conventions.calendar.advance(referenceDate, new Period(1, TimeUnit.Days),
                                                                       vars.conventions.optionBdc));
 
          // VolCube created after change of reference date
@@ -368,7 +368,7 @@ namespace TestSuite
             }
          }
 
-         Settings.setEvaluationDate(referenceDate);
+         Settings.Instance.setEvaluationDate(referenceDate);
 
          SwaptionVolCube2 volCube2_0, volCube2_1;
          // VolCube created before change of reference date
@@ -380,7 +380,7 @@ namespace TestSuite
                                            vars.swapIndexBase,
                                            vars.shortSwapIndexBase,
                                            vars.vegaWeighedSmileFit);
-         Settings.setEvaluationDate(vars.conventions.calendar.advance(referenceDate, new Period(1, TimeUnit.Days),
+         Settings.Instance.setEvaluationDate(vars.conventions.calendar.advance(referenceDate, new Period(1, TimeUnit.Days),
                                                                       vars.conventions.optionBdc));
 
          // VolCube created after change of reference date
@@ -418,7 +418,7 @@ namespace TestSuite
             }
          }
 
-         Settings.setEvaluationDate(referenceDate);
+         Settings.Instance.setEvaluationDate(referenceDate);
       }
    }
 }

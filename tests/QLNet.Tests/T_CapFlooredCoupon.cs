@@ -63,7 +63,7 @@ namespace TestSuite
             calendar = index.fixingCalendar();
             convention = BusinessDayConvention.ModifiedFollowing;
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             settlementDays = 2;
             fixingDays = 2;
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);

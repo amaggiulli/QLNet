@@ -121,7 +121,7 @@ namespace TestSuite
             convention = BusinessDayConvention.ModifiedFollowing;
             Date today = new Date(1, Month.June, 2010);
             evaluationDate = calendar.adjust(today);
-            Settings.setEvaluationDate(evaluationDate);
+            Settings.Instance.setEvaluationDate(evaluationDate);
             settlementDays = 0;
             fixingDays = 0;
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
@@ -409,7 +409,7 @@ namespace TestSuite
          // interpolation pricer first
          // N.B. no new instrument required but we do need a new pricer
 
-         Date startDate = Settings.evaluationDate();
+         Date startDate = Settings.Instance.evaluationDate();
          Date maturity = (startDate + new Period(3, TimeUnit.Years));
          Calendar fixCalendar = new UnitedKingdom(), payCalendar = new UnitedKingdom();
          BusinessDayConvention fixConvention = BusinessDayConvention.Unadjusted,

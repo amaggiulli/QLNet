@@ -176,7 +176,7 @@ namespace QLNet
       protected double optionletPrice(Option.Type optionType, double effStrike)
       {
          Date fixingDate = coupon_.fixingDate();
-         if (fixingDate <= Settings.evaluationDate())
+         if (fixingDate <= Settings.Instance.evaluationDate())
          {
             // the amount is determined
             double a;

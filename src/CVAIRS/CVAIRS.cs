@@ -32,7 +32,7 @@ namespace CVAIRS
             // must be a business day
             todaysDate = calendar.adjust(todaysDate);
 
-            Settings.setEvaluationDate(todaysDate);
+            Settings.Instance.setEvaluationDate(todaysDate);
 
             IborIndex yieldIndx = new Euribor3M();
             int[] tenorsSwapMkt = {5, 10, 15, 20, 25, 30};

@@ -232,7 +232,7 @@ namespace TestSuite
             calendar = eoniaIndex.fixingCalendar();
             today = new Date(5, Month.February, 2009);
             //today = calendar.adjust(Date::todaysDate());
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             settlement = calendar.advance(today, new Period(settlementDays, TimeUnit.Days), BusinessDayConvention.Following);
             eoniaTermStructure.linkTo(Utilities.flatRate(settlement, 0.05, new Actual365Fixed()));
          }
@@ -323,7 +323,7 @@ namespace TestSuite
          // Testing Eonia-swap calculation against cached value...
          CommonVars vars = new CommonVars();
 
-         Settings.setEvaluationDate(vars.today);
+         Settings.Instance.setEvaluationDate(vars.today);
          vars.settlement = vars.calendar.advance(vars.today, vars.settlementDays, TimeUnit.Days);
          double flat = 0.05;
          vars.eoniaTermStructure.linkTo(Utilities.flatRate(vars.settlement, flat, new Actual360()));

@@ -136,7 +136,7 @@ namespace TestSuite
          // make sure of the evaluation date
          Date evaluationDate = new Date(13, Month.August, 2007);
          evaluationDate = new UnitedKingdom().adjust(evaluationDate);
-         Settings.setEvaluationDate(evaluationDate);
+         Settings.Instance.setEvaluationDate(evaluationDate);
 
          // fixing data
          Date from = new Date(1, Month.January, 2005);
@@ -199,13 +199,13 @@ namespace TestSuite
 
          using (SavedSettings backup = new SavedSettings())
          {
-            IndexManager.instance().clearHistories();
+            IndexManager.Instance.clearHistories();
             // try the Zero UK
             Calendar calendar = new UnitedKingdom();
             BusinessDayConvention bdc = BusinessDayConvention.ModifiedFollowing;
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = calendar.adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Settings.Instance.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);
@@ -722,7 +722,7 @@ namespace TestSuite
             // make sure of the evaluation date
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = new UnitedKingdom().adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Settings.Instance.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);
@@ -820,7 +820,7 @@ namespace TestSuite
             BusinessDayConvention bdc = BusinessDayConvention.ModifiedFollowing;
             Date evaluationDate = new Date(13, Month.August, 2007);
             evaluationDate = calendar.adjust(evaluationDate);
-            Settings.setEvaluationDate(evaluationDate);
+            Settings.Instance.setEvaluationDate(evaluationDate);
 
             // fixing data
             Date from = new Date(1, Month.January, 2005);

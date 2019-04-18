@@ -167,7 +167,7 @@ namespace TestSuite
    // this cleans up index-fixing histories when disposed
    public class IndexHistoryCleaner : IDisposable
    {
-      public void Dispose() { IndexManager.instance().clearHistories(); }
+      public void Dispose() { IndexManager.Instance.clearHistories(); }
    }
 
    public static partial class QAssert

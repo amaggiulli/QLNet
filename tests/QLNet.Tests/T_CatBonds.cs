@@ -54,7 +54,7 @@ namespace TestSuite
          {
             calendar = new TARGET();
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             faceAmount = 1000000.0;
          }
       }
@@ -164,7 +164,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -342,7 +342,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -407,7 +407,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          int settlementDays = 1;
 
@@ -490,7 +490,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Date today = new Date(22, Month.November, 2004);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          int settlementDays = 1;
 

@@ -41,7 +41,7 @@ namespace QLNet
 
          bool includeRefDateFlows = includeSettlementDateFlows_.HasValue ?
                                     includeSettlementDateFlows_.Value :
-                                    Settings.includeReferenceDateEvents;
+                                    Settings.Instance.includeReferenceDateEvents;
 
          results_.value = npv(includeRefDateFlows,
                               results_.valuationDate,
@@ -95,7 +95,7 @@ namespace QLNet
             return 0.0;
 
          if (settlementDate == null)
-            settlementDate = Settings.evaluationDate();
+            settlementDate = Settings.Instance.evaluationDate();
 
          if (npvDate == null)
             npvDate = settlementDate;

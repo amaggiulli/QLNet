@@ -46,8 +46,8 @@ namespace TestSuite
          {
 
             // Initialize curves
-            Settings.setEvaluationDate(new Date(9, Month.June, 2006));
-            Date today = Settings.evaluationDate();
+            Settings.Instance.setEvaluationDate(new Date(9, Month.June, 2006));
+            Date today = Settings.Instance.evaluationDate();
             Calendar calendar = new TARGET();
 
             Handle<Quote> hazardRate = new Handle<Quote>(new SimpleQuote(0.01234));
@@ -151,8 +151,8 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
 
-            Settings.setEvaluationDate(new Date(9, Month.June, 2006));
-            Date evalDate = Settings.evaluationDate();
+            Settings.Instance.setEvaluationDate(new Date(9, Month.June, 2006));
+            Date evalDate = Settings.Instance.evaluationDate();
             Calendar calendar = new UnitedStates();
 
             List<Date> discountDates = new List<Date>();
@@ -293,7 +293,7 @@ namespace TestSuite
             // Initialize curves
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             double h1 = 0.30, h2 = 0.40;
             DayCounter dayCounter = new Actual365Fixed();
@@ -397,7 +397,7 @@ namespace TestSuite
             // Initialize curves
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             Handle<Quote> hazardRate = new Handle<Quote>(new SimpleQuote(0.01234));
             RelinkableHandle<DefaultProbabilityTermStructure> probabilityCurve =
@@ -464,7 +464,7 @@ namespace TestSuite
             // Initialize curves
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             Handle<Quote> hazardRate = new Handle<Quote>(new SimpleQuote(0.01234));
             RelinkableHandle<DefaultProbabilityTermStructure> probabilityCurve =
@@ -550,7 +550,7 @@ namespace TestSuite
          SavedSettings backup = new SavedSettings();
 
          Date tradeDate = new Date(21, Month.May, 2009);
-         Settings.setEvaluationDate(tradeDate);
+         Settings.Instance.setEvaluationDate(tradeDate);
 
 
          //build an ISDA compliant yield curve

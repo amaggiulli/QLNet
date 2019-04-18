@@ -104,7 +104,7 @@ namespace QLNet
 
       public Swaption value()
       {
-         Date evaluationDate = Settings.evaluationDate();
+         Date evaluationDate = Settings.Instance.evaluationDate();
          Calendar fixingCalendar = swapIndex_.fixingCalendar();
          fixingDate_ = fixingCalendar.advance(evaluationDate, optionTenor_, optionConvention_);
 

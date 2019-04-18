@@ -69,7 +69,7 @@ namespace TestSuite
 
          Date todaysDate =
             index.fixingCalendar().adjust(new Date(4, 9, 2005));
-         Settings.setEvaluationDate(todaysDate);
+         Settings.Instance.setEvaluationDate(todaysDate);
 
          dates[0] = index.fixingCalendar().advance(todaysDate,
                                                    index.fixingDays(), TimeUnit.Days);
@@ -113,7 +113,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      [TestCategory("LongRun"), TestMethod()]
+      //[TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif
@@ -213,7 +213,7 @@ namespace TestSuite
          LiborForwardModelProcess process = new LiborForwardModelProcess(size, index);
 
          // set-up pricing engine
-         OptionletVolatilityStructure capVolCurve = makeCapVolCurve(Settings.evaluationDate());
+         OptionletVolatilityStructure capVolCurve = makeCapVolCurve(Settings.Instance.evaluationDate());
 
          Vector variances = new LfmHullWhiteParameterization(process, capVolCurve).covariance(0.0, null).diagonal();
 
@@ -241,7 +241,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      [TestCategory("LongRun"), TestMethod()]
+      //[TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif
@@ -348,7 +348,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      [TestCategory("LongRun"), TestMethod()]
+      //[TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif

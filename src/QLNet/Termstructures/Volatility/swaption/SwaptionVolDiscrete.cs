@@ -63,7 +63,7 @@ namespace QLNet
          optionInterpolator_ = new LinearInterpolation(optionTimes_, optionTimes_.Count, optionDatesAsReal_);
          optionInterpolator_.update();
          optionInterpolator_.enableExtrapolation();
-         evaluationDate_ = Settings.evaluationDate();
+         evaluationDate_ = Settings.Instance.evaluationDate();
          Settings.registerWith(update);
       }
 
@@ -153,7 +153,7 @@ namespace QLNet
       {
          if (moving_)
          {
-            Date d = Settings.evaluationDate();
+            Date d = Settings.Instance.evaluationDate();
             if (evaluationDate_ != d)
             {
                evaluationDate_ = d;

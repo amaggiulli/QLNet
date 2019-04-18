@@ -73,7 +73,7 @@ namespace QLNet
 
          registerWithVolatilitySpread();
          Settings.registerWith(update);
-         evaluationDate_ = Settings.evaluationDate();
+         evaluationDate_ = Settings.Instance.evaluationDate();
       }
       // TermStructure interface
       public new DayCounter dayCounter() { return atmVol_.link.dayCounter(); }

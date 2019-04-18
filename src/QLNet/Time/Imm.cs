@@ -93,7 +93,7 @@ namespace QLNet
          if (!isIMMcode(immCode, false))
             throw new ArgumentException(immCode + " is not a valid IMM code");
 
-         Date referenceDate = (refDate ?? Settings.evaluationDate());
+         Date referenceDate = (refDate ?? Settings.Instance.evaluationDate());
 
          int m = "FGHJKMNQUVXZ".IndexOf(immCode.ToUpper()[0]) + 1;
          if (m == 0)
@@ -124,7 +124,7 @@ namespace QLNet
       public static Date nextDate(Date d) { return nextDate(d, true); }
       public static Date nextDate(Date date, bool mainCycle)
       {
-         Date refDate = (date ?? Settings.evaluationDate());
+         Date refDate = (date ?? Settings.Instance.evaluationDate());
 
          int y = refDate.Year;
          int m = refDate.Month;

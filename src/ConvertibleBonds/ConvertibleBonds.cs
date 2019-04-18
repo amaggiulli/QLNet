@@ -46,7 +46,7 @@ namespace ConvertibleBonds
             Calendar calendar = new TARGET();
             Date today = calendar.adjust(Date.Today);
 
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             Date settlementDate = calendar.advance(today, settlementDays, TimeUnit.Days);
             Date exerciseDate = calendar.advance(settlementDate, length, TimeUnit.Years);
             Date issueDate = calendar.advance(exerciseDate, -length, TimeUnit.Years);

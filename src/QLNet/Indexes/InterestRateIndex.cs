@@ -62,7 +62,7 @@ namespace QLNet
 
          Settings.registerWith(update);
          // recheck
-         IndexManager.instance().notifier(name()).registerWith(update);
+         IndexManager.Instance.notifier(name()).registerWith(update);
       }
 
       // Index interface
@@ -76,13 +76,13 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(isValidFixingDate(fixingDate), () => "Fixing date " + fixingDate + " is not valid");
 
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
 
          if (fixingDate > today ||
              (fixingDate == today && forecastTodaysFixing))
             return forecastFixing(fixingDate);
 
-         if (fixingDate < today || Settings.enforcesTodaysHistoricFixings)
+         if (fixingDate < today || Settings.Instance.enforcesTodaysHistoricFixings)
          {
             // must have been fixed
             // do not catch exceptions

@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace QLNet
@@ -27,24 +28,14 @@ namespace QLNet
 
    // exchange-rate repository
    // test lookup of direct, triangulated, and derived exchange rates is tested
-   public class ExchangeRateManager
+   public class ExchangeRateManager : Singleton<ExchangeRateManager>
    {
-      [ThreadStatic] private static ExchangeRateManager instance_;
-
-      public static ExchangeRateManager Instance
-      {
-         get
-         {
-            return instance_ ?? (instance_ = new ExchangeRateManager());
-         }
-      }
-
-      private ExchangeRateManager()
+      public ExchangeRateManager()
       {
          addKnownRates();
       }
 
-      private Dictionary<int, List<Entry>> data_ = new Dictionary<int, List<Entry>>();
+      private ConcurrentDictionary<int, List<Entry>> data_ = new ConcurrentDictionary<int, List<Entry>>();
 
       public class Entry
       {
@@ -169,7 +160,7 @@ namespace QLNet
             return new ExchangeRate(source, target, 1.0);
 
          if (date == new Date())
-            date = Settings.evaluationDate();
+            date = Settings.Instance.evaluationDate();
 
          if (type == ExchangeRate.Type.Direct)
          {

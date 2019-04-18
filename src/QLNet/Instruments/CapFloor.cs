@@ -123,7 +123,7 @@ namespace QLNet
 
       public override bool isExpired()
       {
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          foreach (var cf in floatingLeg_)
             if (!cf.hasOccurred(today))
                return false;
@@ -153,7 +153,7 @@ namespace QLNet
 
          arguments.type = type_;
 
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
 
          for (int i = 0; i < n; ++i)
          {

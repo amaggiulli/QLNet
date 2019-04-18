@@ -80,7 +80,7 @@ namespace QLNet
 
       public virtual Date settlementDate()
       {
-         Date d = calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
+         Date d = calendar_.advance(Settings.Instance.evaluationDate(), settlementDays_, TimeUnit.Days);
          return Date.Max(d, valueDate_);
       }
 

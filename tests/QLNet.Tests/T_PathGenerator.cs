@@ -199,7 +199,7 @@ namespace TestSuite
       public void testPathGenerator()
       {
          // Testing 1-D path generation against cached values
-         Settings.setEvaluationDate(new Date(26, 4, 2005));
+         Settings.Instance.setEvaluationDate(new Date(26, 4, 2005));
 
          Handle<Quote> x0 = new Handle<Quote> (new SimpleQuote(100.0));
          Handle<YieldTermStructure> r = new Handle<YieldTermStructure> (Utilities.flatRate(0.05, new Actual360()));
@@ -233,7 +233,7 @@ namespace TestSuite
       public void testMultiPathGenerator()
       {
          // Testing n-D path generation against cached values
-         Settings.setEvaluationDate(new Date(26, 4, 2005));
+         Settings.Instance.setEvaluationDate(new Date(26, 4, 2005));
 
          Handle<Quote> x0 = new Handle<Quote> (new SimpleQuote(100.0));
          Handle<YieldTermStructure> r = new Handle<YieldTermStructure> (Utilities.flatRate(0.05, new Actual360()));

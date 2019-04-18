@@ -305,7 +305,7 @@ namespace QLNet
          // only the price member function in this class will be dependent on the
          // coupon discount curve.
 
-         today_ = QLNet.Settings.evaluationDate();
+         today_ = QLNet.Settings.Instance.evaluationDate();
 
          if (paymentDate_ > today_ && !couponDiscountCurve_.empty())
             couponDiscountRatio_ = couponDiscountCurve_.link.discount(paymentDate_) /

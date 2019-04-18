@@ -88,7 +88,7 @@ namespace TestSuite
             convention = BusinessDayConvention.ModifiedFollowing;
             Date today = new Date(13, Month.August, 2007);
             evaluationDate = calendar.adjust(today);
-            Settings.setEvaluationDate(evaluationDate);
+            Settings.Instance.setEvaluationDate(evaluationDate);
             settlementDays = 0;
             fixingDays = 0;
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);

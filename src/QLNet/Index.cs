@@ -44,7 +44,7 @@ namespace QLNet
       public abstract double fixing(Date fixingDate, bool forecastTodaysFixing = false);
 
       // Returns the fixing TimeSeries
-      public TimeSeries < double? > timeSeries() { return IndexManager.instance().getHistory(name()); }
+      public TimeSeries < double? > timeSeries() { return IndexManager.Instance.getHistory(name()); }
 
       // Check if index allows for native fixings.
       // If this returns false, calls to addFixing and similar methods will raise an exception.
@@ -63,7 +63,7 @@ namespace QLNet
       public void addFixings(TimeSeries < double? > source, bool forceOverwrite = false)
       {
          checkNativeFixingsAllowed();
-         TimeSeries < double? > target = IndexManager.instance().getHistory(name());
+         TimeSeries < double? > target = IndexManager.Instance.getHistory(name());
          foreach (Date d in source.Keys)
          {
             if (isValidFixingDate(d))
@@ -80,7 +80,7 @@ namespace QLNet
                throw new ArgumentException("Invalid fixing provided: " + d.DayOfWeek + " " + d + ", " + source[d]);
          }
 
-         IndexManager.instance().setHistory(name(), target);
+         IndexManager.Instance.setHistory(name(), target);
       }
 
       // Stores historical fixings at the given dates
@@ -100,7 +100,7 @@ namespace QLNet
       public void clearFixings()
       {
          checkNativeFixingsAllowed();
-         IndexManager.instance().clearHistory(name());
+         IndexManager.Instance.clearHistory(name());
       }
 
       // Check if index allows for native fixings

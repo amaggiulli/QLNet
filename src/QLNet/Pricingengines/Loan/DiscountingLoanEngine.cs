@@ -42,7 +42,7 @@ namespace QLNet
          bool includeRefDateFlows =
             includeSettlementDateFlows_.HasValue ?
             includeSettlementDateFlows_.Value :
-            Settings.includeReferenceDateEvents;
+            Settings.Instance.includeReferenceDateEvents;
 
          results_.value = 0;
          results_.cash = 0;

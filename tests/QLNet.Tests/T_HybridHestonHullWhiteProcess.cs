@@ -69,7 +69,7 @@ namespace TestSuite
          Date today = Date.Today;
          Date maturity = today + new Period(20, TimeUnit.Years);
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          Handle<Quote> spot = new Handle<Quote>(new SimpleQuote(100.0));
          SimpleQuote qRate  = new SimpleQuote(0.04);
@@ -162,7 +162,7 @@ namespace TestSuite
          // Comparing European option pricing for a BSM process with one-factor Hull-White model
          DayCounter dc = new Actual365Fixed();
          Date today = Date.Today;
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          Handle<Quote> spot = new Handle<Quote>(new SimpleQuote(100.0));
          List<Date> dates = new List<Date>();
@@ -254,7 +254,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          // construct a strange yield curve to check drifts and discounting
          // of the joint stochastic process
@@ -376,7 +376,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          // construct a strange yield curve to check drifts and discounting
          // of the joint stochastic process
@@ -468,7 +468,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          // construct a strange yield curve to check drifts and discounting
          // of the joint stochastic process
@@ -552,7 +552,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          // construct a strange yield curve to check drifts and discounting
          // of the joint stochastic process
@@ -645,7 +645,7 @@ namespace TestSuite
          DayCounter dc = new Actual365Fixed();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          Handle<Quote> spot = new Handle<Quote>(new SimpleQuote(100.0));
          SimpleQuote qRate = new SimpleQuote(0.04);
@@ -752,7 +752,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          // construct a strange yield curve to check drifts and discounting
          // of the joint stochastic process
@@ -844,7 +844,7 @@ namespace TestSuite
           * http://repository.tudelft.nl/assets/uuid:a8e1a007-bd89-481a-aee3-0e22f15ade6b/PhDThesis_main.pdf
          */
          Date today = new Date(15, Month.July, 2012);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
          Date exerciseDate = new Date(13, Month.July, 2022);
          DayCounter dc = new Actual365Fixed();
 

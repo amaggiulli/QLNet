@@ -60,7 +60,7 @@ namespace TestSuite
 
          Date today = new Date(15, Month.February, 2002);
          Date settlement = new Date(19, Month.February, 2002);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
          Handle<YieldTermStructure> termStructure =
             new Handle<YieldTermStructure>(Utilities.flatRate(settlement, 0.04875825, new Actual365Fixed()));
          //termStructure.link
@@ -147,7 +147,7 @@ namespace TestSuite
 
          Calendar calendar = new TARGET();
          today = calendar.adjust(Date.Today);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          Date settlement = calendar.advance(today, 2, TimeUnit.Days);
 
@@ -219,7 +219,7 @@ namespace TestSuite
                Date fixingDate = calendar.advance(startDate, -2, TimeUnit.Days);
                TimeSeries < double? > pastFixings = new TimeSeries < double? >();
                pastFixings[fixingDate] = 0.03;
-               IndexManager.instance().setHistory(euribor.name(), pastFixings);
+               IndexManager.Instance.setHistory(euribor.name(), pastFixings);
             }
 
             for (int j = 0; j < length.Length; j++)

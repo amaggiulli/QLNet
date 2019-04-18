@@ -453,7 +453,7 @@ namespace TestSuite
             double[] vols = { 0.11, 0.50, 1.20 };
 
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             DayCounter dc = new Actual360();
             SimpleQuote spot = new SimpleQuote(0.0);
@@ -607,7 +607,7 @@ namespace TestSuite
       public void testFdImpliedVol()
       {
          var settlementDate = new Date(26, 2, 2015);
-         Settings.setEvaluationDate(settlementDate);
+         Settings.Instance.setEvaluationDate(settlementDate);
 
          var calendar = new TARGET();
          var dayCounter = new Actual365Fixed();
@@ -659,7 +659,7 @@ namespace TestSuite
          */
          var result = 124.37658;
          var settlementDate = new Date(20, 7, 2018);
-         Settings.setEvaluationDate(settlementDate);
+         Settings.Instance.setEvaluationDate(settlementDate);
 
          var calendar = new TARGET();
          var dayCounter = new Actual365Fixed();

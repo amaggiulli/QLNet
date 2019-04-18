@@ -156,7 +156,7 @@ namespace TestSuite
 
          DayCounter dc = new Actual360();
          Date today = Date.Today;
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          SimpleQuote spot = new SimpleQuote(0.0);
          SimpleQuote qRate = new SimpleQuote(0.0);
@@ -259,11 +259,11 @@ namespace TestSuite
 
                                     // perturb date and get theta
                                     double dT = dc.yearFraction(today - 1, today + 1);
-                                    Settings.setEvaluationDate(today - 1);
+                                    Settings.Instance.setEvaluationDate(today - 1);
                                     value_m = option.NPV();
-                                    Settings.setEvaluationDate(today + 1);
+                                    Settings.Instance.setEvaluationDate(today + 1);
                                     value_p = option.NPV();
-                                    Settings.setEvaluationDate(today);
+                                    Settings.Instance.setEvaluationDate(today);
                                     expected["theta"] = (value_p - value_m) / dT;
 
                                     // compare

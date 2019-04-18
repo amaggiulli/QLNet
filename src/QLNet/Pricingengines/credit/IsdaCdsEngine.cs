@@ -98,7 +98,7 @@ namespace QLNet
          Actual360 dc1 = new Actual360();
          Actual360 dc2 = new Actual360(true);
 
-         Date evalDate = Settings.evaluationDate();
+         Date evalDate = Settings.Instance.evaluationDate();
 
          // check if given curves are ISDA compatible
          // (the interpolation is checked below)

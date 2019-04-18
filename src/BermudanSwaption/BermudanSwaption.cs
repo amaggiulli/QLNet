@@ -72,7 +72,7 @@ namespace BermudanSwaption
          Date todaysDate = new Date(15, 2, 2002);
          Calendar calendar = new TARGET();
          Date settlementDate = new Date(19, 2, 2002);
-         Settings.setEvaluationDate(todaysDate);
+         Settings.Instance.setEvaluationDate(todaysDate);
 
          // flat yield term structure impling 1x5 swap at 5%
          Quote flatRate = new SimpleQuote(0.04875825);

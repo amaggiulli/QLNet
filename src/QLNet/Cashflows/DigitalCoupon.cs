@@ -253,8 +253,8 @@ namespace QLNet
          Utils.QL_REQUIRE(underlying_.pricer() != null, () => "pricer not set");
 
          Date fixingDate = underlying_.fixingDate();
-         Date today = Settings.evaluationDate();
-         bool enforceTodaysHistoricFixings = Settings.enforcesTodaysHistoricFixings;
+         Date today = Settings.Instance.evaluationDate();
+         bool enforceTodaysHistoricFixings = Settings.Instance.enforcesTodaysHistoricFixings;
          double underlyingRate = underlying_.rate();
          if (fixingDate < today || ((fixingDate == today) && enforceTodaysHistoricFixings))
          {
@@ -264,7 +264,7 @@ namespace QLNet
          if (fixingDate == today)
          {
             // might have been fixed
-            double? pastFixing = IndexManager.instance().getHistory((underlying_.index()).name())[fixingDate];
+            double? pastFixing = IndexManager.Instance.getHistory((underlying_.index()).name())[fixingDate];
             if (pastFixing != null)
             {
                return underlyingRate + callCsi_ * callPayoff() + putCsi_ * putPayoff();

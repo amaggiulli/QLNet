@@ -40,7 +40,7 @@ namespace FRA
          IborIndex euribor3m = new Euribor3M(euriborTermStructure);
 
          Date todaysDate = new Date(23, Month.May, 2006);
-         Settings.setEvaluationDate(todaysDate);
+         Settings.Instance.setEvaluationDate(todaysDate);
 
          Calendar calendar = euribor3m.fixingCalendar();
          int fixingDays = euribor3m.fixingDays();

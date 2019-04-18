@@ -169,7 +169,7 @@ namespace QLNet
       {
 
          Date fixingDate = coupon_.fixingDate();
-         if (fixingDate <= Settings.evaluationDate())
+         if (fixingDate <= Settings.Instance.evaluationDate())
          {
             // the amount is determined
             double a, b;

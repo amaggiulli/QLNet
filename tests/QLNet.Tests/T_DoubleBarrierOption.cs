@@ -388,7 +388,7 @@ namespace TestSuite
 
          DayCounter dc = new Actual360();
          Date today = new Date(05, Month.Mar, 2013);
-         Settings.setEvaluationDate(today);
+         Settings.Instance.setEvaluationDate(today);
 
          SimpleQuote spot = new SimpleQuote(0.0);
          SimpleQuote qRate = new SimpleQuote(0.0);

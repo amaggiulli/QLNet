@@ -24,22 +24,17 @@ namespace QLNet
 {
    // we need only one instance of the class
    // we can not derive it from IObservable because the class is static
-   public static class Settings
+   public class Settings : Singleton<Settings>
    {
 
-      [ThreadStatic]
-      private static Date evaluationDate_;
+      public Settings()
+      {}
+      private ObservableValue<Date> evaluationDate_;
+      private bool includeReferenceDateEvents_;
+      private bool enforcesTodaysHistoricFixings_;
+      private bool? includeTodaysCashFlows_;
 
-      [ThreadStatic]
-      private static bool includeReferenceDateEvents_;
-
-      [ThreadStatic]
-      private static bool enforcesTodaysHistoricFixings_;
-
-      [ThreadStatic]
-      private static bool? includeTodaysCashFlows_;
-
-      public static Date evaluationDate()
+      public Date evaluationDate()
       {
          if (evaluationDate_ == null)
             evaluationDate_ = Date.Today;
@@ -47,13 +42,13 @@ namespace QLNet
       }
 
 
-      public static void setEvaluationDate(Date d)
+      public void setEvaluationDate(Date d)
       {
          evaluationDate_ = d;
          notifyObservers();
       }
 
-      public static bool enforcesTodaysHistoricFixings
+      public bool enforcesTodaysHistoricFixings
       {
          get
          {
@@ -65,7 +60,7 @@ namespace QLNet
          }
       }
 
-      public static bool includeReferenceDateEvents
+      public bool includeReferenceDateEvents
       {
          get
          {
@@ -77,7 +72,7 @@ namespace QLNet
          }
       }
 
-      public static bool? includeTodaysCashFlows
+      public bool? includeTodaysCashFlows
       {
          get
          {
@@ -127,19 +122,19 @@ namespace QLNet
 
       public SavedSettings()
       {
-         evaluationDate_ = Settings.evaluationDate();
-         enforcesTodaysHistoricFixings_ = Settings.enforcesTodaysHistoricFixings;
-         includeReferenceDateEvents_ = Settings.includeReferenceDateEvents;
-         includeTodaysCashFlows_ = Settings.includeTodaysCashFlows;
+         evaluationDate_ = Settings.Instance.evaluationDate();
+         enforcesTodaysHistoricFixings_ = Settings.Instance.enforcesTodaysHistoricFixings;
+         includeReferenceDateEvents_ = Settings.Instance.includeReferenceDateEvents;
+         includeTodaysCashFlows_ = Settings.Instance.includeTodaysCashFlows;
       }
 
       public void Dispose()
       {
-         if (evaluationDate_ != Settings.evaluationDate())
-            Settings.setEvaluationDate(evaluationDate_);
-         Settings.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
-         Settings.includeReferenceDateEvents = includeReferenceDateEvents_;
-         Settings.includeTodaysCashFlows = includeTodaysCashFlows_;
+         if (evaluationDate_ != Settings.Instance.evaluationDate())
+            Settings.Instance.setEvaluationDate(evaluationDate_);
+         Settings.Instance.enforcesTodaysHistoricFixings = enforcesTodaysHistoricFixings_;
+         Settings.Instance.includeReferenceDateEvents = includeReferenceDateEvents_;
+         Settings.Instance.includeTodaysCashFlows = includeTodaysCashFlows_;
       }
    }
 }

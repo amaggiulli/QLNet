@@ -49,7 +49,7 @@ namespace QLNet
       // Instrument interface
       public override bool isExpired()
       {
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          return !legs_.Any<List<CashFlow>>(leg => leg.Any<CashFlow>(cf => !cf.hasOccurred(today)));
       }
 

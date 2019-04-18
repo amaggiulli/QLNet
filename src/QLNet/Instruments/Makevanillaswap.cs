@@ -229,7 +229,7 @@ namespace QLNet
             startDate = effectiveDate_;
          else
          {
-            Date refDate = Settings.evaluationDate();
+            Date refDate = Settings.Instance.evaluationDate();
             // if the evaluation date is not a business day
             // then move to the next business day
             refDate = floatCalendar_.adjust(refDate);

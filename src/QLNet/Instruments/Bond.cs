@@ -120,7 +120,7 @@ namespace QLNet
          // this is the Instrument interface, so it doesn't use
          // BondFunctions, and includeSettlementDateFlows is true
          // (unless QL_TODAY_PAYMENTS will set it to false later on)
-         return CashFlows.isExpired(cashflows_, true, Settings.evaluationDate());
+         return CashFlows.isExpired(cashflows_, true, Settings.Instance.evaluationDate());
       }
 
       #endregion
@@ -175,7 +175,7 @@ namespace QLNet
       public bool isTradable(Date d = null)  { return BondFunctions.isTradable(this, d); }
       public Date settlementDate(Date date = null)
       {
-         Date d = (date ?? Settings.evaluationDate());
+         Date d = (date ?? Settings.Instance.evaluationDate());
 
          // usually, the settlement is at T+n...
          Date settlement = calendar_.advance(d, settlementDays_, TimeUnit.Days);

@@ -527,7 +527,7 @@ namespace QLNet
       public override double capletPrice(double effectiveCap)
       {
          // caplet is equivalent to call option on fixing
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          if (fixingDate_ <= today)
          {
             // the fixing is determined
@@ -556,7 +556,7 @@ namespace QLNet
       public override double floorletPrice(double effectiveFloor)
       {
          // floorlet is equivalent to put option on fixing
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          if (fixingDate_ <= today)
          {
             // the fixing is determined
@@ -623,7 +623,7 @@ namespace QLNet
          SwapIndex swapIndex = coupon_.swapIndex();
          rateCurve_ = swapIndex.forwardingTermStructure().link;
 
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
 
          if (paymentDate_ > today)
             discount_ = rateCurve_.discount(paymentDate_);
@@ -804,7 +804,7 @@ namespace QLNet
 
       public override double swapletPrice()
       {
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          if (fixingDate_ <= today)
          {
             // the fixing is determined
@@ -989,7 +989,7 @@ namespace QLNet
       //Hagan 3.4c
       public override double swapletPrice()
       {
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          if (fixingDate_ <= today)
          {
             // the fixing is determined

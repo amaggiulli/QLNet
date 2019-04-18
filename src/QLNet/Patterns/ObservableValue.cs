@@ -64,6 +64,18 @@ namespace QLNet
          return this;
       }
 
+      public static implicit operator ObservableValue<T>(T d)
+      {
+         ObservableValue<T> r = new ObservableValue<T>();
+         r.Assign(d);
+         return r;
+      }
+
+      public static implicit operator T(ObservableValue<T> d)
+      {
+         return d.value();
+      }
+
       //! explicit inspector
       public T value() { return value_; }
 

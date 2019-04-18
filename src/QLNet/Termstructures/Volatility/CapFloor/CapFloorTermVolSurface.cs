@@ -161,7 +161,7 @@ namespace QLNet
          // recalculate dates if necessary...
          if (moving_)
          {
-            Date d = Settings.evaluationDate() ;
+            Date d = Settings.Instance.evaluationDate() ;
             if (evaluationDate_ != d)
             {
                evaluationDate_ = d;

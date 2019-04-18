@@ -312,14 +312,14 @@ namespace QLNet
          : base(quote)
       {
          Settings.registerWith(update);
-         evaluationDate_ = Settings.evaluationDate();
+         evaluationDate_ = Settings.Instance.evaluationDate();
       }
 
       protected RelativeDateRateHelper(double quote)
          : base(quote)
       {
          Settings.registerWith(update);
-         evaluationDate_ = Settings.evaluationDate();
+         evaluationDate_ = Settings.Instance.evaluationDate();
       }
 
 
@@ -327,9 +327,9 @@ namespace QLNet
       //! Observer interface
       public override void update()
       {
-         if (evaluationDate_ != Settings.evaluationDate())
+         if (evaluationDate_ != Settings.Instance.evaluationDate())
          {
-            evaluationDate_ = Settings.evaluationDate();
+            evaluationDate_ = Settings.Instance.evaluationDate();
             initializeDates();
          }
          base.update();

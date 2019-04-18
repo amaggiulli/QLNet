@@ -135,7 +135,7 @@ namespace QLNet
       public Period observationLag() { return observationLag_; }
 
       // Instrument interface
-      public override bool isExpired() {return (Settings.evaluationDate() > maturity_);}
+      public override bool isExpired() {return (Settings.Instance.evaluationDate() > maturity_);}
       public override void setupArguments(IPricingEngineArguments args)
       {
          // correct PricingEngine?

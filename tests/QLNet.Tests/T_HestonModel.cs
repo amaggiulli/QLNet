@@ -52,7 +52,7 @@ namespace TestSuite
             http://math.ut.ee/~spartak/papers/stochjumpvols.pdf
          */
 
-         Date settlementDate = Settings.evaluationDate();
+         Date settlementDate = Settings.Instance.evaluationDate();
 
          DayCounter dayCounter = new Actual365Fixed();
          Calendar calendar = new TARGET();
@@ -134,7 +134,7 @@ namespace TestSuite
                In addition theta and v0 should be equal to the constant variance */
 
             Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             DayCounter dayCounter = new Actual360();
             Calendar calendar = new NullCalendar();
@@ -230,7 +230,7 @@ namespace TestSuite
          {
             Date settlementDate = new Date(5, Month.July, 2002);
 
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             CalibrationMarketData marketData = getDAXCalibrationMarketData();
 
@@ -283,7 +283,7 @@ namespace TestSuite
          //{
 
          //Date settlementDate = Date.Today;
-         //Settings.setEvaluationDate(settlementDate);
+         //Settings.Instance.setEvaluationDate(settlementDate);
          //DayCounter dayCounter = new ActualActual();
          //Date exerciseDate = settlementDate + new Period(6,TimeUnit.Months);
 
@@ -353,7 +353,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(27, Month.December, 2004);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
             DayCounter dayCounter = new ActualActual();
             Date exerciseDate = new Date(28, Month.March, 2005);
 
@@ -449,7 +449,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(27, Month.December, 2004);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             DayCounter dayCounter = new ActualActual();
             Date exerciseDate = new Date(28, Month.March, 2005);
@@ -559,7 +559,7 @@ namespace TestSuite
          //{
 
          //   Date settlementDate = new Date(27,Month.December,2004);
-         //   Settings.setEvaluationDate(settlementDate);
+         //   Settings.Instance.setEvaluationDate(settlementDate);
 
          //   DayCounter dayCounter = new ActualActual();
          //   Date exerciseDate = new Date(28,Month.March,2005);
@@ -678,7 +678,7 @@ namespace TestSuite
          //{
 
          //Date settlementDate = new Date(30,Month.March,2007);
-         //Settings.setEvaluationDate(settlementDate);
+         //Settings.Instance.setEvaluationDate(settlementDate);
 
          //DayCounter dayCounter = new ActualActual();
          //Date exerciseDate = new Date(30,Month.March,2017);
@@ -798,7 +798,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(27, Month.December, 2004);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             DayCounter dayCounter = new ActualActual();
 
@@ -902,7 +902,7 @@ namespace TestSuite
          //{
 
          //Date settlementDate = new Date(27,Month.December,2004);
-         //Settings.setEvaluationDate(settlementDate);
+         //Settings.Instance.setEvaluationDate(settlementDate);
 
          //DayCounter dayCounter = new ActualActual();
          //Date exerciseDate = new Date(28,Month.March,2006);
@@ -991,7 +991,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(27, Month.December, 2004);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
             DayCounter dayCounter = new ActualActual();
             Date exerciseDate = new Date(28, Month.March, 2005);
 
@@ -1057,7 +1057,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(5, Month.July, 2002);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             CalibrationMarketData marketData = getDAXCalibrationMarketData();
 
@@ -1129,7 +1129,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(5, Month.July, 2002);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             Date maturityDate = new Date(5, Month.July, 2003);
             Exercise exercise = new EuropeanExercise(maturityDate);
@@ -1231,7 +1231,7 @@ namespace TestSuite
          using (SavedSettings backup = new SavedSettings())
          {
             Date settlementDate = new Date(5, Month.July, 2002);
-            Settings.setEvaluationDate(settlementDate);
+            Settings.Instance.setEvaluationDate(settlementDate);
 
             Date maturityDate = new Date(5, Month.July, 2003);
             Exercise exercise = new EuropeanExercise(maturityDate);

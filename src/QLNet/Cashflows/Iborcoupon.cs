@@ -87,12 +87,12 @@ namespace QLNet
            1) allows to save date/time recalculations, and
            2) takes into account par coupon needs
          */
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
 
          if (fixingDate_ > today)
             return iborIndex_.forecastFixing(fixingValueDate_, fixingEndDate_, spanningTime_);
 
-         if (fixingDate_ < today || Settings.enforcesTodaysHistoricFixings)
+         if (fixingDate_ < today || Settings.Instance.enforcesTodaysHistoricFixings)
          {
             // do not catch exceptions
             double? result = index_.pastFixing(fixingDate_);

@@ -58,7 +58,7 @@ namespace TestSuite
             calendar = new TARGET();
 
             today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
 
             dayCounter = new Actual360();
             frequency = Frequency.Annual;
@@ -351,7 +351,7 @@ namespace TestSuite
          Date today = new Date(23, Month.December, 2008);
          Date tomorrow = today + 1;
 
-         Settings.setEvaluationDate(tomorrow);
+         Settings.Instance.setEvaluationDate(tomorrow);
 
          Handle<Quote> u = new Handle<Quote>(new SimpleQuote(2.9084382818797443));
 

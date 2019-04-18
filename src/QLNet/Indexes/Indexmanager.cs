@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using history_map = System.Collections.Generic.Dictionary < string, QLNet.ObservableValue < QLNet.TimeSeries < double? >>>;
+using history_map = System.Collections.Concurrent.ConcurrentDictionary< string, QLNet.ObservableValue < QLNet.TimeSeries < double? >>>;
 
 namespace QLNet
 {
@@ -31,20 +31,13 @@ namespace QLNet
    /// Index names are case insensitive
    /// </remarks>
    /// </summary>
-   public class IndexManager
+   public class IndexManager : Singleton<IndexManager>
    {
 
       // Index manager can store a callback for missing fixings
       public static Func<InterestRateIndex, DateTime, double> MissingPastFixingCallBack { get; set; }
 
-      private static readonly IndexManager instance_ = new IndexManager();
-
-      public static IndexManager instance()
-      {
-         return instance_;
-      }
-
-      private IndexManager()
+      public IndexManager()
       { }
 
       /// <summary>
@@ -129,7 +122,7 @@ namespace QLNet
       /// <param name="name"></param>
       public void clearHistory(string name)
       {
-         data_.Remove(name.ToUpper());
+         data_.TryRemove(name.ToUpper(),out _);
       }
 
       /// <summary>
@@ -147,10 +140,10 @@ namespace QLNet
       private void checkExists(string name)
       {
          if (!data_.ContainsKey(name.ToUpper()))
-            data_.Add(name.ToUpper(), new ObservableValue < TimeSeries < double? >> ());
+            data_.TryAdd(name.ToUpper(), new ObservableValue < TimeSeries < double? >> ());
       }
 
-      private static history_map data_ = new Dictionary < string, ObservableValue < TimeSeries < double? >>> ();
+      private static history_map data_ = new history_map ();
 
    }
 

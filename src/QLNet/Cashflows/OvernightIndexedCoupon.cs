@@ -45,11 +45,11 @@ namespace QLNet
          double compoundFactor = 1.0;
 
          // already fixed part
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          while (fixingDates[i] < today && i < n)
          {
             // rate must have been fixed
-            double? pastFixing = IndexManager.instance().getHistory(index.name())[fixingDates[i]];
+            double? pastFixing = IndexManager.Instance.getHistory(index.name())[fixingDates[i]];
 
             Utils.QL_REQUIRE(pastFixing != null, () => "Missing " + index.name() + " fixing for " + fixingDates[i].ToString());
 
@@ -63,7 +63,7 @@ namespace QLNet
             // might have been fixed
             try
             {
-               double? pastFixing = IndexManager.instance().getHistory(index.name())[fixingDates[i]];
+               double? pastFixing = IndexManager.Instance.getHistory(index.name())[fixingDates[i]];
 
                if (pastFixing != null)
                {

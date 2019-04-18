@@ -117,7 +117,7 @@ namespace TestSuite
             calendar = new TARGET();
             settlementDays = 2;
             Date today = calendar.adjust(Date.Today);
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             Date settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
 
             int deposits = depositData.Length,
@@ -160,12 +160,12 @@ namespace TestSuite
 
          int[] days = new int[] { 10, 30, 60, 120, 360, 720 };
 
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          List<double> expected = new InitializedList<double>(days.Length);
          for (int i = 0; i < days.Length; i++)
             expected[i] = vars.termStructure.discount(today + days[i]);
 
-         Settings.setEvaluationDate(today + 30);
+         Settings.Instance.setEvaluationDate(today + 30);
          List<double> calculated = new InitializedList<double>(days.Length);
          for (int i = 0; i < days.Length; i++)
             calculated[i] = vars.termStructure.discount(today + 30 + days[i]);
@@ -191,7 +191,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          double tolerance = 1.0e-10;
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          Date newToday = today + new Period(3, TimeUnit.Years);
          Date newSettlement = vars.calendar.advance(newToday, vars.settlementDays, TimeUnit.Days);
          Date testDate = newSettlement + new Period(5, TimeUnit.Years);
@@ -216,7 +216,7 @@ namespace TestSuite
          // Testing observability of implied term structure
          CommonVars vars = new CommonVars();
 
-         Date today = Settings.evaluationDate();
+         Date today = Settings.Instance.evaluationDate();
          Date newToday = today + new Period(3, TimeUnit.Years);
          Date newSettlement = vars.calendar.advance(newToday, vars.settlementDays, TimeUnit.Days);
          RelinkableHandle<YieldTermStructure> h = new RelinkableHandle<YieldTermStructure>();
@@ -345,7 +345,7 @@ namespace TestSuite
       {
          // Testing composite zero yield structures...
 
-         Settings.setEvaluationDate(new Date(10, Month.Nov, 2017));
+         Settings.Instance.setEvaluationDate(new Date(10, Month.Nov, 2017));
 
          // First curve
          var dates = new List<Date>

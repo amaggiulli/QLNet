@@ -38,7 +38,7 @@ namespace QLNet
          if (isFloating_)
          {
             Settings.registerWith(update);
-            referenceDate_ = Settings.evaluationDate();
+            referenceDate_ = Settings.Instance.evaluationDate();
          }
          else
             referenceDate_ = referenceDate;
@@ -65,7 +65,7 @@ namespace QLNet
       {
          if (isFloating_)
          {
-            referenceDate_ = Settings.evaluationDate();
+            referenceDate_ = Settings.Instance.evaluationDate();
             initializeExerciseTime();
          }
       }

@@ -46,7 +46,7 @@ namespace QLNet
 
       public CreditDefaultSwap value()
       {
-         Date evaluation = Settings.evaluationDate();
+         Date evaluation = Settings.Instance.evaluationDate();
          Date start = evaluation + 1;
          Date upfrontDate = new WeekendsOnly().advance(evaluation, new Period(3, TimeUnit.Days));
          Date end;

@@ -199,7 +199,7 @@ namespace QLNet
 
          // always works because tenor is always 1 year so
          // no problem with different days-in-month
-         Date from = Settings.evaluationDate();
+         Date from = Settings.Instance.evaluationDate();
          Date to = maturity_;
          Schedule fixedSchedule = new MakeSchedule().from(from).to(to)
          .withTenor(new Period(1, TimeUnit.Years))

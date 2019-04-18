@@ -1355,7 +1355,7 @@ namespace TestSuite
             //General Settings
             calendar = new TARGET();
             today = new Date(39147); // 6 Mar 2007
-            Settings.setEvaluationDate(today);
+            Settings.Instance.setEvaluationDate(today);
             settlement = today;
             //create Yield Curve
             createYieldCurve();

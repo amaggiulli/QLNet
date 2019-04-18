@@ -100,7 +100,7 @@ namespace QLNet
       {
          if (!updated_)
          {
-            Date today = Settings.evaluationDate();
+            Date today = Settings.Instance.evaluationDate();
             referenceDate_ = calendar().advance(today, settlementDays(), TimeUnit.Days);
             updated_ = true;
          }
