@@ -113,7 +113,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      //[TestCategory("LongRun"), TestMethod()]
+      [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif
@@ -241,7 +241,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      //[TestCategory("LongRun"), TestMethod()]
+      [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif
@@ -348,7 +348,7 @@ namespace TestSuite
       }
 
 #if NET40 || NET45
-      //[TestCategory("LongRun"), TestMethod()]
+      [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
 #endif
