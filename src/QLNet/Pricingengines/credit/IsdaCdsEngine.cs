@@ -396,14 +396,12 @@ namespace QLNet
          else
          {
             results_.fairUpfront = null;
-         }
-
-         double basisPoint = 1.0e-4;
+         }         
 
          if (arguments_.spread.IsNotEqual(0.0))
          {
             results_.couponLegBPS =
-               results_.couponLegNPV * basisPoint / arguments_.spread;
+               results_.couponLegNPV * Constants.BasisPoint / arguments_.spread;
          }
          else
          {
@@ -413,7 +411,7 @@ namespace QLNet
          if (arguments_.upfront != null  && arguments_.upfront.IsNotEqual(0.0))
          {
             results_.upfrontBPS =
-               results_.upfrontNPV * basisPoint / (arguments_.upfront);
+               results_.upfrontNPV * Constants.BasisPoint / (arguments_.upfront);
          }
          else
          {
