@@ -716,7 +716,7 @@ namespace QLNet
                 !leg[i].tradingExCoupon(settlementDate))
                leg[i].accept(calc);
          }
-         return basisPoint_ * calc.bps() / discountCurve.discount(npvDate);
+         return Constants.BasisPoint * calc.bps() / discountCurve.discount(npvDate);
       }
       //! NPV and BPS of the cash flows.
       // The NPV and BPS of the cash flows calculated together for performance reason
@@ -745,7 +745,7 @@ namespace QLNet
          }
          double d = discountCurve.discount(npvDate);
          npv /= d;
-         bps = basisPoint_ * bps / d;
+         bps = Constants.BasisPoint * bps / d;
       }
 
       // At-the-money rate of the cash flows.
