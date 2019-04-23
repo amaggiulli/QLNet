@@ -29,9 +29,7 @@ namespace QLNet
 {
    //! %cashflow-analysis functions
    public class CashFlows
-   {
-      const double basisPoint_ = 1.0e-4;
-
+   {      
       #region utility functions
 
       private static double aggregateRate(Leg leg, CashFlow cf)
