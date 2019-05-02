@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.11.0</VersionPrefix>
-    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>EquityOption</AssemblyName>
     <PackageId>EquityOption</PackageId>

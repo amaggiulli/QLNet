@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -31,14 +31,14 @@ using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Bonds : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -48,7 +48,7 @@ namespace TestSuite
 #endif
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -78,7 +78,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -161,7 +161,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -248,7 +248,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -447,7 +447,7 @@ namespace TestSuite
                          + "\n    error:      " + (price - cachedPrice3));
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -520,7 +520,7 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -614,7 +614,7 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -738,7 +738,7 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -832,7 +832,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -880,7 +880,7 @@ namespace TestSuite
       }
 
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1101,7 +1101,7 @@ namespace TestSuite
          QAssert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1136,7 +1136,7 @@ namespace TestSuite
 
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1180,7 +1180,7 @@ namespace TestSuite
 
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1255,7 +1255,7 @@ namespace TestSuite
       /// This requires the use of the Schedule to be constructed
       /// with a custom date vector
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1330,7 +1330,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1355,7 +1355,7 @@ namespace TestSuite
          OIS,
          ZeroCoupon
       }
-#if NET40 || NET45
+#if NET452
       [DataTestMethod]
       [DataRow(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
       [DataRow(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
@@ -1438,7 +1438,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1581,7 +1581,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1718,7 +1718,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1771,7 +1771,7 @@ namespace TestSuite
                          + "\n    expected:   " + "0.7");
       }
 
-#if NET40 || NET45
+#if NET452
       [DataTestMethod()]
       [DataRow("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
       [DataRow("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
@@ -1852,7 +1852,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod]
 #else
       [Fact]
@@ -1990,7 +1990,7 @@ namespace TestSuite
                          + "\n    expected:   " + expectedAccruedInterest);
       }
 
-#if NET40 || NET45
+#if NET452
       [DataTestMethod]
       [DataRow(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
       [DataRow(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]

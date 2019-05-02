@@ -18,7 +18,7 @@
 */
 
 using System;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -27,7 +27,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Solvers
@@ -63,7 +63,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -72,7 +72,7 @@ namespace TestSuite
       {
          test(new Brent(), "Brent");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -81,7 +81,7 @@ namespace TestSuite
       {
          test(new Newton(), "Newton");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -90,7 +90,7 @@ namespace TestSuite
       {
          test(new FalsePosition(), "FalsePosition");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -99,7 +99,7 @@ namespace TestSuite
       {
          test(new Bisection(), "Bisection");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -108,7 +108,7 @@ namespace TestSuite
       {
          test(new Ridder(), "Ridder");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

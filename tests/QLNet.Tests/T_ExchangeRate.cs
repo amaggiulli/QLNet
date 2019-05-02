@@ -16,7 +16,7 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -25,12 +25,12 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_ExchangeRate
    {
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -67,7 +67,7 @@ namespace TestSuite
       /// <summary>
       /// Testing derived exchange rates
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -107,7 +107,7 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of direct exchange rates
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -171,7 +171,7 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of triangulated exchange rates
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -236,7 +236,7 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of derived exchange rates
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
