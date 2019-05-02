@@ -61,7 +61,7 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "choco install msbuild-sonarqube-runner --version 2.3 -y\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \nMSBuild.SonarQube.Runner.exe begin %runner_args%\nmsbuild qlnet.sln /p:TargetFrameworkVersion=v4.5 /p:TargetFrameworks=net45 /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\nMSBuild.SonarQube.Runner.exe end /d:\"sonar.login=%sonar_token%\""
+  - cmd: "choco install msbuild-sonarqube-runner --version 2.3 -y\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \nMSBuild.SonarQube.Runner.exe begin %runner_args%\nmsbuild qlnet.sln /p:TargetFrameworkVersion=v4.5.2 /p:TargetFrameworks=net452 /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\nMSBuild.SonarQube.Runner.exe end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
     verbosity: minimal
@@ -79,7 +79,7 @@
     file_version: '{version}'
     informational_version: '{version}'
   test_script:
-    - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_develop\tests\QLNet.Tests\bin\Debug\net45\QLNet.Tests.dll"
+    - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_develop\tests\QLNet.Tests\bin\Debug\net452\QLNet.Tests.dll"
   deploy:
     - provider: NuGet
       api_key:
