@@ -1567,6 +1567,7 @@ namespace TestSuite
 
                   if (previousPrice > price)
                   {
+#if NET452
                      Assert.Fail("\n" +
                                  "i:\t" + i + "\n" +
                                  "k:\t" + k + "\n" +
@@ -1574,6 +1575,15 @@ namespace TestSuite
                                  ": \t" + previousPrice + "\n" +
                                  "Price at upper strike\t" + effectiveUpperStrike +
                                  ": \t" + price + "\n");
+#else
+                     Assert.True(false,"\n" +
+                                             "i:\t" + i + "\n" +
+                                             "k:\t" + k + "\n" +
+                                             "Price at upper strike\t" + (effectiveUpperStrike - 0.001) +
+                                             ": \t" + previousPrice + "\n" +
+                                             "Price at upper strike\t" + effectiveUpperStrike +
+                                             ": \t" + price + "\n");
+#endif
                   }
                   previousPrice = price;
                }
