@@ -151,7 +151,7 @@ namespace QLNet
          MethodInfo methodInfo;
          if (types == null)
             types = new Type[0];
-#if NET40 || NET45
+#if NET452
          methodInfo =  t.GetType().GetMethod(function, types);
 #else
          methodInfo = t.GetType().GetRuntimeMethod(function, types);

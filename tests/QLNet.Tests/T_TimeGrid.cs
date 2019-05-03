@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -26,12 +26,12 @@ using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_TimeGrid
    {
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -59,7 +59,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), expected_times);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -75,7 +75,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), test_times);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -100,7 +100,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), expected_times);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -114,7 +114,7 @@ namespace TestSuite
          QAssert.ThrowsException<ArgumentException>(() => new TimeGrid(times));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -126,7 +126,7 @@ namespace TestSuite
          QAssert.ThrowsException<ArgumentException>(() => new TimeGrid(times));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -143,7 +143,7 @@ namespace TestSuite
                         "the returned index: " + tg.closestIndex(4));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -160,7 +160,7 @@ namespace TestSuite
                         "the returned time: " + tg.closestTime(4));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

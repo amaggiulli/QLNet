@@ -22,7 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -174,7 +174,7 @@ namespace TestSuite
    {
       public static void CollectionAreEqual(ICollection expected, ICollection actual)
       {
-#if NET40 || NET45
+#if NET452
          CollectionAssert.AreEqual(expected, actual);
 #else
          Assert.AreEqual(expected, actual);
@@ -182,7 +182,7 @@ namespace TestSuite
       }
       public static void CollectionAreNotEqual(ICollection notExpected, ICollection actual)
       {
-#if NET40 || NET45
+#if NET452
          CollectionAssert.AreNotEqual(notExpected, actual);
 #else
          Assert.AreNotEqual(notExpected, actual);
@@ -191,7 +191,7 @@ namespace TestSuite
 
       public static void AreNotSame(object notExpected, object actual)
       {
-#if NET40 || NET45
+#if NET452
          Assert.AreNotSame(notExpected, actual);
 #else
          Assert.NotSame(notExpected, actual);
@@ -200,7 +200,7 @@ namespace TestSuite
 
       public static void Fail(string message)
       {
-#if NET40 || NET45
+#if NET452
          Assert.Fail(message);
 #else
          Assert.True(false, message);
@@ -209,7 +209,7 @@ namespace TestSuite
 
       public static void AreEqual(double expected, double actual, double delta)
       {
-#if NET40 || NET45
+#if NET452
          Assert.AreEqual(expected, actual, delta);
 #else
          Assert.True(Math.Abs(expected - actual) <= delta);
@@ -218,7 +218,7 @@ namespace TestSuite
 
       public static void AreEqual(double expected, double actual, double delta, string message)
       {
-#if NET40 || NET45
+#if NET452
          Assert.AreEqual(expected, actual, delta, message);
 #else
          Assert.True(Math.Abs(expected - actual) <= delta, message);
@@ -228,7 +228,7 @@ namespace TestSuite
       public static void AreEqual<T>(T expected, T actual)
       {
 
-#if NET40 || NET45
+#if NET452
          Assert.AreEqual(expected, actual);
 #else
          Assert.Equal(expected, actual);
@@ -237,7 +237,7 @@ namespace TestSuite
 
       public static void AreEqual<T>(T expected, T actual, string message)
       {
-#if NET40 || NET45
+#if NET452
          Assert.AreEqual(expected, actual, message);
 #else
          Assert.Equal(expected, actual);
@@ -247,7 +247,7 @@ namespace TestSuite
       public static void AreNotEqual<T>(T expected, T actual)
       {
 
-#if NET40 || NET45
+#if NET452
          Assert.AreNotEqual(expected, actual);
 #else
          Assert.NotEqual(expected, actual);
@@ -256,7 +256,7 @@ namespace TestSuite
 
       public static void IsTrue(bool condition)
       {
-#if NET40 || NET45
+#if NET452
          Assert.IsTrue(condition);
 #else
          Assert.True(condition);
@@ -265,7 +265,7 @@ namespace TestSuite
 
       public static void IsTrue(bool condition, string message)
       {
-#if NET40 || NET45
+#if NET452
          Assert.IsTrue(condition, message);
 #else
          Assert.True(condition, message);
@@ -274,7 +274,7 @@ namespace TestSuite
 
       public static void IsFalse(bool condition)
       {
-#if NET40 || NET45
+#if NET452
          Assert.IsFalse(condition);
 #else
          Assert.False(condition);
@@ -283,7 +283,7 @@ namespace TestSuite
 
       public static void IsFalse(bool condition, string message)
       {
-#if NET40 || NET45
+#if NET452
          Assert.IsFalse(condition, message);
 #else
          Assert.False(condition, message);
@@ -296,7 +296,7 @@ namespace TestSuite
       /// <param name="obj">The object to be validated</param>
       public static void Require(object obj)
       {
-#if NET40 || NET45
+#if NET452
          Assert.IsNotNull(obj);
 #else
          Assert.NotNull(obj);
@@ -310,7 +310,7 @@ namespace TestSuite
       /// <param name="action">The Action</param>
       public static void ThrowsException<T>(Action action) where T: SystemException
       {
-#if NET40 || NET45
+#if NET452
          Assert.ThrowsException<T>(action);
 #else
          Assert.ThrowsException<T>(action);

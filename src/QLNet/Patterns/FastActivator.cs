@@ -39,7 +39,7 @@ namespace QLNet
          Expression<Func<T>> expr = () => new T();
          NewExpression newExpr = (NewExpression)expr.Body;
 
-#if NET40 || NET45
+#if NET452
          var method = new DynamicMethod(
             name: "lambda",
             returnType: newExpr.Type,

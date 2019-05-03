@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -33,12 +33,12 @@ namespace TestSuite
       public double downsideVariance() { return ((IncrementalStatistics)impl_).downsideVariance(); }
    }
 
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_RiskStats
    {
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

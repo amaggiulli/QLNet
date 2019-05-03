@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -60,7 +60,7 @@ namespace TestSuite
          result = result_;
       }
    }
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_AmericanOption
@@ -140,7 +140,7 @@ namespace TestSuite
          new AmericanOptionData(Option.Type.Call, 100.00,  120.00,  0.03,  0.07, 3.0,  0.3,  37.177)
       };
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -244,7 +244,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -319,7 +319,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -375,7 +375,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -558,7 +558,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -569,7 +569,7 @@ namespace TestSuite
          testFdGreeks<FDAmericanEngine>();
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -599,7 +599,7 @@ namespace TestSuite
                       + "    tolerance:        " + tolerance);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -635,7 +635,7 @@ namespace TestSuite
             QAssert.Fail(string.Format("Implied volatility calculation failed. Expected {0}. Actual {1}", volatility, impliedVol));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

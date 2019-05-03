@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -30,12 +30,12 @@ using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Calendars
    {
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -78,7 +78,7 @@ namespace TestSuite
          QAssert.IsFalse(c1.isHoliday(d2), d2 + " still a holiday");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -148,7 +148,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -220,7 +220,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -255,7 +255,7 @@ namespace TestSuite
                          " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -360,7 +360,7 @@ namespace TestSuite
 
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -429,7 +429,7 @@ namespace TestSuite
 
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -467,7 +467,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -506,7 +506,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -543,7 +543,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -604,7 +604,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -665,7 +665,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -726,7 +726,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -777,7 +777,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -828,7 +828,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -923,7 +923,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1024,7 +1024,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1163,7 +1163,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1240,7 +1240,7 @@ namespace TestSuite
                          + " expected working weekends, while there are " + k
                          + " calculated holidays");
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1274,7 +1274,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1426,7 +1426,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

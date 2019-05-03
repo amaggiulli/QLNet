@@ -19,7 +19,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -28,7 +28,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_PiecewiseyieldCurve : IDisposable
@@ -241,7 +241,7 @@ namespace TestSuite
       #region Initialize&Cleanup
       private SavedSettings backup;
       private IndexHistoryCleaner cleaner;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -252,7 +252,7 @@ namespace TestSuite
          backup = new SavedSettings();
          cleaner = new IndexHistoryCleaner();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -283,7 +283,7 @@ namespace TestSuite
                                                                                        CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -298,7 +298,7 @@ namespace TestSuite
          testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -312,7 +312,7 @@ namespace TestSuite
          testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>(vars);
          testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>(vars);
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -333,7 +333,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -348,7 +348,7 @@ namespace TestSuite
          testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -372,7 +372,7 @@ namespace TestSuite
                       CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -387,7 +387,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -423,7 +423,7 @@ namespace TestSuite
                       CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -438,7 +438,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, ConvexMonotone, IterativeBootstrapForYield>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -452,7 +452,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-9);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -488,7 +488,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of date change");
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -579,7 +579,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -604,7 +604,7 @@ namespace TestSuite
 
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -683,7 +683,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -696,7 +696,7 @@ namespace TestSuite
          testCurveCopy<Discount, LogLinear>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -709,7 +709,7 @@ namespace TestSuite
          testCurveCopy<ForwardRate, BackwardFlat>(vars);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

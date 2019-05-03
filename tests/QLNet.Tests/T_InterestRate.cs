@@ -18,7 +18,7 @@
 */
 
 using System;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -27,7 +27,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_InterestRate
@@ -58,7 +58,7 @@ namespace TestSuite
       }
 
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
