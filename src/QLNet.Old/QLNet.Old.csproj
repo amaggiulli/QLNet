@@ -136,8 +136,8 @@
     <Compile Include="..\QLNet\Cashflows\FloatingRateCoupon.cs">
       <Link>Cashflows\FloatingRateCoupon.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Cashflows\Iborcoupon.cs">
-      <Link>Cashflows\Iborcoupon.cs</Link>
+    <Compile Include="..\QLNet\Cashflows\IborCoupon.cs">
+      <Link>Cashflows\IborCoupon.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Cashflows\IndexedCashFlow.cs">
       <Link>Cashflows\IndexedCashFlow.cs</Link>
@@ -1462,8 +1462,8 @@
     <Compile Include="..\QLNet\Pricingengines\Swap\DiscountingBasisSwapEngine.cs">
       <Link>Pricingengines\Swap\DiscountingBasisSwapEngine.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Pricingengines\Swap\Discountingswapengine.cs">
-      <Link>Pricingengines\Swap\Discountingswapengine.cs</Link>
+    <Compile Include="..\QLNet\Pricingengines\Swap\DiscountingSwapEngine.cs">
+      <Link>Pricingengines\Swap\DiscountingSwapEngine.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\Swap\discretizedswap.cs">
       <Link>Pricingengines\Swap\discretizedswap.cs</Link>

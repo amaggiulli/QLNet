@@ -93,7 +93,6 @@ namespace QLNet
 
       public override void calculate()
       {
-         double basisPoint = 1.0e-4;
 
          Date exerciseDate = arguments_.exercise.date(0);
 
@@ -140,7 +139,7 @@ namespace QLNet
              (arguments_.settlementType == Settlement.Type.Cash &&
               arguments_.settlementMethod == Settlement.Method.CollateralizedCashPrice))
          {
-            annuity = Math.Abs(swap.fixedLegBPS()) / basisPoint;
+            annuity = Math.Abs(swap.fixedLegBPS()) / Const.BASIS_POINT;
          }
          else if (arguments_.settlementType == Settlement.Type.Cash &&
                   arguments_.settlementMethod == Settlement.Method.ParYieldCurve)
@@ -158,7 +157,7 @@ namespace QLNet
                              new InterestRate(atmForward, dayCount, Compounding.Compounded, Frequency.Annual), false,
                              discountDate);
 
-            annuity = Math.Abs(fixedLegCashBPS / basisPoint) * discountCurve_.link.discount(discountDate);
+            annuity = Math.Abs(fixedLegCashBPS / Const.BASIS_POINT) * discountCurve_.link.discount(discountDate);
          }
          else
          {

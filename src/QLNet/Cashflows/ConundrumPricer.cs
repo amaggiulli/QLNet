@@ -638,9 +638,8 @@ namespace QLNet
             VanillaSwap swap = swapIndex.underlyingSwap(fixingDate_);
 
             swapRateValue_ = swap.fairRate();
-
-            double bp = 1.0e-4;
-            annuity_ = Math.Abs(swap.fixedLegBPS() / bp);
+            
+            annuity_ = Math.Abs(swap.fixedLegBPS() /Const.BASIS_POINT);
 
             int q = (int)swapIndex.fixedLegTenor().frequency();
             Schedule schedule = swap.fixedSchedule();

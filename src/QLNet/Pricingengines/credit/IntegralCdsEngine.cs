@@ -20,9 +20,7 @@
 namespace QLNet
 {
    public class IntegralCdsEngine : CreditDefaultSwap.Engine
-   {
-      const double basisPoint = 1.0e-4;
-
+   {      
       public IntegralCdsEngine(Period step, Handle<DefaultProbabilityTermStructure> probability,
                                double recoveryRate, Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null)
       {
@@ -179,7 +177,7 @@ namespace QLNet
          if (arguments_.spread.IsNotEqual(0.0))
          {
             results_.couponLegBPS =
-               results_.couponLegNPV * basisPoint / arguments_.spread;
+               results_.couponLegNPV * Const.BASIS_POINT / arguments_.spread;
          }
          else
          {
@@ -189,7 +187,7 @@ namespace QLNet
          if (arguments_.upfront.HasValue && arguments_.upfront.IsNotEqual(0.0))
          {
             results_.upfrontBPS =
-               results_.upfrontNPV * basisPoint / (arguments_.upfront.Value);
+               results_.upfrontNPV * Const.BASIS_POINT / (arguments_.upfront.Value);
          }
          else
          {

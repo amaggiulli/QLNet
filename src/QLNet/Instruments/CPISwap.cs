@@ -258,9 +258,7 @@ namespace QLNet
 
       // other
       public override void fetchResults(IPricingEngineResults r)
-      {
-         const double basisPoint = 1.0e-4;
-
+      {         
          // copy from VanillaSwap
          // works because similarly simple instrument
          // that we always expect to be priced with a swap engine
@@ -285,13 +283,13 @@ namespace QLNet
          {
             // calculate it from other results
             if (legBPS_[0] != null)
-               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / basisPoint);
+               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / Const.BASIS_POINT);
          }
          if (fairSpread_ == null)
          {
             // ditto
             if (legBPS_[1] != null)
-               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / basisPoint);
+               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / Const.BASIS_POINT);
          }
       }
 
