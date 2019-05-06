@@ -305,7 +305,7 @@ namespace QLNet
          }
          else if (legBPS_.Count > 1 && legBPS_[1] != null)
          {
-            fairSpread_ = spread_ - NPV_ / legBPS_[1] * Constants.BasisPoint;
+            fairSpread_ = spread_ - NPV_ / legBPS_[1] * Const.BASIS_POINT;
             return fairSpread_.Value;
          }
          else

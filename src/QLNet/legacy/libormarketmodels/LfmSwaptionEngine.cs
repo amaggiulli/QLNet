@@ -70,7 +70,7 @@ namespace QLNet
                          Option.Type.Call : Option.Type.Put;
          double vol = volatility.volatility(exercise, swapLength,
                                             fairRate, true);
-         results_.value = (swap.fixedLegBPS() / Constants.BasisPoint) *
+         results_.value = (swap.fixedLegBPS() / Const.BASIS_POINT) *
                           Utils.blackFormula(w, fixedRate, fairRate, vol * Math.Sqrt(exercise));
       }
    }

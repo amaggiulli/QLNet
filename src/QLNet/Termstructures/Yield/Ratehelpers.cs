@@ -895,9 +895,9 @@ namespace QLNet
          // weak implementation... to be improved         
          double floatingLegNPV = swap_.floatingLegNPV();
          double spread = this.spread();
-         double spreadNPV = swap_.floatingLegBPS() / Constants.BasisPoint * spread;
+         double spreadNPV = swap_.floatingLegBPS() / Const.BASIS_POINT * spread;
          double totNPV = -(floatingLegNPV + spreadNPV);
-         double result = totNPV / (swap_.fixedLegBPS() / Constants.BasisPoint);
+         double result = totNPV / (swap_.fixedLegBPS() / Const.BASIS_POINT);
          return result;
       }
 

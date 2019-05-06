@@ -222,13 +222,13 @@ namespace QLNet
          {
             // calculate it from other results
             if (legBPS_[0] != null)
-               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / Constants.BasisPoint);
+               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / Const.BASIS_POINT);
          }
          if (fairSpread_ == null)
          {
             // ditto
             if (legBPS_[1] != null)
-               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / Constants.BasisPoint);
+               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / Const.BASIS_POINT);
          }
 
       }

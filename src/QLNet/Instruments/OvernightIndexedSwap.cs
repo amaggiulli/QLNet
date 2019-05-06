@@ -162,13 +162,13 @@ namespace QLNet
       public double? fairRate()
       {
          calculate();
-         return fixedRate_ - NPV_ / (fixedLegBPS() / Constants.BasisPoint);
+         return fixedRate_ - NPV_ / (fixedLegBPS() / Const.BASIS_POINT);
       }
 
       public double? fairSpread()
       {      
          calculate();
-         return spread_ - NPV_ / (overnightLegBPS() / Constants.BasisPoint);
+         return spread_ - NPV_ / (overnightLegBPS() / Const.BASIS_POINT);
       }
 
       public double? fixedLegBPS()

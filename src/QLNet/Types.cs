@@ -43,6 +43,8 @@ namespace QLNet
       public const double M_PI = 3.141592653589793238462643383280;
       public const double M_PI_2 = 1.57079632679489661923;
       public const double M_2_PI = 0.636619772367581343076;
+
+      public static double BASIS_POINT = 1.0e-4;
    }
 
    public class TimeSeries<T> : IDictionary<Date, T>

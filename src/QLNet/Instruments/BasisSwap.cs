@@ -265,14 +265,14 @@ namespace QLNet
          // Long fair spread should be fine - no averaging or compounding
          if (fairLongSpread_ == null && legBPS_[longNo_] != null)
          {
-            fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / Constants.BasisPoint);
+            fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / Const.BASIS_POINT);
          }
 
          /* Short fair spread calculation ok if no averaging/compounding OR
             if there is averaging/compounding and the spread is added after */
          if (fairShortSpread_ == null && legBPS_[shortNo_] != null)
          {
-            fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / Constants.BasisPoint);
+            fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / Const.BASIS_POINT);
          }
       }
 
