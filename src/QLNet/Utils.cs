@@ -120,7 +120,8 @@ namespace QLNet
                   throw new NotTradableException(message.Invoke());
                case QLNetExceptionEnum.RootNotBracketException:
                   throw new RootNotBracketException(message.Invoke());
-
+               case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+                  throw new MaxNumberFuncEvalExceeded(message.Invoke());
             }
       }
 
@@ -134,6 +135,8 @@ namespace QLNet
                throw new NotTradableException(message);
             case QLNetExceptionEnum.RootNotBracketException:
                throw new RootNotBracketException(message);
+            case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+               throw new MaxNumberFuncEvalExceeded(message);
          }
       }
 
