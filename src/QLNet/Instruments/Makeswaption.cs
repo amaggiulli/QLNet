@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -24,18 +25,44 @@ namespace QLNet
    /// </summary>
    public class MakeSwaption
    {
-      public MakeSwaption(SwapIndex swapIndex, Period optionTenor, double? strike = null)
+      public MakeSwaption(SwapIndex swapIndex,
+                          Period optionTenor,
+                          double? strike = null)
       {
          swapIndex_ = swapIndex;
          delivery_ = Settlement.Type.Physical;
+         settlementMethod_ = Settlement.Method.PhysicalOTC;
          optionTenor_ = optionTenor;
          optionConvention_ = BusinessDayConvention.ModifiedFollowing;
+         fixingDate_ = null;
          strike_ = strike;
+         underlyingType_ = VanillaSwap.Type.Payer;
+         nominal_ = 1.0;
+      }
+
+      public MakeSwaption(SwapIndex swapIndex,
+                          Date fixingDate,
+                          double? strike = null)
+      {
+         swapIndex_ = swapIndex;
+         delivery_ = Settlement.Type.Physical;
+         settlementMethod_ = Settlement.Method.PhysicalOTC;
+         optionConvention_ = BusinessDayConvention.ModifiedFollowing;
+         fixingDate_ = fixingDate;
+         strike_ = strike;
+         underlyingType_ = VanillaSwap.Type.Payer;
+         nominal_ = 1.0;
       }
 
       public MakeSwaption withSettlementType(Settlement.Type delivery)
       {
          delivery_ = delivery;
+         return this;
+      }
+
+      public MakeSwaption withSettlementMethod(Settlement.Method settlementMethod)
+      {
+         settlementMethod_ = settlementMethod;
          return this;
       }
 
@@ -51,9 +78,21 @@ namespace QLNet
          return this;
       }
 
+      public MakeSwaption withUnderlyingType(VanillaSwap.Type type)
+      {
+         underlyingType_ = type;
+         return this;
+      }
+
       public MakeSwaption withPricingEngine(IPricingEngine engine)
       {
          engine_ = engine;
+         return this;
+      }
+
+      public MakeSwaption withNominal(double n)
+      {
+         nominal_ = n;
          return this;
       }
 
@@ -101,15 +140,18 @@ namespace QLNet
          .withFixedLegCalendar(swapIndex_.fixingCalendar())
          .withFixedLegDayCount(swapIndex_.dayCounter())
          .withFixedLegConvention(bdc)
-         .withFixedLegTerminationDateConvention(bdc);
+         .withFixedLegTerminationDateConvention(bdc)
+         .withType(underlyingType_)
+         .withNominal(nominal_);
 
-         Swaption swaption = new Swaption(underlyingSwap_, exercise_, delivery_);
+         Swaption swaption = new Swaption(underlyingSwap_, exercise_, delivery_, settlementMethod_);
          swaption.setPricingEngine(engine_);
          return swaption;
       }
 
       private SwapIndex swapIndex_;
       private Settlement.Type delivery_;
+      private Settlement.Method settlementMethod_;
       private VanillaSwap underlyingSwap_;
 
       private Period optionTenor_;
@@ -119,6 +161,8 @@ namespace QLNet
       private Exercise exercise_;
 
       private double? strike_;
+      private VanillaSwap.Type underlyingType_;
+      private double nominal_;
 
       IPricingEngine engine_;
    }

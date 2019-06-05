@@ -247,8 +247,7 @@ namespace QLNet
       }
 
       public override void fetchResults(IPricingEngineResults r)
-      {
-         const double basisPoint = 1.0e-4;
+      {         
          base.fetchResults(r);
          BasisSwap.Results results = r as BasisSwap.Results;
 
@@ -266,14 +265,14 @@ namespace QLNet
          // Long fair spread should be fine - no averaging or compounding
          if (fairLongSpread_ == null && legBPS_[longNo_] != null)
          {
-            fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / basisPoint);
+            fairLongSpread_ = longSpread_ - NPV_ / (legBPS_[longNo_] / Const.BASIS_POINT);
          }
 
          /* Short fair spread calculation ok if no averaging/compounding OR
             if there is averaging/compounding and the spread is added after */
          if (fairShortSpread_ == null && legBPS_[shortNo_] != null)
          {
-            fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / basisPoint);
+            fairShortSpread_ = shortSpread_ - NPV_ / (legBPS_[shortNo_] / Const.BASIS_POINT);
          }
       }
 

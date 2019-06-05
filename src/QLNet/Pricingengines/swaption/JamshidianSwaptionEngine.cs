@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -17,7 +18,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -90,8 +90,8 @@ namespace QLNet
 
       public override void calculate()
       {
-         Utils.QL_REQUIRE(arguments_.settlementType == Settlement.Type.Physical, () =>
-                          "cash-settled swaptions not priced by Jamshidian engine");
+         Utils.QL_REQUIRE(arguments_.settlementMethod != Settlement.Method.ParYieldCurve, () =>
+                          "cash-settled (ParYieldCurve) swaptions not priced by Jamshidian engine");
 
          Utils.QL_REQUIRE(arguments_.exercise.type() == Exercise.Type.European, () =>
                           "cannot use the Jamshidian decomposition on exotic swaptions");

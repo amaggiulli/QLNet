@@ -1,15 +1,30 @@
-QLNet 1.11.2
+QLNet 1.11.3
 =========================
 
-QLNet 1.11.2 is a bug-fix release for version 1.11
+QLNet 1.11.3
 A detailed list of changes is available in ChangeLog.txt.
+
+DATE-TIME
+
++ Added Thailand calendar 
++ Updated china holidays up to 2019
+
+INDEXES
+
++ Added bibor index
+
+INSTRUMENTS
+
++ Added CatBond with MonteCarlo pricing engine
++ Added Collateralized Cash Swaption
 
 ENGINES
 
-+ Fixed a bug int FDMultiPeriodEngine.Thanks to Jakub Pstrusiński.
++ Added Binomial Tsiveriotis-Fernandes engine for convertible bonds
 
-CASHFLOWS
+FRAMEWORK
 
-+ Fixed accrual calculation
-+ Fixed yield calculation when settlement date falls on 31st
-+ Added OAS calculation to callable bonds
++ Making all projects dotnet standard.  (Changes minimum framework to net 4.5.1)
++ Added QLNet Exceptions
++ Bug fixing and refactoring.
+

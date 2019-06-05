@@ -2,11 +2,10 @@
 
   <PropertyGroup>
     <VersionPrefix>1.10.0</VersionPrefix>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFrameworks>net452</TargetFrameworks>
     <AssemblyName>QLNet.Tests</AssemblyName>
     <PackageId>QLNet.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>

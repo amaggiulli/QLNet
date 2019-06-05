@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2019 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -17,44 +18,21 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace QLNet
 {
-   //! time grid class
-   /*! \todo what was the rationale for limiting the grid to
-             positive times? Investigate and see whether we
-             can use it for negative ones as well.
-   */
-
+   /// <summary>
+   /// Time grid class
+   /// </summary>
    public class TimeGrid
    {
-      private List<double> times_;
-
-      public double this[int i]
-      {
-         get
-         {
-            return times_[i];
-         }
-      }
-
-      private List<double> dt_;
-
-      public double dt(int i)
-      {
-         return dt_[i];
-      }
-
-      private List<double> mandatoryTimes_;
-
-      public List<double> mandatoryTimes()
-      {
-         return mandatoryTimes_;
-      }
-
+      /// <summary>
+      /// Regularly spaced time-grid
+      /// </summary>
+      /// <param name="end"></param>
+      /// <param name="steps"></param>
       public TimeGrid(double end, int steps)
       {
          // We seem to assume that the grid begins at 0.
@@ -72,10 +50,19 @@ namespace QLNet
          dt_ = new InitializedList<double>(steps, dt);
       }
 
-      public TimeGrid(List<double> times, int offset)
+      /// <summary>
+      /// Time grid with mandatory time points
+      /// <remarks>
+      /// Mandatory points are guaranteed to belong to the grid.
+      /// No additional points are added.
+      /// </remarks>
+      /// </summary>
+      /// <param name="times"></param>
+      public TimeGrid(List<double> times)
       {
-         //not really finished bu run well for actals tests
-         mandatoryTimes_ = times.GetRange(0, offset);
+         Utils.QL_REQUIRE(times.Count > 0, () => "empty time sequence");
+
+         mandatoryTimes_ = new List<double>(times);
          mandatoryTimes_.Sort();
 
          Utils.QL_REQUIRE(mandatoryTimes_[0] >= 0.0, () => "negative times not allowed");
@@ -98,8 +85,83 @@ namespace QLNet
          dt_ = dt.ToList();
       }
 
+      /// <summary>
+      /// Time grid with mandatory time points
+      /// <remarks>
+      /// Mandatory points are guaranteed to belong to the grid.
+      /// Additional points are then added with regular spacing
+      /// between pairs of mandatory times in order to reach the
+      /// desired number of steps.
+      /// </remarks>
+      /// </summary>
+      /// <param name="times"></param>
+      /// <param name="steps"></param>
+      public TimeGrid(List<double> times, int steps)
+      {
+         Utils.QL_REQUIRE(times.Count > 0, () => "empty time sequence");
+
+         //not really finished bu run well for actals tests
+         mandatoryTimes_ = new List<double>(times);
+         mandatoryTimes_.Sort();
+
+         Utils.QL_REQUIRE(mandatoryTimes_[0] >= 0.0, () => "negative times not allowed");
+
+         for (int i = 0; i < mandatoryTimes_.Count - 1; ++i)
+         {
+            if (Utils.close_enough(mandatoryTimes_[i], mandatoryTimes_[i + 1]))
+            {
+               mandatoryTimes_.RemoveAt(i);
+               i--;
+            }
+         }
+
+         double last = mandatoryTimes_.Last();
+         double dtMax;
+         // The resulting timegrid have points at times listed in the input
+         // list. Between these points, there are inner-points which are
+         // regularly spaced.
+         if (steps == 0)
+         {
+            List<double> diff = mandatoryTimes_.Zip(mandatoryTimes_.Skip(1), (x, y) => y - x).ToList();
+
+            if (diff.First().IsEqual(0.0))
+               diff.RemoveAt(0);
+
+            dtMax = diff.Min();
+         }
+         else
+         {
+            dtMax = last / steps;
+         }
+
+         double periodBegin = 0.0;
+         times_ = new List<double>();
+         times_.Add(periodBegin);
+         foreach (var t in mandatoryTimes_)
+         {
+            double periodEnd = t;
+            if (periodEnd.IsNotEqual(0.0))
+            {
+               // the nearest integer
+               int nSteps = (int)((periodEnd - periodBegin) / dtMax + 0.5);
+               // at least one time step!
+               nSteps = (nSteps != 0 ? nSteps : 1);
+               double dt = (periodEnd - periodBegin) / nSteps;
+               //times_.reserve(nSteps);
+               for (int n = 1; n <= nSteps; ++n)
+                  times_.Add(periodBegin + n * dt);
+            }
+            periodBegin = periodEnd;
+         }
+
+         var dtf = times_.Zip(times_.Skip(1), (x, y) => y - x);
+         dt_ = dtf.ToList();
+      }
+
       public TimeGrid(List<double> times, int offset, int steps)
       {
+         Utils.QL_REQUIRE(times.Count > 0, () => "empty time sequence");
+
          //not really finished bu run well for actals tests
          mandatoryTimes_ = times.GetRange(0, offset);
          mandatoryTimes_.Sort();
@@ -156,8 +218,37 @@ namespace QLNet
          }
       }
 
-      // Time grid interface
-      //! returns the index i such that grid[i] = t
+      public double this[int i]
+      {
+         get
+         {
+            return times_[i];
+         }
+      }
+
+      public List<double> Times()
+      {
+         return times_;
+      }
+
+      public double dt(int i)
+      {
+         return dt_[i];
+      }
+
+      public List<double> mandatoryTimes()
+      {
+         return mandatoryTimes_;
+      }
+
+      /// <summary>
+      /// Time grid interface
+      /// <remarks>
+      /// returns the index i such that grid[i] = t
+      /// </remarks>
+      /// </summary>
+      /// <param name="t"></param>
+      /// <returns></returns>
       public int index(double t)
       {
          int i = closestIndex(t);
@@ -187,7 +278,14 @@ namespace QLNet
          return 0;
       }
 
-      //! returns the index i such that grid[i] is closest to t
+      /// <summary>
+      /// Time grid interface
+      /// <remarks>
+      /// returns the index i such that grid[i] is closest to t
+      /// </remarks>
+      /// </summary>
+      /// <param name="t"></param>
+      /// <returns></returns>
       public int closestIndex(double t)
       {
          int result = times_.BinarySearch(t);
@@ -213,7 +311,14 @@ namespace QLNet
          return result - 1;
       }
 
-      //! returns the time on the grid closest to the given t
+      /// <summary>
+      /// Time grid interface
+      /// <remarks>
+      /// returns the time on the grid closest to the given t
+      /// </remarks>
+      /// </summary>
+      /// <param name="t"></param>
+      /// <returns></returns>
       public double closestTime(double t)
       {
          return times_[closestIndex(t)];
@@ -238,5 +343,10 @@ namespace QLNet
       {
          return times_.Last();
       }
+
+      private List<double> times_;
+      private List<double> dt_;
+      private List<double> mandatoryTimes_;
+
    }
 }

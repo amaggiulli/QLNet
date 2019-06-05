@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -25,14 +25,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_HybridHestonHullWhiteProcess : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -43,7 +43,7 @@ namespace TestSuite
 
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -56,7 +56,7 @@ namespace TestSuite
       }
       #endregion
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -152,7 +152,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -242,7 +242,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -276,7 +276,7 @@ namespace TestSuite
          Date maturity = dates.Last() + new Period(10, TimeUnit.Years);
          dates.Add(maturity);
          rates.Add(0.04);
-         times.Add(dc.yearFraction(today, dates.Last()));
+         //times.Add(dc.yearFraction(today, dates.Last()));
 
          Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(100));
 
@@ -290,7 +290,7 @@ namespace TestSuite
 
          HybridHestonHullWhiteProcess jointProcess = new HybridHestonHullWhiteProcess(hestonProcess, hwProcess, -0.4);
 
-         TimeGrid grid = new TimeGrid(times, times.Count - 1);
+         TimeGrid grid = new TimeGrid(times);
 
          int factors = jointProcess.factors();
          int steps = grid.size() - 1;
@@ -365,7 +365,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -457,7 +457,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -541,7 +541,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -624,7 +624,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -741,7 +741,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -830,7 +830,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

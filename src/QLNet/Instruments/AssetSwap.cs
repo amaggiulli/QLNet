@@ -297,8 +297,7 @@ namespace QLNet
 
       // results
       public double fairSpread()
-      {
-         double basisPoint = 1.0e-4;
+      {         
          calculate();
          if (fairSpread_ != null)
          {
@@ -306,7 +305,7 @@ namespace QLNet
          }
          else if (legBPS_.Count > 1 && legBPS_[1] != null)
          {
-            fairSpread_ = spread_ - NPV_ / legBPS_[1] * basisPoint;
+            fairSpread_ = spread_ - NPV_ / legBPS_[1] * Const.BASIS_POINT;
             return fairSpread_.Value;
          }
          else

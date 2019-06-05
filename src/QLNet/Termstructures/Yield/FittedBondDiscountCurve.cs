@@ -162,7 +162,8 @@ namespace QLNet
             Utils.QL_REQUIRE(BondFunctions.isTradable(bond, bondSettlement), () =>
                              (i + 1) + " bond non tradable at " +
                              bondSettlement + " settlement date (maturity" +
-                             " being " + bond.maturityDate() + ")");
+                             " being " + bond.maturityDate() + ")",
+                             QLNetExceptionEnum.NotTradableException);
             maxDate_ = Date.Max(maxDate_, bondHelpers_[i].pillarDate());
             bondHelpers_[i].setTermStructure(this);
          }

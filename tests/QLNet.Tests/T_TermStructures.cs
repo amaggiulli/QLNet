@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-#if NET40 || NET45
+#if NET452
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +33,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
 
    [TestClass()]
 #endif
@@ -45,7 +45,7 @@ namespace TestSuite
       #region Initialize&Cleanup
 
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
 
       [TestInitialize]
       public void testInitialize()
@@ -57,7 +57,7 @@ namespace TestSuite
          backup = new SavedSettings();
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestCleanup]
 #endif
@@ -142,7 +142,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -179,7 +179,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -205,7 +205,7 @@ namespace TestSuite
                          + "    expected:   " + discount);
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -228,7 +228,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of term structure change");
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -257,7 +257,7 @@ namespace TestSuite
                          + "    expected:   " + forward);
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -283,7 +283,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of spread change");
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -308,7 +308,7 @@ namespace TestSuite
                          + "    expected:   " + zero);
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -335,7 +335,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of spread change");
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else
@@ -468,7 +468,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
 
       [TestMethod()]
 #else

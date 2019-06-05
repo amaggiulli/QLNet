@@ -38,8 +38,7 @@ namespace QLNet
              w.r.t. Schedules etc.
    */
    public class YearOnYearInflationSwap : Swap
-   {
-      const double basisPoint = 1.0e-4;
+   {      
       public enum Type { Receiver = -1, Payer = 1 }
       public YearOnYearInflationSwap(
          Type type,
@@ -223,13 +222,13 @@ namespace QLNet
          {
             // calculate it from other results
             if (legBPS_[0] != null)
-               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / basisPoint);
+               fairRate_ = fixedRate_ - NPV_ / (legBPS_[0] / Const.BASIS_POINT);
          }
          if (fairSpread_ == null)
          {
             // ditto
             if (legBPS_[1] != null)
-               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / basisPoint);
+               fairSpread_ = spread_ - NPV_ / (legBPS_[1] / Const.BASIS_POINT);
          }
 
       }

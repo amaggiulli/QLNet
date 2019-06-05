@@ -18,7 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -27,14 +27,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_InflationCapFloorTest : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -44,7 +44,7 @@ namespace TestSuite
 #endif
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -259,7 +259,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -395,7 +395,7 @@ namespace TestSuite
       // (actually in arrears with a lag of a few months) thus the first optionlet
       // is relevant.  Hence we can do a parity test without a special definition
       // of the YoY cap/floor instrument.
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -476,7 +476,7 @@ namespace TestSuite
       }
 
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

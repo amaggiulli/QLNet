@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -18,7 +19,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -27,14 +28,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Swaption : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -44,7 +45,7 @@ namespace TestSuite
 #endif
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -95,11 +96,12 @@ namespace TestSuite
          // utilities
          public Swaption makeSwaption(VanillaSwap swap, Date exercise, double volatility,
                                       Settlement.Type settlementType = Settlement.Type.Physical,
+                                      Settlement.Method settlementMethod = Settlement.Method.PhysicalOTC,
                                       BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel model = BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.SwapRate)
          {
             Handle<Quote> vol = new Handle <Quote>(new SimpleQuote(volatility));
             IPricingEngine engine = new BlackSwaptionEngine(termStructure, vol, new Actual365Fixed(), 0.0, model);
-            Swaption result = new Swaption(swap, new EuropeanExercise(exercise), settlementType);
+            Swaption result = new Swaption(swap, new EuropeanExercise(exercise), settlementType, settlementMethod);
             result.setPricingEngine(engine);
             return result;
          }
@@ -132,7 +134,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -168,7 +170,8 @@ namespace TestSuite
                      // FLOATING_POINT_EXCEPTION
                      values[l] = swaption.NPV();
                      Swaption swaption_cash = vars.makeSwaption(swap, exerciseDate, vol,
-                                                                Settlement.Type.Cash);
+                                                                Settlement.Type.Cash,
+                                                                Settlement.Method.ParYieldCurve);
                      values_cash[l] = swaption_cash.NPV();
                   }
 
@@ -240,7 +243,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -279,7 +282,8 @@ namespace TestSuite
                      values[l] = swaption.NPV();
                      Swaption swaption_cash =
                         vars.makeSwaption(swap, exerciseDate, 0.20,
-                                          Settlement.Type.Cash);
+                                          Settlement.Type.Cash,
+                                          Settlement.Method.ParYieldCurve);
                      values_cash[l] = swaption_cash.NPV();
                   }
                   // and check that they go the right way
@@ -330,7 +334,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -375,10 +379,12 @@ namespace TestSuite
                         vars.makeSwaption(equivalentSwap, exerciseDate, 0.20);
                      Swaption swaption1_cash =
                         vars.makeSwaption(swap, exerciseDate, 0.20,
-                                          Settlement.Type.Cash);
+                                          Settlement.Type.Cash,
+                                          Settlement.Method.ParYieldCurve);
                      Swaption swaption2_cash =
                         vars.makeSwaption(equivalentSwap, exerciseDate, 0.20,
-                                          Settlement.Type.Cash);
+                                          Settlement.Type.Cash,
+                                          Settlement.Method.ParYieldCurve);
                      if (Math.Abs(swaption1.NPV() - swaption2.NPV()) > 1.0e-6)
                         QAssert.Fail("wrong spread treatment:" +
                                      "\nexercise: " + exerciseDate +
@@ -402,7 +408,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -439,7 +445,7 @@ namespace TestSuite
                          "\nexpected:   " + cachedNPV);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -450,6 +456,7 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
 
          Settlement.Type[] types = { Settlement.Type.Physical, Settlement.Type.Cash };
+         Settlement.Method[] methods = { Settlement.Method.PhysicalOTC, Settlement.Method.ParYieldCurve };
          double[] strikes = { 0.03, 0.04, 0.05, 0.06, 0.07 };
          double[] vols = { 0.01, 0.20, 0.30, 0.70, 0.90 };
          double shift = 1e-8;
@@ -474,14 +481,14 @@ namespace TestSuite
                      {
                         Swaption swaption =
                            vars.makeSwaption(swap, exerciseDate,
-                                             vols[u], types[h]);
+                                             vols[u], types[h], methods[h]);
                         // FLOATING_POINT_EXCEPTION
                         Swaption swaption1 =
                            vars.makeSwaption(swap, exerciseDate,
-                                             vols[u] - shift, types[h]);
+                                             vols[u] - shift, types[h], methods[h]);
                         Swaption swaption2 =
                            vars.makeSwaption(swap, exerciseDate,
-                                             vols[u] + shift, types[h]);
+                                             vols[u] + shift, types[h], methods[h]);
 
                         double swaptionNPV = swaption.NPV();
                         double numericalVegaPerPoint =
@@ -517,7 +524,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -676,7 +683,8 @@ namespace TestSuite
                // Cash settled swaption
                Swaption swaption_c_u360 =
                   vars.makeSwaption(swap_u360, exerciseDate, 0.20,
-                                    Settlement.Type.Cash);
+                                    Settlement.Type.Cash,
+                                    Settlement.Method.ParYieldCurve);
                double value_c_u360 = swaption_c_u360.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_u360 = value_c_u360 / value_p_u360;
@@ -692,7 +700,8 @@ namespace TestSuite
                // Cash settled swaption
                Swaption swaption_c_a365 =
                   vars.makeSwaption(swap_a365, exerciseDate, 0.20,
-                                    Settlement.Type.Cash);
+                                    Settlement.Type.Cash,
+                                    Settlement.Method.ParYieldCurve);
                double value_c_a365 = swaption_c_a365.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_a365 = value_c_a365 / value_p_a365;
@@ -708,7 +717,8 @@ namespace TestSuite
                // Cash settled swaption
                Swaption swaption_c_a360 =
                   vars.makeSwaption(swap_a360, exerciseDate, 0.20,
-                                    Settlement.Type.Cash);
+                                    Settlement.Type.Cash,
+                                    Settlement.Method.ParYieldCurve);
                double value_c_a360 = swaption_c_a360.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_a360 = value_c_a360 / value_p_a360;
@@ -724,7 +734,8 @@ namespace TestSuite
                // Cash settled swaption
                Swaption swaption_c_u365 =
                   vars.makeSwaption(swap_u365, exerciseDate, 0.20,
-                                    Settlement.Type.Cash);
+                                    Settlement.Type.Cash,
+                                    Settlement.Method.ParYieldCurve);
                double value_c_u365 = swaption_c_u365.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_u365 = value_c_u365 / value_p_u365;
@@ -866,7 +877,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -880,6 +891,7 @@ namespace TestSuite
          double tolerance = 1.0e-08;
 
          Settlement.Type[] types = { Settlement.Type.Physical, Settlement.Type.Cash };
+         Settlement.Method[] methods = { Settlement.Method.PhysicalOTC, Settlement.Method.ParYieldCurve };
          // test data
          double[] strikes = { 0.02, 0.03, 0.04, 0.05, 0.06, 0.07 };
          double[] vols = { 0.01, 0.05, 0.10, 0.20, 0.30, 0.70, 0.90 };
@@ -906,7 +918,7 @@ namespace TestSuite
                         for (int u = 0; u < vols.Length; u++)
                         {
                            Swaption swaption = vars.makeSwaption(swap, exerciseDate,
-                                                                 vols[u], types[h],
+                                                                 vols[u], types[h], methods[h],
                                                                  BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.DiscountCurve);
                            // Black price
                            double value = swaption.NPV();

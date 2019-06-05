@@ -243,9 +243,7 @@ namespace QLNet
       }
 
       public override void fetchResults(IPricingEngineResults r)
-      {
-         const double basisPoint = 1.0e-4;
-
+      {         
          base.fetchResults(r);
          VanillaSwap.Results results = r as VanillaSwap.Results;
 
@@ -265,13 +263,13 @@ namespace QLNet
          {
             // calculate it from other results
             if (legBPS_[0] != null)
-               fairRate_ = fixedRate_ - NPV_.GetValueOrDefault() / (legBPS_[0] / basisPoint);
+               fairRate_ = fixedRate_ - NPV_.GetValueOrDefault() / (legBPS_[0] / Const.BASIS_POINT);
          }
          if (fairSpread_ == null)
          {
             // ditto
             if (legBPS_[1] != null)
-               fairSpread_ = spread_ - NPV_.GetValueOrDefault() / (legBPS_[1] / basisPoint);
+               fairSpread_ = spread_ - NPV_.GetValueOrDefault() / (legBPS_[1] / Const.BASIS_POINT);
          }
       }
 

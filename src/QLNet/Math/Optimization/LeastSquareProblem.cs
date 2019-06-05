@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- *
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -17,6 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+using System.Collections.Generic;
 
 namespace QLNet
 {
@@ -74,7 +75,7 @@ namespace QLNet
          return Vector.DirectMultiply(diff, diff);
       }
       //! compute vector of derivatives of the least square function
-      public void gradient(ref Vector grad_f, Vector x)
+      public override void gradient(ref Vector grad_f, Vector x)
       {
          // size of target and function to fit vectors
          Vector target = new Vector(lsp_.size());
@@ -89,7 +90,7 @@ namespace QLNet
          grad_f = -2.0 * (Matrix.transpose(grad_fct2fit) * diff);
       }
       //! compute value and gradient of the least square function
-      public double valueAndGradient(ref Vector grad_f, Vector x)
+      public override double valueAndGradient(ref Vector grad_f, Vector x)
       {
          // size of target and function to fit vectors
          Vector target = new Vector(lsp_.size());

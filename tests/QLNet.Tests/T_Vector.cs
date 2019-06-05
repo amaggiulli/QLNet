@@ -15,7 +15,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -24,7 +24,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Vector
@@ -37,7 +37,7 @@ namespace TestSuite
       /// <summary>
       /// Test vector clone
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -58,7 +58,7 @@ namespace TestSuite
       /// <summary>
       /// Test clone a vector using <c>IClonable</c> interface method.
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -66,7 +66,7 @@ namespace TestSuite
       public void testCloneICloneable()
       {
          Vector vector = new Vector(Data);
-         Vector clone = (Vector)((ICloneable)vector).Clone();
+         Vector clone = (Vector)((QLNet.ICloneable)vector).Clone();
 
          QAssert.AreNotSame(vector, clone);
          QAssert.AreEqual(vector.Count, clone.Count);
@@ -78,7 +78,7 @@ namespace TestSuite
       /// <summary>
       /// Test vectors equality.
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -98,7 +98,7 @@ namespace TestSuite
       /// <summary>
       /// Test Vector hash code.
       /// </summary>
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
