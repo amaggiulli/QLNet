@@ -50,7 +50,7 @@
   branches:
     only:
       - develop
-  version: 1.11.3-preview.{build}
+  version: 1.11.4-preview.{build}
   configuration: Debug
   platform: Any CPU
   image: Visual Studio 2017
@@ -93,7 +93,7 @@
   branches:
     only:
       - /feature/
-  version: 1.11.3-{build}
+  version: 1.11.4-{build}
   configuration: Debug
   platform: Any CPU
   image: Visual Studio 2017
@@ -101,7 +101,7 @@
   clone_folder: c:\projects\qlnet_feature
   init:
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.11.3-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.11.4-%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
   build:
