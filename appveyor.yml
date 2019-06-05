@@ -24,7 +24,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net40\QLNet.dll
+    - path: src\QLNet\bin\Release\net452\QLNet.dll
       name: Windows
     - path: src\qlnet\*.nupkg
       name: ng
