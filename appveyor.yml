@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.11.2
+  version: 1.11.3
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2017
@@ -30,12 +30,12 @@
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.11.2
-    release: QLNet Version 1.11.2
-    description: QLNet 1.11.2 is a bug-fix release for version 1.11
+    tag: QLNet-v1.11.3
+    release: QLNet Version 1.11.3
+    description: QLNet 1.11.3 
     auth_token:
       secure: rK95hgNgZt9ybzXBJ/1W0nbqsG/aENQ22eyY2qxn5xjbi7ZEjv+5BmNjY/l1cAYH
-    artifact: src\QLNet\bin\Release\net40\QLNet.dll
+    artifact: src\QLNet\bin\Release\net452\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
