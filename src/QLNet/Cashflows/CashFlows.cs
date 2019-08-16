@@ -294,12 +294,9 @@ namespace QLNet
                      lastSign = thisSign;
                }
             }
-
-            if (signChanges <= 0)
-            {
-               Utils.QL_FAIL("the given cash flows cannot result in the given market " +
-                             "price due to their sign", QLNetExceptionEnum.InvalidPriceSignException);
-            }
+            Utils.QL_REQUIRE(signChanges > 0, () =>
+                             "the given cash flows cannot result in the given market " +
+                             "price due to their sign",QLNetExceptionEnum.InvalidPriceSignException);
          }
       }
       class ZSpreadFinder : ISolver1d

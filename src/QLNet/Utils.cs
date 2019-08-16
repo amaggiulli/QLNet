@@ -122,6 +122,8 @@ namespace QLNet
                   throw new RootNotBracketException(message.Invoke());
                case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
                   throw new MaxNumberFuncEvalExceeded(message.Invoke());
+               case QLNetExceptionEnum.InvalidPriceSignException:
+                  throw new InvalidPriceSignException(message.Invoke());
             }
       }
 

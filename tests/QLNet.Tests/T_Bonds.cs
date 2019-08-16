@@ -2039,6 +2039,10 @@ namespace TestSuite
          {
             return;
          }
+         catch (InvalidPriceSignException)
+         {
+            return;
+         }
          catch (Exception)
          {
             QAssert.Fail("Failed to handle QLNet exception");
