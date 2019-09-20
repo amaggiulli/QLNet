@@ -463,7 +463,8 @@ namespace QLNet
       public static DateTime WeightedAverageLife(DateTime today, List<double> amounts, List<DateTime> schedule)
       {
          Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
-         double totAmount = amounts.Sum();
+
+         double totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
 
          if (totAmount.IsEqual(0))
             return today;
@@ -473,6 +474,8 @@ namespace QLNet
 
          for (int x = 0; x < amounts.Count; x++)
          {
+            if (schedule[x] <= today)
+               continue;
             double per = amounts[x] / totAmount;
             double years = dc.yearFraction(today, schedule[x]);
             double yearw = years * per;
@@ -480,7 +483,6 @@ namespace QLNet
          }
 
          return today.AddDays(wal * 365).Date;
-
       }
 
       #endregion

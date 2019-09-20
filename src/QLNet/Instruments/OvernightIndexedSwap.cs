@@ -166,7 +166,7 @@ namespace QLNet
       }
 
       public double? fairSpread()
-      {      
+      {
          calculate();
          return spread_ - NPV_ / (overnightLegBPS() / Const.BASIS_POINT);
       }

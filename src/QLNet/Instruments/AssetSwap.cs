@@ -297,7 +297,7 @@ namespace QLNet
 
       // results
       public double fairSpread()
-      {         
+      {
          calculate();
          if (fairSpread_ != null)
          {

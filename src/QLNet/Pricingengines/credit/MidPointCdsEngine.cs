@@ -20,7 +20,7 @@
 namespace QLNet
 {
    public class MidPointCdsEngine : CreditDefaultSwap.Engine
-   {      
+   {
       public MidPointCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
                                double recoveryRate,
                                Handle<YieldTermStructure> discountCurve,

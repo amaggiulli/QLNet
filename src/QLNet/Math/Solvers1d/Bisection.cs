@@ -60,7 +60,7 @@ namespace QLNet
             }
          }
          Utils.QL_FAIL("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded",
-            QLNetExceptionEnum.MaxNumberFuncEvalExceeded);
+                       QLNetExceptionEnum.MaxNumberFuncEvalExceeded);
          return 0;
       }
    }

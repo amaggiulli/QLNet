@@ -243,7 +243,7 @@ namespace QLNet
       }
 
       public override void fetchResults(IPricingEngineResults r)
-      {         
+      {
          base.fetchResults(r);
          VanillaSwap.Results results = r as VanillaSwap.Results;
 

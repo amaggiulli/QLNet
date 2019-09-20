@@ -892,7 +892,7 @@ namespace QLNet
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");
          // we didn't register as observers - force calculation
          swap_.recalculate();                // it is from lazy objects
-         // weak implementation... to be improved         
+         // weak implementation... to be improved
          double floatingLegNPV = swap_.floatingLegNPV();
          double spread = this.spread();
          double spreadNPV = swap_.floatingLegBPS() / Const.BASIS_POINT * spread;

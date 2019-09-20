@@ -38,7 +38,7 @@ namespace QLNet
              w.r.t. Schedules etc.
    */
    public class YearOnYearInflationSwap : Swap
-   {      
+   {
       public enum Type { Receiver = -1, Payer = 1 }
       public YearOnYearInflationSwap(
          Type type,

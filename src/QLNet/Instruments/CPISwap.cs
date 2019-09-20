@@ -258,7 +258,7 @@ namespace QLNet
 
       // other
       public override void fetchResults(IPricingEngineResults r)
-      {         
+      {
          // copy from VanillaSwap
          // works because similarly simple instrument
          // that we always expect to be priced with a swap engine

@@ -396,7 +396,7 @@ namespace QLNet
          else
          {
             results_.fairUpfront = null;
-         }         
+         }
 
          if (arguments_.spread.IsNotEqual(0.0))
          {

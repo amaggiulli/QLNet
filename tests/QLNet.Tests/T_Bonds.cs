@@ -1346,6 +1346,14 @@ namespace TestSuite
 
          DateTime wal = BondFunctions.WeightedAverageLife(today, amounts, schedule);
          QAssert.IsTrue(wal == new DateTime(2036, 08, 25));
+
+         // Test with past dates
+         today = new Date(19, Month.Sep, 2019);
+         amounts = new List<double> { 1180000, 1250000, 1320000, 1395000 };
+         schedule = new List<DateTime> { new Date(1, 10, 2016), new Date(1, 10, 2017), new Date(1, 10, 2018), new Date(1, 10, 2019)};
+
+         wal = BondFunctions.WeightedAverageLife(today, amounts, schedule);
+         QAssert.IsTrue(wal == new DateTime(2019, 10, 1));
       }
 
       public enum CouponType

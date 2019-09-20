@@ -20,7 +20,7 @@
 namespace QLNet
 {
    public class IntegralCdsEngine : CreditDefaultSwap.Engine
-   {      
+   {
       public IntegralCdsEngine(Period step, Handle<DefaultProbabilityTermStructure> probability,
                                double recoveryRate, Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null)
       {

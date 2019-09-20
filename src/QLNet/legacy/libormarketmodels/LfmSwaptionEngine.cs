@@ -41,7 +41,7 @@ namespace QLNet
       public override void calculate()
       {
          Utils.QL_REQUIRE(arguments_.settlementMethod != Settlement.Method.ParYieldCurve, () =>
-                          "cash-settled (ParYieldCurve) swaptions not priced with Lfm engine");         
+                          "cash-settled (ParYieldCurve) swaptions not priced with Lfm engine");
 
          VanillaSwap swap = arguments_.swap;
          IPricingEngine pe = new DiscountingSwapEngine(discountCurve_);
