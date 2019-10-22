@@ -325,7 +325,7 @@ namespace QLNet
 
       public override int GetHashCode()
       {
-         return 0;
+         return date.GetHashCode();
       }
 
       // IComparable interface
