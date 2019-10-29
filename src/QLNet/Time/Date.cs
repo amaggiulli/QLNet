@@ -25,7 +25,7 @@ namespace QLNet
 {
    public class Date : IComparable
    {
-      private DateTime date;
+      private readonly DateTime date;
 
       //! Default constructor returning a null date.
       public Date()
