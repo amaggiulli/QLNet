@@ -2043,6 +2043,10 @@ namespace TestSuite
          {
             return;
          }
+         catch (NullEffectiveDateException)
+         {
+            return;
+         }
          catch (RootNotBracketException)
          {
             return;

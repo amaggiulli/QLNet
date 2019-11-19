@@ -124,6 +124,8 @@ namespace QLNet
                   throw new MaxNumberFuncEvalExceeded(message.Invoke());
                case QLNetExceptionEnum.InvalidPriceSignException:
                   throw new InvalidPriceSignException(message.Invoke());
+               case QLNetExceptionEnum.NullEffectiveDate:
+                  throw new NullEffectiveDateException(message.Invoke());
             }
       }
 
@@ -141,6 +143,8 @@ namespace QLNet
                throw new MaxNumberFuncEvalExceeded(message);
             case QLNetExceptionEnum.InvalidPriceSignException:
                throw new InvalidPriceSignException(message);
+            case QLNetExceptionEnum.NullEffectiveDate:
+               throw new NullEffectiveDateException(message);
          }
       }
 
