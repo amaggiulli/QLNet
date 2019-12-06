@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -219,11 +215,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEuropeanValues()
       {
          // Testing dividend European option values with no dividends...
@@ -388,11 +380,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEuropeanStartLimit()
       {
          // Testing dividend European option with a dividend on today's date...
@@ -488,11 +476,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEuropeanGreeks()
       {
          // Testing dividend European option greeks...
@@ -648,11 +632,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdEuropeanValues()
       {
          // Testing finite-difference dividend European option values...
@@ -758,11 +738,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdEuropeanGreeks()
       {
          // Testing finite-differences dividend European option greeks...
@@ -781,11 +757,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdAmericanGreeks()
       {
          // Testing finite-differences dividend American option greeks...
@@ -804,11 +776,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdEuropeanDegenerate()
       {
          // Testing degenerate finite-differences dividend European option...
@@ -824,11 +792,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdAmericanDegenerate()
       {
          // Testing degenerate finite-differences dividend American option...

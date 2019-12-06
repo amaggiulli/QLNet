@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -155,11 +151,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testVega()
       {
          CommonVars vars = new CommonVars();
@@ -215,11 +207,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testStrikeDependency()
       {
 
@@ -279,11 +267,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testConsistency()
       {
          CommonVars vars = new CommonVars();
@@ -331,11 +315,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testParity()
       {
          CommonVars vars = new CommonVars();
@@ -383,11 +363,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testATMRate()
       {
          CommonVars vars = new CommonVars();
@@ -449,11 +425,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testImpliedVolatility()
       {
          CommonVars vars = new CommonVars();
@@ -548,11 +520,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCachedValue()
       {
          CommonVars vars = new CommonVars();

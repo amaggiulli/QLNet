@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -31,11 +27,7 @@ namespace TestSuite
 #endif
    public class T_BlackFormula
    {
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBachelierImpliedVol()
       {
          // Testing Bachelier implied vol...
@@ -62,11 +54,7 @@ namespace TestSuite
          return;
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testChambersImpliedVol()
       {
          // Testing Chambers-Nawalkha implied vol approximation

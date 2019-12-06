@@ -15,11 +15,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 using Calendar = QLNet.Calendar;
 
@@ -59,11 +55,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEventSetForWholeYears()
       {
          // Testing that catastrophe events are split correctly for periods of whole years
@@ -97,11 +89,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEventSetForIrregularPeriods()
       {
          // Testing that catastrophe events are split correctly for irregular periods
@@ -126,11 +114,7 @@ namespace TestSuite
          QAssert.Require(!simulation.nextPath(path));
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEventSetForNoEvents()
       {
          // Testing that catastrophe events are split correctly when there are no simulated events
@@ -152,11 +136,7 @@ namespace TestSuite
          QAssert.Require(!simulation.nextPath(path));
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testRiskFreeAgainstFloatingRateBond()
       {
          // Testing floating-rate cat bond against risk-free floating-rate bond
@@ -330,11 +310,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCatBondInDoomScenario()
       {
          // Testing floating-rate cat bond in a doom scenario (certain default)
@@ -396,11 +372,7 @@ namespace TestSuite
          QAssert.AreEqual(1.0, expectedLoss, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCatBondWithDoomOnceInTenYears()
       {
          // Testing floating-rate cat bond in a doom once in 10 years scenario
@@ -478,11 +450,7 @@ namespace TestSuite
          QAssert.IsTrue(riskFreeYield < yield);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCatBondWithDoomOnceInTenYearsProportional()
       {
          // Testing floating-rate cat bond in a doom once in 10 years scenario with proportional notional reduction

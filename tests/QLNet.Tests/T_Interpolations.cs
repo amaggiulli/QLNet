@@ -20,11 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -40,11 +36,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSplineErrorOnGaussianValues()
       {
          //("Testing spline approximation on Gaussian data sets...");
@@ -109,11 +101,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSplineOnGaussianValues()
       {
 
@@ -185,11 +173,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSplineOnRPN15AValues()
       {
 
@@ -336,11 +320,7 @@ namespace TestSuite
          Applied Linear Algebra and Numerical Analysis AMATH 352 Lecture Notes
          http://www.amath.washington.edu/courses/352-winter-2002/spline_note.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSplineOnGenericValues()
       {
 
@@ -415,11 +395,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSimmetricEndConditions()
       {
 
@@ -452,11 +428,7 @@ namespace TestSuite
          checkSymmetry("MC not-a-knot spline", f, x[0]);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDerivativeEndConditions()
       {
 
@@ -554,11 +526,7 @@ namespace TestSuite
          Hermite Interpolation"
          Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
       */
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testNonRestrictiveHymanFilter()
       {
 
@@ -731,11 +699,7 @@ namespace TestSuite
 
       class NotThrown : Exception { }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testAsFunctor()
       {
 
@@ -788,11 +752,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBackwardFlat()
       {
 
@@ -902,11 +862,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testForwardFlat()
       {
 
@@ -1015,11 +971,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSabrInterpolation()
       {
          // Testing Sabr interpolation...
@@ -1190,11 +1142,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testNormalSabrInterpolation()
       {
          // Testing Sabr interpolation...
@@ -1366,11 +1314,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testKernelInterpolation()
       {
 
@@ -1497,11 +1441,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testKernelInterpolation2D()
       {
          // No test values known from the literature.
@@ -1629,11 +1569,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBicubicDerivatives()
       {
          // Testing bicubic spline derivatives...
@@ -1686,11 +1622,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBicubicUpdate()
       {
          // Testing that bicubic splines actually update...
@@ -1719,11 +1651,7 @@ namespace TestSuite
             QAssert.Fail("Failed to update bicubic spline");
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testRichardsonExtrapolation()
       {
          // Testing Richardson extrapolation...
@@ -1772,11 +1700,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSabrSingleCases()
       {
          // Testing Sabr calibration single cases...

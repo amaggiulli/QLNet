@@ -44,7 +44,7 @@ namespace QLNet
 
    public abstract class Solver1D
    {
-      const int MAX_FUNCTION_EVALUATIONS = 100;
+      const int MAX_FUNCTION_EVALUATIONS = 250;
 
       protected double root_, xMin_, xMax_, fxMin_, fxMax_;
       protected int maxEvaluations_ = MAX_FUNCTION_EVALUATIONS;

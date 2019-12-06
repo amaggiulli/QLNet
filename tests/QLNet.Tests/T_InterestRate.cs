@@ -18,11 +18,7 @@
 */
 
 using System;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -58,11 +54,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testConversions()
       {
          InterestRateData[] cases =

@@ -57,7 +57,7 @@ namespace QLNet
          public BusinessDayConvention fixConvention { get; set; }
          public BusinessDayConvention payConvention { get; set; }
          public double strike { get; set; }
-         public Handle<ZeroInflationIndex> infIndex { get; set; }
+         public Handle<ZeroIndex> infIndex { get; set; }
          public Period observationLag { get; set; }
          public InterpolationType observationInterpolation { get; set; }
 
@@ -84,7 +84,7 @@ namespace QLNet
                          Calendar payCalendar,
                          BusinessDayConvention payConvention,
                          double strike,
-                         Handle<ZeroInflationIndex> infIndex,
+                         Handle<ZeroIndex> infIndex,
                          Period observationLag,
                          InterpolationType observationInterpolation = InterpolationType.AsIndex)
       {
@@ -131,7 +131,7 @@ namespace QLNet
       //! when you fix - but remember that there is an observation interpolation factor as well
       public Date fixingDate() { return fixCalendar_.adjust(maturity_ - observationLag_, fixConvention_); }
       public Date payDate() { return payCalendar_.adjust(maturity_, payConvention_); }
-      public Handle<ZeroInflationIndex> inflationIndex() { return infIndex_; }
+      public Handle<ZeroIndex> inflationIndex() { return infIndex_; }
       public Period observationLag() { return observationLag_; }
 
       // Instrument interface
@@ -171,7 +171,7 @@ namespace QLNet
       protected Calendar payCalendar_;
       protected BusinessDayConvention payConvention_;
       protected double strike_;
-      protected Handle<ZeroInflationIndex> infIndex_;
+      protected Handle<ZeroIndex> infIndex_;
       protected Period observationLag_;
       protected InterpolationType observationInterpolation_;
    }

@@ -18,11 +18,7 @@
 */
 
 using System;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -63,56 +59,32 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBrent()
       {
          test(new Brent(), "Brent");
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testNewton()
       {
          test(new Newton(), "Newton");
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFalsePosition()
       {
          test(new FalsePosition(), "FalsePosition");
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBisection()
       {
          test(new Bisection(), "Bisection");
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testRidder()
       {
          test(new Ridder(), "Ridder");
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSecant()
       {
          test(new Secant(), "Secant");

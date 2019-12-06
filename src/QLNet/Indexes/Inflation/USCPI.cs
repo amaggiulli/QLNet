@@ -20,7 +20,7 @@
 namespace QLNet
 {
    //! US CPI index
-   public class USCPI : ZeroInflationIndex
+   public class USCPI : ZeroIndex
    {
       public USCPI(bool interpolated)
          : this(interpolated, new Handle<ZeroInflationTermStructure>()) {}

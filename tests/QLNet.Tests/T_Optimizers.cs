@@ -19,11 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -63,11 +59,7 @@ namespace TestSuite
          bfgs_goldstein
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void OptimizersTest()
       {
          //("Testing optimizers...");
@@ -118,11 +110,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void nestedOptimizationTest()
       {
          //("Testing nested optimizations...");
@@ -138,11 +126,7 @@ namespace TestSuite
          optimizationMethod.minimize(problem, endCriteria);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDifferentialEvolution()
       {
          //BOOST_TEST_MESSAGE("Testing differential evolution...");

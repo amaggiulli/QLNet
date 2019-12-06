@@ -20,11 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -34,11 +30,7 @@ namespace TestSuite
 #endif
    public class T_Dates
    {
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testECBDates()
       {
          // Testing ECB dates
@@ -90,11 +82,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testIMMDates()
       {
          // ("Testing IMM dates...");
@@ -166,11 +154,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testConsistency()
       {
          //("Testing dates...");
@@ -274,11 +258,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testASXDates()
       {
          //Testing ASX dates...");
@@ -345,11 +325,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testIntraday()
       {
          // Testing intraday information of dates

@@ -19,11 +19,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -283,11 +279,7 @@ namespace TestSuite
                                                                                        CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLogLinearDiscountConsistency()
       {
          // "Testing consistency of piecewise-log-linear discount curve...");
@@ -298,11 +290,7 @@ namespace TestSuite
          testBMACurveConsistency<Discount, LogLinear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLinearDiscountConsistency()
       {
          // "Testing consistency of piecewise-linear discount curve..."
@@ -312,11 +300,7 @@ namespace TestSuite
          testCurveConsistency<Discount, Linear, IterativeBootstrapForYield>(vars);
          testBMACurveConsistency<Discount, Linear, IterativeBootstrapForYield>(vars);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLogLinearZeroConsistency()
       {
          // "Testing consistency of piecewise-log-linear zero-yield curve...");
@@ -333,11 +317,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLinearZeroConsistency()
       {
          // "Testing consistency of piecewise-linear zero-yield curve...");
@@ -348,11 +328,7 @@ namespace TestSuite
          testBMACurveConsistency<ZeroYield, Linear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSplineZeroConsistency()
       {
 
@@ -372,11 +348,7 @@ namespace TestSuite
                       CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLinearForwardConsistency()
       {
          // "Testing consistency of piecewise-linear forward-rate curve...");
@@ -387,11 +359,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, Linear, IterativeBootstrapForYield>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFlatForwardConsistency()
       {
 
@@ -423,11 +391,7 @@ namespace TestSuite
                       CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0));
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testConvexMonotoneForwardConsistency()
       {
          //"Testing consistency of convex monotone forward-rate curve...");
@@ -438,11 +402,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, ConvexMonotone, IterativeBootstrapForYield>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLocalBootstrapConsistency()
       {
          //"Testing consistency of local-bootstrap algorithm...");
@@ -452,11 +412,7 @@ namespace TestSuite
          testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-9);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testObservability()
       {
          // "Testing observability of piecewise yield curve...");
@@ -488,11 +444,7 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of date change");
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLiborFixing()
       {
 
@@ -579,11 +531,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testForwardRateDayCounter()
       {
 
@@ -604,11 +552,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testJpyLibor()
       {
          //"Testing bootstrap over JPY LIBOR swaps...");
@@ -683,11 +627,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDiscountCopy()
       {
          //BOOST_MESSAGE("Testing copying of discount curve...");
@@ -696,11 +636,7 @@ namespace TestSuite
          testCurveCopy<Discount, LogLinear>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testForwardCopy()
       {
          //BOOST_MESSAGE("Testing copying of forward-rate curve...");
@@ -709,11 +645,7 @@ namespace TestSuite
          testCurveCopy<ForwardRate, BackwardFlat>(vars);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testZeroCopy()
       {
          //BOOST_MESSAGE("Testing copying of zero-rate curve...");

@@ -20,11 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -133,11 +129,9 @@ namespace TestSuite
          return process;
       }
 
-#if NET452
+
       [TestCategory("LongRun"), TestMethod()]
-#else
-      [Fact(Skip = "LongRun")]
-#endif
+
       public void testInitialisation()
       {
          // Testing caplet LMM process initialisation
@@ -182,11 +176,9 @@ namespace TestSuite
          }
       }
 
-#if NET452
+
       [TestCategory("LongRun"), TestMethod()]
-#else
-      [Fact(Skip = "LongRun")]
-#endif
+
       public void testLambdaBootstrapping()
       {
          // Testing caplet LMM lambda bootstrapping
@@ -236,11 +228,9 @@ namespace TestSuite
          }
       }
 
-#if NET452
+
       [TestCategory("LongRun"), TestMethod()]
-#else
-      [Fact(Skip = "LongRun")]
-#endif
+
       public void testMonteCarloCapletPricing()
       {
          // Testing caplet LMM Monte-Carlo caplet pricing

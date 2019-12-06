@@ -21,18 +21,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
+
    [TestClass()]
-#endif
    public class T_AsianOptions
    {
       public void REPORT_FAILURE(string greekName, Average.Type averageType,
@@ -79,11 +74,8 @@ namespace TestSuite
          return String.Empty;
       }
 
-#if NET452
+
       [TestMethod()]
-#else
-      [Fact]
-#endif
       public void testAnalyticContinuousGeometricAveragePrice()
       {
          // Testing analytic continuous geometric average-price Asians
@@ -162,11 +154,8 @@ namespace TestSuite
 
       }
 
-#if NET452
+
       [TestMethod()]
-#else
-      [Fact]
-#endif
       public void testAnalyticContinuousGeometricAveragePriceGreeks()
       {
          // Testing analytic continuous geometric average-price Asian greeks
@@ -327,11 +316,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
       [TestMethod()]
-#else
-      [Fact]
-#endif
       public void testAnalyticDiscreteGeometricAveragePrice()
       {
          // Testing analytic discrete geometric average-price Asians
@@ -390,11 +375,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
       [TestMethod()]
-#else
-      [Fact]
-#endif
       public void testAnalyticDiscreteGeometricAverageStrike()
       {
          // Testing analytic discrete geometric average-strike Asians
@@ -522,11 +503,8 @@ namespace TestSuite
          }
       }
 
-#if NET452
       [TestMethod()]
-#else
-      [Fact]
-#endif
+
       public void testAnalyticDiscreteGeometricAveragePriceGreeks()
       {
          // Testing discrete-averaging geometric Asian greeks

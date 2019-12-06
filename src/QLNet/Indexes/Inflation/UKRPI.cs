@@ -20,7 +20,7 @@
 namespace QLNet
 {
    //! UK Retail Price Inflation Index
-   public class UKRPI : ZeroInflationIndex
+   public class UKRPI : ZeroIndex
    {
       public UKRPI(bool interpolated)
          : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }

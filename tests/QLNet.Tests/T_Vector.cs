@@ -15,11 +15,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -37,11 +33,7 @@ namespace TestSuite
       /// <summary>
       /// Test vector clone
       /// </summary>
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testClone()
       {
          Vector vector = new Vector(Data);
@@ -58,11 +50,7 @@ namespace TestSuite
       /// <summary>
       /// Test clone a vector using <c>IClonable</c> interface method.
       /// </summary>
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCloneICloneable()
       {
          Vector vector = new Vector(Data);
@@ -78,11 +66,7 @@ namespace TestSuite
       /// <summary>
       /// Test vectors equality.
       /// </summary>
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEquals()
       {
          Vector vector1 = new Vector(Data);
@@ -98,11 +82,7 @@ namespace TestSuite
       /// <summary>
       /// Test Vector hash code.
       /// </summary>
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testHashCode()
       {
          Vector vector = new Vector(Data);

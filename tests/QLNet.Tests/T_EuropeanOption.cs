@@ -18,11 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -67,11 +63,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testJRBinomialEngines()
       {
          // Testing JR binomial European engines against analytic results
@@ -85,11 +77,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCRRBinomialEngines()
       {
          // Testing CRR binomial European engines against analytic results
@@ -103,11 +91,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEQPBinomialEngines()
       {
          // Testing EQP binomial European engines against analytic results
@@ -121,11 +105,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testTGEOBinomialEngines()
       {
          // Testing TGEO binomial European engines " against analytic results
@@ -139,11 +119,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testTIANBinomialEngines()
       {
          // Testing TIAN binomial European engines against analytic results
@@ -157,11 +133,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testLRBinomialEngines()
       {
          // Testing LR binomial European engines against analytic results
@@ -175,11 +147,7 @@ namespace TestSuite
          relativeTol.Add("theta", 0.03);
          testEngineConsistency(engine, steps, samples, relativeTol, true);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testJOSHIBinomialEngines()
       {
          // Testing Joshi binomial European engines against analytic results
@@ -195,11 +163,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFdEngines()
       {
 

@@ -32,7 +32,7 @@ namespace QLNet
          Calendar calendar,   // index may have null calendar as valid on every day
          BusinessDayConvention paymentConvention,
          DayCounter dayCounter,
-         ZeroInflationIndex zii)
+         ZeroIndex zii)
          : base(quote)
       {
          swapObsLag_ = swapObsLag;
@@ -94,7 +94,7 @@ namespace QLNet
          // felt via the effect on the inflation index
          Handle<ZeroInflationTermStructure> zits = new Handle<ZeroInflationTermStructure>(z, own);
 
-         ZeroInflationIndex new_zii = zii_.clone(zits);
+         ZeroIndex new_zii = zii_.clone(zits);
 
          double nominal = 1000000.0;   // has to be something but doesn't matter what
          Date start = z.nominalTermStructure().link.referenceDate();
@@ -123,7 +123,7 @@ namespace QLNet
       protected Calendar calendar_;
       protected BusinessDayConvention paymentConvention_;
       protected DayCounter dayCounter_;
-      protected ZeroInflationIndex zii_;
+      protected ZeroIndex zii_;
       protected ZeroCouponInflationSwap zciis_;
    }
 

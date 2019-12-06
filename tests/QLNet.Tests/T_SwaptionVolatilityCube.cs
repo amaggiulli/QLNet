@@ -15,11 +15,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -122,11 +118,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testAtmVols()
       {
          // Testing swaption volatility cube (atm vols)
@@ -146,11 +138,7 @@ namespace TestSuite
          vars.makeAtmVolTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSmile()
       {
          // Testing swaption volatility cube (smile)
@@ -169,11 +157,7 @@ namespace TestSuite
          vars.makeVolSpreadsTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSabrVols()
       {
          // Testing swaption volatility cube (sabr interpolation)
@@ -202,11 +186,7 @@ namespace TestSuite
          vars.makeVolSpreadsTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSpreadedCube()
       {
 
@@ -290,11 +270,7 @@ namespace TestSuite
             QAssert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testObservability()
       {
          // Testing volatility cube observability

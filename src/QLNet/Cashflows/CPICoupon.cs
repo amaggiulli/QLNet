@@ -101,7 +101,7 @@ namespace QLNet
                        Date startDate,
                        Date endDate,
                        int fixingDays,
-                       ZeroInflationIndex index,
+                       ZeroIndex index,
                        Period observationLag,
                        InterpolationType observationInterpolation,
                        DayCounter dayCounter,
@@ -142,7 +142,7 @@ namespace QLNet
       //! utility method, calls indexFixing
       public double indexObservation(Date onDate) { return indexFixing(onDate); }
       //! index used
-      public ZeroInflationIndex cpiIndex() { return index() as ZeroInflationIndex; }
+      public ZeroIndex cpiIndex() { return index() as ZeroIndex; }
    }
 
    //! Cash flow paying the performance of a CPI (zero inflation) index
@@ -150,7 +150,7 @@ namespace QLNet
    public class CPICashFlow : IndexedCashFlow
    {
       public CPICashFlow(double notional,
-                         ZeroInflationIndex index,
+                         ZeroIndex index,
                          Date baseDate,
                          double baseFixing,
                          Date fixingDate,
@@ -241,7 +241,7 @@ namespace QLNet
    public class CPILeg : CPILegBase
    {
       public CPILeg(Schedule schedule,
-                    ZeroInflationIndex index,
+                    ZeroIndex index,
                     double baseCPI,
                     Period observationLag)
       {

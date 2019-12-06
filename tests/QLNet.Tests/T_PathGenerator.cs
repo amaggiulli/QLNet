@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -191,11 +187,8 @@ namespace TestSuite
          }
       }
 
-#if NET452
+
       [TestCategory("LongRun"), TestMethod()]
-#else
-      [Fact(Skip = "LongRun")]
-#endif
       public void testPathGenerator()
       {
          // Testing 1-D path generation against cached values
@@ -225,11 +218,7 @@ namespace TestSuite
                     "square-root", false, 1.70608664108, 6.024200546031);
       }
 
-#if NET452
       [TestCategory("LongRun"), TestMethod()]
-#else
-      [Fact(Skip = "LongRun")]
-#endif
       public void testMultiPathGenerator()
       {
          // Testing n-D path generation against cached values

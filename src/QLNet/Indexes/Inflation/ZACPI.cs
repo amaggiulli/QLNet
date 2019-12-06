@@ -20,7 +20,7 @@
 namespace QLNet
 {
    //! South African CPI index
-   public class ZACPI : ZeroInflationIndex
+   public class ZACPI : ZeroIndex
    {
       public ZACPI(bool interpolated)
          : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }

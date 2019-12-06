@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -31,11 +27,7 @@ namespace TestSuite
 #endif
    public class T_Money
    {
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testNone()
       {
          Currency EUR = new EURCurrency();
@@ -54,11 +46,7 @@ namespace TestSuite
             QAssert.Fail("Wrong result: expected: " + expected + " calculated: " + calculated);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBaseCurrency()
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();
@@ -91,11 +79,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testAutomated()
       {
          Currency EUR = new EURCurrency(), GBP = new GBPCurrency(), USD = new USDCurrency();

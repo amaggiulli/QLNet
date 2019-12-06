@@ -120,7 +120,7 @@ namespace QLNet
                            bool growthOnly,
                            double baseCPI,
                            Period observationLag,
-                           ZeroInflationIndex cpiIndex,
+                           ZeroIndex cpiIndex,
                            InterpolationType observationInterpolation,
                            Schedule schedule,
                            List<double> fixedRate,
@@ -140,6 +140,11 @@ namespace QLNet
                                    exCouponConvention, exCouponEndOfMonth), useCleanPrice)
       {
          cpiBond_ = bond_ as CPIBond;
+      }
+
+      public void SetCPIIndex(ZeroIndex index)
+      {
+         cpiBond_.CpiIndex = index;
       }
 
       public CPIBond cpiBond() { return cpiBond_; }

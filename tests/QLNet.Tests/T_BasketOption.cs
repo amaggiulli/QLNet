@@ -18,19 +18,14 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 
 namespace TestSuite
 {
-#if NET452
+
    [TestClass()]
-#endif
    public class T_BasketOption
    {
       public enum BasketType { MinBasket, MaxBasket, SpreadBasket }
@@ -125,11 +120,9 @@ namespace TestSuite
 
       }
 
-#if NET452
+
       [TestMethod()]
-#else
-      [Fact]
-#endif
+
       public void testEuroTwoValues()
       {
          // Testing two-asset European basket options...

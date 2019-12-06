@@ -20,11 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -339,11 +335,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSwaptionVolMatrixCoherence()
       {
          // Testing swaption volatility matrix
@@ -399,11 +391,7 @@ namespace TestSuite
          vars.makeCoherenceTest(description, vol);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSwaptionVolMatrixObservability()
       {
          // Testing swaption volatility matrix observability

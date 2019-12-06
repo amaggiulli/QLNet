@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -33,11 +29,7 @@ namespace TestSuite
    {
       public const double average = 0.0, sigma = 1.0;
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testOperatorConsistency()
       {
 
@@ -97,11 +89,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBSMOperatorConsistency()
       {
          //("Testing consistency of BSM operators...");

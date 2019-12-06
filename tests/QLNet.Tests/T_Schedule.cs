@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -48,11 +44,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDailySchedule()
       {
          // Testing schedule with daily frequency
@@ -78,11 +70,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testEndDateWithEomAdjustment()
       {
          // Testing end date for schedule with end-of-month adjustment
@@ -124,11 +112,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDatesPastEndDateWithEomAdjustment()
       {
 
@@ -151,11 +135,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDatesSameAsEndDateWithEomAdjustment()
       {
          // Testing that next-to-last date same as end date is removed...
@@ -185,11 +165,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testForwardDatesWithEomAdjustment()
       {
          // Testing that the last date is not adjusted for EOM when termination date convention is unadjusted
@@ -212,11 +188,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBackwardDatesWithEomAdjustment()
       {
          // Testing that the first date is not adjusted for EOM going backward when termination date convention is unadjusted
@@ -239,11 +211,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDoubleFirstDateWithEomAdjustment()
       {
          // Testing that the first date is not duplicated due to EOM convention when going backwards
@@ -265,11 +233,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCDS2015Convention()
       {
          // Testing CDS2015 semi-annual rolling convention
@@ -307,11 +271,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testDateConstructor()
       {
          // Testing the constructor taking a vector of dates and possibly additional meta information

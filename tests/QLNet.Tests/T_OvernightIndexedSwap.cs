@@ -18,11 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -239,11 +235,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFairRate()
       {
          // Testing Eonia-swap calculation of fair fixed rate...
@@ -275,11 +267,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFairSpread()
       {
          // Testing Eonia-swap calculation of fair floating spread...
@@ -313,11 +301,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCachedValue()
       {
          // Testing Eonia-swap calculation against cached value...
@@ -339,11 +323,7 @@ namespace TestSuite
                          "\n tolerance:" + tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testBootstrap()
       {
          // Testing Eonia-swap curve building...

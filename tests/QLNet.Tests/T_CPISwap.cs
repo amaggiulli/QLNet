@@ -15,18 +15,14 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
+
    [TestClass()]
-#endif
+
    public class T_CPISwap
    {
       internal struct Datum
@@ -44,7 +40,7 @@ namespace TestSuite
       private class CommonVars
       {
          private List<BootstrapHelper<ZeroInflationTermStructure>> makeHelpers(Datum[] iiData, int N,
-                                                                               ZeroInflationIndex ii, Period observationLag,
+                                                                               ZeroIndex ii, Period observationLag,
                                                                                Calendar calendar,
                                                                                BusinessDayConvention bdc,
                                                                                DayCounter dc)
@@ -80,7 +76,7 @@ namespace TestSuite
          public List<Date> zciisD;
          public List<double> zciisR;
          public UKRPI ii;
-         public RelinkableHandle<ZeroInflationIndex> hii;
+         public RelinkableHandle<ZeroIndex> hii;
          public int zciisDataLength;
 
          public RelinkableHandle<YieldTermStructure> nominalUK;
@@ -103,7 +99,7 @@ namespace TestSuite
             hcpi = new RelinkableHandle<ZeroInflationTermStructure>();
             zciisD = new List<Date>();
             zciisR = new List<double>();
-            hii = new RelinkableHandle<ZeroInflationIndex>();
+            hii = new RelinkableHandle<ZeroIndex>();
 
             nominals = new InitializedList<double>(1, 1000000);
             // option variables
@@ -246,11 +242,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void consistency()
       {
          // check inflation leg vs calculation directly from inflation TS
@@ -273,7 +265,7 @@ namespace TestSuite
          DayCounter fixedDayCount = new Actual365Fixed();
          BusinessDayConvention fixedPaymentConvention = BusinessDayConvention.ModifiedFollowing;
          Calendar fixedPaymentCalendar = new UnitedKingdom();
-         ZeroInflationIndex fixedIndex = common.ii;
+         ZeroIndex fixedIndex = common.ii;
          Period contractObservationLag = common.contractObservationLag;
          InterpolationType observationInterpolation = common.contractObservationInterpolation;
 
@@ -361,11 +353,7 @@ namespace TestSuite
          common.hcpi.linkTo(null);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void zciisconsistency()
       {
          CommonVars common = new CommonVars();
@@ -422,11 +410,7 @@ namespace TestSuite
          common.hcpi.linkTo(null);
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void cpibondconsistency()
       {
          CommonVars common = new CommonVars();
@@ -449,7 +433,7 @@ namespace TestSuite
          DayCounter fixedDayCount = new Actual365Fixed();
          BusinessDayConvention fixedPaymentConvention = BusinessDayConvention.ModifiedFollowing;
          Calendar fixedPaymentCalendar = new UnitedKingdom();
-         ZeroInflationIndex fixedIndex = common.ii;
+         ZeroIndex fixedIndex = common.ii;
          Period contractObservationLag = common.contractObservationLag;
          InterpolationType observationInterpolation = common.contractObservationInterpolation;
 

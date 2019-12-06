@@ -20,7 +20,7 @@
 namespace QLNet
 {
    //! EU HICP index
-   public class EUHICP : ZeroInflationIndex
+   public class EUHICP : ZeroIndex
    {
       public EUHICP(bool interpolated)
          : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }

@@ -68,6 +68,36 @@ namespace QLNet
    */
    public class FittedBondDiscountCurve : YieldTermStructure
    {
+      /// <summary>
+      /// Holds the errors from the fit
+      /// </summary>
+      private double[] _errors;
+
+      /// <summary>
+      /// Holds the predicted values from the model
+      /// </summary>
+      private double[] _modelPrediction;
+
+      /// <summary>
+      /// The value of the fit objective function
+      /// </summary>
+      private double _cost;
+
+      /// <summary>
+      /// The model predictiosn for the bond prices from the fitted curve
+      /// </summary>
+      public double[] ModelPrediction { get { return _modelPrediction; } }
+
+      /// <summary>
+      /// Gets the errors for each bond from the fitting process
+      /// </summary>
+      public double[] Errors { get { return _errors; } }
+
+      /// <summary>
+      /// The overall cost value from the fitting process
+      /// </summary>
+      public double Cost { get { return _cost; } }
+
       // Constructors
       //! reference date based on current evaluation date
       public FittedBondDiscountCurve(int settlementDays,
@@ -280,6 +310,78 @@ namespace QLNet
                return values;
             }
 
+            public Vector BondPrices(Vector x)
+            {
+               Date refDate = fittingMethod_.curve_.referenceDate();
+               DayCounter dc = fittingMethod_.curve_.dayCounter();
+               int n = fittingMethod_.curve_.bondHelpers_.Count;
+               Vector values = new Vector(n);
+               for (int i = 0; i < n; ++i)
+               {
+                  BondHelper helper = fittingMethod_.curve_.bondHelpers_[i];
+
+                  Bond bond = helper.bond();
+                  Date bondSettlement = bond.settlementDate();
+
+                  // CleanPrice_i = sum( cf_k * d(t_k) ) - accruedAmount
+                  double modelPrice = 0.0;
+                  List<CashFlow> cf = bond.cashflows();
+                  for (int k = firstCashFlow_[i]; k < cf.Count; ++k)
+                  {
+                     double tenor = dc.yearFraction(refDate, cf[k].date());
+                     modelPrice += cf[k].amount() * fittingMethod_.discountFunction(x, tenor);
+                  }
+                  if (helper.useCleanPrice())
+                     modelPrice -= bond.accruedAmount(bondSettlement);
+
+                  // adjust price (NPV) for forward settlement
+                  if (bondSettlement != refDate)
+                  {
+                     double tenor = dc.yearFraction(refDate, bondSettlement);
+                     modelPrice /= fittingMethod_.discountFunction(x, tenor);
+                  }
+                  
+                  values[i] = modelPrice;
+               }
+               return values;
+            }
+
+            public Vector Errors(Vector x)
+            {
+               Date refDate = fittingMethod_.curve_.referenceDate();
+               DayCounter dc = fittingMethod_.curve_.dayCounter();
+               int n = fittingMethod_.curve_.bondHelpers_.Count;
+               Vector values = new Vector(n);
+               for (int i = 0; i < n; ++i)
+               {
+                  BondHelper helper = fittingMethod_.curve_.bondHelpers_[i];
+
+                  Bond bond = helper.bond();
+                  Date bondSettlement = bond.settlementDate();
+
+                  // CleanPrice_i = sum( cf_k * d(t_k) ) - accruedAmount
+                  double modelPrice = 0.0;
+                  List<CashFlow> cf = bond.cashflows();
+                  for (int k = firstCashFlow_[i]; k < cf.Count; ++k)
+                  {
+                     double tenor = dc.yearFraction(refDate, cf[k].date());
+                     modelPrice += cf[k].amount() * fittingMethod_.discountFunction(x, tenor);
+                  }
+                  if (helper.useCleanPrice())
+                     modelPrice -= bond.accruedAmount(bondSettlement);
+
+                  // adjust price (NPV) for forward settlement
+                  if (bondSettlement != refDate)
+                  {
+                     double tenor = dc.yearFraction(refDate, bondSettlement);
+                     modelPrice /= fittingMethod_.discountFunction(x, tenor);
+                  }
+                  double marketPrice = helper.quote().link.value();
+                  values[i] = modelPrice - marketPrice;                  
+               }
+               return values;
+            }
+
             private FittedBondDiscountCurve.FittingMethod fittingMethod_;
             internal List<int> firstCashFlow_;
 
@@ -437,6 +539,10 @@ namespace QLNet
 
             // save the results as the guess solution, in case of recalculation
             curve_.guessSolution_ = solution_;
+            curve_._modelPrediction = costFunction.BondPrices(solution_).ToArray();
+            curve_._errors = costFunction.Errors(solution_).ToArray();
+            curve_._cost = costValue_;
+
          }
 
          // array of normalized (duration) weights, one for each bond helper

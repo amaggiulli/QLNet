@@ -69,7 +69,7 @@ namespace QLNet
                                      BusinessDayConvention fixConvention,
                                      DayCounter dayCounter,
                                      double fixedRate,
-                                     ZeroInflationIndex infIndex,
+                                     ZeroIndex infIndex,
                                      Period observationLag,
                                      bool adjustInfObsDates = false,
                                      Calendar infCalendar = null,
@@ -173,7 +173,7 @@ namespace QLNet
       public DayCounter dayCounter() { return dayCounter_; }
       //! \f$ K \f$ in the above formula.
       public double fixedRate()  { return fixedRate_; }
-      public ZeroInflationIndex inflationIndex()  { return infIndex_; }
+      public ZeroIndex inflationIndex()  { return infIndex_; }
       public Period observationLag()  { return observationLag_; }
       public bool adjustObservationDates()  { return adjustInfObsDates_; }
       public Calendar inflationCalendar()  { return infCalendar_; }
@@ -242,7 +242,7 @@ namespace QLNet
       protected Calendar fixCalendar_;
       protected BusinessDayConvention fixConvention_;
       protected double fixedRate_;
-      protected ZeroInflationIndex infIndex_;
+      protected ZeroIndex infIndex_;
       protected Period observationLag_;
       protected bool adjustInfObsDates_;
       protected Calendar infCalendar_;

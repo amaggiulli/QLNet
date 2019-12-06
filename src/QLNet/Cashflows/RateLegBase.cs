@@ -337,7 +337,7 @@ namespace QLNet
          return this;
       }
 
-      protected ZeroInflationIndex index_;
+      protected ZeroIndex index_;
       protected double baseCPI_;
       protected Period observationLag_;
       protected List<double> fixedRates_;  // aka gearing

@@ -16,11 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -1400,11 +1396,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testInfiniteRange()
       {
          // Testing infinite range accrual floaters
@@ -1456,11 +1448,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testPriceMonotonicityWithRespectToLowerStrike()
       {
          // Testing price monotonicity with respect to the lower strike
@@ -1518,11 +1506,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testPriceMonotonicityWithRespectToUpperStrike()
       {
 

@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -144,11 +140,7 @@ namespace TestSuite
          SeedGenerator.instance().get();
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testPolynomialsModuloTwo()
       {
 
@@ -188,11 +180,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSobol()
       {
 
@@ -438,11 +426,7 @@ namespace TestSuite
           }
       }*/
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testHalton()
       {
 
@@ -845,11 +829,7 @@ namespace TestSuite
 
       #endregion
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSobolSkipping()
       {
 

@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -108,11 +104,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFairRate()
       {
          // Testing vanilla-swap calculation of fair fixed rate
@@ -140,11 +132,7 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFairSpread()
       {
          // Testing vanilla-swap calculation of fair floating spread
@@ -171,11 +159,7 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testRateDependency()
       {
          // Testing vanilla-swap dependency on fixed rate
@@ -213,11 +197,7 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testSpreadDependency()
       {
          // Testing vanilla-swap dependency on floating spread
@@ -255,11 +235,7 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testInArrears()
       {
          // Testing in-arrears swap calculation
@@ -317,11 +293,7 @@ namespace TestSuite
                          + "    expected:   " + storedValue + "\n"
                          + "    calculated: " + swap.NPV());
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testCachedValue()
       {
          // Testing vanilla-swap calculation against cached value
@@ -344,11 +316,7 @@ namespace TestSuite
                          + "    calculated: " + swap.NPV() + "\n"
                          + "    expected:   " + cachedNPV);
       }
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testFixing()
       {
          Date tradeDate = new Date(17, Month.April, 2015);

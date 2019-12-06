@@ -18,11 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -64,11 +60,7 @@ namespace TestSuite
 
       const double tolerance = 0.025;
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testRegression()
       {
          // Testing linear least-squares regression
@@ -146,11 +138,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void test1dLinearRegression()
       {
          // Testing 1d simple linear least-squares regression
@@ -196,11 +184,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
-      [Fact]
-#endif
+ [TestMethod()]
       public void testMultiDimRegression()
       {
          // Testing linear least-squares regression
