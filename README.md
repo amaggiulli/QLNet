@@ -53,4 +53,4 @@ As soon as the fix is complete, it will be merged into both *master* and *develo
 
 Thanks to all Quantlib creators and contributors.
 Thanks to all QLNet contributors.
-Special thanks to JetBrains for their support of open source projects; QLNet makes extensive use of Resharper.   
+Special thanks to [JetBrains](https://www.jetbrains.com/?from=qlnet) for their support of open source projects; QLNet makes extensive use of [Resharper](https://www.jetbrains.com/dotnet/?from=qlnet).   
