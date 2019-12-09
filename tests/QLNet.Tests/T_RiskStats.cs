@@ -29,9 +29,7 @@ namespace TestSuite
       public double downsideVariance() { return ((IncrementalStatistics)impl_).downsideVariance(); }
    }
 
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_RiskStats
    {
  [TestMethod()]

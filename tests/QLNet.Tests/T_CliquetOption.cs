@@ -20,9 +20,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_CliquetOption
    {
       private void REPORT_FAILURE(string greekName,

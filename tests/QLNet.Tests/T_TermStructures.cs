@@ -27,10 +27,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_TermStructures : IDisposable
    {
       private double sub(double x, double y)

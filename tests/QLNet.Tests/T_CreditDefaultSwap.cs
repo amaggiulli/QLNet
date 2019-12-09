@@ -24,9 +24,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_CreditDefaultSwap
    {
  [TestMethod()]

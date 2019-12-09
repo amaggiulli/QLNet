@@ -129,9 +129,7 @@ namespace TestSuite
    #endregion
 
 
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_LowDiscrepancySequences
    {
       public void testSeedGenerator()

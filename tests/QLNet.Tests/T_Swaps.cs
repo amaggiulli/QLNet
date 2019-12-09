@@ -24,9 +24,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_Swaps : IDisposable
    {
       #region Initialize&Cleanup

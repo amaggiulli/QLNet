@@ -170,19 +170,19 @@ namespace TestSuite
    {
       public static void CollectionAreEqual(ICollection expected, ICollection actual)
       {
-#if NET452
+         //#if NET452
+         //         CollectionAssert.AreEqual(expected, actual);
+         //#else
          CollectionAssert.AreEqual(expected, actual);
-#else
-         Assert.AreEqual(expected, actual);
-#endif
+//#endif
       }
       public static void CollectionAreNotEqual(ICollection notExpected, ICollection actual)
       {
-#if NET452
+         //#if NET452
+         //         CollectionAssert.AreNotEqual(notExpected, actual);
+         //#else
          CollectionAssert.AreNotEqual(notExpected, actual);
-#else
-         Assert.AreNotEqual(notExpected, actual);
-#endif
+//#endif
       }
 
       public static void AreNotSame(object notExpected, object actual)
@@ -258,11 +258,11 @@ namespace TestSuite
       /// <param name="action">The Action</param>
       public static void ThrowsException<T>(Action action) where T: SystemException
       {
-#if NET452
+//#if NET452
+//         Assert.ThrowsException<T>(action);
+//#else
          Assert.ThrowsException<T>(action);
-#else
-         Assert.ThrowsException<T>(action);
-#endif
+//#endif
       }
 
    }

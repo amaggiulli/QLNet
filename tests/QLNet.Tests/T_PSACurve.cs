@@ -21,9 +21,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_PSACurve
    {
  [TestMethod()]

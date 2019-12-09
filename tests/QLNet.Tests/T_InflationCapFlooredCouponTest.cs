@@ -23,9 +23,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_InflationCapFlooredCouponTest : IDisposable
    {
       #region Initialize&Cleanup

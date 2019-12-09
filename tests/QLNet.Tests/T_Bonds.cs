@@ -27,9 +27,7 @@ using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_Bonds : IDisposable
    {
       #region Initialize&Cleanup

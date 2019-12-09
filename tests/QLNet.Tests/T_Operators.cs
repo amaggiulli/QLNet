@@ -22,9 +22,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_Operators
    {
       public const double average = 0.0, sigma = 1.0;

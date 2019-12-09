@@ -19,9 +19,7 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+ [TestClass()]
    public class T_LookbackOption
    {
       void REPORT_FAILURE_FLOATING(string greekName,
