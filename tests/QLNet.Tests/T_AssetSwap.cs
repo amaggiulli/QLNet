@@ -18,27 +18,37 @@
 */
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-
+#if NET452
    [TestClass()]
+#endif
    public class T_AssetSwap : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
       private IndexHistoryCleaner cleaner;
-
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
+#else
+      public T_AssetSwap()
+      {
+#endif
          backup = new SavedSettings();
          cleaner = new IndexHistoryCleaner();
       }
+#if NET452
       [TestCleanup]
-
+#endif
       public void testCleanup()
       {
          Dispose();
@@ -97,8 +107,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testConsistency()
       {
 
@@ -419,8 +432,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testImpliedValue()
       {
          // Testing implied bond value against asset-swap fair price with null spread
@@ -724,9 +740,11 @@ namespace TestSuite
 
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testMarketASWSpread()
       {
          // Testing relationship between market asset swap and par asset swap...
@@ -1122,9 +1140,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testZSpread()
       {
          // Testing clean and dirty price with null Z-spread against theoretical prices...
@@ -1403,9 +1423,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testGenericBondImplied()
       {
 
@@ -1753,9 +1775,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testMASWWithGenericBond()
       {
          // Testing market asset swap against par asset swap with generic bond...
@@ -2179,9 +2203,11 @@ namespace TestSuite
                          "\n  tolerance:                " + tolerance);
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testZSpreadWithGenericBond()
       {
          // Testing clean and dirty price with null Z-spread against theoretical prices...
@@ -2504,9 +2530,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testSpecializedBondVsGenericBond()
       {
          // Testing clean and dirty prices for specialized bond against equivalent generic bond...
@@ -3015,9 +3043,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testSpecializedBondVsGenericBondUsingAsw()
       {
          // Testing asset-swap prices and spreads for specialized bond against equivalent generic bond...

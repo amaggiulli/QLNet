@@ -20,12 +20,18 @@
 
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_LiborMarketModel : IDisposable
    {
       #region Initialize&Cleanup
@@ -106,8 +112,11 @@ namespace TestSuite
                                         capletVols, new Actual360());
       }
 
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
-
+#else
+      [Fact(Skip = "LongRun")]
+#endif
       public void testSimpleCovarianceModels()
       {
          // Testing simple covariance models
@@ -185,8 +194,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
-
+#else
+      [Fact(Skip = "LongRun")]
+#endif
       public void testCapletPricing()
       {
          // Testing caplet pricing
@@ -228,8 +240,11 @@ namespace TestSuite
                          + "\n    expected:   " + expected);
       }
 
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
-
+#else
+      [Fact(Skip = "LongRun")]
+#endif
       public void testCalibration()
       {
          // Testing calibration of a Libor forward model
@@ -332,7 +347,11 @@ namespace TestSuite
                          + "\n    expected : smaller than  " + tolerance);
       }
 
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
+#else
+      [Fact(Skip = "LongRun")]
+#endif
       public void testSwaptionPricing()
       {
          // Testing forward swap and swaption pricing

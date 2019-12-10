@@ -16,7 +16,11 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 
 using QLNet;
 using System.Numerics;
@@ -26,11 +30,17 @@ using System;
 namespace TestSuite
 {
 
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_FastFourierTransform
    {
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFFTSimple()
       {
          List<Complex> a = new List<Complex>();
@@ -67,7 +77,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFFTInverse()
       {
          List<Complex> x = new InitializedList<Complex>(3);

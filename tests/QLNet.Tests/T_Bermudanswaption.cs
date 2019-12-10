@@ -19,13 +19,18 @@
 
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-
+#if NET452
    [TestClass()]
+#endif
    public class T_Bermudanswaption : IDisposable
    {
       #region Initialize&Cleanup
@@ -121,9 +126,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod()]
-
+#else
+      [Fact]
+#endif
       public void testCachedValues()
       {
 

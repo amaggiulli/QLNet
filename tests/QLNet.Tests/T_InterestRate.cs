@@ -18,12 +18,18 @@
 */
 
 using System;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_InterestRate
    {
       public struct InterestRateData
@@ -52,7 +58,11 @@ namespace TestSuite
       }
 
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testConversions()
       {
          InterestRateData[] cases =

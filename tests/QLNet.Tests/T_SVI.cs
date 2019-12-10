@@ -21,13 +21,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
 
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_SVI
    {
       double add10(double x) { return x + 10; }
@@ -39,7 +45,11 @@ namespace TestSuite
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCalibration()
       {
          double forward = 0.03;
@@ -98,7 +108,7 @@ namespace TestSuite
             QAssert.Fail("error in b coefficient estimation");
 
          Console.WriteLine("sigma=" + svi2.sigma());
-         if (!Utils.close_enough(sigma, svi2.sigma(), 1000))
+         if (!Utils.close_enough(sigma, svi2.sigma(), 100))
             QAssert.Fail("error in sigma coefficient estimation");
 
          Console.WriteLine("rho=" + svi2.rho());

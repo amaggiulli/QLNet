@@ -19,12 +19,18 @@
 */
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Swaption : IDisposable
    {
       #region Initialize&Cleanup
@@ -128,7 +134,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testStrikeDependency()
       {
          // Testing swaption dependency on strike
@@ -233,7 +243,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testSpreadDependency()
       {
          // Testing swaption dependency on spread
@@ -320,7 +334,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testSpreadTreatment()
       {
          // Testing swaption treatment of spread
@@ -390,7 +408,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCachedValue()
       {
          // Testing swaption value against cached value
@@ -423,7 +445,11 @@ namespace TestSuite
                          "\nexpected:   " + cachedNPV);
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testVega()
       {
          // Testing swaption vega
@@ -498,7 +524,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCashSettledSwaptions()
       {
 
@@ -847,7 +877,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testImpliedVolatility()
       {
          // Testing implied volatility for swaptions

@@ -21,13 +21,19 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Bonds : IDisposable
    {
       #region Initialize&Cleanup
@@ -72,7 +78,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testYield()
       {
 
@@ -151,7 +161,11 @@ namespace TestSuite
             }
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testTheoretical()
       {
          // "Testing theoretical bond price/yield calculation...");
@@ -234,7 +248,11 @@ namespace TestSuite
             }
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCached()
       {
          // ("Testing bond price/yield calculation against cached values...");
@@ -429,7 +447,11 @@ namespace TestSuite
                          + "\n    error:      " + (price - cachedPrice3));
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCachedZero()
       {
          // Testing zero-coupon bond prices against cached values
@@ -498,7 +520,11 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCachedFixed()
       {
          // "Testing fixed-coupon bond prices against cached values...");
@@ -588,7 +614,11 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCachedFloating()
       {
          // "Testing floating-rate bond prices against cached values...");
@@ -708,7 +738,11 @@ namespace TestSuite
                          + "    error:      " + (price - cachedPrice3));
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testBrazilianCached()
       {
          //("Testing Brazilian public bond prices against cached values...");
@@ -798,7 +832,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAmortizingFixedBond()
       {
          Date startDate = new Date(2, 1, 2007);
@@ -842,7 +880,11 @@ namespace TestSuite
       }
 
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testMBSFixedBondCached()
       {
          // Test MBS Bond against cached values
@@ -1059,7 +1101,11 @@ namespace TestSuite
          QAssert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAmortizingBond1()
       {
          // Input Values
@@ -1090,7 +1136,11 @@ namespace TestSuite
 
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAmortizingBond2()
       {
          // Par – 500,000
@@ -1130,7 +1180,11 @@ namespace TestSuite
 
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAmortizingFixedRateBond()
       {
          // Testing amortizing fixed rate bond
@@ -1201,7 +1255,11 @@ namespace TestSuite
       /// This requires the use of the Schedule to be constructed
       /// with a custom date vector
       /// </summary>
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testBondFromScheduleWithDateVector()
       {
          // Testing South African R2048 bond price using Schedule constructor with Date vector
@@ -1272,7 +1330,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testWeightedAverageLife()
       {
          // Test against know data
@@ -1301,7 +1363,7 @@ namespace TestSuite
          OIS,
          ZeroCoupon
       }
-
+#if NET452
       [DataTestMethod]
       [DataRow(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
       [DataRow(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
@@ -1313,7 +1375,19 @@ namespace TestSuite
       [DataRow(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
       [DataRow(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
       [DataRow(CouponType.FixedRate, 5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
-
+#else
+      [Theory]
+      [InlineData(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
+      [InlineData(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
+      [InlineData(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
+      [InlineData(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
+      [InlineData(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
+      [InlineData(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
+      [InlineData(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
+      [InlineData(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
+      [InlineData(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
+      [InlineData(CouponType.FixedRate, 5.375, "03/01/2018", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
+#endif
       public void testAccruedInterest(CouponType couponType, double Coupon,
                                       string AccrualDate, string MaturityDate, string SettlementDate, string FirstCouponDate,
                                       double Price, double expectedAccruedInterest, double expectedYtm)
@@ -1372,7 +1446,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testExCouponGilt()
       {
          // Testing ex-coupon UK Gilt price against market values
@@ -1511,7 +1589,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testExCouponAustralianBond()
       {
          // Testing ex-coupon Australian bond price against market values
@@ -1644,7 +1726,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testThirty360BondWithSettlementOn31st()
       {
          // Testing Thirty/360 bond with settlement on 31st of the month
@@ -1693,7 +1779,7 @@ namespace TestSuite
                          + "\n    expected:   " + "0.7");
       }
 
-
+#if NET452
       [DataTestMethod()]
       [DataRow("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
       [DataRow("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
@@ -1708,7 +1794,21 @@ namespace TestSuite
       //[DataRow("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
       //[DataRow("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
 
-
+#else
+      [Theory]
+      [InlineData("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
+      [InlineData("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
+      [InlineData("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
+      [InlineData("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
+      [InlineData("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
+      //[InlineData("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]
+      //[InlineData("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]
+      //[InlineData("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]
+      //[InlineData("15147TDU9", "07/15/2035", 4, "07/10/2018", 105.591, 12.405, 10.7)]
+      //[InlineData("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
+      //[InlineData("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
+      //[InlineData("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
+#endif
       public void testDurations(string Cusip, string MaturityDate, double Coupon,
                                 string SettlementDate, double Price, double ExpectedModifiedDuration, double ExpectedOASDuration)
       {
@@ -1760,9 +1860,11 @@ namespace TestSuite
          }
       }
 
-
+#if NET452
       [TestMethod]
-
+#else
+      [Fact]
+#endif
       public void testSteppedCoupon()
       {
          // Sample 1
@@ -1896,10 +1998,15 @@ namespace TestSuite
                          + "\n    expected:   " + expectedAccruedInterest);
       }
 
+#if NET452
       [DataTestMethod]
       [DataRow(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
       [DataRow(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
-
+#else
+      [Theory]
+      [InlineData(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+#endif
       public void testQLNetExceptions(CouponType couponType, double Coupon,
                                       string AccrualDate, string MaturityDate, string SettlementDate,
                                       string FirstCouponDate, double Price)

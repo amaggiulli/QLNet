@@ -15,12 +15,18 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_DigitalCoupon
    {
       private class CommonVars
@@ -56,7 +62,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAssetOrNothing()
       {
 
@@ -232,7 +242,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAssetOrNothingDeepInTheMoney()
       {
          // Testing European deep in-the-money asset-or-nothing digital coupon
@@ -335,7 +349,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testAssetOrNothingDeepOutTheMoney()
       {
          // Testing European deep out-the-money asset-or-nothing digital coupon
@@ -437,7 +455,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCashOrNothing()
       {
          // Testing European cash-or-nothing digital coupon
@@ -579,7 +601,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCashOrNothingDeepInTheMoney()
       {
          // Testing European deep in-the-money cash-or-nothing digital coupon
@@ -680,7 +706,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCashOrNothingDeepOutTheMoney()
       {
          // Testing European deep out-the-money cash-or-nothing digital coupon
@@ -783,7 +813,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCallPutParity()
       {
          // Testing call/put parity for European digital coupon
@@ -875,7 +909,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testReplicationType()
       {
          // Testing replication type for European digital coupon

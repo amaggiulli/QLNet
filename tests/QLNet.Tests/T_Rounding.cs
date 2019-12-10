@@ -17,12 +17,18 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Rounding
    {
       public struct TestCase
@@ -72,7 +78,11 @@ namespace TestSuite
          new TestCase(7.89428221, 2, 7.89, 7.90, 7.89, 7.89, 7.89)
       };
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testClosest()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -85,7 +95,11 @@ namespace TestSuite
                QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testUp()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -99,7 +113,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testDown()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -113,7 +131,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFloor()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -127,7 +149,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCeiling()
       {
          for (int i = 0; i < testData.Length; i++)

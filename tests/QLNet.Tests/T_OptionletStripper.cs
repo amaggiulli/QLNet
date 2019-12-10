@@ -15,12 +15,18 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_OptionletStripper : IDisposable
    {
       #region Initialize&Cleanup
@@ -241,7 +247,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFlatTermVolatilityStripping1()
       {
          // Testing forward/forward vol stripping from flat term vol
@@ -294,7 +304,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testTermVolatilityStripping1()
       {
          // Testing forward/forward vol stripping from non-flat term
@@ -347,7 +361,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFlatTermVolatilityStripping2()
       {
          // Testing forward/forward vol stripping from flat term vol
@@ -407,7 +425,11 @@ namespace TestSuite
 
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testTermVolatilityStripping2()
       {
          // Testing forward/forward vol stripping from non-flat term vol "

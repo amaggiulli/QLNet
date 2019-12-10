@@ -17,14 +17,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_DividendOption
    {
       public void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
@@ -213,7 +219,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testEuropeanValues()
       {
          // Testing dividend European option values with no dividends...
@@ -378,7 +388,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testEuropeanStartLimit()
       {
          // Testing dividend European option with a dividend on today's date...
@@ -474,7 +488,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testEuropeanGreeks()
       {
          // Testing dividend European option greeks...
@@ -630,7 +648,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFdEuropeanValues()
       {
          // Testing finite-difference dividend European option values...
@@ -736,7 +758,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFdEuropeanGreeks()
       {
          // Testing finite-differences dividend European option greeks...
@@ -755,7 +781,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFdAmericanGreeks()
       {
          // Testing finite-differences dividend American option greeks...
@@ -774,7 +804,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFdEuropeanDegenerate()
       {
          // Testing degenerate finite-differences dividend European option...
@@ -790,7 +824,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFdAmericanDegenerate()
       {
          // Testing degenerate finite-differences dividend American option...

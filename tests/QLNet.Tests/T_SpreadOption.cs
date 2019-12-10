@@ -14,12 +14,18 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_SpreadOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -70,7 +76,11 @@ namespace TestSuite
             this.theta = theta;
          }
       }
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testKirkEngine()
       {
          // Testing Kirk approximation for spread options

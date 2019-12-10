@@ -18,12 +18,18 @@
 */
 using System;
 using System.Collections.Generic;
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
- [TestClass()]
+#if NET452
+   [TestClass()]
+#endif
    public class T_OvernightIndexedSwap : IDisposable
    {
       #region Initialize&Cleanup
@@ -233,7 +239,11 @@ namespace TestSuite
       }
 
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFairRate()
       {
          // Testing Eonia-swap calculation of fair fixed rate...
@@ -265,7 +275,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testFairSpread()
       {
          // Testing Eonia-swap calculation of fair floating spread...
@@ -299,7 +313,11 @@ namespace TestSuite
          }
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testCachedValue()
       {
          // Testing Eonia-swap calculation against cached value...
@@ -321,7 +339,11 @@ namespace TestSuite
                          "\n tolerance:" + tolerance);
       }
 
- [TestMethod()]
+#if NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
       public void testBootstrap()
       {
          // Testing Eonia-swap curve building...

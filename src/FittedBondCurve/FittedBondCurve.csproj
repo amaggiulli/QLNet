@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.11.3</VersionPrefix>
-    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net452</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>FittedBondCurve</AssemblyName>
     <PackageId>FittedBondCurve</PackageId>
