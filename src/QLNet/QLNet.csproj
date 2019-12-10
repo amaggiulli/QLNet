@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <VersionPrefix>1.11.3</VersionPrefix>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>net452;netstandard1.2;netstandard2.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
     <PackageId>QLNet</PackageId>
     <PackageVersion>1.11.3</PackageVersion>
     <Authors>Andrea Maggiulli</Authors>
     <Company />
-    <Description> Fork created by Quant Foundry for Risk First -> chris.cormack@quantfoundry.com </Description>
+    <Description> Fork created by Quant Foundry for Risk First -&gt; chris.cormack@quantfoundry.com </Description>
     <Copyright>Copyright (c) 2008-2019 Andrea Maggiulli (a.maggiulli@gmail.com)</Copyright>
     <PackageLicenseUrl>http://qlnet.sourceforge.net/License.html</PackageLicenseUrl>
     <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
