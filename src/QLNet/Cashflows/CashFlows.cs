@@ -29,7 +29,7 @@ namespace QLNet
 {
    //! %cashflow-analysis functions
    public class CashFlows
-   {
+   {      
       #region utility functions
 
       private static double aggregateRate(Leg leg, CashFlow cf)
@@ -296,7 +296,7 @@ namespace QLNet
             }
             Utils.QL_REQUIRE(signChanges > 0, () =>
                              "the given cash flows cannot result in the given market " +
-                             "price due to their sign", QLNetExceptionEnum.InvalidPriceSignException);
+                             "price due to their sign");
          }
       }
       class ZSpreadFinder : ISolver1d

@@ -21,7 +21,7 @@ namespace QLNet
 {
 
    //! FR HICP index
-   public class FRHICP : ZeroInflationIndex
+   public class FRHICP : ZeroIndex
    {
       public FRHICP(bool interpolated)
          : this(interpolated, new Handle<ZeroInflationTermStructure>()) {}

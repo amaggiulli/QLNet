@@ -32,7 +32,7 @@ namespace QLNet
                      bool growthOnly,
                      double baseCPI,
                      Period observationLag,
-                     ZeroInflationIndex cpiIndex,
+                     ZeroIndex cpiIndex,
                      InterpolationType observationInterpolation,
                      Schedule schedule,
                      List<double> fixedRate,
@@ -53,6 +53,17 @@ namespace QLNet
          observationLag_ = observationLag;
          cpiIndex_ = cpiIndex;
          observationInterpolation_ = observationInterpolation;
+         fixedRate_ = fixedRate;
+         faceAmount_ = faceAmount;
+         exCouponPeriod_ = exCouponPeriod;
+         schedule_ = schedule;
+         exCouponCalendar_ = exCouponCalendar;
+         exCouponConvention_ = exCouponConvention;
+         exCouponEndOfMonth_ = exCouponEndOfMonth;
+         paymentConvention_ = paymentConvention;
+
+
+
 
          maturityDate_ = schedule.endDate();
 
@@ -80,12 +91,46 @@ namespace QLNet
             i.registerWith(update);
       }
 
+      /// <summary>
+      /// Gets and Sets the CPI Index
+      /// </summary>
+      public ZeroIndex CpiIndex { get { return cpiIndex_; }
+         set { cpiIndex_ = value;
+            UpdateCPICoupons();
+         } }
+
+      private void UpdateCPICoupons()
+      {
+         cashflows_ = new CPILeg(schedule_, cpiIndex_,
+                                 baseCPI_, observationLag_)
+         .withSubtractInflationNominal(growthOnly_)
+         .withObservationInterpolation(observationInterpolation_)
+         .withPaymentDayCounter(dayCounter_)
+         .withFixedRates(fixedRate_)
+         .withPaymentCalendar(calendar_)
+         .withExCouponPeriod(exCouponPeriod_,
+                             exCouponCalendar_,
+                             exCouponConvention_,
+                             exCouponEndOfMonth_)
+         .withNotionals(faceAmount_)
+         .withPaymentAdjustment(paymentConvention_);
+
+
+         calculateNotionalsFromCashflows();
+
+         cpiIndex_.registerWith(update);
+
+         foreach (CashFlow i in cashflows_)
+            i.registerWith(update);
+      }
       public Frequency frequency() { return frequency_; }
       public DayCounter dayCounter() { return dayCounter_; }
       public bool growthOnly()  { return growthOnly_; }
       public double baseCPI()  { return baseCPI_; }
       public Period observationLag()  { return observationLag_; }
-      public  ZeroInflationIndex cpiIndex()  { return cpiIndex_; }
+      public  ZeroIndex cpiIndex()  { return cpiIndex_; }
+
+   
       public InterpolationType observationInterpolation()  { return observationInterpolation_; }
 
       protected Frequency frequency_;
@@ -93,7 +138,15 @@ namespace QLNet
       protected bool growthOnly_;
       protected double baseCPI_;
       protected Period observationLag_;
-      protected ZeroInflationIndex cpiIndex_;
+      protected ZeroIndex cpiIndex_;
       protected InterpolationType observationInterpolation_;
+      private List<double> fixedRate_;
+      private double faceAmount_;
+      private Period exCouponPeriod_;
+      private Schedule schedule_;
+      private Calendar exCouponCalendar_;
+      private BusinessDayConvention exCouponConvention_;
+      private bool exCouponEndOfMonth_;
+      private BusinessDayConvention paymentConvention_;
    }
 }

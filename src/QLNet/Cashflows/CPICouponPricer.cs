@@ -88,7 +88,7 @@ namespace QLNet
          gearing_ = coupon_.fixedRate();
          spread_ = coupon_.spread();
          paymentDate_ = coupon_.date();
-         rateCurve_ = ((ZeroInflationIndex)coupon.index())
+         rateCurve_ = ((ZeroIndex)coupon.index())
                       .zeroInflationTermStructure().link
                       .nominalTermStructure();
 

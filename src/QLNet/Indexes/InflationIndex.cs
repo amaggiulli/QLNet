@@ -35,6 +35,8 @@ namespace QLNet
           give the previous period's value)
           and enables storage of the most recent uninterpolated value.
       */
+
+       
       public InflationIndex(string familyName,
                             Region region,
                             bool revised,
@@ -65,6 +67,11 @@ namespace QLNet
           NullCalendar as its fixing calendar.
       */
       public override Calendar fixingCalendar() { return new NullCalendar(); }
+
+      /// <summary>
+      /// Sets the interpolation settings for the Inflation index
+      /// </summary>
+      public virtual bool Interpolated { get { return interpolated_; } set { interpolated_ = value; } }
 
       public override bool isValidFixingDate(Date fixingDate) { return true; }
 
@@ -101,6 +108,7 @@ namespace QLNet
          base.addFixings(dates, rates, forceOverwrite);
 
       }
+
 
       // Observer interface
       public void update() { notifyObservers(); }
@@ -141,10 +149,21 @@ namespace QLNet
 
 
    //! Base class for zero inflation indices.
-   public class ZeroInflationIndex : InflationIndex
+   public class ZeroIndex : InflationIndex
    {
+
+      /// <summary>
+      /// Seasonality assigend to hte 
+      /// </summary>
+      private Seasonality _seasonality = null;
+
+      /// <summary>
+      /// Gets the assigned seasonality
+      /// </summary>
+      public Seasonality Seasonality { get { return _seasonality; } }
+
       //! Always use the evaluation date as the reference date
-      public ZeroInflationIndex(string familyName,
+      public ZeroIndex(string familyName,
                                 Region region,
                                 bool revised,
                                 bool interpolated,
@@ -205,12 +224,32 @@ namespace QLNet
 
       // Other methods
       public Handle<ZeroInflationTermStructure> zeroInflationTermStructure() { return zeroInflation_; }
-      public ZeroInflationIndex clone(Handle<ZeroInflationTermStructure> h)
+
+      public RelinkableHandle<ZeroInflationTermStructure> ZeroInflationTermStructureHandle { get { return (RelinkableHandle<ZeroInflationTermStructure>)zeroInflation_; } set { zeroInflation_ = value;
+            zeroInflation_.registerWith(update);
+         } }
+      public ZeroIndex clone(Handle<ZeroInflationTermStructure> h)
       {
 
-         return new ZeroInflationIndex(familyName_, region_, revised_,
+         return new ZeroIndex(familyName_, region_, revised_,
                                        interpolated_, frequency_,
                                        availabilityLag_, currency_, h);
+      }
+
+      /// <summary>
+      /// Assigns the seasonality to the zero inflation curve
+      /// </summary>
+      /// <param name="seasonality">Seasonanility object normally a multiplicative seasonality factor</param>
+      public virtual void SetSeasonality(Seasonality seasonality)
+      {
+         try
+         {
+            zeroInflation_.link.setSeasonality(seasonality);
+            _seasonality = seasonality;
+         }catch
+         {
+            throw new Exception("QF Curve Fitter: Unable to set the assigned inflation");
+         }
       }
 
       private bool needsForecast(Date fixingDate)
@@ -282,6 +321,7 @@ namespace QLNet
          double t = zeroInflation_.link.dayCounter().yearFraction(baseDate, effectiveFixingDate);
          bool forceLinearInterpolation = false;
          double zero = zeroInflation_.link.zeroRate(fixingDate, new Period(0, TimeUnit.Days), forceLinearInterpolation);
+         zero = Math.Max(-0.05, zero);
          // Annual compounding is the convention for zero inflation rates (or quotes)
          return baseFixing * Math.Pow(1.0 + zero, t);
       }

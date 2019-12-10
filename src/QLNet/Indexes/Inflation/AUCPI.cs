@@ -20,8 +20,16 @@
 namespace QLNet
 {
    //! AU CPI index (either quarterly or annual)
-   public class AUCPI : ZeroInflationIndex
+   public class AUCPI : ZeroIndex
    {
+
+      public AUCPI(bool interpolated)
+         : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }
+
+      public AUCPI(bool interpolated, Handle<ZeroInflationTermStructure> ts)
+         : base("CPI", new AustraliaRegion(), false, interpolated, Frequency.Monthly,
+                new Period(2, TimeUnit.Months), new AUDCurrency(), ts)
+      { }
       public AUCPI(Frequency frequency,
                    bool revised,
                    bool interpolated)

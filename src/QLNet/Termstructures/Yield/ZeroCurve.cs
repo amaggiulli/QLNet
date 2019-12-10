@@ -194,14 +194,14 @@ namespace QLNet
             }
 
 #if !QL_NEGATIVE_RATES
-            Utils.QL_REQUIRE(data_[i] > 0.0, () => "non-positive yield");
+            //Utils.QL_REQUIRE(data_[i] > 0.0, () => "non-positive yield");
             // positive yields are not enough to ensure non-negative fwd rates
             // so here's a stronger requirement
-            Utils.QL_REQUIRE(data_[i] * times_[i] - data_[i - 1] * times_[i - 1] >= 0.0,
-                             () => "negative forward rate implied by the zero yield " + data_[i] + " at " + dates_[i] +
-                             " (t=" + times_[i] + ") after the zero yield " +
-                             data_[i - 1] + " at " + dates_[i - 1] +
-                             " (t=" + times_[i - 1] + ")");
+            //Utils.QL_REQUIRE(data_[i] * times_[i] - data_[i - 1] * times_[i - 1] >= 0.0,
+            //                 () => "negative forward rate implied by the zero yield " + data_[i] + " at " + dates_[i] +
+            //                 " (t=" + times_[i] + ") after the zero yield " +
+            //                 data_[i - 1] + " at " + dates_[i - 1] +
+            //                 " (t=" + times_[i - 1] + ")");
 #endif
 
          }

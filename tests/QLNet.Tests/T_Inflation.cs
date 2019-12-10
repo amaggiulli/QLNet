@@ -56,7 +56,7 @@ namespace TestSuite
       }
 
       private List<BootstrapHelper<ZeroInflationTermStructure>> makeHelpers(Datum[] iiData, int N,
-                                                                            ZeroInflationIndex ii, Period observationLag,
+                                                                            ZeroIndex ii, Period observationLag,
                                                                             Calendar calendar,
                                                                             BusinessDayConvention bdc,
                                                                             DayCounter dc)
@@ -232,7 +232,7 @@ namespace TestSuite
                iiUKRPI.addFixing(rpiSchedule[i], fixData[i]);
             }
 
-            ZeroInflationIndex ii = iiUKRPI as ZeroInflationIndex;
+            ZeroIndex ii = iiUKRPI as ZeroIndex;
             YieldTermStructure nominalTS = nominalTermStructure();
 
             // now build the zero inflation curve
@@ -346,8 +346,8 @@ namespace TestSuite
 
             // first make one ...
 
-            ZeroInflationIndex zii = ii as ZeroInflationIndex;
-            Utils.QL_REQUIRE(zii != null, () => "dynamic_pointer_cast to ZeroInflationIndex from UKRPI failed");
+            ZeroIndex zii = ii as ZeroIndex;
+            Utils.QL_REQUIRE(zii != null, () => "dynamic_pointer_cast to ZeroIndex from UKRPI failed");
             ZeroCouponInflationSwap nzcis =
                new ZeroCouponInflationSwap(ZeroCouponInflationSwap.Type.Payer,
                                            1000000.0,
@@ -535,7 +535,7 @@ namespace TestSuite
                iiUKRPIyes.addFixing(rpiSchedule[i], fixData[i]);
             }
 
-            ZeroInflationIndex iiyes = iiUKRPIyes as ZeroInflationIndex;
+            ZeroIndex iiyes = iiUKRPIyes as ZeroIndex;
 
             // now build the zero inflation curve
             // same data, bigger lag or it will be a self-contradiction
@@ -605,8 +605,8 @@ namespace TestSuite
             //===========================================================================================
             // Test zero coupon swap
 
-            ZeroInflationIndex ziiyes = iiyes as ZeroInflationIndex;
-            Utils.QL_REQUIRE(ziiyes != null, () => "dynamic_pointer_cast to ZeroInflationIndex from UKRPI-I failed");
+            ZeroIndex ziiyes = iiyes as ZeroIndex;
+            Utils.QL_REQUIRE(ziiyes != null, () => "dynamic_pointer_cast to ZeroIndex from UKRPI-I failed");
             ZeroCouponInflationSwap nzcisyes = new ZeroCouponInflationSwap(ZeroCouponInflationSwap.Type.Payer,
                                                                            1000000.0,
                                                                            evaluationDate,

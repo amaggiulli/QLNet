@@ -44,7 +44,7 @@ namespace TestSuite
       private class CommonVars
       {
          private List<BootstrapHelper<ZeroInflationTermStructure>> makeHelpers(Datum[] iiData, int N,
-                                                                               ZeroInflationIndex ii, Period observationLag,
+                                                                               ZeroIndex ii, Period observationLag,
                                                                                Calendar calendar,
                                                                                BusinessDayConvention bdc,
                                                                                DayCounter dc)
@@ -81,7 +81,7 @@ namespace TestSuite
          public List<Date> zciisD;
          public List<double> zciisR;
          public UKRPI ii;
-         public RelinkableHandle<ZeroInflationIndex> hii;
+         public RelinkableHandle<ZeroIndex> hii;
          public int zciisDataLength;
 
          public RelinkableHandle<YieldTermStructure> nominalUK;
@@ -109,7 +109,7 @@ namespace TestSuite
             hcpi = new RelinkableHandle<ZeroInflationTermStructure>();
             zciisD = new List<Date>();
             zciisR = new List<double>();
-            hii = new RelinkableHandle<ZeroInflationIndex>();
+            hii = new RelinkableHandle<ZeroIndex>();
 
             nominals = new InitializedList<double>(1, 1000000);
             // option variables

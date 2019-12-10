@@ -95,7 +95,7 @@ namespace QLNet
                      Schedule fixedSchedule,
                      BusinessDayConvention fixedPaymentRoll,
                      Period observationLag,
-                     ZeroInflationIndex fixedIndex,
+                     ZeroIndex fixedIndex,
                      InterpolationType observationInterpolation = InterpolationType.AsIndex,
                      double? inflationNominal = null)
       : base(2)
@@ -248,7 +248,7 @@ namespace QLNet
       public virtual Schedule fixedSchedule() {return fixedSchedule_; }
       public virtual BusinessDayConvention fixedPaymentRoll() {return fixedPaymentRoll_;}
       public virtual Period observationLag() {return observationLag_; }
-      public virtual ZeroInflationIndex fixedIndex() {return fixedIndex_;}
+      public virtual ZeroIndex fixedIndex() {return fixedIndex_;}
       public virtual InterpolationType observationInterpolation() {return observationInterpolation_;}
       public virtual double inflationNominal() {return inflationNominal_;}
 
@@ -258,7 +258,7 @@ namespace QLNet
 
       // other
       public override void fetchResults(IPricingEngineResults r)
-      {
+      {         
          // copy from VanillaSwap
          // works because similarly simple instrument
          // that we always expect to be priced with a swap engine
@@ -319,7 +319,7 @@ namespace QLNet
       private DayCounter fixedDayCount_;
       private Schedule fixedSchedule_;
       private BusinessDayConvention fixedPaymentRoll_;
-      private ZeroInflationIndex fixedIndex_;
+      private ZeroIndex fixedIndex_;
       private Period observationLag_;
       private InterpolationType observationInterpolation_;
       private double inflationNominal_;

@@ -46,7 +46,7 @@ namespace QLNet
                                             Calendar cal, // calendar in index may not be useful
                                             BusinessDayConvention bdc,
                                             DayCounter dc,
-                                            Handle<ZeroInflationIndex> zii,
+                                            Handle<ZeroIndex> zii,
                                             Handle<YieldTermStructure> yts,
                                             List<double> cStrikes,
                                             List<double> fStrikes,
@@ -137,7 +137,7 @@ namespace QLNet
       }
 
       //! is based on
-      public Handle<ZeroInflationIndex> zeroInflationIndex() { return zii_; }
+      public Handle<ZeroIndex> zeroInflationIndex() { return zii_; }
 
 
       //! inspectors
@@ -194,7 +194,7 @@ namespace QLNet
          return (minDate() <= d && d <= maxDate());
       }
 
-      protected Handle<ZeroInflationIndex> zii_;
+      protected Handle<ZeroIndex> zii_;
       // data
       protected List<double> cStrikes_;
       protected List<double> fStrikes_;
@@ -219,7 +219,7 @@ namespace QLNet
                                                      Calendar cal,
                                                      BusinessDayConvention bdc,
                                                      DayCounter dc,
-                                                     Handle<ZeroInflationIndex> zii,
+                                                     Handle<ZeroIndex> zii,
                                                      Handle<YieldTermStructure> yts,
                                                      List<double> cStrikes,
                                                      List<double> fStrikes,
