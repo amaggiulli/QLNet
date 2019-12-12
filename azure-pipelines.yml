@@ -1,3 +1,10 @@
+#This is a bit wrong way around as QF used develop branch to make their fork
+#master branch is now behind. 
+#When QLNet publishes a new version by pull request to master we should:
+# 1 merge its master to our master
+# 2 merge our develop branch to our master
+# 3 modify this yaml (change master to develop in the conditions) to make master a release branch and use develop for preview 
+
 trigger:
   branches:
       include:
