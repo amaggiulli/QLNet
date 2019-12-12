@@ -87,10 +87,6 @@ steps:
   displayName: 'Nuget Authenticate'
   inputs:
     nuGetServiceConnections: 'zak temp nuget connection'
-- task: DotNetCoreCLI@2
-  displayName: 'Publish Nuget'
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'zak temp nuget connection'
+
+- script: nuget push *.nupkg oy2mnd2ip44zphcfttbar7i5kn4tttzulg6yhpkvzxvf6q -src https://api.nuget.org/v3/index.json -SkipDuplicate
+
