@@ -31,7 +31,7 @@ steps:
 
 # Patch preview project versions (only when on master branch)
 - task: CmdLine@2
-  displayName: 'Install DNT'
+  displayName: 'Install dot net tools'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     script: 'npm i -g dotnettools'
@@ -83,5 +83,5 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- script: nuget push *.nupkg oy2mnd2ip44zphcfttbar7i5kn4tttzulg6yhpkvzxvf6q -src https://api.nuget.org/v3/index.json -SkipDuplicate
+#- script: nuget push *.nupkg oy2mnd2ip44zphcfttbar7i5kn4tttzulg6yhpkvzxvf6q -src https://api.nuget.org/v3/index.json -SkipDuplicate
 
