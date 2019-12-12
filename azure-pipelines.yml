@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  Projects: '**/*.csproj'
+  Projects: '**/QLNet.sln'
 
 steps:
 # Install required SDKs and tools
