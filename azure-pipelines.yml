@@ -82,6 +82,11 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: NuGetAuthenticate@0
+  displayName: 'Nuget Authenticate'
+  inputs:
+    nuGetServiceConnections: 'zak temp nuget connection'
 - task: DotNetCoreCLI@2
   displayName: 'Publish Nuget'
   inputs:
