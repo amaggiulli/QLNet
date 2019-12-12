@@ -83,10 +83,5 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- task: NuGetAuthenticate@0
-  displayName: 'Nuget Authenticate'
-  inputs:
-    nuGetServiceConnections: 'zak temp nuget connection'
-
 - script: nuget push *.nupkg oy2mnd2ip44zphcfttbar7i5kn4tttzulg6yhpkvzxvf6q -src https://api.nuget.org/v3/index.json -SkipDuplicate
 
