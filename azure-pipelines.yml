@@ -76,6 +76,7 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 - task: DotNetCoreCLI@2
+  displayName: 'Publish Nuget'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
