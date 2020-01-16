@@ -11,15 +11,7 @@ namespace QLNet.Termstructures.Inflation
    {
 
 
-      /// <summary>
-      /// Switches the use of the fitter to the smooth fitter
-      /// </summary>
-      private bool _useSmoothFitter = false;
 
-      /// <summary>
-      /// Switches the use of the fitter to the smooth fitter
-      /// </summary>
-      public bool useSmoothFitter { get { return _useSmoothFitter; }  set { _useSmoothFitter = value; } }
 
       private int size_;
 
@@ -34,8 +26,15 @@ namespace QLNet.Termstructures.Inflation
       private double _akimaWeightFactor = 1.0;
 
 
-      public InflationFittingMethods(Datum[] initalCurve , 
-         bool constrainatZero, Vector initialGuess = null, Vector weights = null, OptimizationMethod optimizationMethod = null, double akimaWeightFactor =1.0) : base(constrainatZero,weights, optimizationMethod)
+      protected bool _useHistoricalInflationAtShortEnd = true;
+
+      public bool UseHistoricalInflationAtShortEnd { get { return _useHistoricalInflationAtShortEnd; } set { _useHistoricalInflationAtShortEnd = value; } }
+
+
+
+
+      public InflationFittingMethods(Datum[] initalCurve,
+         bool constrainatZero, Vector initialGuess = null, Vector weights = null, OptimizationMethod optimizationMethod = null, double akimaWeightFactor = 1.0, Vector lowerBound = null, Vector upperBound = null) : base(constrainatZero, weights, optimizationMethod)
       {
 
          //Extract the data for the curve tenors for the Akima Spline Fitting
@@ -50,7 +49,7 @@ namespace QLNet.Termstructures.Inflation
          if (initialGuess == null)
          {
             initialGuess = new Vector(size_);
-            for(int i =0; i < size_; ++i)
+            for (int i = 0; i < size_; ++i)
             {
                initialGuess[i] = 1.0;
             }
@@ -59,7 +58,7 @@ namespace QLNet.Termstructures.Inflation
          {
             if (initialGuess.Count < size_)
             {
-               
+
                initialGuess = new Vector(size_);
                for (int i = 0; i < size_; ++i)
                {
@@ -69,6 +68,10 @@ namespace QLNet.Termstructures.Inflation
          }
 
          intialGuess_ = initialGuess;
+
+
+         UpperBound = upperBound;
+         LowerBound = lowerBound;
       }
 
       /// <summary>
@@ -91,17 +94,35 @@ namespace QLNet.Termstructures.Inflation
 
       internal double SvenssonCurve(Vector x, double t)
       {
+         // Fix the short end of the inflation curve to be close to historical
+         double x0 = x[0] - x[1];
+
+
          double kappa = x[size() - 2];
          double kappa_1 = x[size() - 1];
 
-         double zeroRate = x[0] + (x[1] + x[2]) *
+         double zeroRate = x0 + (x[1] + x[2]) *
                            (1.0 - Math.Exp(-kappa * t)) /
                            ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
-                           (x[2]) * Math.Exp(-kappa * t) +
-                           x[3] * (((1.0 - Math.Exp(-kappa_1 * t)) / ((kappa_1 + Const.QL_EPSILON) * (t + Const.QL_EPSILON))) - Math.Exp(-kappa_1 * t));
-         
+                           (x[2]) * Math.Exp(-kappa * t)
+                          + x[3] * (((1.0 - Math.Exp(-kappa_1 * t)) / ((kappa_1 + Const.QL_EPSILON) * (t + Const.QL_EPSILON))) - Math.Exp(-kappa_1 * t));
+
          return zeroRate;
       }
+
+      //internal double SvenssonCurve(Vector x, double t)
+      //{
+      //   double kappa = x[3];
+      //   //double kappa_1 = x[size() - 1];
+
+      //   double zeroRate = x[0] + (x[1] + x[2]) *
+      //                     (1.0 - Math.Exp(-kappa * t)) /
+      //                     ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
+      //                     (x[2]) * Math.Exp(-kappa * t);
+
+
+      //   return zeroRate;
+      //}
 
       public double AkimaCurveValue(Vector x, double t)
       {
@@ -183,7 +204,7 @@ namespace QLNet.Termstructures.Inflation
       {
 
          // now build the zero inflation curve
-         RelinkableHandle<ZeroInflationTermStructure>  cpiUK = new RelinkableHandle<ZeroInflationTermStructure>(helper_.InflationIndex.zeroInflationTermStructure());
+         RelinkableHandle<ZeroInflationTermStructure> cpiUK = new RelinkableHandle<ZeroInflationTermStructure>(helper_.InflationIndex.zeroInflationTermStructure());
          Period observationLag = helper_.availabilityLag();
          Period contractObservationLag = helper_.availabilityLag();
          //InterpolationType contractObservationInterpolation = InterpolationType.Flat;
@@ -194,7 +215,7 @@ namespace QLNet.Termstructures.Inflation
 
          //Apply the vector of adjustments
 
-         if (_useSmoothFitter)
+         if (UseSmoothFitter)
          {
             // Use the Swensson Curve Fitter
             for (int i = 0; i < _ncurvePoints; ++i)
@@ -202,7 +223,7 @@ namespace QLNet.Termstructures.Inflation
                zciisData[i] = _initialCurveData[i];
                zciisData[i].rate = SvenssonCurve(x, _initialCurveData[i].tenor);
             }
-            
+
          }
          else
          {
@@ -232,7 +253,7 @@ namespace QLNet.Termstructures.Inflation
          double baseZeroRate = zciisData[0].rate / 100.0;
          //baseZeroRate = 0.026751143963392954;
          PiecewiseZeroInflationCurve<Linear> pCPIts = new PiecewiseZeroInflationCurve<Linear>(
-            helper_.ReferenceDate, helper_.fixingCalendar(), helper_.DayCounter, observationLag, helper_.frequency(),false, baseZeroRate,
+            helper_.ReferenceDate, helper_.fixingCalendar(), helper_.DayCounter, observationLag, helper_.frequency(), false, baseZeroRate,
             new Handle<YieldTermStructure>(helper_.Curve), helpers);
 
          pCPIts.recalculate();

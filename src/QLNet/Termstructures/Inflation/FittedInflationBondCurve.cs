@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace QLNet.Termstructures.Inflation
 {
-   public class FittedInflationBondCurve : ZeroIndex 
+   public class FittedInflationBondCurve : ZeroIndex
    {
       #region private data members
 
@@ -21,7 +22,7 @@ namespace QLNet.Termstructures.Inflation
       private Date maxDate_;
       private List<CPIBondHelper> bondHelpers_;
       private FittingInflationMethod fittingMethod_; // TODO Clone
-      private  DayCounter _dayCounter;
+      private DayCounter _dayCounter;
       private Calendar _calendar;
 
       private int _flatOrder = 2;
@@ -47,7 +48,7 @@ namespace QLNet.Termstructures.Inflation
 
       public YieldTermStructure Curve { get { return curve_; } }
 
-      public ZeroIndex InflationIndex { get{ return _zeroInflationIndex; } }
+      public ZeroIndex InflationIndex { get { return _zeroInflationIndex; } }
 
       public Vector Errors { get { return _errors; } protected set { _errors = value; } }
 
@@ -55,7 +56,7 @@ namespace QLNet.Termstructures.Inflation
 
       public int SmoothOrder { get { return _smoothOrder; } set { _smoothOrder = value; } }
 
-      public int FlatOrder { get { return _flatOrder; }  set { _flatOrder = value; } }
+      public int FlatOrder { get { return _flatOrder; } set { _flatOrder = value; } }
 
       public double SmoothWeight { get { return _smoothWeight; } set { _smoothWeight = value; } }
 
@@ -63,9 +64,11 @@ namespace QLNet.Termstructures.Inflation
 
       public double Cost { get => fittingMethod_.minimumCostValue(); }
 
+
+
       #endregion
 
-      public FittedInflationBondCurve(DateTime referenceDate,string familyName,
+      public FittedInflationBondCurve(DateTime referenceDate, string familyName,
                                       Region region,
                                       bool revised,
                                       bool interpolated,
@@ -85,7 +88,7 @@ namespace QLNet.Termstructures.Inflation
                                       int maxEvaluations = 10000,
                                       double simplexLambda = 1.0,
                                       int maxStationaryStateIterations = 100
-                                     ) :base(familyName,region,revised,interpolated,frequency,availabilityLag,currency,ts) 
+                                     ) : base(familyName, region, revised, interpolated, frequency, availabilityLag, currency, ts)
       {
          referenceDate_ = referenceDate;
          _calendar = calendar;
@@ -132,6 +135,25 @@ namespace QLNet.Termstructures.Inflation
       #region fitting class
       public class FittingInflationMethod
       {
+         /// <summary>
+         /// Indicates if the smooth fitter is to be used
+         /// </summary>
+         public bool UseSmoothFitter { get; set; }
+
+         protected Vector _upperBound;
+
+         /// <summary>
+         /// Defines the upper bound for the smooth curve fitting process
+         /// </summary>
+         public Vector UpperBound { get { return _upperBound; } set { _upperBound = value; } }
+
+         protected Vector _lowerBound;
+
+         /// <summary>
+         /// Defines the lower bound for the smooth curve fitting process
+         /// </summary>
+         public Vector LowerBound { get { return _lowerBound; } set { _lowerBound = value; } }
+
          public struct Datum
          {
             public Date date;
@@ -174,6 +196,9 @@ namespace QLNet.Termstructures.Inflation
          protected RelinkableHandle<ZeroInflationTermStructure> zeroInflationCurve_ = new RelinkableHandle<ZeroInflationTermStructure>();
          public class FittingInflationCost : CostFunction
          {
+
+
+            public bool UseSmoothFitter => false;
 
             private double _smoothOrder = 2.0;
 
@@ -230,9 +255,9 @@ namespace QLNet.Termstructures.Inflation
             {
 
                double tot = 0.0;
-               for(int i = 0; i < x.size()-2; ++i)
+               for (int i = 0; i < x.size() - 2; ++i)
                {
-                  tot += Math.Pow((double)i, _flatOrder) * (x[i] - x[i + 1])* (x[i] - x[i + 1]);
+                  tot += Math.Pow((double)i, _flatOrder) * (x[i] - x[i + 1]) * (x[i] - x[i + 1]);
                }
 
                return _flatWeight * tot;
@@ -267,7 +292,7 @@ namespace QLNet.Termstructures.Inflation
                   for (int k = firstCashFlow_[i]; k < cf.Count; ++k)
                   {
                      double tenor = dc.yearFraction(refDate, cf[k].date());
-                     modelPrice += cf[k].amount() * fittingMethod_.curve_.discount( tenor,true);
+                     modelPrice += cf[k].amount() * fittingMethod_.curve_.discount(tenor, true);
                   }
                   if (helper.useCleanPrice())
                      modelPrice -= bond.accruedAmount(bondSettlement);
@@ -276,7 +301,7 @@ namespace QLNet.Termstructures.Inflation
                   if (bondSettlement != refDate)
                   {
                      double tenor = dc.yearFraction(refDate, bondSettlement);
-                     modelPrice /= fittingMethod_.curve_.discount( tenor,true);
+                     modelPrice /= fittingMethod_.curve_.discount(tenor, true);
                   }
                   double marketPrice = helper.quote().link.value();
                   double error = modelPrice - marketPrice;
@@ -286,7 +311,7 @@ namespace QLNet.Termstructures.Inflation
                return values;
             }
 
-            public  Vector Error(Vector x)
+            public Vector Error(Vector x)
             {
                //TODO This method requires the new assignment of the forward inflation curve to each of the bonds
                // Each bond then needs to be assigned to a pricing method
@@ -497,7 +522,32 @@ namespace QLNet.Termstructures.Inflation
          {
             FittingInflationCost costFunction = costFunction_;
             //Constraint constraint = new BoundaryConstraint(0.0, helper_.guessSolution_[0] * 3);
-            Constraint constraint = new BoundaryConstraint(-5.0,25.0);
+
+
+            Constraint constraint = new Constraint();
+
+            if (this.UseSmoothFitter)
+            {
+
+               if (this.helper_.fittingMethod_.UpperBound == null)
+               {
+
+                  throw new NullReferenceException("FittedInflationBondCurve - fitting bounds cannot be null");
+               }
+               else
+               {
+                  constraint = new NonhomogeneousBoundaryConstraint(helper_.fittingMethod_.LowerBound, helper_.fittingMethod_.UpperBound);
+               }
+
+
+
+
+
+            }
+            else
+            {
+               constraint = new BoundaryConstraint(-5.0, 25.0);
+            }
 
             // start with the guess solution, if it exists
             Vector x = new Vector(size(), 0.0);

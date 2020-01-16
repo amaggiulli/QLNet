@@ -150,7 +150,7 @@ namespace QLNet
 
       // Inspectors
       //! total number of bonds used to fit the yield curve
-      public int numberOfBonds() {return bondHelpers_.Count;}
+      public int numberOfBonds() { return bondHelpers_.Count; }
       //! the latest date for which the curve can return values
       public override Date maxDate()
       {
@@ -274,7 +274,7 @@ namespace QLNet
             }
             public override Vector values(Vector x)
             {
-               Date refDate  = fittingMethod_.curve_.referenceDate();
+               Date refDate = fittingMethod_.curve_.referenceDate();
                DayCounter dc = fittingMethod_.curve_.dayCounter();
                int n = fittingMethod_.curve_.bondHelpers_.Count;
                Vector values = new Vector(n);
@@ -340,7 +340,7 @@ namespace QLNet
                      double tenor = dc.yearFraction(refDate, bondSettlement);
                      modelPrice /= fittingMethod_.discountFunction(x, tenor);
                   }
-                  
+
                   values[i] = modelPrice;
                }
                return values;
@@ -377,7 +377,7 @@ namespace QLNet
                      modelPrice /= fittingMethod_.discountFunction(x, tenor);
                   }
                   double marketPrice = helper.quote().link.value();
-                  values[i] = modelPrice - marketPrice;                  
+                  values[i] = modelPrice - marketPrice;
                }
                return values;
             }
@@ -391,21 +391,21 @@ namespace QLNet
          //! total number of coefficients to fit/solve for
          public virtual int size() { throw new NotImplementedException(); }
          //! output array of results of optimization problem
-         public Vector solution() { return solution_;}
+         public Vector solution() { return solution_; }
          //! final number of iterations used in the optimization problem
-         public int numberOfIterations() {return numberOfIterations_;}
+         public int numberOfIterations() { return numberOfIterations_; }
          //! final value of cost function after optimization
-         public double minimumCostValue() { return costValue_;}
+         public double minimumCostValue() { return costValue_; }
          //! clone of the current object
          public virtual FittingMethod clone() { throw new NotImplementedException(); }
          //! return whether there is a constraint at zero
-         public bool constrainAtZero() {return constrainAtZero_;}
+         public bool constrainAtZero() { return constrainAtZero_; }
          //! return weights being used
-         public Vector weights() {return weights_;}
+         public Vector weights() { return weights_; }
          //! return optimization method being used
-         public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
+         public OptimizationMethod optimizationMethod() { return optimizationMethod_; }
          //! open discountFunction to public
-         public double discount(Vector x, double t) {return discountFunction(x, t);}
+         public double discount(Vector x, double t) { return discountFunction(x, t); }
 
          //! constructor
          protected FittingMethod(bool constrainAtZero = true,
@@ -493,7 +493,7 @@ namespace QLNet
          internal void calculate()
          {
             FittingCost costFunction = costFunction_;
-            Constraint constraint = new NoConstraint();
+            Constraint constraint = new BoundaryConstraint(-5.0, 25.0);
 
             // start with the guess solution, if it exists
             Vector x = new Vector(size(), 0.0);
@@ -522,7 +522,7 @@ namespace QLNet
             Problem problem = new Problem(costFunction, constraint, x);
 
             double rootEpsilon = curve_.accuracy_;
-            double functionEpsilon =  curve_.accuracy_;
+            double functionEpsilon = curve_.accuracy_;
             double gradientNormEpsilon = curve_.accuracy_;
 
             EndCriteria endCriteria = new EndCriteria(curve_.maxEvaluations_,
