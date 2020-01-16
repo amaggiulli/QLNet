@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.11.4</VersionPrefix>
+    <VersionPrefix>1.11.5</VersionPrefix>
     <TargetFrameworks>net452;netstandard1.2;netstandard2.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
     <PackageId>RiskFirst.QLNet</PackageId>
-    <PackageVersion>1.11.4</PackageVersion>
+    <PackageVersion>1.11.5</PackageVersion>
     <Authors>Andrea Maggiulli</Authors>
     <Company />
     <Description> Fork created by Quant Foundry for Risk First</Description>
@@ -15,9 +15,6 @@
     <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
     <PackageTags>QLNet QuantLib quantitative finance financial adaptation for Quant Foundry Financial Library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.11.5.0</AssemblyVersion>
-    <FileVersion>1.11.5.0</FileVersion>
-    <Version>1.11.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
