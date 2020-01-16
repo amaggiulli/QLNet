@@ -15,6 +15,9 @@
     <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
     <PackageTags>QLNet QuantLib quantitative finance financial adaptation for Quant Foundry Financial Library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.11.5.0</AssemblyVersion>
+    <FileVersion>1.11.5.0</FileVersion>
+    <Version>1.11.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
