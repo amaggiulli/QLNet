@@ -1353,6 +1353,9 @@
     <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesRebateEngine.cs">
       <Link>Pricingengines\barrier\FdBlackScholesRebateEngine.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Pricingengines\barrier\MCBarrierEngine.cs">
+      <Link>Pricingengines\barrier\MCBarrierEngine.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\VannaVolgaBarrierEngine.cs">
       <Link>Pricingengines\barrier\VannaVolgaBarrierEngine.cs</Link>
     </Compile>
