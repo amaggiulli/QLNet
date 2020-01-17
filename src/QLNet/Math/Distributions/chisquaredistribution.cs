@@ -197,6 +197,8 @@ namespace QLNet
 
    public class NonCentralCumulativeChiSquareDistribution
    {
+      protected double df_, ncp_;
+      
       public NonCentralCumulativeChiSquareDistribution(double df, double ncp)
       {
          df_ = df;
@@ -272,17 +274,18 @@ namespace QLNet
             Utils.QL_FAIL("didn't converge");
          return (ans);
       }
-
-      protected double df_, ncp_;
    }
 
    public class NonCentralCumulativeChiSquareSankaranApprox
    {
+      protected double df_, ncp_;
+      
       public NonCentralCumulativeChiSquareSankaranApprox(double df, double ncp)
       {
          df_ = df;
          ncp_ = ncp;
       }
+      
       double value(double x)
       {
          double h = 1 - 2 * (df_ + ncp_) * (df_ + 3 * ncp_) / (3 * Math.Pow(df_ + 2 * ncp_, 2));
@@ -294,13 +297,16 @@ namespace QLNet
 
          return new CumulativeNormalDistribution().value(u);
       }
-
-      protected double df_, ncp_;
    }
 
 
    public class InverseNonCentralCumulativeChiSquareDistribution
    {
+      protected NonCentralCumulativeChiSquareDistribution nonCentralDist_;
+      protected double guess_;
+      protected int maxEvaluations_;
+      protected double accuracy_;
+      
       public InverseNonCentralCumulativeChiSquareDistribution(double df, double ncp,
                                                               int maxEvaluations = 10,
                                                               double accuracy = 1e-8)
@@ -310,6 +316,7 @@ namespace QLNet
          maxEvaluations_ = maxEvaluations;
          accuracy_ = accuracy;
       }
+      
       public double value(double x)
       {
          // first find the right side of the interval
@@ -334,6 +341,9 @@ namespace QLNet
 
       protected class MinFinder : ISolver1d
       {
+         protected NonCentralCumulativeChiSquareDistribution nonCentralDist_;
+         protected double x_;
+         
          public MinFinder(NonCentralCumulativeChiSquareDistribution nonCentralDist, double x)
          {
             nonCentralDist_ = nonCentralDist;
@@ -344,14 +354,6 @@ namespace QLNet
          {
             return x_ - nonCentralDist_.value(y);
          }
-
-         protected NonCentralCumulativeChiSquareDistribution nonCentralDist_;
-         protected double x_;
       }
-
-      protected NonCentralCumulativeChiSquareDistribution nonCentralDist_;
-      protected double guess_;
-      protected int maxEvaluations_;
-      protected double accuracy_;
    }
 }
