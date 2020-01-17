@@ -882,8 +882,8 @@
     <Compile Include="..\QLNet\Math\randomnumbers\randomsequencegenerator.cs">
       <Link>Math\randomnumbers\randomsequencegenerator.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Math\randomnumbers\rngtraits.cs">
-      <Link>Math\randomnumbers\rngtraits.cs</Link>
+    <Compile Include="..\QLNet\Math\randomnumbers\RNGTraits.cs">
+      <Link>Math\randomnumbers\RNGTraits.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\randomnumbers\seedgenerator.cs">
       <Link>Math\randomnumbers\seedgenerator.cs</Link>
