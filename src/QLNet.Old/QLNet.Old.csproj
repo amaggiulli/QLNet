@@ -15,7 +15,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -38,7 +38,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\net40\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;QL_NEGATIVE_RATES,NET40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;QL_NEGATIVE_RATES,NET452</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -60,7 +60,7 @@
     <OutputPath>bin\Debug\net45\</OutputPath>
     <DefineConstants>TRACE;DEBUG;QL_NEGATIVE_RATES,QL_DOTNET_FRAMEWORK</DefineConstants>
     <DebugType>full</DebugType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -202,6 +202,24 @@
     <Compile Include="..\QLNet\discretizedasset.cs" />
     <Compile Include="..\QLNet\Event.cs" />
     <Compile Include="..\QLNet\Exercise.cs" />
+    <Compile Include="..\QLNet\Exceptions\InvalidPriceSignException.cs">
+      <Link>Exceptions\InvalidPriceSignException.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Exceptions\MaxNumberFuncEvalExceeded.cs">
+      <Link>Exceptions\MaxNumberFuncEvalExceeded.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Exceptions\NotTradableException.cs">
+      <Link>Exceptions\NotTradableException.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Exceptions\NullEffectiveDateException.cs">
+      <Link>Exceptions\NullEffectiveDateException.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Exceptions\QLNetExceptionEnum.cs">
+      <Link>Exceptions\QLNetExceptionEnum.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Exceptions\RootNotBracketException.cs">
+      <Link>Exceptions\RootNotBracketException.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Extensions\DoubleExtension.cs">
       <Link>Extensions\DoubleExtension.cs</Link>
     </Compile>
@@ -440,6 +458,9 @@
     <Compile Include="..\QLNet\Instruments\CompositeInstrument.cs">
       <Link>Instruments\CompositeInstrument.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Instruments\CouponConversionSchedule.cs">
+      <Link>Instruments\CouponConversionSchedule.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Instruments\CPICapFloor.cs">
       <Link>Instruments\CPICapFloor.cs</Link>
     </Compile>
@@ -549,7 +570,9 @@
     <Compile Include="..\QLNet\Instruments\ZeroCouponInflationSwap.cs">
       <Link>Instruments\ZeroCouponInflationSwap.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\InterestRate.cs" />
+    <Compile Include="..\QLNet\InterestRate.cs">
+      <Link>InterestRate.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\legacy\libormarketmodels\lfmcovarparam.cs">
       <Link>legacy\libormarketmodels\lfmcovarparam.cs</Link>
     </Compile>
