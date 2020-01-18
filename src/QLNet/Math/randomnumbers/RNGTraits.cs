@@ -30,7 +30,7 @@ namespace QLNet
    public interface IRSG
    {
       int allowsErrorEstimate { get; }
-      object make_sequence_generator(int dimension, ulong seed);
+      IRNG make_sequence_generator(int dimension, ulong seed);
    }
 
    // random number traits
@@ -61,7 +61,7 @@ namespace QLNet
       }
 
       // factory
-      public object make_sequence_generator(int dimension, ulong seed)
+      public IRNG make_sequence_generator(int dimension, ulong seed)
       {
          RandomSequenceGenerator<URNG> g = new RandomSequenceGenerator<URNG>(dimension, seed);
          return (icInstance_ != null
@@ -102,7 +102,7 @@ namespace QLNet
       public int allowsErrorEstimate { get { return 0; } }
 
       // factory
-      public object make_sequence_generator(int dimension, ulong seed)
+      public IRNG make_sequence_generator(int dimension, ulong seed)
       {
          URSG g = (URSG)FastActivator<URSG>.Create().factory(dimension, seed);
          return (icInstance != null ? new InverseCumulativeRsg<URSG, IC>(g, icInstance)

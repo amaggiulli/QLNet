@@ -882,8 +882,8 @@
     <Compile Include="..\QLNet\Math\randomnumbers\randomsequencegenerator.cs">
       <Link>Math\randomnumbers\randomsequencegenerator.cs</Link>
     </Compile>
-    <Compile Include="..\QLNet\Math\randomnumbers\rngtraits.cs">
-      <Link>Math\randomnumbers\rngtraits.cs</Link>
+    <Compile Include="..\QLNet\Math\randomnumbers\RNGTraits.cs">
+      <Link>Math\randomnumbers\RNGTraits.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Math\randomnumbers\seedgenerator.cs">
       <Link>Math\randomnumbers\seedgenerator.cs</Link>
@@ -1352,6 +1352,9 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesRebateEngine.cs">
       <Link>Pricingengines\barrier\FdBlackScholesRebateEngine.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Pricingengines\barrier\MCBarrierEngine.cs">
+      <Link>Pricingengines\barrier\MCBarrierEngine.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\VannaVolgaBarrierEngine.cs">
       <Link>Pricingengines\barrier\VannaVolgaBarrierEngine.cs</Link>
