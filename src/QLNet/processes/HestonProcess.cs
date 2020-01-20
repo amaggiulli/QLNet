@@ -254,8 +254,8 @@ namespace QLNet
                double x = Math.Min(1.0 - Const.QL_EPSILON,
                                    Math.Max(0.0, new CumulativeNormalDistribution().value(dw[2])));
 
-               cdf_nu_ds f = new cdf_nu_ds(this, nu_0, nu_t, dt, discretization_);
-               double vds = new Brent().solve(f, 1e-5, -x, theta_ * dt, 0.1 * theta_ * dt);
+               cdf_nu_ds_minus_x f = new cdf_nu_ds_minus_x(x, this, nu_0, nu_t, dt, discretization_);
+               double vds = new Brent().solve(f, 1e-5, theta_ * dt, 0.1 * theta_ * dt);
 
                double vdw = (nu_t - nu_0 - kappa_*theta_*dt + kappa_*vds) / sigma_;
 
@@ -310,6 +310,24 @@ namespace QLNet
       private Handle<Quote> s0_;
       private double v0_, kappa_, theta_, sigma_, rho_;
       private new Discretization discretization_;
+
+      private class cdf_nu_ds_minus_x : ISolver1d
+      {
+         private double x0;
+         private cdf_nu_ds cdf_nu;
+
+         public cdf_nu_ds_minus_x(double _x0, HestonProcess _process, double _nu_0, double _nu_t, double _dt,
+                                  Discretization _discretization)
+         {
+            cdf_nu = new cdf_nu_ds(_process, _nu_0, _nu_t, _dt, _discretization);
+            x0 = _x0;
+         }
+
+         public override double value(double v)
+         {
+            return cdf_nu.value(v) - x0;
+         }
+      }
 
       private class cdf_nu_ds : ISolver1d
       {

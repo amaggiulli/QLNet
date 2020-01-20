@@ -540,27 +540,28 @@ namespace TestSuite
                               expected, calculated, error, maxErrorAllowed);
             }
 
-            // TODO MakeMCBarrierEngine
-            //double maxMcRelativeErrorAllowed = 2.0e-2;
+            double maxMcRelativeErrorAllowed = 2.0e-2;
 
-            //IPricingEngine mcEngine =
-            //   MakeMCBarrierEngine<LowDiscrepancy>(stochProcess)
-            //   .withStepsPerYear(1)
-            //   .withBrownianBridge()
-            //   .withSamples(131071) // 2^17-1
-            //   .withMaxSamples(1048575) // 2^20-1
-            //   .withSeed(5);
+            IPricingEngine mcEngine =
+               new MakeMCBarrierEngine<LowDiscrepancy, GeneralStatistics>(stochProcess)
+            .withStepsPerYear(1)
+            .withBrownianBridge()
+            .withSamples(131071) // 2^17-1
+            .withMaxSamples(1048575) // 2^20-1
+            .withSeed(5)
+            .getAsPricingEngine();
 
-            //barrierCallOption.setPricingEngine(mcEngine);
-            //calculated = barrierCallOption.NPV();
-            //error = std::fabs(calculated-expected)/expected;
-            //if (error>maxMcRelativeErrorAllowed) {
-            //   REPORT_FAILURE("value", values[i].type, values[i].barrier,
-            //                  rebate, callPayoff, exercise, underlyingPrice,
-            //                  q, r, today, values[i].volatility,
-            //                  expected, calculated, error,
-            //                  maxMcRelativeErrorAllowed);
-            //}
+            barrierCallOption.setPricingEngine(mcEngine);
+            calculated = barrierCallOption.NPV();
+            error = Math.Abs(calculated - expected) / expected;
+            if (error > maxMcRelativeErrorAllowed)
+            {
+               REPORT_FAILURE("value", values[i].type, values[i].barrier,
+                              rebate, callPayoff, exercise, underlyingPrice,
+                              q, r, today, values[i].volatility,
+                              expected, calculated, error,
+                              maxMcRelativeErrorAllowed);
+            }
 
          }
 
@@ -639,27 +640,27 @@ namespace TestSuite
                               expected, calculated, error, maxErrorAllowed);
             }
 
-            // TODO MakeMCBarrierEngine
-            //double maxMcRelativeErrorAllowed = 0.01;
-            //IPricingEngine mcEngine =
-            //   MakeMCBarrierEngine<LowDiscrepancy>(stochProcess)
-            //   .withStepsPerYear(1)
-            //   .withBrownianBridge()
-            //   .withSamples(131071) // 2^17-1
-            //   .withMaxSamples(1048575) // 2^20-1
-            //   .withSeed(10);
+            double maxMcRelativeErrorAllowed = 0.01;
+            IPricingEngine mcEngine =
+               new MakeMCBarrierEngine<LowDiscrepancy, GeneralStatistics>(stochProcess)
+            .withStepsPerYear(1)
+            .withBrownianBridge()
+            .withSamples(131071) // 2^17-1
+            .withMaxSamples(1048575) // 2^20-1
+            .withSeed(10)
+            .getAsPricingEngine();
 
-            //barrierCallOption.setPricingEngine(mcEngine);
-            //calculated = barrierCallOption.NPV();
-            //error = Math.Abs(calculated-expected)/expected;
-            //if (error>maxMcRelativeErrorAllowed)
-            //{
-            //   REPORT_FAILURE("value", values[i].type, values[i].barrier,
-            //                  rebate, callPayoff, exercise, underlyingPrice,
-            //                  q, r, today, values[i].volatility,
-            //                  expected, calculated, error,
-            //                  maxMcRelativeErrorAllowed);
-            //}
+            barrierCallOption.setPricingEngine(mcEngine);
+            calculated = barrierCallOption.NPV();
+            error = Math.Abs(calculated - expected) / expected;
+            if (error > maxMcRelativeErrorAllowed)
+            {
+               REPORT_FAILURE("value", values[i].type, values[i].barrier,
+                              rebate, callPayoff, exercise, underlyingPrice,
+                              q, r, today, values[i].volatility,
+                              expected, calculated, error,
+                              maxMcRelativeErrorAllowed);
+            }
          }
       }
 
