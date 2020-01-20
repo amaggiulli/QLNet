@@ -29,7 +29,8 @@ namespace QLNet
          FdmSolverDesc solverDesc,
          FdmSchemeDesc schemeDesc = null,
          bool localVol = false,
-         double? illegalLocalVolOverwrite = null)
+         double? illegalLocalVolOverwrite = null,
+         Handle<FdmQuantoHelper> quantoHelper = null)
       {
          process_ = process;
          strike_ = strike;
@@ -37,6 +38,11 @@ namespace QLNet
          schemeDesc_ = schemeDesc ?? new FdmSchemeDesc().Douglas();
          localVol_ = localVol;
          illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
+         quantoHelper_ = quantoHelper;
+         quantoHelper_ = quantoHelper ?? new Handle<FdmQuantoHelper>();
+
+         process_.registerWith(update);
+         quantoHelper_.registerWith(update);
       }
 
       public double valueAt(double s)
@@ -65,7 +71,10 @@ namespace QLNet
       {
          FdmBlackScholesOp op = new FdmBlackScholesOp(
             solverDesc_.mesher, process_.currentLink(), strike_,
-            localVol_, illegalLocalVolOverwrite_);
+            localVol_, illegalLocalVolOverwrite_, 0,
+            (quantoHelper_.empty())
+            ? null
+            : quantoHelper_.currentLink());
 
          solver_ = new Fdm1DimSolver(solverDesc_, schemeDesc_, op);
       }
@@ -77,5 +86,6 @@ namespace QLNet
       protected bool localVol_;
       protected double? illegalLocalVolOverwrite_;
       protected Fdm1DimSolver solver_;
+      protected Handle<FdmQuantoHelper> quantoHelper_;
    }
 }
