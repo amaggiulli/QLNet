@@ -77,7 +77,7 @@ namespace QLNet
          alpha_ = 2.0 - Math.Sqrt(2.0);
       }
 
-      public void step(ref object a, double t)
+      public void step(ref object a, double t, double theta = 1.0)
       {
          int i;
          Vector aInit = new Vector((a as Vector).size());

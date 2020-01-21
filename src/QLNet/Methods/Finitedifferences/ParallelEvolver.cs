@@ -62,7 +62,7 @@ namespace QLNet
          }
       }
 
-      public void step(ref object o, double t)
+      public void step(ref object o, double t, double theta = 1.0)
       {
          List<Vector> a = (List<Vector>)o;
          for (int i = 0; i < evolvers_.Count; i++)
