@@ -59,14 +59,14 @@ namespace QLNet
 
       public void applyTo(object o, double t)
       {
-         Vector a = (Vector) o;
+         Vector a = (Vector)o;
          Vector aCopy = new Vector(a);
 
-         int iter = dividendTimes_.BinarySearch(t);
+         int iterIndex = dividendTimes_.BinarySearch(t);
 
-         if (iter != dividendTimes_.Count)
+         if (iterIndex >= 0)
          {
-            double dividend = dividends_[iter];
+            double dividend = dividends_[iterIndex];
 
             if (mesher_.layout().dim().Count == 1)
             {

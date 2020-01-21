@@ -93,7 +93,7 @@ namespace QLNet
       {
          int n = y1.Count;
          List<double> y = new List<double>(y1);
-         List<double> yScale = new List<double>(n);
+         List<double> yScale = new InitializedList<double>(n);
          double x = x1;
          double h = h1_ * (x1 <= x2 ? 1 : -1);
          double hnext = 0, hdid = 0;
@@ -141,7 +141,7 @@ namespace QLNet
       {
          int n = y.Count;
          double errmax, xnew;
-         List<double> yerr = new List<double>(n), ytemp = new List<double>(n);
+         List<double> yerr = new InitializedList<double>(n), ytemp = new InitializedList<double>(n);
 
          double h = htry;
 
@@ -193,12 +193,12 @@ namespace QLNet
                           OdeFct derivs)
       {
          int n = y.Count;
-         List<double> ak2 = new List<double>(n),
-         ak3 = new List<double>(n),
-         ak4 = new List<double>(n),
-         ak5 = new List<double>(n),
-         ak6 = new List<double>(n),
-         ytemp = new List<double>(n);
+         List<double> ak2 = new InitializedList<double>(n),
+         ak3 = new InitializedList<double>(n),
+         ak4 = new InitializedList<double>(n),
+         ak5 = new InitializedList<double>(n),
+         ak6 = new InitializedList<double>(n),
+         ytemp = new InitializedList<double>(n);
 
          // first step
          for (int i = 0; i < n; i++)
