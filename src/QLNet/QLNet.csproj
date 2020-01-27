@@ -14,7 +14,7 @@
     <PackageLicenseUrl>http://qlnet.sourceforge.net/License.html</PackageLicenseUrl>
     <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
     <PackageTags>QLNet QuantLib quantitative finance financial adaptation for Quant Foundry Financial Library</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
