@@ -71,10 +71,10 @@ steps:
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'BUILD_BUILDNUMBER'
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   displayName: 'Publish to Nuget.org'
   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'RiskFirst Nuget.org'
+   command: 'push'
+   packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+   nuGetFeedType: 'external'
+   publishFeedCredentials: 'RiskFirst Nuget.org'
