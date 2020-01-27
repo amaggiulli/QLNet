@@ -36,7 +36,6 @@ steps:
   env:
     BUILD_BUILDNUMBER: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
 
-- script: echo $(BUILD_BUILDNUMBER)
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -63,18 +62,19 @@ steps:
     feedsToUse: 'select'
     versioningScheme: 'off'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
 - task: DotNetCoreCLI@2
+  displayName: 'Pack'
   inputs:
     command: 'pack'
     packagesToPack: '**/QLNet.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'BUILD_BUILDNUMBER'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish to Nuget.org'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'RiskFirst Nuget.org'
