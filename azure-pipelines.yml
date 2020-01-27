@@ -36,19 +36,6 @@ steps:
   env:
     BUILD_BUILDNUMBER: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
 
-- task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.203'
-
-# Patch preview project versions (only when on master branch)
-- task: CmdLine@2
-  displayName: 'Install dot net tools'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    script: 'npm i -g dotnettools'
-
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
