@@ -36,6 +36,7 @@ steps:
   env:
     BUILD_BUILDNUMBER: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
 
+- script: echo $(BUILD_BUILDNUMBER)
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -75,4 +76,5 @@ steps:
     command: 'pack'
     packagesToPack: '**/QLNet.csproj'
     nobuild: true
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'BUILD_BUILDNUMBER'
