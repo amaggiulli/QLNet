@@ -3,15 +3,15 @@
 #When QLNet publishes a new version by pull request to master we should:
 # 1 merge its master to our master
 # 2 merge our develop branch to our master
-# 3 modify this yaml
+# 3 modify this yaml to release from master
 
 trigger:
   branches:
       include:
-#      - master
+      - master
       - develop
 pr:
-#- master
+- master
 - develop
 
 pool:
@@ -24,7 +24,7 @@ variables:
   value: 1.11
 # Counter for each build run.
 - name: Version.Revision
-  value: $[counter(variables['Version.MajorMinor'], 6)]
+  value: $[counter(variables['Version.MajorMinor'], 0)]
 - name: BUILD_BUILDNUMBER
   value: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
 - name: Projects
@@ -67,14 +67,16 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/QLNet.csproj'
+    includesymbols: true 
     nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'BUILD_BUILDNUMBER'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Publish to Nuget.org'
+- task: NuGetCommand@2
+  displayName: 'Publish to Nuget.org from develop branch only'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'RiskFirst Nuget.org'
+   command: 'push'
+   packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+   nuGetFeedType: 'external'
+   publishFeedCredentials: 'RiskFirst Nuget.org'
