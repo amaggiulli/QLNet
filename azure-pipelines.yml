@@ -3,52 +3,46 @@
 #When QLNet publishes a new version by pull request to master we should:
 # 1 merge its master to our master
 # 2 merge our develop branch to our master
-# 3 modify this yaml (change master to develop in the conditions) to make master a release branch and use develop for preview 
+# 3 modify this yaml
 
 trigger:
   branches:
       include:
-      - master
+#      - master
       - develop
 pr:
-- master
+#- master
 - develop
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
-  Projects: '**/QLNet.sln'
+- name: BuildConfiguration
+  value: Release
+- name: 'Version.MajorMinor'
+  value: 1.11
+# Counter for each build run.
+- name: Version.Revision
+  value: $[counter(variables['Version.MajorMinor'], 6)]
+- name: BUILD_BUILDNUMBER
+  value: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
+- name: Projects
+  value: '**/QLNet.sln'
 
 steps:
-# Install required SDKs and tools
-- task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '2.2.203'
+- script: echo $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
+- powershell:
+  env:
+    BUILD_BUILDNUMBER: $(Version.MajorMinor).$(Version.Revision).$(Build.BuildID)
 
-# Patch preview project versions (only when on master branch)
-- task: CmdLine@2
-  displayName: 'Install dot net tools'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+- task: DotNetCoreCLI@2
+  displayName: Restore
   inputs:
-    script: 'npm i -g dotnettools'
-- task: CmdLine@2
-  displayName: 'Update project version patch'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    script: 'dnt bump-versions patch'
-    failOnStderr: true
-- task: CmdLine@2
-  displayName: 'Patch project version preview'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    script: 'dnt bump-versions preview "$(Build.BuildNumber)"'
-    failOnStderr: true
+    command: restore
+    projects: '$(Projects)'
+    vstsFeed: '8485f31c-8383-4a52-9f73-cb780c09dd25'
 
-# Build and test
 - task: DotNetCoreCLI@2
   displayName: 'Build solution'
   inputs:
@@ -57,6 +51,7 @@ steps:
     arguments: '--configuration $(BuildConfiguration)'
     feedsToUse: 'select'
     versioningScheme: 'off'
+
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
   inputs:
@@ -67,14 +62,6 @@ steps:
     feedsToUse: 'select'
     versioningScheme: 'off'
 
-# Publish artifacts
-- task: CopyFiles@2
-  displayName: 'Copy packages'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  inputs:
-    Contents: '**/*.nupkg'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    flattenFolders: true
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifacts'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -83,6 +70,9 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-#TO DO ADD PUSH TO NUGET
-#- script: nuget push *.nupkg oy2mnd2ip44zphcfttbar7i5kn4tttzulg6yhpkvzxvf6q -src https://api.nuget.org/v3/index.json -SkipDuplicate
-
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/QLNet.csproj'
+    nobuild: true
+    versioningScheme: 'byBuildNumber'
