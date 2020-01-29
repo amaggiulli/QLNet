@@ -55,7 +55,7 @@ namespace QLNet
 
       #region IMixedScheme interface
 
-      public void step(ref object a, double t)
+      public void step(ref object a, double t, double theta = 1.0)
       {
          Utils.QL_REQUIRE(t - dt_.Value > -1e-8, () => "a step towards negative time given");
 

@@ -1093,6 +1093,9 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\CraigSneydScheme.cs">
       <Link>Methods\Finitedifferences\Schemes\CraigSneydScheme.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\CrankNicolsonScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\CrankNicolsonScheme.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\DouglasScheme.cs">
       <Link>Methods\Finitedifferences\Schemes\DouglasScheme.cs</Link>
     </Compile>
@@ -1105,8 +1108,14 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\ImplicitEulerScheme.cs">
       <Link>Methods\Finitedifferences\Schemes\ImplicitEulerScheme.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\MethodOfLinesScheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\MethodOfLinesScheme.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\ModifiedCraigSneydScheme.cs">
       <Link>Methods\Finitedifferences\Schemes\ModifiedCraigSneydScheme.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Schemes\TrBDF2Scheme.cs">
+      <Link>Methods\Finitedifferences\Schemes\TrBDF2Scheme.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs</Link>
