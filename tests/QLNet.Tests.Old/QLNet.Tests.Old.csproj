@@ -112,6 +112,7 @@
     <Compile Include="..\QLNet.Tests\T_CreditDefaultSwap.cs" />
     <Compile Include="..\QLNet.Tests\T_DefaultProbabilityCurves.cs" />
     <Compile Include="..\QLNet.Tests\T_DividendOption.cs" />
+	<Compile Include="..\QLNet.Tests\T_FdHeston.cs" />
     <Compile Include="..\QLNet.Tests\T_Inflation.cs" />
     <Compile Include="..\QLNet.Tests\T_InflationCapFlooredCouponTest.cs" />
     <Compile Include="..\QLNet.Tests\T_InflationCapFloorTest.cs" />
