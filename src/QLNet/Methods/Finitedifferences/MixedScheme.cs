@@ -27,7 +27,7 @@ namespace QLNet
 
    public interface IMixedScheme
    {
-      void step(ref object a, double t);
+      void step(ref object a, double t, double theta = 1.0);
       void setStep(double dt);
    }
 
@@ -55,7 +55,7 @@ namespace QLNet
          bcs_ = bcs;
       }
 
-      public void step(ref object o, double t)
+      public void step(ref object o, double t, double theta = 1.0)
       {
          Vector a = (Vector)o;
 

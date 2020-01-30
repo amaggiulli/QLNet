@@ -49,7 +49,7 @@ namespace QLNet
       #endregion
 
       #region IMixedScheme interface
-      public void step(ref object a, double t)
+      public void step(ref object a, double t, double theta = 1.0)
       {
          Utils.QL_REQUIRE(t - dt_.Value > -1e-8, () => "a step towards negative time given");
          map_.setTime(Math.Max(0.0, t - dt_.Value), t);
@@ -57,25 +57,37 @@ namespace QLNet
 
          bcSet_.applyBeforeSolving(map_, a as Vector);
 
-         if (solverType_ == SolverType.BiCGstab)
+         if (map_.size() == 1)
          {
-            BiCGStabResult result =
-               new BiCGStab(this.apply, Math.Max(10, (a as Vector).Count), relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
-
-            iterations_ += result.Iterations;
-            a = result.X;
-         }
-         else if (solverType_ == SolverType.GMRES)
-         {
-            GMRESResult result =
-               new GMRES(this.apply, Math.Max(10, (a as Vector).Count) / 10, relTol_, x => map_.preconditioner(x, -dt_.Value)).solve(a as Vector, a as Vector);
-
-            iterations_ += result.Errors.Count;
-            a = result.X;
+            a = map_.solve_splitting(0, a as Vector, -theta * dt_.Value);
          }
          else
-            Utils.QL_FAIL("unknown/illegal solver type");
+         {
+            if (solverType_ == SolverType.BiCGstab)
+            {
+               BiCGStab.MatrixMult preconditioner = x => map_.preconditioner(x, -theta * dt_.Value);
+               BiCGStab.MatrixMult applyF = x => this.apply(x, theta);
 
+               BiCGStabResult result =
+                  new BiCGStab(applyF, Math.Max(10, (a as Vector).Count), relTol_, preconditioner).solve(a as Vector, a as Vector);
+
+               iterations_ += result.Iterations;
+               a = result.X;
+            }
+            else if (solverType_ == SolverType.GMRES)
+            {
+               GMRES.MatrixMult preconditioner = x => map_.preconditioner(x, -theta * dt_.Value);
+               GMRES.MatrixMult applyF = x => this.apply(x, theta);
+
+               GMRESResult result =
+                  new GMRES(applyF, Math.Max(10, (a as Vector).Count) / 10, relTol_, preconditioner).solve(a as Vector, a as Vector);
+
+               iterations_ += result.Errors.Count;
+               a = result.X;
+            }
+            else
+               Utils.QL_FAIL("unknown/illegal solver type");
+         }
          bcSet_.applyAfterSolving(a as Vector);
       }
 
@@ -90,9 +102,9 @@ namespace QLNet
          return iterations_;
       }
 
-      protected Vector apply(Vector r)
+      protected Vector apply(Vector r, double theta = 1.0)
       {
-         return r - dt_.Value * map_.apply(r);
+         return r - (theta * dt_.Value) * map_.apply(r);
       }
 
       protected double? dt_;
