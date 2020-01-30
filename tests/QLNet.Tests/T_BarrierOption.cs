@@ -5,7 +5,7 @@
 //  QLNet is free software: you can redistribute it and/or modify it
 //  under the terms of the QLNet license.  You should have received a
 //  copy of the license along with this program; if not, license is
-//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+//  available online at <http://qlnet.sourceforge.net/License.html>.
 //
 //  QLNet is a based on QuantLib, a free-software/open-source library
 //  for financial quantitative analysts and developers - http://quantlib.org/
@@ -16,7 +16,7 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
+#if NET40 || NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -25,14 +25,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET452
+#if NET40 || NET45
    [TestClass()]
 #endif
    public class T_BarrierOption
    {
       private void REPORT_FAILURE(string greekName,
                                   Barrier.Type barrierType,
-                                  double  barrier,
+                                  double barrier,
                                   double rebate,
                                   StrikedTypePayoff payoff,
                                   Exercise exercise,
@@ -96,7 +96,7 @@ namespace TestSuite
                       + "    risk-free rate:   " + r + "\n"
                       + "    reference date:   " + today + "\n"
                       + "    maturity:         " + exercise.lastDate() + "\n"
-                      + "    25PutVol:         " +  vol25Put + "\n"
+                      + "    25PutVol:         " + vol25Put + "\n"
                       + "    atmVol:           " + atmVol + "\n"
                       + "    25CallVol:        " + vol25Call + "\n"
                       + "    volatility:       " + v + "\n\n"
@@ -203,7 +203,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
+#if NET40 || NET452
       [TestMethod()]
 #else
       [Fact]
@@ -360,10 +360,10 @@ namespace TestSuite
          {
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
@@ -460,7 +460,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
+#if NET40 || NET452
       [TestMethod()]
 #else
       [Fact]
@@ -567,7 +567,7 @@ namespace TestSuite
 
       }
 
-#if NET452
+#if NET40 || NET452
       [TestMethod()]
 #else
       [Fact]
@@ -575,8 +575,6 @@ namespace TestSuite
       public void testBeagleholeValues()
       {
          // Testing barrier options against Beaglehole's values
-
-
          /*
             Data from
             "Going to Extreme: Correcting Simulation Bias in Exotic
@@ -664,7 +662,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
+#if NET40 || NET452
       [TestMethod()]
 #else
       [Fact]
@@ -738,25 +736,23 @@ namespace TestSuite
          GeneralizedBlackScholesProcess localVolProcess = new BlackScholesMertonProcess(s0, qTS, rTS,
                                                                                         new Handle<BlackVolTermStructure>(volTS));
 
-         double v0    = 0.195662;
+         double v0 = 0.195662;
          double kappa = 5.6628;
          double theta = 0.0745911;
          double sigma = 1.1619;
-         double rho   = -0.511493;
+         double rho = -0.511493;
 
          HestonProcess hestonProcess = new HestonProcess(rTS, qTS, s0, v0, kappa, theta, sigma, rho);
 
-         HestonModel hestonModel =  new HestonModel(hestonProcess);
-
-         // TODO FdHestonBarrierEngine
-         //IPricingEngine fdHestonEngine = new FdHestonBarrierEngine(hestonModel, 100, 400, 50);
+         HestonModel hestonModel = new HestonModel(hestonProcess);
+         IPricingEngine fdHestonEngine = new FdHestonBarrierEngine(hestonModel, 100, 400, 50);
 
          IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess, 100, 400, 0, new FdmSchemeDesc().Douglas(), true, 0.35);
 
-         double strike  = s0.link.value();
+         double strike = s0.link.value();
          double barrier = 3000;
-         double rebate  = 100;
-         Date exDate  = settlementDate + new Period(20, TimeUnit.Months);
+         double rebate = 100;
+         Date exDate = settlementDate + new Period(20, TimeUnit.Months);
 
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, strike);
 
@@ -764,10 +760,9 @@ namespace TestSuite
 
          BarrierOption barrierOption = new BarrierOption(Barrier.Type.DownOut, barrier, rebate, payoff, exercise);
 
-         // TODO FdHestonBarrierEngine
-         //barrierOption.setPricingEngine(fdHestonEngine);
-         //double expectedHestonNPV = 111.5;
-         //double calculatedHestonNPV = barrierOption.NPV();
+         barrierOption.setPricingEngine(fdHestonEngine);
+         double expectedHestonNPV = 111.5;
+         double calculatedHestonNPV = barrierOption.NPV();
 
          barrierOption.setPricingEngine(fdLocalVolEngine);
          double expectedLocalVolNPV = 132.8;
@@ -775,16 +770,15 @@ namespace TestSuite
 
          double tol = 0.01;
 
-         /* TODO FdHestonBarrierEngine
-         if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV)
+         if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol * expectedHestonNPV)
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "
-                        + "\n    strike:     " + payoff.strike()
-                        + "\n    barrier:    " + barrier
-                        + "\n    maturity:   " + exDate
-                        + "\n    calculated: " + calculatedHestonNPV
-                        + "\n    expected:   " + expectedHestonNPV);
-         }*/
+                         + "\n    strike:     " + payoff.strike()
+                         + "\n    barrier:    " + barrier
+                         + "\n    maturity:   " + exDate
+                         + "\n    calculated: " + calculatedHestonNPV
+                         + "\n    expected:   " + expectedHestonNPV);
+         }
          if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol * expectedLocalVolNPV)
          {
             QAssert.Fail("Failed to reproduce Heston barrier price for "
@@ -796,7 +790,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
+#if NET40 || NET452
       [TestMethod()]
 #else
       [Fact]
@@ -1007,9 +1001,9 @@ namespace TestSuite
                                                        spot.value() * qTS.discount(values[i].t) / rTS.discount(values[i].t),
                                                        values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
             IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
-                                                                          new Handle<Quote> (spot),
-                                                                          new Handle<YieldTermStructure> (rTS),
-                                                                          new Handle<YieldTermStructure> (qTS),
+                                                                          new Handle<Quote>(spot),
+                                                                          new Handle<YieldTermStructure>(rTS),
+                                                                          new Handle<YieldTermStructure>(qTS),
                                                                           true,
                                                                           bsVanillaPrice);
             barrierOption.setPricingEngine(vannaVolgaEngine);
@@ -1024,6 +1018,128 @@ namespace TestSuite
                                  values[i].q, values[i].r, today, values[i].vol25Put,
                                  values[i].volAtm, values[i].vol25Call, values[i].v,
                                  expected, calculated, error, values[i].tol);
+            }
+         }
+      }
+
+#if NET40 || NET452
+      [TestMethod()]
+#else
+      [Fact]
+#endif
+      public void testDividendBarrierOption()
+      {
+         //Testing barrier option pricing with discrete dividends...
+         SavedSettings backup = new SavedSettings();
+
+         DayCounter dc = new Actual365Fixed();
+
+         Date today = new Date(11, Month.February, 2018);
+         Date maturity = today + new Period(1, TimeUnit.Years);
+         Settings.setEvaluationDate(today);
+
+         double spot = 100.0;
+         double strike = 105.0;
+         double rebate = 5.0;
+
+         double[] barriers = new double[] { 80.0, 120.0 };
+         Barrier.Type[] barrierTypes = new Barrier.Type[] { Barrier.Type.DownOut, Barrier.Type.UpOut };
+
+         double r = 0.05;
+         double q = 0.0;
+         double v = 0.02;
+
+         Handle<Quote> s0 = new Handle<Quote>(new SimpleQuote(spot));
+         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, q, dc));
+         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, r, dc));
+         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(today, v, dc));
+
+         BlackScholesMertonProcess bsProcess = new
+         BlackScholesMertonProcess(s0, qTS, rTS, volTS);
+
+         IPricingEngine douglas = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().Douglas());
+
+         IPricingEngine crankNicolson = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().CrankNicolson());
+
+         IPricingEngine craigSnyed = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().CraigSneyd());
+
+         IPricingEngine hundsdorfer = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().Hundsdorfer());
+
+         IPricingEngine mol = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().MethodOfLines());
+
+         IPricingEngine trPDF2 = new
+         FdBlackScholesBarrierEngine(
+            bsProcess, 100, 100, 0, new FdmSchemeDesc().TrBDF2());
+
+         IPricingEngine hestonEngine = new
+         FdHestonBarrierEngine(new
+                               HestonModel(new
+                                           HestonProcess(
+                                              rTS, qTS, s0, v * v, 1.0, v * v, 0.005, 0.0)), 50, 101, 3);
+
+         IPricingEngine[] engines = new IPricingEngine[]
+         {
+            douglas, crankNicolson,
+            trPDF2, craigSnyed, hundsdorfer, mol, hestonEngine
+         };
+
+         StrikedTypePayoff payoff = new
+         PlainVanillaPayoff(Option.Type.Put, strike);
+
+         Exercise exercise = new
+         EuropeanExercise(maturity);
+
+         double divAmount = 30;
+         Date divDate = today + new Period(6, TimeUnit.Months);
+
+         double[] expected = new double[]
+         {
+            rTS.currentLink().discount(divDate)* rebate,
+            payoff.value(
+               (spot - divAmount * rTS.currentLink().discount(divDate)) / rTS.currentLink().discount(maturity))
+            * rTS.currentLink().discount(maturity)
+         };
+
+         double relTol = 1e-4;
+         for (int i = 0; i < barriers.Length; ++i)
+         {
+            for (int j = 0; j < engines.Length; ++j)
+            {
+               double barrier = barriers[i];
+               Barrier.Type barrierType = barrierTypes[i];
+
+               DividendBarrierOption barrierOption = new DividendBarrierOption(
+                  barrierType, barrier, rebate, payoff, exercise,
+                  new InitializedList<Date>(1, divDate),
+                  new InitializedList<double>(1, divAmount));
+
+               barrierOption.setPricingEngine(engines[j]);
+
+               double calculated = barrierOption.NPV();
+
+               double diff = Math.Abs(calculated - expected[i]);
+               if (diff > relTol * expected[i])
+               {
+                  QAssert.Fail("Failed to reproduce barrier price with "
+                               + "discrete dividends for "
+                               + "\n    strike:     " + strike
+                               + "\n    barrier:    " + barrier
+                               + "\n    maturity:   " + maturity
+                               + "\n    calculated: " + calculated
+                               + "\n    expected:   " + expected[i]
+                               + "\n    difference  " + diff
+                               + "\n    tolerance   " + relTol * expected[i]);
+               }
             }
          }
       }
