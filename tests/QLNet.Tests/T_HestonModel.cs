@@ -703,9 +703,9 @@ namespace TestSuite
       }
 
 #if NET40 || NET452
-      [TestMethod()]
+      [TestCategory("LongRun"), TestMethod()]
 #else
-      [Fact]
+      [Fact(Skip = "LongRun")]
 #endif
       public void testKahlJaeckelCase()
       {
