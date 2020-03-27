@@ -263,7 +263,7 @@ namespace QLNet
                      double tenor = dc.yearFraction(refDate, cf[k].date());
                      modelPrice += cf[k].amount() * fittingMethod_.discountFunction(x, tenor);
                   }
-                  if (helper.useCleanPrice())
+                  if (helper.priceType() == Bond.Price.Type.Clean)
                      modelPrice -= bond.accruedAmount(bondSettlement);
 
                   // adjust price (NPV) for forward settlement
