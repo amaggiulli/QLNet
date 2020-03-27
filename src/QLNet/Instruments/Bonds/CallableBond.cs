@@ -539,7 +539,7 @@ namespace QLNet
                arguments.callabilityDates.Add(putCallSchedule_[i].date());
                arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
 
-               if (putCallSchedule_[i].price().type() == Callability.Price.Type.Clean)
+               if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
                {
                   /* calling accrued() forces accrued interest to be zero
                      if future option date is also coupon date, so that dirty

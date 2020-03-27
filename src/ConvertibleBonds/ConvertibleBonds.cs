@@ -75,14 +75,14 @@ namespace ConvertibleBonds
             for (int i = 0; i < callLength.Length; i++)
             {
                SoftCallability s = new SoftCallability(
-                  new Callability.Price(callPrices[i], Callability.Price.Type.Clean), schedule.date(callLength[i]),
+                  new Bond.Price(callPrices[i], Bond.Price.Type.Clean), schedule.date(callLength[i]),
                   1.20);
                callability.Add(s);
             }
 
             for (int j = 0; j < putLength.Length; j++)
             {
-               Callability s = new Callability(new Callability.Price(putPrices[j], Callability.Price.Type.Clean),
+               Callability s = new Callability(new Bond.Price(putPrices[j], Bond.Price.Type.Clean),
                                                Callability.Type.Put, schedule.date(putLength[j]));
                callability.Add(s);
             }
