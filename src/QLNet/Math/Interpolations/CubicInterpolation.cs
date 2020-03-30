@@ -137,21 +137,21 @@ namespace QLNet
 
       public List<double> aCoefficients()
       {
-         return ((CubicInterpolationImpl)impl_).a_;
+         return ((CubicInterpolationImpl) impl_).a_;
       }
 
       public List<double> bCoefficients()
       {
-         return ((CubicInterpolationImpl)impl_).b_;
+         return ((CubicInterpolationImpl) impl_).b_;
       }
 
       public List<double> cCoefficients()
       {
-         return ((CubicInterpolationImpl)impl_).c_;
+         return ((CubicInterpolationImpl) impl_).c_;
       }
    }
 
-   // convenience classes
+// convenience classes
 
    public class CubicNaturalSpline : CubicInterpolation
    {
@@ -161,7 +161,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Spline, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class MonotonicCubicNaturalSpline : CubicInterpolation
@@ -172,7 +172,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Spline, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class CubicSplineOvershootingMinimization1 : CubicInterpolation
@@ -183,7 +183,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.SplineOM1, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class CubicSplineOvershootingMinimization2 : CubicInterpolation
@@ -194,7 +194,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.SplineOM2, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class AkimaCubicInterpolation : CubicInterpolation
@@ -205,7 +205,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Akima, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class KrugerCubic : CubicInterpolation
@@ -216,7 +216,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Kruger, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class HarmonicCubic : CubicInterpolation
@@ -227,7 +227,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Harmonic, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class FritschButlandCubic : CubicInterpolation
@@ -238,7 +238,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.FritschButland, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class Parabolic : CubicInterpolation
@@ -249,7 +249,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Parabolic, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    public class MonotonicParabolic : CubicInterpolation
@@ -260,7 +260,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Parabolic, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
    }
 
    /// <summary>
@@ -323,7 +323,7 @@ namespace QLNet
       public Cubic() : this(CubicInterpolation.DerivativeApprox.Kruger, false,
                                CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                                CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      { }
+      {}
 
       public Cubic(CubicInterpolation.DerivativeApprox da, bool monotonic,
                    CubicInterpolation.BoundaryCondition leftCondition, double leftConditionValue,
@@ -633,6 +633,9 @@ namespace QLNet
                               (Math.Abs(S[1] - S[0]) + Math.Abs(2 * S[0] * S[1] - 4 * S[0] * S[0] * S[1]));
                      tmp[1] = (Math.Abs(S[2] - S[1]) * S[0] + Math.Abs(S[0] - 2 * S[0] * S[1]) * S[1]) /
                               (Math.Abs(S[2] - S[1]) + Math.Abs(S[0] - 2 * S[0] * S[1]));
+                     tmp[0] = (Math.Abs(S[1] - S[0]) + Math.Abs(2 * S[0] * S[1] - 4 * S[0] * S[0] * S[1])) == 0.0 ?  0.0 : tmp[0];
+                     tmp[1] = (Math.Abs(S[2] - S[1]) + Math.Abs(S[0] - 2 * S[0] * S[1])) == 0.0 ? 0.0 : tmp[1];
+
                      for (int i = 2; i < size_ - 2; ++i)
                      {
                         if ((S[i - 2].IsEqual(S[i - 1])) && (S[i].IsNotEqual(S[i + 1])))
@@ -680,7 +683,7 @@ namespace QLNet
                      {
                         double w1 = 2 * dx[i] + dx[i - 1];
                         double w2 = dx[i] + 2 * dx[i - 1];
-                        if (S[i - 1] * S[i] <= 0.0)
+                        if (S[i - 1]*S[i] <= 0.0)
                            // slope changes sign at point
                            tmp[i] = 0.0;
                         else
@@ -690,11 +693,11 @@ namespace QLNet
                      }
                      // end points [0]
                      tmp[0] = ((2 * dx[0] + dx[1]) * S[0] - dx[0] * S[1]) / (dx[1] + dx[0]);
-                     if (tmp[0] * S[0] < 0.0)
+                     if (tmp[0]*S[0] < 0.0)
                      {
                         tmp[0] = 0;
                      }
-                     else if (S[0] * S[1] < 0)
+                     else if (S[0]*S[1] < 0)
                      {
                         if (Math.Abs(tmp[0]) > Math.Abs(3 * S[0]))
                         {
@@ -703,11 +706,11 @@ namespace QLNet
                      }
                      // end points [n-1]
                      tmp[size_ - 1] = ((2 * dx[size_ - 2] + dx[size_ - 3]) * S[size_ - 2] - dx[size_ - 2] * S[size_ - 3]) / (dx[size_ - 3] + dx[size_ - 2]);
-                     if (tmp[size_ - 1] * S[size_ - 2] < 0.0)
+                     if (tmp[size_ - 1]*S[size_ - 2] < 0.0)
                      {
                         tmp[size_ - 1] = 0;
                      }
-                     else if (S[size_ - 2] * S[size_ - 3] < 0)
+                     else if (S[size_ - 2]*S[size_ - 3] < 0)
                      {
                         if (Math.Abs(tmp[size_ - 1]) > Math.Abs(3 * S[size_ - 2]))
                         {
