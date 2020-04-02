@@ -61,7 +61,7 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \ndotnet sonarscanner begin %runner_args%\ndotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\ndotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
+  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \ndotnet sonarscanner begin %runner_args%\ndotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet\ndotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
     verbosity: minimal
