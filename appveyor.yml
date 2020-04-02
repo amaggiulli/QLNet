@@ -9,7 +9,7 @@
   version: 1.11.3
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   test: off
   skip_tags: true
   pull_requests:
@@ -24,9 +24,9 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net452\QLNet.dll
+    - path: src\QLNet\bin\Release\netstandard12\QLNet.dll
       name: Windows
-    - path: src\qlnet\*.nupkg
+    - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
@@ -35,7 +35,7 @@
     description: QLNet 1.11.3 
     auth_token:
       secure: rK95hgNgZt9ybzXBJ/1W0nbqsG/aENQ22eyY2qxn5xjbi7ZEjv+5BmNjY/l1cAYH
-    artifact: src\QLNet\bin\Release\net452\QLNet.dll
+    artifact: src\QLNet\bin\Release\netstandard12\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
@@ -53,7 +53,7 @@
   version: 1.11.4-preview.{build}
   configuration: Debug
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   skip_tags: true
   clone_folder: c:\projects\qlnet_develop
   pull_requests:
@@ -61,14 +61,21 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "choco install msbuild-sonarqube-runner -y\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \nMSBuild.SonarQube.Runner.exe begin %runner_args%\nmsbuild qlnet.sln /p:TargetFrameworkVersion=v4.5.2 /p:TargetFrameworks=net452 /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\nMSBuild.SonarQube.Runner.exe end /d:\"sonar.login=%sonar_token%\""
+  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln"
+  - cmd: "dotnet clean qlnet.sln"
+  - cmd: "SET runner_args=\"\""
+  - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit%"
+  - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr%"
+  - cmd: "dotnet sonarscanner begin %runner_args%"
+  - cmd: "dotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
+  - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
     verbosity: minimal
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./
   artifacts:
-    - path: src\qlnet\*.nupkg
+    - path: .\*.nupkg
       name: ng
   dotnet_csproj:
     patch: true
@@ -96,7 +103,7 @@
   version: 1.11.4-{build}
   configuration: Debug
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
   init:
@@ -110,7 +117,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./	
   artifacts:
-    - path: src\qlnet\*.nupkg
+    - path: .\*.nupkg
       name: ng
   dotnet_csproj:
     patch: true

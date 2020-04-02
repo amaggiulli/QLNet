@@ -177,7 +177,7 @@ namespace TestSuite
 #if NET452
          CollectionAssert.AreEqual(expected, actual);
 #else
-         Assert.AreEqual(expected, actual);
+         Assert.Equal(expected, actual);
 #endif
       }
       public static void CollectionAreNotEqual(ICollection notExpected, ICollection actual)
@@ -185,7 +185,7 @@ namespace TestSuite
 #if NET452
          CollectionAssert.AreNotEqual(notExpected, actual);
 #else
-         Assert.AreNotEqual(notExpected, actual);
+         Assert.NotEqual(notExpected, actual);
 #endif
       }
 
@@ -313,7 +313,7 @@ namespace TestSuite
 #if NET452
          Assert.ThrowsException<T>(action);
 #else
-         Assert.ThrowsException<T>(action);
+         Xunit.Assert.Throws<T>(action);
 #endif
       }
 
