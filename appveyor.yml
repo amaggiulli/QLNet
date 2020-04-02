@@ -53,7 +53,7 @@
   version: 1.11.4-preview.{build}
   configuration: Debug
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   skip_tags: true
   clone_folder: c:\projects\qlnet_develop
   pull_requests:
@@ -61,7 +61,7 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "choco install msbuild-sonarqube-runner --version 2.3 -y\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \nMSBuild.SonarQube.Runner.exe begin %runner_args%\nmsbuild qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\nMSBuild.SonarQube.Runner.exe end /d:\"sonar.login=%sonar_token%\""
+  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \ndotnet sonarscanner begin %runner_args%\ndotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet > log.txt\ndotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
     verbosity: minimal
