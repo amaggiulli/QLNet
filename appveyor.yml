@@ -9,7 +9,7 @@
   version: 1.11.3
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   test: off
   skip_tags: true
   pull_requests:
@@ -96,7 +96,7 @@
   version: 1.11.4-{build}
   configuration: Debug
   platform: Any CPU
-  image: Visual Studio 2017
+  image: Visual Studio 2019
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
   init:
