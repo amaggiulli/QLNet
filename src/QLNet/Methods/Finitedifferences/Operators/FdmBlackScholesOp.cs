@@ -28,7 +28,8 @@ namespace QLNet
                                double strike,
                                bool localVol = false,
                                double? illegalLocalVolOverwrite = null,
-                               int direction = 0)
+                               int direction = 0,
+                               FdmQuantoHelper quantoHelper = null)
       {
          mesher_ = mesher;
          rTS_   = bsProcess.riskFreeRate().currentLink();
@@ -43,7 +44,9 @@ namespace QLNet
          strike_ = strike;
          illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
          direction_ = direction;
+         quantoHelper_ = quantoHelper;
       }
+
       public override int size() { return 1; }
 
       //! Time \f$t1 <= t2\f$ is required
@@ -82,16 +85,37 @@ namespace QLNet
 
                }
             }
-            mapT_.axpyb(r - q - 0.5 * v, dxMap_,
-                        dxxMap_.mult(0.5 * v), new Vector(1, -r));
+            if (quantoHelper_ != null)
+            {
+               mapT_.axpyb(r - q - 0.5 * v
+                           - quantoHelper_.quantoAdjustment(Vector.Sqrt(v), t1, t2),
+                           dxMap_,
+                           dxxMap_.mult(0.5 * v), new Vector(1, -r));
+            }
+            else
+            {
+               mapT_.axpyb(r - q - 0.5 * v, dxMap_,
+                           dxxMap_.mult(0.5 * v), new Vector(1, -r));
+            }
          }
          else
          {
-            double vv
-               = volTS_.blackForwardVariance(t1, t2, strike_) / (t2 - t1);
-            mapT_.axpyb(new Vector(1, r - q - 0.5 * vv), dxMap_,
-                        dxxMap_.mult(0.5 * new Vector(mesher_.layout().size(), vv)),
-                        new Vector(1, -r));
+            double vv = volTS_.blackForwardVariance(t1, t2, strike_) / (t2 - t1);
+
+            if (quantoHelper_ != null)
+            {
+               mapT_.axpyb(new Vector(1, r - q - 0.5 * vv)
+                           - quantoHelper_.quantoAdjustment(new Vector(1, Math.Sqrt(vv)), t1, t2),
+                           dxMap_,
+                           dxxMap_.mult(0.5 * new Vector(mesher_.layout().size(), vv)),
+                           new Vector(1, -r));
+            }
+            else
+            {
+               mapT_.axpyb(new Vector(1, r - q - 0.5 * vv), dxMap_,
+                           dxxMap_.mult(0.5 * new Vector(mesher_.layout().size(), vv)),
+                           new Vector(1, -r));
+            }
          }
       }
 
@@ -160,5 +184,6 @@ namespace QLNet
       protected double strike_;
       protected double? illegalLocalVolOverwrite_;
       protected int direction_;
+      protected FdmQuantoHelper quantoHelper_;
    }
 }

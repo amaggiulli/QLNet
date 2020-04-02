@@ -120,7 +120,12 @@ namespace QLNet
                   throw new NotTradableException(message.Invoke());
                case QLNetExceptionEnum.RootNotBracketException:
                   throw new RootNotBracketException(message.Invoke());
-
+               case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+                  throw new MaxNumberFuncEvalExceeded(message.Invoke());
+               case QLNetExceptionEnum.InvalidPriceSignException:
+                  throw new InvalidPriceSignException(message.Invoke());
+               case QLNetExceptionEnum.NullEffectiveDate:
+                  throw new NullEffectiveDateException(message.Invoke());
             }
       }
 
@@ -134,6 +139,12 @@ namespace QLNet
                throw new NotTradableException(message);
             case QLNetExceptionEnum.RootNotBracketException:
                throw new RootNotBracketException(message);
+            case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+               throw new MaxNumberFuncEvalExceeded(message);
+            case QLNetExceptionEnum.InvalidPriceSignException:
+               throw new InvalidPriceSignException(message);
+            case QLNetExceptionEnum.NullEffectiveDate:
+               throw new NullEffectiveDateException(message);
          }
       }
 

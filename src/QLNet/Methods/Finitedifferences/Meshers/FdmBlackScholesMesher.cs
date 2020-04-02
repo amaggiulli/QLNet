@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2017 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
+ Copyright (C) 2017, 2020 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -60,6 +60,18 @@ namespace QLNet
       }
    }
 
+   public class pair_double : Pair<double, double>, IComparable<Pair<double, double>>
+   {
+      public pair_double(double first, double second)
+         : base(first, second)
+      { }
+
+      public int CompareTo(Pair<double, double> other)
+      {
+         return first.CompareTo(other.first);
+      }
+   }
+
    public class equal_on_first : IEqualityComparer < Pair < double?, double? >>
    {
       public bool Equals(Pair < double?, double? > p1,
@@ -85,11 +97,65 @@ namespace QLNet
                                    double eps = 0.0001,
                                    double scaleFactor = 1.5,
                                    Pair < double?, double? > cPoint
-                                   = null)
+                                   = null,
+                                   DividendSchedule dividendSchedule = null,
+                                   FdmQuantoHelper fdmQuantoHelper = null,
+                                   double spotAdjustment = 0.0)
       : base(size)
       {
          double S = process.x0();
          Utils.QL_REQUIRE(S > 0.0, () => "negative or null underlying given");
+
+         dividendSchedule = dividendSchedule == null ? new DividendSchedule() : dividendSchedule;
+         List<pair_double> intermediateSteps = new List<pair_double>();
+         for (int i = 0; i < dividendSchedule.Count
+              && process.time(dividendSchedule[i].date()) <= maturity; ++i)
+            intermediateSteps.Add(
+               new pair_double(
+                  process.time(dividendSchedule[i].date()),
+                  dividendSchedule[i].amount()
+               ));
+
+         int intermediateTimeSteps = (int)Math.Max(2, 24.0 * maturity);
+         for (int i = 0; i < intermediateTimeSteps; ++i)
+            intermediateSteps.Add(
+               new pair_double((i + 1) * (maturity / intermediateTimeSteps), 0.0));
+
+         intermediateSteps.Sort();
+
+         Handle<YieldTermStructure> rTS = process.riskFreeRate();
+         Handle<YieldTermStructure> qTS = fdmQuantoHelper != null
+                                          ? new Handle<YieldTermStructure>(
+                                             new QuantoTermStructure(process.dividendYield(),
+                                                                     process.riskFreeRate(),
+                                                                     new Handle<YieldTermStructure>(fdmQuantoHelper.foreignTermStructure()),
+                                                                     process.blackVolatility(),
+                                                                     strike,
+                                                                     new Handle<BlackVolTermStructure>(fdmQuantoHelper.fxVolatilityTermStructure()),
+                                                                     fdmQuantoHelper.exchRateATMlevel(),
+                                                                     fdmQuantoHelper.equityFxCorrelation()))
+                                          : process.dividendYield();
+
+         double lastDivTime = 0.0;
+         double fwd = S + spotAdjustment;
+         double mi = fwd, ma = fwd;
+
+         for (int i = 0; i < intermediateSteps.Count; ++i)
+         {
+            double divTime = intermediateSteps[i].first;
+            double divAmount = intermediateSteps[i].second;
+
+            fwd = fwd / rTS.currentLink().discount(divTime) * rTS.currentLink().discount(lastDivTime)
+                  * qTS.currentLink().discount(divTime) / qTS.currentLink().discount(lastDivTime);
+
+            mi = Math.Min(mi, fwd); ma = Math.Max(ma, fwd);
+
+            fwd -= divAmount;
+
+            mi = Math.Min(mi, fwd); ma = Math.Max(ma, fwd);
+
+            lastDivTime = divTime;
+         }
 
          // Set the grid boundaries
          double normInvEps = new InverseCumulativeNormal().value(1 - eps);
@@ -97,8 +163,8 @@ namespace QLNet
             = process.blackVolatility().currentLink().blackVol(maturity, strike)
               * Math.Sqrt(maturity);
 
-         double? xMin = Math.Log(S) - sigmaSqrtT * normInvEps * scaleFactor;
-         double? xMax = Math.Log(S) + sigmaSqrtT * normInvEps * scaleFactor;
+         double? xMin = Math.Log(mi) - sigmaSqrtT * normInvEps * scaleFactor;
+         double? xMax = Math.Log(ma) + sigmaSqrtT * normInvEps * scaleFactor;
 
          if (xMinConstraint != null)
          {
@@ -111,6 +177,7 @@ namespace QLNet
 
          Fdm1dMesher helper;
          if (cPoint != null
+             && cPoint.first != null
              && Math.Log(cPoint.first.Value) >= xMin && Math.Log(cPoint.first.Value) <= xMax)
          {
 

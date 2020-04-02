@@ -43,8 +43,6 @@ namespace QLNet
          Utils.QL_REQUIRE(arguments_.settlementMethod != Settlement.Method.ParYieldCurve, () =>
                           "cash-settled (ParYieldCurve) swaptions not priced with Lfm engine");
 
-         double basisPoint = 1.0e-4;
-
          VanillaSwap swap = arguments_.swap;
          IPricingEngine pe = new DiscountingSwapEngine(discountCurve_);
          swap.setPricingEngine(pe);
@@ -72,7 +70,7 @@ namespace QLNet
                          Option.Type.Call : Option.Type.Put;
          double vol = volatility.volatility(exercise, swapLength,
                                             fairRate, true);
-         results_.value = (swap.fixedLegBPS() / basisPoint) *
+         results_.value = (swap.fixedLegBPS() / Const.BASIS_POINT) *
                           Utils.blackFormula(w, fixedRate, fairRate, vol * Math.Sqrt(exercise));
       }
    }

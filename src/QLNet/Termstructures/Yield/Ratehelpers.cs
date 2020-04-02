@@ -893,12 +893,11 @@ namespace QLNet
          // we didn't register as observers - force calculation
          swap_.recalculate();                // it is from lazy objects
          // weak implementation... to be improved
-         const double basisPoint = 1.0e-4;
          double floatingLegNPV = swap_.floatingLegNPV();
          double spread = this.spread();
-         double spreadNPV = swap_.floatingLegBPS() / basisPoint * spread;
+         double spreadNPV = swap_.floatingLegBPS() / Const.BASIS_POINT * spread;
          double totNPV = -(floatingLegNPV + spreadNPV);
-         double result = totNPV / (swap_.fixedLegBPS() / basisPoint);
+         double result = totNPV / (swap_.fixedLegBPS() / Const.BASIS_POINT);
          return result;
       }
 

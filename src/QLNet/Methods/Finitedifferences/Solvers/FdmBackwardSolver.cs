@@ -27,7 +27,9 @@ namespace QLNet
       {
          HundsdorferType, DouglasType,
          CraigSneydType, ModifiedCraigSneydType,
-         ImplicitEulerType, ExplicitEulerType
+         ImplicitEulerType, ExplicitEulerType,
+         MethodOfLinesType, TrBDF2Type,
+         CrankNicolsonType
       }
 
       public FdmSchemeDesc() { }
@@ -67,12 +69,15 @@ namespace QLNet
 
       // some default scheme descriptions
       public FdmSchemeDesc Douglas() { return new FdmSchemeDesc(FdmSchemeType.DouglasType, 0.5, 0.0); }
+      public FdmSchemeDesc CrankNicolson() { return new FdmSchemeDesc(FdmSchemeType.CrankNicolsonType, 0.5, 0.0); }
       public FdmSchemeDesc ImplicitEuler() { return new FdmSchemeDesc(FdmSchemeType.ImplicitEulerType, 0.0, 0.0); }
       public FdmSchemeDesc ExplicitEuler() { return new FdmSchemeDesc(FdmSchemeType.ExplicitEulerType, 0.0, 0.0); }
       public FdmSchemeDesc CraigSneyd() { return new FdmSchemeDesc(FdmSchemeType.CraigSneydType, 0.5, 0.5); }
       public FdmSchemeDesc ModifiedCraigSneyd() { return new FdmSchemeDesc(FdmSchemeType.ModifiedCraigSneydType, 1.0 / 3.0, 1.0 / 3.0); }
       public FdmSchemeDesc Hundsdorfer() { return new FdmSchemeDesc(FdmSchemeType.HundsdorferType, 0.5 + Math.Sqrt(3.0) / 6.0, 0.5); }
       public FdmSchemeDesc ModifiedHundsdorfer() { return new FdmSchemeDesc(FdmSchemeType.HundsdorferType, 1.0 - Math.Sqrt(2.0) / 2.0, 0.5); }
+      public FdmSchemeDesc MethodOfLines(double eps = 0.001, double relInitStepSize = 0.01) { return new FdmSchemeDesc(FdmSchemeType.MethodOfLinesType, eps, relInitStepSize); }
+      public FdmSchemeDesc TrBDF2() { return new FdmSchemeDesc(FdmSchemeType.TrBDF2Type, 2.0 - Math.Sqrt(2.0), 1E-8); }
    }
 
    public class FdmBackwardSolver
@@ -126,6 +131,14 @@ namespace QLNet
                dsModel.rollback(ref a, dampingTo, to, steps, condition_);
             }
             break;
+            case FdmSchemeDesc.FdmSchemeType.CrankNicolsonType:
+            {
+               CrankNicolsonScheme cnEvolver = new CrankNicolsonScheme(schemeDesc_.theta, map_, bcSet_);
+               FiniteDifferenceModel<CrankNicolsonScheme>
+               cnModel = new FiniteDifferenceModel<CrankNicolsonScheme>(cnEvolver, condition_.stoppingTimes());
+               cnModel.rollback(ref a, dampingTo, to, steps, condition_);
+            }
+            break;
             case FdmSchemeDesc.FdmSchemeType.CraigSneydType:
             {
                CraigSneydScheme csEvolver = new CraigSneydScheme(schemeDesc_.theta, schemeDesc_.mu,
@@ -159,6 +172,27 @@ namespace QLNet
                FiniteDifferenceModel<ExplicitEulerScheme>
                explicitModel = new FiniteDifferenceModel<ExplicitEulerScheme>(explicitEvolver, condition_.stoppingTimes());
                explicitModel.rollback(ref a, dampingTo, to, steps, condition_);
+            }
+            break;
+            case FdmSchemeDesc.FdmSchemeType.MethodOfLinesType:
+            {
+               MethodOfLinesScheme methodOfLines = new MethodOfLinesScheme(schemeDesc_.theta, schemeDesc_.mu, map_, bcSet_);
+               FiniteDifferenceModel<MethodOfLinesScheme>
+               molModel = new FiniteDifferenceModel<MethodOfLinesScheme>(methodOfLines, condition_.stoppingTimes());
+               molModel.rollback(ref a, dampingTo, to, steps, condition_);
+            }
+            break;
+            case FdmSchemeDesc.FdmSchemeType.TrBDF2Type:
+            {
+               FdmSchemeDesc trDesc = new FdmSchemeDesc().CraigSneyd();
+               CraigSneydScheme hsEvolver = new CraigSneydScheme(trDesc.theta, trDesc.mu, map_, bcSet_);
+
+               TrBDF2Scheme<CraigSneydScheme> trBDF2 = new TrBDF2Scheme<CraigSneydScheme>(
+                  schemeDesc_.theta, map_, hsEvolver, bcSet_, schemeDesc_.mu);
+
+               FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>
+               trBDF2Model = new FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>(trBDF2, condition_.stoppingTimes());
+               trBDF2Model.rollback(ref a, dampingTo, to, steps, condition_);
             }
             break;
             default:
