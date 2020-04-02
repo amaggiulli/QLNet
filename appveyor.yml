@@ -26,7 +26,7 @@
   artifacts:
     - path: src\QLNet\bin\Release\netstandard12\QLNet.dll
       name: Windows
-    - path: src\qlnet\*.nupkg
+    - path: *.nupkg
       name: ng
   deploy:
   - provider: GitHub
@@ -61,14 +61,21 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln\ndotnet clean qlnet.sln\nSET runner_args=\"\"\nif \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit% \nif not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr% \ndotnet sonarscanner begin %runner_args%\ndotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet\ndotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
+  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln"
+  - cmd: "dotnet clean qlnet.sln"
+  - cmd: "SET runner_args=\"\""
+  - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit%"
+  - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr%"
+  - cmd: "dotnet sonarscanner begin %runner_args%"
+  - cmd: "dotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
+  - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
     verbosity: minimal
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./
   artifacts:
-    - path: src\qlnet\*.nupkg
+    - path: *.nupkg
       name: ng
   dotnet_csproj:
     patch: true
@@ -110,7 +117,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./	
   artifacts:
-    - path: src\qlnet\*.nupkg
+    - path: *.nupkg
       name: ng
   dotnet_csproj:
     patch: true
