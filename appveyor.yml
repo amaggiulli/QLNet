@@ -26,7 +26,7 @@
   artifacts:
     - path: src\QLNet\bin\Release\netstandard12\QLNet.dll
       name: Windows
-    - path: *.nupkg
+    - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
@@ -75,7 +75,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./
   artifacts:
-    - path: *.nupkg
+    - path: .\*.nupkg
       name: ng
   dotnet_csproj:
     patch: true
@@ -117,7 +117,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./	
   artifacts:
-    - path: *.nupkg
+    - path: .\*.nupkg
       name: ng
   dotnet_csproj:
     patch: true
