@@ -14,19 +14,11 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
-using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_DigitalCoupon
    {
       private class CommonVars
@@ -62,11 +54,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAssetOrNothing()
       {
 
@@ -139,7 +127,7 @@ namespace TestSuite
                                           vars.nominal * accrualPeriod * discount;
                      double error = Math.Abs(nd1Price - optionPrice);
                      if (error > vars.optionTolerance)
-                        QAssert.Fail("\nDigital Call Option:" +
+                        Assert.True(false, "\nDigital Call Option:" +
                                      "\nVolatility = " + (capletVol) +
                                      "\nStrike = " + (strike) +
                                      "\nExercise = " + k + 1 + " years" +
@@ -172,7 +160,7 @@ namespace TestSuite
                                         * forward / effFwd;
                         error = Math.Abs(nd1Price - callVO);
                         if (error > vars.blackTolerance)
-                           QAssert.Fail("\nDigital Call Option:" +
+                           Assert.True(false, "\nDigital Call Option:" +
                                         "\nVolatility = " + (capletVol) +
                                         "\nStrike = " + (strike) +
                                         "\nExercise = " + k + 1 + " years" +
@@ -195,7 +183,7 @@ namespace TestSuite
                                    vars.nominal * accrualPeriod * discount;
                      error = Math.Abs(nd1Price - optionPrice);
                      if (error > vars.optionTolerance)
-                        QAssert.Fail("\nDigital Put Option:" +
+                        Assert.True(false, "\nDigital Put Option:" +
                                      "\nVolatility = " + (capletVol) +
                                      "\nStrike = " + (strike) +
                                      "\nExercise = " + k + 1 + " years" +
@@ -228,7 +216,7 @@ namespace TestSuite
                                         * forward / effFwd;
                         error = Math.Abs(nd1Price - putVO);
                         if (error > vars.blackTolerance)
-                           QAssert.Fail("\nDigital Put Option:" +
+                           Assert.True(false, "\nDigital Put Option:" +
                                         "\nVolatility = " + (capletVol) +
                                         "\nStrike = " + (strike) +
                                         "\nExercise = " + k + 1 + " years" +
@@ -242,11 +230,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAssetOrNothingDeepInTheMoney()
       {
          // Testing European deep in-the-money asset-or-nothing digital coupon
@@ -290,7 +274,7 @@ namespace TestSuite
             double error = Math.Abs(targetPrice - digitalPrice);
             double tolerance = 1e-08;
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon - Digital Call Option:" +
+               Assert.True(false, "\nFloating Coupon - Digital Call Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -304,7 +288,7 @@ namespace TestSuite
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             double optionTolerance = 1e-08;
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Call Option:" +
+               Assert.True(false, "\nDigital Call Option:" +
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -325,7 +309,7 @@ namespace TestSuite
             error = Math.Abs(targetPrice - digitalPrice);
             tolerance = 2.5e-06;
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon + Digital Put Option:" +
+               Assert.True(false, "\nFloating Coupon + Digital Put Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -339,7 +323,7 @@ namespace TestSuite
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             optionTolerance = 2.5e-06;
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Put Option:" +
+               Assert.True(false, "\nDigital Put Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -349,11 +333,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAssetOrNothingDeepOutTheMoney()
       {
          // Testing European deep out-the-money asset-or-nothing digital coupon
@@ -396,7 +376,7 @@ namespace TestSuite
             double error = Math.Abs(targetPrice - digitalPrice);
             double tolerance = 1e-10;
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon - Digital Call Option :" +
+               Assert.True(false, "\nFloating Coupon - Digital Call Option :" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -411,7 +391,7 @@ namespace TestSuite
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             double optionTolerance = 1e-08;
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Call Option:" +
+               Assert.True(false, "\nDigital Call Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -431,7 +411,7 @@ namespace TestSuite
             tolerance = 1e-08;
             error = Math.Abs(targetPrice - digitalPrice);
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon + Digital Put Coupon:" +
+               Assert.True(false, "\nFloating Coupon + Digital Put Coupon:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -445,7 +425,7 @@ namespace TestSuite
                                      vars.nominal * accrualPeriod * discount;
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Put Coupon:" +
+               Assert.True(false, "\nDigital Put Coupon:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -455,11 +435,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashOrNothing()
       {
          // Testing European cash-or-nothing digital coupon
@@ -523,7 +499,7 @@ namespace TestSuite
                                        vars.nominal * accrualPeriod * discount;
                   double error = Math.Abs(nd2Price - optionPrice);
                   if (error > vars.optionTolerance)
-                     QAssert.Fail("\nDigital Call Option:" +
+                     Assert.True(false, "\nDigital Call Option:" +
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -552,7 +528,7 @@ namespace TestSuite
                                   * discount / discountAtFixing;
                   error = Math.Abs(nd2Price - callVO);
                   if (error > vars.blackTolerance)
-                     QAssert.Fail("\nDigital Call Option:" +
+                     Assert.True(false, "\nDigital Call Option:" +
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -573,7 +549,7 @@ namespace TestSuite
                                 vars.nominal * accrualPeriod * discount;
                   error = Math.Abs(nd2Price - optionPrice);
                   if (error > vars.optionTolerance)
-                     QAssert.Fail("\nPut Digital Option:" +
+                     Assert.True(false, "\nPut Digital Option:" +
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -589,7 +565,7 @@ namespace TestSuite
                                   * discount / discountAtFixing;
                   error = Math.Abs(nd2Price - putVO);
                   if (error > vars.blackTolerance)
-                     QAssert.Fail("\nDigital Put Option:" +
+                     Assert.True(false, "\nDigital Put Option:" +
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -601,11 +577,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashOrNothingDeepInTheMoney()
       {
          // Testing European deep in-the-money cash-or-nothing digital coupon
@@ -650,7 +622,7 @@ namespace TestSuite
             double error = Math.Abs(targetPrice - digitalPrice);
             double tolerance = 1e-07;
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon - Digital Call Coupon:" +
+               Assert.True(false, "\nFloating Coupon - Digital Call Coupon:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -664,7 +636,7 @@ namespace TestSuite
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             double optionTolerance = 1e-07;
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Call Option:" +
+               Assert.True(false, "\nDigital Call Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -683,7 +655,7 @@ namespace TestSuite
             digitalPrice = digitalFlooredCoupon.price(vars.termStructure);
             error = Math.Abs(targetPrice - digitalPrice);
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon + Digital Put Option:" +
+               Assert.True(false, "\nFloating Coupon + Digital Put Option:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -696,7 +668,7 @@ namespace TestSuite
                                      vars.nominal * accrualPeriod * discount;
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Put Coupon:" +
+               Assert.True(false, "\nDigital Put Coupon:" +
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -706,11 +678,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashOrNothingDeepOutTheMoney()
       {
          // Testing European deep out-the-money cash-or-nothing digital coupon
@@ -754,7 +722,7 @@ namespace TestSuite
             double error = Math.Abs(targetPrice - digitalPrice);
             double tolerance = 1e-10;
             if (error > tolerance)
-               QAssert.Fail("\nFloating Coupon + Digital Call Option:" +
+               Assert.True(false, "\nFloating Coupon + Digital Call Option:" +
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -769,7 +737,7 @@ namespace TestSuite
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             double optionTolerance = 1e-10;
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Call Option:" +
+               Assert.True(false, "\nDigital Call Option:" +
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -789,7 +757,7 @@ namespace TestSuite
             tolerance = 1e-09;
             error = Math.Abs(targetPrice - digitalPrice);
             if (error > tolerance)
-               QAssert.Fail("\nDigital Floored Coupon:" +
+               Assert.True(false, "\nDigital Floored Coupon:" +
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -803,7 +771,7 @@ namespace TestSuite
                                      vars.nominal * accrualPeriod * discount;
             error = Math.Abs(targetOptionPrice - replicationOptionPrice);
             if (error > optionTolerance)
-               QAssert.Fail("\nDigital Put Option:" +
+               Assert.True(false, "\nDigital Put Option:" +
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
@@ -813,11 +781,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCallPutParity()
       {
          // Testing call/put parity for European digital coupon
@@ -873,7 +837,7 @@ namespace TestSuite
                   double error = Math.Abs(targetPrice - digitalPrice);
                   double tolerance = 1.0e-08;
                   if (error > tolerance)
-                     QAssert.Fail("\nCash-or-nothing:" +
+                     Assert.True(false, "\nCash-or-nothing:" +
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -897,7 +861,7 @@ namespace TestSuite
                   error = Math.Abs(targetPrice - digitalPrice);
                   tolerance = 1.0e-07;
                   if (error > tolerance)
-                     QAssert.Fail("\nAsset-or-nothing:" +
+                     Assert.True(false, "\nAsset-or-nothing:" +
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -909,11 +873,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testReplicationType()
       {
          // Testing replication type for European digital coupon
@@ -972,7 +932,7 @@ namespace TestSuite
                       ((central_digitalPrice > over_digitalPrice)  &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
-                     QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
+                     Assert.True(false, "\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -1001,7 +961,7 @@ namespace TestSuite
                       ((central_digitalPrice > over_digitalPrice)  &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
-                     QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon - Call Digital option" +
+                     Assert.True(false, "\nCash-or-nothing: Floating Rate Coupon - Call Digital option" +
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -1027,7 +987,7 @@ namespace TestSuite
                       ((central_digitalPrice > over_digitalPrice)  &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
-                     QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Put Digital option" +
+                     Assert.True(false, "\nCash-or-nothing: Floating Rate Coupon + Put Digital option" +
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
@@ -1054,7 +1014,7 @@ namespace TestSuite
                       ((central_digitalPrice > over_digitalPrice)  &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
-                     QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
+                     Assert.True(false, "\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +

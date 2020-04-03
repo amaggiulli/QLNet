@@ -16,12 +16,8 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
-using Xunit;
-#endif
 
+using Xunit;
 using QLNet;
 using System.Numerics;
 using System.Collections.Generic;
@@ -29,18 +25,9 @@ using System;
 
 namespace TestSuite
 {
-
-#if NET452
-   [TestClass()]
-#endif
    public class T_FastFourierTransform
    {
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFFTSimple()
       {
          List<Complex> a = new List<Complex>();
@@ -71,17 +58,13 @@ namespace TestSuite
          {
             if ((Math.Abs(b[i].Real - expected[i].Real) > 1.0e-2) ||
                 (Math.Abs(b[i].Imaginary - expected[i].Imaginary) > 1.0e-2))
-               QAssert.Fail("Convolution(" + i + ")\n"
+               Assert.True(false, "Convolution(" + i + ")\n"
                             + "    calculated: " + b[i] + "\n"
                             + "    expected:   " + expected[i]);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFFTInverse()
       {
          List<Complex> x = new InitializedList<Complex>(3);
@@ -110,7 +93,7 @@ namespace TestSuite
          double calculated = ft[0].Real / nFrq;
          double expected = (x[0] * x[0] + x[1] * x[1] + x[2] * x[2]).Real;
          if (Math.Abs(calculated - expected) > 1.0e-10)
-            QAssert.Fail("Convolution(0)\n"
+            Assert.True(false, "Convolution(0)\n"
                          + "    calculated: " + calculated + "\n"
                          + "    expected:   " + expected);
 
@@ -118,7 +101,7 @@ namespace TestSuite
          calculated = ft[1].Real / nFrq;
          expected = (x[0] * x[1] + x[1] * x[2]).Real;
          if (Math.Abs(calculated - expected) > 1.0e-10)
-            QAssert.Fail("Convolution(1)\n"
+            Assert.True(false, "Convolution(1)\n"
                          + "    calculated: " + calculated + "\n"
                          + "    expected:   " + expected);
 
@@ -126,7 +109,7 @@ namespace TestSuite
          calculated = ft[2].Real / nFrq;
          expected = (x[0] * x[2]).Real;
          if (Math.Abs(calculated - expected) > 1.0e-10)
-            QAssert.Fail("Convolution(1)\n"
+            Assert.True(false, "Convolution(1)\n"
                          + "    calculated: " + calculated + "\n"
                          + "    expected:   " + expected);
 

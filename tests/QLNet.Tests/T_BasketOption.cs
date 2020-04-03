@@ -18,19 +18,12 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BasketOption
    {
       public enum BasketType { MinBasket, MaxBasket, SpreadBasket }
@@ -99,11 +92,12 @@ namespace TestSuite
          Utils.QL_FAIL("unknown basket option type");
          return String.Empty;
       }
-      public void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise,
+
+      private void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise,
                                    double s1, double s2, double q1, double q2, double r, Date today, double v1, double v2, double rho,
                                    double expected, double calculated, double error, double tolerance)
       {
-         QAssert.Fail(Utilities.exerciseTypeToString(exercise) + " "
+         Assert.True(false, Utilities.exerciseTypeToString(exercise) + " "
                       + payoff.optionType() + " option on "
                       + basketTypeToString(basketType)
                       + " with " + Utilities.payoffTypeToString(payoff) + " payoff:\n"
@@ -125,11 +119,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuroTwoValues()
       {
          // Testing two-asset European basket options...

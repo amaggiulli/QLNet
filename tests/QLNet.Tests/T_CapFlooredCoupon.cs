@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_CapFlooredCoupon
    {
       private class CommonVars
@@ -156,11 +149,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLargeRates()
       {
          // Testing degenerate collared coupon
@@ -190,7 +179,7 @@ namespace TestSuite
          double npvCollar = collarLeg.NPV();
          if (Math.Abs(npvVanilla - npvCollar) > tolerance)
          {
-            QAssert.Fail("Lenght: " + vars.length + " y" + "\n" +
+            Assert.True(false, "Lenght: " + vars.length + " y" + "\n" +
                          "Volatility: " + vars.volatility * 100 + "%\n" +
                          "Notional: " + vars.nominal + "\n" +
                          "Vanilla floating leg NPV: " + vanillaLeg.NPV()
@@ -202,11 +191,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDecomposition()
       {
          // Testing collared coupon against its decomposition
@@ -265,7 +250,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla - npvCap));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCapped Leg: gearing=1, spread=0%, strike=" + capstrike * 100 +
+            Assert.True(false, "\nCapped Leg: gearing=1, spread=0%, strike=" + capstrike * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
                          "  Floating Leg NPV - Cap NPV: " + (npvVanilla - npvCap) + "\n" +
@@ -290,7 +275,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg - (npvVanilla + npvFloor));
          if (error > tolerance)
          {
-            QAssert.Fail("Floored Leg: gearing=1, spread=0%, strike=" + floorstrike * 100 +
+            Assert.True(false, "Floored Leg: gearing=1, spread=0%, strike=" + floorstrike * 100 +
                          "%\n" +
                          "  Floored Floating Leg NPV: " + npvFlooredLeg + "\n" +
                          "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor) + "\n" +
@@ -314,7 +299,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg - (npvVanilla - npvCollar));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCollared Leg: gearing=1, spread=0%, strike=" +
+            Assert.True(false, "\nCollared Leg: gearing=1, spread=0%, strike=" +
                          floorstrike * 100 + "% and " + capstrike * 100 + "%\n" +
                          "  Collared Floating Leg NPV: " + npvCollaredLeg + "\n" +
                          "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar) + "\n" +
@@ -347,7 +332,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla - npvCap));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCapped Leg: gearing=" + gearing_p + ", " +
+            Assert.True(false, "\nCapped Leg: gearing=" + gearing_p + ", " +
                          "spread= " + spread_p * 100 +
                          "%, strike=" + capstrike * 100  + "%, " +
                          "effective strike= " + (capstrike - spread_p) / gearing_p * 100 +
@@ -372,7 +357,7 @@ namespace TestSuite
          error = Math.Abs(npvCappedLeg - (npvVanilla + gearing_n * npvFloor));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
+            Assert.True(false, "\nCapped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
                          "%, strike=" + capstrike * 100  + "%, " +
                          "effective strike= " + (capstrike - spread_n) / gearing_n * 100 +
@@ -410,7 +395,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg - (npvVanilla + npvFloor));
          if (error > tolerance)
          {
-            QAssert.Fail("\nFloored Leg: gearing=" + gearing_p + ", "
+            Assert.True(false, "\nFloored Leg: gearing=" + gearing_p + ", "
                          + "spread= " + spread_p * 100 + "%, strike=" + floorstrike * 100 + "%, "
                          + "effective strike= " + (floorstrike - spread_p) / gearing_p * 100
                          + "%\n" +
@@ -433,7 +418,7 @@ namespace TestSuite
          error = Math.Abs(npvFlooredLeg - (npvVanilla - gearing_n * npvCap));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
+            Assert.True(false, "\nCapped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
                          "%, strike=" + floorstrike * 100  + "%, " +
                          "effective strike= " + (floorstrike - spread_n) / gearing_n * 100 +
@@ -464,7 +449,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg - (npvVanilla - npvCollar));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCollared Leg: gearing=" + gearing_p + ", "
+            Assert.True(false, "\nCollared Leg: gearing=" + gearing_p + ", "
                          + "spread= " + spread_p * 100 + "%, strike="
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "
@@ -491,7 +476,7 @@ namespace TestSuite
          error = Math.Abs(npvCollaredLeg - (npvVanilla - gearing_n * npvCollar));
          if (error > tolerance)
          {
-            QAssert.Fail("\nCollared Leg: gearing=" + gearing_n + ", "
+            Assert.True(false, "\nCollared Leg: gearing=" + gearing_n + ", "
                          + "spread= " + spread_n * 100 + "%, strike="
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "

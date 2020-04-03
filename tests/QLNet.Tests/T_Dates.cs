@@ -20,37 +20,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Dates
    {
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testECBDates()
       {
          // Testing ECB dates
 
          List<Date> knownDates = ECB.knownDates();
          if (knownDates.empty())
-            QAssert.Fail("Empty EBC date vector");
+            Assert.True(false, "Empty EBC date vector");
 
          int n = ECB.nextDates(Date.minDate()).Count;
 
          if (n != knownDates.Count)
-            QAssert.Fail("NextDates(minDate) returns "  + n +
+            Assert.True(false, "NextDates(minDate) returns "  + n +
                          " instead of " + knownDates.Count + " dates");
 
          Date previousEcbDate = Date.minDate(),
@@ -62,18 +52,18 @@ namespace TestSuite
             currentEcbDate = knownDates[i];
 
             if (!ECB.isECBdate(currentEcbDate))
-               QAssert.Fail(currentEcbDate + " fails isECBdate check");
+               Assert.True(false, currentEcbDate + " fails isECBdate check");
 
             ecbDateMinusOne = currentEcbDate - 1;
             if (ECB.isECBdate(ecbDateMinusOne))
-               QAssert.Fail(ecbDateMinusOne + " fails isECBdate check");
+               Assert.True(false, ecbDateMinusOne + " fails isECBdate check");
 
             if (ECB.nextDate(ecbDateMinusOne) != currentEcbDate)
-               QAssert.Fail("Next EBC date following " + ecbDateMinusOne +
+               Assert.True(false, "Next EBC date following " + ecbDateMinusOne +
                             " must be " + currentEcbDate);
 
             if (ECB.nextDate(previousEcbDate) != currentEcbDate)
-               QAssert.Fail("Next EBC date following " + previousEcbDate +
+               Assert.True(false, "Next EBC date following " + previousEcbDate +
                             " must be " + currentEcbDate);
 
             previousEcbDate = currentEcbDate;
@@ -82,19 +72,15 @@ namespace TestSuite
          Date knownDate = knownDates.First();
          ECB.removeDate(knownDate);
          if (ECB.isECBdate(knownDate))
-            QAssert.Fail("Unable to remove an EBC date");
+            Assert.True(false, "Unable to remove an EBC date");
 
          ECB.addDate(knownDate);
          if (!ECB.isECBdate(knownDate))
-            QAssert.Fail("Unable to add an EBC date");
+            Assert.True(false, "Unable to add an EBC date");
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIMMDates()
       {
          // ("Testing IMM dates...");
@@ -124,19 +110,19 @@ namespace TestSuite
 
             // check that imm is greater than counter
             if (imm <= counter)
-               QAssert.Fail(imm.DayOfWeek + " " + imm
+               Assert.True(false, imm.DayOfWeek + " " + imm
                             + " is not greater than "
                             + counter.DayOfWeek + " " + counter);
 
             // check that imm is an IMM date
             if (!IMM.isIMMdate(imm, false))
-               QAssert.Fail(imm.DayOfWeek + " " + imm
+               Assert.True(false, imm.DayOfWeek + " " + imm
                             + " is not an IMM date (calculated from "
                             + counter.DayOfWeek + " " + counter + ")");
 
             // check that imm is <= to the next IMM date in the main cycle
             if (imm > IMM.nextDate(counter, true))
-               QAssert.Fail(imm.DayOfWeek + " " + imm
+               Assert.True(false, imm.DayOfWeek + " " + imm
                             + " is not less than or equal to the next future in the main cycle "
                             + IMM.nextDate(counter, true));
 
@@ -149,7 +135,7 @@ namespace TestSuite
 
             // check that for every date IMMdate is the inverse of IMMcode
             if (IMM.date(IMM.code(imm), counter) != imm)
-               QAssert.Fail(IMM.code(imm)
+               Assert.True(false, IMM.code(imm)
                             + " at calendar day " + counter
                             + " is not the IMM code matching " + imm);
 
@@ -157,7 +143,7 @@ namespace TestSuite
             for (int i = 0; i < 40; ++i)
             {
                if (IMM.date(IMMcodes[i], counter) < counter)
-                  QAssert.Fail(IMM.date(IMMcodes[i], counter)
+                  Assert.True(false, IMM.date(IMMcodes[i], counter)
                                + " is wrong for " + IMMcodes[i]
                                + " at reference date " + counter);
             }
@@ -166,11 +152,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConsistency()
       {
          //("Testing dates...");
@@ -191,7 +173,7 @@ namespace TestSuite
 
             // check serial number consistency
             if (serial != i)
-               QAssert.Fail("inconsistent serial number:\n"
+               Assert.True(false, "inconsistent serial number:\n"
                             + "    original:      " + i + "\n"
                             + "    date:          " + t + "\n"
                             + "    serial number: " + serial);
@@ -206,7 +188,7 @@ namespace TestSuite
             if (!((dy == dyold + 1) ||
                   (dy == 1 && dyold == 365 && !Date.IsLeapYear(yold)) ||
                   (dy == 1 && dyold == 366 && Date.IsLeapYear(yold))))
-               QAssert.Fail("wrong day of year increment: \n"
+               Assert.True(false, "wrong day of year increment: \n"
                             + "    date: " + t + "\n"
                             + "    day of year: " + dy + "\n"
                             + "    previous:    " + dyold);
@@ -215,7 +197,7 @@ namespace TestSuite
             if (!((d == dold + 1 && m == mold && y == yold) ||
                   (d == 1 && m == mold + 1 && y == yold) ||
                   (d == 1 && m == 1 && y == yold + 1)))
-               QAssert.Fail("wrong day,month,year increment: \n"
+               Assert.True(false, "wrong day,month,year increment: \n"
                             + "    date: " + t + "\n"
                             + "    day,month,year: "
                             + d + "," + m + "," + y + "\n"
@@ -225,13 +207,13 @@ namespace TestSuite
 
             // check month definition
             if (m < 1 || m > 12)
-               QAssert.Fail("invalid month: \n"
+               Assert.True(false, "invalid month: \n"
                             + "    date:  " + t + "\n"
                             + "    month: " + m);
 
             // check day definition
             if (d < 1)
-               QAssert.Fail("invalid day of month: \n"
+               Assert.True(false, "invalid day of month: \n"
                             + "    date:  " + t + "\n"
                             + "    day: " + d);
             if (!((m == 1 && d <= 31) ||
@@ -247,14 +229,14 @@ namespace TestSuite
                   (m == 10 && d <= 31) ||
                   (m == 11 && d <= 30) ||
                   (m == 12 && d <= 31)))
-               QAssert.Fail("invalid day of month: \n"
+               Assert.True(false, "invalid day of month: \n"
                             + "    date:  " + t + "\n"
                             + "    day: " + d);
 
             // check weekday definition
             if (!((wd == wdold + 1) ||
                   (wd == 1 && wdold == 7)))
-               QAssert.Fail("invalid weekday: \n"
+               Assert.True(false, "invalid weekday: \n"
                             + "    date:  " + t + "\n"
                             + "    weekday:  " + wd + "\n"
                             + "    previous: " + wdold);
@@ -265,7 +247,7 @@ namespace TestSuite
             // check serial number consistency
             serial = s.serialNumber();
             if (serial != i)
-               QAssert.Fail("inconsistent serial number:\n"
+               Assert.True(false, "inconsistent serial number:\n"
                             + "    date:          " + t + "\n"
                             + "    serial number: " + i + "\n"
                             + "    cloned date:   " + s + "\n"
@@ -274,11 +256,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testASXDates()
       {
          //Testing ASX dates...");
@@ -308,26 +286,26 @@ namespace TestSuite
 
             // check that asx is greater than counter
             if (asx <= counter)
-               QAssert.Fail(asx.weekday() + " " + asx
+               Assert.True(false, asx.weekday() + " " + asx
                             + " is not greater than "
                             + counter.weekday() + " " + counter);
 
             // check that asx is an ASX date
             if (!ASX.isASXdate(asx, false))
-               QAssert.Fail(asx.weekday() + " " + asx
+               Assert.True(false, asx.weekday() + " " + asx
                             + " is not an ASX date (calculated from "
                             + counter.weekday() + " " + counter + ")");
 
             // check that asx is <= to the next ASX date in the main cycle
             if (asx > ASX.nextDate(counter, true))
-               QAssert.Fail(asx.weekday() + " " + asx
+               Assert.True(false, asx.weekday() + " " + asx
                             + " is not less than or equal to the next future in the main cycle "
                             + ASX.nextDate(counter, true));
 
 
             // check that for every date ASXdate is the inverse of ASXcode
             if (ASX.date(ASX.code(asx), counter) != asx)
-               QAssert.Fail(ASX.code(asx)
+               Assert.True(false, ASX.code(asx)
                             + " at calendar day " + counter
                             + " is not the ASX code matching " + asx);
 
@@ -335,7 +313,7 @@ namespace TestSuite
             for (int i = 0; i < 120; ++i)
             {
                if (ASX.date(ASXcodes[i], counter) < counter)
-                  QAssert.Fail(ASX.date(ASXcodes[i], counter)
+                  Assert.True(false, ASX.date(ASXcodes[i], counter)
                                + " is wrong for " + ASXcodes[i]
                                + " at reference date " + counter);
             }
@@ -345,11 +323,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIntraday()
       {
          // Testing intraday information of dates

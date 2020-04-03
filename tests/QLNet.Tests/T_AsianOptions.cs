@@ -21,28 +21,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_AsianOptions
    {
-      public void REPORT_FAILURE(string greekName, Average.Type averageType,
+      private void REPORT_FAILURE(string greekName, Average.Type averageType,
                                  double? runningAccumulator, int? pastFixings,
                                  List<Date> fixingDates, StrikedTypePayoff payoff,
                                  Exercise exercise, double s, double q, double r,
                                  Date today, double v, double expected,
                                  double calculated, double tolerance)
       {
-         QAssert.Fail(exercise + " "
+         Assert.True(false, exercise + " "
                       + exercise
                       + " Asian option with "
                       + averageType + " and "
@@ -79,11 +72,8 @@ namespace TestSuite
          return String.Empty;
       }
 
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testAnalyticContinuousGeometricAveragePrice()
       {
          // Testing analytic continuous geometric average-price Asians
@@ -162,11 +152,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticContinuousGeometricAveragePriceGreeks()
       {
          // Testing analytic continuous geometric average-price Asian greeks
@@ -327,11 +313,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticDiscreteGeometricAveragePrice()
       {
          // Testing analytic discrete geometric average-price Asians
@@ -390,11 +372,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticDiscreteGeometricAverageStrike()
       {
          // Testing analytic discrete geometric average-strike Asians
@@ -452,7 +430,7 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void testMCDiscreteGeometricAveragePrice()
+      private void testMCDiscreteGeometricAveragePrice()
       {
          // Testing Monte Carlo discrete geometric average-price Asians
          // data from "Implementing Derivatives Model",
@@ -522,11 +500,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticDiscreteGeometricAveragePriceGreeks()
       {
          // Testing discrete-averaging geometric Asian greeks
@@ -698,7 +672,7 @@ namespace TestSuite
       }
 
       // Issue #115
-      public void testIssue115()
+      private void testIssue115()
       {
          DateTime timer = DateTime.Now;
 
@@ -1214,7 +1188,7 @@ namespace TestSuite
       //        double price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            QAssert.Fail(
+      //            Assert.True(false, 
       //                 "past fixings had no effect on arithmetic average-price option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1232,7 +1206,7 @@ namespace TestSuite
       //        price2 = option2.NPV();
 
       //        if (Utils.close(price1, price2)) {
-      //            QAssert.Fail(
+      //            Assert.True(false, 
       //                 "past fixings had no effect on arithmetic average-strike option"
       //                 + "\n  without fixings: " + price1
       //                 + "\n  with fixings:    " + price2);
@@ -1264,7 +1238,7 @@ namespace TestSuite
       //        double price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            QAssert.Fail(
+      //            Assert.True(false, 
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);
@@ -1283,7 +1257,7 @@ namespace TestSuite
       //        price4 = option4.NPV();
 
       //        if (Utils.close(price3, price4)) {
-      //            QAssert.Fail(
+      //            Assert.True(false, 
       //                 "past fixings had no effect on geometric average-price option"
       //                 + "\n  without fixings: " + price3
       //                 + "\n  with fixings:    " + price4);

@@ -17,27 +17,16 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Operators
    {
       public const double average = 0.0, sigma = 1.0;
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testOperatorConsistency()
       {
 
@@ -81,7 +70,7 @@ namespace TestSuite
          double e = Utilities.norm(diff, diff.size(), h);
          if (e > 1.0e-6)
          {
-            QAssert.Fail("norm of 1st derivative of cum minus Gaussian: " + e + "\ntolerance exceeded");
+            Assert.True(false, "norm of 1st derivative of cum minus Gaussian: " + e + "\ntolerance exceeded");
          }
 
          // check that the second derivative of cum is normal.derivative
@@ -93,15 +82,11 @@ namespace TestSuite
          e = Utilities.norm(diff, diff.size(), h);
          if (e > 1.0e-4)
          {
-            QAssert.Fail("norm of 2nd derivative of cum minus Gaussian derivative: " + e + "\ntolerance exceeded");
+            Assert.True(false, "norm of 2nd derivative of cum minus Gaussian derivative: " + e + "\ntolerance exceeded");
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBSMOperatorConsistency()
       {
          //("Testing consistency of BSM operators...");
@@ -150,7 +135,7 @@ namespace TestSuite
                 Math.Abs(derror[i]) > tolerance ||
                 Math.Abs(uderror[i]) > tolerance)
             {
-               QAssert.Fail("inconsistency between BSM operators:\n"
+               Assert.True(false, "inconsistency between BSM operators:\n"
                             + i + " row:\n"
                             + "expected:   "
                             + refer.lowerDiagonal()[i] + ", "
@@ -172,7 +157,7 @@ namespace TestSuite
                 Math.Abs(derror[i]) > tolerance ||
                 Math.Abs(uderror[i]) > tolerance)
             {
-               QAssert.Fail("inconsistency between BSM operators:\n"
+               Assert.True(false, "inconsistency between BSM operators:\n"
                             + i + " row:\n"
                             + "expected:   "
                             + refer.lowerDiagonal()[i] + ", "

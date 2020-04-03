@@ -18,28 +18,15 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
-
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_FdmLinearOp
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFdmLinearOpLayout()
       {
 
@@ -52,7 +39,7 @@ namespace TestSuite
          int expectedDim = dim.Count;
          if (calculatedDim != expectedDim)
          {
-            QAssert.Fail("index.dimensions() should be " + expectedDim
+            Assert.True(false, "index.dimensions() should be " + expectedDim
                          + ", but is " + calculatedDim);
          }
 
@@ -61,7 +48,7 @@ namespace TestSuite
 
          if (calculatedSize != expectedSize)
          {
-            QAssert.Fail("index.size() should be "
+            Assert.True(false, "index.size() should be "
                          + expectedSize + ", but is " + calculatedSize);
          }
 
@@ -79,7 +66,7 @@ namespace TestSuite
 
                   if (expectedIndex != layout.index(tmp))
                   {
-                     QAssert.Fail("index.size() should be " + expectedIndex
+                     Assert.True(false, "index.size() should be " + expectedIndex
                                   + ", but is " + calculatedIndex);
                   }
                }
@@ -103,7 +90,7 @@ namespace TestSuite
 
                      if (nn != calculatedIndex)
                      {
-                        QAssert.Fail("next neighbourhood index is " + nn
+                        Assert.True(false, "next neighbourhood index is " + nn
                                      + " but should be " + calculatedIndex);
                      }
                   }
@@ -115,7 +102,7 @@ namespace TestSuite
                                            + ((m < n) ? n - m : m - n) * dim[0] * dim[1];
                      if (nn != calculatedIndex)
                      {
-                        QAssert.Fail("next neighbourhood index is " + nn
+                        Assert.True(false, "next neighbourhood index is " + nn
                                      + " but should be " + calculatedIndex);
                      }
                   }
@@ -124,11 +111,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUniformGridMesher()
       {
          int[] dims = new int[] {5, 7, 8};
@@ -154,15 +137,11 @@ namespace TestSuite
              || Math.Abs(dx3 - mesher.dminus(layout.begin(), 2).Value) > tol
              || Math.Abs(dx3 - mesher.dplus(layout.begin(), 2).Value) > tol)
          {
-            QAssert.Fail("inconsistent uniform mesher object");
+            Assert.True(false, "inconsistent uniform mesher object");
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFirstDerivativesMapApply()
       {
          int[] dims = new int[] {400, 100, 50};
@@ -218,18 +197,14 @@ namespace TestSuite
             double calculated = t[iter.index()];
             if (Math.Abs(calculated - expected) > 1e-10)
             {
-               QAssert.Fail("first derivative calculation failed."
+               Assert.True(false, "first derivative calculation failed."
                             + "\n    calculated: " + calculated
                             + "\n    expected:   " + expected);
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSecondDerivativesMapApply()
       {
          int[] dims = new int[] {50, 50, 50};
@@ -274,7 +249,7 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dx^2 deviation is too big"
+               Assert.True(false, "numerical derivative in dx^2 deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
          }
@@ -295,7 +270,7 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dy^2 deviation is too big"
+               Assert.True(false, "numerical derivative in dy^2 deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
          }
@@ -316,17 +291,13 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dz^2 deviation is too big"
+               Assert.True(false, "numerical derivative in dz^2 deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDerivativeWeightsOnNonUniformGrids()
       {
          Fdm1dMesher mesherX =
@@ -376,7 +347,7 @@ namespace TestSuite
                   if (Math.Abs((beta1  - ndWeights1st[0]) / beta1) > tol
                       || Math.Abs((gamma1 - ndWeights1st[1]) / gamma1) > tol)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "first order derivative operator "
                                   + "on the lower boundary"
                                   + "\n expected beta:    " + ndWeights1st[0]
@@ -396,7 +367,7 @@ namespace TestSuite
                   if (Math.Abs(beta2)  > Const.QL_EPSILON
                       || Math.Abs(gamma2) > Const.QL_EPSILON)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "second order derivative operator "
                                   + "on the lower boundary"
                                   + "\n expected beta:    " + 0.0
@@ -418,7 +389,7 @@ namespace TestSuite
                   if (Math.Abs((alpha1 - ndWeights1st[0]) / alpha1) > tol
                       || Math.Abs((beta1  - ndWeights1st[1]) / beta1) > tol)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "first order derivative operator "
                                   + "on the upper boundary"
                                   + "\n expected alpha:   " + ndWeights1st[0]
@@ -438,7 +409,7 @@ namespace TestSuite
                   if (Math.Abs(alpha2)  > Const.QL_EPSILON
                       || Math.Abs(beta2) > Const.QL_EPSILON)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "second order derivative operator "
                                   + "on the upper boundary"
                                   + "\n expected alpha:   " + 0.0
@@ -464,7 +435,7 @@ namespace TestSuite
                       || Math.Abs((beta1  - ndWeights1st[1]) / beta1) > tol
                       || Math.Abs((gamma1 - ndWeights1st[2]) / gamma1) > tol)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "first order derivative operator"
                                   + "\n expected alpha:   " + ndWeights1st[0]
                                   + "\n calculated alpha: " + alpha1
@@ -489,7 +460,7 @@ namespace TestSuite
                       || Math.Abs((beta2  - ndWeights2nd[1]) / beta2) > tol
                       || Math.Abs((gamma2 - ndWeights2nd[2]) / gamma2) > tol)
                   {
-                     QAssert.Fail("can not reproduce the weights of the "
+                     Assert.True(false, "can not reproduce the weights of the "
                                   + "second order derivative operator"
                                   + "\n expected alpha:   " + ndWeights2nd[0]
                                   + "\n calculated alpha: " + alpha2
@@ -509,11 +480,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSecondOrderMixedDerivativesMapApply()
       {
          int[] dims = new int[] {50, 50, 50};
@@ -555,13 +522,13 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dxdy deviation is too big"
+               Assert.True(false, "numerical derivative in dxdy deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
 
             if (Math.Abs(t[i] - u[i]) > 1e5 * Const.QL_EPSILON)
             {
-               QAssert.Fail("numerical derivative in dxdy not equal to dydx"
+               Assert.True(false, "numerical derivative in dxdy not equal to dydx"
                             + "\n  found at " + x + " " + y + " " + z
                             + "\n  value    " + Math.Abs(t[i] - u[i]));
             }
@@ -580,13 +547,13 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dxdy deviation is too big"
+               Assert.True(false, "numerical derivative in dxdy deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
 
             if (Math.Abs(t[i] - u[i]) > 1e5 * Const.QL_EPSILON)
             {
-               QAssert.Fail("numerical derivative in dxdz not equal to dzdx"
+               Assert.True(false, "numerical derivative in dxdz not equal to dzdx"
                             + "\n  found at " + x + " " + y + " " + z
                             + "\n  value    " + Math.Abs(t[i] - u[i]));
             }
@@ -605,13 +572,13 @@ namespace TestSuite
 
             if (Math.Abs(d - t[i]) > tol)
             {
-               QAssert.Fail("numerical derivative in dydz deviation is too big"
+               Assert.True(false, "numerical derivative in dydz deviation is too big"
                             + "\n  found at " + x + " " + y + " " + z);
             }
 
             if (Math.Abs(t[i] - u[i]) > 1e5 * Const.QL_EPSILON)
             {
-               QAssert.Fail("numerical derivative in dydz not equal to dzdy"
+               Assert.True(false, "numerical derivative in dydz not equal to dzdy"
                             + "\n  found at " + x + " " + y + " " + z
                             + "\n  value    " + Math.Abs(t[i] - u[i]));
             }
@@ -620,11 +587,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTripleBandMapSolve()
       {
          int[] dims = new int[] {100, 400};
@@ -653,7 +616,7 @@ namespace TestSuite
          {
             if (Math.Abs(u[i] - t[i]) > 1e-6)
             {
-               QAssert.Fail("solve and apply are not consistent "
+               Assert.True(false, "solve and apply are not consistent "
                             + "\n expected      : " + u[i]
                             + "\n calculated    : " + t[i]);
             }
@@ -671,7 +634,7 @@ namespace TestSuite
          {
             if (Math.Abs(u[i] - t[i]) > 1e-6)
             {
-               QAssert.Fail("solve and apply are not consistent "
+               Assert.True(false, "solve and apply are not consistent "
                             + "\n expected      : " + u[i]
                             + "\n calculated    : " + t[i]);
             }
@@ -689,7 +652,7 @@ namespace TestSuite
          {
             if (Math.Abs(u[i] - t[i]) > 1e-6)
             {
-               QAssert.Fail("solve and apply are not consistent "
+               Assert.True(false, "solve and apply are not consistent "
                             + "\n expected      : " + u[i]
                             + "\n calculated    : " + t[i]);
             }
@@ -705,18 +668,14 @@ namespace TestSuite
          {
             if (Math.Abs(u[i] - t[i]) > 1e-6)
             {
-               QAssert.Fail("solve and apply are not consistent "
+               Assert.True(false, "solve and apply are not consistent "
                             + "\n expected      : " + u[i]
                             + "\n calculated    : " + t[i]);
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCrankNicolsonWithDamping()
       {
          SavedSettings backup = new SavedSettings();
@@ -796,25 +755,21 @@ namespace TestSuite
 
          if (Math.Abs(calculatedPV - expectedPV) > relTol * expectedPV)
          {
-            QAssert.Fail("Error calculating the PV of the digital option" +
+            Assert.True(false, "Error calculating the PV of the digital option" +
                          "\n rel. tolerance:  " + relTol +
                          "\n expected:        " + expectedPV +
                          "\n calculated:      " + calculatedPV);
          }
          if (Math.Abs(calculatedGamma - expectedGamma) > relTol * expectedGamma)
          {
-            QAssert.Fail("Error calculating the Gamma of the digital option" +
+            Assert.True(false, "Error calculating the Gamma of the digital option" +
                          "\n rel. tolerance:  " + relTol +
                          "\n expected:        " + expectedGamma +
                          "\n calculated:      " + calculatedGamma);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSpareMatrixReference()
       {
          int rows    = 10;
@@ -851,7 +806,7 @@ namespace TestSuite
             {
                if (Math.Abs(calculated[i, j] - expected[i, j]) > 100 * Const.QL_EPSILON)
                {
-                  QAssert.Fail("Error using sparse matrix references in " +
+                  Assert.True(false, "Error using sparse matrix references in " +
                                "Element (" + i + ", " + j + ")" +
                                "\n expected  : " + expected[i, j] +
                                "\n calculated: " + calculated[i, j]);
@@ -860,11 +815,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFdmMesherIntegral()
       {
          FdmMesherComposite mesher =
@@ -899,7 +850,7 @@ namespace TestSuite
 
          if (Math.Abs(calculatedSimpson - expectedSimpson) > tol * expectedSimpson)
          {
-            QAssert.Fail("discrete mesher integration using Simpson's rule failed: "
+            Assert.True(false, "discrete mesher integration using Simpson's rule failed: "
                          + "\n    calculated: " + calculatedSimpson
                          + "\n    expected:   " + expectedSimpson);
          }
@@ -911,7 +862,7 @@ namespace TestSuite
          if (Math.Abs(calculatedTrapezoid - expectedTrapezoid)
              > tol * expectedTrapezoid)
          {
-            QAssert.Fail("discrete mesher integration using Trapezoid rule failed: "
+            Assert.True(false, "discrete mesher integration using Trapezoid rule failed: "
                          + "\n    calculated: " + calculatedTrapezoid
                          + "\n    expected:   " + expectedTrapezoid);
          }

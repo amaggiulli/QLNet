@@ -15,40 +15,21 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_OptionletStripper : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_OptionletStripper()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -247,11 +228,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFlatTermVolatilityStripping1()
       {
          // Testing forward/forward vol stripping from flat term vol
@@ -294,7 +271,7 @@ namespace TestSuite
 
                double error = Math.Abs(priceFromStrippedVolatility - priceFromConstantVolatility);
                if (error > vars.tolerance)
-                  QAssert.Fail("\noption tenor:       " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false, "\noption tenor:       " + vars.optionTenors[tenorIndex] +
                                "\nstrike:             " + vars.strikes[strikeIndex] +
                                "\nstripped vol price: " + priceFromStrippedVolatility +
                                "\nconstant vol price: " + priceFromConstantVolatility +
@@ -304,11 +281,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTermVolatilityStripping1()
       {
          // Testing forward/forward vol stripping from non-flat term
@@ -351,7 +324,7 @@ namespace TestSuite
 
                double error = Math.Abs(priceFromStrippedVolatility - priceFromConstantVolatility);
                if (error > vars.tolerance)
-                  QAssert.Fail("\noption tenor:       " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false, "\noption tenor:       " + vars.optionTenors[tenorIndex] +
                                "\nstrike:             " + vars.strikes[strikeIndex] +
                                "\nstripped vol price: " + priceFromStrippedVolatility +
                                "\nconstant vol price: " + priceFromConstantVolatility +
@@ -361,11 +334,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFlatTermVolatilityStripping2()
       {
          // Testing forward/forward vol stripping from flat term vol
@@ -413,7 +382,7 @@ namespace TestSuite
 
                double error = Math.Abs(strippedVol1 - strippedVol2);
                if (error > vars.tolerance)
-                  QAssert.Fail("\noption tenor:  " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false, "\noption tenor:  " + vars.optionTenors[tenorIndex] +
                                "\nstrike:        " + vars.strikes[strikeIndex] +
                                "\nstripped vol1: " + strippedVol1 +
                                "\nstripped vol2: " + strippedVol2 +
@@ -425,11 +394,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTermVolatilityStripping2()
       {
          // Testing forward/forward vol stripping from non-flat term vol "
@@ -468,7 +433,7 @@ namespace TestSuite
 
                double error = Math.Abs(strippedVol1 - strippedVol2);
                if (error > vars.tolerance)
-                  QAssert.Fail("\noption tenor:  " + vars.optionTenors[tenorIndex] +
+                  Assert.True(false, "\noption tenor:  " + vars.optionTenors[tenorIndex] +
                                "\nstrike:        " + (vars.strikes[strikeIndex]) +
                                "\nstripped vol1: " + (strippedVol1) +
                                "\nstripped vol2: " + (strippedVol2) +

@@ -20,26 +20,15 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
-using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_Calendars
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testModifiedCalendars()
       {
          Calendar c1 = new TARGET();
@@ -78,11 +67,7 @@ namespace TestSuite
          QAssert.IsFalse(c1.isHoliday(d2), d2 + " still a holiday");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testJointCalendars()
       {
          Calendar c1 = new TARGET(),
@@ -110,37 +95,37 @@ namespace TestSuite
                  b4 = c4.isBusinessDay(d);
 
             if ((b1 && b2) != c12h.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c12h.name() + " (joining holidays)\n"
                             + "    and its components");
 
             if ((b1 || b2) != c12b.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c12b.name() + " (joining business days)\n"
                             + "    and its components");
 
             if ((b1 && b2 && b3) != c123h.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c123h.name() + " (joining holidays)\n"
                             + "    and its components");
 
             if ((b1 || b2 || b3) != c123b.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c123b.name() + " (joining business days)\n"
                             + "    and its components");
 
             if ((b1 && b2 && b3 && b4) != c1234h.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c1234h.name() + " (joining holidays)\n"
                             + "    and its components");
 
             if ((b1 || b2 || b3 || b4) != c1234b.isBusinessDay(d))
-               QAssert.Fail("At date " + d + ":\n"
+               Assert.True(false, "At date " + d + ":\n"
                             + "    inconsistency between joint calendar "
                             + c1234b.name() + " (joining business days)\n"
                             + "    and its components");
@@ -148,11 +133,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSSettlement()
       {
          // Testing US settlement holiday list
@@ -184,14 +165,14 @@ namespace TestSuite
          List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
                                                new Date(31, Month.December, 2005));
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
 
          for (int i = 0; i < hol.Count; i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+               Assert.True(false, "expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
          }
 
          // before Uniform Monday Holiday Act
@@ -208,23 +189,19 @@ namespace TestSuite
          hol = Calendar.holidayList(c, new Date(1, Month.January, 1961), new Date(31, Month.December, 1961));
 
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count +
+            Assert.True(false, "there were " + expectedHol.Count +
                          " expected holidays, while there are " + hol.Count +
                          " calculated holidays");
 
          for (int i = 0; i < hol.Count; i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSGovernmentBondMarket()
       {
 
@@ -247,19 +224,15 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+               Assert.True(false, "expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count +
+            Assert.True(false, "there were " + expectedHol.Count +
                          " expected holidays, while there are " + hol.Count +
                          " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSNewYorkStockExchange()
       {
 
@@ -301,10 +274,10 @@ namespace TestSuite
          for (i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+               Assert.True(false, "expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count +
+            Assert.True(false, "there were " + expectedHol.Count +
                          " expected holidays, while there are " + hol.Count +
                          " calculated holidays");
 
@@ -355,16 +328,12 @@ namespace TestSuite
          for (i = 0; i < histClose.Count; i++)
          {
             if (!c.isHoliday(histClose[i]))
-               QAssert.Fail(histClose[i] + " should be holiday (historical close)");
+               Assert.True(false, histClose[i] + " should be holiday (historical close)");
          }
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTARGET()
       {
          List<Date> expectedHol = new List<Date>();
@@ -419,21 +388,17 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyFrankfurt()
       {
          List<Date> expectedHol = new List<Date>();
@@ -458,20 +423,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyEurex()
       {
          List<Date> expectedHol = new List<Date>();
@@ -497,20 +458,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyXetra()
       {
          List<Date> expectedHol = new List<Date>();
@@ -535,19 +492,15 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+               Assert.True(false, "expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKSettlement()
       {
          //BOOST_MESSAGE("Testing UK settlement holiday list...");
@@ -595,20 +548,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKExchange()
       {
          //BOOST_MESSAGE("Testing London Stock Exchange holiday list...");
@@ -656,20 +605,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKMetals()
       {
          //BOOST_MESSAGE("Testing London Metals Exchange holiday list...");
@@ -717,20 +662,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testItalyExchange()
       {
          //BOOST_MESSAGE("Testing Milan Stock Exchange holiday list...");
@@ -768,20 +709,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBrazil()
       {
          //BOOST_MESSAGE("Testing Brazil holiday list...");
@@ -819,20 +756,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSouthKoreanSettlement()
       {
          //("Testing South-Korean settlement holiday list...");
@@ -915,19 +848,15 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+               Assert.True(false, "expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testKoreaStockExchange()
       {
          //("Testing Korea Stock Exchange holiday list...");
@@ -1015,20 +944,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaSSE()
       {
          // Testing China Shanghai Stock Exchange holiday list
@@ -1154,20 +1079,16 @@ namespace TestSuite
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
-               QAssert.Fail("expected holiday was " + expectedHol[i]
+               Assert.True(false, "expected holiday was " + expectedHol[i]
                             + " while calculated holiday is " + hol[i]);
          }
          if (hol.Count != expectedHol.Count)
-            QAssert.Fail("there were " + expectedHol.Count
+            Assert.True(false, "there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaIB()
       {
          // Testing China Inter Bank working weekends list
@@ -1228,7 +1149,7 @@ namespace TestSuite
             if (c.isBusinessDay(start) && c.isWeekend(start.DayOfWeek))
             {
                if (expectedWorkingWeekEnds[k] != start)
-                  QAssert.Fail("expected working weekend was " + expectedWorkingWeekEnds[k]
+                  Assert.True(false, "expected working weekend was " + expectedWorkingWeekEnds[k]
                                + " while calculated working weekend is " + start);
                ++k;
             }
@@ -1236,15 +1157,12 @@ namespace TestSuite
          }
 
          if (k != (expectedWorkingWeekEnds.Count))
-            QAssert.Fail("there were " + expectedWorkingWeekEnds.Count
+            Assert.True(false, "there were " + expectedWorkingWeekEnds.Count
                          + " expected working weekends, while there are " + k
                          + " calculated holidays");
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testEndOfMonth()
       {
          //BOOST_MESSAGE("Testing end-of-month calculation...");
@@ -1259,14 +1177,14 @@ namespace TestSuite
             eom = c.endOfMonth(counter);
             // check that eom is eom
             if (!c.isEndOfMonth(eom))
-               QAssert.Fail("\n  "
+               Assert.True(false, "\n  "
                             + eom.weekday() + " " + eom
                             + " is not the last business day in "
                             + eom.month() + " " + eom.year()
                             + " according to " + c.name());
             // check that eom is in the same month as counter
             if (eom.month() != counter.month())
-               QAssert.Fail("\n  "
+               Assert.True(false, "\n  "
                             + eom
                             + " is not in the same month as "
                             + counter);
@@ -1274,11 +1192,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBusinessDaysBetween()
       {
 
@@ -1388,7 +1302,7 @@ namespace TestSuite
             int calculated = calendar.businessDaysBetween(testDates[i - 1], testDates[i]);
             if (calculated != expected[i - 1])
             {
-               QAssert.Fail("from " + testDates[i - 1]
+               Assert.True(false, "from " + testDates[i - 1]
                             + " to " + testDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i - 1]);
@@ -1397,7 +1311,7 @@ namespace TestSuite
                                                       testDates[i], false, true);
             if (calculated != expected_include_to[i - 1])
             {
-               QAssert.Fail("from " + testDates[i - 1] + " excluded"
+               Assert.True(false, "from " + testDates[i - 1] + " excluded"
                             + " to " + testDates[i] + " included:\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected_include_to[i - 1]);
@@ -1407,7 +1321,7 @@ namespace TestSuite
                                                       testDates[i], true, true);
             if (calculated != expected_include_all[i - 1])
             {
-               QAssert.Fail("from " + testDates[i - 1] + " included"
+               Assert.True(false, "from " + testDates[i - 1] + " included"
                             + " to " + testDates[i] + " included:\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected_include_all[i - 1]);
@@ -1417,7 +1331,7 @@ namespace TestSuite
                                                       testDates[i], false, false);
             if (calculated != expected_exclude_all[i - 1])
             {
-               QAssert.Fail("from " + testDates[i - 1] + " excluded"
+               Assert.True(false, "from " + testDates[i - 1] + " excluded"
                             + " to " + testDates[i] + " excluded:\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected_exclude_all[i - 1]);
@@ -1426,11 +1340,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBespokeCalendars()
       {
 
@@ -1445,104 +1355,104 @@ namespace TestSuite
          Date testDate4 = new Date(7, Month.October, 2008); // Tuesday
 
          if (!a1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (!a1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " erroneously detected as holiday");
+            Assert.True(false, testDate2 + " erroneously detected as holiday");
          if (!a1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " erroneously detected as holiday");
+            Assert.True(false, testDate3 + " erroneously detected as holiday");
          if (!a1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          if (!b1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " erroneously detected as holiday");
+            Assert.True(false, testDate2 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " erroneously detected as holiday");
+            Assert.True(false, testDate3 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          a1.addWeekend(DayOfWeek.Sunday);
 
          if (!a1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (a1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (!a1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " erroneously detected as holiday");
+            Assert.True(false, testDate3 + " erroneously detected as holiday");
          if (!a1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          if (!b1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " erroneously detected as holiday");
+            Assert.True(false, testDate2 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " erroneously detected as holiday");
+            Assert.True(false, testDate3 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          a1.addHoliday(testDate3);
 
          if (!a1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (a1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (a1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " (marked as holiday) not detected");
+            Assert.True(false, testDate3 + " (marked as holiday) not detected");
          if (!a1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          if (!b1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " erroneously detected as holiday");
+            Assert.True(false, testDate1 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " erroneously detected as holiday");
+            Assert.True(false, testDate2 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " erroneously detected as holiday");
+            Assert.True(false, testDate3 + " erroneously detected as holiday");
          if (!b1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          BespokeCalendar a2 = a1;  // linked to a1
 
          a2.addWeekend(DayOfWeek.Saturday);
 
          if (a1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " (Saturday) not detected as weekend");
+            Assert.True(false, testDate1 + " (Saturday) not detected as weekend");
          if (a1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (a1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " (marked as holiday) not detected");
+            Assert.True(false, testDate3 + " (marked as holiday) not detected");
          if (!a1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          if (a2.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " (Saturday) not detected as weekend");
+            Assert.True(false, testDate1 + " (Saturday) not detected as weekend");
          if (a2.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (a2.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " (marked as holiday) not detected");
+            Assert.True(false, testDate3 + " (marked as holiday) not detected");
          if (!a2.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " erroneously detected as holiday");
+            Assert.True(false, testDate4 + " erroneously detected as holiday");
 
          a2.addHoliday(testDate4);
 
          if (a1.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " (Saturday) not detected as weekend");
+            Assert.True(false, testDate1 + " (Saturday) not detected as weekend");
          if (a1.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (a1.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " (marked as holiday) not detected");
+            Assert.True(false, testDate3 + " (marked as holiday) not detected");
          if (a1.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " (marked as holiday) not detected");
+            Assert.True(false, testDate4 + " (marked as holiday) not detected");
 
          if (a2.isBusinessDay(testDate1))
-            QAssert.Fail(testDate1 + " (Saturday) not detected as weekend");
+            Assert.True(false, testDate1 + " (Saturday) not detected as weekend");
          if (a2.isBusinessDay(testDate2))
-            QAssert.Fail(testDate2 + " (Sunday) not detected as weekend");
+            Assert.True(false, testDate2 + " (Sunday) not detected as weekend");
          if (a2.isBusinessDay(testDate3))
-            QAssert.Fail(testDate3 + " (marked as holiday) not detected");
+            Assert.True(false, testDate3 + " (marked as holiday) not detected");
          if (a2.isBusinessDay(testDate4))
-            QAssert.Fail(testDate4 + " (marked as holiday) not detected");
+            Assert.True(false, testDate4 + " (marked as holiday) not detected");
       }
    }
 }

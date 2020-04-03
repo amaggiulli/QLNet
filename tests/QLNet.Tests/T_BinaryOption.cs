@@ -14,19 +14,11 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
-using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BinaryOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -44,7 +36,7 @@ namespace TestSuite
                                   double error,
                                   double tolerance)
       {
-         QAssert.Fail(payoff.optionType() + " option with "
+         Assert.True(false, payoff.optionType() + " option with "
                       + barrierType + " barrier type:\n"
                       + "    barrier:          " + barrier + "\n"
                       + payoff + " payoff:\n"
@@ -96,11 +88,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashOrNothingHaugValues()
       {
          // Testing cash-or-nothing barrier options against Haug's values
@@ -198,11 +186,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAssetOrNothingHaugValues()
       {
          // Testing asset-or-nothing barrier options against Haug's values

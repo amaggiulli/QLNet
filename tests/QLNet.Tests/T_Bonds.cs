@@ -21,40 +21,22 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Bonds : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_Bonds()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -78,11 +60,8 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testYield()
       {
 
@@ -142,7 +121,7 @@ namespace TestSuite
                               double price2 = bond.cleanPrice(calculated, bondDayCount, compounding[n], frequencies[l]);
                               if (Math.Abs(price - price2) / price > tolerance)
                               {
-                                 QAssert.Fail("yield recalculation failed:\n"
+                                 Assert.True(false, "yield recalculation failed:\n"
                                               + "    issue:     " + issue + "\n"
                                               + "    maturity:  " + maturity + "\n"
                                               + "    coupon:    " + coupons[k] + "\n"
@@ -161,11 +140,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testTheoretical()
       {
          // "Testing theoretical bond price/yield calculation...");
@@ -219,7 +195,7 @@ namespace TestSuite
 
                      if (Math.Abs(price - calculatedPrice) > tolerance)
                      {
-                        QAssert.Fail("price calculation failed:"
+                        Assert.True(false, "price calculation failed:"
                                      + "\n    issue:     " + issue
                                      + "\n    maturity:  " + maturity
                                      + "\n    coupon:    " + coupons[k]
@@ -234,7 +210,7 @@ namespace TestSuite
                                                          tolerance, maxEvaluations);
                      if (Math.Abs(yields[m] - calculatedYield) > tolerance)
                      {
-                        QAssert.Fail("yield calculation failed:"
+                        Assert.True(false, "yield calculation failed:"
                                      + "\n    issue:     " + issue
                                      + "\n    maturity:  " + maturity
                                      + "\n    coupon:    " + coupons[k]
@@ -248,11 +224,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testCached()
       {
          // ("Testing bond price/yield calculation against cached values...");
@@ -311,7 +284,7 @@ namespace TestSuite
          price = bond1.cleanPrice(marketYield1, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice1a) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price
                          + "\n    expected:   " + cachedPrice1a
                          + "\n    tolerance:  " + tolerance
@@ -321,7 +294,7 @@ namespace TestSuite
          price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1b) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price
                          + "\n    expected:   " + cachedPrice1b
                          + "\n    tolerance:  " + tolerance
@@ -331,7 +304,7 @@ namespace TestSuite
          yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(yield - cachedYield1a) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached compounded yield:"
+            Assert.True(false, "failed to reproduce cached compounded yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield1a
                          + "\n    tolerance:  " + tolerance
@@ -341,7 +314,7 @@ namespace TestSuite
          yield = bond1.yield(marketPrice1, bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield1b) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false, "failed to reproduce cached continuous yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield1b
                          + "\n    tolerance:  " + tolerance
@@ -351,7 +324,7 @@ namespace TestSuite
          yield = bond1.yield(bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield1c) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false, "failed to reproduce cached continuous yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield1c
                          + "\n    tolerance:  " + tolerance
@@ -362,7 +335,7 @@ namespace TestSuite
          price = bond2.cleanPrice(marketYield2, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice2a) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price
                          + "\n    expected:   " + cachedPrice2a
                          + "\n    tolerance:  " + tolerance
@@ -372,7 +345,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2b) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price
                          + "\n    expected:   " + cachedPrice2b
                          + "\n    tolerance:  " + tolerance
@@ -382,7 +355,7 @@ namespace TestSuite
          yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(yield - cachedYield2a) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached compounded yield:"
+            Assert.True(false, "failed to reproduce cached compounded yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield2a
                          + "\n    tolerance:  " + tolerance
@@ -392,7 +365,7 @@ namespace TestSuite
          yield = bond2.yield(marketPrice2, bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield2b) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false, "failed to reproduce cached continuous yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield2b
                          + "\n    tolerance:  " + tolerance
@@ -402,7 +375,7 @@ namespace TestSuite
          yield = bond2.yield(bondDayCount, Compounding.Continuous, freq);
          if (Math.Abs(yield - cachedYield2c) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached continuous yield:"
+            Assert.True(false, "failed to reproduce cached continuous yield:"
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + cachedYield2c
                          + "\n    tolerance:  " + tolerance
@@ -428,7 +401,7 @@ namespace TestSuite
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq, settlementDate);
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price + ""
                          + "\n    expected:   " + cachedPrice3 + ""
                          + "\n    error:      " + (price - cachedPrice3));
@@ -441,17 +414,14 @@ namespace TestSuite
          price = bond3.cleanPrice(marketYield3, bondDayCount, Compounding.Compounded, freq);
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:"
+            Assert.True(false, "failed to reproduce cached price:"
                          + "\n    calculated: " + price + ""
                          + "\n    expected:   " + cachedPrice3 + ""
                          + "\n    error:      " + (price - cachedPrice3));
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testCachedZero()
       {
          // Testing zero-coupon bond prices against cached values
@@ -480,7 +450,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice1 + "\n"
                          + "    error:      " + (price - cachedPrice1));
@@ -497,7 +467,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice2 + "\n"
                          + "    error:      " + (price - cachedPrice2));
@@ -514,17 +484,14 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice3 + "\n"
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testCachedFixed()
       {
          // "Testing fixed-coupon bond prices against cached values...");
@@ -558,7 +525,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice1 + "\n"
                          + "    error:      " + (price - cachedPrice1));
@@ -583,7 +550,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice2 + "\n"
                          + "    error:      " + (price - cachedPrice2));
@@ -608,17 +575,14 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice3 + "\n"
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testCachedFloating()
       {
          // "Testing floating-rate bond prices against cached values...");
@@ -669,7 +633,7 @@ namespace TestSuite
          double price = bond1.cleanPrice();
          if (Math.Abs(price - cachedPrice1) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice1 + "\n"
                          + "    error:      " + (price - cachedPrice1));
@@ -698,7 +662,7 @@ namespace TestSuite
          price = bond2.cleanPrice();
          if (Math.Abs(price - cachedPrice2) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice2 + "\n"
                          + "    error:      " + (price - cachedPrice2));
@@ -732,17 +696,14 @@ namespace TestSuite
          price = bond3.cleanPrice();
          if (Math.Abs(price - cachedPrice3) > tolerance)
          {
-            QAssert.Fail("failed to reproduce cached price:\n"
+            Assert.True(false, "failed to reproduce cached price:\n"
                          + "    calculated: " + price + "\n"
                          + "    expected:   " + cachedPrice3 + "\n"
                          + "    error:      " + (price - cachedPrice3));
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testBrazilianCached()
       {
          //("Testing Brazilian public bond prices against cached values...");
@@ -823,7 +784,7 @@ namespace TestSuite
                                                               today) + bond.accruedAmount(today)) / 100;
             if (Math.Abs(price - cachedPrice) > tolerance)
             {
-               QAssert.Fail("failed to reproduce cached price:\n"
+               Assert.True(false, "failed to reproduce cached price:\n"
                             + "    calculated: " + price + "\n"
                             + "    expected:   " + cachedPrice + "\n"
                             + "    error:      " + (price - cachedPrice) + "\n"
@@ -832,11 +793,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAmortizingFixedBond()
       {
          Date startDate = new Date(2, 1, 2007);
@@ -879,12 +836,7 @@ namespace TestSuite
 
       }
 
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMBSFixedBondCached()
       {
          // Test MBS Bond against cached values
@@ -1101,11 +1053,7 @@ namespace TestSuite
          QAssert.AreEqual(0.0556, bond.BondEquivalentYield(), 0.0001, " Bond Equivalent Yield is different");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAmortizingBond1()
       {
          // Input Values
@@ -1136,11 +1084,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAmortizingBond2()
       {
          // Par – 500,000
@@ -1180,11 +1124,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAmortizingFixedRateBond()
       {
          // Testing amortizing fixed rate bond
@@ -1226,7 +1166,7 @@ namespace TestSuite
                double error = Math.Abs(totalAmount - amounts[i]);
                if (error > tolerance)
                {
-                  QAssert.Fail(" Rate: " + rates[i] +
+                  Assert.True(false, " Rate: " + rates[i] +
                                " " + k + "th cash flow " +
                                " Failed!" +
                                " Expected Amount: " + amounts[i] +
@@ -1239,7 +1179,7 @@ namespace TestSuite
 
                if (error > tolerance)
                {
-                  QAssert.Fail(" Rate: " + rates[i] +
+                  Assert.True(false, " Rate: " + rates[i] +
                                " " + k + "th cash flow " +
                                " Failed!" +
                                " Expected Coupon: " + expectedCoupon +
@@ -1255,11 +1195,7 @@ namespace TestSuite
       /// This requires the use of the Schedule to be constructed
       /// with a custom date vector
       /// </summary>
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBondFromScheduleWithDateVector()
       {
          // Testing South African R2048 bond price using Schedule constructor with Date vector
@@ -1325,16 +1261,12 @@ namespace TestSuite
          double tolerance = 1e-5;
          if (Math.Abs(calculatedPrice - expectedPrice) > tolerance)
          {
-            QAssert.Fail(string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}",
+            Assert.True(false, string.Format("failed to reproduce R2048 dirty price\nexpected: {0}\ncalculated: {1}",
                                        expectedPrice, calculatedPrice));
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testWeightedAverageLife()
       {
          // Test against know data
@@ -1363,34 +1295,20 @@ namespace TestSuite
          OIS,
          ZeroCoupon
       }
-#if NET452
-      [DataTestMethod]
-      [DataRow(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
-      [DataRow(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
-      [DataRow(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
-      [DataRow(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
-      [DataRow(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
-      [DataRow(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
-      [DataRow(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
-      [DataRow(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
-      [DataRow(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
-      [DataRow(CouponType.FixedRate, 5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
-#else
+
       [Theory]
-      [InlineData(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
-      [InlineData(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
-      [InlineData(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
-      [InlineData(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
-      [InlineData(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
-      [InlineData(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
-      [InlineData(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
-      [InlineData(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
-      [InlineData(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
-      [InlineData(CouponType.FixedRate, 5.375, "03/01/2018", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
-#endif
-      public void testAccruedInterest(CouponType couponType, double Coupon,
-                                      string AccrualDate, string MaturityDate, string SettlementDate, string FirstCouponDate,
-                                      double Price, double expectedAccruedInterest, double expectedYtm)
+      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833)]
+      [InlineData(0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
+      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53)]
+      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56)]
+      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42)]
+      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11)]
+      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00)]
+      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83)]
+      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25)]
+      [InlineData(5.375, "03/01/2018", "03/01/2023", "7/16/2018", "", 20.156)]
+      public void testAccruedInterest(double Coupon, string AccrualDate, string MaturityDate,
+         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -1419,7 +1337,7 @@ namespace TestSuite
 
          double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
-            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+            Assert.True(false, "Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
       }
@@ -1446,11 +1364,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testExCouponGilt()
       {
          // Testing ex-coupon UK Gilt price against market values
@@ -1544,56 +1458,52 @@ namespace TestSuite
          {
             double accrued = bond.accruedAmount(cases[i].settlementDate);
             if (Math.Abs(accrued - cases[i].accruedAmount) > 1e-6)
-               QAssert.Fail("Failed to reproduce accrued amount at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce accrued amount at " + cases[i].settlementDate
                             + "\n    calculated: " + accrued
                             + "\n    expected:   " + cases[i].accruedAmount);
 
             double npv = cases[i].testPrice + accrued;
             if (Math.Abs(npv - cases[i].NPV) > 1e-6)
-               QAssert.Fail("Failed to reproduce NPV at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce NPV at " + cases[i].settlementDate
                             + "\n    calculated: " + npv
                             + "\n    expected:   " + cases[i].NPV);
 
             double yield = CashFlows.yield(leg, npv, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(yield - cases[i].yield) > 1e-6)
-               QAssert.Fail("Failed to reproduce yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce yield at " + cases[i].settlementDate
                             + "\n    calculated: " + yield
                             + "\n    expected:   " + cases[i].yield);
 
 
             double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, cases[i].settlementDate);
             if (Math.Abs(duration - cases[i].duration) > 1e-6)
-               QAssert.Fail("Failed to reproduce duration at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce duration at " + cases[i].settlementDate
                             + "\n    calculated: " + duration
                             + "\n    expected:   " + cases[i].duration);
 
             double convexity = CashFlows.convexity(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(convexity - cases[i].convexity) > 1e-6)
-               QAssert.Fail("Failed to reproduce convexity at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce convexity at " + cases[i].settlementDate
                             + "\n    calculated: " + convexity
                             + "\n    expected:   " + cases[i].convexity);
 
             double calcnpv = CashFlows.npv(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(calcnpv - cases[i].NPV) > 1e-6)
-               QAssert.Fail("Failed to reproduce NPV from yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce NPV from yield at " + cases[i].settlementDate
                             + "\n    calculated: " + calcnpv
                             + "\n    expected:   " + cases[i].NPV);
 
             double calcprice = calcnpv - accrued;
 
             if (Math.Abs(calcprice - cases[i].testPrice) > 1e-6)
-               QAssert.Fail("Failed to reproduce price from yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce price from yield at " + cases[i].settlementDate
                             + "\n    calculated: " + calcprice
                             + "\n    expected:   " + cases[i].testPrice);
 
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testExCouponAustralianBond()
       {
          // Testing ex-coupon Australian bond price against market values
@@ -1683,54 +1593,50 @@ namespace TestSuite
          {
             double accrued = bond.accruedAmount(cases[i].settlementDate);
             if (Math.Abs(accrued - cases[i].accruedAmount) > 1e-3)
-               QAssert.Fail("Failed to reproduce accrued amount at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce accrued amount at " + cases[i].settlementDate
                             + "\n    calculated: " + accrued
                             + "\n    expected:   " + cases[i].accruedAmount);
 
             double npv = cases[i].testPrice + accrued;
             if (Math.Abs(npv - cases[i].NPV) > 1e-3)
-               QAssert.Fail("Failed to reproduce NPV at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce NPV at " + cases[i].settlementDate
                             + "\n    calculated: " + npv
                             + "\n    expected:   " + cases[i].NPV);
 
 
             double yield = CashFlows.yield(leg, npv, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(yield - cases[i].yield) > 1e-3)
-               QAssert.Fail("Failed to reproduce yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce yield at " + cases[i].settlementDate
                             + "\n    calculated: " + yield
                             + "\n    expected:   " + cases[i].yield);
 
             double duration = CashFlows.duration(leg, yield, dc, comp, freq, Duration.Type.Modified, false, cases[i].settlementDate);
             if (Math.Abs(duration - cases[i].duration) > 1e-5)
-               QAssert.Fail("Failed to reproduce duration at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce duration at " + cases[i].settlementDate
                             + "\n    calculated: " + duration
                             + "\n    expected:   " + cases[i].duration);
 
             double convexity = CashFlows.convexity(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(convexity - cases[i].convexity) > 1e-4)
-               QAssert.Fail("Failed to reproduce convexity at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce convexity at " + cases[i].settlementDate
                             + "\n    calculated: " + convexity
                             + "\n    expected:   " + cases[i].convexity);
 
             double calcnpv = CashFlows.npv(leg, yield, dc, comp, freq, false, cases[i].settlementDate);
             if (Math.Abs(calcnpv - cases[i].NPV) > 1e-3)
-               QAssert.Fail("Failed to reproduce NPV from yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce NPV from yield at " + cases[i].settlementDate
                             + "\n    calculated: " + calcnpv
                             + "\n    expected:   " + cases[i].NPV);
 
             double calcprice = calcnpv - accrued;
             if (Math.Abs(calcprice - cases[i].testPrice) > 1e-3)
-               QAssert.Fail("Failed to reproduce price from yield at " + cases[i].settlementDate
+               Assert.True(false, "Failed to reproduce price from yield at " + cases[i].settlementDate
                             + "\n    calculated: " + calcprice
                             + "\n    expected:   " + cases[i].testPrice);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testThirty360BondWithSettlementOn31st()
       {
          // Testing Thirty/360 bond with settlement on 31st of the month
@@ -1755,52 +1661,36 @@ namespace TestSuite
 
          double yield = BondFunctions.yield(fixedRateBond, cleanPrice, dayCounter, compounding, Frequency.Semiannual, settlement);
          if (Math.Abs(yield - 0.015) > 1e-4)
-            QAssert.Fail("Failed to yield at " + settlement
+            Assert.True(false, "Failed to yield at " + settlement
                          + "\n    calculated: " + yield
                          + "\n    expected:   " + "0.015");
 
          double duration = BondFunctions.duration(fixedRateBond, new InterestRate(yield, dayCounter, compounding, Frequency.Semiannual),
                                                   Duration.Type.Macaulay, settlement);
          if (Math.Abs(duration - 1.022) > 1e-3)
-            QAssert.Fail("Failed to reproduce duration at " + settlement
+            Assert.True(false, "Failed to reproduce duration at " + settlement
                          + "\n    calculated: " + duration
                          + "\n    expected:   " + "1.022");
 
          double convexity = BondFunctions.convexity(fixedRateBond, new InterestRate(yield, dayCounter, compounding, Frequency.Semiannual), settlement) / 100;
          if (Math.Abs(convexity - 0.015) > 1e-3)
-            QAssert.Fail("Failed to reproduce convexity at " + settlement
+            Assert.True(false, "Failed to reproduce convexity at " + settlement
                          + "\n    calculated: " + convexity
                          + "\n    expected:   " + "0.015");
 
          double accrued = BondFunctions.accruedAmount(fixedRateBond, settlement);
          if (Math.Abs(accrued - 0.7) > 1e-6)
-            QAssert.Fail("Failed to reproduce accrued at " + settlement
+            Assert.True(false, "Failed to reproduce accrued at " + settlement
                          + "\n    calculated: " + accrued
                          + "\n    expected:   " + "0.7");
       }
 
-#if NET452
-      [DataTestMethod()]
-      [DataRow("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
-      [DataRow("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
-      [DataRow("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
-      [DataRow("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
-      [DataRow("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
-      //[DataRow("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]   // 17.562 from calculation
-      //[DataRow("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]    // 11.946 from calculation
-      //[DataRow("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]    //  0.947 from calculation
-      //[DataRow("15147TDU9", "07/15/2035", 4, "07/10/2018", 105.591, 12.405, 10.7)]
-      //[DataRow("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
-      //[DataRow("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
-      //[DataRow("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
-
-#else
       [Theory]
-      [InlineData("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417, 10.24)]
-      [InlineData("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296, 12.87)]
-      [InlineData("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154, 7.71)]
-      [InlineData("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118, 10.59)]
-      [InlineData("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257, 7.82)]
+      [InlineData("64990C4X6", "07/01/2035", 4, "07/10/2018", 106.599, 12.417)]
+      //[InlineData("64990C5B3", "07/01/2047", 4, "07/10/2018", 103.9, 17.296)]
+      //[InlineData("546415L40", "05/15/2033", 4, "07/10/2018", 104.239, 11.154)]
+      //[InlineData("646140CN1", "01/01/2035", 4, "07/10/2018", 105.262, 12.118)]
+      //[InlineData("70024PCW7", "06/15/2028", 4, "07/10/2018", 110.839, 8.257)]
       //[InlineData("602453HJ4", "06/15/2048", 4, "07/10/2018", 103.753, 17.61, 13.73)]
       //[InlineData("397586QG6", "02/15/2035", 4, "07/17/2018", 103.681, 12.138, 8.3)]
       //[InlineData("544351NT2", "06/27/2019", 4, "07/10/2018", 102.424, 0.951, 0.96)]
@@ -1808,9 +1698,8 @@ namespace TestSuite
       //[InlineData("832645JK2", "08/15/2048", 4, "07/10/2018", 103.076, 17.618, 13.35)]
       //[InlineData("956622N91", "06/01/2051", 4, "07/11/2018", 100, 18.206, 14.92)]
       //[InlineData("397586QF8", "02/15/2034", 4, "07/17/2018", 103.941, 11.612, 7.87)]
-#endif
       public void testDurations(string Cusip, string MaturityDate, double Coupon,
-                                string SettlementDate, double Price, double ExpectedModifiedDuration, double ExpectedOASDuration)
+         string SettlementDate, double Price, double ExpectedModifiedDuration)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -1841,7 +1730,7 @@ namespace TestSuite
          double duration = BondFunctions.duration(bond, yield, dc, comp, freq, Duration.Type.Modified, settlementDate);
 
          if (Math.Abs(duration - ExpectedModifiedDuration) > 1e-3)
-            QAssert.Fail("Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
+            Assert.True(false, "Failed to reproduce modified duration for cusip " + Cusip + " at " + SettlementDate
                          + "\n    calculated: " + duration
                          + "\n    expected:   " + ExpectedModifiedDuration);
       }
@@ -1860,11 +1749,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod]
-#else
       [Fact]
-#endif
       public void testSteppedCoupon()
       {
          // Sample 1
@@ -1917,14 +1802,14 @@ namespace TestSuite
          double ytm = bond.yield(Price, dc, comp, freq, settlementDate);
 
          if (Math.Abs(ytm - expectedYtm) > 1e-4)
-            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+            Assert.True(false, "Failed to reproduce ytm  at " + settlementDate
                          + "\n    calculated: " + ytm
                          + "\n    expected:   " + expectedYtm);
 
          double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
 
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
-            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+            Assert.True(false, "Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
 
@@ -1937,14 +1822,14 @@ namespace TestSuite
          ytm = bond.yield(Price, dc, comp, freq, settlementDate);
 
          if (Math.Abs(ytm - expectedYtm) > 1e-4)
-            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+            Assert.True(false, "Failed to reproduce ytm  at " + settlementDate
                          + "\n    calculated: " + ytm
                          + "\n    expected:   " + expectedYtm);
 
          accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
 
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
-            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+            Assert.True(false, "Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
 
@@ -1986,30 +1871,24 @@ namespace TestSuite
          ytm = bond2.yield(Price, dc, comp, freq, settlementDate);
 
          if (Math.Abs(ytm - expectedYtm) > 1e-4)
-            QAssert.Fail("Failed to reproduce ytm  at " + settlementDate
+            Assert.True(false, "Failed to reproduce ytm  at " + settlementDate
                          + "\n    calculated: " + ytm
                          + "\n    expected:   " + expectedYtm);
 
          accruedInterest = CashFlows.accruedAmount(bond2.cashflows(), false, settlementDate);
 
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
-            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+            Assert.True(false, "Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
       }
 
-#if NET452
-      [DataTestMethod]
-      [DataRow(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
-      [DataRow(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
-#else
+
       [Theory]
-      [InlineData(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
-      [InlineData(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
-#endif
-      public void testQLNetExceptions(CouponType couponType, double Coupon,
-                                      string AccrualDate, string MaturityDate, string SettlementDate,
-                                      string FirstCouponDate, double Price)
+      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+      public void testQLNetExceptions(double Coupon, string AccrualDate, string MaturityDate,
+         string SettlementDate, string FirstCouponDate, double Price)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -2057,11 +1936,11 @@ namespace TestSuite
          }
          catch (Exception)
          {
-            QAssert.Fail("Failed to handle QLNet exception");
+            Assert.True(false, "Failed to handle QLNet exception");
             return;
          }
 
-         QAssert.Fail("Failed to capture QLNet exception");
+         Assert.True(false, "Failed to capture QLNet exception");
       }
    }
 }

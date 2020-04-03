@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -44,9 +40,6 @@ namespace TestSuite
    // zero inflation tests, index, termstructure, and swaps
    //===========================================================================================
 
-#if NET452
-   [TestClass()]
-#endif
    public class T_Inflation
    {
       private YieldTermStructure nominalTermStructure()
@@ -91,11 +84,7 @@ namespace TestSuite
          return instruments;
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZeroIndex()
       {
          // Testing zero inflation indices...
@@ -108,7 +97,7 @@ namespace TestSuite
              || !euhicp.interpolated()
              || euhicp.availabilityLag() != new Period(1, TimeUnit.Months))
          {
-            QAssert.Fail("wrong EU HICP data ("
+            Assert.True(false, "wrong EU HICP data ("
                          + euhicp.name() + ", "
                          + euhicp.frequency() + ", "
                          + euhicp.revised() + ", "
@@ -123,7 +112,7 @@ namespace TestSuite
              || ukrpi.interpolated()
              || ukrpi.availabilityLag() != new Period(1, TimeUnit.Months))
          {
-            QAssert.Fail("wrong UK RPI data ("
+            Assert.True(false, "wrong UK RPI data ("
                          + ukrpi.name() + ", "
                          + ukrpi.frequency() + ", "
                          + ukrpi.revised() + ", "
@@ -180,7 +169,7 @@ namespace TestSuite
                if (d < Utils.inflationPeriod(todayMinusLag, iir.frequency()).Key)
                {
                   if (Math.Abs(iir.fixing(d) - fixData[i]) > eps)
-                     QAssert.Fail("Fixings not constant within a period: "
+                     Assert.True(false, "Fixings not constant within a period: "
                                   + iir.fixing(d)
                                   + ", should be " + fixData[i]);
                }
@@ -188,11 +177,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZeroTermStructure()
       {
          // Testing zero inflation term structure...
@@ -315,7 +300,7 @@ namespace TestSuite
                if (t <= 0)
                   calc = ii.fixing(d, false); // still historical
                if (Math.Abs(calc - ii.fixing(d, true)) / 10000.0 > eps)
-                  QAssert.Fail("ZC index does not forecast correctly for date " + d
+                  Assert.True(false, "ZC index does not forecast correctly for date " + d
                                + " from base date " + bd
                                + " with fixing " + bf
                                + ", correct:  " + calc
@@ -442,7 +427,7 @@ namespace TestSuite
             {
                if (Math.Abs(fixing[i] - seasonalityFixing_1[i]) > eps)
                {
-                  QAssert.Fail("Seasonality doesn't work correctly when seasonality factors are set = 1");
+                  Assert.True(false, "Seasonality doesn't work correctly when seasonality factors are set = 1");
                }
             }
 
@@ -488,7 +473,7 @@ namespace TestSuite
             {
                if (Math.Abs(expectedFixing[i] - seasonalityFixing_real[i]) > 0.01)
                {
-                  QAssert.Fail("Seasonality doesn't work correctly when considering seasonality factors != 1 "
+                  Assert.True(false, "Seasonality doesn't work correctly when considering seasonality factors != 1 "
                                + expectedFixing[i] + " vs " + seasonalityFixing_real[i]);
                }
             }
@@ -519,7 +504,7 @@ namespace TestSuite
             {
                if (Math.Abs(seasonalityFixing_unset[i] - seasonalityFixing_1[i]) > eps)
                {
-                  QAssert.Fail("UnsetSeasonality doesn't work correctly "
+                  Assert.True(false, "UnsetSeasonality doesn't work correctly "
                                + seasonalityFixing_unset[i] + " vs " + seasonalityFixing_1[i]);
                }
             }
@@ -593,7 +578,7 @@ namespace TestSuite
                if (t <= 0)
                   calc = iiyes.fixing(d); // still historical
                if (Math.Abs(calc - iiyes.fixing(d)) > eps)
-                  QAssert.Fail("ZC INTERPOLATED index does not forecast correctly for date " + d
+                  Assert.True(false, "ZC INTERPOLATED index does not forecast correctly for date " + d
                                + " from base date " + bd
                                + " with fixing " + bf
                                + ", correct:  " + calc
@@ -636,11 +621,7 @@ namespace TestSuite
       //===========================================================================================
       // year on year tests, index, termstructure, and swaps
       //===========================================================================================
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testYYIndex()
       {
          // Testing year-on-year inflation indices
@@ -657,7 +638,7 @@ namespace TestSuite
                 || yyeuhicp.ratio()
                 || yyeuhicp.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               QAssert.Fail("wrong year-on-year EU HICP data ("
+               Assert.True(false, "wrong year-on-year EU HICP data ("
                             + yyeuhicp.name() + ", "
                             + yyeuhicp.frequency() + ", "
                             + yyeuhicp.revised() + ", "
@@ -674,7 +655,7 @@ namespace TestSuite
                 || !yyeuhicpr.ratio()
                 || yyeuhicpr.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               QAssert.Fail("wrong year-on-year EU HICPr data ("
+               Assert.True(false, "wrong year-on-year EU HICPr data ("
                             + yyeuhicpr.name() + ", "
                             + yyeuhicpr.frequency() + ", "
                             + yyeuhicpr.revised() + ", "
@@ -691,7 +672,7 @@ namespace TestSuite
                 || yyukrpi.ratio()
                 || yyukrpi.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               QAssert.Fail("wrong year-on-year UK RPI data ("
+               Assert.True(false, "wrong year-on-year UK RPI data ("
                             + yyukrpi.name() + ", "
                             + yyukrpi.frequency() + ", "
                             + yyukrpi.revised() + ", "
@@ -708,7 +689,7 @@ namespace TestSuite
                 || !yyukrpir.ratio()
                 || yyukrpir.availabilityLag() != new Period(1, TimeUnit.Months))
             {
-               QAssert.Fail("wrong year-on-year UK RPIr data ("
+               Assert.True(false, "wrong year-on-year UK RPIr data ("
                             + yyukrpir.name() + ", "
                             + yyukrpir.frequency() + ", "
                             + yyukrpir.revised() + ", "
@@ -801,12 +782,7 @@ namespace TestSuite
          }
       }
 
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testYYTermStructure()
       {
          // Testing year-on-year inflation term structure...

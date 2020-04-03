@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_SwaptionVolatilityCube
    {
       public class CommonVars
@@ -55,7 +48,7 @@ namespace TestSuite
                   double actVol = volCube.volatility(atm.tenors.options[i], atm.tenors.swaps[j], strike, true);
                   double error = Math.Abs(expVol - actVol);
                   if (error > tolerance)
-                     QAssert.Fail("recovery of atm vols failed:" +
+                     Assert.True(false, "recovery of atm vols failed:" +
                                   "\nexpiry time = " + atm.tenors.options[i] +
                                   "\nswap length = " + atm.tenors.swaps[j] +
                                   "\n atm strike = " + strike +
@@ -83,7 +76,7 @@ namespace TestSuite
                      double expVolSpread = cube.volSpreads[i * cube.tenors.swaps.Count + j, k];
                      double error = Math.Abs(expVolSpread - spread);
                      if (error > tolerance)
-                        QAssert.Fail("\nrecovery of smile vol spreads failed:" +
+                        Assert.True(false, "\nrecovery of smile vol spreads failed:" +
                                      "\n    option tenor = " + cube.tenors.options[i] +
                                      "\n      swap tenor = " + cube.tenors.swaps[j] +
                                      "\n      atm strike = " + atmStrike +
@@ -122,11 +115,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAtmVols()
       {
          // Testing swaption volatility cube (atm vols)
@@ -146,11 +135,7 @@ namespace TestSuite
          vars.makeAtmVolTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSmile()
       {
          // Testing swaption volatility cube (smile)
@@ -169,11 +154,7 @@ namespace TestSuite
          vars.makeVolSpreadsTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSabrVols()
       {
          // Testing swaption volatility cube (sabr interpolation)
@@ -202,11 +183,7 @@ namespace TestSuite
          vars.makeVolSpreadsTest(volCube, tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSpreadedCube()
       {
 
@@ -258,7 +235,7 @@ namespace TestSuite
                   double diff = spreadedVolCube.volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike)
                                 - volCube.link.volatility(vars.cube.tenors.options[i], vars.cube.tenors.swaps[j], strike);
                   if (Math.Abs(diff - spread.value()) > 1e-16)
-                     QAssert.Fail("\ndiff!=spread in volatility method:" +
+                     Assert.True(false, "\ndiff!=spread in volatility method:" +
                                   "\nexpiry time = " + vars.cube.tenors.options[i] +
                                   "\nswap length = " + vars.cube.tenors.swaps[j] +
                                   "\n atm strike = " + (strike) +
@@ -267,7 +244,7 @@ namespace TestSuite
 
                   diff = smileSectionBySpreadedCube.volatility(strike) - smileSectionByCube.volatility(strike);
                   if (Math.Abs(diff - spread.value()) > 1e-16)
-                     QAssert.Fail("\ndiff!=spread in smile section method:" +
+                     Assert.True(false, "\ndiff!=spread in smile section method:" +
                                   "\nexpiry time = " + vars.cube.tenors.options[i] +
                                   "\nswap length = " + vars.cube.tenors.swaps[j] +
                                   "\n atm strike = " + (strike) +
@@ -282,19 +259,15 @@ namespace TestSuite
          spreadedVolCube.registerWith(f.update);
          volCube.link.update();
          if (!f.isUp())
-            QAssert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
+            Assert.True(false, "SpreadedSwaptionVolatilityStructure does not propagate notifications");
 
          f.lower();
          spread.setValue(.001);
          if (!f.isUp())
-            QAssert.Fail("SpreadedSwaptionVolatilityStructure does not propagate notifications");
+            Assert.True(false, "SpreadedSwaptionVolatilityStructure does not propagate notifications");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testObservability()
       {
          // Testing volatility cube observability
@@ -358,7 +331,7 @@ namespace TestSuite
                                                     dummyStrike + vars.cube.strikeSpreads[k],
                                                     false);
                   if (Math.Abs(v0 - v1) > 1e-14)
-                     QAssert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
+                     Assert.True(false, " option tenor = " + vars.cube.tenors.options[i] +
                                   " swap tenor = " + vars.cube.tenors.swaps[j] +
                                   " strike = " + (dummyStrike + vars.cube.strikeSpreads[k]) +
                                   "  v0 = " + (v0) +
@@ -408,7 +381,7 @@ namespace TestSuite
                                                     dummyStrike + vars.cube.strikeSpreads[k],
                                                     false);
                   if (Math.Abs(v0 - v1) > 1e-14)
-                     QAssert.Fail(" option tenor = " + vars.cube.tenors.options[i] +
+                     Assert.True(false, " option tenor = " + vars.cube.tenors.options[i] +
                                   " swap tenor = " + vars.cube.tenors.swaps[j] +
                                   " strike = " + (dummyStrike + vars.cube.strikeSpreads[k]) +
                                   "  v0 = " + (v0) +

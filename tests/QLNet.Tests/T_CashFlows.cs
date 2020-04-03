@@ -17,27 +17,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_CashFlows
    {
       private void CHECK_INCLUSION(int n, int days, bool expected, List<CashFlow> leg, Date today)
       {
          if ((!leg[n].hasOccurred(today + days)) != expected)
          {
-            QAssert.Fail("cashflow at T+" + n + " "
+            Assert.True(false, "cashflow at T+" + n + " "
                          + (expected ? "not" : "") + "included"
                          + " at T+" + days);
          }
@@ -50,7 +43,7 @@ namespace TestSuite
             double NPV = CashFlows.npv(leg, no_discount, includeRef, today);
             if (Math.Abs(NPV - expected) > 1e-6)
             {
-               QAssert.Fail("NPV mismatch:\n"
+               Assert.True(false, "NPV mismatch:\n"
                             + "    calculated: " + NPV + "\n"
                             + "    expected: " + expected);
             }
@@ -58,11 +51,7 @@ namespace TestSuite
          while (false);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSettings()
       {
          // Testing cash-flow settings...
@@ -178,11 +167,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAccessViolation()
       {
          // Testing dynamic cast of coupon in Black pricer...
@@ -228,11 +213,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDefaultSettlementDate()
       {
          // Testing default evaluation date in cashflows methods...
@@ -253,22 +234,18 @@ namespace TestSuite
 
          double accruedPeriod = CashFlows.accruedPeriod(leg, false);
          if (accruedPeriod == 0.0)
-            QAssert.Fail("null accrued period with default settlement date");
+            Assert.True(false, "null accrued period with default settlement date");
 
          int accruedDays = CashFlows.accruedDays(leg, false);
          if (accruedDays == 0)
-            QAssert.Fail("no accrued days with default settlement date");
+            Assert.True(false, "no accrued days with default settlement date");
 
          double accruedAmount = CashFlows.accruedAmount(leg, false);
          if (accruedAmount == 0.0)
-            QAssert.Fail("null accrued amount with default settlement date");
+            Assert.True(false, "null accrued amount with default settlement date");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testNullFixingDays()
       {
          // Testing ibor leg construction with null fixing days...

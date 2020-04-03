@@ -16,18 +16,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BarrierOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -46,7 +39,7 @@ namespace TestSuite
                                   double error,
                                   double tolerance)
       {
-         QAssert.Fail(barrierType + " "
+         Assert.True(false, barrierType + " "
                       + exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
@@ -84,7 +77,7 @@ namespace TestSuite
                                      double error,
                                      double tolerance)
       {
-         QAssert.Fail(barrierType + " "
+         Assert.True(false, barrierType + " "
                       + exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
@@ -203,11 +196,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testHaugValues()
       {
          // Testing barrier options against Haug's values
@@ -460,11 +449,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBabsiriValues()
       {
          // Testing barrier options against Babsiri's values
@@ -567,11 +552,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBeagleholeValues()
       {
          // Testing barrier options against Beaglehole's values
@@ -664,11 +645,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLocalVolAndHestonComparison()
       {
          // Testing local volatility and Heston FD engines for barrier options
@@ -778,7 +755,7 @@ namespace TestSuite
          /* TODO FdHestonBarrierEngine
          if (Math.Abs(expectedHestonNPV - calculatedHestonNPV) > tol*expectedHestonNPV)
          {
-            QAssert.Fail("Failed to reproduce Heston barrier price for "
+            Assert.True(false, "Failed to reproduce Heston barrier price for "
                         + "\n    strike:     " + payoff.strike()
                         + "\n    barrier:    " + barrier
                         + "\n    maturity:   " + exDate
@@ -787,7 +764,7 @@ namespace TestSuite
          }*/
          if (Math.Abs(expectedLocalVolNPV - calculatedLocalVolNPV) > tol * expectedLocalVolNPV)
          {
-            QAssert.Fail("Failed to reproduce Heston barrier price for "
+            Assert.True(false, "Failed to reproduce Heston barrier price for "
                          + "\n    strike:     " + payoff.strike()
                          + "\n    barrier:    " + barrier
                          + "\n    maturity:   " + exDate
@@ -796,11 +773,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVannaVolgaSimpleBarrierValues()
       {
          // Testing barrier FX options against Vanna/Volga values

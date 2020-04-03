@@ -20,19 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-
-#if NET452
-   [TestClass()]
-#endif
    public class T_Interpolations
    {
 
@@ -40,11 +32,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSplineErrorOnGaussianValues()
       {
          //("Testing spline approximation on Gaussian data sets...");
@@ -83,7 +71,7 @@ namespace TestSuite
             double result = Math.Sqrt(integral.value(make_error_function(f).value, -1.7, 1.9));
             result /= scaleFactor;
             if (Math.Abs(result - tabulatedErrors[i]) > toleranceOnTabErr[i])
-               QAssert.Fail("Not-a-knot spline interpolation "
+               Assert.True(false, "Not-a-knot spline interpolation "
                             + "\n    sample points:      " + n
                             + "\n    norm of difference: " + result
                             + "\n    it should be:       " + tabulatedErrors[i]);
@@ -97,7 +85,7 @@ namespace TestSuite
             result = Math.Sqrt(integral.value(make_error_function(f).value, -1.7, 1.9));
             result /= scaleFactor;
             if (Math.Abs(result - tabulatedMCErrors[i]) > toleranceOnTabMCErr[i])
-               QAssert.Fail("MC Not-a-knot spline interpolation "
+               Assert.True(false, "MC Not-a-knot spline interpolation "
                             + "\n    sample points:      " + n
                             + "\n    norm of difference: " + result
                             + "\n    it should be:       "
@@ -109,11 +97,8 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testSplineOnGaussianValues()
       {
 
@@ -143,7 +128,7 @@ namespace TestSuite
             interpolated2 = f.value(x2_bad);
             if (interpolated > 0.0 && interpolated2 > 0.0)
             {
-               QAssert.Fail("Not-a-knot spline interpolation "
+               Assert.True(false, "Not-a-knot spline interpolation "
                             + "bad performance unverified"
                             + "\nat x = " + x1_bad
                             + " interpolated value: " + interpolated
@@ -163,7 +148,7 @@ namespace TestSuite
             interpolated = f.value(x1_bad);
             if (interpolated < 0.0)
             {
-               QAssert.Fail("MC not-a-knot spline interpolation "
+               Assert.True(false, "MC not-a-knot spline interpolation "
                             + "good performance unverified\n"
                             + "at x = " + x1_bad
                             + "\ninterpolated value: " + interpolated
@@ -172,7 +157,7 @@ namespace TestSuite
             interpolated = f.value(x2_bad);
             if (interpolated < 0.0)
             {
-               QAssert.Fail("MC not-a-knot spline interpolation "
+               Assert.True(false, "MC not-a-knot spline interpolation "
                             + "good performance unverified\n"
                             + "at x = " + x2_bad
                             + "\ninterpolated value: " + interpolated
@@ -185,11 +170,7 @@ namespace TestSuite
          SIAM J. of Scientific and Statistical Computing, v. 4, 1983, pp. 645-654.
          http://math.lanl.gov/~mac/papers/numerics/H83.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSplineOnRPN15AValues()
       {
 
@@ -222,7 +203,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated < 1.0)
          {
-            QAssert.Fail("Natural spline interpolation "
+            Assert.True(false, "Natural spline interpolation "
                          + "poor performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -243,7 +224,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated < 1.0)
          {
-            QAssert.Fail("Clamped spline interpolation "
+            Assert.True(false, "Clamped spline interpolation "
                          + "poor performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -264,7 +245,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated < 1.0)
          {
-            QAssert.Fail("Not-a-knot spline interpolation "
+            Assert.True(false, "Not-a-knot spline interpolation "
                          + "poor performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -283,7 +264,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated > 1.0)
          {
-            QAssert.Fail("MC natural spline interpolation "
+            Assert.True(false, "MC natural spline interpolation "
                          + "good performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -305,7 +286,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated > 1.0)
          {
-            QAssert.Fail("MC clamped spline interpolation "
+            Assert.True(false, "MC clamped spline interpolation "
                          + "good performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -324,7 +305,7 @@ namespace TestSuite
          interpolated = f.value(x_bad);
          if (interpolated > 1.0)
          {
-            QAssert.Fail("MC clamped spline interpolation "
+            Assert.True(false, "MC clamped spline interpolation "
                          + "good performance unverified\n"
                          + "at x = " + x_bad
                          + "\ninterpolated value: " + interpolated
@@ -336,11 +317,7 @@ namespace TestSuite
          Applied Linear Algebra and Numerical Analysis AMATH 352 Lecture Notes
          http://www.amath.washington.edu/courses/352-winter-2002/spline_note.pdf
       */
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSplineOnGenericValues()
       {
 
@@ -370,7 +347,7 @@ namespace TestSuite
             error = interpolated - generic_natural_y2[i];
             if (Math.Abs(error) > 3e-16)
             {
-               QAssert.Fail("Natural spline interpolation "
+               Assert.True(false, "Natural spline interpolation "
                             + "second derivative failed at x=" + generic_x[i]
                             + "\ninterpolated value: " + interpolated
                             + "\nexpected value:     " + generic_natural_y2[i]
@@ -406,7 +383,7 @@ namespace TestSuite
 
          if (x35[0] > x35[1] || x35[1] > x35[2])
          {
-            QAssert.Fail("Spline interpolation failure"
+            Assert.True(false, "Spline interpolation failure"
                          + "\nat x = " + 3.5
                          + "\nclamped spline    " + x35[0]
                          + "\nnatural spline    " + x35[1]
@@ -415,11 +392,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSimmetricEndConditions()
       {
 
@@ -452,11 +425,7 @@ namespace TestSuite
          checkSymmetry("MC not-a-knot spline", f, x[0]);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDerivativeEndConditions()
       {
 
@@ -554,11 +523,7 @@ namespace TestSuite
          Hermite Interpolation"
          Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
       */
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testNonRestrictiveHymanFilter()
       {
 
@@ -580,7 +545,7 @@ namespace TestSuite
          interpolated = f.value(zero);
          if (Math.Abs(interpolated - expected) > 1e-15)
          {
-            QAssert.Fail("MC not-a-knot spline"
+            Assert.True(false, "MC not-a-knot spline"
                          + " interpolation failed at x = " + zero
                          + "\n    interpolated value: " + interpolated
                          + "\n    expected value:     " + expected
@@ -598,7 +563,7 @@ namespace TestSuite
          interpolated = f.value(zero);
          if (Math.Abs(interpolated - expected) > 1e-15)
          {
-            QAssert.Fail("MC clamped spline"
+            Assert.True(false, "MC clamped spline"
                          + " interpolation failed at x = " + zero
                          + "\n    interpolated value: " + interpolated
                          + "\n    expected value:     " + expected
@@ -616,7 +581,7 @@ namespace TestSuite
          interpolated = f.value(zero);
          if (Math.Abs(interpolated - expected) > 1e-15)
          {
-            QAssert.Fail("MC SecondDerivative spline"
+            Assert.True(false, "MC SecondDerivative spline"
                          + " interpolation failed at x = " + zero
                          + "\n    interpolated value: " + interpolated
                          + "\n    expected value:     " + expected
@@ -691,7 +656,7 @@ namespace TestSuite
       //                        double error = Math.Abs(interpolated-expected);
       //                        double tolerance = 1e-16;
       //                        if (error > tolerance) {
-      //                           QAssert.Fail(
+      //                           Assert.True(false, 
       //                                 "\n  At ("
       //                                 + s + "," + t + "," + u + ","
       //                                             + v + "," + w + "):"
@@ -718,7 +683,7 @@ namespace TestSuite
       //         double interpolated = cs(args), expected = multif(s, t, u, v, w);
       //         double error = Math.Abs(interpolated-expected);
       //         if (error > tolerance) {
-      //            QAssert.Fail(
+      //            Assert.True(false, 
       //               "\n  At ("
       //               + s + "," + t + "," + u + "," + v + "," + w + "):"
       //               + "\n    interpolated: " + interpolated
@@ -731,11 +696,7 @@ namespace TestSuite
 
       class NotThrown : Exception { }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAsFunctor()
       {
 
@@ -780,7 +741,7 @@ namespace TestSuite
          {
             double expected = 5.0 - x2[i];
             if (Math.Abs(y2[i] - expected) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to reproduce " + (i + 1) + " expected datum"
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + y2[i]
@@ -788,11 +749,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBackwardFlat()
       {
 
@@ -815,7 +772,7 @@ namespace TestSuite
             calculated = f.value(p);
             expected = y[i];
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to reproduce " + (i + 1) + " datum"
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -829,7 +786,7 @@ namespace TestSuite
             calculated = f.value(p);
             expected = y[i + 1];
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to interpolate correctly at " + p
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -843,7 +800,7 @@ namespace TestSuite
          calculated = f.value(p);
          expected = y[0];
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to extrapolate correctly at " + p
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -853,7 +810,7 @@ namespace TestSuite
          calculated = f.value(p);
          expected = y[N - 1];
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to extrapolate correctly at " + p
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -863,7 +820,7 @@ namespace TestSuite
          calculated = f.primitive(x[0]);
          expected = 0.0;
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to calculate primitive at " + x[0]
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -876,7 +833,7 @@ namespace TestSuite
             calculated = f.primitive(x[i]);
             expected = sum;
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to calculate primitive at " + x[i]
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -893,7 +850,7 @@ namespace TestSuite
             expected = sum;
             sum += (x[i + 1] - x[i]) * y[i + 1] / 2;
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to calculate primitive at " + x[i]
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -902,11 +859,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testForwardFlat()
       {
 
@@ -929,7 +882,7 @@ namespace TestSuite
             calculated = f.value(p);
             expected = y[i];
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to reproduce " + (i + 1) + " datum"
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -943,7 +896,7 @@ namespace TestSuite
             calculated = f.value(p);
             expected = y[i];
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to interpolate correctly at " + p
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -957,7 +910,7 @@ namespace TestSuite
          calculated = f.value(p);
          expected = y[0];
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to extrapolate correctly at " + p
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -967,7 +920,7 @@ namespace TestSuite
          calculated = f.value(p);
          expected = y[N - 1];
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to extrapolate correctly at " + p
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -977,7 +930,7 @@ namespace TestSuite
          calculated = f.primitive(x[0]);
          expected = 0.0;
          if (Math.Abs(expected - calculated) > tolerance)
-            QAssert.Fail(
+            Assert.True(false, 
                "failed to calculate primitive at " + x[0]
                + "\n    expected:   " + expected
                + "\n    calculated: " + calculated
@@ -990,7 +943,7 @@ namespace TestSuite
             calculated = f.primitive(x[i]);
             expected = sum;
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to calculate primitive at " + x[i]
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -1007,7 +960,7 @@ namespace TestSuite
             expected = sum;
             sum += (x[i + 1] - x[i]) * y[i] / 2;
             if (Math.Abs(expected - calculated) > tolerance)
-               QAssert.Fail(
+               Assert.True(false, 
                   "failed to calculate primitive at " + p
                   + "\n    expected:   " + expected
                   + "\n    calculated: " + calculated
@@ -1015,11 +968,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSabrInterpolation()
       {
          // Testing Sabr interpolation...
@@ -1067,7 +1016,7 @@ namespace TestSuite
                                                         initialAlpha, initialBeta,
                                                         initialNu, initialRho);
             if (Math.Abs(volatilities[i] - calculatedVol) > tolerance)
-               QAssert.Fail("failed to calculate Sabr function at strike " + strikes[i]
+               Assert.True(false, "failed to calculate Sabr function at strike " + strikes[i]
                             + "\n    expected:   " + volatilities[i]
                             + "\n    calculated: " + calculatedVol
                             + "\n    error:      " + Math.Abs(calculatedVol - volatilities[i]));
@@ -1138,7 +1087,7 @@ namespace TestSuite
                            error = Math.Abs(initialAlpha - calibratedAlpha);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate alpha Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate alpha Sabr parameter:" +
                                            "\n    expected:        " + initialAlpha +
                                            "\n    calibrated:      " + calibratedAlpha +
                                            "\n    error:           " + error);
@@ -1148,7 +1097,7 @@ namespace TestSuite
                            error = Math.Abs(initialBeta - calibratedBeta);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate beta Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate beta Sabr parameter:" +
                                            "\n    expected:        " + initialBeta +
                                            "\n    calibrated:      " + calibratedBeta +
                                            "\n    error:           " + error);
@@ -1158,7 +1107,7 @@ namespace TestSuite
                            error = Math.Abs(initialNu - calibratedNu);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate nu Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate nu Sabr parameter:" +
                                            "\n    expected:        " + initialNu +
                                            "\n    calibrated:      " + calibratedNu +
                                            "\n    error:           " + error);
@@ -1168,7 +1117,7 @@ namespace TestSuite
                            error = Math.Abs(initialRho - calibratedRho);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate rho Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate rho Sabr parameter:" +
                                            "\n    expected:        " + initialRho +
                                            "\n    calibrated:      " + calibratedRho +
                                            "\n    error:           " + error);
@@ -1176,7 +1125,7 @@ namespace TestSuite
                            }
 
                            if (failed)
-                              QAssert.Fail("\nSabr calibration failure:" +
+                              Assert.True(false, "\nSabr calibration failure:" +
                                            "\n    isAlphaFixed:    " + isAlphaFixed[k_a] +
                                            "\n    isBetaFixed:     " + isBetaFixed[k_b] +
                                            "\n    isNuFixed:       " + isNuFixed[k_n] +
@@ -1190,11 +1139,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testNormalSabrInterpolation()
       {
          // Testing Sabr interpolation...
@@ -1243,7 +1188,7 @@ namespace TestSuite
                                                                      initialAlpha, initialBeta,
                                                                      initialNu, initialRho);
             if (Math.Abs(volatilities[i] - calculatedVol) > tolerance)
-               QAssert.Fail("failed to calculate Sabr function at strike " + strikes[i]
+               Assert.True(false, "failed to calculate Sabr function at strike " + strikes[i]
                             + "\n    expected:   " + volatilities[i]
                             + "\n    calculated: " + calculatedVol
                             + "\n    error:      " + Math.Abs(calculatedVol - volatilities[i]));
@@ -1314,7 +1259,7 @@ namespace TestSuite
                            error = Math.Abs(initialAlpha - calibratedAlpha);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate alpha Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate alpha Sabr parameter:" +
                                            "\n    expected:        " + initialAlpha +
                                            "\n    calibrated:      " + calibratedAlpha +
                                            "\n    error:           " + error);
@@ -1324,7 +1269,7 @@ namespace TestSuite
                            error = Math.Abs(initialBeta - calibratedBeta);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate beta Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate beta Sabr parameter:" +
                                            "\n    expected:        " + initialBeta +
                                            "\n    calibrated:      " + calibratedBeta +
                                            "\n    error:           " + error);
@@ -1334,7 +1279,7 @@ namespace TestSuite
                            error = Math.Abs(initialNu - calibratedNu);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate nu Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate nu Sabr parameter:" +
                                            "\n    expected:        " + initialNu +
                                            "\n    calibrated:      " + calibratedNu +
                                            "\n    error:           " + error);
@@ -1344,7 +1289,7 @@ namespace TestSuite
                            error = Math.Abs(initialRho - calibratedRho);
                            if (error > calibrationTolerance)
                            {
-                              QAssert.Fail("\nfailed to calibrate rho Sabr parameter:" +
+                              Assert.True(false, "\nfailed to calibrate rho Sabr parameter:" +
                                            "\n    expected:        " + initialRho +
                                            "\n    calibrated:      " + calibratedRho +
                                            "\n    error:           " + error);
@@ -1352,7 +1297,7 @@ namespace TestSuite
                            }
 
                            if (failed)
-                              QAssert.Fail("\nSabr calibration failure:" +
+                              Assert.True(false, "\nSabr calibration failure:" +
                                            "\n    isAlphaFixed:    " + isAlphaFixed[k_a] +
                                            "\n    isBetaFixed:     " + isBetaFixed[k_b] +
                                            "\n    isNuFixed:       " + isNuFixed[k_n] +
@@ -1366,11 +1311,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testKernelInterpolation()
       {
 
@@ -1426,7 +1367,7 @@ namespace TestSuite
                   if (Math.Abs(expectedVal - calcVal) > tolerance)
                   {
 
-                     QAssert.Fail("Kernel interpolation failed at x = "
+                     Assert.True(false, "Kernel interpolation failed at x = "
                                   + deltaGrid[dIt]
                                   + "\n    interpolated value: " + calcVal
                                   + "\n    expected value:     " + expectedVal
@@ -1484,7 +1425,7 @@ namespace TestSuite
                if (Math.Abs(expectedVal - calcVal) > tolerance)
                {
 
-                  QAssert.Fail("Kernel interpolation failed at x = "
+                  Assert.True(false, "Kernel interpolation failed at x = "
                                + deltaGrid[dIt]
                                + "\n    interpolated value: " + calcVal
                                + "\n    expected value:     " + expectedVal
@@ -1497,11 +1438,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testKernelInterpolation2D()
       {
          // No test values known from the literature.
@@ -1548,7 +1485,7 @@ namespace TestSuite
                if (Math.Abs(expectedVal - calcVal) > tolerance)
                {
 
-                  QAssert.Fail("2D Kernel interpolation failed at x = " + xVec[i]
+                  Assert.True(false, "2D Kernel interpolation failed at x = " + xVec[i]
                                + ", y = " + yVec[j]
                                + "\n    interpolated value: " + calcVal
                                + "\n    expected value:     " + expectedVal
@@ -1589,7 +1526,7 @@ namespace TestSuite
                if (Math.Abs(expectedVal - calcVal) > tolerance)
                {
 
-                  QAssert.Fail("2D Epanechnkikov Kernel interpolation failed at x = " + xVec1[i]
+                  Assert.True(false, "2D Epanechnkikov Kernel interpolation failed at x = " + xVec1[i]
                                + ", y = " + yVec1[j]
                                + "\n    interpolated value: " + calcVal
                                + "\n    expected value:     " + expectedVal
@@ -1618,7 +1555,7 @@ namespace TestSuite
                if (Math.Abs(expectedVal - calcVal) > tolerance)
                {
 
-                  QAssert.Fail("2D Epanechnkikov Kernel updated interpolation failed at x = " + xVec1[i]
+                  Assert.True(false, "2D Epanechnkikov Kernel updated interpolation failed at x = " + xVec1[i]
                                + ", y = " + yVec1[j]
                                + "\n    interpolated value: " + calcVal
                                + "\n    expected value:     " + expectedVal
@@ -1629,11 +1566,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBicubicDerivatives()
       {
          // Testing bicubic spline derivatives...
@@ -1664,33 +1597,29 @@ namespace TestSuite
 
                if (Math.Abs(f_x - y[i] / 10 * Math.Cos(x[j])) > tol)
                {
-                  QAssert.Fail("Failed to reproduce f_x");
+                  Assert.True(false, "Failed to reproduce f_x");
                }
                if (Math.Abs(f_xx + y[i] / 10 * Math.Sin(x[j])) > tol)
                {
-                  QAssert.Fail("Failed to reproduce f_xx");
+                  Assert.True(false, "Failed to reproduce f_xx");
                }
                if (Math.Abs(f_y - (Math.Sin(x[j]) / 10 - Math.Sin(y[i]))) > tol)
                {
-                  QAssert.Fail("Failed to reproduce f_y");
+                  Assert.True(false, "Failed to reproduce f_y");
                }
                if (Math.Abs(f_yy + Math.Cos(y[i])) > tol)
                {
-                  QAssert.Fail("Failed to reproduce f_yy");
+                  Assert.True(false, "Failed to reproduce f_yy");
                }
                if (Math.Abs(f_xy - Math.Cos(x[j]) / 10) > tol)
                {
-                  QAssert.Fail("Failed to reproduce f_xy");
+                  Assert.True(false, "Failed to reproduce f_xy");
                }
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBicubicUpdate()
       {
          // Testing that bicubic splines actually update...
@@ -1716,14 +1645,10 @@ namespace TestSuite
 
          double new_result = spline.value(x[2] + 0.1, y[4]);
          if (Math.Abs(old_result - new_result) < 0.5)
-            QAssert.Fail("Failed to update bicubic spline");
+            Assert.True(false, "Failed to update bicubic spline");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testRichardsonExtrapolation()
       {
          // Testing Richardson extrapolation...
@@ -1752,13 +1677,13 @@ namespace TestSuite
 
          if (Math.Abs(expected - calculated) > tol)
          {
-            QAssert.Fail("failed to reproduce Richardson extrapolation");
+            Assert.True(false, "failed to reproduce Richardson extrapolation");
          }
 
          calculated = extrap.value();
          if (Math.Abs(expected - calculated) > tol)
          {
-            QAssert.Fail("failed to reproduce Richardson extrapolation");
+            Assert.True(false, "failed to reproduce Richardson extrapolation");
          }
 
          expected = 2.721376;
@@ -1767,16 +1692,11 @@ namespace TestSuite
 
          if (Math.Abs(expected - calculated) > tol)
          {
-            QAssert.Fail("failed to reproduce Richardson extrapolation");
+            Assert.True(false, "failed to reproduce Richardson extrapolation");
          }
       }
 
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSabrSingleCases()
       {
          // Testing Sabr calibration single cases...
@@ -1795,7 +1715,7 @@ namespace TestSuite
 
          if (s0.maxError() > 0.01 || s0.rmsError() > 0.01)
          {
-            QAssert.Fail("Sabr case #1 failed with max error ("
+            Assert.True(false, "Sabr case #1 failed with max error ("
                          + s0.maxError() + ") and rms error (" + s0.rmsError()
                          + "), both should be < 0.01");
 
@@ -1838,7 +1758,7 @@ namespace TestSuite
             double interpolated = cubic.value(xBegin[i]);
             if (Math.Abs(interpolated - yBegin[i]) > tolerance)
             {
-               QAssert.Fail(type + " interpolation failed at x = " + xBegin[i]
+               Assert.True(false, type + " interpolation failed at x = " + xBegin[i]
                             + "\n    interpolated value: " + interpolated
                             + "\n    expected value:     " + yBegin[i]
                             + "\n    error:              "
@@ -1854,7 +1774,7 @@ namespace TestSuite
          double error = Math.Abs(interpolated - value);
          if (error > tolerance)
          {
-            QAssert.Fail(type + " interpolation first derivative failure\n"
+            Assert.True(false, type + " interpolation first derivative failure\n"
                          + "at x = " + x
                          + "\n    interpolated value: " + interpolated
                          + "\n    expected value:     " + value
@@ -1869,7 +1789,7 @@ namespace TestSuite
          double error = Math.Abs(interpolated - value);
          if (error > tolerance)
          {
-            QAssert.Fail(type + " interpolation second derivative failure\n"
+            Assert.True(false, type + " interpolation second derivative failure\n"
                          + "at x = " + x
                          + "\n    interpolated value: " + interpolated
                          + "\n    expected value:     " + value
@@ -1883,7 +1803,7 @@ namespace TestSuite
          List<double> c = cubic.cCoefficients();
          if (Math.Abs(c[0] - c[1]) > tolerance)
          {
-            QAssert.Fail(type + " interpolation failure"
+            Assert.True(false, type + " interpolation failure"
                          + "\n    cubic coefficient of the first"
                          + " polinomial is " + c[0]
                          + "\n    cubic coefficient of the second"
@@ -1892,7 +1812,7 @@ namespace TestSuite
          int n = c.Count;
          if (Math.Abs(c[n - 2] - c[n - 1]) > tolerance)
          {
-            QAssert.Fail(type + " interpolation failure"
+            Assert.True(false, type + " interpolation failure"
                          + "\n    cubic coefficient of the 2nd to last"
                          + " polinomial is " + c[n - 2]
                          + "\n    cubic coefficient of the last"
@@ -1908,7 +1828,7 @@ namespace TestSuite
             double y1 = cubic.value(x), y2 = cubic.value(-x);
             if (Math.Abs(y1 - y2) > tolerance)
             {
-               QAssert.Fail(type + " interpolation not symmetric"
+               Assert.True(false, type + " interpolation not symmetric"
                             + "\n    x = " + x
                             + "\n    g(x)  = " + y1
                             + "\n    g(-x) = " + y2

@@ -18,25 +18,14 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_RNGTraits
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGaussian()
       {
          //("Testing Gaussian pseudo-random number generation...");
@@ -52,16 +41,12 @@ namespace TestSuite
          double stored = 4.09916;
          double tolerance = 1.0e-5;
          if (Math.Abs(sum - stored) > tolerance)
-            QAssert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false, "the sum of the samples does not match the stored value\n"
                          + "    calculated: " + sum + "\n"
                          + "    expected:   " + stored);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDefaultPoisson()
       {
 
@@ -77,16 +62,12 @@ namespace TestSuite
 
          double stored = 108.0;
          if (!Utils.close(sum, stored))
-            QAssert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false, "the sum of the samples does not match the stored value\n"
                          + "    calculated: " + sum + "\n"
                          + "    expected:   " + stored);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCustomPoisson()
       {
 
@@ -102,7 +83,7 @@ namespace TestSuite
 
          double stored = 409.0;
          if (!Utils.close(sum, stored))
-            QAssert.Fail("the sum of the samples does not match the stored value\n"
+            Assert.True(false, "the sum of the samples does not match the stored value\n"
                          + "    calculated: " + sum + "\n"
                          + "    expected:   " + stored);
       }

@@ -17,27 +17,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_DividendOption
    {
-      public void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
+      private void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                  double r, Date today, double v, double expected, double calculated, double error,
                                  double tolerance)
       {
-         QAssert.Fail(exercise + " "
+         Assert.True(false, exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
                       + "    spot value:       " + s + "\n"
@@ -212,18 +205,14 @@ namespace TestSuite
             double value = option.NPV();
 
             if (Math.Abs(refValue - value) > tolerance)
-               QAssert.Fail("NPV changed by null dividend :\n"
+               Assert.True(false, "NPV changed by null dividend :\n"
                             + "    previous value: " + value + "\n"
                             + "    current value:  " + refValue + "\n"
                             + "    change:         " + (value - refValue));
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuropeanValues()
       {
          // Testing dividend European option values with no dividends...
@@ -388,11 +377,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuropeanStartLimit()
       {
          // Testing dividend European option with a dividend on today's date...
@@ -488,11 +473,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuropeanGreeks()
       {
          // Testing dividend European option greeks...
@@ -648,11 +629,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFdEuropeanValues()
       {
          // Testing finite-difference dividend European option values...

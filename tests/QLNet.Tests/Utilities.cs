@@ -22,11 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -174,120 +170,66 @@ namespace TestSuite
    {
       public static void CollectionAreEqual(ICollection expected, ICollection actual)
       {
-#if NET452
-         CollectionAssert.AreEqual(expected, actual);
-#else
          Assert.Equal(expected, actual);
-#endif
       }
       public static void CollectionAreNotEqual(ICollection notExpected, ICollection actual)
       {
-#if NET452
-         CollectionAssert.AreNotEqual(notExpected, actual);
-#else
          Assert.NotEqual(notExpected, actual);
-#endif
       }
 
       public static void AreNotSame(object notExpected, object actual)
       {
-#if NET452
-         Assert.AreNotSame(notExpected, actual);
-#else
          Assert.NotSame(notExpected, actual);
-#endif
       }
 
       public static void Fail(string message)
       {
-#if NET452
-         Assert.Fail(message);
-#else
          Assert.True(false, message);
-#endif
       }
 
       public static void AreEqual(double expected, double actual, double delta)
       {
-#if NET452
-         Assert.AreEqual(expected, actual, delta);
-#else
          Assert.True(Math.Abs(expected - actual) <= delta);
-#endif
       }
 
       public static void AreEqual(double expected, double actual, double delta, string message)
       {
-#if NET452
-         Assert.AreEqual(expected, actual, delta, message);
-#else
          Assert.True(Math.Abs(expected - actual) <= delta, message);
-#endif
       }
 
       public static void AreEqual<T>(T expected, T actual)
       {
-
-#if NET452
-         Assert.AreEqual(expected, actual);
-#else
          Assert.Equal(expected, actual);
-#endif
       }
 
       public static void AreEqual<T>(T expected, T actual, string message)
       {
-#if NET452
-         Assert.AreEqual(expected, actual, message);
-#else
          Assert.Equal(expected, actual);
-#endif
       }
 
       public static void AreNotEqual<T>(T expected, T actual)
       {
-
-#if NET452
-         Assert.AreNotEqual(expected, actual);
-#else
          Assert.NotEqual(expected, actual);
-#endif
       }
 
       public static void IsTrue(bool condition)
       {
-#if NET452
-         Assert.IsTrue(condition);
-#else
          Assert.True(condition);
-#endif
       }
 
       public static void IsTrue(bool condition, string message)
       {
-#if NET452
-         Assert.IsTrue(condition, message);
-#else
          Assert.True(condition, message);
-#endif
       }
 
       public static void IsFalse(bool condition)
       {
-#if NET452
-         Assert.IsFalse(condition);
-#else
          Assert.False(condition);
-#endif
       }
 
       public static void IsFalse(bool condition, string message)
       {
-#if NET452
-         Assert.IsFalse(condition, message);
-#else
          Assert.False(condition, message);
-#endif
       }
 
       /// <summary>
@@ -296,11 +238,7 @@ namespace TestSuite
       /// <param name="obj">The object to be validated</param>
       public static void Require(object obj)
       {
-#if NET452
-         Assert.IsNotNull(obj);
-#else
          Assert.NotNull(obj);
-#endif
       }
 
       /// <summary>
@@ -308,13 +246,9 @@ namespace TestSuite
       /// </summary>
       /// <typeparam name="T">The Exception</typeparam>
       /// <param name="action">The Action</param>
-      public static void ThrowsException<T>(Action action) where T: SystemException
+      public static void ThrowsException<T>(Action action) where T : SystemException
       {
-#if NET452
-         Assert.ThrowsException<T>(action);
-#else
          Xunit.Assert.Throws<T>(action);
-#endif
       }
 
    }

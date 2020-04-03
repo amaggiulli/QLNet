@@ -17,25 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BlackFormula
    {
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testBachelierImpliedVol()
       {
          // Testing Bachelier implied vol...
@@ -56,17 +46,13 @@ namespace TestSuite
 
             if (Math.Abs(bpvol - impliedBpVol) > 1.0e-12)
             {
-               QAssert.Fail("Failed, expected " + bpvol + " realised " + impliedBpVol);
+               Assert.True(false, "Failed, expected " + bpvol + " realised " + impliedBpVol);
             }
          }
          return;
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChambersImpliedVol()
       {
          // Testing Chambers-Nawalkha implied vol approximation
@@ -113,7 +99,7 @@ namespace TestSuite
                                  moneyness = 1.0 / moneyness;
                               double error = (iStdDev - stdDevs[i5]) / stdDevs[i5] * moneyness;
                               if (error > tol)
-                                 QAssert.Fail("Failed to verify Chambers-Nawalkha approximation for "
+                                 Assert.True(false, "Failed to verify Chambers-Nawalkha approximation for "
                                               + types[i1]
                                               + " displacement=" + displacements[i2]
                                               + " forward=" + forwards[i3]

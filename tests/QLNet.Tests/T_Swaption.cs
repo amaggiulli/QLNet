@@ -19,39 +19,21 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Swaption : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_Swaption()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -134,11 +116,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testStrikeDependency()
       {
          // Testing swaption dependency on strike
@@ -182,7 +160,7 @@ namespace TestSuite
                      {
                         if (values[z] < values[z + 1])
                         {
-                           QAssert.Fail("NPV of Payer swaption with delivery settlement" +
+                           Assert.True(false, "NPV of Payer swaption with delivery settlement" +
                                         "is increasing with the strike:" +
                                         "\noption tenor: " + exercises[i] +
                                         "\noption date:  " + exerciseDate +
@@ -196,7 +174,7 @@ namespace TestSuite
                      {
                         if (values_cash[z] < values_cash[z + 1])
                         {
-                           QAssert.Fail("NPV of Payer swaption with cash settlement" +
+                           Assert.True(false, "NPV of Payer swaption with cash settlement" +
                                         "is increasing with the strike:" +
                                         "\noption tenor: " + exercises[i] +
                                         "\noption date:  " + exerciseDate +
@@ -213,7 +191,7 @@ namespace TestSuite
                      {
                         if (values[z] > values[z + 1])
                         {
-                           QAssert.Fail("NPV of Receiver swaption with delivery settlement" +
+                           Assert.True(false, "NPV of Receiver swaption with delivery settlement" +
                                         "is increasing with the strike:" +
                                         "\noption tenor: " + exercises[i] +
                                         "\noption date:  " + exerciseDate +
@@ -227,7 +205,7 @@ namespace TestSuite
                      {
                         if (values[z] > values[z + 1])
                         {
-                           QAssert.Fail("NPV of Receiver swaption with cash settlement" +
+                           Assert.True(false, "NPV of Receiver swaption with cash settlement" +
                                         "is increasing with the strike:" +
                                         "\noption tenor: " + exercises[i] +
                                         "\noption date:  " + exerciseDate +
@@ -243,11 +221,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSpreadDependency()
       {
          // Testing swaption dependency on spread
@@ -292,7 +266,7 @@ namespace TestSuite
                      for (int n = 0; n < spreads.Length - 1; n++)
                      {
                         if (values[n] > values[n + 1])
-                           QAssert.Fail("NPV is decreasing with the spread " +
+                           Assert.True(false, "NPV is decreasing with the spread " +
                                         "in a payer swaption (physical delivered):" +
                                         "\nexercise date: " + exerciseDate +
                                         "\nlength:        " + lengths[j] +
@@ -300,7 +274,7 @@ namespace TestSuite
                                         "\nvalue:         " + values[n + 1] + " for spread: " + spreads[n + 1]);
 
                         if (values_cash[n] > values_cash[n + 1])
-                           QAssert.Fail("NPV is decreasing with the spread " +
+                           Assert.True(false, "NPV is decreasing with the spread " +
                                         "in a payer swaption (cash delivered):" +
                                         "\nexercise date: " + exerciseDate +
                                         "\nlength: " + lengths[j] +
@@ -313,7 +287,7 @@ namespace TestSuite
                      for (int n = 0; n < spreads.Length - 1; n++)
                      {
                         if (values[n] < values[n + 1])
-                           QAssert.Fail("NPV is increasing with the spread " +
+                           Assert.True(false, "NPV is increasing with the spread " +
                                         "in a receiver swaption (physical delivered):" +
                                         "\nexercise date: " + exerciseDate +
                                         "\nlength: " + lengths[j] +
@@ -321,7 +295,7 @@ namespace TestSuite
                                         "\nvalue:  " + values[n + 1] + " for spread: " + spreads[n + 1]);
 
                         if (values_cash[n] < values_cash[n + 1])
-                           QAssert.Fail("NPV is increasing with the spread " +
+                           Assert.True(false, "NPV is increasing with the spread " +
                                         "in a receiver swaption (cash delivered):" +
                                         "\nexercise date: " + exerciseDate +
                                         "\nlength: " + lengths[j] +
@@ -334,11 +308,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSpreadTreatment()
       {
          // Testing swaption treatment of spread
@@ -386,7 +356,7 @@ namespace TestSuite
                                           Settlement.Type.Cash,
                                           Settlement.Method.ParYieldCurve);
                      if (Math.Abs(swaption1.NPV() - swaption2.NPV()) > 1.0e-6)
-                        QAssert.Fail("wrong spread treatment:" +
+                        Assert.True(false, "wrong spread treatment:" +
                                      "\nexercise: " + exerciseDate +
                                      "\nlength:   " + lengths[j] +
                                      "\ntype      " + type[k] +
@@ -395,7 +365,7 @@ namespace TestSuite
                                      "\nequivalent swaption value: " + swaption2.NPV());
 
                      if (Math.Abs(swaption1_cash.NPV() - swaption2_cash.NPV()) > 1.0e-6)
-                        QAssert.Fail("wrong spread treatment:" +
+                        Assert.True(false, "wrong spread treatment:" +
                                      "\nexercise date: " + exerciseDate +
                                      "\nlength: " + lengths[j] +
                                      //"\npay " + (type[k] ? "fixed" : "floating") +
@@ -408,11 +378,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedValue()
       {
          // Testing swaption value against cached value
@@ -439,17 +405,13 @@ namespace TestSuite
 
          // FLOATING_POINT_EXCEPTION
          if (Math.Abs(swaption.NPV() - cachedNPV) > 1.0e-12)
-            QAssert.Fail("failed to reproduce cached swaption value:\n" +
+            Assert.True(false, "failed to reproduce cached swaption value:\n" +
                          //QL_FIXED + std::setprecision(12) +
                          "\ncalculated: " + swaption.NPV() +
                          "\nexpected:   " + cachedNPV);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVega()
       {
          // Testing swaption vega
@@ -503,7 +465,7 @@ namespace TestSuite
                            discrepancy /= numericalVegaPerPoint;
                            double tolerance = 0.015;
                            if (discrepancy > tolerance)
-                              QAssert.Fail("failed to compute swaption vega:" +
+                              Assert.True(false, "failed to compute swaption vega:" +
                                            "\n  option tenor:    " + exercises[i] +
                                            "\n  volatility:      " + vols[u] +
                                            "\n  option type:     " + swaption.type() +
@@ -524,11 +486,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashSettledSwaptions()
       {
 
@@ -743,7 +701,7 @@ namespace TestSuite
 
                if (Math.Abs(annuity_ratio_u360 - npv_ratio_u360) > 1e-10)
                {
-                  QAssert.Fail("\n" +
+                  Assert.True(false, "\n" +
                                "    The npv's ratio must be equal to " +
                                " annuities ratio" + "\n" +
                                "    Swaption " +
@@ -776,7 +734,7 @@ namespace TestSuite
                }
                if (Math.Abs(annuity_ratio_a365 - npv_ratio_a365) > 1e-10)
                {
-                  QAssert.Fail("\n" +
+                  Assert.True(false, "\n" +
                                "    The npv's ratio must be equal to " +
                                " annuities ratio" + "\n" +
                                "    Swaption " +
@@ -809,7 +767,7 @@ namespace TestSuite
                }
                if (Math.Abs(annuity_ratio_a360 - npv_ratio_a360) > 1e-10)
                {
-                  QAssert.Fail("\n" +
+                  Assert.True(false, "\n" +
                                "    The npv's ratio must be equal to " +
                                " annuities ratio" + "\n" +
                                "    Swaption " +
@@ -842,7 +800,7 @@ namespace TestSuite
                }
                if (Math.Abs(annuity_ratio_u365 - npv_ratio_u365) > 1e-10)
                {
-                  QAssert.Fail("\n" +
+                  Assert.True(false, "\n" +
                                "    The npv's ratio must be equal to " +
                                " annuities ratio" + "\n" +
                                "    Swaption " +
@@ -877,11 +835,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testImpliedVolatility()
       {
          // Testing implied volatility for swaptions
@@ -943,7 +897,7 @@ namespace TestSuite
                                  continue;
                               }
                               // otherwise, report error
-                              QAssert.Fail("implied vol failure: " +
+                              Assert.True(false, "implied vol failure: " +
                                            exercises[i] + "x" + lengths[j] + " " + type[k] +
                                            "\nsettlement: " + types[h] +
                                            "\nstrike      " + strikes[t] +
@@ -959,7 +913,7 @@ namespace TestSuite
                               double value2 = swaption.NPV();
                               if (Math.Abs(value - value2) > tolerance)
                               {
-                                 QAssert.Fail("implied vol failure: " +
+                                 Assert.True(false, "implied vol failure: " +
                                               exercises[i] + "x" + lengths[j] + " " + type[k] +
                                               "\nsettlement:    " + types[h] +
                                               "\nstrike         " + strikes[t] +

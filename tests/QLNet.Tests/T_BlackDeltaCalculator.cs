@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BlackDeltaCalculator
    {
       private int timeToDays(double t)
@@ -87,11 +80,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDeltaValues()
       {
          // Testing delta calculator values
@@ -150,7 +139,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Delta-from-strike calculation failed for delta. \n"
+               Assert.True(false, "\n Delta-from-strike calculation failed for delta. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Strike:" + calculated + "\n"
                             + "Expected   Strike:" + expected + "\n"
@@ -168,7 +157,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Strike-from-delta calculation failed for delta. \n"
+               Assert.True(false, "\n Strike-from-delta calculation failed for delta. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Strike:" + calculated + "\n"
                             + "Expected   Strike:" + expected + "\n"
@@ -177,11 +166,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDeltaPriceConsistency()
       {
          // Testing premium-adjusted delta price consistency
@@ -294,7 +279,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Premium-adjusted spot delta test failed. \n"
+               Assert.True(false, "\n Premium-adjusted spot delta test failed. \n"
                             + "Calculated Delta: " + calculatedVal + "\n"
                             + "Expected Value:   " + expectedVal + "\n"
                             + "Error: " + error);
@@ -308,7 +293,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Premium-adjusted forward delta test failed. \n"
+               Assert.True(false, "\n Premium-adjusted forward delta test failed. \n"
                             + "Calculated Delta: " + calculatedVal + "\n"
                             + "Expected Value:   " + expectedVal + "\n"
                             + "Error: " + error);
@@ -324,7 +309,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n spot delta in BlackDeltaCalculator differs from delta in BlackScholesCalculator. \n"
+               Assert.True(false, "\n spot delta in BlackDeltaCalculator differs from delta in BlackScholesCalculator. \n"
                             + "Calculated Value: " + calculatedVal + "\n"
                             + "Expected Value:   " + expectedVal + "\n"
                             + "Error: " + error);
@@ -332,11 +317,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPutCallParity()
       {
          // Testing put-call parity for deltas
@@ -464,7 +445,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Put-call parity failed for spot delta. \n"
+               Assert.True(false, "\n Put-call parity failed for spot delta. \n"
                             + "Calculated Call Delta: " + deltaCall + "\n"
                             + "Calculated Put Delta:  " + deltaPut + "\n"
                             + "Expected Difference:   " + expectedDiff + "\n"
@@ -483,7 +464,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Put-call parity failed for forward delta. \n"
+               Assert.True(false, "\n Put-call parity failed for forward delta. \n"
                             + "Calculated Call Delta: " + deltaCall + "\n"
                             + "Calculated Put Delta:  " + deltaPut + "\n"
                             + "Expected Difference:   " + expectedDiff + "\n"
@@ -503,7 +484,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Put-call parity failed for premium-adjusted spot delta. \n"
+               Assert.True(false, "\n Put-call parity failed for premium-adjusted spot delta. \n"
                             + "Calculated Call Delta: " + deltaCall + "\n"
                             + "Calculated Put Delta:  " + deltaPut + "\n"
                             + "Expected Difference:   " + expectedDiff + "\n"
@@ -523,7 +504,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Put-call parity failed for premium-adjusted forward delta. \n"
+               Assert.True(false, "\n Put-call parity failed for premium-adjusted forward delta. \n"
                             + "Calculated Call Delta: " + deltaCall + "\n"
                             + "Calculated Put Delta:  " + deltaPut + "\n"
                             + "Expected Difference:   " + expectedDiff + "\n"
@@ -532,11 +513,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAtmCalcs()
       {
          // Testing delta-neutral ATM quotations
@@ -603,7 +580,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Delta neutrality failed for spot delta in Delta Calculator. \n"
+               Assert.True(false, "\n Delta neutrality failed for spot delta in Delta Calculator. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
@@ -623,7 +600,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Delta neutrality failed for forward delta in Delta Calculator. \n"
+               Assert.True(false, "\n Delta neutrality failed for forward delta in Delta Calculator. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
@@ -643,7 +620,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Delta neutrality failed for premium-adjusted spot delta in Delta Calculator. \n"
+               Assert.True(false, "\n Delta neutrality failed for premium-adjusted spot delta in Delta Calculator. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
@@ -664,7 +641,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Delta neutrality failed for premium-adjusted forward delta in Delta Calculator. \n"
+               Assert.True(false, "\n Delta neutrality failed for premium-adjusted forward delta in Delta Calculator. \n"
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
@@ -678,7 +655,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Atm forward test failed. \n"
+               Assert.True(false, "\n Atm forward test failed. \n"
                             + "Calculated Value: " + calculated + "\n"
                             + "Expected   Value: " + expected + "\n"
                             + "Error: " + error);
@@ -693,7 +670,7 @@ namespace TestSuite
 
             if (error > tolerance)
             {
-               QAssert.Fail("\n Atm 0.50 delta strike test failed. \n"
+               Assert.True(false, "\n Atm 0.50 delta strike test failed. \n"
                             + "Iteration:" + i + "\n"
                             + "Calculated Value: " + calculated + "\n"
                             + "Expected   Value: " + expected + "\n"

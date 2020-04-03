@@ -17,18 +17,11 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Rounding
    {
       public struct TestCase
@@ -78,11 +71,7 @@ namespace TestSuite
          new TestCase(7.89428221, 2, 7.89, 7.90, 7.89, 7.89, 7.89)
       };
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testClosest()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -92,14 +81,11 @@ namespace TestSuite
             double calculated = closest.Round(testData[i].x);
             double expected = testData[i].closest;
             if (!Utils.close(calculated, expected, 1))
-               QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false, "Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testUp()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -109,15 +95,11 @@ namespace TestSuite
             double calculated = up.Round(testData[i].x);
             double expected = testData[i].up;
             if (!Utils.close(calculated, expected, 1))
-               QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false, "Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDown()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -127,15 +109,11 @@ namespace TestSuite
             double calculated = down.Round(testData[i].x);
             double expected = testData[i].down;
             if (!Utils.close(calculated, expected, 1))
-               QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false, "Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFloor()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -145,15 +123,11 @@ namespace TestSuite
             double calculated = floor.Round(testData[i].x);
             double expected = testData[i].floor;
             if (!Utils.close(calculated, expected, 1))
-               QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false, "Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCeiling()
       {
          for (int i = 0; i < testData.Length; i++)
@@ -163,7 +137,7 @@ namespace TestSuite
             double calculated = ceiling.Round(testData[i].x);
             double expected = testData[i].ceiling;
             if (!Utils.close(calculated, expected, 1))
-               QAssert.Fail("Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
+               Assert.True(false, "Original number: " + testData[i].x + "Expected: " + expected + "Calculated: " + calculated);
          }
       }
 

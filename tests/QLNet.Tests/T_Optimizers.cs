@@ -19,18 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Optimizers
    {
       List<CostFunction> costFunctions_ = new List<CostFunction>();
@@ -63,11 +56,7 @@ namespace TestSuite
          bfgs_goldstein
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void OptimizersTest()
       {
          //("Testing optimizers...");
@@ -102,7 +91,7 @@ namespace TestSuite
                   if (endCriteriaResult == EndCriteria.Type.None ||
                       endCriteriaResult == EndCriteria.Type.MaxIterations ||
                       endCriteriaResult == EndCriteria.Type.Unknown)
-                     QAssert.Fail("function evaluations: " + problem.functionEvaluation()  +
+                     Assert.True(false, "function evaluations: " + problem.functionEvaluation()  +
                                   " gradient evaluations: " + problem.gradientEvaluation() +
                                   " x expected:           " + xMinExpected_[i] +
                                   " x calculated:         " + xMinCalculated +
@@ -118,11 +107,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void nestedOptimizationTest()
       {
          //("Testing nested optimizations...");
@@ -138,11 +123,7 @@ namespace TestSuite
          optimizationMethod.minimize(problem, endCriteria);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDifferentialEvolution()
       {
          //BOOST_TEST_MESSAGE("Testing differential evolution...");
@@ -233,7 +214,7 @@ namespace TestSuite
                // stable
                if (Math.Abs(problem.functionValue() - minima[i]) > 1e-8)
                {
-                  QAssert.Fail("costFunction # " + i
+                  Assert.True(false, "costFunction # " + i
                                + "\ncalculated: " + problem.functionValue()
                                + "\nexpected:   " + minima[i]);
                }
@@ -244,7 +225,7 @@ namespace TestSuite
                // long as the result is below 15
                if (problem.functionValue() > 15)
                {
-                  QAssert.Fail("costFunction # " + i
+                  Assert.True(false, "costFunction # " + i
                                + "\ncalculated: " + problem.functionValue()
                                + "\nexpected:   " + "less than 15");
                }

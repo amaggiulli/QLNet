@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Cms
    {
       private class CommonVars
@@ -241,11 +234,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairRate()
       {
          // Testing Hagan-pricer flat-vol equivalence for coupons
@@ -295,7 +284,7 @@ namespace TestSuite
             bool linearTsr = j == vars.yieldCurveModels.Count - 1;
 
             if (difference > tol)
-               QAssert.Fail("\nCoupon payment date: " + paymentDate +
+               Assert.True(false, "\nCoupon payment date: " + paymentDate +
                             "\nCoupon start date:   " + startDate +
                             "\nCoupon floor:        " + (infiniteFloor) +
                             "\nCoupon gearing:      " + (gearing) +
@@ -311,11 +300,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCmsSwap()
       {
          // Testing Hagan-pricer flat-vol equivalence for swaps
@@ -364,7 +349,7 @@ namespace TestSuite
                double tol = 2.0e-4;
                bool linearTsr = j == vars.yieldCurveModels.Count - 1;
                if (difference > tol)
-                  QAssert.Fail("\nLength in Years:  " + swapLengths[sl] +
+                  Assert.True(false, "\nLength in Years:  " + swapLengths[sl] +
                                "\nswap index:       " + swapIndex.name() +
                                "\nibor index:       " + vars.iborIndex.name() +
                                "\nspread:           " + (spread) +
@@ -377,11 +362,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testParity()
       {
          // Testing put-call parity for capped-floored CMS coupons
@@ -440,7 +421,7 @@ namespace TestSuite
                      if (linearTsr)
                         tol = 1.0e-7;
                      if (difference > tol)
-                        QAssert.Fail("\nCoupon payment date: " + paymentDate +
+                        Assert.True(false, "\nCoupon payment date: " + paymentDate +
                                      "\nCoupon start date:   " + startDate +
                                      "\nCoupon gearing:      " + (gearing) +
                                      "\nCoupon swap index:   " + swapIndex.name() +

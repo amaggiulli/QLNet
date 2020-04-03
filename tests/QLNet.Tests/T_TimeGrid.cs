@@ -16,26 +16,15 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_TimeGrid
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConstructorAdditionalSteps()
       {
          // Testing TimeGrid construction with additional steps
@@ -59,11 +48,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), expected_times);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConstructorMandatorySteps()
       {
          // Testing TimeGrid construction with only mandatory points
@@ -75,11 +60,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), test_times);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConstructorEvenSteps()
       {
          // Testing TimeGrid construction with n evenly spaced points
@@ -100,11 +81,7 @@ namespace TestSuite
          QAssert.CollectionAreEqual(tg.Times(), expected_times);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConstructorEmptyIterator()
       {
          // Testing that the TimeGrid constructor raises an error for empty iterators
@@ -114,11 +91,7 @@ namespace TestSuite
          QAssert.ThrowsException<ArgumentException>(() => new TimeGrid(times));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConstructorNegativeValuesInIterator()
       {
          // Testing that the TimeGrid constructor raises an error for negative time values
@@ -126,11 +99,7 @@ namespace TestSuite
          QAssert.ThrowsException<ArgumentException>(() => new TimeGrid(times));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testClosestIndex()
       {
          // Testing that the returned index is closest to the requested time
@@ -143,11 +112,7 @@ namespace TestSuite
                         "the returned index: " + tg.closestIndex(4));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testClosestTime()
       {
          // Testing that the returned time matches the requested index
@@ -160,11 +125,7 @@ namespace TestSuite
                         "the returned time: " + tg.closestTime(4));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMandatoryTimes()
       {
          // Testing that mandatory times are recalled correctly

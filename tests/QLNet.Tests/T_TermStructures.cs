@@ -20,23 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-
-#if NET452
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-#else
 using Xunit;
-#endif
-
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-
-   [TestClass()]
-#endif
    public class T_TermStructures : IDisposable
    {
       private double sub(double x, double y)
@@ -45,25 +33,10 @@ namespace TestSuite
       #region Initialize&Cleanup
 
       private SavedSettings backup;
-#if NET452
 
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
       public T_TermStructures()
       {
-#endif
          backup = new SavedSettings();
-      }
-
-#if NET452
-
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
       }
 
       public void Dispose()
@@ -142,12 +115,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testReferenceChange()
       {
          // Testing term structure against evaluation date change
@@ -173,18 +141,13 @@ namespace TestSuite
          for (int i = 0; i < days.Length; i++)
          {
             if (!Utils.close(expected[i], calculated[i]))
-               QAssert.Fail("\n  Discount at " + days[i] + " days:\n"
+               Assert.True(false, "\n  Discount at " + days[i] + " days:\n"
                             + "    before date change: " + expected[i] + "\n"
                             + "    after date change:  " + calculated[i]);
          }
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testImplied()
       {
          // Testing consistency of implied term structure
@@ -200,17 +163,12 @@ namespace TestSuite
          double discount = vars.termStructure.discount(testDate);
          double impliedDiscount = implied.discount(testDate);
          if (Math.Abs(discount - baseDiscount * impliedDiscount) > tolerance)
-            QAssert.Fail("unable to reproduce discount from implied curve\n"
+            Assert.True(false, "unable to reproduce discount from implied curve\n"
                          + "    calculated: " + baseDiscount * impliedDiscount + "\n"
                          + "    expected:   " + discount);
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testImpliedObs()
       {
          // Testing observability of implied term structure
@@ -225,15 +183,10 @@ namespace TestSuite
          implied.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            QAssert.Fail("Observer was not notified of term structure change");
+            Assert.True(false, "Observer was not notified of term structure change");
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFSpreaded()
       {
          // Testing consistency of forward-spreaded term structure
@@ -251,18 +204,13 @@ namespace TestSuite
          double spreadedForward = spreaded.forwardRate(testDate, testDate, sprdc, Compounding.Continuous,
                                                        Frequency.NoFrequency).rate();
          if (Math.Abs(forward - (spreadedForward - me.value())) > tolerance)
-            QAssert.Fail("unable to reproduce forward from spreaded curve\n"
+            Assert.True(false, "unable to reproduce forward from spreaded curve\n"
                          + "    calculated: "
                          + (spreadedForward - me.value()) + "\n"
                          + "    expected:   " + forward);
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFSpreadedObs()
       {
          // Testing observability of forward-spreaded term structure
@@ -276,19 +224,14 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            QAssert.Fail("Observer was not notified of term structure change");
+            Assert.True(false, "Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            QAssert.Fail("Observer was not notified of spread change");
+            Assert.True(false, "Observer was not notified of spread change");
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZSpreaded()
       {
          // Testing consistency of zero-spreaded term structure
@@ -303,17 +246,12 @@ namespace TestSuite
          double zero = vars.termStructure.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          double spreadedZero = spreaded.zeroRate(testDate, rfdc, Compounding.Continuous, Frequency.NoFrequency).rate();
          if (Math.Abs(zero - (spreadedZero - me.value())) > tolerance)
-            QAssert.Fail("unable to reproduce zero yield from spreaded curve\n"
+            Assert.True(false, "unable to reproduce zero yield from spreaded curve\n"
                          + "    calculated: " + (spreadedZero - me.value()) + "\n"
                          + "    expected:   " + zero);
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZSpreadedObs()
       {
          // Testing observability of zero-spreaded term structure
@@ -328,19 +266,14 @@ namespace TestSuite
          spreaded.registerWith(flag.update);
          h.linkTo(vars.termStructure);
          if (!flag.isUp())
-            QAssert.Fail("Observer was not notified of term structure change");
+            Assert.True(false, "Observer was not notified of term structure change");
          flag.lower();
          me.setValue(0.005);
          if (!flag.isUp())
-            QAssert.Fail("Observer was not notified of spread change");
+            Assert.True(false, "Observer was not notified of spread change");
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCompositeZeroYieldStructures()
       {
          // Testing composite zero yield structures...
@@ -468,12 +401,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testInterpolatedZeroCurveWithRefDateAndTenorDates()
       {
          CommonVars vars = new CommonVars();

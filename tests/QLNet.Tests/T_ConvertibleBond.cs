@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_ConvertibleBond
    {
       private class CommonVars
@@ -86,11 +79,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBond()
       {
 
@@ -147,7 +136,7 @@ namespace TestSuite
          double error = Math.Abs(euZero.NPV() - zero.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce zero-coupon bond price:"
+            Assert.True(false, "failed to reproduce zero-coupon bond price:"
                          + "\n    calculated: " + euZero.NPV()
                          + "\n    expected:   " + zero.settlementValue()
                          + "\n    error:      " + error);
@@ -156,7 +145,7 @@ namespace TestSuite
          error = Math.Abs(amZero.NPV() - zero.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce zero-coupon bond price:"
+            Assert.True(false, "failed to reproduce zero-coupon bond price:"
                          + "\n    calculated: " + amZero.NPV()
                          + "\n    expected:   " + zero.settlementValue()
                          + "\n    error:      " + error);
@@ -199,7 +188,7 @@ namespace TestSuite
          error = Math.Abs(euFixed.NPV() - fixedBond.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce fixed-coupon bond price:"
+            Assert.True(false, "failed to reproduce fixed-coupon bond price:"
                          + "\n    calculated: " + euFixed.NPV()
                          + "\n    expected:   " + fixedBond.settlementValue()
                          + "\n    error:      " + error);
@@ -208,7 +197,7 @@ namespace TestSuite
          error = Math.Abs(amFixed.NPV() - fixedBond.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce fixed-coupon bond price:"
+            Assert.True(false, "failed to reproduce fixed-coupon bond price:"
                          + "\n    calculated: " + amFixed.NPV()
                          + "\n    expected:   " + fixedBond.settlementValue()
                          + "\n    error:      " + error);
@@ -261,7 +250,7 @@ namespace TestSuite
          error = Math.Abs(euFloating.NPV() - floating.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce floating-rate bond price:"
+            Assert.True(false, "failed to reproduce floating-rate bond price:"
                          + "\n    calculated: " + euFloating.NPV()
                          + "\n    expected:   " + floating.settlementValue()
                          + "\n    error:      " + error);
@@ -270,18 +259,14 @@ namespace TestSuite
          error = Math.Abs(amFloating.NPV() - floating.settlementValue());
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce floating-rate bond price:"
+            Assert.True(false, "failed to reproduce floating-rate bond price:"
                          + "\n    calculated: " + amFloating.NPV()
                          + "\n    expected:   " + floating.settlementValue()
                          + "\n    error:      " + error);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testOption()
       {
 
@@ -330,7 +315,7 @@ namespace TestSuite
          double error = Math.Abs(euZero.NPV() - expected);
          if (error > tolerance)
          {
-            QAssert.Fail("failed to reproduce plain-option price:"
+            Assert.True(false, "failed to reproduce plain-option price:"
                          + "\n    calculated: " + euZero.NPV()
                          + "\n    expected:   " + expected
                          + "\n    error:      " + error
@@ -338,11 +323,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testRegression()
       {
 
@@ -419,7 +400,7 @@ namespace TestSuite
          try
          {
             double x = bond.NPV();  // should throw; if not, an INF was not detected.
-            QAssert.Fail("INF result was not detected: " + x + " returned");
+            Assert.True(false, "INF result was not detected: " + x + " returned");
          }
          catch (Exception)
          {

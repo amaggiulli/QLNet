@@ -13,28 +13,22 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
+
 using Xunit;
-#endif
 using QLNet;
 using System;
-using System.Collections.Generic;
+
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_DoubleBarrierOption
    {
-      public void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,
+      private void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,
                                  StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                  double r, Date today, double v, double expected, double calculated, double error,
                                  double tolerance)
       {
-         QAssert.Fail(barrierType + " " + exercise + " "
+         Assert.True(false, barrierType + " " + exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
                       + "    underlying value: " + s + "\n"
@@ -51,13 +45,13 @@ namespace TestSuite
                       + "    error:            " + error + "\n"
                       + "    tolerance:        " + tolerance);
       }
-      public void REPORT_FAILURE_VANNAVOLGA(string greekName, DoubleBarrier.Type barrierType,
+      private void REPORT_FAILURE_VANNAVOLGA(string greekName, DoubleBarrier.Type barrierType,
                                             double barrier1, double barrier2, double rebate,
                                             StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                             double r, Date today, double vol25Put, double atmVol, double vol25Call, double v,
                                             double expected, double calculated, double error, double tolerance)
       {
-         QAssert.Fail("Double Barrier Option " + barrierType + " " + exercise + " "
+         Assert.True(false, "Double Barrier Option " + barrierType + " " + exercise + " "
                       + payoff.optionType() + " option with "
                       + payoff + " payoff:\n"
                       + "    underlying value: " + s + "\n"
@@ -153,11 +147,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuropeanHaugValues()
       {
          // Testing double barrier european options against Haug's values
@@ -347,11 +337,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVannaVolgaDoubleBarrierValues()
       {
          // Testing double-barrier FX options against Vanna/Volga values

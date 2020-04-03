@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -94,7 +90,7 @@ namespace TestSuite
                prefix = "Kuo3";
                break;
             default:
-               QAssert.Fail("unknown direction integers");
+               Assert.True(false, "unknown direction integers");
                break;
          }
          return prefix + "Sobol sequences: ";
@@ -132,23 +128,15 @@ namespace TestSuite
 
    #endregion
 
-
-#if NET452
-   [TestClass()]
-#endif
    public class T_LowDiscrepancySequences
    {
-      public void testSeedGenerator()
+      private void testSeedGenerator()
       {
          //("Testing random-seed generator...");
          SeedGenerator.instance().get();
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPolynomialsModuloTwo()
       {
 
@@ -178,7 +166,7 @@ namespace TestSuite
                --n;
                if (j != jj[i])
                {
-                  QAssert.Fail("Only " + j + " polynomials in degree " + i + 1
+                  Assert.True(false, "Only " + j + " polynomials in degree " + i + 1
                                + " instead of " + jj[i]);
                }
             }
@@ -188,11 +176,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSobol()
       {
 
@@ -212,7 +196,7 @@ namespace TestSuite
             point = rsg.nextSequence().value;
             if (point.Count != dimensionality)
             {
-               QAssert.Fail("Sobol sequence generator returns " +
+               Assert.True(false, "Sobol sequence generator returns " +
                             " a sequence of wrong dimensionality: " + point.Count
                             + " instead of  " + dimensionality);
             }
@@ -240,7 +224,7 @@ namespace TestSuite
                double error = Math.Abs(mean[i] - 0.5);
                if (error > tolerance)
                {
-                  QAssert.Fail(i + 1 + " dimension: "
+                  Assert.True(false, i + 1 + " dimension: "
                                // + QL_FIXED
                                + "mean (" + mean[i]
                                + ") at the end of the " + j + 1
@@ -276,7 +260,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               QAssert.Fail(i + 1 + " draw ("
+               Assert.True(false, i + 1 + " draw ("
                             //+ QL_FIXED
                             + point[0]
                             + ") in 1-D Sobol sequence is not in the "
@@ -303,7 +287,7 @@ namespace TestSuite
           for (i=0; i<points; i++) {
               point = rsg.nextSequence().value;
               if (point.size()!=dimensionality) {
-                  QAssert.Fail("Faure sequence generator returns "
+                  Assert.True(false, "Faure sequence generator returns "
                               " a sequence of wrong dimensionality: " + point.size()
                               + " instead of  " + dimensionality);
               }
@@ -330,7 +314,7 @@ namespace TestSuite
               point = rsg.nextSequence().value;
               double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 1 ("
                               + QL_FIXED + point[0]
                               + ") in 3-D Faure sequence should have been "
                               + vanderCorputSequenceModuloTwo[i]
@@ -363,7 +347,7 @@ namespace TestSuite
               point = rsg.nextSequence().value;
               double error = std::fabs(point[0]-vanderCorputSequenceModuloTwo[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 1 ("
                               + QL_FIXED + point[0]
                               + ") in 3-D Faure sequence should have been "
                               + vanderCorputSequenceModuloTwo[i]
@@ -372,7 +356,7 @@ namespace TestSuite
               }
               error = std::fabs(point[1]-FaureDimensionTwoOfTwo[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 2 ("
                               + QL_FIXED + point[1]
                               + ") in 3-D Faure sequence should have been "
                               + FaureDimensionTwoOfTwo[i]
@@ -410,7 +394,7 @@ namespace TestSuite
               point = rsg.nextSequence().value;
               double error = std::fabs(point[0]-FaureDimensionOneOfThree[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 1 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 1 ("
                               + QL_FIXED + point[0]
                               + ") in 3-D Faure sequence should have been "
                               + FaureDimensionOneOfThree[i]
@@ -419,7 +403,7 @@ namespace TestSuite
               }
               error = std::fabs(point[1]-FaureDimensionTwoOfThree[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 2 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 2 ("
                               + QL_FIXED + point[1]
                               + ") in 3-D Faure sequence should have been "
                               + FaureDimensionTwoOfThree[i]
@@ -428,7 +412,7 @@ namespace TestSuite
               }
               error = std::fabs(point[2]-FaureDimensionThreeOfThree[i]);
               if (error > tolerance) {
-                  QAssert.Fail(io::ordinal(i+1) + " draw, dimension 3 ("
+                  Assert.True(false, io::ordinal(i+1) + " draw, dimension 3 ("
                               + QL_FIXED + point[2]
                               + ") in 3-D Faure sequence should have been "
                               + FaureDimensionThreeOfThree[i]
@@ -438,11 +422,7 @@ namespace TestSuite
           }
       }*/
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testHalton()
       {
 
@@ -460,7 +440,7 @@ namespace TestSuite
             point = rsg.nextSequence().value;
             if (point.Count != dimensionality)
             {
-               QAssert.Fail("Halton sequence generator returns " +
+               Assert.True(false, "Halton sequence generator returns " +
                             " a sequence of wrong dimensionality: " + point.Count
                             + " instead of  " + dimensionality)
                ;
@@ -495,7 +475,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               QAssert.Fail(i + 1 + " draw ("
+               Assert.True(false, i + 1 + " draw ("
                             + /*QL_FIXED*/ +point[0]
                             + ") in 1-D Halton sequence is not in the "
                             + "van der Corput sequence modulo two: "
@@ -527,7 +507,7 @@ namespace TestSuite
             double error = Math.Abs(point[0] - vanderCorputSequenceModuloTwo[i]);
             if (error > tolerance)
             {
-               QAssert.Fail("First component of " + i + 1
+               Assert.True(false, "First component of " + i + 1
                             + " draw (" + /*QL_FIXED*/ +point[0]
                             + ") in 2-D Halton sequence is not in the "
                             + "van der Corput sequence modulo two: "
@@ -539,7 +519,7 @@ namespace TestSuite
             error = Math.Abs(point[1] - vanderCorputSequenceModuloThree[i]);
             if (error > tolerance)
             {
-               QAssert.Fail("Second component of " + i + 1
+               Assert.True(false, "Second component of " + i + 1
                             + " draw (" + /*QL_FIXED*/ +point[1]
                             + ") in 2-D Halton sequence is not in the "
                             + "van der Corput sequence modulo three: "
@@ -570,7 +550,7 @@ namespace TestSuite
             double error = Math.Abs(mean[0] - 0.5);
             if (error > tolerance)
             {
-               QAssert.Fail("First dimension mean (" + /*QL_FIXED*/ +mean[0]
+               Assert.True(false, "First dimension mean (" + /*QL_FIXED*/ +mean[0]
                             + ") at the end of the " + j + 1
                             + " cycle in Halton sequence is not " + 0.5
                             //+ QL_SCIENTIFIC
@@ -595,7 +575,7 @@ namespace TestSuite
             double error = Math.Abs(mean[1] - 0.5);
             if (error > tolerance)
             {
-               QAssert.Fail("Second dimension mean (" + /*QL_FIXED*/ +mean[1]
+               Assert.True(false, "Second dimension mean (" + /*QL_FIXED*/ +mean[1]
                             + ") at the end of the " + j + 1
                             + " cycle in Halton sequence is not " + 0.5
                             //+ QL_SCIENTIFIC
@@ -604,7 +584,7 @@ namespace TestSuite
          }
       }
 
-      public void testGeneratorDiscrepancy(IRNGFactory generatorFactory, double[][] discrepancy)
+      private void testGeneratorDiscrepancy(IRNGFactory generatorFactory, double[][] discrepancy)
       {
          //QL_TEST_START_TIMING
          double tolerance = 1.0e-2;
@@ -638,7 +618,7 @@ namespace TestSuite
 
                if (Math.Abs(discr - discrepancy[i][j - jMin]) > tolerance * discr)
                {
-                  QAssert.Fail(generatorFactory.name()
+                  Assert.True(false, generatorFactory.name()
                                + "discrepancy dimension " + dimensionality[i]
                                + " at " + points + " samples is "
                                + discr + " instead of "
@@ -650,7 +630,7 @@ namespace TestSuite
 
       #region testMersenneTwisterDiscrepancy
 
-      public void testMersenneTwisterDiscrepancy()
+      private void testMersenneTwisterDiscrepancy()
       {
          //("Testing Mersenne-twister discrepancy...");
 
@@ -672,7 +652,7 @@ namespace TestSuite
 
       #region testAltonDiscrepancy
 
-      public void testPlainHaltonDiscrepancy()
+      private void testPlainHaltonDiscrepancy()
       {
 
          //("Testing plain Halton discrepancy...");
@@ -691,7 +671,7 @@ namespace TestSuite
                                  );
       }
 
-      public void testRandomStartHaltonDiscrepancy()
+      private void testRandomStartHaltonDiscrepancy()
       {
 
          //("Testing random-start Halton discrepancy...");
@@ -710,7 +690,7 @@ namespace TestSuite
                                  );
       }
 
-      public void testRandomShiftHaltonDiscrepancy()
+      private void testRandomShiftHaltonDiscrepancy()
       {
 
          //("Testing random-shift Halton discrepancy...");
@@ -729,7 +709,7 @@ namespace TestSuite
                                  );
       }
 
-      public void testRandomStartRandomShiftHaltonDiscrepancy()
+      private void testRandomStartRandomShiftHaltonDiscrepancy()
       {
 
          //("Testing random-start, random-shift Halton discrepancy...");
@@ -749,7 +729,7 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void _testDiscrepancy_Alton()
+      private void _testDiscrepancy_Alton()
       {
          testPlainHaltonDiscrepancy();
          testRandomStartHaltonDiscrepancy();
@@ -761,7 +741,7 @@ namespace TestSuite
 
       #region testSobolDiscrepancy
 
-      public void testJackelSobolDiscrepancy()
+      private void testJackelSobolDiscrepancy()
       {
 
          //("Testing Jaeckel-Sobol discrepancy...");
@@ -777,7 +757,7 @@ namespace TestSuite
                                   discrepancy /*,"JackelSobolDiscrepancy.txt","DiscrJackel_Sobol"*/);
       }
 
-      public void testSobolLevitanSobolDiscrepancy()
+      private void testSobolLevitanSobolDiscrepancy()
       {
 
          //("Testing Levitan-Sobol discrepancy...");
@@ -795,7 +775,7 @@ namespace TestSuite
                                   /*,"SobolLevitanSobolDiscrepancy.txt",                                                        "DiscrSobLev_Sobol"*/);
       }
 
-      public void testSobolLevitanLemieuxSobolDiscrepancy()
+      private void testSobolLevitanLemieuxSobolDiscrepancy()
       {
 
          //("Testing Levitan-Lemieux-Sobol discrepancy...");
@@ -815,7 +795,7 @@ namespace TestSuite
                                  );
       }
 
-      public void testUnitSobolDiscrepancy()
+      private void testUnitSobolDiscrepancy()
       {
 
          //("Testing unit Sobol discrepancy...");
@@ -835,7 +815,7 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void _testDiscrepancy_Sobol()
+      private void _testDiscrepancy_Sobol()
       {
          testJackelSobolDiscrepancy();
          testSobolLevitanSobolDiscrepancy();
@@ -845,11 +825,7 @@ namespace TestSuite
 
       #endregion
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSobolSkipping()
       {
 
@@ -890,7 +866,7 @@ namespace TestSuite
                      {
                         if (s1[n] != s2[n])
                         {
-                           QAssert.Fail("Mismatch after skipping:"
+                           Assert.True(false, "Mismatch after skipping:"
                                         + "\n  size:     " + dimensionality[j]
                                         + "\n  integers: " + integers[i]
                                         + "\n  skipped:  " + skip[k]

@@ -16,18 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_RangeAccrual
    {
       private class CommonVars
@@ -1400,11 +1393,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testInfiniteRange()
       {
          // Testing infinite range accrual floaters
@@ -1442,7 +1431,7 @@ namespace TestSuite
 
                if (Math.Abs(difference) > vars.rateTolerance)
                {
-                  QAssert.Fail("\n" +
+                  Assert.True(false, "\n" +
                                "i:\t" + i + "\n" +
                                "fixingDate:\t" + fixingDate + "\n" +
                                "startDate:\t" + vars.startDate + "\n" +
@@ -1456,11 +1445,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPriceMonotonicityWithRespectToLowerStrike()
       {
          // Testing price monotonicity with respect to the lower strike
@@ -1503,7 +1488,7 @@ namespace TestSuite
 
                   if (previousPrice <= price)
                   {
-                     QAssert.Fail("\n" +
+                     Assert.True(false, "\n" +
                                   "i:\t" + i + "\n" +
                                   "k:\t" + k + "\n" +
                                   "Price at lower strike\t" + (effectiveLowerStrike - 0.001) +
@@ -1518,11 +1503,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPriceMonotonicityWithRespectToUpperStrike()
       {
 
@@ -1567,7 +1548,7 @@ namespace TestSuite
 
                   if (previousPrice > price)
                   {
-                     Assert.Fail("\n" +
+                     Assert.True(false, "\n" +
                                  "i:\t" + i + "\n" +
                                  "k:\t" + k + "\n" +
                                  "Price at upper strike\t" + (effectiveUpperStrike - 0.001) +

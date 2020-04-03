@@ -19,18 +19,11 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_DayCounters
    {
       public struct SingleCase
@@ -97,11 +90,7 @@ namespace TestSuite
                 / (referenceDayCount * couponsPerYear);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActual()
       {
          SingleCase[] testCases =
@@ -198,17 +187,13 @@ namespace TestSuite
 
             if (Math.Abs(calculated - testCases[i]._result) > 1.0e-10)
             {
-               QAssert.Fail(dayCounter.name() + "period: " + d1 + " to " + d2 +
+               Assert.True(false, dayCounter.name() + "period: " + d1 + " to " + d2 +
                             "    calculated: " + calculated + "    expected:   " + testCases[i]._result);
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithSemiannualSchedule()
       {
 
@@ -265,7 +250,7 @@ namespace TestSuite
                dayCounter.yearFraction(testDate, referencePeriodEnd);
             if (Math.Abs(difference) > 1.0e-10)
             {
-               QAssert.Fail("Failed to correctly use the schedule to find the reference period for Act/Act");
+               Assert.True(false, "Failed to correctly use the schedule to find the reference period for Act/Act");
             }
             testDate = calendar.advance(testDate, 1, TimeUnit.Days);
          }
@@ -309,7 +294,7 @@ namespace TestSuite
 
             if (Math.Abs(expected - calculated) > 1e-8)
             {
-               QAssert.Fail("Failed to compute the correct year fraction " +
+               Assert.True(false, "Failed to compute the correct year fraction " +
                             "given a schedule: " + periodStartDate +
                             " to " + periodEndDate +
                             "\n expected: " + expected +
@@ -319,11 +304,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithAnnualSchedule()
       {
          // Testing actual/actual with schedule "for undefined annual reference periods
@@ -354,7 +335,7 @@ namespace TestSuite
                dayCounter.yearFraction(testDate, referencePeriodEnd);
             if (Math.Abs(difference) > 1.0e-10)
             {
-               QAssert.Fail("Failed to correctly use the schedule " +
+               Assert.True(false, "Failed to correctly use the schedule " +
                             "to find the reference period for Act/Act:\n"
                             + testDate + " to " + referencePeriodEnd
                             + "\n Ref: " + referencePeriodStart
@@ -364,11 +345,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithSchedule()
       {
 
@@ -441,19 +418,19 @@ namespace TestSuite
 
          if (Math.Abs(t_total - expected) > 1.0e-10)
          {
-            QAssert.Fail("Failed to reproduce expected time:\n"
+            Assert.True(false, "Failed to reproduce expected time:\n"
                          + "    calculated: " + t_total + "\n"
                          + "    expected:   " + expected);
          }
          if (Math.Abs(t_with_reference - expected) > 1.0e-10)
          {
-            QAssert.Fail("Failed to reproduce expected time:\n"
+            Assert.True(false, "Failed to reproduce expected time:\n"
                          + "    calculated: " + t_with_reference + "\n"
                          + "    expected:   " + expected);
          }
          if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
          {
-            QAssert.Fail("Should produce the same time whether or not references are present");
+            Assert.True(false, "Should produce the same time whether or not references are present");
          }
 
          // settlement date in the first quasi-period
@@ -468,18 +445,18 @@ namespace TestSuite
          double t_expected_first_qp = 0.03314917127071823; //12.0/362
          if (Math.Abs(t_with_reference - t_expected_first_qp) > 1.0e-10)
          {
-            QAssert.Fail("Failed to reproduce expected time:\n"
+            Assert.True(false, "Failed to reproduce expected time:\n"
                          + "    calculated: " + t_no_reference + "\n"
                          + "    expected:   " + t_expected_first_qp);
          }
          if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
          {
-            QAssert.Fail("Should produce the same time whether or not references are present");
+            Assert.True(false, "Should produce the same time whether or not references are present");
          }
          double t2 = dayCounter.yearFraction(settlementDate, firstCouponDate);
          if (Math.Abs(t_expected_first_qp + t2 - expected) > 1.0e-10)
          {
-            QAssert.Fail("Sum of quasiperiod2 split is not consistent");
+            Assert.True(false, "Sum of quasiperiod2 split is not consistent");
          }
 
          // settlement date in the second quasi-period
@@ -496,22 +473,18 @@ namespace TestSuite
                             );
          if (Math.Abs(t_no_reference - t_with_reference) > 1.0e-10)
          {
-            QAssert.Fail("These two cases should be identical");
+            Assert.True(false, "These two cases should be identical");
          }
          t2 = dayCounter.yearFraction(settlementDate, firstCouponDate);
          if (Math.Abs(t_total - (t_no_reference + t2)) > 1.0e-10)
          {
-            QAssert.Fail("Failed to reproduce expected time:\n"
+            Assert.True(false, "Failed to reproduce expected time:\n"
                          + "    calculated: " + t_total + "\n"
                          + "    expected:   " + t_no_reference + t2);
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSimple()
       {
          Period[] p = { new Period(3, TimeUnit.Months), new Period(6, TimeUnit.Months), new Period(1, TimeUnit.Years) };
@@ -530,7 +503,7 @@ namespace TestSuite
                double calculated = dayCounter.yearFraction(start, end, null, null);
                if (Math.Abs(calculated - expected[i]) > 1.0e-12)
                {
-                  QAssert.Fail("from " + start + " to " + end +
+                  Assert.True(false, "from " + start + " to " + end +
                                "Calculated: " + calculated +
                                "Expected:   " + expected[i]);
                }
@@ -539,11 +512,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testOne()
       {
          Period[] p = { new Period(3, TimeUnit.Months), new Period(6, TimeUnit.Months), new Period(1, TimeUnit.Years) };
@@ -562,7 +531,7 @@ namespace TestSuite
                double calculated = dayCounter.yearFraction(start, end, null, null);
                if (Math.Abs(calculated - expected[i]) > 1.0e-12)
                {
-                  QAssert.Fail("from " + start + " to " + end +
+                  Assert.True(false, "from " + start + " to " + end +
                                "Calculated: " + calculated +
                                "Expected:   " + expected[i]);
                }
@@ -571,11 +540,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBusiness252()
       {
          // Testing business/252 day counter
@@ -624,7 +589,7 @@ namespace TestSuite
             calculated = dayCounter1.yearFraction(testDates[i - 1], testDates[i]);
             if (Math.Abs(calculated - expected[i - 1]) > 1.0e-12)
             {
-               QAssert.Fail("from " + testDates[i - 1]
+               Assert.True(false, "from " + testDates[i - 1]
                             + " to " + testDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i - 1]);
@@ -638,7 +603,7 @@ namespace TestSuite
             calculated = dayCounter2.yearFraction(testDates[i - 1], testDates[i]);
             if (Math.Abs(calculated - expected[i - 1]) > 1.0e-12)
             {
-               QAssert.Fail("from " + testDates[i - 1]
+               Assert.True(false, "from " + testDates[i - 1]
                             + " to " + testDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i - 1]);
@@ -647,11 +612,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testThirty360_BondBasis()
       {
          // Testing thirty/360 day counter (Bond Basis)
@@ -709,7 +670,7 @@ namespace TestSuite
             calculated = dayCounter.dayCount(testStartDates[i], testEndDates[i]);
             if (calculated != expected[i])
             {
-               QAssert.Fail("from " + testStartDates[i]
+               Assert.True(false, "from " + testStartDates[i]
                             + " to " + testEndDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i]);
@@ -717,11 +678,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testThirty360_EurobondBasis()
       {
          // Testing thirty/360 day counter (Eurobond Basis)
@@ -786,7 +743,7 @@ namespace TestSuite
             calculated = dayCounter.dayCount(testStartDates[i], testEndDates[i]);
             if (calculated != expected[i])
             {
-               QAssert.Fail("from " + testStartDates[i]
+               Assert.True(false, "from " + testStartDates[i]
                             + " to " + testEndDates[i] + ":\n"
                             + "    calculated: " + calculated + "\n"
                             + "    expected:   " + expected[i]);
@@ -794,11 +751,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIntraday()
       {
          // Testing intraday behavior of day counter

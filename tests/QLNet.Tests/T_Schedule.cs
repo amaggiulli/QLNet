@@ -17,42 +17,31 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Schedule
    {
       void check_dates(Schedule s, List<Date> expected)
       {
          if (s.Count != expected.Count)
          {
-            QAssert.Fail("expected " + expected.Count + " dates, " + "found " + s.Count);
+            Assert.True(false, "expected " + expected.Count + " dates, " + "found " + s.Count);
          }
 
          for (int i = 0; i < expected.Count; ++i)
          {
             if (s[i] != expected[i])
             {
-               QAssert.Fail("expected " + expected[i] + " at index " + i + ", " + "found " + s[i]);
+               Assert.True(false, "expected " + expected[i] + " at index " + i + ", " + "found " + s[i]);
 
             }
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDailySchedule()
       {
          // Testing schedule with daily frequency
@@ -78,11 +67,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEndDateWithEomAdjustment()
       {
          // Testing end date for schedule with end-of-month adjustment
@@ -124,11 +109,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDatesPastEndDateWithEomAdjustment()
       {
 
@@ -151,11 +132,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDatesSameAsEndDateWithEomAdjustment()
       {
          // Testing that next-to-last date same as end date is removed...
@@ -181,15 +158,10 @@ namespace TestSuite
 
          // also, the last period should be regular.
          if (!s.isRegular(2))
-            QAssert.Fail("last period should be regular");
+            Assert.True(false, "last period should be regular");
       }
 
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testForwardDatesWithEomAdjustment()
       {
          // Testing that the last date is not adjusted for EOM when termination date convention is unadjusted
@@ -212,11 +184,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBackwardDatesWithEomAdjustment()
       {
          // Testing that the first date is not adjusted for EOM going backward when termination date convention is unadjusted
@@ -239,11 +207,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDoubleFirstDateWithEomAdjustment()
       {
          // Testing that the first date is not duplicated due to EOM convention when going backwards
@@ -265,11 +229,7 @@ namespace TestSuite
          check_dates(s, expected);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCDS2015Convention()
       {
          // Testing CDS2015 semi-annual rolling convention
@@ -307,11 +267,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDateConstructor()
       {
          // Testing the constructor taking a vector of dates and possibly additional meta information
@@ -325,14 +281,14 @@ namespace TestSuite
          // schedule without any additional information
          Schedule schedule1 = new Schedule(dates);
          if (schedule1.Count != dates.Count)
-            QAssert.Fail("schedule1 has size " + schedule1.Count + ", expected " + dates.Count);
+            Assert.True(false, "schedule1 has size " + schedule1.Count + ", expected " + dates.Count);
          for (int i = 0; i < dates.Count; ++i)
             if (schedule1[i] != dates[i])
-               QAssert.Fail("schedule1 has " + schedule1[i] + " at position " + i + ", expected " + dates[i]);
+               Assert.True(false, "schedule1 has " + schedule1[i] + " at position " + i + ", expected " + dates[i]);
          if (schedule1.calendar() != new NullCalendar())
-            QAssert.Fail("schedule1 has calendar " + schedule1.calendar().name() + ", expected null calendar");
+            Assert.True(false, "schedule1 has calendar " + schedule1.calendar().name() + ", expected null calendar");
          if (schedule1.businessDayConvention() != BusinessDayConvention.Unadjusted)
-            QAssert.Fail("schedule1 has convention " + schedule1.businessDayConvention() + ", expected unadjusted");
+            Assert.True(false, "schedule1 has convention " + schedule1.businessDayConvention() + ", expected unadjusted");
 
          // schedule with metadata
          List<bool> regular = new List<bool>();
@@ -344,19 +300,19 @@ namespace TestSuite
                                            DateGeneration.Rule.Backward, true, regular);
          for (int i = 1; i < dates.Count; ++i)
             if (schedule2.isRegular(i) != regular[i - 1])
-               QAssert.Fail("schedule2 has a " + (schedule2.isRegular(i) ? "regular" : "irregular") + " period at position " + i + ", expected " + (regular[i - 1] ? "regular" : "irregular"));
+               Assert.True(false, "schedule2 has a " + (schedule2.isRegular(i) ? "regular" : "irregular") + " period at position " + i + ", expected " + (regular[i - 1] ? "regular" : "irregular"));
          if (schedule2.calendar() != new TARGET())
-            QAssert.Fail("schedule1 has calendar " + schedule2.calendar().name() + ", expected TARGET");
+            Assert.True(false, "schedule1 has calendar " + schedule2.calendar().name() + ", expected TARGET");
          if (schedule2.businessDayConvention() != BusinessDayConvention.Following)
-            QAssert.Fail("schedule2 has convention " + schedule2.businessDayConvention() + ", expected Following");
+            Assert.True(false, "schedule2 has convention " + schedule2.businessDayConvention() + ", expected Following");
          if (schedule2.terminationDateBusinessDayConvention() != BusinessDayConvention.ModifiedPreceding)
-            QAssert.Fail("schedule2 has convention " + schedule2.terminationDateBusinessDayConvention() + ", expected Modified Preceding");
+            Assert.True(false, "schedule2 has convention " + schedule2.terminationDateBusinessDayConvention() + ", expected Modified Preceding");
          if (schedule2.tenor() != new Period(1, TimeUnit.Years))
-            QAssert.Fail("schedule2 has tenor " + schedule2.tenor() + ", expected 1Y");
+            Assert.True(false, "schedule2 has tenor " + schedule2.tenor() + ", expected 1Y");
          if (schedule2.rule() != DateGeneration.Rule.Backward)
-            QAssert.Fail("schedule2 has rule " + schedule2.rule() + ", expected Backward");
+            Assert.True(false, "schedule2 has rule " + schedule2.rule() + ", expected Backward");
          if (schedule2.endOfMonth() != true)
-            QAssert.Fail("schedule2 has end of month flag false, expected true");
+            Assert.True(false, "schedule2 has end of month flag false, expected true");
       }
    }
 }

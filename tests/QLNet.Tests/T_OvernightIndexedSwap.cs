@@ -18,40 +18,21 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_OvernightIndexedSwap : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_OvernightIndexedSwap()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -238,12 +219,7 @@ namespace TestSuite
          }
       }
 
-
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairRate()
       {
          // Testing Eonia-swap calculation of fair fixed rate...
@@ -264,7 +240,7 @@ namespace TestSuite
                if (Math.Abs(swap.NPV()) > 1.0e-10)
                {
 
-                  QAssert.Fail("recalculating with implied rate:\n"
+                  Assert.True(false, "recalculating with implied rate:\n"
                                + "    length: " + lengths[i] + " \n"
                                + "    floating spread: "
                                + (spreads[j]) + "\n"
@@ -275,11 +251,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairSpread()
       {
          // Testing Eonia-swap calculation of fair floating spread...
@@ -303,7 +275,7 @@ namespace TestSuite
 
                if (Math.Abs(swap.NPV()) > 1.0e-10)
                {
-                  QAssert.Fail("Recalculating with implied spread:" +
+                  Assert.True(false, "Recalculating with implied spread:" +
                                "\n     length: " + lengths[i] +
                                "\n fixed rate: " + rates[j] +
                                "\nfair spread: " + fairSpread +
@@ -313,11 +285,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedValue()
       {
          // Testing Eonia-swap calculation against cached value...
@@ -333,17 +301,13 @@ namespace TestSuite
          double tolerance = 1.0e-11;
 
          if (Math.Abs(swap.NPV() - cachedNPV) > tolerance)
-            QAssert.Fail("\nfailed to reproduce cached swap value:" +
+            Assert.True(false, "\nfailed to reproduce cached swap value:" +
                          "\ncalculated: " + swap.NPV() +
                          "\n  expected: " + cachedNPV +
                          "\n tolerance:" + tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBootstrap()
       {
          // Testing Eonia-swap curve building...
@@ -451,7 +415,7 @@ namespace TestSuite
             double? calculated = 100.0 * swap.fairRate();
 
             if (Math.Abs(expected - calculated.Value) > tolerance)
-               QAssert.Fail("curve inconsistency:\n"
+               Assert.True(false, "curve inconsistency:\n"
                             + "    swap length:     " + term + "\n"
                             + "    quoted rate:     " + expected + "\n"
                             + "    calculated rate: " + calculated);

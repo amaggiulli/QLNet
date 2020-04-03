@@ -19,39 +19,21 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Swaps : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_Swaps()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -108,11 +90,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairRate()
       {
          // Testing vanilla-swap calculation of fair fixed rate
@@ -131,7 +109,7 @@ namespace TestSuite
                swap = vars.makeSwap(lengths[i], swap.fairRate(), spreads[j]);
                if (Math.Abs(swap.NPV()) > 1.0e-10)
                {
-                  QAssert.Fail("recalculating with implied rate:\n"
+                  Assert.True(false, "recalculating with implied rate:\n"
                                + "    length: " + lengths[i] + " years\n"
                                + "    floating spread: "
                                + spreads[j] + "\n"
@@ -140,11 +118,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testFairSpread()
       {
          // Testing vanilla-swap calculation of fair floating spread
@@ -162,7 +137,7 @@ namespace TestSuite
                swap = vars.makeSwap(lengths[i], rates[j], swap.fairSpread());
                if (Math.Abs(swap.NPV()) > 1.0e-10)
                {
-                  QAssert.Fail("recalculating with implied spread:\n"
+                  Assert.True(false, "recalculating with implied spread:\n"
                                + "    length: " + lengths[i] + " years\n"
                                + "    fixed rate: "
                                + rates[j] + "\n"
@@ -171,11 +146,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testRateDependency()
       {
          // Testing vanilla-swap dependency on fixed rate
@@ -202,7 +174,7 @@ namespace TestSuite
                for (int z = 0; z < swap_values.Count - 1; z++)
                {
                   if (swap_values[z] < swap_values[z + 1])
-                     QAssert.Fail(
+                     Assert.True(false, 
                         "NPV is increasing with the fixed rate in a swap: \n"
                         + "    length: " + lengths[i] + " years\n"
                         + "    value:  " + swap_values[z]
@@ -213,11 +185,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testSpreadDependency()
       {
          // Testing vanilla-swap dependency on floating spread
@@ -244,7 +213,7 @@ namespace TestSuite
                for (int z = 0; z < swap_values.Count - 1; z++)
                {
                   if (swap_values[z] > swap_values[z + 1])
-                     QAssert.Fail(
+                     Assert.True(false, 
                         "NPV is decreasing with the floating spread in a swap: \n"
                         + "    length: " + lengths[i] + " years\n"
                         + "    value:  " + swap_values[z]
@@ -255,11 +224,8 @@ namespace TestSuite
             }
          }
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testInArrears()
       {
          // Testing in-arrears swap calculation
@@ -313,15 +279,12 @@ namespace TestSuite
          double tolerance = 1.0;
 
          if (Math.Abs(swap.NPV() - storedValue) > tolerance)
-            QAssert.Fail("Wrong NPV calculation:\n"
+            Assert.True(false, "Wrong NPV calculation:\n"
                          + "    expected:   " + storedValue + "\n"
                          + "    calculated: " + swap.NPV());
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testCachedValue()
       {
          // Testing vanilla-swap calculation against cached value
@@ -340,15 +303,12 @@ namespace TestSuite
 #endif
 
          if (Math.Abs(swap.NPV() - cachedNPV) > 1.0e-11)
-            QAssert.Fail("failed to reproduce cached swap value:\n"
+            Assert.True(false, "failed to reproduce cached swap value:\n"
                          + "    calculated: " + swap.NPV() + "\n"
                          + "    expected:   " + cachedNPV);
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testFixing()
       {
          Date tradeDate = new Date(17, Month.April, 2015);
@@ -393,7 +353,7 @@ namespace TestSuite
          }
          catch (Exception ex)
          {
-            QAssert.Fail(ex.Message);
+            Assert.True(false, ex.Message);
          }
       }
 

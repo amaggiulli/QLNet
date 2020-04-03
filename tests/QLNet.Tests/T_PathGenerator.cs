@@ -19,47 +19,28 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Pathgenerator : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_Pathgenerator()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
       }
       #endregion
 
-      public void testSingle(StochasticProcess1D process,
+      private void testSingle(StochasticProcess1D process,
                              string tag,
                              bool brownianBridge,
                              double expected,
@@ -92,7 +73,7 @@ namespace TestSuite
          double tolerance = 2.0e-8;
          if (error > tolerance)
          {
-            QAssert.Fail("using " + tag + " process "
+            Assert.True(false, "using " + tag + " process "
                          + (brownianBridge ? "with " : "without ")
                          + "brownian bridge:\n"
                          //+ std::setprecision(13)
@@ -110,7 +91,7 @@ namespace TestSuite
          tolerance = 2.0e-7;
          if (error > tolerance)
          {
-            QAssert.Fail("using " + tag + " process "
+            Assert.True(false, "using " + tag + " process "
                          + (brownianBridge ? "with " : "without ")
                          + "brownian bridge:\n"
                          + "antithetic sample:\n"
@@ -122,7 +103,7 @@ namespace TestSuite
          }
       }
 
-      public void testMultiple(StochasticProcess process,
+      private void testMultiple(StochasticProcess process,
                                string tag,
                                double[] expected,
                                double[] antithetic)
@@ -159,7 +140,7 @@ namespace TestSuite
             error = Math.Abs(calculated[j] - expected[j]);
             if (error > tolerance)
             {
-               QAssert.Fail("using " + tag + " process "
+               Assert.True(false, "using " + tag + " process "
                             + "(" + j + 1 + " asset:)\n"
                             //+ std::setprecision(13)
                             + "    calculated: " + calculated[j] + "\n"
@@ -179,7 +160,7 @@ namespace TestSuite
             error = Math.Abs(calculated[j] - antithetic[j]);
             if (error > tolerance)
             {
-               QAssert.Fail("using " + tag + " process "
+               Assert.True(false, "using " + tag + " process "
                             + "(" + j + 1 + " asset:)\n"
                             + "antithetic sample:\n"
                             //+ std::setprecision(13)
@@ -191,11 +172,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testPathGenerator()
       {
          // Testing 1-D path generation against cached values
@@ -225,11 +202,7 @@ namespace TestSuite
                     "square-root", false, 1.70608664108, 6.024200546031);
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testMultiPathGenerator()
       {
          // Testing n-D path generation against cached values

@@ -20,40 +20,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_LiborMarketModelProcess : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_LiborMarketModelProcess()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -133,11 +114,7 @@ namespace TestSuite
          return process;
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testInitialisation()
       {
          // Testing caplet LMM process initialisation
@@ -175,18 +152,14 @@ namespace TestSuite
 
                if ((ileft != i) || (iright != i + 1) || (ii != i + 1))
                {
-                  QAssert.Fail("Failed to next index resets");
+                  Assert.True(false, "Failed to next index resets");
                }
             }
 
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testLambdaBootstrapping()
       {
          // Testing caplet LMM lambda bootstrapping
@@ -205,7 +178,7 @@ namespace TestSuite
             double expected   = lambdaExpected[i] / 100;
 
             if (Math.Abs(calculated - expected) > tolerance)
-               QAssert.Fail("Failed to reproduce expected lambda values"
+               Assert.True(false, "Failed to reproduce expected lambda values"
                             + "\n    calculated: " + calculated
                             + "\n    expected:   " + expected);
          }
@@ -227,7 +200,7 @@ namespace TestSuite
                {
                   if (Math.Abs(diff[i, j]) > tolerance)
                   {
-                     QAssert.Fail("Failed to reproduce integrated covariance"
+                     Assert.True(false, "Failed to reproduce integrated covariance"
                                   + "\n    calculated: " + diff[i, j]
                                   + "\n    expected:   " + 0);
                   }
@@ -236,11 +209,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testMonteCarloCapletPricing()
       {
          // Testing caplet LMM Monte-Carlo caplet pricing
@@ -361,7 +330,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated1 - expected) > tolerance1)
             {
-               QAssert.Fail("Failed to reproduce expected caplet NPV"
+               Assert.True(false, "Failed to reproduce expected caplet NPV"
                             + "\n    calculated: " + calculated1
                             + "\n    error int:  " + tolerance1
                             + "\n    expected:   " + expected);
@@ -372,7 +341,7 @@ namespace TestSuite
 
             if (Math.Abs(calculated2 - expected) > tolerance2)
             {
-               QAssert.Fail("Failed to reproduce expected caplet NPV"
+               Assert.True(false, "Failed to reproduce expected caplet NPV"
                             + "\n    calculated: " + calculated2
                             + "\n    error int:  " + tolerance2
                             + "\n    expected:   " + expected);
@@ -388,7 +357,7 @@ namespace TestSuite
 
                if (Math.Abs(calculated3 - expected) > tolerance3 + refError)
                {
-                  QAssert.Fail("Failed to reproduce expected caplet NPV"
+                  Assert.True(false, "Failed to reproduce expected caplet NPV"
                                + "\n    calculated: " + calculated3
                                + "\n    error int:  " + tolerance3 + refError
                                + "\n    expected:   " + expected);
