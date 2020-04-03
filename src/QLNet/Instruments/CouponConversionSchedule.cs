@@ -28,7 +28,10 @@ namespace QLNet
 
       public DateTime Date { get; set; }
       public double Rate { get; set; }
-      public override string ToString() => ($"Conversion Date : {Date}\nConversion Rate : {Rate}");
+      public override string ToString()
+      {
+         return (string.Format("Conversion Date : {0}\nConversion Rate : {1}", Date, Rate));
+      }
    }
 
    public class CouponConversionSchedule : List<CouponConversion>

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-#if ! NET40 || NET45
+#if ! NET452
 using Xunit;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 #endif
