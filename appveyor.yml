@@ -70,7 +70,7 @@
   - cmd: "dotnet sonarscanner begin %runner_args%"
 #  - cmd: "dotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
   - cmd: "dotnet restore"
-  - cmd: "dotnet publish" 
+  - cmd: "dotnet publish /-c Release -f netstandard2.0" 
   - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
   build:
     project: QLNet.sln
