@@ -1,731 +1,332 @@
-commit f56d26565978e74cd649807971da0e0550451464
+commit 3dce73f39710dba45f4306ea6f69e599385322c8
+Author: Sean O'Connor <potatman@users.noreply.github.com>
+Date:   Thu Apr 2 15:46:49 2020 -0700
+
+    Fixing outdated sonarqube and adding dotnet core tests (#248)
+    
+    * Enabling dotnet core tests.
+    
+    * Switching to the dotnet tool for sonar.
+    
+    * Updating all appveyor images.
+    
+    * Temp disable netstandard tests.
+    
+    * Updating appveyor logger.
+    
+    * Removing bad test merge.
+    
+    * Fixing nuget publish
+    
+    * Fixing artifacts.
+    
+    * Fixing typo in last commit.
+    
+    * Adding gitignore.
+
+ .gitignore                           | 362 ++++++++++++++++++++++++++++++++++-
+ appveyor.yml                         |  25 ++-
+ src/QLNet/QLNet.csproj               |   2 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj |  12 +-
+ tests/QLNet.Tests/Utilities.cs       |   6 +-
+ 5 files changed, 384 insertions(+), 23 deletions(-)
+
+commit 46075c83fa23c0714918684654c6cb08d67e8481
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Wed Jan 29 19:53:02 2020 +0100
+
+    Add Cranck-Nicholson, Method of Lines & TrBDF2 schemes (#244)
+    
+    * Update step method & add new schemes
+    
+    - Update step method by adding theta parameter.
+    - Add Cranck-Nicholson, Method of Lines & TrBDF2 schemes
+    
+    * Add new schemes to FdmBackwardSolver
+    
+    * Update IMixedScheme interface and dependencies
+    
+    * Update QLNet Old project file
+    
+    * Delete FdmBackwardSolver.cs
+    
+    * Move to Solvers folder
+
+ src/QLNet.Old/QLNet.Old.csproj                     |   9 ++
+ src/QLNet/Methods/Finitedifferences/MixedScheme.cs |   4 +-
+ .../Methods/Finitedifferences/ParallelEvolver.cs   |   2 +-
+ .../Finitedifferences/Schemes/CraigSneydScheme.cs  |   2 +-
+ .../Schemes/CrankNicolsonScheme.cs                 |  85 ++++++++++++
+ .../Finitedifferences/Schemes/DouglasScheme.cs     |   2 +-
+ .../Schemes/ExplicitEulerScheme.cs                 |   5 +-
+ .../Finitedifferences/Schemes/HundsdorferScheme.cs |   2 +-
+ .../Schemes/ImplicitEulerScheme.cs                 |  48 ++++---
+ .../Schemes/MethodOfLinesScheme.cs                 |  87 +++++++++++++
+ .../Schemes/ModifiedCraigSneydScheme.cs            |   2 +-
+ .../Finitedifferences/Schemes/TrBDF2Scheme.cs      | 143 +++++++++++++++++++++
+ .../Finitedifferences/Solvers/FdmBackwardSolver.cs |  36 +++++-
+ src/QLNet/Methods/Finitedifferences/TRBDF2.cs      |   2 +-
+ 14 files changed, 399 insertions(+), 30 deletions(-)
+
+commit 3b313eceb8cc438161a60786035be8edaf29eece
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Mon Jan 20 22:23:03 2020 +0100
+
+    Add Quanto Term Structure (#243)
+    
+    * Add QuantoTermStructure class
+    
+    * Add FdmQuantoHelper class
+    
+    * Extend FdmBlackScholesMesher with FdmQuantoHelper
+    
+    * Extend FdmBlackScholesOp with FdmQuantoHelper
+    
+    * Extend FdmBlackScholesSolver with FdmQuantoHelper
+    
+    * Fix FdmDividendHandler using wrong array index
+    
+    * Dividends in Fd BS Barrier Engines
+    
+    Ensure dividend cash-flows are well taken into account in FDM pricing for Black-Scholes Barrier Engine.
+    
+    * Extend FDM BS Vanilla with CashDividendModel
+    
+    Add CashDividendModel to Black-Scholes Vanilla engine under Finite Difference model.
+    
+    Add MakeFdBlackScholesVanillaEngine class.
+    
+    * Update Old Project File
+    
+    Also update filename convention
+
+ src/QLNet.Old/QLNet.Old.csproj                     | 662 +++++++++++----------
+ .../Meshers/FdmBlackScholesMesher.cs               |  75 ++-
+ .../Operators/FdmBlackScholesOp.cs                 |  41 +-
+ .../Solvers/FdmBlackScholesSolver.cs               |  14 +-
+ .../Utilities/FdmDividendHandler.cs                |   8 +-
+ .../Finitedifferences/Utilities/FdmQuantoHelper.cs | 110 ++++
+ .../barrier/FdBlackScholesBarrierEngine.cs         |   4 +-
+ .../barrier/FdBlackScholesRebateEngine.cs          |   4 +-
+ .../vanilla/FdBlackScholesVanillaEngine.cs         | 353 +++++++----
+ .../Termstructures/Yield/QuantoTermStructure.cs    | 107 ++++
+ 10 files changed, 927 insertions(+), 451 deletions(-)
+
+commit 68b7f68293e2166edb70d3d43db4bb51e96bbc88
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Mon Jan 20 22:01:54 2020 +0100
+
+    Add Cumulative & Inverse Cumulative Chi² Distrib (#242)
+
+ .../Math/Distributions/ChiSquareDistribution.cs    | 521 ++++++++++++++-------
+ 1 file changed, 359 insertions(+), 162 deletions(-)
+
+commit a170d037b717dfe29db2c416f1d5863dedeef4d2
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Mon Jan 20 21:41:01 2020 +0100
+
+    Fix AdaptiveRungeKutta (#241)
+    
+    Lists need to be initialized
+
+ src/QLNet/Math/ODE/AdaptiveRungeKutta.cs | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit 7ed37d532161526f32397671219232fdb7a7908c
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Sat Jan 18 11:26:43 2020 +0100
+
+    MC Barrier Engine (#240)
+    
+    * RNGTraits - force IRNG type for factory return
+    
+    * MCBarrierEngine - add file
+    
+    * Update tests with MC Barrier Engine
+    
+    * Project - update old project file
+    
+    * Delete rngtraits.cs
+    
+    * RNGTraits - force IRNG type for factory function
+    
+    * update RNGTraits filename
+
+ src/QLNet.Old/QLNet.Old.csproj                     |   9 +-
+ src/QLNet/Math/randomnumbers/RNGTraits.cs          |   6 +-
+ .../Pricingengines/barrier/MCBarrierEngine.cs      | 587 +++++++++++++++++++++
+ tests/QLNet.Tests/T_BarrierOption.cs               |  85 +--
+ 4 files changed, 639 insertions(+), 48 deletions(-)
+
+commit b08aeba13ab13510a8480de9c7cb7541a1f220ae
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Fri Jan 17 22:57:57 2020 +0100
+
+    [Heston process] Fix Broadie-Kaya exact scheme (#239)
+
+ src/QLNet/processes/HestonProcess.cs | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+commit e5560686fe70161e5ab17ab6ff81438cef3d2963
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Fri Jan 17 15:10:58 2020 +0100
+
+    Add Cumulative Gamma distribution (#236)
+
+ src/QLNet/Math/Distributions/GammaDistribution.cs | 59 +++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+
+commit 0405f1c742c86d52e1170de2ce9da5ca124992c7
+Author: tournierjc <tournier.jc@protonmail.com>
+Date:   Fri Jan 17 15:09:45 2020 +0100
+
+    Old Project Files Fix (#235) [skip ci]
+    
+    * [QLNet Old Project]
+    
+    Fix missing files
+    
+    * [QLNet Test Old]
+    
+    Update framework and fix dependency error message
+    
+    * Delete QLNet.Old.csproj
+    
+    * [QLnet old project] fix missing Exceptions
+
+ src/QLNet.Old/QLNet.Old.csproj               | 31 ++++++++++++++++++++---
+ tests/QLNet.Tests.Old/QLNet.Tests.Old.csproj | 38 +++++++++++++---------------
+ 2 files changed, 44 insertions(+), 25 deletions(-)
+
+commit 4ed7bee8a371f771ef5dcf0f909ea563ef30a31f
+Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
+Date:   Fri Dec 6 17:43:45 2019 +0100
+
+    Update ReadMe. [skip ci]
+
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8954646338eaf0ee9aff0571e628af54a4d84707
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri May 24 20:20:41 2019 +0200
+Date:   Tue Nov 19 18:31:37 2019 +0100
+
+    Added a new QLNet Exception.
+
+ src/QLNet/Exceptions/NullEffectiveDateException.cs | 21 +++++++++++++++++++++
+ src/QLNet/Exceptions/QLNetExceptionEnum.cs         |  3 ++-
+ src/QLNet/Time/Schedule.cs                         |  4 ++--
+ src/QLNet/Utils.cs                                 |  4 ++++
+ tests/QLNet.Tests/T_Bonds.cs                       |  4 ++++
+ 5 files changed, 33 insertions(+), 3 deletions(-)
+
+commit 1a0a999ad90c82f0fdaa22e725904a061a4ad48a
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Tue Oct 29 16:56:27 2019 +0100
+
+    Fixed Date GetHashCode , compute hash on readonly field.
+
+ src/QLNet/Time/Date.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 66170a26489eb04d20ee6ca1db33eb68d789b969
+Merge: 8dc18ef af5d041
+Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
+Date:   Tue Oct 29 15:42:15 2019 +0100
+
+    Merge pull request #234 from QtRoS/develop
+    
+    Date.GetHashCode() implemented (closes #233)
+
+commit af5d04175d5f982f766f4893f4655a7b3e98c20d
+Author: Roman Shchekin <shchekin@nsd.ru>
+Date:   Tue Oct 22 11:54:23 2019 +0300
+
+    Date.GetHashCode() implemented
+
+ src/QLNet/Time/Date.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8dc18ef5116bdfbe1f0a4e82de7a57e5a6db8380
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Fri Sep 20 16:13:23 2019 +0200
+
+    Trying to fix Sonar build
+
+ appveyor.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 800542f9ed9ab35423583c17b644ebb5af42212f
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Fri Sep 20 16:04:58 2019 +0200
+
+    Fixed WAL calculation for past dates with test.
+
+ src/QLNet/Cashflows/CashFlows.cs                        | 4 ++--
+ src/QLNet/Cashflows/ConundrumPricer.cs                  | 4 ++--
+ src/QLNet/Instruments/AssetSwap.cs                      | 2 +-
+ src/QLNet/Instruments/BMASwap.cs                        | 4 ++--
+ src/QLNet/Instruments/BasisSwap.cs                      | 2 +-
+ src/QLNet/Instruments/Bonds/AmortizingFixedRateBond.cs  | 2 +-
+ src/QLNet/Instruments/CPISwap.cs                        | 2 +-
+ src/QLNet/Instruments/OvernightIndexedSwap.cs           | 2 +-
+ src/QLNet/Instruments/VanillaSwap.cs                    | 2 +-
+ src/QLNet/Instruments/YearOnYearInflationSwap.cs        | 2 +-
+ src/QLNet/Math/Solvers1d/Bisection.cs                   | 2 +-
+ src/QLNet/Math/Solvers1d/Brent.cs                       | 2 +-
+ src/QLNet/Math/Solvers1d/FalsePosition.cs               | 2 +-
+ src/QLNet/Math/Solvers1d/FiniteDifferenceNewtonSafe.cs  | 2 +-
+ src/QLNet/Math/Solvers1d/Newton.cs                      | 2 +-
+ src/QLNet/Math/Solvers1d/Newtonsafe.cs                  | 2 +-
+ src/QLNet/Math/Solvers1d/Ridder.cs                      | 2 +-
+ src/QLNet/Math/Solvers1d/Secant.cs                      | 2 +-
+ src/QLNet/Math/integrals/Kronrodintegral.cs             | 2 +-
+ src/QLNet/Pricingengines/Bond/BondFunctions.cs          | 6 ++++--
+ src/QLNet/Pricingengines/credit/IntegralCdsEngine.cs    | 2 +-
+ src/QLNet/Pricingengines/credit/IsdaCdsEngine.cs        | 2 +-
+ src/QLNet/Pricingengines/credit/MidPointCdsEngine.cs    | 2 +-
+ src/QLNet/Termstructures/Yield/Ratehelpers.cs           | 2 +-
+ src/QLNet/legacy/libormarketmodels/LfmSwaptionEngine.cs | 2 +-
+ tests/QLNet.Tests/T_Bonds.cs                            | 8 ++++++++
+ 26 files changed, 39 insertions(+), 29 deletions(-)
+
+commit 57e816e2051cda87fef1757ba75f997f5b1d7bb4
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Fri Aug 16 13:58:05 2019 +0200
+
+    Added a new QLNet Exceptions (fixed missing source file).
+
+ src/QLNet/Cashflows/CashFlows.cs                  |  9 +++------
+ src/QLNet/Exceptions/InvalidPriceSignException.cs | 21 +++++++++++++++++++++
+ src/QLNet/Utils.cs                                |  2 ++
+ tests/QLNet.Tests/T_Bonds.cs                      |  4 ++++
+ 4 files changed, 30 insertions(+), 6 deletions(-)
+
+commit 9633df8179a07cb9e8f7663a3372544504ff5d68
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Fri Aug 16 13:32:28 2019 +0200
 
     Added a new QLNet Exceptions.
 
- src/QLNet/Exceptions/MaxNumberFuncEvalExceeded.cs   | 21 +++++++++++++++++++++
- src/QLNet/Exceptions/QLNetExceptionEnum.cs          |  3 ++-
- src/QLNet/Math/Solvers1d/Bisection.cs               |  4 +++-
- src/QLNet/Math/Solvers1d/Brent.cs                   |  4 +++-
- src/QLNet/Math/Solvers1d/FalsePosition.cs           |  4 +++-
- .../Math/Solvers1d/FiniteDifferenceNewtonSafe.cs    |  4 +++-
- src/QLNet/Math/Solvers1d/Newton.cs                  |  3 ++-
- src/QLNet/Math/Solvers1d/Newtonsafe.cs              |  3 ++-
- src/QLNet/Math/Solvers1d/Ridder.cs                  |  4 +++-
- src/QLNet/Math/Solvers1d/Secant.cs                  |  4 +++-
- src/QLNet/Math/integrals/Kronrodintegral.cs         |  2 +-
- src/QLNet/Utils.cs                                  |  5 ++++-
- 12 files changed, 50 insertions(+), 11 deletions(-)
+ src/QLNet/Cashflows/CashFlows.cs           | 9 ++++++---
+ src/QLNet/Exceptions/QLNetExceptionEnum.cs | 3 ++-
+ src/QLNet/Utils.cs                         | 2 ++
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-commit 591ece9936f61cf671982770b2463d502a7a0526
-Merge: 1c28fa0 0d0abe5
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Mon May 6 17:11:48 2019 +0200
-
-    Merge pull request #230 from muichkine/develop
-    
-    Filename convention and BasisPoint definition
-
-commit 0d0abe54a780ae16d74b1c3dde5db6cbbc867c69
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Mon May 6 16:22:11 2019 +0200
-
-    Merged Constatns.BasisPoint into Const.BASIS_POINT
-
- src/QLNet/Cashflows/CashFlows.cs                         | 4 ++--
- src/QLNet/Cashflows/ConundrumPricer.cs                   | 2 +-
- src/QLNet/Constants.cs                                   | 8 --------
- src/QLNet/Instruments/AssetSwap.cs                       | 2 +-
- src/QLNet/Instruments/BMASwap.cs                         | 4 ++--
- src/QLNet/Instruments/BasisSwap.cs                       | 4 ++--
- src/QLNet/Instruments/CPISwap.cs                         | 4 ++--
- src/QLNet/Instruments/OvernightIndexedSwap.cs            | 4 ++--
- src/QLNet/Instruments/VanillaSwap.cs                     | 4 ++--
- src/QLNet/Instruments/YearOnYearInflationSwap.cs         | 4 ++--
- src/QLNet/Pricingengines/credit/IntegralCdsEngine.cs     | 4 ++--
- src/QLNet/Pricingengines/credit/IsdaCdsEngine.cs         | 4 ++--
- src/QLNet/Pricingengines/credit/MidPointCdsEngine.cs     | 4 ++--
- src/QLNet/Pricingengines/swaption/BlackSwaptionEngine.cs | 4 ++--
- src/QLNet/Termstructures/Yield/Ratehelpers.cs            | 4 ++--
- src/QLNet/Types.cs                                       | 2 ++
- src/QLNet/legacy/libormarketmodels/LfmSwaptionEngine.cs  | 2 +-
- 17 files changed, 29 insertions(+), 35 deletions(-)
-
-commit 1c28fa0bdf743745098bc67e3281e890386a2dbe
-Merge: 6d0024d 37dfa23
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri May 3 18:17:35 2019 +0200
-
-    Merge pull request #231 from potatman/develop
-    
-    Making all projects dotnet standard/coreapp.  (Changes minimum framework to net 4.5.1)
-
-commit 37dfa2350dece12b7c1c0fdd6ca99c486d5af0d1
-Author: Sean O'Connor <potatman@gmail.com>
-Date:   Thu May 2 15:06:07 2019 -0700
-
-    One more fix for appveyor
-
- src/QLNet/QLNet.csproj | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit 4dfb599202e5d77f4bef58d276db91e7524cd49b
-Author: Sean O'Connor <potatman@gmail.com>
-Date:   Thu May 2 15:03:26 2019 -0700
-
-    Build fix
-
- appveyor.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-commit ebd39f2c300788d787a0d3a302d0e2b76082ae62
-Author: Sean O'Connor <potatman@gmail.com>
-Date:   Thu May 2 14:50:34 2019 -0700
-
-    Making all projects dotnet standard.  (Changes minimum framework to net 4.5.1)
-
- src/BermudanSwaption/BermudanSwaption.csproj       |  2 +-
- src/Bonds/Bonds.csproj                             |  2 +-
- src/CVAIRS/CVAIRS.csproj                           |  2 +-
- src/CallableBonds/CallableBonds.csproj             |  2 +-
- src/ConvertibleBonds/ConvertibleBonds.csproj       |  2 +-
- src/EquityOption/EquityOption.csproj               |  2 +-
- src/FRA/FRA.csproj                                 |  2 +-
- src/FittedBondCurve/FittedBondCurve.csproj         |  2 +-
- src/QLNet/Patterns/FastActivator.cs                |  2 +-
- src/QLNet/Patterns/WeakEventSource.cs              |  6 +--
- src/QLNet/QLNet.csproj                             | 22 +---------
- src/QLNet/Utils.cs                                 |  2 +-
- src/Repo/Repo.csproj                               |  2 +-
- src/Swap/Swap.csproj                               |  2 +-
- tests/QLNet.Tests/QLNet.Tests.csproj               |  3 +-
- tests/QLNet.Tests/T_AmericanOption.cs              | 20 ++++-----
- tests/QLNet.Tests/T_AsianOptions.cs                | 14 +++---
- tests/QLNet.Tests/T_AssetSwap.cs                   | 26 +++++------
- tests/QLNet.Tests/T_BarrierOption.cs               | 14 +++---
- tests/QLNet.Tests/T_BasketOption.cs                |  6 +--
- tests/QLNet.Tests/T_Bermudanswaption.cs            | 10 ++---
- tests/QLNet.Tests/T_BinaryOption.cs                |  8 ++--
- tests/QLNet.Tests/T_BlackDeltaCalculator.cs        | 12 +++---
- tests/QLNet.Tests/T_BlackFormula.cs                |  8 ++--
- tests/QLNet.Tests/T_Bonds.cs                       | 50 +++++++++++-----------
- tests/QLNet.Tests/T_BusinessDayConvention.cs       |  6 +--
- tests/QLNet.Tests/T_CPISwap.cs                     | 10 ++---
- tests/QLNet.Tests/T_Calendars.cs                   | 46 ++++++++++----------
- tests/QLNet.Tests/T_CapFloor.cs                    | 22 +++++-----
- tests/QLNet.Tests/T_CapFlooredCoupon.cs            |  8 ++--
- tests/QLNet.Tests/T_CashFlows.cs                   | 12 +++---
- tests/QLNet.Tests/T_CatBonds.cs                    | 18 ++++----
- tests/QLNet.Tests/T_CliquetOption.cs               | 12 +++---
- tests/QLNet.Tests/T_Cms.cs                         | 10 ++---
- tests/QLNet.Tests/T_ConvertibleBond.cs             | 10 ++---
- tests/QLNet.Tests/T_CreditDefaultSwap.cs           | 16 +++----
- tests/QLNet.Tests/T_Dates.cs                       | 16 +++----
- tests/QLNet.Tests/T_DayCounters.cs                 | 24 +++++------
- tests/QLNet.Tests/T_DefaultProbabilityCurves.cs    | 10 ++---
- tests/QLNet.Tests/T_DigitalCoupon.cs               | 20 ++++-----
- tests/QLNet.Tests/T_DigitalOption.cs               | 20 ++++-----
- tests/QLNet.Tests/T_DividendOption.cs              | 20 ++++-----
- tests/QLNet.Tests/T_DoubleBarrierOption.cs         |  8 ++--
- tests/QLNet.Tests/T_DoubleBinaryOption.cs          |  6 +--
- tests/QLNet.Tests/T_EuropeanOption.cs              | 24 +++++------
- tests/QLNet.Tests/T_ExchangeRate.cs                | 14 +++---
- tests/QLNet.Tests/T_FastFourierTransform.cs        |  8 ++--
- tests/QLNet.Tests/T_FdmLinearOp.cs                 | 24 +++++------
- tests/QLNet.Tests/T_ForwardOption.cs               | 14 +++---
- tests/QLNet.Tests/T_Functions.cs                   | 14 +++---
- tests/QLNet.Tests/T_HestonModel.cs                 | 24 +++++------
- .../QLNet.Tests/T_HybridHestonHullWhiteProcess.cs  | 26 +++++------
- tests/QLNet.Tests/T_Inflation.cs                   | 12 +++---
- tests/QLNet.Tests/T_InflationCPICapFloor.cs        |  8 ++--
- tests/QLNet.Tests/T_InflationCapFloorTest.cs       | 14 +++---
- .../QLNet.Tests/T_InflationCapFlooredCouponTest.cs | 12 +++---
- tests/QLNet.Tests/T_Instruments.cs                 |  6 +--
- tests/QLNet.Tests/T_InterestRate.cs                |  6 +--
- tests/QLNet.Tests/T_Interpolations.cs              | 40 ++++++++---------
- tests/QLNet.Tests/T_LiborMarketModel.cs            | 16 +++----
- tests/QLNet.Tests/T_LiborMarketModelProcess.cs     | 14 +++---
- .../QLNet.Tests/T_LinearLeastSquaresRegression.cs  | 14 +++---
- tests/QLNet.Tests/T_LookbackOption.cs              | 12 +++---
- tests/QLNet.Tests/T_LowDiscrepancySequences.cs     | 12 +++---
- tests/QLNet.Tests/T_Matrices.cs                    | 18 ++++----
- tests/QLNet.Tests/T_Money.cs                       | 10 ++---
- tests/QLNet.Tests/T_Operators.cs                   |  8 ++--
- tests/QLNet.Tests/T_Optimizers.cs                  | 10 ++---
- tests/QLNet.Tests/T_OptionletStripper.cs           | 16 +++----
- tests/QLNet.Tests/T_OvernightIndexedSwap.cs        | 16 +++----
- tests/QLNet.Tests/T_PSACurve.cs                    |  6 +--
- tests/QLNet.Tests/T_PathGenerator.cs               | 12 +++---
- .../T_PiecewiseZeroSpreadedTermStructure.cs        | 24 +++++------
- tests/QLNet.Tests/T_Piecewiseyieldcurve.cs         | 40 ++++++++---------
- tests/QLNet.Tests/T_Quotes.cs                      | 12 +++---
- tests/QLNet.Tests/T_RNGTraits.cs                   | 10 ++---
- tests/QLNet.Tests/T_RangeAccrual.cs                | 10 ++---
- tests/QLNet.Tests/T_RiskStats.cs                   |  6 +--
- tests/QLNet.Tests/T_Rounding.cs                    | 14 +++---
- tests/QLNet.Tests/T_SVI.cs                         |  6 +--
- tests/QLNet.Tests/T_SampledCurve.cs                |  6 +--
- tests/QLNet.Tests/T_Schedule.cs                    | 22 +++++-----
- tests/QLNet.Tests/T_ShortRateModels.cs             | 10 ++---
- tests/QLNet.Tests/T_Solvers.cs                     | 16 +++----
- tests/QLNet.Tests/T_SpreadOption.cs                |  6 +--
- tests/QLNet.Tests/T_Stats.cs                       | 12 +++---
- tests/QLNet.Tests/T_Swaps.cs                       | 22 +++++-----
- tests/QLNet.Tests/T_Swaption.cs                    | 22 +++++-----
- tests/QLNet.Tests/T_SwaptionVolatilityCube.cs      | 14 +++---
- tests/QLNet.Tests/T_SwaptionVolatilitymatrix.cs    | 12 +++---
- tests/QLNet.Tests/T_TermStructures.cs              | 26 +++++------
- tests/QLNet.Tests/T_TimeGrid.cs                    | 20 ++++-----
- tests/QLNet.Tests/T_Vector.cs                      | 14 +++---
- tests/QLNet.Tests/Utilities.cs                     | 32 +++++++-------
- 94 files changed, 632 insertions(+), 651 deletions(-)
-
-commit 182c17e768b3fc0392d1a62a268426d2ebd97c3c
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Tue Apr 23 13:07:21 2019 +0200
-
-    Constants.BasisPoint
-
- src/QLNet/Cashflows/CashFlows.cs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-commit e05f74881c6b0499143c9b8b9f13e34f43b3389e
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Tue Apr 23 13:07:13 2019 +0200
-
-    use Constants.BasisPoint
-
- src/QLNet/Cashflows/CashFlows.cs       | 4 +---
- src/QLNet/Cashflows/ConundrumPricer.cs | 5 ++---
- 2 files changed, 3 insertions(+), 6 deletions(-)
-
-commit b3f085236da44335f2af763eb63c7a55643a4f49
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Tue Apr 23 12:53:47 2019 +0200
-
-    Centralized the definition of BasisPoint
-
- src/QLNet/Constants.cs                                   |  8 ++++++++
- src/QLNet/Instruments/AssetSwap.cs                       |  5 ++---
- src/QLNet/Instruments/BMASwap.cs                         | 11 ++++-------
- src/QLNet/Instruments/BasisSwap.cs                       |  7 +++----
- src/QLNet/Instruments/CPISwap.cs                         |  8 +++-----
- src/QLNet/Instruments/OvernightIndexedSwap.cs            |  8 +++-----
- src/QLNet/Instruments/VanillaSwap.cs                     |  8 +++-----
- src/QLNet/Instruments/YearOnYearInflationSwap.cs         |  7 +++----
- src/QLNet/Pricingengines/credit/IntegralCdsEngine.cs     |  8 +++-----
- src/QLNet/Pricingengines/credit/IsdaCdsEngine.cs         |  8 +++-----
- src/QLNet/Pricingengines/credit/MidPointCdsEngine.cs     |  8 +++-----
- src/QLNet/Pricingengines/swaption/BlackSwaptionEngine.cs |  5 ++---
- src/QLNet/Termstructures/Yield/Ratehelpers.cs            |  7 +++----
- src/QLNet/legacy/libormarketmodels/LfmSwaptionEngine.cs  |  6 ++----
- 14 files changed, 45 insertions(+), 59 deletions(-)
-
-commit f3d65d21c34fd8038e0f54208c946a53af6012fc
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Tue Apr 23 12:42:43 2019 +0200
-
-    Fixed 2 Filename Case
-
- src/QLNet.Old/QLNet.Old.csproj                                    | 8 ++++----
- src/QLNet/Cashflows/{Iborcoupon.cs => IborCoupon.cs}              | 0
- .../Swap/{Discountingswapengine.cs => DiscountingSwapEngine.cs}   | 0
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-commit 6d0024d752650015adf1f8c002104d011150804c
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri Apr 19 19:22:33 2019 +0200
-
-    Update issue templates
-
- .github/ISSUE_TEMPLATE/bug_report.md      | 28 ++++++++++++++++++++++++++++
- .github/ISSUE_TEMPLATE/feature_request.md | 20 ++++++++++++++++++++
- 2 files changed, 48 insertions(+)
-
-commit 30859f726120ce63f8b20d28b169f0034313dc46
-Merge: e876186 90623b7
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Thu Apr 11 17:57:43 2019 +0200
-
-    Merge pull request #227 from muichkine/develop
-    
-    Fixedratebond.cs => FixedRateBond.cs
-
-commit 90623b706e9a752067a209f9059b07d9827315ef
-Author: Olivier Milla <olivier@freddelacompta.com>
-Date:   Thu Apr 11 11:36:08 2019 +0200
-
-    Fixed CSProj for file name changed (Fixedbondrate.cs)
-
- src/QLNet.Old/QLNet.Old.csproj | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-commit e876186ab38c40b6bebe7074ce8ff8b639547eb9
-Merge: a8d738d 0bb9d2e
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Wed Apr 10 16:46:55 2019 +0200
-
-    Merge pull request #226 from muichkine/patch-1
-    
-    Assignment was made twice.
-
-commit bb0bbb4660c0080e0351b88addc9961d5d6efa0b
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Wed Apr 10 14:33:43 2019 +0200
-
-    Fixedratebond.cs => FixedRateBond.cs
-
- src/QLNet/Instruments/Bonds/{Fixedratebond.cs => FixedRateBond.cs} | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
-
-commit 0bb9d2edc941eca6364552005035eeb64c4a1b9e
-Author: Olivier Milla <olivier.milla@gmail.com>
-Date:   Wed Apr 10 14:19:44 2019 +0200
-
-    Assignment was made twice.
-
- src/QLNet/Instruments/Bonds/AmortizingFixedRateBond.cs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-commit a8d738d71c352ce766dca0bee0253817aee75efb
+commit ac2ca38e9c491fd4d20730b8411c7c52b7afe4e1
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Mar 19 10:27:12 2019 +0100
+Date:   Wed Jun 5 20:09:42 2019 +0200
 
-    TimeGrid, added tests & refactoring.
-
- src/QLNet/Time/Calendars/China.cs                  |  10 +-
- src/QLNet/Time/Calendars/UnitedStates.cs           |   2 +-
- src/QLNet/TimeGrid.cs                              | 186 ++++++++++++++++-----
- .../QLNet.Tests/T_HybridHestonHullWhiteProcess.cs  |   4 +-
- tests/QLNet.Tests/T_TimeGrid.cs                    | 179 ++++++++++++++++++++
- tests/QLNet.Tests/Utilities.cs                     |  19 ++-
- 6 files changed, 350 insertions(+), 50 deletions(-)
-
-commit 81aa149f79be52b389813c6b0ae890a7a3196135
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Mar 13 15:18:48 2019 +0100
-
-    Updated china holidays up to 2019
-
- src/QLNet/Time/Calendars/China.cs | 45 +++++++++++++++++++++-
- tests/QLNet.Tests/T_Calendars.cs  | 81 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 122 insertions(+), 4 deletions(-)
-
-commit d9ccac6f0a26f05e07234afffe3f605590596be5
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Mar 13 14:28:16 2019 +0100
-
-    Added Day of Mourning for George HW Bush to Special US Holidays
-
- src/QLNet/Time/Calendars/UnitedStates.cs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-commit 3e0e699aa03d3ff526aafcb0499c1b7499e8de4f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Mar 13 14:13:35 2019 +0100
-
-    Fixed business days between logic when from and to are same date.
-
- src/QLNet/Instruments/Makeswaption.cs              |   2 +-
- .../swaption/JamshidianSwaptionEngine.cs           |   3 +-
- src/QLNet/Time/Calendar.cs                         |   5 +
- tests/QLNet.Tests/T_Calendars.cs                   | 102 ++++++++++++++++++++-
- 4 files changed, 107 insertions(+), 5 deletions(-)
-
-commit 38dd4b7e88b4bbc9dca70e9890340238df1e897f
-Merge: 21af0b1 efa4106
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Wed Mar 13 13:44:48 2019 +0100
-
-    Merge pull request #223 from tournierjc/CashCollatSwaption
-    
-    Collateralized Cash Swaption
-
-commit 21af0b17862a5295f1ccc822270dc456a2029f9e
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Mar 13 12:31:21 2019 +0100
-
-    Added a new ActualActual day counter implementation that use a schedule, with tests.
-    Updated net core version to 2.2
-
- src/QLNet/QLNet.csproj                     |   2 +-
- src/QLNet/Time/DayCounters/ActualActual.cs | 145 ++++++++++--
- tests/QLNet.Tests/T_DayCounters.cs         | 340 +++++++++++++++++++++++++++++
- 3 files changed, 471 insertions(+), 16 deletions(-)
-
-commit efa41062dbb5004142bd157d46d231e19b431686
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Wed Jan 9 15:49:34 2019 +0100
-
-    [Swaption Test] add settlement method
-
- tests/QLNet.Tests/T_Swaption.cs | 38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
-
-commit 195435ec2901ec0eab9661712c7e06192c8eef9c
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Wed Jan 9 15:49:10 2019 +0100
-
-    [Swaption Engines] add settlement method
-
- .../Pricingengines/swaption/BlackSwaptionEngine.cs | 56 +++++++++++-----------
- .../swaption/JamshidianSwaptionEngine.cs           |  5 +-
- .../Pricingengines/swaption/TreeSwaptionEngine.cs  |  5 +-
- 3 files changed, 34 insertions(+), 32 deletions(-)
-
-commit ba53c042bdc77ee4fe02d8dfb8ef8e1622d3a14d
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Wed Jan 9 15:48:31 2019 +0100
-
-    [LfmSwaptionEngine] add settlement method
-
- src/QLNet/legacy/libormarketmodels/LfmSwaptionEngine.cs | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-commit fa580ec13fff36bef2cb7e903c1f7e28e59cf355
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Wed Jan 9 15:47:53 2019 +0100
-
-    [Makewaption] add settlement method & more
-
- src/QLNet/Instruments/Makeswaption.cs | 50 ++++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 3 deletions(-)
-
-commit 1bb0a47df99fb68fdc9d22853b2a30abd5ed126b
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Wed Jan 9 15:46:50 2019 +0100
-
-    [Swaption] add settlement method
-
- src/QLNet/Instruments/Swaption.cs | 48 +++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 10 deletions(-)
-
-commit 39d4390d8c11cb2d62c280a78807cefba1c99e27
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Jan 2 18:29:26 2019 +0100
-
-    Added specific type for exceptions, initial version. Close #112.
-
- src/QLNet/Exceptions/NotTradableException.cs       | 21 ++++++++
- src/QLNet/Exceptions/QLNetExceptionEnum.cs         |  9 ++++
- src/QLNet/Exceptions/RootNotBracketException.cs    | 21 ++++++++
- src/QLNet/Instruments/CouponConversionSchedule.cs  |  2 +-
- src/QLNet/Math/Solver1d.cs                         |  3 +-
- src/QLNet/Pricingengines/Bond/BondFunctions.cs     | 63 ++++++++++++++--------
- .../Yield/FittedBondDiscountCurve.cs               |  3 +-
- src/QLNet/Utils.cs                                 | 26 +++++++--
- tests/QLNet.Tests/T_Bonds.cs                       | 58 ++++++++++++++++++++
- 9 files changed, 178 insertions(+), 28 deletions(-)
-
-commit 8733d7672f73f9ba9ce3f32ae85df4edbc0f0ab1
-Merge: bf13789 0b40d8f
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Tue Nov 27 15:43:16 2018 +0100
-
-    Merge pull request #222 from tournierjc/add_fft
-    
-    Add Fast Fourier Transform
-
-commit f2dfa64180cb8089dc46a2202dafdd2b398d00d0
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 14:39:28 2018 +0100
-
-    update from master (#15)
-    
-    * Added Binomial Tsiveriotis-Fernandes engine for convertible bonds with tests.Thanks @maittaeb for the initial version. This close #217
-    
-    * Added CatBond with MonteCarlo pricing engine and tests.
-    
-    * Added a new test for Stepped Coupon Bonds.
-    
-    * [Cost Function] Fix omitted "ref" keyword in base class
-    
-    * Delete Problem.cs
-    
-    * Rename problem.cs to Problem.cs
-
-commit 0b40d8f88baf565e22600dd1376cdd6c9a11bd9b
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 14:35:49 2018 +0100
-
-    Update QLNet.Tests old project file
-
- tests/QLNet.Tests.Old/QLNet.Tests.Old.csproj | 405 ++++++++++++++-------------
- 1 file changed, 209 insertions(+), 196 deletions(-)
-
-commit 0b9a00e1d2f621578725ac65b35d243a9de39549
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 14:35:19 2018 +0100
-
-    Update QLNet old project file
-
- src/QLNet.Old/QLNet.Old.csproj | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-commit 32a160e8dc642cc0971b11d3fc72ce7da6d5cfdc
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 14:34:55 2018 +0100
-
-    Add FFT tests
-
- tests/QLNet.Tests/T_FastFourierTransform.cs | 135 ++++++++++++++++++++++++++++
- 1 file changed, 135 insertions(+)
-
-commit 349f44a63737ff97b8c12b0874a321d6af6db1ae
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 14:34:27 2018 +0100
-
-    Add FFT
-
- src/QLNet/Math/FastFourierTransform.cs | 121 +++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
-
-commit 27a8e02c0be2188b4afb583370ea0ac4a7d4574a
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Tue Nov 27 13:57:43 2018 +0100
-
-    update from master (#14)
-    
-    * Added Binomial Tsiveriotis-Fernandes engine for convertible bonds with tests.Thanks @maittaeb for the initial version. This close #217
-    
-    * Added CatBond with MonteCarlo pricing engine and tests.
-    
-    * Added a new test for Stepped Coupon Bonds.
-    
-    * [Cost Function] Fix omitted "ref" keyword in base class
-    
-    * Delete Problem.cs
-    
-    * Rename problem.cs to Problem.cs
-
- QLNet.sln                                          |  10 +
- src/ConvertibleBonds/.editorconfig                 |  16 +
- src/ConvertibleBonds/ConvertibleBonds.cs           | 201 ++++++++
- src/ConvertibleBonds/ConvertibleBonds.csproj       |  18 +
- src/QLNet/Instruments/Bonds/CatBond.cs             | 220 ++++++++
- src/QLNet/Instruments/Bonds/CatRisk.cs             | 125 +++++
- src/QLNet/Instruments/Bonds/ConvertibleBond.cs     |  10 +-
- .../Instruments/Bonds/DiscretizedConvertible.cs    | 270 ++++++++++
- src/QLNet/Instruments/Bonds/RiskyNotional.cs       | 131 +++++
- src/QLNet/Instruments/CouponConversionSchedule.cs  |  52 ++
- src/QLNet/Math/Optimization/ArmijoLineSearch.cs    |   4 +-
- src/QLNet/Math/Optimization/CostFunction.cs        |   7 +-
- src/QLNet/Math/Optimization/GoldsteinLineSearch.cs |  37 +-
- src/QLNet/Math/Optimization/LeastSquareProblem.cs  |   7 +-
- .../Math/Optimization/LineSearchBasedMethod.cs     |   2 +-
- src/QLNet/Math/Optimization/Problem.cs             |  10 +-
- src/QLNet/Methods/lattices/BsmLattice.cs           |   4 +-
- .../lattices/TsiveriotisFernandesLattice.cs        |  97 ++++
- .../Bond/BinomialConvertibleEngine.cs              |  95 ++++
- .../Pricingengines/Bond/MonteCarloCatBondEngine.cs | 158 ++++++
- tests/QLNet.Tests/T_Bonds.cs                       | 167 +++++-
- tests/QLNet.Tests/T_CatBonds.cs                    | 564 +++++++++++++++++++++
- tests/QLNet.Tests/T_ConvertibleBond.cs             | 434 ++++++++++++++++
- tests/QLNet.Tests/Utilities.cs                     |  12 +
- 24 files changed, 2606 insertions(+), 45 deletions(-)
-
-commit bf1378905ef0d7ca5642364722268eb85d717be2
-Merge: b9b15d6 8edefee
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Mon Nov 26 12:15:25 2018 +0100
-
-    Merge pull request #221 from tournierjc/costfunctionfix
-    
-    [Cost Function] Fix omitted 'ref' keyword
-
-commit 8edefee706b6ea7c05ee613b7dbb26cbf81eb156
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Mon Nov 26 10:28:37 2018 +0100
-
-    Rename problem.cs to Problem.cs
-
- src/QLNet/Math/Optimization/{problem.cs => Problem.cs} | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
-
-commit dca281428426fbf73a53e28685d0bd79de2c97a8
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Mon Nov 26 10:28:27 2018 +0100
-
-    Delete Problem.cs
-
- src/QLNet/Math/Optimization/Problem.cs | 112 ---------------------------------
- 1 file changed, 112 deletions(-)
-
-commit 2030b0109a560bb27b19ee9a4aaec657c2aba70e
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Mon Nov 26 10:25:26 2018 +0100
-
-    [Cost Function] Fix omitted "ref" keyword in base class
-
- src/QLNet/Math/Optimization/ArmijoLineSearch.cs    |   4 +-
- src/QLNet/Math/Optimization/CostFunction.cs        |   7 +-
- src/QLNet/Math/Optimization/GoldsteinLineSearch.cs |  37 +++----
- src/QLNet/Math/Optimization/LeastSquareProblem.cs  |   7 +-
- .../Math/Optimization/LineSearchBasedMethod.cs     |   2 +-
- src/QLNet/Math/Optimization/problem.cs             | 112 +++++++++++++++++++++
- 6 files changed, 143 insertions(+), 26 deletions(-)
-
-commit b9b15d62c49fbbf208e6cb9ebeefec0fa9dbfa5b
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Sep 27 22:21:45 2018 +0200
-
-    Added a new test for Stepped Coupon Bonds.
-
- src/QLNet/Instruments/CouponConversionSchedule.cs |  52 +++++++
- tests/QLNet.Tests/T_Bonds.cs                      | 167 ++++++++++++++++++++--
- tests/QLNet.Tests/T_CatBonds.cs                   |  10 +-
- 3 files changed, 216 insertions(+), 13 deletions(-)
-
-commit 037cce653ad7f98638555f326ee6bbfa7fe59871
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Sep 21 15:56:09 2018 +0200
-
-    Added CatBond with MonteCarlo pricing engine and tests.
-
- src/QLNet/Instruments/Bonds/CatBond.cs             | 220 ++++++++
- src/QLNet/Instruments/Bonds/CatRisk.cs             | 125 +++++
- src/QLNet/Instruments/Bonds/RiskyNotional.cs       | 131 +++++
- .../Bond/BinomialConvertibleEngine.cs              |  16 +-
- .../Pricingengines/Bond/MonteCarloCatBondEngine.cs | 158 ++++++
- tests/QLNet.Tests/T_CatBonds.cs                    | 564 +++++++++++++++++++++
- tests/QLNet.Tests/T_ConvertibleBond.cs             | 336 ++++++------
- tests/QLNet.Tests/Utilities.cs                     |  12 +
- 8 files changed, 1386 insertions(+), 176 deletions(-)
-
-commit 15cca8cb202db576a6ae2b4e137634838530dff2
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Sep 20 10:11:17 2018 +0200
-
-    Added Binomial Tsiveriotis-Fernandes engine for convertible bonds with tests.Thanks @maittaeb for the initial version. This close #217
-
- QLNet.sln                                          |  10 +
- src/ConvertibleBonds/.editorconfig                 |  16 +
- src/ConvertibleBonds/ConvertibleBonds.cs           | 201 ++++++++++
- src/ConvertibleBonds/ConvertibleBonds.csproj       |  18 +
- src/QLNet/Instruments/Bonds/ConvertibleBond.cs     |  10 +-
- .../Instruments/Bonds/DiscretizedConvertible.cs    | 270 +++++++++++++
- src/QLNet/Methods/lattices/BsmLattice.cs           |   4 +-
- .../lattices/TsiveriotisFernandesLattice.cs        |  97 +++++
- .../Bond/BinomialConvertibleEngine.cs              |  95 +++++
- tests/QLNet.Tests/T_ConvertibleBond.cs             | 434 +++++++++++++++++++++
- 10 files changed, 1149 insertions(+), 6 deletions(-)
-
-commit 2913809c61ddc5645ed7f1c053a73b113fcacb5f
-Merge: 8cef399 69305f4
-Author: tournierjc <tournier.jc@gmail.com>
-Date:   Thu Sep 13 16:11:51 2018 +0200
-
-    Merge pull request #11 from amaggiulli/develop
-    
-    Update 1.8.0.0
-
-commit 69305f413b8ed737315cf764bfe3e184c5b2456d
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Sep 12 17:38:43 2018 +0200
-
-    Fix msbuild-sonarqube-runner
-
- appveyor.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit 03d4c765f085b937abffd18fa728b0b5960a6da1
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Sep 12 17:05:35 2018 +0200
-
-    Fix msbuild-sonarqube-runner
-
- appveyor.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit 11b3c7f77ba8de5013070278c590231f92b497a3
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Sep 12 16:49:13 2018 +0200
-
-    Fix msbuild-sonarqube-runner
-
- appveyor.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit 65c3db0aee49862eca0a139b45f155bb8a884e16
-Merge: 880228a c048c2f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Sep 12 15:59:43 2018 +0200
-
-    Merge branch 'develop' of https://github.com/amaggiulli/qlnet into develop
-
-commit 880228a3c2ce2d70312dc78035a2a859c0a9ffca
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Sep 12 15:59:26 2018 +0200
-
-    Fix msbuild-sonarqube-runner
-
- appveyor.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit c048c2f6f4cbf3b55d8e3c7ca6aff7cec23e669a
-Merge: 46530ae 170036b
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri Aug 24 16:06:50 2018 +0200
-
-    Merge pull request #216 from papaneko/settings_clear_observers
-    
-    Being able to clear settings Observers
-
-commit 170036be017c3e903436e94dae10dbb502f5252f
-Author: Niklas Holma <niklas.holma@crm.se>
-Date:   Thu Aug 23 16:17:35 2018 +0200
-
-    Fix problem with not being able to cut loose old yield curves from new evaluation date changes
-
- src/QLNet/Patterns/WeakEventSource.cs | 8 ++++++++
- src/QLNet/Settings.cs                 | 7 ++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
-
-commit 46530aeca4cf4d21648b3abcb31d118df7ba31d4
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Aug 23 11:41:00 2018 +0200
-
-    Added bibor index
-
- src/QLNet/Indexes/Ibor/Bibor.cs      | 136 +++++++++++++++++++++++++++++++++++
- src/QLNet/Time/Calendars/Thailand.cs | 100 +++++++++++++-------------
- 2 files changed, 186 insertions(+), 50 deletions(-)
-
-commit 1eb832d0ef14d9c3750018e9c63db48c7e18eb50
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Aug 23 11:19:40 2018 +0200
-
-    Added Thailand calendar
-
- src/QLNet/Time/Calendars/Thailand.cs | 274 +++++++++++++++++++++++++++++++++++
- 1 file changed, 274 insertions(+)
-
-commit c74a5abb9fa5f6e563847af294531086c00a67a6
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Aug 3 15:52:20 2018 +0200
-
-    Simplified testDurations
-
- format_code.bat                       |  3 ++-
- tests/QLNet.Tests/T_AmericanOption.cs |  2 +-
- tests/QLNet.Tests/T_Bonds.cs          | 16 +++++++---------
- 3 files changed, 10 insertions(+), 11 deletions(-)
-
-commit 2503f49485cfc1e036fb05b1b7f7fa2e934fc4cd
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Aug 2 09:56:29 2018 +0200
-
-    Test develop preview debug publishing.
-
- appveyor.yml | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-commit 060801ae16d049dee4d44d70a1c35932ac18090c
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Jul 25 19:28:24 2018 +0200
-
-    Updated version for previews and features [skip ci]
+    Updated development versions. [skip ci]
 
  appveyor.yml | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 7b57f231127e1821689d672dbea11d09cba58555
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Wed Jun 5 19:38:05 2019 +0200
+
+    Fixed appveyor.yml [skip ci]
+
+ appveyor.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
