@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -29,14 +29,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_LiborMarketModelProcess : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -47,7 +47,7 @@ namespace TestSuite
 
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -133,7 +133,7 @@ namespace TestSuite
          return process;
       }
 
-#if NET40 || NET45
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
@@ -182,7 +182,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
@@ -236,7 +236,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]

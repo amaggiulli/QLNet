@@ -125,7 +125,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accrualStartDate(bond.cashflows(), false, settlementDate);
       }
@@ -136,7 +137,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accrualEndDate(bond.cashflows(), false, settlementDate);
       }
@@ -147,7 +149,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.referencePeriodStart(bond.cashflows(), false, settlementDate);
       }
@@ -158,7 +161,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.referencePeriodEnd(bond.cashflows(), false, settlementDate);
       }
@@ -169,7 +173,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accrualPeriod(bond.cashflows(), false, settlementDate);
       }
@@ -180,7 +185,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accrualDays(bond.cashflows(), false, settlementDate);
       }
@@ -191,7 +197,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accruedPeriod(bond.cashflows(), false, settlementDate);
       }
@@ -202,7 +209,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accruedDays(bond.cashflows(), false, settlementDate);
       }
@@ -213,7 +221,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.accruedAmount(bond.cashflows(), false, settlementDate) * 100.0 / bond.notional(settlementDate);
       }
@@ -230,7 +239,8 @@ namespace QLNet
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
                           " settlementDate date (maturity being " +
-                          bond.maturityDate() + ")");
+                          bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double dirtyPrice = CashFlows.npv(bond.cashflows(), discountCurve, false, settlementDate) *
                              100.0 / bond.notional(settlementDate);
@@ -243,7 +253,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.bps(bond.cashflows(), discountCurve, false, settlementDate) * 100.0 / bond.notional(settlementDate);
       }
@@ -254,7 +265,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double ? dirtyPrice = cleanPrice == null ? null : cleanPrice + bond.accruedAmount(settlementDate);
          double currentNotional = bond.notional(settlementDate);
@@ -283,7 +295,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double dirtyPrice = CashFlows.npv(bond.cashflows(), yield, false, settlementDate) *
                              100.0 / bond.notional(settlementDate);
@@ -301,7 +314,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.bps(bond.cashflows(), yield, false, settlementDate) *
                 100.0 / bond.notional(settlementDate);
@@ -319,7 +333,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double dirtyPrice = cleanPrice + bond.accruedAmount(settlementDate);
          dirtyPrice /= 100.0 / bond.notional(settlementDate);
@@ -337,7 +352,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.duration(bond.cashflows(), yield, type, false, settlementDate);
       }
@@ -353,7 +369,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.convexity(bond.cashflows(), yield, false, settlementDate);
       }
@@ -369,7 +386,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.basisPointValue(bond.cashflows(), yield,
                                           false, settlementDate);
@@ -386,7 +404,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          return CashFlows.yieldValueBasisPoint(bond.cashflows(), yield,
                                                false, settlementDate);
@@ -408,7 +427,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double dirtyPrice = CashFlows.npv(bond.cashflows(), discount, zSpread, dayCounter, compounding, frequency, false, settlementDate) *
                              100.0 / bond.notional(settlementDate);
@@ -423,7 +443,8 @@ namespace QLNet
 
          Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
                           "non tradable at " + settlementDate +
-                          " (maturity being " + bond.maturityDate() + ")");
+                          " (maturity being " + bond.maturityDate() + ")",
+                          QLNetExceptionEnum.NotTradableException);
 
          double dirtyPrice = cleanPrice + bond.accruedAmount(settlementDate);
          dirtyPrice /= 100.0 / bond.notional(settlementDate);
@@ -442,7 +463,8 @@ namespace QLNet
       public static DateTime WeightedAverageLife(DateTime today, List<double> amounts, List<DateTime> schedule)
       {
          Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
-         double totAmount = amounts.Sum();
+
+         double totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
 
          if (totAmount.IsEqual(0))
             return today;
@@ -452,6 +474,8 @@ namespace QLNet
 
          for (int x = 0; x < amounts.Count; x++)
          {
+            if (schedule[x] <= today)
+               continue;
             double per = amounts[x] / totAmount;
             double years = dc.yearFraction(today, schedule[x]);
             double yearw = years * per;
@@ -459,7 +483,6 @@ namespace QLNet
          }
 
          return today.AddDays(wal * 365).Date;
-
       }
 
       #endregion

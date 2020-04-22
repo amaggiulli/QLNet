@@ -17,30 +17,38 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Actual/Actual day count
-   /*! The day count can be calculated according to:
-          - the ISDA convention, also known as "Actual/Actual (Historical)", "Actual/Actual", "Act/Act",
-             and according to ISDA also "Actual/365", "Act/365", and "A/365"
-          - the ISMA and US Treasury convention, also known as "Actual/Actual (Bond)";
-          - the AFB convention, also known as "Actual/Actual (Euro)".
-   For more details, refer to http://www.isda.org/publications/pdf/Day-Count-Fracation1999.pdf  */
+   /// <summary>
+   /// Actual/Actual day count
+   /// <remarks>
+   /// The day count can be calculated according to:
+   ///    - the ISDA convention, also known as "Actual/Actual (Historical)", "Actual/Actual", "Act/Act",
+   ///      and according to ISDA also "Actual/365", "Act/365", and "A/365"
+   ///    - the ISMA and US Treasury convention, also known as "Actual/Actual (Bond)";
+   ///    - the AFB convention, also known as "Actual/Actual (Euro)".
+   /// For more details, refer to https://www.isda.org/a/pIJEE/The-Actual-Actual-Day-Count-Fraction-1999.pdf
+   /// </remarks>
+   /// </summary>
    public class ActualActual : DayCounter
    {
       public enum Convention { ISMA, Bond, ISDA, Historical, Actual365, AFB, Euro }
 
       public ActualActual() : base(ISDA_Impl.Singleton) { }
-      public ActualActual(Convention c) : base(conventions(c)) { }
+      public ActualActual(Convention c, Schedule schedule = null) : base(conventions(c, schedule)) { }
 
-      private static DayCounter conventions(Convention c)
+      private static DayCounter conventions(Convention c, Schedule schedule)
       {
          switch (c)
          {
             case Convention.ISMA:
             case Convention.Bond:
-               return ISMA_Impl.Singleton;
+               if (schedule != null)
+                  return ISMA_Impl.Singleton(schedule);
+               else
+                  return Old_ISMA_Impl.Singleton;
             case Convention.ISDA:
             case Convention.Historical:
             case Convention.Actual365:
@@ -53,10 +61,116 @@ namespace QLNet
          }
       }
 
+
       private class ISMA_Impl : DayCounter
       {
-         public static readonly ISMA_Impl Singleton = new ISMA_Impl();
-         private ISMA_Impl() { }
+         public static ISMA_Impl Singleton(Schedule schedule)
+         {
+            return new ISMA_Impl(schedule);
+         }
+
+         private ISMA_Impl(Schedule schedule)
+         {
+            schedule_ = schedule;
+         }
+
+         public override string name() { return "Actual/Actual (ISMA)"; }
+
+         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
+
+         public override double yearFraction(Date d1, Date d2, Date d3, Date d4)
+         {
+            if (d1 == d2)
+               return 0.0;
+
+            if (d2 < d1)
+               return -yearFraction(d2, d1, d3, d4);
+
+            List<Date> couponDates =
+               getListOfPeriodDatesIncludingQuasiPayments(schedule_);
+
+            double yearFractionSum = 0.0;
+            for (int i = 0; i < couponDates.Count - 1; i++)
+            {
+               Date startReferencePeriod = couponDates[i];
+               Date endReferencePeriod = couponDates[i + 1];
+               if (d1 < endReferencePeriod && d2 > startReferencePeriod)
+               {
+                  yearFractionSum +=
+                     yearFractionWithReferenceDates(this,
+                                                    Date.Max(d1, startReferencePeriod),
+                                                    Date.Min(d2, endReferencePeriod),
+                                                    startReferencePeriod,
+                                                    endReferencePeriod);
+               }
+            }
+            return yearFractionSum;
+         }
+
+         private List<Date> getListOfPeriodDatesIncludingQuasiPayments(Schedule schedule)
+         {
+            // Process the schedule into an array of dates.
+            Date issueDate = schedule.date(0);
+            Date firstCoupon = schedule.date(1);
+            Date notionalCoupon =
+               schedule.calendar().advance(firstCoupon,
+                                           -schedule.tenor(),
+                                           schedule.businessDayConvention(),
+                                           schedule.endOfMonth());
+
+            List<Date> newDates = schedule.dates();
+            newDates[0] = notionalCoupon;
+
+            //long first coupon
+            if (notionalCoupon > issueDate)
+            {
+               Date priorNotionalCoupon =
+                  schedule.calendar().advance(notionalCoupon,
+                                              -schedule.tenor(),
+                                              schedule.businessDayConvention(),
+                                              schedule.endOfMonth());
+               newDates.Insert(0, priorNotionalCoupon);
+            }
+            return newDates;
+         }
+
+         private double yearFractionWithReferenceDates<T>(T impl,
+                                                          Date d1, Date d2, Date d3, Date d4) where T: DayCounter
+         {
+            Utils.QL_REQUIRE(d1 <= d2, () =>
+                             "This function is only correct if d1 <= d2\n" +
+                             "d1: " + d1 + " d2: " + d2);
+
+            double referenceDayCount = impl.dayCount(d3, d4);
+            //guess how many coupon periods per year:
+            int couponsPerYear;
+            if (referenceDayCount < 16)
+            {
+               couponsPerYear = 1;
+               referenceDayCount = impl.dayCount(d1, d1 + new Period(1, TimeUnit.Years));
+            }
+            else
+            {
+               couponsPerYear = findCouponsPerYear(impl, d3, d4);
+            }
+            return impl.dayCount(d1, d2) / (referenceDayCount * couponsPerYear);
+         }
+
+         private int findCouponsPerYear<T>(T impl, Date refStart, Date refEnd) where T : DayCounter
+         {
+            // This will only work for day counts longer than 15 days.
+            int months = (int)(0.5 + 12 * (double)(impl.dayCount(refStart, refEnd)) / 365.0);
+            return (int)(0.5 + 12.0 / months);
+         }
+
+         private Schedule schedule_;
+      }
+
+      private class Old_ISMA_Impl : DayCounter
+      {
+         public static readonly Old_ISMA_Impl Singleton =  new Old_ISMA_Impl();
+
+         private Old_ISMA_Impl() {}
 
          public override string name() { return "Actual/Actual (ISMA)"; }
 
@@ -132,7 +246,7 @@ namespace QLNet
                // count how many regular periods are in [refPeriodEnd, d2], then add the remaining time
                int i = 0;
                Date newRefStart, newRefEnd;
-               for (;;)
+               for (; ;)
                {
                   newRefStart = refPeriodEnd + new Period(months * i, TimeUnit.Months);
                   newRefEnd = refPeriodEnd + new Period(months * (i + 1), TimeUnit.Months);
@@ -155,6 +269,7 @@ namespace QLNet
       private class ISDA_Impl : DayCounter
       {
          public static readonly ISDA_Impl Singleton = new ISDA_Impl();
+
          private ISDA_Impl() { }
 
          public override string name() { return "Actual/Actual (ISDA)"; }
@@ -182,6 +297,7 @@ namespace QLNet
       private class AFB_Impl : DayCounter
       {
          public static readonly AFB_Impl Singleton = new AFB_Impl();
+
          private AFB_Impl() { }
 
          public override string name() { return "Actual/Actual (AFB)"; }
@@ -227,6 +343,5 @@ namespace QLNet
             return sum + Date.daysBetween(d1, newD2) / den;
          }
       }
-
    }
 }

@@ -132,4 +132,63 @@ namespace QLNet
          return -Const.M_PI / (value(-x) * x * Math.Sin(Const.M_PI * x));
       }
    }
+
+   public class CumulativeGammaDistribution
+   {
+      public CumulativeGammaDistribution(double a)
+      {
+         a_ = a;
+         Utils.QL_REQUIRE(a > 0.0, () => "invalid parameter for gamma distribution");
+      }
+
+      public double value(double x)
+      {
+         if (x <= 0.0)
+            return 0.0;
+
+         double gln = GammaFunction.logValue(a_);
+
+         if (x < (a_ + 1.0))
+         {
+            double ap = a_;
+            double del = 1.0 / a_;
+            double sum = del;
+            for (int n = 1; n <= 100; n++)
+            {
+               ap += 1.0;
+               del *= x / ap;
+               sum += del;
+               if (Math.Abs(del) < Math.Abs(sum) * 3.0e-7)
+                  return sum * Math.Exp(-x + a_ * Math.Log(x) - gln);
+            }
+         }
+         else
+         {
+            double b = x + 1.0 - a_;
+            double c = Double.MaxValue;
+            double d = 1.0 / b;
+            double h = d;
+            for (int n = 1; n <= 100; n++)
+            {
+               double an = -1.0 * n * (n - a_);
+               b += 2.0;
+               d = an * d + b;
+               if (Math.Abs(d) < Const.QL_EPSILON)
+                  d = Const.QL_EPSILON;
+               c = b + an / c;
+               if (Math.Abs(c) < Const.QL_EPSILON)
+                  c = Const.QL_EPSILON;
+               d = 1.0 / d;
+               double del = d * c;
+               h *= del;
+               if (Math.Abs(del - 1.0) < Const.QL_EPSILON)
+                  return 1.0 - h * Math.Exp(-x + a_ * Math.Log(x) - gln);
+            }
+         }
+         Utils.QL_FAIL("too few iterations");
+         return 0.0;
+      }
+
+      protected double a_;
+   }
 }

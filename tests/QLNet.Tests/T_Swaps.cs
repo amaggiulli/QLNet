@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -28,14 +28,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Swaps : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -45,7 +45,7 @@ namespace TestSuite
 #endif
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -108,7 +108,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -140,7 +140,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -171,7 +171,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -213,7 +213,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -255,7 +255,7 @@ namespace TestSuite
             }
          }
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -317,7 +317,7 @@ namespace TestSuite
                          + "    expected:   " + storedValue + "\n"
                          + "    calculated: " + swap.NPV());
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -344,7 +344,7 @@ namespace TestSuite
                          + "    calculated: " + swap.NPV() + "\n"
                          + "    expected:   " + cachedNPV);
       }
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props" Condition="Exists('..\..\packages\MSTest.TestAdapter.1.4.0\build\netcoreapp1.0\MSTest.TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestSuite</RootNamespace>
     <AssemblyName>Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <FileUpgradeFlags>
@@ -33,13 +34,15 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\net40\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -64,24 +67,19 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-net45|AnyCPU'">
     <OutputPath>bin\Release\net45\</OutputPath>
     <DefineConstants>TRACE;QL_DOTNET_FRAMEWORK</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\QLNet.Tests\T_BarrierOption.cs" />
     <Compile Include="..\QLNet.Tests\T_BasketOption.cs" />
@@ -133,6 +131,7 @@
     <Compile Include="..\QLNet.Tests\T_FdmLinearOp.cs" />
     <Compile Include="..\QLNet.Tests\T_Instruments.cs" />
     <Compile Include="..\QLNet.Tests\T_InterestRate.cs" />
+    <Compile Include="..\QLNet.Tests\T_FastFourierTransform.cs" />
     <Compile Include="..\QLNet.Tests\T_Interpolations.cs" />
     <Compile Include="..\QLNet.Tests\T_OvernightIndexedSwap.cs" />
     <Compile Include="..\QLNet.Tests\T_Piecewiseyieldcurve.cs" />
@@ -148,11 +147,11 @@
     <Compile Include="..\QLNet.Tests\T_ShortRateModels.cs" />
     <Compile Include="..\QLNet.Tests\T_Solvers.cs" />
     <Compile Include="..\QLNet.Tests\T_Stats.cs" />
-    <Compile Include="..\QLNet.Tests\T_SVI.cs" />    
+    <Compile Include="..\QLNet.Tests\T_SVI.cs" />
     <Compile Include="..\QLNet.Tests\T_Swaps.cs" />
     <Compile Include="..\QLNet.Tests\T_SwaptionVolatilityCube.cs" />
     <Compile Include="..\QLNet.Tests\T_TermStructures.cs" />
-	  <Compile Include="..\QLNet.Tests\T_Vector.cs" />
+    <Compile Include="..\QLNet.Tests\T_Vector.cs" />
     <Compile Include="..\QLNet.Tests\Utilities.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModel.cs" />
     <Compile Include="..\QLNet.Tests\T_LiborMarketModelProcess.cs" />
@@ -191,6 +190,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\QLNet.Tests\.editorconfig" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

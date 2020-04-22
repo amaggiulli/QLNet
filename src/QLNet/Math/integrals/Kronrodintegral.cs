@@ -341,7 +341,7 @@ namespace QLNet
          else
          {
             Utils.QL_REQUIRE(numberOfEvaluations() + 30 <= maxEvaluations(), () =>
-                             "maximum number of function evaluations " + "exceeded");
+                             "maximum number of function evaluations " + "exceeded", QLNetExceptionEnum.MaxNumberFuncEvalExceeded);
             return integrateRecursively(f, a, center, tolerance / 2) + integrateRecursively(f, center, b, tolerance / 2);
          }
       }

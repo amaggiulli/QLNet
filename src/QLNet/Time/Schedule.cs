@@ -115,7 +115,7 @@ namespace QLNet
          if (effectiveDate == null && firstDate == null && rule == DateGeneration.Rule.Backward)
          {
             Date evalDate = Settings.evaluationDate();
-            Utils.QL_REQUIRE(evalDate < terminationDate, () => "null effective date");
+            Utils.QL_REQUIRE(evalDate < terminationDate, () => "null effective date", QLNetExceptionEnum.NullEffectiveDate);
             int y;
             if (nextToLastDate != null)
             {
@@ -134,7 +134,7 @@ namespace QLNet
                effectiveDate = effectiveDate + new Period(tenor_.length(), TimeUnit.Months);
          }
          else
-            Utils.QL_REQUIRE(effectiveDate != null, () => "null effective date");
+            Utils.QL_REQUIRE(effectiveDate != null, () => "null effective date", QLNetExceptionEnum.NullEffectiveDate);
 
          Utils.QL_REQUIRE(effectiveDate < terminationDate, () =>
                           "effective date (" + effectiveDate +

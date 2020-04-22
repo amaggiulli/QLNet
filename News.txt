@@ -1,15 +1,38 @@
-QLNet 1.11.2
+QLNet 1.11.4
 =========================
 
-QLNet 1.11.2 is a bug-fix release for version 1.11
+QLNet 1.11.4
 A detailed list of changes is available in ChangeLog.txt.
+
+WARNING : This is the last version supporting old Visual Studio projects, with
+the upcoming version 1.12 the QLNetOld.sln will be removed and a general cleanup
+will be done. 
+
+MATH 
+
++ Added Cumulative Gamma distribution
+
+INSTRUMENTS
+
++ Fixed Weighted Average Life calculation for past dates
+
+TERMSTRUCTURES
+
++ Added Quanto Term Structure
+
+METHODS
+
++ Added Cranck-Nicholson, Method of Lines & TrBDF2 schemes 
 
 ENGINES
 
-+ Fixed a bug int FDMultiPeriodEngine.Thanks to Jakub Pstrusiński.
++ Fixed Broadie-Kaya exact scheme [Heston process]
++ Added Monte Carlo Barrier Engine
++ Fixed AdaptiveRungeKutta
++ Added Cumulative & Inverse Cumulative Chi² Distrib
 
-CASHFLOWS
+FRAMEWORK
 
-+ Fixed accrual calculation
-+ Fixed yield calculation when settlement date falls on 31st
-+ Added OAS calculation to callable bonds
++ Added more QLNet Exceptions
++ Bug fixing and refactoring.
+

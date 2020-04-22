@@ -19,7 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -28,14 +28,14 @@ using QLNet;
 
 namespace TestSuite
 {
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Pathgenerator : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET40 || NET45
+#if NET452
       [TestInitialize]
       public void testInitialize()
       {
@@ -46,7 +46,7 @@ namespace TestSuite
 
          backup = new SavedSettings();
       }
-#if NET40 || NET45
+#if NET452
       [TestCleanup]
 #endif
       public void testCleanup()
@@ -191,7 +191,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]
@@ -225,7 +225,7 @@ namespace TestSuite
                     "square-root", false, 1.70608664108, 6.024200546031);
       }
 
-#if NET40 || NET45
+#if NET452
       [TestCategory("LongRun"), TestMethod()]
 #else
       [Fact(Skip = "LongRun")]

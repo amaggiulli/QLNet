@@ -108,9 +108,7 @@ namespace QLNet
 
       public double fairLiborFraction()
       {
-         const double basisPoint = 1.0e-4;
-
-         double spreadNPV = (liborSpread_ / basisPoint) * liborLegBPS();
+         double spreadNPV = (liborSpread_ / Const.BASIS_POINT) * liborLegBPS();
          double pureLiborNPV = liborLegNPV() - spreadNPV;
          Utils.QL_REQUIRE(pureLiborNPV.IsNotEqual(0.0), () => "result not available (null libor NPV)");
          return -liborFraction_ * (bmaLegNPV() + spreadNPV) / pureLiborNPV;
@@ -118,8 +116,7 @@ namespace QLNet
 
       public double fairLiborSpread()
       {
-         const double basisPoint = 1.0e-4;
-         return liborSpread_ - NPV() / (liborLegBPS() / basisPoint);
+         return liborSpread_ - NPV() / (liborLegBPS() / Const.BASIS_POINT);
       }
 
       public double bmaLegBPS()

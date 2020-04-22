@@ -109,14 +109,43 @@ namespace QLNet
          }
       }
 
-      public static void QL_REQUIRE(bool condition, Func<string> message)
+      public static void QL_REQUIRE(bool condition, Func<string> message, QLNetExceptionEnum exEnum = QLNetExceptionEnum.ArgumentException)
       {
          if (!condition)
-            throw new ArgumentException(message.Invoke());
+            switch (exEnum)
+            {
+               case QLNetExceptionEnum.ArgumentException:
+                  throw new ArgumentException(message.Invoke());
+               case QLNetExceptionEnum.NotTradableException:
+                  throw new NotTradableException(message.Invoke());
+               case QLNetExceptionEnum.RootNotBracketException:
+                  throw new RootNotBracketException(message.Invoke());
+               case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+                  throw new MaxNumberFuncEvalExceeded(message.Invoke());
+               case QLNetExceptionEnum.InvalidPriceSignException:
+                  throw new InvalidPriceSignException(message.Invoke());
+               case QLNetExceptionEnum.NullEffectiveDate:
+                  throw new NullEffectiveDateException(message.Invoke());
+            }
       }
-      public static void QL_FAIL(string message)
+
+      public static void QL_FAIL(string message, QLNetExceptionEnum exEnum = QLNetExceptionEnum.ArgumentException)
       {
-         throw new ArgumentException(message);
+         switch (exEnum)
+         {
+            case QLNetExceptionEnum.ArgumentException:
+               throw new ArgumentException(message);
+            case QLNetExceptionEnum.NotTradableException:
+               throw new NotTradableException(message);
+            case QLNetExceptionEnum.RootNotBracketException:
+               throw new RootNotBracketException(message);
+            case QLNetExceptionEnum.MaxNumberFuncEvalExceeded:
+               throw new MaxNumberFuncEvalExceeded(message);
+            case QLNetExceptionEnum.InvalidPriceSignException:
+               throw new InvalidPriceSignException(message);
+            case QLNetExceptionEnum.NullEffectiveDate:
+               throw new NullEffectiveDateException(message);
+         }
       }
 
       public static bool is_QL_NEGATIVE_RATES()
@@ -133,7 +162,7 @@ namespace QLNet
          MethodInfo methodInfo;
          if (types == null)
             types = new Type[0];
-#if NET40 || NET45
+#if NET452
          methodInfo =  t.GetType().GetMethod(function, types);
 #else
          methodInfo = t.GetType().GetRuntimeMethod(function, types);

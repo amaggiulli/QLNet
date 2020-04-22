@@ -17,7 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET40 || NET45
+#if NET452
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 using Xunit;
@@ -44,7 +44,7 @@ namespace TestSuite
    // zero inflation tests, index, termstructure, and swaps
    //===========================================================================================
 
-#if NET40 || NET45
+#if NET452
    [TestClass()]
 #endif
    public class T_Inflation
@@ -91,7 +91,7 @@ namespace TestSuite
          return instruments;
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -188,7 +188,7 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -636,7 +636,7 @@ namespace TestSuite
       //===========================================================================================
       // year on year tests, index, termstructure, and swaps
       //===========================================================================================
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]
@@ -802,7 +802,7 @@ namespace TestSuite
       }
 
 
-#if NET40 || NET45
+#if NET452
       [TestMethod()]
 #else
       [Fact]

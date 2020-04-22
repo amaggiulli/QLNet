@@ -103,7 +103,6 @@ namespace QLNet
                           + bondTenor + " is not allowed.");
 
          maturityDate_ = startDate + bondTenor;
-         maturityDate_ = startDate + bondTenor;
          schedule_ = sinkingSchedule(startDate, bondTenor, sinkingFrequency, calendar);
          cashflows_ = new FixedRateLeg(schedule_)
          .withCouponRates(coupon, accrualDayCounter)

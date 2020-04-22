@@ -20,6 +20,7 @@
 
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace QLNet
 {
@@ -37,7 +38,7 @@ namespace QLNet
 
       //! method to overload to compute grad_f, the first derivative of
       //  the cost function with respect to x
-      public virtual void gradient(Vector grad, Vector x)
+      public virtual void gradient(ref Vector grad, Vector x)
       {
          double eps = finiteDifferenceEpsilon(), fp, fm;
          Vector xx = new Vector(x);
@@ -54,9 +55,9 @@ namespace QLNet
 
       //! method to overload to compute grad_f, the first derivative of
       //  the cost function with respect to x and also the cost function
-      public virtual double valueAndGradient(Vector grad, Vector x)
+      public virtual double valueAndGradient(ref Vector grad, Vector x)
       {
-         gradient(grad, x);
+         gradient(ref grad, x);
          return value(x);
       }
 
