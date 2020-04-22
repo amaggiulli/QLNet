@@ -1,30 +1,38 @@
-QLNet 1.11.3
+QLNet 1.11.4
 =========================
 
-QLNet 1.11.3
+QLNet 1.11.4
 A detailed list of changes is available in ChangeLog.txt.
 
-DATE-TIME
+WARNING : This is the last version supporting old Visual Studio projects, with
+the upcoming version 1.12 the QLNetOld.sln will be removed and a general cleanup
+will be done. 
 
-+ Added Thailand calendar 
-+ Updated china holidays up to 2019
+MATH 
 
-INDEXES
-
-+ Added bibor index
++ Added Cumulative Gamma distribution
 
 INSTRUMENTS
 
-+ Added CatBond with MonteCarlo pricing engine
-+ Added Collateralized Cash Swaption
++ Fixed Weighted Average Life calculation for past dates
+
+TERMSTRUCTURES
+
++ Added Quanto Term Structure
+
+METHODS
+
++ Added Cranck-Nicholson, Method of Lines & TrBDF2 schemes 
 
 ENGINES
 
-+ Added Binomial Tsiveriotis-Fernandes engine for convertible bonds
++ Fixed Broadie-Kaya exact scheme [Heston process]
++ Added Monte Carlo Barrier Engine
++ Fixed AdaptiveRungeKutta
++ Added Cumulative & Inverse Cumulative Chi² Distrib
 
 FRAMEWORK
 
-+ Making all projects dotnet standard.  (Changes minimum framework to net 4.5.1)
-+ Added QLNet Exceptions
++ Added more QLNet Exceptions
 + Bug fixing and refactoring.
 
