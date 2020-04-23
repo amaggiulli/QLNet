@@ -515,10 +515,10 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET452
-      [TestMethod()]
+#if NET452
+      [TestCategory("LongRun"), TestMethod()]
 #else
-      [Fact]
+      [Fact(Skip = "LongRun")]
 #endif
       public void testFdBarrierVsCached()
       {
@@ -573,10 +573,10 @@ namespace TestSuite
          }
       }
 
-#if NET40 || NET452
-      [TestMethod()]
+#if NET452
+      [TestCategory("LongRun"), TestMethod()]
 #else
-      [Fact]
+      [Fact(Skip = "LongRun")]
 #endif
       public void testFdVanillaVsCached()
       {
