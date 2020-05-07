@@ -29,6 +29,7 @@ namespace ConvertibleBonds
       {
          try
          {
+            DateTime timer = DateTime.Now;
             Option.Type type = Option.Type.Put;
             double underlying = 36.0;
             double spreadRate = 0.005;
@@ -189,12 +190,15 @@ namespace ConvertibleBonds
 
             Console.WriteLine("Joshi4                              {0:0.000000}   {1:0.000000}", europeanBond.NPV(), americanBond.NPV());
             Console.WriteLine("===========================================================================");
+
+            Console.WriteLine(" \nRun completed in {0}", DateTime.Now - timer);
+            Console.WriteLine();
          }
          catch (Exception e)
          {
             Console.WriteLine(e.ToString());
          }
-
+         Console.Write("Press any key to continue ...");
          Console.ReadKey();
       }
    }

@@ -41,7 +41,7 @@ namespace CallableBonds
 
       static void Main(string[] args)
       {
-         // boost::timer timer;
+         DateTime timer = DateTime.Now;
 
          Date today = new Date(16, Month.October, 2007);
          Settings.setEvaluationDate(today);
@@ -234,6 +234,12 @@ namespace CallableBonds
                                                       maxIterations));
 
          Console.WriteLine("Bloomberg price/yld (%) 77,31 / 10,65");
+
+         Console.WriteLine(" \nRun completed in {0}", DateTime.Now - timer);
+         Console.WriteLine();
+
+         Console.Write("Press any key to continue ...");
+         Console.ReadKey();
       }
    }
 }

@@ -4,15 +4,15 @@
     <VersionPrefix>1.11.4</VersionPrefix>
     <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
-    <AssemblyName>FRA</AssemblyName>
-    <PackageId>FRA</PackageId>
+    <AssemblyName>EquityOption</AssemblyName>
+    <PackageId>EquityOption</PackageId>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
   </PropertyGroup>
  
   <ItemGroup>
-    <ProjectReference Include="..\QLNet\QLNet.csproj" />
+    <PackageReference Include="QLNet" Version="1.11.4" />
   </ItemGroup>
 
 </Project>
