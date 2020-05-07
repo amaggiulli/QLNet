@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BlackDeltaCalculator
    {
       private int timeToDays(double t)
@@ -87,11 +80,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDeltaValues()
       {
          // Testing delta calculator values
@@ -177,11 +166,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDeltaPriceConsistency()
       {
          // Testing premium-adjusted delta price consistency
@@ -332,11 +317,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPutCallParity()
       {
          // Testing put-call parity for deltas
@@ -532,11 +513,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAtmCalcs()
       {
          // Testing delta-neutral ATM quotations

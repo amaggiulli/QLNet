@@ -20,35 +20,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_SwaptionVolatilityMatrix : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_SwaptionVolatilityMatrix()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
+
       public void testCleanup()
       {
          Dispose();
@@ -339,11 +326,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSwaptionVolMatrixCoherence()
       {
          // Testing swaption volatility matrix
@@ -399,11 +382,7 @@ namespace TestSuite
          vars.makeCoherenceTest(description, vol);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSwaptionVolMatrixObservability()
       {
          // Testing swaption volatility matrix observability

@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_Cms
    {
       private class CommonVars
@@ -241,11 +234,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairRate()
       {
          // Testing Hagan-pricer flat-vol equivalence for coupons
@@ -311,11 +300,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCmsSwap()
       {
          // Testing Hagan-pricer flat-vol equivalence for swaps
@@ -377,11 +362,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testParity()
       {
          // Testing put-call parity for capped-floored CMS coupons

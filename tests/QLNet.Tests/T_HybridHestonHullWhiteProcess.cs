@@ -16,36 +16,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_HybridHestonHullWhiteProcess : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_HybridHestonHullWhiteProcess()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
+
       public void testCleanup()
       {
          Dispose();
@@ -56,11 +42,7 @@ namespace TestSuite
       }
       #endregion
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBsmHullWhiteEngine()
       {
          // Testing European option pricing for a BSM process with one-factor Hull-White model
@@ -152,11 +134,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCompareBsmHWandHestonHW()
       {
          // Comparing European option pricing for a BSM process with one-factor Hull-White model
@@ -242,11 +220,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZeroBondPricing()
       {
          // Testing Monte-Carlo zero bond pricing
@@ -365,11 +339,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMcVanillaPricing()
       {
          // Testing Monte-Carlo vanilla option pricing
@@ -457,11 +427,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMcPureHestonPricing()
       {
          // Testing Monte-Carlo Heston option pricing
@@ -541,11 +507,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticHestonHullWhitePricing()
       {
          // Testing analytic Heston Hull-White option pricing
@@ -624,11 +586,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCallableEquityPricing()
       {
          // Testing the pricing of a callable equity product
@@ -741,11 +699,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDiscretizationError()
       {
          // Testing the discretization error of the Heston Hull-White process
@@ -830,11 +784,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testH1HWPricingEngine()
       {
          /*

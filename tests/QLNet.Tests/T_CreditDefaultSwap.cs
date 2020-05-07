@@ -17,27 +17,17 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_CreditDefaultSwap
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedValue()
       {
          // Testing credit-default swap against cached values...
@@ -139,11 +129,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedMarketValue()
       {
          // Testing credit-default swap against cached market values...
@@ -278,11 +264,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testImpliedHazardRate()
       {
          // Testing implied hazard-rate for credit-default swaps...
@@ -382,11 +364,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairSpread()
       {
          // Testing fair-spread calculation for credit-default swaps...
@@ -450,11 +428,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFairUpfront()
       {
          // Testing fair-upfront calculation for credit-default swaps...
@@ -538,11 +512,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIsdaEngine()
       {
          // Testing ISDA engine calculations for credit-default swaps

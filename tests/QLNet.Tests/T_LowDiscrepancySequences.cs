@@ -19,11 +19,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -133,9 +129,7 @@ namespace TestSuite
    #endregion
 
 
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_LowDiscrepancySequences
    {
       public void testSeedGenerator()
@@ -144,11 +138,7 @@ namespace TestSuite
          SeedGenerator.instance().get();
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPolynomialsModuloTwo()
       {
 
@@ -188,11 +178,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSobol()
       {
 
@@ -438,11 +424,7 @@ namespace TestSuite
           }
       }*/
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testHalton()
       {
 
@@ -845,11 +827,7 @@ namespace TestSuite
 
       #endregion
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSobolSkipping()
       {
 

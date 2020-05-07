@@ -18,35 +18,22 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_InflationCapFloorTest : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_InflationCapFloorTest()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
+
       public void testCleanup()
       {
          Dispose();
@@ -259,11 +246,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConsistency()
       {
          // Testing consistency between yoy inflation cap,floor and collar...
@@ -395,11 +378,7 @@ namespace TestSuite
       // (actually in arrears with a lag of a few months) thus the first optionlet
       // is relevant.  Hence we can do a parity test without a special definition
       // of the YoY cap/floor instrument.
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testParity()
       {
 
@@ -476,11 +455,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedValue()
       {
          // Testing Black yoy inflation cap/floor price  against cached values...

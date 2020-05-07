@@ -15,18 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_ForwardOption
    {
       void REPORT_FAILURE(string greekName,
@@ -92,11 +86,7 @@ namespace TestSuite
          public double tol;        // tolerance
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testValues()
       {
          // Testing forward option values...
@@ -160,11 +150,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPerformanceValues()
       {
          // Testing forward performance option values...
@@ -385,11 +371,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGreeks()
       {
          // Testing forward option greeks
@@ -398,11 +380,7 @@ namespace TestSuite
          testForwardGreeks(typeof(ForwardVanillaEngine));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPerformanceGreeks()
       {
          // Testing forward performance option greeks
@@ -419,11 +397,7 @@ namespace TestSuite
       }
 
       // verify than if engine
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGreeksInitialization()
       {
          // Testing forward option greeks initialization

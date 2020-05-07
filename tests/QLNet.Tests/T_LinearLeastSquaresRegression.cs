@@ -18,11 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
@@ -30,28 +26,17 @@ namespace TestSuite
    /// <summary>
    /// Summary description for LinearLeastSquaresRegression
    /// </summary>
-#if NET452
-   [TestClass]
-#endif
    public class T_LinearLeastSquaresRegression : IDisposable
    {
 
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_LinearLeastSquaresRegression()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
+
       public void testCleanup()
       {
          Dispose();
@@ -64,11 +49,7 @@ namespace TestSuite
 
       const double tolerance = 0.025;
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testRegression()
       {
          // Testing linear least-squares regression
@@ -146,11 +127,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void test1dLinearRegression()
       {
          // Testing 1d simple linear least-squares regression
@@ -196,11 +173,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMultiDimRegression()
       {
          // Testing linear least-squares regression

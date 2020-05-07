@@ -20,36 +20,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_LiborMarketModelProcess : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_LiborMarketModelProcess()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
+
       public void testCleanup()
       {
          Dispose();
@@ -133,11 +119,7 @@ namespace TestSuite
          return process;
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testInitialisation()
       {
          // Testing caplet LMM process initialisation
@@ -182,11 +164,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testLambdaBootstrapping()
       {
          // Testing caplet LMM lambda bootstrapping
@@ -236,11 +214,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testMonteCarloCapletPricing()
       {
          // Testing caplet LMM Monte-Carlo caplet pricing

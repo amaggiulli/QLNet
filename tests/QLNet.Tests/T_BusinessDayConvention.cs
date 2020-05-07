@@ -16,18 +16,11 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_BusinessDayConvention
    {
       struct SingleCase
@@ -54,11 +47,7 @@ namespace TestSuite
          public Date result;
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConventions()
       {
          // Testing business day conventions...

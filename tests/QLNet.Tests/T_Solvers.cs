@@ -18,18 +18,12 @@
 */
 
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_Solvers
    {
       class Foo : ISolver1d
@@ -63,56 +57,32 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBrent()
       {
          test(new Brent(), "Brent");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testNewton()
       {
          test(new Newton(), "Newton");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFalsePosition()
       {
          test(new FalsePosition(), "FalsePosition");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBisection()
       {
          test(new Bisection(), "Bisection");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testRidder()
       {
          test(new Ridder(), "Ridder");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSecant()
       {
          test(new Secant(), "Secant");

@@ -19,40 +19,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_Stats
    {
 
       double[] data = { 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 7.0 };
       double[] weights = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testStatistics()
       {
          check<IncrementalStatistics>("IncrementalStatistics");
          check<RiskStatistics>("Statistics");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSequenceStatistics()
       {
          //("Testing sequence statistics...");
@@ -61,11 +47,7 @@ namespace TestSuite
          checkSequence<RiskStatistics>("Statistics", 5);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConvergenceStatistics()
       {
 
@@ -75,11 +57,7 @@ namespace TestSuite
          checkConvergence<RiskStatistics>("Statistics");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIncrementalStatistics()
       {
          // Testing incremental statistics

@@ -21,19 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
 
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_SVI
    {
       double add10(double x) { return x + 10; }
@@ -45,11 +39,7 @@ namespace TestSuite
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCalibration()
       {
          double forward = 0.03;

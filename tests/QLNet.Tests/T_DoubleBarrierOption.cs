@@ -13,20 +13,14 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+
    public class T_DoubleBarrierOption
    {
       public void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,
@@ -153,11 +147,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testEuropeanHaugValues()
       {
          // Testing double barrier european options against Haug's values
@@ -347,11 +337,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVannaVolgaDoubleBarrierValues()
       {
          // Testing double-barrier FX options against Vanna/Volga values

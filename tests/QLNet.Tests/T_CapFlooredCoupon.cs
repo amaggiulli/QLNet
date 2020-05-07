@@ -15,18 +15,11 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_CapFlooredCoupon
    {
       private class CommonVars
@@ -156,11 +149,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLargeRates()
       {
          // Testing degenerate collared coupon
@@ -202,11 +191,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDecomposition()
       {
          // Testing collared coupon against its decomposition

@@ -13,20 +13,14 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
+
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
    public class T_CliquetOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -56,11 +50,7 @@ namespace TestSuite
                       + "    tolerance:        " + tolerance);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testValues()
       {
          // Testing Cliquet option values
@@ -108,22 +98,14 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGreeks()
       {
          // Testing Cliquet option greek
          testOptionGreeks(process => new AnalyticCliquetEngine(process));
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testPerformanceGreeks()
       {
          // Testing Performance option greek
