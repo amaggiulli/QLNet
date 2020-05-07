@@ -53,7 +53,7 @@ namespace QLNet
       protected ArgumentsType arguments_ = FastActivator<ArgumentsType>.Create();
       protected ResultsType results_ = FastActivator<ResultsType>.Create();
 
-      public IPricingEngineArguments getArguments()
+      public virtual IPricingEngineArguments getArguments()
       {
          return arguments_;
       }

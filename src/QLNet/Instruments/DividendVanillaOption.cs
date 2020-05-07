@@ -78,7 +78,7 @@ namespace QLNet
          Arguments arguments = args as Arguments;
          Utils.QL_REQUIRE(arguments != null, () => "wrong engine type");
 
-         arguments.cashFlow = cashFlow_;
+         arguments.cashFlow = cashFlow_ ?? new DividendSchedule();
       }
 
       //! %Arguments for dividend vanilla option calculation
@@ -89,6 +89,8 @@ namespace QLNet
          public override void validate()
          {
             base.validate();
+            if (cashFlow == null)
+               cashFlow = new DividendSchedule();
 
             Date exerciseDate = exercise.lastDate();
 

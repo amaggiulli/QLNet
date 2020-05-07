@@ -1042,6 +1042,12 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs">
       <Link>Methods\Finitedifferences\Meshers\FdmBlackScholesMesher.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmBlackScholesMultiStrikeMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmBlackScholesMultiStrikeMesher .cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmHestonVarianceMesher.cs">
+      <Link>Methods\Finitedifferences\Meshers\FdmHestonVarianceMesher.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Meshers\FdmMesher.cs">
       <Link>Methods\Finitedifferences\Meshers\FdmMesher.cs</Link>
     </Compile>
@@ -1056,6 +1062,9 @@
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs">
       <Link>Methods\Finitedifferences\Operators\FdmBlackScholesOp.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmHestonOp.cs">
+      <Link>Methods\Finitedifferences\Operators\FdmHestonOp.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Operators\FdmHullWhiteOp.cs">
       <Link>Methods\Finitedifferences\Operators\FdmHullWhiteOp.cs</Link>
@@ -1120,11 +1129,17 @@
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\Fdm1DimSolver.cs</Link>
     </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\Fdm2DimSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\Fdm2DimSolver.cs</Link>
+    </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmBackwardSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\FdmBackwardSolver.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\FdmBlackScholesSolver.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmHestonSolver.cs">
+      <Link>Methods\Finitedifferences\Solvers\FdmHestonSolver.cs</Link>
     </Compile>
     <Compile Include="..\QLNet\Methods\Finitedifferences\Solvers\FdmHullWhiteSolver.cs">
       <Link>Methods\Finitedifferences\Solvers\FdmHullWhiteSolver.cs</Link>
@@ -1364,6 +1379,12 @@
     </Compile>
     <Compile Include="..\QLNet\Pricingengines\barrier\FdBlackScholesRebateEngine.cs">
       <Link>Pricingengines\barrier\FdBlackScholesRebateEngine.cs</Link>
+    </Compile>
+	<Compile Include="..\QLNet\Pricingengines\barrier\FdHestonBarrierEngine.cs">
+      <Link>Pricingengines\barrier\FdHestonBarrierEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\QLNet\Pricingengines\barrier\FdHestonRebateEngine.cs">
+      <Link>Pricingengines\barrier\FdHestonRebateEngine.cs</Link>
     </Compile>
 	<Compile Include="..\QLNet\Pricingengines\barrier\MCBarrierEngine.cs">
       <Link>Pricingengines\barrier\MCBarrierEngine.cs</Link>
