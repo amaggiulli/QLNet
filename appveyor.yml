@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.11.4
+  version: 1.12.0
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2019
@@ -30,9 +30,9 @@
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.11.4
-    release: QLNet Version 1.11.4
-    description: QLNet 1.11.4 
+    tag: QLNet-v1.12.0
+    release: QLNet Version 1.12.0
+    description: QLNet 1.12.0 
     auth_token:
       secure: rK95hgNgZt9ybzXBJ/1W0nbqsG/aENQ22eyY2qxn5xjbi7ZEjv+5BmNjY/l1cAYH
     artifact: src\QLNet\bin\Release\netstandard12\QLNet.dll
@@ -50,7 +50,7 @@
   branches:
     only:
       - develop
-  version: 1.11.4-preview.{build}
+  version: 1.12.0-preview.{build}
   configuration: Debug
   platform: Any CPU
   image: Visual Studio 2019
@@ -100,7 +100,7 @@
   branches:
     only:
       - /feature/
-  version: 1.11.4-{build}
+  version: 1.12.0-{build}
   configuration: Debug
   platform: Any CPU
   image: Visual Studio 2019
@@ -108,7 +108,7 @@
   clone_folder: c:\projects\qlnet_feature
   init:
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.11.4-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.12.0-%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
   build:
