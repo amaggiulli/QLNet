@@ -65,6 +65,8 @@
   - cmd: "dotnet sonarscanner begin %runner_args%"
   - cmd: "dotnet build qlnet.sln /p:Configuration=Release /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
   - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
+  build_script:
+   - cmd:  dotnet build -c Release
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
