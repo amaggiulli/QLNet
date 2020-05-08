@@ -36,10 +36,6 @@ namespace TestSuite
          cleaner = new IndexHistoryCleaner();
       }
 
-      public void testCleanup()
-      {
-         Dispose();
-      }
       public void Dispose()
       {
          backup.Dispose();

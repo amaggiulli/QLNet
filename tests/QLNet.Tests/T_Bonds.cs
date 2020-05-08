@@ -38,10 +38,6 @@ namespace TestSuite
          backup = new SavedSettings();
       }
 
-      public void testCleanup()
-      {
-         Dispose();
-      }
       public void Dispose()
       {
          backup.Dispose();
@@ -1301,19 +1297,18 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(CouponType.FixedRate, 5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 119.908, 5.833, 3.504)]
-      [InlineData(CouponType.ZeroCoupon, 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 5.793, 0.00, 8.126)]
-      [InlineData(CouponType.FixedRate, 2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.530, 1.53, 2.013)]
-      [InlineData(CouponType.FixedRate, 2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 100.393, 1.56, 2.111)]
-      [InlineData(CouponType.FixedRate, 3, "2/15/2018", "2/15/2031", "3/26/2018", "", 98.422, 3.42, 3.150)]
-      [InlineData(CouponType.FixedRate, 4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 111.170, 6.11, 2.585)]
-      [InlineData(CouponType.FixedRate, 4, "2/20/2018", "10/1/2036", "3/26/2018", "", 104.676, 4.00, 3.650)]
-      [InlineData(CouponType.FixedRate, 1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 99.916, 2.83, 1.880)]
-      [InlineData(CouponType.FixedRate, 2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 99.525, 3.25, 2.984)]
-      [InlineData(CouponType.FixedRate, 5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 103.674, 20.156, 4.490)]
-      public void testAccruedInterest(CouponType couponType, double Coupon,
-                                      string AccrualDate, string MaturityDate, string SettlementDate, string FirstCouponDate,
-                                      double Price, double expectedAccruedInterest, double expectedYtm)
+      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833)]
+      [InlineData( 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
+      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53)]
+      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56)]
+      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42)]
+      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11)]
+      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00)]
+      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83)]
+      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25)]
+      [InlineData(5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 20.156)]
+      public void testAccruedInterest(double Coupon, string AccrualDate, string MaturityDate,
+         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -1709,6 +1704,7 @@ namespace TestSuite
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
          Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         var expectedOasDuration = ExpectedOASDuration;
          Settings.setEvaluationDate(settlementDate);
 
          // Divide number by 100
@@ -1890,9 +1886,9 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(CouponType.FixedRate, 1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
-      [InlineData(CouponType.FixedRate, 2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
-      public void testQLNetExceptions(CouponType couponType, double Coupon,
+      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+      public void testQLNetExceptions(double Coupon,
                                       string AccrualDate, string MaturityDate, string SettlementDate,
                                       string FirstCouponDate, double Price)
       {

@@ -261,8 +261,8 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void testAnalyticVsBlack()
-      {
+      //public void testAnalyticVsBlack()
+      //{
          // Testing analytic Heston engine against Black formula
 
          //using (SavedSettings backup = new SavedSettings())
@@ -325,7 +325,7 @@ namespace TestSuite
          //              +"\n    error:      " + error);
          //}
          //}
-      }
+      //}
 
       [Fact]
       public void testAnalyticVsCached()
@@ -475,8 +475,8 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void testFdBarrierVsCached()
-      {
+      //public void testFdBarrierVsCached()
+      //{
          //  // Testing FD barrier Heston engine against cached values
 
          //   using (SavedSettings backup = new SavedSettings())
@@ -526,11 +526,11 @@ namespace TestSuite
          //                 + "\n    error:      " + error);
          //   }
          //}
-      }
+      //}
 
       //[TestMethod()]
-      public void testFdVanillaVsCached()
-      {
+      //public void testFdVanillaVsCached()
+      //{
          //   // Testing FD vanilla Heston engine against cached values
 
          //   using (SavedSettings backup = new SavedSettings())
@@ -639,11 +639,11 @@ namespace TestSuite
          //                 + "\n    error:      " + error);
          //   }
          //}
-      }
+      //}
 
       // [TestMethod()]
-      public void testKahlJaeckelCase()
-      {
+      //public void testKahlJaeckelCase()
+      //{
          //// Testing MC and FD Heston engines for the Kahl-Jaeckel example
 
          ///* Example taken from Wilmott mag (Sept. 2005).
@@ -749,7 +749,7 @@ namespace TestSuite
          //              + "\n    error:      " + error);
          //}
          //}
-      }
+      //}
 
       struct HestonParameter
       {
@@ -868,8 +868,8 @@ namespace TestSuite
       }
 
       // [TestMethod()]
-      public void testMultipleStrikesEngine()
-      {
+      //public void testMultipleStrikesEngine()
+      //{
          //// Testing multiple-strikes FD Heston engine...");
 
          //using (SavedSettings backup = new SavedSettings())
@@ -951,7 +951,7 @@ namespace TestSuite
          //   }
          // }
          //}
-      }
+      //}
 
       [Fact]
       public void testAnalyticPiecewiseTimeDependent()

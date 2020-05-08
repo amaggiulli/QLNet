@@ -61,10 +61,5 @@ namespace TestSuite
          if (!f.isUp())
             QAssert.Fail("Observer was not notified of instrument change");
       }
-
-      public void suite()
-      {
-         testObservable();
-      }
    }
 }

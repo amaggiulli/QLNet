@@ -28,7 +28,7 @@ namespace TestSuite
 {
    public class T_AsianOptions
    {
-      public void REPORT_FAILURE(string greekName, Average.Type averageType,
+      internal void REPORT_FAILURE(string greekName, Average.Type averageType,
                                  double? runningAccumulator, int? pastFixings,
                                  List<Date> fixingDates, StrikedTypePayoff payoff,
                                  Exercise exercise, double s, double q, double r,
@@ -428,7 +428,7 @@ namespace TestSuite
 
       }
 
-      //[TestMethod()]
+      [Fact(Skip = "Incomplete")]
       public void testMCDiscreteGeometricAveragePrice()
       {
          // Testing Monte Carlo discrete geometric average-price Asians
@@ -670,7 +670,7 @@ namespace TestSuite
          }
       }
 
-      // Issue #115
+      [Fact]
       public void testIssue115()
       {
          DateTime timer = DateTime.Now;

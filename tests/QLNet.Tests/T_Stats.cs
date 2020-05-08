@@ -110,7 +110,7 @@ namespace TestSuite
 
       }
 
-      public void TEST_INC_STAT(double expr, double expected)
+      internal void TEST_INC_STAT(double expr, double expected)
       {
          if (!Utils.close_enough(expr, expected))
             QAssert.Fail(" (" + expr + ") can not be reproduced against cached result (" + expected + ")");

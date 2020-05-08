@@ -27,7 +27,7 @@ namespace TestSuite
 
    public class T_DividendOption
    {
-      public void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
+      internal void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                  double r, Date today, double v, double expected, double calculated, double error,
                                  double tolerance)
       {

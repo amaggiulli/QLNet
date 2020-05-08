@@ -92,7 +92,8 @@ namespace TestSuite
          Utils.QL_FAIL("unknown basket option type");
          return String.Empty;
       }
-      public void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise,
+
+      internal void REPORT_FAILURE_2(String greekName, BasketType basketType, PlainVanillaPayoff payoff, Exercise exercise,
                                    double s1, double s2, double q1, double q2, double r, Date today, double v1, double v2, double rho,
                                    double expected, double calculated, double error, double tolerance)
       {

@@ -34,17 +34,13 @@ namespace TestSuite
          backup = new SavedSettings();
       }
 
-      public void testCleanup()
-      {
-         Dispose();
-      }
       public void Dispose()
       {
          backup.Dispose();
       }
       #endregion
 
-      public void testSingle(StochasticProcess1D process,
+      internal void testSingle(StochasticProcess1D process,
                              string tag,
                              bool brownianBridge,
                              double expected,
@@ -107,7 +103,7 @@ namespace TestSuite
          }
       }
 
-      public void testMultiple(StochasticProcess process,
+      internal void testMultiple(StochasticProcess process,
                                string tag,
                                double[] expected,
                                double[] antithetic)
