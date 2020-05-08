@@ -112,6 +112,7 @@
   before_build:
     - cmd: dotnet restore qlnet.sln
   build:
+   - cmd:  dotnet build -c Release
     project: QLNet.sln
     verbosity: minimal
   after_build:
@@ -132,7 +133,7 @@
   nuget:
     disable_publish_on_pr: true
   test_script:
-    - cmd:  dotnet test qlnet.sln -v=normal --no-build -p:Configuration=Release   
+    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release   
   deploy:
     - provider: NuGet
       api_key:
