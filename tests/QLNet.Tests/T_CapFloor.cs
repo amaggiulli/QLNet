@@ -24,27 +24,8 @@ using QLNet;
 
 namespace TestSuite
 {
-   public class T_CapFloor : IDisposable
+   public class T_CapFloor
    {
-
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_CapFloor()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       class CommonVars
       {
          // common data

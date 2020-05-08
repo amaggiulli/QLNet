@@ -233,12 +233,10 @@ namespace TestSuite
       }
 
       #region Initialize&Cleanup
-      private SavedSettings backup;
       private IndexHistoryCleaner cleaner;
 
       public T_PiecewiseyieldCurve()
       {
-         backup = new SavedSettings();
          cleaner = new IndexHistoryCleaner();
       }
 
@@ -248,7 +246,6 @@ namespace TestSuite
       }
       public void Dispose()
       {
-         backup.Dispose();
          cleaner.Dispose();
       }
       #endregion

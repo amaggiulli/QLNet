@@ -25,26 +25,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_Swaps : IDisposable
+   public class T_Swaps
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_Swaps()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       class CommonVars
       {
          // global data

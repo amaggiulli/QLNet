@@ -55,161 +55,154 @@ namespace TestSuite
       public void testSettings()
       {
          // Testing cash-flow settings...
-         using (SavedSettings backup = new SavedSettings())
-         {
-            Date today = Date.Today;
-            Settings.setEvaluationDate(today);
+         Date today = Date.Today;
+         Settings.setEvaluationDate(today);
 
-            // cash flows at T+0, T+1, T+2
-            List<CashFlow> leg = new List<CashFlow>();
+         // cash flows at T+0, T+1, T+2
+         List<CashFlow> leg = new List<CashFlow>();
 
-            for (int i = 0; i < 3; ++i)
-               leg.Add(new SimpleCashFlow(1.0, today + i));
+         for (int i = 0; i < 3; ++i)
+            leg.Add(new SimpleCashFlow(1.0, today + i));
 
-            // case 1: don't include reference-date payments, no override at
-            //         today's date
+         // case 1: don't include reference-date payments, no override at
+         //         today's date
 
-            Settings.includeReferenceDateEvents = false;
-            Settings.includeTodaysCashFlows = null;
+         Settings.includeReferenceDateEvents = false;
+         Settings.includeTodaysCashFlows = null;
 
-            CHECK_INCLUSION(0, 0, false, leg, today);
-            CHECK_INCLUSION(0, 1, false, leg, today);
+         CHECK_INCLUSION(0, 0, false, leg, today);
+         CHECK_INCLUSION(0, 1, false, leg, today);
 
-            CHECK_INCLUSION(1, 0, true, leg, today);
-            CHECK_INCLUSION(1, 1, false, leg, today);
-            CHECK_INCLUSION(1, 2, false, leg, today);
+         CHECK_INCLUSION(1, 0, true, leg, today);
+         CHECK_INCLUSION(1, 1, false, leg, today);
+         CHECK_INCLUSION(1, 2, false, leg, today);
 
-            CHECK_INCLUSION(2, 1, true, leg, today);
-            CHECK_INCLUSION(2, 2, false, leg, today);
-            CHECK_INCLUSION(2, 3, false, leg, today);
+         CHECK_INCLUSION(2, 1, true, leg, today);
+         CHECK_INCLUSION(2, 2, false, leg, today);
+         CHECK_INCLUSION(2, 3, false, leg, today);
 
-            // case 2: same, but with explicit setting at today's date
+         // case 2: same, but with explicit setting at today's date
 
-            Settings.includeReferenceDateEvents = false;
-            Settings.includeTodaysCashFlows = false;
+         Settings.includeReferenceDateEvents = false;
+         Settings.includeTodaysCashFlows = false;
 
-            CHECK_INCLUSION(0, 0, false, leg, today);
-            CHECK_INCLUSION(0, 1, false, leg, today);
+         CHECK_INCLUSION(0, 0, false, leg, today);
+         CHECK_INCLUSION(0, 1, false, leg, today);
 
-            CHECK_INCLUSION(1, 0, true, leg, today);
-            CHECK_INCLUSION(1, 1, false, leg, today);
-            CHECK_INCLUSION(1, 2, false, leg, today);
+         CHECK_INCLUSION(1, 0, true, leg, today);
+         CHECK_INCLUSION(1, 1, false, leg, today);
+         CHECK_INCLUSION(1, 2, false, leg, today);
 
-            CHECK_INCLUSION(2, 1, true, leg, today);
-            CHECK_INCLUSION(2, 2, false, leg, today);
-            CHECK_INCLUSION(2, 3, false, leg, today);
+         CHECK_INCLUSION(2, 1, true, leg, today);
+         CHECK_INCLUSION(2, 2, false, leg, today);
+         CHECK_INCLUSION(2, 3, false, leg, today);
 
-            // case 3: do include reference-date payments, no override at
-            //         today's date
+         // case 3: do include reference-date payments, no override at
+         //         today's date
 
-            Settings.includeReferenceDateEvents = true;
-            Settings.includeTodaysCashFlows = null;
+         Settings.includeReferenceDateEvents = true;
+         Settings.includeTodaysCashFlows = null;
 
-            CHECK_INCLUSION(0, 0, true, leg, today);
-            CHECK_INCLUSION(0, 1, false, leg, today);
+         CHECK_INCLUSION(0, 0, true, leg, today);
+         CHECK_INCLUSION(0, 1, false, leg, today);
 
-            CHECK_INCLUSION(1, 0, true, leg, today);
-            CHECK_INCLUSION(1, 1, true, leg, today);
-            CHECK_INCLUSION(1, 2, false, leg, today);
+         CHECK_INCLUSION(1, 0, true, leg, today);
+         CHECK_INCLUSION(1, 1, true, leg, today);
+         CHECK_INCLUSION(1, 2, false, leg, today);
 
-            CHECK_INCLUSION(2, 1, true, leg, today);
-            CHECK_INCLUSION(2, 2, true, leg, today);
-            CHECK_INCLUSION(2, 3, false, leg, today);
+         CHECK_INCLUSION(2, 1, true, leg, today);
+         CHECK_INCLUSION(2, 2, true, leg, today);
+         CHECK_INCLUSION(2, 3, false, leg, today);
 
-            // case 4: do include reference-date payments, explicit (and same)
-            //         setting at today's date
+         // case 4: do include reference-date payments, explicit (and same)
+         //         setting at today's date
 
-            Settings.includeReferenceDateEvents = true;
-            Settings.includeTodaysCashFlows = true;
+         Settings.includeReferenceDateEvents = true;
+         Settings.includeTodaysCashFlows = true;
 
-            CHECK_INCLUSION(0, 0, true, leg, today);
-            CHECK_INCLUSION(0, 1, false, leg, today);
+         CHECK_INCLUSION(0, 0, true, leg, today);
+         CHECK_INCLUSION(0, 1, false, leg, today);
 
-            CHECK_INCLUSION(1, 0, true, leg, today);
-            CHECK_INCLUSION(1, 1, true, leg, today);
-            CHECK_INCLUSION(1, 2, false, leg, today);
+         CHECK_INCLUSION(1, 0, true, leg, today);
+         CHECK_INCLUSION(1, 1, true, leg, today);
+         CHECK_INCLUSION(1, 2, false, leg, today);
 
-            CHECK_INCLUSION(2, 1, true, leg, today);
-            CHECK_INCLUSION(2, 2, true, leg, today);
-            CHECK_INCLUSION(2, 3, false, leg, today);
+         CHECK_INCLUSION(2, 1, true, leg, today);
+         CHECK_INCLUSION(2, 2, true, leg, today);
+         CHECK_INCLUSION(2, 3, false, leg, today);
 
-            // case 5: do include reference-date payments, override at
-            //         today's date
+         // case 5: do include reference-date payments, override at
+         //         today's date
 
-            Settings.includeReferenceDateEvents = true;
-            Settings.includeTodaysCashFlows = false;
+         Settings.includeReferenceDateEvents = true;
+         Settings.includeTodaysCashFlows = false;
 
-            CHECK_INCLUSION(0, 0, false, leg, today);
-            CHECK_INCLUSION(0, 1, false, leg, today);
+         CHECK_INCLUSION(0, 0, false, leg, today);
+         CHECK_INCLUSION(0, 1, false, leg, today);
 
-            CHECK_INCLUSION(1, 0, true, leg, today);
-            CHECK_INCLUSION(1, 1, true, leg, today);
-            CHECK_INCLUSION(1, 2, false, leg, today);
+         CHECK_INCLUSION(1, 0, true, leg, today);
+         CHECK_INCLUSION(1, 1, true, leg, today);
+         CHECK_INCLUSION(1, 2, false, leg, today);
 
-            CHECK_INCLUSION(2, 1, true, leg, today);
-            CHECK_INCLUSION(2, 2, true, leg, today);
-            CHECK_INCLUSION(2, 3, false, leg, today);
+         CHECK_INCLUSION(2, 1, true, leg, today);
+         CHECK_INCLUSION(2, 2, true, leg, today);
+         CHECK_INCLUSION(2, 3, false, leg, today);
 
-            // no discount to make calculations easier
-            InterestRate no_discount = new InterestRate(0.0, new Actual365Fixed(), Compounding.Continuous, Frequency.Annual);
+         // no discount to make calculations easier
+         InterestRate no_discount = new InterestRate(0.0, new Actual365Fixed(), Compounding.Continuous, Frequency.Annual);
 
-            // no override
-            Settings.includeTodaysCashFlows = null;
+         // no override
+         Settings.includeTodaysCashFlows = null;
 
-            CHECK_NPV(false, 2.0, no_discount, leg, today);
-            CHECK_NPV(true, 3.0, no_discount, leg, today);
+         CHECK_NPV(false, 2.0, no_discount, leg, today);
+         CHECK_NPV(true, 3.0, no_discount, leg, today);
 
-            // override
-            Settings.includeTodaysCashFlows = false;
+         // override
+         Settings.includeTodaysCashFlows = false;
 
-            CHECK_NPV(false, 2.0, no_discount, leg, today);
-            CHECK_NPV(true, 2.0, no_discount, leg, today);
-         }
+         CHECK_NPV(false, 2.0, no_discount, leg, today);
+         CHECK_NPV(true, 2.0, no_discount, leg, today);
       }
 
       [Fact]
       public void testAccessViolation()
       {
          // Testing dynamic cast of coupon in Black pricer...
+         Date todaysDate = new Date(7, Month.April, 2010);
+         Date settlementDate = new Date(9, Month.April, 2010);
+         Settings.setEvaluationDate(todaysDate);
+         Calendar calendar = new TARGET();
 
-         using (SavedSettings backup = new SavedSettings())
+         Handle<YieldTermStructure> rhTermStructure = new Handle<YieldTermStructure>(
+            Utilities.flatRate(settlementDate, 0.04875825, new Actual365Fixed()));
+
+         double volatility = 0.10;
+         Handle<OptionletVolatilityStructure> vol = new Handle<OptionletVolatilityStructure>(
+            new ConstantOptionletVolatility(2,
+               calendar,
+               BusinessDayConvention.ModifiedFollowing,
+               volatility,
+               new Actual365Fixed()));
+
+         IborIndex index3m = new USDLibor(new Period(3, TimeUnit.Months), rhTermStructure);
+
+         Date payDate = new Date(20, Month.December, 2013);
+         Date startDate = new Date(20, Month.September, 2013);
+         Date endDate = new Date(20, Month.December, 2013);
+         double spread = 0.0115;
+         IborCouponPricer pricer = new BlackIborCouponPricer(vol);
+         FloatingRateCoupon coupon = new FloatingRateCoupon(payDate, 100, startDate, endDate, 2,
+            index3m, 1.0, spread / 100);
+         coupon.setPricer(pricer);
+
+         try
          {
-            Date todaysDate = new Date(7, Month.April, 2010);
-            Date settlementDate = new Date(9, Month.April, 2010);
-            Settings.setEvaluationDate(todaysDate);
-            Calendar calendar = new TARGET();
-
-            Handle<YieldTermStructure> rhTermStructure = new Handle<YieldTermStructure>(
-               Utilities.flatRate(settlementDate, 0.04875825, new Actual365Fixed()));
-
-            double volatility = 0.10;
-            Handle<OptionletVolatilityStructure> vol = new Handle<OptionletVolatilityStructure>(
-               new ConstantOptionletVolatility(2,
-                                               calendar,
-                                               BusinessDayConvention.ModifiedFollowing,
-                                               volatility,
-                                               new Actual365Fixed()));
-
-            IborIndex index3m = new USDLibor(new Period(3, TimeUnit.Months), rhTermStructure);
-
-            Date payDate = new Date(20, Month.December, 2013);
-            Date startDate = new Date(20, Month.September, 2013);
-            Date endDate = new Date(20, Month.December, 2013);
-            double spread = 0.0115;
-            IborCouponPricer pricer = new BlackIborCouponPricer(vol);
-            FloatingRateCoupon coupon = new FloatingRateCoupon(payDate, 100, startDate, endDate, 2,
-                                                               index3m, 1.0, spread / 100);
-            coupon.setPricer(pricer);
-
-            try
-            {
-               // this caused an access violation in version 1.0
-               coupon.amount();
-            }
-            catch (Exception)
-            {
-               // ok; proper exception thrown
-            }
+            // this caused an access violation in version 1.0
+            coupon.amount();
+         }
+         catch (Exception)
+         {
+            // ok; proper exception thrown
          }
       }
 

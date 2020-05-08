@@ -26,27 +26,8 @@ namespace TestSuite
    /// <summary>
    /// Summary description for LinearLeastSquaresRegression
    /// </summary>
-   public class T_LinearLeastSquaresRegression : IDisposable
+   public class T_LinearLeastSquaresRegression
    {
-
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_LinearLeastSquaresRegression()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       const double tolerance = 0.025;
 
       [Fact]

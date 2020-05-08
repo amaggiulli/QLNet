@@ -28,26 +28,8 @@ using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
-   public class T_Bonds : IDisposable
+   public class T_Bonds
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_Bonds()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       class CommonVars
       {
          // common data

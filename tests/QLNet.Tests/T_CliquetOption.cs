@@ -114,9 +114,6 @@ namespace TestSuite
 
       private void testOptionGreeks(ForwardVanillaEngine.GetOriginalEngine getEngine)
       {
-
-         SavedSettings backup = new SavedSettings();
-
          Dictionary<String, double> calculated = new Dictionary<string, double>(),
          expected = new Dictionary<string, double>(),
          tolerance = new Dictionary<string, double>();

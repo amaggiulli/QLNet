@@ -25,25 +25,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_Pathgenerator : IDisposable
+   public class T_Pathgenerator
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-      public T_Pathgenerator()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       public void testSingle(StochasticProcess1D process,
                              string tag,
                              bool brownianBridge,

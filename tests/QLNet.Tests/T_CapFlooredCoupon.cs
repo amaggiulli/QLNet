@@ -39,14 +39,10 @@ namespace TestSuite
          public int length;
          public double volatility;
 
-         // cleanup
-         SavedSettings backup;
-
          // setup
          public CommonVars()
          {
             termStructure = new RelinkableHandle<YieldTermStructure>();
-            backup = new SavedSettings();
             length = 20;           //years
             volatility = 0.20;
             nominal = 100.0;

@@ -35,13 +35,9 @@ namespace TestSuite
          public double optionTolerance;
          public double blackTolerance;
 
-         // cleanup
-         SavedSettings backup;
-
          // setup
          public CommonVars()
          {
-            backup = new SavedSettings();
             termStructure = new RelinkableHandle<YieldTermStructure>();
             fixingDays = 2;
             nominal = 1000000.0;

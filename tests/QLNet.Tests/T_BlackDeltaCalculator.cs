@@ -175,8 +175,6 @@ namespace TestSuite
          // Black Scholes calculator, since premium adjusted deltas can be calculated
          // from spot deltas by adding/subtracting the premium.
 
-         SavedSettings backup = new SavedSettings();
-
          // actually, value and tol won't be needed for testing
          EuropeanOptionData[] values =
          {
@@ -323,8 +321,6 @@ namespace TestSuite
          // Testing put-call parity for deltas
 
          // Test for put call parity between put and call deltas.
-
-         SavedSettings backup = new SavedSettings();
 
          /* The data below are from
             "Option pricing formulas", E.G. Haug, McGraw-Hill 1998
@@ -517,8 +513,6 @@ namespace TestSuite
       public void testAtmCalcs()
       {
          // Testing delta-neutral ATM quotations
-         SavedSettings backup = new SavedSettings();
-
          DeltaData[] values =
          {
             new DeltaData(Option.Type.Call, DeltaVolQuote.DeltaType.Spot,     1.421, 0.997306, 0.992266,          0.1180654,  1.608080, 0.15),

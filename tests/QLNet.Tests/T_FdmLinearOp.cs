@@ -681,8 +681,6 @@ namespace TestSuite
       [Fact]
       public void testCrankNicolsonWithDamping()
       {
-         SavedSettings backup = new SavedSettings();
-
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 

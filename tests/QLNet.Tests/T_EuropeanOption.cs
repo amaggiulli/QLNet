@@ -24,26 +24,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_EuropeanOption : IDisposable
+   public class T_EuropeanOption
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_EuropeanOption()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       enum EngineType
       {
          Analytic,
@@ -159,8 +141,6 @@ namespace TestSuite
       {
 
          //("Testing finite-difference European engines against analytic results...");
-
-         //SavedSettings backup;
 
          EngineType engine = EngineType.FiniteDifferences;
          int timeSteps = 300;

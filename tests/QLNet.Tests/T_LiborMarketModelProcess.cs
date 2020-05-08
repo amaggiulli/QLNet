@@ -26,26 +26,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_LiborMarketModelProcess : IDisposable
+   public class T_LiborMarketModelProcess
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_LiborMarketModelProcess()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       int len = 10;
 
       IborIndex makeIndex()

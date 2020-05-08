@@ -649,8 +649,6 @@ namespace TestSuite
       public void testLocalVolAndHestonComparison()
       {
          // Testing local volatility and Heston FD engines for barrier options
-         SavedSettings backup = new SavedSettings();
-
          Date settlementDate = new Date(5, Month.July, 2002);
          Settings.setEvaluationDate(settlementDate);
 
@@ -777,8 +775,6 @@ namespace TestSuite
       public void testVannaVolgaSimpleBarrierValues()
       {
          // Testing barrier FX options against Vanna/Volga values
-         SavedSettings backup = new SavedSettings();
-
          BarrierFxOptionData[] values =
          {
 

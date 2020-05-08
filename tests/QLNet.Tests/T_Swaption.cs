@@ -25,26 +25,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_Swaption : IDisposable
+   public class T_Swaption
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_Swaption()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       public Period[] exercises = new Period[] { new Period(1, TimeUnit.Years),
                 new Period(2, TimeUnit.Years),
                 new Period(3, TimeUnit.Years),

@@ -341,8 +341,6 @@ namespace TestSuite
       public void testVannaVolgaDoubleBarrierValues()
       {
          // Testing double-barrier FX options against Vanna/Volga values
-         SavedSettings backup = new SavedSettings();
-
          DoubleBarrierFxOptionData[] values =
          {
             //                             BarrierType,                    barr.1, barr.2, rebate,         type,    strike,          s,         q,         r,  t, vol25Put,    volAtm,vol25Call,      vol,    result,   tol

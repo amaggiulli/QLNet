@@ -37,14 +37,10 @@ namespace TestSuite
          public List<CmsCouponPricer> numericalPricers;
          public List<CmsCouponPricer> analyticPricers;
 
-         // cleanup
-         public SavedSettings backup;
 
          // setup
          public CommonVars()
          {
-            backup = new SavedSettings();
-
             Calendar calendar = new TARGET();
 
             Date referenceDate = calendar.adjust(Date.Today);
