@@ -111,10 +111,8 @@
     - cmd: appveyor UpdateBuild -Version "1.12.0-%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
-  build:
+  build_script:
    - cmd:  dotnet build -c Release
-    project: QLNet.sln
-    verbosity: minimal
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
   artifacts:
