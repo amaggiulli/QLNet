@@ -26,26 +26,8 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_SwaptionVolatilityMatrix : IDisposable
+   public class T_SwaptionVolatilityMatrix 
    {
-      #region Initialize&Cleanup
-      private SavedSettings backup;
-
-      public T_SwaptionVolatilityMatrix()
-      {
-         backup = new SavedSettings();
-      }
-
-      public void testCleanup()
-      {
-         Dispose();
-      }
-      public void Dispose()
-      {
-         backup.Dispose();
-      }
-      #endregion
-
       public class SwaptionTenors
       {
          public List<Period> options;
