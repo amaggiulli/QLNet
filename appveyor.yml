@@ -64,7 +64,7 @@
   - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr_new%"
   - cmd: "dotnet sonarscanner begin %runner_args%"
   build_script:
-   - cmd:  dotnet build -c Release /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
+   - cmd:  dotnet build -c Release
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
@@ -127,9 +127,4 @@
     disable_publish_on_pr: true
   test_script:
     - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release   
-  deploy:
-    - provider: NuGet
-      api_key:
-        secure: HcilScZbZnJrCk5hoEPz9MSzKQanBzsQCfulI9gFpcT7wurwxIy3hwSwPfjXmr/v
-      skip_symbols: true
-      artifact: ng
+
