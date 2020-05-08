@@ -24,8 +24,26 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_InflationCapFlooredCouponTest 
+   public class T_InflationCapFlooredCouponTest : IDisposable
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+
+      public T_InflationCapFlooredCouponTest()
+      {
+         backup = new SavedSettings();
+      }
+
+      public void testCleanup()
+      {
+         Dispose();
+      }
+      public void Dispose()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       class CommonVars
       {
          // common data

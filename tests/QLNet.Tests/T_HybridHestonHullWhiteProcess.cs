@@ -22,8 +22,26 @@ using QLNet;
 namespace TestSuite
 {
 
-   public class T_HybridHestonHullWhiteProcess
+   public class T_HybridHestonHullWhiteProcess : IDisposable
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+
+      public T_HybridHestonHullWhiteProcess()
+      {
+         backup = new SavedSettings();
+      }
+
+      public void testCleanup()
+      {
+         Dispose();
+      }
+      public void Dispose()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       [Fact]
       public void testBsmHullWhiteEngine()
       {

@@ -25,10 +25,31 @@ using QLNet;
 
 namespace TestSuite
 {
-   public class T_TermStructures
+   public class T_TermStructures : IDisposable
    {
       private double sub(double x, double y)
       { return x - y; }
+
+      #region Initialize&Cleanup
+
+      private SavedSettings backup;
+
+      public T_TermStructures()
+      {
+         backup = new SavedSettings();
+      }
+
+      public void testCleanup()
+      {
+         Dispose();
+      }
+
+      public void Dispose()
+      {
+         backup.Dispose();
+      }
+
+      #endregion Initialize&Cleanup
 
       public class CommonVars
       {

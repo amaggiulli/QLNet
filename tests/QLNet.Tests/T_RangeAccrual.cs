@@ -82,6 +82,10 @@
 //         public double rateTolerance;
 //         public double priceTolerance;
 
+
+//         // cleanup
+//         SavedSettings backup = new SavedSettings();
+
 //         public void createYieldCurve()
 //         {
 

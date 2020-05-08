@@ -24,8 +24,26 @@ using QLNet;
 
 namespace TestSuite
 {
-   public class T_Bermudanswaption
+   public class T_Bermudanswaption : IDisposable
    {
+      #region Initialize&Cleanup
+      private SavedSettings backup;
+
+      public T_Bermudanswaption()
+      {
+         backup = new SavedSettings();
+      }
+
+      public void testCleanup()
+      {
+         Dispose();
+      }
+      public void Dispose()
+      {
+         backup.Dispose();
+      }
+      #endregion
+
       public class CommonVars
       {
          // global data

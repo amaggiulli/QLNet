@@ -521,125 +521,130 @@ namespace TestSuite
       [Fact]
       public void testCashAtHitOrNothingAmericanGreeks()
       {
+
          // Testing American cash-(at-hit)-or-nothing digital option greeks
-         SortedDictionary<string, double> calculated = new SortedDictionary<string, double>();
-         SortedDictionary<string, double> expected = new SortedDictionary<string, double>();
-         SortedDictionary<string, double> tolerance = new SortedDictionary<string, double>(); // std::map<std::string,Real> calculated, expected, tolerance;
 
-         tolerance["delta"]  = 5.0e-5;
-         tolerance["gamma"]  = 5.0e-5;
-         tolerance["rho"]    = 5.0e-5;
-
-         Option.Type[] types = { QLNet.Option.Type.Call, QLNet.Option.Type.Put };
-         double[] strikes = { 50.0, 99.5, 100.5, 150.0 };
-         double cashPayoff = 100.0;
-         double[] underlyings = { 100 };
-         double[] qRates = { 0.04, 0.05, 0.06 };
-         double[] rRates = { 0.01, 0.05, 0.15 };
-         double[] vols = { 0.11, 0.5, 1.2 };
-
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
-
-         // there is no cycling on different residual times
-         Date exDate = today + 360;
-         Exercise exercise = new EuropeanExercise(exDate);
-         Exercise amExercise = new AmericanExercise(today, exDate, false);
-         Exercise[] exercises = { exercise, amExercise };
-
-         BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), qTS, rTS, volTS);
-
-         IPricingEngine euroEngine = new AnalyticEuropeanEngine(stochProcess);
-
-         IPricingEngine amEngine = new AnalyticDigitalAmericanEngine(stochProcess);
-
-         IPricingEngine[] engines = { euroEngine, amEngine };
-
-         bool knockin = true;
-         for (int j = 0; j < engines.Length; j++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            for (int i1 = 0; i1 < types.Length; i1++)
+            SortedDictionary<string, double> calculated = new SortedDictionary<string, double>();
+            SortedDictionary<string, double> expected = new SortedDictionary<string, double>();
+            SortedDictionary<string, double> tolerance = new SortedDictionary<string, double>(); // std::map<std::string,Real> calculated, expected, tolerance;
+
+            tolerance["delta"]  = 5.0e-5;
+            tolerance["gamma"]  = 5.0e-5;
+            tolerance["rho"]    = 5.0e-5;
+
+            Option.Type[] types = { QLNet.Option.Type.Call, QLNet.Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.5, 150.0 };
+            double cashPayoff = 100.0;
+            double[] underlyings = { 100 };
+            double[] qRates = { 0.04, 0.05, 0.06 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            double[] vols = { 0.11, 0.5, 1.2 };
+
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+
+            // there is no cycling on different residual times
+            Date exDate = today + 360;
+            Exercise exercise = new EuropeanExercise(exDate);
+            Exercise amExercise = new AmericanExercise(today, exDate, false);
+            Exercise[] exercises = { exercise, amExercise };
+
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), qTS, rTS, volTS);
+
+            IPricingEngine euroEngine = new AnalyticEuropeanEngine(stochProcess);
+
+            IPricingEngine amEngine = new AnalyticDigitalAmericanEngine(stochProcess);
+
+            IPricingEngine[] engines = { euroEngine, amEngine };
+
+            bool knockin = true;
+            for (int j = 0; j < engines.Length; j++)
             {
-               for (int i6 = 0; i6 < strikes.Length; i6++)
+               for (int i1 = 0; i1 < types.Length; i1++)
                {
-                  StrikedTypePayoff payoff = new CashOrNothingPayoff(types[i1], strikes[i6], cashPayoff);
-
-                  VanillaOption opt = new VanillaOption(payoff, exercises[j]);
-                  opt.setPricingEngine(engines[j]);
-
-                  for (int i2 = 0; i2 < underlyings.Length; i2++)
+                  for (int i6 = 0; i6 < strikes.Length; i6++)
                   {
-                     for (int i4 = 0; i4 < qRates.Length; i4++)
+                     StrikedTypePayoff payoff = new CashOrNothingPayoff(types[i1], strikes[i6], cashPayoff);
+
+                     VanillaOption opt = new VanillaOption(payoff, exercises[j]);
+                     opt.setPricingEngine(engines[j]);
+
+                     for (int i2 = 0; i2 < underlyings.Length; i2++)
                      {
-                        for (int i3 = 0; i3 < rRates.Length; i3++)
+                        for (int i4 = 0; i4 < qRates.Length; i4++)
                         {
-                           for (int i7 = 0; i7 < vols.Length; i7++)
+                           for (int i3 = 0; i3 < rRates.Length; i3++)
                            {
-                              // test data
-                              double u = underlyings[i2];
-                              double q = qRates[i4];
-                              double r = rRates[i3];
-                              double v = vols[i7];
-                              spot.setValue(u);
-                              qRate.setValue(q);
-                              rRate.setValue(r);
-                              vol.setValue(v);
-
-                              // theta, dividend rho and vega are not available for
-                              // digital option with american exercise. Greeks of
-                              // digital options with european payoff are tested
-                              // in the europeanoption.cpp test
-                              double value = opt.NPV();
-                              calculated["delta"]  = opt.delta();
-                              calculated["gamma"]  = opt.gamma();
-                              calculated["rho"]    = opt.rho();
-
-                              if (value > 1.0e-6)
+                              for (int i7 = 0; i7 < vols.Length; i7++)
                               {
-                                 // perturb spot and get delta and gamma
-                                 double du = u * 1.0e-4;
-                                 spot.setValue(u + du);
-                                 double value_p = opt.NPV(),
-                                    delta_p = opt.delta();
-                                 spot.setValue(u - du);
-                                 double value_m = opt.NPV(),
-                                    delta_m = opt.delta();
+                                 // test data
+                                 double u = underlyings[i2];
+                                 double q = qRates[i4];
+                                 double r = rRates[i3];
+                                 double v = vols[i7];
                                  spot.setValue(u);
-                                 expected["delta"] = (value_p - value_m) / (2 * du);
-                                 expected["gamma"] = (delta_p - delta_m) / (2 * du);
-
-                                 // perturb rates and get rho and dividend rho
-                                 double dr = r * 1.0e-4;
-                                 rRate.setValue(r + dr);
-                                 value_p = opt.NPV();
-                                 rRate.setValue(r - dr);
-                                 value_m = opt.NPV();
+                                 qRate.setValue(q);
                                  rRate.setValue(r);
-                                 expected["rho"] = (value_p - value_m) / (2 * dr);
+                                 vol.setValue(v);
 
-                                 // check
-                                 //std::map<std::string,Real>::iterator it;
-                                 foreach (var it in calculated)
+                                 // theta, dividend rho and vega are not available for
+                                 // digital option with american exercise. Greeks of
+                                 // digital options with european payoff are tested
+                                 // in the europeanoption.cpp test
+                                 double value = opt.NPV();
+                                 calculated["delta"]  = opt.delta();
+                                 calculated["gamma"]  = opt.gamma();
+                                 calculated["rho"]    = opt.rho();
+
+                                 if (value > 1.0e-6)
                                  {
-                                    string greek = it.Key;
-                                    double expct = expected  [greek],
-                                       calcl = calculated[greek],
-                                       tol   = tolerance [greek];
-                                    double error = Utilities.relativeError(expct, calcl, value);
-                                    if (error > tol)
+                                    // perturb spot and get delta and gamma
+                                    double du = u * 1.0e-4;
+                                    spot.setValue(u + du);
+                                    double value_p = opt.NPV(),
+                                           delta_p = opt.delta();
+                                    spot.setValue(u - du);
+                                    double value_m = opt.NPV(),
+                                           delta_m = opt.delta();
+                                    spot.setValue(u);
+                                    expected["delta"] = (value_p - value_m) / (2 * du);
+                                    expected["gamma"] = (delta_p - delta_m) / (2 * du);
+
+                                    // perturb rates and get rho and dividend rho
+                                    double dr = r * 1.0e-4;
+                                    rRate.setValue(r + dr);
+                                    value_p = opt.NPV();
+                                    rRate.setValue(r - dr);
+                                    value_m = opt.NPV();
+                                    rRate.setValue(r);
+                                    expected["rho"] = (value_p - value_m) / (2 * dr);
+
+                                    // check
+                                    //std::map<std::string,Real>::iterator it;
+                                    foreach (var it in calculated)
                                     {
-                                       REPORT_FAILURE(greek, payoff, exercise,
-                                          u, q, r, today, v,
-                                          expct, calcl, error, tol, knockin);
+                                       string greek = it.Key;
+                                       double expct = expected  [greek],
+                                              calcl = calculated[greek],
+                                              tol   = tolerance [greek];
+                                       double error = Utilities.relativeError(expct, calcl, value);
+                                       if (error > tol)
+                                       {
+                                          REPORT_FAILURE(greek, payoff, exercise,
+                                                         u, q, r, today, v,
+                                                         expct, calcl, error, tol, knockin);
+                                       }
                                     }
                                  }
                               }

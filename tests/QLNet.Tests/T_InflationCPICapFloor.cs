@@ -90,9 +90,14 @@ namespace TestSuite
 
          public CPICapFloorTermPriceSurface cpiCFsurfUK;
 
+         // cleanup
+
+         public SavedSettings backup;
+
          // setup
          public CommonVars()
          {
+            backup = new SavedSettings();
             nominalUK = new RelinkableHandle<YieldTermStructure>();
             cpiUK = new RelinkableHandle<ZeroInflationTermStructure>();
             hcpi = new RelinkableHandle<ZeroInflationTermStructure>();

@@ -81,11 +81,15 @@ namespace TestSuite
          public RelinkableHandle<ZeroInflationTermStructure> hcpi;
 
 
+         // cleanup
+
+         public SavedSettings backup;
          public IndexHistoryCleaner cleaner;
 
          // setup
          public CommonVars()
          {
+            backup = new SavedSettings();
             cleaner = new IndexHistoryCleaner();
             nominalUK = new RelinkableHandle<YieldTermStructure>();
             cpiUK = new RelinkableHandle<ZeroInflationTermStructure>();

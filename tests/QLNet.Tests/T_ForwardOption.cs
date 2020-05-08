@@ -375,6 +375,8 @@ namespace TestSuite
       public void testGreeks()
       {
          // Testing forward option greeks
+         SavedSettings backup = new SavedSettings();
+
          testForwardGreeks(typeof(ForwardVanillaEngine));
       }
 
@@ -382,6 +384,8 @@ namespace TestSuite
       public void testPerformanceGreeks()
       {
          // Testing forward performance option greeks
+         SavedSettings backup = new SavedSettings();
+
          testForwardGreeks(typeof(ForwardPerformanceVanillaEngine));
       }
 
@@ -398,6 +402,7 @@ namespace TestSuite
       {
          // Testing forward option greeks initialization
          DayCounter dc = new Actual360();
+         SavedSettings backup = new SavedSettings();
          Date today = Date.Today;
          Settings.setEvaluationDate(today);
 

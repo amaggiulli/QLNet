@@ -34,6 +34,9 @@
 //         public SwapIndex swapIndexBase, shortSwapIndexBase;
 //         public bool vegaWeighedSmileFit;
 
+//         // cleanup
+//         //public SavedSettings backup = new SavedSettings();
+
 //         // utilities
 //         public void makeAtmVolTest(SwaptionVolatilityCube volCube, double tolerance)
 //         {

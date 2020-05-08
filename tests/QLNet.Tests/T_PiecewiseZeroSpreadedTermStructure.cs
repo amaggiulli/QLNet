@@ -39,6 +39,9 @@ namespace TestSuite
          public Date today;
          public Date settlementDate;
 
+         // cleanup
+         public SavedSettings backup;
+
          // setup
          public CommonVars()
          {

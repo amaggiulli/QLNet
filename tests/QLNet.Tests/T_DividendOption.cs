@@ -217,90 +217,93 @@ namespace TestSuite
       public void testEuropeanValues()
       {
          // Testing dividend European option values with no dividends...
-         double tolerance = 1.0e-5;
-
-         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
-         double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-         double[] underlyings = { 100.0 };
-         double[] qRates = { 0.00, 0.10, 0.30 };
-         double[] rRates = { 0.01, 0.05, 0.15 };
-         int[] lengths = { 1, 2 };
-         double[] vols = { 0.05, 0.20, 0.70 };
-
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
-
-         for (int i = 0; i < types.Length; i++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            for (int j = 0; j < strikes.Length; j++)
+            double tolerance = 1.0e-5;
+
+            Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+            double[] underlyings = { 100.0 };
+            double[] qRates = { 0.00, 0.10, 0.30 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            int[] lengths = { 1, 2 };
+            double[] vols = { 0.05, 0.20, 0.70 };
+
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+
+            for (int i = 0; i < types.Length; i++)
             {
-               for (int k = 0; k < lengths.Length; k++)
+               for (int j = 0; j < strikes.Length; j++)
                {
-                  Date exDate = today + new Period(lengths[k], TimeUnit.Years);
-                  Exercise exercise = new EuropeanExercise(exDate);
-
-                  List<Date> dividendDates = new List<Date>();
-                  List<double> dividends = new List<double>();
-                  for (Date d = today + new Period(3, TimeUnit.Months);
-                     d < exercise.lastDate();
-                     d += new Period(6, TimeUnit.Months))
-
+                  for (int k = 0; k < lengths.Length; k++)
                   {
-                     dividendDates.Add(d);
-                     dividends.Add(0.0);
-                  }
+                     Date exDate = today + new Period(lengths[k], TimeUnit.Years);
+                     Exercise exercise = new EuropeanExercise(exDate);
 
-                  StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+                     List<Date> dividendDates = new List<Date>();
+                     List<double> dividends = new List<double>();
+                     for (Date d = today + new Period(3, TimeUnit.Months);
+                          d < exercise.lastDate();
+                          d += new Period(6, TimeUnit.Months))
 
-                  BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                     qTS, rTS, volTS);
-
-                  IPricingEngine ref_engine = new AnalyticEuropeanEngine(stochProcess);
-
-                  IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
-
-                  DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
-                  option.setPricingEngine(engine);
-
-                  VanillaOption ref_option = new VanillaOption(payoff, exercise);
-                  ref_option.setPricingEngine(ref_engine);
-
-                  for (int l = 0; l < underlyings.Length; l++)
-                  {
-                     for (int m = 0; m < qRates.Length; m++)
                      {
-                        for (int n = 0; n < rRates.Length; n++)
-                        {
-                           for (int p = 0; p < vols.Length; p++)
-                           {
-                              double u = underlyings[l];
-                              double q = qRates[m],
-                                 r = rRates[n];
-                              double v = vols[p];
-                              spot.setValue(u);
-                              qRate.setValue(q);
-                              rRate.setValue(r);
-                              vol.setValue(v);
+                        dividendDates.Add(d);
+                        dividends.Add(0.0);
+                     }
 
-                              double calculated = option.NPV();
-                              double expected = ref_option.NPV();
-                              double error = Math.Abs(calculated - expected);
-                              if (error > tolerance)
+                     StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+
+                     BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                                                            qTS, rTS, volTS);
+
+                     IPricingEngine ref_engine = new AnalyticEuropeanEngine(stochProcess);
+
+                     IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
+
+                     DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
+                     option.setPricingEngine(engine);
+
+                     VanillaOption ref_option = new VanillaOption(payoff, exercise);
+                     ref_option.setPricingEngine(ref_engine);
+
+                     for (int l = 0; l < underlyings.Length; l++)
+                     {
+                        for (int m = 0; m < qRates.Length; m++)
+                        {
+                           for (int n = 0; n < rRates.Length; n++)
+                           {
+                              for (int p = 0; p < vols.Length; p++)
                               {
-                                 REPORT_FAILURE("value start limit",
-                                    payoff, exercise,
-                                    u, q, r, today, v,
-                                    expected, calculated,
-                                    error, tolerance);
+                                 double u = underlyings[l];
+                                 double q = qRates[m],
+                                        r = rRates[n];
+                                 double v = vols[p];
+                                 spot.setValue(u);
+                                 qRate.setValue(q);
+                                 rRate.setValue(r);
+                                 vol.setValue(v);
+
+                                 double calculated = option.NPV();
+                                 double expected = ref_option.NPV();
+                                 double error = Math.Abs(calculated - expected);
+                                 if (error > tolerance)
+                                 {
+                                    REPORT_FAILURE("value start limit",
+                                                   payoff, exercise,
+                                                   u, q, r, today, v,
+                                                   expected, calculated,
+                                                   error, tolerance);
+                                 }
                               }
                            }
                         }
@@ -317,58 +320,61 @@ namespace TestSuite
       private void testEuropeanKnownValue()
       {
          // Testing dividend European option values with known value...
-         double tolerance = 1.0e-2;
-         double expected = 3.67;
-
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
-
-         Date exDate = today + new Period(6, TimeUnit.Months);
-         Exercise exercise = new EuropeanExercise(exDate);
-
-         List<Date> dividendDates = new List<Date>();
-         List<double> dividends = new List<double>();
-         dividendDates.Add(today + new Period(2, TimeUnit.Months));
-         dividends.Add(0.50);
-         dividendDates.Add(today + new Period(5, TimeUnit.Months));
-         dividends.Add(0.50);
-
-         StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 40.0);
-
-         BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-            qTS, rTS, volTS);
-
-         IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
-
-         DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
-         option.setPricingEngine(engine);
-
-         double u = 40.0;
-         double q = 0.0, r = 0.09;
-         double v = 0.30;
-         spot.setValue(u);
-         qRate.setValue(q);
-         rRate.setValue(r);
-         vol.setValue(v);
-
-         double calculated = option.NPV();
-         double error = Math.Abs(calculated - expected);
-         if (error > tolerance)
+         using (SavedSettings backup = new SavedSettings())
          {
-            REPORT_FAILURE("value start limit",
-               payoff, exercise,
-               u, q, r, today, v,
-               expected, calculated,
-               error, tolerance);
+            double tolerance = 1.0e-2;
+            double expected = 3.67;
+
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+
+            Date exDate = today + new Period(6, TimeUnit.Months);
+            Exercise exercise = new EuropeanExercise(exDate);
+
+            List<Date> dividendDates = new List<Date>();
+            List<double> dividends = new List<double>();
+            dividendDates.Add(today + new Period(2, TimeUnit.Months));
+            dividends.Add(0.50);
+            dividendDates.Add(today + new Period(5, TimeUnit.Months));
+            dividends.Add(0.50);
+
+            StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Call, 40.0);
+
+            BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                                                   qTS, rTS, volTS);
+
+            IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
+
+            DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
+            option.setPricingEngine(engine);
+
+            double u = 40.0;
+            double q = 0.0, r = 0.09;
+            double v = 0.30;
+            spot.setValue(u);
+            qRate.setValue(q);
+            rRate.setValue(r);
+            vol.setValue(v);
+
+            double calculated = option.NPV();
+            double error = Math.Abs(calculated - expected);
+            if (error > tolerance)
+            {
+               REPORT_FAILURE("value start limit",
+                              payoff, exercise,
+                              u, q, r, today, v,
+                              expected, calculated,
+                              error, tolerance);
+            }
          }
       }
 
@@ -376,85 +382,88 @@ namespace TestSuite
       public void testEuropeanStartLimit()
       {
          // Testing dividend European option with a dividend on today's date...
-         double tolerance = 1.0e-5;
-         double dividendValue = 10.0;
-
-         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
-         double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-         double[] underlyings = { 100.0 };
-         double[] qRates = { 0.00, 0.10, 0.30 };
-         double[] rRates = { 0.01, 0.05, 0.15 };
-         int[] lengths = { 1, 2 };
-         double[] vols = { 0.05, 0.20, 0.70 };
-
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
-
-         for (int i = 0; i < types.Length; i++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            for (int j = 0; j < strikes.Length; j++)
+            double tolerance = 1.0e-5;
+            double dividendValue = 10.0;
+
+            Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+            double[] underlyings = { 100.0 };
+            double[] qRates = { 0.00, 0.10, 0.30 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            int[] lengths = { 1, 2 };
+            double[] vols = { 0.05, 0.20, 0.70 };
+
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+
+            for (int i = 0; i < types.Length; i++)
             {
-               for (int k = 0; k < lengths.Length; k++)
+               for (int j = 0; j < strikes.Length; j++)
                {
-                  Date exDate = today + new Period(lengths[k], TimeUnit.Years);
-                  Exercise exercise = new EuropeanExercise(exDate);
-
-                  List<Date> dividendDates = new List<Date>();
-                  List<double> dividends = new List<double>();
-                  dividendDates.Add(today);
-                  dividends.Add(dividendValue);
-
-                  StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
-
-                  BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                     qTS, rTS, volTS);
-
-                  IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
-
-                  IPricingEngine ref_engine = new AnalyticEuropeanEngine(stochProcess);
-
-                  DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
-                  option.setPricingEngine(engine);
-
-                  VanillaOption ref_option = new VanillaOption(payoff, exercise);
-                  ref_option.setPricingEngine(ref_engine);
-
-                  for (int l = 0; l < underlyings.Length; l++)
+                  for (int k = 0; k < lengths.Length; k++)
                   {
-                     for (int m = 0; m < qRates.Length; m++)
-                     {
-                        for (int n = 0; n < rRates.Length; n++)
-                        {
-                           for (int p = 0; p < vols.Length; p++)
-                           {
-                              double u = underlyings[l];
-                              double q = qRates[m],
-                                 r = rRates[n];
-                              double v = vols[p];
-                              spot.setValue(u);
-                              qRate.setValue(q);
-                              rRate.setValue(r);
-                              vol.setValue(v);
+                     Date exDate = today + new Period(lengths[k], TimeUnit.Years);
+                     Exercise exercise = new EuropeanExercise(exDate);
 
-                              double calculated = option.NPV();
-                              spot.setValue(u - dividendValue);
-                              double expected = ref_option.NPV();
-                              double error = Math.Abs(calculated - expected);
-                              if (error > tolerance)
+                     List<Date> dividendDates = new List<Date>();
+                     List<double> dividends = new List<double>();
+                     dividendDates.Add(today);
+                     dividends.Add(dividendValue);
+
+                     StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+
+                     BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                                                            qTS, rTS, volTS);
+
+                     IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
+
+                     IPricingEngine ref_engine = new AnalyticEuropeanEngine(stochProcess);
+
+                     DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
+                     option.setPricingEngine(engine);
+
+                     VanillaOption ref_option = new VanillaOption(payoff, exercise);
+                     ref_option.setPricingEngine(ref_engine);
+
+                     for (int l = 0; l < underlyings.Length; l++)
+                     {
+                        for (int m = 0; m < qRates.Length; m++)
+                        {
+                           for (int n = 0; n < rRates.Length; n++)
+                           {
+                              for (int p = 0; p < vols.Length; p++)
                               {
-                                 REPORT_FAILURE("value", payoff, exercise,
-                                    u, q, r, today, v,
-                                    expected, calculated,
-                                    error, tolerance);
+                                 double u = underlyings[l];
+                                 double q = qRates[m],
+                                        r = rRates[n];
+                                 double v = vols[p];
+                                 spot.setValue(u);
+                                 qRate.setValue(q);
+                                 rRate.setValue(r);
+                                 vol.setValue(v);
+
+                                 double calculated = option.NPV();
+                                 spot.setValue(u - dividendValue);
+                                 double expected = ref_option.NPV();
+                                 double error = Math.Abs(calculated - expected);
+                                 if (error > tolerance)
+                                 {
+                                    REPORT_FAILURE("value", payoff, exercise,
+                                                   u, q, r, today, v,
+                                                   expected, calculated,
+                                                   error, tolerance);
+                                 }
                               }
                            }
                         }
@@ -469,143 +478,146 @@ namespace TestSuite
       public void testEuropeanGreeks()
       {
          // Testing dividend European option greeks...
-         Dictionary<string, double> calculated = new Dictionary<string, double>(),
+         using (SavedSettings backup = new SavedSettings())
+         {
+            Dictionary<string, double> calculated = new Dictionary<string, double>(),
             expected = new Dictionary<string, double>(),
             tolerance = new Dictionary<string, double>();
-         tolerance["delta"] = 1.0e-5;
-         tolerance["gamma"] = 1.0e-5;
-         tolerance["theta"] = 1.0e-5;
-         tolerance["rho"] = 1.0e-5;
-         tolerance["vega"] = 1.0e-5;
+            tolerance["delta"] = 1.0e-5;
+            tolerance["gamma"] = 1.0e-5;
+            tolerance["theta"] = 1.0e-5;
+            tolerance["rho"] = 1.0e-5;
+            tolerance["vega"] = 1.0e-5;
 
-         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
-         double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-         double[] underlyings = { 100.0 };
-         double[] qRates = { 0.00, 0.10, 0.30 };
-         double[] rRates = { 0.01, 0.05, 0.15 };
-         int[] lengths = { 1, 2 };
-         double[] vols = { 0.05, 0.20, 0.40 };
+            Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+            double[] underlyings = { 100.0 };
+            double[] qRates = { 0.00, 0.10, 0.30 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            int[] lengths = { 1, 2 };
+            double[] vols = { 0.05, 0.20, 0.40 };
 
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
 
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
 
-         for (int i = 0; i < types.Length; i++)
-         {
-            for (int j = 0; j < strikes.Length; j++)
+            for (int i = 0; i < types.Length; i++)
             {
-               for (int k = 0; k < lengths.Length; k++)
+               for (int j = 0; j < strikes.Length; j++)
                {
-                  Date exDate = today + new Period(lengths[k], TimeUnit.Years);
-                  Exercise exercise = new EuropeanExercise(exDate);
-
-                  List<Date> dividendDates = new List<Date>();
-                  List<double> dividends = new List<double>();
-                  for (Date d = today + new Period(3, TimeUnit.Months);
-                     d < exercise.lastDate();
-                     d += new Period(6, TimeUnit.Months))
+                  for (int k = 0; k < lengths.Length; k++)
                   {
-                     dividendDates.Add(d);
-                     dividends.Add(5.0);
-                  }
+                     Date exDate = today + new Period(lengths[k], TimeUnit.Years);
+                     Exercise exercise = new EuropeanExercise(exDate);
 
-                  StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
-
-                  BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                     qTS, rTS, volTS);
-
-                  IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
-
-                  DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates,
-                     dividends);
-                  option.setPricingEngine(engine);
-
-                  for (int l = 0; l < underlyings.Length; l++)
-                  {
-                     for (int m = 0; m < qRates.Length; m++)
+                     List<Date> dividendDates = new List<Date>();
+                     List<double> dividends = new List<double>();
+                     for (Date d = today + new Period(3, TimeUnit.Months);
+                          d < exercise.lastDate();
+                          d += new Period(6, TimeUnit.Months))
                      {
-                        for (int n = 0; n < rRates.Length; n++)
+                        dividendDates.Add(d);
+                        dividends.Add(5.0);
+                     }
+
+                     StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+
+                     BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                                                            qTS, rTS, volTS);
+
+                     IPricingEngine engine = new AnalyticDividendEuropeanEngine(stochProcess);
+
+                     DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates,
+                                                                              dividends);
+                     option.setPricingEngine(engine);
+
+                     for (int l = 0; l < underlyings.Length; l++)
+                     {
+                        for (int m = 0; m < qRates.Length; m++)
                         {
-                           for (int p = 0; p < vols.Length; p++)
+                           for (int n = 0; n < rRates.Length; n++)
                            {
-                              double u = underlyings[l];
-                              double q = qRates[m],
-                                 r = rRates[n];
-                              double v = vols[p];
-                              spot.setValue(u);
-                              qRate.setValue(q);
-                              rRate.setValue(r);
-                              vol.setValue(v);
-
-                              double value = option.NPV();
-                              calculated["delta"] = option.delta();
-                              calculated["gamma"] = option.gamma();
-                              calculated["theta"] = option.theta();
-                              calculated["rho"] = option.rho();
-                              calculated["vega"] = option.vega();
-
-                              if (value > spot.value() * 1.0e-5)
+                              for (int p = 0; p < vols.Length; p++)
                               {
-                                 // perturb spot and get delta and gamma
-                                 double du = u * 1.0e-4;
-                                 spot.setValue(u + du);
-                                 double value_p = option.NPV(),
-                                    delta_p = option.delta();
-                                 spot.setValue(u - du);
-                                 double value_m = option.NPV(),
-                                    delta_m = option.delta();
+                                 double u = underlyings[l];
+                                 double q = qRates[m],
+                                        r = rRates[n];
+                                 double v = vols[p];
                                  spot.setValue(u);
-                                 expected["delta"] = (value_p - value_m) / (2 * du);
-                                 expected["gamma"] = (delta_p - delta_m) / (2 * du);
-
-                                 // perturb risk-free rate and get rho
-                                 double dr = r * 1.0e-4;
-                                 rRate.setValue(r + dr);
-                                 value_p = option.NPV();
-                                 rRate.setValue(r - dr);
-                                 value_m = option.NPV();
+                                 qRate.setValue(q);
                                  rRate.setValue(r);
-                                 expected["rho"] = (value_p - value_m) / (2 * dr);
-
-                                 // perturb volatility and get vega
-                                 double dv = v * 1.0e-4;
-                                 vol.setValue(v + dv);
-                                 value_p = option.NPV();
-                                 vol.setValue(v - dv);
-                                 value_m = option.NPV();
                                  vol.setValue(v);
-                                 expected["vega"] = (value_p - value_m) / (2 * dv);
 
-                                 // perturb date and get theta
-                                 double dT = dc.yearFraction(today - 1, today + 1);
-                                 Settings.setEvaluationDate(today - 1);
-                                 value_m = option.NPV();
-                                 Settings.setEvaluationDate(today + 1);
-                                 value_p = option.NPV();
-                                 Settings.setEvaluationDate(today);
-                                 expected["theta"] = (value_p - value_m) / dT;
+                                 double value = option.NPV();
+                                 calculated["delta"] = option.delta();
+                                 calculated["gamma"] = option.gamma();
+                                 calculated["theta"] = option.theta();
+                                 calculated["rho"] = option.rho();
+                                 calculated["vega"] = option.vega();
 
-                                 // compare
-                                 foreach (KeyValuePair<string, double> it in calculated)
+                                 if (value > spot.value() * 1.0e-5)
                                  {
-                                    string greek = it.Key;
-                                    double expct = expected[greek],
-                                       calcl = calculated[greek],
-                                       tol = tolerance[greek];
-                                    double error = Utilities.relativeError(expct, calcl, u);
-                                    if (error > tol)
+                                    // perturb spot and get delta and gamma
+                                    double du = u * 1.0e-4;
+                                    spot.setValue(u + du);
+                                    double value_p = option.NPV(),
+                                           delta_p = option.delta();
+                                    spot.setValue(u - du);
+                                    double value_m = option.NPV(),
+                                           delta_m = option.delta();
+                                    spot.setValue(u);
+                                    expected["delta"] = (value_p - value_m) / (2 * du);
+                                    expected["gamma"] = (delta_p - delta_m) / (2 * du);
+
+                                    // perturb risk-free rate and get rho
+                                    double dr = r * 1.0e-4;
+                                    rRate.setValue(r + dr);
+                                    value_p = option.NPV();
+                                    rRate.setValue(r - dr);
+                                    value_m = option.NPV();
+                                    rRate.setValue(r);
+                                    expected["rho"] = (value_p - value_m) / (2 * dr);
+
+                                    // perturb volatility and get vega
+                                    double dv = v * 1.0e-4;
+                                    vol.setValue(v + dv);
+                                    value_p = option.NPV();
+                                    vol.setValue(v - dv);
+                                    value_m = option.NPV();
+                                    vol.setValue(v);
+                                    expected["vega"] = (value_p - value_m) / (2 * dv);
+
+                                    // perturb date and get theta
+                                    double dT = dc.yearFraction(today - 1, today + 1);
+                                    Settings.setEvaluationDate(today - 1);
+                                    value_m = option.NPV();
+                                    Settings.setEvaluationDate(today + 1);
+                                    value_p = option.NPV();
+                                    Settings.setEvaluationDate(today);
+                                    expected["theta"] = (value_p - value_m) / dT;
+
+                                    // compare
+                                    foreach (KeyValuePair<string, double> it in calculated)
                                     {
-                                       REPORT_FAILURE(greek, payoff, exercise,
-                                          u, q, r, today, v,
-                                          expct, calcl, error, tol);
+                                       string greek = it.Key;
+                                       double expct = expected[greek],
+                                              calcl = calculated[greek],
+                                              tol = tolerance[greek];
+                                       double error = Utilities.relativeError(expct, calcl, u);
+                                       if (error > tol)
+                                       {
+                                          REPORT_FAILURE(greek, payoff, exercise,
+                                                         u, q, r, today, v,
+                                                         expct, calcl, error, tol);
+                                       }
                                     }
                                  }
                               }
@@ -622,94 +634,97 @@ namespace TestSuite
       public void testFdEuropeanValues()
       {
          // Testing finite-difference dividend European option values...
-         double tolerance = 1.0e-2;
-         int gridPoints = 300;
-         int timeSteps = 40;
-
-         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
-         double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
-         double[] underlyings = { 100.0 };
-         // Rate qRates[] = { 0.00, 0.10, 0.30 };
-         // Analytic dividend may not be handling q correctly
-         double[] qRates = { 0.00 };
-         double[] rRates = { 0.01, 0.05, 0.15 };
-         int[] lengths = { 1, 2 };
-         double[] vols = { 0.05, 0.20, 0.40 };
-
-         DayCounter dc = new Actual360();
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-
-         SimpleQuote spot = new SimpleQuote(0.0);
-         SimpleQuote qRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
-         SimpleQuote rRate = new SimpleQuote(0.0);
-         Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
-         SimpleQuote vol = new SimpleQuote(0.0);
-         Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
-
-         for (int i = 0; i < types.Length; i++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            for (int j = 0; j < strikes.Length; j++)
+            double tolerance = 1.0e-2;
+            int gridPoints = 300;
+            int timeSteps = 40;
+
+            Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+            double[] strikes = { 50.0, 99.5, 100.0, 100.5, 150.0 };
+            double[] underlyings = { 100.0 };
+            // Rate qRates[] = { 0.00, 0.10, 0.30 };
+            // Analytic dividend may not be handling q correctly
+            double[] qRates = { 0.00 };
+            double[] rRates = { 0.01, 0.05, 0.15 };
+            int[] lengths = { 1, 2 };
+            double[] vols = { 0.05, 0.20, 0.40 };
+
+            DayCounter dc = new Actual360();
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+
+            SimpleQuote spot = new SimpleQuote(0.0);
+            SimpleQuote qRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(qRate, dc));
+            SimpleQuote rRate = new SimpleQuote(0.0);
+            Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(rRate, dc));
+            SimpleQuote vol = new SimpleQuote(0.0);
+            Handle<BlackVolTermStructure> volTS = new Handle<BlackVolTermStructure>(Utilities.flatVol(vol, dc));
+
+            for (int i = 0; i < types.Length; i++)
             {
-               for (int k = 0; k < lengths.Length; k++)
+               for (int j = 0; j < strikes.Length; j++)
                {
-                  Date exDate = today + new Period(lengths[k], TimeUnit.Years);
-                  Exercise exercise = new EuropeanExercise(exDate);
-
-                  List<Date> dividendDates = new List<Date>();
-                  List<double> dividends = new List<double>();
-                  for (Date d = today + new Period(3, TimeUnit.Months);
-                     d < exercise.lastDate();
-                     d += new Period(6, TimeUnit.Months))
+                  for (int k = 0; k < lengths.Length; k++)
                   {
-                     dividendDates.Add(d);
-                     dividends.Add(5.0);
-                  }
+                     Date exDate = today + new Period(lengths[k], TimeUnit.Years);
+                     Exercise exercise = new EuropeanExercise(exDate);
 
-                  StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
-
-                  BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
-                     qTS, rTS, volTS);
-
-                  IPricingEngine engine = new FDDividendEuropeanEngine(stochProcess, timeSteps, gridPoints);
-
-                  IPricingEngine ref_engine = new AnalyticDividendEuropeanEngine(stochProcess);
-
-                  DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
-                  option.setPricingEngine(engine);
-
-                  DividendVanillaOption ref_option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
-                  ref_option.setPricingEngine(ref_engine);
-
-                  for (int l = 0; l < underlyings.Length; l++)
-                  {
-                     for (int m = 0; m < qRates.Length; m++)
+                     List<Date> dividendDates = new List<Date>();
+                     List<double> dividends = new List<double>();
+                     for (Date d = today + new Period(3, TimeUnit.Months);
+                          d < exercise.lastDate();
+                          d += new Period(6, TimeUnit.Months))
                      {
-                        for (int n = 0; n < rRates.Length; n++)
+                        dividendDates.Add(d);
+                        dividends.Add(5.0);
+                     }
+
+                     StrikedTypePayoff payoff = new PlainVanillaPayoff(types[i], strikes[j]);
+
+                     BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
+                                                                                            qTS, rTS, volTS);
+
+                     IPricingEngine engine = new FDDividendEuropeanEngine(stochProcess, timeSteps, gridPoints);
+
+                     IPricingEngine ref_engine = new AnalyticDividendEuropeanEngine(stochProcess);
+
+                     DividendVanillaOption option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
+                     option.setPricingEngine(engine);
+
+                     DividendVanillaOption ref_option = new DividendVanillaOption(payoff, exercise, dividendDates, dividends);
+                     ref_option.setPricingEngine(ref_engine);
+
+                     for (int l = 0; l < underlyings.Length; l++)
+                     {
+                        for (int m = 0; m < qRates.Length; m++)
                         {
-                           for (int p = 0; p < vols.Length; p++)
+                           for (int n = 0; n < rRates.Length; n++)
                            {
-                              double u = underlyings[l];
-                              double q = qRates[m],
-                                 r = rRates[n];
-                              double v = vols[p];
-                              spot.setValue(u);
-                              qRate.setValue(q);
-                              rRate.setValue(r);
-                              vol.setValue(v);
-                              // FLOATING_POINT_EXCEPTION
-                              double calculated = option.NPV();
-                              if (calculated > spot.value() * 1.0e-5)
+                              for (int p = 0; p < vols.Length; p++)
                               {
-                                 double expected = ref_option.NPV();
-                                 double error = Math.Abs(calculated - expected);
-                                 if (error > tolerance)
+                                 double u = underlyings[l];
+                                 double q = qRates[m],
+                                        r = rRates[n];
+                                 double v = vols[p];
+                                 spot.setValue(u);
+                                 qRate.setValue(q);
+                                 rRate.setValue(r);
+                                 vol.setValue(v);
+                                 // FLOATING_POINT_EXCEPTION
+                                 double calculated = option.NPV();
+                                 if (calculated > spot.value() * 1.0e-5)
                                  {
-                                    REPORT_FAILURE("value", payoff, exercise,
-                                       u, q, r, today, v,
-                                       expected, calculated,
-                                       error, tolerance);
+                                    double expected = ref_option.NPV();
+                                    double error = Math.Abs(calculated - expected);
+                                    if (error > tolerance)
+                                    {
+                                       REPORT_FAILURE("value", payoff, exercise,
+                                                      u, q, r, today, v,
+                                                      expected, calculated,
+                                                      error, tolerance);
+                                    }
                                  }
                               }
                            }
@@ -725,15 +740,18 @@ namespace TestSuite
       public void testFdEuropeanGreeks()
       {
          // Testing finite-differences dividend European option greeks...
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-         int[] lengths = { 1, 2 };
-
-         for (int i = 0; i < lengths.Length; i++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            Date exDate = today + new Period(lengths[i], TimeUnit.Years);
-            Exercise exercise = new EuropeanExercise(exDate);
-            testFdGreeks<FDDividendEuropeanEngine>(today, exercise);
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+            int[] lengths = { 1, 2 };
+
+            for (int i = 0; i < lengths.Length; i++)
+            {
+               Date exDate = today + new Period(lengths[i], TimeUnit.Years);
+               Exercise exercise = new EuropeanExercise(exDate);
+               testFdGreeks<FDDividendEuropeanEngine>(today, exercise);
+            }
          }
       }
 
@@ -741,15 +759,18 @@ namespace TestSuite
       public void testFdAmericanGreeks()
       {
          // Testing finite-differences dividend American option greeks...
-         Date today = Date.Today;
-         Settings.setEvaluationDate(today);
-         int[] lengths = { 1, 2 };
-
-         for (int i = 0; i < lengths.Length; i++)
+         using (SavedSettings backup = new SavedSettings())
          {
-            Date exDate = today + new Period(lengths[i], TimeUnit.Years);
-            Exercise exercise = new AmericanExercise(exDate);
-            testFdGreeks<FDDividendAmericanEngine>(today, exercise);
+            Date today = Date.Today;
+            Settings.setEvaluationDate(today);
+            int[] lengths = { 1, 2 };
+
+            for (int i = 0; i < lengths.Length; i++)
+            {
+               Date exDate = today + new Period(lengths[i], TimeUnit.Years);
+               Exercise exercise = new AmericanExercise(exDate);
+               testFdGreeks<FDDividendAmericanEngine>(today, exercise);
+            }
          }
       }
 
@@ -757,26 +778,32 @@ namespace TestSuite
       public void testFdEuropeanDegenerate()
       {
          // Testing degenerate finite-differences dividend European option...
-         Date today = new Date(27, Month.February, 2005);
-         Settings.setEvaluationDate(today);
-         Date exDate = new Date(13, Month.April, 2005);
+         using (SavedSettings backup = new SavedSettings())
+         {
+            Date today = new Date(27, Month.February, 2005);
+            Settings.setEvaluationDate(today);
+            Date exDate = new Date(13, Month.April, 2005);
 
-         Exercise exercise = new EuropeanExercise(exDate);
+            Exercise exercise = new EuropeanExercise(exDate);
 
-         testFdDegenerate<FDDividendEuropeanEngine>(today, exercise);
+            testFdDegenerate<FDDividendEuropeanEngine>(today, exercise);
+         }
       }
 
       [Fact]
       public void testFdAmericanDegenerate()
       {
          // Testing degenerate finite-differences dividend American option...
-         Date today = new Date(27, Month.February, 2005);
-         Settings.setEvaluationDate(today);
-         Date exDate = new Date(13, Month.April, 2005);
+         using (SavedSettings backup = new SavedSettings())
+         {
+            Date today = new Date(27, Month.February, 2005);
+            Settings.setEvaluationDate(today);
+            Date exDate = new Date(13, Month.April, 2005);
 
-         Exercise exercise = new AmericanExercise(exDate);
+            Exercise exercise = new AmericanExercise(exDate);
 
-         testFdDegenerate<FDDividendAmericanEngine>(today, exercise);
+            testFdDegenerate<FDDividendAmericanEngine>(today, exercise);
+         }
       }
    }
 }
