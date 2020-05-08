@@ -1,5 +1,5 @@
 {
   "diagnosticMessages": false,
-  "methodDisplay": "Method",
+  "methodDisplay": "method",
   "parallelizeTestCollections": false
 }

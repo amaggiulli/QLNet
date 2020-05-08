@@ -24,6 +24,7 @@ using System.Globalization;
 using Xunit;
 using QLNet;
 using Calendar = QLNet.Calendar;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace TestSuite
 {
@@ -1708,6 +1709,7 @@ namespace TestSuite
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
          Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Settings.setEvaluationDate(settlementDate);
 
          // Divide number by 100
          Coupon = Coupon / 100;
