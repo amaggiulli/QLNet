@@ -65,8 +65,6 @@
   - cmd: "dotnet sonarscanner begin %runner_args%"
   build_script:
    - cmd:  dotnet build -c Release
-  after_build:
-    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
     - path: .\*.nupkg
       name: ng
@@ -82,6 +80,7 @@
     - cmd: dotnet test -v=normal --no-build -p:Configuration=Release
   after_test:
     - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token_new%\""  
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   deploy:
     - provider: NuGet
       api_key:
@@ -108,11 +107,6 @@
     - cmd: dotnet restore qlnet.sln
   build_script:
    - cmd:  dotnet build -c Release
-  after_build:
-    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./	
-  artifacts:
-    - path: .\*.nupkg
-      name: ng
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
