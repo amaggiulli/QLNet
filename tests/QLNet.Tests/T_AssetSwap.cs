@@ -23,6 +23,7 @@ using QLNet;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_AssetSwap : IDisposable
    {
       #region Initialize&Cleanup

@@ -24,6 +24,7 @@ using QLNet;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_BasketOption
    {
       public enum BasketType { MinBasket, MaxBasket, SpreadBasket }

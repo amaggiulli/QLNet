@@ -21,7 +21,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_DigitalOption
    {
       struct DigitalOptionData

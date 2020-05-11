@@ -29,7 +29,7 @@ namespace TestSuite
       public double downsideVariance() { return ((IncrementalStatistics)impl_).downsideVariance(); }
    }
 
-
+   [Collection("QLNet CI Tests")]
    public class T_RiskStats
    {
       [Fact]

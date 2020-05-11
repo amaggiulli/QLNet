@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_CashFlows
    {
       private void CHECK_INCLUSION(int n, int days, bool expected, List<CashFlow> leg, Date today)

@@ -20,7 +20,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_DigitalCoupon
    {
       private class CommonVars

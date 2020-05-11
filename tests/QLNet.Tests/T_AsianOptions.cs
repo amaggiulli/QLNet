@@ -26,6 +26,7 @@ using QLNet;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_AsianOptions
    {
       internal void REPORT_FAILURE(string greekName, Average.Type averageType,

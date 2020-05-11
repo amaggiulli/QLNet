@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_DividendOption
    {
       internal void REPORT_FAILURE(string greekName, StrikedTypePayoff payoff, Exercise exercise, double s, double q,

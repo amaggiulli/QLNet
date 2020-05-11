@@ -128,8 +128,7 @@ namespace TestSuite
 
    #endregion
 
-
-
+   [Collection("QLNet CI Tests")]
    public class T_LowDiscrepancySequences
    {
       internal void testSeedGenerator()

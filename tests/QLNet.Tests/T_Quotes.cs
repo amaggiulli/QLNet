@@ -23,8 +23,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
-
+   [Collection("QLNet CI Tests")]
    public class T_Quotes
    {
       double add10(double x) { return x + 10; }

@@ -24,7 +24,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_Optimizers
    {
       List<CostFunction> costFunctions_ = new List<CostFunction>();

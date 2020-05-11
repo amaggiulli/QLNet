@@ -21,6 +21,7 @@ using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_CatBonds
    {
       static KeyValuePair<Date, double>[] data =

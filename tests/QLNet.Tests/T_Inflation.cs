@@ -40,7 +40,7 @@ namespace TestSuite
    // zero inflation tests, index, termstructure, and swaps
    //===========================================================================================
 
-
+   [Collection("QLNet CI Tests")]
    public class T_Inflation
    {
       private YieldTermStructure nominalTermStructure()

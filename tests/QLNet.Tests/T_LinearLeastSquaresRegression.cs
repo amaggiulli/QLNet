@@ -26,6 +26,7 @@ namespace TestSuite
    /// <summary>
    /// Summary description for LinearLeastSquaresRegression
    /// </summary>
+   [Collection("QLNet CI Tests")]
    public class T_LinearLeastSquaresRegression : IDisposable
    {
 

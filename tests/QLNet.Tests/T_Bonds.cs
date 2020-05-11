@@ -28,6 +28,7 @@ using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_Bonds : IDisposable
    {
       #region Initialize&Cleanup

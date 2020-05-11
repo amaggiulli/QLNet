@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_DoubleBarrierOption
    {
       internal void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,

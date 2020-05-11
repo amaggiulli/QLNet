@@ -25,6 +25,7 @@ using QLNet;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_TermStructures : IDisposable
    {
       private double sub(double x, double y)

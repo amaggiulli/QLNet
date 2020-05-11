@@ -21,7 +21,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_DoubleBinaryOption
    {
       private void REPORT_FAILURE(string greekName,

@@ -22,7 +22,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_Operators
    {
       public const double average = 0.0, sigma = 1.0;

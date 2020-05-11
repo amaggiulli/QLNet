@@ -25,7 +25,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_SwaptionVolatilityMatrix : IDisposable
    {
       #region Initialize&Cleanup

@@ -27,8 +27,7 @@ using Xunit.Abstractions;
 
 namespace TestSuite
 {
-
-
+   [Collection("QLNet CI Tests")]
    public class T_SVI
    {
       private readonly ITestOutputHelper testOutputHelper;

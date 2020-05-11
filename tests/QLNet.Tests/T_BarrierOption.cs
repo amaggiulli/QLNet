@@ -21,6 +21,7 @@ using QLNet;
 
 namespace TestSuite
 {
+   [Collection("QLNet CI Tests")]
    public class T_BarrierOption
    {
       private void REPORT_FAILURE(string greekName,

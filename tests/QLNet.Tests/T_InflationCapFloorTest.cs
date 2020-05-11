@@ -23,7 +23,7 @@ using QLNet;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_InflationCapFloorTest : IDisposable
    {
       #region Initialize&Cleanup

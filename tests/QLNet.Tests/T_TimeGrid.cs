@@ -22,7 +22,7 @@ using System.Diagnostics;
 
 namespace TestSuite
 {
-
+   [Collection("QLNet CI Tests")]
    public class T_TimeGrid
    {
       [Fact]
