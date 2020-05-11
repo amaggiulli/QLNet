@@ -35,7 +35,7 @@ namespace QLNet
                    the bond after creating the helper, so that the
                    helper has sole ownership of it.
       */
-      public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice = true)
+      public BondHelper(Handle<Quote> price, Bond bond, Bond.Price.Type priceType = Bond.Price.Type.Clean)
          : base(price)
       {
          bond_ = bond;
@@ -48,9 +48,14 @@ namespace QLNet
          termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
          bond_.setPricingEngine(new DiscountingBondEngine(termStructureHandle_));
 
-         useCleanPrice_ = useCleanPrice;
+         priceType_ = priceType;
       }
 
+      [Obsolete("Use the constructor that passes the Bond.Price.Type parameter.")]
+      public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice)
+         : this(price, bond, useCleanPrice ? Bond.Price.Type.Clean : Bond.Price.Type.Dirty)
+      {
+      }
 
       // RateHelper interface
       public override void setTermStructure(YieldTermStructure t)
@@ -65,18 +70,31 @@ namespace QLNet
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");
          // we didn't register as observers - force calculation
          bond_.recalculate();
-         if (useCleanPrice_)
-            return bond_.cleanPrice();
-         else
-            return bond_.dirtyPrice();
+
+         switch (priceType_)
+         {
+            case Bond.Price.Type.Clean:
+               return bond_.cleanPrice();
+
+            case Bond.Price.Type.Dirty:
+               return bond_.dirtyPrice();
+
+            default:
+               Utils.QL_FAIL("This price type isn't implemented.");
+               return default;
+         }
       }
 
       public Bond bond() { return bond_; }
-      public bool useCleanPrice() { return useCleanPrice_; }
+
+      public Bond.Price.Type priceType() { return priceType_; }
+
+      [Obsolete("Use priceType()")]
+      public bool useCleanPrice() { return priceType_ == Bond.Price.Type.Clean; }
 
       protected Bond bond_;
       protected RelinkableHandle<YieldTermStructure> termStructureHandle_;
-      protected bool useCleanPrice_;
+      protected Bond.Price.Type priceType_;
 
    }
 
@@ -97,14 +115,36 @@ namespace QLNet
                                  Calendar exCouponCalendar = null,
                                  BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                                  bool exCouponEndOfMonth = false,
-                                 bool useCleanPrice = true)
+                                 Bond.Price.Type priceType = Bond.Price.Type.Clean)
          : base(price, new FixedRateBond(settlementDays, faceAmount, schedule,
                                          coupons, dayCounter, paymentConvention,
                                          redemption, issueDate, paymentCalendar,
                                          exCouponPeriod, exCouponCalendar,
-                                         exCouponConvention, exCouponEndOfMonth), useCleanPrice)
+                                         exCouponConvention, exCouponEndOfMonth), priceType)
       {
          fixedRateBond_ = bond_ as FixedRateBond;
+      }
+
+      [Obsolete("Use the constructor that passes the Bond.Price.Type parameter.")]
+      public FixedRateBondHelper(Handle<Quote> price,
+                                 int settlementDays,
+                                 double faceAmount,
+                                 Schedule schedule,
+                                 List<double> coupons,
+                                 DayCounter dayCounter,
+                                 BusinessDayConvention paymentConvention,
+                                 double redemption,
+                                 Date issueDate,
+                                 Calendar paymentCalendar,
+                                 Period exCouponPeriod,
+                                 Calendar exCouponCalendar,
+                                 BusinessDayConvention exCouponConvention,
+                                 bool exCouponEndOfMonth,
+                                 bool useCleanPrice)
+         : this(price, settlementDays, faceAmount, schedule, coupons, dayCounter, paymentConvention,
+                redemption, issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar, exCouponConvention,
+                exCouponEndOfMonth, useCleanPrice ? Bond.Price.Type.Clean : Bond.Price.Type.Dirty)
+      {
       }
 
       public FixedRateBond fixedRateBond() { return fixedRateBond_; }
@@ -132,14 +172,41 @@ namespace QLNet
                            Calendar exCouponCalendar = null,
                            BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
                            bool exCouponEndOfMonth = false,
-                           bool useCleanPrice = true)
+                           Bond.Price.Type priceType = Bond.Price.Type.Clean)
          : base(price, new CPIBond(settlementDays, faceAmount, growthOnly, baseCPI,
                                    observationLag, cpiIndex, observationInterpolation,
                                    schedule, fixedRate, accrualDayCounter, paymentConvention,
                                    issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar,
-                                   exCouponConvention, exCouponEndOfMonth), useCleanPrice)
+                                   exCouponConvention, exCouponEndOfMonth), priceType)
       {
          cpiBond_ = bond_ as CPIBond;
+      }
+
+      [Obsolete("Use the constructor that passes the Bond.Price.Type parameter.")]
+      public CPIBondHelper(Handle<Quote> price,
+                           int settlementDays,
+                           double faceAmount,
+                           bool growthOnly,
+                           double baseCPI,
+                           Period observationLag,
+                           ZeroInflationIndex cpiIndex,
+                           InterpolationType observationInterpolation,
+                           Schedule schedule,
+                           List<double> fixedRate,
+                           DayCounter accrualDayCounter,
+                           BusinessDayConvention paymentConvention,
+                           Date issueDate,
+                           Calendar paymentCalendar,
+                           Period exCouponPeriod,
+                           Calendar exCouponCalendar,
+                           BusinessDayConvention exCouponConvention,
+                           bool exCouponEndOfMonth,
+                           bool useCleanPrice)
+         : this(price, settlementDays, faceAmount, growthOnly, baseCPI, observationLag, cpiIndex,
+                observationInterpolation, schedule, fixedRate, accrualDayCounter, paymentConvention,
+                issueDate, paymentCalendar, exCouponPeriod, exCouponCalendar, exCouponConvention,
+                exCouponEndOfMonth, useCleanPrice ? Bond.Price.Type.Clean : Bond.Price.Type.Dirty)
+      {
       }
 
       public CPIBond cpiBond() { return cpiBond_; }

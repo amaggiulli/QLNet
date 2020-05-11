@@ -84,7 +84,7 @@ namespace CallableBonds
          {
             Calendar nullCalendar = new NullCalendar();
 
-            Callability.Price myPrice = new Callability.Price(callPrice, Callability.Price.Type.Clean);
+            Bond.Price myPrice = new Bond.Price(callPrice, Bond.Price.Type.Clean);
             callSchedule.Add(new Callability(myPrice, Callability.Type.Call, callDate));
             callDate = nullCalendar.advance(callDate, 3, TimeUnit.Months);
          }

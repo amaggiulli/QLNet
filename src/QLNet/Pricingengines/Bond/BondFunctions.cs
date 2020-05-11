@@ -325,8 +325,9 @@ namespace QLNet
       {
          return bps(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
-      public static double yield(Bond bond, double cleanPrice, DayCounter dayCounter, Compounding compounding, Frequency frequency,
-                                 Date settlementDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
+      public static double yield(Bond bond, double price, DayCounter dayCounter, Compounding compounding, Frequency frequency,
+                                 Date settlementDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05,
+                                 Bond.Price.Type priceType = Bond.Price.Type.Clean)
       {
          if (settlementDate == null)
             settlementDate = bond.settlementDate();
@@ -336,7 +337,11 @@ namespace QLNet
                           " (maturity being " + bond.maturityDate() + ")",
                           QLNetExceptionEnum.NotTradableException);
 
-         double dirtyPrice = cleanPrice + bond.accruedAmount(settlementDate);
+         double dirtyPrice = price;
+
+         if (priceType == Bond.Price.Type.Clean)
+            dirtyPrice += bond.accruedAmount(settlementDate);
+
          dirtyPrice /= 100.0 / bond.notional(settlementDate);
 
          return CashFlows.yield(bond.cashflows(), dirtyPrice,

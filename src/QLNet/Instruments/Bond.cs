@@ -33,6 +33,35 @@ namespace QLNet
        - price/yield calculations are checked against known good values. */
    public class Bond : Instrument
    {
+      //! Bond price information
+      public class Price
+      {
+         public enum Type { Dirty, Clean }
+
+         public Price()
+         {
+            amount_ = null;
+         }
+
+         public Price(double amount, Type type)
+         {
+            amount_ = amount;
+            type_ = type;
+         }
+
+         public double amount()
+         {
+            Utils.QL_REQUIRE(amount_ != null, () => "no amount given");
+            return amount_.Value;
+         }
+
+         public Type type() { return type_; }
+
+         private double? amount_;
+         private Type type_;
+      }
+
+
       #region Constructors
       //! constructor for amortizing or non-amortizing bonds.
       /*! Redemptions and maturity are calculated from the coupon
@@ -229,14 +258,16 @@ namespace QLNet
 
       //! theoretical bond yield
       /*! The default bond settlement and theoretical price are used for calculation. */
-      public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100)
+      public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100, double guess = 0.05, Bond.Price.Type priceType = Price.Type.Clean)
       {
          double currentNotional = notional(settlementDate());
 
          if (currentNotional.IsEqual(0.0))
             return 0.0;
 
-         return BondFunctions.yield(this, cleanPrice(), dc, comp, freq, settlementDate(), accuracy, maxEvaluations);
+         var price = priceType == Price.Type.Clean ? cleanPrice() : dirtyPrice();
+
+         return BondFunctions.yield(this, price, dc, comp, freq, settlementDate(), accuracy, maxEvaluations, guess, priceType);
       }
 
       //! clean price given a yield and settlement date
@@ -259,14 +290,14 @@ namespace QLNet
 
       //! yield given a (clean) price and settlement date
       /*! The default bond settlement is used if no date is given. */
-      public double yield(double cleanPrice, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
-                          double accuracy = 1.0e-8, int maxEvaluations = 100)
+      public double yield(double price, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
+                          double accuracy = 1.0e-8, int maxEvaluations = 100, double guess = 0.05, Bond.Price.Type priceType = Price.Type.Clean)
       {
          double currentNotional = notional(settlement);
          if (currentNotional.IsEqual(0.0))
             return 0.0;
 
-         return BondFunctions.yield(this, cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
+         return BondFunctions.yield(this, price, dc, comp, freq, settlement, accuracy, maxEvaluations, guess, priceType);
       }
 
       //! accrued amount at a given date

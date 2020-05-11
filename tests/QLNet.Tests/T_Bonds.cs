@@ -134,7 +134,7 @@ namespace TestSuite
 
                            double price = bond.cleanPrice(yields[m], bondDayCount, compounding[n], frequencies[l]);
                            double calculated = bond.yield(price, bondDayCount, compounding[n], frequencies[l], null,
-                                                          tolerance, maxEvaluations);
+                                                          tolerance, maxEvaluations, 0.05, Bond.Price.Type.Clean);
 
                            if (Math.Abs(yields[m] - calculated) > tolerance)
                            {
@@ -151,7 +151,30 @@ namespace TestSuite
                                               + (compounding[n] == Compounding.Compounded ? "compounded" : "continuous") + "\n"
                                               + "    price:  " + price + "\n"
                                               + "    yield': " + calculated + "\n"
-                                              + "    price': " + price2);
+                                              + "    clean price': " + price2);
+                              }
+                           }
+
+                           price = bond.dirtyPrice(yields[m], bondDayCount, compounding[n], frequencies[l]);
+                           calculated = bond.yield(price, bondDayCount, compounding[n], frequencies[l], null,
+                                                   tolerance, maxEvaluations, 0.05, Bond.Price.Type.Dirty);
+
+                           if (Math.Abs(yields[m] - calculated) > tolerance)
+                           {
+                              // the difference might not matter
+                              double price2 = bond.dirtyPrice(calculated, bondDayCount, compounding[n], frequencies[l]);
+                              if (Math.Abs(price - price2) / price > tolerance)
+                              {
+                                 QAssert.Fail("yield recalculation failed:\n"
+                                              + "    issue:     " + issue + "\n"
+                                              + "    maturity:  " + maturity + "\n"
+                                              + "    coupon:    " + coupons[k] + "\n"
+                                              + "    frequency: " + frequencies[l] + "\n\n"
+                                              + "    yield:  " + yields[m] + " "
+                                              + (compounding[n] == Compounding.Compounded ? "compounded" : "continuous") + "\n"
+                                              + "    price:  " + price + "\n"
+                                              + "    yield': " + calculated + "\n"
+                                              + "    dirty price': " + price2);
                               }
                            }
                         }
