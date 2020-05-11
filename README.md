@@ -11,7 +11,8 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=alert_status)](https://sonarcloud.io/dashboard?id=QLNet)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=bugs)](https://sonarcloud.io/dashboard?id=QLNet)[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=QLNet)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=bugs)](https://sonarcloud.io/dashboard?id=QLNet)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=code_smells)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=ncloc)](https://sonarcloud.io/dashboard?id=QLNet)
