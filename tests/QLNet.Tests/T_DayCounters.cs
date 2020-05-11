@@ -19,18 +19,12 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_DayCounters
    {
       public struct SingleCase
@@ -97,11 +91,7 @@ namespace TestSuite
                 / (referenceDayCount * couponsPerYear);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActual()
       {
          SingleCase[] testCases =
@@ -204,11 +194,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithSemiannualSchedule()
       {
 
@@ -319,11 +305,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithAnnualSchedule()
       {
          // Testing actual/actual with schedule "for undefined annual reference periods
@@ -364,11 +346,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testActualActualWithSchedule()
       {
 
@@ -507,11 +485,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSimple()
       {
          Period[] p = { new Period(3, TimeUnit.Months), new Period(6, TimeUnit.Months), new Period(1, TimeUnit.Years) };
@@ -539,11 +513,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testOne()
       {
          Period[] p = { new Period(3, TimeUnit.Months), new Period(6, TimeUnit.Months), new Period(1, TimeUnit.Years) };
@@ -571,11 +541,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBusiness252()
       {
          // Testing business/252 day counter
@@ -647,11 +613,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testThirty360_BondBasis()
       {
          // Testing thirty/360 day counter (Bond Basis)
@@ -717,11 +679,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testThirty360_EurobondBasis()
       {
          // Testing thirty/360 day counter (Eurobond Basis)
@@ -794,11 +752,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testIntraday()
       {
          // Testing intraday behavior of day counter

@@ -15,18 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_HestonModel
    {
       struct CalibrationMarketData
@@ -118,11 +112,7 @@ namespace TestSuite
          return marketData;
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBlackCalibration()
       {
          // Testing Heston model calibration using a flat volatility surface
@@ -218,11 +208,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDAXCalibration()
       {
          // Testing Heston model calibration using DAX volatility data
@@ -275,8 +261,8 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void testAnalyticVsBlack()
-      {
+      //public void testAnalyticVsBlack()
+      //{
          // Testing analytic Heston engine against Black formula
 
          //using (SavedSettings backup = new SavedSettings())
@@ -339,13 +325,9 @@ namespace TestSuite
          //              +"\n    error:      " + error);
          //}
          //}
-      }
+      //}
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticVsCached()
       {
          // Testing analytic Heston engine against cached values
@@ -438,11 +420,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMcVsCached()
       {
          // Testing Monte Carlo Heston engine against cached values
@@ -497,8 +475,8 @@ namespace TestSuite
       }
 
       //[TestMethod()]
-      public void testFdBarrierVsCached()
-      {
+      //public void testFdBarrierVsCached()
+      //{
          //  // Testing FD barrier Heston engine against cached values
 
          //   using (SavedSettings backup = new SavedSettings())
@@ -548,11 +526,11 @@ namespace TestSuite
          //                 + "\n    error:      " + error);
          //   }
          //}
-      }
+      //}
 
       //[TestMethod()]
-      public void testFdVanillaVsCached()
-      {
+      //public void testFdVanillaVsCached()
+      //{
          //   // Testing FD vanilla Heston engine against cached values
 
          //   using (SavedSettings backup = new SavedSettings())
@@ -661,11 +639,11 @@ namespace TestSuite
          //                 + "\n    error:      " + error);
          //   }
          //}
-      }
+      //}
 
       // [TestMethod()]
-      public void testKahlJaeckelCase()
-      {
+      //public void testKahlJaeckelCase()
+      //{
          //// Testing MC and FD Heston engines for the Kahl-Jaeckel example
 
          ///* Example taken from Wilmott mag (Sept. 2005).
@@ -771,7 +749,7 @@ namespace TestSuite
          //              + "\n    error:      " + error);
          //}
          //}
-      }
+      //}
 
       struct HestonParameter
       {
@@ -786,11 +764,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDifferentIntegrals()
       {
          // Testing different numerical Heston integration algorithms
@@ -894,8 +868,8 @@ namespace TestSuite
       }
 
       // [TestMethod()]
-      public void testMultipleStrikesEngine()
-      {
+      //public void testMultipleStrikesEngine()
+      //{
          //// Testing multiple-strikes FD Heston engine...");
 
          //using (SavedSettings backup = new SavedSettings())
@@ -977,13 +951,9 @@ namespace TestSuite
          //   }
          // }
          //}
-      }
+      //}
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAnalyticPiecewiseTimeDependent()
       {
          // Testing analytic piecewise time dependent Heston prices
@@ -1045,11 +1015,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDAXCalibrationOfTimeDependentModel()
       {
          // Testing time-dependent Heston model calibration
@@ -1112,11 +1078,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAlanLewisReferencePrices()
       {
          // Testing Alan Lewis reference prices
@@ -1219,11 +1181,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testExpansionOnAlanLewisReference()
       {
          // Testing expansion on Alan Lewis reference prices
@@ -1320,11 +1278,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testExpansionOnFordeReference()
       {
          // Testing expansion on Forde reference prices

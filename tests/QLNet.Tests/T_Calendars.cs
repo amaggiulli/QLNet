@@ -20,26 +20,16 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Calendars
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testModifiedCalendars()
       {
          Calendar c1 = new TARGET();
@@ -78,11 +68,7 @@ namespace TestSuite
          QAssert.IsFalse(c1.isHoliday(d2), d2 + " still a holiday");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testJointCalendars()
       {
          Calendar c1 = new TARGET(),
@@ -148,11 +134,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSSettlement()
       {
          // Testing US settlement holiday list
@@ -220,11 +202,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSGovernmentBondMarket()
       {
 
@@ -255,11 +233,7 @@ namespace TestSuite
                          " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSNewYorkStockExchange()
       {
 
@@ -360,11 +334,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTARGET()
       {
          List<Date> expectedHol = new List<Date>();
@@ -429,11 +399,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyFrankfurt()
       {
          List<Date> expectedHol = new List<Date>();
@@ -467,11 +433,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyEurex()
       {
          List<Date> expectedHol = new List<Date>();
@@ -506,11 +468,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyXetra()
       {
          List<Date> expectedHol = new List<Date>();
@@ -543,11 +501,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKSettlement()
       {
          //BOOST_MESSAGE("Testing UK settlement holiday list...");
@@ -604,11 +558,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKExchange()
       {
          //BOOST_MESSAGE("Testing London Stock Exchange holiday list...");
@@ -665,11 +615,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKMetals()
       {
          //BOOST_MESSAGE("Testing London Metals Exchange holiday list...");
@@ -726,11 +672,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testItalyExchange()
       {
          //BOOST_MESSAGE("Testing Milan Stock Exchange holiday list...");
@@ -777,11 +719,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBrazil()
       {
          //BOOST_MESSAGE("Testing Brazil holiday list...");
@@ -828,11 +766,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSouthKoreanSettlement()
       {
          //("Testing South-Korean settlement holiday list...");
@@ -923,11 +857,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testKoreaStockExchange()
       {
          //("Testing Korea Stock Exchange holiday list...");
@@ -1024,11 +954,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaSSE()
       {
          // Testing China Shanghai Stock Exchange holiday list
@@ -1163,11 +1089,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaIB()
       {
          // Testing China Inter Bank working weekends list
@@ -1240,11 +1162,8 @@ namespace TestSuite
                          + " expected working weekends, while there are " + k
                          + " calculated holidays");
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testEndOfMonth()
       {
          //BOOST_MESSAGE("Testing end-of-month calculation...");
@@ -1274,11 +1193,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBusinessDaysBetween()
       {
 
@@ -1426,11 +1341,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBespokeCalendars()
       {
 

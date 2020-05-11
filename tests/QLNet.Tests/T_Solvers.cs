@@ -18,18 +18,12 @@
 */
 
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Solvers
    {
       class Foo : ISolver1d
@@ -38,7 +32,7 @@ namespace TestSuite
          public override double derivative(double x) { return 2.0 * x; }
       }
 
-      public void test(Solver1D solver, string name)
+      internal void test(Solver1D solver, string name)
       {
          double[] accuracy = new double[] { 1.0e-4, 1.0e-6, 1.0e-8 };
          double expected = 1.0;
@@ -63,69 +57,35 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBrent()
       {
          test(new Brent(), "Brent");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testNewton()
       {
          test(new Newton(), "Newton");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFalsePosition()
       {
          test(new FalsePosition(), "FalsePosition");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBisection()
       {
          test(new Bisection(), "Bisection");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testRidder()
       {
          test(new Ridder(), "Ridder");
       }
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSecant()
       {
          test(new Secant(), "Secant");
-      }
-
-      public void suite()
-      {
-         testBrent();
-         testNewton();
-         testFalsePosition();
-         testBisection();
-         testRidder();
-         testSecant();
       }
    }
 }

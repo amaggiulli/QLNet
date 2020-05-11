@@ -20,18 +20,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_PiecewiseZeroSpreadedTermStructure
    {
       public class CommonVars
@@ -78,11 +72,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFlatInterpolationLeft()
       {
          // Testing flat interpolation before the first spreaded date...
@@ -118,11 +108,7 @@ namespace TestSuite
                          + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFlatInterpolationRight()
       {
          // Testing flat interpolation after the last spreaded date...
@@ -159,11 +145,7 @@ namespace TestSuite
                          + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLinearInterpolationMultipleSpreads()
       {
          // Testing linear interpolation with more than two spreaded dates...
@@ -208,11 +190,7 @@ namespace TestSuite
                + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLinearInterpolation()
       {
          // Testing linear interpolation between two dates...
@@ -255,11 +233,7 @@ namespace TestSuite
                + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testForwardFlatInterpolation()
       {
          // Testing forward flat interpolation between two dates...
@@ -297,11 +271,7 @@ namespace TestSuite
                + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBackwardFlatInterpolation()
       {
          // Testing backward flat interpolation between two dates...
@@ -343,11 +313,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDefaultInterpolation()
       {
          // Testing default interpolation between two dates...
@@ -385,11 +351,7 @@ namespace TestSuite
                + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSetInterpolationFactory()
       {
          // Testing factory constructor with additional parameters...
@@ -440,11 +402,7 @@ namespace TestSuite
                + "    expected: " + expectedRate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testMaxDate()
       {
          // Testing term structure max date...
@@ -477,11 +435,7 @@ namespace TestSuite
                + "    expected: " + expectedDate);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testQuoteChanging()
       {
          // Testing quote update...

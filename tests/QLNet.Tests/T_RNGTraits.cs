@@ -18,25 +18,15 @@
 */
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_RNGTraits
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGaussian()
       {
          //("Testing Gaussian pseudo-random number generation...");
@@ -57,11 +47,7 @@ namespace TestSuite
                          + "    expected:   " + stored);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDefaultPoisson()
       {
 
@@ -82,11 +68,7 @@ namespace TestSuite
                          + "    expected:   " + stored);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCustomPoisson()
       {
 

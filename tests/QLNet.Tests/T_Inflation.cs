@@ -17,11 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -44,9 +40,7 @@ namespace TestSuite
    // zero inflation tests, index, termstructure, and swaps
    //===========================================================================================
 
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Inflation
    {
       private YieldTermStructure nominalTermStructure()
@@ -91,11 +85,7 @@ namespace TestSuite
          return instruments;
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZeroIndex()
       {
          // Testing zero inflation indices...
@@ -188,11 +178,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testZeroTermStructure()
       {
          // Testing zero inflation term structure...
@@ -636,11 +622,7 @@ namespace TestSuite
       //===========================================================================================
       // year on year tests, index, termstructure, and swaps
       //===========================================================================================
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testYYIndex()
       {
          // Testing year-on-year inflation indices
@@ -802,11 +784,7 @@ namespace TestSuite
       }
 
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testYYTermStructure()
       {
          // Testing year-on-year inflation term structure...

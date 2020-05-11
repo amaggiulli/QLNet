@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.11.4</VersionPrefix>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
+    <AssemblyName>Repo</AssemblyName>
+    <PackageId>Repo</PackageId>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <PackageReference Include="QLNet" Version="1.11.4" />
+  </ItemGroup>
+
+</Project>

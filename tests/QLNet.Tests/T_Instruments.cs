@@ -17,25 +17,15 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Instruments
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testObservable()
       {
          //.("Testing observability of instruments...");
@@ -70,11 +60,6 @@ namespace TestSuite
          s.unfreeze();
          if (!f.isUp())
             QAssert.Fail("Observer was not notified of instrument change");
-      }
-
-      public void suite()
-      {
-         testObservable();
       }
    }
 }
