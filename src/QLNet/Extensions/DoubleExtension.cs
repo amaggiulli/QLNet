@@ -17,7 +17,7 @@ using System;
 
 namespace QLNet
 {
-   public static class DoubleExtension
+   internal static class DoubleExtension
    {
       // Fix double comparison
       public static bool IsEqual(this double d1, double d2)
