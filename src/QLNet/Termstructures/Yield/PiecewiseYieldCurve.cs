@@ -207,6 +207,9 @@ namespace QLNet
       {
 
          _instruments_ = instruments;
+         // ensure helpers are sorted
+         _instruments_.Sort((x, y) => x.pillarDate().CompareTo(y.pillarDate()));
+
 
          accuracy_ = accuracy;
          interpolator_ = i;
@@ -226,6 +229,9 @@ namespace QLNet
          : base(settlementDays, calendar, dayCounter, jumps, jumpDates)
       {
          _instruments_ = instruments;
+         // ensure helpers are sorted
+         _instruments_.Sort((x, y) => x.pillarDate().CompareTo(y.pillarDate()));
+
          accuracy_ = accuracy;
          interpolator_ = i;
          bootstrap_ = bootstrap;
