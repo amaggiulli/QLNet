@@ -30,7 +30,7 @@ namespace QLNet
       private double lambda_;
 
       public InverseCumulativePoisson() : this(1)
-      {}
+      { }
 
       public InverseCumulativePoisson(double lambda)
       {

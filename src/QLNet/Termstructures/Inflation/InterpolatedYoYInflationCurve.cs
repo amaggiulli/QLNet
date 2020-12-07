@@ -26,7 +26,7 @@ namespace QLNet
        \ingroup inflationtermstructures
    */
    public class InterpolatedYoYInflationCurve<Interpolator> : YoYInflationTermStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedYoYInflationCurve(Date referenceDate,
                                            Calendar calendar,

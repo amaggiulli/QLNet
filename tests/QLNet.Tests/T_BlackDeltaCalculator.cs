@@ -106,8 +106,8 @@ namespace TestSuite
             new DeltaData(Option.Type.Put,  DeltaVolQuote.DeltaType.PaSpot,   103.00,   0.99482, 0.98508,     0.07247845, 97.22,  -0.25)
          };
 
-         Option.Type                currOt;
-         DeltaVolQuote.DeltaType    currDt;
+         Option.Type currOt;
+         DeltaVolQuote.DeltaType currDt;
          double currSpot;
          double currdDf;
          double currfDf;
@@ -121,22 +121,22 @@ namespace TestSuite
 
          for (int i = 0; i < values.Length; i++)
          {
-            currOt      = values[i].ot;
-            currDt      = values[i].dt;
-            currSpot    = values[i].spot;
-            currdDf     = values[i].dDf;
-            currfDf     = values[i].fDf;
-            currStdDev  = values[i].stdDev;
-            currStrike  = values[i].strike;
-            currDelta   = values[i].value;
+            currOt = values[i].ot;
+            currDt = values[i].dt;
+            currSpot = values[i].spot;
+            currdDf = values[i].dDf;
+            currfDf = values[i].fDf;
+            currStdDev = values[i].stdDev;
+            currStrike = values[i].strike;
+            currDelta = values[i].value;
 
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(currOt, currDt, currSpot, currdDf, currfDf, currStdDev);
 
             tolerance = 1.0e-3;
 
-            expected    = currDelta;
-            calculated  = myCalc.deltaFromStrike(currStrike);
-            error       = Math.Abs(calculated - expected);
+            expected = currDelta;
+            calculated = myCalc.deltaFromStrike(currStrike);
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -152,9 +152,9 @@ namespace TestSuite
             // particular since they might be results of a numerical
             // procedure
 
-            expected    = currStrike;
-            calculated  = myCalc.strikeFromDelta(currDelta);
-            error       = Math.Abs(calculated - expected);
+            expected = currStrike;
+            calculated = myCalc.strikeFromDelta(currDelta);
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -208,18 +208,18 @@ namespace TestSuite
             new EuropeanOptionData(Option.Type.Put,   0.0000,  1.2212, 0.0000, 0.0000, 1.00, 0.133,  0.0, 0.0),
          };
 
-         DayCounter dc       = new Actual360();
-         Calendar calendar   = new TARGET();
-         Date today          = Date.Today;
+         DayCounter dc = new Actual360();
+         Calendar calendar = new TARGET();
+         Date today = Date.Today;
 
          // Start setup of market data
 
-         double discFor        = 0.0;
-         double discDom        = 0.0;
-         double implVol        = 0.0;
-         double expectedVal    = 0.0;
-         double calculatedVal  = 0.0;
-         double error          = 0.0;
+         double discFor = 0.0;
+         double discDom = 0.0;
+         double implVol = 0.0;
+         double expectedVal = 0.0;
+         double calculatedVal = 0.0;
+         double error = 0.0;
 
          SimpleQuote spotQuote = new SimpleQuote(0.0);
          Handle<Quote> spotHandle = new Handle<Quote>(spotQuote);
@@ -252,10 +252,10 @@ namespace TestSuite
             exDate = today + timeToDays(values[i].t);
             exercise = new EuropeanExercise(exDate);
 
-            spotQuote   .setValue(values[i].s);
-            volQuote    .setValue(values[i].v);
-            rQuote      .setValue(values[i].r);
-            qQuote      .setValue(values[i].q);
+            spotQuote.setValue(values[i].s);
+            volQuote.setValue(values[i].v);
+            rQuote.setValue(values[i].r);
+            qQuote.setValue(values[i].q);
 
             discDom = rTS.discount(exDate);
             discFor = qTS.discount(exDate);
@@ -387,15 +387,15 @@ namespace TestSuite
          Calendar calendar = new TARGET();
          Date today = Date.Today;
 
-         double discFor        = 0.0;
-         double discDom        = 0.0;
-         double implVol        = 0.0;
-         double deltaCall      = 0.0;
-         double deltaPut       = 0.0;
-         double expectedDiff   = 0.0;
+         double discFor = 0.0;
+         double discDom = 0.0;
+         double implVol = 0.0;
+         double deltaCall = 0.0;
+         double deltaPut = 0.0;
+         double expectedDiff = 0.0;
          double calculatedDiff = 0.0;
-         double error          = 0.0;
-         double forward        = 0.0;
+         double error = 0.0;
+         double forward = 0.0;
 
          SimpleQuote spotQuote = new SimpleQuote(0.0);
 
@@ -542,7 +542,7 @@ namespace TestSuite
             new DeltaData(Option.Type.Call,  DeltaVolQuote.DeltaType.Spot,    103.00,   0.99482, 0.98508,     0.0,    101.0013, 0.99482 * 0.5)
          };
 
-         DeltaVolQuote.DeltaType    currDt;
+         DeltaVolQuote.DeltaType currDt;
          double currSpot;
          double currdDf;
          double currfDf;
@@ -559,12 +559,12 @@ namespace TestSuite
          for (int i = 0; i < values.Length; i++)
          {
 
-            currDt      = values[i].dt;
-            currSpot    = values[i].spot;
-            currdDf     = values[i].dDf;
-            currfDf     = values[i].fDf;
-            currStdDev  = values[i].stdDev;
-            currFwd     = currSpot * currfDf / currdDf;
+            currDt = values[i].dt;
+            currSpot = values[i].spot;
+            currdDf = values[i].dDf;
+            currfDf = values[i].fDf;
+            currStdDev = values[i].stdDev;
+            currFwd = currSpot * currfDf / currdDf;
 
             BlackDeltaCalculator myCalc = new BlackDeltaCalculator(Option.Type.Call, currDt, currSpot, currdDf,
                                                                    currfDf, currStdDev);
@@ -575,9 +575,9 @@ namespace TestSuite
             currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    = 0.0;
-            calculated  = currCallDelta + currPutDelta;
-            error       = Math.Abs(calculated - expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -585,7 +585,7 @@ namespace TestSuite
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
-                            + "Error: "                + error);
+                            + "Error: " + error);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.Fwd);
@@ -595,9 +595,9 @@ namespace TestSuite
             currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    = 0.0;
-            calculated  = currCallDelta + currPutDelta;
-            error       = Math.Abs(calculated - expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -605,7 +605,7 @@ namespace TestSuite
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
-                            + "Error: "                + error);
+                            + "Error: " + error);
             }
 
             myCalc.setDeltaType(DeltaVolQuote.DeltaType.PaSpot);
@@ -615,9 +615,9 @@ namespace TestSuite
             currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    = 0.0;
-            calculated  = currCallDelta + currPutDelta;
-            error       = Math.Abs(calculated - expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -625,7 +625,7 @@ namespace TestSuite
                             + "Iteration: " + i + "\n"
                             + "Calculated Delta Sum: " + calculated + "\n"
                             + "Expected Delta Sum:   " + expected + "\n"
-                            + "Error: "                + error);
+                            + "Error: " + error);
             }
 
 
@@ -636,9 +636,9 @@ namespace TestSuite
             currPutDelta = myCalc.deltaFromStrike(currAtmStrike);
             myCalc.setOptionType(Option.Type.Call);
 
-            expected    = 0.0;
-            calculated  = currCallDelta + currPutDelta;
-            error       = Math.Abs(calculated - expected);
+            expected = 0.0;
+            calculated = currCallDelta + currPutDelta;
+            error = Math.Abs(calculated - expected);
 
             if (error > tolerance)
             {
@@ -675,7 +675,7 @@ namespace TestSuite
                             + "Iteration:" + i + "\n"
                             + "Calculated Value: " + calculated + "\n"
                             + "Expected   Value: " + expected + "\n"
-                            + "Error: "    + error);
+                            + "Error: " + error);
             }
          }
       }

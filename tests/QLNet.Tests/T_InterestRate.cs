@@ -110,7 +110,7 @@ namespace TestSuite
          double error;
          double disc;
 
-         for (int i = 0; i < cases.Length - 1 ; i++)
+         for (int i = 0; i < cases.Length - 1; i++)
          {
             ir = new InterestRate(cases[i].r, new Actual360(), cases[i].comp, cases[i].freq);
             d2 = d1 + new Period((int)(360 * cases[i].t + 0.5), TimeUnit.Days);
@@ -164,7 +164,7 @@ namespace TestSuite
             // check that the equivalent rate with *different*
             // compounding, and frequency is the *expected* rate
             //r3 = ir.equivalentRate(d1, d2, ir.dayCounter(), cases[i].comp2, cases[i].freq2).rate();
-            r3 = ir.equivalentRate(ir.dayCounter(), cases[i].comp2, cases[i].freq2,  d1, d2).value();
+            r3 = ir.equivalentRate(ir.dayCounter(), cases[i].comp2, cases[i].freq2, d1, d2).value();
             r3 = roundingPrecision.Round(r3);
             error = Math.Abs(r3 - cases[i].expected);
             if (error > 1.0e-17)

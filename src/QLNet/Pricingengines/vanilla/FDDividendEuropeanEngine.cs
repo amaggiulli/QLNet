@@ -22,7 +22,7 @@ namespace QLNet
    public class FDDividendEuropeanEngine : FDEngineAdapter<FDDividendEngine, DividendVanillaOption.Engine>, IFDEngine
    {
       public FDDividendEuropeanEngine()
-      {}
+      { }
 
       public FDDividendEuropeanEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints,
                                       bool timeDependent = false)

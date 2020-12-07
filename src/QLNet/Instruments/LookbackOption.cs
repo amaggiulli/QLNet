@@ -20,7 +20,7 @@ namespace QLNet
    public class ContinuousFloatingLookbackOption : OneAssetOption
    {
       //! %Arguments for continuous fixed lookback option calculation
-      public new class Arguments :  OneAssetOption.Arguments
+      public new class Arguments : OneAssetOption.Arguments
       {
          public double? minmax { get; set; }
          public override void validate()
@@ -35,7 +35,7 @@ namespace QLNet
       //! %Continuous floating lookback %engine base class
       public new class Engine : GenericEngine<ContinuousFloatingLookbackOption.Arguments,
          ContinuousFloatingLookbackOption.Results>
-      {}
+      { }
       public ContinuousFloatingLookbackOption(double minmax, TypePayoff payoff, Exercise exercise)
          : base(payoff, exercise)
       {
@@ -75,7 +75,7 @@ namespace QLNet
       //! %Continuous fixed lookback %engine base class
       public new class Engine : GenericEngine<ContinuousFixedLookbackOption.Arguments,
          ContinuousFixedLookbackOption.Results>
-      {}
+      { }
       public ContinuousFixedLookbackOption(double minmax, StrikedTypePayoff payoff, Exercise exercise)
          : base(payoff, exercise)
       {
@@ -110,7 +110,7 @@ namespace QLNet
    public class ContinuousPartialFloatingLookbackOption : ContinuousFloatingLookbackOption
    {
       //! %Arguments for continuous partial floating lookback option calculation
-      public new class Arguments: ContinuousFloatingLookbackOption.Arguments
+      public new class Arguments : ContinuousFloatingLookbackOption.Arguments
       {
          public double lambda { get; set; }
          public Date lookbackPeriodEnd { get; set; }
@@ -139,9 +139,9 @@ namespace QLNet
       }
 
       //! %Continuous partial floating lookback %engine base class
-      public new class Engine: GenericEngine<ContinuousPartialFloatingLookbackOption.Arguments,
+      public new class Engine : GenericEngine<ContinuousPartialFloatingLookbackOption.Arguments,
          ContinuousPartialFloatingLookbackOption.Results>
-      {}
+      { }
 
       public ContinuousPartialFloatingLookbackOption(double minmax, double lambda,
                                                      Date lookbackPeriodEnd, TypePayoff payoff, Exercise exercise)
@@ -202,7 +202,7 @@ namespace QLNet
       //! %Continuous partial fixed lookback %engine base class
       public new class Engine : GenericEngine<ContinuousPartialFixedLookbackOption.Arguments,
          ContinuousPartialFixedLookbackOption.Results>
-      {}
+      { }
       public ContinuousPartialFixedLookbackOption(Date lookbackPeriodStart, StrikedTypePayoff payoff, Exercise exercise)
          : base(0, payoff, exercise)
       {

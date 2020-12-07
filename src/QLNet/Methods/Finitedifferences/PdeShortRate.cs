@@ -26,7 +26,7 @@ namespace QLNet
       private OneFactorModel.ShortRateDynamics dynamics_;
 
       public PdeShortRate()
-      {} // required for geerics
+      { } // required for geerics
 
       public PdeShortRate(OneFactorModel.ShortRateDynamics d)
       {

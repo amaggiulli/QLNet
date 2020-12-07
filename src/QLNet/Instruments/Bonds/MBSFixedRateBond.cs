@@ -94,7 +94,7 @@ namespace QLNet
          List<CashFlow> cf = expectedCashflows();
 
          MonthlyYieldFinder objective = new MonthlyYieldFinder(notional(settlementDate()), cf, settlementDate());
-         return solver.solve(objective, 1.0e-10, 0.02, 0.0, 1.0) / 100 ;
+         return solver.solve(objective, 1.0e-10, 0.02, 0.0, 1.0) / 100;
       }
 
       public double BondEquivalentYield()
@@ -105,7 +105,7 @@ namespace QLNet
       protected void calcBondFactor()
       {
          bondFactors_ = new InitializedList<double>(notionals_.Count);
-         for (int i = 0 ; i < notionals_.Count ; i++)
+         for (int i = 0; i < notionals_.Count; i++)
          {
             if (i == 0)
                bondFactors_[i] = 1;
@@ -150,8 +150,8 @@ namespace QLNet
       public static double PVDifference(double faceAmount, List<CashFlow> cashflows, double yield, Date settlement)
       {
          double price = 0.0;
-         Date actualDate = new Date(1, 1, 1970) ;
-         int cashflowindex = 0 ;
+         Date actualDate = new Date(1, 1, 1970);
+         int cashflowindex = 0;
 
 
          for (int i = 0; i < cashflows.Count; i++)

@@ -253,7 +253,7 @@ namespace QLNet
                                  Handle<YieldTermStructure> riskFreeTS,
                                  Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, riskFreeTS, blackVolTS, new EulerDiscretization())
-      {}
+      { }
 
       public BlackScholesProcess(Handle<Quote> x0,
                                  Handle<YieldTermStructure> riskFreeTS,
@@ -263,7 +263,7 @@ namespace QLNet
                 // no dividend yield
                 new Handle<YieldTermStructure>(new FlatForward(0, new NullCalendar(), 0.0, new Actual365Fixed())),
                 riskFreeTS, blackVolTS, d)
-      {}
+      { }
    }
 
    //! Merton (1973) extension to the Black-Scholes stochastic process
@@ -284,7 +284,7 @@ namespace QLNet
                                        Handle<YieldTermStructure> riskFreeTS,
                                        Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, dividendTS, riskFreeTS, blackVolTS, new EulerDiscretization())
-      {}
+      { }
 
       public BlackScholesMertonProcess(Handle<Quote> x0,
                                        Handle<YieldTermStructure> dividendTS,
@@ -292,7 +292,7 @@ namespace QLNet
                                        Handle<BlackVolTermStructure> blackVolTS,
                                        IDiscretization1D d)
          : base(x0, dividendTS, riskFreeTS, blackVolTS, d)
-      {}
+      { }
    }
 
    //! Black (1976) stochastic process
@@ -311,14 +311,14 @@ namespace QLNet
                           Handle<YieldTermStructure> riskFreeTS,
                           Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, riskFreeTS, blackVolTS, new EulerDiscretization())
-      {}
+      { }
 
       public BlackProcess(Handle<Quote> x0,
                           Handle<YieldTermStructure> riskFreeTS,
                           Handle<BlackVolTermStructure> blackVolTS,
                           IDiscretization1D d)
          : base(x0, riskFreeTS, riskFreeTS, blackVolTS, d)
-      {}
+      { }
    }
 
    //! Garman-Kohlhagen (1983) stochastic process
@@ -339,13 +339,13 @@ namespace QLNet
                                    Handle<YieldTermStructure> domesticRiskFreeTS,
                                    Handle<BlackVolTermStructure> blackVolTS)
          : this(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, new EulerDiscretization())
-      {}
+      { }
 
       public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
                                    Handle<YieldTermStructure> domesticRiskFreeTS,
                                    Handle<BlackVolTermStructure> blackVolTS, IDiscretization1D d)
          : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, d)
-      {}
+      { }
 
       public GarmanKohlagenProcess(Handle<Quote> x0, Handle<YieldTermStructure> foreignRiskFreeTS,
                                    Handle<YieldTermStructure> domesticRiskFreeTS,
@@ -353,7 +353,7 @@ namespace QLNet
                                    RelinkableHandle<LocalVolTermStructure> localVolTS,
                                    IDiscretization1D d = null)
          : base(x0, foreignRiskFreeTS, domesticRiskFreeTS, blackVolTS, localVolTS, d)
-      {}
+      { }
 
    }
 }

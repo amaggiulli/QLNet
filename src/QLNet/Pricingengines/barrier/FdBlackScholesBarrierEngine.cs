@@ -68,7 +68,7 @@ namespace QLNet
          Fdm1dMesher equityMesher =
             new FdmBlackScholesMesher(xGrid_, process_, maturity,
                                       payoff.strike(), xMin, xMax, 0.0001, 1.5,
-                                      new Pair < double?, double? >(),
+                                      new Pair<double?, double?>(),
                                       arguments_.cashFlow);
 
          FdmMesher mesher =

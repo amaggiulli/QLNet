@@ -26,7 +26,7 @@ namespace QLNet
    */
    public class BDTCurrency : Currency
    {
-      public BDTCurrency() : base("Bangladesh taka", "BDT", 50, "Bt", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public BDTCurrency() : base("Bangladesh taka", "BDT", 50, "Bt", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Chinese yuan
@@ -37,7 +37,7 @@ namespace QLNet
    */
    public class CNYCurrency : Currency
    {
-      public CNYCurrency() : base("Chinese yuan", "CNY", 156, "Y", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public CNYCurrency() : base("Chinese yuan", "CNY", 156, "Y", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Hong Kong dollar
@@ -59,7 +59,7 @@ namespace QLNet
    */
    public class IDRCurrency : Currency
    {
-      public IDRCurrency(): base("Indonesian Rupiah", "IDR", 360, "Rp", "", 100, new Rounding(), "%3% %1$.2f") { }
+      public IDRCurrency() : base("Indonesian Rupiah", "IDR", 360, "Rp", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Israeli shekel
@@ -137,7 +137,7 @@ namespace QLNet
    */
    public class KWDCurrency : Currency
    {
-      public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414, "KD", "", 1000, new Rounding(), "%3% %1$.3f") {}
+      public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414, "KD", "", 1000, new Rounding(), "%3% %1$.3f") { }
    }
 
    //! Malaysian Ringgit
@@ -148,7 +148,7 @@ namespace QLNet
    */
    public class MYRCurrency : Currency
    {
-      public MYRCurrency() : base("Malaysian Ringgit", "MYR", 458, "RM", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public MYRCurrency() : base("Malaysian Ringgit", "MYR", 458, "RM", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Nepal rupee
@@ -159,7 +159,7 @@ namespace QLNet
    */
    public class NPRCurrency : Currency
    {
-      public NPRCurrency() : base("Nepal rupee", "NPR", 524, "NRs", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public NPRCurrency() : base("Nepal rupee", "NPR", 524, "NRs", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Pakistani rupee
@@ -170,7 +170,7 @@ namespace QLNet
    */
    public class PKRCurrency : Currency
    {
-      public PKRCurrency() : base("Pakistani rupee", "PKR", 586, "Rs", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public PKRCurrency() : base("Pakistani rupee", "PKR", 586, "Rs", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Saudi riyal
@@ -181,7 +181,7 @@ namespace QLNet
    */
    public class SARCurrency : Currency
    {
-      public SARCurrency() : base("Saudi riyal", "SAR", 682, "SRls", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public SARCurrency() : base("Saudi riyal", "SAR", 682, "SRls", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! %Singapore dollar
@@ -192,7 +192,7 @@ namespace QLNet
    */
    public class SGDCurrency : Currency
    {
-      public SGDCurrency() : base("Singapore dollar", "SGD", 702, "S$", "", 100, new Rounding(), "%3% %1$.2f") {}
+      public SGDCurrency() : base("Singapore dollar", "SGD", 702, "S$", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
    //! Thai baht
@@ -203,7 +203,7 @@ namespace QLNet
    */
    public class THBCurrency : Currency
    {
-      public THBCurrency() : base("Thai baht", "THB", 764, "Bht", "", 100, new Rounding(), "%1$.2f %3%") {}
+      public THBCurrency() : base("Thai baht", "THB", 764, "Bht", "", 100, new Rounding(), "%1$.2f %3%") { }
    }
 
    //! %Taiwan dollar
@@ -225,6 +225,6 @@ namespace QLNet
    */
    public class VNDCurrency : Currency
    {
-      public VNDCurrency() : base("Vietnamese Dong", "VND", 704, "", "", 100, new Rounding(), "%1$.0f %3%") {}
+      public VNDCurrency() : base("Vietnamese Dong", "VND", 704, "", "", 100, new Rounding(), "%1$.0f %3%") { }
    }
 }

@@ -72,7 +72,7 @@ namespace QLNet
 
          public double value(double x)
          {
-            if ((x + 1.0)*c_inf > Const.QL_EPSILON)
+            if ((x + 1.0) * c_inf > Const.QL_EPSILON)
             {
                return f(-Math.Log(0.5 * x + 0.5) / c_inf) / ((x + 1.0) * c_inf);
             }
@@ -169,7 +169,7 @@ namespace QLNet
                case Algorithm.GaussLegendre:
                case Algorithm.GaussChebyshev:
                case Algorithm.GaussChebyshev2nd:
-                  retVal = gaussianQuadrature_ .value(new integrand1(c_inf, f).value);
+                  retVal = gaussianQuadrature_.value(new integrand1(c_inf, f).value);
                   break;
                case Algorithm.Simpson:
                case Algorithm.Trapezoid:
@@ -331,7 +331,7 @@ namespace QLNet
                                        TypePayoff type,
                                        Integration integration,
                                        ComplexLogFormula cpxLog,
-                                       AnalyticHestonEngine  enginePtr,
+                                       AnalyticHestonEngine enginePtr,
                                        ref double? value,
                                        ref int evaluations)
       {
@@ -421,7 +421,7 @@ namespace QLNet
             dd_ = x_ - Math.Log(ratio);
             sigma2_ = sigma_ * sigma_;
             rsigma_ = rho * sigma_;
-            t0_ = kappa - ((j == 1) ? rho* sigma : 0);
+            t0_ = kappa - ((j == 1) ? rho * sigma : 0);
             b_ = 0;
             g_km1_ = 0;
             engine_ = engine;
@@ -447,7 +447,7 @@ namespace QLNet
             dd_ = x_ - Math.Log(ratio);
             sigma2_ = sigma_ * sigma_;
             rsigma_ = rho * sigma_;
-            t0_ = kappa - ((j == 1) ? rho* sigma : 0);
+            t0_ = kappa - ((j == 1) ? rho * sigma : 0);
             b_ = 0;
             g_km1_ = 0;
             engine_ = null;
@@ -519,7 +519,7 @@ namespace QLNet
             }
             else if (cpxLog_ == ComplexLogFormula.BranchCorrection)
             {
-               Complex p  = (t1 + d) / (t1 - d);
+               Complex p = (t1 + d) / (t1 - d);
 
                // next term: g = std::log((1.0 - p*std::exp(d*term_))/(1.0 - p))
                Complex g = new Complex();
@@ -590,7 +590,7 @@ namespace QLNet
          private double t0_;
 
          // log branch counter
-         private int  b_;     // log branch counter
+         private int b_;     // log branch counter
          private double g_km1_; // imag part of last log value
 
          private AnalyticHestonEngine engine_;

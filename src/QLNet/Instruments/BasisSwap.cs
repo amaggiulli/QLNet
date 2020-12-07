@@ -49,11 +49,12 @@ namespace QLNet
                        Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
                        Schedule float2Schedule, IborIndex iborIndex2, double spread2, DayCounter float2DayCount)
          : this(type, nominal, float1Schedule, iborIndex1, spread1, float1DayCount,
-                float2Schedule, iborIndex2, spread2, float2DayCount, null) { }
+                float2Schedule, iborIndex2, spread2, float2DayCount, null)
+      { }
       public BasisSwap(Type type, double nominal,
                        Schedule float1Schedule, IborIndex iborIndex1, double spread1, DayCounter float1DayCount,
                        Schedule float2Schedule, IborIndex iborIndex2, double spread2, DayCounter float2DayCount,
-                       BusinessDayConvention ? paymentConvention) :
+                       BusinessDayConvention? paymentConvention) :
       base(2)
       {
          type_ = type;
@@ -215,7 +216,7 @@ namespace QLNet
          return legNPV_[1].GetValueOrDefault();
       }
 
-      public IborIndex iborIndex1() {return iborIndex1_;}
+      public IborIndex iborIndex1() { return iborIndex1_; }
       public IborIndex iborIndex2() { return iborIndex2_; }
       public double spread1 { get { return spread1_; } }
       public double spread2 { get { return spread2_; } }

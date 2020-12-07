@@ -231,7 +231,7 @@ namespace QLNet
                {
                   // ...and which carries information for the requested date.
                   ExchangeRate head = fetch(source, other, date);
-                  if (((double?) head.rate).HasValue)
+                  if (((double?)head.rate).HasValue)
                   {
                      // if we can get to the target from here...
                      try

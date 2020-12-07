@@ -43,7 +43,7 @@ namespace QLNet
       {
          get
          {
-            return source_ ;
+            return source_;
          }
       }
 

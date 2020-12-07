@@ -27,11 +27,11 @@ namespace QLNet
    {
       public DKKLibor(Period tenor)
          : base("DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public DKKLibor(Period tenor, Handle<YieldTermStructure> h)
          : base("DKKLibor", tenor, 2, new DKKCurrency(), new Denmark(), new Actual360(), h)
-      {}
+      { }
    }
 
 }

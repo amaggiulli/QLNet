@@ -50,7 +50,7 @@ namespace QLNet
 
    // this is template version to serve as base for FDAmericanCondition and FDShoutCondition
    public class FDConditionTemplate<baseEngine> : FDConditionEngineTemplate
-      where baseEngine : FDConditionEngineTemplate, new ()
+      where baseEngine : FDConditionEngineTemplate, new()
    {
       #region Common definitions for deriving classes
       protected baseEngine engine_;
@@ -73,7 +73,7 @@ namespace QLNet
 
 
    public class FDAmericanCondition<baseEngine> : FDConditionTemplate<baseEngine>
-      where baseEngine : FDConditionEngineTemplate, new ()
+      where baseEngine : FDConditionEngineTemplate, new()
    {
 
       // required for generics
@@ -99,7 +99,7 @@ namespace QLNet
 
 
    public class FDShoutCondition<baseEngine> : FDConditionTemplate<baseEngine>
-      where baseEngine : FDConditionEngineTemplate, new ()
+      where baseEngine : FDConditionEngineTemplate, new()
    {
 
       // required for generics

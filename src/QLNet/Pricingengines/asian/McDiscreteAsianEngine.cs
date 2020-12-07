@@ -29,10 +29,10 @@ namespace QLNet
    */
 
    public class MCDiscreteAveragingAsianEngine<RNG, S> : McSimulation<SingleVariate, RNG, S>, IGenericEngine
-   //DiscreteAveragingAsianOption.Engine,
-   //McSimulation<SingleVariate,RNG,S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      //DiscreteAveragingAsianOption.Engine,
+      //McSimulation<SingleVariate,RNG,S>
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       // data members
       protected GeneralizedBlackScholesProcess process_;
@@ -77,8 +77,8 @@ namespace QLNet
       protected override TimeGrid timeGrid()
       {
          Date referenceDate = process_.riskFreeRate().link.referenceDate();
-         DayCounter voldc = process_.blackVolatility().link.dayCounter() ;
-         List<double> fixingTimes = new  InitializedList<double>(arguments_.fixingDates.Count);
+         DayCounter voldc = process_.blackVolatility().link.dayCounter();
+         List<double> fixingTimes = new InitializedList<double>(arguments_.fixingDates.Count);
 
          for (int i = 0; i < arguments_.fixingDates.Count; i++)
          {
@@ -97,7 +97,7 @@ namespace QLNet
       {
 
          TimeGrid grid = this.timeGrid();
-         IRNG gen = (IRNG)new  RNG().make_sequence_generator(grid.size() - 1, seed_);
+         IRNG gen = (IRNG)new RNG().make_sequence_generator(grid.size() - 1, seed_);
          return new PathGenerator<IRNG>(process_, grid,
                                         gen, brownianBridge_);
       }

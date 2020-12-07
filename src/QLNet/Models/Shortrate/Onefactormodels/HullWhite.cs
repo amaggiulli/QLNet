@@ -61,7 +61,7 @@ namespace QLNet
          TrinomialTree trinomial = new TrinomialTree(numericDynamics.process(), grid);
          ShortRateTree numericTree = new ShortRateTree(trinomial, numericDynamics, grid);
          TermStructureFittingParameter.NumericalImpl impl =
-            (TermStructureFittingParameter.NumericalImpl) phi.implementation();
+            (TermStructureFittingParameter.NumericalImpl)phi.implementation();
          impl.reset();
          for (int i = 0; i < (grid.size() - 1); i++)
          {

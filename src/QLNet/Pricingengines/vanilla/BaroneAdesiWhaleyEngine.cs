@@ -163,13 +163,13 @@ namespace QLNet
          if (dividendDiscount >= 1.0 && payoff.optionType() == Option.Type.Call)
          {
             // early exercise never optimal
-            results_.value        = black.value();
-            results_.delta        = black.delta(spot);
+            results_.value = black.value();
+            results_.delta = black.delta(spot);
             results_.deltaForward = black.deltaForward();
-            results_.elasticity   = black.elasticity(spot);
-            results_.gamma        = black.gamma(spot);
+            results_.elasticity = black.elasticity(spot);
+            results_.gamma = black.gamma(spot);
 
-            DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+            DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
             DayCounter divdc = process_.dividendYield().link.dayCounter();
             DayCounter voldc = process_.blackVolatility().link.dayCounter();
             double t = rfdc.yearFraction(process_.riskFreeRate().link.referenceDate(), arguments_.exercise.lastDate());
@@ -179,11 +179,11 @@ namespace QLNet
             results_.dividendRho = black.dividendRho(t);
 
             t = voldc.yearFraction(process_.blackVolatility().link.referenceDate(), arguments_.exercise.lastDate());
-            results_.vega        = black.vega(t);
-            results_.theta       = black.theta(spot, t);
+            results_.vega = black.vega(t);
+            results_.theta = black.theta(spot, t);
             results_.thetaPerDay = black.thetaPerDay(spot, t);
 
-            results_.strikeSensitivity  = black.strikeSensitivity();
+            results_.strikeSensitivity = black.strikeSensitivity();
             results_.itmCashProbability = black.itmCashProbability();
          }
          else

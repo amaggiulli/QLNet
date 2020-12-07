@@ -278,7 +278,7 @@ namespace QLNet
 
       }
       private double correlation_;
-      private  CumulativeNormalDistribution cumnorm_ = new CumulativeNormalDistribution();
+      private CumulativeNormalDistribution cumnorm_ = new CumulativeNormalDistribution();
    }
 
    public class eqn3
@@ -287,7 +287,7 @@ namespace QLNet
       public eqn3(double h, double k, double asr)
       {
          hk_ = h * k;
-         hs_  = (h * h + k * k) / 2;
+         hs_ = (h * h + k * k) / 2;
          asr_ = asr;
       }
       public double value(double x)

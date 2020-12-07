@@ -45,7 +45,7 @@ namespace QLNet
    }
 
 
-   public class PdeConstantCoeff<PdeClass> : PdeSecondOrderParabolic where PdeClass : PdeSecondOrderParabolic, new ()
+   public class PdeConstantCoeff<PdeClass> : PdeSecondOrderParabolic where PdeClass : PdeSecondOrderParabolic, new()
    {
       private double diffusion_;
       private double drift_;
@@ -53,7 +53,7 @@ namespace QLNet
 
       public PdeConstantCoeff(GeneralizedBlackScholesProcess process, double t, double x)
       {
-         PdeClass pde = (PdeClass) FastActivator<PdeClass>.Create().factory(process);
+         PdeClass pde = (PdeClass)FastActivator<PdeClass>.Create().factory(process);
          diffusion_ = pde.diffusion(t, x);
          drift_ = pde.drift(t, x);
          discount_ = pde.discount(t, x);
@@ -69,7 +69,7 @@ namespace QLNet
    }
 
 
-   public class GenericTimeSetter<PdeClass> : TridiagonalOperator.TimeSetter where PdeClass : PdeSecondOrderParabolic, new ()
+   public class GenericTimeSetter<PdeClass> : TridiagonalOperator.TimeSetter where PdeClass : PdeSecondOrderParabolic, new()
    {
       private LogGrid grid_;
       private PdeClass pde_;
@@ -77,7 +77,7 @@ namespace QLNet
       public GenericTimeSetter(Vector grid, GeneralizedBlackScholesProcess process)
       {
          grid_ = new LogGrid(grid);
-         pde_ = (PdeClass) FastActivator<PdeClass>.Create().factory(process);
+         pde_ = (PdeClass)FastActivator<PdeClass>.Create().factory(process);
       }
 
       public override void setTime(double t, IOperator L)
@@ -87,7 +87,7 @@ namespace QLNet
    }
 
 
-   public class PdeOperator<PdeClass> : TridiagonalOperator where PdeClass : PdeSecondOrderParabolic, new ()
+   public class PdeOperator<PdeClass> : TridiagonalOperator where PdeClass : PdeSecondOrderParabolic, new()
    {
       public PdeOperator(Vector grid, GeneralizedBlackScholesProcess process) : this(grid, process, 0) { }
       public PdeOperator(Vector grid, GeneralizedBlackScholesProcess process, double residualTime)

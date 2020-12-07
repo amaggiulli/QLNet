@@ -171,8 +171,8 @@ namespace QLNet
    }
 
    public class FDEngineAdapter<Base, Engine> : FDVanillaEngine, IGenericEngine
-      where Base : FDConditionEngineTemplate, new ()
-      where Engine : IGenericEngine, new ()
+      where Base : FDConditionEngineTemplate, new()
+      where Engine : IGenericEngine, new()
    {
 
       // a wrap-up of base engine
@@ -184,7 +184,7 @@ namespace QLNet
       //public FDEngineAdapter(GeneralizedBlackScholesProcess process, Size timeSteps=100, Size gridPoints=100, bool timeDependent = false)
       public FDEngineAdapter(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
       {
-         optionBase = (Base) FastActivator<Base>.Create().factory(process, timeSteps, gridPoints, timeDependent);
+         optionBase = (Base)FastActivator<Base>.Create().factory(process, timeSteps, gridPoints, timeDependent);
          process.registerWith(update);
       }
 

@@ -29,7 +29,7 @@ namespace QLNet
              would necessarily bypass the notification code; client
              code should modify the value via re-assignment instead.
    */
-   public class ObservableValue<T> : IObservable where T : new ()
+   public class ObservableValue<T> : IObservable where T : new()
    {
       private T value_;
 

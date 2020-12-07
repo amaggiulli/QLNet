@@ -63,10 +63,10 @@ namespace QLNet
                         new FlatHazardRate(0, ctptyDTS.link.calendar(), 1.0E-12, ctptyDTS.link.dayCounter()));
          invstRecoveryRate_ = invstRecoveryRate;
 
-         discountCurve.registerWith(update) ;
-         ctptyDTS.registerWith(update) ;
-         invstDTS_.registerWith(update) ;
-         swaptionEngine.registerWith(update) ;
+         discountCurve.registerWith(update);
+         ctptyDTS.registerWith(update);
+         invstDTS_.registerWith(update);
+         swaptionEngine.registerWith(update);
       }
 
       /*! Creates an engine with a black volatility model for the
@@ -93,9 +93,9 @@ namespace QLNet
                         new FlatHazardRate(0, ctptyDTS.link.calendar(), 1.0e-12, ctptyDTS.link.dayCounter()));
          invstRecoveryRate_ = invstRecoveryRate;
 
-         discountCurve.registerWith(update) ;
-         ctptyDTS.registerWith(update) ;
-         invstDTS_.registerWith(update) ;
+         discountCurve.registerWith(update);
+         ctptyDTS.registerWith(update);
+         invstDTS_.registerWith(update);
       }
 
       /*! Creates an engine with a black volatility model for the
@@ -122,10 +122,10 @@ namespace QLNet
                         new FlatHazardRate(0, ctptyDTS.link.calendar(), 1.0e-12, ctptyDTS.link.dayCounter()));
          invstRecoveryRate_ = invstRecoveryRate;
 
-         discountCurve.registerWith(update) ;
-         ctptyDTS.registerWith(update) ;
-         invstDTS_.registerWith(update) ;
-         blackVol.registerWith(update) ;
+         discountCurve.registerWith(update);
+         ctptyDTS.registerWith(update);
+         invstDTS_.registerWith(update);
+         blackVol.registerWith(update);
       }
 
       public override void calculate()

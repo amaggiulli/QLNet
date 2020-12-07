@@ -50,7 +50,7 @@ namespace TestSuite
          Settings.setEvaluationDate(today);
 
          Handle<Quote> spot = new Handle<Quote>(new SimpleQuote(100.0));
-         SimpleQuote qRate  = new SimpleQuote(0.04);
+         SimpleQuote qRate = new SimpleQuote(0.04);
          Handle<YieldTermStructure> qTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, qRate, dc));
          SimpleQuote rRate = new SimpleQuote(0.0525);
          Handle<YieldTermStructure> rTS = new Handle<YieldTermStructure>(Utilities.flatRate(today, rRate, dc));
@@ -70,8 +70,8 @@ namespace TestSuite
          EuropeanOption option = new EuropeanOption(payoff, exercise);
 
          double tol = 1e-8;
-         double[] corr = {-0.75, -0.25, 0.0, 0.25, 0.75};
-         double[] expectedVol = {0.217064577, 0.243995801, 0.256402830, 0.268236596, 0.290461343};
+         double[] corr = { -0.75, -0.25, 0.0, 0.25, 0.75 };
+         double[] expectedVol = { 0.217064577, 0.243995801, 0.256402830, 0.268236596, 0.290461343 };
 
          for (int i = 0; i < corr.Length; ++i)
          {
@@ -162,7 +162,7 @@ namespace TestSuite
          BlackScholesMertonProcess bsmProcess = new BlackScholesMertonProcess(spot, qTS, rTS, volTS);
 
          HestonProcess hestonProcess = new HestonProcess(rTS, qTS, spot,
-                                                         vol.value()*vol.value(), 1.0, vol.value()*vol.value(), 1e-4, 0.0);
+                                                         vol.value() * vol.value(), 1.0, vol.value() * vol.value(), 1e-4, 0.0);
 
          HestonModel hestonModel = new HestonModel(hestonProcess);
 
@@ -173,9 +173,9 @@ namespace TestSuite
          IPricingEngine hestonHwEngine = new AnalyticHestonHullWhiteEngine(hestonModel, hullWhiteModel, 128);
 
          double tol = 1e-5;
-         double[] strike = {0.25, 0.5, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.5, 2.0, 4.0};
-         int[] maturity = {1, 2, 3, 5, 10, 15, 20, 25, 30};
-         Option.Type[] types = {Option.Type.Put, Option.Type.Call};
+         double[] strike = { 0.25, 0.5, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.5, 2.0, 4.0 };
+         int[] maturity = { 1, 2, 3, 5, 10, 15, 20, 25, 30 };
+         Option.Type[] types = { Option.Type.Put, Option.Type.Call };
 
          for (int i = 0; i < types.Length; ++i)
          {
@@ -376,8 +376,8 @@ namespace TestSuite
          hwProcess.setForwardMeasureTime(dc.yearFraction(today, maturity));
 
          double tol = 0.05;
-         double[] corr = {-0.9, -0.5, 0.0, 0.5, 0.9};
-         double[] strike = {100};
+         double[] corr = { -0.9, -0.5, 0.0, 0.5, 0.9 };
+         double[] strike = { 100 };
 
          for (int i = 0; i < corr.Length; ++i)
          {
@@ -459,8 +459,8 @@ namespace TestSuite
          hwProcess.setForwardMeasureTime(dc.yearFraction(today, maturity + new Period(1, TimeUnit.Years)));
 
          double tol = 0.001;
-         double[] corr = {-0.45, 0.45, 0.25};
-         double[] strike = {100, 75, 50, 150};
+         double[] corr = { -0.45, 0.45, 0.25 };
+         double[] strike = { 100, 75, 50, 150 };
 
          for (int i = 0; i < corr.Length; ++i)
          {
@@ -541,8 +541,8 @@ namespace TestSuite
          HullWhite hullWhiteModel = new HullWhite(rTS, hwFwdProcess.a(), hwFwdProcess.sigma());
 
          double tol = 0.002;
-         double[] strike = {80, 120};
-         Option.Type[] types = {Option.Type.Put, Option.Type.Call};
+         double[] strike = { 80, 120 };
+         Option.Type[] types = { Option.Type.Put, Option.Type.Call };
 
          for (int i = 0; i < types.Length; ++i)
          {
@@ -622,7 +622,7 @@ namespace TestSuite
          for (int i = 0; i <= maturity; ++i)
             times[i] = i;
 
-         TimeGrid grid  = new TimeGrid(times, times.Count);
+         TimeGrid grid = new TimeGrid(times, times.Count);
 
          List<double> redemption = new InitializedList<double>(maturity);
          for (int i = 0; i < maturity; ++i)
@@ -737,8 +737,8 @@ namespace TestSuite
          hwProcess.setForwardMeasureTime(20.1472222222222222);
 
          double tol = 0.05;
-         double[] corr = {-0.85, 0.5};
-         double[] strike = {50, 100, 125};
+         double[] corr = { -0.85, 0.5 };
+         double[] strike = { 50, 100, 125 };
 
          for (int i = 0; i < corr.Length; ++i)
          {
@@ -803,7 +803,7 @@ namespace TestSuite
          double v0 = 0.05;
          double theta = 0.05;
          double kappa_v = 0.3;
-         double[] sigma_v = {0.3, 0.6};
+         double[] sigma_v = { 0.3, 0.6 };
          double rho_sv = -0.30;
          double rho_sr = 0.6;
          double kappa_r = 0.01;
@@ -819,7 +819,7 @@ namespace TestSuite
          HullWhite hullWhiteModel = new HullWhite(new Handle<YieldTermStructure>(rTS), kappa_r, sigma_r);
 
          double tol = 0.0001;
-         double[] strikes = {40, 80, 100, 120, 180};
+         double[] strikes = { 40, 80, 100, 120, 180 };
          double[][] expected =
          {
             new double[] {0.267503, 0.235742, 0.228223, 0.223461, 0.217855},

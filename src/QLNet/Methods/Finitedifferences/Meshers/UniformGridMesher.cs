@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    public class UniformGridMesher : FdmMesher
    {
-      public UniformGridMesher(FdmLinearOpLayout layout, List < Pair < double?, double? >> boundaries)
+      public UniformGridMesher(FdmLinearOpLayout layout, List<Pair<double?, double?>> boundaries)
       : base(layout)
       {
          dx_ = new Vector(layout.dim().Count);

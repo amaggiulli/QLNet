@@ -36,7 +36,7 @@ namespace QLNet
 
       #region Constructors
 
-      protected YieldTermStructure(DayCounter dc = null, List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+      protected YieldTermStructure(DayCounter dc = null, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(dc)
       {
          if (jumps != null)
@@ -57,7 +57,7 @@ namespace QLNet
       }
 
       protected YieldTermStructure(Date referenceDate, Calendar cal = null, DayCounter dc = null,
-                                   List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+                                   List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(referenceDate, cal, dc)
       {
          if (jumps != null)
@@ -78,7 +78,7 @@ namespace QLNet
       }
 
       protected YieldTermStructure(int settlementDays, Calendar cal, DayCounter dc = null,
-                                   List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+                                   List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(settlementDays, cal, dc)
       {
          if (jumps != null)
@@ -157,7 +157,7 @@ namespace QLNet
             double compound = 1.0 / discount(dt, extrapolate);
             // t has been calculated with a possibly different daycounter
             // but the difference should not matter for very small times
-            return InterestRate. impliedRate(compound, dayCounter, comp, freq,  dt);
+            return InterestRate.impliedRate(compound, dayCounter, comp, freq, dt);
          }
          double compound1 = 1.0 / discount(d, extrapolate);
          return InterestRate.impliedRate(compound1, dayCounter, comp, freq, referenceDate(), d);
@@ -305,7 +305,7 @@ namespace QLNet
       }
 
       // data members
-      private List<Handle<Quote> > jumps_;
+      private List<Handle<Quote>> jumps_;
       private List<Date> jumpDates_;
       private List<double> jumpTimes_;
       private int nJumps_;

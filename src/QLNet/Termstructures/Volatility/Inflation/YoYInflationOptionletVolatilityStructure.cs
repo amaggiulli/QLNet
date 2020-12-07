@@ -29,7 +29,7 @@ namespace QLNet
     with a (usually different) availability lag.
     */
 
-   public abstract class YoYOptionletVolatilitySurface :  VolatilityTermStructure
+   public abstract class YoYOptionletVolatilitySurface : VolatilityTermStructure
    {
       // Constructor
       //! calculate the reference date based on the global evaluation date
@@ -62,7 +62,7 @@ namespace QLNet
       }
       public double volatility(Date maturityDate, double strike, Period obsLag)
       {
-         return volatility(maturityDate, strike, obsLag, false) ;
+         return volatility(maturityDate, strike, obsLag, false);
       }
 
       public double volatility(Date maturityDate, double strike, Period obsLag, bool extrapolate)
@@ -151,7 +151,7 @@ namespace QLNet
       //! The TS observes with a lag that is usually different from the
       //! availability lag of the index.  An inflation rate is given,
       //! by default, for the maturity requested assuming this lag.
-      public virtual Period observationLag()  { return observationLag_; }
+      public virtual Period observationLag() { return observationLag_; }
       public virtual Frequency frequency() { return frequency_; }
       public virtual bool indexIsInterpolated() { return indexIsInterpolated_; }
 
@@ -256,7 +256,7 @@ namespace QLNet
    }
 
    //! Constant surface, no K or T dependence.
-   public class ConstantYoYOptionletVolatility  : YoYOptionletVolatilitySurface
+   public class ConstantYoYOptionletVolatility : YoYOptionletVolatilitySurface
    {
 
       // Constructor
@@ -279,7 +279,7 @@ namespace QLNet
       }
 
       // Limits
-      public override Date maxDate()  { return Date.maxDate(); }
+      public override Date maxDate() { return Date.maxDate(); }
       //! the minimum strike for which the term structure can return vols
       public override double minStrike() { return minStrike_; }
       //! the maximum strike for which the term structure can return vols

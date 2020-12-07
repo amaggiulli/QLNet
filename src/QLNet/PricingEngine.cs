@@ -42,13 +42,13 @@ namespace QLNet
    }
 
    public interface IGenericEngine : IPricingEngine, IObserver
-   {}
+   { }
 
    // template base class for option pricing engines
    // Derived engines only need to implement the <tt>calculate()</tt> method.
    public abstract class GenericEngine<ArgumentsType, ResultsType> : IGenericEngine
-      where ArgumentsType : IPricingEngineArguments, new ()
-      where ResultsType : IPricingEngineResults, new ()
+      where ArgumentsType : IPricingEngineArguments, new()
+      where ResultsType : IPricingEngineResults, new()
    {
       protected ArgumentsType arguments_ = FastActivator<ArgumentsType>.Create();
       protected ResultsType results_ = FastActivator<ResultsType>.Create();

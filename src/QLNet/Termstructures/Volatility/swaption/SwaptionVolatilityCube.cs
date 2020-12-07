@@ -24,7 +24,7 @@ namespace QLNet
                                        List<Period> optionTenors,
                                        List<Period> swapTenors,
                                        List<double> strikeSpreads,
-                                       List<List<Handle<Quote> > > volSpreads,
+                                       List<List<Handle<Quote>>> volSpreads,
                                        SwapIndex swapIndexBase,
                                        SwapIndex shortSwapIndexBase,
                                        bool vegaWeightedSmileFit)
@@ -43,18 +43,18 @@ namespace QLNet
 
          Utils.QL_REQUIRE(!atmVol_.empty(), () => "atm vol handle not linked to anything");
          for (int i = 1; i < nStrikes_; ++i)
-            Utils.QL_REQUIRE(strikeSpreads_[i - 1]<strikeSpreads_[i], () =>
-                             "non increasing strike spreads: " + i + " is " + strikeSpreads_[i - 1] + ", " +
-                             (i + 1) + " is " + strikeSpreads_[i]);
+            Utils.QL_REQUIRE(strikeSpreads_[i - 1] < strikeSpreads_[i], () =>
+                               "non increasing strike spreads: " + i + " is " + strikeSpreads_[i - 1] + ", " +
+                               (i + 1) + " is " + strikeSpreads_[i]);
 
          Utils.QL_REQUIRE(!volSpreads_.empty(), () => "empty vol spreads matrix");
 
-         Utils.QL_REQUIRE(nOptionTenors_*nSwapTenors_ == volSpreads_.Count, () =>
-                          "mismatch between number of option tenors * swap tenors (" +
-                          nOptionTenors_*nSwapTenors_ + ") and number of rows (" +
-                          volSpreads_.Count + ")");
+         Utils.QL_REQUIRE(nOptionTenors_ * nSwapTenors_ == volSpreads_.Count, () =>
+                            "mismatch between number of option tenors * swap tenors (" +
+                            nOptionTenors_ * nSwapTenors_ + ") and number of rows (" +
+                            volSpreads_.Count + ")");
 
-         for (int i = 0; i<volSpreads_.Count; i++)
+         for (int i = 0; i < volSpreads_.Count; i++)
             Utils.QL_REQUIRE(nStrikes_ == volSpreads_[i].Count, () =>
                              "mismatch between number of strikes (" + nStrikes_ +
                              ") and number of columns (" + volSpreads_[i].Count +
@@ -66,10 +66,10 @@ namespace QLNet
          swapIndexBase_.registerWith(update);
          shortSwapIndexBase_.registerWith(update);
 
-         Utils.QL_REQUIRE(shortSwapIndexBase_.tenor()<swapIndexBase_.tenor(), () =>
-                          "short index tenor (" + shortSwapIndexBase_.tenor() +
-                          ") is not less than index tenor (" +
-                          swapIndexBase_.tenor() + ")");
+         Utils.QL_REQUIRE(shortSwapIndexBase_.tenor() < swapIndexBase_.tenor(), () =>
+                            "short index tenor (" + shortSwapIndexBase_.tenor() +
+                            ") is not less than index tenor (" +
+                            swapIndexBase_.tenor() + ")");
 
          registerWithVolatilitySpread();
          Settings.registerWith(update);
@@ -89,7 +89,7 @@ namespace QLNet
       public new Calendar calendar() { return atmVol_.link.calendar(); }
       public new int settlementDays() { return atmVol_.link.settlementDays(); }
       // VolatilityTermStructure interface
-      public override double minStrike() { return - double.MaxValue; }
+      public override double minStrike() { return -double.MaxValue; }
       public override double maxStrike() { return double.MaxValue; }
 
       // SwaptionVolatilityStructure interface
@@ -161,11 +161,11 @@ namespace QLNet
          return atmStrike(optionDate, swapTenor);
       }
       public Handle<SwaptionVolatilityStructure> atmVol() { return atmVol_; }
-      public List<double> strikeSpreads()  { return strikeSpreads_; }
-      public List<List<Handle<Quote> > > volSpreads() { return volSpreads_; }
+      public List<double> strikeSpreads() { return strikeSpreads_; }
+      public List<List<Handle<Quote>>> volSpreads() { return volSpreads_; }
       public SwapIndex swapIndexBase() { return swapIndexBase_; }
       public SwapIndex shortSwapIndexBase() { return shortSwapIndexBase_; }
-      public bool vegaWeightedSmileFit()  { return vegaWeightedSmileFit_; }
+      public bool vegaWeightedSmileFit() { return vegaWeightedSmileFit_; }
 
       // LazyObject interface
       protected override void performCalculations()
@@ -204,7 +204,7 @@ namespace QLNet
       protected List<double> strikeSpreads_;
       protected List<double> localStrikes_;
       protected List<double> localSmile_;
-      protected List<List<Handle<Quote> > > volSpreads_;
+      protected List<List<Handle<Quote>>> volSpreads_;
       protected SwapIndex swapIndexBase_, shortSwapIndexBase_;
       protected bool vegaWeightedSmileFit_;
 

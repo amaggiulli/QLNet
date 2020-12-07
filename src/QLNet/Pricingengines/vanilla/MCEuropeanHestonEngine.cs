@@ -23,8 +23,8 @@ namespace QLNet
              reproducing results available in web/literature
    */
    public class MCEuropeanHestonEngine<RNG, S> : MCVanillaEngine<MultiVariate, RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MCEuropeanHestonEngine(HestonProcess process,
                                     int? timeSteps,
@@ -36,7 +36,7 @@ namespace QLNet
                                     ulong seed)
       : base(process, timeSteps, timeStepsPerYear, false, antitheticVariate, false, requiredSamples, requiredTolerance,
              maxSamples, seed)
-      {}
+      { }
 
       protected override PathPricer<IPath> pathPricer()
       {
@@ -55,8 +55,8 @@ namespace QLNet
 
    //! Monte Carlo Heston European engine factory
    public class MakeMCEuropeanHestonEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MakeMCEuropeanHestonEngine(HestonProcess process)
       {

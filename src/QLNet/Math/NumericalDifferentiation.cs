@@ -81,7 +81,7 @@ namespace QLNet
          Utils.QL_REQUIRE(N > M, () => "number of points must be greater "
                           + "than the order of the derivative");
 
-         double[,,]  d = new double[M + 1, N, N];
+         double[,,] d = new double[M + 1, N, N];
          d[0, 0, 0] = 1.0;
          double c1 = 1.0;
 

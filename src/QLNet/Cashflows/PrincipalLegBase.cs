@@ -86,7 +86,7 @@ namespace QLNet
          double nominal = notionals_[0];
          double quota = nominal / (schedule_.Count - 1);
 
-         leg.Add(new Principal(nominal * sign_, nominal, paymentDate, start, end, dayCounter_,  start, end));
+         leg.Add(new Principal(nominal * sign_, nominal, paymentDate, start, end, dayCounter_, start, end));
 
          if (schedule_.Count == 2)
          {

@@ -28,7 +28,8 @@ namespace QLNet
       public EUHICP(bool interpolated, Handle<ZeroInflationTermStructure> ts)
          : base("HICP", new EURegion(), false, interpolated, Frequency.Monthly,
                 new Period(1, TimeUnit.Months), // availability
-                new EURCurrency(), ts) {}
+                new EURCurrency(), ts)
+      { }
    }
 
    //! Genuine year-on-year EU HICP (i.e. not a ratio of EU HICP)
@@ -39,7 +40,8 @@ namespace QLNet
 
       public YYEUHICP(bool interpolated, Handle<YoYInflationTermStructure> ts)
          : base("YY_HICP", new EURegion(), false, interpolated, false, Frequency.Monthly,
-                new Period(1, TimeUnit.Months), new EURCurrency(), ts) {}
+                new Period(1, TimeUnit.Months), new EURCurrency(), ts)
+      { }
    }
 
 
@@ -51,7 +53,8 @@ namespace QLNet
 
       public YYEUHICPr(bool interpolated, Handle<YoYInflationTermStructure> ts)
          : base("YYR_HICP", new EURegion(), false, interpolated, true, Frequency.Monthly,
-                new Period(1, TimeUnit.Months), new EURCurrency(), ts) {}
+                new Period(1, TimeUnit.Months), new EURCurrency(), ts)
+      { }
    }
 
 }

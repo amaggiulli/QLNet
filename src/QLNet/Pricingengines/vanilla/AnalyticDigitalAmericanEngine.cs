@@ -49,7 +49,7 @@ namespace QLNet
       public override void calculate()
       {
          AmericanExercise ex = arguments_.exercise as AmericanExercise;
-         Utils.QL_REQUIRE(ex != null, () =>  "non-American exercise given");
+         Utils.QL_REQUIRE(ex != null, () => "non-American exercise given");
          Utils.QL_REQUIRE(ex.dates()[0] <= process_.blackVolatility().link.referenceDate(), () =>
                           "American option with window exercise not handled yet");
 
@@ -84,7 +84,7 @@ namespace QLNet
          }
 
       }
-      public virtual bool knock_in() {return true;}
+      public virtual bool knock_in() { return true; }
 
       private GeneralizedBlackScholesProcess process_;
    }
@@ -114,10 +114,11 @@ namespace QLNet
 
    public class AnalyticDigitalAmericanKOEngine : AnalyticDigitalAmericanEngine
    {
-      public AnalyticDigitalAmericanKOEngine(GeneralizedBlackScholesProcess engine):
-         base(engine) {}
+      public AnalyticDigitalAmericanKOEngine(GeneralizedBlackScholesProcess engine) :
+         base(engine)
+      { }
 
-      public override bool knock_in() {return false;}
+      public override bool knock_in() { return false; }
 
    }
 

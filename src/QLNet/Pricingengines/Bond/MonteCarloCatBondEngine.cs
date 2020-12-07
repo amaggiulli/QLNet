@@ -75,7 +75,7 @@ namespace QLNet
          return discountCurve_;
       }
 
-      protected double cashFlowRiskyValue(CashFlow cf,  NotionalPath notionalPath)
+      protected double cashFlowRiskyValue(CashFlow cf, NotionalPath notionalPath)
       {
          return cf.amount() * notionalPath.notionalRate(cf.date()); //TODO: fix for more complicated cashflows
       }
@@ -88,7 +88,7 @@ namespace QLNet
                            out double expectedLoss)
       {
          const int MAX_PATHS = 10000; //TODO
-         lossProbability =  0.0;
+         lossProbability = 0.0;
          exhaustionProbability = 0.0;
          expectedLoss = 0.0;
          if (arguments_.cashflows.empty())
@@ -104,7 +104,7 @@ namespace QLNet
          Date effectiveDate = Date.Max(arguments_.startDate, settlementDate);
          Date maturityDate = arguments_.cashflows.Last().date();
          CatSimulation catSimulation = catRisk_.newSimulation(effectiveDate, maturityDate);
-         List<KeyValuePair<Date, double> > eventsPath = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> eventsPath = new List<KeyValuePair<Date, double>>();
          NotionalPath notionalPath = new NotionalPath();
          double riskFreeNPV = pathNpv(includeSettlementDateFlows, settlementDate, notionalPath);
          int pathCount = 0;

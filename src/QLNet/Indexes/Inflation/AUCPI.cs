@@ -25,7 +25,7 @@ namespace QLNet
       public AUCPI(Frequency frequency,
                    bool revised,
                    bool interpolated)
-         : this(frequency, revised, interpolated, new Handle<ZeroInflationTermStructure>()) {}
+         : this(frequency, revised, interpolated, new Handle<ZeroInflationTermStructure>()) { }
 
       public AUCPI(Frequency frequency,
                    bool revised,
@@ -38,7 +38,8 @@ namespace QLNet
                 frequency,
                 new Period(2, TimeUnit.Months),
                 new AUDCurrency(),
-                ts) {}
+                ts)
+      { }
 
    }
 
@@ -48,7 +49,7 @@ namespace QLNet
       public YYAUCPI(Frequency frequency,
                      bool revised,
                      bool interpolated)
-         : this(frequency, revised, interpolated, new Handle<YoYInflationTermStructure>()) {}
+         : this(frequency, revised, interpolated, new Handle<YoYInflationTermStructure>()) { }
 
       public YYAUCPI(Frequency frequency,
                      bool revised,
@@ -62,7 +63,8 @@ namespace QLNet
                 frequency,
                 new Period(2, TimeUnit.Months),
                 new AUDCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 
 
@@ -86,6 +88,7 @@ namespace QLNet
                 frequency,
                 new Period(2, TimeUnit.Months),
                 new AUDCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 }

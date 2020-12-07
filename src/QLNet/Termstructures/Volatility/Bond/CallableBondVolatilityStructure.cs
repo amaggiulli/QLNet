@@ -75,7 +75,7 @@ namespace QLNet
       //! returns the Black variance for a given option date and bond tenor
       public double blackVariance(Date optionDate, Period bondTenor, double strike, bool extrapolate = false)
       {
-         double vol =  volatility(optionDate, bondTenor, strike, extrapolate);
+         double vol = volatility(optionDate, bondTenor, strike, extrapolate);
          KeyValuePair<double, double> p = convertDates(optionDate, bondTenor);
          return vol * vol * p.Key;
       }

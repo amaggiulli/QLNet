@@ -35,7 +35,7 @@ namespace QLNet
    {
       public ConjugateGradient(LineSearch lineSearch = null)
          : base(lineSearch)
-      {}
+      { }
 
       protected override Vector getUpdatedDirection(Problem P, double gold2, Vector gradient)
       {

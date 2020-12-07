@@ -38,7 +38,7 @@ namespace QLNet
       #region Constructors
 
       protected ZeroYieldStructure(DayCounter dc = null, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(dc, jumps, jumpDates) {}
+         : base(dc, jumps, jumpDates) { }
 
       protected ZeroYieldStructure(Date referenceDate, Calendar calendar = null, DayCounter dc = null,
                                    List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)

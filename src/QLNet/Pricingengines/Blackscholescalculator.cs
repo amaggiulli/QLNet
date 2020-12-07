@@ -28,7 +28,7 @@ namespace QLNet
       protected double growth_;
 
       public BlackScholesCalculator(StrikedTypePayoff payoff, double spot, double growth, double stdDev, double discount)
-         : base(payoff, spot* growth / discount, stdDev, discount)
+         : base(payoff, spot * growth / discount, stdDev, discount)
       {
          spot_ = spot;
          growth_ = growth;
@@ -44,15 +44,15 @@ namespace QLNet
          return base.delta(spot_);
       }
 
-//        ! Sensitivity in percent to a percent change in the
-//            underlying spot price.
+      //        ! Sensitivity in percent to a percent change in the
+      //            underlying spot price.
       public double elasticity()
       {
          return base.elasticity(spot_);
       }
 
-//        ! Second order derivative with respect to change in the
-//            underlying spot price.
+      //        ! Second order derivative with respect to change in the
+      //            underlying spot price.
       public double gamma()
       {
          return base.gamma(spot_);
@@ -62,8 +62,8 @@ namespace QLNet
       {
          return base.theta(spot_, maturity);
       }
-//        ! Sensitivity to time to maturity per day
-//            (assuming 365 day in a year).
+      //        ! Sensitivity to time to maturity per day
+      //            (assuming 365 day in a year).
       public double thetaPerDay(double maturity)
       {
          return base.thetaPerDay(spot_, maturity);

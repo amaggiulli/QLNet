@@ -239,13 +239,13 @@ namespace TestSuite
             Date exDate = today + (int)(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot1 .setValue(values[i].s1);
-            spot2 .setValue(values[i].s2);
+            spot1.setValue(values[i].s1);
+            spot2.setValue(values[i].s2);
             qRate1.setValue(values[i].q1);
             qRate2.setValue(values[i].q2);
-            rRate .setValue(values[i].r);
-            vol1  .setValue(values[i].v1);
-            vol2  .setValue(values[i].v2);
+            rRate.setValue(values[i].r);
+            vol1.setValue(values[i].v1);
+            vol2.setValue(values[i].v2);
 
 
             IPricingEngine analyticEngine = null;
@@ -283,7 +283,7 @@ namespace TestSuite
             }
 
 
-            List<StochasticProcess1D> procs = new List<StochasticProcess1D> {p1, p2};
+            List<StochasticProcess1D> procs = new List<StochasticProcess1D> { p1, p2 };
 
             Matrix correlationMatrix = new Matrix(2, 2, values[i].rho);
             for (int j = 0; j < 2; j++)

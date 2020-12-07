@@ -33,7 +33,7 @@ namespace QLNet
    /*! Random sequence generator based on a pseudo-random number generator RNG.
        Do not use with low-discrepancy sequence generator.
    */
-   public class RandomSequenceGenerator<RNG> : IRNG where RNG : IRNGTraits, new ()
+   public class RandomSequenceGenerator<RNG> : IRNG where RNG : IRNGTraits, new()
    {
       private int dimensionality_;
 

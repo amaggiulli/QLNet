@@ -29,9 +29,11 @@ namespace QLNet
 
       // constructors
       public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter) :
-         this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
+         this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual)
+      { }
       public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter, Compounding compounding) :
-         this(referenceDate, forward, dayCounter, compounding, Frequency.Annual) {}
+         this(referenceDate, forward, dayCounter, compounding, Frequency.Annual)
+      { }
       public FlatForward(Date referenceDate, Quote forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
          base(referenceDate, new Calendar(), dayCounter)
       {
@@ -43,9 +45,11 @@ namespace QLNet
       }
 
       public FlatForward(Date referenceDate, double forward, DayCounter dayCounter) :
-         this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
+         this(referenceDate, forward, dayCounter, Compounding.Continuous, Frequency.Annual)
+      { }
       public FlatForward(Date referenceDate, double forward, DayCounter dayCounter, Compounding compounding) :
-         this(referenceDate, forward, dayCounter, compounding, Frequency.Annual) {}
+         this(referenceDate, forward, dayCounter, compounding, Frequency.Annual)
+      { }
       public FlatForward(Date referenceDate, double forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
          base(referenceDate, new Calendar(), dayCounter)
       {
@@ -55,9 +59,11 @@ namespace QLNet
       }
 
       public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter) :
-         this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
+         this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual)
+      { }
       public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter, Compounding compounding) :
-         this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual) {}
+         this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual)
+      { }
       public FlatForward(int settlementDays, Calendar calendar, Quote forward, DayCounter dayCounter, Compounding compounding, Frequency frequency) :
          base(settlementDays, calendar, dayCounter)
       {
@@ -69,9 +75,11 @@ namespace QLNet
       }
 
       public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter) :
-         this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual) {}
+         this(settlementDays, calendar, forward, dayCounter, Compounding.Continuous, Frequency.Annual)
+      { }
       public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter, Compounding compounding) :
-         this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual) {}
+         this(settlementDays, calendar, forward, dayCounter, compounding, Frequency.Annual)
+      { }
       public FlatForward(int settlementDays, Calendar calendar, double forward, DayCounter dayCounter,
                          Compounding compounding, Frequency frequency) :
          base(settlementDays, calendar, dayCounter)

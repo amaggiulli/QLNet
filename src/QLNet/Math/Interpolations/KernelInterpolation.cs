@@ -22,7 +22,7 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   public class KernelInterpolationImpl<Kernel> : Interpolation.templateImpl where Kernel: IKernelFunction
+   public class KernelInterpolationImpl<Kernel> : Interpolation.templateImpl where Kernel : IKernelFunction
    {
       public KernelInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, Kernel kernel)
          : base(xBegin, size, yBegin)

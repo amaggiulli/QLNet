@@ -34,16 +34,16 @@ namespace QLNet
    public class Concentrating1dMesher : Fdm1dMesher
    {
       public Concentrating1dMesher(double start, double end, int size,
-                                   Pair < double?, double? > cPoints = null,
+                                   Pair<double?, double?> cPoints = null,
                                    bool requireCPoint = false)
       : base(size)
       {
          Utils.QL_REQUIRE(end > start, () => "end must be larger than start");
          if (cPoints == null)
-            cPoints = new Pair < double?, double? >();
+            cPoints = new Pair<double?, double?>();
 
          double? cPoint = cPoints.first;
-         double ? density = cPoints.second == null ? null : cPoints.second * (end - start);
+         double? density = cPoints.second == null ? null : cPoints.second * (end - start);
 
          Utils.QL_REQUIRE(cPoint == null || (cPoint >= start && cPoint <= end),
                           () => "cPoint must be between start and end");
@@ -111,8 +111,8 @@ namespace QLNet
 
       public class OdeIntegrationFct
       {
-         public OdeIntegrationFct(List < double? > points,
-                                  List < double? > betas,
+         public OdeIntegrationFct(List<double?> points,
+                                  List<double?> betas,
                                   double tol)
          {
             rk_ = new AdaptiveRungeKutta(tol);
@@ -138,7 +138,7 @@ namespace QLNet
          }
 
          protected AdaptiveRungeKutta rk_;
-         protected List < double? > points_, betas_;
+         protected List<double?> points_, betas_;
       }
 
       public class OdeSolver : ISolver1d
@@ -179,14 +179,14 @@ namespace QLNet
       }
 
       public Concentrating1dMesher(double start, double end, int size,
-                                   List < Tuple < double?, double?, bool >> cPoints,
+                                   List<Tuple<double?, double?, bool>> cPoints,
                                    double tol = 1e-8)
       : base(size)
       {
          Utils.QL_REQUIRE(end > start, () => "end must be larger than start");
 
-         List < double? > points = new List < double? >(), betas = new List < double? >();
-         foreach (Tuple < double?, double?, bool > iter in cPoints)
+         List<double?> points = new List<double?>(), betas = new List<double?>();
+         foreach (Tuple<double?, double?, bool> iter in cPoints)
          {
             points.Add(iter.Item1);
             betas.Add((iter.Item2 * (end - start)) * (iter.Item2 * (end - start)));
@@ -227,8 +227,8 @@ namespace QLNet
          LinearInterpolation odeSolution = new LinearInterpolation(x, x.Count, y);
 
          // ensure required points are part of the grid
-         List < Pair < double?, double? >> w =
-            new InitializedList < Pair < double?, double? >> (1, new Pair < double?, double? >(0.0, 0.0));
+         List<Pair<double?, double?>> w =
+            new InitializedList<Pair<double?, double?>>(1, new Pair<double?, double?>(0.0, 0.0));
 
          for (int i = 0; i < points.Count; ++i)
          {
@@ -240,10 +240,10 @@ namespace QLNet
                   new OdeSolver2(odeSolution.value, points[i].Value),
                   Const.QL_EPSILON, x[j], 0.5 / size);
 
-               w.Add(new Pair < double?, double? >(Math.Min(x[size - 2], x[j]), e));
+               w.Add(new Pair<double?, double?>(Math.Min(x[size - 2], x[j]), e));
             }
          }
-         w.Add(new Pair < double?, double? >(1.0, 1.0));
+         w.Add(new Pair<double?, double?>(1.0, 1.0));
          w = w.OrderBy(xx => xx.first).Distinct(new equal_on_first()).ToList();
 
          List<double> u = new List<double>(w.Count), z = new List<double>(w.Count);

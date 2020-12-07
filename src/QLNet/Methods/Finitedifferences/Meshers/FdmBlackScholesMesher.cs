@@ -72,15 +72,15 @@ namespace QLNet
       }
    }
 
-   public class equal_on_first : IEqualityComparer < Pair < double?, double? >>
+   public class equal_on_first : IEqualityComparer<Pair<double?, double?>>
    {
-      public bool Equals(Pair < double?, double? > p1,
-                         Pair < double?, double? > p2)
+      public bool Equals(Pair<double?, double?> p1,
+                         Pair<double?, double?> p2)
       {
          return Utils.close_enough(p1.first.Value, p2.first.Value, 1000);
       }
 
-      public int GetHashCode(Pair < double?, double? > p)
+      public int GetHashCode(Pair<double?, double?> p)
       {
          return Convert.ToInt32(p.first.Value * p.second.Value);
       }
@@ -96,7 +96,7 @@ namespace QLNet
                                    double? xMaxConstraint = null,
                                    double eps = 0.0001,
                                    double scaleFactor = 1.5,
-                                   Pair < double?, double? > cPoint
+                                   Pair<double?, double?> cPoint
                                    = null,
                                    DividendSchedule dividendSchedule = null,
                                    FdmQuantoHelper fdmQuantoHelper = null,
@@ -182,7 +182,7 @@ namespace QLNet
          {
 
             helper = new Concentrating1dMesher(xMin.Value, xMax.Value, size,
-                                               new Pair < double?, double? >(Math.Log(cPoint.first.Value), cPoint.second));
+                                               new Pair<double?, double?>(Math.Log(cPoint.first.Value), cPoint.second));
          }
          else
          {
@@ -192,7 +192,7 @@ namespace QLNet
          locations_ = helper.locations();
          for (int i = 0; i < locations_.Count; ++i)
          {
-            dplus_[i]  = helper.dplus(i);
+            dplus_[i] = helper.dplus(i);
             dminus_[i] = helper.dminus(i);
          }
       }

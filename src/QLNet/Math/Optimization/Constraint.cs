@@ -229,9 +229,9 @@ namespace QLNet
    }
 
    //! %Constraint imposing i-th argument to be in [low_i,high_i] for all i
-   public class NonhomogeneousBoundaryConstraint: Constraint
+   public class NonhomogeneousBoundaryConstraint : Constraint
    {
-      private class Impl: IConstraint
+      private class Impl : IConstraint
       {
          public Impl(Vector low, Vector high)
          {
@@ -268,7 +268,7 @@ namespace QLNet
 
       public NonhomogeneousBoundaryConstraint(Vector low, Vector high)
          : base(new Impl(low, high))
-      {}
+      { }
    }
 
 }

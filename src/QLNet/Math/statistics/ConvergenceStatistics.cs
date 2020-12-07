@@ -53,7 +53,7 @@ namespace QLNet
        \test results are tested against known good values.
    */
    public class ConvergenceStatistics<T> : ConvergenceStatistics<T, DoublingConvergenceSteps>
-      where T : IGeneralStatistics, new ()
+      where T : IGeneralStatistics, new()
    {
       public ConvergenceStatistics(T stats, DoublingConvergenceSteps rule) : base(stats, rule) { }
       public ConvergenceStatistics() : base(new DoublingConvergenceSteps()) { }
@@ -61,12 +61,12 @@ namespace QLNet
    }
 
    public class ConvergenceStatistics<T, U> : IGeneralStatistics
-      where T : IGeneralStatistics, new ()
-      where U : IConvergenceSteps, new ()
+      where T : IGeneralStatistics, new()
+      where U : IConvergenceSteps, new()
    {
 
       private List<KeyValuePair<int, double>> table_ = new List<KeyValuePair<int, double>>();
-      public List<KeyValuePair<int, double>>convergenceTable() { return table_; }
+      public List<KeyValuePair<int, double>> convergenceTable() { return table_; }
 
       private U samplingRule_;
       private int nextSampleSize_;
@@ -94,7 +94,8 @@ namespace QLNet
       }
 
       public void add
-         (double value) { add(value, 1); }
+         (double value)
+      { add(value, 1); }
       public void add
          (double value, double weight)
       {

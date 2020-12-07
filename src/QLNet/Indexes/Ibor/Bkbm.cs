@@ -40,7 +40,7 @@ namespace QLNet
    {
       public Bkbm1M(Handle<YieldTermStructure> h = null)
          : base(new Period(1, TimeUnit.Months), h ?? new Handle<YieldTermStructure>())
-      {}
+      { }
    }
 
    //! 2-month %Bkbm index

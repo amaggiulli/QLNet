@@ -31,11 +31,11 @@ namespace QLNet
       public GBPLibor(Period tenor)
          : base("GBPLibor", tenor, 0, new GBPCurrency(), new UnitedKingdom(UnitedKingdom.Market.Exchange), new Actual365Fixed(),
                 new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public GBPLibor(Period tenor, Handle<YieldTermStructure> h)
          : base("GBPLibor", tenor, 0, new GBPCurrency(), new UnitedKingdom(UnitedKingdom.Market.Exchange), new Actual365Fixed(), h)
-      {}
+      { }
 
    }
 
@@ -45,13 +45,13 @@ namespace QLNet
       public DailyTenorGBPLibor(int settlementDays, Handle<YieldTermStructure> h)
          : base("GBPLibor", settlementDays, new GBPCurrency(), new UnitedKingdom(UnitedKingdom.Market.Exchange),
                 new Actual365Fixed(), h)
-      {}
+      { }
    }
 
    //! Overnight %GBP %Libor index
    public class GBPLiborON : DailyTenorGBPLibor
    {
       public GBPLiborON(Handle<YieldTermStructure> h) : base(0, h)
-      {}
+      { }
    }
 }

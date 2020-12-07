@@ -99,7 +99,7 @@ namespace QLNet
 
          next_.weight = sequence_.weight;
 
-         Path path = (Path) next_.value;
+         Path path = (Path)next_.value;
          path.setFront(process_.x0());
 
          for (int i = 1; i < path.length(); i++)

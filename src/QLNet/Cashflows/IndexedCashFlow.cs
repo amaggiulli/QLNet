@@ -48,8 +48,8 @@ namespace QLNet
       }
 
       public override Date date() { return paymentDate_; }
-      public virtual double notional()  { return notional_; }
-      public virtual Date baseDate()  { return baseDate_; }
+      public virtual double notional() { return notional_; }
+      public virtual Date baseDate() { return baseDate_; }
       public virtual Date fixingDate() { return fixingDate_; }
       public virtual Index index() { return index_; }
       public virtual bool growthOnly() { return growthOnly_; }

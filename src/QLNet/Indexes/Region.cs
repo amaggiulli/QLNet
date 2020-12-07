@@ -32,7 +32,7 @@ namespace QLNet
          return data_.code;
       }
 
-      protected  Region() {}
+      protected Region() { }
       protected struct Data
       {
          public readonly string name;

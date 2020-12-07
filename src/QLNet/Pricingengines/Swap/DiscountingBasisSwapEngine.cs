@@ -43,9 +43,9 @@ namespace QLNet
 
          results_.value = results_.cash = 0;
          results_.errorEstimate = null;
-         results_.legNPV = new InitializedList < double? >(arguments_.legs.Count);
-         results_.legBPS = new InitializedList < double? >(arguments_.legs.Count);
-         List < double? > startDiscounts = new InitializedList < double? >(arguments_.legs.Count);
+         results_.legNPV = new InitializedList<double?>(arguments_.legs.Count);
+         results_.legBPS = new InitializedList<double?>(arguments_.legs.Count);
+         List<double?> startDiscounts = new InitializedList<double?>(arguments_.legs.Count);
          for (int i = 0; i < arguments_.legs.Count; ++i)
          {
             results_.value += results_.legNPV[i];

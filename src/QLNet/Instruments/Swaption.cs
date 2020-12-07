@@ -27,11 +27,13 @@ namespace QLNet
    public struct Settlement
    {
       public enum Type { Physical, Cash };
-      public enum Method { PhysicalOTC,
-                           PhysicalCleared,
-                           CollateralizedCashPrice,
-                           ParYieldCurve
-                         };
+      public enum Method
+      {
+         PhysicalOTC,
+         PhysicalCleared,
+         CollateralizedCashPrice,
+         ParYieldCurve
+      };
 
       public static void checkTypeAndMethodConsistency(Type settlementType, Method settlementMethod)
       {

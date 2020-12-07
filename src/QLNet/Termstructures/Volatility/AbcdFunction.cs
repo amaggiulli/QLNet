@@ -22,9 +22,9 @@ namespace QLNet
        following Rebonato's notation. */
    public class AbcdFunction : AbcdMathFunction
    {
-      public AbcdFunction(double a = -0.06, double b =  0.17, double c =  0.54, double d =  0.17)
+      public AbcdFunction(double a = -0.06, double b = 0.17, double c = 0.54, double d = 0.17)
          : base(a, b, c, d)
-      {}
+      { }
 
       //! maximum value of the volatility function
       public double maximumVolatility() { return maximumValue(); }

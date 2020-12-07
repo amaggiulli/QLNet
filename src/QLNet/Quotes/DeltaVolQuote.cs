@@ -64,7 +64,7 @@ namespace QLNet
          vol_.registerWith(update);
       }
 
-      public void update()  { notifyObservers(); }
+      public void update() { notifyObservers(); }
 
       public override double value() { return vol_.link.value(); }
       public double delta() { return delta_; }

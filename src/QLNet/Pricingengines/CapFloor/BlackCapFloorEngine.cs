@@ -27,7 +27,7 @@ namespace QLNet
    /// </summary>
    public class BlackCapFloorEngine : CapFloorEngine
    {
-      private  Handle<YieldTermStructure> discountCurve_;
+      private Handle<YieldTermStructure> discountCurve_;
       private Handle<OptionletVolatilityStructure> vol_;
       private double displacement_;
 

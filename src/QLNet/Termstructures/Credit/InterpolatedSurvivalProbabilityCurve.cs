@@ -24,7 +24,7 @@ namespace QLNet
    /// </summary>
    /// <typeparam name="Interpolator"></typeparam>
    public class InterpolatedSurvivalProbabilityCurve<Interpolator> : SurvivalProbabilityStructure,
-      InterpolatedCurve where Interpolator : IInterpolationFactory, new ()
+      InterpolatedCurve where Interpolator : IInterpolationFactory, new()
    {
       public InterpolatedSurvivalProbabilityCurve(List<Date> dates,
                                                   List<double> probabilities,
@@ -41,7 +41,7 @@ namespace QLNet
          Utils.QL_REQUIRE(this.data_.Count == dates_.Count, () => "dates/data count mismatch");
          Utils.QL_REQUIRE(this.data_[0].IsEqual(1.0), () => "the first probability must be == 1.0 to flag the corresponding date as reference date");
 
-         this.times_  = new InitializedList<double>(dates_.Count);
+         this.times_ = new InitializedList<double>(dates_.Count);
          this.times_[0] = 0.0;
          for (int i = 1; i < dates_.Count; ++i)
          {

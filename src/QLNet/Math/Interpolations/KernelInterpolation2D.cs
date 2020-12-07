@@ -39,7 +39,7 @@ namespace QLNet
        corresponding to the grid above.
      - kernel is a template which needs a Real operator()(Real x) implementation
    */
-   public class KernelInterpolation2DImpl<Kernel> : Interpolation2D.templateImpl where Kernel: IKernelFunction
+   public class KernelInterpolation2DImpl<Kernel> : Interpolation2D.templateImpl where Kernel : IKernelFunction
    {
       public KernelInterpolation2DImpl(List<double> xBegin, int size, List<double> yBegin, int ySize,
                                        Matrix zData, Kernel kernel)
@@ -88,7 +88,7 @@ namespace QLNet
       // singularity or rounding errors the recalculation
       // M*a may not give y. Here, a failure will be thrown if
       // |M*a-y|>=invPrec_
-      public void setInverseResultPrecision(double invPrec) {invPrec_ = invPrec;}
+      public void setInverseResultPrecision(double invPrec) { invPrec_ = invPrec; }
 
 
       // returns K(||X-Y||) where X,Y are vectors
@@ -160,8 +160,8 @@ namespace QLNet
          Vector diffVec = Vector.Abs(M_ * alphaVec_ - yVec_);
          for (int i = 0; i < diffVec.size(); ++i)
          {
-            Utils.QL_REQUIRE(diffVec[i]<invPrec_, () =>
-                             "inversion failed in 2d kernel interpolation");
+            Utils.QL_REQUIRE(diffVec[i] < invPrec_, () =>
+                               "inversion failed in 2d kernel interpolation");
          }
       }
 

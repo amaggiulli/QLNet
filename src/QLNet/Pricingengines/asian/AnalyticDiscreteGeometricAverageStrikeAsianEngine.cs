@@ -57,7 +57,7 @@ namespace QLNet
          PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
          Utils.QL_REQUIRE(payoff != null, () => "non-plain payoff given");
 
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
 
@@ -75,7 +75,7 @@ namespace QLNet
          int numberOfFixings = pastFixings.GetValueOrDefault() + remainingFixings;
          double N = (double)(numberOfFixings);
 
-         double pastWeight   = pastFixings.GetValueOrDefault() / N;
+         double pastWeight = pastFixings.GetValueOrDefault() / N;
          double futureWeight = 1.0 - pastWeight;
 
          double timeSum = 0;

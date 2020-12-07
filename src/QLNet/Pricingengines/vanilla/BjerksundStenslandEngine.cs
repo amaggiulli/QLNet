@@ -73,13 +73,13 @@ namespace QLNet
             double forwardPrice = spot * dividendDiscount / riskFreeDiscount;
             BlackCalculator black = new BlackCalculator(payoff, forwardPrice, Math.Sqrt(variance), riskFreeDiscount);
 
-            results_.value        = black.value();
-            results_.delta        = black.delta(spot);
+            results_.value = black.value();
+            results_.delta = black.delta(spot);
             results_.deltaForward = black.deltaForward();
-            results_.elasticity   = black.elasticity(spot);
-            results_.gamma        = black.gamma(spot);
+            results_.elasticity = black.elasticity(spot);
+            results_.gamma = black.gamma(spot);
 
-            DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+            DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
             DayCounter divdc = process_.dividendYield().link.dayCounter();
             DayCounter voldc = process_.blackVolatility().link.dayCounter();
             double t = rfdc.yearFraction(process_.riskFreeRate().link.referenceDate(), arguments_.exercise.lastDate());
@@ -89,11 +89,11 @@ namespace QLNet
             results_.dividendRho = black.dividendRho(t);
 
             t = voldc.yearFraction(process_.blackVolatility().link.referenceDate(), arguments_.exercise.lastDate());
-            results_.vega        = black.vega(t);
-            results_.theta       = black.theta(spot, t);
+            results_.vega = black.vega(t);
+            results_.theta = black.theta(spot, t);
             results_.thetaPerDay = black.thetaPerDay(spot, t);
 
-            results_.strikeSensitivity  = black.strikeSensitivity();
+            results_.strikeSensitivity = black.strikeSensitivity();
             results_.itmCashProbability = black.itmCashProbability();
          }
          else
@@ -143,10 +143,10 @@ namespace QLNet
             double alpha = (I - X) * Math.Pow(I, (-beta));
             return (I - X) * Math.Pow(S / I, beta)
                    * (1 - phi(S, beta, I, I, rT, bT, variance))
-                   +    S *  phi(S,  1.0, I, I, rT, bT, variance)
-                   -    S *  phi(S,  1.0, X, I, rT, bT, variance)
-                   -    X *  phi(S,  0.0, I, I, rT, bT, variance)
-                   +    X *  phi(S,  0.0, X, I, rT, bT, variance);
+                   + S * phi(S, 1.0, I, I, rT, bT, variance)
+                   - S * phi(S, 1.0, X, I, rT, bT, variance)
+                   - X * phi(S, 0.0, I, I, rT, bT, variance)
+                   + X * phi(S, 0.0, X, I, rT, bT, variance);
          }
       }
 

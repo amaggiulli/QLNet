@@ -75,8 +75,8 @@ namespace QLNet
          }
       }
 
-      public class Engine :  GenericEngine<CPISwap.Arguments, CPISwap.Results>
-      {}
+      public class Engine : GenericEngine<CPISwap.Arguments, CPISwap.Results>
+      { }
 
       public CPISwap(Type type,
                      double nominal,
@@ -229,32 +229,32 @@ namespace QLNet
       }
 
       // inspectors
-      public virtual Type type() {return type_; }
-      public virtual double nominal() {return nominal_;}
-      public virtual bool subtractInflationNominal() {return subtractInflationNominal_;}
+      public virtual Type type() { return type_; }
+      public virtual double nominal() { return nominal_; }
+      public virtual bool subtractInflationNominal() { return subtractInflationNominal_; }
 
       // float+spread
-      public virtual double spread() {return spread_; }
-      public virtual DayCounter floatDayCount() {return floatDayCount_;}
-      public virtual Schedule floatSchedule() {return floatSchedule_;}
-      public virtual BusinessDayConvention floatPaymentRoll() {return floatPaymentRoll_;}
-      public virtual int fixingDays() { return fixingDays_;}
-      public virtual IborIndex floatIndex() {return floatIndex_;}
+      public virtual double spread() { return spread_; }
+      public virtual DayCounter floatDayCount() { return floatDayCount_; }
+      public virtual Schedule floatSchedule() { return floatSchedule_; }
+      public virtual BusinessDayConvention floatPaymentRoll() { return floatPaymentRoll_; }
+      public virtual int fixingDays() { return fixingDays_; }
+      public virtual IborIndex floatIndex() { return floatIndex_; }
 
       // fixed rate x inflation
-      public virtual double fixedRate() {return fixedRate_;}
-      public virtual double baseCPI() {return baseCPI_;}
-      public virtual DayCounter fixedDayCount() {return fixedDayCount_; }
-      public virtual Schedule fixedSchedule() {return fixedSchedule_; }
-      public virtual BusinessDayConvention fixedPaymentRoll() {return fixedPaymentRoll_;}
-      public virtual Period observationLag() {return observationLag_; }
-      public virtual ZeroInflationIndex fixedIndex() {return fixedIndex_;}
-      public virtual InterpolationType observationInterpolation() {return observationInterpolation_;}
-      public virtual double inflationNominal() {return inflationNominal_;}
+      public virtual double fixedRate() { return fixedRate_; }
+      public virtual double baseCPI() { return baseCPI_; }
+      public virtual DayCounter fixedDayCount() { return fixedDayCount_; }
+      public virtual Schedule fixedSchedule() { return fixedSchedule_; }
+      public virtual BusinessDayConvention fixedPaymentRoll() { return fixedPaymentRoll_; }
+      public virtual Period observationLag() { return observationLag_; }
+      public virtual ZeroInflationIndex fixedIndex() { return fixedIndex_; }
+      public virtual InterpolationType observationInterpolation() { return observationInterpolation_; }
+      public virtual double inflationNominal() { return inflationNominal_; }
 
       // legs
-      public virtual List<CashFlow>  cpiLeg() {return legs_[0];}
-      public virtual List<CashFlow> floatLeg() {return legs_[1];}
+      public virtual List<CashFlow> cpiLeg() { return legs_[0]; }
+      public virtual List<CashFlow> floatLeg() { return legs_[1]; }
 
       // other
       public override void fetchResults(IPricingEngineResults r)

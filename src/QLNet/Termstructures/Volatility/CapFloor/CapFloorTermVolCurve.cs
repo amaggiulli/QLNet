@@ -31,7 +31,7 @@ namespace QLNet
                                   Calendar calendar,
                                   BusinessDayConvention bdc,
                                   List<Period> optionTenors,
-                                  List<Handle<Quote> > vols,
+                                  List<Handle<Quote>> vols,
                                   DayCounter dc = null)  // Actual365Fixed()
          : base(settlementDays, calendar, bdc, dc ?? new Actual365Fixed())
       {
@@ -53,7 +53,7 @@ namespace QLNet
                                   Calendar calendar,
                                   BusinessDayConvention bdc,
                                   List<Period> optionTenors,
-                                  List<Handle<Quote> > vols,
+                                  List<Handle<Quote>> vols,
                                   DayCounter dc = null)  // Actual365Fixed()
          : base(settlementDate, calendar, bdc, dc ?? new Actual365Fixed())
       {
@@ -215,7 +215,7 @@ namespace QLNet
       List<double> optionTimes_;
       Date evaluationDate_;
 
-      List<Handle<Quote> > volHandles_;
+      List<Handle<Quote>> volHandles_;
       List<double> vols_;
 
       // make it not mutable if possible

@@ -133,7 +133,7 @@ namespace TestSuite
          double error, tolerance = 2.0e-7;
 
          for (int j = 0; j < assets; j++)
-            calculated[j] = value[j].back() ;
+            calculated[j] = value[j].back();
 
          for (int j = 0; j < assets; j++)
          {
@@ -178,9 +178,9 @@ namespace TestSuite
          // Testing 1-D path generation against cached values
          Settings.setEvaluationDate(new Date(26, 4, 2005));
 
-         Handle<Quote> x0 = new Handle<Quote> (new SimpleQuote(100.0));
-         Handle<YieldTermStructure> r = new Handle<YieldTermStructure> (Utilities.flatRate(0.05, new Actual360()));
-         Handle<YieldTermStructure> q = new Handle<YieldTermStructure> (Utilities.flatRate(0.02, new Actual360()));
+         Handle<Quote> x0 = new Handle<Quote>(new SimpleQuote(100.0));
+         Handle<YieldTermStructure> r = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, new Actual360()));
+         Handle<YieldTermStructure> q = new Handle<YieldTermStructure>(Utilities.flatRate(0.02, new Actual360()));
          Handle<BlackVolTermStructure> sigma = new Handle<BlackVolTermStructure>(Utilities.flatVol(0.20, new Actual360()));
          // commented values must be used when Halley's correction is enabled
          testSingle(new BlackScholesMertonProcess(x0, q, r, sigma),
@@ -208,17 +208,17 @@ namespace TestSuite
          // Testing n-D path generation against cached values
          Settings.setEvaluationDate(new Date(26, 4, 2005));
 
-         Handle<Quote> x0 = new Handle<Quote> (new SimpleQuote(100.0));
-         Handle<YieldTermStructure> r = new Handle<YieldTermStructure> (Utilities.flatRate(0.05, new Actual360()));
-         Handle<YieldTermStructure> q = new Handle<YieldTermStructure> (Utilities.flatRate(0.02, new Actual360()));
-         Handle<BlackVolTermStructure> sigma = new Handle<BlackVolTermStructure> (Utilities.flatVol(0.20, new Actual360()));
+         Handle<Quote> x0 = new Handle<Quote>(new SimpleQuote(100.0));
+         Handle<YieldTermStructure> r = new Handle<YieldTermStructure>(Utilities.flatRate(0.05, new Actual360()));
+         Handle<YieldTermStructure> q = new Handle<YieldTermStructure>(Utilities.flatRate(0.02, new Actual360()));
+         Handle<BlackVolTermStructure> sigma = new Handle<BlackVolTermStructure>(Utilities.flatVol(0.20, new Actual360()));
 
          Matrix correlation = new Matrix(3, 3);
          correlation[0, 0] = 1.0; correlation[0, 1] = 0.9; correlation[0, 2] = 0.7;
          correlation[1, 0] = 0.9; correlation[1, 1] = 1.0; correlation[1, 2] = 0.4;
          correlation[2, 0] = 0.7; correlation[2, 1] = 0.4; correlation[2, 2] = 1.0;
 
-         List<StochasticProcess1D>  processes = new List<StochasticProcess1D>(3);
+         List<StochasticProcess1D> processes = new List<StochasticProcess1D>(3);
          StochasticProcess process;
 
          processes.Add(new BlackScholesMertonProcess(x0, q, r, sigma));

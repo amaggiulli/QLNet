@@ -20,15 +20,15 @@ namespace QLNet
 {
    public interface IBrownianGenerator
    {
-      double nextStep(List<double> l) ;
-      double nextPath() ;
-      int numberOfFactors() ;
-      int numberOfSteps() ;
+      double nextStep(List<double> l);
+      double nextPath();
+      int numberOfFactors();
+      int numberOfSteps();
    }
 
    public interface IBrownianGeneratorFactory
    {
-      IBrownianGenerator create(int factors, int steps) ;
+      IBrownianGenerator create(int factors, int steps);
    }
 
 }

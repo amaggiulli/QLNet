@@ -212,7 +212,7 @@ namespace QLNet
          update();
       }
 
-      protected virtual void generateArguments() {}
+      protected virtual void generateArguments() { }
 
 
       //! Constraint imposed on arguments

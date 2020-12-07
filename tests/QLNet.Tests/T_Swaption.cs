@@ -82,7 +82,7 @@ namespace TestSuite
                                       Settlement.Method settlementMethod = Settlement.Method.PhysicalOTC,
                                       BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel model = BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.SwapRate)
          {
-            Handle<Quote> vol = new Handle <Quote>(new SimpleQuote(volatility));
+            Handle<Quote> vol = new Handle<Quote>(new SimpleQuote(volatility));
             IPricingEngine engine = new BlackSwaptionEngine(termStructure, vol, new Actual365Fixed(), 0.0, model);
             Swaption result = new Swaption(swap, new EuropeanExercise(exercise), settlementType, settlementMethod);
             result.setPricingEngine(engine);
@@ -92,7 +92,7 @@ namespace TestSuite
          public IPricingEngine makeEngine(double volatility,
                                           BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel model = BlackStyleSwaptionEngine<Black76Spec>.CashAnnuityModel.SwapRate)
          {
-            Handle<Quote> h = new Handle < Quote >(new SimpleQuote(volatility));
+            Handle<Quote> h = new Handle<Quote>(new SimpleQuote(volatility));
             return (IPricingEngine)(new BlackSwaptionEngine(termStructure, h, new Actual365Fixed(), 0.0, model));
          }
 
@@ -124,11 +124,11 @@ namespace TestSuite
          CommonVars vars = new CommonVars();
          double[] strikes = new double[] { 0.03, 0.04, 0.05, 0.06, 0.07 };
 
-         for (int i = 0; i <  exercises.Length; i++)
+         for (int i = 0; i < exercises.Length; i++)
          {
             for (int j = 0; j < lengths.Length; j++)
             {
-               for (int k = 0; k < type.Length ; k++)
+               for (int k = 0; k < type.Length; k++)
                {
                   Date exerciseDate = vars.calendar.advance(vars.today,
                                                             exercises[i]);
@@ -139,13 +139,13 @@ namespace TestSuite
                   List<double> values_cash = new InitializedList<double>(strikes.Length);
                   double vol = 0.20;
 
-                  for (int l = 0; l < strikes.Length ; l++)
+                  for (int l = 0; l < strikes.Length; l++)
                   {
-                     VanillaSwap swap    = new MakeVanillaSwap(lengths[j], vars.index, strikes[l])
+                     VanillaSwap swap = new MakeVanillaSwap(lengths[j], vars.index, strikes[l])
                      .withEffectiveDate(startDate)
                      .withFloatingLegSpread(0.0)
                      .withType(type[k]);
-                     Swaption swaption   = vars.makeSwaption(swap, exerciseDate, vol);
+                     Swaption swaption = vars.makeSwaption(swap, exerciseDate, vol);
                      // FLOATING_POINT_EXCEPTION
                      values[l] = swaption.NPV();
                      Swaption swaption_cash = vars.makeSwaption(swap, exerciseDate, vol,
@@ -167,7 +167,7 @@ namespace TestSuite
                                         "\noption date:  " + exerciseDate +
                                         "\nvolatility:   " + vol +
                                         "\nswap tenor:   " + lengths[j] +
-                                        "\nvalue:        " + values[z  ] + " at strike: " + strikes[z  ] +
+                                        "\nvalue:        " + values[z] + " at strike: " + strikes[z] +
                                         "\nvalue:        " + values[z + 1] + " at strike: " + strikes[z + 1]);
                         }
                      }
@@ -230,11 +230,11 @@ namespace TestSuite
 
          double[] spreads = { -0.002, -0.001, 0.0, 0.001, 0.002 };
 
-         for (int i = 0; i < exercises.Length ; i++)
+         for (int i = 0; i < exercises.Length; i++)
          {
-            for (int j = 0; j < lengths.Length ; j++)
+            for (int j = 0; j < lengths.Length; j++)
             {
-               for (int k = 0; k < type.Length ; k++)
+               for (int k = 0; k < type.Length; k++)
                {
                   Date exerciseDate = vars.calendar.advance(vars.today,
                                                             exercises[i]);
@@ -300,7 +300,7 @@ namespace TestSuite
                                         "in a receiver swaption (cash delivered):" +
                                         "\nexercise date: " + exerciseDate +
                                         "\nlength: " + lengths[j] +
-                                        "\nvalue:  " + values_cash[n  ] + " for spread: " + spreads[n] +
+                                        "\nvalue:  " + values_cash[n] + " for spread: " + spreads[n] +
                                         "\nvalue:  " + values_cash[n + 1] + " for spread: " + spreads[n + 1]);
                      }
                   }
@@ -319,16 +319,16 @@ namespace TestSuite
 
          for (int i = 0; i < exercises.Length; i++)
          {
-            for (int j = 0; j < lengths.Length ; j++)
+            for (int j = 0; j < lengths.Length; j++)
             {
-               for (int k = 0; k < type.Length ; k++)
+               for (int k = 0; k < type.Length; k++)
                {
                   Date exerciseDate = vars.calendar.advance(vars.today,
                                                             exercises[i]);
                   Date startDate =
                      vars.calendar.advance(exerciseDate,
                                            vars.settlementDays, TimeUnit.Days);
-                  for (int l = 0; l < spreads.Length ; l++)
+                  for (int l = 0; l < spreads.Length; l++)
                   {
                      VanillaSwap swap =
                         new MakeVanillaSwap(lengths[j], vars.index, 0.06)
@@ -371,8 +371,8 @@ namespace TestSuite
                                      "\nlength: " + lengths[j] +
                                      //"\npay " + (type[k] ? "fixed" : "floating") +
                                      "\nspread: " + spreads[l] +
-                                     "\nvalue of original swaption:   "  + swaption1_cash.NPV() +
-                                     "\nvalue of equivalent swaption: "  + swaption2_cash.NPV());
+                                     "\nvalue of original swaption:   " + swaption1_cash.NPV() +
+                                     "\nvalue of equivalent swaption: " + swaption2_cash.NPV());
                   }
                }
             }
@@ -423,24 +423,24 @@ namespace TestSuite
          double[] strikes = { 0.03, 0.04, 0.05, 0.06, 0.07 };
          double[] vols = { 0.01, 0.20, 0.30, 0.70, 0.90 };
          double shift = 1e-8;
-         for (int i = 0; i < exercises.Length ; i++)
+         for (int i = 0; i < exercises.Length; i++)
          {
             Date exerciseDate = vars.calendar.advance(vars.today, exercises[i]);
             // A VERIFIER§§§§
             Date startDate = vars.calendar.advance(exerciseDate,
                                                    vars.settlementDays, TimeUnit.Days);
-            for (int j = 0; j < lengths.Length ; j++)
+            for (int j = 0; j < lengths.Length; j++)
             {
-               for (int t = 0; t < strikes.Length ; t++)
+               for (int t = 0; t < strikes.Length; t++)
                {
-                  for (int h = 0; h < type.Length ; h++)
+                  for (int h = 0; h < type.Length; h++)
                   {
                      VanillaSwap swap =
                         new MakeVanillaSwap(lengths[j], vars.index, strikes[t])
                      .withEffectiveDate(startDate)
                      .withFloatingLegSpread(0.0)
                      .withType(type[h]);
-                     for (int u = 0; u < vols.Length ; u++)
+                     for (int u = 0; u < vols.Length; u++)
                      {
                         Swaption swaption =
                            vars.makeSwaption(swap, exerciseDate,
@@ -562,7 +562,7 @@ namespace TestSuite
 
                // FlatForward curves
                // FLOATING_POINT_EXCEPTION
-               Handle<YieldTermStructure> termStructure_u360  = new Handle<YieldTermStructure>(
+               Handle<YieldTermStructure> termStructure_u360 = new Handle<YieldTermStructure>(
                   new FlatForward(vars.settlement, swap_u360.fairRate(),
                                   new Thirty360(), Compounding.Compounded,
                                   vars.fixedFrequency));
@@ -664,7 +664,7 @@ namespace TestSuite
                double value_c_a365 = swaption_c_a365.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_a365 = value_c_a365 / value_p_a365;
-               double annuity_ratio_a365 =  cashannuity_a365 / annuity_a365;
+               double annuity_ratio_a365 = cashannuity_a365 / annuity_a365;
 
                // Swaptions: underlying swap fixed leg conventions:
                // modified following, 30/360
@@ -681,7 +681,7 @@ namespace TestSuite
                double value_c_a360 = swaption_c_a360.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_a360 = value_c_a360 / value_p_a360;
-               double annuity_ratio_a360 =  cashannuity_a360 / annuity_a360;
+               double annuity_ratio_a360 = cashannuity_a360 / annuity_a360;
 
                // Swaptions: underlying swap fixed leg conventions:
                // unadjusted, act/365
@@ -698,7 +698,7 @@ namespace TestSuite
                double value_c_u365 = swaption_c_u365.NPV();
                // the NPV's ratio must be equal to annuities ratio
                double npv_ratio_u365 = value_c_u365 / value_p_u365;
-               double annuity_ratio_u365 =  cashannuity_u365 / annuity_u365;
+               double annuity_ratio_u365 = cashannuity_u365 / annuity_u365;
 
                if (Math.Abs(annuity_ratio_u360 - npv_ratio_u360) > 1e-10)
                {
@@ -713,11 +713,11 @@ namespace TestSuite
                                "    Settlement date : " +
                                vars.settlement + "\n" +
                                "    Exercise date   : " +
-                               exerciseDate + "\n"   +
+                               exerciseDate + "\n" +
                                "    Swap start date : " +
-                               startDate + "\n"   +
+                               startDate + "\n" +
                                "    Swap end date   : " +
-                               maturity +     "\n"   +
+                               maturity + "\n" +
                                "    physical delivered swaption npv : " +
                                value_p_u360 + "\t\t\t" +
                                "    annuity : " +
@@ -746,16 +746,16 @@ namespace TestSuite
                                "    Settlement date : " +
                                vars.settlement + "\n" +
                                "    Exercise date   : " +
-                               exerciseDate +  "\n"  +
+                               exerciseDate + "\n" +
                                "    Swap start date : " +
-                               startDate + "\n"   +
+                               startDate + "\n" +
                                "    Swap end date   : " +
-                               maturity +     "\n"   +
-                               "    physical delivered swaption npv : "  +
+                               maturity + "\n" +
+                               "    physical delivered swaption npv : " +
                                value_p_a365 + "\t\t\t" +
                                "    annuity : " +
                                annuity_a365 + "\n" +
-                               "    cash delivered swaption npv :     "  +
+                               "    cash delivered swaption npv :     " +
                                value_c_a365 + "\t\t\t" +
                                "    annuity : " +
                                cashannuity_a365 + "\n" +
@@ -779,11 +779,11 @@ namespace TestSuite
                                "    Settlement date : " +
                                vars.settlement + "\n" +
                                "    Exercise date   : " +
-                               exerciseDate + "\n"   +
+                               exerciseDate + "\n" +
                                "    Swap start date : " +
-                               startDate + "\n"   +
+                               startDate + "\n" +
                                "    Swap end date   : " +
-                               maturity +     "\n"   +
+                               maturity + "\n" +
                                "    physical delivered swaption npv : " +
                                value_p_a360 + "\t\t\t" +
                                "    annuity : " +
@@ -812,11 +812,11 @@ namespace TestSuite
                                "    Settlement date : " +
                                vars.settlement + "\n" +
                                "    Exercise date   : " +
-                               exerciseDate + "\n"   +
+                               exerciseDate + "\n" +
                                "    Swap start date : " +
-                               startDate + "\n"   +
+                               startDate + "\n" +
                                "    Swap end date   : " +
-                               maturity +     "\n"   +
+                               maturity + "\n" +
                                "    physical delivered swaption npv : " +
                                value_p_u365 + "\t\t\t" +
                                "    annuity : " +

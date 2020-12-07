@@ -45,7 +45,7 @@ namespace QLNet
 
        \ingroup calendars
    */
-   public class Sweden :  Calendar
+   public class Sweden : Calendar
    {
       public Sweden() : base(Impl.Singleton) { }
 
@@ -72,11 +72,11 @@ namespace QLNet
                 // Whit Monday
                 || (dd == em + 49)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // Epiphany
-                || (d == 6  && m == Month.January)
+                || (d == 6 && m == Month.January)
                 // May Day
-                || (d == 1  && m == Month.May)
+                || (d == 1 && m == Month.May)
                 // June 6 id National Day but is not a holiday.
                 // It has been debated wheter or not this day should be
                 // declared as a holiday.

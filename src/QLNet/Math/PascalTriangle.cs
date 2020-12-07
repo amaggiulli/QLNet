@@ -40,7 +40,7 @@ namespace QLNet
          return coefficients_[order];
       }
 
-      private PascalTriangle() {}
+      private PascalTriangle() { }
       private static void nextOrder()
       {
          int order = coefficients_.Count;
@@ -52,6 +52,6 @@ namespace QLNet
          }
       }
 
-      private static List<List<ulong> > coefficients_ = new List<List<ulong>>();
+      private static List<List<ulong>> coefficients_ = new List<List<ulong>>();
    }
 }

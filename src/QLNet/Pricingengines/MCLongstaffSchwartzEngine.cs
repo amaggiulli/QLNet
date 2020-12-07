@@ -33,8 +33,8 @@ namespace QLNet
    */
    public abstract class MCLongstaffSchwartzEngine<GenericEngine, MC, RNG>
       : MCLongstaffSchwartzEngine<GenericEngine, MC, RNG, Statistics>
-        where GenericEngine : IPricingEngine, new ()
-        where RNG : IRSG, new ()
+        where GenericEngine : IPricingEngine, new()
+        where RNG : IRSG, new()
    {
       protected MCLongstaffSchwartzEngine(StochasticProcess process,
                                           int? timeSteps,
@@ -49,13 +49,13 @@ namespace QLNet
                                           int nCalibrationSamples) :
       base(process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate,
            requiredSamples, requiredTolerance, maxSamples, seed, nCalibrationSamples)
-      {}
+      { }
    }
 
    public abstract class MCLongstaffSchwartzEngine<GenericEngine, MC, RNG, S> : McSimulation<MC, RNG, S>, IPricingEngine
-      where GenericEngine : IPricingEngine, new ()
-      where RNG : IRSG, new ()
-         where S : IGeneralStatistics, new ()
+      where GenericEngine : IPricingEngine, new()
+      where RNG : IRSG, new()
+         where S : IGeneralStatistics, new()
    {
       protected StochasticProcess process_;
       protected int? timeSteps_;
@@ -155,7 +155,7 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = timeGrid();
-         IRNG generator = (IRNG) FastActivator<RNG>.Create().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
+         IRNG generator = (IRNG)FastActivator<RNG>.Create().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
          if (typeof(MC) == typeof(SingleVariate))
             return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
          else

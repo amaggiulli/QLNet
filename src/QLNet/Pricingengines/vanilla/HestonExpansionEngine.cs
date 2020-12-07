@@ -68,26 +68,26 @@ namespace QLNet
          switch (formula_)
          {
             case HestonExpansionFormula.LPP2:
-            {
-               LPP2HestonExpansion expansion = new LPP2HestonExpansion(model_.link.kappa(), model_.link.theta(),
-                                                                       model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
-               vol = expansion.impliedVolatility(strikePrice, forward);
-               break;
-            }
+               {
+                  LPP2HestonExpansion expansion = new LPP2HestonExpansion(model_.link.kappa(), model_.link.theta(),
+                                                                          model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
+                  vol = expansion.impliedVolatility(strikePrice, forward);
+                  break;
+               }
             case HestonExpansionFormula.LPP3:
-            {
-               LPP3HestonExpansion expansion = new LPP3HestonExpansion(model_.link.kappa(), model_.link.theta(),
-                                                                       model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
-               vol = expansion.impliedVolatility(strikePrice, forward);
-               break;
-            }
+               {
+                  LPP3HestonExpansion expansion = new LPP3HestonExpansion(model_.link.kappa(), model_.link.theta(),
+                                                                          model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
+                  vol = expansion.impliedVolatility(strikePrice, forward);
+                  break;
+               }
             case HestonExpansionFormula.Forde:
-            {
-               FordeHestonExpansion expansion = new FordeHestonExpansion(model_.link.kappa(), model_.link.theta(),
-                                                                         model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
-               vol = expansion.impliedVolatility(strikePrice, forward);
-               break;
-            }
+               {
+                  FordeHestonExpansion expansion = new FordeHestonExpansion(model_.link.kappa(), model_.link.theta(),
+                                                                            model_.link.sigma(), model_.link.v0(), model_.link.rho(), term);
+                  vol = expansion.impliedVolatility(strikePrice, forward);
+                  break;
+               }
             default:
                Utils.QL_FAIL("unknown expansion formula");
                break;
@@ -109,8 +109,8 @@ namespace QLNet
 
    public abstract class HestonExpansion
    {
-      ~HestonExpansion() {}
-      public abstract double impliedVolatility(double strike, double forward) ;
+      ~HestonExpansion() { }
+      public abstract double impliedVolatility(double strike, double forward);
 
    }
 
@@ -126,7 +126,7 @@ namespace QLNet
    {
       public LPP2HestonExpansion(double kappa, double theta, double sigma, double v0, double rho, double term)
       {
-         ekt  = Math.Exp(kappa * term);
+         ekt = Math.Exp(kappa * term);
          e2kt = ekt * ekt;
          e3kt = e2kt * ekt;
          e4kt = e2kt * e2kt;

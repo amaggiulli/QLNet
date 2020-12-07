@@ -29,7 +29,7 @@ namespace QLNet
 
       public static bool IsNotEqual(this double d1, double d2)
       {
-         return ! IsEqual(d1, d2);
+         return !IsEqual(d1, d2);
       }
 
       // Fix double? comparison

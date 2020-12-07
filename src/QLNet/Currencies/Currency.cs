@@ -55,7 +55,8 @@ namespace QLNet
       public Currency(string name, string code, int numericCode, string symbol, string fractionSymbol,
                       int fractionsPerUnit, Rounding rounding, string formatString) :
          this(name, code, numericCode, symbol, fractionSymbol, fractionsPerUnit, rounding, formatString,
-              new Currency()) { }
+              new Currency())
+      { }
       public Currency(string name, string code, int numericCode, string symbol, string fractionSymbol,
                       int fractionsPerUnit, Rounding rounding, string formatString,
                       Currency triangulationCurrency)

@@ -63,7 +63,7 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // Australia Day, January 26th (possibly moved to Monday)
                 || ((d == 26 || ((d == 27 || d == 28) && w == DayOfWeek.Monday)) &&
                     m == Month.January)

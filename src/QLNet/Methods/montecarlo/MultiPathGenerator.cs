@@ -76,7 +76,7 @@ namespace QLNet
          int m = process_.size();
          int n = process_.factors();
 
-         MultiPath path = (MultiPath) next_.value;
+         MultiPath path = (MultiPath)next_.value;
 
          Vector asset = process_.initialValues();
          for (int j = 0; j < m; j++)

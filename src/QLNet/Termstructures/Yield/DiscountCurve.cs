@@ -26,7 +26,7 @@ namespace QLNet
    //! Term structure based on interpolation of discount factors
    /*! \ingroup yieldtermstructures */
    public class InterpolatedDiscountCurve<Interpolator> : YieldTermStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve

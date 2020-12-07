@@ -27,8 +27,8 @@ namespace QLNet
    */
    public class LatticeShortRateModelEngine<ArgumentsType, ResultsType>
       : GenericModelEngine<ShortRateModel, ArgumentsType, ResultsType>
-        where ArgumentsType : IPricingEngineArguments, new ()
-        where ResultsType :  IPricingEngineResults, new ()
+        where ArgumentsType : IPricingEngineArguments, new()
+        where ResultsType : IPricingEngineResults, new()
 
    {
       protected TimeGrid timeGrid_;

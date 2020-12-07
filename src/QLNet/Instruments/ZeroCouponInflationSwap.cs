@@ -140,7 +140,7 @@ namespace QLNet
          bool growthOnly = true;
          legs_[1].Add(new IndexedCashFlow(nominal, infIndex, baseDate_, obsDate_, infPayDate, growthOnly));
 
-         for (int j = 0; j<2; ++j)
+         for (int j = 0; j < 2; ++j)
          {
             legs_[j].ForEach((i, x) => x.registerWith(update));
          }
@@ -169,15 +169,15 @@ namespace QLNet
       public new Date startDate() { return startDate_; }
       public new Date maturityDate() { return maturityDate_; }
       public Calendar fixedCalendar() { return fixCalendar_; }
-      public BusinessDayConvention fixedConvention()  { return fixConvention_; }
+      public BusinessDayConvention fixedConvention() { return fixConvention_; }
       public DayCounter dayCounter() { return dayCounter_; }
       //! \f$ K \f$ in the above formula.
-      public double fixedRate()  { return fixedRate_; }
-      public ZeroInflationIndex inflationIndex()  { return infIndex_; }
-      public Period observationLag()  { return observationLag_; }
-      public bool adjustObservationDates()  { return adjustInfObsDates_; }
-      public Calendar inflationCalendar()  { return infCalendar_; }
-      public BusinessDayConvention inflationConvention()  { return infConvention_; }
+      public double fixedRate() { return fixedRate_; }
+      public ZeroInflationIndex inflationIndex() { return infIndex_; }
+      public Period observationLag() { return observationLag_; }
+      public bool adjustObservationDates() { return adjustInfObsDates_; }
+      public Calendar inflationCalendar() { return infCalendar_; }
+      public BusinessDayConvention inflationConvention() { return infConvention_; }
       //! just one cashflow (that is not a coupon) in each leg
       public List<CashFlow> fixedLeg() { return legs_[0]; }
       //! just one cashflow (that is not a coupon) in each leg

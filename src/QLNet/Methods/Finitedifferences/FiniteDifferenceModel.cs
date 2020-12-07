@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace QLNet
 {
-   public class FiniteDifferenceModel<Evolver> where Evolver : IMixedScheme, ISchemeFactory, new ()
+   public class FiniteDifferenceModel<Evolver> where Evolver : IMixedScheme, ISchemeFactory, new()
    {
       private Evolver evolver_;
       public Evolver evolver() { return evolver_; }
@@ -77,7 +77,7 @@ namespace QLNet
             if (Math.Abs(to - next) < Math.Sqrt(Const.QL_EPSILON))
                next = to;
             bool hit = false;
-            for (int j = stoppingTimes_.Count - 1; j >= 0 ; --j)
+            for (int j = stoppingTimes_.Count - 1; j >= 0; --j)
             {
                if (next <= stoppingTimes_[j] && stoppingTimes_[j] < now)
                {

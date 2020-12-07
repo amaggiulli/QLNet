@@ -69,7 +69,7 @@ namespace QLNet
       public VanillaSwap(Type type, double nominal,
                          Schedule fixedSchedule, double fixedRate, DayCounter fixedDayCount,
                          Schedule floatSchedule, IborIndex iborIndex, double spread, DayCounter floatingDayCount,
-                         BusinessDayConvention ? paymentConvention = null) :
+                         BusinessDayConvention? paymentConvention = null) :
       base(2)
       {
          type_ = type;

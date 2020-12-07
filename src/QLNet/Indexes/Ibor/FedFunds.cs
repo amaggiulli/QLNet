@@ -23,6 +23,7 @@ namespace QLNet
    {
       public FedFunds(Handle<YieldTermStructure> h = null)
          : base("FedFunds", 0, new USDCurrency(), new UnitedStates(UnitedStates.Market.Settlement),
-                new Actual360(), h ?? new Handle<YieldTermStructure>()) {}
+                new Actual360(), h ?? new Handle<YieldTermStructure>())
+      { }
    }
 }

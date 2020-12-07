@@ -209,9 +209,9 @@ namespace QLNet
 
 
    public class PiecewiseYoYInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseYoYInflationCurve
-      where Traits : ITraits<YoYInflationTermStructure>, new ()
-      where Interpolator : IInterpolationFactory, new ()
-         where Bootstrap : IBootStrap<PiecewiseYoYInflationCurve>, new ()
+      where Traits : ITraits<YoYInflationTermStructure>, new()
+      where Interpolator : IInterpolationFactory, new()
+         where Bootstrap : IBootStrap<PiecewiseYoYInflationCurve>, new()
    {
 
       public PiecewiseYoYInflationCurve(Date referenceDate,
@@ -288,7 +288,7 @@ namespace QLNet
 
    // Allows for optional 3rd generic parameter defaulted to IterativeBootstrap
    public class PiecewiseYoYInflationCurve<Interpolator> : PiecewiseYoYInflationCurve<Interpolator, IterativeBootstrapForYoYInflation, YoYInflationTraits>
-      where Interpolator : IInterpolationFactory, new ()
+      where Interpolator : IInterpolationFactory, new()
    {
       public PiecewiseYoYInflationCurve(Date referenceDate,
                                         Calendar calendar,
@@ -302,7 +302,8 @@ namespace QLNet
                                         double accuracy = 1.0e-12,
                                         Interpolator i = default(Interpolator))
          : base(referenceDate, calendar, dayCounter, lag, frequency, indexIsInterpolated, baseZeroRate, nominalTS,
-                instruments, accuracy, i) { }
+                instruments, accuracy, i)
+      { }
 
 
    }

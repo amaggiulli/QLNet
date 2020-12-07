@@ -40,13 +40,13 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      public YoYInflationIndex index() { return index_;}
-      public Handle<YoYOptionletVolatilitySurface> volatility()  { return volatility_; }
+      public YoYInflationIndex index() { return index_; }
+      public Handle<YoYOptionletVolatilitySurface> volatility() { return volatility_; }
 
       public void setVolatility(Handle<YoYOptionletVolatilitySurface> vol)
       {
          if (!volatility_.empty())
-            volatility_ .unregisterWith(update);
+            volatility_.unregisterWith(update);
          volatility_ = vol;
          volatility_.registerWith(update);
          update();
@@ -60,7 +60,7 @@ namespace QLNet
          int optionlets = arguments_.startDates.Count;
          List<double> values = new InitializedList<double>(optionlets, 0.0);
          List<double> stdDevs = new InitializedList<double>(optionlets, 0.0);
-         List<double> forwards = new InitializedList<double> (optionlets, 0.0);
+         List<double> forwards = new InitializedList<double>(optionlets, 0.0);
          CapFloorType type = arguments_.type;
 
          Handle<YoYInflationTermStructure> yoyTS
@@ -144,10 +144,11 @@ namespace QLNet
 
       //! descendents only need to implement this
       protected virtual double optionletImpl(Option.Type type, double strike, double forward, double stdDev,
-                                             double d) { throw new NotImplementedException("not implemented"); }
+                                             double d)
+      { throw new NotImplementedException("not implemented"); }
 
-      protected  YoYInflationIndex index_;
-      protected  Handle<YoYOptionletVolatilitySurface> volatility_;
+      protected YoYInflationIndex index_;
+      protected Handle<YoYOptionletVolatilitySurface> volatility_;
    }
 
    //! Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
@@ -177,7 +178,7 @@ namespace QLNet
                                               double d)
       {
          // could use displacement parameter in blackFormula but this is clearer
-         return Utils.blackFormula(type, strike + 1.0,  forward + 1.0, stdDev, d);
+         return Utils.blackFormula(type, strike + 1.0, forward + 1.0, stdDev, d);
       }
 
    }

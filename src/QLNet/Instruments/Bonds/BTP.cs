@@ -41,13 +41,14 @@ namespace QLNet
                 new Actual360(),
                 BusinessDayConvention.Following,
                 new Euribor6M().fixingDays(),
-                new List<double> {1.0}, // gearing
-      new List<double> {spread},
-      new List < double? >(), // caps
-      new List < double? >(), // floors
+                new List<double> { 1.0 }, // gearing
+      new List<double> { spread },
+      new List<double?>(), // caps
+      new List<double?>(), // floors
       false, // in arrears
       100.0, // redemption
-      issueDate) {}
+      issueDate)
+      { }
 
       #region Bond interface
 
@@ -74,9 +75,10 @@ namespace QLNet
                                        maturityDate, new Period(6, TimeUnit.Months),
                                        new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                        DateGeneration.Rule.Backward, true),
-                new List<double> {fixedRate},
+                new List<double> { fixedRate },
       new ActualActual(ActualActual.Convention.ISMA),
-      BusinessDayConvention.ModifiedFollowing, 100.0, issueDate, new TARGET()) { }
+      BusinessDayConvention.ModifiedFollowing, 100.0, issueDate, new TARGET())
+      { }
 
       /*! constructor needed for legacy non-par redemption BTPs.
           As of today the only remaining one is IT123456789012
@@ -86,9 +88,10 @@ namespace QLNet
                                        maturityDate, new Period(6, TimeUnit.Months),
                                        new NullCalendar(), BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                        DateGeneration.Rule.Backward, true),
-                new List<double> {fixedRate},
+                new List<double> { fixedRate },
       new ActualActual(ActualActual.Convention.ISMA),
-      BusinessDayConvention.ModifiedFollowing, redemption, issueDate, new TARGET()) { }
+      BusinessDayConvention.ModifiedFollowing, redemption, issueDate, new TARGET())
+      { }
       #region Bond interface
 
       //! accrued amount at a given date
@@ -112,7 +115,7 @@ namespace QLNet
       }
    }
 
-   public class RendistatoBasket :  IObserver, IObservable
+   public class RendistatoBasket : IObserver, IObservable
    {
 
       public RendistatoBasket(List<BTP> btps, List<double> outstandings, List<Handle<Quote>> cleanPriceQuotes)
@@ -161,12 +164,12 @@ namespace QLNet
       }
       #region Inspectors
 
-      public int size() { return n_;}
-      public List<BTP> btps() {return btps_;}
-      public List<Handle<Quote>> cleanPriceQuotes() { return quotes_;}
-      public List<double> outstandings() { return outstandings_;}
-      public List<double> weights()  { return weights_;}
-      public double outstanding()  { return outstanding_;}
+      public int size() { return n_; }
+      public List<BTP> btps() { return btps_; }
+      public List<Handle<Quote>> cleanPriceQuotes() { return quotes_; }
+      public List<double> outstandings() { return outstandings_; }
+      public List<double> weights() { return weights_; }
+      public double outstanding() { return outstanding_; }
 
       #endregion
 
@@ -196,12 +199,12 @@ namespace QLNet
       #endregion
 
 
-      private   List<BTP> btps_;
-      private   List<double> outstandings_;
-      private   List<Handle<Quote> > quotes_;
-      private   double outstanding_;
-      private   int n_;
-      private   List<double> weights_;
+      private List<BTP> btps_;
+      private List<double> outstandings_;
+      private List<Handle<Quote>> quotes_;
+      private double outstanding_;
+      private int n_;
+      private List<double> weights_;
    }
 
    public class RendistatoCalculator : LazyObject
@@ -216,9 +219,9 @@ namespace QLNet
          nSwaps_ = 15;  // TODO: generalize number of swaps and their lenghts
          swaps_ = new List<VanillaSwap>(nSwaps_);
          swapLenghts_ = new List<double>(nSwaps_);
-         swapBondDurations_ = new InitializedList < double? >(nSwaps_, null);
-         swapBondYields_ = new InitializedList < double? >(nSwaps_, 0.05);
-         swapRates_ = new InitializedList < double? >(nSwaps_, null);
+         swapBondDurations_ = new InitializedList<double?>(nSwaps_, null);
+         swapBondYields_ = new InitializedList<double?>(nSwaps_, 0.05);
+         swapRates_ = new InitializedList<double?>(nSwaps_, null);
 
          basket_.registerWith(update);
          euriborIndex_.registerWith(update);
@@ -260,17 +263,17 @@ namespace QLNet
       }
       // swaps
       public List<double> swapLengths() { return swapLenghts_; }
-      public List < double? > swapRates()
+      public List<double?> swapRates()
       {
          calculate();
          return swapRates_;
       }
-      public List < double? > swapYields()
+      public List<double?> swapYields()
       {
          calculate();
          return swapBondYields_;
       }
-      public List < double? > swapDurations()
+      public List<double?> swapDurations()
       {
          calculate();
          return swapBondDurations_;
@@ -316,7 +319,7 @@ namespace QLNet
       protected override void performCalculations()
       {
          List<BTP> btps = basket_.btps();
-         List<Handle<Quote> > quotes = basket_.cleanPriceQuotes();
+         List<Handle<Quote>> quotes = basket_.cleanPriceQuotes();
          Date bondSettlementDate = btps[0].settlementDate();
          for (int i = 0; i < basket_.size(); ++i)
          {
@@ -364,7 +367,7 @@ namespace QLNet
             FixedRateBond swapBond2 = new FixedRateBond(settlDays,
                                                         100.0,      // faceAmount
                                                         swaps_[i].fixedSchedule(),
-            new List<double>() {swapRates_[i].Value},
+            new List<double>() { swapRates_[i].Value },
             fixedDayCount,
             BusinessDayConvention.Following, // paymentConvention
             100.0);    // redemption
@@ -404,8 +407,8 @@ namespace QLNet
       private int nSwaps_;
       private List<VanillaSwap> swaps_;
       private List<double> swapLenghts_;
-      private List < double? > swapBondDurations_;
-      private List < double? > swapBondYields_, swapRates_;
+      private List<double?> swapBondDurations_;
+      private List<double?> swapBondYields_, swapRates_;
    }
 
    //! RendistatoCalculator equivalent swap lenth Quote adapter

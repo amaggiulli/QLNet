@@ -36,7 +36,7 @@ namespace QLNet
       private static int M = 397; // shift size
 
       /*! if the given seed is 0, a random seed will be chosen based on clock() */
-      public MersenneTwisterUniformRng() : this(0) {}
+      public MersenneTwisterUniformRng() : this(0) { }
 
       public MersenneTwisterUniformRng(ulong seed)
       {

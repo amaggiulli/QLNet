@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace QLNet
 {
-   public class DiscretizedSwaption :  DiscretizedOption
+   public class DiscretizedSwaption : DiscretizedOption
    {
 
       private Swaption.Arguments arguments_;
@@ -76,7 +76,7 @@ namespace QLNet
                                     arguments_.floatingPayDates.Last());
          lastPayment_ = Math.Max(lastFixedPayment, lastFloatingPayment);
 
-         underlying_ =   new DiscretizedSwap(arguments_,
+         underlying_ = new DiscretizedSwap(arguments_,
                                              referenceDate,
                                              dayCounter);
 
@@ -88,12 +88,12 @@ namespace QLNet
          base.reset(size);
       }
 
-      public bool withinPreviousWeek(Date d1,  Date d2)
+      public bool withinPreviousWeek(Date d1, Date d2)
       {
          return d2 >= d1 - 7 && d2 <= d1;
       }
 
-      public bool withinNextWeek(Date d1,  Date d2)
+      public bool withinNextWeek(Date d1, Date d2)
       {
          return d2 >= d1 && d2 <= d1 + 7;
       }

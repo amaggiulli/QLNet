@@ -120,13 +120,13 @@ namespace QLNet
             double v2 = D(H / S * Math.Pow(H / L, 2.0 * n), mu, vol, T);
             double v3 = D(S / L * Math.Pow(H / L, 2.0 * n), -mu, vol, T);
             double v4 = D(S / L * Math.Pow(H / L, 2.0 * n), mu, vol, T);
-            rebateIn +=  dd * R_H * sgn * (Math.Pow(L / H, 2.0 * n * mu / (vol * vol)) * f_.value(sgn * v1) - Math.Pow(H / S, 2.0 * mu / (vol * vol)) * f_.value(-sgn * v2))
+            rebateIn += dd * R_H * sgn * (Math.Pow(L / H, 2.0 * n * mu / (vol * vol)) * f_.value(sgn * v1) - Math.Pow(H / S, 2.0 * mu / (vol * vol)) * f_.value(-sgn * v2))
                          + dd * R_L * sgn * (Math.Pow(L / S, 2.0 * mu / (vol * vol)) * f_.value(-sgn * v3) - Math.Pow(H / L, 2.0 * n * mu / (vol * vol)) * f_.value(sgn * v4));
          }
 
          //rebate paid at maturity
          if (barrierType == DoubleBarrier.Type.KnockOut)
-            results_.value = barrierOut ;
+            results_.value = barrierOut;
          else
             results_.value = european - barrierOut;
 

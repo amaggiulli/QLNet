@@ -169,7 +169,7 @@ namespace QLNet
          numSubPeriods = 0;
 
          KeyValuePair<int, int> superDays = daysMinMax(superPeriod);
-         KeyValuePair<int, int>  subDays = daysMinMax(subPeriod);
+         KeyValuePair<int, int> subDays = daysMinMax(subPeriod);
 
          //obtain the approximate time ratio
          double minPeriodRatio =

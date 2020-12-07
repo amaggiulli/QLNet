@@ -34,9 +34,9 @@ namespace QLNet
    {
       public const double QL_EPSILON = 2.2204460492503131e-016;
 
-      public const double M_SQRT2    = 1.41421356237309504880;
-      public const double M_SQRT_2   = 0.7071067811865475244008443621048490392848359376887;
-      public const double M_SQRTPI   = 1.77245385090551602792981;
+      public const double M_SQRT2 = 1.41421356237309504880;
+      public const double M_SQRT_2 = 0.7071067811865475244008443621048490392848359376887;
+      public const double M_SQRTPI = 1.77245385090551602792981;
       public const double M_1_SQRTPI = 0.564189583547756286948;
 
       public const double M_LN2 = 0.693147180559945309417;
@@ -168,18 +168,18 @@ namespace QLNet
 
    public enum Month
    {
-      January   = 1,
-      February  = 2,
-      March     = 3,
-      April     = 4,
-      May       = 5,
-      June      = 6,
-      July      = 7,
-      August    = 8,
+      January = 1,
+      February = 2,
+      March = 3,
+      April = 4,
+      May = 5,
+      June = 6,
+      July = 7,
+      August = 8,
       September = 9,
-      October   = 10,
-      November  = 11,
-      December  = 12,
+      October = 10,
+      November = 11,
+      December = 12,
       Jan = 1,
       Feb = 2,
       Mar = 3,

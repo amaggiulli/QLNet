@@ -26,7 +26,7 @@ namespace QLNet
       {
          baseVol_ = baseVol;
          spread_ = spread;
-         enableExtrapolation(baseVol.link.allowsExtrapolation()) ;
+         enableExtrapolation(baseVol.link.allowsExtrapolation());
          baseVol_.registerWith(update);
          spread_.registerWith(update);
       }

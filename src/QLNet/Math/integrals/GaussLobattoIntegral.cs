@@ -63,32 +63,32 @@ namespace QLNet
          double h = (b - a) / 2;
          double m = (a + b) / 2;
 
-         double mll = m - alpha_*h;
-         double ml = m - beta_*h;
-         double mr = m + beta_*h;
-         double mrr = m + alpha_*h;
+         double mll = m - alpha_ * h;
+         double ml = m - beta_ * h;
+         double mr = m + beta_ * h;
+         double mrr = m + alpha_ * h;
 
          double fmll = f(mll);
          double fml = f(ml);
-         double fm  = f(m);
+         double fm = f(m);
          double fmr = f(mr);
          double fmrr = f(mrr);
          increaseNumberOfEvaluations(5);
 
-         double integral2 = (h / 6)*(fa + fb + 5 * (fml + fmr));
-         double integral1 = (h / 1470)*(77 * (fa + fb)
+         double integral2 = (h / 6) * (fa + fb + 5 * (fml + fmr));
+         double integral1 = (h / 1470) * (77 * (fa + fb)
                                         + 432 * (fmll + fmrr) + 625 * (fml + fmr) + 672 * fm);
 
          // avoid 80 bit logic on x86 cpu
          double dist = acc + (integral1 - integral2);
-         if(dist.IsEqual(acc) || mll <= a || b <= mrr)
+         if (dist.IsEqual(acc) || mll <= a || b <= mrr)
          {
-            Utils.QL_REQUIRE(m>a&& b > m, () => "Interval contains no more machine number");
+            Utils.QL_REQUIRE(m > a && b > m, () => "Interval contains no more machine number");
             return integral1;
          }
          else
          {
-            return  adaptivGaussLobattoStep(f, a, mll, fa, fmll, acc)
+            return adaptivGaussLobattoStep(f, a, mll, fa, fmll, acc)
                     + adaptivGaussLobattoStep(f, mll, ml, fmll, fml, acc)
                     + adaptivGaussLobattoStep(f, ml, m, fml, fm, acc)
                     + adaptivGaussLobattoStep(f, m, mr, fm, fmr, acc)

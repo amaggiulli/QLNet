@@ -28,15 +28,15 @@ namespace QLNet
 
    public class SwaptionVolCube1x : SwaptionVolatilityCube
    {
-      const double SWAPTIONVOLCUBE_VEGAWEIGHTED_TOL = 15.0e-4 ;
-      const double SWAPTIONVOLCUBE_TOL = 100.0e-4 ;
+      const double SWAPTIONVOLCUBE_VEGAWEIGHTED_TOL = 15.0e-4;
+      const double SWAPTIONVOLCUBE_TOL = 100.0e-4;
 
 
       public delegate SABRInterpolation GetInterpolation(GeneralizedBlackScholesProcess process);
 
       public class Cube
       {
-         public Cube() {}
+         public Cube() { }
          public Cube(List<Date> optionDates,
                      List<Period> swapTenors,
                      List<double> optionTimes,
@@ -62,7 +62,7 @@ namespace QLNet
             Utils.QL_REQUIRE(swapTenors.Count == swapLengths.Count, () => "Cube::Cube(...): swapTenors/swapLengths mismatch");
 
             List<Matrix> points = new InitializedList<Matrix>(nLayers_);
-            for (int i = 0; i < nLayers ; i++)
+            for (int i = 0; i < nLayers; i++)
             {
                points[i] = new Matrix(optionTimes_.Count, swapLengths_.Count, 0.0);
             }
@@ -144,9 +144,9 @@ namespace QLNet
 
          public void setElement(int IndexOfLayer, int IndexOfRow, int IndexOfColumn, double x)
          {
-            Utils.QL_REQUIRE(IndexOfLayer<nLayers_, () => "Cube::setElement: incompatible IndexOfLayer ");
-            Utils.QL_REQUIRE(IndexOfRow<optionTimes_.Count, () => "Cube::setElement: incompatible IndexOfRow");
-            Utils.QL_REQUIRE(IndexOfColumn<swapLengths_.Count, () => "Cube::setElement: incompatible IndexOfColumn");
+            Utils.QL_REQUIRE(IndexOfLayer < nLayers_, () => "Cube::setElement: incompatible IndexOfLayer ");
+            Utils.QL_REQUIRE(IndexOfRow < optionTimes_.Count, () => "Cube::setElement: incompatible IndexOfRow");
+            Utils.QL_REQUIRE(IndexOfColumn < swapLengths_.Count, () => "Cube::setElement: incompatible IndexOfColumn");
             Matrix p = points_[IndexOfLayer];
             p[IndexOfRow, IndexOfColumn] = x;
          }
@@ -188,7 +188,7 @@ namespace QLNet
 
          public void setLayer(int i, Matrix x)
          {
-            Utils.QL_REQUIRE(i<nLayers_, () => "Cube::setLayer: incompatible number of layer ");
+            Utils.QL_REQUIRE(i < nLayers_, () => "Cube::setLayer: incompatible number of layer ");
             Utils.QL_REQUIRE(x.rows() == optionTimes_.Count, () => "Cube::setLayer: incompatible size 1");
             Utils.QL_REQUIRE(x.columns() == swapLengths_.Count, () => "Cube::setLayer: incompatible size 2");
 
@@ -212,7 +212,7 @@ namespace QLNet
             }
 
             List<Matrix> newPoints = new InitializedList<Matrix>(nLayers_);
-            for (int ii = 0; ii < nLayers_ ; ii++)
+            for (int ii = 0; ii < nLayers_; ii++)
             {
                newPoints[ii]
                   = new Matrix(optionTimes_.Count, swapLengths_.Count, 0.0);
@@ -238,11 +238,11 @@ namespace QLNet
             setPoints(newPoints);
          }
 
-         public List<Date> optionDates()  {return optionDates_;}
-         public List<Period> swapTenors()  { return swapTenors_; }
-         public List<double> optionTimes() {return optionTimes_;}
-         public List<double> swapLengths() { return swapLengths_;}
-         public List<Matrix> points() { return points_;}
+         public List<Date> optionDates() { return optionDates_; }
+         public List<Period> swapTenors() { return swapTenors_; }
+         public List<double> optionTimes() { return optionTimes_; }
+         public List<double> swapLengths() { return swapLengths_; }
+         public List<Matrix> points() { return points_; }
          public List<double> value(double optionTime, double swapLength)
          {
             List<double> result = new List<double>();
@@ -297,18 +297,18 @@ namespace QLNet
          private List<Matrix> transposedPoints_;
          private bool extrapolation_;
          private bool backwardFlat_;
-         private List< Interpolation2D > interpolators_;
+         private List<Interpolation2D> interpolators_;
       }
 
       public SwaptionVolCube1x(Handle<SwaptionVolatilityStructure> atmVolStructure,
                                List<Period> optionTenors,
                                List<Period> swapTenors,
                                List<double> strikeSpreads,
-                               List<List<Handle<Quote> > > volSpreads,
+                               List<List<Handle<Quote>>> volSpreads,
                                SwapIndex swapIndexBase,
                                SwapIndex shortSwapIndexBase,
                                bool vegaWeightedSmileFit,
-                               List<List<Handle<Quote> > > parametersGuess,
+                               List<List<Handle<Quote>>> parametersGuess,
                                List<bool> isParameterFixed,
                                bool isAtmCalibrated,
                                EndCriteria endCriteria = null,
@@ -340,7 +340,7 @@ namespace QLNet
          {
             maxErrorTolerance_ = SWAPTIONVOLCUBE_TOL;
             if (vegaWeightedSmileFit_)
-               maxErrorTolerance_ =  SWAPTIONVOLCUBE_VEGAWEIGHTED_TOL;
+               maxErrorTolerance_ = SWAPTIONVOLCUBE_VEGAWEIGHTED_TOL;
          }
          if (errorAccept != null)
          {
@@ -400,7 +400,7 @@ namespace QLNet
          return smileSection(optionTime, swapLength, ref sparseParameters_);
       }
       // Other inspectors
-      public Matrix marketVolCube(int i)  {return marketVolCube_.points()[i];}
+      public Matrix marketVolCube(int i) { return marketVolCube_.points()[i]; }
       public Matrix sparseSabrParameters()
       {
          calculate();
@@ -493,12 +493,12 @@ namespace QLNet
                              ", swap tenor " + swapTenors[k] +
                              ": max iteration (" +
                              endCriteria_.maxIterations() + ")" +
-                             ", alpha " +  calibrationResult[0] +
-                             ", beta "  +  calibrationResult[1] +
-                             ", nu "    +  calibrationResult[2]   +
-                             ", rho "   +  calibrationResult[3]  +
+                             ", alpha " + calibrationResult[0] +
+                             ", beta " + calibrationResult[1] +
+                             ", nu " + calibrationResult[2] +
+                             ", rho " + calibrationResult[3] +
                              ", max error " + calibrationResult[6] +
-                             ", error " +  calibrationResult[5]
+                             ", error " + calibrationResult[5]
                             );
 
             Utils.QL_REQUIRE(useMaxError_ ? calibrationResult[6] > 0 : calibrationResult[5] < maxErrorTolerance_, () =>
@@ -507,10 +507,10 @@ namespace QLNet
                              ", swap tenor " + swapTenors[k] +
                              (useMaxError_ ? ": max error " : ": error ") +
                              (useMaxError_ ? calibrationResult[6] : calibrationResult[5]) +
-                             ", alpha " +  calibrationResult[0] +
-                             ", beta "  +  calibrationResult[1] +
-                             ", nu "    +  calibrationResult[2] +
-                             ", rho "   +  calibrationResult[3] +
+                             ", alpha " + calibrationResult[0] +
+                             ", beta " + calibrationResult[1] +
+                             ", nu " + calibrationResult[2] +
+                             ", rho " + calibrationResult[3] +
                              (useMaxError_ ? ": error" : ": max error ") +
                              (useMaxError_ ? calibrationResult[5] : calibrationResult[6])
                             );
@@ -603,7 +603,7 @@ namespace QLNet
          parametersGuess_ = new Cube(optionDates_, swapTenors_, optionTimes_, swapLengths_, 4, true, backwardFlat_);
          int i;
          for (i = 0; i < 4; i++)
-            for (int j = 0; j < nOptionTenors_ ; j++)
+            for (int j = 0; j < nOptionTenors_; j++)
                for (int k = 0; k < nSwapTenors_; k++)
                {
                   parametersGuess_.setElement(i, j, k,
@@ -681,26 +681,26 @@ namespace QLNet
 
                double rmsError = sabrInterpolation.rmsError();
                double maxError = sabrInterpolation.maxError();
-               alphas     [j, k] = sabrInterpolation.alpha();
-               betas      [j, k] = sabrInterpolation.beta();
-               nus        [j, k] = sabrInterpolation.nu();
-               rhos       [j, k] = sabrInterpolation.rho();
-               forwards   [j, k] = atmForward;
-               errors     [j, k] = rmsError;
-               maxErrors  [j, k] = maxError;
+               alphas[j, k] = sabrInterpolation.alpha();
+               betas[j, k] = sabrInterpolation.beta();
+               nus[j, k] = sabrInterpolation.nu();
+               rhos[j, k] = sabrInterpolation.rho();
+               forwards[j, k] = atmForward;
+               errors[j, k] = rmsError;
+               maxErrors[j, k] = maxError;
                endCriteria[j, k] = (double)sabrInterpolation.endCriteria();
 
-               Utils.QL_REQUIRE(endCriteria[j, k].IsNotEqual((double) EndCriteria.Type.MaxIterations), () =>
-                                "global swaptions calibration failed: " +
-                                "MaxIterations reached: " + "\n" +
-                                "option maturity = " + optionDates[j] + ", \n" +
-                                "swap tenor = " + swapTenors[k] + ", \n" +
-                                "error = " + (errors[j, k])  + ", \n" +
-                                "max error = " + (maxErrors[j, k]) + ", \n" +
-                                "   alpha = " +  alphas[j, k] + "n" +
-                                "   beta = " +  betas[j, k] + "\n" +
-                                "   nu = " +  nus[j, k]   + "\n" +
-                                "   rho = " +  rhos[j, k]  + "\n"
+               Utils.QL_REQUIRE(endCriteria[j, k].IsNotEqual((double)EndCriteria.Type.MaxIterations), () =>
+                               "global swaptions calibration failed: " +
+                               "MaxIterations reached: " + "\n" +
+                               "option maturity = " + optionDates[j] + ", \n" +
+                               "swap tenor = " + swapTenors[k] + ", \n" +
+                               "error = " + (errors[j, k]) + ", \n" +
+                               "max error = " + (maxErrors[j, k]) + ", \n" +
+                               "   alpha = " + alphas[j, k] + "n" +
+                               "   beta = " + betas[j, k] + "\n" +
+                               "   nu = " + nus[j, k] + "\n" +
+                               "   rho = " + rhos[j, k] + "\n"
                                );
 
                Utils.QL_REQUIRE(useMaxError_ ? maxError > 0 : rmsError < maxErrorTolerance_, () =>
@@ -709,10 +709,10 @@ namespace QLNet
                                 ", swap tenor " + swapTenors[k] +
                                 (useMaxError_ ? ": max error " : ": error") +
                                 (useMaxError_ ? maxError : rmsError) +
-                                "   alpha = " +  alphas[j, k] + "\n" +
-                                "   beta = " +  betas[j, k] + "\n" +
-                                "   nu = " +  nus[j, k]   + "\n" +
-                                "   rho = " +  rhos[j, k]  + "\n" +
+                                "   alpha = " + alphas[j, k] + "\n" +
+                                "   beta = " + betas[j, k] + "\n" +
+                                "   nu = " + nus[j, k] + "\n" +
+                                "   rho = " + rhos[j, k] + "\n" +
                                 (useMaxError_ ? ": error" : ": max error ") +
                                 (useMaxError_ ? rmsError : maxError)
 
@@ -796,7 +796,7 @@ namespace QLNet
 
          for (int j = 0; j < optionTimes.Count; j++)
          {
-            List<SmileSection > tmp;
+            List<SmileSection> tmp;
             int n = swapLengths.Count;
             tmp = new List<SmileSection>(n);
             for (int k = 0; k < n; ++k)
@@ -826,14 +826,14 @@ namespace QLNet
          int swapLengthsPreviousIndex = swapLengths_.IndexOf(swapLengthsPreviousNode);
 
          if (optionTimesPreviousIndex > 0)
-            optionTimesPreviousIndex --;
+            optionTimesPreviousIndex--;
 
          if (swapLengthsPreviousIndex > 0)
-            swapLengthsPreviousIndex --;
+            swapLengthsPreviousIndex--;
 
-         List< List<SmileSection > > smiles = new List<List<SmileSection>>();
-         List<SmileSection>  smilesOnPreviousExpiry = new List<SmileSection>();
-         List<SmileSection>  smilesOnNextExpiry = new List<SmileSection>();
+         List<List<SmileSection>> smiles = new List<List<SmileSection>>();
+         List<SmileSection> smilesOnPreviousExpiry = new List<SmileSection>();
+         List<SmileSection> smilesOnNextExpiry = new List<SmileSection>();
 
          Utils.QL_REQUIRE(optionTimesPreviousIndex + 1 < sparseSmiles_.Count, () =>
                           "optionTimesPreviousIndex+1 >= sparseSmiles_.size()");
@@ -926,8 +926,8 @@ namespace QLNet
       private Cube volCubeAtmCalibrated_;
       private Cube sparseParameters_;
       private Cube denseParameters_;
-      private List< List<SmileSection > > sparseSmiles_;
-      private List<List<Handle<Quote> > > parametersGuessQuotes_;
+      private List<List<SmileSection>> sparseSmiles_;
+      private List<List<Handle<Quote>>> parametersGuessQuotes_;
       private Cube parametersGuess_;
       private List<bool> isParameterFixed_;
       private bool isAtmCalibrated_;

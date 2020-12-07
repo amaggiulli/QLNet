@@ -37,10 +37,10 @@ namespace QLNet
    {
       public Cdor(Period tenor)
          : base("CDOR", tenor, 0, new CADCurrency(), new Canada(), BusinessDayConvention.ModifiedFollowing, false, new Actual365Fixed(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public Cdor(Period tenor, Handle<YieldTermStructure> h)
          : base("CDOR", tenor, 0, new CADCurrency(), new Canada(), BusinessDayConvention.ModifiedFollowing, false, new Actual365Fixed(), h)
-      {}
+      { }
    }
 }

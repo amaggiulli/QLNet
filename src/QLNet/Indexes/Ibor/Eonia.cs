@@ -25,6 +25,6 @@ namespace QLNet
       public Eonia() : this(new Handle<YieldTermStructure>()) { }
 
       public Eonia(Handle<YieldTermStructure> h)
-         : base("Eonia", 0, new EURCurrency(), new TARGET(), new Actual360(), h) {}
+         : base("Eonia", 0, new EURCurrency(), new TARGET(), new Actual360(), h) { }
    }
 }

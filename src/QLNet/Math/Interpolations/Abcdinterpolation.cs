@@ -74,7 +74,7 @@ namespace QLNet
       public bool dIsFixed_ { get; set; }
       public List<double> k_ { get; set; }
       public double? error_ { get; set; }
-      public double?  maxError_ { get; set; }
+      public double? maxError_ { get; set; }
       public EndCriteria.Type abcdEndCriteria_ { get; set; }
    }
 
@@ -161,7 +161,7 @@ namespace QLNet
          return li.value(t);
       }
 
-      public AbcdCoeffHolder AbcdCoeffHolder() {return abcdCoeffHolder_;}
+      public AbcdCoeffHolder AbcdCoeffHolder() { return abcdCoeffHolder_; }
       private EndCriteria endCriteria_;
       private OptimizationMethod optMethod_;
       private bool vegaWeighted_;
@@ -177,9 +177,9 @@ namespace QLNet
       /*! Constructor */
       public AbcdInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                double a = -0.06,
-                               double b =  0.17,
-                               double c =  0.54,
-                               double d =  0.17,
+                               double b = 0.17,
+                               double c = 0.54,
+                               double d = 0.17,
                                bool aIsFixed = false,
                                bool bIsFixed = false,
                                bool cIsFixed = false,
@@ -205,8 +205,8 @@ namespace QLNet
       public double? c() { return coeffs_.c_; }
       public double? d() { return coeffs_.d_; }
       public List<double> k() { return coeffs_.k_; }
-      public double? rmsError()  { return coeffs_.error_; }
-      public double? maxError()  { return coeffs_.maxError_; }
+      public double? rmsError() { return coeffs_.error_; }
+      public double? maxError() { return coeffs_.maxError_; }
       public EndCriteria.Type endCriteria() { return coeffs_.abcdEndCriteria_; }
       public double k(double t, List<double> xBegin, int size)
       {
@@ -233,10 +233,10 @@ namespace QLNet
          b_ = b;
          c_ = c;
          d_ = d;
-         aIsFixed_  = aIsFixed;
-         bIsFixed_  = bIsFixed;
-         cIsFixed_  = cIsFixed;
-         dIsFixed_  = dIsFixed;
+         aIsFixed_ = aIsFixed;
+         bIsFixed_ = bIsFixed;
+         cIsFixed_ = cIsFixed;
+         dIsFixed_ = dIsFixed;
          vegaWeighted_ = vegaWeighted;
          endCriteria_ = endCriteria;
          optMethod_ = optMethod;

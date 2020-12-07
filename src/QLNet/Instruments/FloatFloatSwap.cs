@@ -48,8 +48,8 @@ namespace QLNet
       : base(2)
       {
          type_ = type;
-         nominal1_ = new InitializedList<double> (schedule1.size()  - 1, nominal1);
-         nominal2_ = new InitializedList<double> (schedule2.size() - 1, nominal2);
+         nominal1_ = new InitializedList<double>(schedule1.size() - 1, nominal1);
+         nominal2_ = new InitializedList<double>(schedule2.size() - 1, nominal2);
          schedule1_ = schedule1;
          schedule2_ = schedule2;
          index1_ = index1;
@@ -58,10 +58,10 @@ namespace QLNet
          gearing2_ = new InitializedList<double>(schedule2.size() - 1, gearing2);
          spread1_ = new InitializedList<double>(schedule1.size() - 1, spread1);
          spread2_ = new InitializedList<double>(schedule2.size() - 1, spread2);
-         cappedRate1_ = new InitializedList < double? >(schedule1.size() - 1, cappedRate1);
-         flooredRate1_ = new InitializedList < double? >(schedule1.size() - 1, flooredRate1);
-         cappedRate2_ = new InitializedList < double? >(schedule2.size() - 1, cappedRate2);
-         flooredRate2_ = new InitializedList < double? >(schedule2.size() - 1, flooredRate2);
+         cappedRate1_ = new InitializedList<double?>(schedule1.size() - 1, cappedRate1);
+         flooredRate1_ = new InitializedList<double?>(schedule1.size() - 1, flooredRate1);
+         cappedRate2_ = new InitializedList<double?>(schedule2.size() - 1, cappedRate2);
+         flooredRate2_ = new InitializedList<double?>(schedule2.size() - 1, flooredRate2);
          dayCount1_ = dayCount1; dayCount2_ = dayCount2;
          intermediateCapitalExchange_ = intermediateCapitalExchange;
          finalCapitalExchange_ = finalCapitalExchange;
@@ -82,12 +82,12 @@ namespace QLNet
                             bool finalCapitalExchange = false,
                             List<double> gearing1 = null,
                             List<double> spread1 = null,
-                            List < double? > cappedRate1 = null,
-                            List < double? > flooredRate1 = null,
+                            List<double?> cappedRate1 = null,
+                            List<double?> flooredRate1 = null,
                             List<double> gearing2 = null,
                             List<double> spread2 = null,
-                            List < double? > cappedRate2 = null,
-                            List < double? > flooredRate2 = null,
+                            List<double?> cappedRate2 = null,
+                            List<double?> flooredRate2 = null,
                             BusinessDayConvention? paymentConvention1 = null,
                             BusinessDayConvention? paymentConvention2 = null)
       : base(2)
@@ -132,10 +132,10 @@ namespace QLNet
       public List<double> gearing1() { return gearing1_; }
       public List<double> gearing2() { return gearing2_; }
 
-      public List < double? > cappedRate1() { return cappedRate1_; }
-      public List < double? > flooredRate1() { return flooredRate1_; }
-      public List < double? > cappedRate2() { return cappedRate2_; }
-      public List < double? > flooredRate2() { return flooredRate2_; }
+      public List<double?> cappedRate1() { return cappedRate1_; }
+      public List<double?> flooredRate1() { return flooredRate1_; }
+      public List<double?> cappedRate2() { return cappedRate2_; }
+      public List<double?> flooredRate2() { return flooredRate2_; }
 
       public DayCounter dayCount1() { return dayCount1_; }
       public DayCounter dayCount2() { return dayCount2_; }
@@ -174,16 +174,16 @@ namespace QLNet
          arguments.leg2Spreads = arguments.leg2AccrualTimes =
                                     arguments.leg2Gearings = new InitializedList<double>(leg2Coupons.Count);
 
-         arguments.leg1Coupons = new InitializedList < double? >(leg1Coupons.Count, null);
-         arguments.leg2Coupons = new InitializedList < double? >(leg2Coupons.Count, null);
+         arguments.leg1Coupons = new InitializedList<double?>(leg1Coupons.Count, null);
+         arguments.leg2Coupons = new InitializedList<double?>(leg2Coupons.Count, null);
 
          arguments.leg1IsRedemptionFlow = new InitializedList<bool>(leg1Coupons.Count, false);
          arguments.leg2IsRedemptionFlow = new InitializedList<bool>(leg2Coupons.Count, false);
 
          arguments.leg1CappedRates = arguments.leg1FlooredRates =
-                                        new InitializedList < double? >(leg1Coupons.Count, null);
+                                        new InitializedList<double?>(leg1Coupons.Count, null);
          arguments.leg2CappedRates = arguments.leg2FlooredRates =
-                                        new InitializedList < double? >(leg2Coupons.Count, null);
+                                        new InitializedList<double?>(leg2Coupons.Count, null);
 
          for (int i = 0; i < leg1Coupons.Count; ++i)
          {
@@ -276,7 +276,7 @@ namespace QLNet
       }
 
 
-      public override void fetchResults(IPricingEngineResults res) { base.fetchResults(res);}
+      public override void fetchResults(IPricingEngineResults res) { base.fetchResults(res); }
 
       private void init(BusinessDayConvention? paymentConvention1, BusinessDayConvention? paymentConvention2)
       {
@@ -324,13 +324,13 @@ namespace QLNet
          if (spread2_.Count == 0)
             spread2_ = new InitializedList<double>(nominal2_.Count, 0.0);
          if (cappedRate1_.Count == 0)
-            cappedRate1_ = new InitializedList < double? >(nominal1_.Count, null);
+            cappedRate1_ = new InitializedList<double?>(nominal1_.Count, null);
          if (cappedRate2_.Count == 0)
-            cappedRate2_ = new InitializedList < double? >(nominal2_.Count, null);
+            cappedRate2_ = new InitializedList<double?>(nominal2_.Count, null);
          if (flooredRate1_.Count == 0)
-            flooredRate1_ = new InitializedList < double? >(nominal1_.Count, null);
+            flooredRate1_ = new InitializedList<double?>(nominal1_.Count, null);
          if (flooredRate2_.Count == 0)
-            flooredRate2_ = new InitializedList < double? >(nominal2_.Count, null);
+            flooredRate2_ = new InitializedList<double?>(nominal2_.Count, null);
 
          bool isNull = cappedRate1_[0] == null;
          for (int i = 0; i < cappedRate1_.Count; i++)
@@ -395,8 +395,8 @@ namespace QLNet
 
          IborIndex ibor1 = index1_ as IborIndex;
          IborIndex ibor2 = index2_ as IborIndex;
-         SwapIndex cms1 =  index1_ as SwapIndex;
-         SwapIndex cms2 =  index2_ as SwapIndex;
+         SwapIndex cms1 = index1_ as SwapIndex;
+         SwapIndex cms2 = index2_ as SwapIndex;
          SwapSpreadIndex cmsspread1 = index1_ as SwapSpreadIndex;
          SwapSpreadIndex cmsspread2 = index2_ as SwapSpreadIndex;
 
@@ -415,88 +415,88 @@ namespace QLNet
                   .withNotionals(nominal1_);
 
             if (cappedRate1_[0] != null)
-               leg = (IborLeg) leg.withCaps(cappedRate1_);
+               leg = (IborLeg)leg.withCaps(cappedRate1_);
             if (flooredRate1_[0] != null)
-               leg = (IborLeg) leg.withFloors(flooredRate1_);
+               leg = (IborLeg)leg.withFloors(flooredRate1_);
             legs_[0] = leg;
          }
 
          if (ibor2 != null)
          {
             IborLeg leg = new IborLeg(schedule2_, ibor2);
-            leg = (IborLeg) leg.withPaymentDayCounter(dayCount2_)
+            leg = (IborLeg)leg.withPaymentDayCounter(dayCount2_)
                   .withSpreads(spread2_)
                   .withGearings(gearing2_)
                   .withPaymentAdjustment(paymentConvention2_)
                   .withNotionals(nominal2_);
 
             if (cappedRate2_[0] != null)
-               leg = (IborLeg) leg.withCaps(cappedRate2_);
+               leg = (IborLeg)leg.withCaps(cappedRate2_);
             if (flooredRate2_[0] != null)
-               leg = (IborLeg) leg.withFloors(flooredRate2_);
+               leg = (IborLeg)leg.withFloors(flooredRate2_);
             legs_[1] = leg;
          }
 
          if (cms1 != null)
          {
             CmsLeg leg = new CmsLeg(schedule1_, cms1);
-            leg = (CmsLeg) leg.withPaymentDayCounter(dayCount1_)
+            leg = (CmsLeg)leg.withPaymentDayCounter(dayCount1_)
                   .withSpreads(spread1_)
                   .withGearings(gearing1_)
                   .withNotionals(nominal1_)
                   .withPaymentAdjustment(paymentConvention1_);
 
             if (cappedRate1_[0] != null)
-               leg = (CmsLeg) leg.withCaps(cappedRate1_);
+               leg = (CmsLeg)leg.withCaps(cappedRate1_);
             if (flooredRate1_[0] != null)
-               leg = (CmsLeg) leg.withFloors(flooredRate1_);
+               leg = (CmsLeg)leg.withFloors(flooredRate1_);
             legs_[0] = leg;
          }
 
          if (cms2 != null)
          {
             CmsLeg leg = new CmsLeg(schedule2_, cms2);
-            leg = (CmsLeg) leg.withPaymentDayCounter(dayCount2_)
+            leg = (CmsLeg)leg.withPaymentDayCounter(dayCount2_)
                   .withSpreads(spread2_)
                   .withGearings(gearing2_)
                   .withNotionals(nominal2_)
                   .withPaymentAdjustment(paymentConvention2_);
 
             if (cappedRate2_[0] != null)
-               leg = (CmsLeg) leg.withCaps(cappedRate2_);
+               leg = (CmsLeg)leg.withCaps(cappedRate2_);
             if (flooredRate2_[0] != null)
-               leg = (CmsLeg) leg.withFloors(flooredRate2_);
+               leg = (CmsLeg)leg.withFloors(flooredRate2_);
             legs_[1] = leg;
          }
 
          if (cmsspread1 != null)
          {
             CmsSpreadLeg leg = new CmsSpreadLeg(schedule1_, cmsspread1);
-            leg = (CmsSpreadLeg) leg.withPaymentDayCounter(dayCount1_)
+            leg = (CmsSpreadLeg)leg.withPaymentDayCounter(dayCount1_)
                   .withSpreads(spread1_)
                   .withGearings(gearing1_)
                   .withNotionals(nominal1_)
                   .withPaymentAdjustment(paymentConvention1_);
             if (cappedRate1_[0] != null)
-               leg = (CmsSpreadLeg) leg.withCaps(cappedRate1_);
+               leg = (CmsSpreadLeg)leg.withCaps(cappedRate1_);
             if (flooredRate1_[0] != null)
-               leg = (CmsSpreadLeg) leg.withFloors(flooredRate1_);
+               leg = (CmsSpreadLeg)leg.withFloors(flooredRate1_);
             legs_[0] = leg;
          }
 
          if (cmsspread2 != null)
          {
             CmsSpreadLeg leg = new CmsSpreadLeg(schedule2_, cmsspread2);
-            leg = (CmsSpreadLeg) leg.withPaymentDayCounter(dayCount2_)
+            leg = (CmsSpreadLeg)leg.withPaymentDayCounter(dayCount2_)
                   .withSpreads(spread2_)
                   .withGearings(gearing2_)
                   .withNotionals(nominal2_)
                   .withPaymentAdjustment(paymentConvention2_);
 
             if (cappedRate2_[0] != null)
-               leg = (CmsSpreadLeg) leg.withCaps(cappedRate2_);
+               leg = (CmsSpreadLeg)leg.withCaps(cappedRate2_);
             if (flooredRate2_[0] != null)
-               leg = (CmsSpreadLeg) leg.withFloors(flooredRate2_);
+               leg = (CmsSpreadLeg)leg.withFloors(flooredRate2_);
             legs_[1] = leg;
          }
 
@@ -559,7 +559,7 @@ namespace QLNet
       private Schedule schedule1_, schedule2_;
       private InterestRateIndex index1_, index2_;
       private List<double> gearing1_, gearing2_, spread1_, spread2_;
-      private List < double? > cappedRate1_, flooredRate1_, cappedRate2_, flooredRate2_;
+      private List<double?> cappedRate1_, flooredRate1_, cappedRate2_, flooredRate2_;
       private DayCounter dayCount1_, dayCount2_;
       //private List<bool> isRedemptionFlow1_, isRedemptionFlow2_;
       private BusinessDayConvention paymentConvention1_, paymentConvention2_;
@@ -570,7 +570,7 @@ namespace QLNet
       /// </summary>
       public new class Arguments : Swap.Arguments
       {
-         public Arguments()  { type = VanillaSwap.Type.Receiver;}
+         public Arguments() { type = VanillaSwap.Type.Receiver; }
          public VanillaSwap.Type type { get; set; }
          public List<double> nominal1 { get; set; }
          public List<double> nominal2 { get; set; }
@@ -588,13 +588,13 @@ namespace QLNet
          public List<double> leg1Gearings { get; set; }
          public List<double> leg2Gearings { get; set; }
 
-         public List < double? > leg1CappedRates { get; set; }
-         public List < double? > leg1FlooredRates { get; set; }
-         public List < double? > leg2CappedRates { get; set; }
-         public List < double? > leg2FlooredRates { get; set; }
+         public List<double?> leg1CappedRates { get; set; }
+         public List<double?> leg1FlooredRates { get; set; }
+         public List<double?> leg2CappedRates { get; set; }
+         public List<double?> leg2FlooredRates { get; set; }
 
-         public List < double? > leg1Coupons { get; set; }
-         public List < double? > leg2Coupons { get; set; }
+         public List<double?> leg1Coupons { get; set; }
+         public List<double?> leg2Coupons { get; set; }
 
          public List<double> leg1AccrualTimes { get; set; }
          public List<double> leg2AccrualTimes { get; set; }
@@ -609,47 +609,47 @@ namespace QLNet
          {
             base.validate();
 
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1ResetDates.Count, () =>
-                             "nominal1 size is different from resetDates1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1FixingDates.Count, () =>
-                             "nominal1 size is different from fixingDates1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1PayDates.Count, () =>
-                             "nominal1 size is different from payDates1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1Spreads.Count, () =>
-                             "nominal1 size is different from spreads1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1Gearings.Count, () =>
-                             "nominal1 size is different from gearings1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1CappedRates.Count, () =>
-                             "nominal1 size is different from cappedRates1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1FlooredRates.Count, () =>
-                             "nominal1 size is different from flooredRates1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1Coupons.Count, () =>
-                             "nominal1 size is different from coupons1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1AccrualTimes.Count, () =>
-                             "nominal1 size is different from accrualTimes1 size");
-            Utils.QL_REQUIRE(nominal1.Count ==  leg1IsRedemptionFlow.Count, () =>
-                             "nominal1 size is different from redemption1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1ResetDates.Count, () =>
+                            "nominal1 size is different from resetDates1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1FixingDates.Count, () =>
+                            "nominal1 size is different from fixingDates1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1PayDates.Count, () =>
+                            "nominal1 size is different from payDates1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1Spreads.Count, () =>
+                            "nominal1 size is different from spreads1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1Gearings.Count, () =>
+                            "nominal1 size is different from gearings1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1CappedRates.Count, () =>
+                            "nominal1 size is different from cappedRates1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1FlooredRates.Count, () =>
+                            "nominal1 size is different from flooredRates1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1Coupons.Count, () =>
+                            "nominal1 size is different from coupons1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1AccrualTimes.Count, () =>
+                            "nominal1 size is different from accrualTimes1 size");
+            Utils.QL_REQUIRE(nominal1.Count == leg1IsRedemptionFlow.Count, () =>
+                            "nominal1 size is different from redemption1 size");
 
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2ResetDates.Count, () =>
-                             "nominal2 size is different from resetDates2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2FixingDates.Count, () =>
-                             "nominal2 size is different from fixingDates2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2PayDates.Count, () =>
-                             "nominal2 size is different from payDates2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2Spreads.Count, () =>
-                             "nominal2 size is different from spreads2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2Gearings.Count, () =>
-                             "nominal2 size is different from gearings2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2CappedRates.Count, () =>
-                             "nominal2 size is different from cappedRates2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2FlooredRates.Count, () =>
-                             "nominal2 size is different from flooredRates2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2Coupons.Count, () =>
-                             "nominal2 size is different from coupons2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2AccrualTimes.Count, () =>
-                             "nominal2 size is different from accrualTimes2 size");
-            Utils.QL_REQUIRE(nominal2.Count ==  leg2IsRedemptionFlow.Count, () =>
-                             "nominal2 size is different from redemption2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2ResetDates.Count, () =>
+                            "nominal2 size is different from resetDates2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2FixingDates.Count, () =>
+                            "nominal2 size is different from fixingDates2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2PayDates.Count, () =>
+                            "nominal2 size is different from payDates2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2Spreads.Count, () =>
+                            "nominal2 size is different from spreads2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2Gearings.Count, () =>
+                            "nominal2 size is different from gearings2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2CappedRates.Count, () =>
+                            "nominal2 size is different from cappedRates2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2FlooredRates.Count, () =>
+                            "nominal2 size is different from flooredRates2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2Coupons.Count, () =>
+                            "nominal2 size is different from coupons2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2AccrualTimes.Count, () =>
+                            "nominal2 size is different from accrualTimes2 size");
+            Utils.QL_REQUIRE(nominal2.Count == leg2IsRedemptionFlow.Count, () =>
+                            "nominal2 size is different from redemption2 size");
 
             Utils.QL_REQUIRE(index1 != null, () => "index1 is null");
             Utils.QL_REQUIRE(index2 != null, () => "index2 is null");
@@ -660,10 +660,10 @@ namespace QLNet
 
       //! %Results from float float swap calculation
       public new class Results : Swap.Results
-      {}
+      { }
 
       public class Engine : GenericEngine<Arguments, Results>
-      {}
+      { }
    }
 }
 

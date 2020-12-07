@@ -31,7 +31,7 @@ namespace QLNet
 
       // parameterless constructor is requried for generics
       public Tree()
-      {}
+      { }
 
       public Tree(int columns)
       {

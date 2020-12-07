@@ -59,7 +59,7 @@ namespace QLNet
       private double minmax() { return arguments_.minmax.GetValueOrDefault(); }
       private double lambda() { return arguments_.lambda; }
       private double lookbackPeriodEndTime() { return process_.time(arguments_.lookbackPeriodEnd); }
-      private double stdDeviation() {return volatility() * Math.Sqrt(residualTime());}
+      private double stdDeviation() { return volatility() * Math.Sqrt(residualTime()); }
       private double riskFreeRate()
       {
          return process_.riskFreeRate().link.zeroRate(residualTime(), Compounding.Continuous,

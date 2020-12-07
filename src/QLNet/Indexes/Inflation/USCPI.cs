@@ -23,7 +23,7 @@ namespace QLNet
    public class USCPI : ZeroInflationIndex
    {
       public USCPI(bool interpolated)
-         : this(interpolated, new Handle<ZeroInflationTermStructure>()) {}
+         : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }
 
       public USCPI(bool interpolated,
                    Handle<ZeroInflationTermStructure> ts)
@@ -34,14 +34,15 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months), // availability
                 new USDCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 
    //! Genuine year-on-year US CPI (i.e. not a ratio of US CPI)
    public class YYUSCPI : YoYInflationIndex
    {
       public YYUSCPI(bool interpolated)
-         : this(interpolated, new Handle<YoYInflationTermStructure>()) {}
+         : this(interpolated, new Handle<YoYInflationTermStructure>()) { }
 
       public YYUSCPI(bool interpolated,
                      Handle<YoYInflationTermStructure> ts)
@@ -53,7 +54,8 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new USDCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 
    //! Fake year-on-year US CPI (i.e. a ratio of US CPI)
@@ -72,6 +74,7 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new USDCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 }

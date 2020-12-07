@@ -26,24 +26,24 @@ namespace QLNet
          impl_ = new FlatExtrapolator2DImpl(decoratedInterpolation);
       }
 
-      protected class FlatExtrapolator2DImpl: Interpolation2D.Impl
+      protected class FlatExtrapolator2DImpl : Interpolation2D.Impl
       {
          public FlatExtrapolator2DImpl(Interpolation2D decoratedInterpolation)
          {
             decoratedInterp_ = decoratedInterpolation;
             calculate();
          }
-         public double xMin() { return decoratedInterp_.xMin();}
-         public double xMax() { return decoratedInterp_.xMax();}
-         public List<double> xValues() {return decoratedInterp_.xValues();}
-         public int locateX(double x) {return decoratedInterp_.locateX(x);}
-         public double yMin() {return decoratedInterp_.yMin();}
-         public double yMax() {return decoratedInterp_.yMax();}
-         public List<double> yValues() {return decoratedInterp_.yValues();}
-         public int locateY(double y) {return decoratedInterp_.locateY(y);}
-         public Matrix zData() {return decoratedInterp_.zData();}
-         public bool isInRange(double x, double y) {return decoratedInterp_.isInRange(x, y);}
-         public void update() {decoratedInterp_.update();}
+         public double xMin() { return decoratedInterp_.xMin(); }
+         public double xMax() { return decoratedInterp_.xMax(); }
+         public List<double> xValues() { return decoratedInterp_.xValues(); }
+         public int locateX(double x) { return decoratedInterp_.locateX(x); }
+         public double yMin() { return decoratedInterp_.yMin(); }
+         public double yMax() { return decoratedInterp_.yMax(); }
+         public List<double> yValues() { return decoratedInterp_.yValues(); }
+         public int locateY(double y) { return decoratedInterp_.locateY(y); }
+         public Matrix zData() { return decoratedInterp_.zData(); }
+         public bool isInRange(double x, double y) { return decoratedInterp_.isInRange(x, y); }
+         public void update() { decoratedInterp_.update(); }
          public void calculate()
          {
             // Nothing to do here

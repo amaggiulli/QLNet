@@ -45,7 +45,7 @@ namespace QLNet
             return amount_.Value;
          }
 
-         public Type type()  { return type_; }
+         public Type type() { return type_; }
 
          private double? amount_;
          private Type type_;
@@ -75,7 +75,7 @@ namespace QLNet
 
    }
 
-   public class CallabilitySchedule : List<Callability> {}
+   public class CallabilitySchedule : List<Callability> { }
 
 
 }

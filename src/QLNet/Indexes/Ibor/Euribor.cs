@@ -129,7 +129,7 @@ namespace QLNet
    public class Euribor3M : Euribor
    {
       public Euribor3M() : this(new Handle<YieldTermStructure>()) { }
-      public Euribor3M(Handle<YieldTermStructure> h) : base(new Period(3, TimeUnit.Months), h) {}
+      public Euribor3M(Handle<YieldTermStructure> h) : base(new Period(3, TimeUnit.Months), h) { }
    }
 
    // 4-months %Euribor index

@@ -91,7 +91,7 @@ namespace QLNet
          dy = ((Math.Abs(y) > 0.001) ? y * 0.0001 : 0.000001);
          strikep = strike * Math.Exp(dy);
          strikem = strike / Math.Exp(dy);
-         w  = blackTS_.link.blackVariance(t, strike,  true);
+         w = blackTS_.link.blackVariance(t, strike, true);
          wp = blackTS_.link.blackVariance(t, strikep, true);
          wm = blackTS_.link.blackVariance(t, strikem, true);
          dwdy = (wp - wm) / (2.0 * dy);

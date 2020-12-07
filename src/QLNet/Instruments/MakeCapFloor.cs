@@ -49,7 +49,7 @@ namespace QLNet
             leg.RemoveRange(0, leg.Count - 2); // Sun Studio needs an lvalue
          }
 
-         List<double> strikeVector ;
+         List<double> strikeVector;
          if (strike_ == null)
          {
             // temporary patch...

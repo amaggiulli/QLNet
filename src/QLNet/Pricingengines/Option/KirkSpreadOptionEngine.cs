@@ -93,7 +93,7 @@ namespace QLNet
             results_.value = riskFreeDiscount * (NMd2 - F * NMd1) * (forward2 + strike);
          }
 
-         double ? callValue = optionType == Option.Type.Call ? results_.value :
+         double? callValue = optionType == Option.Type.Call ? results_.value :
                               riskFreeDiscount * (F * Nd1 - Nd2) * (forward2 + strike);
          results_.theta = (Math.Log(riskFreeDiscount) / t) * callValue +
                           riskFreeDiscount * (forward1 * sigma) / (2 * Math.Sqrt(t)) * pdf.value(d1);

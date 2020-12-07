@@ -39,7 +39,7 @@ namespace QLNet
    /*! Generic Black-style-formula swaption engine
        This is the base class for the Black and Bachelier swaption engines */
    public class BlackStyleSwaptionEngine<Spec> : SwaptionEngine
-      where Spec : ISwaptionEngineSpec, new ()
+      where Spec : ISwaptionEngineSpec, new()
    {
       public enum CashAnnuityModel
       {

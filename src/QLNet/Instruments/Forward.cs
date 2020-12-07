@@ -119,8 +119,8 @@ namespace QLNet
                                        Compounding compoundingConvention, DayCounter dayCounter)
       {
 
-         double tenor = dayCounter.yearFraction(settlementDate, maturityDate_) ;
-         double compoundingFactor = forwardValue / (underlyingSpotValue - spotIncome(incomeDiscountCurve_)) ;
+         double tenor = dayCounter.yearFraction(settlementDate, maturityDate_);
+         double compoundingFactor = forwardValue / (underlyingSpotValue - spotIncome(incomeDiscountCurve_));
          return InterestRate.impliedRate(compoundingFactor, dayCounter, compoundingConvention, Frequency.Annual, tenor);
       }
 
@@ -151,7 +151,7 @@ namespace QLNet
       }
 
       // Payoff interface
-      public override string name() { return "Forward";}
+      public override string name() { return "Forward"; }
       public override string description()
       {
          string result = name() + ", " + strike() + " strike";

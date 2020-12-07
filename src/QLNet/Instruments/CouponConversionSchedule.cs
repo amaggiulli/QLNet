@@ -32,7 +32,7 @@ namespace QLNet
    }
 
    public class CouponConversionSchedule : List<CouponConversion>
-   {}
+   { }
 
    public static partial class Utils
    {
@@ -40,7 +40,7 @@ namespace QLNet
                                                       CouponConversionSchedule couponConversionSchedule)
       {
          List<double> ret = new InitializedList<double>(schedule.Count);
-         for (int i = 0 ; i < couponConversionSchedule.Count; i++)
+         for (int i = 0; i < couponConversionSchedule.Count; i++)
             for (int j = 0; j < schedule.Count; j++)
                if (schedule[j] >= (Date)couponConversionSchedule[i].Date)
                   ret[j] = couponConversionSchedule[i].Rate;

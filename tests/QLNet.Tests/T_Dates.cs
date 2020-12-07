@@ -40,7 +40,7 @@ namespace TestSuite
          int n = ECB.nextDates(Date.minDate()).Count;
 
          if (n != knownDates.Count)
-            QAssert.Fail("NextDates(minDate) returns "  + n +
+            QAssert.Fail("NextDates(minDate) returns " + n +
                          " instead of " + knownDates.Count + " dates");
 
          Date previousEcbDate = Date.minDate(),

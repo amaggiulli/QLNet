@@ -29,7 +29,7 @@ namespace QLNet
        The inverse cumulative distribution is supplied by IC.
    */
 
-   public class InverseCumulativeRng<RNG, IC> where RNG : IRNGTraits where IC : IValue, new ()
+   public class InverseCumulativeRng<RNG, IC> where RNG : IRNGTraits where IC : IValue, new()
    {
       private RNG uniformGenerator_;
       private IC ICND_ = FastActivator<IC>.Create();

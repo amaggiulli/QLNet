@@ -31,7 +31,8 @@ namespace TestSuite
       double sub10(double x) { return x - 10; }
 
       double add
-         (double x, double y) { return x + y; }
+         (double x, double y)
+      { return x + y; }
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
@@ -83,7 +84,7 @@ namespace TestSuite
 
          // Testing derived quotes
 
-         Func<double, double>[] f = {add10, mul10, sub10};
+         Func<double, double>[] f = { add10, mul10, sub10 };
 
          Quote me = new SimpleQuote(17.0);
          Handle<Quote> h = new Handle<Quote>(me);
@@ -104,7 +105,7 @@ namespace TestSuite
       {
          // Testing composite quotes
 
-         Func<double, double, double >[] f = { add, mul, sub };
+         Func<double, double, double>[] f = { add, mul, sub };
 
          Quote me1 = new SimpleQuote(12.0),
          me2 = new SimpleQuote(13.0);

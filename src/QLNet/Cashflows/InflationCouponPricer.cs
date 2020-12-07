@@ -42,13 +42,13 @@ namespace QLNet
    public class InflationCouponPricer : IObserver, IObservable
    {
       // Interface
-      public virtual double swapletPrice() {return 0; }
+      public virtual double swapletPrice() { return 0; }
       public virtual double swapletRate() { return 0; }
       public virtual double capletPrice(double effectiveCap) { return 0; }
       public virtual double capletRate(double effectiveCap) { return 0; }
       public virtual double floorletPrice(double effectiveFloor) { return 0; }
       public virtual double floorletRate(double effectiveFloor) { return 0; }
-      public virtual void initialize(InflationCoupon i) {}
+      public virtual void initialize(InflationCoupon i) { }
 
       #region Observer & observable
       private readonly WeakEventSource eventSource = new WeakEventSource();
@@ -240,7 +240,7 @@ namespace QLNet
 
       public BlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol)
          : base(capletVol)
-      {}
+      { }
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)
@@ -258,7 +258,7 @@ namespace QLNet
    {
       public UnitDisplacedBlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
          : base(capletVol)
-      {}
+      { }
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)
@@ -276,7 +276,7 @@ namespace QLNet
    {
       public BachelierYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
          : base(capletVol)
-      {}
+      { }
 
       protected override double optionletPriceImp(Option.Type optionType, double effStrike,
                                                   double forward, double stdDev)

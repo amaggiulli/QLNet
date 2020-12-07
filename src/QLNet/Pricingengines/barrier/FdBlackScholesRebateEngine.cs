@@ -72,7 +72,7 @@ namespace QLNet
          Fdm1dMesher equityMesher =
             new FdmBlackScholesMesher(xGrid_, process_, maturity,
                                       payoff.strike(), xMin, xMax, 0.0001, 1.5,
-                                      new Pair < double?, double? >(),
+                                      new Pair<double?, double?>(),
                                       arguments_.cashFlow);
 
          FdmMesher mesher =
@@ -96,7 +96,7 @@ namespace QLNet
                process_.riskFreeRate().currentLink().dayCounter());
 
          // 4. Boundary conditions
-         FdmBoundaryConditionSet  boundaries = new FdmBoundaryConditionSet();
+         FdmBoundaryConditionSet boundaries = new FdmBoundaryConditionSet();
          if (arguments_.barrierType == Barrier.Type.DownIn
              || arguments_.barrierType == Barrier.Type.DownOut)
          {

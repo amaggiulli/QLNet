@@ -106,7 +106,7 @@ namespace QLNet
 
          base(familyName, new Period(1, TimeUnit.Days), settlementDays,
               currency, fixingCalendar, BusinessDayConvention.Following, false, dayCounter, h)
-      {}
+      { }
 
       //! returns a copy of itself linked to a different forwarding curve
       public new OvernightIndex clone(Handle<YieldTermStructure> h)

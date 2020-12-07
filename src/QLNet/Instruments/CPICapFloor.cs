@@ -69,10 +69,10 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public override void reset() { base.reset();}
+         public override void reset() { base.reset(); }
       }
 
-      public class Engine : GenericEngine<CPICapFloor.Arguments, CPICapFloor.Results> {}
+      public class Engine : GenericEngine<CPICapFloor.Arguments, CPICapFloor.Results> { }
 
       public CPICapFloor(Option.Type type,
                          double nominal,
@@ -105,7 +105,7 @@ namespace QLNet
          Utils.QL_REQUIRE(fixCalendar_ != null, () => "CPICapFloor: fixing calendar may not be null.");
          Utils.QL_REQUIRE(payCalendar_ != null, () => "CPICapFloor: payment calendar may not be null.");
 
-         if (observationInterpolation_ == InterpolationType.Flat  ||
+         if (observationInterpolation_ == InterpolationType.Flat ||
              observationInterpolation_ == InterpolationType.AsIndex && !infIndex_.link.interpolated())
          {
             Utils.QL_REQUIRE(observationLag_ >= infIndex_.link.availabilityLag(), () =>
@@ -124,7 +124,7 @@ namespace QLNet
       }
 
       // Inspectors
-      public Option.Type type()  { return type_; }
+      public Option.Type type() { return type_; }
       public double nominal() { return nominal_; }
       //! \f$ K \f$ in the above formula.
       public double strike() { return strike_; }
@@ -135,7 +135,7 @@ namespace QLNet
       public Period observationLag() { return observationLag_; }
 
       // Instrument interface
-      public override bool isExpired() {return (Settings.evaluationDate() > maturity_);}
+      public override bool isExpired() { return (Settings.evaluationDate() > maturity_); }
       public override void setupArguments(IPricingEngineArguments args)
       {
          // correct PricingEngine?

@@ -82,8 +82,8 @@ namespace QLNet
                if (t3.IsNotEqual(0.0))
                {
                   double t = 0;
-                  for (int kk = j ; kk < mT.columns(); kk++)
-                     t += (mT[j, kk] * w[kk]) / t3 ;
+                  for (int kk = j; kk < mT.columns(); kk++)
+                     t += (mT[j, kk] * w[kk]) / t3;
 
                   for (int i = j; i < m; ++i)
                   {

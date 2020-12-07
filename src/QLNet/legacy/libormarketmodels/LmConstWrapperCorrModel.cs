@@ -54,7 +54,7 @@ namespace QLNet
       }
 
       protected override void generateArguments()
-      {}
+      { }
 
       protected LmCorrelationModel corrModel_;
    }

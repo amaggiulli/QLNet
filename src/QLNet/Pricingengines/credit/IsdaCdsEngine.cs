@@ -127,10 +127,10 @@ namespace QLNet
          // collect nodes from both curves and sort them
          List<Date> yDates = new List<Date>(), cDates = new List<Date>();
 
-         var castY1 =  discountCurve_.link as PiecewiseYieldCurve<Discount, LogLinear>;
+         var castY1 = discountCurve_.link as PiecewiseYieldCurve<Discount, LogLinear>;
          var castY2 = discountCurve_.link as InterpolatedForwardCurve<BackwardFlat>;
          var castY3 = discountCurve_.link as InterpolatedForwardCurve<ForwardFlat>;
-         var castY4 =  discountCurve_.link as FlatForward;
+         var castY4 = discountCurve_.link as FlatForward;
          if (castY1 != null)
          {
             if (castY1.dates() != null)
@@ -152,7 +152,7 @@ namespace QLNet
             Utils.QL_FAIL("Yield curve must be flat forward interpolated");
          }
 
-         var castC1 =  probability_.link as InterpolatedSurvivalProbabilityCurve<LogLinear>;
+         var castC1 = probability_.link as InterpolatedSurvivalProbabilityCurve<LogLinear>;
          var castC2 = probability_.link as InterpolatedHazardRateCurve<BackwardFlat>;
          var castC3 = probability_.link as FlatHazardRate;
 
@@ -408,7 +408,7 @@ namespace QLNet
             results_.couponLegBPS = null;
          }
 
-         if (arguments_.upfront != null  && arguments_.upfront.IsNotEqual(0.0))
+         if (arguments_.upfront != null && arguments_.upfront.IsNotEqual(0.0))
          {
             results_.upfrontBPS =
                results_.upfrontNPV * Const.BASIS_POINT / (arguments_.upfront);

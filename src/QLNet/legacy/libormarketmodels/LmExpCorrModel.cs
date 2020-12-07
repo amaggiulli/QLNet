@@ -74,7 +74,7 @@ namespace QLNet
          {
             for (int j = i; j < size_; ++j)
             {
-               corrMatrix_[i, j] = corrMatrix_[j, i] = Math.Exp(-rho * Math.Abs((double) i - (double) j));
+               corrMatrix_[i, j] = corrMatrix_[j, i] = Math.Exp(-rho * Math.Abs((double)i - (double)j));
             }
          }
          pseudoSqrt_ = MatrixUtilitites.pseudoSqrt(corrMatrix_, MatrixUtilitites.SalvagingAlgorithm.Spectral);

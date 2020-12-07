@@ -62,7 +62,7 @@ namespace QLNet
          DayCounter dayCounter;
 
          ITermStructureConsistentModel tsmodel =
-            (ITermStructureConsistentModel) base.model_.link;
+            (ITermStructureConsistentModel)base.model_.link;
          try
          {
             if (tsmodel != null)

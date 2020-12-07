@@ -27,7 +27,7 @@ namespace QLNet
                                     BusinessDayConvention bdc,
                                     List<Period> optionTenors,
                                     List<double> strikes,
-                                    List<List<Handle<Quote> > > vols,
+                                    List<List<Handle<Quote>>> vols,
                                     DayCounter dc = null)
          : base(settlementDays, calendar, bdc, dc ?? new Actual365Fixed())
       {
@@ -60,7 +60,7 @@ namespace QLNet
                                     BusinessDayConvention bdc,
                                     List<Period> optionTenors,
                                     List<double> strikes,
-                                    List<List<Handle<Quote> > > vols,
+                                    List<List<Handle<Quote>>> vols,
                                     DayCounter dc = null)
          : base(settlementDate, calendar, bdc, dc ?? new Actual365Fixed())
       {
@@ -161,7 +161,7 @@ namespace QLNet
          // recalculate dates if necessary...
          if (moving_)
          {
-            Date d = Settings.evaluationDate() ;
+            Date d = Settings.evaluationDate();
             if (evaluationDate_ != d)
             {
                evaluationDate_ = d;
@@ -196,7 +196,7 @@ namespace QLNet
          calculate();
          return optionTimes_;
       }
-      public List<double> strikes() {return strikes_;}
+      public List<double> strikes() { return strikes_; }
       protected override double volatilityImpl(double t, double strike)
       {
          calculate();
@@ -222,10 +222,10 @@ namespace QLNet
                           "mismatch between strikes(" + strikes_.Count +
                           ") and vol columns (" + vols_.columns() + ")");
          for (int j = 1; j < nStrikes_; ++j)
-            Utils.QL_REQUIRE(strikes_[j - 1]<strikes_[j], () =>
-                             "non increasing strikes: " + j +
-                             " is " + strikes_[j - 1] + ", " +
-                             (j + 1) + " is " + strikes_[j]);
+            Utils.QL_REQUIRE(strikes_[j - 1] < strikes_[j], () =>
+                               "non increasing strikes: " + j +
+                               " is " + strikes_[j - 1] + ", " +
+                               (j + 1) + " is " + strikes_[j]);
       }
       private void initializeOptionDatesAndTimes()
       {
@@ -240,7 +240,7 @@ namespace QLNet
       {
          for (int i = 0; i < nOptionTenors_; ++i)
             for (int j = 0; j < nStrikes_; ++j)
-               volHandles_[i][j] .registerWith(update);
+               volHandles_[i][j].registerWith(update);
       }
       private void interpolate()
       {
@@ -256,7 +256,7 @@ namespace QLNet
       private int nStrikes_;
       private List<double> strikes_;
 
-      private List<List<Handle<Quote> > > volHandles_;
+      private List<List<Handle<Quote>>> volHandles_;
       private Matrix vols_;
 
       // make it not mutable if possible

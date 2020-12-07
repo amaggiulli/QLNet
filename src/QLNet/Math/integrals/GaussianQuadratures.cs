@@ -91,7 +91,7 @@ namespace QLNet
    public class GaussLaguerreIntegration : GaussianQuadrature
    {
       public GaussLaguerreIntegration(int n, double s = 0.0)
-         : base(n, new GaussLaguerrePolynomial(s)) {}
+         : base(n, new GaussLaguerrePolynomial(s)) { }
    }
 
    //! generalized Gauss-Hermite integration
@@ -99,7 +99,7 @@ namespace QLNet
    public class GaussHermiteIntegration : GaussianQuadrature
    {
       public GaussHermiteIntegration(int n, double mu = 0.0)
-         : base(n, new GaussHermitePolynomial(mu)) {}
+         : base(n, new GaussHermitePolynomial(mu)) { }
    }
 
    //! Gauss-Jacobi integration
@@ -107,7 +107,7 @@ namespace QLNet
    public class GaussJacobiIntegration : GaussianQuadrature
    {
       public GaussJacobiIntegration(int n, double alpha, double beta)
-         : base(n, new GaussJacobiPolynomial(alpha, beta)) {}
+         : base(n, new GaussJacobiPolynomial(alpha, beta)) { }
    }
 
    //! Gauss-Hyperbolic integration
@@ -115,7 +115,7 @@ namespace QLNet
    public class GaussHyperbolicIntegration : GaussianQuadrature
    {
       public GaussHyperbolicIntegration(int n)
-         : base(n, new GaussHyperbolicPolynomial()) {}
+         : base(n, new GaussHyperbolicPolynomial()) { }
    }
 
    //! Gauss-Legendre integration
@@ -123,7 +123,7 @@ namespace QLNet
    public class GaussLegendreIntegration : GaussianQuadrature
    {
       public GaussLegendreIntegration(int n)
-         : base(n, new GaussJacobiPolynomial(0.0, 0.0)) {}
+         : base(n, new GaussJacobiPolynomial(0.0, 0.0)) { }
    }
 
    //! Gauss-Chebyshev integration
@@ -131,7 +131,7 @@ namespace QLNet
    public class GaussChebyshevIntegration : GaussianQuadrature
    {
       public GaussChebyshevIntegration(int n)
-         : base(n, new GaussJacobiPolynomial(-0.5, -0.5)) {}
+         : base(n, new GaussJacobiPolynomial(-0.5, -0.5)) { }
    }
 
    //! Gauss-Chebyshev integration (second kind)
@@ -139,7 +139,7 @@ namespace QLNet
    public class GaussChebyshev2ndIntegration : GaussianQuadrature
    {
       public GaussChebyshev2ndIntegration(int n)
-         : base(n, new GaussJacobiPolynomial(0.5, 0.5)) {}
+         : base(n, new GaussJacobiPolynomial(0.5, 0.5)) { }
    }
 
    //! Gauss-Gegenbauer integration
@@ -147,7 +147,7 @@ namespace QLNet
    public class GaussGegenbauerIntegration : GaussianQuadrature
    {
       public GaussGegenbauerIntegration(int n, double lambda)
-         : base(n, new GaussJacobiPolynomial(lambda - 0.5, lambda - 0.5)) {}
+         : base(n, new GaussJacobiPolynomial(lambda - 0.5, lambda - 0.5)) { }
    }
 
    //! tabulated Gauss-Legendre quadratures
@@ -213,32 +213,32 @@ namespace QLNet
 
       private List<double> w_;
       private List<double> x_;
-      private int  n_;
+      private int n_;
 
       private static double[] w6 = { 0.467913934572691, 0.360761573048139, 0.171324492379170 };
       private static double[] x6 = { 0.238619186083197, 0.661209386466265, 0.932469514203152 };
       private static int n6 = 3;
 
       private static double[] w7 = { 0.417959183673469, 0.381830050505119, 0.279705391489277, 0.129484966168870 };
-      private static  double[] x7 = { 0.000000000000000, 0.405845151377397, 0.741531185599394, 0.949107912342759 };
-      private static  int n7 = 4;
+      private static double[] x7 = { 0.000000000000000, 0.405845151377397, 0.741531185599394, 0.949107912342759 };
+      private static int n7 = 4;
 
-      private static  double[] w12 = { 0.249147045813403, 0.233492536538355, 0.203167426723066, 0.160078328543346,
+      private static double[] w12 = { 0.249147045813403, 0.233492536538355, 0.203167426723066, 0.160078328543346,
                                        0.106939325995318, 0.047175336386512
                                      };
-      private static  double[] x12 = { 0.125233408511469, 0.367831498998180, 0.587317954286617, 0.769902674194305,
+      private static double[] x12 = { 0.125233408511469, 0.367831498998180, 0.587317954286617, 0.769902674194305,
                                        0.904117256370475, 0.981560634246719
                                      };
-      private static  int n12 = 6;
+      private static int n12 = 6;
 
-      private static  double[] w20 = { 0.152753387130726, 0.149172986472604, 0.142096109318382, 0.131688638449177,
+      private static double[] w20 = { 0.152753387130726, 0.149172986472604, 0.142096109318382, 0.131688638449177,
                                        0.118194531961518, 0.101930119817240, 0.083276741576704, 0.062672048334109,
                                        0.040601429800387, 0.017614007139152
                                      };
-      private static  double[] x20 = { 0.076526521133497, 0.227785851141645, 0.373706088715420, 0.510867001950827,
+      private static double[] x20 = { 0.076526521133497, 0.227785851141645, 0.373706088715420, 0.510867001950827,
                                        0.636053680726515, 0.746331906460151, 0.839116971822219, 0.912234428251326,
                                        0.963971927277914, 0.993128599185095
                                      };
-      private static  int n20 = 10;
+      private static int n20 = 10;
    }
 }

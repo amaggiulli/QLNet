@@ -72,7 +72,7 @@ namespace QLNet
                 // Whit Monday
                 || (dd == em + 49)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // May Day
                 || (d == 1 && m == Month.May)
                 // National Independence Day

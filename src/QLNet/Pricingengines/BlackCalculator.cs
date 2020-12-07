@@ -94,16 +94,16 @@ namespace QLNet
          switch (payoff.optionType())
          {
             case Option.Type.Call:
-               alpha_     =  cum_d1_;//  N(d1)
-               DalphaDd1_ =    n_d1_;//  n(d1)
-               beta_      = -cum_d2_;// -N(d2)
-               DbetaDd2_  = -  n_d2_;// -n(d2)
+               alpha_ = cum_d1_;//  N(d1)
+               DalphaDd1_ = n_d1_;//  n(d1)
+               beta_ = -cum_d2_;// -N(d2)
+               DbetaDd2_ = -n_d2_;// -n(d2)
                break;
             case Option.Type.Put:
-               alpha_     = -1.0 + cum_d1_; // -N(-d1)
-               DalphaDd1_ =        n_d1_;//  n( d1)
-               beta_      =  1.0 - cum_d2_; //  N(-d2)
-               DbetaDd2_  =     -  n_d2_;// -n( d2)
+               alpha_ = -1.0 + cum_d1_; // -N(-d1)
+               DalphaDd1_ = n_d1_;//  n( d1)
+               beta_ = 1.0 - cum_d2_; //  N(-d2)
+               DbetaDd2_ = -n_d2_;// -n( d2)
                break;
             default:
                Utils.QL_FAIL("invalid option type");
@@ -144,9 +144,9 @@ namespace QLNet
 
          double temp = stdDev_ * spot;
          double DalphaDs = DalphaDd1_ / temp;
-         double DbetaDs  = DbetaDd2_ / temp;
+         double DbetaDs = DbetaDd2_ / temp;
          double temp2 = DalphaDs * forward_ + alpha_ * DforwardDs
-                        + DbetaDs  * X_       + beta_  * DXDs_;
+                        + DbetaDs * X_ + beta_ * DXDs_;
 
          return discount_ * temp2;
       }
@@ -229,9 +229,9 @@ namespace QLNet
             return 0.0;
          Utils.QL_REQUIRE(maturity > 0.0, () => "non negative maturity required: " + maturity + " not allowed");
 
-         return -(Math.Log(discount_)            * value()
+         return -(Math.Log(discount_) * value()
                   + Math.Log(forward_ / spot) * spot * delta(spot)
-                  + 0.5 * variance_ * spot  * spot * gamma(spot)) / maturity;
+                  + 0.5 * variance_ * spot * spot * gamma(spot)) / maturity;
       }
 
       /*! Sensitivity to time to maturity per day,
@@ -249,7 +249,7 @@ namespace QLNet
          double temp = Math.Log(strike_ / forward_) / variance_;
          // actually DalphaDsigma / SQRT(T)
          double DalphaDsigma = DalphaDd1_ * (temp + 0.5);
-         double DbetaDsigma  = DbetaDd2_ * (temp - 0.5);
+         double DbetaDsigma = DbetaDd2_ * (temp - 0.5);
 
          double temp2 = DalphaDsigma * forward_ + DbetaDsigma * X_;
 
@@ -362,12 +362,12 @@ namespace QLNet
             switch (payoff.optionType())
             {
                case Option.Type.Call:
-                  black_.beta_     = black_.cum_d2_;
+                  black_.beta_ = black_.cum_d2_;
                   black_.DbetaDd2_ = black_.n_d2_;
                   break;
                case Option.Type.Put:
-                  black_.beta_     = 1.0 - black_.cum_d2_;
-                  black_.DbetaDd2_ =    -black_.n_d2_;
+                  black_.beta_ = 1.0 - black_.cum_d2_;
+                  black_.DbetaDd2_ = -black_.n_d2_;
                   break;
                default:
                   Utils.QL_FAIL("invalid option type");
@@ -381,11 +381,11 @@ namespace QLNet
             switch (payoff.optionType())
             {
                case Option.Type.Call:
-                  black_.alpha_     = black_.cum_d1_;
+                  black_.alpha_ = black_.cum_d1_;
                   black_.DalphaDd1_ = black_.n_d1_;
                   break;
                case Option.Type.Put:
-                  black_.alpha_     = 1.0 - black_.cum_d1_;
+                  black_.alpha_ = 1.0 - black_.cum_d1_;
                   black_.DalphaDd1_ = -black_.n_d1_;
                   break;
                default:

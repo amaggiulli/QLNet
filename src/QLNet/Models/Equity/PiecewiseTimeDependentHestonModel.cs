@@ -56,23 +56,23 @@ namespace QLNet
          arguments_[3] = rho;
          arguments_[4] = new ConstantParameter(v0, new PositiveConstraint());
 
-         s0.registerWith(update) ;
-         riskFreeRate.registerWith(update) ;
-         dividendYield.registerWith(update) ;
+         s0.registerWith(update);
+         riskFreeRate.registerWith(update);
+         dividendYield.registerWith(update);
       }
 
       // variance mean version level
-      public double theta(double t)  { return arguments_[0].value(t); }
+      public double theta(double t) { return arguments_[0].value(t); }
       // variance mean reversion speed
-      public double kappa(double t)  { return arguments_[1].value(t); }
+      public double kappa(double t) { return arguments_[1].value(t); }
       // volatility of the volatility
-      public double sigma(double t)  { return arguments_[2].value(t); }
+      public double sigma(double t) { return arguments_[2].value(t); }
       // correlation
-      public double rho(double t)    { return arguments_[3].value(t); }
+      public double rho(double t) { return arguments_[3].value(t); }
       // spot variance
-      public double v0()           { return arguments_[4].value(0.0); }
+      public double v0() { return arguments_[4].value(0.0); }
       // spot
-      public double s0()           { return s0_.link.value(); }
+      public double s0() { return s0_.link.value(); }
 
 
       public TimeGrid timeGrid() { return timeGrid_; }

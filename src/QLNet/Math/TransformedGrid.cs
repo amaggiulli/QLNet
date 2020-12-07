@@ -31,11 +31,11 @@ namespace QLNet
       protected Vector dxp_;
       protected Vector dx_;
 
-      public Vector gridArray() { return grid_;}
-      public Vector transformedGridArray() { return transformedGrid_;}
-      public Vector dxmArray() { return dxm_;}
-      public Vector dxpArray() { return dxp_;}
-      public Vector dxArray() { return dx_;}
+      public Vector gridArray() { return grid_; }
+      public Vector transformedGridArray() { return transformedGrid_; }
+      public Vector dxmArray() { return dxm_; }
+      public Vector dxpArray() { return dxp_; }
+      public Vector dxArray() { return dx_; }
 
       public TransformedGrid(Vector grid)
       {
@@ -45,7 +45,7 @@ namespace QLNet
          dxp_ = new Vector(grid.size());
          dx_ = new Vector(grid.size());
 
-         for (int i = 1; i < transformedGrid_.size() - 1 ; i++)
+         for (int i = 1; i < transformedGrid_.size() - 1; i++)
          {
             dxm_[i] = transformedGrid_[i] - transformedGrid_[i - 1];
             dxp_[i] = transformedGrid_[i + 1] - transformedGrid_[i];
@@ -64,7 +64,7 @@ namespace QLNet
          for (int i = 0; i < grid.size(); i++)
             transformedGrid_[i] = func(grid_[i]);
 
-         for (int i = 1; i < transformedGrid_.size() - 1 ; i++)
+         for (int i = 1; i < transformedGrid_.size() - 1; i++)
          {
             dxm_[i] = transformedGrid_[i] - transformedGrid_[i - 1];
             dxp_[i] = transformedGrid_[i + 1] - transformedGrid_[i];
@@ -74,17 +74,17 @@ namespace QLNet
 
       public double grid(int i) { return grid_[i]; }
       public double transformedGrid(int i) { return transformedGrid_[i]; }
-      public double dxm(int i) { return dxm_[i];}
+      public double dxm(int i) { return dxm_[i]; }
       public double dxp(int i) { return dxp_[i]; }
       public double dx(int i) { return dx_[i]; }
-      public int size() {return grid_.size();}
+      public int size() { return grid_.size(); }
    }
 
    public class LogGrid : TransformedGrid
    {
-      public LogGrid(Vector grid) : base(grid, Math.Log) {}
+      public LogGrid(Vector grid) : base(grid, Math.Log) { }
 
-      public Vector logGridArray() { return transformedGridArray();}
-      public double logGrid(int i) { return transformedGrid(i);}
+      public Vector logGridArray() { return transformedGridArray(); }
+      public double logGrid(int i) { return transformedGrid(i); }
    }
 }

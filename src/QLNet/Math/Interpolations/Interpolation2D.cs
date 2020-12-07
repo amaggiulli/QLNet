@@ -42,27 +42,27 @@ namespace QLNet
    {
       protected Impl impl_;
 
-      public double xMin() {return impl_.xMin();}
+      public double xMin() { return impl_.xMin(); }
 
-      public double xMax() {return impl_.xMax();}
+      public double xMax() { return impl_.xMax(); }
 
-      public List<double> xValues() {return impl_.xValues();}
+      public List<double> xValues() { return impl_.xValues(); }
 
-      public int locateX(double x) {return impl_.locateX(x);}
+      public int locateX(double x) { return impl_.locateX(x); }
 
-      public double yMin() {return impl_.yMin();}
+      public double yMin() { return impl_.yMin(); }
 
-      public double yMax() {return impl_.yMax();}
+      public double yMax() { return impl_.yMax(); }
 
-      public List<double> yValues() {return impl_.yValues();}
+      public List<double> yValues() { return impl_.yValues(); }
 
-      public int locateY(double y) {return impl_.locateY(y);}
+      public int locateY(double y) { return impl_.locateY(y); }
 
-      public Matrix zData() {return impl_.zData();}
+      public Matrix zData() { return impl_.zData(); }
 
-      public bool isInRange(double x, double y) {return impl_.isInRange(x, y);}
+      public bool isInRange(double x, double y) { return impl_.isInRange(x, y); }
 
-      public override void update() {impl_.calculate();}
+      public override void update() { impl_.calculate(); }
 
       // main method to derive an interpolated point
       public double value(double x, double y) { return value(x, y, false); }
@@ -73,11 +73,11 @@ namespace QLNet
          return impl_.value(x, y);
       }
 
-      protected  void checkRange(double x, double y, bool extrapolate)
+      protected void checkRange(double x, double y, bool extrapolate)
       {
          if (!(extrapolate || allowsExtrapolation() || impl_.isInRange(x, y)))
             throw new ArgumentException("interpolation range is [" + impl_.xMin() + ", " + impl_.xMax()
-                                        +  "] X [" + x +  impl_.yMin() + ", " + impl_.yMax()
+                                        + "] X [" + x + impl_.yMin() + ", " + impl_.yMax()
                                         + "]: extrapolation at (" + x + ", " + y + " not allowed");
       }
 
@@ -137,7 +137,7 @@ namespace QLNet
 
          public List<double> yValues() { return yBegin_.GetRange(0, ySize_); }
 
-         public Matrix zData() {return zData_;}
+         public Matrix zData() { return zData_; }
 
          public bool isInRange(double x, double y)
          {

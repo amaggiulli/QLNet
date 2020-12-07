@@ -89,7 +89,7 @@ namespace QLNet
       protected override void performCalculations()
       {
          object rhs = new Vector(initialValues_.Count);
-         for (int i = 0; i < initialValues_.Count;  i++)
+         for (int i = 0; i < initialValues_.Count; i++)
             (rhs as Vector)[i] = initialValues_[i];
 
          new FdmBackwardSolver(op_, solverDesc_.bcSet, conditions_, schemeDesc_)

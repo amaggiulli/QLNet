@@ -162,12 +162,12 @@ namespace TestSuite
             calculated = new Dictionary<string, double>(6);
             expected = new Dictionary<string, double>(6);
             tolerance = new Dictionary<string, double>(6);
-            tolerance["delta"]  = 1.0e-5;
-            tolerance["gamma"]  = 1.0e-5;
-            tolerance["theta"]  = 1.0e-5;
-            tolerance["rho"]    = 1.0e-5;
+            tolerance["delta"] = 1.0e-5;
+            tolerance["gamma"] = 1.0e-5;
+            tolerance["theta"] = 1.0e-5;
+            tolerance["rho"] = 1.0e-5;
             tolerance["divRho"] = 1.0e-5;
-            tolerance["vega"]   = 1.0e-5;
+            tolerance["vega"] = 1.0e-5;
 
             Option.Type[] types = { Option.Type.Call, Option.Type.Put };
             double[] underlyings = { 100.0 };
@@ -380,7 +380,7 @@ namespace TestSuite
          DayCounter dc = new Actual360();
          Date today = Date.Today;
 
-         SimpleQuote spot  = new SimpleQuote(100.0);
+         SimpleQuote spot = new SimpleQuote(100.0);
          SimpleQuote qRate = new SimpleQuote(0.03);
          YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
          SimpleQuote rRate = new SimpleQuote(0.06);
@@ -511,12 +511,12 @@ namespace TestSuite
             calculated = new Dictionary<string, double>(6);
             expected = new Dictionary<string, double>(6);
             tolerance = new Dictionary<string, double>(6);
-            tolerance["delta"]  = 1.0e-5;
-            tolerance["gamma"]  = 1.0e-5;
-            tolerance["theta"]  = 1.0e-5;
-            tolerance["rho"]    = 1.0e-5;
+            tolerance["delta"] = 1.0e-5;
+            tolerance["gamma"] = 1.0e-5;
+            tolerance["theta"] = 1.0e-5;
+            tolerance["rho"] = 1.0e-5;
             tolerance["divRho"] = 1.0e-5;
-            tolerance["vega"]   = 1.0e-5;
+            tolerance["vega"] = 1.0e-5;
 
             Option.Type[] types = { Option.Type.Call, Option.Type.Put };
             double[] underlyings = { 100.0 };

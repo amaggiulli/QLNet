@@ -127,7 +127,7 @@ namespace QLNet
          update();
       }
 
-      public InflationCouponPricer pricer() {return pricer_;}
+      public InflationCouponPricer pricer() { return pricer_; }
 
       protected InflationCouponPricer pricer_;
       protected InflationIndex index_;

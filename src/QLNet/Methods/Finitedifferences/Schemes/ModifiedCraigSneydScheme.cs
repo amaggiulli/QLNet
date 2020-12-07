@@ -75,7 +75,7 @@ namespace QLNet
 
          bcSet_.applyBeforeApplying(map_);
          Vector yt = y0 + mu_ * dt_.Value * map_.apply_mixed(y - (a as Vector))
-                     + (0.5 - mu_) * dt_.Value * map_.apply(y - (a as Vector));;
+                     + (0.5 - mu_) * dt_.Value * map_.apply(y - (a as Vector)); ;
          bcSet_.applyAfterApplying(yt);
 
          for (int i = 0; i < map_.size(); ++i)

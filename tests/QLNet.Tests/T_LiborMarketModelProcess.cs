@@ -147,9 +147,9 @@ namespace TestSuite
             List<double> fixings = process.fixingTimes();
             for (int i = 1; i < fixings.Count - 1; ++i)
             {
-               int ileft  = process.nextIndexReset(fixings[i] - 0.000001);
+               int ileft = process.nextIndexReset(fixings[i] - 0.000001);
                int iright = process.nextIndexReset(fixings[i] + 0.000001);
-               int ii     = process.nextIndexReset(fixings[i]);
+               int ii = process.nextIndexReset(fixings[i]);
 
                if ((ileft != i) || (iright != i + 1) || (ii != i + 1))
                {
@@ -176,7 +176,7 @@ namespace TestSuite
          for (int i = 0; i < 9; ++i)
          {
             double calculated = Math.Sqrt(covar[i + 1, i + 1]);
-            double expected   = lambdaExpected[i] / 100;
+            double expected = lambdaExpected[i] / 100;
 
             if (Math.Abs(calculated - expected) > tolerance)
                QAssert.Fail("Failed to reproduce expected lambda values"
@@ -184,7 +184,7 @@ namespace TestSuite
                             + "\n    expected:   " + expected);
          }
 
-         LfmCovarianceParameterization param =  process.covarParam();
+         LfmCovarianceParameterization param = process.covarParam();
 
          List<double> tmp = process.fixingTimes();
          TimeGrid grid = new TimeGrid(tmp.Last(), 14);
@@ -249,7 +249,7 @@ namespace TestSuite
          List<int> location = new List<int>();
          for (int i = 0; i < tmp.Count; ++i)
          {
-            location.Add(grid.index(tmp[i])) ;
+            location.Add(grid.index(tmp[i]));
          }
 
          // set-up a small Monte-Carlo simulation to price caplets
@@ -262,8 +262,8 @@ namespace TestSuite
          IRNG rsg2 = (IRNG)new LowDiscrepancy().make_sequence_generator(
                         process2.factors() * (grid.size() - 1), seed);
 
-         MultiPathGenerator<IRNG> generator1 = new MultiPathGenerator<IRNG> (process1, grid, rsg1, false);
-         MultiPathGenerator<IRNG> generator2 = new MultiPathGenerator<IRNG> (process2, grid, rsg2, false);
+         MultiPathGenerator<IRNG> generator1 = new MultiPathGenerator<IRNG>(process1, grid, rsg1, false);
+         MultiPathGenerator<IRNG> generator2 = new MultiPathGenerator<IRNG>(process2, grid, rsg2, false);
 
          const int nrTrails = 250000;
          List<GeneralStatistics> stat1 = new InitializedList<GeneralStatistics>(process1.size());
@@ -291,7 +291,7 @@ namespace TestSuite
 
             for (int k = 0; k < process1.size(); ++k)
             {
-               double accrualPeriod =  process1.accrualEndTimes()[k]
+               double accrualPeriod = process1.accrualEndTimes()[k]
                                        - process1.accrualStartTimes()[k];
                // caplet payoff function, cap rate at 4%
                double payoff1 = Math.Max(rates1[k] - 0.04, 0.0) * accrualPeriod;
@@ -303,7 +303,7 @@ namespace TestSuite
                if (k != 0)
                {
                   // ratchet cap payoff function
-                  double payoff3 =  Math.Max(rates2[k] - (rates2[k - 1] + 0.0025), 0.0)
+                  double payoff3 = Math.Max(rates2[k] - (rates2[k - 1] + 0.0025), 0.0)
                                     * accrualPeriod;
                   stat3[k - 1].add(dis2[k] * payoff3);
                }
@@ -326,8 +326,8 @@ namespace TestSuite
          {
 
             double calculated1 = stat1[k].mean();
-            double tolerance1  = stat1[k].errorEstimate();
-            double expected    = capletNpv[k];
+            double tolerance1 = stat1[k].errorEstimate();
+            double expected = capletNpv[k];
 
             if (Math.Abs(calculated1 - expected) > tolerance1)
             {
@@ -338,7 +338,7 @@ namespace TestSuite
             }
 
             double calculated2 = stat2[k].mean();
-            double tolerance2  = stat2[k].errorEstimate();
+            double tolerance2 = stat2[k].errorEstimate();
 
             if (Math.Abs(calculated2 - expected) > tolerance2)
             {
@@ -351,8 +351,8 @@ namespace TestSuite
             if (k != 0)
             {
                double calculated3 = stat3[k - 1].mean();
-               double tolerance3  = stat3[k - 1].errorEstimate();
-               expected    = ratchetNpv[k - 1];
+               double tolerance3 = stat3[k - 1].errorEstimate();
+               expected = ratchetNpv[k - 1];
 
                double refError = 1e-5; // 1e-5. error bars of the reference values
 

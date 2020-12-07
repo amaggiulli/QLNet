@@ -192,7 +192,7 @@ namespace QLNet
       protected Period fixedLegTenor_;
       protected BusinessDayConvention fixedLegConvention_;
       protected bool exogenousDiscount_;
-      protected  Handle<YieldTermStructure> discount_;
+      protected Handle<YieldTermStructure> discount_;
       // cache data to avoid swap recreation when the same fixing date
       // is used multiple time to forecast changing fixing
       protected VanillaSwap lastSwap_;

@@ -38,11 +38,12 @@ namespace QLNet
       }
 
       public Shibor(Period tenor)
-         : this(tenor, new Handle<YieldTermStructure>()) {}
+         : this(tenor, new Handle<YieldTermStructure>()) { }
 
       public Shibor(Period tenor, Handle<YieldTermStructure> h)
          : base("Shibor", tenor, (tenor == new Period(1, TimeUnit.Days) ? 0 : 1), new CNYCurrency(),
                 new China(China.Market.IB), shiborConvention(tenor), false,
-                new Actual360(), h) {}
+                new Actual360(), h)
+      { }
    }
 }

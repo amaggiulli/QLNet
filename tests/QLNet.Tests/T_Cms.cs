@@ -280,7 +280,7 @@ namespace TestSuite
             coupon.setPricer(vars.analyticPricers[j]);
             double rate1 = coupon.rate();
 
-            double difference =  Math.Abs(rate1 - rate0);
+            double difference = Math.Abs(rate1 - rate0);
             double tol = 2.0e-4;
             bool linearTsr = j == vars.yieldCurveModels.Count - 1;
 
@@ -370,7 +370,7 @@ namespace TestSuite
 
          CommonVars vars = new CommonVars();
 
-         List<Handle<SwaptionVolatilityStructure> > swaptionVols = new List<Handle<SwaptionVolatilityStructure>>();
+         List<Handle<SwaptionVolatilityStructure>> swaptionVols = new List<Handle<SwaptionVolatilityStructure>>();
          swaptionVols.Add(vars.atmVol);
          swaptionVols.Add(vars.SabrVolCube1);
          swaptionVols.Add(vars.SabrVolCube2);

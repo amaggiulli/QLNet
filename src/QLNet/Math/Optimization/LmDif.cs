@@ -327,11 +327,11 @@ namespace QLNet
          */
          par = zero;
          iter = 1;
-         /*
-         *     beginning of the outer loop.
-         */
+      /*
+      *     beginning of the outer loop.
+      */
 
-         L30:
+      L30:
 
          /*
          *    calculate the jacobian matrix.
@@ -463,10 +463,10 @@ namespace QLNet
                diag[j] = dmax1(diag[j], wa2[j]);
          }
 
-         /*
-         *    beginning of the inner loop.
-         */
-         L200:
+      /*
+      *    beginning of the inner loop.
+      */
+      L200:
          /*
          *       determine the levenberg-marquardt parameter.
          */
@@ -617,7 +617,7 @@ namespace QLNet
          */
          goto L30;
 
-         L300:
+      L300:
          /*
          *     termination, either normal or user imposed.
          */
@@ -1000,7 +1000,7 @@ namespace QLNet
             ipvt[j] = ipvt[kmax];
             ipvt[kmax] = k;
 
-            L40:
+         L40:
             /*
             *    compute the householder transformation to reduce the
             *    j-th column of a to a multiple of the j-th unit vector.
@@ -1060,7 +1060,7 @@ namespace QLNet
                }
             }
 
-            L100:
+         L100:
             rdiag[j] = -ajnorm;
          }
       }
@@ -1240,7 +1240,7 @@ namespace QLNet
                   }
                }
             }
-            L90:
+         L90:
             /*
             *    store the diagonal element of s and restore
             *    the corresponding diagonal element of r.
@@ -1280,7 +1280,7 @@ namespace QLNet
             }
             wa[j] = (wa[j] - sum) / sdiag[j];
          }
-         L150:
+      L150:
          /*
          *     permute the components of z back to components of x.
          */
@@ -1589,7 +1589,7 @@ namespace QLNet
          */
          goto L150;
 
-         L220:
+      L220:
          /*
          *     termination.
          */

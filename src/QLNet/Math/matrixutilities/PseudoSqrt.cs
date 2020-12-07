@@ -522,14 +522,14 @@ namespace QLNet
                   eigenValues[i] = Math.Max(eigenValues[i], 0.0);
                break;
             case SalvagingAlgorithm.Higham:
-            {
-               int maxIterations = 40;
-               double tolerance = 1e-6;
-               Matrix adjustedMatrix = highamImplementation(matrix, maxIterations, tolerance);
-               jd = new SymmetricSchurDecomposition(adjustedMatrix);
-               eigenValues = jd.eigenvalues();
-            }
-            break;
+               {
+                  int maxIterations = 40;
+                  double tolerance = 1e-6;
+                  Matrix adjustedMatrix = highamImplementation(matrix, maxIterations, tolerance);
+                  jd = new SymmetricSchurDecomposition(adjustedMatrix);
+                  eigenValues = jd.eigenvalues();
+               }
+               break;
             default:
                Utils.QL_FAIL("unknown or invalid salvaging algorithm");
                break;

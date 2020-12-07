@@ -32,15 +32,15 @@ namespace QLNet
                                FdmQuantoHelper quantoHelper = null)
       {
          mesher_ = mesher;
-         rTS_   = bsProcess.riskFreeRate().currentLink();
-         qTS_   = bsProcess.dividendYield().currentLink();
+         rTS_ = bsProcess.riskFreeRate().currentLink();
+         qTS_ = bsProcess.dividendYield().currentLink();
          volTS_ = bsProcess.blackVolatility().currentLink();
          localVol_ = (localVol) ? bsProcess.localVolatility().currentLink()
                      : null;
-         x_      = (localVol) ? new Vector(Vector.Exp(mesher.locations(direction))) : null;
+         x_ = (localVol) ? new Vector(Vector.Exp(mesher.locations(direction))) : null;
          dxMap_ = new FirstDerivativeOp(direction, mesher);
          dxxMap_ = new SecondDerivativeOp(direction, mesher);
-         mapT_  = new TripleBandLinearOp(direction, mesher);
+         mapT_ = new TripleBandLinearOp(direction, mesher);
          strike_ = strike;
          illegalLocalVolOverwrite_ = illegalLocalVolOverwrite;
          direction_ = direction;
@@ -165,7 +165,8 @@ namespace QLNet
 
       public override IOperator multiply(double a, IOperator D) { return null; }
       public override IOperator add
-         (IOperator A, IOperator B) { return null; }
+         (IOperator A, IOperator B)
+      { return null; }
       public override IOperator subtract(IOperator A, IOperator B) { return null; }
 
       public override bool isTimeDependent() { return false; }

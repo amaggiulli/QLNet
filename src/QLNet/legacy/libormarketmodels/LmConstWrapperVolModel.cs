@@ -47,6 +47,6 @@ namespace QLNet
       protected LmVolatilityModel volaModel_;
 
       public override void generateArguments()
-      {}
+      { }
    }
 }

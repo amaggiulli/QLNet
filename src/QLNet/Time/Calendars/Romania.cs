@@ -52,7 +52,7 @@ namespace QLNet
          {
             DayOfWeek w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month) date.Month;
+            Month m = (Month)date.Month;
             int y = date.Year;
             int em = easterMonday(y);
             if (isWeekend(w)

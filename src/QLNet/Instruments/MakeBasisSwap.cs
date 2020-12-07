@@ -45,7 +45,8 @@ namespace QLNet
 
 
       public MakeBasisSwap(Period swapTenor, IborIndex index1, IborIndex index2) :
-         this(swapTenor, index1, index2, new Period(0, TimeUnit.Days)) { }
+         this(swapTenor, index1, index2, new Period(0, TimeUnit.Days))
+      { }
       public MakeBasisSwap(Period swapTenor, IborIndex index1, IborIndex index2, Period forwardStart)
       {
          swapTenor_ = swapTenor;

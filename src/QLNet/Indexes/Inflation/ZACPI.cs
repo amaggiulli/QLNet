@@ -34,7 +34,8 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),   // availability
                 new ZARCurrency(),
-                ts) { }
+                ts)
+      { }
    }
 
    //! Genuine year-on-year South African CPI (i.e. not a ratio of South African CPI)
@@ -53,7 +54,8 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new ZARCurrency(),
-                ts) { }
+                ts)
+      { }
    }
 
    //! Fake year-on-year South African CPI (i.e. a ratio of South African CPI)
@@ -72,6 +74,7 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new ZARCurrency(),
-                ts) { }
+                ts)
+      { }
    }
 }

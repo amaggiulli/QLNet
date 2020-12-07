@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   public class CapletVarianceCurve :  OptionletVolatilityStructure
+   public class CapletVarianceCurve : OptionletVolatilityStructure
    {
 
       private BlackVarianceCurve blackCurve_;
@@ -49,7 +49,7 @@ namespace QLNet
          return blackCurve_.minStrike();
       }
 
-      public override double  maxStrike()
+      public override double maxStrike()
       {
          return blackCurve_.maxStrike();
       }

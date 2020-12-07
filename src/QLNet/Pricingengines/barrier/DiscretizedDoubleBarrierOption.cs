@@ -48,11 +48,11 @@ namespace QLNet
          adjustValues();
       }
 
-      public Vector vanilla()  { return vanilla_.values(); }
+      public Vector vanilla() { return vanilla_.values(); }
 
-      public DoubleBarrierOption.Arguments arguments() {return arguments_;}
+      public DoubleBarrierOption.Arguments arguments() { return arguments_; }
 
-      public override List<double> mandatoryTimes() {return stoppingTimes_;}
+      public override List<double> mandatoryTimes() { return stoppingTimes_; }
 
       public void checkBarrier(Vector optvalues, Vector grid)
       {
@@ -203,7 +203,7 @@ namespace QLNet
          adjustValues();
       }
 
-      public override List<double> mandatoryTimes() {return unenhanced_.mandatoryTimes();}
+      public override List<double> mandatoryTimes() { return unenhanced_.mandatoryTimes(); }
 
       protected override void postAdjustValuesImpl()
       {

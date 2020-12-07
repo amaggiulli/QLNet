@@ -20,7 +20,7 @@ namespace QLNet
    /// Binomial Tsiveriotis-Fernandes engine for convertible bonds
    /// </summary>
    /// <typeparam name="T"></typeparam>
-   public class BinomialConvertibleEngine<T> : ConvertibleBond.option.Engine where T : ITree, ITreeFactory<T>, new ()
+   public class BinomialConvertibleEngine<T> : ConvertibleBond.option.Engine where T : ITree, ITreeFactory<T>, new()
    {
       public BinomialConvertibleEngine(GeneralizedBlackScholesProcess process, int timeSteps)
       {

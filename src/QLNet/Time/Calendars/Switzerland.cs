@@ -63,9 +63,9 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // Berchtoldstag
-                || (d == 2  && m == Month.January)
+                || (d == 2 && m == Month.January)
                 // Good Friday
                 || (dd == em - 3)
                 // Easter Monday
@@ -75,9 +75,9 @@ namespace QLNet
                 // Whit Monday
                 || (dd == em + 49)
                 // Labour Day
-                || (d == 1  && m == Month.May)
+                || (d == 1 && m == Month.May)
                 // National Day
-                || (d == 1  && m == Month.August)
+                || (d == 1 && m == Month.August)
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // St. Stephen's Day

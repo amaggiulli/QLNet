@@ -29,7 +29,7 @@ namespace TestSuite
       public void testConstructorAdditionalSteps()
       {
          // Testing TimeGrid construction with additional steps
-         List<double> test_times = new List<double> {1.0, 2.0, 4.0};
+         List<double> test_times = new List<double> { 1.0, 2.0, 4.0 };
          TimeGrid tg = new TimeGrid(test_times, 8);
 
          // Expect 8 evenly sized steps over the interval [0, 4].
@@ -53,7 +53,7 @@ namespace TestSuite
       public void testConstructorMandatorySteps()
       {
          // Testing TimeGrid construction with only mandatory points
-         List<double> test_times = new List<double> {0.0, 1.0, 2.0, 4.0};
+         List<double> test_times = new List<double> { 0.0, 1.0, 2.0, 4.0 };
          TimeGrid tg = new TimeGrid(test_times);
 
          // Time grid must include all times from passed iterator.
@@ -96,7 +96,7 @@ namespace TestSuite
       public void testConstructorNegativeValuesInIterator()
       {
          // Testing that the TimeGrid constructor raises an error for negative time values
-         List<double> times = new List<double> {-3.0, 1.0, 4.0, 5.0};
+         List<double> times = new List<double> { -3.0, 1.0, 4.0, 5.0 };
          QAssert.ThrowsException<ArgumentException>(() => new TimeGrid(times));
       }
 
@@ -104,7 +104,7 @@ namespace TestSuite
       public void testClosestIndex()
       {
          // Testing that the returned index is closest to the requested time
-         List<double> test_times = new List<double> {1.0, 2.0, 5.0};
+         List<double> test_times = new List<double> { 1.0, 2.0, 5.0 };
          TimeGrid tg = new TimeGrid(test_times);
          int expected_index = 3;
 
@@ -117,7 +117,7 @@ namespace TestSuite
       public void testClosestTime()
       {
          // Testing that the returned time matches the requested index
-         List<double> test_times = new List<double> {1.0, 2.0, 5.0};
+         List<double> test_times = new List<double> { 1.0, 2.0, 5.0 };
          TimeGrid tg = new TimeGrid(test_times);
          int expected_time = 5;
 
@@ -130,7 +130,7 @@ namespace TestSuite
       public void testMandatoryTimes()
       {
          // Testing that mandatory times are recalled correctly
-         List<double> test_times = new List<double> {1.0, 2.0, 4.0};
+         List<double> test_times = new List<double> { 1.0, 2.0, 4.0 };
          TimeGrid tg = new TimeGrid(test_times, 8);
 
          // Mandatory times are those provided by the original iterator.

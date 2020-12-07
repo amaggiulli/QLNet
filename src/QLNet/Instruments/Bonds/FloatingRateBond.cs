@@ -28,16 +28,18 @@ namespace QLNet
       public FloatingRateBond(int settlementDays, double faceAmount, Schedule schedule, IborIndex index,
                               DayCounter paymentDayCounter)
          : this(settlementDays, faceAmount, schedule, index, paymentDayCounter, BusinessDayConvention.Following,
-                0, new List<double>() { 1 }, new List<double>() { 0 }, new List < double? >(), new List < double? >(),
-      false, 100, null) { }
+                0, new List<double>() { 1 }, new List<double>() { 0 }, new List<double?>(), new List<double?>(),
+      false, 100, null)
+      { }
       public FloatingRateBond(int settlementDays, double faceAmount, Schedule schedule, IborIndex index,
                               DayCounter paymentDayCounter, BusinessDayConvention paymentConvention, int fixingDays,
                               List<double> gearings, List<double> spreads)
          : this(settlementDays, faceAmount, schedule, index, paymentDayCounter, BusinessDayConvention.Following,
-                fixingDays, gearings, spreads, new List < double? >(), new List < double? >(), false, 100, null) { }
+                fixingDays, gearings, spreads, new List<double?>(), new List<double?>(), false, 100, null)
+      { }
       public FloatingRateBond(int settlementDays, double faceAmount, Schedule schedule, IborIndex index, DayCounter paymentDayCounter,
                               BusinessDayConvention paymentConvention, int fixingDays, List<double> gearings, List<double> spreads,
-                              List < double? > caps, List < double? > floors, bool inArrears, double redemption, Date issueDate)
+                              List<double?> caps, List<double?> floors, bool inArrears, double redemption, Date issueDate)
       : base(settlementDays, schedule.calendar(), issueDate)
       {
          maturityDate_ = schedule.endDate();
@@ -78,8 +80,8 @@ namespace QLNet
       public FloatingRateBond(int settlementDays, double faceAmount, Date startDate, Date maturityDate, Frequency couponFrequency,
                               Calendar calendar, IborIndex index, DayCounter accrualDayCounter,
                               BusinessDayConvention accrualConvention, BusinessDayConvention paymentConvention,
-                              int fixingDays, List<double> gearings, List<double> spreads, List < double? > caps,
-                              List < double? > floors, bool inArrears, double redemption, Date issueDate,
+                              int fixingDays, List<double> gearings, List<double> spreads, List<double?> caps,
+                              List<double?> floors, bool inArrears, double redemption, Date issueDate,
                               Date stubDate, DateGeneration.Rule rule, bool endOfMonth)
       : base(settlementDays, calendar, issueDate)
       {

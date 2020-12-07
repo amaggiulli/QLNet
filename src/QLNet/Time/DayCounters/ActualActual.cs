@@ -122,7 +122,7 @@ namespace QLNet
                                            schedule.endOfMonth());
 
             List<Date> newDates = schedule.dates().ToList();
-            newDates[0] = notionalFirstCoupon ;
+            newDates[0] = notionalFirstCoupon;
 
             // The handling of the last coupon is is needed for odd final periods
             var notionalLastCoupon =
@@ -135,10 +135,10 @@ namespace QLNet
             newDates[schedule.Count - 1] = notionalLastCoupon;
 
             //long first coupon
-            if (notionalFirstCoupon  > issueDate)
+            if (notionalFirstCoupon > issueDate)
             {
                Date priorNotionalCoupon =
-                  schedule.calendar().advance(notionalFirstCoupon ,
+                  schedule.calendar().advance(notionalFirstCoupon,
                                               -schedule.tenor(),
                                               schedule.businessDayConvention(),
                                               schedule.endOfMonth());
@@ -162,7 +162,7 @@ namespace QLNet
          }
 
          private double yearFractionWithReferenceDates<T>(T impl,
-                                                          Date d1, Date d2, Date d3, Date d4) where T: DayCounter
+                                                          Date d1, Date d2, Date d3, Date d4) where T : DayCounter
          {
             Utils.QL_REQUIRE(d1 <= d2, () =>
                              "This function is only correct if d1 <= d2\n" +
@@ -193,9 +193,9 @@ namespace QLNet
 
       private class Old_ISMA_Impl : DayCounter
       {
-         public static readonly Old_ISMA_Impl Singleton =  new Old_ISMA_Impl();
+         public static readonly Old_ISMA_Impl Singleton = new Old_ISMA_Impl();
 
-         private Old_ISMA_Impl() {}
+         private Old_ISMA_Impl() { }
 
          public override string name() { return "Actual/Actual (ISMA)"; }
 
@@ -271,7 +271,7 @@ namespace QLNet
                // count how many regular periods are in [refPeriodEnd, d2], then add the remaining time
                int i = 0;
                Date newRefStart, newRefEnd;
-               for (; ;)
+               for (; ; )
                {
                   newRefStart = refPeriodEnd + new Period(months * i, TimeUnit.Months);
                   newRefEnd = refPeriodEnd + new Period(months * (i + 1), TimeUnit.Months);

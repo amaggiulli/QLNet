@@ -86,11 +86,11 @@ namespace QLNet
             // checks
             if (isWeekend(w)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // Bank Holiday
-                || (d == 2  && m == Month.January)
+                || (d == 2 && m == Month.January)
                 // Bank Holiday
-                || (d == 3  && m == Month.January)
+                || (d == 3 && m == Month.January)
                 // Coming of Age Day (2nd Monday in January),
                 // was January 15th until 2000
                 || (w == DayOfWeek.Monday && (d >= 8 && d <= 14) && m == Month.January
@@ -104,9 +104,9 @@ namespace QLNet
                 // Greenery Day
                 || ((d == 29 || (d == 30 && w == DayOfWeek.Monday)) && m == Month.April)
                 // Constitution Memorial Day
-                || (d == 3  && m == Month.May)
+                || (d == 3 && m == Month.May)
                 // Holiday for a Nation
-                || (d == 4  && m == Month.May)
+                || (d == 4 && m == Month.May)
                 // Children's Day
                 || (d == 5 && m == Month.May)
                 // any of the three above observed later if on Saturday or Sunday

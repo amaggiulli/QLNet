@@ -28,8 +28,8 @@ namespace QLNet
              checking it against analytic results.
    */
    public class MCEuropeanEngine<RNG, S> : MCVanillaEngine<SingleVariate, RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       // constructor
       public MCEuropeanEngine(GeneralizedBlackScholesProcess process,
@@ -42,7 +42,8 @@ namespace QLNet
                               int? maxSamples,
                               ulong seed)
       : base(process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, false,
-             requiredSamples, requiredTolerance, maxSamples, seed) { }
+             requiredSamples, requiredTolerance, maxSamples, seed)
+      { }
 
       protected override PathPricer<IPath> pathPricer()
       {
@@ -60,14 +61,14 @@ namespace QLNet
 
    //! Monte Carlo European engine factory
    // template <class RNG = PseudoRandom, class S = Statistics>
-   public class MakeMCEuropeanEngine<RNG> : MakeMCEuropeanEngine<RNG, Statistics> where RNG : IRSG, new ()
+   public class MakeMCEuropeanEngine<RNG> : MakeMCEuropeanEngine<RNG, Statistics> where RNG : IRSG, new()
    {
       public MakeMCEuropeanEngine(GeneralizedBlackScholesProcess process) : base(process) { }
    }
 
    public class MakeMCEuropeanEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
 
       public MakeMCEuropeanEngine(GeneralizedBlackScholesProcess process)

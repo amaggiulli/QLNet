@@ -48,7 +48,7 @@ namespace TestSuite
          public List<Period> swaps;
       }
 
-      public class  SwaptionMarketConventions
+      public class SwaptionMarketConventions
       {
          public Calendar calendar;
          public BusinessDayConvention optionBdc;
@@ -59,7 +59,7 @@ namespace TestSuite
             Date today = calendar.adjust(Date.Today);
             Settings.setEvaluationDate(today);
             optionBdc = BusinessDayConvention.ModifiedFollowing;
-            dayCounter = new  Actual365Fixed();
+            dayCounter = new Actual365Fixed();
          }
       }
 
@@ -122,7 +122,7 @@ namespace TestSuite
             conventions.setConventions();
             atm = new AtmVolatility();
             atm.setMarketData();
-            atmVolMatrix = new RelinkableHandle<SwaptionVolatilityStructure> (new
+            atmVolMatrix = new RelinkableHandle<SwaptionVolatilityStructure>(new
                                                                               SwaptionVolatilityMatrix(conventions.calendar,
                                                                                     conventions.optionBdc,
                                                                                     atm.tenors.options,
@@ -147,7 +147,7 @@ namespace TestSuite
                                    atm.tenors.swaps[0], dummyStrike, false);
             // testing evaluation date change ...
             Settings.setEvaluationDate(referenceDate - new Period(1, TimeUnit.Years));
-            double newVol =  vol.volatility(
+            double newVol = vol.volatility(
                                 referenceDate + atm.tenors.options[0],
                                 atm.tenors.swaps[0], dummyStrike, false);
 
@@ -203,7 +203,7 @@ namespace TestSuite
                      "\n  exp. option time : " + vol.optionTimes()[i]);
             }
 
-            BlackSwaptionEngine engine = new  BlackSwaptionEngine(
+            BlackSwaptionEngine engine = new BlackSwaptionEngine(
                termStructure,
                new Handle<SwaptionVolatilityStructure>(vol));
 
@@ -211,7 +211,7 @@ namespace TestSuite
             {
                double swapLength = vol.swapLength(atm.tenors.swaps[j]);
 
-               if (swapLength !=   atm.tenors.swaps[j].length())
+               if (swapLength != atm.tenors.swaps[j].length())
                   QAssert.Fail("convertSwapTenor failure for " +
                                description + ":" +
                                "\n        swap tenor : " + atm.tenors.swaps[j] +

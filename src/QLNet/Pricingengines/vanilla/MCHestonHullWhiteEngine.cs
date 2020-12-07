@@ -18,8 +18,8 @@ using System;
 namespace QLNet
 {
    public class MCHestonHullWhiteEngine<RNG, S> : MCVanillaEngine<MultiVariate, RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MCHestonHullWhiteEngine(HybridHestonHullWhiteProcess process,
                                      int? timeSteps,
@@ -33,7 +33,7 @@ namespace QLNet
       : base(process, timeSteps, timeStepsPerYear, false, antitheticVariate, controlVariate, requiredSamples,
              requiredTolerance, maxSamples, seed)
       {
-         process_ =  process;
+         process_ = process;
       }
 
       public override void calculate()
@@ -56,7 +56,7 @@ namespace QLNet
 
          double exerciseTime = process_.time(exercise.lastDate());
 
-         return new HestonHullWhitePathPricer(exerciseTime, this.arguments_.payoff, (HybridHestonHullWhiteProcess) process_);
+         return new HestonHullWhitePathPricer(exerciseTime, this.arguments_.payoff, (HybridHestonHullWhiteProcess)process_);
       }
 
       protected override PathPricer<IPath> controlPathPricer()
@@ -64,7 +64,7 @@ namespace QLNet
          HybridHestonHullWhiteProcess process = process_ as HybridHestonHullWhiteProcess;
          Utils.QL_REQUIRE(process != null, () => "invalid process");
 
-         HestonProcess hestonProcess = process.hestonProcess() ;
+         HestonProcess hestonProcess = process.hestonProcess();
 
          Utils.QL_REQUIRE(hestonProcess != null, () =>
                           "first constituent of the joint stochastic process need to be of type HestonProcess");
@@ -75,7 +75,7 @@ namespace QLNet
 
          double exerciseTime = process.time(exercise.lastDate());
 
-         return new HestonHullWhitePathPricer(exerciseTime, this.arguments_.payoff, process) ;
+         return new HestonHullWhitePathPricer(exerciseTime, this.arguments_.payoff, process);
 
       }
       protected override IPricingEngine controlPricingEngine()
@@ -100,20 +100,20 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = this.timeGrid();
-         IRNG generator = (IRNG)new  RNG().make_sequence_generator(dimensions * (grid.size() - 1), this.seed_);
+         IRNG generator = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), this.seed_);
          HybridHestonHullWhiteProcess process = process_ as HybridHestonHullWhiteProcess;
          Utils.QL_REQUIRE(process != null, () => "invalid process");
          HybridHestonHullWhiteProcess cvProcess = new HybridHestonHullWhiteProcess(process.hestonProcess(),
                                                                                    process.hullWhiteProcess(), 0.0, process.discretization());
 
-         return  new MultiPathGenerator<IRNG>(cvProcess, grid, generator, false) ;
+         return new MultiPathGenerator<IRNG>(cvProcess, grid, generator, false);
       }
    }
 
    //! Monte Carlo Heston/Hull-White engine factory
-   public class MakeMCHestonHullWhiteEngine <RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+   public class MakeMCHestonHullWhiteEngine<RNG, S>
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MakeMCHestonHullWhiteEngine(HybridHestonHullWhiteProcess process)
       {

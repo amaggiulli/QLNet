@@ -23,7 +23,7 @@ namespace QLNet
    // Base on Sergey Teplyakov code
    // https://blogs.msdn.microsoft.com/seteplia/2017/02/01/dissecting-the-new-constraint-in-c-a-perfect-example-of-a-leaky-abstraction/
    //
-   public static class FastActivator<T> where T : new ()
+   public static class FastActivator<T> where T : new()
    {
       /// <summary>
       /// Extremely fast generic factory method that returns an instance
@@ -34,7 +34,7 @@ namespace QLNet
 
    public static class DynamicModuleLambdaCompiler
    {
-      public static Func<T> GenerateFactory<T>() where T : new ()
+      public static Func<T> GenerateFactory<T>() where T : new()
       {
          Expression<Func<T>> expr = () => new T();
          NewExpression newExpr = (NewExpression)expr.Body;

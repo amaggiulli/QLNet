@@ -80,7 +80,7 @@ namespace TestSuite
                           15.78, 15.40, 15.21, 14.86
                          };
 
-         List<Date> dates = new List<Date>() ;
+         List<Date> dates = new List<Date>();
          List<double> capletVols = new List<double>();
          LiborForwardModelProcess process =
             new LiborForwardModelProcess(10, makeIndex());
@@ -252,7 +252,7 @@ namespace TestSuite
 
          LmCorrelationModel corrModel = new LmLinearExponentialCorrelationModel(size, 0.5, 0.8);
 
-         LiborForwardModel  model = new LiborForwardModel(process, volaModel, corrModel);
+         LiborForwardModel model = new LiborForwardModel(process, volaModel, corrModel);
 
          int swapVolIndex = 0;
          DayCounter dayCounter = index.forwardingTermStructure().link.dayCounter();
@@ -279,7 +279,7 @@ namespace TestSuite
                for (int j = 1; j <= size / 2; ++j)
                {
                   Period len = j * index.tenor();
-                  Handle<Quote> swaptionVol =  new Handle<Quote>(
+                  Handle<Quote> swaptionVol = new Handle<Quote>(
                      new SimpleQuote(swaptionVols[swapVolIndex++]));
 
                   CalibrationHelper swaptionHelper =
@@ -306,7 +306,7 @@ namespace TestSuite
 
          // measure the calibration error
          double calculated = 0.0;
-         for (i = 0; i < calibrationHelper.Count ; ++i)
+         for (i = 0; i < calibrationHelper.Count; ++i)
          {
             double diff = calibrationHelper[i].calibrationError();
             calculated += diff * diff;
@@ -322,7 +322,7 @@ namespace TestSuite
       public void testSwaptionPricing()
       {
          // Testing forward swap and swaption pricing
-         const int size  = 10;
+         const int size = 10;
          const int steps = 8 * size;
 #if QL_USE_INDEXED_COUPON
          const double tolerance = 1e-6;
@@ -358,7 +358,7 @@ namespace TestSuite
          List<int> location = new List<int>();
          for (int i = 0; i < tmp.Count; ++i)
          {
-            location.Add(grid.index(tmp[i])) ;
+            location.Add(grid.index(tmp[i]));
          }
 
          ulong seed = 42;
@@ -389,13 +389,13 @@ namespace TestSuite
          {
             for (int j = 1; j <= size - i; ++j)
             {
-               Date fwdStart    = settlement + new Period(6 * i, TimeUnit.Months);
+               Date fwdStart = settlement + new Period(6 * i, TimeUnit.Months);
                Date fwdMaturity = fwdStart + new Period(6 * j, TimeUnit.Months);
 
                Schedule schedule = new Schedule(fwdStart, fwdMaturity, index.tenor(), calendar,
                                                 convention, convention, DateGeneration.Rule.Forward, false);
 
-               double swapRate  = 0.0404;
+               double swapRate = 0.0404;
                VanillaSwap forwardSwap = new VanillaSwap(VanillaSwap.Type.Receiver, 1.0,
                                                          schedule, swapRate, dayCounter,
                                                          schedule, index, 0.0, index.dayCounter());

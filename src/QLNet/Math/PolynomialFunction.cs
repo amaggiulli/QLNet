@@ -87,7 +87,7 @@ namespace QLNet
       }
 
       /*! Inspectors */
-      public int order()  { return order_; }
+      public int order() { return order_; }
       public List<double> coefficients() { return c_; }
       public List<double> derivativeCoefficients() { return derC_; }
       public List<double> primitiveCoefficients() { return prC_; }

@@ -32,7 +32,7 @@ namespace QLNet
          List<double> strikes,
          bool hasFloatingStrikes,
          Handle<Quote> atmVolatility,
-         List<Handle<Quote> > volHandles,
+         List<Handle<Quote>> volHandles,
          double a, double b, double sigma, double rho, double m,
          bool isAFixed, bool isBFixed, bool isSigmaFixed, bool isRhoFixed, bool isMFixed,
          bool vegaWeighted,
@@ -41,7 +41,7 @@ namespace QLNet
          DayCounter dc = null)
          : base(optionDate, dc)
       {
-         forward_  = forward;
+         forward_ = forward;
          atmVolatility_ = atmVolatility;
          volHandles_ = volHandles;
          strikes_ = strikes;
@@ -53,7 +53,7 @@ namespace QLNet
          rho_ = rho;
          m_ = m;
          isAFixed_ = isAFixed;
-         isBFixed_  = isBFixed;
+         isBFixed_ = isBFixed;
          isSigmaFixed_ = isSigmaFixed;
          isRhoFixed_ = isRhoFixed;
          isMFixed_ = isMFixed;
@@ -95,7 +95,7 @@ namespace QLNet
          rho_ = rho;
          m_ = m;
          isAFixed_ = isAFixed;
-         isBFixed_  = isBFixed;
+         isBFixed_ = isBFixed;
          isSigmaFixed_ = isSigmaFixed;
          isRhoFixed_ = isRhoFixed;
          isMFixed_ = isMFixed;

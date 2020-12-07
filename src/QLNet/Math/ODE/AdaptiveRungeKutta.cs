@@ -145,7 +145,7 @@ namespace QLNet
 
          double h = htry;
 
-         for (;;)
+         for (; ; )
          {
             rkck(y, dydx, ref x, h, ref ytemp, ref yerr, derivs);
             errmax = 0.0;

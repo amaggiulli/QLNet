@@ -27,6 +27,6 @@ namespace QLNet
          : base("Nzocr", 0, new NZDCurrency(),
                 new NewZealand(),
                 new Actual365Fixed(), h ?? new Handle<YieldTermStructure>())
-      {}
+      { }
    }
 }

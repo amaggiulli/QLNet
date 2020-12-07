@@ -66,9 +66,9 @@ namespace QLNet
       public virtual void jacobian(Matrix jac, Vector x)
       {
          double eps = finiteDifferenceEpsilon();
-         Vector xx = new Vector(x) ;
-         Vector fp = new Vector() ;
-         Vector fm = new Vector() ;
+         Vector xx = new Vector(x);
+         Vector fp = new Vector();
+         Vector fm = new Vector();
          for (int i = 0; i < x.size(); ++i)
          {
             xx[i] += eps;
@@ -97,7 +97,7 @@ namespace QLNet
 
    public interface IParametersTransformation
    {
-      Vector direct(Vector x) ;
+      Vector direct(Vector x);
       Vector inverse(Vector x);
    }
 }

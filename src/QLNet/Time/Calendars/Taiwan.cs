@@ -46,7 +46,7 @@ namespace QLNet
 
        \ingroup calendars
    */
-   public class Taiwan :  Calendar
+   public class Taiwan : Calendar
    {
       public Taiwan() : base(Impl.Singleton) { }
 

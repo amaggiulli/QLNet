@@ -26,7 +26,7 @@ namespace TestSuite
    {
       private void REPORT_FAILURE(string greekName,
                                   Barrier.Type barrierType,
-                                  double  barrier,
+                                  double barrier,
                                   double rebate,
                                   StrikedTypePayoff payoff,
                                   Exercise exercise,
@@ -90,7 +90,7 @@ namespace TestSuite
                       + "    risk-free rate:   " + r + "\n"
                       + "    reference date:   " + today + "\n"
                       + "    maturity:         " + exercise.lastDate() + "\n"
-                      + "    25PutVol:         " +  vol25Put + "\n"
+                      + "    25PutVol:         " + vol25Put + "\n"
                       + "    atmVol:           " + atmVol + "\n"
                       + "    25CallVol:        " + vol25Call + "\n"
                       + "    volatility:       " + v + "\n\n"
@@ -350,10 +350,10 @@ namespace TestSuite
          {
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
@@ -716,25 +716,25 @@ namespace TestSuite
          GeneralizedBlackScholesProcess localVolProcess = new BlackScholesMertonProcess(s0, qTS, rTS,
                                                                                         new Handle<BlackVolTermStructure>(volTS));
 
-         double v0    = 0.195662;
+         double v0 = 0.195662;
          double kappa = 5.6628;
          double theta = 0.0745911;
          double sigma = 1.1619;
-         double rho   = -0.511493;
+         double rho = -0.511493;
 
          HestonProcess hestonProcess = new HestonProcess(rTS, qTS, s0, v0, kappa, theta, sigma, rho);
 
-         HestonModel hestonModel =  new HestonModel(hestonProcess);
+         HestonModel hestonModel = new HestonModel(hestonProcess);
 
          // TODO FdHestonBarrierEngine
          //IPricingEngine fdHestonEngine = new FdHestonBarrierEngine(hestonModel, 100, 400, 50);
 
          IPricingEngine fdLocalVolEngine = new FdBlackScholesBarrierEngine(localVolProcess, 100, 400, 0, new FdmSchemeDesc().Douglas(), true, 0.35);
 
-         double strike  = s0.link.value();
+         double strike = s0.link.value();
          double barrier = 3000;
-         double rebate  = 100;
-         Date exDate  = settlementDate + new Period(20, TimeUnit.Months);
+         double rebate = 100;
+         Date exDate = settlementDate + new Period(20, TimeUnit.Months);
 
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, strike);
 
@@ -981,9 +981,9 @@ namespace TestSuite
                                                        spot.value() * qTS.discount(values[i].t) / rTS.discount(values[i].t),
                                                        values[i].v * Math.Sqrt(values[i].t), rTS.discount(values[i].t));
             IPricingEngine vannaVolgaEngine = new VannaVolgaBarrierEngine(volAtmQuote, vol25PutQuote, vol25CallQuote,
-                                                                          new Handle<Quote> (spot),
-                                                                          new Handle<YieldTermStructure> (rTS),
-                                                                          new Handle<YieldTermStructure> (qTS),
+                                                                          new Handle<Quote>(spot),
+                                                                          new Handle<YieldTermStructure>(rTS),
+                                                                          new Handle<YieldTermStructure>(qTS),
                                                                           true,
                                                                           bsVanillaPrice);
             barrierOption.setPricingEngine(vannaVolgaEngine);

@@ -60,7 +60,7 @@ namespace QLNet
 
       public override void calculate()
       {
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          Calendar volcal = process_.blackVolatility().link.calendar();
@@ -101,7 +101,7 @@ namespace QLNet
                divisor = Math.Pow(Math.Log(arguments_.barrier.Value / s0), 2);
             if (!Utils.close(divisor, 0))
             {
-               for (int i = 1; i < timeSteps_ ; ++i)
+               for (int i = 1; i < timeSteps_; ++i)
                {
                   int optimum = (int)((i * i * v * v * maturity) / divisor);
                   if (timeSteps_ < optimum)

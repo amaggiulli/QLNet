@@ -158,7 +158,7 @@ namespace QLNet
    {
       protected new IDiscretization1D discretization_;
 
-      protected StochasticProcess1D() {}
+      protected StochasticProcess1D() { }
       protected StochasticProcess1D(IDiscretization1D disc)
       {
          discretization_ = disc;

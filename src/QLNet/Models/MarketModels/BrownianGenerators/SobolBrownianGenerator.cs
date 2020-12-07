@@ -47,7 +47,7 @@ namespace QLNet
          lastStep_ = 0;
          orderedIndices_ = new InitializedList<List<int>>(factors);
          bridgedVariates_ = new InitializedList<List<double>>(factors);
-         for (int i = 0 ; i < factors ; i++)
+         for (int i = 0; i < factors; i++)
          {
             orderedIndices_[i] = new InitializedList<int>(steps);
             bridgedVariates_[i] = new InitializedList<double>(steps);
@@ -76,7 +76,7 @@ namespace QLNet
          // Brownian-bridge the variates according to the ordered indices
          for (int i = 0; i < factors_; ++i)
          {
-            List< double>  permList = new List<double>();
+            List<double> permList = new List<double>();
             foreach (var index in orderedIndices_[i])
             {
                permList.Add(sample.value[index]);
@@ -93,7 +93,7 @@ namespace QLNet
          Utils.QL_REQUIRE(output.Count == factors_, () => "size mismatch");
          Utils.QL_REQUIRE(lastStep_<steps_, () => "sequence exhausted");
 #endif
-         for (int i = 0; i<factors_; ++i)
+         for (int i = 0; i < factors_; ++i)
             output[i] = bridgedVariates_[i][lastStep_];
          ++lastStep_;
          return 1.0;
@@ -103,12 +103,12 @@ namespace QLNet
       public int numberOfSteps() { return steps_; }
 
       // test interface
-      public List<List<int> > orderedIndices() {return orderedIndices_;}
-      public List<List<double> > transform(List<List<double> > variates)
+      public List<List<int>> orderedIndices() { return orderedIndices_; }
+      public List<List<double>> transform(List<List<double>> variates)
       {
          Utils.QL_REQUIRE((variates.Count == factors_ * steps_), () => "inconsistent variate vector");
 
-         int dim    = factors_ * steps_;
+         int dim = factors_ * steps_;
          int nPaths = variates.First().Count;
 
          List<List<double>> retVal = new InitializedList<List<double>>(factors_, new InitializedList<double>(nPaths * steps_));
@@ -134,7 +134,7 @@ namespace QLNet
          return retVal;
       }
 
-      private void fillByFactor(List<List<int> > M, int factors, int steps)
+      private void fillByFactor(List<List<int>> M, int factors, int steps)
       {
          int counter = 0;
          for (int i = 0; i < factors; ++i)
@@ -142,7 +142,7 @@ namespace QLNet
                M[i][j] = counter++;
       }
 
-      private void fillByStep(List<List<int> > M, int factors, int steps)
+      private void fillByStep(List<List<int>> M, int factors, int steps)
       {
          int counter = 0;
          for (int j = 0; j < steps; ++j)
@@ -151,7 +151,7 @@ namespace QLNet
       }
 
       // variate 2 is used for the second factor's full path
-      private void fillByDiagonal(List<List<int> > M, int factors, int steps)
+      private void fillByDiagonal(List<List<int>> M, int factors, int steps)
       {
          // starting position of the current diagonal
          int i0 = 0, j0 = 0;
@@ -194,8 +194,8 @@ namespace QLNet
       private BrownianBridge bridge_;
       // work variables
       private int lastStep_;
-      private List<List<int> > orderedIndices_;
-      private List<List<double> > bridgedVariates_;
+      private List<List<int>> orderedIndices_;
+      private List<List<double>> bridgedVariates_;
    }
 
    public class SobolBrownianGeneratorFactory : IBrownianGeneratorFactory

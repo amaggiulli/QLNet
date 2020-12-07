@@ -79,7 +79,7 @@ namespace TestSuite
                x[i] = rng.next().value;
 
                // regression in y = a_1 + a_2*x + a_3*x^2 + a_4*sin(x) + eps
-               y[i] =  a[0] * v[0](x[i]) + a[1] * v[1](x[i]) + a[2] * v[2](x[i])
+               y[i] = a[0] * v[0](x[i]) + a[1] * v[1](x[i]) + a[2] * v[2](x[i])
                        + a[3] * v[3](x[i]) + rng.next().value;
             }
 

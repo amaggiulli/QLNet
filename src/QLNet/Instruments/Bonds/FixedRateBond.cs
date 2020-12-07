@@ -91,7 +91,7 @@ namespace QLNet
 
          frequency_ = tenor.frequency();
          dayCounter_ = accrualDayCounter;
-         maturityDate_     = maturityDate;
+         maturityDate_ = maturityDate;
 
          Date firstDate = null, nextToLastDate = null;
 

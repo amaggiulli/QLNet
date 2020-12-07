@@ -23,11 +23,11 @@ namespace QLNet
 {
 
    //! Criteria to end optimization process:
-//    ! - maximum number of iterations AND minimum number of iterations around stationary point
-//        - x (independent variable) stationary point
-//        - y=f(x) (dependent variable) stationary point
-//        - stationary gradient
-//
+   //    ! - maximum number of iterations AND minimum number of iterations around stationary point
+   //        - x (independent variable) stationary point
+   //        - y=f(x) (dependent variable) stationary point
+   //        - stationary gradient
+   //
    public class EndCriteria
    {
       public enum Type
@@ -87,8 +87,8 @@ namespace QLNet
          return gradientNormEpsilon_.GetValueOrDefault();
       }
 
-//        ! Test if the number of iterations is not too big
-//            and if a minimum point is not reached
+      //        ! Test if the number of iterations is not too big
+      //            and if a minimum point is not reached
       public bool value(int iteration, ref int statStateIterations, bool positiveOptimization, double fold, double UnnamedParameter1, double fnew, double normgnew, ref EndCriteria.Type ecType)
       {
          return checkMaxIterations(iteration, ref ecType) || checkStationaryFunctionValue(fold, fnew, ref statStateIterations, ref ecType) || checkStationaryFunctionAccuracy(fnew, positiveOptimization, ref ecType) || checkZeroGradientNorm(normgnew, ref ecType);

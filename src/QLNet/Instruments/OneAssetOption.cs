@@ -36,7 +36,7 @@ namespace QLNet
                 itmCashProbability_;
 
       public OneAssetOption(Payoff payoff, Exercise exercise) : base(payoff, exercise)
-      {}
+      { }
 
       public override bool isExpired()
       {
@@ -187,6 +187,6 @@ namespace QLNet
       }
 
       public class Engine : GenericEngine<OneAssetOption.Arguments, OneAssetOption.Results>
-      {}
+      { }
    }
 }

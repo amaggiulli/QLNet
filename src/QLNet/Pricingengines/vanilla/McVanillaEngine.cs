@@ -24,8 +24,8 @@ namespace QLNet
    //! Pricing engine for vanilla options using Monte Carlo simulation
    /*! \ingroup vanillaengines */
    public abstract class MCVanillaEngine<MC, RNG, S> : MCVanillaEngine<MC, RNG, S, VanillaOption>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       protected MCVanillaEngine(StochasticProcess process,
                                 int? timeSteps,
@@ -38,12 +38,13 @@ namespace QLNet
                                 int? maxSamples,
                                 ulong seed)
       : base(process, timeSteps, timeStepsPerYear, brownianBridge, antitheticVariate, controlVariate, requiredSamples,
-             requiredTolerance, maxSamples, seed) { }
+             requiredTolerance, maxSamples, seed)
+      { }
    }
 
    public abstract class MCVanillaEngine<MC, RNG, S, Inst> : McSimulation<MC, RNG, S>, IGenericEngine
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       protected StochasticProcess process_;
       protected int? timeSteps_, timeStepsPerYear_;
@@ -120,7 +121,7 @@ namespace QLNet
       {
          int dimensions = process_.factors();
          TimeGrid grid = timeGrid();
-         IRNG generator = (IRNG) FastActivator<RNG>.Create().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
+         IRNG generator = (IRNG)FastActivator<RNG>.Create().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
          if (typeof(MC) == typeof(SingleVariate))
             return new PathGenerator<IRNG>(process_, grid, generator, brownianBridge_);
 

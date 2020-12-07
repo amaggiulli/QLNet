@@ -31,8 +31,8 @@ namespace QLNet
              reproducing results available in web/literature
    */
    public class MCAmericanEngine<RNG, S> : MCLongstaffSchwartzEngine<VanillaOption.Engine, SingleVariate, RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
 
       private int polynomOrder_;
@@ -163,14 +163,14 @@ namespace QLNet
    //! Monte Carlo American engine factory
    //template <class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCAmericanEngine<RNG> : MakeMCAmericanEngine<RNG, Statistics>
-      where RNG : IRSG, new ()
+      where RNG : IRSG, new()
    {
       public MakeMCAmericanEngine(GeneralizedBlackScholesProcess process) : base(process) { }
    }
 
    public class MakeMCAmericanEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
 
       private GeneralizedBlackScholesProcess process_;

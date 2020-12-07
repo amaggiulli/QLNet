@@ -163,12 +163,12 @@ namespace QLNet
       /*! This method performs the actual pre-adjustment */
 
       protected virtual void preAdjustValuesImpl()
-      {}
+      { }
 
       /*! This method performs the actual post-adjustment */
 
       protected virtual void postAdjustValuesImpl()
-      {}
+      { }
 
       // safe version of QL double* time()
       public void setTime(double t)

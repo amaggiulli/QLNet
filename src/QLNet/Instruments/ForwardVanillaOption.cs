@@ -42,11 +42,11 @@ namespace QLNet
          base.fetchResults(r);
          ForwardVanillaOption.Results results = r as ForwardVanillaOption.Results;
          Utils.QL_REQUIRE(results != null, () => "no results returned from pricing engine");
-         delta_       = results.delta;
-         gamma_       = results.gamma;
-         theta_       = results.theta;
-         vega_        = results.vega;
-         rho_         = results.rho;
+         delta_ = results.delta;
+         gamma_ = results.gamma;
+         theta_ = results.theta;
+         vega_ = results.vega;
+         rho_ = results.rho;
          dividendRho_ = results.dividendRho;
       }
 

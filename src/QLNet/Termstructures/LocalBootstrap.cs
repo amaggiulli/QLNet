@@ -25,11 +25,11 @@ using System.Linq;
 namespace QLNet
 {
    public class LocalBootstrapForYield : LocalBootstrap<PiecewiseYieldCurve, YieldTermStructure>
-   {}
+   { }
 
    // penalty function class for solving using a multi-dimensional solver
    public class PenaltyFunction<T, U> : CostFunction
-      where T : Curve<U>, new ()
+      where T : Curve<U>, new()
       where U : TermStructure
    {
       private T curve_;
@@ -87,8 +87,8 @@ namespace QLNet
        whilst using a smoother interpolation method. Particularly
        good for the convex-monotone spline method.
    */
-   public class LocalBootstrap <T, U>: IBootStrap<T>
-      where T : Curve<U>, new ()
+   public class LocalBootstrap<T, U> : IBootStrap<T>
+      where T : Curve<U>, new()
       where U : TermStructure
    {
       private bool validCurve_;

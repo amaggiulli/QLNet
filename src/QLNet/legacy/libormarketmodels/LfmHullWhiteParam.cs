@@ -33,7 +33,7 @@ namespace QLNet
          Matrix correlation, int factors)
          : base(process.size(), factors)
       {
-         diffusion_  = new Matrix(size_ - 1, factors_);
+         diffusion_ = new Matrix(size_ - 1, factors_);
          fixingTimes_ = process.fixingTimes();
 
          Matrix sqrtCorr = new Matrix(size_ - 1, factors_, 1.0);
@@ -66,7 +66,7 @@ namespace QLNet
          }
          List<double> lambda = new List<double>();
          DayCounter dayCounter = process.index().dayCounter();
-         List<double>  fixingTimes = process.fixingTimes();
+         List<double> fixingTimes = process.fixingTimes();
          List<Date> fixingDates = process.fixingDates();
 
          for (int i = 1; i < size_; ++i)
@@ -74,11 +74,11 @@ namespace QLNet
             double cumVar = 0.0;
             for (int j = 1; j < i; ++j)
             {
-               cumVar +=  lambda[i - j - 1] * lambda[i - j - 1]
+               cumVar += lambda[i - j - 1] * lambda[i - j - 1]
                           * (fixingTimes[j + 1] - fixingTimes[j]);
             }
 
-            double vol =  capletVol.volatility(fixingDates[i], 0.0, false);
+            double vol = capletVol.volatility(fixingDates[i], 0.0, false);
             double var = vol * vol
                          * capletVol.dayCounter().yearFraction(fixingDates[0],
                                                                fixingDates[i]);
@@ -86,7 +86,7 @@ namespace QLNet
                                  / (fixingTimes[1] - fixingTimes[0])));
             for (int q = 0; q < factors_; ++q)
             {
-               diffusion_[i - 1, q] = sqrtCorr[i - 1, q] * lambda.Last() ;
+               diffusion_[i - 1, q] = sqrtCorr[i - 1, q] * lambda.Last();
             }
          }
          covariance_ = diffusion_ * Matrix.transpose(diffusion_);

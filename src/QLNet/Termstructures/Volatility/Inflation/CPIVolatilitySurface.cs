@@ -140,8 +140,8 @@ namespace QLNet
           requested assuming this lag.
       */
       public virtual Period observationLag() { return observationLag_; }
-      public virtual Frequency frequency()  { return frequency_; }
-      public virtual bool indexIsInterpolated()  { return indexIsInterpolated_;}
+      public virtual Frequency frequency() { return frequency_; }
+      public virtual bool indexIsInterpolated() { return indexIsInterpolated_; }
       public virtual Date baseDate()
       {
          // Depends on interpolation, or not, of observed index

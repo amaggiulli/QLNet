@@ -34,8 +34,8 @@ namespace QLNet
    //template <class RNG = PseudoRandom, class S = Statistics>
    public class MCDiscreteArithmeticAPEngine<RNG, S>
       : MCDiscreteAveragingAsianEngine<RNG, S>
-        where RNG : IRSG, new ()
-        where S : IGeneralStatistics, new ()
+        where RNG : IRSG, new()
+        where S : IGeneralStatistics, new()
    {
 
       // constructor
@@ -154,13 +154,13 @@ namespace QLNet
       public double value(IPath path)
       {
          Utils.QL_REQUIRE(path.length() > 0, () => "the path cannot be empty");
-         return payoff_.value(((Path) path).back()) * discount_;
+         return payoff_.value(((Path)path).back()) * discount_;
       }
    }
    //<class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCDiscreteArithmeticAPEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : Statistics, new ()
+      where RNG : IRSG, new()
+      where S : Statistics, new()
    {
       public MakeMCDiscreteArithmeticAPEngine(GeneralizedBlackScholesProcess process)
       {

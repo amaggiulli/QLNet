@@ -140,7 +140,7 @@ namespace QLNet
             for (int i = 0; i < timeGrid_.size() - 1; ++i)
             {
                double begin = Math.Min(term_, timeGrid_[i]);
-               double end   = Math.Min(term_, timeGrid_[i + 1]);
+               double end = Math.Min(term_, timeGrid_[i + 1]);
                r_[i] = model.link.riskFreeRate().link.forwardRate(begin, end,
                                                                   Compounding.Continuous, Frequency.NoFrequency).rate();
                q_[i] = model.link.dividendYield().link.forwardRate(begin, end,
@@ -173,7 +173,7 @@ namespace QLNet
                   double theta = model_.link.theta(t);
 
                   double sigma2 = sigma * sigma;
-                  double t0 = kappa - ((j_ == 1) ? rho* sigma : 0);
+                  double t0 = kappa - ((j_ == 1) ? rho * sigma : 0);
                   double rpsig = rho * sigma * phi;
 
                   Complex t1 = t0 + new Complex(0, -rpsig);
@@ -186,7 +186,7 @@ namespace QLNet
                   Complex lng = Complex.Log((1.0 - gt * Complex.Exp(-d * tau)) / (1.0 - gt));
 
                   C = (kappa * theta) / sigma2 * ((t1 - d) * tau - 2.0 * lng)
-                      + new Complex(0.0, phi * (r_[i - 1] - q_[i - 1])*tau) + C;
+                      + new Complex(0.0, phi * (r_[i - 1] - q_[i - 1]) * tau) + C;
                }
             }
             return Complex.Exp(v0_ * D + C + new Complex(0.0, phi * (x_ - sx_))).Imaginary / phi;

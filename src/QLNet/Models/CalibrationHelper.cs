@@ -66,7 +66,7 @@ namespace QLNet
       //! returns the error resulting from the model valuation
       public virtual double calibrationError()
       {
-         double error = 0 ;
+         double error = 0;
 
          switch (calibrationErrorType_)
          {
@@ -77,23 +77,23 @@ namespace QLNet
                error = marketValue() - modelValue();
                break;
             case CalibrationErrorType.ImpliedVolError:
-            {
-               double minVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 0.0010 : 0.00005;
-               double maxVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 10.0 : 0.50;
-               double lowerPrice = blackPrice(minVol);
-               double upperPrice = blackPrice(maxVol);
-               double modelPrice = modelValue();
+               {
+                  double minVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 0.0010 : 0.00005;
+                  double maxVol = volatilityType_ == VolatilityType.ShiftedLognormal ? 10.0 : 0.50;
+                  double lowerPrice = blackPrice(minVol);
+                  double upperPrice = blackPrice(maxVol);
+                  double modelPrice = modelValue();
 
-               double implied;
-               if (modelPrice <= lowerPrice)
-                  implied = 0.001;
-               else if (modelPrice >= upperPrice)
-                  implied = 10.0;
-               else
-                  implied = this.impliedVolatility(modelPrice, 1e-12, 5000, 0.001, 10);
-               error = implied - volatility_.link.value();
-            }
-            break;
+                  double implied;
+                  if (modelPrice <= lowerPrice)
+                     implied = 0.001;
+                  else if (modelPrice >= upperPrice)
+                     implied = 10.0;
+                  else
+                     implied = this.impliedVolatility(modelPrice, 1e-12, 5000, 0.001, 10);
+                  error = implied - volatility_.link.value();
+               }
+               break;
             default:
                Utils.QL_FAIL("unknown Calibration Error Type");
                break;
@@ -119,7 +119,7 @@ namespace QLNet
       //! Black price given a volatility
       public abstract double blackPrice(double volatility);
 
-      public void setPricingEngine(IPricingEngine engine) {engine_ = engine;}
+      public void setPricingEngine(IPricingEngine engine) { engine_ = engine; }
 
 
       protected double marketValue_;

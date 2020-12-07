@@ -218,7 +218,7 @@ namespace QLNet
       {
          Date d = (date ?? Settings.evaluationDate());
 
-         int i = knownDates(). FindIndex(x => x > d);
+         int i = knownDates().FindIndex(x => x > d);
 
          Utils.QL_REQUIRE(i != -1, () =>
                           "ECB dates after " + knownDates().Last() + " are unknown");

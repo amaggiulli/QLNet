@@ -268,7 +268,7 @@ namespace QLNet
                           " (maturity being " + bond.maturityDate() + ")",
                           QLNetExceptionEnum.NotTradableException);
 
-         double ? dirtyPrice = cleanPrice == null ? null : cleanPrice + bond.accruedAmount(settlementDate);
+         double? dirtyPrice = cleanPrice == null ? null : cleanPrice + bond.accruedAmount(settlementDate);
          double currentNotional = bond.notional(settlementDate);
          double? npv = dirtyPrice / 100.0 * currentNotional;
 

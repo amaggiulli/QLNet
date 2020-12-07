@@ -24,7 +24,7 @@ namespace QLNet
       {
          public Impl(Constraint constraint,
                      Vector parameterValues,
-                     List<bool>fixParameters)
+                     List<bool> fixParameters)
 
          {
             constraint_ = constraint;
@@ -60,11 +60,11 @@ namespace QLNet
                                  Vector parameterValues,
                                  List<bool> fixParameters)
          : base(new Impl(constraint, parameterValues, fixParameters))
-      {}
+      { }
 
       public ProjectedConstraint(Constraint constraint, Projection projection)
          : base(new Impl(constraint, projection))
-      {}
+      { }
 
    }
 }

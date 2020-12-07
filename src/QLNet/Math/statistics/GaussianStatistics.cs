@@ -27,7 +27,7 @@ namespace QLNet
        shortfall, etc.) based on the mean and variance provided by
        the underlying statistic tool.
    */
-   public class GenericGaussianStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
+   public class GenericGaussianStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new()
    {
       public GenericGaussianStatistics() { }
       public GenericGaussianStatistics(Stat s)
@@ -52,7 +52,8 @@ namespace QLNet
 
       public void reset() { impl_.reset(); }
       public void add
-         (double value, double weight) { impl_.add(value, weight); }
+         (double value, double weight)
+      { impl_.add(value, weight); }
       public void addSequence(List<double> data, List<double> weight) { impl_.addSequence(data, weight); }
 
       public KeyValuePair<double, int> expectationValue(Func<KeyValuePair<double, double>, double> f,
@@ -104,7 +105,7 @@ namespace QLNet
       //! gaussian-assumption Potential-Upside at a given percentile
       public double gaussianPotentialUpside(double percentile)
       {
-         Utils.QL_REQUIRE(percentile<1.0 && percentile >= 0.9, () => "percentile (" + percentile + ") out of range [0.9, 1)");
+         Utils.QL_REQUIRE(percentile < 1.0 && percentile >= 0.9, () => "percentile (" + percentile + ") out of range [0.9, 1)");
 
          double result = gaussianPercentile(percentile);
          // potential upside must be a gain, i.e., floored at 0.0
@@ -200,7 +201,8 @@ namespace QLNet
 
       public void reset() { throw new NotSupportedException(); }
       public void add
-         (double value, double weight) { throw new NotSupportedException(); }
+         (double value, double weight)
+      { throw new NotSupportedException(); }
       public void addSequence(List<double> data, List<double> weight) { throw new NotSupportedException(); }
 
       public KeyValuePair<double, int> expectationValue(Func<KeyValuePair<double, double>, double> f,

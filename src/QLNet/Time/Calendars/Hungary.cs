@@ -65,17 +65,17 @@ namespace QLNet
                 // Whit Monday
                 || (dd == em + 49)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // National Day
-                || (d == 15  && m == Month.March)
+                || (d == 15 && m == Month.March)
                 // Labour Day
-                || (d == 1  && m == Month.May)
+                || (d == 1 && m == Month.May)
                 // Constitution Day
-                || (d == 20  && m == Month.August)
+                || (d == 20 && m == Month.August)
                 // Republic Day
-                || (d == 23  && m == Month.October)
+                || (d == 23 && m == Month.October)
                 // All Saints Day
-                || (d == 1  && m == Month.November)
+                || (d == 1 && m == Month.November)
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // 2nd Day of Christmas

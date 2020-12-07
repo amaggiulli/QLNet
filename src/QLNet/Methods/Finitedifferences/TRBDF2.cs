@@ -92,7 +92,7 @@ namespace QLNet
          if (L_.isTimeDependent())
          {
             L_.setTime(t);
-            explicitTrapezoidalPart_ = (Operator)I_.subtract(I_, L_.multiply(- 0.5 * alpha_ * dt_, L_));
+            explicitTrapezoidalPart_ = (Operator)I_.subtract(I_, L_.multiply(-0.5 * alpha_ * dt_, L_));
          }
          for (i = 0; i < bcs_.Count; i++)
             bcs_[i].applyBeforeApplying(explicitTrapezoidalPart_);

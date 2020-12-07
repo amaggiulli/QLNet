@@ -50,7 +50,7 @@ namespace QLNet
       //    1981.
 
       // x1, abscissae common to the 10-, 21-, 43- and 87-point rule
-      private static readonly double[] x1_  = { 0.973906528517171720077964012084452, 0.865063366688984510732096688423493, 0.679409568299024406234327365114874, 0.433395394129247190799265943165784, 0.148874338981631210884826001129720 };
+      private static readonly double[] x1_ = { 0.973906528517171720077964012084452, 0.865063366688984510732096688423493, 0.679409568299024406234327365114874, 0.433395394129247190799265943165784, 0.148874338981631210884826001129720 };
       public static double[] x1 { get { return x1_; } }
 
       // w10, weights of the 10-point formula
@@ -109,21 +109,21 @@ namespace QLNet
    }
 
    //! Integral of a 1-dimensional function using the Gauss-Kronrod methods
-//    ! This class provide a non-adaptive integration procedure which
-//        uses fixed Gauss-Kronrod abscissae to sample the integrand at
-//        a maximum of 87 points.  It is provided for fast integration
-//        of smooth functions.
-//
-//        This function applies the Gauss-Kronrod 10-point, 21-point, 43-point
-//        and 87-point integration rules in succession until an estimate of the
-//        integral of f over (a, b) is achieved within the desired absolute and
-//        relative error limits, epsabs and epsrel. The function returns the
-//        final approximation, result, an estimate of the absolute error,
-//        abserr and the number of function evaluations used, neval. The
-//        Gauss-Kronrod rules are designed in such a way that each rule uses
-//        all the results of its predecessors, in order to minimize the total
-//        number of function evaluations.
-//
+   //    ! This class provide a non-adaptive integration procedure which
+   //        uses fixed Gauss-Kronrod abscissae to sample the integrand at
+   //        a maximum of 87 points.  It is provided for fast integration
+   //        of smooth functions.
+   //
+   //        This function applies the Gauss-Kronrod 10-point, 21-point, 43-point
+   //        and 87-point integration rules in succession until an estimate of the
+   //        integral of f over (a, b) is achieved within the desired absolute and
+   //        relative error limits, epsabs and epsrel. The function returns the
+   //        final approximation, result, an estimate of the absolute error,
+   //        abserr and the number of function evaluations used, neval. The
+   //        Gauss-Kronrod rules are designed in such a way that each rule uses
+   //        all the results of its predecessors, in order to minimize the total
+   //        number of function evaluations.
+   //
    public class GaussKronrodNonAdaptive : Integrator
    {
       public GaussKronrodNonAdaptive(double absoluteAccuracy, int maxEvaluations, double relativeAccuracy) : base(absoluteAccuracy, maxEvaluations)
@@ -151,7 +151,7 @@ namespace QLNet
          double resasc; // approximation to the integral of abs(f-i/(b-a))
          int k;
 
-         Utils.QL_REQUIRE(a<b, () => "b must be greater than a)");
+         Utils.QL_REQUIRE(a < b, () => "b must be greater than a)");
 
          double halfLength = 0.5 * (b - a);
          double center = 0.5 * (b + a);
@@ -165,7 +165,7 @@ namespace QLNet
 
          for (k = 0; k < 5; k++)
          {
-            double abscissa = halfLength* KronrodintegralArrays.x1[k];
+            double abscissa = halfLength * KronrodintegralArrays.x1[k];
             double fval1 = f(center + abscissa);
             double fval2 = f(center - abscissa);
             double fval = fval1 + fval2;
@@ -179,7 +179,7 @@ namespace QLNet
 
          for (k = 0; k < 5; k++)
          {
-            double abscissa = halfLength* KronrodintegralArrays.x2[k];
+            double abscissa = halfLength * KronrodintegralArrays.x2[k];
             double fval1 = f(center + abscissa);
             double fval2 = f(center - abscissa);
             double fval = fval1 + fval2;
@@ -190,7 +190,7 @@ namespace QLNet
             fv4[k] = fval2;
          }
 
-         result = res21* halfLength;
+         result = res21 * halfLength;
          resAbs *= halfLength;
          double mean = 0.5 * res21;
          resasc = KronrodintegralArrays.w21b[5] * Math.Abs(fCenter - mean);
@@ -218,15 +218,15 @@ namespace QLNet
 
          for (k = 0; k < 11; k++)
          {
-            double abscissa = halfLength* KronrodintegralArrays.x3[k];
+            double abscissa = halfLength * KronrodintegralArrays.x3[k];
             double fval = (f(center + abscissa) + f(center - abscissa));
-            res43 += fval* KronrodintegralArrays.w43b[k];
+            res43 += fval * KronrodintegralArrays.w43b[k];
             savfun[k + 10] = fval;
          }
 
          // test for convergence.
 
-         result = res43* halfLength;
+         result = res43 * halfLength;
          err = KronrodintegralArrays.rescaleError((res43 - res21) * halfLength, resAbs, resasc);
 
          if (err < absoluteAccuracy() || err < relativeAccuracy() * Math.Abs(result))
@@ -245,12 +245,12 @@ namespace QLNet
 
          for (k = 0; k < 22; k++)
          {
-            double abscissa = halfLength* KronrodintegralArrays.x4[k];
+            double abscissa = halfLength * KronrodintegralArrays.x4[k];
             res87 += KronrodintegralArrays.w87b[k] * (f(center + abscissa) + f(center - abscissa));
          }
 
          // test for convergence.
-         result = res87* halfLength;
+         result = res87 * halfLength;
          err = KronrodintegralArrays.rescaleError((res87 - res43) * halfLength, resAbs, resasc);
 
          setAbsoluteError(err);
@@ -261,24 +261,24 @@ namespace QLNet
    }
 
    //! Integral of a 1-dimensional function using the Gauss-Kronrod methods
-//    ! This class provide an adaptive integration procedure using 15
-//        points Gauss-Kronrod integration rule.  This is more robust in
-//        that it allows to integrate less smooth functions (though
-//        singular functions should be integrated using dedicated
-//        algorithms) but less efficient beacuse it does not reuse
-//        precedently computed points during computation steps.
-//
-//        References:
-//
-//        Gauss-Kronrod Integration
-//        <http://mathcssun1.emporia.edu/~oneilcat/ExperimentApplet3/ExperimentApplet3.html>
-//
-//        NMS - Numerical Analysis Library
-//        <http://www.math.iastate.edu/burkardt/f_src/nms/nms.html>
-//
-//        \test the correctness of the result is tested by checking it
-//              against known good values.
-//
+   //    ! This class provide an adaptive integration procedure using 15
+   //        points Gauss-Kronrod integration rule.  This is more robust in
+   //        that it allows to integrate less smooth functions (though
+   //        singular functions should be integrated using dedicated
+   //        algorithms) but less efficient beacuse it does not reuse
+   //        precedently computed points during computation steps.
+   //
+   //        References:
+   //
+   //        Gauss-Kronrod Integration
+   //        <http://mathcssun1.emporia.edu/~oneilcat/ExperimentApplet3/ExperimentApplet3.html>
+   //
+   //        NMS - Numerical Analysis Library
+   //        <http://www.math.iastate.edu/burkardt/f_src/nms/nms.html>
+   //
+   //        \test the correctness of the result is tested by checking it
+   //              against known good values.
+   //
    public class GaussKronrodAdaptive : Integrator
    {
       public GaussKronrodAdaptive(double absoluteAccuracy, int maxEvaluations) : base(absoluteAccuracy, maxEvaluations)

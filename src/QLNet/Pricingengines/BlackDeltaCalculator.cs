@@ -51,8 +51,8 @@ namespace QLNet
          Utils.QL_REQUIRE(fDiscount_ > 0.0, () => "positive foreign discount factor required: " + fDiscount_ + " not allowed");
          Utils.QL_REQUIRE(stdDev_ >= 0.0, () => "non-negative standard deviation required: " + stdDev_ + " not allowed");
 
-         fExpPos_    = forward_ * Math.Exp(0.5 * stdDev_ * stdDev_);
-         fExpNeg_    = forward_ * Math.Exp(-0.5 * stdDev_ * stdDev_);
+         fExpPos_ = forward_ * Math.Exp(0.5 * stdDev_ * stdDev_);
+         fExpNeg_ = forward_ * Math.Exp(-0.5 * stdDev_ * stdDev_);
       }
 
       // Give strike, receive delta according to specified type
@@ -217,7 +217,7 @@ namespace QLNet
       public void setOptionType(Option.Type ot)
       {
          ot_ = ot;
-         phi_ = (int) ot_ ;
+         phi_ = (int)ot_;
       }
 
       // The following function can be calculated without an explicit strike
@@ -400,7 +400,7 @@ namespace QLNet
       public override double value(double strike) { return bdc_.cumD2(strike) * stdDev_ - bdc_.nD2(strike); }
 
       private BlackDeltaCalculator bdc_;
-      private  double stdDev_;
+      private double stdDev_;
    }
 
 }

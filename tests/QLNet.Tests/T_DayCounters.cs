@@ -629,37 +629,37 @@ namespace TestSuite
          int calculated;
 
          // ISDA - Example 1: End dates do not involve the last day of February
-         testStartDates.Add(new Date(20, Month.August, 2006));   testEndDates.Add(new Date(20, Month.February, 2007));
+         testStartDates.Add(new Date(20, Month.August, 2006)); testEndDates.Add(new Date(20, Month.February, 2007));
          testStartDates.Add(new Date(20, Month.February, 2007)); testEndDates.Add(new Date(20, Month.August, 2007));
-         testStartDates.Add(new Date(20, Month.August, 2007));   testEndDates.Add(new Date(20, Month.February, 2008));
+         testStartDates.Add(new Date(20, Month.August, 2007)); testEndDates.Add(new Date(20, Month.February, 2008));
          testStartDates.Add(new Date(20, Month.February, 2008)); testEndDates.Add(new Date(20, Month.August, 2008));
-         testStartDates.Add(new Date(20, Month.August, 2008));   testEndDates.Add(new Date(20, Month.February, 2009));
+         testStartDates.Add(new Date(20, Month.August, 2008)); testEndDates.Add(new Date(20, Month.February, 2009));
          testStartDates.Add(new Date(20, Month.February, 2009)); testEndDates.Add(new Date(20, Month.August, 2009));
 
          // ISDA - Example 2: End dates include some end-February dates
-         testStartDates.Add(new Date(31, Month.August, 2006));   testEndDates.Add(new Date(28, Month.February, 2007));
+         testStartDates.Add(new Date(31, Month.August, 2006)); testEndDates.Add(new Date(28, Month.February, 2007));
          testStartDates.Add(new Date(28, Month.February, 2007)); testEndDates.Add(new Date(31, Month.August, 2007));
-         testStartDates.Add(new Date(31, Month.August, 2007));   testEndDates.Add(new Date(29, Month.February, 2008));
+         testStartDates.Add(new Date(31, Month.August, 2007)); testEndDates.Add(new Date(29, Month.February, 2008));
          testStartDates.Add(new Date(29, Month.February, 2008)); testEndDates.Add(new Date(31, Month.August, 2008));
-         testStartDates.Add(new Date(31, Month.August, 2008));   testEndDates.Add(new Date(28, Month.February, 2009));
+         testStartDates.Add(new Date(31, Month.August, 2008)); testEndDates.Add(new Date(28, Month.February, 2009));
          testStartDates.Add(new Date(28, Month.February, 2009)); testEndDates.Add(new Date(31, Month.August, 2009));
 
          //// ISDA - Example 3: Miscellaneous calculations
-         testStartDates.Add(new Date(31, Month.January, 2006));   testEndDates.Add(new Date(28, Month.February, 2006));
-         testStartDates.Add(new Date(30, Month.January, 2006));   testEndDates.Add(new Date(28, Month.February, 2006));
-         testStartDates.Add(new Date(28, Month.February, 2006));  testEndDates.Add(new Date(3,  Month.March, 2006));
-         testStartDates.Add(new Date(14, Month.February, 2006));  testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(31, Month.January, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(30, Month.January, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(28, Month.February, 2006)); testEndDates.Add(new Date(3, Month.March, 2006));
+         testStartDates.Add(new Date(14, Month.February, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
          testStartDates.Add(new Date(30, Month.September, 2006)); testEndDates.Add(new Date(31, Month.October, 2006));
-         testStartDates.Add(new Date(31, Month.October, 2006));   testEndDates.Add(new Date(28, Month.November, 2006));
-         testStartDates.Add(new Date(31, Month.August, 2007));    testEndDates.Add(new Date(28, Month.February, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(28, Month.August, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(30, Month.August, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(31, Month.August, 2008));
-         testStartDates.Add(new Date(26, Month.February, 2007));  testEndDates.Add(new Date(28, Month.February, 2008));
-         testStartDates.Add(new Date(26, Month.February, 2007));  testEndDates.Add(new Date(29, Month.February, 2008));
-         testStartDates.Add(new Date(29, Month.February, 2008));  testEndDates.Add(new Date(28, Month.February, 2009));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(30, Month.March, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(31, Month.March, 2008));
+         testStartDates.Add(new Date(31, Month.October, 2006)); testEndDates.Add(new Date(28, Month.November, 2006));
+         testStartDates.Add(new Date(31, Month.August, 2007)); testEndDates.Add(new Date(28, Month.February, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(28, Month.August, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(30, Month.August, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(31, Month.August, 2008));
+         testStartDates.Add(new Date(26, Month.February, 2007)); testEndDates.Add(new Date(28, Month.February, 2008));
+         testStartDates.Add(new Date(26, Month.February, 2007)); testEndDates.Add(new Date(29, Month.February, 2008));
+         testStartDates.Add(new Date(29, Month.February, 2008)); testEndDates.Add(new Date(28, Month.February, 2009));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(30, Month.March, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(31, Month.March, 2008));
 
          int[] expected = { 180, 180, 180, 180, 180, 180,
                             178, 183, 179, 182, 178, 183,
@@ -695,43 +695,43 @@ namespace TestSuite
          int calculated;
 
          // ISDA - Example 1: End dates do not involve the last day of February
-         testStartDates.Add(new Date(20, Month.August, 2006));   testEndDates.Add(new Date(20, Month.February, 2007));
+         testStartDates.Add(new Date(20, Month.August, 2006)); testEndDates.Add(new Date(20, Month.February, 2007));
          testStartDates.Add(new Date(20, Month.February, 2007)); testEndDates.Add(new Date(20, Month.August, 2007));
-         testStartDates.Add(new Date(20, Month.August, 2007));   testEndDates.Add(new Date(20, Month.February, 2008));
+         testStartDates.Add(new Date(20, Month.August, 2007)); testEndDates.Add(new Date(20, Month.February, 2008));
          testStartDates.Add(new Date(20, Month.February, 2008)); testEndDates.Add(new Date(20, Month.August, 2008));
-         testStartDates.Add(new Date(20, Month.August, 2008));   testEndDates.Add(new Date(20, Month.February, 2009));
+         testStartDates.Add(new Date(20, Month.August, 2008)); testEndDates.Add(new Date(20, Month.February, 2009));
          testStartDates.Add(new Date(20, Month.February, 2009)); testEndDates.Add(new Date(20, Month.August, 2009));
 
          //// ISDA - Example 2: End dates include some end-February dates
          testStartDates.Add(new Date(28, Month.February, 2006)); testEndDates.Add(new Date(31, Month.August, 2006));
-         testStartDates.Add(new Date(31, Month.August, 2006));   testEndDates.Add(new Date(28, Month.February, 2007));
+         testStartDates.Add(new Date(31, Month.August, 2006)); testEndDates.Add(new Date(28, Month.February, 2007));
          testStartDates.Add(new Date(28, Month.February, 2007)); testEndDates.Add(new Date(31, Month.August, 2007));
-         testStartDates.Add(new Date(31, Month.August, 2007));   testEndDates.Add(new Date(29, Month.February, 2008));
+         testStartDates.Add(new Date(31, Month.August, 2007)); testEndDates.Add(new Date(29, Month.February, 2008));
          testStartDates.Add(new Date(29, Month.February, 2008)); testEndDates.Add(new Date(31, Month.August, 2008));
-         testStartDates.Add(new Date(31, Month.August, 2008));   testEndDates.Add(new Date(28, Month.Feb, 2009));
+         testStartDates.Add(new Date(31, Month.August, 2008)); testEndDates.Add(new Date(28, Month.Feb, 2009));
          testStartDates.Add(new Date(28, Month.February, 2009)); testEndDates.Add(new Date(31, Month.August, 2009));
-         testStartDates.Add(new Date(31, Month.August, 2009));   testEndDates.Add(new Date(28, Month.Feb, 2010));
+         testStartDates.Add(new Date(31, Month.August, 2009)); testEndDates.Add(new Date(28, Month.Feb, 2010));
          testStartDates.Add(new Date(28, Month.February, 2010)); testEndDates.Add(new Date(31, Month.August, 2010));
-         testStartDates.Add(new Date(31, Month.August, 2010));   testEndDates.Add(new Date(28, Month.Feb, 2011));
+         testStartDates.Add(new Date(31, Month.August, 2010)); testEndDates.Add(new Date(28, Month.Feb, 2011));
          testStartDates.Add(new Date(28, Month.February, 2011)); testEndDates.Add(new Date(31, Month.August, 2011));
-         testStartDates.Add(new Date(31, Month.August, 2011));   testEndDates.Add(new Date(29, Month.Feb, 2012));
+         testStartDates.Add(new Date(31, Month.August, 2011)); testEndDates.Add(new Date(29, Month.Feb, 2012));
 
          //// ISDA - Example 3: Miscellaneous calculations
-         testStartDates.Add(new Date(31, Month.January, 2006));   testEndDates.Add(new Date(28, Month.February, 2006));
-         testStartDates.Add(new Date(30, Month.January, 2006));   testEndDates.Add(new Date(28, Month.February, 2006));
-         testStartDates.Add(new Date(28, Month.February, 2006));  testEndDates.Add(new Date(3,  Month.March, 2006));
-         testStartDates.Add(new Date(14, Month.February, 2006));  testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(31, Month.January, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(30, Month.January, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
+         testStartDates.Add(new Date(28, Month.February, 2006)); testEndDates.Add(new Date(3, Month.March, 2006));
+         testStartDates.Add(new Date(14, Month.February, 2006)); testEndDates.Add(new Date(28, Month.February, 2006));
          testStartDates.Add(new Date(30, Month.September, 2006)); testEndDates.Add(new Date(31, Month.October, 2006));
-         testStartDates.Add(new Date(31, Month.October, 2006));   testEndDates.Add(new Date(28, Month.November, 2006));
-         testStartDates.Add(new Date(31, Month.August, 2007));    testEndDates.Add(new Date(28, Month.February, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(28, Month.August, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(30, Month.August, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(31, Month.August, 2008));
-         testStartDates.Add(new Date(26, Month.February, 2007));  testEndDates.Add(new Date(28, Month.February, 2008));
-         testStartDates.Add(new Date(26, Month.February, 2007));  testEndDates.Add(new Date(29, Month.February, 2008));
-         testStartDates.Add(new Date(29, Month.February, 2008));  testEndDates.Add(new Date(28, Month.February, 2009));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(30, Month.March, 2008));
-         testStartDates.Add(new Date(28, Month.February, 2008));  testEndDates.Add(new Date(31, Month.March, 2008));
+         testStartDates.Add(new Date(31, Month.October, 2006)); testEndDates.Add(new Date(28, Month.November, 2006));
+         testStartDates.Add(new Date(31, Month.August, 2007)); testEndDates.Add(new Date(28, Month.February, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(28, Month.August, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(30, Month.August, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(31, Month.August, 2008));
+         testStartDates.Add(new Date(26, Month.February, 2007)); testEndDates.Add(new Date(28, Month.February, 2008));
+         testStartDates.Add(new Date(26, Month.February, 2007)); testEndDates.Add(new Date(29, Month.February, 2008));
+         testStartDates.Add(new Date(29, Month.February, 2008)); testEndDates.Add(new Date(28, Month.February, 2009));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(30, Month.March, 2008));
+         testStartDates.Add(new Date(28, Month.February, 2008)); testEndDates.Add(new Date(31, Month.March, 2008));
 
          int[] expected = { 180, 180, 180, 180, 180, 180,
                             182, 178, 182, 179, 181, 178,

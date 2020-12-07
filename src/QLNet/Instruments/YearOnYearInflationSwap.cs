@@ -80,7 +80,7 @@ namespace QLNet
          .withNotionals(nominal_)
          .withPaymentAdjustment(paymentConvention_);
 
-         yoyLeg.ForEach((i, x) =>  x.registerWith(update));
+         yoyLeg.ForEach((i, x) => x.registerWith(update));
 
 
          legs_[0] = fixedLeg;
@@ -124,11 +124,11 @@ namespace QLNet
          return fairSpread_.Value;
       }
       // inspectors
-      public virtual Type type() {return type_;}
-      public virtual double nominal() { return nominal_;}
+      public virtual Type type() { return type_; }
+      public virtual double nominal() { return nominal_; }
 
-      public virtual Schedule fixedSchedule() {return fixedSchedule_;}
-      public virtual double fixedRate() {return fixedRate_;}
+      public virtual Schedule fixedSchedule() { return fixedSchedule_; }
+      public virtual double fixedRate() { return fixedRate_; }
       public virtual DayCounter fixedDayCount() { return fixedDayCount_; }
 
       public virtual Schedule yoySchedule() { return yoySchedule_; }
@@ -175,7 +175,7 @@ namespace QLNet
          arguments.yoyResetDates = arguments.yoyPayDates = arguments.yoyFixingDates = new List<Date>(yoyCoupons.Count);
          arguments.yoyAccrualTimes = new List<double>(yoyCoupons.Count);
          arguments.yoySpreads = new List<double>(yoyCoupons.Count);
-         arguments.yoyCoupons = new List < double? >(yoyCoupons.Count);
+         arguments.yoyCoupons = new List<double?>(yoyCoupons.Count);
          for (int i = 0; i < yoyCoupons.Count; ++i)
          {
             YoYInflationCoupon coupon = yoyCoupons[i] as YoYInflationCoupon;
@@ -263,7 +263,7 @@ namespace QLNet
          public Arguments()
          {
             type = Type.Receiver;
-            nominal = null ;
+            nominal = null;
          }
 
          public Type type { get; set; }
@@ -278,7 +278,7 @@ namespace QLNet
 
          public List<double> fixedCoupons { get; set; }
          public List<double> yoySpreads { get; set; }
-         public List < double? > yoyCoupons { get; set; }
+         public List<double?> yoyCoupons { get; set; }
          public override void validate()
          {
             base.validate();
@@ -313,7 +313,7 @@ namespace QLNet
          }
       }
 
-      public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> {}
+      public class Engine : GenericEngine<YearOnYearInflationSwap.Arguments, YearOnYearInflationSwap.Results> { }
 
    }
 }

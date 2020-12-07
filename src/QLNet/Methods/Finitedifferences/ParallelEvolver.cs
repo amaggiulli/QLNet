@@ -47,7 +47,7 @@ namespace QLNet
 
    public class BoundaryConditionSet : List<List<BoundaryCondition<IOperator>>> { }
 
-   public class ParallelEvolver<Evolver> : IMixedScheme, ISchemeFactory where Evolver : IMixedScheme, ISchemeFactory, new ()
+   public class ParallelEvolver<Evolver> : IMixedScheme, ISchemeFactory where Evolver : IMixedScheme, ISchemeFactory, new()
    {
       private List<IMixedScheme> evolvers_;
 

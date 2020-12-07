@@ -128,10 +128,10 @@ namespace TestSuite
             Exercise exercise = new EuropeanExercise(exDate);
             Date reset = today + Convert.ToInt32(values[i].start * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset, payoff, exercise);
             option.setPricingEngine(engine);
@@ -190,10 +190,10 @@ namespace TestSuite
             Exercise exercise = new EuropeanExercise(exDate);
             Date reset = today + Convert.ToInt32(values[i].start * 360 + 0.5);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             ForwardVanillaOption option = new ForwardVanillaOption(values[i].moneyness, reset, payoff, exercise);
             option.setPricingEngine(engine);
@@ -217,12 +217,12 @@ namespace TestSuite
          Dictionary<String, double> calculated = new Dictionary<string, double>(),
          expected = new Dictionary<string, double>(),
          tolerance = new Dictionary<string, double>();
-         tolerance["delta"]   = 1.0e-5;
-         tolerance["gamma"]   = 1.0e-5;
-         tolerance["theta"]   = 1.0e-5;
-         tolerance["rho"]     = 1.0e-5;
-         tolerance["divRho"]  = 1.0e-5;
-         tolerance["vega"]    = 1.0e-5;
+         tolerance["delta"] = 1.0e-5;
+         tolerance["gamma"] = 1.0e-5;
+         tolerance["theta"] = 1.0e-5;
+         tolerance["rho"] = 1.0e-5;
+         tolerance["divRho"] = 1.0e-5;
+         tolerance["vega"] = 1.0e-5;
 
          Option.Type[] types = { Option.Type.Call, Option.Type.Put };
          double[] moneyness = { 0.9, 1.0, 1.1 };
@@ -287,12 +287,12 @@ namespace TestSuite
                                  vol.setValue(v);
 
                                  double value = option.NPV();
-                                 calculated["delta"]   = option.delta();
-                                 calculated["gamma"]   = option.gamma();
-                                 calculated["theta"]   = option.theta();
-                                 calculated["rho"]     = option.rho();
-                                 calculated["divRho"]  = option.dividendRho();
-                                 calculated["vega"]    = option.vega();
+                                 calculated["delta"] = option.delta();
+                                 calculated["gamma"] = option.gamma();
+                                 calculated["theta"] = option.theta();
+                                 calculated["rho"] = option.rho();
+                                 calculated["divRho"] = option.dividendRho();
+                                 calculated["vega"] = option.vega();
 
                                  if (value > spot.value() * 1.0e-5)
                                  {
@@ -348,9 +348,9 @@ namespace TestSuite
                                     foreach (KeyValuePair<string, double> it in calculated)
                                     {
                                        String greek = it.Key;
-                                       double expct = expected  [greek],
+                                       double expct = expected[greek],
                                               calcl = calculated[greek],
-                                              tol   = tolerance [greek];
+                                              tol = tolerance[greek];
                                        double error = Utilities.relativeError(expct, calcl, u);
                                        if (error > tol)
                                        {
@@ -391,9 +391,9 @@ namespace TestSuite
 
       class TestBinomialEngine : BinomialVanillaEngine<CoxRossRubinstein>
       {
-         public TestBinomialEngine(GeneralizedBlackScholesProcess process):
+         public TestBinomialEngine(GeneralizedBlackScholesProcess process) :
             base(process, 300) // fixed steps
-         {}
+         { }
       }
 
       // verify than if engine
@@ -440,7 +440,7 @@ namespace TestSuite
             // nor should forward
             try
             {
-               delta   = option.delta();
+               delta = option.delta();
             }
             catch (Exception)
             {
@@ -449,7 +449,7 @@ namespace TestSuite
             Utils.QL_REQUIRE(delta == null, () => "Forward delta invalid");
          }
 
-         double? rho  = 0;
+         double? rho = 0;
          try
          {
             rho = ctrloption.rho();

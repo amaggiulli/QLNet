@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using history_map = System.Collections.Generic.Dictionary < string, QLNet.ObservableValue < QLNet.TimeSeries < double? >>>;
+using history_map = System.Collections.Generic.Dictionary<string, QLNet.ObservableValue<QLNet.TimeSeries<double?>>>;
 
 namespace QLNet
 {
@@ -62,7 +62,7 @@ namespace QLNet
       /// </summary>
       /// <param name="name"></param>
       /// <returns></returns>
-      public TimeSeries < double? > getHistory(string name)
+      public TimeSeries<double?> getHistory(string name)
       {
          checkExists(name);
          return data_[name.ToUpper()].value();
@@ -75,7 +75,7 @@ namespace QLNet
       /// <param name="name">The index name</param>
       /// <param name="history">The history of the index. Populated with null if the index does not exist</param>
       /// <returns>true if the index exists; otherwise, false.</returns>
-      public bool tryGetHistory(string name, out TimeSeries < double? > history)
+      public bool tryGetHistory(string name, out TimeSeries<double?> history)
       {
          if (hasHistory(name))
          {
@@ -94,7 +94,7 @@ namespace QLNet
       /// </summary>
       /// <param name="name"></param>
       /// <param name="history"></param>
-      public void setHistory(string name, TimeSeries < double? > history)
+      public void setHistory(string name, TimeSeries<double?> history)
       {
          checkExists(name);
          data_[name.ToUpper()].Assign(history);
@@ -105,7 +105,7 @@ namespace QLNet
       /// </summary>
       /// <param name="name"></param>
       /// <returns></returns>
-      public ObservableValue < TimeSeries < double? >> notifier(string name)
+      public ObservableValue<TimeSeries<double?>> notifier(string name)
       {
          checkExists(name);
          return data_[name.ToUpper()];
@@ -147,10 +147,10 @@ namespace QLNet
       private void checkExists(string name)
       {
          if (!data_.ContainsKey(name.ToUpper()))
-            data_.Add(name.ToUpper(), new ObservableValue < TimeSeries < double? >> ());
+            data_.Add(name.ToUpper(), new ObservableValue<TimeSeries<double?>>());
       }
 
-      private static history_map data_ = new Dictionary < string, ObservableValue < TimeSeries < double? >>> ();
+      private static history_map data_ = new Dictionary<string, ObservableValue<TimeSeries<double?>>>();
 
    }
 

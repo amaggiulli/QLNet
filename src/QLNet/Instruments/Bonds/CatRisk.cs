@@ -26,7 +26,7 @@ namespace QLNet
          end_ = end;
       }
 
-      public abstract bool nextPath(List<KeyValuePair<Date, double> > path) ;
+      public abstract bool nextPath(List<KeyValuePair<Date, double>> path);
 
       protected Date start_;
       protected Date end_;
@@ -39,7 +39,7 @@ namespace QLNet
 
    public class EventSetSimulation : CatSimulation
    {
-      public EventSetSimulation(List<KeyValuePair<Date, double> > events, Date eventsStart, Date eventsEnd, Date start, Date end)
+      public EventSetSimulation(List<KeyValuePair<Date, double>> events, Date eventsStart, Date eventsEnd, Date start, Date end)
          : base(start, end)
       {
          events_ = events;
@@ -63,7 +63,7 @@ namespace QLNet
 
       }
 
-      public override bool nextPath(List<KeyValuePair<Date, double> > path)
+      public override bool nextPath(List<KeyValuePair<Date, double>> path)
       {
          path.Clear();
          if (periodEnd_ > eventsEnd_) //Ran out of event data
@@ -73,7 +73,7 @@ namespace QLNet
          {
             ++i_; //skip the elements between the previous period and this period
          }
-         while (i_ < events_.Count  && (events_)[i_].Key <= periodEnd_)
+         while (i_ < events_.Count && (events_)[i_].Key <= periodEnd_)
          {
             KeyValuePair<Date, double> e = new KeyValuePair<Date, double>
             (events_[i_].Key + new Period((start_.year() - periodStart_.year()), TimeUnit.Years), events_[i_].Value);
@@ -93,7 +93,7 @@ namespace QLNet
          return true;
       }
 
-      private List<KeyValuePair<Date, double>>  events_;
+      private List<KeyValuePair<Date, double>> events_;
       private Date eventsStart_;
       private Date eventsEnd_;
 
@@ -105,7 +105,7 @@ namespace QLNet
 
    public class EventSet : CatRisk
    {
-      public EventSet(List<KeyValuePair<Date, double> >  events, Date eventsStart, Date eventsEnd)
+      public EventSet(List<KeyValuePair<Date, double>> events, Date eventsStart, Date eventsEnd)
       {
          events_ = events;
          eventsStart_ = eventsStart;
@@ -117,7 +117,7 @@ namespace QLNet
          return new EventSetSimulation(events_, eventsStart_, eventsEnd_, start, end);
       }
 
-      private List<KeyValuePair<Date, double> > events_;
+      private List<KeyValuePair<Date, double>> events_;
       private Date eventsStart_;
       private Date eventsEnd_;
    }

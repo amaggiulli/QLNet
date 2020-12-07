@@ -84,7 +84,7 @@ namespace QLNet
 
                for (int j = 0; j < m; ++j)
                {
-                  a_[j]  += u * V[j, i];
+                  a_[j] += u * V[j, i];
                   err_[j] += V[j, i] * V[j, i] / (w[i] * w[i]);
                }
             }
@@ -115,10 +115,10 @@ namespace QLNet
          reg_ = new LinearLeastSquaresRegression<List<double>>(x, y, linearFcts(x[0].Count));
       }
 
-      public Vector coefficients()   { return reg_.coefficients(); }
+      public Vector coefficients() { return reg_.coefficients(); }
 
-      public Vector residuals()      { return reg_.residuals(); }
-      public Vector standardErrors()  { return reg_.standardErrors(); }
+      public Vector residuals() { return reg_.residuals(); }
+      public Vector standardErrors() { return reg_.standardErrors(); }
 
 
       class LinearFct

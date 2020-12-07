@@ -23,14 +23,14 @@ using System.Collections.Generic;
 namespace QLNet
 {
    public class LogInterpolationImpl<Interpolator> : Interpolation.templateImpl
-      where Interpolator : IInterpolationFactory, new ()
+      where Interpolator : IInterpolationFactory, new()
    {
       private List<double> logY_;
       private Interpolation interpolation_;
 
       public LogInterpolationImpl(List<double> xBegin, int size, List<double> yBegin)
          : this(xBegin, size, yBegin, FastActivator<Interpolator>.Create())
-      {}
+      { }
 
       public LogInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, IInterpolationFactory factory)
          : base(xBegin, size, yBegin)
@@ -117,7 +117,7 @@ namespace QLNet
       private double leftValue_, rightValue_;
 
       public LogCubic()
-      {}
+      { }
 
       public LogCubic(CubicInterpolation.DerivativeApprox da, bool monotonic,
                       CubicInterpolation.BoundaryCondition leftCondition, double leftConditionValue,

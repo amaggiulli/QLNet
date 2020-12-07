@@ -32,7 +32,7 @@ namespace QLNet
    public class EurLiborSwapIsdaFixA : SwapIndex
    {
       public EurLiborSwapIsdaFixA(Period tenor)
-         : this(tenor, new Handle<YieldTermStructure>()) {}
+         : this(tenor, new Handle<YieldTermStructure>()) { }
 
       public EurLiborSwapIsdaFixA(Period tenor, Handle<YieldTermStructure> h)
          : base("EurLiborSwapIsdaFixA", // familyName
@@ -45,7 +45,8 @@ namespace QLNet
                 new Thirty360(Thirty360.Thirty360Convention.BondBasis), // fixedLegDaycounter
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), h) :
-                new EURLibor(new Period(3, TimeUnit.Months), h)) {}
+                new EURLibor(new Period(3, TimeUnit.Months), h))
+      { }
 
       public EurLiborSwapIsdaFixA(Period tenor,
                                   Handle<YieldTermStructure> forwarding,
@@ -61,7 +62,8 @@ namespace QLNet
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), forwarding) :
                 new EURLibor(new Period(3, TimeUnit.Months), forwarding),
-                discounting) {}
+                discounting)
+      { }
    }
 
    //! %EurLiborSwapIsdaFixB index base class
@@ -77,7 +79,7 @@ namespace QLNet
    public class EurLiborSwapIsdaFixB : SwapIndex
    {
       public EurLiborSwapIsdaFixB(Period tenor)
-         : this(tenor, new Handle<YieldTermStructure>()) {}
+         : this(tenor, new Handle<YieldTermStructure>()) { }
 
       public EurLiborSwapIsdaFixB(Period tenor, Handle<YieldTermStructure> h)
          : base("EurLiborSwapIsdaFixB", // familyName
@@ -90,7 +92,8 @@ namespace QLNet
                 new Thirty360(Thirty360.Thirty360Convention.BondBasis), // fixedLegDaycounter
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), h) :
-                new EURLibor(new Period(3, TimeUnit.Months), h)) {}
+                new EURLibor(new Period(3, TimeUnit.Months), h))
+      { }
 
       public EurLiborSwapIsdaFixB(Period tenor,
                                   Handle<YieldTermStructure> forwarding,
@@ -106,7 +109,8 @@ namespace QLNet
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), forwarding) :
                 new EURLibor(new Period(3, TimeUnit.Months), forwarding),
-                discounting) {}
+                discounting)
+      { }
    }
 
    //! %EurLiborSwapIfrFix index base class
@@ -119,7 +123,7 @@ namespace QLNet
    public class EurLiborSwapIfrFix : SwapIndex
    {
       public EurLiborSwapIfrFix(Period tenor)
-         : this(tenor, new Handle<YieldTermStructure>()) {}
+         : this(tenor, new Handle<YieldTermStructure>()) { }
 
       public EurLiborSwapIfrFix(Period tenor, Handle<YieldTermStructure> h)
          : base("EurLiborSwapIfrFix", // familyName
@@ -132,7 +136,8 @@ namespace QLNet
                 new Thirty360(Thirty360.Thirty360Convention.BondBasis), // fixedLegDaycounter
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), h) :
-                new EURLibor(new Period(3, TimeUnit.Months), h)) {}
+                new EURLibor(new Period(3, TimeUnit.Months), h))
+      { }
 
 
       public EurLiborSwapIfrFix(Period tenor,
@@ -149,7 +154,8 @@ namespace QLNet
                 tenor > new Period(1, TimeUnit.Years) ?
                 new EURLibor(new Period(6, TimeUnit.Months), forwarding) :
                 new EURLibor(new Period(3, TimeUnit.Months), forwarding),
-                discounting) {}
+                discounting)
+      { }
 
    }
 }

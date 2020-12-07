@@ -129,7 +129,7 @@ namespace QLNet
          Utils.QL_REQUIRE(dividendDiscount > 0.0, () => "positive dividend discount required");
          Utils.QL_REQUIRE(variance >= 0.0, () => "negative variance not allowed");
 
-         Option.Type type   = payoff_.optionType();
+         Option.Type type = payoff_.optionType();
          double strike = payoff_.strike();
          double? barrier = arguments_.barrier;
          Utils.QL_REQUIRE(barrier > 0.0, () => "positive barrier value required");
@@ -154,11 +154,11 @@ namespace QLNet
             K = spot * dividendDiscount / discount; // forward
          }
 
-         double log_S_X   = Math.Log(spot / strike);
-         double log_S_H   = Math.Log(spot / barrier.GetValueOrDefault());
-         double log_H_S   = Math.Log(barrier.GetValueOrDefault() / spot);
+         double log_S_X = Math.Log(spot / strike);
+         double log_S_H = Math.Log(spot / barrier.GetValueOrDefault());
+         double log_H_S = Math.Log(barrier.GetValueOrDefault() / spot);
          double log_H2_SX = Math.Log(barrier.GetValueOrDefault() * barrier.GetValueOrDefault() / (spot * strike));
-         double H_S_2mu   = Math.Pow(barrier.GetValueOrDefault() / spot, 2 * mu);
+         double H_S_2mu = Math.Pow(barrier.GetValueOrDefault() / spot, 2 * mu);
 
          double eta = (barrierType == Barrier.Type.DownIn ||
                        barrierType == Barrier.Type.DownOut ? 1.0 : -1.0);

@@ -21,7 +21,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedSmileSection<Interpolator> : SmileSection, InterpolatedCurve
-      where Interpolator : IInterpolationFactory, new ()
+      where Interpolator : IInterpolationFactory, new()
    {
       public InterpolatedSmileSection(double timeToExpiry,
                                       List<double> strikes,
@@ -78,7 +78,7 @@ namespace QLNet
 
       public InterpolatedSmileSection(Date d,
                                       List<double> strikes,
-                                      List<Handle<Quote> > stdDevHandles,
+                                      List<Handle<Quote>> stdDevHandles,
                                       Handle<Quote> atmLevel,
                                       DayCounter dc = null,  //Actual365Fixed(),
                                       Interpolator interpolator = default(Interpolator),
@@ -151,8 +151,8 @@ namespace QLNet
       }
       public override double minStrike() { return strikes_.First(); }
       public override double maxStrike() { return strikes_.Last(); }
-      public override double? atmLevel()  { return atmLevel_.link.value(); }
-      public override void update() {base.update();}
+      public override double? atmLevel() { return atmLevel_.link.value(); }
+      public override void update() { base.update(); }
 
       private double exerciseTimeSquareRoot_;
       private List<double> strikes_;

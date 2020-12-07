@@ -30,7 +30,7 @@ namespace QLNet
          factors_ = factors;
          steps_ = steps;
          dim_ = factors * steps;
-         seq_ = new Sample<List<double>>(new InitializedList<double>(factors * steps), 1.0) ;
+         seq_ = new Sample<List<double>>(new InitializedList<double>(factors * steps), 1.0);
          gen_ = new SobolBrownianGenerator(factors, steps, ordering, seed, directionIntegers);
       }
 
@@ -41,7 +41,7 @@ namespace QLNet
          for (int i = 0; i < steps_; ++i)
          {
             gen_.nextStep(output);
-            for (int j = 0; j < output.Count ; j++)
+            for (int j = 0; j < output.Count; j++)
             {
                seq_.value[j + i * factors_] = output[j];
             }
@@ -49,13 +49,13 @@ namespace QLNet
 
          return seq_;
       }
-      public Sample<List<double>> lastSequence() {return seq_;}
+      public Sample<List<double>> lastSequence() { return seq_; }
       public IRNG factory(int dimensionality, ulong seed)
       {
          throw new NotImplementedException();
       }
 
-      public int dimension() {return dim_;}
+      public int dimension() { return dim_; }
 
       private int factors_, steps_, dim_;
       private Sample<List<double>> seq_;

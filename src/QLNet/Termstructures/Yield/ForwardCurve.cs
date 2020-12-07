@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedForwardCurve<Interpolator> : ForwardRateStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve
