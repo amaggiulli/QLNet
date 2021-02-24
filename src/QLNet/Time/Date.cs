@@ -288,6 +288,8 @@ namespace QLNet
          return d1.date >= d2.date;
       }
 
+      public DateTime ToDateTime() => date;
+
       public string ToLongDateString()
       {
          return date.ToString("D");
