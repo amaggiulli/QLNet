@@ -24,6 +24,10 @@ namespace QLNet
    // Introduces Observer pattern
    public abstract class LazyObject : IObservable, IObserver
    {
+      [ThreadStatic]
+      protected bool bootstrapping_;
+      protected System.Threading.SpinLock spinLock_ = new System.Threading.SpinLock(false);
+
       protected bool calculated_;
       protected bool frozen_;
 
@@ -57,7 +61,7 @@ namespace QLNet
          // LazyObject forwards notifications only once until it has been recalculated
          if (!frozen_ && calculated_)
             notifyObservers();
-         calculated_ = false;
+         calculated_ = bootstrapping_ = false;
       }
       #endregion
 
@@ -70,7 +74,7 @@ namespace QLNet
       public virtual void recalculate()
       {
          bool wasFrozen = frozen_;
-         calculated_ = frozen_ = false;
+         calculated_ = frozen_ = bootstrapping_ = false;
          try
          {
             calculate();
@@ -105,18 +109,27 @@ namespace QLNet
           in the overriding method. */
       protected virtual void calculate()
       {
-         if (!calculated_ && !frozen_)
+         if (!calculated_ && !frozen_ && !bootstrapping_)
          {
-            calculated_ = true;   // prevent infinite recursion in case of bootstrapping
+            bootstrapping_ = true;
+            bool taken = false;
             try
             {
-               performCalculations();
+               spinLock_.Enter(ref taken);
+               if (taken)
+                  performCalculations();
             }
             catch
             {
-               calculated_ = false;
+               calculated_ = bootstrapping_ = false;
                throw;
             }
+            finally
+            {
+               if (taken) spinLock_.Exit();
+            }
+            calculated_ = true;   // prevent infinite recursion in case of bootstrapping
+            bootstrapping_ = false;
          }
       }
 
