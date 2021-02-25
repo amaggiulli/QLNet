@@ -251,7 +251,7 @@ namespace QLNet
             foreach(var ml1 in scope)
             {
                // filter scope to self
-               if (ml1 == self && ml1._Held && !ml1._Disposed)
+               if (ml1 == self && !ml1._Held && !ml1._Disposed)
                {
                   var newPath = new MayLock[path.Length + 1];
                   path.CopyTo(newPath, 1);
