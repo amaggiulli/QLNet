@@ -53,9 +53,9 @@ namespace QLNet
       }
 
       // dereferencing of the observable to the Link
-      public void registerWith(Callback handler) { link_.registerWith(handler); }
+      public void registerWith(Callback handler) {} public void XXXregisterWith(Callback handler) { link_.registerWith(handler); }
 
-      public void unregisterWith(Callback handler) { link_.unregisterWith(handler); }
+      public void unregisterWith(Callback handler) {} public void XXXunregisterWith(Callback handler) { link_.unregisterWith(handler); }
 
       //! checks if the contained shared pointer points to anything
       public bool empty() { return link_.empty(); }
@@ -138,9 +138,9 @@ namespace QLNet
             }
          }
 
-         public void registerWith(Callback handler) { notifyObserversEvent += handler; }
+         public void registerWith(Callback handler) {} public void XXXregisterWith(Callback handler) { notifyObserversEvent += handler; }
 
-         public void unregisterWith(Callback handler) { notifyObserversEvent -= handler; }
+         public void unregisterWith(Callback handler) {} public void XXXunregisterWith(Callback handler) { notifyObserversEvent -= handler; }
 
          protected void notifyObservers()
          {

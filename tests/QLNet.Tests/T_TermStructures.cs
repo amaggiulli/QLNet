@@ -20,12 +20,23 @@
 
 using System;
 using System.Collections.Generic;
+
+#if NET452
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+#else
 using Xunit;
+#endif
+
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+
+   [TestClass()]
+#endif
    public class T_TermStructures : IDisposable
    {
       private double sub(double x, double y)
@@ -34,10 +45,25 @@ namespace TestSuite
       #region Initialize&Cleanup
 
       private SavedSettings backup;
+#if NET452
 
+      [TestInitialize]
+      public void testInitialize()
+      {
+#else
       public T_TermStructures()
       {
+#endif
          backup = new SavedSettings();
+      }
+
+#if NET452
+
+      [TestCleanup]
+#endif
+      public void testCleanup()
+      {
+         Dispose();
       }
 
       public void Dispose()
@@ -116,7 +142,12 @@ namespace TestSuite
          }
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testReferenceChange()
       {
          // Testing term structure against evaluation date change
@@ -148,7 +179,12 @@ namespace TestSuite
          }
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testImplied()
       {
          // Testing consistency of implied term structure
@@ -169,7 +205,12 @@ namespace TestSuite
                          + "    expected:   " + discount);
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testImpliedObs()
       {
          // Testing observability of implied term structure
@@ -187,7 +228,12 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of term structure change");
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFSpreaded()
       {
          // Testing consistency of forward-spreaded term structure
@@ -211,7 +257,12 @@ namespace TestSuite
                          + "    expected:   " + forward);
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFSpreadedObs()
       {
          // Testing observability of forward-spreaded term structure
@@ -232,7 +283,12 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of spread change");
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testZSpreaded()
       {
          // Testing consistency of zero-spreaded term structure
@@ -252,7 +308,12 @@ namespace TestSuite
                          + "    expected:   " + zero);
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testZSpreadedObs()
       {
          // Testing observability of zero-spreaded term structure
@@ -274,7 +335,12 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of spread change");
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCompositeZeroYieldStructures()
       {
          // Testing composite zero yield structures...
@@ -402,7 +468,12 @@ namespace TestSuite
          }
       }
 
+#if NET452
+
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testInterpolatedZeroCurveWithRefDateAndTenorDates()
       {
          CommonVars vars = new CommonVars();

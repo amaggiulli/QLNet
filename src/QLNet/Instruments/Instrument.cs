@@ -71,13 +71,16 @@ namespace QLNet
        * In case a pricing engine is used, the default implementation can be used. */
       protected override void performCalculations()
       {
-         if (engine_ == null)
-            throw new ArgumentException("null pricing engine");
-         engine_.reset();
-         setupArguments(engine_.getArguments());
-         engine_.getArguments().validate();
-         engine_.calculate();
-         fetchResults(engine_.getResults());
+         using (new MayLock(engine_))
+         {
+            if (engine_ == null)
+               throw new ArgumentException("null pricing engine");
+            engine_.reset();
+            setupArguments(engine_.getArguments());
+            engine_.getArguments().validate();
+            engine_.calculate();
+            fetchResults(engine_.getResults());
+         }
       }
       #endregion
 

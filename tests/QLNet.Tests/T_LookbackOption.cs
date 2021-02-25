@@ -14,12 +14,18 @@
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_LookbackOption
    {
       void REPORT_FAILURE_FLOATING(string greekName,
@@ -116,7 +122,11 @@ namespace TestSuite
          public double tol;      // tolerance
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAnalyticContinuousFloatingLookback()
       {
          // Testing analytic continuous floating-strike lookback options
@@ -184,7 +194,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAnalyticContinuousFixedLookback()
       {
          // Testing analytic continuous fixed-strike lookback options
@@ -281,7 +295,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAnalyticContinuousPartialFloatingLookback()
       {
          // Testing analytic continuous partial floating-strike lookback options...");
@@ -378,7 +396,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAnalyticContinuousPartialFixedLookback()
       {
          // Testing analytic continuous fixed-strike lookback options

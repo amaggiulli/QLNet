@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>1.11.4</VersionPrefix>
-    <TargetFrameworks>netstandard1.2</TargetFrameworks>
+    <TargetFrameworks>net48;netstandard2.1;net5.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
-    <PackageId>QLNet</PackageId>
-    <PackageVersion>1.11.4</PackageVersion>
     <Authors>Andrea Maggiulli</Authors>
     <Company />
     <Description>A free/open-source library for quantitative finance</Description>
@@ -18,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

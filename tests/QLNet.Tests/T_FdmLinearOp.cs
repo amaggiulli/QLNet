@@ -20,16 +20,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_FdmLinearOp
    {
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFdmLinearOpLayout()
       {
 
@@ -114,7 +124,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testUniformGridMesher()
       {
          int[] dims = new int[] {5, 7, 8};
@@ -144,7 +158,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFirstDerivativesMapApply()
       {
          int[] dims = new int[] {400, 100, 50};
@@ -207,7 +225,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSecondDerivativesMapApply()
       {
          int[] dims = new int[] {50, 50, 50};
@@ -300,7 +322,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDerivativeWeightsOnNonUniformGrids()
       {
          Fdm1dMesher mesherX =
@@ -483,7 +509,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSecondOrderMixedDerivativesMapApply()
       {
          int[] dims = new int[] {50, 50, 50};
@@ -590,7 +620,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testTripleBandMapSolve()
       {
          int[] dims = new int[] {100, 400};
@@ -678,7 +712,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCrankNicolsonWithDamping()
       {
          SavedSettings backup = new SavedSettings();
@@ -772,7 +810,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSpareMatrixReference()
       {
          int rows    = 10;
@@ -818,7 +860,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFdmMesherIntegral()
       {
          FdmMesherComposite mesher =

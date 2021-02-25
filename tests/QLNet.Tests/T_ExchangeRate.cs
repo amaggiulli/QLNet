@@ -16,15 +16,25 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_ExchangeRate
    {
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDirect()
       {
 
@@ -57,7 +67,11 @@ namespace TestSuite
       /// <summary>
       /// Testing derived exchange rates
       /// </summary>
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDerived()
       {
 
@@ -93,7 +107,11 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of direct exchange rates
       /// </summary>
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDirectLookup()
       {
          ExchangeRateManager rateManager = ExchangeRateManager.Instance;
@@ -153,7 +171,11 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of triangulated exchange rates
       /// </summary>
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testTriangulatedLookup()
       {
 
@@ -214,7 +236,11 @@ namespace TestSuite
       /// <summary>
       /// Testing lookup of derived exchange rates
       /// </summary>
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSmartLookup()
       {
 

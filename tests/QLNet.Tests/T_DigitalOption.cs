@@ -16,12 +16,18 @@
 
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_DigitalOption
    {
       struct DigitalOptionData
@@ -74,7 +80,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCashOrNothingEuropeanValues()
       {
          // Testing European cash-or-nothing digital option
@@ -131,7 +141,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAssetOrNothingEuropeanValues()
       {
 
@@ -188,7 +202,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testGapEuropeanValues()
       {
          // Testing European gap digital option
@@ -244,7 +262,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCashAtHitOrNothingAmericanValues()
       {
          // Testing American cash-(at-hit)-or-nothing digital option
@@ -311,7 +333,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAssetAtHitOrNothingAmericanValues()
       {
          // Testing American asset-(at-hit)-or-nothing "digital option
@@ -376,7 +402,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCashAtExpiryOrNothingAmericanValues()
       {
          // Testing American cash-(at-expiry)-or-nothing digital option
@@ -444,7 +474,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAssetAtExpiryOrNothingAmericanValues()
       {
 
@@ -518,7 +552,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCashAtHitOrNothingAmericanGreeks()
       {
 

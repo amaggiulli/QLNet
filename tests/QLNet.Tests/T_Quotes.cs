@@ -18,12 +18,19 @@
 */
 
 using System;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+
+#if NET452
+   [TestClass()]
+#endif
    public class T_Quotes
    {
       double add10(double x) { return x + 10; }
@@ -35,7 +42,11 @@ namespace TestSuite
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testObservable()
       {
          // Testing observability of quotes
@@ -50,7 +61,11 @@ namespace TestSuite
             QAssert.Fail("Observer was not notified of quote change");
 
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testObservableHandle()
       {
 
@@ -77,7 +92,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDerived()
       {
 
@@ -99,7 +118,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testComposite()
       {
          // Testing composite quotes

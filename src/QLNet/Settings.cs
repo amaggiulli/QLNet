@@ -29,6 +29,7 @@ namespace QLNet
 
       [ThreadStatic]
       private static Date evaluationDate_;
+      private static Date evaluationDate_2;
 
       [ThreadStatic]
       private static bool includeReferenceDateEvents_;
@@ -42,7 +43,12 @@ namespace QLNet
       public static Date evaluationDate()
       {
          if (evaluationDate_ == null)
-            evaluationDate_ = Date.Today;
+         {
+            if (evaluationDate_2 == null)
+               evaluationDate_ = Date.Today;
+            else
+               evaluationDate_ = evaluationDate_2;
+         }
          return evaluationDate_;
       }
 
@@ -50,7 +56,8 @@ namespace QLNet
       public static void setEvaluationDate(Date d)
       {
          evaluationDate_ = d;
-         notifyObservers();
+         evaluationDate_2 = d;
+         //         notifyObservers();       
       }
 
       public static bool enforcesTodaysHistoricFixings

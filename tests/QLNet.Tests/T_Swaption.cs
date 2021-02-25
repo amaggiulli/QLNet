@@ -19,22 +19,39 @@
 */
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Swaption : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-
+#if NET452
+      [TestInitialize]
+      public void testInitialize()
+      {
+#else
       public T_Swaption()
       {
+#endif
          backup = new SavedSettings();
       }
-
+#if NET452
+      [TestCleanup]
+#endif
+      public void testCleanup()
+      {
+         Dispose();
+      }
       public void Dispose()
       {
          backup.Dispose();
@@ -117,7 +134,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testStrikeDependency()
       {
          // Testing swaption dependency on strike
@@ -222,7 +243,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSpreadDependency()
       {
          // Testing swaption dependency on spread
@@ -309,7 +334,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSpreadTreatment()
       {
          // Testing swaption treatment of spread
@@ -379,7 +408,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCachedValue()
       {
          // Testing swaption value against cached value
@@ -412,7 +445,11 @@ namespace TestSuite
                          "\nexpected:   " + cachedNPV);
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testVega()
       {
          // Testing swaption vega
@@ -487,7 +524,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCashSettledSwaptions()
       {
 
@@ -836,7 +877,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testImpliedVolatility()
       {
          // Testing implied volatility for swaptions

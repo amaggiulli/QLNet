@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2017 Andrea Maggiulli (a.maggiulli@gmail.com)System.Collections.Concurrent.ConcurentDictionary
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -74,17 +74,26 @@ namespace QLNet
 
       public void Add(KeyValuePair<Date, T> item)
       {
-         backingDictionary_.Add(item.Key, item.Value);
+         lock (backingDictionary_)
+         {
+            backingDictionary_.Add(item.Key, item.Value);
+         }
       }
 
       public void Clear()
       {
-         backingDictionary_.Clear();
+         lock (backingDictionary_)
+         {
+            backingDictionary_.Clear();
+         }
       }
 
       public bool Contains(KeyValuePair<Date, T> item)
       {
-         return backingDictionary_.Contains(item);
+         lock (backingDictionary_)
+         {
+            return backingDictionary_.Contains(item);
+         }
       }
 
       public void CopyTo(KeyValuePair<Date, T>[] array, int arrayIndex)
@@ -94,7 +103,10 @@ namespace QLNet
 
       public bool Remove(KeyValuePair<Date, T> item)
       {
-         return backingDictionary_.Remove(item.Key);
+         lock (backingDictionary_)
+         {
+            return backingDictionary_.Remove(item.Key);
+         }
       }
 
       public int Count { get { return backingDictionary_.Count; } }
@@ -108,37 +120,55 @@ namespace QLNet
 
       public bool ContainsKey(Date key)
       {
-         return backingDictionary_.ContainsKey(key);
+         lock (backingDictionary_)
+         {
+            return backingDictionary_.ContainsKey(key);
+         }
       }
 
       public void Add(Date key, T value)
       {
-         backingDictionary_.Add(key, value);
+         lock (backingDictionary_)
+         {
+            backingDictionary_.Add(key, value);
+         }
       }
 
       public bool Remove(Date key)
       {
-         return backingDictionary_.Remove(key);
+         lock (backingDictionary_)
+         {
+            return backingDictionary_.Remove(key);
+         }
       }
 
       public bool TryGetValue(Date key, out T value)
       {
-         return backingDictionary_.TryGetValue(key, out value);
+         lock (backingDictionary_)
+         {
+            return backingDictionary_.TryGetValue(key, out value);
+         }
       }
 
       public T this[Date key]
       {
          get
          {
-            if (backingDictionary_.ContainsKey(key))
+            lock (backingDictionary_)
             {
-               return backingDictionary_[key];
+               if (backingDictionary_.ContainsKey(key))
+               {
+                  return backingDictionary_[key];
+               }
+               return default(T);
             }
-            return default(T);
          }
          set
          {
-            backingDictionary_[key] = value;
+            lock (backingDictionary_)
+            {
+               backingDictionary_[key] = value;
+            }
          }
       }
 

@@ -17,14 +17,20 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_CashFlows
    {
       private void CHECK_INCLUSION(int n, int days, bool expected, List<CashFlow> leg, Date today)
@@ -52,7 +58,11 @@ namespace TestSuite
          while (false);
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSettings()
       {
          // Testing cash-flow settings...
@@ -168,7 +178,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testAccessViolation()
       {
          // Testing dynamic cast of coupon in Black pricer...
@@ -214,7 +228,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testDefaultSettlementDate()
       {
          // Testing default evaluation date in cashflows methods...
@@ -246,7 +264,11 @@ namespace TestSuite
             QAssert.Fail("null accrued amount with default settlement date");
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testNullFixingDays()
       {
          // Testing ibor leg construction with null fixing days...

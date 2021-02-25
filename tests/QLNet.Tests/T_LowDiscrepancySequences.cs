@@ -19,7 +19,11 @@
 
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
@@ -128,16 +132,23 @@ namespace TestSuite
 
    #endregion
 
-   [Collection("QLNet CI Tests")]
+
+#if NET452
+   [TestClass()]
+#endif
    public class T_LowDiscrepancySequences
    {
-      internal void testSeedGenerator()
+      public void testSeedGenerator()
       {
          //("Testing random-seed generator...");
          SeedGenerator.instance().get();
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testPolynomialsModuloTwo()
       {
 
@@ -177,7 +188,11 @@ namespace TestSuite
 
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSobol()
       {
 
@@ -423,7 +438,11 @@ namespace TestSuite
           }
       }*/
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testHalton()
       {
 
@@ -585,7 +604,7 @@ namespace TestSuite
          }
       }
 
-      internal void testGeneratorDiscrepancy(IRNGFactory generatorFactory, double[][] discrepancy)
+      public void testGeneratorDiscrepancy(IRNGFactory generatorFactory, double[][] discrepancy)
       {
          //QL_TEST_START_TIMING
          double tolerance = 1.0e-2;
@@ -631,7 +650,7 @@ namespace TestSuite
 
       #region testMersenneTwisterDiscrepancy
 
-      internal void testMersenneTwisterDiscrepancy()
+      public void testMersenneTwisterDiscrepancy()
       {
          //("Testing Mersenne-twister discrepancy...");
 
@@ -653,7 +672,7 @@ namespace TestSuite
 
       #region testAltonDiscrepancy
 
-      internal void testPlainHaltonDiscrepancy()
+      public void testPlainHaltonDiscrepancy()
       {
 
          //("Testing plain Halton discrepancy...");
@@ -672,7 +691,7 @@ namespace TestSuite
                                  );
       }
 
-      internal void testRandomStartHaltonDiscrepancy()
+      public void testRandomStartHaltonDiscrepancy()
       {
 
          //("Testing random-start Halton discrepancy...");
@@ -691,7 +710,7 @@ namespace TestSuite
                                  );
       }
 
-      internal void testRandomShiftHaltonDiscrepancy()
+      public void testRandomShiftHaltonDiscrepancy()
       {
 
          //("Testing random-shift Halton discrepancy...");
@@ -710,7 +729,7 @@ namespace TestSuite
                                  );
       }
 
-      internal void testRandomStartRandomShiftHaltonDiscrepancy()
+      public void testRandomStartRandomShiftHaltonDiscrepancy()
       {
 
          //("Testing random-start, random-shift Halton discrepancy...");
@@ -729,20 +748,20 @@ namespace TestSuite
                                  );
       }
 
-      //[Fact]
-      //public void _testDiscrepancy_Alton()
-      //{
-      //   testPlainHaltonDiscrepancy();
-      //   testRandomStartHaltonDiscrepancy();
-      //   testRandomShiftHaltonDiscrepancy();
-      //   testRandomStartRandomShiftHaltonDiscrepancy();
-      //}
+      //[TestMethod()]
+      public void _testDiscrepancy_Alton()
+      {
+         testPlainHaltonDiscrepancy();
+         testRandomStartHaltonDiscrepancy();
+         testRandomShiftHaltonDiscrepancy();
+         testRandomStartRandomShiftHaltonDiscrepancy();
+      }
 
       #endregion Halton
 
       #region testSobolDiscrepancy
 
-      internal void testJackelSobolDiscrepancy()
+      public void testJackelSobolDiscrepancy()
       {
 
          //("Testing Jaeckel-Sobol discrepancy...");
@@ -758,7 +777,7 @@ namespace TestSuite
                                   discrepancy /*,"JackelSobolDiscrepancy.txt","DiscrJackel_Sobol"*/);
       }
 
-      internal void testSobolLevitanSobolDiscrepancy()
+      public void testSobolLevitanSobolDiscrepancy()
       {
 
          //("Testing Levitan-Sobol discrepancy...");
@@ -776,7 +795,7 @@ namespace TestSuite
                                   /*,"SobolLevitanSobolDiscrepancy.txt",                                                        "DiscrSobLev_Sobol"*/);
       }
 
-      internal void testSobolLevitanLemieuxSobolDiscrepancy()
+      public void testSobolLevitanLemieuxSobolDiscrepancy()
       {
 
          //("Testing Levitan-Lemieux-Sobol discrepancy...");
@@ -796,7 +815,7 @@ namespace TestSuite
                                  );
       }
 
-      internal void testUnitSobolDiscrepancy()
+      public void testUnitSobolDiscrepancy()
       {
 
          //("Testing unit Sobol discrepancy...");
@@ -815,18 +834,22 @@ namespace TestSuite
                                  );
       }
 
-      //[Fact]
-      //public void _testDiscrepancy_Sobol()
-      //{
-      //   testJackelSobolDiscrepancy();
-      //   testSobolLevitanSobolDiscrepancy();
-      //   testSobolLevitanLemieuxSobolDiscrepancy();
-      //   testUnitSobolDiscrepancy();
-      //}
+      //[TestMethod()]
+      public void _testDiscrepancy_Sobol()
+      {
+         testJackelSobolDiscrepancy();
+         testSobolLevitanSobolDiscrepancy();
+         testSobolLevitanLemieuxSobolDiscrepancy();
+         testUnitSobolDiscrepancy();
+      }
 
       #endregion
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSobolSkipping()
       {
 

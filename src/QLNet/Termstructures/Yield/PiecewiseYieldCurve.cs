@@ -260,7 +260,7 @@ namespace QLNet
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates)
          : base(referenceDate, instruments, dayCounter, jumps, jumpDates) { }
-      public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,
+      public PiecewiseYieldCurve (Date referenceDate, List<RateHelper> instruments,
                                  DayCounter dayCounter, List<Handle<Quote>> jumps, List<Date> jumpDates, double accuracy)
          : base(referenceDate, instruments, dayCounter, jumps, jumpDates, accuracy) { }
       public PiecewiseYieldCurve(Date referenceDate, List<RateHelper> instruments,

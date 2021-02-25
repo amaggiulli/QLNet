@@ -15,12 +15,18 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_InflationCPICapFloor
    {
       internal struct Datum
@@ -312,7 +318,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void cpicapfloorpricesurface()
       {
          // check inflation leg vs calculation directly from inflation TS
@@ -370,7 +380,11 @@ namespace TestSuite
          common.hcpi.linkTo(null);
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void cpicapfloorpricer()
       {
          CommonVars common = new CommonVars();

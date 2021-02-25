@@ -28,7 +28,7 @@ namespace QLNet
        <ul>
        <li>Saturdays</li>
        <li>Sundays</li>
-       <li>Maundy Thursday</li>
+       <li>Maunday Thursday</li>
        <li>Good Friday</li>
        <li>Easter Monday</li>
        <li>General Prayer Day, 25 days after Easter Monday</li>
@@ -60,7 +60,7 @@ namespace QLNet
             int y = date.Year;
             int em = easterMonday(y);
             if (isWeekend(w)
-                // Maundy Thursday
+                // Maunday Thursday
                 || (dd == em - 4)
                 // Good Friday
                 || (dd == em - 3)
@@ -70,22 +70,16 @@ namespace QLNet
                 || (dd == em + 25)
                 // Ascension
                 || (dd == em + 38)
-                // Day after Ascension (bank holiday after year 2008)
-                || (dd == em + 39 && date.Year > 2008)
                 // Whit Monday
                 || (dd == em + 49)
                 // New Year's Day
                 || (d == 1 && m == Month.January)
                 // Constitution Day, June 5th
                 || (d == 5 && m == Month.June)
-                // Christmas day
-                || (d == 24 && m == Month.December)
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Boxing Day
-                || (d == 26 && m == Month.December)
-                // New Year's Eve (bank holiday from 2003)
-                || (d == 31 && m == Month.December && date.Year >= 2003))
+                || (d == 26 && m == Month.December))
                return false;
             return true;
          }

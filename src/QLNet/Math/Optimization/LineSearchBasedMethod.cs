@@ -90,7 +90,6 @@ namespace QLNet
                fnew = P.functionValue();
                fdiff = 2.0 * Math.Abs(fnew - fold) /
                        (Math.Abs(fnew) + Math.Abs(fold) + Const.QL_EPSILON);
-               P.setCurrentValue(x_);        // update problem current value
                if (fdiff < ftol ||
                    endCriteria.checkMaxIterations(iterationNumber_, ref ecType))
                {
@@ -98,6 +97,7 @@ namespace QLNet
                   endCriteria.checkMaxIterations(iterationNumber_, ref ecType);
                   return ecType;
                }
+               P.setCurrentValue(x_);        // update problem current value
                ++iterationNumber_;         // Increase iteration number
                first_time = false;
             }

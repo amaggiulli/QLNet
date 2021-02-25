@@ -19,7 +19,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
@@ -29,10 +33,16 @@ namespace TestSuite
       public double downsideVariance() { return ((IncrementalStatistics)impl_).downsideVariance(); }
    }
 
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_RiskStats
    {
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void RiskStatisticsTest()
       {
          //    ("Testing risk measures...");

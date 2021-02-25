@@ -13,17 +13,23 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 using System;
 using System.Collections.Generic;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_DoubleBarrierOption
    {
-      internal void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,
+      public void REPORT_FAILURE(string greekName, DoubleBarrier.Type barrierType, double barrierlo, double barrierhi,
                                  StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                  double r, Date today, double v, double expected, double calculated, double error,
                                  double tolerance)
@@ -45,8 +51,7 @@ namespace TestSuite
                       + "    error:            " + error + "\n"
                       + "    tolerance:        " + tolerance);
       }
-
-      internal void REPORT_FAILURE_VANNAVOLGA(string greekName, DoubleBarrier.Type barrierType,
+      public void REPORT_FAILURE_VANNAVOLGA(string greekName, DoubleBarrier.Type barrierType,
                                             double barrier1, double barrier2, double rebate,
                                             StrikedTypePayoff payoff, Exercise exercise, double s, double q,
                                             double r, Date today, double vol25Put, double atmVol, double vol25Call, double v,
@@ -148,7 +153,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testEuropeanHaugValues()
       {
          // Testing double barrier european options against Haug's values
@@ -338,7 +347,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testVannaVolgaDoubleBarrierValues()
       {
          // Testing double-barrier FX options against Vanna/Volga values

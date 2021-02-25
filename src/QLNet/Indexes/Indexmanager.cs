@@ -54,7 +54,10 @@ namespace QLNet
       /// <returns></returns>
       public bool hasHistory(string name)
       {
-         return data_.ContainsKey(name.ToUpper()) && data_[name.ToUpper()].value().Count > 0;
+         lock (data_)
+         {
+            return data_.ContainsKey(name.ToUpper()) && data_[name.ToUpper()].value().Count > 0;
+         }
       }
 
       /// <summary>
@@ -64,8 +67,11 @@ namespace QLNet
       /// <returns></returns>
       public TimeSeries < double? > getHistory(string name)
       {
-         checkExists(name);
-         return data_[name.ToUpper()].value();
+         lock (data_)
+         {
+            checkExists(name);
+            return data_[name.ToUpper()].value();
+         }
       }
 
       /// <summary>
@@ -77,15 +83,18 @@ namespace QLNet
       /// <returns>true if the index exists; otherwise, false.</returns>
       public bool tryGetHistory(string name, out TimeSeries < double? > history)
       {
-         if (hasHistory(name))
+         lock (data_)
          {
-            history = getHistory(name);
-            return true;
-         }
-         else
-         {
-            history = null;
-            return false;
+            if (hasHistory(name))
+            {
+               history = getHistory(name);
+               return true;
+            }
+            else
+            {
+               history = null;
+               return false;
+            }
          }
       }
 
@@ -96,8 +105,11 @@ namespace QLNet
       /// <param name="history"></param>
       public void setHistory(string name, TimeSeries < double? > history)
       {
-         checkExists(name);
-         data_[name.ToUpper()].Assign(history);
+         lock (data_)
+         {
+            checkExists(name);
+            data_[name.ToUpper()].Assign(history);
+         }
       }
 
       /// <summary>
@@ -107,8 +119,11 @@ namespace QLNet
       /// <returns></returns>
       public ObservableValue < TimeSeries < double? >> notifier(string name)
       {
-         checkExists(name);
-         return data_[name.ToUpper()];
+         lock (data_)
+         {
+            checkExists(name);
+            return data_[name.ToUpper()];
+         }
       }
 
       /// <summary>
@@ -117,10 +132,13 @@ namespace QLNet
       /// <returns></returns>
       public List<string> histories()
       {
-         List<string> t = new List<string>();
-         foreach (string s in data_.Keys)
-            t.Add(s);
-         return t;
+         lock (data_)
+         {
+            List<string> t = new List<string>();
+            foreach (string s in data_.Keys)
+               t.Add(s);
+            return t;
+         }
       }
 
       /// <summary>
@@ -129,7 +147,10 @@ namespace QLNet
       /// <param name="name"></param>
       public void clearHistory(string name)
       {
-         data_.Remove(name.ToUpper());
+         lock (data_)
+         {
+            data_.Remove(name.ToUpper());
+         }
       }
 
       /// <summary>
@@ -137,7 +158,10 @@ namespace QLNet
       /// </summary>
       public void clearHistories()
       {
-         data_.Clear();
+         lock (data_)
+         {
+            data_.Clear();
+         }
       }
 
       /// <summary>
@@ -146,10 +170,15 @@ namespace QLNet
       /// <param name="name"></param>
       private void checkExists(string name)
       {
-         if (!data_.ContainsKey(name.ToUpper()))
-            data_.Add(name.ToUpper(), new ObservableValue < TimeSeries < double? >> ());
+         lock (data_)
+         {
+            lock (this)
+            {
+               if (!data_.ContainsKey(name.ToUpper()))
+                  data_.Add(name.ToUpper(), new ObservableValue<TimeSeries<double?>>());
+            }
+         }
       }
-
       private static history_map data_ = new Dictionary < string, ObservableValue < TimeSeries < double? >>> ();
 
    }

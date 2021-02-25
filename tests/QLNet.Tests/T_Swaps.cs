@@ -19,22 +19,39 @@
 
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Swaps : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-
+#if NET452
+      [TestInitialize]
+      public void testInitialize()
+      {
+#else
       public T_Swaps()
       {
+#endif
          backup = new SavedSettings();
       }
-
+#if NET452
+      [TestCleanup]
+#endif
+      public void testCleanup()
+      {
+         Dispose();
+      }
       public void Dispose()
       {
          backup.Dispose();
@@ -91,7 +108,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFairRate()
       {
          // Testing vanilla-swap calculation of fair fixed rate
@@ -119,7 +140,11 @@ namespace TestSuite
             }
          }
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFairSpread()
       {
          // Testing vanilla-swap calculation of fair floating spread
@@ -146,7 +171,11 @@ namespace TestSuite
             }
          }
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testRateDependency()
       {
          // Testing vanilla-swap dependency on fixed rate
@@ -184,7 +213,11 @@ namespace TestSuite
             }
          }
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSpreadDependency()
       {
          // Testing vanilla-swap dependency on floating spread
@@ -222,7 +255,11 @@ namespace TestSuite
             }
          }
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testInArrears()
       {
          // Testing in-arrears swap calculation
@@ -280,7 +317,11 @@ namespace TestSuite
                          + "    expected:   " + storedValue + "\n"
                          + "    calculated: " + swap.NPV());
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testCachedValue()
       {
          // Testing vanilla-swap calculation against cached value
@@ -303,7 +344,11 @@ namespace TestSuite
                          + "    calculated: " + swap.NPV() + "\n"
                          + "    expected:   " + cachedNPV);
       }
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testFixing()
       {
          Date tradeDate = new Date(17, Month.April, 2015);

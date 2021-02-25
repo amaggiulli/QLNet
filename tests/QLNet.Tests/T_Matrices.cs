@@ -19,12 +19,18 @@
 */
 using System;
 using System.Collections.Generic;
+#if NET452
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
 using Xunit;
+#endif
 using QLNet;
 
 namespace TestSuite
 {
-   [Collection("QLNet CI Tests")]
+#if NET452
+   [TestClass()]
+#endif
    public class T_Matrices
    {
 
@@ -92,7 +98,11 @@ namespace TestSuite
          M7[0, 1] = 0.3; M7[0, 2] = 0.2; M7[2, 1] = 1.2;
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testEigenvectors()
       {
          //("Testing eigenvalues and eigenvectors calculation...");
@@ -136,7 +146,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSqrt()
       {
 
@@ -159,7 +173,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testHighamSqrt()
       {
          //BOOST_MESSAGE("Testing Higham matricial square root...");
@@ -181,7 +199,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testSVD()
       {
 
@@ -227,7 +249,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testQRDecomposition()
       {
 
@@ -269,7 +295,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testQRSolve()
       {
          // Testing QR solve...
@@ -344,7 +374,11 @@ namespace TestSuite
          }
       }
 
+#if NET452
+      [TestMethod()]
+#else
       [Fact]
+#endif
       public void testInverse()
       {
 

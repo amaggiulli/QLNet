@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.12.0
+  version: 1.11.4
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2019
@@ -16,23 +16,26 @@
     do_not_increment_build_number: true  
   nuget:
     disable_publish_on_pr: true
-  build_script:
-   - cmd:  dotnet build -c Release
+  before_build:
+    - cmd: dotnet restore qlnet.sln
+  build:
+    project: QLNet.sln
+    verbosity: minimal
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\netstandard1.2\QLNet.dll
+    - path: src\QLNet\bin\Release\netstandard12\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.12.0
-    release: QLNet Version 1.12.0
-    description: QLNet 1.12.0 
+    tag: QLNet-v1.11.4
+    release: QLNet Version 1.11.4
+    description: QLNet 1.11.4 
     auth_token:
       secure: rK95hgNgZt9ybzXBJ/1W0nbqsG/aENQ22eyY2qxn5xjbi7ZEjv+5BmNjY/l1cAYH
-    artifact: src\QLNet\bin\Release\netstandard1.2\QLNet.dll
+    artifact: src\QLNet\bin\Release\netstandard12\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
@@ -42,13 +45,13 @@
     artifact: ng
 
 # Configuration for "develop" branch
-# build in Release mode, run tests , deploy to Sonar
+# build in Debug mode, run tests , deploy to Sonar
 -
   branches:
     only:
       - develop
-  version: 1.12.0-preview.{build}
-  configuration: Release
+  version: 1.11.4-preview.{build}
+  configuration: Debug
   platform: Any CPU
   image: Visual Studio 2019
   skip_tags: true
@@ -58,13 +61,19 @@
   nuget:
     disable_publish_on_pr: true
   before_build:
-  - cmd: "dotnet tool install --global dotnet-sonarscanner"
+  - cmd: "dotnet tool install --global dotnet-sonarscanner\ndotnet restore qlnet.sln"
+  - cmd: "dotnet clean qlnet.sln"
   - cmd: "SET runner_args=\"\""
-  - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit_new%"
-  - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr_new%"
+  - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit%"
+  - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr%"
   - cmd: "dotnet sonarscanner begin %runner_args%"
-  build_script:
-   - cmd:  dotnet build -c Release
+  - cmd: "dotnet build qlnet.sln /p:Configuration=Debug /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\dotnetcore\\Appveyor.MSBuildLogger.dll\" /target:src\\qlnet"
+  - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token%\""
+  build:
+    project: QLNet.sln
+    verbosity: minimal
+  after_build:
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./
   artifacts:
     - path: .\*.nupkg
       name: ng
@@ -77,10 +86,7 @@
     file_version: '{version}'
     informational_version: '{version}'
   test_script:
-    - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-  after_test:
-    - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token_new%\""  
-    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
+    - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_develop\tests\QLNet.Tests\bin\Debug\net452\QLNet.Tests.dll"
   deploy:
     - provider: NuGet
       api_key:
@@ -89,24 +95,30 @@
       artifact: ng
 
 # Configuration for "feature/*" branch
-# build in Release mode, run tests , deploy to Nuget
+# build in Debug mode, run tests , deploy to Sonar
 -
   branches:
     only:
       - /feature/
-  version: 1.12.0-{build}
-  configuration: Release
+  version: 1.11.4-{build}
+  configuration: Debug
   platform: Any CPU
   image: Visual Studio 2019
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
   init:
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.12.0-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.11.4-%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
-  build_script:
-   - cmd:  dotnet build -c Release
+  build:
+    project: QLNet.sln
+    verbosity: minimal
+  after_build:
+    - cmd: dotnet pack src/qlnet/qlnet.csproj -c Debug -o ./	
+  artifacts:
+    - path: .\*.nupkg
+      name: ng
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
@@ -119,6 +131,18 @@
     do_not_increment_build_number: true
   nuget:
     disable_publish_on_pr: true
-  test_script:
-    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release   
+  deploy:
+    - provider: NuGet
+      api_key:
+        secure: HcilScZbZnJrCk5hoEPz9MSzKQanBzsQCfulI9gFpcT7wurwxIy3hwSwPfjXmr/v
+      skip_symbols: true
+      artifact: ng
+  test: off 
+#  test_script:
+#  - cmd: vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=LongRun" "c:\projects\qlnet_feature\tests\QLNet.Tests\bin\Release\net45\QLNet.Tests.dll"
 
+# "fall back" configuration for all other branches
+# no "branches" section defined
+# do not deploy at all
+-
+  configuration: Debug  
