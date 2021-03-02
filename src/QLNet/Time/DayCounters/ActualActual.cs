@@ -18,6 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QLNet
 {
@@ -64,6 +65,8 @@ namespace QLNet
 
       private class ISMA_Impl : DayCounter
       {
+         private Schedule schedule_;
+
          public static ISMA_Impl Singleton(Schedule schedule)
          {
             return new ISMA_Impl(schedule);
@@ -112,25 +115,49 @@ namespace QLNet
             // Process the schedule into an array of dates.
             Date issueDate = schedule.date(0);
             Date firstCoupon = schedule.date(1);
-            Date notionalCoupon =
+            Date notionalFirstCoupon =
                schedule.calendar().advance(firstCoupon,
                                            -schedule.tenor(),
                                            schedule.businessDayConvention(),
                                            schedule.endOfMonth());
 
-            List<Date> newDates = schedule.dates();
-            newDates[0] = notionalCoupon;
+            List<Date> newDates = schedule.dates().ToList();
+            newDates[0] = notionalFirstCoupon ;
+
+            // The handling of the last coupon is is needed for odd final periods
+            var notionalLastCoupon =
+               schedule.calendar().advance(
+                  schedule.date(schedule.Count - 2),
+                  schedule.tenor(),
+                  schedule.businessDayConvention(),
+                  schedule.endOfMonth());
+
+            newDates[schedule.Count - 1] = notionalLastCoupon;
 
             //long first coupon
-            if (notionalCoupon > issueDate)
+            if (notionalFirstCoupon  > issueDate)
             {
                Date priorNotionalCoupon =
-                  schedule.calendar().advance(notionalCoupon,
+                  schedule.calendar().advance(notionalFirstCoupon ,
                                               -schedule.tenor(),
                                               schedule.businessDayConvention(),
                                               schedule.endOfMonth());
                newDates.Insert(0, priorNotionalCoupon);
             }
+
+            // long last coupon
+            if (notionalLastCoupon < schedule.endDate())
+            {
+               Date nextNotionalCoupon =
+                  schedule.calendar().advance(
+                     notionalLastCoupon,
+                     schedule.tenor(),
+                     schedule.businessDayConvention(),
+                     schedule.endOfMonth());
+
+               newDates.Add(nextNotionalCoupon);
+            }
+
             return newDates;
          }
 
@@ -162,8 +189,6 @@ namespace QLNet
             int months = (int)(0.5 + 12 * (double)(impl.dayCount(refStart, refEnd)) / 365.0);
             return (int)(0.5 + 12.0 / months);
          }
-
-         private Schedule schedule_;
       }
 
       private class Old_ISMA_Impl : DayCounter

@@ -19,8 +19,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Xunit;
 using QLNet;
+using Calendar = QLNet.Calendar;
 
 namespace TestSuite
 {
@@ -778,6 +780,55 @@ namespace TestSuite
             QAssert.IsTrue(Math.Abs(dc.yearFraction(d2, d1) + expected) < tol,
                            "can not reproduce result for day counter " + dc.name());
          }
+      }
+
+      /// <summary>
+      /// https://www.isda.org/book/actualactual-day-count-fraction/
+      /// </summary>
+      /// <param name="isEndOfMonth"></param>
+      /// <param name="frequency"></param>
+      /// <param name="interestAccrualDateAsString"></param>
+      /// <param name="maturityDateAsString"></param>
+      /// <param name="firstCouponDateAsString"></param>
+      /// <param name="penultimateCouponDateAsString"></param>
+      /// <param name="d1AsString"></param>
+      /// <param name="d2AsString"></param>
+      /// <param name="expectedYearFraction"></param>
+      [Theory]
+      [InlineData(false, Frequency.Semiannual, "2003-05-01", "2005-05-01", "2003-11-01", "2004-11-01", "2003-11-01", "2004-05-01", 182.0 / (182.0 * 2))] // example a: regular calculation period
+      [InlineData(false, Frequency.Annual, "1999-02-01", "2002-07-01", "1999-07-01", "2001-07-01", "1999-02-01", "1999-07-01", 150.0 / (365.0 * 1))] // example b: short first calculation period - first period
+      [InlineData(false, Frequency.Annual, "1999-02-01", "2002-07-01", "1999-07-01", "2001-07-01", "1999-07-01", "2000-07-01", 366.0 / (366.0 * 1))] // example b: short first calculation period - second period
+      [InlineData(false, Frequency.Semiannual, "2002-08-15", "2005-07-15", "2003-07-15", "2004-07-15", "2002-08-15", "2003-07-15", (181.0 / (181.0 * 2)) + (153.0 / (184.0 * 2)))] // example c: long first calculation period - first period
+      [InlineData(false, Frequency.Semiannual, "2002-08-15", "2005-07-15", "2003-07-15", "2004-07-15", "2003-07-15", "2004-01-15", 184.0 / (184.0 * 2))] // example c: long first calculation period - second period
+      [InlineData(false, Frequency.Semiannual, "1999-01-30", "2000-06-30", "1999-07-30", "2000-01-30", "1999-07-30", "2000-01-30", 184.0 / (184.0 * 2))] // example d: short final calculation period - penultimate period
+      [InlineData(false, Frequency.Semiannual, "1999-01-30", "2000-06-30", "1999-07-30", "2000-01-30", "2000-01-30", "2000-06-30", 152.0 / (182.0 * 2))] // example d: short final calculation period - final period
+      [InlineData(true, Frequency.Quarterly, "1999-05-31", "2000-04-30", "1999-08-31", "1999-11-30", "1999-11-30", "2000-04-30", (91.0 / (91.0 * 4)) + (61.0 / (92.0 * 4)))] // example e: long final calculation period
+      [InlineData(false, Frequency.Quarterly, "1999-05-31", "2000-04-30", "1999-08-31", "1999-11-30", "1999-11-30", "2000-04-30", (91.0 / (91.0 * 4)) + (61.0 / (90.0 * 4)))] // example e: long final calculation period - not end of month
+      public void testActualActualIsma(bool isEndOfMonth, Frequency frequency, string interestAccrualDateAsString, string maturityDateAsString, string firstCouponDateAsString, string penultimateCouponDateAsString, string d1AsString, string d2AsString, double expectedYearFraction)
+      {
+         // Example from ISDA Paper: The actual/actual day count fraction, paper for use with the ISDA Market Conventions Survey, 3rd June, 1999
+         var interestAccrualDate = new Date(DateTime.ParseExact(interestAccrualDateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+         var maturityDate = new Date(DateTime.ParseExact(maturityDateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+         var firstCouponDate = new Date(DateTime.ParseExact(firstCouponDateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+         var penultimateCouponDate = new Date(DateTime.ParseExact(penultimateCouponDateAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+         var d1 = new Date(DateTime.ParseExact(d1AsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+         var d2 = new Date(DateTime.ParseExact(d2AsString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+         var schedule = new MakeSchedule()
+             .from(interestAccrualDate)
+             .to(maturityDate)
+             .withFrequency(frequency)
+             .withFirstDate(firstCouponDate)
+             .withNextToLastDate(penultimateCouponDate)
+             .endOfMonth(isEndOfMonth)
+             .value();
+
+         var dayCounter = new ActualActual(ActualActual.Convention.ISMA, schedule);
+
+         var t = dayCounter.yearFraction(d1, d2);
+
+         Assert.Equal(expectedYearFraction, t);
       }
    }
 }
