@@ -316,7 +316,7 @@ namespace TestSuite
             Date baseDate = new Date(1, Month.January, 2006);
             Date fixDate = new Date(1, Month.August, 2014);
             Date payDate = new UnitedKingdom().adjust(fixDate + new Period(3, TimeUnit.Months), BusinessDayConvention.ModifiedFollowing);
-            Index ind = ii as Index;
+            QLNet.Index ind = ii as QLNet.Index;
             Utils.QL_REQUIRE(ind != null, () => "dynamic_pointer_cast to Index from InflationIndex failed");
 
             double notional = 1000000.0;//1m
