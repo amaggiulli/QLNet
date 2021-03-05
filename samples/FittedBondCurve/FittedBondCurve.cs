@@ -50,7 +50,7 @@ namespace FittedBondCurve
 
       public static void printOutput(string tag, FittedBondDiscountCurve curve)
       {
-         Console.WriteLine(tag) ;
+         Console.WriteLine(tag);
          Console.WriteLine("reference date : " + curve.referenceDate());
          Console.WriteLine("number of iterations : " + curve.fitResults().numberOfIterations() + "\n");
       }
@@ -276,7 +276,7 @@ namespace FittedBondCurve
                {
                   if (!cfs[j].hasOccurred(bondSettlementDate, false))
                   {
-                     Date myDate =  cfs[j].date();
+                     Date myDate = cfs[j].date();
                      keyDates.Add(myDate);
                   }
                }
@@ -352,7 +352,7 @@ namespace FittedBondCurve
                {
                   if (!cfs[j].hasOccurred(bondSettlementDate, false))
                   {
-                     Date myDate =  cfs[j].date();
+                     Date myDate = cfs[j].date();
                      keyDates.Add(myDate);
                   }
                }
@@ -483,7 +483,7 @@ namespace FittedBondCurve
                {
                   if (!cfs[j].hasOccurred(bondSettlementDate, false))
                   {
-                     Date myDate =  cfs[j].date();
+                     Date myDate = cfs[j].date();
                      keyDates.Add(myDate);
                   }
                }
@@ -554,7 +554,7 @@ namespace FittedBondCurve
                {
                   if (!cfs[j].hasOccurred(bondSettlementDate, false))
                   {
-                     Date myDate =  cfs[j].date();
+                     Date myDate = cfs[j].date();
                      keyDates.Add(myDate);
                   }
                }
@@ -591,7 +591,7 @@ namespace FittedBondCurve
          catch (Exception e)
          {
             Console.WriteLine(e.Message);
-            return ;
+            return;
          }
 
       }

@@ -48,9 +48,9 @@ namespace EquityOption
          DayCounter dayCounter = new Actual365Fixed();
 
          Console.WriteLine("Option type = " + type);
-         Console.WriteLine("Maturity = "    + maturity);
+         Console.WriteLine("Maturity = " + maturity);
          Console.WriteLine("Underlying price = " + underlying);
-         Console.WriteLine("Strike = "      + strike);
+         Console.WriteLine("Strike = " + strike);
          Console.WriteLine("Risk-free interest rate = {0:0.000000%}", riskFreeRate);
          Console.WriteLine("Dividend yield = {0:0.000000%}", dividendYield);
          Console.WriteLine("Volatility = {0:0.000000%}", volatility);

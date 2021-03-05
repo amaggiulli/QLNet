@@ -337,7 +337,7 @@ namespace Bonds
          YieldTermStructure depoSwapTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(
             settlementDate, depoSwapInstruments,
             termStructureDayCounter,
-            new List<Handle<Quote> >(),
+            new List<Handle<Quote>>(),
             new List<Date>(),
             tolerance);
 
@@ -407,17 +407,17 @@ namespace Bonds
             BusinessDayConvention.ModifiedFollowing,
             2,
             // Gearings
-         new List<double>() { 1.0 },
-         // Spreads
-         new List<double>() { 0.001 },
-         // Caps
-         new List < double? >(),
-         // Floors
-         new List < double? >(),
-         // Fixing in arrears
-         true,
-         100.0,
-         new Date(21, Month.October, 2005));
+            new List<double>() { 1.0 },
+            // Spreads
+            new List<double>() { 0.001 },
+            // Caps
+            new List<double?>(),
+            // Floors
+            new List<double?>(),
+            // Fixing in arrears
+            true,
+            100.0,
+            new Date(21, Month.October, 2005));
 
          floatingRateBond.setPricingEngine(bondEngine);
 
