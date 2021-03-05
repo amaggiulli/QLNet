@@ -1,2 +1,3 @@
-tools\AStyle.exe --options=qlnet.astyle --recursive src/*.cs tests/*.cs
+dotnet format QLNet.sln
+dotnet format samples\QLNetSamples.sln
 pause
