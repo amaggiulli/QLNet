@@ -38,7 +38,7 @@ namespace QLNet
        \test the correctness of the returned values is tested by
              checking them against numerical calculations.
    */
-   public class GenericSequenceStatistics<S> where S : IGeneralStatistics, new ()
+   public class GenericSequenceStatistics<S> where S : IGeneralStatistics, new()
    {
       protected int dimension_;
       public int size() { return dimension_; }
@@ -235,7 +235,8 @@ namespace QLNet
       }
 
       public virtual void add
-         (List<double> begin) { add(begin, 1); }
+         (List<double> begin)
+      { add(begin, 1); }
 
       public virtual void add
          (List<double> begin, double weight)

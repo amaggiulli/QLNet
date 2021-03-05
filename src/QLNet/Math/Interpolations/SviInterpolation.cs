@@ -24,7 +24,7 @@ namespace QLNet
 {
    public class SVIWrapper : IWrapper
    {
-      public SVIWrapper(double t, double forward, List < double? > param, List < double? > addParams)
+      public SVIWrapper(double t, double forward, List<double?> param, List<double?> addParams)
       {
          t_ = t;
          forward_ = forward;
@@ -37,13 +37,13 @@ namespace QLNet
       }
 
       private double t_, forward_;
-      private List < double? > params_;
+      private List<double?> params_;
    }
 
    public struct SVISpecs : IModel
    {
       public int dimension() { return 5; }
-      public void defaultValues(List < double? > param, List<bool> paramIsFixed, double forward, double expiryTime, List < double? > addParams)
+      public void defaultValues(List<double?> param, List<bool> paramIsFixed, double forward, double expiryTime, List<double?> addParams)
       {
          if (param[2] == null)
             param[2] = 0.1;
@@ -62,7 +62,7 @@ namespace QLNet
                                 Math.Sqrt(1.0 - (double)param[3] * (double)param[3]) + eps1());
       }
 
-      public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List < double? > addParams)
+      public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams)
       {
          int j = 0;
          if (!paramIsFixed[2])
@@ -81,7 +81,7 @@ namespace QLNet
       public double eps1() { return 0.000001; }
       public double eps2() { return 0.999999; }
       public double dilationFactor() { return 0.001; }
-      public Vector inverse(Vector y, List<bool> b, List < double? > c, double d)
+      public Vector inverse(Vector y, List<bool> b, List<double?> c, double d)
       {
          Vector x = new Vector(5);
          x[2] = Math.Sqrt(y[2] - eps1());
@@ -93,7 +93,7 @@ namespace QLNet
                           y[1] * y[2] * Math.Sqrt(1.0 - y[3] * y[3]));
          return x;
       }
-      public Vector direct(Vector x, List<bool> paramIsFixed, List < double? > param, double forward)
+      public Vector direct(Vector x, List<bool> paramIsFixed, List<double?> param, double forward)
       {
          Vector y = new Vector(5);
          y[2] = x[2] * x[2] + eps1();
@@ -111,11 +111,11 @@ namespace QLNet
                    y[1] * y[2] * Math.Sqrt(1.0 - y[3] * y[3]);
          return y;
       }
-      public IWrapper instance(double t, double forward, List < double? > param, List < double? > addParams)
+      public IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams)
       {
          return new SVIWrapper(t, forward, param, addParams);
       }
-      public double weight(double strike, double forward, double stdDev, List < double? > addParams)
+      public double weight(double strike, double forward, double stdDev, List<double?> addParams)
       {
          return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);
       }
@@ -145,12 +145,12 @@ namespace QLNet
                               double errorAccept = 0.0020,
                               bool useMaxError = false,
                               int maxGuesses = 50,
-                              List < double? > addParams = null)
+                              List<double?> addParams = null)
       {
 
          impl_ = new XABRInterpolationImpl<SVISpecs>(
             xBegin, size, yBegin, t, forward,
-         new List < double? >() { a, b, sigma, rho, m },
+         new List<double?>() { a, b, sigma, rho, m },
          new List<bool>() { aIsFixed, bIsFixed, sigmaIsFixed, rhoIsFixed, mIsFixed },
          vegaWeighted, endCriteria, optMethod, errorAccept, useMaxError,
          maxGuesses, addParams);
@@ -179,7 +179,7 @@ namespace QLNet
                  bool vegaWeighted = false,
                  EndCriteria endCriteria = null,
                  OptimizationMethod optMethod = null,
-                 double errorAccept = 0.0020, bool useMaxError = false, int maxGuesses = 50, List < double? > addParams = null)
+                 double errorAccept = 0.0020, bool useMaxError = false, int maxGuesses = 50, List<double?> addParams = null)
       {
          t_ = t;
          forward_ = forward;
@@ -220,6 +220,6 @@ namespace QLNet
       private double errorAccept_;
       private bool useMaxError_;
       private int maxGuesses_;
-      private List < double? > addParams_;
+      private List<double?> addParams_;
    }
 }

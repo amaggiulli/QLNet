@@ -33,7 +33,7 @@ namespace TestSuite
       public void testFdmLinearOpLayout()
       {
 
-         int[] dims = new int[] {5, 7, 8};
+         int[] dims = new int[] { 5, 7, 8 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout layout = new FdmLinearOpLayout(dim);
@@ -88,7 +88,7 @@ namespace TestSuite
                   {
                      int nn = layout.neighbourhood(iter, 1, n);
                      int calculatedIndex = k + m * dim[0] * dim[1]
-                                           + ((l < dim[1] - n)? l + n
+                                           + ((l < dim[1] - n) ? l + n
                                               : dim[1] - 1 - (l + n - (dim[1] - 1))) * dim[0];
 
                      if (nn != calculatedIndex)
@@ -100,7 +100,7 @@ namespace TestSuite
 
                   for (int n = 1; n < 7; ++n)
                   {
-                     int nn = layout.neighbourhood(iter, 2, - n);
+                     int nn = layout.neighbourhood(iter, 2, -n);
                      int calculatedIndex = k + l * dim[0]
                                            + ((m < n) ? n - m : m - n) * dim[0] * dim[1];
                      if (nn != calculatedIndex)
@@ -117,14 +117,14 @@ namespace TestSuite
       [Fact]
       public void testUniformGridMesher()
       {
-         int[] dims = new int[] {5, 7, 8};
+         int[] dims = new int[] { 5, 7, 8 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout layout = new FdmLinearOpLayout(dim);
-         List < Pair < double?, double? >> boundaries = new List < Pair < double?, double? >> ();;
-         boundaries.Add(new Pair < double?, double? >(-5, 10));
-         boundaries.Add(new Pair < double?, double? >(5, 100));
-         boundaries.Add(new Pair < double?, double? >(10, 20));
+         List<Pair<double?, double?>> boundaries = new List<Pair<double?, double?>>(); ;
+         boundaries.Add(new Pair<double?, double?>(-5, 10));
+         boundaries.Add(new Pair<double?, double?>(5, 100));
+         boundaries.Add(new Pair<double?, double?>(10, 20));
 
          UniformGridMesher mesher = new UniformGridMesher(layout, boundaries);
 
@@ -147,15 +147,15 @@ namespace TestSuite
       [Fact]
       public void testFirstDerivativesMapApply()
       {
-         int[] dims = new int[] {400, 100, 50};
+         int[] dims = new int[] { 400, 100, 50 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout index = new FdmLinearOpLayout(dim);
 
-         List < Pair < double?, double? > > boundaries = new List < Pair < double?, double? >> ();
-         boundaries.Add(new Pair < double?, double? >(-5, 5));
-         boundaries.Add(new Pair < double?, double? >(0, 10));
-         boundaries.Add(new Pair < double?, double? >(5, 15));
+         List<Pair<double?, double?>> boundaries = new List<Pair<double?, double?>>();
+         boundaries.Add(new Pair<double?, double?>(-5, 5));
+         boundaries.Add(new Pair<double?, double?>(0, 10));
+         boundaries.Add(new Pair<double?, double?>(5, 15));
 
          FdmMesher mesher = new UniformGridMesher(index, boundaries);
 
@@ -166,7 +166,7 @@ namespace TestSuite
 
          for (FdmLinearOpIterator iter = index.begin(); iter != endIter; ++iter)
          {
-            r[iter.index()] =  Math.Sin(mesher.location(iter, 0))
+            r[iter.index()] = Math.Sin(mesher.location(iter, 0))
                                + Math.Cos(mesher.location(iter, 2));
          }
 
@@ -210,15 +210,15 @@ namespace TestSuite
       [Fact]
       public void testSecondDerivativesMapApply()
       {
-         int[] dims = new int[] {50, 50, 50};
+         int[] dims = new int[] { 50, 50, 50 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout index = new FdmLinearOpLayout(dim);
 
-         List < Pair < double?, double? > > boundaries = new List < Pair < double?, double? >> ();
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
+         List<Pair<double?, double?>> boundaries = new List<Pair<double?, double?>>();
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
 
          FdmMesher mesher = new UniformGridMesher(index, boundaries);
 
@@ -304,11 +304,11 @@ namespace TestSuite
       public void testDerivativeWeightsOnNonUniformGrids()
       {
          Fdm1dMesher mesherX =
-            new Concentrating1dMesher(-2.0, 3.0, 50, new Pair < double?, double? >(0.5, 0.01));
+            new Concentrating1dMesher(-2.0, 3.0, 50, new Pair<double?, double?>(0.5, 0.01));
          Fdm1dMesher mesherY =
-            new Concentrating1dMesher(0.5, 5.0, 25, new Pair < double?, double? >(0.5, 0.1));
+            new Concentrating1dMesher(0.5, 5.0, 25, new Pair<double?, double?>(0.5, 0.1));
          Fdm1dMesher mesherZ =
-            new Concentrating1dMesher(-1.0, 2.0, 31, new Pair < double?, double? >(1.5, 0.01));
+            new Concentrating1dMesher(-1.0, 2.0, 31, new Pair<double?, double?>(1.5, 0.01));
 
          FdmMesher meshers =
             new FdmMesherComposite(mesherX, mesherY, mesherZ);
@@ -332,7 +332,7 @@ namespace TestSuite
             {
 
                int c = iter.coordinates()[direction];
-               int index   = iter.index();
+               int index = iter.index();
                int indexM1 = layout.neighbourhood(iter, direction, -1);
                int indexP1 = layout.neighbourhood(iter, direction, +1);
 
@@ -345,9 +345,9 @@ namespace TestSuite
 
                   Vector ndWeights1st = new NumericalDifferentiation(x => x, 1, twoPoints).weights();
 
-                  double beta1  = dfdx[index, index];
+                  double beta1 = dfdx[index, index];
                   double gamma1 = dfdx[index, indexP1];
-                  if (Math.Abs((beta1  - ndWeights1st[0]) / beta1) > tol
+                  if (Math.Abs((beta1 - ndWeights1st[0]) / beta1) > tol
                       || Math.Abs((gamma1 - ndWeights1st[1]) / gamma1) > tol)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
@@ -364,10 +364,10 @@ namespace TestSuite
                   }
 
                   // free boundary condition by default
-                  double beta2  = d2fdx2[index, index];
+                  double beta2 = d2fdx2[index, index];
                   double gamma2 = d2fdx2[index, indexP1];
 
-                  if (Math.Abs(beta2)  > Const.QL_EPSILON
+                  if (Math.Abs(beta2) > Const.QL_EPSILON
                       || Math.Abs(gamma2) > Const.QL_EPSILON)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
@@ -388,9 +388,9 @@ namespace TestSuite
                   Vector ndWeights1st = new NumericalDifferentiation(x => x, 1, twoPoints).weights();
 
                   double alpha1 = dfdx[index, indexM1];
-                  double beta1  = dfdx[index, index];
+                  double beta1 = dfdx[index, index];
                   if (Math.Abs((alpha1 - ndWeights1st[0]) / alpha1) > tol
-                      || Math.Abs((beta1  - ndWeights1st[1]) / beta1) > tol)
+                      || Math.Abs((beta1 - ndWeights1st[1]) / beta1) > tol)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
                                   + "first order derivative operator "
@@ -407,9 +407,9 @@ namespace TestSuite
 
                   // free boundary condition by default
                   double alpha2 = d2fdx2[index, indexM1];
-                  double beta2  = d2fdx2[index, index];
+                  double beta2 = d2fdx2[index, index];
 
-                  if (Math.Abs(alpha2)  > Const.QL_EPSILON
+                  if (Math.Abs(alpha2) > Const.QL_EPSILON
                       || Math.Abs(beta2) > Const.QL_EPSILON)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
@@ -431,11 +431,11 @@ namespace TestSuite
                   Vector ndWeights1st = new NumericalDifferentiation(x => x, 1, threePoints).weights();
 
                   double alpha1 = dfdx[index, indexM1];
-                  double beta1  = dfdx[index, index];
+                  double beta1 = dfdx[index, index];
                   double gamma1 = dfdx[index, indexP1];
 
                   if (Math.Abs((alpha1 - ndWeights1st[0]) / alpha1) > tol
-                      || Math.Abs((beta1  - ndWeights1st[1]) / beta1) > tol
+                      || Math.Abs((beta1 - ndWeights1st[1]) / beta1) > tol
                       || Math.Abs((gamma1 - ndWeights1st[2]) / gamma1) > tol)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
@@ -457,10 +457,10 @@ namespace TestSuite
                   Vector ndWeights2nd = new NumericalDifferentiation(x => x, 2, threePoints).weights();
 
                   double alpha2 = d2fdx2[index, indexM1];
-                  double beta2  = d2fdx2[index, index];
+                  double beta2 = d2fdx2[index, index];
                   double gamma2 = d2fdx2[index, indexP1];
                   if (Math.Abs((alpha2 - ndWeights2nd[0]) / alpha2) > tol
-                      || Math.Abs((beta2  - ndWeights2nd[1]) / beta2) > tol
+                      || Math.Abs((beta2 - ndWeights2nd[1]) / beta2) > tol
                       || Math.Abs((gamma2 - ndWeights2nd[2]) / gamma2) > tol)
                   {
                      QAssert.Fail("can not reproduce the weights of the "
@@ -486,15 +486,15 @@ namespace TestSuite
       [Fact]
       public void testSecondOrderMixedDerivativesMapApply()
       {
-         int[] dims = new int[] {50, 50, 50};
+         int[] dims = new int[] { 50, 50, 50 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout index = new FdmLinearOpLayout(dim);
 
-         List < Pair < double?, double? >> boundaries = new List < Pair < double?, double? >> ();
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
-         boundaries.Add(new Pair < double?, double? >(0, 0.5));
+         List<Pair<double?, double?>> boundaries = new List<Pair<double?, double?>>();
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
+         boundaries.Add(new Pair<double?, double?>(0, 0.5));
 
          FdmMesher mesher = new UniformGridMesher(index, boundaries);
 
@@ -593,14 +593,14 @@ namespace TestSuite
       [Fact]
       public void testTripleBandMapSolve()
       {
-         int[] dims = new int[] {100, 400};
+         int[] dims = new int[] { 100, 400 };
          List<int> dim = new List<int>(dims);
 
          FdmLinearOpLayout layout = new FdmLinearOpLayout(dim);
 
-         List < Pair < double?, double? >> boundaries = new List < Pair < double?, double? >> ();
-         boundaries.Add(new Pair < double?, double? >(0, 1.0));
-         boundaries.Add(new Pair < double?, double? >(0, 1.0));
+         List<Pair<double?, double?>> boundaries = new List<Pair<double?, double?>>();
+         boundaries.Add(new Pair<double?, double?>(0, 1.0));
+         boundaries.Add(new Pair<double?, double?>(0, 1.0));
 
          FdmMesher mesher = new UniformGridMesher(layout, boundaries);
 
@@ -720,7 +720,7 @@ namespace TestSuite
             new FdmBlackScholesMesher(
             dim[0], process, maturity, payoff.strike(),
             null, null, 0.0001, 1.5,
-            new Pair < double?, double? >(payoff.strike(), 0.01));
+            new Pair<double?, double?>(payoff.strike(), 0.01));
 
          FdmMesher mesher =
             new FdmMesherComposite(equityMesher);
@@ -775,7 +775,7 @@ namespace TestSuite
       [Fact]
       public void testSpareMatrixReference()
       {
-         int rows    = 10;
+         int rows = 10;
          int columns = 10;
          int nMatrices = 5;
          int nElements = 50;
@@ -790,11 +790,11 @@ namespace TestSuite
             SparseMatrix m = new SparseMatrix(rows, columns);
             for (int j = 0; j < nElements; ++j)
             {
-               int row    = Convert.ToInt32(rng.next().value * rows);
+               int row = Convert.ToInt32(rng.next().value * rows);
                int column = Convert.ToInt32(rng.next().value * columns);
 
                double value = rng.next().value;
-               m[row, column]        += value;
+               m[row, column] += value;
                expected[row, column] += value;
             }
 
@@ -823,9 +823,9 @@ namespace TestSuite
       {
          FdmMesherComposite mesher =
             new FdmMesherComposite(
-            new Concentrating1dMesher(-1, 1.6, 21, new Pair < double?, double? >(0, 0.1)),
-            new Concentrating1dMesher(-3, 4, 11, new Pair < double?, double? >(1, 0.01)),
-            new Concentrating1dMesher(-2, 1, 5, new Pair < double?, double? >(0.5, 0.1)));
+            new Concentrating1dMesher(-1, 1.6, 21, new Pair<double?, double?>(0, 0.1)),
+            new Concentrating1dMesher(-3, 4, 11, new Pair<double?, double?>(1, 0.01)),
+            new Concentrating1dMesher(-2, 1, 5, new Pair<double?, double?>(0.5, 0.1)));
 
          FdmLinearOpLayout layout = mesher.layout();
 
@@ -839,7 +839,7 @@ namespace TestSuite
 
             f[iter.index()] = x * x + 3 * y * y - 3 * z * z
                               + 2 * x * y - x * z - 3 * y * z
-                              + 4 * x - y - 3 * z + 2 ;
+                              + 4 * x - y - 3 * z + 2;
          }
 
          double tol = 1e-12;

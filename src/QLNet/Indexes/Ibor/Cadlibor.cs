@@ -37,11 +37,11 @@ namespace QLNet
    {
       public CADLibor(Period tenor)
          : base("CADLibor", tenor, 0, new CADCurrency(), new Canada(), new Actual365Fixed(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public CADLibor(Period tenor, Handle<YieldTermStructure> h)
          : base("CADLibor", tenor, 0, new CADCurrency(), new Canada(), new Actual365Fixed(), h)
-      {}
+      { }
    }
 
    /// <summary>
@@ -51,11 +51,11 @@ namespace QLNet
    {
       public CADLiborON()
          : base("CADLibor", 0, new CADCurrency(), new Canada(), new Actual365Fixed(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public CADLiborON(Handle<YieldTermStructure> h)
          : base("CADLibor", 0, new CADCurrency(), new Canada(), new Actual365Fixed(), h)
-      {}
+      { }
    }
 
 }

@@ -70,7 +70,7 @@ namespace QLNet
 
    public static partial class Utils
    {
-      public static double effectiveFixedRate(List<double> spreads, List < double? > caps, List < double? > floors, int i)
+      public static double effectiveFixedRate(List<double> spreads, List<double?> caps, List<double?> floors, int i)
       {
          double result = Get(spreads, i);
          double? floor = Get(floors, i);
@@ -82,7 +82,7 @@ namespace QLNet
          return result;
       }
 
-      public static bool noOption(List < double? > caps, List < double? > floors, int i)
+      public static bool noOption(List<double?> caps, List<double?> floors, int i)
       {
          return Get(caps, i) == null && Get(floors, i) == null;
       }
@@ -157,7 +157,7 @@ namespace QLNet
 #endif
       }
 
-      public static MethodInfo GetMethodInfo(Object t, String function,  Type[] types = null)
+      public static MethodInfo GetMethodInfo(Object t, String function, Type[] types = null)
       {
          MethodInfo methodInfo;
          if (types == null)
@@ -174,7 +174,7 @@ namespace QLNet
 
    // this is a redefined collection class to emulate array-type behaviour at initialisation
    // if T is a class then the list is initilized with default constructors instead of null
-   public class InitializedList<T> : List<T> where T : new ()
+   public class InitializedList<T> : List<T> where T : new()
    {
       public InitializedList() : base() { }
       public InitializedList(int size) : base(size)

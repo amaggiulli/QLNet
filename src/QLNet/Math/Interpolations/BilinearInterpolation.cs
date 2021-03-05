@@ -32,7 +32,7 @@ namespace QLNet
       }
 
       public override void calculate()
-      {}
+      { }
 
       public override double value(double x, double y)
       {

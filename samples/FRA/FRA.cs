@@ -75,10 +75,10 @@ namespace FRA
          SimpleQuote fra6x9Rate = new SimpleQuote(threeMonthFraQuote[6]);
          SimpleQuote fra9x12Rate = new SimpleQuote(threeMonthFraQuote[9]);
 
-         RelinkableHandle<Quote> h1x4 = new RelinkableHandle<Quote>();  h1x4.linkTo(fra1x4Rate);
-         RelinkableHandle<Quote> h2x5 = new RelinkableHandle<Quote>();  h2x5.linkTo(fra2x5Rate);
-         RelinkableHandle<Quote> h3x6 = new RelinkableHandle<Quote>();  h3x6.linkTo(fra3x6Rate);
-         RelinkableHandle<Quote> h6x9 = new RelinkableHandle<Quote>();  h6x9.linkTo(fra6x9Rate);
+         RelinkableHandle<Quote> h1x4 = new RelinkableHandle<Quote>(); h1x4.linkTo(fra1x4Rate);
+         RelinkableHandle<Quote> h2x5 = new RelinkableHandle<Quote>(); h2x5.linkTo(fra2x5Rate);
+         RelinkableHandle<Quote> h3x6 = new RelinkableHandle<Quote>(); h3x6.linkTo(fra3x6Rate);
+         RelinkableHandle<Quote> h6x9 = new RelinkableHandle<Quote>(); h6x9.linkTo(fra6x9Rate);
          RelinkableHandle<Quote> h9x12 = new RelinkableHandle<Quote>(); h9x12.linkTo(fra9x12Rate);
 
          /*********************
@@ -94,7 +94,7 @@ namespace FRA
          BusinessDayConvention convention = euribor3m.businessDayConvention();
          bool endOfMonth = euribor3m.endOfMonth();
 
-         RateHelper fra1x4 =  new FraRateHelper(h1x4, 1, 4,
+         RateHelper fra1x4 = new FraRateHelper(h1x4, 1, 4,
                                                 fixingDays, calendar, convention,
                                                 endOfMonth, fraDayCounter);
 
@@ -153,7 +153,7 @@ namespace FRA
          Position.Type fraFwdType = Position.Type.Long;
          double fraNotional = 100.0;
          const int FraTermMonths = 3;
-         int[] monthsToStart = new [] { 1, 2, 3, 6, 9 };
+         int[] monthsToStart = new[] { 1, 2, 3, 6, 9 };
 
          euriborTermStructure.linkTo(fraTermStructure);
 

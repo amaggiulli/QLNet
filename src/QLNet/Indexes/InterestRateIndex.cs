@@ -58,7 +58,7 @@ namespace QLNet
          else
             res += tenor_.ToShortString();
          res = res + " " + dayCounter_.name();
-         name_ =  res;
+         name_ = res;
 
          Settings.registerWith(update);
          // recheck

@@ -68,9 +68,11 @@ namespace QLNet
    public class Brazil : Calendar
    {
       //! Brazilian calendars
-      public enum Market { Settlement,            //!< generic settlement calendar
-                           Exchange               //!< BOVESPA calendar
-                         }
+      public enum Market
+      {
+         Settlement,            //!< generic settlement calendar
+         Exchange               //!< BOVESPA calendar
+      }
 
       public Brazil() : this(Market.Settlement) { }
       public Brazil(Market market)
@@ -82,7 +84,7 @@ namespace QLNet
                calendar_ = SettlementImpl.Singleton;
                break;
             case Market.Exchange:
-               calendar_  = ExchangeImpl.Singleton;
+               calendar_ = ExchangeImpl.Singleton;
                break;
             default:
                Utils.QL_FAIL("unknown market");

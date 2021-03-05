@@ -535,7 +535,7 @@ namespace TestSuite
                                 0.015488
                                };
 
-         for (int i = 0; i < dep_tenors.Length ; i++)
+         for (int i = 0; i < dep_tenors.Length; i++)
          {
             isdaRateHelpers.Add(new DepositRateHelper(dep_quotes[i], new Period(dep_tenors[i], TimeUnit.Months), 2,
                                                       new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360())
@@ -560,7 +560,7 @@ namespace TestSuite
 
          IborIndex isda_ibor = new IborIndex("IsdaIbor", new Period(3, TimeUnit.Months), 2, new USDCurrency(),
                                              new WeekendsOnly(), BusinessDayConvention.ModifiedFollowing, false, new Actual360());
-         for (int i = 0; i < swap_tenors.Length ; i++)
+         for (int i = 0; i < swap_tenors.Length; i++)
          {
             isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i], TimeUnit.Years),
                                                    new WeekendsOnly(), Frequency.Semiannual, BusinessDayConvention.ModifiedFollowing, new Thirty360(),
@@ -614,7 +614,7 @@ namespace TestSuite
 
          int l = 0;
 
-         for (int i = 0; i < termDates.Length ; i++)
+         for (int i = 0; i < termDates.Length; i++)
          {
             for (int j = 0; j < 2; j++)
             {

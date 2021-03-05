@@ -182,9 +182,9 @@ namespace QLNet
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
-                  Utils.QL_REQUIRE(nextToLastDate_ > effectiveDate&& nextToLastDate_ < terminationDate, () =>
-                                   "next to last date (" + nextToLastDate_ + ") out of effective-termination date range (" +
-                                   effectiveDate + ", " + terminationDate + "]");
+                  Utils.QL_REQUIRE(nextToLastDate_ > effectiveDate && nextToLastDate_ < terminationDate, () =>
+                                    "next to last date (" + nextToLastDate_ + ") out of effective-termination date range (" +
+                                    effectiveDate + ", " + terminationDate + "]");
                   // we should ensure that the above condition is still verified after adjustment
                   break;
                case DateGeneration.Rule.ThirdWednesday:
@@ -225,7 +225,7 @@ namespace QLNet
                if (nextToLastDate_ != null)
                {
                   dates_.Insert(0, nextToLastDate_);
-                  Date temp = nullCalendar.advance(seed, -periods* tenor_, convention_, endOfMonth_.Value);
+                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp != nextToLastDate_)
                      isRegular_.Insert(0, false);
                   else
@@ -238,7 +238,7 @@ namespace QLNet
 
                while (true)
                {
-                  Date temp = nullCalendar.advance(seed, -periods* tenor_, convention_, endOfMonth_.Value);
+                  Date temp = nullCalendar.advance(seed, -periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp < exitDate)
                   {
                      if (firstDate_ != null && (calendar_.adjust(dates_.First(), convention_) !=
@@ -277,7 +277,7 @@ namespace QLNet
             case DateGeneration.Rule.CDS:
             case DateGeneration.Rule.CDS2015:
                Utils.QL_REQUIRE(!endOfMonth, () => "endOfMonth convention incompatible with " + rule_.Value + " date generation rule");
-            goto case DateGeneration.Rule.Forward;       // fall through
+               goto case DateGeneration.Rule.Forward;       // fall through
 
             case DateGeneration.Rule.Forward:
                if (rule_.Value == DateGeneration.Rule.CDS ||
@@ -294,7 +294,7 @@ namespace QLNet
                if (firstDate_ != null)
                {
                   dates_.Add(firstDate_);
-                  Date temp = nullCalendar.advance(seed, periods* tenor_, convention_, endOfMonth_.Value);
+                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp != firstDate_)
                      isRegular_.Add(false);
                   else
@@ -337,11 +337,11 @@ namespace QLNet
                }
                while (true)
                {
-                  Date temp = nullCalendar.advance(seed, periods* tenor_, convention_, endOfMonth_.Value);
+                  Date temp = nullCalendar.advance(seed, periods * tenor_, convention_, endOfMonth_.Value);
                   if (temp > exitDate)
                   {
                      if (nextToLastDate_ != null &&
-                         (calendar_.adjust(dates_.Last(), convention_) !=  calendar_.adjust(nextToLastDate_, convention_)))
+                         (calendar_.adjust(dates_.Last(), convention_) != calendar_.adjust(nextToLastDate_, convention_)))
                      {
                         dates_.Add(nextToLastDate_);
                         isRegular_.Add(false);
@@ -447,7 +447,7 @@ namespace QLNet
          // necessary.  It can happen to be equal or later than the end
          // date due to EOM adjustments (see the Schedule test suite
          // for an example).
-         if (dates_.Count >= 2 &&  dates_[dates_.Count - 2] >= dates_.Last())
+         if (dates_.Count >= 2 && dates_[dates_.Count - 2] >= dates_.Last())
          {
             isRegular_[isRegular_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
             dates_[dates_.Count - 2] = dates_.Last();

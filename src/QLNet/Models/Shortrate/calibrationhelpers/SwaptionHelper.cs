@@ -50,7 +50,7 @@ namespace QLNet
          strike_ = strike;
          nominal_ = nominal;
 
-         index_ .registerWith(update);
+         index_.registerWith(update);
       }
 
       public SwaptionHelper(Date exerciseDate,
@@ -203,7 +203,7 @@ namespace QLNet
                                             floatSchedule, index_, 0.0, floatingLegDayCounter_);
          temp.setPricingEngine(swapEngine);
          double forward = temp.fairRate();
-         if (! strike_.HasValue)
+         if (!strike_.HasValue)
          {
             exerciseRate_ = forward;
          }

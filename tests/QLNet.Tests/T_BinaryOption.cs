@@ -159,10 +159,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(spot),
@@ -240,10 +240,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(
                new Handle<Quote>(spot),

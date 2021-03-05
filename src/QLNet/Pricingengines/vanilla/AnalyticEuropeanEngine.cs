@@ -81,7 +81,7 @@ namespace QLNet
          results_.elasticity = black.elasticity(spot);
          results_.gamma = black.gamma(spot);
 
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          double t = rfdc.yearFraction(process_.riskFreeRate().link.referenceDate(), arguments_.exercise.lastDate());
@@ -103,7 +103,7 @@ namespace QLNet
             results_.thetaPerDay = null;
          }
 
-         results_.strikeSensitivity  = black.strikeSensitivity();
+         results_.strikeSensitivity = black.strikeSensitivity();
          results_.itmCashProbability = black.itmCashProbability();
       }
    }

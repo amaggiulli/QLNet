@@ -128,8 +128,8 @@ namespace QLNet
       }
 
       public static double modifiedBesselFunction_i_impl<T, I>(double nu, double x)
-      where T : Weight<double>, new ()
-         where I : baseValue<double>, new ()
+      where T : Weight<double>, new()
+         where I : baseValue<double>, new()
       {
          if (Math.Abs(x) < 13.0)
          {
@@ -143,7 +143,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE(++k < 1000, () => "max iterations exceeded");
             }
-            return sum* FastActivator<T>.Create().weightSmallX(x);
+            return sum * FastActivator<T>.Create().weightSmallX(x);
          }
          else
          {
@@ -172,8 +172,8 @@ namespace QLNet
       }
 
       public static Complex modifiedBesselFunction_i_impl<T, I>(double nu, Complex x)
-      where T : Weight<Complex>, new ()
-         where I : baseValue<Complex>, new ()
+      where T : Weight<Complex>, new()
+         where I : baseValue<Complex>, new()
       {
          if (Complex.Abs(x) < 13.0)
          {
@@ -187,7 +187,7 @@ namespace QLNet
                sum += B_k;
                Utils.QL_REQUIRE(++k < 1000, () => "max iterations exceeded");
             }
-            return sum* FastActivator<T>.Create().weightSmallX(x);
+            return sum * FastActivator<T>.Create().weightSmallX(x);
          }
          else
          {
@@ -216,8 +216,8 @@ namespace QLNet
       }
 
       public static double modifiedBesselFunction_k_impl<T, I>(double nu, double x)
-      where T : Weight<double>, new ()
-         where I : baseValue<double>, new ()
+      where T : Weight<double>, new()
+         where I : baseValue<double>, new()
       {
          return Const.M_PI_2 * (modifiedBesselFunction_i_impl<T, I>(-nu, x) -
                                 modifiedBesselFunction_i_impl<T, I>(nu, x)) /
@@ -226,8 +226,8 @@ namespace QLNet
 
 
       public static Complex modifiedBesselFunction_k_impl<T, I>(double nu, Complex x)
-      where T : Weight<Complex>, new ()
-         where I : baseValue<Complex>, new ()
+      where T : Weight<Complex>, new()
+         where I : baseValue<Complex>, new()
       {
          return Const.M_PI_2 * (modifiedBesselFunction_i_impl<T, I>(-nu, x) -
                                 modifiedBesselFunction_i_impl<T, I>(nu, x)) /

@@ -48,7 +48,7 @@ namespace QLNet
             xh = xMin_;
             fh = fxMin_;
          }
-         dx = xh - xl ;
+         dx = xh - xl;
 
          while (evaluationNumber_ <= maxEvaluations_)
          {

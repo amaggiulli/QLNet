@@ -80,9 +80,9 @@ namespace QLNet
          originalEngine_.reset();
 
          originalArguments_ = originalEngine_.getArguments() as Option.Arguments;
-         Utils.QL_REQUIRE(originalArguments_ != null, () =>  "wrong engine type");
+         Utils.QL_REQUIRE(originalArguments_ != null, () => "wrong engine type");
          originalResults_ = originalEngine_.getResults() as OneAssetOption.Results;
-         Utils.QL_REQUIRE(originalResults_ != null, () =>  "wrong engine type");
+         Utils.QL_REQUIRE(originalResults_ != null, () => "wrong engine type");
 
          originalArguments_.payoff = payoff;
          originalArguments_.exercise = this.arguments_.exercise;

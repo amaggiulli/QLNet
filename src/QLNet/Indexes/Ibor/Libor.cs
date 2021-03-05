@@ -104,7 +104,7 @@ namespace QLNet
       public DailyTenorLibor(string familyName, int settlementDays, Currency currency, Calendar financialCenterCalendar,
                              DayCounter dayCounter)
          : this(familyName, settlementDays, currency, financialCenterCalendar, dayCounter, new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public DailyTenorLibor(string familyName, int settlementDays, Currency currency, Calendar financialCenterCalendar,
                              DayCounter dayCounter, Handle<YieldTermStructure> h)

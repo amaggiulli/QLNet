@@ -28,7 +28,7 @@ namespace QLNet
    public abstract class OneFactorModel : ShortRateModel
    {
       protected OneFactorModel(int nArguments) : base(nArguments)
-      {}
+      { }
 
       //! Base class describing the short-rate dynamics
       public abstract class ShortRateDynamics
@@ -172,7 +172,7 @@ namespace QLNet
    {
       protected OneFactorAffineModel(int nArguments)
          : base(nArguments)
-      {}
+      { }
 
       public virtual double discountBond(double now,
                                          double maturity,

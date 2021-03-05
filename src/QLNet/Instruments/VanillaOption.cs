@@ -25,7 +25,7 @@ namespace QLNet
    public class VanillaOption : OneAssetOption
    {
       public VanillaOption(StrikedTypePayoff payoff, Exercise exercise)
-         : base(payoff, exercise) {}
+         : base(payoff, exercise) { }
 
       /*! \warning currently, this method returns the Black-Scholes
                implied volatility using analytic formulas for

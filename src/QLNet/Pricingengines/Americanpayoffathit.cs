@@ -78,7 +78,7 @@ namespace QLNet
          double cum_d2_;
          if (variance_ >= Const.QL_EPSILON)
          {
-            if (discount_ .IsEqual(0.0) && dividendDiscount_.IsEqual(0.0))
+            if (discount_.IsEqual(0.0) && dividendDiscount_.IsEqual(0.0))
             {
                mu_ = -0.5;
                lambda_ = 0.5;

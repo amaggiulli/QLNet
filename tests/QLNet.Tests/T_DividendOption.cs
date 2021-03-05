@@ -47,7 +47,7 @@ namespace TestSuite
                       + "    tolerance:        " + tolerance);
       }
 
-      private void testFdGreeks<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new ()
+      private void testFdGreeks<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new()
       {
          Dictionary<string, double> calculated = new Dictionary<string, double>(),
          expected = new Dictionary<string, double>(),
@@ -167,7 +167,7 @@ namespace TestSuite
          }
       }
 
-      private void testFdDegenerate<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new ()
+      private void testFdDegenerate<Engine>(Date today, Exercise exercise) where Engine : IFDEngine, new()
       {
          DayCounter dc = new Actual360();
          SimpleQuote spot = new SimpleQuote(54.625);

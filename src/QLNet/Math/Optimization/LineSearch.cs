@@ -25,7 +25,7 @@ namespace QLNet
    {
       //! Default constructor
       protected LineSearch() : this(0.0)
-      {}
+      { }
 
       protected LineSearch(double UnnamedParameter1)
       {

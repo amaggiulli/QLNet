@@ -31,7 +31,7 @@ namespace QLNet
          volatilities_ = volatilities;
          startTimes_ = startTimes;
 
-         Utils.QL_REQUIRE(startTimes_.Count > 1, () =>  "too few dates");
+         Utils.QL_REQUIRE(startTimes_.Count > 1, () => "too few dates");
 
          Utils.QL_REQUIRE(volatilities_.size() == startTimes_.Count, () =>
                           "volatility array and fixing time array have to have the same size");
@@ -87,7 +87,7 @@ namespace QLNet
       }
 
       public override void generateArguments()
-      {}
+      { }
 
       private Vector volatilities_;
       private List<double> startTimes_;

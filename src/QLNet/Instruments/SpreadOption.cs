@@ -23,13 +23,13 @@ namespace QLNet
    {
       public SpreadOption(PlainVanillaPayoff payoff, Exercise exercise)
          : base(payoff, exercise)
-      {}
+      { }
 
       /// <summary>
       /// Spread option engine base class
       /// </summary>
       public new class Engine :
          GenericEngine<SpreadOption.Arguments, SpreadOption.Results>
-      {}
+      { }
    }
 }

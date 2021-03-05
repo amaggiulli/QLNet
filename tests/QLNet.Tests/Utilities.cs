@@ -129,7 +129,7 @@ namespace TestSuite
 
       public static String payoffTypeToString(Payoff h)
       {
-         object  hd = null;
+         object hd = null;
          hd = h as PlainVanillaPayoff;
          if (hd != null)
             return "plain-vanilla";
@@ -147,7 +147,7 @@ namespace TestSuite
             return "super-fund";
          hd = h as PercentageStrikePayoff;
          if (hd != null)
-            return"percentage-strike";
+            return "percentage-strike";
          hd = h as GapPayoff;
          if (hd != null)
             return "gap";
@@ -246,7 +246,7 @@ namespace TestSuite
       /// </summary>
       /// <typeparam name="T">The Exception</typeparam>
       /// <param name="action">The Action</param>
-      public static void ThrowsException<T>(Action action) where T: SystemException
+      public static void ThrowsException<T>(Action action) where T : SystemException
       {
          Xunit.Assert.Throws<T>(action);
       }
@@ -275,7 +275,7 @@ namespace TestSuite
    {
       public SwaptionTenors tenors;
       public Matrix vols;
-      public List<List<Handle<Quote> > > volsHandle;
+      public List<List<Handle<Quote>>> volsHandle;
       public void setMarketData()
       {
          tenors.options = new InitializedList<Period>(6);
@@ -313,7 +313,7 @@ namespace TestSuite
    {
       public SwaptionTenors tenors;
       public Matrix volSpreads;
-      public List<List<Handle<Quote> > > volSpreadsHandle;
+      public List<List<Handle<Quote>>> volSpreadsHandle;
       public List<double> strikeSpreads;
       public void setMarketData()
       {

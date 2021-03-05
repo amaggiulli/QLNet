@@ -53,8 +53,8 @@ namespace QLNet
 
          for (int i = 0; i < x.size(); ++i)
          {
-            f.copy(i    * subSize,
-                   (i + 1)*subSize, 0, fSub);
+            f.copy(i * subSize,
+                   (i + 1) * subSize, 0, fSub);
 
             g[i] = subMesherIntegral.integrate(fSub);
          }

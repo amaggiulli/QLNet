@@ -142,12 +142,12 @@ namespace QLNet
             return varianceSurface_.value(times_.Last(), strike, true) * t / times_.Last();
       }
 
-      public void setInterpolation<Interpolator>() where Interpolator : IInterpolationFactory2D, new ()
+      public void setInterpolation<Interpolator>() where Interpolator : IInterpolationFactory2D, new()
       {
          setInterpolation<Interpolator>(FastActivator<Interpolator>.Create());
       }
 
-      public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory2D, new ()
+      public void setInterpolation<Interpolator>(Interpolator i) where Interpolator : IInterpolationFactory2D, new()
       {
          varianceSurface_ = i.interpolate(times_, times_.Count, strikes_, strikes_.Count, variances_);
          varianceSurface_.update();

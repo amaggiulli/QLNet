@@ -63,7 +63,7 @@ namespace TestSuite
 
          for (int i = 2; i < 9000; i++)
          {
-            expected  += Math.Log(i);
+            expected += Math.Log(i);
             calculated = GammaFunction.logValue((i + 1));
             if (Math.Abs(calculated - expected) / expected > 1.0e-9)
                QAssert.Fail("GammaFunction(" + i + ")\n"
@@ -136,7 +136,7 @@ namespace TestSuite
          for (int i = 0; i < r.Length; ++i)
          {
             double nu = r[i][0];
-            double x  = r[i][1];
+            double x = r[i][1];
             double expected_i = r[i][2];
             double expected_k = r[i][3];
             double tol_i = 5e4 * Const.QL_EPSILON * Math.Abs(expected_i);
@@ -189,7 +189,7 @@ namespace TestSuite
          for (int i = 0; i < c.Length; ++i)
          {
             double nu = c[i][0];
-            Complex z  = new Complex(c[i][1], c[i][2]);
+            Complex z = new Complex(c[i][1], c[i][2]);
             Complex expected_i = new Complex(c[i][3], c[i][4]);
             Complex expected_k = new Complex(c[i][5], c[i][6]);
 

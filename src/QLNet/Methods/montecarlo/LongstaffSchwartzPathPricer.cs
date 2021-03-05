@@ -35,7 +35,7 @@ namespace QLNet
    */
    public class LongstaffSchwartzPathPricer<PathType> : PathPricer<PathType> where PathType : IPath
    {
-      protected bool  calibrationPhase_;
+      protected bool calibrationPhase_;
       protected IEarlyExercisePathPricer<PathType, double> pathPricer_;
 
       protected List<Vector> coeff_;
@@ -55,7 +55,7 @@ namespace QLNet
 
          for (int i = 0; i < times.size() - 1; ++i)
          {
-            dF_[i] =   termStructure.discount(times[i + 1])
+            dF_[i] = termStructure.discount(times[i + 1])
                        / termStructure.discount(times[i]);
          }
       }
@@ -80,7 +80,7 @@ namespace QLNet
             double exercise = pathPricer_.value(path, i);
             if (exercise > 0.0)
             {
-               double regValue  = pathPricer_.state(path, i);
+               double regValue = pathPricer_.state(path, i);
 
                double continuationValue = 0.0;
                for (int l = 0; l < v_.Count; ++l)
@@ -120,7 +120,7 @@ namespace QLNet
                if (exercise[j] > 0.0)
                {
                   x.Add(pathPricer_.state(paths_[j], i));
-                  y.Add(dF_[i]*prices[j]);
+                  y.Add(dF_[i] * prices[j]);
                }
             }
 

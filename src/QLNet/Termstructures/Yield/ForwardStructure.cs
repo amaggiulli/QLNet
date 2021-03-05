@@ -37,15 +37,15 @@ namespace QLNet
 
       protected ForwardRateStructure(DayCounter dc = null,
                                      List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(dc, jumps, jumpDates) {}
+         : base(dc, jumps, jumpDates) { }
 
       protected ForwardRateStructure(Date refDate, Calendar cal = null, DayCounter dc = null,
                                      List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(refDate, cal, dc, jumps, jumpDates) {}
+         : base(refDate, cal, dc, jumps, jumpDates) { }
 
       protected ForwardRateStructure(int settlDays, Calendar cal, DayCounter dc = null,
                                      List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
-         : base(settlDays, cal, dc, jumps, jumpDates) {}
+         : base(settlDays, cal, dc, jumps, jumpDates) { }
 
       #endregion
 

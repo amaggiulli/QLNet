@@ -162,7 +162,7 @@ namespace QLNet
             }
       }
 
-      public static Period operator+(Period p1, Period p2)
+      public static Period operator +(Period p1, Period p2)
       {
          int length_ = p1.length();
          TimeUnit units_ = p1.units();
@@ -265,10 +265,10 @@ namespace QLNet
 
       public static bool operator ==(Period p1, Period p2)
       {
-         if ((object) p1 == null && (object) p2 == null)
+         if ((object)p1 == null && (object)p2 == null)
             return true;
 
-         if ((object) p1 == null || (object) p2 == null)
+         if ((object)p1 == null || (object)p2 == null)
             return false;
 
          return !(p1 < p2 || p2 < p1);

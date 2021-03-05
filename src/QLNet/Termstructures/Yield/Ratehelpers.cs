@@ -689,7 +689,7 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         iborIndex_.registerWith(update) ;
+         iborIndex_.registerWith(update);
          spread_.registerWith(update);
          discountHandle_.registerWith(update);
          pillarDate_ = customPillarDate;
@@ -733,7 +733,7 @@ namespace QLNet
          // We want to be notified of changes of fixings, but we don't
          // want notifications from termStructureHandle_ (they would
          // interfere with bootstrapping.)
-         iborIndex_.registerWith(update) ;
+         iborIndex_.registerWith(update);
          spread_.registerWith(update);
          discountHandle_.registerWith(update);
 
@@ -996,7 +996,7 @@ namespace QLNet
          .endOfMonth(iborIndex_.endOfMonth())
          .backwards().value();
 
-         swap_ =  new BMASwap(BMASwap.Type.Payer,
+         swap_ = new BMASwap(BMASwap.Type.Payer,
                               100.0, liborSchedule, 0.75, // arbitrary
                               0.0, iborIndex_, iborIndex_.dayCounter(), bmaSchedule, clonedIndex, bmaDayCount_);
 
@@ -1089,13 +1089,13 @@ namespace QLNet
       }
 
       // FxSwapRateHelper inspectors
-      public double spot()  { return spot_.link.value(); }
-      public Period tenor()  { return tenor_; }
-      public int fixingDays()  { return fixingDays_; }
-      public Calendar calendar()  { return cal_; }
-      public BusinessDayConvention businessDayConvention()  { return conv_; }
-      public bool endOfMonth()  { return eom_; }
-      public bool isFxBaseCurrencyCollateralCurrency()  { return isFxBaseCurrencyCollateralCurrency_; }
+      public double spot() { return spot_.link.value(); }
+      public Period tenor() { return tenor_; }
+      public int fixingDays() { return fixingDays_; }
+      public Calendar calendar() { return cal_; }
+      public BusinessDayConvention businessDayConvention() { return conv_; }
+      public bool endOfMonth() { return eom_; }
+      public bool isFxBaseCurrencyCollateralCurrency() { return isFxBaseCurrencyCollateralCurrency_; }
 
       protected override void initializeDates()
       {

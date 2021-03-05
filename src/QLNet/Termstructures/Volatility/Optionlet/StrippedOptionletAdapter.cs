@@ -75,7 +75,7 @@ namespace QLNet
          List<double> stddevs = new List<double>();
          for (int i = 0; i < optionletStrikes.Count; i++)
          {
-            stddevs.Add(volatilityImpl(t, optionletStrikes[i])*Math.Sqrt(t));
+            stddevs.Add(volatilityImpl(t, optionletStrikes[i]) * Math.Sqrt(t));
          }
          // Extrapolation may be a problem with splines, but since minStrike() and maxStrike() are set, we assume that no one will use stddevs for strikes outside these strikes
          CubicInterpolation.BoundaryCondition bc = optionletStrikes.Count >= 4 ? CubicInterpolation.BoundaryCondition.Lagrange : CubicInterpolation.BoundaryCondition.SecondDerivative;

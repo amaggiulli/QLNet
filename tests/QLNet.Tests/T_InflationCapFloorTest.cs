@@ -64,7 +64,7 @@ namespace TestSuite
          public CommonVars()
          {
             // option variables
-            nominals = new List<double> {1000000};
+            nominals = new List<double> { 1000000 };
             frequency = Frequency.Annual;
             // usual setup
             calendar = new UnitedKingdom();
@@ -132,7 +132,7 @@ namespace TestSuite
                            calendar, convention, dc);
 
             double baseYYRate = yyData[0].rate / 100.0;
-            PiecewiseYoYInflationCurve<Linear>  pYYTS =
+            PiecewiseYoYInflationCurve<Linear> pYYTS =
                new PiecewiseYoYInflationCurve<Linear>(
                evaluationDate, calendar, dc, observationLag,
                iir.frequency(), iir.interpolated(), baseYYRate,
@@ -209,7 +209,7 @@ namespace TestSuite
             switch (type)
             {
                case CapFloorType.Cap:
-                  result = new YoYInflationCap(leg, new List<double>() {strike});
+                  result = new YoYInflationCap(leg, new List<double>() { strike });
                   break;
                case CapFloorType.Floor:
                   result = new YoYInflationFloor(leg, new List<double>() { strike });
@@ -272,8 +272,8 @@ namespace TestSuite
                         YoYInflationCapFloor floor = vars.makeYoYCapFloor(CapFloorType.Floor,
                                                                           leg, floor_rates[k], vols[l], whichPricer);
 
-                        YoYInflationCollar collar = new YoYInflationCollar(leg, new List<double>() {cap_rates[j]},
-                        new List<double>() {floor_rates[k]});
+                        YoYInflationCollar collar = new YoYInflationCollar(leg, new List<double>() { cap_rates[j] },
+                        new List<double>() { floor_rates[k] });
 
                         collar.setPricingEngine(vars.makeEngine(vols[l], whichPricer));
 
@@ -282,11 +282,11 @@ namespace TestSuite
                            QAssert.Fail(
                               "inconsistency between cap, floor and collar:\n"
                               + "    length:       " + lengths[i] + " years\n"
-                              + "    volatility:   " +  "\n"
+                              + "    volatility:   " + "\n"
                               + "    cap value:    " + cap.NPV()
                               + " at strike: " + "\n"
                               + "    floor value:  " + floor.NPV()
-                              + " at strike: " +  "\n"
+                              + " at strike: " + "\n"
                               + "    collar value: " + collar.NPV());
 
                         }
@@ -305,16 +305,16 @@ namespace TestSuite
                            QAssert.Fail(
                               "sum of caplet NPVs does not equal cap NPV:\n"
                               + "    length:       " + lengths[i] + " years\n"
-                              + "    volatility:   " +  "\n"
+                              + "    volatility:   " + "\n"
                               + "    cap value:    " + cap.NPV()
-                              + " at strike: " +  "\n"
+                              + " at strike: " + "\n"
                               + "    sum of caplets value:  " + capletsNPV
                               + " at strike (first): " + caplets[0].capRates()[0] + "\n"
                            );
                         }
 
                         double floorletsNPV = 0.0;
-                        List<YoYInflationCapFloor>  floorlets = new List<YoYInflationCapFloor>();
+                        List<YoYInflationCapFloor> floorlets = new List<YoYInflationCapFloor>();
                         for (int m = 0; m < lengths[i] * 1; m++)
                         {
                            floorlets.Add(floor.optionlet(m));
@@ -327,7 +327,7 @@ namespace TestSuite
                            QAssert.Fail(
                               "sum of floorlet NPVs does not equal floor NPV:\n"
                               + "    length:       " + lengths[i] + " years\n"
-                              + "    volatility:   " +  "\n"
+                              + "    volatility:   " + "\n"
                               + "    cap value:    " + floor.NPV()
                               + " at strike: " + floor_rates[j] + "\n"
                               + "    sum of floorlets value:  " + floorletsNPV
@@ -336,7 +336,7 @@ namespace TestSuite
                         }
 
                         double collarletsNPV = 0.0;
-                        List<YoYInflationCapFloor>  collarlets = new List<YoYInflationCapFloor>();
+                        List<YoYInflationCapFloor> collarlets = new List<YoYInflationCapFloor>();
                         for (int m = 0; m < lengths[i] * 1; m++)
                         {
                            collarlets.Add(collar.optionlet(m));
@@ -468,8 +468,8 @@ namespace TestSuite
 
 
          // close to atm prices
-         double cachedCapNPVblack   = 219.452;
-         double cachedFloorNPVblack =  314.641;
+         double cachedCapNPVblack = 219.452;
+         double cachedFloorNPVblack = 314.641;
          // N.B. notionals are 10e6.
          QAssert.IsTrue(Math.Abs(cap.NPV() - cachedCapNPVblack) < 0.02, "yoy cap cached NPV wrong "
                         + cap.NPV() + " should be " + cachedCapNPVblack + " Black pricer"
@@ -484,8 +484,8 @@ namespace TestSuite
          floor = vars.makeYoYCapFloor(CapFloorType.Floor, leg, K, 0.01, whichPricer);
 
          // close to atm prices
-         double cachedCapNPVdd   = 9114.61;
-         double cachedFloorNPVdd =  9209.8;
+         double cachedCapNPVdd = 9114.61;
+         double cachedFloorNPVdd = 9209.8;
          // N.B. notionals are 10e6.
          QAssert.IsTrue(Math.Abs(cap.NPV() - cachedCapNPVdd) < 0.22, "yoy cap cached NPV wrong "
                         + cap.NPV() + " should be " + cachedCapNPVdd + " dd Black pricer"
@@ -500,8 +500,8 @@ namespace TestSuite
          floor = vars.makeYoYCapFloor(CapFloorType.Floor, leg, K, 0.01, whichPricer);
 
          // close to atm prices
-         double cachedCapNPVbac   = 8852.4;
-         double cachedFloorNPVbac =  8947.59;
+         double cachedCapNPVbac = 8852.4;
+         double cachedFloorNPVbac = 8947.59;
          // N.B. notionals are 10e6.
          QAssert.IsTrue(Math.Abs(cap.NPV() - cachedCapNPVbac) < 0.22, "yoy cap cached NPV wrong "
                         + cap.NPV() + " should be " + cachedCapNPVbac + " bac Black pricer"

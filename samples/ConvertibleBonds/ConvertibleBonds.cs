@@ -66,11 +66,11 @@ namespace ConvertibleBonds
             List<double> coupons = new InitializedList<double>(1, 0.05);
             DayCounter bondDayCount = new Thirty360();
 
-            int[] callLength = {2, 4}; // Call dates, years 2,4.
-            int[] putLength = {3}; // Put dates year 3.
+            int[] callLength = { 2, 4 }; // Call dates, years 2,4.
+            int[] putLength = { 3 }; // Put dates year 3.
 
-            double[] callPrices = {101.5, 100.85};
-            double[] putPrices = {105.0};
+            double[] callPrices = { 101.5, 100.85 };
+            double[] putPrices = { 105.0 };
 
             // Load call schedules
             for (int i = 0; i < callLength.Length; i++)
@@ -108,7 +108,7 @@ namespace ConvertibleBonds
 
 
             // write column headings
-            int[] widths = {35, 14, 14};
+            int[] widths = { 35, 14, 14 };
             int totalWidth = widths[0] + widths[1] + widths[2];
             string rule = new string('-', totalWidth);
             string dblrule = new string('=', totalWidth);

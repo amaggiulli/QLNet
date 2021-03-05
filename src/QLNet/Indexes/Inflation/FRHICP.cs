@@ -24,7 +24,7 @@ namespace QLNet
    public class FRHICP : ZeroInflationIndex
    {
       public FRHICP(bool interpolated)
-         : this(interpolated, new Handle<ZeroInflationTermStructure>()) {}
+         : this(interpolated, new Handle<ZeroInflationTermStructure>()) { }
 
       public FRHICP(bool interpolated,
                     Handle<ZeroInflationTermStructure> ts)
@@ -35,14 +35,15 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new EURCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 
    //! Genuine year-on-year FR HICP (i.e. not a ratio)
    public class YYFRHICP : YoYInflationIndex
    {
       public YYFRHICP(bool interpolated)
-         : this(interpolated, new Handle<YoYInflationTermStructure>()) {}
+         : this(interpolated, new Handle<YoYInflationTermStructure>()) { }
 
       public YYFRHICP(bool interpolated,
                       Handle<YoYInflationTermStructure> ts)
@@ -54,7 +55,8 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new EURCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 
    //! Fake year-on-year FR HICP (i.e. a ratio)
@@ -73,6 +75,7 @@ namespace QLNet
                 Frequency.Monthly,
                 new Period(1, TimeUnit.Months),
                 new EURCurrency(),
-                ts) {}
+                ts)
+      { }
    }
 }

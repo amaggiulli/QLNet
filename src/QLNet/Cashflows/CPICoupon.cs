@@ -174,7 +174,7 @@ namespace QLNet
 
       //! value used on base date
       /*! This does not have to agree with index on that date. */
-      public virtual double baseFixing() {return baseFixing_;}
+      public virtual double baseFixing() { return baseFixing_; }
 
       //! you may not have a valid date
       public override Date baseDate()

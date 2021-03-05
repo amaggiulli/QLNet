@@ -32,7 +32,7 @@ namespace QLNet
                                        Vector weights = null,
                                        OptimizationMethod optimizationMethod = null)
          : base(constrainAtZero, weights, optimizationMethod)
-      {}
+      { }
 
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
@@ -82,11 +82,11 @@ namespace QLNet
        See: Nelson, C. and A. Siegel (1985): "Parsimonious modeling of yield
        curves for US Treasury bills." NBER Working Paper Series, no 1594.
    */
-   public class NelsonSiegelFitting :  FittedBondDiscountCurve.FittingMethod
+   public class NelsonSiegelFitting : FittedBondDiscountCurve.FittingMethod
    {
       public NelsonSiegelFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
          : base(true, weights, optimizationMethod)
-      {}
+      { }
 
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
@@ -102,7 +102,7 @@ namespace QLNet
                            (1.0 - Math.Exp(-kappa * t)) /
                            ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
                            (x[2]) * Math.Exp(-kappa * t);
-         double d = Math.Exp(-zeroRate * t) ;
+         double d = Math.Exp(-zeroRate * t);
          return d;
       }
    }
@@ -118,11 +118,11 @@ namespace QLNet
    {
       public SvenssonFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
          : base(true, weights, optimizationMethod)
-      {}
+      { }
 
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
-         return MemberwiseClone() as FittedBondDiscountCurve.FittingMethod ;
+         return MemberwiseClone() as FittedBondDiscountCurve.FittingMethod;
       }
 
       public override int size() { return 6; }
@@ -137,7 +137,7 @@ namespace QLNet
                            ((kappa + Const.QL_EPSILON) * (t + Const.QL_EPSILON)) -
                            (x[2]) * Math.Exp(-kappa * t) +
                            x[3] * (((1.0 - Math.Exp(-kappa_1 * t)) / ((kappa_1 + Const.QL_EPSILON) * (t + Const.QL_EPSILON))) - Math.Exp(-kappa_1 * t));
-         double d = Math.Exp(-zeroRate * t) ;
+         double d = Math.Exp(-zeroRate * t);
          return d;
       }
 

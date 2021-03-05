@@ -658,11 +658,11 @@ namespace QLNet
                   gFunction_ = GFunctionFactory.newGFunctionExactYield(coupon_);
                   break;
                case GFunctionFactory.YieldCurveModel.ParallelShifts:
-               {
-                  Handle<Quote> nullMeanReversionQuote = new Handle<Quote>(new SimpleQuote(0.0));
-                  gFunction_ = GFunctionFactory.newGFunctionWithShifts(coupon_, nullMeanReversionQuote);
-               }
-               break;
+                  {
+                     Handle<Quote> nullMeanReversionQuote = new Handle<Quote>(new SimpleQuote(0.0));
+                     gFunction_ = GFunctionFactory.newGFunctionWithShifts(coupon_, nullMeanReversionQuote);
+                  }
+                  break;
                case GFunctionFactory.YieldCurveModel.NonParallelShifts:
                   gFunction_ = GFunctionFactory.newGFunctionWithShifts(coupon_, meanReversion_);
                   break;
@@ -843,7 +843,7 @@ namespace QLNet
       #region Nested classes
       public class VariableChange
       {
-         private double a_,  width_;
+         private double a_, width_;
          private Func<double, double> f_;
          private int k_;
 

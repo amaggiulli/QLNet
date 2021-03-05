@@ -32,7 +32,7 @@ namespace QLNet
          : base(corrModel.size(), corrModel.factors())
       {
          volaModel_ = volaModel;
-         corrModel_ = corrModel ;
+         corrModel_ = corrModel;
 
          Utils.QL_REQUIRE(volaModel_.size() == corrModel_.size(), () =>
                           "different size for the volatility (" + volaModel_.size() + ") and correlation (" + corrModel_.size() + ") models");
@@ -56,18 +56,18 @@ namespace QLNet
       public override Matrix diffusion(double t, Vector x)
       {
          Matrix pca = corrModel_.pseudoSqrt(t, x);
-         Vector  vol = volaModel_.volatility(t, x);
+         Vector vol = volaModel_.volatility(t, x);
          for (int i = 0; i < size_; ++i)
          {
             for (int j = 0; j < size_; ++j)
-               pca[i, j] =   pca[i, j] * vol[i];
+               pca[i, j] = pca[i, j] * vol[i];
          }
          return pca;
       }
 
       public override Matrix covariance(double t, Vector x)
       {
-         Vector  volatility  = volaModel_.volatility(t, x);
+         Vector volatility = volaModel_.volatility(t, x);
          Matrix correlation = corrModel_.correlation(t, x);
 
          Matrix tmp = new Matrix(size_, size_);

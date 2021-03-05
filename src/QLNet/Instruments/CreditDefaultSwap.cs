@@ -264,8 +264,8 @@ namespace QLNet
       /// The last date for which defaults will trigger the contract
       /// </summary>
       /// <returns></returns>
-      public Date protectionEndDate() {return ((Coupon)(leg_.Last())).accrualEndDate();}
-      public bool rebatesAccrual() {return accrualRebate_ != null;}
+      public Date protectionEndDate() { return ((Coupon)(leg_.Last())).accrualEndDate(); }
+      public bool rebatesAccrual() { return accrualRebate_ != null; }
       // Results
       /// <summary>
       /// Returns the upfront spread that, given the running spread
@@ -588,7 +588,7 @@ namespace QLNet
       }
 
       public abstract class Engine : GenericEngine<CreditDefaultSwap.Arguments, CreditDefaultSwap.Results>
-      {}
+      { }
 
    }
 }

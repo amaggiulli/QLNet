@@ -43,8 +43,8 @@ namespace QLNet
 
 
    //! Universal piecewise-term-structure boostrapper.
-   public class IterativeBootstrap<T, U>: IBootStrap<T>
-      where T : Curve<U>, new ()
+   public class IterativeBootstrap<T, U> : IBootStrap<T>
+      where T : Curve<U>, new()
       where U : TermStructure
    {
       private bool validCurve_;
@@ -95,7 +95,7 @@ namespace QLNet
 
 
          errors_ = new List<BootstrapError<T, U>>(alive_ + 1);
-         dates[0] = firstDate ;
+         dates[0] = firstDate;
          times[0] = (ts_.timeFromReference(dates[0]));
          Date latestRelevantDate, maxDate = firstDate;
          for (int i = 1, j = firstAliveHelper_; j < n_; ++i, ++j)

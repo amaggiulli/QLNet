@@ -70,7 +70,7 @@ namespace QLNet
          }
       }
       //! %Dividend-barrier-option %engine base class
-      public new class Engine :  GenericEngine<DividendBarrierOption.Arguments, DividendBarrierOption.Results> {}
+      public new class Engine : GenericEngine<DividendBarrierOption.Arguments, DividendBarrierOption.Results> { }
 
    }
 

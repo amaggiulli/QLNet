@@ -116,7 +116,7 @@ namespace TestSuite
             QAssert.Fail(" (" + expr + ") can not be reproduced against cached result (" + expected + ")");
 
       }
-      void check<S>(string name) where S : IGeneralStatistics, new ()
+      void check<S>(string name) where S : IGeneralStatistics, new()
       {
          S s = FastActivator<S>.Create();
 
@@ -189,7 +189,7 @@ namespace TestSuite
                          + "    expected:   " + expected);
       }
 
-      void checkSequence<S>(string name, int dimension) where S : IGeneralStatistics, new ()
+      void checkSequence<S>(string name, int dimension) where S : IGeneralStatistics, new()
       {
 
          GenericSequenceStatistics<S> ss = new GenericSequenceStatistics<S>(dimension);
@@ -302,7 +302,7 @@ namespace TestSuite
          }
       }
 
-      void checkConvergence<S>(string name) where S : IGeneralStatistics, new ()
+      void checkConvergence<S>(string name) where S : IGeneralStatistics, new()
       {
 
          ConvergenceStatistics<S> stats = new ConvergenceStatistics<S>();

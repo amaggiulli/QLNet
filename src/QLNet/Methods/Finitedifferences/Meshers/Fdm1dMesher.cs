@@ -29,8 +29,8 @@ namespace QLNet
       public Fdm1dMesher(int size)
       {
          locations_ = new InitializedList<double>(size);
-         dplus_ = new InitializedList < double? >(size);
-         dminus_ = new InitializedList < double? >(size);
+         dplus_ = new InitializedList<double?>(size);
+         dminus_ = new InitializedList<double?>(size);
       }
 
       public int size()
@@ -59,6 +59,6 @@ namespace QLNet
       }
 
       protected List<double> locations_;
-      protected List < double? > dplus_, dminus_;
+      protected List<double?> dplus_, dminus_;
    }
 }

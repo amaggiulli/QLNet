@@ -81,15 +81,15 @@ namespace QLNet
       }
 
 
-      public AbcdCalibration() {}
+      public AbcdCalibration() { }
 
       // to constrained <- from unconstrained
       public AbcdCalibration(List<double> t,
                              List<double> blackVols,
                              double aGuess = -0.06,
-                             double bGuess =  0.17,
-                             double cGuess =  0.54,
-                             double dGuess =  0.17,
+                             double bGuess = 0.17,
+                             double cGuess = 0.54,
+                             double dGuess = 0.17,
                              bool aIsFixed = false,
                              bool bIsFixed = false,
                              bool cIsFixed = false,
@@ -148,7 +148,7 @@ namespace QLNet
          Utils.QL_REQUIRE(blackVols.Count == t.Count, () =>
                           "mismatch between number of times (" + t.Count + ") and blackVols (" + blackVols.Count + ")");
          List<double> k = new InitializedList<double>(t.Count);
-         for (int i = 0; i < t.Count ; i++)
+         for (int i = 0; i < t.Count; i++)
          {
             k[i] = blackVols[i] / value(t[i]);
          }
@@ -161,7 +161,7 @@ namespace QLNet
          if (vegaWeighted_)
          {
             double weightsSum = 0.0;
-            for (int i = 0; i < times_.Count ; i++)
+            for (int i = 0; i < times_.Count; i++)
             {
                double stdDev = Math.Sqrt(blackVols_[i] * blackVols_[i] * times_[i]);
                // when strike==forward, the blackFormulaStdDevDerivative becomes
@@ -169,7 +169,7 @@ namespace QLNet
                weightsSum += weights_[i];
             }
             // weight normalization
-            for (int i = 0; i < times_.Count ; i++)
+            for (int i = 0; i < times_.Count; i++)
             {
                weights_[i] /= weightsSum;
             }
@@ -227,7 +227,7 @@ namespace QLNet
       {
          int n = times_.Count;
          double error, squaredError = 0.0;
-         for (int i = 0; i < times_.Count ; i++)
+         for (int i = 0; i < times_.Count; i++)
          {
             error = (value(times_[i]) - blackVols_[i]);
             squaredError += error * error * weights_[i];
@@ -238,7 +238,7 @@ namespace QLNet
       public double maxError()
       {
          double error, maxError = double.MinValue;
-         for (int i = 0; i < times_.Count ; i++)
+         for (int i = 0; i < times_.Count; i++)
          {
             error = Math.Abs(value(times_[i]) - blackVols_[i]);
             maxError = Math.Max(maxError, error);
@@ -249,7 +249,7 @@ namespace QLNet
       public Vector errors()
       {
          Vector results = new Vector(times_.Count);
-         for (int i = 0; i < times_.Count ; i++)
+         for (int i = 0; i < times_.Count; i++)
          {
             results[i] = (value(times_[i]) - blackVols_[i]) * Math.Sqrt(weights_[i]);
          }
@@ -263,10 +263,10 @@ namespace QLNet
       }
 
       public EndCriteria.Type endCriteria() { return abcdEndCriteria_; }
-      public double a()  { return a_; }
-      public double b()  { return b_; }
-      public double c()  { return c_; }
-      public double d()  { return d_; }
+      public double a() { return a_; }
+      public double b() { return b_; }
+      public double c() { return c_; }
+      public double d() { return d_; }
       public bool aIsFixed_ { get; set; }
       public bool bIsFixed_ { get; set; }
       public bool cIsFixed_ { get; set; }

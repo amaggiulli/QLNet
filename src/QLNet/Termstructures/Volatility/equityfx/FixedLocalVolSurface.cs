@@ -29,11 +29,11 @@ namespace QLNet
       {
          t -= 1e4 * Const.QL_EPSILON; // add a small buffer for rounding errors
          Date d = new Date(referenceDate);
-         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Years)) < t);
+         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Years)) < t) ;
          d -= new Period(1, TimeUnit.Years);
-         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Months)) < t);
+         while (dc.yearFraction(referenceDate, d += new Period(1, TimeUnit.Months)) < t) ;
          d -= new Period(1, TimeUnit.Months);
-         while (dc.yearFraction(referenceDate, d++) < t);
+         while (dc.yearFraction(referenceDate, d++) < t) ;
          return d;
       }
    }
@@ -137,7 +137,7 @@ namespace QLNet
       public override double maxStrike() { return strikes_.Max().Max(); }
 
       public void setInterpolation<Interpolator>(Interpolator i = default(Interpolator))
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
       {
          localVolInterpol_.Clear();
          Interpolator i_ = i ?? FastActivator<Interpolator>.Create();

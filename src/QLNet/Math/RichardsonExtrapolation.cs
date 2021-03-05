@@ -44,7 +44,7 @@ namespace QLNet
 
       public override double value(double k)
       {
-         return  ft_ + (ft_ - fdelta_h_) / (Math.Pow(t_, k) - 1.0)
+         return ft_ + (ft_ - fdelta_h_) / (Math.Pow(t_, k) - 1.0)
                  - (fs_ + (fs_ - fdelta_h_) / (Math.Pow(s_, k) - 1.0));
       }
 

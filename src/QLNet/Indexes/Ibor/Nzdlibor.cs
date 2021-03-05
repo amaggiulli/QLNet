@@ -27,11 +27,11 @@ namespace QLNet
    {
       public NZDLibor(Period tenor)
          : base("NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public NZDLibor(Period tenor, Handle<YieldTermStructure> h)
          : base("NZDLibor", tenor, 2, new NZDCurrency(), new NewZealand(), new Actual360(), h)
-      {}
+      { }
 
    }
 

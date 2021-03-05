@@ -86,7 +86,7 @@ namespace QLNet
          f_x_2n += 2.0;
 
          double bound;
-         for (;;)
+         for (; ; )
          {
             if (f_x_2n > 0)
             {
@@ -95,7 +95,7 @@ namespace QLNet
                if (bound <= errmax || n > itrmax)
                   goto L_End;
             }
-            for (;;)
+            for (; ; )
             {
                u *= lam / n;
                v += u;
@@ -112,7 +112,7 @@ namespace QLNet
                   goto L_End;
             }
          }
-         L_End:
+      L_End:
          Utils.QL_REQUIRE(bound <= errmax, () => "didn't converge");
          return (ans);
       }
@@ -242,14 +242,14 @@ namespace QLNet
 
          double bound;
          bool skip = false;
-         for (;;)
+         for (; ; )
          {
             if (f_x_2n > 0)
             {
                flag = true;
                skip = true;
             }
-            for (;;)
+            for (; ; )
             {
                if (!skip)
                {
@@ -269,7 +269,7 @@ namespace QLNet
                   goto L_End;
             }
          }
-         L_End:
+      L_End:
          if (bound > errmax)
             Utils.QL_FAIL("didn't converge");
          return (ans);

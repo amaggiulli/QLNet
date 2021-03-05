@@ -128,7 +128,7 @@ namespace QLNet
    }
 
    //! Year-on-year inflation-swap bootstrap helper
-   public class YearOnYearInflationSwapHelper  : BootstrapHelper<YoYInflationTermStructure>
+   public class YearOnYearInflationSwapHelper : BootstrapHelper<YoYInflationTermStructure>
    {
       public YearOnYearInflationSwapHelper(Handle<Quote> quote,
                                            Period swapObsLag,

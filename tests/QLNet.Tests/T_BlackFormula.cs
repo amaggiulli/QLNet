@@ -37,7 +37,7 @@ namespace TestSuite
          Option.Type optionType = Option.Type.Call;
          double discount = 0.95;
 
-         double[] d = {-3.0, -2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0, 3.0};
+         double[] d = { -3.0, -2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0, 3.0 };
          for (int i = 0; i < d.Length; ++i)
          {
             double strike = forward - d[i] * bpvol * Math.Sqrt(tte);
@@ -57,12 +57,12 @@ namespace TestSuite
       {
          // Testing Chambers-Nawalkha implied vol approximation
 
-         Option.Type[] types = {Option.Type.Call, Option.Type.Put};
-         double[] displacements = {0.0000, 0.0010, 0.0050, 0.0100, 0.0200};
-         double[] forwards = {-0.0010, 0.0000, 0.0050, 0.0100, 0.0200, 0.0500};
-         double[] strikes = {-0.0100, -0.0050, -0.0010, 0.0000, 0.0010, 0.0050, 0.0100,  0.0200,  0.0500,  0.1000};
-         double[] stdDevs = {0.10, 0.15, 0.20, 0.30, 0.50, 0.60, 0.70, 0.80, 1.00, 1.50, 2.00};
-         double[] discounts = {1.00, 0.95, 0.80, 1.10};
+         Option.Type[] types = { Option.Type.Call, Option.Type.Put };
+         double[] displacements = { 0.0000, 0.0010, 0.0050, 0.0100, 0.0200 };
+         double[] forwards = { -0.0010, 0.0000, 0.0050, 0.0100, 0.0200, 0.0500 };
+         double[] strikes = { -0.0100, -0.0050, -0.0010, 0.0000, 0.0010, 0.0050, 0.0100, 0.0200, 0.0500, 0.1000 };
+         double[] stdDevs = { 0.10, 0.15, 0.20, 0.30, 0.50, 0.60, 0.70, 0.80, 1.00, 1.50, 2.00 };
+         double[] discounts = { 1.00, 0.95, 0.80, 1.10 };
 
          double tol = 5.0E-4;
 

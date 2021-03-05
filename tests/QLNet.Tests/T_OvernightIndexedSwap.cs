@@ -210,7 +210,7 @@ namespace TestSuite
             fixedSwapConvention = BusinessDayConvention.ModifiedFollowing;
             fixedSwapFrequency = Frequency.Annual;
             fixedSwapDayCount = new Thirty360();
-            swapIndex = (IborIndex) new Euribor3M(swapTermStructure);
+            swapIndex = (IborIndex)new Euribor3M(swapTermStructure);
             calendar = eoniaIndex.fixingCalendar();
             today = new Date(5, Month.February, 2009);
             //today = calendar.adjust(Date::todaysDate());
@@ -299,7 +299,7 @@ namespace TestSuite
          vars.eoniaTermStructure.linkTo(Utilities.flatRate(vars.settlement, flat, new Actual360()));
          double fixedRate = Math.Exp(flat) - 1;
          OvernightIndexedSwap swap = vars.makeSwap(new Period(1, TimeUnit.Years), fixedRate, 0.0);
-         double cachedNPV   = 0.001730450147;
+         double cachedNPV = 0.001730450147;
          double tolerance = 1.0e-11;
 
          if (Math.Abs(swap.NPV() - cachedNPV) > tolerance)

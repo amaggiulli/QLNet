@@ -42,10 +42,10 @@ namespace QLNet
 
       public static double sviTotalVariance(double a, double b, double sigma, double rho, double m, double k)
       {
-         return a + b * (rho * (k - m) + Math.Sqrt((k - m) * (k - m) + sigma* sigma));
+         return a + b * (rho * (k - m) + Math.Sqrt((k - m) * (k - m) + sigma * sigma));
       }
 
-      public static double sviVolatility(double strike, double forward, double expiryTime, List<double? > param)
+      public static double sviVolatility(double strike, double forward, double expiryTime, List<double?> param)
       {
          List<double> params_ = new List<double>();
          foreach (double? x in param)

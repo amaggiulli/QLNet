@@ -113,7 +113,7 @@ namespace QLNet
       }
 
       private GeneralizedBlackScholesProcess process_;
-      private CumulativeNormalDistribution f_ ;
+      private CumulativeNormalDistribution f_;
       private int series_;
       // helper methods
       private double underlying() { return process_.x0(); }
@@ -129,7 +129,7 @@ namespace QLNet
       private double barrierLo() { return arguments_.barrier_lo.GetValueOrDefault(); }
       private double barrierHi() { return arguments_.barrier_hi.GetValueOrDefault(); }
       private double rebate() { return arguments_.rebate.GetValueOrDefault(); }
-      private double stdDeviation() {return volatility() * Math.Sqrt(residualTime());}
+      private double stdDeviation() { return volatility() * Math.Sqrt(residualTime()); }
       private double riskFreeRate()
       {
          return process_.riskFreeRate().link.zeroRate(
@@ -162,7 +162,7 @@ namespace QLNet
 
          double acc1 = 0;
          double acc2 = 0;
-         for (int n = -series_ ; n <= series_ ; ++n)
+         for (int n = -series_; n <= series_; ++n)
          {
             double L2n = Math.Pow(barrierLo(), 2 * n);
             double U2n = Math.Pow(barrierHi(), 2 * n);
@@ -196,7 +196,7 @@ namespace QLNet
 
          double acc1 = 0;
          double acc2 = 0;
-         for (int n = -series_ ; n <= series_ ; ++n)
+         for (int n = -series_; n <= series_; ++n)
          {
             double L2n = Math.Pow(barrierLo(), 2 * n);
             double U2n = Math.Pow(barrierHi(), 2 * n);
@@ -218,7 +218,7 @@ namespace QLNet
          }
 
          double rend = Math.Exp(-dividendYield() * residualTime());
-         double kov = strike() * riskFreeDiscount() * acc1 - underlying() * rend  * acc2;
+         double kov = strike() * riskFreeDiscount() * acc1 - underlying() * rend * acc2;
          return Math.Max(0.0, kov);
 
       }

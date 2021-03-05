@@ -434,7 +434,7 @@ namespace QLNet
             return null;
 
          Date d = (settlementDate ?? Settings.evaluationDate());
-         return  leg.LastOrDefault(x => x.hasOccurred(d, includeSettlementDateFlows));
+         return leg.LastOrDefault(x => x.hasOccurred(d, includeSettlementDateFlows));
       }
       //! the first cashflow paying after the given date
       public static CashFlow nextCashFlow(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
@@ -503,7 +503,7 @@ namespace QLNet
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          return aggregateRate(leg, cf);
       }
-      public static double nominal(Leg leg, bool includeSettlementDateFlows,  Date settlementDate = null)
+      public static double nominal(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
       {
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null)
@@ -616,7 +616,7 @@ namespace QLNet
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
 
-         CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows,  settlementDate);
+         CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null)
             return 0;
 
@@ -959,7 +959,7 @@ namespace QLNet
                                     Date npvDate = null)
       {
          return duration(leg, new InterestRate(yield, dayCounter, compounding, frequency),
-                         type, includeSettlementDateFlows,   settlementDate, npvDate);
+                         type, includeSettlementDateFlows, settlementDate, npvDate);
       }
 
       //! Cash-flow convexity
@@ -1002,7 +1002,7 @@ namespace QLNet
             P += c * B;
             switch (yield.compounding())
             {
-               case  Compounding.Simple:
+               case Compounding.Simple:
                   d2Pdy2 += c * 2.0 * B * B * B * t * t;
                   break;
                case Compounding.Compounded:

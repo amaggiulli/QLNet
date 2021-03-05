@@ -133,7 +133,7 @@ namespace QLNet
 
       public Matrix(Matrix from)
       {
-         data_ = !from.empty() ? (double[]) from.data_.Clone() : null;
+         data_ = !from.empty() ? (double[])from.data_.Clone() : null;
          rows_ = from.rows_;
          columns_ = from.columns_;
       }

@@ -181,7 +181,8 @@ namespace QLNet
       //! adds a datum to the set, possibly with a weight
       /*! \pre weight must be positive or null */
       public void add
-         (double value) { add(value, 1); }
+         (double value)
+      { add(value, 1); }
       public void add
          (double value, double weight)
       {

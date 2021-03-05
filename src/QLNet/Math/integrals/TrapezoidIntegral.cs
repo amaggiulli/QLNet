@@ -37,7 +37,7 @@ namespace QLNet
        \test the correctness of the result is tested by checking it
              against known good values.
    */
-   public class TrapezoidIntegral<IntegrationPolicy> : Integrator where IntegrationPolicy : IIntegrationPolicy, new ()
+   public class TrapezoidIntegral<IntegrationPolicy> : Integrator where IntegrationPolicy : IIntegrationPolicy, new()
    {
       public TrapezoidIntegral(double accuracy, int maxIterations) : base(accuracy, maxIterations) { }
 
@@ -86,7 +86,7 @@ namespace QLNet
             sum += f(x);
          return (I + dx * sum) / 2.0;
       }
-      public int nbEvalutions() { return 2;}
+      public int nbEvalutions() { return 2; }
    }
 
    public struct MidPoint : IIntegrationPolicy

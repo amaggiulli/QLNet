@@ -23,9 +23,9 @@ namespace QLNet
 {
 
    //! Digital option replication strategy
-//    ! Specification of replication strategies used to price
-//        the embedded digital option in a digital coupon.
-//
+   //    ! Specification of replication strategies used to price
+   //        the embedded digital option in a digital coupon.
+   //
    public struct Replication
    {
       public enum Type

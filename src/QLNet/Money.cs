@@ -55,7 +55,7 @@ namespace QLNet
       [ThreadStatic]
       private static Currency baseCurrency_;
 
-      public static ConversionType conversionType {get {return conversionType_;} set {conversionType_ = value;}}
+      public static ConversionType conversionType { get { return conversionType_; } set { conversionType_ = value; } }
       public static Currency baseCurrency { get { return baseCurrency_; } set { baseCurrency_ = value; } }
 
       private double value_;
@@ -120,13 +120,13 @@ namespace QLNet
       }
       public override String ToString()
       {
-         return this.rounded().value +  "-" + this.currency.code + "-"  + this.currency.symbol ;
+         return this.rounded().value + "-" + this.currency.code + "-" + this.currency.symbol;
       }
       #endregion
 
       #region Operators
 
-      public static Money operator * (Money m, double x)
+      public static Money operator *(Money m, double x)
       {
          return new Money(m.value_ * x, m.currency);
       }
@@ -134,12 +134,12 @@ namespace QLNet
       {
          return m * x;
       }
-      public static Money operator / (Money m, double x)
+      public static Money operator /(Money m, double x)
       {
          return new Money(m.value_ / x, m.currency);
       }
 
-      public static Money operator+(Money m1, Money m2)
+      public static Money operator +(Money m1, Money m2)
       {
          Money m = new Money(m1.currency, m1.value);
 
@@ -167,7 +167,7 @@ namespace QLNet
 
          return m;
       }
-      public static Money operator-(Money m1, Money m2)
+      public static Money operator -(Money m1, Money m2)
       {
          Money m = new Money(m1.currency, m1.value);
 
@@ -196,7 +196,7 @@ namespace QLNet
          return m;
       }
 
-      public static bool  operator ==(Money m1, Money m2)
+      public static bool operator ==(Money m1, Money m2)
       {
          if ((object)m1 == null && (object)m2 == null)
             return true;
@@ -226,9 +226,9 @@ namespace QLNet
             return false;
          }
       }
-      public static bool  operator !=(Money m1, Money m2)
+      public static bool operator !=(Money m1, Money m2)
       {
-         return !(m1 == m2) ;
+         return !(m1 == m2);
       }
 
       public override bool Equals(object o) { return (this == (Money)o); }

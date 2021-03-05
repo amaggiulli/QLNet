@@ -144,8 +144,8 @@ namespace QLNet
       /*! \note you don't know if price() is a cap or a floor
                without checking the ZeroInflation ATM level.
       */
-      public virtual double nominal() {return nominal_;}
-      public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
+      public virtual double nominal() { return nominal_; }
+      public virtual BusinessDayConvention businessDayConvention() { return bdc_; }
 
       //! \warning you MUST remind the compiler in any descendants with the using:: mechanism
       //!          because you overload the names
@@ -162,22 +162,22 @@ namespace QLNet
       {
          return this.floorPrice(cpiOptionDateFromTenor(d), k);
       }
-      public abstract double price(Date d, double k)  ;
-      public abstract double capPrice(Date d, double k)  ;
-      public abstract double floorPrice(Date d, double k)  ;
+      public abstract double price(Date d, double k);
+      public abstract double capPrice(Date d, double k);
+      public abstract double floorPrice(Date d, double k);
 
-      public virtual List<double> strikes()  {return cfStrikes_;}
-      public virtual List<double> capStrikes()  {return cStrikes_;}
-      public virtual List<double> floorStrikes()  {return fStrikes_;}
-      public virtual List<Period> maturities()  {return cfMaturities_;}
+      public virtual List<double> strikes() { return cfStrikes_; }
+      public virtual List<double> capStrikes() { return cStrikes_; }
+      public virtual List<double> floorStrikes() { return fStrikes_; }
+      public virtual List<Period> maturities() { return cfMaturities_; }
 
-      public virtual Matrix capPrices()  { return cPrice_; }
-      public virtual Matrix floorPrices()  { return fPrice_; }
+      public virtual Matrix capPrices() { return cPrice_; }
+      public virtual Matrix floorPrices() { return fPrice_; }
 
-      public virtual double minStrike() {return cfStrikes_.First();}
-      public virtual double maxStrike() {return cfStrikes_.Last();}
-      public virtual Date minDate() {return referenceDate() + cfMaturities_.First();} // \TODO deal with index interpolation
-      public override Date maxDate() {return referenceDate() + cfMaturities_.Last();}
+      public virtual double minStrike() { return cfStrikes_.First(); }
+      public virtual double maxStrike() { return cfStrikes_.Last(); }
+      public virtual Date minDate() { return referenceDate() + cfMaturities_.First(); } // \TODO deal with index interpolation
+      public override Date maxDate() { return referenceDate() + cfMaturities_.Last(); }
 
       public virtual Date cpiOptionDateFromTenor(Period p)
       {
@@ -211,7 +211,7 @@ namespace QLNet
 
 
    public class InterpolatedCPICapFloorTermPriceSurface<Interpolator2D> : CPICapFloorTermPriceSurface
-      where Interpolator2D : IInterpolationFactory2D, new ()
+      where Interpolator2D : IInterpolationFactory2D, new()
    {
       public InterpolatedCPICapFloorTermPriceSurface(double nominal,
                                                      double startRate,

@@ -23,10 +23,10 @@ namespace QLNet
 {
 
    //! Continuous-averaging Asian option
-//    ! \todo add running average
-//
-//        \ingroup instruments
-//
+   //    ! \todo add running average
+   //
+   //        \ingroup instruments
+   //
    public class ContinuousAveragingAsianOption : OneAssetOption
    {
       public new class Arguments : OneAssetOption.Arguments
@@ -43,7 +43,7 @@ namespace QLNet
          public Average.Type averageType { get; set; }
       }
 
-      public new class Engine: GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results>
+      public new class Engine : GenericEngine<ContinuousAveragingAsianOption.Arguments, ContinuousAveragingAsianOption.Results>
       {
       }
 
@@ -106,7 +106,7 @@ namespace QLNet
          public List<Date> fixingDates { get; set; }
       }
 
-      public new class Engine: GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results>
+      public new class Engine : GenericEngine<DiscreteAveragingAsianOption.Arguments, DiscreteAveragingAsianOption.Results>
       {
       }
 

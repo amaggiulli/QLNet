@@ -70,7 +70,7 @@ namespace QLNet
       {
          public BiborSW(Handle<YieldTermStructure> h = null)
             : base(new Period(1, TimeUnit.Weeks), h ?? new Handle<YieldTermStructure>())
-         {}
+         { }
       }
 
       /// <summary>
@@ -80,7 +80,7 @@ namespace QLNet
       {
          public Bibor1M(Handle<YieldTermStructure> h = null)
             : base(new Period(1, TimeUnit.Months), h ?? new Handle<YieldTermStructure>())
-         {}
+         { }
       }
 
       /// <summary>

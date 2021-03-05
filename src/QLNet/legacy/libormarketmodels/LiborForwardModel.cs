@@ -50,7 +50,7 @@ namespace QLNet
 
          for (int i = 0; i < process.size(); ++i)
          {
-            accrualPeriod_[i] =  process.accrualEndTimes()[i]
+            accrualPeriod_[i] = process.accrualEndTimes()[i]
                                  - process.accrualStartTimes()[i];
             f_[i] = 1.0 / (1.0 + accrualPeriod_[i] * process_.initialValues()[i]);
          }
@@ -76,9 +76,9 @@ namespace QLNet
                                        double bondMaturity)
       {
 
-         List<double>  accrualStartTimes
+         List<double> accrualStartTimes
             = process_.accrualStartTimes();
-         List<double>   accrualEndTimes
+         List<double> accrualEndTimes
             = process_.accrualEndTimes();
 
          Utils.QL_REQUIRE(accrualStartTimes.First() <= maturity && accrualStartTimes.Last() >= maturity, () =>
@@ -99,9 +99,9 @@ namespace QLNet
                           && Math.Abs(bondMaturity - accrualEndTimes[i]) < 100 * Const.QL_EPSILON, () =>
                           "irregular fixings are not (yet) supported");
 
-         double tenor     = accrualEndTimes[i] - accrualStartTimes[i];
-         double forward   = process_.initialValues()[i];
-         double capRate   = (1.0 / strike - 1.0) / tenor;
+         double tenor = accrualEndTimes[i] - accrualStartTimes[i];
+         double forward = process_.initialValues()[i];
+         double capRate = (1.0 / strike - 1.0) / tenor;
          double var = covarProxy_.integratedCovariance(i, i, process_.fixingTimes()[i]);
          double dis = process_.index().forwardingTermStructure().link.discount(bondMaturity);
 
@@ -109,9 +109,9 @@ namespace QLNet
                            (type == Option.Type.Put ? Option.Type.Call : Option.Type.Put),
                            capRate, forward, Math.Sqrt(var));
 
-         double   npv = dis* tenor* black;
+         double npv = dis * tenor * black;
 
-         return npv / (1.0 + capRate* tenor);
+         return npv / (1.0 + capRate * tenor);
       }
 
       public double discount(double t)
@@ -127,7 +127,7 @@ namespace QLNet
       public Vector w_0(int alpha, int beta)
       {
          Vector omega = new Vector(beta + 1, 0.0);
-         Utils.QL_REQUIRE(alpha<beta, () => "alpha needs to be smaller than beta");
+         Utils.QL_REQUIRE(alpha < beta, () => "alpha needs to be smaller than beta");
 
          double s = 0.0;
          for (int k = alpha + 1; k <= beta; ++k)
@@ -160,7 +160,7 @@ namespace QLNet
          double fwdRate = 0.0;
          for (int i = alpha + 1; i <= beta; ++i)
          {
-            fwdRate += w[i]*f[i];
+            fwdRate += w[i] * f[i];
          }
          return fwdRate;
       }
@@ -199,7 +199,7 @@ namespace QLNet
          Vector f = process_.initialValues();
          for (int k = 0; k < size; ++k)
          {
-            int alpha  = k;
+            int alpha = k;
             double t_alpha = process_.fixingTimes()[alpha + 1];
 
             Matrix var = new Matrix(size, size);

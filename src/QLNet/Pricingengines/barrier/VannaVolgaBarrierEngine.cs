@@ -279,7 +279,7 @@ namespace QLNet
             barrierOption.recalculate();
             double priceBS_delta2 = barrierOption.NPV();
 
-            ((SimpleQuote)x0Quote.currentLink()).setValue(x0Quote.link.value() +  spotShift_delta);//set back
+            ((SimpleQuote)x0Quote.currentLink()).setValue(x0Quote.link.value() + spotShift_delta);//set back
             double deltaBar1 = (priceBS_delta1 - priceBS_delta2) / (2.0 * spotShift_delta);
 
             //shifted delta
@@ -292,7 +292,7 @@ namespace QLNet
             barrierOption.recalculate();
             priceBS_delta2 = barrierOption.NPV();
 
-            ((SimpleQuote)x0Quote.currentLink()).setValue(x0Quote.link.value() +  spotShift_delta);//set back
+            ((SimpleQuote)x0Quote.currentLink()).setValue(x0Quote.link.value() + spotShift_delta);//set back
             double deltaBar2 = (priceBS_delta1 - priceBS_delta2) / (2.0 * spotShift_delta);
 
             double vannaBarBS = (deltaBar2 - deltaBar1) / sigmaShift_vanna;
@@ -340,7 +340,7 @@ namespace QLNet
                                                           2.0 * mu / Math.Pow(atmVol_.link.value(), 2.0)) * cnd.value(h2);
             double p_survival = 1.0 - probTouch;
 
-            double lambda = p_survival ;
+            double lambda = p_survival;
             double adjust = q[0] * (priceAtmCallMkt - priceAtmCallBS)
                             + q[1] * (price25CallMkt - price25CallBS)
                             + q[2] * (price25PutMkt - price25PutBS);

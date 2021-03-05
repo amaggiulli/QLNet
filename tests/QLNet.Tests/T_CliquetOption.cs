@@ -121,12 +121,12 @@ namespace TestSuite
          Dictionary<String, double> calculated = new Dictionary<string, double>(),
          expected = new Dictionary<string, double>(),
          tolerance = new Dictionary<string, double>();
-         tolerance["delta"]  = 1.0e-5;
-         tolerance["gamma"]  = 1.0e-5;
-         tolerance["theta"]  = 1.0e-5;
-         tolerance["rho"]    = 1.0e-5;
+         tolerance["delta"] = 1.0e-5;
+         tolerance["gamma"] = 1.0e-5;
+         tolerance["theta"] = 1.0e-5;
+         tolerance["rho"] = 1.0e-5;
          tolerance["divRho"] = 1.0e-5;
-         tolerance["vega"]   = 1.0e-5;
+         tolerance["vega"] = 1.0e-5;
 
          Option.Type[] types = { Option.Type.Call, Option.Type.Put };
          double[] moneyness = { 0.9, 1.0, 1.1 };
@@ -134,7 +134,7 @@ namespace TestSuite
          double[] qRates = { 0.04, 0.05, 0.06 };
          double[] rRates = { 0.01, 0.05, 0.15 };
          int[] lengths = { 1, 2 };
-         Frequency[] frequencies = { Frequency.Semiannual, Frequency.Quarterly,  };
+         Frequency[] frequencies = { Frequency.Semiannual, Frequency.Quarterly, };
          double[] vols = { 0.11, 0.50, 1.20 };
 
          DayCounter dc = new Actual360();
@@ -193,12 +193,12 @@ namespace TestSuite
                                  vol.setValue(v);
 
                                  double value = option.NPV();
-                                 calculated["delta"]  = option.delta();
-                                 calculated["gamma"]  = option.gamma();
-                                 calculated["theta"]  = option.theta();
-                                 calculated["rho"]    = option.rho();
+                                 calculated["delta"] = option.delta();
+                                 calculated["gamma"] = option.gamma();
+                                 calculated["theta"] = option.theta();
+                                 calculated["rho"] = option.rho();
                                  calculated["divRho"] = option.dividendRho();
-                                 calculated["vega"]   = option.vega();
+                                 calculated["vega"] = option.vega();
 
                                  if (value > spot.value() * 1.0e-5)
                                  {
@@ -253,9 +253,9 @@ namespace TestSuite
                                     foreach (var it in calculated)
                                     {
                                        String greek = it.Key;
-                                       double expct = expected  [greek],
+                                       double expct = expected[greek],
                                               calcl = calculated[greek],
-                                              tol   = tolerance [greek];
+                                              tol = tolerance[greek];
                                        double error = Utilities.relativeError(expct, calcl, u);
                                        if (error > tol)
                                        {

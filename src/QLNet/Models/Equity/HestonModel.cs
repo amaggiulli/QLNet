@@ -41,9 +41,9 @@ namespace QLNet
          arguments_[4] = new ConstantParameter(process.v0(), new PositiveConstraint());
          generateArguments();
 
-         process_.riskFreeRate().registerWith(update) ;
-         process_.dividendYield().registerWith(update) ;
-         process_.s0().registerWith(update) ;
+         process_.riskFreeRate().registerWith(update);
+         process_.dividendYield().registerWith(update);
+         process_.s0().registerWith(update);
 
       }
 
@@ -87,7 +87,7 @@ namespace QLNet
 
          public FellerConstraint()
             : base(new FellerConstraint.Impl())
-         {}
+         { }
 
       }
 
@@ -97,7 +97,7 @@ namespace QLNet
                                       process_.dividendYield(),
                                       process_.s0(),
                                       v0(), kappa(), theta(),
-                                      sigma(), rho()) ;
+                                      sigma(), rho());
       }
       protected HestonProcess process_;
    }

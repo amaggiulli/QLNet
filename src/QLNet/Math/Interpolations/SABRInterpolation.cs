@@ -23,7 +23,7 @@ namespace QLNet
 {
    public class SABRWrapper : IWrapper
    {
-      public SABRWrapper(double t, double forward, List < double? > param, List < double? > addParams)
+      public SABRWrapper(double t, double forward, List<double?> param, List<double?> addParams)
       {
          t_ = t;
          forward_ = forward;
@@ -54,7 +54,7 @@ namespace QLNet
 
       private double t_, forward_;
       private double? shift_;
-      private List < double? > params_;
+      private List<double?> params_;
       private VolatilityType volatilityType_;
       private SabrApproximationModel approximationModel_;
    }
@@ -62,7 +62,7 @@ namespace QLNet
    public struct SABRSpecs : IModel
    {
       public int dimension() { return 4; }
-      public void defaultValues(List < double? > param, List<bool> b, double forward, double expiryTime, List < double? > addParams)
+      public void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams)
       {
          shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
          volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
@@ -82,7 +82,7 @@ namespace QLNet
             param[3] = 0.0;
       }
 
-      public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List < double? > addParams)
+      public void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r, List<double?> addParams)
       {
          shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
          volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
@@ -106,7 +106,7 @@ namespace QLNet
       public double eps1() { return .0000001; }
       public double eps2() { return .9999; }
       public double dilationFactor() { return 0.001; }
-      public Vector inverse(Vector y, List<bool> b, List < double? > c, double d)
+      public Vector inverse(Vector y, List<bool> b, List<double?> c, double d)
       {
          Vector x = new Vector(4);
          x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt(Math.Max(eps1(), y[0]) - eps1())
@@ -117,7 +117,7 @@ namespace QLNet
          x[3] = Math.Asin(y[3] / eps2());
          return x;
       }
-      public Vector direct(Vector x, List<bool> b, List < double? > c, double d)
+      public Vector direct(Vector x, List<bool> b, List<double?> c, double d)
       {
          Vector y = new Vector(4);
          y[0] = Math.Abs(x[0]) < 5.0
@@ -134,13 +134,13 @@ namespace QLNet
                 : eps2() * (x[3] > 0.0 ? 1.0 : (-1.0));
          return y;
       }
-      public IWrapper instance(double t, double forward, List < double? > param, List < double? > addParams)
+      public IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams)
       {
          shift_ = addParams == null ? 0.0 : Convert.ToDouble(addParams[0]);
          volatilityType_ = addParams == null ? VolatilityType.ShiftedLognormal : (addParams[1] > 0.0 ? VolatilityType.Normal : VolatilityType.ShiftedLognormal);
          return new SABRWrapper(t, forward, param, addParams);
       }
-      public double weight(double strike, double forward, double stdDev, List < double? > addParams)
+      public double weight(double strike, double forward, double stdDev, List<double?> addParams)
       {
          if (Convert.ToDouble(addParams[1]) == 0.0)
             return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0, addParams[0].Value);
@@ -179,16 +179,16 @@ namespace QLNet
                                VolatilityType volatilityType = VolatilityType.ShiftedLognormal,
                                SabrApproximationModel approximationModel = SabrApproximationModel.Hagan2002)
       {
-         List < double? > addParams = new List < double? >();
+         List<double?> addParams = new List<double?>();
          addParams.Add(shift);
          addParams.Add(volatilityType == VolatilityType.ShiftedLognormal ? 0.0 : 1.0);
          addParams.Add((double?)approximationModel);
 
          impl_ = new XABRInterpolationImpl<SABRSpecs>(
             xBegin, xEnd, yBegin, t, forward,
-         new List < double? >() {alpha, beta, nu, rho},
+         new List<double?>() { alpha, beta, nu, rho },
          //boost::assign::list_of(alpha)(beta)(nu)(rho),
-         new List<bool>() {alphaIsFixed, betaIsFixed, nuIsFixed, rhoIsFixed},
+         new List<bool>() { alphaIsFixed, betaIsFixed, nuIsFixed, rhoIsFixed },
          //boost::assign::list_of(alphaIsFixed)(betaIsFixed)(nuIsFixed)(rhoIsFixed),
          vegaWeighted, endCriteria, optMethod, errorAccept, useMaxError,
          maxGuesses, addParams);

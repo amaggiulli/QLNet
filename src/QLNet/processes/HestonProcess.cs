@@ -22,16 +22,18 @@ namespace QLNet
    // This class describes the square root stochastic volatility
    public class HestonProcess : StochasticProcess
    {
-      public enum Discretization { PartialTruncation,
-                                   FullTruncation,
-                                   Reflection,
-                                   NonCentralChiSquareVariance,
-                                   QuadraticExponential,
-                                   QuadraticExponentialMartingale,
-                                   BroadieKayaExactSchemeLobatto,
-                                   BroadieKayaExactSchemeLaguerre,
-                                   BroadieKayaExactSchemeTrapezoidal
-                                 }
+      public enum Discretization
+      {
+         PartialTruncation,
+         FullTruncation,
+         Reflection,
+         NonCentralChiSquareVariance,
+         QuadraticExponential,
+         QuadraticExponentialMartingale,
+         BroadieKayaExactSchemeLobatto,
+         BroadieKayaExactSchemeLaguerre,
+         BroadieKayaExactSchemeTrapezoidal
+      }
 
       public HestonProcess(Handle<YieldTermStructure> riskFreeRate,
                            Handle<YieldTermStructure> dividendYield,
@@ -52,8 +54,8 @@ namespace QLNet
          discretization_ = d;
 
          riskFreeRate_.registerWith(update);
-         dividendYield_.registerWith(update) ;
-         s0_.registerWith(update) ;
+         dividendYield_.registerWith(update);
+         s0_.registerWith(update);
       }
 
       public override int size() { return 2; }
@@ -76,7 +78,7 @@ namespace QLNet
       {
          Vector tmp = new Vector(2);
          double vol = (x[1] > 0.0) ? Math.Sqrt(x[1])
-                      : (discretization_ == Discretization.Reflection) ? - Math.Sqrt(-x[1])
+                      : (discretization_ == Discretization.Reflection) ? -Math.Sqrt(-x[1])
                       : 0.0;
 
          tmp[0] = riskFreeRate_.link.forwardRate(t, t, Compounding.Continuous).value()
@@ -104,8 +106,8 @@ namespace QLNet
          double sigma2 = sigma_ * vol;
          double sqrhov = Math.Sqrt(1.0 - rho_ * rho_);
 
-         tmp[0, 0] = vol;          tmp[0, 1] = 0.0;
-         tmp[1, 0] = rho_ * sigma2;  tmp[1, 1] = sqrhov * sigma2;
+         tmp[0, 0] = vol; tmp[0, 1] = 0.0;
+         tmp[1, 0] = rho_ * sigma2; tmp[1, 1] = sqrhov * sigma2;
          return tmp;
 
       }
@@ -136,7 +138,7 @@ namespace QLNet
             case Discretization.PartialTruncation:
                vol = (x0[1] > 0.0) ? Math.Sqrt(x0[1]) : 0.0;
                vol2 = sigma_ * vol;
-               mu =    riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+               mu = riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - 0.5 * vol * vol;
                nu = kappa_ * (theta_ - x0[1]);
@@ -147,7 +149,7 @@ namespace QLNet
             case Discretization.FullTruncation:
                vol = (x0[1] > 0.0) ? Math.Sqrt(x0[1]) : 0.0;
                vol2 = sigma_ * vol;
-               mu =    riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+               mu = riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - 0.5 * vol * vol;
                nu = kappa_ * (theta_ - vol * vol);
@@ -158,7 +160,7 @@ namespace QLNet
             case Discretization.Reflection:
                vol = Math.Sqrt(Math.Abs(x0[1]));
                vol2 = sigma_ * vol;
-               mu =    riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+               mu = riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                        - 0.5 * vol * vol;
                nu = kappa_ * (theta_ - vol * vol);
@@ -174,7 +176,7 @@ namespace QLNet
                // process. For further details please read the Wilmott thread
                // "QuantLib code is very high quality"
                vol = (x0[1] > 0.0) ? Math.Sqrt(x0[1]) : 0.0;
-               mu =   riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+               mu = riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                       - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
                       - 0.5 * vol * vol;
 
@@ -186,90 +188,90 @@ namespace QLNet
                break;
             case Discretization.QuadraticExponential:
             case Discretization.QuadraticExponentialMartingale:
-            {
-               // for details of the quadratic exponential discretization scheme
-               // see Leif Andersen,
-               // Efficient Simulation of the Heston Stochastic Volatility Model
-               double ex = Math.Exp(-kappa_ * dt);
-
-               double m  =  theta_ + (x0[1] - theta_) * ex;
-               double s2 =  x0[1] * sigma_ * sigma_ * ex / kappa_ * (1 - ex)
-                            + theta_ * sigma_ * sigma_ / (2 * kappa_) * (1 - ex) * (1 - ex);
-               double psi = s2 / (m * m);
-
-               double g1 =  0.5;
-               double g2 =  0.5;
-               double k0 = -rho_ * kappa_ * theta_ * dt / sigma_;
-               double k1 =  g1 * dt * (kappa_ * rho_ / sigma_ - 0.5) - rho_ / sigma_;
-               double k2 =  g2 * dt * (kappa_ * rho_ / sigma_ - 0.5) + rho_ / sigma_;
-               double k3 =  g1 * dt * (1 - rho_ * rho_);
-               double k4 =  g2 * dt * (1 - rho_ * rho_);
-               double A  =  k2 + 0.5 * k4;
-
-               if (psi < 1.5)
                {
-                  double b2 = 2 / psi - 1 + Math.Sqrt(2 / psi * (2 / psi - 1));
-                  double b  = Math.Sqrt(b2);
-                  double a  = m / (1 + b2);
+                  // for details of the quadratic exponential discretization scheme
+                  // see Leif Andersen,
+                  // Efficient Simulation of the Heston Stochastic Volatility Model
+                  double ex = Math.Exp(-kappa_ * dt);
 
-                  if (discretization_ == Discretization.QuadraticExponentialMartingale)
+                  double m = theta_ + (x0[1] - theta_) * ex;
+                  double s2 = x0[1] * sigma_ * sigma_ * ex / kappa_ * (1 - ex)
+                               + theta_ * sigma_ * sigma_ / (2 * kappa_) * (1 - ex) * (1 - ex);
+                  double psi = s2 / (m * m);
+
+                  double g1 = 0.5;
+                  double g2 = 0.5;
+                  double k0 = -rho_ * kappa_ * theta_ * dt / sigma_;
+                  double k1 = g1 * dt * (kappa_ * rho_ / sigma_ - 0.5) - rho_ / sigma_;
+                  double k2 = g2 * dt * (kappa_ * rho_ / sigma_ - 0.5) + rho_ / sigma_;
+                  double k3 = g1 * dt * (1 - rho_ * rho_);
+                  double k4 = g2 * dt * (1 - rho_ * rho_);
+                  double A = k2 + 0.5 * k4;
+
+                  if (psi < 1.5)
                   {
-                     // martingale correction
-                     Utils.QL_REQUIRE(A < 1 / (2 * a), () => "illegal value");
-                     k0 = -A * b2 * a / (1 - 2 * A * a) + 0.5 * Math.Log(1 - 2 * A * a)
-                          - (k1 + 0.5 * k3) * x0[1];
+                     double b2 = 2 / psi - 1 + Math.Sqrt(2 / psi * (2 / psi - 1));
+                     double b = Math.Sqrt(b2);
+                     double a = m / (1 + b2);
+
+                     if (discretization_ == Discretization.QuadraticExponentialMartingale)
+                     {
+                        // martingale correction
+                        Utils.QL_REQUIRE(A < 1 / (2 * a), () => "illegal value");
+                        k0 = -A * b2 * a / (1 - 2 * A * a) + 0.5 * Math.Log(1 - 2 * A * a)
+                             - (k1 + 0.5 * k3) * x0[1];
+                     }
+                     retVal[1] = a * (b + dw[1]) * (b + dw[1]);
                   }
-                  retVal[1] = a * (b + dw[1]) * (b + dw[1]);
-               }
-               else
-               {
-                  double p = (psi - 1) / (psi + 1);
-                  double beta = (1 - p) / m;
-
-                  double u = new CumulativeNormalDistribution().value(dw[1]);
-
-                  if (discretization_ == Discretization.QuadraticExponentialMartingale)
+                  else
                   {
-                     // martingale correction
-                     Utils.QL_REQUIRE(A < beta, () => "illegal value");
-                     k0 = -Math.Log(p + beta*(1 - p) / (beta - A)) - (k1 + 0.5 * k3)*x0[1];
+                     double p = (psi - 1) / (psi + 1);
+                     double beta = (1 - p) / m;
+
+                     double u = new CumulativeNormalDistribution().value(dw[1]);
+
+                     if (discretization_ == Discretization.QuadraticExponentialMartingale)
+                     {
+                        // martingale correction
+                        Utils.QL_REQUIRE(A < beta, () => "illegal value");
+                        k0 = -Math.Log(p + beta * (1 - p) / (beta - A)) - (k1 + 0.5 * k3) * x0[1];
+                     }
+                     retVal[1] = ((u <= p) ? 0.0 : Math.Log((1 - p) / (1 - u)) / beta);
                   }
-                  retVal[1] = ((u <= p) ? 0.0 : Math.Log((1 - p) / (1 - u)) / beta);
+
+                  mu = riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+                         - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value();
+
+                  retVal[0] = x0[0] * Math.Exp(mu * dt + k0 + k1 * x0[1] + k2 * retVal[1]
+                                             + Math.Sqrt(k3 * x0[1] + k4 * retVal[1]) * dw[0]);
                }
-
-               mu =   riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
-                      - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value();
-
-               retVal[0] = x0[0]*Math.Exp(mu* dt + k0 + k1* x0[1] + k2* retVal[1]
-                                          + Math.Sqrt(k3* x0[1] + k4* retVal[1])*dw[0]);
-            }
-            break;
+               break;
             case Discretization.BroadieKayaExactSchemeLobatto:
             case Discretization.BroadieKayaExactSchemeLaguerre:
             case Discretization.BroadieKayaExactSchemeTrapezoidal:
-            {
-               double nu_0 = x0[1];
-               double nu_t = varianceDistribution(nu_0, dw[1], dt);
+               {
+                  double nu_0 = x0[1];
+                  double nu_t = varianceDistribution(nu_0, dw[1], dt);
 
-               double x = Math.Min(1.0 - Const.QL_EPSILON,
-                                   Math.Max(0.0, new CumulativeNormalDistribution().value(dw[2])));
+                  double x = Math.Min(1.0 - Const.QL_EPSILON,
+                                      Math.Max(0.0, new CumulativeNormalDistribution().value(dw[2])));
 
-               cdf_nu_ds_minus_x f = new cdf_nu_ds_minus_x(x, this, nu_0, nu_t, dt, discretization_);
-               double vds = new Brent().solve(f, 1e-5, theta_ * dt, 0.1 * theta_ * dt);
+                  cdf_nu_ds_minus_x f = new cdf_nu_ds_minus_x(x, this, nu_0, nu_t, dt, discretization_);
+                  double vds = new Brent().solve(f, 1e-5, theta_ * dt, 0.1 * theta_ * dt);
 
-               double vdw = (nu_t - nu_0 - kappa_*theta_*dt + kappa_*vds) / sigma_;
+                  double vdw = (nu_t - nu_0 - kappa_ * theta_ * dt + kappa_ * vds) / sigma_;
 
-               mu = (riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
-                     - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value())*dt
-                    - 0.5 * vds + rho_*vdw;
+                  mu = (riskFreeRate_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()
+                        - dividendYield_.link.forwardRate(t0, t0 + dt, Compounding.Continuous).value()) * dt
+                       - 0.5 * vds + rho_ * vdw;
 
-               double sig = Math.Sqrt((1 - rho_*rho_)*vds);
-               double s = x0[0]*Math.Exp(mu + sig* dw[0]);
+                  double sig = Math.Sqrt((1 - rho_ * rho_) * vds);
+                  double s = x0[0] * Math.Exp(mu + sig * dw[0]);
 
-               retVal[0] = s;
-               retVal[1] = nu_t;
-            }
-            break;
+                  retVal[0] = s;
+                  retVal[1] = nu_t;
+               }
+               break;
             default:
                Utils.QL_FAIL("unknown discretization schema");
                break;
@@ -278,8 +280,8 @@ namespace QLNet
          return retVal;
       }
 
-      public double v0()    { return v0_; }
-      public double rho()   { return rho_; }
+      public double v0() { return v0_; }
+      public double rho() { return rho_; }
       public double kappa() { return kappa_; }
       public double theta() { return theta_; }
       public double sigma() { return sigma_; }
@@ -295,7 +297,7 @@ namespace QLNet
 
       private double varianceDistribution(double v, double dw, double dt)
       {
-         double df  = 4 * theta_ * kappa_ / (sigma_ * sigma_);
+         double df = 4 * theta_ * kappa_ / (sigma_ * sigma_);
          double ncp = 4 * kappa_ * Math.Exp(-kappa_ * dt)
                       / (sigma_ * sigma_ * (1 - Math.Exp(-kappa_ * dt))) * v;
 
@@ -480,7 +482,7 @@ namespace QLNet
          public cdf_nu_ds(HestonProcess _process, double _nu_0, double _nu_t, double _dt,
                           Discretization _discretization)
          {
-            process  = _process;
+            process = _process;
             nu_0 = _nu_0;
             nu_t = _nu_t;
             dt = _dt;
@@ -507,53 +509,53 @@ namespace QLNet
             switch (discretization)
             {
                case Discretization.BroadieKayaExactSchemeLaguerre:
-               {
-                  GaussLaguerreIntegration gaussLaguerreIntegration = new GaussLaguerreIntegration(128);
+                  {
+                     GaussLaguerreIntegration gaussLaguerreIntegration = new GaussLaguerreIntegration(128);
 
-                  // get the upper bound for the integration
-                  double upper = u_eps / 2.0;
-                  while (Complex.Abs(Phi(process, upper, nu_0, nu_t, dt) / upper) > eps)
-                     upper *= 2.0;
+                     // get the upper bound for the integration
+                     double upper = u_eps / 2.0;
+                     while (Complex.Abs(Phi(process, upper, nu_0, nu_t, dt) / upper) > eps)
+                        upper *= 2.0;
 
-                  return (x < upper)
-                         ? Math.Max(0.0, Math.Min(1.0,
-                                                  gaussLaguerreIntegration.value(new ch(process, x, nu_0, nu_t, dt).value)))
-                         : 1.0;
-               }
-               case Discretization.BroadieKayaExactSchemeLobatto:
-               {
-                  // get the upper bound for the integration
-                  double upper = u_eps / 2.0;
-                  while (Complex.Abs(Phi(process, upper, nu_0, nu_t, dt) / upper) > eps)
-                     upper *= 2.0;
-
-                  return x < upper ?
-                         Math.Max(0.0, Math.Min(1.0,
-                                                   new GaussLobattoIntegral(default(int), eps).value(new ch(process, x, nu_0, nu_t, dt).value, Const.QL_EPSILON, upper)))
+                     return (x < upper)
+                            ? Math.Max(0.0, Math.Min(1.0,
+                                                     gaussLaguerreIntegration.value(new ch(process, x, nu_0, nu_t, dt).value)))
                             : 1.0;
                   }
-               case Discretization.BroadieKayaExactSchemeTrapezoidal:
-               {
-                  double h = 0.05;
-
-                  double si = Si(0.5 * h * x);
-                  double s = Const.M_2_PI * si;
-                  Complex f = new Complex();
-                  int j = 0;
-                  do
+               case Discretization.BroadieKayaExactSchemeLobatto:
                   {
-                     ++j;
-                     double u = h * j;
-                     double si_n = Si(x * (u + 0.5 * h));
+                     // get the upper bound for the integration
+                     double upper = u_eps / 2.0;
+                     while (Complex.Abs(Phi(process, upper, nu_0, nu_t, dt) / upper) > eps)
+                        upper *= 2.0;
 
-                     f = Phi(process, u, nu_0, nu_t, dt);
-                     s += Const.M_2_PI * f.Real * (si_n - si);
-                     si = si_n;
+                     return x < upper ?
+                            Math.Max(0.0, Math.Min(1.0,
+                                                      new GaussLobattoIntegral(default(int), eps).value(new ch(process, x, nu_0, nu_t, dt).value, Const.QL_EPSILON, upper)))
+                               : 1.0;
                   }
-                  while (Const.M_2_PI * Complex.Abs(f) / j > eps);
+               case Discretization.BroadieKayaExactSchemeTrapezoidal:
+                  {
+                     double h = 0.05;
 
-                  return s;
-               }
+                     double si = Si(0.5 * h * x);
+                     double s = Const.M_2_PI * si;
+                     Complex f = new Complex();
+                     int j = 0;
+                     do
+                     {
+                        ++j;
+                        double u = h * j;
+                        double si_n = Si(x * (u + 0.5 * h));
+
+                        f = Phi(process, u, nu_0, nu_t, dt);
+                        s += Const.M_2_PI * f.Real * (si_n - si);
+                        si = si_n;
+                     }
+                     while (Const.M_2_PI * Complex.Abs(f) / j > eps);
+
+                     return s;
+                  }
                default:
                   Utils.QL_FAIL("unknown integration method");
                   break;

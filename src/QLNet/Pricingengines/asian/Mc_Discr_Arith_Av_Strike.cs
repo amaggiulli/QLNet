@@ -26,8 +26,8 @@ namespace QLNet
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteArithmeticASEngine<RNG, S>
       : MCDiscreteAveragingAsianEngine<RNG, S>
-        where RNG : IRSG, new ()
-        where S : Statistics, new ()
+        where RNG : IRSG, new()
+        where S : Statistics, new()
    {
       // constructor
       public MCDiscreteArithmeticASEngine(
@@ -47,10 +47,10 @@ namespace QLNet
          PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
          Utils.QL_REQUIRE(payoff != null, () => "non-plain payoff given");
 
-         EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
+         EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
-         return (PathPricer<IPath>) new ArithmeticASOPathPricer(
+         return (PathPricer<IPath>)new ArithmeticASOPathPricer(
                    payoff.optionType(),
                    this.process_.riskFreeRate().link.discount(this.timeGrid().Last()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
@@ -112,8 +112,8 @@ namespace QLNet
    }
 
    public class MakeMCDiscreteArithmeticASEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : Statistics, new ()
+      where RNG : IRSG, new()
+      where S : Statistics, new()
    {
       public MakeMCDiscreteArithmeticASEngine(GeneralizedBlackScholesProcess process)
       {

@@ -60,7 +60,7 @@ namespace QLNet
          dividendYield.registerWith(update);
       }
 
-      public override void addTimesTo(List<double> t) {}
+      public override void addTimesTo(List<double> t) { }
 
       protected override void performCalculations()
       {
@@ -91,7 +91,7 @@ namespace QLNet
                                    s0_.link.value() * dividendYield_.link.discount(tau_), stdDev);
       }
 
-      public double maturity()  { calculate(); return tau_; }
+      public double maturity() { calculate(); return tau_; }
       public Option.Type optionType() { calculate(); return type_; }
       public double strike() { return strikePrice_; }
 

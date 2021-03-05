@@ -112,7 +112,7 @@ namespace QLNet
             new FdmBlackScholesMesher(
             xGrid_, process_, maturity, payoff.strike(),
             null, null, 0.0001, 1.5,
-            new Pair < double?, double? >(payoff.strike(), 0.1),
+            new Pair<double?, double?>(payoff.strike(), 0.1),
             dividendSchedule, quantoHelper_,
             spotAdjustment);
 

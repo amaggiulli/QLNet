@@ -69,7 +69,7 @@ namespace QLNet
 
          double value = CashFlows.npv(fixedLeg, discountCurve_, false, settle);
 
-         double npv = CashFlows.npv(fixedLeg, discountCurve_, false,  discountCurve_.link.referenceDate());
+         double npv = CashFlows.npv(fixedLeg, discountCurve_, false, discountCurve_.link.referenceDate());
 
          double fwdCashPrice = (value - spotIncome()) /
                                discountCurve_.link.discount(exerciseDate);
@@ -196,11 +196,11 @@ namespace QLNet
 
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableZeroCouponBondEngine(Handle<Quote> fwdYieldVol, Handle<YieldTermStructure> discountCurve)
-         : base(fwdYieldVol, discountCurve) {}
+         : base(fwdYieldVol, discountCurve) { }
 
       //! volatility is the quoted fwd yield volatility, not price vol
       public BlackCallableZeroCouponBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
                                                Handle<YieldTermStructure> discountCurve)
-         : base(yieldVolStructure, discountCurve) {}
+         : base(yieldVolStructure, discountCurve) { }
    }
 }

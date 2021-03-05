@@ -72,7 +72,7 @@ namespace QLNet
             cost = 0.0;
          }
 
-         public Candidate() : this(0) {}
+         public Candidate() : this(0) { }
 
          public object Clone()
          {
@@ -198,7 +198,7 @@ namespace QLNet
 
          //original quantlib use partial_sort as only first elements is needed
          double fxOld = population.Min(x => x.cost);
-         bestMemberEver_ = (Candidate) population.First(x => x.cost.IsEqual(fxOld)).Clone();
+         bestMemberEver_ = (Candidate)population.First(x => x.cost.IsEqual(fxOld)).Clone();
          int iteration = 0, stationaryPointIteration = 0;
 
          // main loop - calculate consecutive emerging populations
@@ -207,7 +207,7 @@ namespace QLNet
             calculateNextGeneration(population, P.costFunction());
 
             double fxNew = population.Min(x => x.cost);
-            Candidate tmp = (Candidate) population.First(x => x.cost.IsEqual(fxNew)).Clone();
+            Candidate tmp = (Candidate)population.First(x => x.cost.IsEqual(fxNew)).Clone();
 
             if (fxNew < bestMemberEver_.cost)
                bestMemberEver_ = tmp;
@@ -343,170 +343,170 @@ namespace QLNet
                                              CostFunction costFunction)
       {
          List<Candidate> mirrorPopulation = null;
-         List<Candidate> oldPopulation = (List<Candidate>) population.Clone();
+         List<Candidate> oldPopulation = (List<Candidate>)population.Clone();
 
          switch (configuration().strategy)
          {
             case Strategy.Rand1Standard:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               List<Candidate> shuffledPop2 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-
-               for (int popIter = 0; popIter < population.Count; popIter++)
                {
-                  population[popIter].values = population[popIter].values
-                                               + configuration().stepsizeWeight
-                                               * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
-               }
-            }
-            break;
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  List<Candidate> shuffledPop2 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
 
-            case Strategy.BestMemberWithJitter:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               Vector jitter = new Vector(population[0].values.size(), 0.0);
-
-               for (int popIter = 0; popIter < population.Count; popIter++)
-               {
-                  for (int jitterIter = 0; jitterIter < jitter.Count; jitterIter++)
-                  {
-                     jitter[jitterIter] = rng_.nextReal();
-                  }
-
-                  population[popIter].values = bestMemberEver_.values
-                                               + Vector.DirectMultiply(
-                                                  shuffledPop1[popIter].values - population[popIter].values
-                                                  , 0.0001 * jitter + configuration().stepsizeWeight);
-               }
-
-               mirrorPopulation = new InitializedList<Candidate>(population.Count);
-               mirrorPopulation.ForEach((ii, vv) => mirrorPopulation[ii] = (Candidate) bestMemberEver_.Clone());
-            }
-            break;
-
-            case Strategy.CurrentToBest2Diffs:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-
-               for (int popIter = 0; popIter < population.Count; popIter++)
-               {
-                  population[popIter].values = oldPopulation[popIter].values
-                                               + configuration().stepsizeWeight
-                                               * (bestMemberEver_.values - oldPopulation[popIter].values)
-                                               + configuration().stepsizeWeight
-                                               * (population[popIter].values - shuffledPop1[popIter].values);
-               }
-
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-            }
-            break;
-
-            case Strategy.Rand1DiffWithPerVectorDither:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               List<Candidate> shuffledPop2 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-               Vector FWeight = new Vector(population.First().values.size(), 0.0);
-               for (int fwIter = 0; fwIter < FWeight.Count; fwIter++)
-                  FWeight[fwIter] = (1.0 - configuration().stepsizeWeight)
-                                    * rng_.nextReal() + configuration().stepsizeWeight;
-               for (int popIter = 0; popIter < population.Count; popIter++)
-               {
-                  population[popIter].values = population[popIter].values
-                                               + Vector.DirectMultiply(FWeight,
-                                                                       shuffledPop1[popIter].values - shuffledPop2[popIter].values);
-               }
-            }
-            break;
-
-            case Strategy.Rand1DiffWithDither:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               List<Candidate> shuffledPop2 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-               double FWeight = (1.0 - configuration().stepsizeWeight) * rng_.nextReal()
-                                + configuration().stepsizeWeight;
-               for (int popIter = 0; popIter < population.Count; popIter++)
-               {
-                  population[popIter].values = population[popIter].values
-                                               + FWeight * (shuffledPop1[popIter].values -
-                                                            shuffledPop2[popIter].values);
-               }
-            }
-            break;
-
-            case Strategy.EitherOrWithOptimalRecombination:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               List<Candidate> shuffledPop2 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-               double probFWeight = 0.5;
-               if (rng_.nextReal() < probFWeight)
-               {
                   for (int popIter = 0; popIter < population.Count; popIter++)
                   {
-                     population[popIter].values = oldPopulation[popIter].values
+                     population[popIter].values = population[popIter].values
                                                   + configuration().stepsizeWeight
                                                   * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
                   }
                }
-               else
+               break;
+
+            case Strategy.BestMemberWithJitter:
                {
-                  double K = 0.5 * (configuration().stepsizeWeight + 1); // invariant with respect to probFWeight used
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  Vector jitter = new Vector(population[0].values.size(), 0.0);
+
+                  for (int popIter = 0; popIter < population.Count; popIter++)
+                  {
+                     for (int jitterIter = 0; jitterIter < jitter.Count; jitterIter++)
+                     {
+                        jitter[jitterIter] = rng_.nextReal();
+                     }
+
+                     population[popIter].values = bestMemberEver_.values
+                                                  + Vector.DirectMultiply(
+                                                     shuffledPop1[popIter].values - population[popIter].values
+                                                     , 0.0001 * jitter + configuration().stepsizeWeight);
+                  }
+
+                  mirrorPopulation = new InitializedList<Candidate>(population.Count);
+                  mirrorPopulation.ForEach((ii, vv) => mirrorPopulation[ii] = (Candidate)bestMemberEver_.Clone());
+               }
+               break;
+
+            case Strategy.CurrentToBest2Diffs:
+               {
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+
                   for (int popIter = 0; popIter < population.Count; popIter++)
                   {
                      population[popIter].values = oldPopulation[popIter].values
-                                                  + K
-                                                  * (shuffledPop1[popIter].values - shuffledPop2[popIter].values
-                                                     - 2.0 * population[popIter].values);
+                                                  + configuration().stepsizeWeight
+                                                  * (bestMemberEver_.values - oldPopulation[popIter].values)
+                                                  + configuration().stepsizeWeight
+                                                  * (population[popIter].values - shuffledPop1[popIter].values);
+                  }
+
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
+               }
+               break;
+
+            case Strategy.Rand1DiffWithPerVectorDither:
+               {
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  List<Candidate> shuffledPop2 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
+                  Vector FWeight = new Vector(population.First().values.size(), 0.0);
+                  for (int fwIter = 0; fwIter < FWeight.Count; fwIter++)
+                     FWeight[fwIter] = (1.0 - configuration().stepsizeWeight)
+                                       * rng_.nextReal() + configuration().stepsizeWeight;
+                  for (int popIter = 0; popIter < population.Count; popIter++)
+                  {
+                     population[popIter].values = population[popIter].values
+                                                  + Vector.DirectMultiply(FWeight,
+                                                                          shuffledPop1[popIter].values - shuffledPop2[popIter].values);
                   }
                }
-            }
-            break;
+               break;
 
-            case Strategy.Rand1SelfadaptiveWithRotation:
-            {
-               population.Shuffle();
-               List<Candidate> shuffledPop1 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               List<Candidate> shuffledPop2 = (List<Candidate>) population.Clone();
-               population.Shuffle();
-               mirrorPopulation = (List<Candidate>) shuffledPop1.Clone();
-
-               adaptSizeWeights();
-
-               for (int popIter = 0; popIter < population.Count; popIter++)
+            case Strategy.Rand1DiffWithDither:
                {
-                  if (rng_.nextReal() < 0.1)
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  List<Candidate> shuffledPop2 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
+                  double FWeight = (1.0 - configuration().stepsizeWeight) * rng_.nextReal()
+                                   + configuration().stepsizeWeight;
+                  for (int popIter = 0; popIter < population.Count; popIter++)
                   {
-                     population[popIter].values = rotateArray(bestMemberEver_.values);
+                     population[popIter].values = population[popIter].values
+                                                  + FWeight * (shuffledPop1[popIter].values -
+                                                               shuffledPop2[popIter].values);
+                  }
+               }
+               break;
+
+            case Strategy.EitherOrWithOptimalRecombination:
+               {
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  List<Candidate> shuffledPop2 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
+                  double probFWeight = 0.5;
+                  if (rng_.nextReal() < probFWeight)
+                  {
+                     for (int popIter = 0; popIter < population.Count; popIter++)
+                     {
+                        population[popIter].values = oldPopulation[popIter].values
+                                                     + configuration().stepsizeWeight
+                                                     * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
+                     }
                   }
                   else
                   {
-                     population[popIter].values = bestMemberEver_.values
-                                                  + currGenSizeWeights_[popIter]
-                                                  * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
+                     double K = 0.5 * (configuration().stepsizeWeight + 1); // invariant with respect to probFWeight used
+                     for (int popIter = 0; popIter < population.Count; popIter++)
+                     {
+                        population[popIter].values = oldPopulation[popIter].values
+                                                     + K
+                                                     * (shuffledPop1[popIter].values - shuffledPop2[popIter].values
+                                                        - 2.0 * population[popIter].values);
+                     }
                   }
                }
-            }
-            break;
+               break;
+
+            case Strategy.Rand1SelfadaptiveWithRotation:
+               {
+                  population.Shuffle();
+                  List<Candidate> shuffledPop1 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  List<Candidate> shuffledPop2 = (List<Candidate>)population.Clone();
+                  population.Shuffle();
+                  mirrorPopulation = (List<Candidate>)shuffledPop1.Clone();
+
+                  adaptSizeWeights();
+
+                  for (int popIter = 0; popIter < population.Count; popIter++)
+                  {
+                     if (rng_.nextReal() < 0.1)
+                     {
+                        population[popIter].values = rotateArray(bestMemberEver_.values);
+                     }
+                     else
+                     {
+                        population[popIter].values = bestMemberEver_.values
+                                                     + currGenSizeWeights_[popIter]
+                                                     * (shuffledPop1[popIter].values - shuffledPop2[popIter].values);
+                     }
+                  }
+               }
+               break;
 
             default:
                Utils.QL_FAIL("Unknown strategy ("

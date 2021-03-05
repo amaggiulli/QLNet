@@ -239,7 +239,7 @@ namespace TestSuite
          FloatingRateBond floating = new FloatingRateBond(vars.settlementDays, vars.faceAmount, floatSchedule,
                                                           index, vars.dayCounter, BusinessDayConvention.Following, fixingDays,
                                                           gearings, spreads,
-                                                          new List < double? >(), new List < double? >(),
+                                                          new List<double?>(), new List<double?>(),
                                                           false,
                                                           vars.redemption, vars.issueDate);
 
@@ -339,31 +339,31 @@ namespace TestSuite
 
          List<Date> dates = new InitializedList<Date>(25);
          List<double> forwards = new InitializedList<double>(25);
-         dates[0]  = new Date(29, Month.December, 2008);  forwards[0]  = 0.0025999342800;
-         dates[1]  = new Date(5, Month.January, 2009);   forwards[1]  = 0.0025999342800;
-         dates[2]  = new Date(29, Month.January, 2009);   forwards[2]  = 0.0053123275500;
-         dates[3]  = new Date(27, Month.February, 2009);  forwards[3]  = 0.0197049598721;
-         dates[4]  = new Date(30, Month.March, 2009);     forwards[4]  = 0.0220524845296;
-         dates[5]  = new Date(29, Month.June, 2009);      forwards[5]  = 0.0217076395643;
-         dates[6]  = new Date(29, Month.December, 2009);  forwards[6]  = 0.0230349627478;
-         dates[7]  = new Date(29, Month.December, 2010);  forwards[7]  = 0.0087631647476;
-         dates[8]  = new Date(29, Month.December, 2011);  forwards[8]  = 0.0219084299499;
-         dates[9]  = new Date(31, Month.December, 2012);  forwards[9]  = 0.0244798766219;
-         dates[10] = new Date(30, Month.December, 2013);  forwards[10] = 0.0267885498456;
-         dates[11] = new Date(29, Month.December, 2014);  forwards[11] = 0.0266922867562;
-         dates[12] = new Date(29, Month.December, 2015);  forwards[12] = 0.0271052126386;
-         dates[13] = new Date(29, Month.December, 2016);  forwards[13] = 0.0268829891648;
-         dates[14] = new Date(29, Month.December, 2017);  forwards[14] = 0.0264594744498;
-         dates[15] = new Date(31, Month.December, 2018);  forwards[15] = 0.0273450367424;
-         dates[16] = new Date(30, Month.December, 2019);  forwards[16] = 0.0294852614749;
-         dates[17] = new Date(29, Month.December, 2020);  forwards[17] = 0.0285556119719;
-         dates[18] = new Date(29, Month.December, 2021);  forwards[18] = 0.0305557764659;
-         dates[19] = new Date(29, Month.December, 2022);  forwards[19] = 0.0292244738422;
-         dates[20] = new Date(29, Month.December, 2023);  forwards[20] = 0.0263917004194;
-         dates[21] = new Date(29, Month.December, 2028);  forwards[21] = 0.0239626970243;
-         dates[22] = new Date(29, Month.December, 2033);  forwards[22] = 0.0216417108090;
-         dates[23] = new Date(29, Month.December, 2038);  forwards[23] = 0.0228343838422;
-         dates[24] = new Date(31, Month.December, 2199);  forwards[24] = 0.0228343838422;
+         dates[0] = new Date(29, Month.December, 2008); forwards[0] = 0.0025999342800;
+         dates[1] = new Date(5, Month.January, 2009); forwards[1] = 0.0025999342800;
+         dates[2] = new Date(29, Month.January, 2009); forwards[2] = 0.0053123275500;
+         dates[3] = new Date(27, Month.February, 2009); forwards[3] = 0.0197049598721;
+         dates[4] = new Date(30, Month.March, 2009); forwards[4] = 0.0220524845296;
+         dates[5] = new Date(29, Month.June, 2009); forwards[5] = 0.0217076395643;
+         dates[6] = new Date(29, Month.December, 2009); forwards[6] = 0.0230349627478;
+         dates[7] = new Date(29, Month.December, 2010); forwards[7] = 0.0087631647476;
+         dates[8] = new Date(29, Month.December, 2011); forwards[8] = 0.0219084299499;
+         dates[9] = new Date(31, Month.December, 2012); forwards[9] = 0.0244798766219;
+         dates[10] = new Date(30, Month.December, 2013); forwards[10] = 0.0267885498456;
+         dates[11] = new Date(29, Month.December, 2014); forwards[11] = 0.0266922867562;
+         dates[12] = new Date(29, Month.December, 2015); forwards[12] = 0.0271052126386;
+         dates[13] = new Date(29, Month.December, 2016); forwards[13] = 0.0268829891648;
+         dates[14] = new Date(29, Month.December, 2017); forwards[14] = 0.0264594744498;
+         dates[15] = new Date(31, Month.December, 2018); forwards[15] = 0.0273450367424;
+         dates[16] = new Date(30, Month.December, 2019); forwards[16] = 0.0294852614749;
+         dates[17] = new Date(29, Month.December, 2020); forwards[17] = 0.0285556119719;
+         dates[18] = new Date(29, Month.December, 2021); forwards[18] = 0.0305557764659;
+         dates[19] = new Date(29, Month.December, 2022); forwards[19] = 0.0292244738422;
+         dates[20] = new Date(29, Month.December, 2023); forwards[20] = 0.0263917004194;
+         dates[21] = new Date(29, Month.December, 2028); forwards[21] = 0.0239626970243;
+         dates[22] = new Date(29, Month.December, 2033); forwards[22] = 0.0216417108090;
+         dates[23] = new Date(29, Month.December, 2038); forwards[23] = 0.0228343838422;
+         dates[24] = new Date(31, Month.December, 2199); forwards[24] = 0.0228343838422;
 
          Handle<YieldTermStructure> r = new Handle<YieldTermStructure>(new InterpolatedForwardCurve<BackwardFlat>(dates, forwards, new Actual360()));
 
@@ -396,7 +396,7 @@ namespace TestSuite
                                                                           spread, issueDate, settlementDays,
                                                                           coupons, dayCounter,
                                                                           schedule, redemption);
-         bond.setPricingEngine(new BinomialConvertibleEngine<CoxRossRubinstein> (process, 600));
+         bond.setPricingEngine(new BinomialConvertibleEngine<CoxRossRubinstein>(process, 600));
 
          try
          {

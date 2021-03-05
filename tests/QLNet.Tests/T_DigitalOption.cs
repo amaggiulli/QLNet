@@ -162,10 +162,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -218,10 +218,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -285,10 +285,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -350,10 +350,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -414,10 +414,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -488,10 +488,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise amExercise = new AmericanExercise(today, exDate, true);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -530,9 +530,9 @@ namespace TestSuite
             SortedDictionary<string, double> expected = new SortedDictionary<string, double>();
             SortedDictionary<string, double> tolerance = new SortedDictionary<string, double>(); // std::map<std::string,Real> calculated, expected, tolerance;
 
-            tolerance["delta"]  = 5.0e-5;
-            tolerance["gamma"]  = 5.0e-5;
-            tolerance["rho"]    = 5.0e-5;
+            tolerance["delta"] = 5.0e-5;
+            tolerance["gamma"] = 5.0e-5;
+            tolerance["rho"] = 5.0e-5;
 
             Option.Type[] types = { QLNet.Option.Type.Call, QLNet.Option.Type.Put };
             double[] strikes = { 50.0, 99.5, 100.5, 150.0 };
@@ -603,9 +603,9 @@ namespace TestSuite
                                  // digital options with european payoff are tested
                                  // in the europeanoption.cpp test
                                  double value = opt.NPV();
-                                 calculated["delta"]  = opt.delta();
-                                 calculated["gamma"]  = opt.gamma();
-                                 calculated["rho"]    = opt.rho();
+                                 calculated["delta"] = opt.delta();
+                                 calculated["gamma"] = opt.gamma();
+                                 calculated["rho"] = opt.rho();
 
                                  if (value > 1.0e-6)
                                  {
@@ -635,9 +635,9 @@ namespace TestSuite
                                     foreach (var it in calculated)
                                     {
                                        string greek = it.Key;
-                                       double expct = expected  [greek],
+                                       double expct = expected[greek],
                                               calcl = calculated[greek],
-                                              tol   = tolerance [greek];
+                                              tol = tolerance[greek];
                                        double error = Utilities.relativeError(expct, calcl, value);
                                        if (error > tol)
                                        {

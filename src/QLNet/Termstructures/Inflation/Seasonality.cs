@@ -167,7 +167,7 @@ namespace QLNet
             int dir = 1;
             if (from > to)
                dir = -1;
-            int diff = 0 ;
+            int diff = 0;
             if (factorPeriod.units() == TimeUnit.Days)
             {
                diff = dir * diffDays;
@@ -248,11 +248,11 @@ namespace QLNet
          for (int i = 1; i < nTest; i++)
          {
             double factorAt = this.seasonalityFactor(curveBaseDate + new Period(i, TimeUnit.Years));
-            Utils.QL_REQUIRE(Math.Abs(factorAt - factorBase)<eps, () =>
-                             "seasonality is inconsistent with inflation " +
-                             "term structure, factors " + factorBase + " and later factor "
-                             + factorAt + ", " + i + " years later from inflation curve "
-                             + " with base date at " + curveBaseDate);
+            Utils.QL_REQUIRE(Math.Abs(factorAt - factorBase) < eps, () =>
+                               "seasonality is inconsistent with inflation " +
+                               "term structure, factors " + factorBase + " and later factor "
+                               + factorAt + ", " + i + " years later from inflation curve "
+                               + " with base date at " + curveBaseDate);
          }
 
          return true;
@@ -314,7 +314,7 @@ namespace QLNet
    {
       public KerkhofSeasonality(Date seasonalityBaseDate, List<double> seasonalityFactors)
          : base(seasonalityBaseDate, Frequency.Monthly, seasonalityFactors)
-      {}
+      { }
 
       public override double seasonalityFactor(Date to)
       {
@@ -339,7 +339,7 @@ namespace QLNet
                           " got " + seasonalityFactors().Count);
 
          double seasonalCorrection = 1.0;
-         for (int i = fromMonth ; i < toMonth; i++)
+         for (int i = fromMonth; i < toMonth; i++)
          {
             seasonalCorrection *= seasonalityFactors()[i];
          }

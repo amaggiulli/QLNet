@@ -154,15 +154,15 @@ namespace TestSuite
 
          int i = 0, j = 0, n = 0;
          ulong polynomial = 0;
-         while (n < SobolRsg.PPMT_MAX_DIM || (int) polynomial != -1)
+         while (n < SobolRsg.PPMT_MAX_DIM || (int)polynomial != -1)
          {
-            if ((int) polynomial == -1)
+            if ((int)polynomial == -1)
             {
                ++i; // Increase degree index
                j = 0; // Reset index of polynomial in degree.
             }
-            polynomial = (ulong) SobolRsg.PrimitivePolynomials[i][j];
-            if ((int) polynomial == -1)
+            polynomial = (ulong)SobolRsg.PrimitivePolynomials[i][j];
+            if ((int)polynomial == -1)
             {
                --n;
                if (j != jj[i])
@@ -188,7 +188,7 @@ namespace TestSuite
          double tolerance = 1.0e-15;
 
          // testing max dimensionality
-         int dimensionality = (int) SobolRsg.PPMT_MAX_DIM;
+         int dimensionality = (int)SobolRsg.PPMT_MAX_DIM;
          ulong seed = 123456;
          SobolRsg rsg = new SobolRsg(dimensionality, seed);
          int points = 100, i;
@@ -433,7 +433,7 @@ namespace TestSuite
          double tolerance = 1.0e-15;
 
          // testing "high" dimensionality
-         int dimensionality = (int) SobolRsg.PPMT_MAX_DIM;
+         int dimensionality = (int)SobolRsg.PPMT_MAX_DIM;
          HaltonRsg rsg = new HaltonRsg(dimensionality, 0, false, false);
          int points = 100, i, k;
          for (i = 0; i < points; i++)
@@ -833,8 +833,8 @@ namespace TestSuite
          //("Testing Sobol sequence skipping...");
 
          ulong seed = 42;
-         int[] dimensionality = {1, 10, 100, 1000};
-         ulong[] skip = {0, 1, 42, 512, 100000};
+         int[] dimensionality = { 1, 10, 100, 1000 };
+         ulong[] skip = { 0, 1, 42, 512, 100000 };
          SobolRsg.DirectionIntegers[] integers =
          {
             SobolRsg.DirectionIntegers.Unit,
@@ -851,7 +851,7 @@ namespace TestSuite
 
                   // extract n samples
                   SobolRsg rsg1 = new SobolRsg(dimensionality[j], seed, integers[i]);
-                  for (int l = 0; l < (int) skip[k]; l++)
+                  for (int l = 0; l < (int)skip[k]; l++)
                      rsg1.nextInt32Sequence();
 
                   // skip n samples at once
@@ -902,9 +902,9 @@ namespace TestSuite
          1.11e-004, 5.05e-005, 2.42e-005
       };
 
-      double[] dim002DiscrRShiftHalton = {1.32e-003, 7.25e-004};
-      double[] dim002DiscrRStRShHalton = {1.35e-003, 9.43e-004};
-      double[] dim002DiscrRStartHalton = {1.08e-003, 6.40e-004};
+      double[] dim002DiscrRShiftHalton = { 1.32e-003, 7.25e-004 };
+      double[] dim002DiscrRStRShHalton = { 1.35e-003, 9.43e-004 };
+      double[] dim002DiscrRStartHalton = { 1.08e-003, 6.40e-004 };
 
       double[] dim002Discr__Unit_Sobol =
       {
@@ -930,9 +930,9 @@ namespace TestSuite
          1.41e-004, 7.64e-005, 3.93e-005
       };
 
-      double[] dim003DiscrRShiftHalton = {1.96e-003, 1.03e-003};
-      double[] dim003DiscrRStRShHalton = {2.17e-003, 1.54e-003};
-      double[] dim003DiscrRStartHalton = {1.48e-003, 7.77e-004};
+      double[] dim003DiscrRShiftHalton = { 1.96e-003, 1.03e-003 };
+      double[] dim003DiscrRStRShHalton = { 2.17e-003, 1.54e-003 };
+      double[] dim003DiscrRStartHalton = { 1.48e-003, 7.77e-004 };
 
       double[] dim003Discr__Unit_Sobol =
       {
@@ -958,9 +958,9 @@ namespace TestSuite
          2.13e-004, 1.25e-004, 7.17e-005
       };
 
-      double[] dim005DiscrRShiftHalton = {2.02e-003, 1.36e-003};
-      double[] dim005DiscrRStRShHalton = {2.11e-003, 1.25e-003};
-      double[] dim005DiscrRStartHalton = {1.74e-003, 1.08e-003};
+      double[] dim005DiscrRShiftHalton = { 2.02e-003, 1.36e-003 };
+      double[] dim005DiscrRStRShHalton = { 2.11e-003, 1.25e-003 };
+      double[] dim005DiscrRStartHalton = { 1.74e-003, 1.08e-003 };
 
       double[] dim005Discr__Unit_Sobol =
       {
@@ -992,9 +992,9 @@ namespace TestSuite
          1.61e-004, 1.08e-004, 6.69e-005
       };
 
-      double[] dim010DiscrRShiftHalton = {9.25e-004, 6.40e-004};
-      double[] dim010DiscrRStRShHalton = {8.41e-004, 5.42e-004};
-      double[] dim010DiscrRStartHalton = {7.89e-004, 5.33e-004};
+      double[] dim010DiscrRShiftHalton = { 9.25e-004, 6.40e-004 };
+      double[] dim010DiscrRStRShHalton = { 8.41e-004, 5.42e-004 };
+      double[] dim010DiscrRStartHalton = { 7.89e-004, 5.33e-004 };
 
       double[] dim010Discr__Unit_Sobol =
       {
@@ -1026,9 +1026,9 @@ namespace TestSuite
          5.33e-005, 3.45e-005, 2.11e-005
       };
 
-      double[] dim015DiscrRShiftHalton = {1.75e-004, 1.19e-004};
-      double[] dim015DiscrRStRShHalton = {1.66e-004, 1.34e-004};
-      double[] dim015DiscrRStartHalton = {2.09e-004, 1.30e-004};
+      double[] dim015DiscrRShiftHalton = { 1.75e-004, 1.19e-004 };
+      double[] dim015DiscrRStRShHalton = { 1.66e-004, 1.34e-004 };
+      double[] dim015DiscrRStartHalton = { 2.09e-004, 1.30e-004 };
 
       double[] dim015Discr__Unit_Sobol =
       {
@@ -1060,9 +1060,9 @@ namespace TestSuite
          2.78e-005, 1.39e-005, 6.95e-006
       };
 
-      double[] dim030DiscrRShiftHalton = {8.11e-007, 6.05e-007};
-      double[] dim030DiscrRStRShHalton = {1.85e-006, 1.03e-006};
-      double[] dim030DiscrRStartHalton = {4.42e-007, 4.64e-007};
+      double[] dim030DiscrRShiftHalton = { 8.11e-007, 6.05e-007 };
+      double[] dim030DiscrRStRShHalton = { 1.85e-006, 1.03e-006 };
+      double[] dim030DiscrRStartHalton = { 4.42e-007, 4.64e-007 };
 
       double[] dim030Discr__Unit_Sobol =
       {
@@ -1100,9 +1100,9 @@ namespace TestSuite
          2.52e-005, 1.26e-005, 6.31e-006
       };
 
-      double[] dim050DiscrRShiftHalton = {1.14e-010, 1.25e-010};
-      double[] dim050DiscrRStRShHalton = {2.92e-010, 5.02e-010};
-      double[] dim050DiscrRStartHalton = {1.93e-010, 6.82e-010};
+      double[] dim050DiscrRShiftHalton = { 1.14e-010, 1.25e-010 };
+      double[] dim050DiscrRStRShHalton = { 2.92e-010, 5.02e-010 };
+      double[] dim050DiscrRStartHalton = { 1.93e-010, 6.82e-010 };
 
       double[] dim050Discr__Unit_Sobol =
       {
@@ -1140,9 +1140,9 @@ namespace TestSuite
          2.27e-005, 1.13e-005, 5.66e-006
       };
 
-      double[] dim100DiscrRShiftHalton = {3.36e-019, 2.19e-019};
-      double[] dim100DiscrRStRShHalton = {4.44e-019, 2.24e-019};
-      double[] dim100DiscrRStartHalton = {9.85e-020, 8.34e-019};
+      double[] dim100DiscrRShiftHalton = { 3.36e-019, 2.19e-019 };
+      double[] dim100DiscrRStRShHalton = { 4.44e-019, 2.24e-019 };
+      double[] dim100DiscrRStartHalton = { 9.85e-020, 8.34e-019 };
 
       double[] dim100Discr__Unit_Sobol =
       {
@@ -1150,7 +1150,7 @@ namespace TestSuite
          3.10e-007, 1.55e-007, 7.76e-008
       };
 
-      int[] dimensionality = {2, 3, 5, 10, 15, 30, 50, 100};
+      int[] dimensionality = { 2, 3, 5, 10, 15, 30, 50, 100 };
 
       // 7 discrepancy measures for each dimension of all sequence generators
       // would take a few days ... too long for usual/frequent test running

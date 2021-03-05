@@ -83,12 +83,12 @@ namespace QLNet
    {
       // properties
       private List<InterestRate> couponRates_ = new List<InterestRate>();
-      private DayCounter firstPeriodDC_, lastPeriodDC_ ;
+      private DayCounter firstPeriodDC_, lastPeriodDC_;
       private Calendar calendar_;
       private Period exCouponPeriod_;
-      private   Calendar exCouponCalendar_;
-      private   BusinessDayConvention exCouponAdjustment_;
-      private   bool exCouponEndOfMonth_;
+      private Calendar exCouponCalendar_;
+      private BusinessDayConvention exCouponAdjustment_;
+      private bool exCouponEndOfMonth_;
 
       // constructor
       public FixedRateLeg(Schedule schedule)
@@ -142,7 +142,7 @@ namespace QLNet
          return this;
       }
 
-      public FixedRateLeg withCouponRates(List<InterestRate>couponRates)
+      public FixedRateLeg withCouponRates(List<InterestRate> couponRates)
       {
          couponRates_ = couponRates;
          return this;

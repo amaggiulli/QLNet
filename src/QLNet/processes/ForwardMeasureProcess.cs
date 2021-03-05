@@ -32,14 +32,14 @@ namespace QLNet
       }
       public double getForwardMeasureTime() { return T_; }
 
-      protected ForwardMeasureProcess() {}
+      protected ForwardMeasureProcess() { }
       protected ForwardMeasureProcess(double T)
       {
          T_ = T;
       }
       protected ForwardMeasureProcess(IDiscretization disc)
          : base(disc)
-      {}
+      { }
 
       protected double T_;
       public override int size()
@@ -81,13 +81,13 @@ namespace QLNet
          return T_;
       }
 
-      protected ForwardMeasureProcess1D() {}
+      protected ForwardMeasureProcess1D() { }
       protected ForwardMeasureProcess1D(double T)
       {
          T_ = T;
       }
       protected ForwardMeasureProcess1D(IDiscretization1D disc)
-         : base(disc) {}
+         : base(disc) { }
 
       protected double T_;
       public override double x0()

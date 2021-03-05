@@ -42,7 +42,7 @@ namespace QLNet
          // first order finite difference derivative
          double dfroot = xMax_ - root_ < root_ - xMin_ ?
                          (fxMax_ - froot) / (xMax_ - root_) :
-                         (fxMin_ - froot) / (xMin_ - root_) ;
+                         (fxMin_ - froot) / (xMin_ - root_);
 
          // xMax_-xMin_>0 is verified in the constructor
          double dx = xMax_ - xMin_;
@@ -52,8 +52,8 @@ namespace QLNet
             double rootold = root_;
             double dxold = dx;
             // Bisect if (out of range || not decreasing fast enough)
-            if ((((root_ - xh)*dfroot - froot)*
-                 ((root_ - xl)*dfroot - froot) > 0.0)
+            if ((((root_ - xh) * dfroot - froot) *
+                 ((root_ - xl) * dfroot - froot) > 0.0)
                 || (Math.Abs(2.0 * froot) > Math.Abs(dxold * dfroot)))
             {
 

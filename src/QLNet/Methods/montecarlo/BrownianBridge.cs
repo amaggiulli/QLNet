@@ -137,8 +137,8 @@ namespace QLNet
             map[l] = i;
             // The i-th Gaussian variate will be used to set point l-1.
             bridgeIndex_[i] = l;
-            leftIndex_[i]   = j;
-            rightIndex_[i]  = k;
+            leftIndex_[i] = j;
+            rightIndex_[i] = k;
             if (j != 0)
             {
                leftWeight_[i] = (t_[k] - t_[l]) / (t_[k] - t_[j - 1]);
@@ -149,8 +149,8 @@ namespace QLNet
             }
             else
             {
-               leftWeight_[i]  = (t_[k] - t_[l]) / t_[k];
-               rightWeight_[i] =  t_[l] / t_[k];
+               leftWeight_[i] = (t_[k] - t_[l]) / t_[k];
+               rightWeight_[i] = t_[l] / t_[k];
                stdDev_[i] = Math.Sqrt(t_[l] * (t_[k] - t_[l]) / t_[k]);
             }
             j = k + 1;
@@ -175,13 +175,13 @@ namespace QLNet
             {
                output[l] =
                   leftWeight_[i] * output[j - 1] +
-                  rightWeight_[i] * output[k]   +
+                  rightWeight_[i] * output[k] +
                   stdDev_[i] * begin[i];
             }
             else
             {
                output[l] =
-                  rightWeight_[i] * output[k]   +
+                  rightWeight_[i] * output[k] +
                   stdDev_[i] * begin[i];
             }
          }

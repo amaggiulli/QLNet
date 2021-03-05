@@ -121,7 +121,7 @@ namespace QLNet
          //#pragma omp parallel for
          for (int i = 0; i < retVal.size(); ++i)
          {
-            retVal[i] =   a00_[i] * r[i00_[i]]
+            retVal[i] = a00_[i] * r[i00_[i]]
                           + a01_[i] * r[i01_[i]]
                           + a02_[i] * r[i02_[i]]
                           + a10_[i] * r[i10_[i]]
@@ -164,7 +164,7 @@ namespace QLNet
             retVal[i, i01_[i]] += a01_[i];
             retVal[i, i02_[i]] += a02_[i];
             retVal[i, i10_[i]] += a10_[i];
-            retVal[i, i      ] += a11_[i];
+            retVal[i, i] += a11_[i];
             retVal[i, i12_[i]] += a12_[i];
             retVal[i, i20_[i]] += a20_[i];
             retVal[i, i21_[i]] += a21_[i];
@@ -197,7 +197,8 @@ namespace QLNet
 
       public override IOperator multiply(double a, IOperator D) { return null; }
       public override IOperator add
-         (IOperator A, IOperator B) { return null; }
+         (IOperator A, IOperator B)
+      { return null; }
       public override IOperator subtract(IOperator A, IOperator B) { return null; }
 
       public override bool isTimeDependent() { return false; }

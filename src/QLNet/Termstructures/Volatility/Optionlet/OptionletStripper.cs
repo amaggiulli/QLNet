@@ -95,7 +95,7 @@ namespace QLNet
          displacement_ = displacement;
 
 
-         if (volatilityType_ ==  VolatilityType.Normal)
+         if (volatilityType_ == VolatilityType.Normal)
          {
             Utils.QL_REQUIRE(displacement_.IsEqual(0.0), () =>
                              "non-null displacement is not allowed with Normal model");
@@ -123,12 +123,12 @@ namespace QLNet
          }
          nOptionletTenors_ = optionletTenors_.Count;
 
-         optionletVolatilities_ = new InitializedList<List<double>>(nOptionletTenors_) ;
-         for (int x = 0 ; x < nOptionletTenors_; x++)
+         optionletVolatilities_ = new InitializedList<List<double>>(nOptionletTenors_);
+         for (int x = 0; x < nOptionletTenors_; x++)
          {
             optionletVolatilities_[x] = new InitializedList<double>(nStrikes_);
          }
-         optionletStrikes_ = new InitializedList<List<double>>(nOptionletTenors_) ;
+         optionletStrikes_ = new InitializedList<List<double>>(nOptionletTenors_);
          for (int x = 0; x < nOptionletTenors_; x++)
          {
             optionletStrikes_[x] = new List<double>(termVolSurface.strikes());
@@ -147,8 +147,8 @@ namespace QLNet
       protected int nStrikes_;
       protected int nOptionletTenors_;
 
-      protected List<List<double> > optionletStrikes_;
-      protected List<List<double> > optionletVolatilities_;
+      protected List<List<double>> optionletStrikes_;
+      protected List<List<double>> optionletVolatilities_;
 
       protected List<double> optionletTimes_;
       protected List<Date> optionletDates_;

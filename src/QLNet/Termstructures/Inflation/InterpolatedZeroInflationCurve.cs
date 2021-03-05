@@ -22,7 +22,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedZeroInflationCurve<Interpolator> : ZeroInflationTermStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
       public InterpolatedZeroInflationCurve(Date referenceDate, Calendar calendar, DayCounter dayCounter, Period lag,
                                             Frequency frequency, bool indexIsInterpolated, Handle<YieldTermStructure> yTS,

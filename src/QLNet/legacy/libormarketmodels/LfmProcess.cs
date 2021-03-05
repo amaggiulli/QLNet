@@ -76,7 +76,7 @@ namespace QLNet
       }
 
       public LiborForwardModelProcess(int size, IborIndex index)
-         : this(size, index, new EulerDiscretization()) {}
+         : this(size, index, new EulerDiscretization()) { }
 
       public override Vector drift(double t, Vector x)
       {
@@ -196,7 +196,7 @@ namespace QLNet
                                           index_.businessDayConvention(),
                                           DateGeneration.Rule.Forward, false);
 
-         IborLeg cashflows = (IborLeg) new IborLeg(schedule, index_)
+         IborLeg cashflows = (IborLeg)new IborLeg(schedule, index_)
                              .withFixingDays(index_.fixingDays())
                              .withPaymentDayCounter(index_.dayCounter())
                              .withNotionals(amount)

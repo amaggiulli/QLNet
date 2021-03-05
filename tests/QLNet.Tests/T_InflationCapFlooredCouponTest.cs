@@ -67,7 +67,7 @@ namespace TestSuite
          public CommonVars()
          {
             // option variables
-            nominals = new List<double>() {1000000};
+            nominals = new List<double>() { 1000000 };
             frequency = Frequency.Annual;
             // usual setup
             volatility = 0.01;
@@ -132,13 +132,13 @@ namespace TestSuite
             };
 
             // now build the helpers ...
-            List<BootstrapHelper<YoYInflationTermStructure> > helpers =
+            List<BootstrapHelper<YoYInflationTermStructure>> helpers =
                makeHelpers(yyData, yyData.Length, iir,
                            observationLag,
                            calendar, convention, dc);
 
             double baseYYRate = yyData[0].rate / 100.0;
-            PiecewiseYoYInflationCurve<Linear>  pYYTS = new PiecewiseYoYInflationCurve<Linear>(
+            PiecewiseYoYInflationCurve<Linear> pYYTS = new PiecewiseYoYInflationCurve<Linear>(
                evaluationDate, calendar, dc, observationLag,
                iir.frequency(), iir.interpolated(), baseYYRate,
                new Handle<YieldTermStructure>(nominalTS), helpers);
@@ -185,8 +185,8 @@ namespace TestSuite
 
          public List<CashFlow> makeYoYCapFlooredLeg(int which, Date startDate,
                                                     int length,
-                                                    List < double? > caps,
-                                                    List < double? > floors,
+                                                    List<double?> caps,
+                                                    List<double?> floors,
                                                     double volatility,
                                                     double gearing = 1.0,
                                                     double spread = 0.0)
@@ -231,7 +231,7 @@ namespace TestSuite
                                              BusinessDayConvention.Unadjusted,// ref periods & acc periods
                                              DateGeneration.Rule.Forward, false);
 
-            List<CashFlow> yoyLeg =  new yoyInflationLeg(schedule, calendar, ii, observationLag)
+            List<CashFlow> yoyLeg = new yoyInflationLeg(schedule, calendar, ii, observationLag)
             .withPaymentDayCounter(dc)
             .withGearings(gearingVector)
             .withSpreads(spreadVector)
@@ -253,7 +253,7 @@ namespace TestSuite
          public IPricingEngine makeEngine(double volatility, int which)
          {
 
-            YoYInflationIndex  yyii = iir as YoYInflationIndex;
+            YoYInflationIndex yyii = iir as YoYInflationIndex;
 
             Handle<YoYOptionletVolatilitySurface> vol = new Handle<YoYOptionletVolatilitySurface>(
                new ConstantYoYOptionletVolatility(volatility,
@@ -297,10 +297,10 @@ namespace TestSuite
             switch (type)
             {
                case CapFloorType.Cap:
-                  result = new YoYInflationCap(leg, new List<double>() {strike});
+                  result = new YoYInflationCap(leg, new List<double>() { strike });
                   break;
                case CapFloorType.Floor:
-                  result = new YoYInflationFloor(leg, new List<double>() { strike});
+                  result = new YoYInflationFloor(leg, new List<double>() { strike });
                   break;
                default:
                   Utils.QL_FAIL("unknown YoYInflation cap/floor type");
@@ -345,18 +345,18 @@ namespace TestSuite
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         List < double? > caps = new InitializedList < double? >(vars.length, capstrike);
-         List < double? > caps0 = new List < double? >();
-         List < double? > floors = new InitializedList < double? >(vars.length, floorstrike);
-         List < double? > floors0 = new List < double? >();
+         List<double?> caps = new InitializedList<double?>(vars.length, capstrike);
+         List<double?> caps0 = new List<double?>();
+         List<double?> floors = new InitializedList<double?>(vars.length, floorstrike);
+         List<double?> floors0 = new List<double?>();
          double gearing_p = 0.5;
          double spread_p = 0.002;
          double gearing_n = -1.5;
          double spread_n = 0.12;
          // fixed leg with zero rate
-         List<CashFlow> fixedLeg  = vars.makeFixedLeg(vars.startDate, vars.length);
+         List<CashFlow> fixedLeg = vars.makeFixedLeg(vars.startDate, vars.length);
          // floating leg with gearing=1 and spread=0
-         List<CashFlow> floatLeg  = vars.makeYoYLeg(vars.startDate, vars.length);
+         List<CashFlow> floatLeg = vars.makeYoYLeg(vars.startDate, vars.length);
          // floating leg with positive gearing (gearing_p) and spread<>0
          List<CashFlow> floatLeg_p = vars.makeYoYLeg(vars.startDate, vars.length, gearing_p, spread_p);
          // floating leg with negative gearing (gearing_n) and spread<>0
@@ -388,7 +388,7 @@ namespace TestSuite
                                                               caps, floors0, vars.volatility);
          Swap capLeg = new Swap(fixedLeg, cappedLeg);
          capLeg.setPricingEngine(engine);
-         YoYInflationCap cap = new YoYInflationCap(floatLeg, new List<double>() {capstrike});
+         YoYInflationCap cap = new YoYInflationCap(floatLeg, new List<double>() { capstrike });
          cap.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg.NPV();
          npvCappedLeg = capLeg.NPV();
@@ -415,7 +415,7 @@ namespace TestSuite
                                                                caps0, floors, vars.volatility);
          Swap floorLeg = new Swap(fixedLeg, flooredLeg);
          floorLeg.setPricingEngine(engine);
-         YoYInflationFloor floor = new YoYInflationFloor(floatLeg, new List<double>() {floorstrike});
+         YoYInflationFloor floor = new YoYInflationFloor(floatLeg, new List<double>() { floorstrike });
          floor.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvFlooredLeg = floorLeg.NPV();
          npvFloor = floor.NPV();
@@ -440,8 +440,8 @@ namespace TestSuite
          Swap collarLeg = new Swap(fixedLeg, collaredLeg);
          collarLeg.setPricingEngine(engine);
          YoYInflationCollar collar = new YoYInflationCollar(floatLeg,
-         new List<double>() {capstrike},
-         new List<double>() {floorstrike});
+         new List<double>() { capstrike },
+         new List<double>() { floorstrike });
          collar.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvCollaredLeg = collarLeg.NPV();
          npvCollar = collar.NPV();
@@ -473,7 +473,7 @@ namespace TestSuite
                                                                 vars.volatility, gearing_p, spread_p);
          Swap capLeg_p = new Swap(fixedLeg, cappedLeg_p);
          capLeg_p.setPricingEngine(engine);
-         YoYInflationCap cap_p = new YoYInflationCap(floatLeg_p, new List<double>() {capstrike});
+         YoYInflationCap cap_p = new YoYInflationCap(floatLeg_p, new List<double>() { capstrike });
          cap_p.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_p.NPV();
          npvCappedLeg = capLeg_p.NPV();
@@ -483,7 +483,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nYoY Capped Leg: gearing=" + gearing_p + ", " +
                          "spread= " + spread_p * 100 +
-                         "%, strike=" + capstrike * 100  + "%, " +
+                         "%, strike=" + capstrike * 100 + "%, " +
                          "effective strike= " + (capstrike - spread_p) / gearing_p * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
@@ -498,7 +498,7 @@ namespace TestSuite
                                                                 vars.volatility, gearing_n, spread_n);
          Swap capLeg_n = new Swap(fixedLeg, cappedLeg_n);
          capLeg_n.setPricingEngine(engine);
-         YoYInflationFloor floor_n = new YoYInflationFloor(floatLeg, new List<double>() {(capstrike - spread_n) / gearing_n});
+         YoYInflationFloor floor_n = new YoYInflationFloor(floatLeg, new List<double>() { (capstrike - spread_n) / gearing_n });
          floor_n.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_n.NPV();
          npvCappedLeg = capLeg_n.NPV();
@@ -508,7 +508,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nYoY Capped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
-                         "%, strike=" + capstrike * 100  + "%, " +
+                         "%, strike=" + capstrike * 100 + "%, " +
                          "effective strike= " + ((capstrike - spread_n) / gearing_n * 100) +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
@@ -536,7 +536,7 @@ namespace TestSuite
                                                                   vars.volatility, gearing_p, spread_p);
          Swap floorLeg_p1 = new Swap(fixedLeg, flooredLeg_p1);
          floorLeg_p1.setPricingEngine(engine);
-         YoYInflationFloor floor_p1 = new YoYInflationFloor(floatLeg_p, new List<double>() {floorstrike});
+         YoYInflationFloor floor_p1 = new YoYInflationFloor(floatLeg_p, new List<double>() { floorstrike });
          floor_p1.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_p.NPV();
          npvFlooredLeg = floorLeg_p1.NPV();
@@ -548,7 +548,7 @@ namespace TestSuite
                          + "spread= " + spread_p * 100 + "%, strike=" + floorstrike * 100 + "%, "
                          + "effective strike= " + (floorstrike - spread_p) / gearing_p * 100
                          + "%\n" +
-                         "  Floored Floating Leg NPV: "    + npvFlooredLeg
+                         "  Floored Floating Leg NPV: " + npvFlooredLeg
                          + "\n" +
                          "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor)
                          + "\n" +
@@ -559,7 +559,7 @@ namespace TestSuite
                                                                  vars.volatility, gearing_n, spread_n);
          Swap floorLeg_n = new Swap(fixedLeg, flooredLeg_n);
          floorLeg_n.setPricingEngine(engine);
-         YoYInflationCap cap_n = new YoYInflationCap(floatLeg, new List<double>() {(floorstrike - spread_n) / gearing_n});
+         YoYInflationCap cap_n = new YoYInflationCap(floatLeg, new List<double>() { (floorstrike - spread_n) / gearing_n });
          cap_n.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_n.NPV();
          npvFlooredLeg = floorLeg_n.NPV();
@@ -569,7 +569,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nYoY Capped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
-                         "%, strike=" + floorstrike * 100  + "%, " +
+                         "%, strike=" + floorstrike * 100 + "%, " +
                          "effective strike= " + (floorstrike - spread_n) / gearing_n * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvFlooredLeg + "\n" +
@@ -590,8 +590,8 @@ namespace TestSuite
          Swap collarLeg_p1 = new Swap(fixedLeg, collaredLeg_p);
          collarLeg_p1.setPricingEngine(engine);
          YoYInflationCollar collar_p = new YoYInflationCollar(floatLeg_p,
-         new List<double>() {capstrike},
-         new List<double>() {floorstrike});
+         new List<double>() { capstrike },
+         new List<double>() { floorstrike });
          collar_p.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_p.NPV();
          npvCollaredLeg = collarLeg_p1.NPV();
@@ -604,9 +604,9 @@ namespace TestSuite
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "
                          + "effective strike=" + (floorstrike - spread_p) / gearing_p * 100
-                         +  "% and " + (capstrike - spread_p) / gearing_p * 100
+                         + "% and " + (capstrike - spread_p) / gearing_p * 100
                          + "%\n" +
-                         "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                         "  Collared Floating Leg NPV: " + npvCollaredLeg
                          + "\n" +
                          "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar)
                          + "\n" +
@@ -618,8 +618,8 @@ namespace TestSuite
          Swap collarLeg_n1 = new Swap(fixedLeg, collaredLeg_n);
          collarLeg_n1.setPricingEngine(engine);
          YoYInflationCollar collar_n = new YoYInflationCollar(floatLeg,
-         new List<double>() {(floorstrike - spread_n) / gearing_n},
-         new List<double>() {(capstrike - spread_n) / gearing_n});
+         new List<double>() { (floorstrike - spread_n) / gearing_n },
+         new List<double>() { (capstrike - spread_n) / gearing_n });
          collar_n.setPricingEngine(vars.makeEngine(vars.volatility, whichPricer));
          npvVanilla = vanillaLeg_n.NPV();
          npvCollaredLeg = collarLeg_n1.NPV();
@@ -632,9 +632,9 @@ namespace TestSuite
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "
                          + "effective strike=" + (floorstrike - spread_n) / gearing_n * 100
-                         +  "% and " + (capstrike - spread_n) / gearing_n * 100
+                         + "% and " + (capstrike - spread_n) / gearing_n * 100
                          + "%\n" +
-                         "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                         "  Collared Floating Leg NPV: " + npvCollaredLeg
                          + "\n" +
                          "  Floating Leg NPV - Collar NPV: " + (npvVanilla - gearing_n * npvCollar)
                          + "\n" +
@@ -704,16 +704,16 @@ namespace TestSuite
 
                      List<CashFlow> leg2 = vars.makeYoYCapFlooredLeg(whichPricer, from,
                                                                      lengths[i],
-                                                                     new InitializedList < double? >(lengths[i], strikes[j]), //cap
-                                                                     new List < double? >(), //floor
+                                                                     new InitializedList<double?>(lengths[i], strikes[j]), //cap
+                                                                     new List<double?>(), //floor
                                                                      vols[k],
                                                                      1.0,   // gearing
                                                                      0.0);// spread
 
                      List<CashFlow> leg3 = vars.makeYoYCapFlooredLeg(whichPricer, from,
                                                                      lengths[i],
-                                                                     new List < double? >(), // cap
-                                                                     new InitializedList < double? >(lengths[i], strikes[j]), //floor
+                                                                     new List<double?>(), // cap
+                                                                     new InitializedList<double?>(lengths[i], strikes[j]), //floor
                                                                      vols[k],
                                                                      1.0,   // gearing
                                                                      0.0);// spread

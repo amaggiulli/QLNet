@@ -31,7 +31,7 @@ namespace QLNet
    {
       #region Constructors
 
-      protected DefaultProbabilityTermStructure(DayCounter dc = null, List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+      protected DefaultProbabilityTermStructure(DayCounter dc = null, List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(dc)
       {
          if (jumps != null)
@@ -52,7 +52,7 @@ namespace QLNet
       }
 
       protected DefaultProbabilityTermStructure(Date referenceDate, Calendar cal = null, DayCounter dc = null,
-                                                List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+                                                List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(referenceDate, cal, dc)
       {
          if (jumps != null)
@@ -73,7 +73,7 @@ namespace QLNet
       }
 
       protected DefaultProbabilityTermStructure(int settlementDays, Calendar cal, DayCounter dc = null,
-                                                List<Handle<Quote> > jumps = null, List<Date> jumpDates = null)
+                                                List<Handle<Quote>> jumps = null, List<Date> jumpDates = null)
          : base(settlementDays, cal, dc)
       {
          if (jumps != null)
@@ -159,7 +159,7 @@ namespace QLNet
       public double defaultProbability(double t1, double t2, bool extrapo = false)
       {
          Utils.QL_REQUIRE(t1 <= t2, () => "initial time (" + t1 + ") later than final time (" + t2 + ")");
-         double p1 = t1 < 0.0 ? 0.0 : defaultProbability(t1, extrapolate),  p2 = defaultProbability(t2, extrapolate);
+         double p1 = t1 < 0.0 ? 0.0 : defaultProbability(t1, extrapolate), p2 = defaultProbability(t2, extrapolate);
          return p2 - p1;
       }
 
@@ -193,7 +193,7 @@ namespace QLNet
       //    Hazard rates are defined with annual frequency and continuous
       //    compounding.
 
-      public double hazardRate(Date d,  bool extrapolate = false)
+      public double hazardRate(Date d, bool extrapolate = false)
       {
          return hazardRate(timeFromReference(d), extrapolate);
       }
@@ -208,8 +208,8 @@ namespace QLNet
 
       #region Jump inspectors
 
-      public List<Date> jumpDates() { return this.jumpDates_;}
-      public List<double> jumpTimes() {return this.jumpTimes_;}
+      public List<Date> jumpDates() { return this.jumpDates_; }
+      public List<double> jumpTimes() { return this.jumpTimes_; }
 
       #endregion
 
@@ -267,7 +267,7 @@ namespace QLNet
          latestReference_ = base.referenceDate();
       }
       // data members
-      private List<Handle<Quote> > jumps_;
+      private List<Handle<Quote>> jumps_;
       private List<Date> jumpDates_;
       private List<double> jumpTimes_;
       private int nJumps_;

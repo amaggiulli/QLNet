@@ -40,7 +40,7 @@ namespace QLNet
 
       public override void calculate()
       {
-         splines_ = new List<Interpolation> (this.zData_.rows());
+         splines_ = new List<Interpolation>(this.zData_.rows());
          for (int i = 0; i < (this.zData_.rows()); ++i)
             splines_.Add(new CubicInterpolation(this.xBegin_, this.xSize_, this.zData_.row(i),
                                                 CubicInterpolation.DerivativeApprox.Spline, false,
@@ -174,7 +174,7 @@ namespace QLNet
    }
 
    //! bicubic-spline-interpolation factory
-   public  class Bicubic : IInterpolationFactory2D
+   public class Bicubic : IInterpolationFactory2D
    {
       public Interpolation2D interpolate(List<double> xBegin, int size, List<double> yBegin, int ySize, Matrix zData)
       {

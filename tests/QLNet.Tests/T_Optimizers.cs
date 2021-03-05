@@ -92,7 +92,7 @@ namespace TestSuite
                   if (endCriteriaResult == EndCriteria.Type.None ||
                       endCriteriaResult == EndCriteria.Type.MaxIterations ||
                       endCriteriaResult == EndCriteria.Type.Unknown)
-                     QAssert.Fail("function evaluations: " + problem.functionEvaluation()  +
+                     QAssert.Fail("function evaluations: " + problem.functionEvaluation() +
                                   " gradient evaluations: " + problem.gradientEvaluation() +
                                   " x expected:           " + xMinExpected_[i] +
                                   " x calculated:         " + xMinCalculated +
@@ -313,8 +313,8 @@ namespace TestSuite
 
          double simplexLambda = 0.1;                   // characteristic search length for simplex
          double levenbergMarquardtEpsfcn = 1.0e-8;     // parameters specific for Levenberg-Marquardt
-         double levenbergMarquardtXtol   = 1.0e-8;     //
-         double levenbergMarquardtGtol   = 1.0e-8;     //
+         double levenbergMarquardtXtol = 1.0e-8;     //
+         double levenbergMarquardtGtol = 1.0e-8;     //
          optimizationMethods_.Add(makeOptimizationMethods(
                                      optimizationMethodTypes, optimizationMethodTypes.Length,
                                      simplexLambda, levenbergMarquardtEpsfcn, levenbergMarquardtXtol,
@@ -488,7 +488,7 @@ namespace TestSuite
       }
       public override double value(Vector x)
       {
-         return  100.0 * (x[0] * x[0] - x[1]) * (x[0] * x[0] - x[1])
+         return 100.0 * (x[0] * x[0] - x[1]) * (x[0] * x[0] - x[1])
                  + (1.0 - x[0]) * (1.0 - x[0]);
       }
    }

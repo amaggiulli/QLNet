@@ -71,7 +71,7 @@ namespace QLNet
 
    //! %Forward Hull-White stochastic process
    /*! \ingroup processes */
-   public class HullWhiteForwardProcess: ForwardMeasureProcess1D
+   public class HullWhiteForwardProcess : ForwardMeasureProcess1D
    {
       public HullWhiteForwardProcess(Handle<YieldTermStructure> h, double a, double sigma)
       {

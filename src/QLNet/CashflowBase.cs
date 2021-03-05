@@ -39,7 +39,7 @@ namespace QLNet
                return true;
          }
 
-         if (refDate == null ||  refDate == Settings.evaluationDate())
+         if (refDate == null || refDate == Settings.evaluationDate())
          {
             // today's date; we override the bool with the one
             // specified in the settings (if any)
@@ -59,7 +59,7 @@ namespace QLNet
       //! The amount is not discounted, i.e., it is the actual  amount paid at the cash flow date.
       public abstract double amount();
       //! returns the date that the cash flow trades exCoupon
-      public virtual Date exCouponDate() {return null;}
+      public virtual Date exCouponDate() { return null; }
       //! returns true if the cashflow is trading ex-coupon on the refDate
       public bool tradingExCoupon(Date refDate = null)
       {
@@ -101,7 +101,7 @@ namespace QLNet
       }
       public static bool operator >(CashFlow left, CashFlow right)
       {
-         return left.date() > right.date() ;
+         return left.date() > right.date();
       }
       public static bool operator >=(CashFlow left, CashFlow right)
       {
@@ -109,7 +109,7 @@ namespace QLNet
       }
       public static bool operator <(CashFlow left, CashFlow right)
       {
-         return left.date() < right.date() ;
+         return left.date() < right.date();
       }
       public static bool operator <=(CashFlow left, CashFlow right)
       {

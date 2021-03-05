@@ -33,11 +33,11 @@ namespace QLNet
    {
       public CHFLibor(Period tenor)
          : base("CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), new Handle<YieldTermStructure>())
-      {}
+      { }
 
       public CHFLibor(Period tenor, Handle<YieldTermStructure> h)
          : base("CHFLibor", tenor, 2, new CHFCurrency(), new Switzerland(), new Actual360(), h)
-      {}
+      { }
    }
 
    //! base class for the one day deposit BBA %CHF %LIBOR indexes

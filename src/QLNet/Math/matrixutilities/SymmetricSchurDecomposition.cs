@@ -135,7 +135,7 @@ namespace QLNet
                            jacobiRotate_(ss, rho, sine, j, l, l, k);
                         for (l = k + 1; l < size; l++)
                            jacobiRotate_(ss, rho, sine, j, l, k, l);
-                        for (l = 0;   l < size; l++)
+                        for (l = 0; l < size; l++)
                            jacobiRotate_(eigenVectors_,
                                          rho, sine, l, j, l, k);
                      }

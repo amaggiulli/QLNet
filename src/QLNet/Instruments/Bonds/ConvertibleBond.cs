@@ -60,7 +60,7 @@ namespace QLNet
             public List<Date> callabilityDates { get; set; }
             public List<Callability.Type> callabilityTypes { get; set; }
             public List<double> callabilityPrices { get; set; }
-            public List < double? > callabilityTriggers { get; set; }
+            public List<double?> callabilityTriggers { get; set; }
             public List<Date> couponDates { get; set; }
             public List<double> couponAmounts { get; set; }
             public Date issueDate { get; set; }
@@ -96,7 +96,8 @@ namespace QLNet
             }
          }
          public new class Engine : GenericEngine<ConvertibleBond.option.Arguments,
-            ConvertibleBond.option.Results> {}
+            ConvertibleBond.option.Results>
+         { }
 
          public option(ConvertibleBond bond,
                        Exercise exercise,
@@ -154,7 +155,7 @@ namespace QLNet
                moreArgs.callabilityPrices.Clear();
 
             if (moreArgs.callabilityTriggers == null)
-               moreArgs.callabilityTriggers = new List < double? >();
+               moreArgs.callabilityTriggers = new List<double?>();
             else
                moreArgs.callabilityTriggers.Clear();
 
@@ -367,7 +368,7 @@ namespace QLNet
          .withNotionals(100.0)
          .withPaymentAdjustment(schedule.businessDayConvention());
 
-         addRedemptionsToCashflows(new List<double>() {redemption});
+         addRedemptionsToCashflows(new List<double>() { redemption });
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
@@ -412,7 +413,7 @@ namespace QLNet
          .withNotionals(100.0)
          .withPaymentAdjustment(schedule.businessDayConvention());
 
-         addRedemptionsToCashflows(new List<double> {redemption});
+         addRedemptionsToCashflows(new List<double> { redemption });
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 

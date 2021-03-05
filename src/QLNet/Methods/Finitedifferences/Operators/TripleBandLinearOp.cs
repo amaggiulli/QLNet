@@ -54,7 +54,7 @@ namespace QLNet
             int i = iter.index();
 
             i0_[i] = layout.neighbourhood(iter, direction, -1);
-            i2_[i] = layout.neighbourhood(iter, direction,  1);
+            i2_[i] = layout.neighbourhood(iter, direction, 1);
 
             List<int> coordinates = iter.coordinates();
 
@@ -113,7 +113,7 @@ namespace QLNet
          for (int i = 0; i < n; ++i)
          {
             retVal[i, i0_[i]] += lower_[i];
-            retVal[i, i     ] += diag_[i];
+            retVal[i, i] += diag_[i];
             retVal[i, i2_[i]] += upper_[i];
          }
 
@@ -211,7 +211,7 @@ namespace QLNet
          for (int i = 0; i < size; ++i)
          {
             retVal.lower_[i] = lower_[i] + m.lower_[i];
-            retVal.diag_[i] = diag_[i]  + m.diag_[i];
+            retVal.diag_[i] = diag_[i] + m.diag_[i];
             retVal.upper_[i] = upper_[i] + m.upper_[i];
          }
 
@@ -247,7 +247,7 @@ namespace QLNet
                //#pragma omp parallel for
                for (int i = 0; i < size; ++i)
                {
-                  diag_[i]  = y.diag_[i];
+                  diag_[i] = y.diag_[i];
                   lower_[i] = y.lower_[i];
                   upper_[i] = y.upper_[i];
                }
@@ -258,7 +258,7 @@ namespace QLNet
                //#pragma omp parallel for
                for (int i = 0; i < size; ++i)
                {
-                  diag_[i]  = y.diag_[i] + b[i * binc];
+                  diag_[i] = y.diag_[i] + b[i * binc];
                   lower_[i] = y.lower_[i];
                   upper_[i] = y.upper_[i];
                }
@@ -272,7 +272,7 @@ namespace QLNet
             for (int i = 0; i < size; ++i)
             {
                double s = a[i * ainc];
-               diag_[i]  = y.diag_[i]  + s * x.diag_[i];
+               diag_[i] = y.diag_[i] + s * x.diag_[i];
                lower_[i] = y.lower_[i] + s * x.lower_[i];
                upper_[i] = y.upper_[i] + s * x.upper_[i];
             }
@@ -313,7 +313,8 @@ namespace QLNet
 
       public override IOperator multiply(double a, IOperator D) { return null; }
       public override IOperator add
-         (IOperator A, IOperator B) { return null; }
+         (IOperator A, IOperator B)
+      { return null; }
       public override IOperator subtract(IOperator A, IOperator B) { return null; }
 
       public override bool isTimeDependent() { return false; }

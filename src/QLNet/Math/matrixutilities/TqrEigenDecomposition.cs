@@ -83,7 +83,7 @@ namespace QLNet
             while (!offDiagIsZero(k, e))
             {
                int l = k;
-               while (--l > 0 && !offDiagIsZero(l, e));
+               while (--l > 0 && !offDiagIsZero(l, e)) ;
                iter_++;
 
                double q = d_[l];
@@ -99,7 +99,7 @@ namespace QLNet
                                  - 0.5 * d_[k - 1] * d_[k] + e[k] * e[k]);
                   double t2 = 0.5 * (d_[k] + d_[k - 1]);
 
-                  double lambda = (Math.Abs(t2 + t1 - d_[k]) < Math.Abs(t2 - t1 - d_[k]))?
+                  double lambda = (Math.Abs(t2 + t1 - d_[k]) < Math.Abs(t2 - t1 - d_[k])) ?
                                   t2 + t1 : t2 - t1;
 
                   if (strategy == ShiftStrategy.CloseEigenValue)
@@ -163,12 +163,12 @@ namespace QLNet
 
          // sort (eigenvalues, eigenvectors),
          // code taken from symmetricSchureDecomposition.cpp
-         List<KeyValuePair<double, List<double> > > temp = new  InitializedList<KeyValuePair<double, List<double>>>(n);
+         List<KeyValuePair<double, List<double>>> temp = new InitializedList<KeyValuePair<double, List<double>>>(n);
          List<double> eigenVector = new InitializedList<double>(ev_.rows());
          for (i = 0; i < n; i++)
          {
             if (ev_.rows() > 0)
-               eigenVector = ev_.column(i) ;
+               eigenVector = ev_.column(i);
 
             temp[i] = new KeyValuePair<double, List<double>>(d_[i], eigenVector);
          }
@@ -195,10 +195,10 @@ namespace QLNet
          return a.Key.CompareTo(b.Key);
       }
 
-      public Vector eigenvalues()   { return d_; }
-      public Matrix eigenvectors()  { return ev_; }
+      public Vector eigenvalues() { return d_; }
+      public Matrix eigenvectors() { return ev_; }
 
-      public int iterations()  { return iter_; }
+      public int iterations() { return iter_; }
 
 
       private bool offDiagIsZero(int k, Vector e)

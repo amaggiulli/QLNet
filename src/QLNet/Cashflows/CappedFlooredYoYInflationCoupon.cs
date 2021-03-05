@@ -99,7 +99,7 @@ namespace QLNet
                                              Date refPeriodStart = null,
                                              Date refPeriodEnd = null)
       : base(paymentDate, nominal, startDate, endDate,
-             fixingDays, index, observationLag,  dayCounter,
+             fixingDays, index, observationLag, dayCounter,
              gearing, spread, refPeriodStart, refPeriodEnd)
       {
          isFloored_ = false;
@@ -129,7 +129,7 @@ namespace QLNet
          if (isFloored_)
          {
             floorletRate =
-               underlying_ != null?
+               underlying_ != null ?
                underlying_.pricer().floorletRate(effectiveFloor()) :
                pricer().floorletRate(effectiveFloor())
                ;

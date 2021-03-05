@@ -237,7 +237,7 @@ namespace TestSuite
          // Testing CDS2015 semi-annual rolling convention
          //From September 20th 2016 to March 19th 2017 of the next Year,
          //end date is December 20th 2021 for a 5 year Swap
-         Schedule s1 = new  MakeSchedule().from(new Date(12, Month.December, 2016))
+         Schedule s1 = new MakeSchedule().from(new Date(12, Month.December, 2016))
          .to(new Date(12, Month.December, 2016) + new Period(5, TimeUnit.Years))
          .withCalendar(new WeekendsOnly())
          .withTenor(new Period(3, TimeUnit.Months))

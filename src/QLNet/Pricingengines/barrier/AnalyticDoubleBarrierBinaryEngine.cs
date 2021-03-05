@@ -93,7 +93,7 @@ namespace QLNet
          double hi_alpha = Math.Pow(spot / barrier_hi, alpha);
 
          double tot = 0, term = 0;
-         for (int i = 1 ; i < maxIteration ; ++i)
+         for (int i = 1; i < maxIteration; ++i)
          {
             double term1 = (lo_alpha - Math.Pow(-1.0, i) * hi_alpha) /
                            (Math.Pow(alpha, 2) + Math.Pow(i * Const.M_PI / Z, 2));
@@ -113,7 +113,7 @@ namespace QLNet
          {
             double discount = process_.riskFreeRate().currentLink().discount(
                arguments_.exercise.lastDate());
-            Utils.QL_REQUIRE(discount>0.0,
+            Utils.QL_REQUIRE(discount > 0.0,
                              () => "positive discount required");
             return Math.Max(cash * discount - tot, 0.0); // KI
          }
@@ -153,7 +153,7 @@ namespace QLNet
          double log_S_L = Math.Log(spot / barrier_lo);
 
          double tot = 0, term = 0;
-         for (int i = 1 ; i < maxIteration ; ++i)
+         for (int i = 1; i < maxIteration; ++i)
          {
             double factor = Math.Pow(i * Const.M_PI / Z, 2) - beta;
             double term1 = (beta - Math.Pow(i * Const.M_PI / Z, 2) * Math.Exp(-0.5 * factor * variance)) / factor;

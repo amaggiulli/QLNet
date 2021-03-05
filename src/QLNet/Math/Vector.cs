@@ -36,19 +36,19 @@ namespace QLNet
       /// Creates an empty Vector.
       /// </summary>
       public Vector() : this(0)
-      {}
+      { }
 
       /// <summary>
       /// Creates a Vector of the given size.
       /// </summary>
       public Vector(int size) : base(size)
-      {}
+      { }
 
       /// <summary>
       /// Creates the Vector and fills it with value
       /// </summary>
       public Vector(int size, double value) : base(size, value)
-      {}
+      { }
 
       /// <summary>
       /// Creates the vector and fills it according to
@@ -132,7 +132,7 @@ namespace QLNet
       public sealed override bool Equals(object o)
       {
          var v = o as Vector;
-         return v != null && this == v ;
+         return v != null && this == v;
       }
 
       public override int GetHashCode()

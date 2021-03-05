@@ -31,7 +31,7 @@ namespace QLNet
    {
       private List<Path> multiPath_;
 
-      public MultiPath() {}
+      public MultiPath() { }
       public MultiPath(int nAsset, TimeGrid timeGrid)
       {
          multiPath_ = new List<Path>(nAsset);

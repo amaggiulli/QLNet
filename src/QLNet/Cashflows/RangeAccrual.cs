@@ -42,7 +42,7 @@ namespace QLNet
          lowerTrigger_ = lowerTrigger;
          upperTrigger_ = upperTrigger;
 
-         Utils.QL_REQUIRE(lowerTrigger_<upperTrigger, () => "lowerTrigger_>=upperTrigger");
+         Utils.QL_REQUIRE(lowerTrigger_ < upperTrigger, () => "lowerTrigger_>=upperTrigger");
          Utils.QL_REQUIRE(observationsSchedule_.startDate() == startDate, () => "incompatible start date");
          Utils.QL_REQUIRE(observationsSchedule_.endDate() == endDate, () => "incompatible end date");
 
@@ -63,14 +63,14 @@ namespace QLNet
          }
       }
 
-      public double startTime() {return startTime_; }
-      public double endTime()  {return endTime_; }
-      public double lowerTrigger()  {return lowerTrigger_; }
-      public double upperTrigger()  {return upperTrigger_; }
-      public int observationsNo()  {return observationsNo_; }
-      public List<Date> observationDates()  {return observationDates_;}
-      public List<double> observationTimes() {return observationTimes_;}
-      public Schedule observationsSchedule() {return observationsSchedule_;}
+      public double startTime() { return startTime_; }
+      public double endTime() { return endTime_; }
+      public double lowerTrigger() { return lowerTrigger_; }
+      public double upperTrigger() { return upperTrigger_; }
+      public int observationsNo() { return observationsNo_; }
+      public List<Date> observationDates() { return observationDates_; }
+      public List<double> observationTimes() { return observationTimes_; }
+      public Schedule observationsSchedule() { return observationsSchedule_; }
 
       public double priceWithoutOptionality(Handle<YieldTermStructure> discountCurve)
       {
@@ -92,11 +92,11 @@ namespace QLNet
 
    }
 
-   public class RangeAccrualPricer: FloatingRateCouponPricer
+   public class RangeAccrualPricer : FloatingRateCouponPricer
    {
       // Observer interface
-      public override double swapletPrice() {throw new NotImplementedException();}
-      public override double swapletRate() {return swapletPrice() / (accrualFactor_ * discount_);}
+      public override double swapletPrice() { throw new NotImplementedException(); }
+      public override double swapletRate() { return swapletPrice() / (accrualFactor_ * discount_); }
       public override double capletPrice(double effectiveCap)
       {
          Utils.QL_FAIL("RangeAccrualPricer::capletPrice not implemented");
@@ -410,12 +410,12 @@ namespace QLNet
          double previousCall = Utils.blackFormula(Option.Type.Call, previousStrike, previousForward,
                                                   Math.Sqrt(previousVariance), deflator);
 
-         Utils.QL_REQUIRE(nextCall <previousCall, () =>
-                          "RangeAccrualPricerByBgm::callSpreadPrice: nextCall > previousCall" +
-                          "\n nextCall: strike :" + nextStrike + "; variance: " + nextVariance +
-                          " adjusted initial value " + nextForward +
-                          "\n previousCall: strike :" + previousStrike + "; variance: " + previousVariance +
-                          " adjusted initial value " + previousForward);
+         Utils.QL_REQUIRE(nextCall < previousCall, () =>
+                           "RangeAccrualPricerByBgm::callSpreadPrice: nextCall > previousCall" +
+                           "\n nextCall: strike :" + nextStrike + "; variance: " + nextVariance +
+                           " adjusted initial value " + nextForward +
+                           "\n previousCall: strike :" + previousStrike + "; variance: " + previousVariance +
+                           " adjusted initial value " + previousForward);
 
          return (previousCall - nextCall) / (nextStrike - previousStrike);
       }
@@ -436,8 +436,8 @@ namespace QLNet
          double lambdaS = smilesOnExpiry_.volatility(strike);
          double lambdaT = smilesOnPayment_.volatility(strike);
 
-         double derLambdaDerK = derLambdaDerLambdaS(expiry)*derSmileS +
-                                derLambdaDerLambdaT(expiry)*derSmileT;
+         double derLambdaDerK = derLambdaDerLambdaS(expiry) * derSmileS +
+                                derLambdaDerLambdaT(expiry) * derSmileT;
 
 
          double lambdaSATM = smilesOnExpiry_.volatility(forward);

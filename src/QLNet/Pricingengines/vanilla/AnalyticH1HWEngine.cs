@@ -57,7 +57,7 @@ namespace QLNet
 
       protected override Complex addOnTerm(double u, double t, int j)
       {
-         return  base.addOnTerm(u, t, j)
+         return base.addOnTerm(u, t, j)
                  + new Fj_Helper(model_, hullWhiteModel_, rhoSr_, t, 0.0, j).value(u);
       }
 
@@ -107,20 +107,20 @@ namespace QLNet
 
             Complex I4 =
                -1.0 / lambda_ * new Complex(u * u, ((j_ == 1u) ? -u : u))
-               *(b / c * (1.0 - Math.Exp(-c * term_))
+               * (b / c * (1.0 - Math.Exp(-c * term_))
                  + a * term_
                  + a / lambda_ * (Math.Exp(-lambda_ * term_) - 1.0)
-                 + b / (c - lambda_)*Math.Exp(-c * term_)
+                 + b / (c - lambda_) * Math.Exp(-c * term_)
                  * (1.0 - Math.Exp(-term_ * (lambda_ - c))));
 
             return eta_ * rhoSr_ * I4;
          }
 
 
-         private double c(double t) { return gamma_ * gamma_ / (4 * kappa_) * (1.0 - Math.Exp(-kappa_ * t));}
+         private double c(double t) { return gamma_ * gamma_ / (4 * kappa_) * (1.0 - Math.Exp(-kappa_ * t)); }
          private double lambda(double t)
          {
-            return  4.0 * kappa_ * v0_ * Math.Exp(-kappa_ * t) / (gamma_ * gamma_ * (1.0 - Math.Exp(-kappa_ * t)));
+            return 4.0 * kappa_ * v0_ * Math.Exp(-kappa_ * t) / (gamma_ * gamma_ * (1.0 - Math.Exp(-kappa_ * t)));
          }
          private double Lambda(double t)
          {
@@ -147,7 +147,7 @@ namespace QLNet
 
          private double LambdaApprox(double t)
          {
-            return Math.Sqrt(c(t)*(lambda(t) - 1.0) + c(t)*d_*(1.0 + 1.0 / (2.0 * (d_ + lambda(t)))));
+            return Math.Sqrt(c(t) * (lambda(t) - 1.0) + c(t) * d_ * (1.0 + 1.0 / (2.0 * (d_ + lambda(t)))));
          }
 
          private int j_;

@@ -290,8 +290,8 @@ namespace TestSuite
                                     fixedIndex, observationInterpolation);
          Date asofDate = Settings.evaluationDate();
 
-         double[] floatFix = {0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1};
-         double[] cpiFix = {211.4, 217.2, 211.4, 213.4, -2, -2};
+         double[] floatFix = { 0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1 };
+         double[] cpiFix = { 211.4, 217.2, 211.4, 213.4, -2, -2 };
          for (int i = 0; i < floatSchedule.Count; i++)
          {
             if (floatSchedule[i] < common.evaluationDate)
@@ -357,7 +357,7 @@ namespace TestSuite
          CommonVars common = new CommonVars();
 
          ZeroCouponInflationSwap.Type ztype = ZeroCouponInflationSwap.Type.Payer;
-         double  nominal = 1000000.0;
+         double nominal = 1000000.0;
          Date startDate = new Date(common.evaluationDate);
          Date endDate = new Date(25, Month.November, 2059);
          Calendar cal = new UnitedKingdom();
@@ -456,8 +456,8 @@ namespace TestSuite
                                     fixedPaymentConvention, contractObservationLag,
                                     fixedIndex, observationInterpolation);
 
-         double[] floatFix = {0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1};
-         double[] cpiFix = {211.4, 217.2, 211.4, 213.4, -2, -2};
+         double[] floatFix = { 0.06255, 0.05975, 0.0637, 0.018425, 0.0073438, -1, -1 };
+         double[] cpiFix = { 211.4, 217.2, 211.4, 213.4, -2, -2 };
          for (int i = 0; i < floatSchedule.Count; i++)
          {
             if (floatSchedule[i] < common.evaluationDate)

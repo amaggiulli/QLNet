@@ -37,17 +37,17 @@ namespace QLNet
       */
 
       protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
-         : base(bdc, dc) {}
+         : base(bdc, dc) { }
 
       //! initialize with a fixed reference date
       protected LocalVolTermStructure(Date referenceDate, Calendar cal = null,
                                       BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
-         : base(referenceDate, cal, bdc, dc) {}
+         : base(referenceDate, cal, bdc, dc) { }
 
       //! calculate the reference date based on the global evaluation date
       protected LocalVolTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
                                       DayCounter dc = null)
-         : base(settlementDays, cal, bdc, dc) {}
+         : base(settlementDays, cal, bdc, dc) { }
 
       #endregion
 

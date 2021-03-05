@@ -36,12 +36,12 @@ namespace QLNet
    */
    public class TARGET : Calendar
    {
-      public TARGET() : base(Impl.Singleton) {}
+      public TARGET() : base(Impl.Singleton) { }
 
       class Impl : Calendar.WesternImpl
       {
          internal static readonly Impl Singleton = new Impl();
-         private Impl() {}
+         private Impl() { }
 
          public override string name() { return "TARGET calendar"; }
          public override bool isBusinessDay(Date date)

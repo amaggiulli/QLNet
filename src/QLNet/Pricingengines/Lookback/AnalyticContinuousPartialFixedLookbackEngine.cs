@@ -54,7 +54,7 @@ namespace QLNet
       private GeneralizedBlackScholesProcess process_;
       private CumulativeNormalDistribution f_ = new CumulativeNormalDistribution();
       // helper methods
-      private double underlying() {return process_.x0();}
+      private double underlying() { return process_.x0(); }
       private double strike()
       {
          PlainVanillaPayoff payoff = arguments_.payoff as PlainVanillaPayoff;
@@ -64,7 +64,7 @@ namespace QLNet
       private double residualTime() { return process_.time(arguments_.exercise.lastDate()); }
       private double volatility() { return process_.blackVolatility().link.blackVol(residualTime(), strike()); }
       private double lookbackPeriodStartTime() { return process_.time(arguments_.lookbackPeriodStart); }
-      private double stdDeviation() {return volatility() * Math.Sqrt(residualTime());}
+      private double stdDeviation() { return volatility() * Math.Sqrt(residualTime()); }
       private double riskFreeRate()
       {
          return process_.riskFreeRate().link.zeroRate(residualTime(),

@@ -77,7 +77,7 @@ namespace QLNet
             for (int j = i; j < size_; ++j)
             {
                corrMatrix_[i, j] = corrMatrix_[j, i]
-                                   = rho + (1 - rho) * Math.Exp(-beta * Math.Abs((double) i - (double) j));
+                                   = rho + (1 - rho) * Math.Exp(-beta * Math.Abs((double)i - (double)j));
             }
          }
 

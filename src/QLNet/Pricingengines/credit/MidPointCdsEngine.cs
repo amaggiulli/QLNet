@@ -50,14 +50,14 @@ namespace QLNet
          {
             // date determining the probability survival so we have to pay
             //   the upfront (did not knock out)
-            Date effectiveUpfrontDate =  arguments_.protectionStart > probability_.link.referenceDate() ?
+            Date effectiveUpfrontDate = arguments_.protectionStart > probability_.link.referenceDate() ?
                                          arguments_.protectionStart : probability_.link.referenceDate();
             upfPVO1 = probability_.link.survivalProbability(effectiveUpfrontDate) *
                       discountCurve_.link.discount(arguments_.upfrontPayment.date());
          }
          results_.upfrontNPV = upfPVO1 * arguments_.upfrontPayment.amount();
 
-         results_.couponLegNPV  = 0.0;
+         results_.couponLegNPV = 0.0;
          results_.defaultLegNPV = 0.0;
          for (int i = 0; i < arguments_.leg.Count; ++i)
          {
@@ -131,7 +131,7 @@ namespace QLNet
                break;
             case Protection.Side.Buyer:
                results_.couponLegNPV *= -1.0;
-               results_.upfrontNPV   *= -1.0;
+               results_.upfrontNPV *= -1.0;
                upfrontSign = -1.0;
                break;
             default:

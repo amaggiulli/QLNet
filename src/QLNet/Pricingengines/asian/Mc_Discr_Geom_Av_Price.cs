@@ -33,8 +33,8 @@ namespace QLNet
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteGeometricAPEngine<RNG, S>
       : MCDiscreteAveragingAsianEngine<RNG, S>
-        where RNG : IRSG, new ()
-        where S : IGeneralStatistics, new ()
+        where RNG : IRSG, new()
+        where S : IGeneralStatistics, new()
    {
       public MCDiscreteGeometricAPEngine(
          GeneralizedBlackScholesProcess process,
@@ -56,10 +56,10 @@ namespace QLNet
          PlainVanillaPayoff payoff = (PlainVanillaPayoff)(this.arguments_.payoff);
          Utils.QL_REQUIRE(payoff != null, () => "non-plain payoff given");
 
-         EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
+         EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
-         return (PathPricer<IPath>) new GeometricAPOPathPricer(
+         return (PathPricer<IPath>)new GeometricAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
                    this.process_.riskFreeRate().link.discount(
@@ -127,7 +127,7 @@ namespace QLNet
             }
             else
             {
-               averagePrice *= Math.Pow(product, 1.0 / (double) fixings);
+               averagePrice *= Math.Pow(product, 1.0 / (double)fixings);
                product = price;
             }
          }
@@ -138,8 +138,8 @@ namespace QLNet
 
    //<class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCDiscreteGeometricAPEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : Statistics, new ()
+      where RNG : IRSG, new()
+      where S : Statistics, new()
    {
       public MakeMCDiscreteGeometricAPEngine(GeneralizedBlackScholesProcess process)
       {
@@ -226,7 +226,7 @@ namespace QLNet
       public IPricingEngine value()
       {
          Utils.QL_REQUIRE(steps_ != null, () => "max number of steps per year not given");
-         return (IPricingEngine) new MCDiscreteGeometricAPEngine<RNG, S>(process_,
+         return (IPricingEngine)new MCDiscreteGeometricAPEngine<RNG, S>(process_,
                                                                          steps_.Value,
                                                                          brownianBridge_,
                                                                          antithetic_, controlVariate_,

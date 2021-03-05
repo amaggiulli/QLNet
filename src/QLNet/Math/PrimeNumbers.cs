@@ -52,9 +52,9 @@ namespace QLNet
       private static List<ulong> primeNumbers_ = new List<ulong>();
 
       private PrimeNumbers()
-      {}
+      { }
 
-      public  static ulong get(int absoluteIndex)
+      public static ulong get(int absoluteIndex)
       {
          if (primeNumbers_.empty())
             primeNumbers_.AddRange(firstPrimes);

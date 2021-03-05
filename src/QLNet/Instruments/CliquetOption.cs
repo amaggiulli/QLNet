@@ -88,7 +88,7 @@ namespace QLNet
 
       //! Cliquet %engine base class
       public new class Engine : GenericEngine<CliquetOption.Arguments, CliquetOption.Results>
-      {}
+      { }
    }
 
 }

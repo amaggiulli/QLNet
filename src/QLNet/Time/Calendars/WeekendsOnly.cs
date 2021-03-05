@@ -29,7 +29,7 @@ namespace QLNet
          private Impl() { }
 
          public override string name() { return "weekends only"; }
-         public override bool isBusinessDay(Date date) { return ! isWeekend(date.DayOfWeek); }
+         public override bool isBusinessDay(Date date) { return !isWeekend(date.DayOfWeek); }
 
       }
    }

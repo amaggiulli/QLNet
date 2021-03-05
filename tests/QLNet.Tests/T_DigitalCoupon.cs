@@ -133,7 +133,7 @@ namespace TestSuite
                                      "\nVolatility = " + (capletVol) +
                                      "\nStrike = " + (strike) +
                                      "\nExercise = " + k + 1 + " years" +
-                                     "\nOption price by replication = "  + optionPrice +
+                                     "\nOption price by replication = " + optionPrice +
                                      "\nOption price by Cox-Rubinstein formula = " + nd1Price +
                                      "\nError " + error);
 
@@ -189,7 +189,7 @@ namespace TestSuite
                                      "\nVolatility = " + (capletVol) +
                                      "\nStrike = " + (strike) +
                                      "\nExercise = " + k + 1 + " years" +
-                                     "\nOption price by replication = "  + optionPrice +
+                                     "\nOption price by replication = " + optionPrice +
                                      "\nOption price by Cox-Rubinstein = " + nd1Price +
                                      "\nError " + error);
 
@@ -212,7 +212,7 @@ namespace TestSuite
                         IPricingEngine engine = new AnalyticEuropeanEngine(stochProcess);
                         VanillaOption putOpt = new VanillaOption(putPayoff, exercise);
                         putOpt.setPricingEngine(engine);
-                        double putVO  = vars.nominal * gearing
+                        double putVO = vars.nominal * gearing
                                         * accrualPeriod * putOpt.NPV()
                                         * discount / discountAtFixing
                                         * forward / effFwd;
@@ -280,7 +280,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon Price = "  + digitalPrice +
+                            "\nCoupon Price = " + digitalPrice +
                             "\nTarget price = " + targetPrice +
                             "\nError = " + error);
 
@@ -306,7 +306,7 @@ namespace TestSuite
 
             // Check price vs its target price
             targetOptionPrice = underlying.price(vars.termStructure);
-            targetPrice = underlying.price(vars.termStructure) + targetOptionPrice ;
+            targetPrice = underlying.price(vars.termStructure) + targetOptionPrice;
             digitalPrice = digitalFlooredCoupon.price(vars.termStructure);
             error = Math.Abs(targetPrice - digitalPrice);
             tolerance = 2.5e-06;
@@ -315,7 +315,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nDigital coupon price = "  + digitalPrice +
+                            "\nDigital coupon price = " + digitalPrice +
                             "\nTarget price = " + targetPrice +
                             "\nError " + error);
 
@@ -359,7 +359,7 @@ namespace TestSuite
             double? nullstrike = null;
             Date paymentDate = endDate;
 
-            FloatingRateCoupon underlying =  new IborCoupon(paymentDate, vars.nominal, startDate, endDate,
+            FloatingRateCoupon underlying = new IborCoupon(paymentDate, vars.nominal, startDate, endDate,
                                                             vars.fixingDays, vars.index, gearing, spread);
 
             // Floating Rate Coupon - Deep-out-of-the-money Call Digital option
@@ -382,7 +382,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price = " + targetPrice +
                             "\nError = " + error);
 
@@ -397,7 +397,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nPrice by replication = "  + replicationOptionPrice +
+                            "\nPrice by replication = " + replicationOptionPrice +
                             "\nTarget price = " + targetOptionPrice +
                             "\nError = " + error);
 
@@ -417,7 +417,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price = " + targetPrice +
                             "\nError = " + error);
 
@@ -555,7 +555,7 @@ namespace TestSuite
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nPrice by replication = "  + optionPrice +
+                                  "\nPrice by replication = " + optionPrice +
                                   "\nPrice by Reiner-Rubinstein = " + nd2Price +
                                   "\nError = " + error);
 
@@ -563,7 +563,7 @@ namespace TestSuite
                   StrikedTypePayoff putPayoff = new CashOrNothingPayoff(Option.Type.Put, effStrike, cashRate);
                   VanillaOption putOpt = new VanillaOption(putPayoff, exercise);
                   putOpt.setPricingEngine(engine);
-                  double putVO  = vars.nominal * accrualPeriod * putOpt.NPV()
+                  double putVO = vars.nominal * accrualPeriod * putOpt.NPV()
                                   * discount / discountAtFixing;
                   error = Math.Abs(nd2Price - putVO);
                   if (error > vars.blackTolerance)
@@ -571,7 +571,7 @@ namespace TestSuite
                                   "\nVolatility = " + (capletVol) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nOption price by Black asset-ot-nothing payoff = "  + putVO +
+                                  "\nOption price by Black asset-ot-nothing payoff = " + putVO +
                                   "\nOption price by Reiner-Rubinstein = " + nd2Price +
                                   "\nError " + error);
                }
@@ -628,7 +628,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price = " + targetPrice +
                             "\nError " + error);
 
@@ -661,7 +661,7 @@ namespace TestSuite
                             "\nVolatility = " + (capletVolatility) +
                             "\nStrike = " + (strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price  = " + targetPrice +
                             "\nError = " + error);
 
@@ -728,7 +728,7 @@ namespace TestSuite
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price  = " + targetPrice +
                             "\nError = " + error);
 
@@ -743,7 +743,7 @@ namespace TestSuite
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nPrice by replication = "  + replicationOptionPrice +
+                            "\nPrice by replication = " + replicationOptionPrice +
                             "\nTarget price = " + targetOptionPrice +
                             "\nError = " + error);
 
@@ -763,7 +763,7 @@ namespace TestSuite
                             "\nVolatility = " + +(capletVolatility) +
                             "\nStrike = " + +(strike) +
                             "\nExercise = " + k + 1 + " years" +
-                            "\nCoupon price = "  + digitalPrice +
+                            "\nCoupon price = " + digitalPrice +
                             "\nTarget price  = " + targetPrice +
                             "\nError = " + error);
 
@@ -834,7 +834,7 @@ namespace TestSuite
                   // Target price
                   double accrualPeriod = underlying.accrualPeriod();
                   double discount = vars.termStructure.link.discount(endDate);
-                  double targetPrice = vars.nominal * accrualPeriod *  discount * cashRate;
+                  double targetPrice = vars.nominal * accrualPeriod * discount * cashRate;
 
                   double error = Math.Abs(targetPrice - digitalPrice);
                   double tolerance = 1.0e-08;
@@ -843,7 +843,7 @@ namespace TestSuite
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nPrice = "  + digitalPrice +
+                                  "\nPrice = " + digitalPrice +
                                   "\nTarget Price  = " + targetPrice +
                                   "\nError = " + error);
 
@@ -859,7 +859,7 @@ namespace TestSuite
                   digitalPrice = asset_digitalCallCoupon.price(vars.termStructure) -
                                  asset_digitalPutCoupon.price(vars.termStructure);
                   // Target price
-                  targetPrice = vars.nominal *  accrualPeriod *  discount * underlying.rate();
+                  targetPrice = vars.nominal * accrualPeriod * discount * underlying.rate();
                   error = Math.Abs(targetPrice - digitalPrice);
                   tolerance = 1.0e-07;
                   if (error > tolerance)
@@ -867,7 +867,7 @@ namespace TestSuite
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nPrice = "  + digitalPrice +
+                                  "\nPrice = " + digitalPrice +
                                   "\nTarget Price  = " + targetPrice +
                                   "\nError = " + error);
                }
@@ -931,16 +931,16 @@ namespace TestSuite
                   double tolerance = 1.0e-09;
                   if (((sub_digitalPrice > central_digitalPrice) &&
                        Math.Abs(central_digitalPrice - sub_digitalPrice) > tolerance) ||
-                      ((central_digitalPrice > over_digitalPrice)  &&
+                      ((central_digitalPrice > over_digitalPrice) &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
                      QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nSub-Replication Price = "  + sub_digitalPrice +
-                                  "\nCentral-Replication Price = "  + central_digitalPrice +
-                                  "\nOver-Replication Price = "  + over_digitalPrice);
+                                  "\nSub-Replication Price = " + sub_digitalPrice +
+                                  "\nCentral-Replication Price = " + central_digitalPrice +
+                                  "\nOver-Replication Price = " + over_digitalPrice);
                   }
 
                   // Floating Rate Coupon - Call Digital option
@@ -960,16 +960,16 @@ namespace TestSuite
                   over_digitalPrice = over_cash_shortDigitalCallCoupon.price(vars.termStructure);
                   if (((sub_digitalPrice > central_digitalPrice) &&
                        Math.Abs(central_digitalPrice - sub_digitalPrice) > tolerance) ||
-                      ((central_digitalPrice > over_digitalPrice)  &&
+                      ((central_digitalPrice > over_digitalPrice) &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
                      QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon - Call Digital option" +
                                   "\nVolatility = " + +(capletVolatility) +
                                   "\nStrike = " + +(strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nSub-Replication Price = "  + sub_digitalPrice +
-                                  "\nCentral-Replication Price = "  + central_digitalPrice +
-                                  "\nOver-Replication Price = "  + over_digitalPrice);
+                                  "\nSub-Replication Price = " + sub_digitalPrice +
+                                  "\nCentral-Replication Price = " + central_digitalPrice +
+                                  "\nOver-Replication Price = " + over_digitalPrice);
                   }
                   // Floating Rate Coupon + Put Digital option
                   DigitalCoupon sub_cash_longDigitalPutCoupon = new DigitalCoupon(underlying, nullstrike,
@@ -986,16 +986,16 @@ namespace TestSuite
                   over_digitalPrice = over_cash_longDigitalPutCoupon.price(vars.termStructure);
                   if (((sub_digitalPrice > central_digitalPrice) &&
                        Math.Abs(central_digitalPrice - sub_digitalPrice) > tolerance) ||
-                      ((central_digitalPrice > over_digitalPrice)  &&
+                      ((central_digitalPrice > over_digitalPrice) &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
                      QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Put Digital option" +
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nSub-Replication Price = "  + sub_digitalPrice +
-                                  "\nCentral-Replication Price = "  + central_digitalPrice +
-                                  "\nOver-Replication Price = "  + over_digitalPrice);
+                                  "\nSub-Replication Price = " + sub_digitalPrice +
+                                  "\nCentral-Replication Price = " + central_digitalPrice +
+                                  "\nOver-Replication Price = " + over_digitalPrice);
                   }
 
                   // Floating Rate Coupon - Put Digital option
@@ -1013,16 +1013,16 @@ namespace TestSuite
                   over_digitalPrice = over_cash_shortDigitalPutCoupon.price(vars.termStructure);
                   if (((sub_digitalPrice > central_digitalPrice) &&
                        Math.Abs(central_digitalPrice - sub_digitalPrice) > tolerance) ||
-                      ((central_digitalPrice > over_digitalPrice)  &&
+                      ((central_digitalPrice > over_digitalPrice) &&
                        Math.Abs(central_digitalPrice - over_digitalPrice) > tolerance))
                   {
                      QAssert.Fail("\nCash-or-nothing: Floating Rate Coupon + Call Digital option" +
                                   "\nVolatility = " + (capletVolatility) +
                                   "\nStrike = " + (strike) +
                                   "\nExercise = " + k + 1 + " years" +
-                                  "\nSub-Replication Price = "  + sub_digitalPrice +
-                                  "\nCentral-Replication Price = "  + central_digitalPrice +
-                                  "\nOver-Replication Price = "  + over_digitalPrice);
+                                  "\nSub-Replication Price = " + sub_digitalPrice +
+                                  "\nCentral-Replication Price = " + central_digitalPrice +
+                                  "\nOver-Replication Price = " + over_digitalPrice);
                   }
                }
             }

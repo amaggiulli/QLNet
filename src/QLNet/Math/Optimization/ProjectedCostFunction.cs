@@ -23,9 +23,9 @@ namespace QLNet
 {
 
    //! Parameterized cost function
-//    ! This class creates a proxy cost function which can depend
-//        on any arbitrary subset of parameters (the other being fixed)
-//
+   //    ! This class creates a proxy cost function which can depend
+   //        on any arbitrary subset of parameters (the other being fixed)
+   //
    public class ProjectedCostFunction : CostFunction
    {
       private int numberOfFreeParameters_;

@@ -43,8 +43,8 @@ namespace QLNet
              reproducing results available in literature.
    */
    public class MCBarrierEngine<RNG, S> : McSimulation<SingleVariate, RNG, S>, IGenericEngine
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MCBarrierEngine(GeneralizedBlackScholesProcess process,
                              int? timeSteps,
@@ -496,8 +496,8 @@ namespace QLNet
 
    //! Monte Carlo barrier-option engine factory
    public class MakeMCBarrierEngine<RNG, S>
-      where RNG : IRSG, new ()
-      where S : IGeneralStatistics, new ()
+      where RNG : IRSG, new()
+      where S : IGeneralStatistics, new()
    {
       public MakeMCBarrierEngine(GeneralizedBlackScholesProcess process)
       {

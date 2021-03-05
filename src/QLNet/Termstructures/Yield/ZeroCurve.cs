@@ -23,7 +23,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedZeroCurve<Interpolator> : ZeroYieldStructure, InterpolatedCurve
-      where Interpolator : class, IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new()
    {
 
       #region InterpolatedCurve

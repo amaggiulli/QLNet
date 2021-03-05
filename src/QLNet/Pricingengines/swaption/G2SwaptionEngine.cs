@@ -62,7 +62,7 @@ namespace QLNet
                              Math.Abs(swap.floatingLegBPS() / swap.fixedLegBPS());
          double fixedRate = swap.fixedRate - correction;
 
-         results_.value =  model_.link.swaption(arguments_, fixedRate,
+         results_.value = model_.link.swaption(arguments_, fixedRate,
                                                 range_, intervals_);
       }
 

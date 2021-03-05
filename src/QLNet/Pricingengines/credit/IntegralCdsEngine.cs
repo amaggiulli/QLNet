@@ -24,7 +24,7 @@ namespace QLNet
       public IntegralCdsEngine(Period step, Handle<DefaultProbabilityTermStructure> probability,
                                double recoveryRate, Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null)
       {
-         integrationStep_ = step ;
+         integrationStep_ = step;
          probability_ = probability;
          recoveryRate_ = recoveryRate;
          discountCurve_ = discountCurve;
@@ -139,7 +139,7 @@ namespace QLNet
                break;
             case Protection.Side.Buyer:
                results_.couponLegNPV *= -1.0;
-               results_.upfrontNPV   *= -1.0;
+               results_.upfrontNPV *= -1.0;
                upfrontSign = -1.0;
                break;
             default:

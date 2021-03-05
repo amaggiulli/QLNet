@@ -24,7 +24,7 @@ namespace QLNet
    {
 
       public PSACurve(Date startdate)
-         : this(startdate, 1) {}
+         : this(startdate, 1) { }
 
       public PSACurve(Date startdate, double multiplier)
       {

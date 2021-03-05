@@ -191,7 +191,7 @@ namespace QLNet
             temp = omega * (rhs[0] -
                             upperDiagonal_[0] * result[1] -
                             diagonal_[0] * result[0]) / diagonal_[0];
-            err = temp* temp;
+            err = temp * temp;
             result[0] += temp;
 
             for (i = 1; i < size() - 1; i++)
@@ -200,14 +200,14 @@ namespace QLNet
                                upperDiagonal_[i] * result[i + 1] -
                                diagonal_[i] * result[i] -
                                lowerDiagonal_[i - 1] * result[i - 1]) / diagonal_[i];
-               err += temp* temp;
+               err += temp * temp;
                result[i] += temp;
             }
 
             temp = omega * (rhs[i] -
                             diagonal_[i] * result[i] -
                             lowerDiagonal_[i - 1] * result[i - 1]) / diagonal_[i];
-            err += temp* temp;
+            err += temp * temp;
             result[i] += temp;
          }
          return result;

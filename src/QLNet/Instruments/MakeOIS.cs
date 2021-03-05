@@ -67,7 +67,7 @@ namespace QLNet
 
       public MakeOIS receiveFixed(bool flag = true)
       {
-         type_ = flag ? OvernightIndexedSwap.Type.Receiver : OvernightIndexedSwap.Type.Payer ;
+         type_ = flag ? OvernightIndexedSwap.Type.Receiver : OvernightIndexedSwap.Type.Payer;
          return this;
       }
 
@@ -128,7 +128,7 @@ namespace QLNet
       public MakeOIS withDiscountingTermStructure(Handle<YieldTermStructure> discountingTermStructure)
       {
 
-         engine_ = (IPricingEngine) new DiscountingSwapEngine(discountingTermStructure, false);
+         engine_ = (IPricingEngine)new DiscountingSwapEngine(discountingTermStructure, false);
 
          return this;
       }

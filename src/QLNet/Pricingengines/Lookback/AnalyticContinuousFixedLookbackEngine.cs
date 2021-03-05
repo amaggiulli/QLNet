@@ -72,7 +72,7 @@ namespace QLNet
       private double residualTime() { return process_.time(arguments_.exercise.lastDate()); }
       private double volatility() { return process_.blackVolatility().link.blackVol(residualTime(), strike()); }
       private double minmax() { return arguments_.minmax.GetValueOrDefault(); }
-      private double stdDeviation() {return volatility() * Math.Sqrt(residualTime());}
+      private double stdDeviation() { return volatility() * Math.Sqrt(residualTime()); }
       private double riskFreeRate()
       {
          return process_.riskFreeRate().link.zeroRate(residualTime(),

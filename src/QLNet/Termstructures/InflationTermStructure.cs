@@ -28,7 +28,7 @@ namespace QLNet
       //! utility function giving the inflation period for a given date
       public static KeyValuePair<Date, Date> inflationPeriod(Date d, Frequency frequency)
       {
-         Month month = (Month) d.Month;
+         Month month = (Month)d.Month;
          int year = d.Year;
 
          Month startMonth = 0;
@@ -40,11 +40,11 @@ namespace QLNet
                endMonth = Month.December;
                break;
             case Frequency.Semiannual:
-               startMonth = (Month)(6 * ((int) month - 1) / 6 + 1);
+               startMonth = (Month)(6 * ((int)month - 1) / 6 + 1);
                endMonth = startMonth + 5;
                break;
             case Frequency.Quarterly:
-               startMonth = (Month)(3 * ((int) month - 1) / 3 + 1);
+               startMonth = (Month)(3 * ((int)month - 1) / 3 + 1);
                endMonth = startMonth + 2;
                break;
             case Frequency.Monthly:
@@ -91,7 +91,7 @@ namespace QLNet
    public abstract class InflationTermStructure : TermStructure
    {
       protected InflationTermStructure()
-      {}
+      { }
 
       // Constructors
       protected InflationTermStructure(double baseRate,
@@ -254,7 +254,7 @@ namespace QLNet
    public abstract class ZeroInflationTermStructure : InflationTermStructure
    {
       protected ZeroInflationTermStructure()
-      {}
+      { }
 
       // Constructors
       protected ZeroInflationTermStructure(DayCounter dayCounter,
@@ -266,7 +266,7 @@ namespace QLNet
                                            Seasonality seasonality = null)
          : base(baseZeroRate, observationLag, frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality)
-      {}
+      { }
 
       protected ZeroInflationTermStructure(Date referenceDate,
                                            Calendar calendar,
@@ -279,7 +279,7 @@ namespace QLNet
                                            Seasonality seasonality = null)
          : base(referenceDate, baseZeroRate, observationLag, frequency, indexIsInterpolated,
                 yTS, calendar, dayCounter, seasonality)
-      {}
+      { }
 
       protected ZeroInflationTermStructure(int settlementDays,
                                            Calendar calendar,
@@ -292,7 +292,7 @@ namespace QLNet
                                            Seasonality seasonality = null)
          : base(settlementDays, calendar, baseZeroRate, observationLag, frequency,
                 indexIsInterpolated, yTS, dayCounter, seasonality)
-      {}
+      { }
 
       // Inspectors
       //! zero-coupon inflation rate for an instrument with maturity (pay date) d
@@ -381,7 +381,7 @@ namespace QLNet
    public abstract class YoYInflationTermStructure : InflationTermStructure
    {
       protected YoYInflationTermStructure()
-      {}
+      { }
 
       // Constructors
       protected YoYInflationTermStructure(DayCounter dayCounter,
@@ -393,7 +393,7 @@ namespace QLNet
                                           Seasonality seasonality = null)
          : base(baseYoYRate, observationLag, frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality)
-      {}
+      { }
 
       protected YoYInflationTermStructure(Date referenceDate,
                                           Calendar calendar,
@@ -406,7 +406,7 @@ namespace QLNet
                                           Seasonality seasonality = null)
          : base(referenceDate, baseYoYRate, observationLag, frequency, indexIsInterpolated,
                 yTS, calendar, dayCounter, seasonality)
-      {}
+      { }
 
       protected YoYInflationTermStructure(int settlementDays,
                                           Calendar calendar,
@@ -420,7 +420,7 @@ namespace QLNet
          : base(settlementDays, calendar, baseYoYRate, observationLag,
                 frequency, indexIsInterpolated,
                 yTS, dayCounter, seasonality)
-      {}
+      { }
 
       // Inspectors
       //! year-on-year inflation rate, forceLinearInterpolation

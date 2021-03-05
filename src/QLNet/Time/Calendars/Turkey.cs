@@ -39,7 +39,7 @@ namespace QLNet
 
        \ingroup calendars
    */
-   public class Turkey :  Calendar
+   public class Turkey : Calendar
    {
       public Turkey() : base(Impl.Singleton) { }
 

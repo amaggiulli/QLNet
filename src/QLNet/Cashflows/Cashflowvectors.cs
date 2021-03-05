@@ -45,13 +45,13 @@ namespace QLNet
          List<int> fixingDays,
          List<double> gearings,
          List<double> spreads,
-         List < double? > caps,
-         List < double? > floors,
+         List<double?> caps,
+         List<double?> floors,
          bool isInArrears,
          bool isZero)
-      where InterestRateIndexType : InterestRateIndex, new ()
-      where FloatingCouponType : FloatingRateCoupon, new ()
-      where CappedFlooredCouponType : CappedFlooredCoupon, new ()
+      where InterestRateIndexType : InterestRateIndex, new()
+      where FloatingCouponType : FloatingRateCoupon, new()
+      where CappedFlooredCouponType : CappedFlooredCoupon, new()
       {
          int n = schedule.Count;
 
@@ -145,9 +145,9 @@ namespace QLNet
          bool isPutATMIncluded,
          List<double> putDigitalPayoffs,
          DigitalReplication replication)
-      where InterestRateIndexType : InterestRateIndex, new ()
-         where FloatingCouponType : FloatingRateCoupon, new ()
-         where DigitalCouponType : DigitalCoupon, new ()
+      where InterestRateIndexType : InterestRateIndex, new()
+         where FloatingCouponType : FloatingRateCoupon, new()
+         where DigitalCouponType : DigitalCoupon, new()
       {
          int n = schedule.Count;
          Utils.QL_REQUIRE(!nominals.empty(), () => "no notional given");
@@ -271,8 +271,8 @@ namespace QLNet
                                                    List<double> gearings_,
                                                    List<double> spreads_,
                                                    DayCounter paymentDayCounter_,
-                                                   List < double? > caps_,
-                                                   List < double? > floors_,
+                                                   List<double?> caps_,
+                                                   List<double?> floors_,
                                                    Calendar paymentCalendar_,
                                                    List<int> fixingDays_,
                                                    Period observationLag_)

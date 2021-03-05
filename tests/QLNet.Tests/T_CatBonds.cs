@@ -63,7 +63,7 @@ namespace TestSuite
 
          QAssert.Require(simulation);
 
-         List<KeyValuePair<Date, double> > path = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> path = new List<KeyValuePair<Date, double>>();
 
          QAssert.Require(simulation.nextPath(path));
          QAssert.AreEqual(0, path.Count);
@@ -96,7 +96,7 @@ namespace TestSuite
 
          QAssert.Require(simulation);
 
-         List<KeyValuePair<Date, double> > path = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> path = new List<KeyValuePair<Date, double>>();
 
          QAssert.Require(simulation.nextPath(path));
          QAssert.AreEqual(0, path.Count);
@@ -116,13 +116,13 @@ namespace TestSuite
       {
          // Testing that catastrophe events are split correctly when there are no simulated events
 
-         List<KeyValuePair<Date, double> >  emptyEvents = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> emptyEvents = new List<KeyValuePair<Date, double>>();
          EventSet catRisk = new EventSet(emptyEvents, eventsStart, eventsEnd);
          CatSimulation simulation = catRisk.newSimulation(new Date(2, Month.January, 2015), new Date(5, Month.January, 2016));
 
          QAssert.Require(simulation);
 
-         List<KeyValuePair<Date, double> > path = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> path = new List<KeyValuePair<Date, double>>();
 
          QAssert.Require(simulation.nextPath(path));
          QAssert.AreEqual(0, path.Count);
@@ -164,7 +164,7 @@ namespace TestSuite
                                      BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
                                      DateGeneration.Rule.Backward, false);
 
-         CatRisk noCatRisk = new EventSet(new List<KeyValuePair<Date, double>>(),  new Date(1, Month.Jan, 2000), new Date(31, Month.Dec, 2010));
+         CatRisk noCatRisk = new EventSet(new List<KeyValuePair<Date, double>>(), new Date(1, Month.Jan, 2000), new Date(31, Month.Dec, 2010));
 
          EventPaymentOffset paymentOffset = new NoOffset();
          NotionalRisk notionalRisk = new DigitalNotionalRisk(paymentOffset, 100);
@@ -173,7 +173,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -182,7 +182,7 @@ namespace TestSuite
                                                         notionalRisk,
                                                         BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                         new List<double>(), new List<double>(),
-                                                        new List < double? >(), new List < double? >(),
+                                                        new List<double?>(), new List<double?>(),
                                                         false,
                                                         100.0, new Date(30, Month.November, 2004));
 
@@ -220,7 +220,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -229,7 +229,7 @@ namespace TestSuite
                                                         notionalRisk,
                                                         BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                         new List<double>(), new List<double>(),
-                                                        new List < double? >(), new List < double? >(),
+                                                        new List<double?>(), new List<double?>(),
                                                         false,
                                                         100.0, new Date(30, Month.November, 2004));
 
@@ -270,7 +270,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), spreads,
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -279,7 +279,7 @@ namespace TestSuite
                                                         notionalRisk,
                                                         BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                         new List<double>(), spreads,
-                                                        new List < double? >(), new List < double? >(),
+                                                        new List<double?>(), new List<double?>(),
                                                         false,
                                                         100.0, new Date(30, Month.November, 2004));
 
@@ -336,7 +336,7 @@ namespace TestSuite
                                      BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
                                      DateGeneration.Rule.Backward, false);
 
-         List<KeyValuePair<Date, double> > events = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> events = new List<KeyValuePair<Date, double>>();
          events.Add(new KeyValuePair<Date, double>(new Date(30, Month.November, 2004), 1000));
          CatRisk doomCatRisk = new EventSet(events,
                                             new Date(30, Month.November, 2004), new Date(30, Month.November, 2008));
@@ -349,7 +349,7 @@ namespace TestSuite
                                                        notionalRisk,
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -397,7 +397,7 @@ namespace TestSuite
                                      BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
                                      DateGeneration.Rule.Backward, false);
 
-         List<KeyValuePair<Date, double> >  events = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> events = new List<KeyValuePair<Date, double>>();
          events.Add(new KeyValuePair<Date, double>(new Date(30, Month.November, 2008), 1000));
          CatRisk doomCatRisk = new EventSet(events, new Date(30, Month.November, 2004), new Date(30, Month.November, 2044));
 
@@ -412,7 +412,7 @@ namespace TestSuite
                                                        notionalRisk,
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -477,11 +477,11 @@ namespace TestSuite
                          BusinessDayConvention.ModifiedFollowing, BusinessDayConvention.ModifiedFollowing,
                          DateGeneration.Rule.Backward, false);
 
-         List<KeyValuePair<Date, double> > events = new List<KeyValuePair<Date, double>>();
+         List<KeyValuePair<Date, double>> events = new List<KeyValuePair<Date, double>>();
          events.Add(new KeyValuePair<Date, double>(new Date(30, Month.November, 2008), 1000));
          CatRisk doomCatRisk = new EventSet(events, new Date(30, Month.November, 2004), new Date(30, Month.November, 2044));
 
-         CatRisk noCatRisk = new EventSet(new List<KeyValuePair<Date, double> > (),
+         CatRisk noCatRisk = new EventSet(new List<KeyValuePair<Date, double>>(),
                                           new Date(1, Month.Jan, 2000), new Date(31, Month.Dec, 2010));
 
          EventPaymentOffset paymentOffset = new NoOffset();
@@ -493,7 +493,7 @@ namespace TestSuite
                                 notionalRisk,
                                 BusinessDayConvention.ModifiedFollowing, fixingDays,
                                 new List<double>(), new List<double>(),
-                                new List < double? >(), new List < double? >(),
+                                new List<double?>(), new List<double?>(),
                                 false,
                                 100.0, new Date(30, Month.November, 2004));
 

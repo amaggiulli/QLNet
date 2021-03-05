@@ -33,15 +33,15 @@ namespace QLNet
       */
 
       protected SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
-         : base(bdc, dc) {}
+         : base(bdc, dc) { }
 
       //! initialize with a fixed reference date
       protected SwaptionVolatilityStructure(Date referenceDate, Calendar calendar, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(referenceDate, calendar, bdc, dc) {}
+         : base(referenceDate, calendar, bdc, dc) { }
 
       //! calculate the reference date based on the global evaluation date
       protected SwaptionVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(settlementDays, cal, bdc, dc) {}
+         : base(settlementDays, cal, bdc, dc) { }
 
       #endregion
 
@@ -263,7 +263,7 @@ namespace QLNet
 
       protected virtual double volatilityImpl(Date optionDate, Period swapTenor, double strike)
       {
-         return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor),  strike);
+         return volatilityImpl(timeFromReference(optionDate), swapLength(swapTenor), strike);
       }
 
       protected abstract double volatilityImpl(double optionTime, double swapLength, double strike);
@@ -290,7 +290,7 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(swapLength > 0.0, () => "non-positive swap length (" + swapLength + ") given");
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || swapLength <= maxSwapLength(), () =>
-                          "swap tenor (" + swapLength + ") is past max tenor ("  + maxSwapLength() + ")");
+                          "swap tenor (" + swapLength + ") is past max tenor (" + maxSwapLength() + ")");
       }
 
    }

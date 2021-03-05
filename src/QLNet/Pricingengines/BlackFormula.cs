@@ -45,7 +45,7 @@ namespace QLNet
          // since displacement is non-negative strike==0 iff displacement==0
          // so returning forward*discount is OK
          if (strike.IsEqual(0.0))
-            return (optionType == Option.Type.Call ? forward* discount : 0.0);
+            return (optionType == Option.Type.Call ? forward * discount : 0.0);
 
          double d1 = Math.Log(forward / strike) / stdDev + 0.5 * stdDev;
          double d2 = d1 - stdDev;
@@ -346,7 +346,7 @@ namespace QLNet
                                                      double discount = 1.0,
                                                      double displacement = 0.0)
       {
-         return  blackFormulaStdDevDerivative(strike, forward, stdDev, discount, displacement) * Math.Sqrt(expiry);
+         return blackFormulaStdDevDerivative(strike, forward, stdDev, discount, displacement) * Math.Sqrt(expiry);
       }
 
       public static double blackFormulaStdDevDerivative(PlainVanillaPayoff payoff,
@@ -484,25 +484,25 @@ namespace QLNet
       public static double h(double eta)
       {
 
-         const double  A0 = 3.994961687345134e-1;
-         const double  A1 = 2.100960795068497e+1;
-         const double  A2 = 4.980340217855084e+1;
-         const double  A3 = 5.988761102690991e+2;
-         const double  A4 = 1.848489695437094e+3;
-         const double  A5 = 6.106322407867059e+3;
-         const double  A6 = 2.493415285349361e+4;
-         const double  A7 = 1.266458051348246e+4;
+         const double A0 = 3.994961687345134e-1;
+         const double A1 = 2.100960795068497e+1;
+         const double A2 = 4.980340217855084e+1;
+         const double A3 = 5.988761102690991e+2;
+         const double A4 = 1.848489695437094e+3;
+         const double A5 = 6.106322407867059e+3;
+         const double A6 = 2.493415285349361e+4;
+         const double A7 = 1.266458051348246e+4;
 
-         const double  B0 = 1.000000000000000e+0;
-         const double  B1 = 4.990534153589422e+1;
-         const double  B2 = 3.093573936743112e+1;
-         const double  B3 = 1.495105008310999e+3;
-         const double  B4 = 1.323614537899738e+3;
-         const double  B5 = 1.598919697679745e+4;
-         const double  B6 = 2.392008891720782e+4;
-         const double  B7 = 3.608817108375034e+3;
-         const double  B8 = -2.067719486400926e+2;
-         const double  B9 = 1.174240599306013e+1;
+         const double B0 = 1.000000000000000e+0;
+         const double B1 = 4.990534153589422e+1;
+         const double B2 = 3.093573936743112e+1;
+         const double B3 = 1.495105008310999e+3;
+         const double B4 = 1.323614537899738e+3;
+         const double B5 = 1.598919697679745e+4;
+         const double B6 = 2.392008891720782e+4;
+         const double B7 = 3.608817108375034e+3;
+         const double B8 = -2.067719486400926e+2;
+         const double B9 = 1.174240599306013e+1;
 
          QL_REQUIRE(eta >= 0.0, () =>
                     "eta (" + eta + ") must be non-negative");

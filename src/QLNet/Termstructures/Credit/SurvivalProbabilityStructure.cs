@@ -35,7 +35,7 @@ namespace QLNet
       public SurvivalProbabilityStructure(DayCounter dayCounter = null,
                                           List<Handle<Quote>> jumps = null,
                                           List<Date> jumpDates = null)
-         : base(dayCounter, jumps, jumpDates) {}
+         : base(dayCounter, jumps, jumpDates) { }
       public SurvivalProbabilityStructure(Date referenceDate,
                                           Calendar cal = null,
                                           DayCounter dayCounter = null,

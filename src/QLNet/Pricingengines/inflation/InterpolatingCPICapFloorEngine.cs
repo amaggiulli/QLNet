@@ -104,7 +104,7 @@ namespace QLNet
          results_.value = npv;
       }
 
-      public  virtual String name() { return "InterpolatingCPICapFloorEngine"; }
+      public virtual String name() { return "InterpolatingCPICapFloorEngine"; }
 
       protected Handle<CPICapFloorTermPriceSurface> priceSurf_;
    }

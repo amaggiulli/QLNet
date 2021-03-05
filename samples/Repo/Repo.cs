@@ -30,7 +30,7 @@ namespace Repo
       {
          DateTime timer = DateTime.Now;
 
-         Date repoSettlementDate = new Date(14, Month.February, 2000);;
+         Date repoSettlementDate = new Date(14, Month.February, 2000);
          Date repoDeliveryDate = new Date(15, Month.August, 2000);
          double repoRate = 0.05;
          DayCounter repoDayCountConvention = new Actual360();

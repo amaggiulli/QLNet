@@ -26,6 +26,6 @@ namespace QLNet
       public Aonia(Handle<YieldTermStructure> h = null)
          : base("Aonia", 0, new AUDCurrency(), new Australia(), new Actual365Fixed(),
                 h ?? new Handle<YieldTermStructure>())
-      {}
+      { }
    }
 }

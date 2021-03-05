@@ -85,12 +85,12 @@ namespace QLNet
          xt[0] = x[0];
          xt[1] = x[1];
          Matrix m = hestonProcess_.diffusion(t, xt);
-         retVal[0, 0] = m[0, 0]; retVal[0, 1] = 0.0;    retVal[0, 2] = 0.0;
+         retVal[0, 0] = m[0, 0]; retVal[0, 1] = 0.0; retVal[0, 2] = 0.0;
          retVal[1, 0] = m[1, 0]; retVal[1, 1] = m[1, 1]; retVal[1, 2] = 0.0;
 
          double sigma = hullWhiteProcess_.sigma();
          retVal[2, 0] = corrEquityShortRate_ * sigma;
-         retVal[2, 1] = - retVal[2, 0] * retVal[1, 0] / retVal[1, 1];
+         retVal[2, 1] = -retVal[2, 0] * retVal[1, 0] / retVal[1, 1];
          retVal[2, 2] = Math.Sqrt(sigma * sigma - retVal[2, 1] * retVal[2, 1]
                                   - retVal[2, 0] * retVal[2, 0]);
 
@@ -100,7 +100,7 @@ namespace QLNet
       {
          Vector retVal = new Vector(3), xt = new Vector(2), dxt = new Vector(2);
 
-         xt[0]  = x0[0]; xt[1]  = x0[1];
+         xt[0] = x0[0]; xt[1] = x0[1];
          dxt[0] = dx[0]; dxt[1] = dx[1];
 
          Vector yt = hestonProcess_.apply(xt, dxt);

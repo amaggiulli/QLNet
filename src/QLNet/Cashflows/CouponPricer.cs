@@ -101,7 +101,7 @@ namespace QLNet
    {
       public enum TimingAdjustment { Black76, BivariateLognormal }
       public BlackIborCouponPricer(Handle<OptionletVolatilityStructure> v = null,
-                                   TimingAdjustment timingAdjustment  = TimingAdjustment.Black76,
+                                   TimingAdjustment timingAdjustment = TimingAdjustment.Black76,
                                    Handle<Quote> correlation = null)
          : base(v)
       {
@@ -141,7 +141,7 @@ namespace QLNet
 
          spreadLegValue_ = spread_ * accrualPeriod_ * discount_;
 
-         coupon_ = coupon ;
+         coupon_ = coupon;
       }
       public override double swapletPrice()
       {
@@ -279,7 +279,7 @@ namespace QLNet
          swaptionVol_.registerWith(update);
       }
 
-      public Handle<SwaptionVolatilityStructure> swaptionVolatility() {return swaptionVol_;}
+      public Handle<SwaptionVolatilityStructure> swaptionVolatility() { return swaptionVol_; }
 
       public void setSwaptionVolatility(Handle<SwaptionVolatilityStructure> v = null)
       {
@@ -295,8 +295,8 @@ namespace QLNet
       used to calibrate to cms market quotes */
    public interface IMeanRevertingPricer
    {
-      double meanReversion() ;
-      void setMeanReversion(Handle<Quote> q) ;
+      double meanReversion();
+      void setMeanReversion(Handle<Quote> q);
    }
 
    //===========================================================================//

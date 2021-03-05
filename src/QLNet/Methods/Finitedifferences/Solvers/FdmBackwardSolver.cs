@@ -115,86 +115,86 @@ namespace QLNet
          switch (schemeDesc_.type)
          {
             case FdmSchemeDesc.FdmSchemeType.HundsdorferType:
-            {
-               HundsdorferScheme hsEvolver = new HundsdorferScheme(schemeDesc_.theta, schemeDesc_.mu,
-                                                                   map_, bcSet_);
-               FiniteDifferenceModel<HundsdorferScheme>
-               hsModel = new FiniteDifferenceModel<HundsdorferScheme>(hsEvolver, condition_.stoppingTimes());
-               hsModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  HundsdorferScheme hsEvolver = new HundsdorferScheme(schemeDesc_.theta, schemeDesc_.mu,
+                                                                      map_, bcSet_);
+                  FiniteDifferenceModel<HundsdorferScheme>
+                  hsModel = new FiniteDifferenceModel<HundsdorferScheme>(hsEvolver, condition_.stoppingTimes());
+                  hsModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.DouglasType:
-            {
-               DouglasScheme dsEvolver = new DouglasScheme(schemeDesc_.theta, map_, bcSet_);
-               FiniteDifferenceModel<DouglasScheme>
-               dsModel = new FiniteDifferenceModel<DouglasScheme>(dsEvolver, condition_.stoppingTimes());
-               dsModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  DouglasScheme dsEvolver = new DouglasScheme(schemeDesc_.theta, map_, bcSet_);
+                  FiniteDifferenceModel<DouglasScheme>
+                  dsModel = new FiniteDifferenceModel<DouglasScheme>(dsEvolver, condition_.stoppingTimes());
+                  dsModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.CrankNicolsonType:
-            {
-               CrankNicolsonScheme cnEvolver = new CrankNicolsonScheme(schemeDesc_.theta, map_, bcSet_);
-               FiniteDifferenceModel<CrankNicolsonScheme>
-               cnModel = new FiniteDifferenceModel<CrankNicolsonScheme>(cnEvolver, condition_.stoppingTimes());
-               cnModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  CrankNicolsonScheme cnEvolver = new CrankNicolsonScheme(schemeDesc_.theta, map_, bcSet_);
+                  FiniteDifferenceModel<CrankNicolsonScheme>
+                  cnModel = new FiniteDifferenceModel<CrankNicolsonScheme>(cnEvolver, condition_.stoppingTimes());
+                  cnModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.CraigSneydType:
-            {
-               CraigSneydScheme csEvolver = new CraigSneydScheme(schemeDesc_.theta, schemeDesc_.mu,
-                                                                 map_, bcSet_);
-               FiniteDifferenceModel<CraigSneydScheme>
-               csModel = new FiniteDifferenceModel<CraigSneydScheme>(csEvolver, condition_.stoppingTimes());
-               csModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  CraigSneydScheme csEvolver = new CraigSneydScheme(schemeDesc_.theta, schemeDesc_.mu,
+                                                                    map_, bcSet_);
+                  FiniteDifferenceModel<CraigSneydScheme>
+                  csModel = new FiniteDifferenceModel<CraigSneydScheme>(csEvolver, condition_.stoppingTimes());
+                  csModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.ModifiedCraigSneydType:
-            {
-               ModifiedCraigSneydScheme csEvolver = new ModifiedCraigSneydScheme(schemeDesc_.theta,
-                                                                                 schemeDesc_.mu,
-                                                                                 map_, bcSet_);
-               FiniteDifferenceModel<ModifiedCraigSneydScheme>
-               mcsModel = new FiniteDifferenceModel<ModifiedCraigSneydScheme>(csEvolver, condition_.stoppingTimes());
-               mcsModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  ModifiedCraigSneydScheme csEvolver = new ModifiedCraigSneydScheme(schemeDesc_.theta,
+                                                                                    schemeDesc_.mu,
+                                                                                    map_, bcSet_);
+                  FiniteDifferenceModel<ModifiedCraigSneydScheme>
+                  mcsModel = new FiniteDifferenceModel<ModifiedCraigSneydScheme>(csEvolver, condition_.stoppingTimes());
+                  mcsModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.ImplicitEulerType:
-            {
-               ImplicitEulerScheme implicitEvolver = new ImplicitEulerScheme(map_, bcSet_);
-               FiniteDifferenceModel<ImplicitEulerScheme>
-               implicitModel = new FiniteDifferenceModel<ImplicitEulerScheme>(implicitEvolver, condition_.stoppingTimes());
-               implicitModel.rollback(ref a, from, to, allSteps, condition_);
-            }
-            break;
+               {
+                  ImplicitEulerScheme implicitEvolver = new ImplicitEulerScheme(map_, bcSet_);
+                  FiniteDifferenceModel<ImplicitEulerScheme>
+                  implicitModel = new FiniteDifferenceModel<ImplicitEulerScheme>(implicitEvolver, condition_.stoppingTimes());
+                  implicitModel.rollback(ref a, from, to, allSteps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.ExplicitEulerType:
-            {
-               ExplicitEulerScheme explicitEvolver = new ExplicitEulerScheme(map_, bcSet_);
-               FiniteDifferenceModel<ExplicitEulerScheme>
-               explicitModel = new FiniteDifferenceModel<ExplicitEulerScheme>(explicitEvolver, condition_.stoppingTimes());
-               explicitModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  ExplicitEulerScheme explicitEvolver = new ExplicitEulerScheme(map_, bcSet_);
+                  FiniteDifferenceModel<ExplicitEulerScheme>
+                  explicitModel = new FiniteDifferenceModel<ExplicitEulerScheme>(explicitEvolver, condition_.stoppingTimes());
+                  explicitModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.MethodOfLinesType:
-            {
-               MethodOfLinesScheme methodOfLines = new MethodOfLinesScheme(schemeDesc_.theta, schemeDesc_.mu, map_, bcSet_);
-               FiniteDifferenceModel<MethodOfLinesScheme>
-               molModel = new FiniteDifferenceModel<MethodOfLinesScheme>(methodOfLines, condition_.stoppingTimes());
-               molModel.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+               {
+                  MethodOfLinesScheme methodOfLines = new MethodOfLinesScheme(schemeDesc_.theta, schemeDesc_.mu, map_, bcSet_);
+                  FiniteDifferenceModel<MethodOfLinesScheme>
+                  molModel = new FiniteDifferenceModel<MethodOfLinesScheme>(methodOfLines, condition_.stoppingTimes());
+                  molModel.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             case FdmSchemeDesc.FdmSchemeType.TrBDF2Type:
-            {
-               FdmSchemeDesc trDesc = new FdmSchemeDesc().CraigSneyd();
-               CraigSneydScheme hsEvolver = new CraigSneydScheme(trDesc.theta, trDesc.mu, map_, bcSet_);
+               {
+                  FdmSchemeDesc trDesc = new FdmSchemeDesc().CraigSneyd();
+                  CraigSneydScheme hsEvolver = new CraigSneydScheme(trDesc.theta, trDesc.mu, map_, bcSet_);
 
-               TrBDF2Scheme<CraigSneydScheme> trBDF2 = new TrBDF2Scheme<CraigSneydScheme>(
-                  schemeDesc_.theta, map_, hsEvolver, bcSet_, schemeDesc_.mu);
+                  TrBDF2Scheme<CraigSneydScheme> trBDF2 = new TrBDF2Scheme<CraigSneydScheme>(
+                     schemeDesc_.theta, map_, hsEvolver, bcSet_, schemeDesc_.mu);
 
-               FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>
-               trBDF2Model = new FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>(trBDF2, condition_.stoppingTimes());
-               trBDF2Model.rollback(ref a, dampingTo, to, steps, condition_);
-            }
-            break;
+                  FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>
+                  trBDF2Model = new FiniteDifferenceModel<TrBDF2Scheme<CraigSneydScheme>>(trBDF2, condition_.stoppingTimes());
+                  trBDF2Model.rollback(ref a, dampingTo, to, steps, condition_);
+               }
+               break;
             default:
                Utils.QL_FAIL("Unknown scheme type");
                break;

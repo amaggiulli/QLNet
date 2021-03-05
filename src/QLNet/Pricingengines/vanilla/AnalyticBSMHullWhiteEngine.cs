@@ -99,9 +99,9 @@ namespace QLNet
    }
 
 
-   public class ShiftedBlackVolTermStructure :  BlackVolTermStructure
+   public class ShiftedBlackVolTermStructure : BlackVolTermStructure
    {
-      public ShiftedBlackVolTermStructure(double varianceOffset, Handle<BlackVolTermStructure>  volTS)
+      public ShiftedBlackVolTermStructure(double varianceOffset, Handle<BlackVolTermStructure> volTS)
          : base(volTS.link.referenceDate(), volTS.link.calendar(), BusinessDayConvention.Following, volTS.link.dayCounter())
       {
          varianceOffset_ = varianceOffset;
@@ -110,7 +110,7 @@ namespace QLNet
 
       public override double minStrike() { return volTS_.link.minStrike(); }
       public override double maxStrike() { return volTS_.link.maxStrike(); }
-      public override Date maxDate()  { return volTS_.link.maxDate(); }
+      public override Date maxDate() { return volTS_.link.maxDate(); }
 
       protected override double blackVarianceImpl(double t, double strike)
       {

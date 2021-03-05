@@ -82,11 +82,11 @@ namespace QLNet
 
       public Frequency frequency() { return frequency_; }
       public DayCounter dayCounter() { return dayCounter_; }
-      public bool growthOnly()  { return growthOnly_; }
-      public double baseCPI()  { return baseCPI_; }
-      public Period observationLag()  { return observationLag_; }
-      public  ZeroInflationIndex cpiIndex()  { return cpiIndex_; }
-      public InterpolationType observationInterpolation()  { return observationInterpolation_; }
+      public bool growthOnly() { return growthOnly_; }
+      public double baseCPI() { return baseCPI_; }
+      public Period observationLag() { return observationLag_; }
+      public ZeroInflationIndex cpiIndex() { return cpiIndex_; }
+      public InterpolationType observationInterpolation() { return observationInterpolation_; }
 
       protected Frequency frequency_;
       protected DayCounter dayCounter_;

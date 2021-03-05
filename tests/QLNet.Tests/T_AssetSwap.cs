@@ -69,7 +69,7 @@ namespace TestSuite
             Frequency floatingFrequency = Frequency.Semiannual;
             iborIndex = new Euribor(new Period(floatingFrequency), termStructure);
             Calendar calendar = iborIndex.fixingCalendar();
-            swapIndex =  new SwapIndex("EuriborSwapIsdaFixA", new Period(10, TimeUnit.Years), swapSettlementDays,
+            swapIndex = new SwapIndex("EuriborSwapIsdaFixA", new Period(10, TimeUnit.Years), swapSettlementDays,
                                        iborIndex.currency(), calendar,
                                        new Period(fixedFrequency), fixedConvention,
                                        iborIndex.dayCounter(), iborIndex);
@@ -435,7 +435,7 @@ namespace TestSuite
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond1 = new FixedRateBond(settlementDays, vars.faceAmount,
                                              fixedBondSchedule1,
-         new List<double>() {0.04},
+         new List<double>() { 0.04 },
          new ActualActual(ActualActual.Convention.ISDA),
          BusinessDayConvention.Following,
          100.0, new Date(4, Month.January, 2005));
@@ -471,7 +471,7 @@ namespace TestSuite
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond2 = new FixedRateBond(settlementDays, vars.faceAmount,
                                              fixedBondSchedule2,
-         new List<double>() {0.05},
+         new List<double>() { 0.05 },
          new Thirty360(Thirty360.Thirty360Convention.BondBasis),
          BusinessDayConvention.Following,
          100.0, new Date(5, Month.February, 2005));
@@ -480,7 +480,7 @@ namespace TestSuite
 
          double fixedBondPrice2 = fixedBond2.cleanPrice();
          AssetSwap fixedBondAssetSwap2 = new AssetSwap(payFixedRate, fixedBond2, fixedBondPrice2, vars.iborIndex, vars.spread,
-                                                       null, vars.iborIndex.dayCounter(),  parAssetSwap);
+                                                       null, vars.iborIndex.dayCounter(), parAssetSwap);
          fixedBondAssetSwap2.setPricingEngine(swapEngine);
          double fixedBondAssetSwapPrice2 = fixedBondAssetSwap2.fairCleanPrice();
          double error2 = Math.Abs(fixedBondAssetSwapPrice2 - fixedBondPrice2);
@@ -507,10 +507,10 @@ namespace TestSuite
                                                    floatingBondSchedule1,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.Following, fixingDays,
-         new List<double>() {1},
-         new List<double>() {0.0056},
-         new List < double? >(),
-         new List < double? >(),
+         new List<double>() { 1 },
+         new List<double>() { 0.0056 },
+         new List<double?>(),
+         new List<double?>(),
          inArrears,
          100.0, new Date(29, Month.September, 2003));
 
@@ -546,10 +546,10 @@ namespace TestSuite
                                                    floatingBondSchedule2,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.ModifiedFollowing, fixingDays,
-         new List<double>() {1},
-         new List<double>() {0.0025},
-         new List < double? >(),
-         new List < double? >(),
+         new List<double>() { 1 },
+         new List<double>() { 0.0025 },
+         new List<double?>(),
+         new List<double?>(),
          inArrears,
          100.0, new Date(24, Month.September, 2004));
 
@@ -599,10 +599,10 @@ namespace TestSuite
                                          cmsBondSchedule1,
                                          vars.swapIndex, new Thirty360(),
                                          BusinessDayConvention.Following, fixingDays,
-         new List<double>() {1.0},
-         new List<double>() {0.0},
-         new List < double? >() {0.055},
-         new List < double? >() {0.025},
+         new List<double>() { 1.0 },
+         new List<double>() { 0.0 },
+         new List<double?>() { 0.055 },
+         new List<double?>() { 0.025 },
          inArrears,
          100.0, new Date(22, Month.August, 2005));
 
@@ -637,8 +637,8 @@ namespace TestSuite
          Bond cmsBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
                                          vars.swapIndex, new Thirty360(),
                                          BusinessDayConvention.Following, fixingDays,
-         new List<double>() {0.84}, new List<double>() {0.0},
-         new List < double? >(), new List < double? >(),
+         new List<double>() { 0.84 }, new List<double>() { 0.0 },
+         new List<double?>(), new List<double?>(),
          inArrears,
          100.0, new Date(06, Month.May, 2005));
 
@@ -699,7 +699,7 @@ namespace TestSuite
          zeroCpnBond2.setPricingEngine(bondEngine);
 
          double zeroCpnBondPrice2 = zeroCpnBond2.cleanPrice();
-         AssetSwap zeroCpnAssetSwap2 = new AssetSwap(payFixedRate, zeroCpnBond2, zeroCpnBondPrice2,  vars.iborIndex, vars.spread,
+         AssetSwap zeroCpnAssetSwap2 = new AssetSwap(payFixedRate, zeroCpnBond2, zeroCpnBondPrice2, vars.iborIndex, vars.spread,
                                                      null, vars.iborIndex.dayCounter(), parAssetSwap);
          zeroCpnAssetSwap2.setPricingEngine(swapEngine);
          double zeroCpnBondAssetSwapPrice2 = zeroCpnAssetSwap2.fairCleanPrice();
@@ -739,7 +739,7 @@ namespace TestSuite
                                                     BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond1 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule1,
-                                             new List<double> {0.04},
+                                             new List<double> { 0.04 },
                                              new ActualActual(ActualActual.Convention.ISDA), BusinessDayConvention.Following,
                                              100.0, new Date(4, Month.January, 2005));
 
@@ -747,7 +747,7 @@ namespace TestSuite
          IPricingEngine swapEngine = new DiscountingSwapEngine(vars.termStructure);
          fixedBond1.setPricingEngine(bondEngine);
 
-         double fixedBondMktPrice1 = 89.22 ; // market price observed on 7th June 2007
+         double fixedBondMktPrice1 = 89.22; // market price observed on 7th June 2007
          double fixedBondMktFullPrice1 = fixedBondMktPrice1 + fixedBond1.accruedAmount();
          AssetSwap fixedBondParAssetSwap1 = new AssetSwap(payFixedRate,
                                                           fixedBond1, fixedBondMktPrice1,
@@ -787,13 +787,13 @@ namespace TestSuite
                                                     BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond2 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule2,
-                                             new List<double> { 0.05},
+                                             new List<double> { 0.05 },
                                              new Thirty360(Thirty360.Thirty360Convention.BondBasis), BusinessDayConvention.Following,
                                              100.0, new Date(5, Month.February, 2005));
 
          fixedBond2.setPricingEngine(bondEngine);
 
-         double fixedBondMktPrice2 = 99.98 ; // market price observed on 7th June 2007
+         double fixedBondMktPrice2 = 99.98; // market price observed on 7th June 2007
          double fixedBondMktFullPrice2 = fixedBondMktPrice2 + fixedBond2.accruedAmount();
          AssetSwap fixedBondParAssetSwap2 = new AssetSwap(payFixedRate,
                                                           fixedBond2, fixedBondMktPrice2,
@@ -836,8 +836,8 @@ namespace TestSuite
                                                    floatingBondSchedule1,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.Following, fixingDays,
-                                                   new List<double> {1}, new List<double> {0.0056},
-                                                   new List < double? >(), new List < double? >(),
+                                                   new List<double> { 1 }, new List<double> { 0.0056 },
+                                                   new List<double?>(), new List<double?>(),
                                                    inArrears,
                                                    100.0, new Date(29, Month.September, 2003));
 
@@ -846,7 +846,7 @@ namespace TestSuite
          Utils.setCouponPricer(floatingBond1.cashflows(), vars.pricer);
          vars.iborIndex.addFixing(new Date(27, Month.March, 2007), 0.0402);
          // market price observed on 7th June 2007
-         double floatingBondMktPrice1 = 101.64 ;
+         double floatingBondMktPrice1 = 101.64;
          double floatingBondMktFullPrice1 = floatingBondMktPrice1 + floatingBond1.accruedAmount();
          AssetSwap floatingBondParAssetSwap1 = new AssetSwap(payFixedRate,
                                                              floatingBond1, floatingBondMktPrice1,
@@ -888,8 +888,8 @@ namespace TestSuite
                                                    floatingBondSchedule2,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                                   new List<double> {1}, new List<double> {0.0025},
-                                                   new List < double? >(), new List < double? >(),
+                                                   new List<double> { 1 }, new List<double> { 0.0025 },
+                                                   new List<double?>(), new List<double?>(),
                                                    inArrears,
                                                    100.0, new Date(24, Month.September, 2004));
 
@@ -898,7 +898,7 @@ namespace TestSuite
          Utils.setCouponPricer(floatingBond2.cashflows(), vars.pricer);
          vars.iborIndex.addFixing(new Date(22, Month.March, 2007), 0.04013);
          // market price observed on 7th June 2007
-         double floatingBondMktPrice2 = 101.248 ;
+         double floatingBondMktPrice2 = 101.248;
          double floatingBondMktFullPrice2 = floatingBondMktPrice2 + floatingBond2.accruedAmount();
          AssetSwap floatingBondParAssetSwap2 = new AssetSwap(payFixedRate,
                                                              floatingBond2, floatingBondMktPrice2,
@@ -939,8 +939,8 @@ namespace TestSuite
          Bond cmsBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
                                          vars.swapIndex, new Thirty360(),
                                          BusinessDayConvention.Following, fixingDays,
-                                         new List<double> {1.0}, new List<double> {0.0},
-                                         new List < double? > {0.055}, new List < double? > {0.025},
+                                         new List<double> { 1.0 }, new List<double> { 0.0 },
+                                         new List<double?> { 0.055 }, new List<double?> { 0.025 },
                                          inArrears,
                                          100.0, new Date(22, Month.August, 2005));
 
@@ -948,7 +948,7 @@ namespace TestSuite
 
          Utils.setCouponPricer(cmsBond1.cashflows(), vars.cmspricer);
          vars.swapIndex.addFixing(new Date(18, Month.August, 2006), 0.04158);
-         double cmsBondMktPrice1 = 88.45 ; // market price observed on 7th June 2007
+         double cmsBondMktPrice1 = 88.45; // market price observed on 7th June 2007
          double cmsBondMktFullPrice1 = cmsBondMktPrice1 + cmsBond1.accruedAmount();
          AssetSwap cmsBondParAssetSwap1 = new AssetSwap(payFixedRate,
                                                         cmsBond1, cmsBondMktPrice1,
@@ -989,8 +989,8 @@ namespace TestSuite
          Bond cmsBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
                                          vars.swapIndex, new Thirty360(),
                                          BusinessDayConvention.Following, fixingDays,
-                                         new List<double> {0.84}, new List<double> {0.0},
-                                         new List < double? >(), new List < double? >(),
+                                         new List<double> { 0.84 }, new List<double> { 0.0 },
+                                         new List<double?>(), new List<double?>(),
                                          inArrears,
                                          100.0, new Date(06, Month.May, 2005));
 
@@ -998,7 +998,7 @@ namespace TestSuite
 
          Utils.setCouponPricer(cmsBond2.cashflows(), vars.cmspricer);
          vars.swapIndex.addFixing(new Date(04, Month.May, 2006), 0.04217);
-         double cmsBondMktPrice2 = 94.08 ; // market price observed on 7th June 2007
+         double cmsBondMktPrice2 = 94.08; // market price observed on 7th June 2007
          double cmsBondMktFullPrice2 = cmsBondMktPrice2 + cmsBond2.accruedAmount();
          AssetSwap cmsBondParAssetSwap2 = new AssetSwap(payFixedRate,
                                                         cmsBond2, cmsBondMktPrice2,
@@ -1032,13 +1032,13 @@ namespace TestSuite
          // maturity doesn't occur on a business day
 
          Bond zeroCpnBond1 = new ZeroCouponBond(settlementDays, bondCalendar, vars.faceAmount,
-                                                new  Date(20, Month.December, 2015), BusinessDayConvention.Following,
+                                                new Date(20, Month.December, 2015), BusinessDayConvention.Following,
                                                 100.0, new Date(19, Month.December, 1985));
 
          zeroCpnBond1.setPricingEngine(bondEngine);
 
          // market price observed on 12th June 2007
-         double zeroCpnBondMktPrice1 = 70.436 ;
+         double zeroCpnBondMktPrice1 = 70.436;
          double zeroCpnBondMktFullPrice1 = zeroCpnBondMktPrice1 + zeroCpnBond1.accruedAmount();
          AssetSwap zeroCpnBondParAssetSwap1 = new AssetSwap(payFixedRate, zeroCpnBond1,
                                                             zeroCpnBondMktPrice1,
@@ -1081,7 +1081,7 @@ namespace TestSuite
          // Real zeroCpnBondPrice2 = zeroCpnBond2->cleanPrice();
 
          // market price observed on 12th June 2007
-         double zeroCpnBondMktPrice2 = 35.160 ;
+         double zeroCpnBondMktPrice2 = 35.160;
          double zeroCpnBondMktFullPrice2 = zeroCpnBondMktPrice2 + zeroCpnBond2.accruedAmount();
          AssetSwap zeroCpnBondParAssetSwap2 = new AssetSwap(payFixedRate, zeroCpnBond2,
                                                             zeroCpnBondMktPrice2,
@@ -1132,7 +1132,7 @@ namespace TestSuite
                                                     BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond1 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule1,
-                                             new List<double> {0.04},
+                                             new List<double> { 0.04 },
                                              new ActualActual(ActualActual.Convention.ISDA), BusinessDayConvention.Following,
                                              100.0, new Date(4, Month.January, 2005));
 
@@ -1166,7 +1166,7 @@ namespace TestSuite
                                                     BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                     DateGeneration.Rule.Backward, false);
          Bond fixedBond2 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule2,
-                                             new List<double> {0.05},
+                                             new List<double> { 0.05 },
                                              new Thirty360(Thirty360.Thirty360Convention.BondBasis), BusinessDayConvention.Following,
                                              100.0, new Date(5, Month.February, 2005));
 
@@ -1202,8 +1202,8 @@ namespace TestSuite
                                                    floatingBondSchedule1,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.Following, fixingDays,
-                                                   new List<double> {1}, new List<double> {0.0056},
-                                                   new List < double? >(), new List < double? >(),
+                                                   new List<double> { 1 }, new List<double> { 0.0056 },
+                                                   new List<double?>(), new List<double?>(),
                                                    inArrears,
                                                    100.0, new Date(29, Month.September, 2003));
 
@@ -1239,8 +1239,8 @@ namespace TestSuite
                                                    floatingBondSchedule2,
                                                    vars.iborIndex, new Actual360(),
                                                    BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                                   new List<double> {1}, new List<double> {0.0025},
-                                                   new List < double? >(), new List < double? >(),
+                                                   new List<double> { 1 }, new List<double> { 0.0025 },
+                                                   new List<double?>(), new List<double?>(),
                                                    inArrears,
                                                    100.0, new Date(24, Month.September, 2004));
 
@@ -1275,8 +1275,8 @@ namespace TestSuite
          Bond cmsBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
                                          vars.swapIndex, new Thirty360(),
                                          BusinessDayConvention.Following, fixingDays,
-                                         new List<double> {1.0}, new List<double> {0.0},
-                                         new List < double? > {0.055}, new List < double? > {0.025},
+                                         new List<double> { 1.0 }, new List<double> { 0.0 },
+                                         new List<double?> { 0.055 }, new List<double?> { 0.025 },
                                          inArrears,
                                          100.0, new Date(22, Month.August, 2005));
 
@@ -1308,11 +1308,11 @@ namespace TestSuite
                                                   new Period(Frequency.Annual), bondCalendar,
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
-         Bond cmsBond2 = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
+         Bond cmsBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
                                           vars.swapIndex, new Thirty360(),
                                           BusinessDayConvention.Following, fixingDays,
-                                          new List<double> {0.84}, new List<double> {0.0},
-                                          new List < double? >(), new List < double? >(),
+                                          new List<double> { 0.84 }, new List<double> { 0.0 },
+                                          new List<double?>(), new List<double?>(),
                                           inArrears,
                                           100.0, new Date(06, Month.May, 2005));
 
@@ -1683,7 +1683,7 @@ namespace TestSuite
          Date zeroCpnBondStartDate1 = new Date(19, Month.December, 1985);
          Date zeroCpnBondMaturityDate1 = new Date(20, Month.December, 2015);
          Date zeroCpnBondRedemption1 = bondCalendar.adjust(zeroCpnBondMaturityDate1, BusinessDayConvention.Following);
-         List<CashFlow>zeroCpnBondLeg1 = new List<CashFlow> {new SimpleCashFlow(100.0, zeroCpnBondRedemption1)};
+         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> { new SimpleCashFlow(100.0, zeroCpnBondRedemption1) };
          Bond zeroCpnBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate1, zeroCpnBondStartDate1, zeroCpnBondLeg1);
          zeroCpnBond1.setPricingEngine(bondEngine);
@@ -1713,8 +1713,8 @@ namespace TestSuite
          Date zeroCpnBondStartDate2 = new Date(17, Month.February, 1998);
          Date zeroCpnBondMaturityDate2 = new Date(17, Month.February, 2028);
          Date zerocpbondRedemption2 = bondCalendar.adjust(zeroCpnBondMaturityDate2, BusinessDayConvention.Following);
-         List<CashFlow>zeroCpnBondLeg2 = new List<CashFlow> {new SimpleCashFlow(100.0, zerocpbondRedemption2)};
-         Bond zeroCpnBond2 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> { new SimpleCashFlow(100.0, zerocpbondRedemption2) };
+         Bond zeroCpnBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                        zeroCpnBondMaturityDate2, zeroCpnBondStartDate2, zeroCpnBondLeg2);
          zeroCpnBond2.setPricingEngine(bondEngine);
 
@@ -1767,7 +1767,7 @@ namespace TestSuite
          List<CashFlow> fixedBondLeg1 = new FixedRateLeg(fixedBondSchedule1)
          .withCouponRates(0.04, new ActualActual(ActualActual.Convention.ISDA))
          .withNotionals(vars.faceAmount);
-         Date fixedbondRedemption1 = bondCalendar.adjust(fixedBondMaturityDate1,   BusinessDayConvention.Following);
+         Date fixedbondRedemption1 = bondCalendar.adjust(fixedBondMaturityDate1, BusinessDayConvention.Following);
          fixedBondLeg1.Add(new SimpleCashFlow(100.0, fixedbondRedemption1));
          Bond fixedBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount, fixedBondMaturityDate1,
                                     fixedBondStartDate1, fixedBondLeg1);
@@ -1775,7 +1775,7 @@ namespace TestSuite
          IPricingEngine swapEngine = new DiscountingSwapEngine(vars.termStructure);
          fixedBond1.setPricingEngine(bondEngine);
 
-         double fixedBondMktPrice1 = 89.22 ; // market price observed on 7th June 2007
+         double fixedBondMktPrice1 = 89.22; // market price observed on 7th June 2007
          double fixedBondMktFullPrice1 = fixedBondMktPrice1 + fixedBond1.accruedAmount();
          AssetSwap fixedBondParAssetSwap1 = new AssetSwap(payFixedRate,
                                                           fixedBond1, fixedBondMktPrice1,
@@ -1819,13 +1819,13 @@ namespace TestSuite
          List<CashFlow> fixedBondLeg2 = new FixedRateLeg(fixedBondSchedule2)
          .withCouponRates(0.05, new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withNotionals(vars.faceAmount);
-         Date fixedbondRedemption2 = bondCalendar.adjust(fixedBondMaturityDate2,  BusinessDayConvention.Following);
+         Date fixedbondRedemption2 = bondCalendar.adjust(fixedBondMaturityDate2, BusinessDayConvention.Following);
          fixedBondLeg2.Add(new SimpleCashFlow(100.0, fixedbondRedemption2));
          Bond fixedBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount, fixedBondMaturityDate2, fixedBondStartDate2,
                                     fixedBondLeg2);
          fixedBond2.setPricingEngine(bondEngine);
 
-         double fixedBondMktPrice2 = 99.98 ; // market price observed on 7th June 2007
+         double fixedBondMktPrice2 = 99.98; // market price observed on 7th June 2007
          double fixedBondMktFullPrice2 = fixedBondMktPrice2 + fixedBond2.accruedAmount();
          AssetSwap fixedBondParAssetSwap2 = new AssetSwap(payFixedRate,
                                                           fixedBond2, fixedBondMktPrice2,
@@ -1872,14 +1872,14 @@ namespace TestSuite
          Date floatingbondRedemption1 =
             bondCalendar.adjust(floatingBondMaturityDate1, BusinessDayConvention.Following);
          floatingBondLeg1.Add(new SimpleCashFlow(100.0, floatingbondRedemption1));
-         Bond floatingBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,  floatingBondMaturityDate1,
+         Bond floatingBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount, floatingBondMaturityDate1,
                                        floatingBondStartDate1, floatingBondLeg1);
          floatingBond1.setPricingEngine(bondEngine);
 
          Utils.setCouponPricer(floatingBond1.cashflows(), vars.pricer);
          vars.iborIndex.addFixing(new Date(27, Month.March, 2007), 0.0402);
          // market price observed on 7th June 2007
-         double floatingBondMktPrice1 = 101.64 ;
+         double floatingBondMktPrice1 = 101.64;
          double floatingBondMktFullPrice1 =
             floatingBondMktPrice1 + floatingBond1.accruedAmount();
          AssetSwap floatingBondParAssetSwap1 = new AssetSwap(payFixedRate,
@@ -1938,7 +1938,7 @@ namespace TestSuite
          Utils.setCouponPricer(floatingBond2.cashflows(), vars.pricer);
          vars.iborIndex.addFixing(new Date(22, Month.March, 2007), 0.04013);
          // market price observed on 7th June 2007
-         double floatingBondMktPrice2 = 101.248 ;
+         double floatingBondMktPrice2 = 101.248;
          double floatingBondMktFullPrice2 =
             floatingBondMktPrice2 + floatingBond2.accruedAmount();
          AssetSwap floatingBondParAssetSwap2 = new AssetSwap(payFixedRate,
@@ -1993,7 +1993,7 @@ namespace TestSuite
 
          Utils.setCouponPricer(cmsBond1.cashflows(), vars.cmspricer);
          vars.swapIndex.addFixing(new Date(18, Month.August, 2006), 0.04158);
-         double cmsBondMktPrice1 = 88.45 ; // market price observed on 7th June 2007
+         double cmsBondMktPrice1 = 88.45; // market price observed on 7th June 2007
          double cmsBondMktFullPrice1 = cmsBondMktPrice1 + cmsBond1.accruedAmount();
          AssetSwap cmsBondParAssetSwap1 = new AssetSwap(payFixedRate,
                                                         cmsBond1, cmsBondMktPrice1,
@@ -2038,15 +2038,15 @@ namespace TestSuite
          .withGearings(0.84)
          .inArrears(inArrears)
          .withNotionals(vars.faceAmount);
-         Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2,  BusinessDayConvention.Following);
+         Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2, BusinessDayConvention.Following);
          cmsBondLeg2.Add(new SimpleCashFlow(100.0, cmsbondRedemption2));
-         Bond cmsBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,  cmsBondMaturityDate2, cmsBondStartDate2,
+         Bond cmsBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount, cmsBondMaturityDate2, cmsBondStartDate2,
                                   cmsBondLeg2);
          cmsBond2.setPricingEngine(bondEngine);
 
          Utils.setCouponPricer(cmsBond2.cashflows(), vars.cmspricer);
          vars.swapIndex.addFixing(new Date(04, Month.May, 2006), 0.04217);
-         double cmsBondMktPrice2 = 94.08 ; // market price observed on 7th June 2007
+         double cmsBondMktPrice2 = 94.08; // market price observed on 7th June 2007
          double cmsBondMktFullPrice2 = cmsBondMktPrice2 + cmsBond2.accruedAmount();
          AssetSwap cmsBondParAssetSwap2 = new AssetSwap(payFixedRate,
                                                         cmsBond2, cmsBondMktPrice2,
@@ -2082,13 +2082,13 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate1 = new Date(20, Month.December, 2015);
          Date zeroCpnBondRedemption1 = bondCalendar.adjust(zeroCpnBondMaturityDate1,
                                                            BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> {new SimpleCashFlow(100.0, zeroCpnBondRedemption1)};
-         Bond zeroCpnBond1 = new  Bond(settlementDays, bondCalendar, vars.faceAmount, zeroCpnBondMaturityDate1,
+         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> { new SimpleCashFlow(100.0, zeroCpnBondRedemption1) };
+         Bond zeroCpnBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount, zeroCpnBondMaturityDate1,
                                        zeroCpnBondStartDate1, zeroCpnBondLeg1);
          zeroCpnBond1.setPricingEngine(bondEngine);
 
          // market price observed on 12th June 2007
-         double zeroCpnBondMktPrice1 = 70.436 ;
+         double zeroCpnBondMktPrice1 = 70.436;
          double zeroCpnBondMktFullPrice1 =
             zeroCpnBondMktPrice1 + zeroCpnBond1.accruedAmount();
          AssetSwap zeroCpnBondParAssetSwap1 = new AssetSwap(payFixedRate, zeroCpnBond1,
@@ -2125,14 +2125,14 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate2 = new Date(17, Month.February, 2028);
          Date zerocpbondRedemption2 = bondCalendar.adjust(zeroCpnBondMaturityDate2,
                                                           BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> {new SimpleCashFlow(100.0, zerocpbondRedemption2)};
+         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> { new SimpleCashFlow(100.0, zerocpbondRedemption2) };
          Bond zeroCpnBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate2, zeroCpnBondStartDate2, zeroCpnBondLeg2);
          zeroCpnBond2.setPricingEngine(bondEngine);
 
          // double zeroCpnBondPrice2 = zeroCpnBond2.cleanPrice();
          // market price observed on 12th June 2007
-         double zeroCpnBondMktPrice2 = 35.160 ;
+         double zeroCpnBondMktPrice2 = 35.160;
          double zeroCpnBondMktFullPrice2 =
             zeroCpnBondMktPrice2 + zeroCpnBond2.accruedAmount();
          AssetSwap zeroCpnBondParAssetSwap2 = new AssetSwap(payFixedRate, zeroCpnBond2,
@@ -2322,7 +2322,7 @@ namespace TestSuite
          // standard market conventions:
          // bond's frequency + coumpounding and daycounter of the YieldCurve
          double floatingBondCleanPrice2 = BondFunctions.cleanPrice(floatingBond2, vars.termStructure, vars.spread,
-                                                                   new Actual365Fixed(), vars.compounding, Frequency.Semiannual,  fixedBondSettlementDate1);
+                                                                   new Actual365Fixed(), vars.compounding, Frequency.Semiannual, fixedBondSettlementDate1);
          double error7 = Math.Abs(floatingBondImpliedValue2 - floatingBondCleanPrice2);
          if (error7 > tolerance)
          {
@@ -2392,7 +2392,7 @@ namespace TestSuite
          .withGearings(0.84)
          .inArrears(inArrears)
          .withNotionals(vars.faceAmount);
-         Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2,  BusinessDayConvention.Following);
+         Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2, BusinessDayConvention.Following);
          cmsBondLeg2.Add(new SimpleCashFlow(100.0, cmsbondRedemption2));
          Bond cmsBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                   cmsBondMaturityDate2, cmsBondStartDate2, cmsBondLeg2);
@@ -2424,7 +2424,7 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate1 = new Date(20, Month.December, 2015);
          Date zeroCpnBondRedemption1 = bondCalendar.adjust(zeroCpnBondMaturityDate1,
                                                            BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> {new SimpleCashFlow(100.0, zeroCpnBondRedemption1)};
+         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> { new SimpleCashFlow(100.0, zeroCpnBondRedemption1) };
          Bond zeroCpnBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate1, zeroCpnBondStartDate1, zeroCpnBondLeg1);
          zeroCpnBond1.setPricingEngine(bondEngine);
@@ -2458,7 +2458,7 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate2 = new Date(17, Month.February, 2028);
          Date zerocpbondRedemption2 = bondCalendar.adjust(zeroCpnBondMaturityDate2,
                                                           BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> {new SimpleCashFlow(100.0, zerocpbondRedemption2)};
+         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> { new SimpleCashFlow(100.0, zerocpbondRedemption2) };
          Bond zeroCpnBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate2, zeroCpnBondStartDate2, zeroCpnBondLeg2);
          zeroCpnBond2.setPricingEngine(bondEngine);
@@ -2513,14 +2513,14 @@ namespace TestSuite
                                                          BusinessDayConvention.Following);
          fixedBondLeg1.Add(new SimpleCashFlow(100.0, fixedbondRedemption1));
          // generic bond
-         Bond fixedBond1 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond fixedBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                      fixedBondMaturityDate1, fixedBondStartDate1, fixedBondLeg1);
          IPricingEngine bondEngine = new DiscountingBondEngine(vars.termStructure);
          fixedBond1.setPricingEngine(bondEngine);
 
          // equivalent specialized fixed rate bond
          Bond fixedSpecializedBond1 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule1,
-                                                        new List<double> {0.04},
+                                                        new List<double> { 0.04 },
                                                         new ActualActual(ActualActual.Convention.ISDA), BusinessDayConvention.Following,
                                                         100.0, new Date(4, Month.January, 2005));
          fixedSpecializedBond1.setPricingEngine(bondEngine);
@@ -2566,7 +2566,7 @@ namespace TestSuite
          List<CashFlow> fixedBondLeg2 = new FixedRateLeg(fixedBondSchedule2)
          .withCouponRates(0.05, new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withNotionals(vars.faceAmount);
-         Date fixedbondRedemption2 = bondCalendar.adjust(fixedBondMaturityDate2,  BusinessDayConvention.Following);
+         Date fixedbondRedemption2 = bondCalendar.adjust(fixedBondMaturityDate2, BusinessDayConvention.Following);
          fixedBondLeg2.Add(new SimpleCashFlow(100.0, fixedbondRedemption2));
 
          // generic bond
@@ -2575,8 +2575,8 @@ namespace TestSuite
          fixedBond2.setPricingEngine(bondEngine);
 
          // equivalent specialized fixed rate bond
-         Bond fixedSpecializedBond2 = new  FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule2,
-                                                         new List<double> {0.05},
+         Bond fixedSpecializedBond2 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule2,
+                                                         new List<double> { 0.05 },
                                                          new Thirty360(Thirty360.Thirty360Convention.BondBasis), BusinessDayConvention.Following,
                                                          100.0, new Date(5, Month.February, 2005));
          fixedSpecializedBond2.setPricingEngine(bondEngine);
@@ -2639,9 +2639,9 @@ namespace TestSuite
                                                               floatingBondSchedule1,
                                                               vars.iborIndex, new Actual360(),
                                                               BusinessDayConvention.Following, fixingDays,
-                                                              new List<double> {1},
-                                                              new List<double> {0.0056},
-                                                              new List < double? >(), new List < double? >(),
+                                                              new List<double> { 1 },
+                                                              new List<double> { 0.0056 },
+                                                              new List<double?>(), new List<double?>(),
                                                               inArrears,
                                                               100.0, new Date(29, Month.September, 2003));
          floatingSpecializedBond1.setPricingEngine(bondEngine);
@@ -2701,7 +2701,7 @@ namespace TestSuite
          .withNotionals(vars.faceAmount);
          Date floatingbondRedemption2 =
             bondCalendar.adjust(floatingBondMaturityDate2, BusinessDayConvention.ModifiedFollowing);
-         floatingBondLeg2.Add(new  SimpleCashFlow(100.0, floatingbondRedemption2));
+         floatingBondLeg2.Add(new SimpleCashFlow(100.0, floatingbondRedemption2));
          // generic bond
          Bond floatingBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                        floatingBondMaturityDate2, floatingBondStartDate2, floatingBondLeg2);
@@ -2712,9 +2712,9 @@ namespace TestSuite
                                                               floatingBondSchedule2,
                                                               vars.iborIndex, new Actual360(),
                                                               BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                                              new List<double> {1},
-                                                              new List<double> {0.0025},
-                                                              new List < double? >(), new List < double? >(),
+                                                              new List<double> { 1 },
+                                                              new List<double> { 0.0025 },
+                                                              new List<double?>(), new List<double?>(),
                                                               inArrears,
                                                               100.0, new Date(24, Month.September, 2004));
          floatingSpecializedBond2.setPricingEngine(bondEngine);
@@ -2775,19 +2775,19 @@ namespace TestSuite
          .withFloors(0.025)
          .inArrears(inArrears)
          .withNotionals(vars.faceAmount);
-         Date cmsbondRedemption1 = bondCalendar.adjust(cmsBondMaturityDate1,  BusinessDayConvention.Following);
+         Date cmsbondRedemption1 = bondCalendar.adjust(cmsBondMaturityDate1, BusinessDayConvention.Following);
          cmsBondLeg1.Add(new SimpleCashFlow(100.0, cmsbondRedemption1));
          // generic cms bond
-         Bond cmsBond1 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond cmsBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                    cmsBondMaturityDate1, cmsBondStartDate1, cmsBondLeg1);
          cmsBond1.setPricingEngine(bondEngine);
 
          // equivalent specialized cms bond
-         Bond cmsSpecializedBond1  = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
+         Bond cmsSpecializedBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
                                                       vars.swapIndex, new Thirty360(),
                                                       BusinessDayConvention.Following, fixingDays,
-                                                      new List<double> {1.0}, new List<double> {0.0},
-                                                      new List < double? > {0.055}, new List < double? > {0.025},
+                                                      new List<double> { 1.0 }, new List<double> { 0.0 },
+                                                      new List<double?> { 0.055 }, new List<double?> { 0.025 },
                                                       inArrears,
                                                       100.0, new Date(22, Month.August, 2005));
          cmsSpecializedBond1.setPricingEngine(bondEngine);
@@ -2803,7 +2803,7 @@ namespace TestSuite
             QAssert.Fail("wrong clean price for cms bond:"
                          + "\n  generic cms bond's theo clean price: "
                          + cmsBondTheoValue1
-                         +  "\n  equivalent specialized bond's theo clean price: "
+                         + "\n  equivalent specialized bond's theo clean price: "
                          + cmsSpecializedBondTheoValue1
                          + "\n  error:                 " + error9
                          + "\n  tolerance:             " + tolerance);
@@ -2841,7 +2841,7 @@ namespace TestSuite
          Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2, BusinessDayConvention.Following);
          cmsBondLeg2.Add(new SimpleCashFlow(100.0, cmsbondRedemption2));
          // generic bond
-         Bond cmsBond2 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond cmsBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                    cmsBondMaturityDate2, cmsBondStartDate2, cmsBondLeg2);
          cmsBond2.setPricingEngine(bondEngine);
 
@@ -2849,8 +2849,8 @@ namespace TestSuite
          Bond cmsSpecializedBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
                                                     vars.swapIndex, new Thirty360(),
                                                     BusinessDayConvention.Following, fixingDays,
-                                                    new List<double> {0.84}, new List<double> {0.0},
-                                                    new List < double? >(), new List < double? >(),
+                                                    new List<double> { 0.84 }, new List<double> { 0.0 },
+                                                    new List<double?>(), new List<double?>(),
                                                     inArrears, 100.0, new Date(06, Month.May, 2005));
          cmsSpecializedBond2.setPricingEngine(bondEngine);
 
@@ -2892,7 +2892,7 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate1 = new Date(20, Month.December, 2015);
          Date zeroCpnBondRedemption1 = bondCalendar.adjust(zeroCpnBondMaturityDate1,
                                                            BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> {new SimpleCashFlow(100.0, zeroCpnBondRedemption1)};
+         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> { new SimpleCashFlow(100.0, zeroCpnBondRedemption1) };
          // generic bond
          Bond zeroCpnBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount, zeroCpnBondMaturityDate1,
                                       zeroCpnBondStartDate1, zeroCpnBondLeg1);
@@ -2945,9 +2945,9 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate2 = new Date(17, Month.February, 2028);
          Date zerocpbondRedemption2 = bondCalendar.adjust(zeroCpnBondMaturityDate2,
                                                           BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> {new SimpleCashFlow(100.0, zerocpbondRedemption2)};
+         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> { new SimpleCashFlow(100.0, zerocpbondRedemption2) };
          // generic bond
-         Bond zeroCpnBond2 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond zeroCpnBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                        zeroCpnBondMaturityDate2, zeroCpnBondStartDate2, zeroCpnBondLeg2);
          zeroCpnBond2.setPricingEngine(bondEngine);
 
@@ -3031,7 +3031,7 @@ namespace TestSuite
 
          // equivalent specialized fixed rate bond
          Bond fixedSpecializedBond1 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule1,
-                                                        new List<double> {0.04},
+                                                        new List<double> { 0.04 },
                                                         new ActualActual(ActualActual.Convention.ISDA), BusinessDayConvention.Following,
                                                         100.0, new Date(4, Month.January, 2005));
          fixedSpecializedBond1.setPricingEngine(bondEngine);
@@ -3124,7 +3124,7 @@ namespace TestSuite
 
          // equivalent specialized fixed rate bond
          Bond fixedSpecializedBond2 = new FixedRateBond(settlementDays, vars.faceAmount, fixedBondSchedule2,
-                                                        new List<double> { 0.05},
+                                                        new List<double> { 0.05 },
                                                         new Thirty360(Thirty360.Thirty360Convention.BondBasis), BusinessDayConvention.Following,
                                                         100.0, new Date(5, Month.February, 2005));
          fixedSpecializedBond2.setPricingEngine(bondEngine);
@@ -3220,9 +3220,9 @@ namespace TestSuite
                                                               floatingBondSchedule1,
                                                               vars.iborIndex, new Actual360(),
                                                               BusinessDayConvention.Following, fixingDays,
-                                                              new List<double> {1},
-                                                              new List<double> {0.0056},
-                                                              new List < double? >(), new List < double? >(),
+                                                              new List<double> { 1 },
+                                                              new List<double> { 0.0056 },
+                                                              new List<double?>(), new List<double?>(),
                                                               inArrears,
                                                               100.0, new Date(29, Month.September, 2003));
          floatingSpecializedBond1.setPricingEngine(bondEngine);
@@ -3315,7 +3315,7 @@ namespace TestSuite
          Date floatingbondRedemption2 = bondCalendar.adjust(floatingBondMaturityDate2, BusinessDayConvention.ModifiedFollowing);
          floatingBondLeg2.Add(new SimpleCashFlow(100.0, floatingbondRedemption2));
          // generic bond
-         Bond floatingBond2 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond floatingBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                         floatingBondMaturityDate2, floatingBondStartDate2, floatingBondLeg2);
          floatingBond2.setPricingEngine(bondEngine);
 
@@ -3324,9 +3324,9 @@ namespace TestSuite
                                                               floatingBondSchedule2,
                                                               vars.iborIndex, new Actual360(),
                                                               BusinessDayConvention.ModifiedFollowing, fixingDays,
-                                                              new List<double> {1},
-                                                              new List<double> {0.0025},
-                                                              new List < double? >(), new List < double? >(),
+                                                              new List<double> { 1 },
+                                                              new List<double> { 0.0025 },
+                                                              new List<double?>(), new List<double?>(),
                                                               inArrears,
                                                               100.0, new Date(24, Month.September, 2004));
          floatingSpecializedBond2.setPricingEngine(bondEngine);
@@ -3421,7 +3421,7 @@ namespace TestSuite
          Date cmsbondRedemption1 = bondCalendar.adjust(cmsBondMaturityDate1, BusinessDayConvention.Following);
          cmsBondLeg1.Add(new SimpleCashFlow(100.0, cmsbondRedemption1));
          // generic cms bond
-         Bond cmsBond1 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond cmsBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                    cmsBondMaturityDate1, cmsBondStartDate1, cmsBondLeg1);
          cmsBond1.setPricingEngine(bondEngine);
 
@@ -3429,8 +3429,8 @@ namespace TestSuite
          Bond cmsSpecializedBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
                                                     vars.swapIndex, new Thirty360(),
                                                     BusinessDayConvention.Following, fixingDays,
-                                                    new List<double> {1.0}, new List<double> {0.0},
-                                                    new List < double? > {0.055}, new List < double? > {0.025},
+                                                    new List<double> { 1.0 }, new List<double> { 0.0 },
+                                                    new List<double?> { 0.055 }, new List<double?> { 0.025 },
                                                     inArrears,
                                                     100.0, new Date(22, Month.August, 2005));
          cmsSpecializedBond1.setPricingEngine(bondEngine);
@@ -3518,16 +3518,16 @@ namespace TestSuite
                                                        BusinessDayConvention.Following);
          cmsBondLeg2.Add(new SimpleCashFlow(100.0, cmsbondRedemption2));
          // generic bond
-         Bond cmsBond2 = new  Bond(settlementDays, bondCalendar, vars.faceAmount,
+         Bond cmsBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                    cmsBondMaturityDate2, cmsBondStartDate2, cmsBondLeg2);
          cmsBond2.setPricingEngine(bondEngine);
 
          // equivalent specialized cms bond
-         Bond cmsSpecializedBond2 = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
+         Bond cmsSpecializedBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
                                                      vars.swapIndex, new Thirty360(),
                                                      BusinessDayConvention.Following, fixingDays,
-                                                     new List<double> {0.84}, new List<double> {0.0},
-                                                     new List < double? >(), new List < double? >(),
+                                                     new List<double> { 0.84 }, new List<double> { 0.0 },
+                                                     new List<double?>(), new List<double?>(),
                                                      inArrears,
                                                      100.0, new Date(06, Month.May, 2005));
          cmsSpecializedBond2.setPricingEngine(bondEngine);
@@ -3603,7 +3603,7 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate1 = new Date(20, Month.December, 2015);
          Date zeroCpnBondRedemption1 = bondCalendar.adjust(zeroCpnBondMaturityDate1,
                                                            BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> {new SimpleCashFlow(100.0, zeroCpnBondRedemption1)};
+         List<CashFlow> zeroCpnBondLeg1 = new List<CashFlow> { new SimpleCashFlow(100.0, zeroCpnBondRedemption1) };
          // generic bond
          Bond zeroCpnBond1 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate1, zeroCpnBondStartDate1, zeroCpnBondLeg1);
@@ -3689,7 +3689,7 @@ namespace TestSuite
          Date zeroCpnBondMaturityDate2 = new Date(17, Month.February, 2028);
          Date zerocpbondRedemption2 = bondCalendar.adjust(zeroCpnBondMaturityDate2,
                                                           BusinessDayConvention.Following);
-         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> {new SimpleCashFlow(100.0, zerocpbondRedemption2)};
+         List<CashFlow> zeroCpnBondLeg2 = new List<CashFlow> { new SimpleCashFlow(100.0, zerocpbondRedemption2) };
          // generic bond
          Bond zeroCpnBond2 = new Bond(settlementDays, bondCalendar, vars.faceAmount,
                                       zeroCpnBondMaturityDate2, zeroCpnBondStartDate2, zeroCpnBondLeg2);

@@ -75,7 +75,7 @@ namespace QLNet
 
             BlackCalculator black = new BlackCalculator(payoff, forward, Math.Sqrt(variance), rDiscount);
 
-            DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+            DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
             DayCounter divdc = process_.dividendYield().link.dayCounter();
             DayCounter voldc = process_.blackVolatility().link.dayCounter();
 

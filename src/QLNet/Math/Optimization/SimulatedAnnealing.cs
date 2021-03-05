@@ -28,7 +28,7 @@ namespace QLNet
    /// RNG.sample_type RNG.next();
    /// </summary>
    /// <typeparam name="RNG"></typeparam>
-   public class SimulatedAnnealing<RNG> : OptimizationMethod where RNG : class, IRNGTraits, new ()
+   public class SimulatedAnnealing<RNG> : OptimizationMethod where RNG : class, IRNGTraits, new()
    {
       public enum Scheme
       {

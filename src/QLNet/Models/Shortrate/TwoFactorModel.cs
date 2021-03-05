@@ -25,7 +25,7 @@ namespace QLNet
    {
       protected TwoFactorModel(int nArguments)
          : base(nArguments)
-      {}
+      { }
 
       public abstract ShortRateDynamics dynamics();
 

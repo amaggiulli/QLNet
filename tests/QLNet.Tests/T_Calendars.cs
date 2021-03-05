@@ -1096,24 +1096,24 @@ namespace TestSuite
          List<Date> expectedWorkingWeekEnds = new List<Date>();
 
          // China Inter Bank working weekends list in the year 2014
-         expectedWorkingWeekEnds.Add(new Date(26, Month. Jan, 2014));
+         expectedWorkingWeekEnds.Add(new Date(26, Month.Jan, 2014));
          expectedWorkingWeekEnds.Add(new Date(8, Month.Feb, 2014));
          expectedWorkingWeekEnds.Add(new Date(4, Month.May, 2014));
-         expectedWorkingWeekEnds.Add(new Date(28, Month. Sep, 2014));
-         expectedWorkingWeekEnds.Add(new Date(11, Month. Oct, 2014));
+         expectedWorkingWeekEnds.Add(new Date(28, Month.Sep, 2014));
+         expectedWorkingWeekEnds.Add(new Date(11, Month.Oct, 2014));
 
          // China Inter Bank working weekends list in the year 2015
          expectedWorkingWeekEnds.Add(new Date(4, Month.Jan, 2015));
-         expectedWorkingWeekEnds.Add(new Date(15, Month. Feb, 2015));
-         expectedWorkingWeekEnds.Add(new Date(28, Month. Feb, 2015));
+         expectedWorkingWeekEnds.Add(new Date(15, Month.Feb, 2015));
+         expectedWorkingWeekEnds.Add(new Date(28, Month.Feb, 2015));
          expectedWorkingWeekEnds.Add(new Date(6, Month.Sep, 2015));
-         expectedWorkingWeekEnds.Add(new Date(10, Month. Oct, 2015));
+         expectedWorkingWeekEnds.Add(new Date(10, Month.Oct, 2015));
 
          // China Inter Bank working weekends list in the year 2016
          expectedWorkingWeekEnds.Add(new Date(6, Month.Feb, 2016));
-         expectedWorkingWeekEnds.Add(new Date(14, Month. Feb, 2016));
-         expectedWorkingWeekEnds.Add(new Date(12, Month. Jun, 2016));
-         expectedWorkingWeekEnds.Add(new Date(18, Month. Sep, 2016));
+         expectedWorkingWeekEnds.Add(new Date(14, Month.Feb, 2016));
+         expectedWorkingWeekEnds.Add(new Date(12, Month.Jun, 2016));
+         expectedWorkingWeekEnds.Add(new Date(18, Month.Sep, 2016));
          expectedWorkingWeekEnds.Add(new Date(8, Month.Oct, 2016));
          expectedWorkingWeekEnds.Add(new Date(9, Month.Oct, 2016));
 

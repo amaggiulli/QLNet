@@ -77,7 +77,7 @@ namespace QLNet
          a_ = arguments_[0] = new ConstantParameter(a, new PositiveConstraint());
          sigma_ = arguments_[1] = new ConstantParameter(sigma, new PositiveConstraint());
          b_ = arguments_[2] = new ConstantParameter(b, new PositiveConstraint());
-         eta_ =  arguments_[3] = new ConstantParameter(eta, new PositiveConstraint());
+         eta_ = arguments_[3] = new ConstantParameter(eta, new PositiveConstraint());
          rho_ = arguments_[4] = new ConstantParameter(rho, new BoundaryConstraint(-1.0, 1.0));
 
          generateArguments();
@@ -163,7 +163,7 @@ namespace QLNet
                                                 arguments.floatingResetDates[0]);
          double w = (arguments.type == VanillaSwap.Type.Payer ? 1 : -1);
 
-         List<double> fixedPayTimes = new  InitializedList<double>(arguments.fixedPayDates.Count);
+         List<double> fixedPayTimes = new InitializedList<double>(arguments.fixedPayDates.Count);
          for (int i = 0; i < fixedPayTimes.Count; ++i)
             fixedPayTimes[i] =
                dayCounter.yearFraction(settlement,
@@ -325,7 +325,8 @@ namespace QLNet
                                  double rho)
             : base((Parameter.Impl)(
                       new FittingParameter.Impl(termStructure, a, sigma,
-                                                b, eta, rho))) { }
+                                                b, eta, rho)))
+         { }
       }
 
       public class SwaptionPricingFunction
@@ -358,13 +359,13 @@ namespace QLNet
             rate_ = fixedRate;
             size_ = t_.Count;
 
-            A_  = new Vector(size_);
+            A_ = new Vector(size_);
             Ba_ = new Vector(size_);
             Bb_ = new Vector(size_);
 
 
             sigmax_ = sigma_ * Math.Sqrt(0.5 * (1.0 - Math.Exp(-2.0 * a_ * T_)) / a_);
-            sigmay_ =   eta_ * Math.Sqrt(0.5 * (1.0 - Math.Exp(-2.0 * b_ * T_)) / b_);
+            sigmay_ = eta_ * Math.Sqrt(0.5 * (1.0 - Math.Exp(-2.0 * b_ * T_)) / b_);
             rhoxy_ = rho_ * eta_ * sigma_ * (1.0 - Math.Exp(-(a_ + b_) * T_)) /
                      ((a_ + b_) * sigmax_ * sigmay_);
 
@@ -413,7 +414,7 @@ namespace QLNet
             double yb = s1d.solve(function, 1e-6, 0.00, -100.0, 100.0);
 
             double h1 = (yb - muy_) / (sigmay_ * txy) -
-                        rhoxy_ * (x  - mux_) / (sigmax_ * txy);
+                        rhoxy_ * (x - mux_) / (sigmax_ * txy);
             double value = phi.value(-w_ * h1);
 
 
@@ -421,7 +422,7 @@ namespace QLNet
             {
                double h2 = h1 +
                            Bb_[i] * sigmay_ * Math.Sqrt(1.0 - rhoxy_ * rhoxy_);
-               double kappa = - Bb_[i] *
+               double kappa = -Bb_[i] *
                               (muy_ - 0.5 * txy * txy * sigmay_ * sigmay_ * Bb_[i] +
                                rhoxy_ * sigmay_ * (x - mux_) / sigmax_);
                value -= lambda[i] * Math.Exp(kappa) * phi.value(-w_ * h2);

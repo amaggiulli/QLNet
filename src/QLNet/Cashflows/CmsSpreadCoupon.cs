@@ -52,7 +52,7 @@ namespace QLNet
       }
 
       // Inspectors
-      public SwapSpreadIndex swapSpreadIndex() {return index_;}
+      public SwapSpreadIndex swapSpreadIndex() { return index_; }
 
       private new SwapSpreadIndex index_;
    }
@@ -60,7 +60,7 @@ namespace QLNet
    public class CappedFlooredCmsSpreadCoupon : CappedFlooredCoupon
    {
       public CappedFlooredCmsSpreadCoupon()
-      {}
+      { }
 
       public CappedFlooredCmsSpreadCoupon(Date paymentDate,
                                           double nominal,
@@ -78,7 +78,7 @@ namespace QLNet
                                           bool isInArrears = false)
       : base(new CmsSpreadCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
                                  index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears), cap, floor)
-      {}
+      { }
    }
 
    /// <summary>

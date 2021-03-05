@@ -34,7 +34,7 @@ namespace QLNet
       //public FDDividendEngineBase(GeneralizedBlackScholesProcess process,
       //    Size timeSteps = 100, Size gridPoints = 100, bool timeDependent = false)
       protected FDDividendEngineBase(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-         : base(process, timeSteps, gridPoints, timeDependent) {}
+         : base(process, timeSteps, gridPoints, timeDependent) { }
 
       public override FDVanillaEngine factory(GeneralizedBlackScholesProcess process,
                                               int timeSteps, int gridPoints, bool timeDependent)
@@ -94,7 +94,7 @@ namespace QLNet
       public FDDividendEngineMerton73() { }
 
       public FDDividendEngineMerton73(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-         : base(process, timeSteps, gridPoints, timeDependent) {}
+         : base(process, timeSteps, gridPoints, timeDependent) { }
 
       public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
       {
@@ -153,7 +153,7 @@ namespace QLNet
    public class FDDividendEngineShiftScale : FDDividendEngineBase
    {
       public FDDividendEngineShiftScale(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
-         : base(process, timeSteps, gridPoints, timeDependent) {}
+         : base(process, timeSteps, gridPoints, timeDependent) { }
 
       public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
       {
@@ -218,11 +218,11 @@ namespace QLNet
    {
 
       public FDDividendEngine()
-      {}
+      { }
 
       public FDDividendEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100,
                               bool timeDependent = false) : base(process, timeSteps, gridPoints, timeDependent)
-      {}
+      { }
 
       public override FDVanillaEngine factory2(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
       {

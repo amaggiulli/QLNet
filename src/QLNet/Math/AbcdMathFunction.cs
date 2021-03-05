@@ -58,7 +58,7 @@ namespace QLNet
       //! time at which the function reaches maximum (if any)
       public double maximumLocation()
       {
-         if (b_ .IsEqual(0.0))
+         if (b_.IsEqual(0.0))
          {
             if (a_ >= 0.0)
                return 0.0;
@@ -82,7 +82,7 @@ namespace QLNet
       }
 
       //! function value at time +inf: \f[ f(\inf) \f]
-      public double longTermValue()  { return d_; }
+      public double longTermValue() { return d_; }
 
       /*! first derivative of the function at time t
          \f[ f'(t) = [ (b-c*a) + (-c*b)*t) ] e^{-c*t} \f] */
@@ -106,10 +106,10 @@ namespace QLNet
       }
 
       /*! Inspectors */
-      public double a()  { return a_; }
-      public double b()  { return b_; }
-      public double c()  { return c_; }
-      public double d()  { return d_; }
+      public double a() { return a_; }
+      public double b() { return b_; }
+      public double c() { return c_; }
+      public double d() { return d_; }
       public List<double> coefficients() { return abcd_; }
       public List<double> derivativeCoefficients() { return dabcd_; }
       // the primitive is not abcd

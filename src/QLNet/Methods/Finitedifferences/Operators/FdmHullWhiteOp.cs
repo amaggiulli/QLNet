@@ -27,11 +27,11 @@ namespace QLNet
                             HullWhite model,
                             int direction)
       {
-         x_      = mesher.locations(direction);
+         x_ = mesher.locations(direction);
          dzMap_ = new TripleBandLinearOp(new FirstDerivativeOp(direction, mesher).mult(-1.0 * x_ * model.a()).add(
                                             new SecondDerivativeOp(direction, mesher).mult(0.5 * model.sigma() * model.sigma()
                                                   * new Vector(mesher.layout().size(), 1.0))));
-         mapT_  = new TripleBandLinearOp(direction, mesher);
+         mapT_ = new TripleBandLinearOp(direction, mesher);
          direction_ = direction;
          model_ = model;
       }
@@ -94,7 +94,8 @@ namespace QLNet
 
       public override IOperator multiply(double a, IOperator D) { return null; }
       public override IOperator add
-         (IOperator A, IOperator B) { return null; }
+         (IOperator A, IOperator B)
+      { return null; }
       public override IOperator subtract(IOperator A, IOperator B) { return null; }
 
       public override bool isTimeDependent() { return false; }

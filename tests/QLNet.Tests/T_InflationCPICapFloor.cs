@@ -232,7 +232,7 @@ namespace TestSuite
             }
 
             // now build the helpers ...
-            List<BootstrapHelper<ZeroInflationTermStructure> >  helpers = makeHelpers(zciisData, zciisDataLength, ii,
+            List<BootstrapHelper<ZeroInflationTermStructure>> helpers = makeHelpers(zciisData, zciisDataLength, ii,
                                                                                       observationLag, calendar, convention, dcZCIIS);
 
             // we can use historical or first ZCIIS for this
@@ -257,8 +257,8 @@ namespace TestSuite
                       new Period(20, TimeUnit.Years),
                       new Period(30, TimeUnit.Years)
             };
-            double[] cStrike = {3, 4, 5, 6};
-            double[] fStrike = {-1, 0, 1, 2};
+            double[] cStrike = { 3, 4, 5, 6 };
+            double[] fStrike = { -1, 0, 1, 2 };
             int ncStrikes = 4, nfStrikes = 4, ncfMaturities = 7;
 
             double[][] cPrice =

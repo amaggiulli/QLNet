@@ -31,10 +31,10 @@ namespace QLNet
          arguments_ = args;
          redemptionTime_ = dayCounter.yearFraction(referenceDate, args.redemptionDate);
 
-         for (int i = 0; i < args.couponDates.Count ; ++i)
+         for (int i = 0; i < args.couponDates.Count; ++i)
             couponTimes_.Add(dayCounter.yearFraction(referenceDate, args.couponDates[i]));
 
-         for (int i = 0; i < args.callabilityDates.Count ; ++i)
+         for (int i = 0; i < args.callabilityDates.Count; ++i)
             callabilityTimes_.Add(dayCounter.yearFraction(referenceDate, args.callabilityDates[i]));
 
          // similar to the tree swaption engine, we collapse similar coupon
@@ -43,7 +43,7 @@ namespace QLNet
          for (int i = 0; i < callabilityTimes_.Count; i++)
          {
             double exerciseTime = callabilityTimes_[i];
-            for (int j = 0; j < couponTimes_.Count ; j++)
+            for (int j = 0; j < couponTimes_.Count; j++)
             {
                if (withinNextWeek(exerciseTime, couponTimes_[j]))
                   couponTimes_[j] = exerciseTime;
@@ -69,7 +69,7 @@ namespace QLNet
             times.Add(t);
          }
 
-         for (i = 0; i < couponTimes_.Count ; i++)
+         for (i = 0; i < couponTimes_.Count; i++)
          {
             t = couponTimes_[i];
             if (t >= 0.0)

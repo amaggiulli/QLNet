@@ -314,7 +314,7 @@ namespace QLNet
          {
             CallableBond.Arguments args = bond_.engine_.getArguments() as CallableBond.Arguments;
             // Pops the original value when function finishes
-            double originalSpread =  args.spread;
+            double originalSpread = args.spread;
             args.spread = x;
             bond_.engine_.calculate();
             args.spread = originalSpread;
@@ -441,7 +441,7 @@ namespace QLNet
 
          InterestRate baseRate = new InterestRate(zz, dayCounter, compounding, frequency);
 
-         InterestRate spreadedRate  = new InterestRate(oas + zz, dayCounter, compounding, frequency);
+         InterestRate spreadedRate = new InterestRate(oas + zz, dayCounter, compounding, frequency);
 
          double br = baseRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency, yts.link.referenceDate(), b.maturityDate()).rate();
 
@@ -456,9 +456,9 @@ namespace QLNet
 
    }
 
-/// <summary>
-/// Callable fixed rate bond class.
-/// </summary>
+   /// <summary>
+   /// Callable fixed rate bond class.
+   /// </summary>
    public class CallableFixedRateBond : CallableBond
    {
       public CallableFixedRateBond(int settlementDays,
@@ -483,7 +483,7 @@ namespace QLNet
             .withNotionals(faceAmount)
             .withPaymentAdjustment(paymentConvention);
 
-            addRedemptionsToCashflows(new List<double>() {redemption});
+            addRedemptionsToCashflows(new List<double>() { redemption });
          }
          else
          {
@@ -514,7 +514,7 @@ namespace QLNet
          arguments.couponDates = new List<Date>(cfs.Count - 1);
          arguments.couponAmounts = new List<double>(cfs.Count - 1);
 
-         for (int i = 0; i < cfs.Count ; i++)
+         for (int i = 0; i < cfs.Count; i++)
          {
             if (!cfs[i].hasOccurred(settlement, false))
             {
@@ -610,7 +610,7 @@ namespace QLNet
                                                          paymentConvention,
                                                          DateGeneration.Rule.Backward,
                                                          false),
-                new List<double>() {0.0}, dayCounter, paymentConvention, redemption, issueDate, putCallSchedule)
-      {}
+                new List<double>() { 0.0 }, dayCounter, paymentConvention, redemption, issueDate, putCallSchedule)
+      { }
    }
 }

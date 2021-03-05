@@ -112,7 +112,7 @@ namespace QLNet
             // find duplicates
             for (k = 0; k < ret.Count; ++k)
             {
-               if (v.First(xx => (Math.Abs(v[k] - xx) <= 10 * v[k]*Const.QL_EPSILON)) .IsEqual(v.First() + k))
+               if (v.First(xx => (Math.Abs(v[k] - xx) <= 10 * v[k] * Const.QL_EPSILON)).IsEqual(v.First() + k))
                {
                   // don't remove this item, it's unique!
                   rm[k] = false;

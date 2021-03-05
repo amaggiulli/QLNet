@@ -64,8 +64,8 @@ namespace QLNet
          while (evaluationNumber_ <= maxEvaluations_)
          {
             // Bisect if (out of range || not decreasing fast enough)
-            if ((((root_ - xh)*dfroot - froot)*
-                 ((root_ - xl)*dfroot - froot) > 0.0)
+            if ((((root_ - xh) * dfroot - froot) *
+                 ((root_ - xl) * dfroot - froot) > 0.0)
                 || (Math.Abs(2.0 * froot) > Math.Abs(dxold * dfroot)))
             {
 

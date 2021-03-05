@@ -142,30 +142,31 @@ namespace QLNet
                   switch (month)
                   {
                      case Month.January: return d == 2;
-                     case Month.March:   return d == 9;
-                     case Month.April:   return d == 30;
-                     case Month.June:    return d == 12;
-                     default:      return false;
+                     case Month.March: return d == 9;
+                     case Month.April: return d == 30;
+                     case Month.June: return d == 12;
+                     default: return false;
                   }
                case 2013:
                   switch (month)
                   {
-                     case Month.January: return d == 1 || d == 2 || d == 3
-                                                   || d == 4 || d == 7;
-                     default:      return false;
+                     case Month.January:
+                        return d == 1 || d == 2 || d == 3
+                                  || d == 4 || d == 7;
+                     default: return false;
                   }
                case 2014:
                   switch (month)
                   {
                      case Month.January: return d == 1 || d == 2 || d == 3 || d == 7;
-                     default:      return false;
+                     default: return false;
                   }
                case 2015:
                   switch (month)
                   {
                      case Month.January: return d == 1 || d == 2 || d == 7;
-                     case Month.May:     return d == 4;
-                     default:      return false;
+                     case Month.May: return d == 4;
+                     default: return false;
                   }
                default:
                   return false;
@@ -178,7 +179,7 @@ namespace QLNet
          {
 
             DayOfWeek w = date.DayOfWeek;
-            int d = date.Day ;
+            int d = date.Day;
             Month m = (Month)date.Month;
             int y = date.Year;
 

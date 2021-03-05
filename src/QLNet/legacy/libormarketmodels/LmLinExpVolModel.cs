@@ -108,7 +108,7 @@ namespace QLNet
       }
 
       public override void generateArguments()
-      {}
+      { }
 
       private List<double> fixingTimes_;
    }

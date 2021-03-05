@@ -86,7 +86,7 @@ namespace TestSuite
          Vector vector = new Vector(Data);
          QAssert.AreEqual(vector.GetHashCode(), vector.GetHashCode());
          QAssert.AreEqual(vector.GetHashCode(),
-         new Vector(new List<double>() { 1, 2, 3, 4, 5  }).GetHashCode());
+         new Vector(new List<double>() { 1, 2, 3, 4, 5 }).GetHashCode());
          QAssert.AreNotEqual(vector.GetHashCode(), new Vector(new List<double>() { 1 }).GetHashCode());
       }
    }

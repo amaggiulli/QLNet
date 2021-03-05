@@ -27,7 +27,7 @@ namespace QLNet
 
    public interface IKernelFunction
    {
-      double value(double x) ;
+      double value(double x);
    }
 
 

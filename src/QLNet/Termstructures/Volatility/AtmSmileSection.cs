@@ -32,12 +32,12 @@ namespace QLNet
       public override Date exerciseDate() { return source_.exerciseDate(); }
       public override double exerciseTime() { return source_.exerciseTime(); }
       public override DayCounter dayCounter() { return source_.dayCounter(); }
-      public override Date referenceDate()  { return source_.referenceDate(); }
-      public override VolatilityType volatilityType()  { return source_.volatilityType();}
+      public override Date referenceDate() { return source_.referenceDate(); }
+      public override VolatilityType volatilityType() { return source_.volatilityType(); }
       public override double shift() { return source_.shift(); }
 
-      protected override double volatilityImpl(double strike) { return source_.volatility(strike);}
-      protected override double varianceImpl(double strike) { return source_.variance(strike);}
+      protected override double volatilityImpl(double strike) { return source_.volatility(strike); }
+      protected override double varianceImpl(double strike) { return source_.variance(strike); }
 
       private SmileSection source_;
       private double? f_;

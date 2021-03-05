@@ -24,14 +24,14 @@ namespace QLNet
    public class TrinomialTree : Tree<TrinomialTree>
    {
       public enum Branches { branches = 3 }
-      private  List<Branching> branchings_;
+      private List<Branching> branchings_;
       protected double x0_;
       protected List<double> dx_;
       protected TimeGrid timeGrid_;
 
       public TrinomialTree(StochasticProcess1D process,
                            TimeGrid timeGrid)
-         : this(process, timeGrid, false) {}
+         : this(process, timeGrid, false) { }
 
       public TrinomialTree(StochasticProcess1D process,
                            TimeGrid timeGrid,
@@ -66,7 +66,7 @@ namespace QLNet
 
                if (isPositive)
                {
-                  while (x0_ + (temp - 1)*dx_[i + 1] <= 0)
+                  while (x0_ + (temp - 1) * dx_[i + 1] <= 0)
                   {
                      temp++;
                   }
@@ -95,7 +95,7 @@ namespace QLNet
 
       public int size(int i) { return i == 0 ? 1 : branchings_[i - 1].size(); }
 
-      public  double underlying(int i, int index)
+      public double underlying(int i, int index)
       {
          if (i == 0)
             return x0_;
@@ -128,10 +128,10 @@ namespace QLNet
          {
             k_ = new List<int>();
             probs_ = new InitializedList<List<double>>(3);
-            kMin_ = int.MaxValue  ;
-            jMin_ = int.MaxValue ;
+            kMin_ = int.MaxValue;
+            jMin_ = int.MaxValue;
             kMax_ = int.MinValue;
-            jMax_ = int.MinValue ;
+            jMax_ = int.MinValue;
          }
          public int descendant(int index, int branch)
          {

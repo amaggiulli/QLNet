@@ -96,16 +96,16 @@ namespace QLNet
             return 0.0;
          if (x.IsEqual(1.0))
             return 1.0;
-         QL_REQUIRE(x > 0.0 && x<1.0, () => "x must be in [0,1]");
+         QL_REQUIRE(x > 0.0 && x < 1.0, () => "x must be in [0,1]");
 
          double result = Math.Exp(GammaFunction.logValue(a + b) -
                                   GammaFunction.logValue(a) - GammaFunction.logValue(b) +
-                                  a* Math.Log(x) + b* Math.Log(1.0 - x));
+                                  a * Math.Log(x) + b * Math.Log(1.0 - x));
 
          if (x < (a + 1.0) / (a + b + 2.0))
-            return result*
+            return result *
                    betaContinuedFraction(a, b, x, accuracy, maxIteration) / a;
-         return 1.0 - result*
+         return 1.0 - result *
                 betaContinuedFraction(b, a, 1.0 - x, accuracy, maxIteration) / b;
       }
    }

@@ -642,17 +642,19 @@ namespace TestSuite
 
 
       internal void testCurveConsistency<T, I, B>(CommonVars vars)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new () { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
+      { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
       internal void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new () { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
+      { testCurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-9); }
       internal void testCurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new ()
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
       {
 
          vars.termStructure = new PiecewiseYieldCurve<T, I, B>(vars.settlement, vars.instruments,
@@ -755,17 +757,19 @@ namespace TestSuite
       }
 
       internal void testBMACurveConsistency<T, I, B>(CommonVars vars)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new () { testBMACurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-7); }
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
+      { testBMACurveConsistency<T, I, B>(vars, FastActivator<I>.Create(), 1.0e-7); }
       internal void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new () { testBMACurveConsistency<T, I, B>(vars, interpolator, 1.0e-7); }
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
+      { testBMACurveConsistency<T, I, B>(vars, interpolator, 1.0e-7); }
       internal void testBMACurveConsistency<T, I, B>(CommonVars vars, I interpolator, double tolerance)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
-         where B : IBootStrap<PiecewiseYieldCurve>, new ()
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
+         where B : IBootStrap<PiecewiseYieldCurve>, new()
       {
 
          // readjust settlement
@@ -850,14 +854,14 @@ namespace TestSuite
       }
 
       internal void testCurveCopy<T, I>(CommonVars vars)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
       {
          testCurveCopy<T, I>(vars, FastActivator<I>.Create());
       }
       internal void testCurveCopy<T, I>(CommonVars vars, I interpolator)
-      where T : ITraits<YieldTermStructure>, new ()
-         where I : IInterpolationFactory, new ()
+      where T : ITraits<YieldTermStructure>, new()
+         where I : IInterpolationFactory, new()
       {
 
          PiecewiseYieldCurve<T, I> curve = new PiecewiseYieldCurve<T, I>(vars.settlement, vars.instruments,

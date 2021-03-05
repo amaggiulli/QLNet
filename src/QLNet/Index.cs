@@ -44,7 +44,7 @@ namespace QLNet
       public abstract double fixing(Date fixingDate, bool forecastTodaysFixing = false);
 
       // Returns the fixing TimeSeries
-      public TimeSeries < double? > timeSeries() { return IndexManager.instance().getHistory(name()); }
+      public TimeSeries<double?> timeSeries() { return IndexManager.instance().getHistory(name()); }
 
       // Check if index allows for native fixings.
       // If this returns false, calls to addFixing and similar methods will raise an exception.
@@ -55,15 +55,15 @@ namespace QLNet
       public virtual void addFixing(Date d, double v, bool forceOverwrite = false)
       {
          checkNativeFixingsAllowed();
-         addFixings(new TimeSeries < double? >() { { d, v } }, forceOverwrite);
+         addFixings(new TimeSeries<double?>() { { d, v } }, forceOverwrite);
       }
 
       // Stores historical fixings from a TimeSeries
       // The dates in the TimeSeries must be the actual calendar dates of the fixings; no settlement days must be used.
-      public void addFixings(TimeSeries < double? > source, bool forceOverwrite = false)
+      public void addFixings(TimeSeries<double?> source, bool forceOverwrite = false)
       {
          checkNativeFixingsAllowed();
-         TimeSeries < double? > target = IndexManager.instance().getHistory(name());
+         TimeSeries<double?> target = IndexManager.instance().getHistory(name());
          foreach (Date d in source.Keys)
          {
             if (isValidFixingDate(d))
@@ -90,7 +90,7 @@ namespace QLNet
          if ((d.Count != v.Count) || d.Count == 0)
             throw new ArgumentException("Wrong collection dimensions when creating index fixings");
 
-         TimeSeries < double? > t = new TimeSeries < double? >();
+         TimeSeries<double?> t = new TimeSeries<double?>();
          for (int i = 0; i < d.Count; i++)
             t.Add(d[i], v[i]);
          addFixings(t, forceOverwrite);

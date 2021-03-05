@@ -32,15 +32,15 @@ namespace QLNet
       */
 
       protected CapFloorTermVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
-         : base(bdc, dc) {}
+         : base(bdc, dc) { }
 
       //! initialize with a fixed reference date
       protected CapFloorTermVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(referenceDate, cal, bdc, dc) {}
+         : base(referenceDate, cal, bdc, dc) { }
 
       //! calculate the reference date based on the global evaluation date
       protected CapFloorTermVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(settlementDays, cal, bdc, dc) {}
+         : base(settlementDays, cal, bdc, dc) { }
 
       #endregion
 

@@ -31,25 +31,25 @@ namespace QLNet
 
    public interface IModel
    {
-      void defaultValues(List < double? > param, List<bool> b, double forward, double expiryTime, List < double? > addParams);
+      void defaultValues(List<double?> param, List<bool> b, double forward, double expiryTime, List<double?> addParams);
       double dilationFactor();
       int dimension();
-      Vector direct(Vector x, List<bool> b, List < double? > c, double d);
+      Vector direct(Vector x, List<bool> b, List<double?> c, double d);
       double eps1();
       double eps2();
 
       void guess(Vector values, List<bool> paramIsFixed, double forward, double expiryTime, List<double> r,
-                 List < double? > addParams);
+                 List<double?> addParams);
 
-      IWrapper instance(double t, double forward, List < double? > param, List < double? > addParams);
-      Vector inverse(Vector y, List<bool> b, List < double? > c, double d);
-      double weight(double strike, double forward, double stdDev, List < double? > addParams);
+      IWrapper instance(double t, double forward, List<double?> param, List<double?> addParams);
+      Vector inverse(Vector y, List<bool> b, List<double?> c, double d);
+      double weight(double strike, double forward, double stdDev, List<double?> addParams);
    }
 
-   public class XABRCoeffHolder<Model> where Model : IModel, new ()
+   public class XABRCoeffHolder<Model> where Model : IModel, new()
    {
-      public XABRCoeffHolder(double t, double forward, List < double? > _params, List<bool> paramIsFixed,
-                             List < double? > addParams)
+      public XABRCoeffHolder(double t, double forward, List<double?> _params, List<bool> paramIsFixed,
+                             List<double?> addParams)
       {
          t_ = t;
          forward_ = forward;
@@ -91,9 +91,9 @@ namespace QLNet
       public double forward_ { get; set; }
 
       /*! Parameters */
-      public List < double? > params_ { get; set; }
+      public List<double?> params_ { get; set; }
       public List<bool> paramIsFixed_ { get; set; }
-      public List < double? > addParams_ { get; set; }
+      public List<double?> addParams_ { get; set; }
 
       public List<double> weights_ { get; set; }
 
@@ -109,14 +109,14 @@ namespace QLNet
    }
 
    //template <class I1, class I2, typename Model>
-   public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new ()
+   public class XABRInterpolationImpl<Model> : Interpolation.templateImpl where Model : IModel, new()
    {
       public XABRInterpolationImpl(List<double> xBegin, int size, List<double> yBegin, double t,
-                                   double forward, List < double? > _params,
+                                   double forward, List<double?> _params,
                                    List<bool> paramIsFixed, bool vegaWeighted,
                                    EndCriteria endCriteria,
                                    OptimizationMethod optMethod,
-                                   double errorAccept, bool useMaxError, int maxGuesses, List < double? > addParams = null,
+                                   double errorAccept, bool useMaxError, int maxGuesses, List<double?> addParams = null,
                                    XABRConstraint constraint = null)
       : base(xBegin, size, yBegin)
       {
@@ -347,7 +347,7 @@ namespace QLNet
 
       public virtual void config<Model>(ProjectedCostFunction costFunction, XABRCoeffHolder<Model> coeff,
                                         double forward)
-      where Model : IModel, new ()
+      where Model : IModel, new()
       { }
    }
 

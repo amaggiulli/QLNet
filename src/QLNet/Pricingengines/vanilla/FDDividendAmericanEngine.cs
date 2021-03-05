@@ -29,16 +29,16 @@ namespace QLNet
        - the invariance of the results upon addition of null
          dividends is tested.
    */
-   public class FDDividendAmericanEngine: FDEngineAdapter<FDAmericanCondition<FDDividendEngine>, DividendVanillaOption.Engine>,
+   public class FDDividendAmericanEngine : FDEngineAdapter<FDAmericanCondition<FDDividendEngine>, DividendVanillaOption.Engine>,
       IFDEngine
    {
       public FDDividendAmericanEngine()
-      {}
+      { }
 
       public FDDividendAmericanEngine(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100,
                                       bool timeDependent = false)
          : base(process, timeSteps, gridPoints, timeDependent)
-      {}
+      { }
 
       public IFDEngine factory(GeneralizedBlackScholesProcess process, int timeSteps = 100, int gridPoints = 100)
       {

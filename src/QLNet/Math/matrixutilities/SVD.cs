@@ -348,169 +348,169 @@ namespace QLNet
 
                // Deflate negligible s(p).
                case 1:
-               {
-                  double f = e[p - 2];
-                  e[p - 2] = 0.0;
-                  for (j = p - 2; j >= k; --j)
                   {
-                     double t = hypot(s_[j], f);
-                     double cs = s_[j] / t;
-                     double sn = f / t;
-                     s_[j] = t;
-                     if (j != k)
+                     double f = e[p - 2];
+                     e[p - 2] = 0.0;
+                     for (j = p - 2; j >= k; --j)
                      {
-                        f = -sn * e[j - 1];
-                        e[j - 1] = cs * e[j - 1];
-                     }
-                     for (i = 0; i < n_; i++)
-                     {
-                        t = cs * V_[i, j] + sn * V_[i, p - 1];
-                        V_[i, p - 1] = -sn * V_[i, j] + cs * V_[i, p - 1];
-                        V_[i, j] = t;
+                        double t = hypot(s_[j], f);
+                        double cs = s_[j] / t;
+                        double sn = f / t;
+                        s_[j] = t;
+                        if (j != k)
+                        {
+                           f = -sn * e[j - 1];
+                           e[j - 1] = cs * e[j - 1];
+                        }
+                        for (i = 0; i < n_; i++)
+                        {
+                           t = cs * V_[i, j] + sn * V_[i, p - 1];
+                           V_[i, p - 1] = -sn * V_[i, j] + cs * V_[i, p - 1];
+                           V_[i, j] = t;
+                        }
                      }
                   }
-               }
-               break;
+                  break;
 
                // Split at negligible s(k).
                case 2:
-               {
-                  double f = e[k - 1];
-                  e[k - 1] = 0.0;
-                  for (j = k; j < p; j++)
                   {
-                     double t = hypot(s_[j], f);
-                     double cs = s_[j] / t;
-                     double sn = f / t;
-                     s_[j] = t;
-                     f = -sn * e[j];
-                     e[j] = cs * e[j];
-                     for (i = 0; i < m_; i++)
+                     double f = e[k - 1];
+                     e[k - 1] = 0.0;
+                     for (j = k; j < p; j++)
                      {
-                        t = cs * U_[i, j] + sn * U_[i, k - 1];
-                        U_[i, k - 1] = -sn * U_[i, j] + cs * U_[i, k - 1];
-                        U_[i, j] = t;
-                     }
-                  }
-               }
-               break;
-
-               // Perform one qr step.
-               case 3:
-               {
-                  // Calculate the shift.
-                  double scale = Math.Max(
-                                    Math.Max(
-                                       Math.Max(
-                                          Math.Max(Math.Abs(s_[p - 1]),
-                                                   Math.Abs(s_[p - 2])),
-                                          Math.Abs(e[p - 2])),
-                                       Math.Abs(s_[k])),
-                                    Math.Abs(e[k]));
-                  double sp = s_[p - 1] / scale;
-                  double spm1 = s_[p - 2] / scale;
-                  double epm1 = e[p - 2] / scale;
-                  double sk = s_[k] / scale;
-                  double ek = e[k] / scale;
-                  double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
-                  double c = (sp * epm1) * (sp * epm1);
-                  double shift = 0.0;
-                  if ((b.IsNotEqual(0.0)) || (c.IsNotEqual(0.0)))
-                  {
-                     shift = Math.Sqrt(b * b + c);
-                     if (b < 0.0)
-                     {
-                        shift = -shift;
-                     }
-                     shift = c / (b + shift);
-                  }
-                  double f = (sk + sp) * (sk - sp) + shift;
-                  double g = sk * ek;
-
-                  // Chase zeros.
-                  for (j = k; j < p - 1; j++)
-                  {
-                     double t = hypot(f, g);
-                     double cs = f / t;
-                     double sn = g / t;
-                     if (j != k)
-                     {
-                        e[j - 1] = t;
-                     }
-                     f = cs * s_[j] + sn * e[j];
-                     e[j] = cs * e[j] - sn * s_[j];
-                     g = sn * s_[j + 1];
-                     s_[j + 1] = cs * s_[j + 1];
-                     for (i = 0; i < n_; i++)
-                     {
-                        t = cs * V_[i, j] + sn * V_[i, j + 1];
-                        V_[i, j + 1] = -sn * V_[i, j] + cs * V_[i, j + 1];
-                        V_[i, j] = t;
-                     }
-                     t = hypot(f, g);
-                     cs = f / t;
-                     sn = g / t;
-                     s_[j] = t;
-                     f = cs * e[j] + sn * s_[j + 1];
-                     s_[j + 1] = -sn * e[j] + cs * s_[j + 1];
-                     g = sn * e[j + 1];
-                     e[j + 1] = cs * e[j + 1];
-                     if (j < m_ - 1)
-                     {
+                        double t = hypot(s_[j], f);
+                        double cs = s_[j] / t;
+                        double sn = f / t;
+                        s_[j] = t;
+                        f = -sn * e[j];
+                        e[j] = cs * e[j];
                         for (i = 0; i < m_; i++)
                         {
-                           t = cs * U_[i, j] + sn * U_[i, j + 1];
-                           U_[i, j + 1] = -sn * U_[i, j] + cs * U_[i, j + 1];
+                           t = cs * U_[i, j] + sn * U_[i, k - 1];
+                           U_[i, k - 1] = -sn * U_[i, j] + cs * U_[i, k - 1];
                            U_[i, j] = t;
                         }
                      }
                   }
-                  e[p - 2] = f;
-                  iter = iter + 1;
-               }
-               break;
+                  break;
+
+               // Perform one qr step.
+               case 3:
+                  {
+                     // Calculate the shift.
+                     double scale = Math.Max(
+                                       Math.Max(
+                                          Math.Max(
+                                             Math.Max(Math.Abs(s_[p - 1]),
+                                                      Math.Abs(s_[p - 2])),
+                                             Math.Abs(e[p - 2])),
+                                          Math.Abs(s_[k])),
+                                       Math.Abs(e[k]));
+                     double sp = s_[p - 1] / scale;
+                     double spm1 = s_[p - 2] / scale;
+                     double epm1 = e[p - 2] / scale;
+                     double sk = s_[k] / scale;
+                     double ek = e[k] / scale;
+                     double b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
+                     double c = (sp * epm1) * (sp * epm1);
+                     double shift = 0.0;
+                     if ((b.IsNotEqual(0.0)) || (c.IsNotEqual(0.0)))
+                     {
+                        shift = Math.Sqrt(b * b + c);
+                        if (b < 0.0)
+                        {
+                           shift = -shift;
+                        }
+                        shift = c / (b + shift);
+                     }
+                     double f = (sk + sp) * (sk - sp) + shift;
+                     double g = sk * ek;
+
+                     // Chase zeros.
+                     for (j = k; j < p - 1; j++)
+                     {
+                        double t = hypot(f, g);
+                        double cs = f / t;
+                        double sn = g / t;
+                        if (j != k)
+                        {
+                           e[j - 1] = t;
+                        }
+                        f = cs * s_[j] + sn * e[j];
+                        e[j] = cs * e[j] - sn * s_[j];
+                        g = sn * s_[j + 1];
+                        s_[j + 1] = cs * s_[j + 1];
+                        for (i = 0; i < n_; i++)
+                        {
+                           t = cs * V_[i, j] + sn * V_[i, j + 1];
+                           V_[i, j + 1] = -sn * V_[i, j] + cs * V_[i, j + 1];
+                           V_[i, j] = t;
+                        }
+                        t = hypot(f, g);
+                        cs = f / t;
+                        sn = g / t;
+                        s_[j] = t;
+                        f = cs * e[j] + sn * s_[j + 1];
+                        s_[j + 1] = -sn * e[j] + cs * s_[j + 1];
+                        g = sn * e[j + 1];
+                        e[j + 1] = cs * e[j + 1];
+                        if (j < m_ - 1)
+                        {
+                           for (i = 0; i < m_; i++)
+                           {
+                              t = cs * U_[i, j] + sn * U_[i, j + 1];
+                              U_[i, j + 1] = -sn * U_[i, j] + cs * U_[i, j + 1];
+                              U_[i, j] = t;
+                           }
+                        }
+                     }
+                     e[p - 2] = f;
+                     iter = iter + 1;
+                  }
+                  break;
 
                // Convergence.
                case 4:
-               {
-                  // Make the singular values positive.
-                  if (s_[k] <= 0.0)
                   {
-                     s_[k] = (s_[k] < 0.0 ? -s_[k] : 0.0);
-                     for (i = 0; i <= pp; i++)
+                     // Make the singular values positive.
+                     if (s_[k] <= 0.0)
                      {
-                        V_[i, k] = -V_[i, k];
+                        s_[k] = (s_[k] < 0.0 ? -s_[k] : 0.0);
+                        for (i = 0; i <= pp; i++)
+                        {
+                           V_[i, k] = -V_[i, k];
+                        }
                      }
-                  }
 
-                  // Order the singular values.
-                  while (k < pp)
-                  {
-                     if (s_[k] >= s_[k + 1])
+                     // Order the singular values.
+                     while (k < pp)
                      {
-                        break;
-                     }
-                     s_.swap(k, k + 1);
-                     if (k < n_ - 1)
-                     {
-                        for (i = 0; i < n_; i++)
+                        if (s_[k] >= s_[k + 1])
                         {
-                           V_.swap(i, k, i, k + 1);
+                           break;
                         }
-                     }
-                     if (k < m_ - 1)
-                     {
-                        for (i = 0; i < m_; i++)
+                        s_.swap(k, k + 1);
+                        if (k < n_ - 1)
                         {
-                           U_.swap(i, k, i, k + 1);
+                           for (i = 0; i < n_; i++)
+                           {
+                              V_.swap(i, k, i, k + 1);
+                           }
                         }
+                        if (k < m_ - 1)
+                        {
+                           for (i = 0; i < m_; i++)
+                           {
+                              U_.swap(i, k, i, k + 1);
+                           }
+                        }
+                        k++;
                      }
-                     k++;
+                     iter = 0;
+                     --p;
                   }
-                  iter = 0;
-                  --p;
-               }
-               break;
+                  break;
             }
          }
       }

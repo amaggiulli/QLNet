@@ -101,7 +101,7 @@ namespace QLNet
             --w;
          }
       }
-      public static IList<T> Clone<T>(this IList<T> input) where T : ICloneable, new ()
+      public static IList<T> Clone<T>(this IList<T> input) where T : ICloneable, new()
       {
          IList<T> c = new InitializedList<T>(input.Count);
          c.ForEach((ii, vv) => c[ii] = (T)input[ii].Clone());

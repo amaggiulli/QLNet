@@ -29,7 +29,7 @@ namespace QLNet
    {
       public SteepestDescent(LineSearch lineSearch = null)
          : base(lineSearch)
-      {}
+      { }
 
       protected override Vector getUpdatedDirection(Problem P, double gold2, Vector gradient)
       {

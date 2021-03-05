@@ -29,7 +29,7 @@ namespace QLNet
 
       //! Default constructor returning a null date.
       public Date()
-      {}
+      { }
       //! Constructor taking a serial number as given by Excel.
       // Serial numbers in Excel have a known problem with leap year 1900
       public Date(int serialNumber)
@@ -43,11 +43,11 @@ namespace QLNet
 
       public Date(int d, int m, int y) : //! More traditional constructor.
          this(new DateTime(y, m, d))
-      {}
+      { }
 
       public Date(int d, int m, int y, int h, int mi, int s, int ms) :     //! More traditional constructor.
          this(new DateTime(y, m, d, h, mi, s, ms))
-      {}
+      { }
 
       public Date(DateTime d)
       {
@@ -80,7 +80,7 @@ namespace QLNet
 
       public int weekday()
       {
-         return (int) date.DayOfWeek + 1;
+         return (int)date.DayOfWeek + 1;
       } // QL compatible definition
 
       public DayOfWeek DayOfWeek { get { return date.DayOfWeek; } }
@@ -171,15 +171,15 @@ namespace QLNet
             case TimeUnit.Weeks:
                return d + 7 * n;
             case TimeUnit.Months:
-            {
-               DateTime t = d.date;
-               return new Date(t.AddMonths(n));
-            }
+               {
+                  DateTime t = d.date;
+                  return new Date(t.AddMonths(n));
+               }
             case TimeUnit.Years:
-            {
-               DateTime t = d.date;
-               return new Date(t.AddYears(n));
-            }
+               {
+                  DateTime t = d.date;
+                  return new Date(t.AddYears(n));
+               }
             default:
                throw new ArgumentException("Unknown TimeUnit: " + u);
          }
@@ -322,7 +322,7 @@ namespace QLNet
 
       public override bool Equals(object o)
       {
-         return this == (Date) o;
+         return this == (Date)o;
       }
 
       public override int GetHashCode()
@@ -333,9 +333,9 @@ namespace QLNet
       // IComparable interface
       public int CompareTo(object obj)
       {
-         if (this < (Date) obj)
+         if (this < (Date)obj)
             return -1;
-         if (this == (Date) obj)
+         if (this == (Date)obj)
             return 0;
          return 1;
       }

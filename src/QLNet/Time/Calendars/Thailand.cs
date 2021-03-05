@@ -134,9 +134,9 @@ namespace QLNet
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 12 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 12 && m == Month.June)     // Special Holidays (Due to the auspicious occasion of the
-                 // celebration of 60th Anniversary of His Majesty's Accession
-                 // to the throne. For Bangkok, Samut Prakan, Nonthaburi,
-                 // Pathumthani and Nakhon Pathom province)
+                                                     // celebration of 60th Anniversary of His Majesty's Accession
+                                                     // to the throne. For Bangkok, Samut Prakan, Nonthaburi,
+                                                     // Pathumthani and Nakhon Pathom province)
                  || (d == 13 && m == Month.June)     // Special Holidays (as above)
                  || (d == 11 && m == Month.July)     // Buddhist Lent Day
                  || (d == 23 && m == Month.October)  // Chulalongkorn Day

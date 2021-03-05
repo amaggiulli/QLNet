@@ -62,7 +62,7 @@ namespace QLNet
 
       public override void calculate()
       {
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          Calendar volcal = process_.blackVolatility().link.calendar();

@@ -27,7 +27,7 @@ namespace QLNet
    {
       public BlackScholesLattice(ITree tree, double riskFreeRate, double end, int steps)
          : base(tree, riskFreeRate, end, steps)
-      {}
+      { }
    }
 
    //! Simple binomial lattice approximating the Black-Scholes model

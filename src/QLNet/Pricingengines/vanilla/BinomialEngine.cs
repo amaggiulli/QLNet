@@ -32,7 +32,7 @@ namespace QLNet
              one, while the two side points would be used for
              estimating partial derivatives.
    */
-   public class BinomialVanillaEngine<T> : VanillaOption.Engine where T : ITreeFactory<T>, ITree, new ()
+   public class BinomialVanillaEngine<T> : VanillaOption.Engine where T : ITreeFactory<T>, ITree, new()
    {
       private GeneralizedBlackScholesProcess process_;
       private int timeSteps_;
@@ -50,7 +50,7 @@ namespace QLNet
       public override void calculate()
       {
 
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter divdc = process_.dividendYield().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          Calendar volcal = process_.blackVolatility().link.calendar();

@@ -67,7 +67,7 @@ namespace QLNet
          else
          {
             Utils.QL_REQUIRE(npvDate_ >= refDate, () =>
-                             "npv date (" + npvDate_  + ") before " +
+                             "npv date (" + npvDate_ + ") before " +
                              "discount curve reference date (" + refDate + ")");
          }
 
@@ -75,10 +75,10 @@ namespace QLNet
 
          int n = arguments_.legs.Count;
 
-         results_.legNPV = new InitializedList < double? >(n);
-         results_.legBPS = new InitializedList < double? >(n);
-         results_.startDiscounts = new InitializedList < double? >(n);
-         results_.endDiscounts = new InitializedList < double? >(n);
+         results_.legNPV = new InitializedList<double?>(n);
+         results_.legBPS = new InitializedList<double?>(n);
+         results_.startDiscounts = new InitializedList<double?>(n);
+         results_.endDiscounts = new InitializedList<double?>(n);
 
          bool includeRefDateFlows =
             includeSettlementDateFlows_.HasValue ?

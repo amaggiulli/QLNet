@@ -25,7 +25,7 @@ namespace QLNet
       private Calendar calendar_;
       private Date startDate_, endDate_;
       private Frequency frequency_;
-      private BusinessDayConvention convention_ ;
+      private BusinessDayConvention convention_;
       private DayCounter dayCounter_;
       private double fixedRate_;
       private Loan.Type type_;
@@ -355,7 +355,7 @@ namespace QLNet
          endDate_ = endDate;
          nominal_ = nominal;
 
-         frequency_  = Frequency.Once;
+         frequency_ = Frequency.Once;
          type_ = Loan.Type.Loan;
          amortising_ = Loan.Amortising.Bullet;
          calendar_ = new TARGET();

@@ -65,7 +65,7 @@ namespace QLNet
          results_.delta = black.delta(spot);
          results_.gamma = black.gamma(spot);
 
-         DayCounter rfdc  = process_.riskFreeRate().link.dayCounter();
+         DayCounter rfdc = process_.riskFreeRate().link.dayCounter();
          DayCounter voldc = process_.blackVolatility().link.dayCounter();
          double t = voldc.yearFraction(process_.blackVolatility().link.referenceDate(), arguments_.exercise.lastDate());
          results_.vega = black.vega(t);

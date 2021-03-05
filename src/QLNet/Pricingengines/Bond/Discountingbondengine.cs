@@ -25,7 +25,7 @@ namespace QLNet
       private Handle<YieldTermStructure> discountCurve_;
       private bool? includeSettlementDateFlows_;
 
-      public Handle<YieldTermStructure> discountCurve() {return discountCurve_; }
+      public Handle<YieldTermStructure> discountCurve() { return discountCurve_; }
 
       public DiscountingBondEngine(Handle<YieldTermStructure> discountCurve, bool? includeSettlementDateFlows = null)
       {

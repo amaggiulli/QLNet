@@ -21,7 +21,7 @@ namespace QLNet
 {
    public abstract class EventPaymentOffset
    {
-      public abstract Date paymentDate(Date eventDate) ;
+      public abstract Date paymentDate(Date eventDate);
    }
 
    public class NoOffset : EventPaymentOffset
@@ -34,13 +34,13 @@ namespace QLNet
       public NotionalPath()
       {
          double previous = 1.0;//full notional at the beginning
-         notionalRate_ = new List<KeyValuePair<Date, double>> {new KeyValuePair<Date, double>(new Date(), previous)};
+         notionalRate_ = new List<KeyValuePair<Date, double>> { new KeyValuePair<Date, double>(new Date(), previous) };
       }
       public double notionalRate(Date date)  //The fraction of the original notional left on a given date
       {
          int i = 0;
          for (; i < notionalRate_.Count && notionalRate_[i].Key <= date; ++i) //TODO do we take notional after reductions or before?
-         {}
+         { }
          return notionalRate_[i - 1].Value;
 
       }
@@ -60,7 +60,7 @@ namespace QLNet
          return 1.0 - notionalRate_.Last().Value;
       }
 
-      private List<KeyValuePair<Date, double> > notionalRate_;
+      private List<KeyValuePair<Date, double>> notionalRate_;
    }
 
    public abstract class NotionalRisk
@@ -70,7 +70,7 @@ namespace QLNet
          paymentOffset_ = paymentOffset;
       }
 
-      public abstract void updatePath(List<KeyValuePair<Date, double> >  events, NotionalPath path);
+      public abstract void updatePath(List<KeyValuePair<Date, double>> events, NotionalPath path);
 
       protected EventPaymentOffset paymentOffset_;
    }
@@ -83,7 +83,7 @@ namespace QLNet
          threshold_ = threshold;
       }
 
-      public override void updatePath(List<KeyValuePair<Date, double> >  events,
+      public override void updatePath(List<KeyValuePair<Date, double>> events,
                                       NotionalPath path)
       {
          path.reset();
@@ -105,10 +105,10 @@ namespace QLNet
          attachement_ = attachement;
          exhaustion_ = exhaustion;
 
-         Utils.QL_REQUIRE(attachement<exhaustion, () => "exhaustion level needs to be greater than attachement");
+         Utils.QL_REQUIRE(attachement < exhaustion, () => "exhaustion level needs to be greater than attachement");
       }
 
-      public override void updatePath(List<KeyValuePair<Date, double> >  events, NotionalPath path)
+      public override void updatePath(List<KeyValuePair<Date, double>> events, NotionalPath path)
       {
          path.reset();
          double losses = 0;

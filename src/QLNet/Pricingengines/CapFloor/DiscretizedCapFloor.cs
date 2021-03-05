@@ -23,11 +23,11 @@ namespace QLNet
 {
    public class DiscretizedCapFloor : DiscretizedAsset
    {
-      private  CapFloor.Arguments arguments_;
-      private  List<double>  startTimes_;
-      private  List<double>  endTimes_;
+      private CapFloor.Arguments arguments_;
+      private List<double> startTimes_;
+      private List<double> endTimes_;
 
-      public  DiscretizedCapFloor(CapFloor.Arguments args,
+      public DiscretizedCapFloor(CapFloor.Arguments args,
                                   Date referenceDate,
                                   DayCounter dayCounter)
       {
@@ -52,14 +52,14 @@ namespace QLNet
 
       public override List<double> mandatoryTimes()
       {
-         List<double>  times = startTimes_;
+         List<double> times = startTimes_;
 
          for (int j = 0; j < endTimes_.Count; j++)
             times.Insert(0, endTimes_[j]);
          return times;
       }
 
-      protected  override void preAdjustValuesImpl()
+      protected override void preAdjustValuesImpl()
       {
          for (int i = 0; i < startTimes_.Count; i++)
          {
@@ -99,7 +99,7 @@ namespace QLNet
          }
       }
 
-      protected  override void postAdjustValuesImpl()
+      protected override void postAdjustValuesImpl()
       {
          for (int i = 0; i < endTimes_.Count; i++)
          {
@@ -115,7 +115,7 @@ namespace QLNet
 
                   if (type == CapFloorType.Cap || type == CapFloorType.Collar)
                   {
-                     double cap = (double) arguments_.capRates[i];
+                     double cap = (double)arguments_.capRates[i];
                      double capletRate = Math.Max(fixing - cap, 0.0);
                      values_ += capletRate * accrual * nominal * gearing;
                   }

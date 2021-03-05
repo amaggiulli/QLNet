@@ -37,7 +37,7 @@ namespace QLNet
                                    EndCriteria endCriteria,
                                    double t_ini)      // initial value of line-search step
       {
-         Constraint  constraint = P.constraint();
+         Constraint constraint = P.constraint();
          succeed_ = true;
          bool maxIter = false;
          double t = t_ini;

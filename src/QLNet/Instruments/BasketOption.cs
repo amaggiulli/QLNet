@@ -61,7 +61,7 @@ namespace QLNet
    public class MinBasketPayoff : BasketPayoff
    {
       public MinBasketPayoff(Payoff p) : base(p)
-      {}
+      { }
 
       public override double accumulate(Vector a)
       {
@@ -72,7 +72,7 @@ namespace QLNet
    public class MaxBasketPayoff : BasketPayoff
    {
       public MaxBasketPayoff(Payoff p) : base(p)
-      {}
+      { }
 
       public override double accumulate(Vector a)
       {
@@ -105,7 +105,7 @@ namespace QLNet
    {
       public SpreadBasketPayoff(Payoff p)
          : base(p)
-      {}
+      { }
 
       public override double accumulate(Vector a)
       {
@@ -119,9 +119,9 @@ namespace QLNet
    public class BasketOption : MultiAssetOption
    {
       public new class Engine : GenericEngine<BasketOption.Arguments, BasketOption.Results>
-      {}
+      { }
 
       public BasketOption(BasketPayoff payoff, Exercise exercise) : base(payoff, exercise)
-      {}
+      { }
    }
 }

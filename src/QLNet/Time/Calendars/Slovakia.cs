@@ -46,7 +46,7 @@ namespace QLNet
 
        \ingroup calendars
    */
-   public class Slovakia :  Calendar
+   public class Slovakia : Calendar
    {
       public Slovakia() : base(Impl.Singleton) { }
 

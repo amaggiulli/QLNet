@@ -29,7 +29,7 @@ namespace QLNet
 
        \todo add historical annualized volatility
    */
-   public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
+   public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new()
    {
 
       #region wrap-up Stat
@@ -49,7 +49,8 @@ namespace QLNet
 
       public void reset() { impl_.reset(); }
       public void add
-         (double value, double weight) { impl_.add(value, weight); }
+         (double value, double weight)
+      { impl_.add(value, weight); }
       public void addSequence(List<double> data, List<double> weight) { impl_.addSequence(data, weight); }
 
       public KeyValuePair<double, int> expectationValue(Func<KeyValuePair<double, double>, double> f,

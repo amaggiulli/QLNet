@@ -615,7 +615,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -645,7 +645,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), new List<double>(),
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -680,7 +680,7 @@ namespace TestSuite
                                                        index, new ActualActual(ActualActual.Convention.ISMA),
                                                        BusinessDayConvention.ModifiedFollowing, fixingDays,
                                                        new List<double>(), spreads,
-                                                       new List < double? >(), new List < double? >(),
+                                                       new List<double?>(), new List<double?>(),
                                                        false,
                                                        100.0, new Date(30, Month.November, 2004));
 
@@ -1254,7 +1254,7 @@ namespace TestSuite
                                  schedule.endOfMonth(),
                                  schedule.isRegular());
 
-         FixedRateBond bond = new FixedRateBond(0, 100.0, schedule, new List<double>() {coupon}, dc,
+         FixedRateBond bond = new FixedRateBond(0, 100.0, schedule, new List<double>() { coupon }, dc,
          BusinessDayConvention.Following, 100.0, issueDate, calendar, exCouponPeriod, calendar);
 
          double calculatedPrice = BondFunctions.dirtyPrice(bond, yield, settlementDate);
@@ -1273,7 +1273,7 @@ namespace TestSuite
          // Test against know data
          DateTime today = new Date(5, Month.Jun, 2018);
          List<double> amounts = new List<double> { 5080, 35255, 8335 };
-         List < DateTime > schedule = new List<DateTime> { new Date(1, 8, 2035),
+         List<DateTime> schedule = new List<DateTime> { new Date(1, 8, 2035),
                  new Date(1, 8, 2036), new Date(1, 8, 2037)
          };
 
@@ -1283,7 +1283,7 @@ namespace TestSuite
          // Test with past dates
          today = new Date(19, Month.Sep, 2019);
          amounts = new List<double> { 1180000, 1250000, 1320000, 1395000 };
-         schedule = new List<DateTime> { new Date(1, 10, 2016), new Date(1, 10, 2017), new Date(1, 10, 2018), new Date(1, 10, 2019)};
+         schedule = new List<DateTime> { new Date(1, 10, 2016), new Date(1, 10, 2017), new Date(1, 10, 2018), new Date(1, 10, 2019) };
 
          wal = BondFunctions.WeightedAverageLife(today, amounts, schedule);
          QAssert.IsTrue(wal == new DateTime(2019, 10, 1));
@@ -1299,7 +1299,7 @@ namespace TestSuite
 
       [Theory]
       [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833)]
-      [InlineData( 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
+      [InlineData(0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
       [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53)]
       [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56)]
       [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42)]
@@ -1317,7 +1317,7 @@ namespace TestSuite
          Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
          Date firstCouponDate = null;
          if (FirstCouponDate != String.Empty)
-            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
 
          Coupon = Coupon / 100;
 
@@ -1771,7 +1771,7 @@ namespace TestSuite
          Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
          Date firstCouponDate = null;
          if (FirstCouponDate != String.Empty)
-            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
 
          Coupon = Coupon / 100;
 
@@ -1852,7 +1852,7 @@ namespace TestSuite
          datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
          firstCouponDate = null;
          if (FirstCouponDate != String.Empty)
-            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
 
          Coupon = Coupon / 100;
 
@@ -1899,7 +1899,7 @@ namespace TestSuite
          Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
          Date firstCouponDate = null;
          if (FirstCouponDate != String.Empty)
-            firstCouponDate  = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
 
          Coupon = Coupon / 100;
 

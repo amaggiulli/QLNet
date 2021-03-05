@@ -57,7 +57,7 @@ namespace QLNet
 
       #region TermStructure interface
 
-      public override Date maxDate()  { return Date.maxDate(); }
+      public override Date maxDate() { return Date.maxDate(); }
 
       #endregion
 

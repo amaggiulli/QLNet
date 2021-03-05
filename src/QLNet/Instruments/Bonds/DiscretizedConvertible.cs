@@ -164,7 +164,7 @@ namespace QLNet
                   double? trigger = conversionValue * arguments_.callabilityTriggers[i];
 
                   for (var j = 0; j < values_.size(); j++)
-                     // the callability is conditioned by the trigger ...
+                  // the callability is conditioned by the trigger ...
                   {
                      if (grid[j] >= trigger)
                      {

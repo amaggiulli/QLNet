@@ -35,10 +35,10 @@ namespace CVAIRS
             Settings.setEvaluationDate(todaysDate);
 
             IborIndex yieldIndx = new Euribor3M();
-            int[] tenorsSwapMkt = {5, 10, 15, 20, 25, 30};
+            int[] tenorsSwapMkt = { 5, 10, 15, 20, 25, 30 };
 
             // rates ignoring counterparty risk:
-            double[] ratesSwapmkt = {.03249, .04074, .04463, .04675, .04775, .04811};
+            double[] ratesSwapmkt = { .03249, .04074, .04463, .04675, .04775, .04811 };
 
             List<RateHelper> swapHelpers = new List<RateHelper>();
             for (int i = 0; i < tenorsSwapMkt.Length; i++)
@@ -59,11 +59,11 @@ namespace CVAIRS
             List<Handle<DefaultProbabilityTermStructure>> defaultIntensityTS =
                new List<Handle<DefaultProbabilityTermStructure>>();
 
-            int[] defaultTenors = {0, 12, 36, 60, 84, 120, 180, 240, 300, 360}; // months
+            int[] defaultTenors = { 0, 12, 36, 60, 84, 120, 180, 240, 300, 360 }; // months
             // Three risk levels:
-            double[] intensitiesLow = {0.0036, 0.0036, 0.0065, 0.0099, 0.0111, 0.0177, 0.0177, 0.0177, 0.0177, 0.0177, 0.0177};
-            double[] intensitiesMedium = {0.0202, 0.0202, 0.0231, 0.0266, 0.0278, 0.0349, 0.0349, 0.0349, 0.0349, 0.0349, 0.0349};
-            double[] intensitiesHigh = {0.0534, 0.0534, 0.0564, 0.06, 0.0614, 0.0696, 0.0696, 0.0696, 0.0696, 0.0696, 0.0696};
+            double[] intensitiesLow = { 0.0036, 0.0036, 0.0065, 0.0099, 0.0111, 0.0177, 0.0177, 0.0177, 0.0177, 0.0177, 0.0177 };
+            double[] intensitiesMedium = { 0.0202, 0.0202, 0.0231, 0.0266, 0.0278, 0.0349, 0.0349, 0.0349, 0.0349, 0.0349, 0.0349 };
+            double[] intensitiesHigh = { 0.0534, 0.0534, 0.0564, 0.06, 0.0614, 0.0696, 0.0696, 0.0696, 0.0696, 0.0696, 0.0696 };
             // Recovery rates:
             double ctptyRRLow = 0.4, ctptyRRMedium = 0.35, ctptyRRHigh = 0.3;
 

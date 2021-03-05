@@ -84,6 +84,6 @@ namespace QLNet
 
       private BlackProcess process1_;
       private BlackProcess process2_;
-      private  double rho_;
+      private double rho_;
    }
 }

@@ -61,10 +61,10 @@ namespace QLNet
       public override Date maxDate() { return Date.maxDate(); }
 
       // CallableBondConstantVolatility interface
-      public override Period maxBondTenor() {return maxBondTenor_;}
-      public override double maxBondLength() {return double.MaxValue;}
-      public override double minStrike() {return double.MinValue;}
-      public override double maxStrike()  {return double.MaxValue;}
+      public override Period maxBondTenor() { return maxBondTenor_; }
+      public override double maxBondLength() { return double.MaxValue; }
+      public override double minStrike() { return double.MinValue; }
+      public override double maxStrike() { return double.MaxValue; }
 
       protected override double volatilityImpl(double d1, double d2, double d3)
       {

@@ -56,7 +56,7 @@ namespace QLNet
       #endregion
 
       //! the business day convention used in tenor to date conversion
-      public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
+      public virtual BusinessDayConvention businessDayConvention() { return bdc_; }
 
       //! period/date conversion
       public virtual Date optionDateFromTenor(Period p)

@@ -36,7 +36,7 @@ namespace QLNet
                               List<Period> optionTenors,
                               List<Period> swapTenors,
                               List<double> strikeSpreads,
-                              List<List<Handle<Quote> > > volSpreads,
+                              List<List<Handle<Quote>>> volSpreads,
                               SwapIndex swapIndexBase,
                               SwapIndex shortSwapIndexBase,
                               bool vegaWeightedSmileFit)
@@ -45,7 +45,7 @@ namespace QLNet
       {
          volSpreadsInterpolator_ = new List<Interpolation2D>();
          volSpreadsMatrix_ = new List<Matrix>(nStrikes_);
-         for (int i = 0 ; i < nStrikes_; i++)
+         for (int i = 0; i < nStrikes_; i++)
             volSpreadsMatrix_.Add(new Matrix(optionTenors.Count, swapTenors.Count, 0.0));
       }
       // LazyObject interface
@@ -70,7 +70,7 @@ namespace QLNet
       }
 
       // SwaptionVolatilityCube inspectors
-      public  Matrix volSpreads(int i) { return volSpreadsMatrix_[i]; }
+      public Matrix volSpreads(int i) { return volSpreadsMatrix_[i]; }
 
       protected override SmileSection smileSectionImpl(Date optionDate, Period swapTenor)
       {

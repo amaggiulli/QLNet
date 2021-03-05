@@ -209,10 +209,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -280,10 +280,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(values[i].t * 360 + 0.5);
             Exercise exercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -332,10 +332,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(juValues[i].t * 360 + 0.5);
             Exercise exercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(juValues[i].s);
+            spot.setValue(juValues[i].s);
             qRate.setValue(juValues[i].q);
             rRate.setValue(juValues[i].r);
-            vol  .setValue(juValues[i].v);
+            vol.setValue(juValues[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -384,10 +384,10 @@ namespace TestSuite
             Date exDate = today + Convert.ToInt32(juValues[i].t * 360 + 0.5);
             Exercise exercise = new AmericanExercise(today, exDate);
 
-            spot .setValue(juValues[i].s);
+            spot.setValue(juValues[i].s);
             qRate.setValue(juValues[i].q);
             rRate.setValue(juValues[i].r);
-            vol  .setValue(juValues[i].v);
+            vol.setValue(juValues[i].v);
 
             BlackScholesMertonProcess stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot),
                                                                                    new Handle<YieldTermStructure>(qTS),
@@ -410,7 +410,7 @@ namespace TestSuite
          }
       }
 
-      internal void testFdGreeks<Engine>() where Engine : IFDEngine, new ()
+      internal void testFdGreeks<Engine>() where Engine : IFDEngine, new()
       {
          using (SavedSettings backup = new SavedSettings())
          {
@@ -590,7 +590,7 @@ namespace TestSuite
          var pricingEngine = new FDDividendAmericanEngine(process);
          var payoff = new PlainVanillaPayoff(Option.Type.Put, 3200);
          var dividendDates = new[] { new Date(1, 3, 2015) };
-         var dividendAmounts = new[] {10d};
+         var dividendAmounts = new[] { 10d };
          var option = new DividendVanillaOption(payoff, exercise, dividendDates.ToList(), dividendAmounts.ToList());
          option.setPricingEngine(pricingEngine);
 

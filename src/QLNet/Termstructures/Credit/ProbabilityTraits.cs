@@ -72,7 +72,7 @@ namespace QLNet
    /// <summary>
    ///  Hazard-rate-curve traits
    /// </summary>
-   public class HazardRate  : ITraits<DefaultProbabilityTermStructure>
+   public class HazardRate : ITraits<DefaultProbabilityTermStructure>
    {
       const double avgHazardRate = 0.01;
       const double maxHazardRate = 1.0;
@@ -117,7 +117,7 @@ namespace QLNet
          // We choose as max a value very unlikely to be exceeded.
          return maxHazardRate;
       }
-      public  void updateGuess(List<double> data, double rate, int i)
+      public void updateGuess(List<double> data, double rate, int i)
       {
          data[i] = rate;
          if (i == 1)

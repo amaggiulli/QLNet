@@ -35,15 +35,15 @@ namespace QLNet
 
       protected OptionletVolatilityStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
                                              DayCounter dc = null)
-         : base(bdc, dc) {}
+         : base(bdc, dc) { }
 
       //! initialize with a fixed reference date
       protected OptionletVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(referenceDate, cal, bdc, dc) {}
+         : base(referenceDate, cal, bdc, dc) { }
 
       //! calculate the reference date based on the global evaluation date
       protected OptionletVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
-         : base(settlementDays, cal, bdc, dc) {}
+         : base(settlementDays, cal, bdc, dc) { }
 
       #endregion
 
@@ -88,7 +88,7 @@ namespace QLNet
       }
 
       //! returns the Black variance for a given option time and strike rate
-      public double blackVariance(double optionTime,  double strike,  bool extrapolate = false)
+      public double blackVariance(double optionTime, double strike, bool extrapolate = false)
       {
          double v = volatility(optionTime, strike, extrapolate);
          return v * v * optionTime;
@@ -109,7 +109,7 @@ namespace QLNet
       }
 
       //! returns the smile for a given option time
-      public SmileSection smileSection(double optionTime,  bool extr = false)
+      public SmileSection smileSection(double optionTime, bool extr = false)
       {
          checkRange(optionTime, extrapolate);
          return smileSectionImpl(optionTime);
@@ -117,8 +117,8 @@ namespace QLNet
 
       #endregion
 
-      public virtual double displacement() {return 0.0;}
-      public virtual VolatilityType volatilityType() {return VolatilityType.ShiftedLognormal;}
+      public virtual double displacement() { return 0.0; }
+      public virtual VolatilityType volatilityType() { return VolatilityType.ShiftedLognormal; }
 
       protected virtual SmileSection smileSectionImpl(Date optionDate)
       {

@@ -34,7 +34,7 @@ namespace TestSuite
          public Frequency frequency;
          public IborIndex index;
          public int settlementDays, fixingDays;
-         public RelinkableHandle<YieldTermStructure> termStructure ;
+         public RelinkableHandle<YieldTermStructure> termStructure;
          //public List<double> caps;
          //public List<double> floors;
          public int length;
@@ -93,7 +93,7 @@ namespace TestSuite
                    .withPaymentAdjustment(convention);
          }
 
-         public List<CashFlow> makeCapFlooredLeg(Date sDate, int len, List < double? > caps, List < double? > floors,
+         public List<CashFlow> makeCapFlooredLeg(Date sDate, int len, List<double?> caps, List<double?> floors,
                                                  double volatility, double gearing = 1.0, double spread = 0.0)
          {
             Date endDate = calendar.advance(sDate, len, TimeUnit.Years, convention);
@@ -162,8 +162,8 @@ namespace TestSuite
             (depending on variance: option expiry and volatility)
          */
 
-         List < double? > caps = new InitializedList < double? >(vars.length, 100.0);
-         List < double? > floors = new InitializedList < double? >(vars.length, 0.0);
+         List<double?> caps = new InitializedList<double?>(vars.length, 100.0);
+         List<double?> floors = new InitializedList<double?>(vars.length, 0.0);
          double tolerance = 1e-10;
 
          // fixed leg with zero rate
@@ -204,18 +204,18 @@ namespace TestSuite
          double error;
          double floorstrike = 0.05;
          double capstrike = 0.10;
-         List < double? > caps = new InitializedList < double? >(vars.length, capstrike);
-         List < double? > caps0 = new List < double? >();
-         List < double? > floors = new InitializedList < double? >(vars.length, floorstrike);
-         List < double? > floors0 = new List < double? >();
+         List<double?> caps = new InitializedList<double?>(vars.length, capstrike);
+         List<double?> caps0 = new List<double?>();
+         List<double?> floors = new InitializedList<double?>(vars.length, floorstrike);
+         List<double?> floors0 = new List<double?>();
          double gearing_p = 0.5;
-         double spread_p =  0.002;
+         double spread_p = 0.002;
          double gearing_n = -1.5;
          double spread_n = 0.12;
          // fixed leg with zero rate
-         List<CashFlow> fixedLeg  = vars.makeFixedLeg(vars.startDate, vars.length);
+         List<CashFlow> fixedLeg = vars.makeFixedLeg(vars.startDate, vars.length);
          // floating leg with gearing=1 and spread=0
-         List<CashFlow> floatLeg  = vars.makeFloatingLeg(vars.startDate, vars.length);
+         List<CashFlow> floatLeg = vars.makeFloatingLeg(vars.startDate, vars.length);
          // floating leg with positive gearing (gearing_p) and spread<>0
          List<CashFlow> floatLeg_p = vars.makeFloatingLeg(vars.startDate, vars.length, gearing_p, spread_p);
          // floating leg with negative gearing (gearing_n) and spread<>0
@@ -335,7 +335,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_p + ", " +
                          "spread= " + spread_p * 100 +
-                         "%, strike=" + capstrike * 100  + "%, " +
+                         "%, strike=" + capstrike * 100 + "%, " +
                          "effective strike= " + (capstrike - spread_p) / gearing_p * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
@@ -360,7 +360,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
-                         "%, strike=" + capstrike * 100  + "%, " +
+                         "%, strike=" + capstrike * 100 + "%, " +
                          "effective strike= " + (capstrike - spread_n) / gearing_n * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvCappedLeg + "\n" +
@@ -400,7 +400,7 @@ namespace TestSuite
                          + "spread= " + spread_p * 100 + "%, strike=" + floorstrike * 100 + "%, "
                          + "effective strike= " + (floorstrike - spread_p) / gearing_p * 100
                          + "%\n" +
-                         "  Floored Floating Leg NPV: "    + npvFlooredLeg
+                         "  Floored Floating Leg NPV: " + npvFlooredLeg
                          + "\n" +
                          "  Floating Leg NPV + Floor NPV: " + (npvVanilla + npvFloor)
                          + "\n" +
@@ -421,7 +421,7 @@ namespace TestSuite
          {
             QAssert.Fail("\nCapped Leg: gearing=" + gearing_n + ", " +
                          "spread= " + spread_n * 100 +
-                         "%, strike=" + floorstrike * 100  + "%, " +
+                         "%, strike=" + floorstrike * 100 + "%, " +
                          "effective strike= " + (floorstrike - spread_n) / gearing_n * 100 +
                          "%\n" +
                          "  Capped Floating Leg NPV: " + npvFlooredLeg + "\n" +
@@ -455,9 +455,9 @@ namespace TestSuite
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "
                          + "effective strike=" + (floorstrike - spread_p) / gearing_p * 100
-                         +  "% and " + (capstrike - spread_p) / gearing_p * 100
+                         + "% and " + (capstrike - spread_p) / gearing_p * 100
                          + "%\n" +
-                         "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                         "  Collared Floating Leg NPV: " + npvCollaredLeg
                          + "\n" +
                          "  Floating Leg NPV - Collar NPV: " + (npvVanilla - npvCollar)
                          + "\n" +
@@ -482,9 +482,9 @@ namespace TestSuite
                          + floorstrike * 100 + "% and " + capstrike * 100
                          + "%, "
                          + "effective strike=" + (floorstrike - spread_n) / gearing_n * 100
-                         +  "% and " + (capstrike - spread_n) / gearing_n * 100
+                         + "% and " + (capstrike - spread_n) / gearing_n * 100
                          + "%\n" +
-                         "  Collared Floating Leg NPV: "    + npvCollaredLeg
+                         "  Collared Floating Leg NPV: " + npvCollaredLeg
                          + "\n" +
                          "  Floating Leg NPV - Collar NPV: " + (npvVanilla - gearing_n * npvCollar)
                          + "\n" +

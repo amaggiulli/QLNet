@@ -21460,7 +21460,7 @@ namespace QLNet
       degree is terminated with an entry of -1. Accessing beyond this entry
       will result in a memory violation and must be avoided.  */
       public static long[][] PrimitivePolynomials { get { return PrimitivePolynomials_; } }
-      private static long[][] PrimitivePolynomials_  = new long[N_MAX_DEGREE][]
+      private static long[][] PrimitivePolynomials_ = new long[N_MAX_DEGREE][]
       {
          PrimitivePolynomialDegree01
          //#if PPMT_MAX_DIM > N_PRIMITIVES_UP_TO_DEGREE_01

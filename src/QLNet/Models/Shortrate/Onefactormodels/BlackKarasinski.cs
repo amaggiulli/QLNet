@@ -21,11 +21,11 @@ using System;
 namespace QLNet
 {
 
-   public class BlackKarasinski :   OneFactorModel,
+   public class BlackKarasinski : OneFactorModel,
       ITermStructureConsistentModel
    {
       private double a() { return a_.value(0.0); }
-      private double sigma()  { return sigma_.value(0.0); }
+      private double sigma() { return sigma_.value(0.0); }
 
       Parameter a_;
       Parameter sigma_;

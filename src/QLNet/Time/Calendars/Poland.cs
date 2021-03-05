@@ -67,19 +67,19 @@ namespace QLNet
                 // Corpus Christi
                 || (dd == em + 59)
                 // New Year's Day
-                || (d == 1  && m == Month.January)
+                || (d == 1 && m == Month.January)
                 // Epiphany
                 || (d == 6 && m == Month.January && y >= 2011)
                 // May Day
-                || (d == 1  && m == Month.May)
+                || (d == 1 && m == Month.May)
                 // Constitution Day
-                || (d == 3  && m == Month.May)
+                || (d == 3 && m == Month.May)
                 // Assumption of the Blessed Virgin Mary
-                || (d == 15  && m == Month.August)
+                || (d == 15 && m == Month.August)
                 // All Saints Day
-                || (d == 1  && m == Month.November)
+                || (d == 1 && m == Month.November)
                 // Independence Day
-                || (d == 11  && m == Month.November)
+                || (d == 11 && m == Month.November)
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // 2nd Day of Christmas

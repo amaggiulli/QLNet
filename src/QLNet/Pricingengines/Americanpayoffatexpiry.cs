@@ -77,7 +77,7 @@ namespace QLNet
                   // up-and-in cash-(at-expiry)-or-nothing option
                   // a.k.a. american call with cash-or-nothing payoff
                   eta = -1.0;
-                  phi =  1.0;
+                  phi = 1.0;
                }
                else
                {
@@ -91,14 +91,14 @@ namespace QLNet
                {
                   // down-and-in cash-(at-expiry)-or-nothing option
                   // a.k.a. american put with cash-or-nothing payoff
-                  eta =  1.0;
+                  eta = 1.0;
                   phi = -1.0;
                }
                else
                {
                   // down-and-out cash-(at-expiry)-or-nothing option
-                  eta =  1.0;
-                  phi =  1.0;
+                  eta = 1.0;
+                  phi = 1.0;
                }
                break;
             default:
@@ -142,18 +142,18 @@ namespace QLNet
                   {
                      // up-and-in cash-(at-expiry)-or-nothing option
                      // a.k.a. american call with cash-or-nothing payoff
-                     cum_d1_     = 0.5;
-                     cum_d2_     = 0.5;
+                     cum_d1_ = 0.5;
+                     cum_d2_ = 0.5;
                   }
                   else
                   {
                      // up-and-out cash-(at-expiry)-or-nothing option
                      // already knocked out
-                     cum_d1_     = 0.0;
-                     cum_d2_     = 0.0;
+                     cum_d1_ = 0.0;
+                     cum_d2_ = 0.0;
                   }
-                  n_d1_       = 0.0;
-                  n_d2_       = 0.0;
+                  n_d1_ = 0.0;
+                  n_d2_ = 0.0;
                }
                break;
             case Option.Type.Put:
@@ -173,8 +173,8 @@ namespace QLNet
                      cum_d1_ = 0.0;
                      cum_d2_ = 0.0;
                   }
-                  n_d1_       = 0.0;
-                  n_d2_       = 0.0;
+                  n_d1_ = 0.0;
+                  n_d2_ = 0.0;
                }
                break;
             default:

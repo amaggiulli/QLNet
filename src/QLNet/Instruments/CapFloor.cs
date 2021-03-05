@@ -140,15 +140,15 @@ namespace QLNet
 
          int n = floatingLeg_.Count;
 
-         arguments.startDates = new InitializedList<Date>(n) ;
+         arguments.startDates = new InitializedList<Date>(n);
          arguments.fixingDates = new InitializedList<Date>(n);
          arguments.endDates = new InitializedList<Date>(n);
          arguments.accrualTimes = new InitializedList<double>(n);
-         arguments.forwards = new InitializedList < double? >(n);
+         arguments.forwards = new InitializedList<double?>(n);
          arguments.nominals = new InitializedList<double>(n);
          arguments.gearings = new InitializedList<double>(n);
-         arguments.capRates = new InitializedList < double? >(n);
-         arguments.floorRates = new InitializedList < double? >(n);
+         arguments.capRates = new InitializedList<double?>(n);
+         arguments.floorRates = new InitializedList<double?>(n);
          arguments.spreads = new InitializedList<double>(n);
 
          arguments.type = type_;
@@ -207,8 +207,8 @@ namespace QLNet
       public List<double> floorRates() { return floorRates_; }
       public List<CashFlow> floatingLeg() { return floatingLeg_; }
 
-      public Date startDate() {return CashFlows.startDate(floatingLeg_);}
-      public Date maturityDate() {return CashFlows.maturityDate(floatingLeg_);}
+      public Date startDate() { return CashFlows.startDate(floatingLeg_); }
+      public Date maturityDate() { return CashFlows.maturityDate(floatingLeg_); }
 
       public FloatingRateCoupon lastFloatingRateCoupon()
       {
@@ -226,8 +226,8 @@ namespace QLNet
          List<CashFlow> cf = new List<CashFlow>();
          cf.Add(floatingLeg()[i]);
 
-         List<double> cap = new List<double>() ;
-         List<double> floor = new List<double>() ;
+         List<double> cap = new List<double>();
+         List<double> floor = new List<double>();
 
          if (getType() == CapFloorType.Cap || getType() == CapFloorType.Collar)
             cap.Add(capRates()[i]);
@@ -288,9 +288,9 @@ namespace QLNet
          public List<Date> fixingDates { get; set; }
          public List<Date> endDates { get; set; }
          public List<double> accrualTimes { get; set; }
-         public List < double? > capRates { get; set; }
-         public List < double? > floorRates { get; set; }
-         public List < double? > forwards { get; set; }
+         public List<double?> capRates { get; set; }
+         public List<double?> floorRates { get; set; }
+         public List<double?> forwards { get; set; }
          public List<double> gearings { get; set; }
          public List<double> spreads { get; set; }
          public List<double> nominals { get; set; }
@@ -349,7 +349,7 @@ namespace QLNet
    public class Cap : CapFloor
    {
       public Cap(List<CashFlow> floatingLeg, List<double> exerciseRates)
-         : base(CapFloorType.Cap, floatingLeg, exerciseRates, new List<double>()) {}
+         : base(CapFloorType.Cap, floatingLeg, exerciseRates, new List<double>()) { }
    }
 
    /// <summary>
@@ -359,7 +359,7 @@ namespace QLNet
    public class Floor : CapFloor
    {
       public Floor(List<CashFlow> floatingLeg, List<double> exerciseRates)
-         : base(CapFloorType.Floor, floatingLeg, new List<double>(), exerciseRates) {}
+         : base(CapFloorType.Floor, floatingLeg, new List<double>(), exerciseRates) { }
    }
 
    /// <summary>
@@ -374,7 +374,8 @@ namespace QLNet
 
    //! base class for cap/floor engines
    public abstract class CapFloorEngine
-      : GenericEngine<CapFloor.Arguments, CapFloor.Results> {}
+      : GenericEngine<CapFloor.Arguments, CapFloor.Results>
+   { }
 
    public class ImpliedVolHelper : ISolver1d
    {
@@ -435,7 +436,7 @@ namespace QLNet
             engine_.calculate();
          }
          Utils.QL_REQUIRE(results_.additionalResults.Keys.Contains("vega"), () => "vega not provided");
-         return (double) results_.additionalResults["vega"];
+         return (double)results_.additionalResults["vega"];
       }
    }
 }

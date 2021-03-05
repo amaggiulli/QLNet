@@ -23,8 +23,8 @@ namespace QLNet
 
    public class GenericModelEngine<ModelType, ArgumentsType, ResultsType>
       : GenericEngine<ArgumentsType, ResultsType>
-        where ArgumentsType : IPricingEngineArguments, new ()
-        where ResultsType : IPricingEngineResults, new ()
+        where ArgumentsType : IPricingEngineArguments, new()
+        where ResultsType : IPricingEngineResults, new()
            where ModelType : IObservable
    {
       public GenericModelEngine() { }
@@ -35,7 +35,7 @@ namespace QLNet
       }
       public GenericModelEngine(ModelType model)
       {
-         model_  = new Handle<ModelType>(model);
+         model_ = new Handle<ModelType>(model);
          model_.registerWith(update);
       }
       public void setModel(Handle<ModelType> model)

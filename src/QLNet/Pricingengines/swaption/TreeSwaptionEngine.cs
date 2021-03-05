@@ -104,7 +104,7 @@ namespace QLNet
          }
 
          DiscretizedSwaption swaption = new DiscretizedSwaption(arguments_, referenceDate, dayCounter);
-         Lattice lattice ;
+         Lattice lattice;
 
          if (lattice_ != null)
          {

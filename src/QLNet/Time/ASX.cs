@@ -178,7 +178,7 @@ namespace QLNet
          else
             Utils.QL_FAIL("invalid ASX month letter");
 
-//       Year y = boost::lexical_cast<Year>(); // lexical_cast causes compilation errors with x64
+         //       Year y = boost::lexical_cast<Year>(); // lexical_cast causes compilation errors with x64
 
          int y = int.Parse(code.Substring(1, 1));
          /* year<1900 are not valid QuantLib years: to avoid a run-time

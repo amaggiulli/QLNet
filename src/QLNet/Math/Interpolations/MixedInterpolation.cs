@@ -32,8 +32,8 @@ namespace QLNet
    }
 
    public class MixedInterpolationImpl<Interpolator1, Interpolator2> : Interpolation.templateImpl
-      where Interpolator1 : IInterpolationFactory, new ()
-      where Interpolator2 : IInterpolationFactory, new ()
+      where Interpolator1 : IInterpolationFactory, new()
+      where Interpolator2 : IInterpolationFactory, new()
    {
       public MixedInterpolationImpl(List<double> xBegin, int xEnd,
                                     List<double> yBegin, int n,
@@ -77,14 +77,14 @@ namespace QLNet
 
       public override double value(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (x < (xBegin2_.First()))
             return interpolation1_.value(x, true);
          return interpolation2_.value(x, true);
       }
 
       public override double primitive(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (x < (xBegin2_.First()))
             return interpolation1_.primitive(x, true);
          return interpolation2_.primitive(x, true) -
                 interpolation2_.primitive(xBegin2_.First(), true) +
@@ -156,7 +156,7 @@ namespace QLNet
          rightType_ = rightCondition;
          leftValue_ = leftConditionValue;
          rightValue_ = rightConditionValue;
-         global  = true;
+         global = true;
          requiredPoints = 3;
       }
 
@@ -192,19 +192,19 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Spline, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
    public class MixedLinearMonotonicCubicNaturalSpline : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
-      public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int  xEnd, List<double> yBegin, int n,
+      public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                                     Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
                 CubicInterpolation.DerivativeApprox.Spline, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
    public class MixedLinearKrugerCubic : MixedLinearCubicInterpolation
@@ -216,7 +216,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Kruger, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
    public class MixedLinearFritschButlandCubic : MixedLinearCubicInterpolation
@@ -228,7 +228,7 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.FritschButland, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
    public class MixedLinearParabolic : MixedLinearCubicInterpolation
@@ -240,19 +240,19 @@ namespace QLNet
                 CubicInterpolation.DerivativeApprox.Parabolic, false,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
    public class MixedLinearMonotonicParabolic : MixedLinearCubicInterpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
       public MixedLinearMonotonicParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
-                                           Behavior behavior =  Behavior.ShareRanges)
+                                           Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
                 CubicInterpolation.DerivativeApprox.Parabolic, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
-      {}
+      { }
    }
 
 }

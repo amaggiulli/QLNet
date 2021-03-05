@@ -63,7 +63,7 @@ namespace QLNet
 
          rng_ = new MersenneTwisterUniformRng(init);
 
-         for (ulong i = 0; i < skip ; i++)
+         for (ulong i = 0; i < skip; i++)
             rng_.nextInt32();
       }
    }

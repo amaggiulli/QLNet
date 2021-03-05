@@ -51,7 +51,7 @@ namespace QLNet
       }
       public override double minStrike() { return 0.0; }
       public override double maxStrike() { return Double.MaxValue; }
-      public override double? atmLevel() { return forward_;  }
+      public override double? atmLevel() { return forward_; }
 
       #region svi smile section
       protected double forward_;

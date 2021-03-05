@@ -288,10 +288,10 @@ namespace TestSuite
             Date exDate = today + (int)(values[i].t * 360 + 0.5);
             Exercise exercise = new EuropeanExercise(exDate);
 
-            spot .setValue(values[i].s);
+            spot.setValue(values[i].s);
             qRate.setValue(values[i].q);
             rRate.setValue(values[i].r);
-            vol  .setValue(values[i].v);
+            vol.setValue(values[i].v);
 
             StrikedTypePayoff payoff = new PlainVanillaPayoff(values[i].type, values[i].strike);
 
@@ -390,7 +390,7 @@ namespace TestSuite
          {
             for (int j = 0; j <= 1; j++)
             {
-               DoubleBarrier.Type barrierType = (DoubleBarrier.Type) j ;
+               DoubleBarrier.Type barrierType = (DoubleBarrier.Type)j;
                spot.setValue(values[i].s);
                qRate.setValue(values[i].q);
                rRate.setValue(values[i].r);

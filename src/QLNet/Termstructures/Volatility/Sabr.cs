@@ -147,7 +147,7 @@ namespace QLNet
       public static double sabrVolatility(double strike, double forward, double expiryTime, double alpha, double beta,
                                           double nu, double rho, SabrApproximationModel approximationModel = SabrApproximationModel.Hagan2002)
       {
-         QL_REQUIRE(strike>0.0, () => "strike must be positive: " + strike + " not allowed");
+         QL_REQUIRE(strike > 0.0, () => "strike must be positive: " + strike + " not allowed");
          QL_REQUIRE(forward > 0.0, () => "at the money forward rate must be: " + forward + " not allowed");
          QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: " + expiryTime + " not allowed");
          validateSabrParameters(alpha, beta, nu, rho);
@@ -165,7 +165,7 @@ namespace QLNet
                                                  SabrApproximationModel approximationModel = SabrApproximationModel.Hagan2002)
       {
          QL_REQUIRE(strike + shift > 0.0, () => "strike+shift must be positive: "
-                    + strike + "+"  + shift + " not allowed");
+                    + strike + "+" + shift + " not allowed");
          QL_REQUIRE(forward + shift > 0.0, () => "at the money forward rate + shift must be "
                     + "positive: " + forward + " " + shift + " not allowed");
          QL_REQUIRE(expiryTime >= 0.0, () => "expiry time must be non-negative: "

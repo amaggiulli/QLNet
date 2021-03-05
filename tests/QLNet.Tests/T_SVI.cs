@@ -42,11 +42,12 @@ namespace TestSuite
       double sub10(double x) { return x - 10; }
 
       double add
-         (double x, double y) { return x + y; }
+         (double x, double y)
+      { return x + y; }
       double mul(double x, double y) { return x * y; }
       double sub(double x, double y) { return x - y; }
 
-      [Fact (Skip = "Failing")]
+      [Fact(Skip = "Failing")]
       public void testCalibration()
       {
          double forward = 0.03;

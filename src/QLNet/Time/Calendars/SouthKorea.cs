@@ -64,9 +64,11 @@ namespace QLNet
    */
    public class SouthKorea : Calendar
    {
-      public enum Market { Settlement,  //!< Public holidays
-                           KRX          //!< Korea exchange
-                         }
+      public enum Market
+      {
+         Settlement,  //!< Public holidays
+         KRX          //!< Korea exchange
+      }
 
       public SouthKorea() : this(Market.KRX) { }
       public SouthKorea(Market m)
@@ -167,7 +169,7 @@ namespace QLNet
                 || (d == 19 && m == Month.December && y == 2012) // Presidency
                 || (d == 4 && m == Month.June && y == 2014)        // Local election
                 || (d == 13 && m == Month.April && y == 2016)   // National Assembly
-                // Buddha's birthday
+                                                                // Buddha's birthday
                 || (d == 26 && m == Month.May && y == 2004)
                 || (d == 15 && m == Month.May && y == 2005)
                 || (d == 24 && m == Month.May && y == 2007)

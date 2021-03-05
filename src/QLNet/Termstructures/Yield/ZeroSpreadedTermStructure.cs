@@ -53,7 +53,7 @@ namespace QLNet
 
       #region YieldTermStructure interface
 
-      public override DayCounter dayCounter() {return originalCurve_.link.dayCounter();}
+      public override DayCounter dayCounter() { return originalCurve_.link.dayCounter(); }
       public override Calendar calendar() { return originalCurve_.link.calendar(); }
       public override int settlementDays() { return originalCurve_.link.settlementDays(); }
       public override Date referenceDate() { return originalCurve_.link.referenceDate(); }
@@ -77,7 +77,7 @@ namespace QLNet
       }
       //! returns the spreaded forward rate
       /* This method must disappear should the spread become a curve */
-      protected   double forwardImpl(double t)
+      protected double forwardImpl(double t)
       {
          return originalCurve_.link.forwardRate(t, t, comp_, freq_, true).value()
                 + spread_.link.value();

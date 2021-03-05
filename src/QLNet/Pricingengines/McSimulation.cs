@@ -30,7 +30,7 @@ namespace QLNet
 
        See McVanillaEngine as an example.
    */
-   public abstract class McSimulation<MC, RNG, S> where S : IGeneralStatistics, new ()
+   public abstract class McSimulation<MC, RNG, S> where S : IGeneralStatistics, new()
    {
       protected McSimulation(bool antitheticVariate, bool controlVariate)
       {
@@ -59,8 +59,8 @@ namespace QLNet
                              + ") is still above tolerance (" + tolerance + ")");
 
             // conservative estimate of how many samples are needed
-            order = maxError(error* error) / tolerance / tolerance;
-            nextBatch = (int)Math.Max(sampleNumber* order * 0.8 - sampleNumber, minSamples);
+            order = maxError(error * error) / tolerance / tolerance;
+            nextBatch = (int)Math.Max(sampleNumber * order * 0.8 - sampleNumber, minSamples);
 
             // do not exceed maxSamples
             nextBatch = Math.Min(nextBatch, maxSamples - sampleNumber);

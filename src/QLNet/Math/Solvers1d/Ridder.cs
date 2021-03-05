@@ -53,7 +53,7 @@ namespace QLNet
                return root_;
             // Updating formula
             nextRoot = xMid + (xMid - xMin_) *
-                       ((fxMin_  >= fxMax_ ? 1.0 : -1.0) * fxMid / s);
+                       ((fxMin_ >= fxMax_ ? 1.0 : -1.0) * fxMid / s);
             if (Math.Abs(nextRoot - root_) <= xAccuracy)
                return root_;
 

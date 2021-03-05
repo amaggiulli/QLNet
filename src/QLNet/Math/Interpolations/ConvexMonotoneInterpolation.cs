@@ -799,7 +799,8 @@ namespace QLNet
       public ConvexMonotoneInterpolation(List<double> xBegin, int size, List<double> yBegin, double quadraticity,
                                          double monotonicity, bool forcePositive, bool flatFinalPeriod)
          : this(xBegin, size, yBegin, quadraticity, monotonicity, forcePositive, flatFinalPeriod,
-                new Dictionary<double, ISectionHelper>()) { }
+                new Dictionary<double, ISectionHelper>())
+      { }
       public ConvexMonotoneInterpolation(List<double> xBegin, int size, List<double> yBegin, double quadraticity,
                                          double monotonicity, bool forcePositive, bool flatFinalPeriod,
                                          Dictionary<double, ISectionHelper> preExistingHelpers)

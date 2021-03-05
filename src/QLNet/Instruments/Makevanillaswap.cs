@@ -252,7 +252,7 @@ namespace QLNet
                endDate = startDate + swapTenor_;
 
          Currency curr = iborIndex_.currency();
-         Period fixedTenor = null ;
+         Period fixedTenor = null;
          if (fixedTenor_ != null)
             fixedTenor = fixedTenor_;
          else

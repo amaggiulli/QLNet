@@ -34,7 +34,7 @@ namespace QLNet
 
       //protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process,
       //     int gridPoints = 100, int timeSteps = 100, bool timeDependent = false)
-      protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process, int timeSteps,  int gridPoints, bool timeDependent)
+      protected FDMultiPeriodEngine(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
          : base(process, timeSteps, gridPoints, timeDependent)
       {
          timeStepPerPeriod_ = timeSteps;

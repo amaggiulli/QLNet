@@ -75,7 +75,7 @@ namespace QLNet
       }
 
       // Inspectors
-      public IborIndex iborIndex()  {return iborIndex_;}
+      public IborIndex iborIndex() { return iborIndex_; }
 
       //! FloatingRateCoupon interface
       //! Implemented in order to manage the case of par coupon

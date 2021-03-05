@@ -176,7 +176,7 @@ namespace QLNet
          if (_isPremium)
             return (_marketValue - totAmortized);
          else
-            return (_marketValue  + totAmortized);
+            return (_marketValue + totAmortized);
 
       }
 

@@ -35,14 +35,14 @@ namespace QLNet
       protected List<List<CashFlow>> legs_;
       protected List<double> payer_;
       protected List<double> notionals_;
-      protected List < double? > legNPV_;
+      protected List<double?> legNPV_;
 
       public Loan(int legs)
       {
          legs_ = new InitializedList<List<CashFlow>>(legs);
          payer_ = new InitializedList<double>(legs);
          notionals_ = new List<double>();
-         legNPV_ = new InitializedList < double? >(legs);
+         legNPV_ = new InitializedList<double?>(legs);
       }
 
       ///////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ namespace QLNet
       protected override void setupExpired()
       {
          base.setupExpired();
-         legNPV_ = new InitializedList < double? >(legNPV_.Count);
+         legNPV_ = new InitializedList<double?>(legNPV_.Count);
       }
 
       public override void setupArguments(IPricingEngineArguments args)
@@ -81,11 +81,11 @@ namespace QLNet
          {
             if (results.legNPV.Count != legNPV_.Count)
                throw new ArgumentException("wrong number of leg NPV returned");
-            legNPV_ = new List < double? >(results.legNPV);
+            legNPV_ = new List<double?>(results.legNPV);
          }
          else
          {
-            legNPV_ = new InitializedList < double? >(legNPV_.Count);
+            legNPV_ = new InitializedList<double?>(legNPV_.Count);
          }
 
       }
@@ -105,13 +105,13 @@ namespace QLNet
 
       public new class Results : Instrument.Results
       {
-         public List < double? > legNPV { get; set; }
+         public List<double?> legNPV { get; set; }
          public override void reset()
          {
             base.reset();
             // clear all previous results
             if (legNPV == null)
-               legNPV = new List < double? >();
+               legNPV = new List<double?>();
             else
                legNPV.Clear();
          }
@@ -134,7 +134,7 @@ namespace QLNet
 
       public FixedLoan(Type type, double nominal,
                        Schedule fixedSchedule, double fixedRate, DayCounter fixedDayCount,
-                       Schedule principalSchedule, BusinessDayConvention ? paymentConvention) :
+                       Schedule principalSchedule, BusinessDayConvention? paymentConvention) :
       base(2)
       {
 
@@ -199,7 +199,7 @@ namespace QLNet
 
       public FloatingLoan(Type type, double nominal,
                           Schedule floatingSchedule, double floatingSpread, DayCounter floatingDayCount,
-                          Schedule principalSchedule, BusinessDayConvention ? paymentConvention, IborIndex index) :
+                          Schedule principalSchedule, BusinessDayConvention? paymentConvention, IborIndex index) :
       base(2)
       {
 
@@ -265,7 +265,7 @@ namespace QLNet
 
       public CommercialPaper(Type type, double nominal,
                              Schedule fixedSchedule, double fixedRate, DayCounter fixedDayCount,
-                             Schedule principalSchedule, BusinessDayConvention ? paymentConvention) :
+                             Schedule principalSchedule, BusinessDayConvention? paymentConvention) :
       base(2)
       {
 
@@ -301,11 +301,11 @@ namespace QLNet
          // Discounting Pricipal
          notionals_.Clear();
          double n;
-         for (int i = 0; i < fixedLeg.Count ; i++)
+         for (int i = 0; i < fixedLeg.Count; i++)
          {
             FixedRateCoupon c = (FixedRateCoupon)fixedLeg[i];
             n = i > 0 ? notionals_.Last() : c.nominal();
-            notionals_.Add(n / (1 + (c.rate()* c.dayCounter().yearFraction(c.referencePeriodStart, c.referencePeriodEnd))));
+            notionals_.Add(n / (1 + (c.rate() * c.dayCounter().yearFraction(c.referencePeriodStart, c.referencePeriodEnd))));
          }
 
          // New Leg
@@ -343,7 +343,7 @@ namespace QLNet
       private BusinessDayConvention paymentConvention_;
 
       public Cash(Type type, double nominal,
-                  Schedule principalSchedule, BusinessDayConvention ? paymentConvention) :
+                  Schedule principalSchedule, BusinessDayConvention? paymentConvention) :
       base(1)
       {
 

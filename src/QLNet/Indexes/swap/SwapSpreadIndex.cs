@@ -38,7 +38,7 @@ namespace QLNet
          swapIndex1_.registerWith(update);
          swapIndex2_.registerWith(update);
 
-         name_ =  swapIndex1_.name() + "(" + gearing1 + ") + "
+         name_ = swapIndex1_.name() + "(" + gearing1 + ") + "
                   + swapIndex2_.name() + "(" + gearing1 + ")";
 
          Utils.QL_REQUIRE(swapIndex1_.fixingDays() == swapIndex2_.fixingDays(), () =>
