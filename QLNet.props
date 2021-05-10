@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <Authors>Andrea Maggiulli</Authors>
+    <Description>A free/open-source library for quantitative finance</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright (c) 2008-2020 Andrea Maggiulli (a.maggiulli@gmail.com)</Copyright>
+    <PackageTags>QLNet QuantLib quantitative finance financial</PackageTags>
+    <PackageProjectUrl>http://github.com/amaggiulli/qlnet</PackageProjectUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+
+    <VersionPrefix>1.11.4</VersionPrefix>
+    <PackageVersion>1.11.4</PackageVersion>
+  </PropertyGroup>
+</Project>

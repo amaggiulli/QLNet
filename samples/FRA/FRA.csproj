@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), QLNet.sln))\QLNet.props" />
+
   <PropertyGroup>
-    <VersionPrefix>1.11.4</VersionPrefix>
     <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>FRA</AssemblyName>
@@ -12,7 +13,7 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <PackageReference Include="QLNet" Version="1.11.4" />
+    <ProjectReference Include="..\..\src\QLNet\QLNet.csproj" />
   </ItemGroup>
 
 </Project>

@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repo", "Repo\Repo.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swap", "Swap\Swap.csproj", "{8B065C68-3BF3-4B62-9CFB-8A8B8084DB10}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QLNet", "..\src\QLNet\QLNet.csproj", "{8A8AAD1A-4D54-4D70-82D1-DD50DD910421}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{8B065C68-3BF3-4B62-9CFB-8A8B8084DB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B065C68-3BF3-4B62-9CFB-8A8B8084DB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B065C68-3BF3-4B62-9CFB-8A8B8084DB10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8AAD1A-4D54-4D70-82D1-DD50DD910421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8AAD1A-4D54-4D70-82D1-DD50DD910421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8AAD1A-4D54-4D70-82D1-DD50DD910421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8AAD1A-4D54-4D70-82D1-DD50DD910421}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
