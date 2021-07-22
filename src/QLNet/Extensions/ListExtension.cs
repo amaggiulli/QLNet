@@ -5,7 +5,7 @@ using System.Text;
 
 namespace QLNet
 {
-   public static class ListExtension
+   internal static class ListExtension
    {
       //    list: List<T> to resize
       //    size: desired new size
