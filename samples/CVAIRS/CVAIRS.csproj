@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.11.4</VersionPrefix>
-    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>CVAIRS</AssemblyName>
     <PackageId>CVAIRS</PackageId>
