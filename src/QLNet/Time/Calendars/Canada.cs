@@ -104,7 +104,7 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
-                || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
                 // Family Day (third Monday in February, since 2008)
                 || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.February
                     && y >= 2008)
@@ -120,6 +120,9 @@ namespace QLNet
                 || (d <= 7 && w == DayOfWeek.Monday && m == Month.August)
                 // first Monday of September (Labor Day)
                 || (d <= 7 && w == DayOfWeek.Monday && m == Month.September)
+                // September 30th, possibly moved to Monday
+                // (National Day for Truth and Reconciliation, since 2021)
+                || (((d == 30 && m == Month.September) || (d <= 2 && m == Month.October && w == DayOfWeek.Monday)) && y >= 2021)
                 // second Monday of October (Thanksgiving Day)
                 || (d > 7 && d <= 14 && w == DayOfWeek.Monday && m == Month.October)
                 // November 11th (possibly moved to Monday)
@@ -153,7 +156,7 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
-                || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
                 // Family Day (third Monday in February, since 2008)
                 || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.February
                     && y >= 2008)
