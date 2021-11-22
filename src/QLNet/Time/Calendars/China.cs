@@ -111,6 +111,8 @@ namespace QLNet
                 || (y == 2018 && d == 1 && m == Month.January)
                 || (y == 2018 && d == 31 && m == Month.December)
                 || (y == 2019 && d == 1 && m == Month.January)
+                || (y == 2020 && d == 1 && m == Month.January)
+                || (y == 2021 && d == 1 && m == Month.January)
                 // Chinese New Year
                 || (y == 2004 && d >= 19 && d <= 28 && m == Month.January)
                 || (y == 2005 && d >= 7 && d <= 15 && m == Month.February)
@@ -131,6 +133,8 @@ namespace QLNet
                                   (d <= 2 && m == Month.February)))
                 || (y == 2018 && (d >= 15 && d <= 21 && m == Month.February))
                 || (y == 2019 && d >= 4 && d <= 8 && m == Month.February)
+                || (y == 2020 && (d == 24 || (d >= 27 && d <= 31)) && m == Month.January)
+                || (y == 2021 && (d == 11 || d == 12 || d == 15 || d == 16 || d == 17) && m == Month.February)
                 // Ching Ming Festival
                 || (y <= 2008 && d == 4 && m == Month.April)
                 || (y == 2009 && d == 6 && m == Month.April)
@@ -144,6 +148,8 @@ namespace QLNet
                 || (y == 2017 && d >= 3 && d <= 4 && m == Month.April)
                 || (y == 2018 && d >= 5 && d <= 6 && m == Month.April)
                 || (y == 2019 && d == 5 && m == Month.April)
+                || (y == 2020 && d == 6 && m == Month.April)
+                || (y == 2021 && d == 5 && m == Month.April)
                 // Labor Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.May)
                 || (y == 2008 && d >= 1 && d <= 2 && m == Month.May)
@@ -159,7 +165,9 @@ namespace QLNet
                 || (y == 2016 && d >= 1 && d <= 2 && m == Month.May)
                 || (y == 2017 && d == 1 && m == Month.May)
                 || (y == 2018 && ((d == 30 && m == Month.April) || (d == 1 && m == Month.May)))
-                || (y == 2019 && d == 1 && m == Month.May)
+                || (y == 2019 && d >= 1 && d <= 3 && m == Month.May)
+                || (y == 2020 && (d == 1 || d == 4 || d == 5) && m == Month.May)
+                || (y == 2021 && (d == 3 || d == 4 || d == 5) && m == Month.May)
                 // Tuen Ng Festival
                 || (y <= 2008 && d == 9 && m == Month.June)
                 || (y == 2009 && (d == 28 || d == 29) && m == Month.May)
@@ -173,6 +181,8 @@ namespace QLNet
                 || (y == 2017 && d >= 29 && d <= 30 && m == Month.May)
                 || (y == 2018 && d == 18 && m == Month.June)
                 || (y == 2019 && d == 7 && m == Month.June)
+                || (y == 2020 && d >= 25 && d <= 26 && m == Month.June)
+                || (y == 2021 && d == 14 && m == Month.June)
                 // Mid-Autumn Festival
                 || (y <= 2008 && d == 15 && m == Month.September)
                 || (y == 2010 && d >= 22 && d <= 24 && m == Month.September)
@@ -184,6 +194,7 @@ namespace QLNet
                 || (y == 2016 && d >= 15 && d <= 16 && m == Month.September)
                 || (y == 2018 && d == 24 && m == Month.September)
                 || (y == 2019 && d == 13 && m == Month.September)
+                || (y == 2021 && (d == 20 || d == 21) && m == Month.September)
                 // National Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.October)
                 || (y == 2008 && ((d >= 29 && m == Month.September) ||
@@ -198,7 +209,10 @@ namespace QLNet
                 || (y == 2016 && d >= 3 && d <= 7 && m == Month.October)
                 || (y == 2017 && d >= 2 && d <= 6 && m == Month.October)
                 || (y == 2018 && d >= 1 && d <= 5 && m == Month.October)
-                || (y == 2019 && ((d == 30 && m == Month.September) || (d >= 1 && d <= 4 && m == Month.October)))
+                || (y == 2019 && d >= 1 && d <= 7 && m == Month.October)
+                || (y == 2020 && d >= 1 && d <= 2 && m == Month.October)
+                || (y == 2020 && d >= 5 && d <= 8 && m == Month.October)
+                || (y == 2021 && (d == 1 || d == 4 || d == 5 || d == 6 || d == 7) && m == Month.October)
                 // 70th anniversary of the victory of anti-Japaneses war
                 || (y == 2015 && d >= 3 && d <= 4 && m == Month.September)
                )
@@ -333,8 +347,25 @@ namespace QLNet
                // 2019
                new Date(2, Month.February, 2019),
                new Date(3, Month.February, 2019),
+               new Date(28, Month.April, 2019),
+               new Date(5, Month.May, 2019),
                new Date(29, Month.September, 2019),
-               new Date(12, Month.October, 2019)
+               new Date(12, Month.October, 2019),
+               // 2020
+               new Date(19, Month.January, 2020),
+               new Date(26, Month.April, 2020),
+               new Date(9, Month.May, 2020),
+               new Date(28, Month.June, 2020),
+               new Date(27, Month.September, 2020),
+               new Date(10, Month.October, 2020),
+               // 2021
+               new Date(7, Month.February, 2021),
+               new Date(20, Month.February, 2021),
+               new Date(25, Month.April, 2021),
+               new Date(8, Month.May, 2021),
+               new Date(18, Month.September, 2021),
+               new Date(26, Month.September, 2021),
+               new Date(9, Month.October, 2021)
             };
 
             // If it is already a SSE business day, it must be a IB business day
