@@ -60,6 +60,8 @@ namespace QLNet
             int y = date.Year;
             int em = easterMonday(y);
             if (isWeekend(w)
+                // Good Friday (since 2017)
+                || (dd == em - 3 && y >= 2017)
                 // Easter Monday
                 || (dd == em)
                 // Whit Monday

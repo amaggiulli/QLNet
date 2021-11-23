@@ -71,12 +71,53 @@ namespace QLNet
          }
       }
 
+
       class SettlementImpl : Calendar.OrthodoxImpl
       {
          public static readonly SettlementImpl Singleton = new SettlementImpl();
          private SettlementImpl() { }
 
          public override string name() { return "Russian settlement"; }
+         private bool isExtraHolidaySettlementImpl(int d, Month month, int year)
+         {
+            switch (year)
+            {
+               case 2017:
+                  switch (month)
+                  {
+                     case Month.February: return d == 24;
+                     case Month.May: return d == 8;
+                     case Month.November: return d == 6;
+                     default: return false;
+                  }
+               case 2018:
+                  switch (month)
+                  {
+                     case Month.March: return d == 9;
+                     case Month.April: return d == 30;
+                     case Month.May: return d == 2;
+                     case Month.June: return d == 11;
+                     case Month.December: return d == 31;
+                     default: return false;
+                  }
+               case 2019:
+                  switch (month)
+                  {
+                     case Month.May: return d == 2 || d == 3 || d == 10;
+                     default: return false;
+                  }
+               case 2020:
+                  switch (month)
+                  {
+                     case Month.March: return d == 30 || d == 31;
+                     case Month.April: return d == 1 || d == 2 || d == 3;
+                     case Month.May: return d == 4 || d == 5;
+                     default: return false;
+                  }
+               default:
+                  return false;
+            }
+         }
          public override bool isBusinessDay(Date date)
          {
             DayOfWeek w = date.DayOfWeek;
@@ -87,7 +128,12 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's holidays
-                || (d >= 1 && d <= 8 && m == Month.January)
+                || (y <= 2005 && d <= 2 && m == Month.January)
+                || (y >= 2005 && d <= 5 && m == Month.January)
+                // in 2012, the 6th was also a holiday
+                || (y == 2012 && d == 6 && m == Month.January)
+                // Christmas (possibly moved to Monday)
+                || ((d == 7 || ((d == 8 || d == 9) && w == DayOfWeek.Monday)) && m == Month.January)
                 // Defender of the Fatherland Day (possibly moved to Monday)
                 || ((d == 23 || ((d == 24 || d == 25) && w == DayOfWeek.Monday)) &&
                     m == Month.February)
@@ -106,6 +152,9 @@ namespace QLNet
                 // Unity Day (possibly moved to Monday)
                 || ((d == 4 || ((d == 5 || d == 6) && w == DayOfWeek.Monday)) &&
                     m == Month.November))
+               return false;
+
+            if (isExtraHolidaySettlementImpl(d, m, y))
                return false;
 
             return true;
@@ -130,11 +179,25 @@ namespace QLNet
                      case Month.June: return d == 9;
                      default: return false;
                   }
+               case 2016:
+                  switch (month)
+                  {
+                     case Month.February: return d == 20;
+                     default: return false;
+                  }
+               case 2018:
+                  switch (month)
+                  {
+                     case Month.April: return d == 28;
+                     case Month.June: return d == 9;
+                     case Month.December: return d == 29;
+                     default: return false;
+                  }
                default:
                   return false;
             }
          }
-         private bool isExtraHoliday(int d, Month month, int year)
+         private bool isExtraHolidayExchangeImpl(int d, Month month, int year)
          {
             switch (year)
             {
@@ -166,6 +229,45 @@ namespace QLNet
                      case Month.January: return d == 1 || d == 2 || d == 7;
                      case Month.May:     return d == 4;
                      default:      return false;
+                  }
+               case 2016:
+                  switch (month)
+                  {
+                     case Month.January: return d == 1 || d == 7 || d == 8;
+                     case Month.May: return d == 2 || d == 3;
+                     case Month.June: return d == 13;
+                     case Month.December: return d == 30;
+                     default: return false;
+                  }
+               case 2017:
+                  switch (month)
+                  {
+                     case Month.January: return d == 2;
+                     case Month.May: return d == 8;
+                     default: return false;
+                  }
+               case 2018:
+                  switch (month)
+                  {
+                     case Month.January: return d == 1 || d == 2 || d == 8;
+                     case Month.December: return d == 31;
+                     default: return false;
+                  }
+               case 2019:
+                  switch (month)
+                  {
+                     case Month.January: return d == 1 || d == 2 || d == 7;
+                     case Month.December: return d == 31;
+                     default: return false;
+                  }
+               case 2020:
+                  switch (month)
+                  {
+                     case Month.January: return d == 1 || d == 2 || d == 7;
+                     case Month.February: return d == 24;
+                     case Month.June: return d == 24;
+                     case Month.July: return d == 1;
+                     default: return false;
                   }
                default:
                   return false;
@@ -209,7 +311,7 @@ namespace QLNet
                 || (d == 31 && m == Month.December))
                return false;
 
-            if (isExtraHoliday(d, m, y))
+            if (isExtraHolidayExchangeImpl(d, m, y))
                return false;
 
             return true;

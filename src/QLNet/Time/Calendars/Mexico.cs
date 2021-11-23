@@ -77,6 +77,8 @@ namespace QLNet
                 || (d == 1 && m == Month.May)
                 // National Day
                 || (d == 16 && m == Month.September)
+                // All Souls Day
+                || (d == 2 && m == Month.November)
                 // Revolution Day
                 || (y <= 2005 && d == 20 && m == Month.November)
                 || (y >= 2006 && (d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.November)

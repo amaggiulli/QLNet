@@ -68,9 +68,11 @@ namespace QLNet
                 || (d == 23 && m == Month.April)
                 // 19 may/ National Holiday
                 || (d == 19 && m == Month.May)
+                // 15 july / National Holiday (since 2017)
+                || (d == 15 && m == Month.July && y >= 2017)
                 // 30 aug/ National Holiday
                 || (d == 30 && m == Month.August)
-                ///29 ekim  National Holiday
+                // 29 ekim  National Holiday
                 || (d == 29 && m == Month.October))
                return false;
 

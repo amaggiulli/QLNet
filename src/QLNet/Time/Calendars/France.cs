@@ -149,6 +149,5 @@ namespace QLNet
             return true;
          }
       }
-
    }
 }

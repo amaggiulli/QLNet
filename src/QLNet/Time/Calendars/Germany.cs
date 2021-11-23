@@ -182,9 +182,7 @@ namespace QLNet
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Boxing Day
-                || (d == 26 && m == Month.December)
-                // New Year's Eve
-                || (d == 31 && m == Month.December))
+                || (d == 26 && m == Month.December))
                return false;
             return true;
          }
@@ -217,9 +215,7 @@ namespace QLNet
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Christmas Day
-                || (d == 26 && m == Month.December)
-                // New Year's Eve
-                || (d == 31 && m == Month.December))
+                || (d == 26 && m == Month.December))
                return false;
             return true;
          }
@@ -252,9 +248,7 @@ namespace QLNet
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Christmas Day
-                || (d == 26 && m == Month.December)
-                // New Year's Eve
-                || (d == 31 && m == Month.December))
+                || (d == 26 && m == Month.December))
                return false;
             return true;
          }
@@ -324,9 +318,7 @@ namespace QLNet
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Christmas Day
-                || (d == 26 && m == Month.December)
-                // New Year's Eve
-                || (d == 31 && m == Month.December))
+                || (d == 26 && m == Month.December))
                return false;
             return true;
          }

@@ -168,13 +168,37 @@ namespace QLNet
          }
       }
 
+      protected static bool isVeteransDayNoSaturday(int d, Month m, int y, DayOfWeek w)
+      {
+         if (y <= 1970 || y >= 1978)
+         {
+            // November 11th, adjusted, but no Saturday to Friday
+            return (d == 11 || (d == 12 && w == DayOfWeek.Monday)) && m == Month.November;
+         }
+         else
+         {
+            // fourth Monday in October
+            return (d >= 22 && d <= 28) && w == DayOfWeek.Monday && m == Month.October;
+         }
+      }
+
+      protected static bool isJuneteenth(int d, Month m, int y, DayOfWeek w)
+      {
+         // declared in 2021, but only observed by exchanges since 2022
+         return (d == 19 || (d == 20 && w == DayOfWeek.Monday) || (d == 18 && w == DayOfWeek.Friday))
+                && m == Month.June && y >= 2022;
+      }
+
+
       //! US calendars
       public enum Market
       {
          Settlement,     //!< generic settlement calendar
          NYSE,           //!< New York stock exchange calendar
          GovernmentBond, //!< government-bond calendar
-         NERC            //!< off-peak days for NERC
+         NERC,            //!< off-peak days for NERC
+         LiborImpact,    //!< Libor impact calendar
+         FederalReserve  //!< Federal Reserve Bankwire System
       }
 
       public UnitedStates() : this(Market.Settlement) { }
@@ -194,6 +218,12 @@ namespace QLNet
             case Market.NERC:
                calendar_ = NERC.Singleton;
                break;
+            case Market.LiborImpact:
+               calendar_ = LiborImpact.Singleton;
+               break;
+            case Market.FederalReserve:
+               calendar_ = FederalReserve.Singleton;
+               break;
             default:
                throw new ArgumentException("Unknown market: " + m);
          }
@@ -202,7 +232,7 @@ namespace QLNet
       private class Settlement : Calendar.WesternImpl
       {
          public static readonly Settlement Singleton = new Settlement();
-         private Settlement() { }
+         protected Settlement() { }
 
          public override string name() { return "US settlement"; }
          public override bool isBusinessDay(Date date)
@@ -222,6 +252,8 @@ namespace QLNet
                 || isWashingtonBirthday(d, m, y, w)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
+                // Juneteenth (Monday if Sunday or Friday if Saturday)
+                || isJuneteenth(d, m, y, w)
                 // Independence Day (Monday if Sunday or Friday if Saturday)
                 || ((d == 4 || (d == 5 && w == DayOfWeek.Monday) ||
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
@@ -262,6 +294,8 @@ namespace QLNet
                 || (dd == em - 3)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
+                // Juneteenth (Monday if Sunday or Friday if Saturday)
+                || isJuneteenth(d, m, y, w)
                 // Independence Day (Monday if Sunday or Friday if Saturday)
                 || ((d == 4 || (d == 5 && w == DayOfWeek.Monday) ||
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
@@ -356,10 +390,12 @@ namespace QLNet
                 || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January && y >= 1983)
                 // Washington's birthday (third Monday in February)
                 || isWashingtonBirthday(d, m, y, w)
-                // Good Friday
-                || (dd == em - 3)
+                // Good Friday (2015 was half day due to NFP report)
+                || (dd == em - 3 && y != 2015)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
+                // Juneteenth (Monday if Sunday or Friday if Saturday)
+                || isJuneteenth(d, m, y, w)
                 // Independence Day (Monday if Sunday or Friday if Saturday)
                 || ((d == 4 || (d == 5 && w == DayOfWeek.Monday) ||
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
@@ -367,14 +403,24 @@ namespace QLNet
                 || isLaborDay(d, m, y, w)
                 // Columbus Day (second Monday in October)
                 || isColumbusDay(d, m, y, w)
-                // Veteran's Day (Monday if Sunday or Friday if Saturday)
-                || isVeteransDay(d, m, y, w)
+                // Veteran's Day (Monday if Sunday)
+                || isVeteransDayNoSaturday(d, m, y, w)
                 // Thanksgiving Day (fourth Thursday in November)
                 || ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November)
                 // Christmas (Monday if Sunday or Friday if Saturday)
                 || ((d == 25 || (d == 26 && w == DayOfWeek.Monday) ||
                      (d == 24 && w == DayOfWeek.Friday)) && m == Month.December))
                return false;
+
+            // Special closings
+            if (// President Bush's Funeral
+               (y == 2018 && m == Month.December && d == 5)
+               // Hurricane Sandy
+               || (y == 2012 && m == Month.October && (d == 30))
+               // President Reagan's funeral
+               || (y == 2004 && m == Month.June && d == 11)
+            ) return false;
+
             return true;
          }
       }
@@ -399,6 +445,70 @@ namespace QLNet
                 || ((d == 4 || (d == 5 && w == DayOfWeek.Monday)) && m == Month.July)
                 // Labor Day (first Monday in September)
                 || isLaborDay(d, m, y, w)
+                // Thanksgiving Day (fourth Thursday in November)
+                || ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November)
+                // Christmas (Monday if Sunday)
+                || ((d == 25 || (d == 26 && w == DayOfWeek.Monday)) && m == Month.December))
+               return false;
+            return true;
+         }
+      }
+      private class LiborImpact : Settlement
+      {
+         public new static readonly LiborImpact Singleton = new LiborImpact();
+         private LiborImpact() { }
+
+         public override string name() { return "US with Libor impact"; }
+         public override bool isBusinessDay(Date date)
+         {
+            // Since 2015 Independence Day only impacts Libor if it falls
+            // on a weekday
+            DayOfWeek w = date.DayOfWeek;
+            int d = date.Day;
+            Month m = (Month)date.Month;
+            int y = date.year();
+            if (((d == 5 && w == DayOfWeek.Monday) ||
+                 (d == 3 && w == DayOfWeek.Friday)) && m == Month.July && y >= 2015)
+               return true;
+            return base.isBusinessDay(date);
+         }
+      }
+
+      private class FederalReserve : Calendar.WesternImpl
+      {
+         public static readonly FederalReserve Singleton = new FederalReserve();
+
+         private FederalReserve() {}
+
+         public override string name() { return "Federal Reserve Bankwire System"; }
+
+         public override bool isBusinessDay(Date date)
+         {
+            // see https://www.frbservices.org/holidayschedules/ for details
+            DayOfWeek w = date.DayOfWeek;
+            int d = date.Day;
+            Month m = (Month)date.Month;
+            int y = date.year();
+            if (isWeekend(w)
+                // New Year's Day (possibly moved to Monday if on Sunday)
+                || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
+                // Martin Luther King's birthday (third Monday in January)
+                || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January
+                    && y >= 1983)
+                // Washington's birthday (third Monday in February)
+                || isWashingtonBirthday(d, m, y, w)
+                // Memorial Day (last Monday in May)
+                || isMemorialDay(d, m, y, w)
+                // Juneteenth (Monday if Sunday or Friday if Saturday)
+                || isJuneteenth(d, m, y, w)
+                // Independence Day (Monday if Sunday)
+                || ((d == 4 || (d == 5 && w == DayOfWeek.Monday)) && m == Month.July)
+                // Labor Day (first Monday in September)
+                || isLaborDay(d, m, y, w)
+                // Columbus Day (second Monday in October)
+                || isColumbusDay(d, m, y, w)
+                // Veteran's Day (Monday if Sunday)
+                || isVeteransDayNoSaturday(d, m, y, w)
                 // Thanksgiving Day (fourth Thursday in November)
                 || ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November)
                 // Christmas (Monday if Sunday)
