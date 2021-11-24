@@ -99,6 +99,10 @@ namespace QLNet
                     && y < 2000)
                 // National Foundation Day
                 || ((d == 11 || (d == 12 && w == DayOfWeek.Monday)) && m == Month.February)
+                // Emperor's Birthday (Emperor Naruhito)
+                || ((d == 23 || (d == 24 && w == DayOfWeek.Monday)) && m == Month.February && y >= 2020)
+                // Emperor's Birthday (Emperor Akihito)
+                || ((d == 23 || (d == 24 && w == DayOfWeek.Monday)) && m == Month.December && (y >= 1989 && y < 2019))
                 // Vernal Equinox
                 || ((d == ve || (d == ve + 1 && w == DayOfWeek.Monday)) && m == Month.March)
                 // Greenery Day
@@ -112,38 +116,42 @@ namespace QLNet
                 // any of the three above observed later if on Saturday or Sunday
                 || (d == 6 && m == Month.May && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday || w == DayOfWeek.Wednesday))
                 // Marine Day (3rd Monday in July),
-                // was July 20th until 2003, not a holiday before 1996
+                // was July 20th until 2003, not a holiday before 1996,
+                // July 23rd in 2020 due to Olympics games
+                // July 22nd in 2021 due to Olympics games
                 || (w == DayOfWeek.Monday && (d >= 15 && d <= 21) && m == Month.July
-                    && y >= 2003)
-                || ((d == 20 || (d == 21 && w == DayOfWeek.Monday)) && m == Month.July
-                    && y >= 1996 && y < 2003)
-                // Mountain Day (from 2016)
-                || ((d == 11 || (d == 12 && w == DayOfWeek.Monday)) && m == Month.August && y >= 2016)
+                    && ((y >= 2003 && y < 2020) || y >= 2022))
+                || ((d == 20 || (d == 21 && w == DayOfWeek.Monday)) && m == Month.July && y >= 1996 && y < 2003)
+                || (d == 23 && m == Month.July && y == 2020)
+                || (d == 22 && m == Month.July && y == 2021)
+                // Mountain Day
+                // (moved in 2020 due to Olympics games)
+                // (moved in 2021 due to Olympics games)
+                || ((d == 11 || (d == 12 && w == DayOfWeek.Monday)) && m == Month.August && ((y >= 2016 && y < 2020) || y >= 2022))
+                || (d == 10 && m == Month.August && y == 2020)
+                || (d == 9 && m == Month.August && y == 2021)
                 // Respect for the Aged Day (3rd Monday in September),
                 // was September 15th until 2003
-                || (w == DayOfWeek.Monday && (d >= 15 && d <= 21) && m == Month.September
-                    && y >= 2003)
-                || ((d == 15 || (d == 16 && w == DayOfWeek.Monday)) && m == Month.September
-                    && y < 2003)
+                || (w == DayOfWeek.Monday && (d >= 15 && d <= 21) && m == Month.September && y >= 2003)
+                || ((d == 15 || (d == 16 && w == DayOfWeek.Monday)) && m == Month.September && y < 2003)
                 // If a single day falls between Respect for the Aged Day
                 // and the Autumnal Equinox, it is holiday
-                || (w == DayOfWeek.Tuesday && d + 1 == ae && d >= 16 && d <= 22
-                    && m == Month.September && y >= 2003)
+                || (w == DayOfWeek.Tuesday && d+1 == ae && d >= 16 && d <= 22 && m == Month.September && y >= 2003)
                 // Autumnal Equinox
-                || ((d == ae || (d == ae + 1 && w == DayOfWeek.Monday)) && m == Month.September)
+                || ((d == ae || (d == ae+1 && w == DayOfWeek.Monday)) && m == Month.September)
                 // Health and Sports Day (2nd Monday in October),
-                // was October 10th until 2000
+                // was October 10th until 2000,
+                // July 24th in 2020 due to Olympics games
+                // July 23rd in 2021 due to Olympics games
                 || (w == DayOfWeek.Monday && (d >= 8 && d <= 14) && m == Month.October
-                    && y >= 2000)
-                || ((d == 10 || (d == 11 && w == DayOfWeek.Monday)) && m == Month.October
-                    && y < 2000)
+                    && ((y >= 2000 && y < 2020) || y >= 2022))
+                || ((d == 10 || (d == 11 && w == DayOfWeek.Monday)) && m == Month.October && y < 2000)
+                || (d == 24 && m == Month.July && y == 2020)
+                || (d == 23 && m == Month.July && y == 2021)
                 // National Culture Day
-                || ((d == 3 || (d == 4 && w == DayOfWeek.Monday)) && m == Month.November)
+                || ((d == 3  || (d == 4 && w == DayOfWeek.Monday)) && m == Month.November)
                 // Labor Thanksgiving Day
                 || ((d == 23 || (d == 24 && w == DayOfWeek.Monday)) && m == Month.November)
-                // Emperor's Birthday
-                || ((d == 23 || (d == 24 && w == DayOfWeek.Monday)) && m == Month.December
-                    && y >= 1989)
                 // Bank Holiday
                 || (d == 31 && m == Month.December)
                 // one-shot holidays
@@ -151,10 +159,18 @@ namespace QLNet
                 || (d == 10 && m == Month.April && y == 1959)
                 // Rites of Imperial Funeral
                 || (d == 24 && m == Month.February && y == 1989)
-                // Enthronement Ceremony
+                // Enthronement Ceremony (Emperor Akihito)
                 || (d == 12 && m == Month.November && y == 1990)
                 // Marriage of Prince Naruhito
-                || (d == 9 && m == Month.June && y == 1993))
+                || (d == 9 && m == Month.June && y == 1993)
+                // Special holiday based on Japanese public holidays law
+                || (d == 30 && m == Month.April && y == 2019)
+                // Enthronement Day (Emperor Naruhito)
+                || (d == 1 && m == Month.May && y == 2019)
+                // Special holiday based on Japanese public holidays law
+                || (d == 2 && m == Month.May && y == 2019)
+                // Enthronement Ceremony (Emperor Naruhito)
+                || (d == 22 && m == Month.October && y == 2019))
                return false;
             return true;
          }

@@ -114,6 +114,8 @@ namespace QLNet
                 || (d == 1 && m == Month.May)
                 // Children's Day
                 || (d == 5 && m == Month.May)
+                || (d == 7 && m == Month.May && y == 2018)
+                || (d == 6 && m == Month.May && y == 2019)
                 // Memorial Day
                 || (d == 6 && m == Month.June)
                 // Constitution Day
@@ -139,10 +141,10 @@ namespace QLNet
                 || ((d == 30 || d == 31) && m == Month.January && y == 2014)
                 || ((d == 18 || d == 19 || d == 20) && m == Month.February && y == 2015)
                 || ((d == 7 || d == 8 || d == 9) && m == Month.February && y == 2016)
-                || ((d == 27 || d == 28 || d == 29) && m == Month.January && y == 2017)
+                || ((d >= 27 && d <= 30) && m == Month.January && y == 2017)
                 || ((d == 15 || d == 16 || d == 17) && m == Month.February && y == 2018)
                 || ((d == 4 || d == 5 || d == 6) && m == Month.February && y == 2019)
-                || ((d == 24 || d == 25 || d == 26) && m == Month.January && y == 2020)
+                || ((d >= 24 && d <= 27) && m == Month.January && y == 2020)
                 || ((d == 11 || d == 12 || d == 13) && m == Month.February && y == 2021)
                 || (((d == 31 && m == Month.January) || ((d == 1 || d == 2)
                                                          && m == Month.February)) && y == 2022)
@@ -167,6 +169,9 @@ namespace QLNet
                 || (d == 19 && m == Month.December && y == 2012) // Presidency
                 || (d == 4 && m == Month.June && y == 2014)        // Local election
                 || (d == 13 && m == Month.April && y == 2016)   // National Assembly
+                || (d == 9 && m == Month.May && y == 2017) // Presidency
+                || (d == 13 && m == Month.June && y == 2018) // Local election
+                || (d == 15 && m == Month.April && y == 2020) // National Assembly
                 // Buddha's birthday
                 || (d == 26 && m == Month.May && y == 2004)
                 || (d == 15 && m == Month.May && y == 2005)
@@ -198,6 +203,8 @@ namespace QLNet
                 || (d == 16 && m == Month.May && y == 2032)
                 // Special holiday: 70 years from Independence Day
                 || (d == 14 && m == Month.August && y == 2015)
+                // Special temporary holiday
+                || (d == 17 && m == Month.August && y == 2020)
                 // Harvest Moon Day
                 || ((d == 27 || d == 28 || d == 29) && m == Month.September && y == 2004)
                 || ((d == 17 || d == 18 || d == 19) && m == Month.September && y == 2005)
@@ -212,8 +219,8 @@ namespace QLNet
                 || ((d == 8 || d == 9 || d == 10) && m == Month.September && y == 2014)
                 || ((d == 28 || d == 29) && m == Month.September && y == 2015)
                 || ((d == 14 || d == 15 || d == 16) && m == Month.September && y == 2016)
-                || ((d == 3 || d == 4 || d == 5) && m == Month.October && y == 2017)
-                || ((d == 23 || d == 24 || d == 25) && m == Month.September && y == 2018)
+                || ((d >= 3 && d <= 6) && m == Month.October && y == 2017)
+                || ((d >= 23 && d <= 26) && m == Month.September && y == 2018)
                 || ((d == 12 || d == 13 || d == 14) && m == Month.September && y == 2019)
                 || (((d == 30 && m == Month.September) || ((d == 1 || d == 2)
                                                            && m == Month.October)) && y == 2020)
@@ -253,10 +260,17 @@ namespace QLNet
             int d = date.Day;
             DayOfWeek w = date.DayOfWeek;
             Month m = (Month)date.Month;
+            int y = date.Year;
 
             if ( // Year-end closing
                ((((d == 29 || d == 30) && w == DayOfWeek.Friday) || d == 31)
                 && m == Month.December)
+            )
+               return false;
+
+            if (// occasional closing days (KRX day)
+               (d == 6 && m == Month.May && y == 2016) ||
+               (d == 2 && m == Month.October && y == 2017)
             )
                return false;
 

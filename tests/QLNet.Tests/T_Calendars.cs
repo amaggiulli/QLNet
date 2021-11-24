@@ -20,26 +20,16 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System.Diagnostics;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Calendars
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testModifiedCalendars()
       {
          Calendar c1 = new TARGET();
@@ -78,11 +68,7 @@ namespace TestSuite
          QAssert.IsFalse(c1.isHoliday(d2), d2 + " still a holiday");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testJointCalendars()
       {
          Calendar c1 = new TARGET(),
@@ -148,11 +134,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSSettlement()
       {
          // Testing US settlement holiday list
@@ -220,11 +202,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSGovernmentBondMarket()
       {
 
@@ -234,6 +212,7 @@ namespace TestSuite
          expectedHol.Add(new Date(16, Month.February, 2004));
          expectedHol.Add(new Date(9, Month.April, 2004));
          expectedHol.Add(new Date(31, Month.May, 2004));
+         expectedHol.Add(new Date(11, Month.June, 2004)); // Reagan's funeral
          expectedHol.Add(new Date(5, Month.July, 2004));
          expectedHol.Add(new Date(6, Month.September, 2004));
          expectedHol.Add(new Date(11, Month.October, 2004));
@@ -255,11 +234,7 @@ namespace TestSuite
                          " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUSNewYorkStockExchange()
       {
 
@@ -360,11 +335,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testTARGET()
       {
          List<Date> expectedHol = new List<Date>();
@@ -429,11 +400,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyFrankfurt()
       {
          List<Date> expectedHol = new List<Date>();
@@ -445,13 +412,11 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2003));
          expectedHol.Add(new Date(25, Month.December, 2003));
          expectedHol.Add(new Date(26, Month.December, 2003));
-         expectedHol.Add(new Date(31, Month.December, 2003));
 
          expectedHol.Add(new Date(1, Month.January, 2004));
          expectedHol.Add(new Date(9, Month.April, 2004));
          expectedHol.Add(new Date(12, Month.April, 2004));
          expectedHol.Add(new Date(24, Month.December, 2004));
-         expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.FrankfurtStockExchange);
          List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
@@ -467,11 +432,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyEurex()
       {
          List<Date> expectedHol = new List<Date>();
@@ -506,11 +467,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGermanyXetra()
       {
          List<Date> expectedHol = new List<Date>();
@@ -522,13 +479,11 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2003));
          expectedHol.Add(new Date(25, Month.December, 2003));
          expectedHol.Add(new Date(26, Month.December, 2003));
-         expectedHol.Add(new Date(31, Month.December, 2003));
 
          expectedHol.Add(new Date(1, Month.January, 2004));
          expectedHol.Add(new Date(9, Month.April, 2004));
          expectedHol.Add(new Date(12, Month.April, 2004));
          expectedHol.Add(new Date(24, Month.December, 2004));
-         expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.Xetra);
          List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
@@ -543,11 +498,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKSettlement()
       {
          //BOOST_MESSAGE("Testing UK settlement holiday list...");
@@ -604,11 +555,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKExchange()
       {
          //BOOST_MESSAGE("Testing London Stock Exchange holiday list...");
@@ -665,11 +612,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testUKMetals()
       {
          //BOOST_MESSAGE("Testing London Metals Exchange holiday list...");
@@ -726,11 +669,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testItalyExchange()
       {
          //BOOST_MESSAGE("Testing Milan Stock Exchange holiday list...");
@@ -777,11 +716,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBrazil()
       {
          //BOOST_MESSAGE("Testing Brazil holiday list...");
@@ -828,11 +763,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSouthKoreanSettlement()
       {
          //("Testing South-Korean settlement holiday list...");
@@ -923,11 +854,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testKoreaStockExchange()
       {
          //("Testing Korea Stock Exchange holiday list...");
@@ -1024,11 +951,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaSSE()
       {
          // Testing China Shanghai Stock Exchange holiday list
@@ -1138,18 +1061,60 @@ namespace TestSuite
          expectedHol.Add(new Date(8, Month.Feb, 2019));
          expectedHol.Add(new Date(5, Month.April, 2019));
          expectedHol.Add(new Date(1, Month.May, 2019));
+         expectedHol.Add(new Date(2, Month.May, 2019));
+         expectedHol.Add(new Date(3, Month.May, 2019));
          expectedHol.Add(new Date(7, Month.June, 2019));
          expectedHol.Add(new Date(13, Month.September, 2019));
-         expectedHol.Add(new Date(30, Month.September, 2019));
          expectedHol.Add(new Date(1, Month.October, 2019));
          expectedHol.Add(new Date(2, Month.October, 2019));
          expectedHol.Add(new Date(3, Month.October, 2019));
          expectedHol.Add(new Date(4, Month.October, 2019));
+         expectedHol.Add(new Date(7, Month.October, 2019));
 
+         // China Shanghai Securities Exchange holiday list in the year 2020
+         expectedHol.Add(new Date(1, Month.Jan, 2020));
+         expectedHol.Add(new Date(24, Month.Jan, 2020));
+         expectedHol.Add(new Date(27, Month.Jan, 2020));
+         expectedHol.Add(new Date(28, Month.Jan, 2020));
+         expectedHol.Add(new Date(29, Month.Jan, 2020));
+         expectedHol.Add(new Date(30, Month.Jan, 2020));
+         expectedHol.Add(new Date(31, Month.Jan, 2020));
+         expectedHol.Add(new Date(6, Month.April, 2020));
+         expectedHol.Add(new Date(1, Month.May, 2020));
+         expectedHol.Add(new Date(4, Month.May, 2020));
+         expectedHol.Add(new Date(5, Month.May, 2020));
+         expectedHol.Add(new Date(25, Month.June, 2020));
+         expectedHol.Add(new Date(26, Month.June, 2020));
+         expectedHol.Add(new Date(1, Month.October, 2020));
+         expectedHol.Add(new Date(2, Month.October, 2020));
+         expectedHol.Add(new Date(5, Month.October, 2020));
+         expectedHol.Add(new Date(6, Month.October, 2020));
+         expectedHol.Add(new Date(7, Month.October, 2020));
+         expectedHol.Add(new Date(8, Month.October, 2020));
+
+         // China Shanghai Securities Exchange holiday list in the year 2021
+         expectedHol.Add(new Date(1, Month.Jan, 2021));
+         expectedHol.Add(new Date(11, Month.Feb, 2021));
+         expectedHol.Add(new Date(12, Month.Feb, 2021));
+         expectedHol.Add(new Date(15, Month.Feb, 2021));
+         expectedHol.Add(new Date(16, Month.Feb, 2021));
+         expectedHol.Add(new Date(17, Month.Feb, 2021));
+         expectedHol.Add(new Date(5, Month.April, 2021));
+         expectedHol.Add(new Date(3, Month.May, 2021));
+         expectedHol.Add(new Date(4, Month.May, 2021));
+         expectedHol.Add(new Date(5, Month.May, 2021));
+         expectedHol.Add(new Date(14, Month.June, 2021));
+         expectedHol.Add(new Date(20, Month.September, 2021));
+         expectedHol.Add(new Date(21, Month.September, 2021));
+         expectedHol.Add(new Date(1, Month.October, 2021));
+         expectedHol.Add(new Date(4, Month.October, 2021));
+         expectedHol.Add(new Date(5, Month.October, 2021));
+         expectedHol.Add(new Date(6, Month.October, 2021));
+         expectedHol.Add(new Date(7, Month.October, 2021));
 
          Calendar c = new China(China.Market.SSE);
          List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2014),
-                                               new Date(31, Month.December, 2019));
+                                               new Date(31, Month.December, 2021));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -1163,11 +1128,7 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testChinaIB()
       {
          // Testing China Inter Bank working weekends list
@@ -1214,12 +1175,31 @@ namespace TestSuite
          // China Inter Bank working weekends list in the year 2019
          expectedWorkingWeekEnds.Add(new Date(2, Month.Feb, 2019));
          expectedWorkingWeekEnds.Add(new Date(3, Month.Feb, 2019));
+         expectedWorkingWeekEnds.Add(new Date(28, Month.April, 2019));
+         expectedWorkingWeekEnds.Add(new Date(5, Month.May, 2019));
          expectedWorkingWeekEnds.Add(new Date(29, Month.September, 2019));
          expectedWorkingWeekEnds.Add(new Date(12, Month.October, 2019));
 
+         // China Inter Bank working weekends list in the year 2020
+         expectedWorkingWeekEnds.Add(new Date(19, Month.January, 2020));
+         expectedWorkingWeekEnds.Add(new Date(26, Month.April, 2020));
+         expectedWorkingWeekEnds.Add(new Date(9, Month.May, 2020));
+         expectedWorkingWeekEnds.Add(new Date(28, Month.June, 2020));
+         expectedWorkingWeekEnds.Add(new Date(27, Month.September, 2020));
+         expectedWorkingWeekEnds.Add(new Date(10, Month.October, 2020));
+
+         // China Inter Bank working weekends list in the year 2021
+         expectedWorkingWeekEnds.Add(new Date(7, Month.Feb, 2021));
+         expectedWorkingWeekEnds.Add(new Date(20, Month.Feb, 2021));
+         expectedWorkingWeekEnds.Add(new Date(25, Month.April, 2021));
+         expectedWorkingWeekEnds.Add(new Date(8, Month.May, 2021));
+         expectedWorkingWeekEnds.Add(new Date(18, Month.September, 2021));
+         expectedWorkingWeekEnds.Add(new Date(26, Month.September, 2021));
+         expectedWorkingWeekEnds.Add(new Date(9, Month.October, 2021));
+
          Calendar c = new China(China.Market.IB);
          Date start = new Date(1, Month.Jan, 2014);
-         Date end = new Date(31, Month.Dec, 2019);
+         Date end = new Date(31, Month.Dec, 2021);
 
          int k = 0;
 
@@ -1240,11 +1220,8 @@ namespace TestSuite
                          + " expected working weekends, while there are " + k
                          + " calculated holidays");
       }
-#if NET452
-      [TestMethod()]
-#else
+
       [Fact]
-#endif
       public void testEndOfMonth()
       {
          //BOOST_MESSAGE("Testing end-of-month calculation...");
@@ -1274,11 +1251,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBusinessDaysBetween()
       {
 
@@ -1426,11 +1399,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBespokeCalendars()
       {
 

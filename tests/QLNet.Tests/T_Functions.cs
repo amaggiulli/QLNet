@@ -17,26 +17,16 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 using System.Numerics;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Functions
    {
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFactorial()
       {
          // Testing factorial numbers
@@ -59,11 +49,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGammaFunction()
       {
          // Testing Gamma function
@@ -88,11 +74,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testGammaValues()
       {
          // Testing Gamma values
@@ -131,11 +113,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testModifiedBesselFunctions()
       {
          // Testing modified Bessel function of first and second kind
@@ -245,11 +223,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testWeightedModifiedBesselFunctions()
       {
          // Testing weighted modified Bessel functions

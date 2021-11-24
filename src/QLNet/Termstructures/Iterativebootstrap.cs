@@ -66,9 +66,6 @@ namespace QLNet
 
       private void initialize()
       {
-         // ensure helpers are sorted
-         ts_.instruments_.Sort((x, y) => x.pillarDate().CompareTo(y.pillarDate()));
-
          // skip expired helpers
          Date firstDate = ts_.initialDate();
          Utils.QL_REQUIRE(ts_.instruments_[n_ - 1].pillarDate() > firstDate, () => "all instruments expired");

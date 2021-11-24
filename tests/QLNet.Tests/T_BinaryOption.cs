@@ -15,18 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_BinaryOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -96,11 +90,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCashOrNothingHaugValues()
       {
          // Testing cash-or-nothing barrier options against Haug's values
@@ -198,11 +188,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testAssetOrNothingHaugValues()
       {
          // Testing asset-or-nothing barrier options against Haug's values

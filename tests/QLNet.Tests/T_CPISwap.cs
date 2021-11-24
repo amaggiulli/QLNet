@@ -15,18 +15,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_CPISwap
    {
       internal struct Datum
@@ -246,11 +240,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void consistency()
       {
          // check inflation leg vs calculation directly from inflation TS
@@ -361,11 +351,7 @@ namespace TestSuite
          common.hcpi.linkTo(null);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void zciisconsistency()
       {
          CommonVars common = new CommonVars();
@@ -422,11 +408,7 @@ namespace TestSuite
          common.hcpi.linkTo(null);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void cpibondconsistency()
       {
          CommonVars common = new CommonVars();

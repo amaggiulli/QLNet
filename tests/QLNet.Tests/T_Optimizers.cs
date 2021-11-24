@@ -19,18 +19,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Optimizers
    {
       List<CostFunction> costFunctions_ = new List<CostFunction>();
@@ -63,11 +57,7 @@ namespace TestSuite
          bfgs_goldstein
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void OptimizersTest()
       {
          //("Testing optimizers...");
@@ -118,11 +108,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void nestedOptimizationTest()
       {
          //("Testing nested optimizations...");
@@ -138,11 +124,7 @@ namespace TestSuite
          optimizationMethod.minimize(problem, endCriteria);
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testDifferentialEvolution()
       {
          //BOOST_TEST_MESSAGE("Testing differential evolution...");
@@ -252,6 +234,41 @@ namespace TestSuite
          }
       }
 
+
+      [Fact]
+      public void testFunctionValueEqualsCostFunctionAtCurrentValue()
+      {
+         var testCostFunction = new TestCostFunction();
+         var problem = new Problem(testCostFunction, new NoConstraint(), new Vector(new List<double> { 3, 7.4 }));
+         var endCriteria = new EndCriteria(maxIterations: 1000, maxStationaryStateIterations: 10, rootEpsilon: 0, functionEpsilon: 1e-10, gradientNormEpsilon: null);
+         var method = new BFGS();
+
+         var endType = method.minimize(problem, endCriteria);
+         QAssert.AreEqual(EndCriteria.Type.StationaryFunctionValue, endType);
+
+         QAssert.AreEqual(problem.functionValue(), testCostFunction.value(problem.currentValue()));
+      }
+
+      private class TestCostFunction : CostFunction
+      {
+         public override Vector values(Vector x)
+         {
+            return new Vector(x.Select(z => z * z).ToList());
+         }
+
+         /// <inheritdoc />
+         public override double value(Vector x)
+         {
+            return x.Sum(z => z * z);
+         }
+
+         /// <inheritdoc />
+         public override void gradient(ref Vector grad, Vector x)
+         {
+            for (int i = 0; i < grad.Count; i++)
+               grad[i] = 2 * x[i];
+         }
+      }
 
       // Set up, for each cost function, all the ingredients for optimization:
       // constraint, initial guess, end criteria, optimization methods.
@@ -540,4 +557,5 @@ namespace TestSuite
          return fx - p + 1.0;
       }
    }
+
 }

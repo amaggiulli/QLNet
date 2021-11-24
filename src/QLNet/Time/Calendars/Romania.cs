@@ -36,25 +36,43 @@ namespace QLNet
        <li>2nd Day of Christmas, December 26th</li>
        </ul>
 
-       \ingroup calendars
+       Holidays for the Bucharest stock exchange
+       (data from <http://www.bvb.ro/Marketplace/TradingCalendar/index.aspx>):
+       all public holidays, plus a few one-off closing days (2014 only).      
    */
    public class Romania : Calendar
    {
-      public Romania() : base(Impl.Singleton) { }
-
-      class Impl : Calendar.OrthodoxImpl
+      public enum Market
       {
-         public static readonly Impl Singleton = new Impl();
-         private Impl() { }
+         Public,     //!< Public holidays
+         BVB         //!< Bucharest stock-exchange
+      }
 
+      public Romania() : this(Market.BVB) { }
+
+      public Romania(Market m) : base()
+      {
+         calendar_ = m switch
+         {
+            Market.Public => PublicImpl.Singleton,
+            Market.BVB => BVBImpl.Impl,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
+      }
+
+      private class PublicImpl : Calendar.OrthodoxImpl
+      {
+         public static readonly PublicImpl Singleton = new PublicImpl();
+         protected PublicImpl() { }
          public override string name() { return "Romania"; }
+
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month) date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.year();
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day
                 || (d == 1 && m == Month.January)
@@ -68,6 +86,8 @@ namespace QLNet
                 || (d == 1 && m == Month.May)
                 // Pentecost
                 || (dd == em + 49)
+                // Children's Day (since 2017)
+                || (d == 1 && m == Month.June && y >= 2017)
                 // St Marys Day
                 || (d == 15 && m == Month.August)
                 // Feast of St Andrew
@@ -78,6 +98,27 @@ namespace QLNet
                 || (d == 25 && m == Month.December)
                 // 2nd Day of Chritsmas
                 || (d == 26 && m == Month.December))
+               return false; 
+            return true;
+         }
+      }
+
+      private class BVBImpl : PublicImpl
+      {
+         public static readonly BVBImpl Impl = new BVBImpl();
+         private BVBImpl() { }
+         public override string name() { return "Romania"; }
+         public override bool isBusinessDay(Date date)
+         {
+            if (!base.isBusinessDay(date))
+               return false;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
+            if (// one-off closing days
+               (d == 24 && m == Month.December && y == 2014) ||
+               (d == 31 && m == Month.December && y == 2014)
+            )
                return false;
             return true;
          }

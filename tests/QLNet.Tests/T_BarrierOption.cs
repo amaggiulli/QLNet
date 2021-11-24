@@ -16,18 +16,12 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_BarrierOption
    {
       private void REPORT_FAILURE(string greekName,
@@ -203,11 +197,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testHaugValues()
       {
          // Testing barrier options against Haug's values
@@ -460,11 +450,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBabsiriValues()
       {
          // Testing barrier options against Babsiri's values
@@ -567,11 +553,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testBeagleholeValues()
       {
          // Testing barrier options against Beaglehole's values
@@ -664,11 +646,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testLocalVolAndHestonComparison()
       {
          // Testing local volatility and Heston FD engines for barrier options
@@ -796,11 +774,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVannaVolgaSimpleBarrierValues()
       {
          // Testing barrier FX options against Vanna/Volga values

@@ -19,47 +19,28 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_Pathgenerator : IDisposable
    {
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
       public T_Pathgenerator()
       {
-#endif
-
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
       }
       #endregion
 
-      public void testSingle(StochasticProcess1D process,
+      internal void testSingle(StochasticProcess1D process,
                              string tag,
                              bool brownianBridge,
                              double expected,
@@ -122,7 +103,7 @@ namespace TestSuite
          }
       }
 
-      public void testMultiple(StochasticProcess process,
+      internal void testMultiple(StochasticProcess process,
                                string tag,
                                double[] expected,
                                double[] antithetic)
@@ -191,11 +172,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testPathGenerator()
       {
          // Testing 1-D path generation against cached values
@@ -225,11 +202,7 @@ namespace TestSuite
                     "square-root", false, 1.70608664108, 6.024200546031);
       }
 
-#if NET452
-      [TestCategory("LongRun"), TestMethod()]
-#else
       [Fact(Skip = "LongRun")]
-#endif
       public void testMultiPathGenerator()
       {
          // Testing n-D path generation against cached values

@@ -86,7 +86,7 @@ namespace QLNet
                 // H.M. the Queen's Birthday
                 || ((d == 12 || ((d == 13 || d == 14) && w == DayOfWeek.Monday)) && m == Month.August)
                 // H.M. King Bhumibol Adulyadej Memorial Day
-                || ((d == 3 || ((d == 14 || d == 15) && w == DayOfWeek.Monday)) && m == Month.October && y >= 2017)
+                || ((d == 13 || ((d == 14 || d == 15) && w == DayOfWeek.Monday)) && m == Month.October && y >= 2017)
                 // H.M. King Bhumibol Adulyadej's Birthday
                 || ((d == 5 || ((d == 6 || d == 7) && w == DayOfWeek.Monday)) && m == Month.December)
                 // Constitution Day
@@ -95,76 +95,76 @@ namespace QLNet
                 || (d == 31 && m == Month.December)
                 // New Year’s Eve Observence
                 || ((d == 1 || d == 2) && w == DayOfWeek.Monday && m == Month.January)
-               )
+                )
                return false;
 
             if ((y == 2000) &&
-                ((d == 21 && m == Month.February)     // Makha Bucha Day (Substitution Day)
-                 || (d == 5 && m == Month.May)        // Coronation Day
+                ((d == 21 && m == Month.February)  // Makha Bucha Day (Substitution Day)
+                 || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 17 && m == Month.May)       // Wisakha Bucha Day
                  || (d == 17 && m == Month.July)      // Buddhist Lent Day
                  || (d == 23 && m == Month.October)   // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             if ((y == 2001) &&
-                ((d == 8 && m == Month.February)    // Makha Bucha Day
+                ((d == 8 && m == Month.February) // Makha Bucha Day
                  || (d == 7 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 8 && m == Month.May)      // Coronation Day (Substitution Day)
                  || (d == 6 && m == Month.July)     // Buddhist Lent Day
                  || (d == 23 && m == Month.October) // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             // 2002, 2003 and 2004 are missing
 
             if ((y == 2005) &&
-                ((d == 23 && m == Month.February)    // Makha Bucha Day
+                ((d == 23 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 23 && m == Month.May)      // Wisakha Bucha Day (Substitution Day for Sunday 22 May)
                  || (d == 1 && m == Month.July)      // Mid Year Closing Day
                  || (d == 22 && m == Month.July)     // Buddhist Lent Day
                  || (d == 24 && m == Month.October)  // Chulalongkorn Day (Substitution Day for Sunday 23 October)
-                ))
+                    ))
                return false;
 
             if ((y == 2006) &&
-                ((d == 13 && m == Month.February)   // Makha Bucha Day
-                 || (d == 19 && m == Month.April)    // Special Holiday
-                 || (d == 5 && m == Month.May)       // Coronation Day
-                 || (d == 12 && m == Month.May)      // Wisakha Bucha Day
-                 || (d == 12 && m == Month.June)     // Special Holidays (Due to the auspicious occasion of the
-                 // celebration of 60th Anniversary of His Majesty's Accession
-                 // to the throne. For Bangkok, Samut Prakan, Nonthaburi,
-                 // Pathumthani and Nakhon Pathom province)
-                 || (d == 13 && m == Month.June)     // Special Holidays (as above)
-                 || (d == 11 && m == Month.July)     // Buddhist Lent Day
-                 || (d == 23 && m == Month.October)  // Chulalongkorn Day
-                ))
+                ((d == 13 && m == Month.February) // Makha Bucha Day
+                || (d == 19 && m == Month.April)    // Special Holiday
+                || (d == 5 && m == Month.May)       // Coronation Day
+                || (d == 12 && m == Month.May)      // Wisakha Bucha Day
+                || (d == 12 && m == Month.June)     // Special Holidays (Due to the auspicious occasion of the
+                                              // celebration of 60th Anniversary of His Majesty's Accession
+                                              // to the throne. For Bangkok, Samut Prakan, Nonthaburi,
+                                              // Pathumthani and Nakhon Pathom province)
+                || (d == 13 && m == Month.June)     // Special Holidays (as above)
+                || (d == 11 && m == Month.July)     // Buddhist Lent Day
+                || (d == 23 && m == Month.October)  // Chulalongkorn Day
+                   ))
                return false;
 
             if ((y == 2007) &&
-                ((d == 5 && m == Month.March)        // Makha Bucha Day (Substitution Day for Saturday 3 March)
+                ((d == 5 && m == Month.March)     // Makha Bucha Day (Substitution Day for Saturday 3 March)
                  || (d == 7 && m == Month.May)       // Coronation Day (Substitution Day for Saturday 5 May)
                  || (d == 31 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 30 && m == Month.July)     // Asarnha Bucha Day (Substitution Day for Sunday 29 July)
                  || (d == 23 && m == Month.October)  // Chulalongkorn Day
                  || (d == 24 && m == Month.December) // Special Holiday
-                ))
+                    ))
                return false;
 
             if ((y == 2008) &&
-                ((d == 21 && m == Month.February)    // Makha Bucha Day
+                ((d == 21 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 19 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 1 && m == Month.July)      // Mid Year Closing Day
                  || (d == 17 && m == Month.July)     // Asarnha Bucha Day
                  || (d == 23 && m == Month.October)  // Chulalongkorn Day
-                ))
+                   ))
                return false;
 
             if ((y == 2009) &&
-                ((d == 2 && m == Month.January)     // Special Holiday
+                ((d == 2 && m == Month.January)  // Special Holiday
                  || (d == 9 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)      // Coronation Day
                  || (d == 8 && m == Month.May)      // Wisakha Bucha Day
@@ -172,11 +172,11 @@ namespace QLNet
                  || (d == 6 && m == Month.July)     // Special Holiday
                  || (d == 7 && m == Month.July)     // Asarnha Bucha Day
                  || (d == 23 && m == Month.October) // Chulalongkorn Day
-                ))
+                   ))
                return false;
 
             if ((y == 2010) &&
-                ((d == 1 && m == Month.March)       // Substitution for Makha Bucha Day(Sunday 28 February)
+                ((d == 1 && m == Month.March)    // Substitution for Makha Bucha Day(Sunday 28 February)
                  || (d == 5 && m == Month.May)      // Coronation Day
                  || (d == 20 && m == Month.May)     // Special Holiday
                  || (d == 21 && m == Month.May)     // Special Holiday
@@ -185,55 +185,55 @@ namespace QLNet
                  || (d == 26 && m == Month.July)    // Asarnha Bucha Day
                  || (d == 13 && m == Month.August)  // Special Holiday
                  || (d == 25 && m == Month.October) // Substitution for Chulalongkorn Day(Saturday 23 October)
-                ))
+                   ))
                return false;
 
             if ((y == 2011) &&
-                ((d == 18 && m == Month.February)    // Makha Bucha Day
+                ((d == 18 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 16 && m == Month.May)      // Special Holiday
                  || (d == 17 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 1 && m == Month.July)      // Mid Year Closing Day
                  || (d == 15 && m == Month.July)     // Asarnha Bucha Day
                  || (d == 24 && m == Month.October)  // Substitution for Chulalongkorn Day(Sunday 23 October)
-                ))
+                   ))
                return false;
 
             if ((y == 2012) &&
-                ((d == 3 && m == Month.January)     // Special Holiday
+                ((d == 3 && m == Month.January)  // Special Holiday
                  || (d == 7 && m == Month.March)    // Makha Bucha Day 2/
                  || (d == 9 && m == Month.April)    // Special Holiday
                  || (d == 7 && m == Month.May)      // Substitution for Coronation Day(Saturday 5 May)
                  || (d == 4 && m == Month.June)     // Wisakha Bucha Day
                  || (d == 2 && m == Month.August)   // Asarnha Bucha Day
                  || (d == 23 && m == Month.October) // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             if ((y == 2013) &&
-                ((d == 25 && m == Month.February)    // Makha Bucha Day
+                ((d == 25 && m == Month.February) // Makha Bucha Day
                  || (d == 6 && m == Month.May)       // Substitution for Coronation Day(Sunday 5 May)
                  || (d == 24 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 1 && m == Month.July)      // Mid Year Closing Day
                  || (d == 22 && m == Month.July)     // Asarnha Bucha Day 2/
                  || (d == 23 && m == Month.October)  // Chulalongkorn Day
                  || (d == 30 && m == Month.December) // Special Holiday
-                ))
+                    ))
                return false;
 
             if ((y == 2014) &&
-                ((d == 14 && m == Month.February)    // Makha Bucha Day
+                ((d == 14 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 13 && m == Month.May)      // Wisakha Bucha Day
                  || (d == 1 && m == Month.July)      // Mid Year Closing Day
                  || (d == 11 && m == Month.July)     // Asarnha Bucha Day 1/
                  || (d == 11 && m == Month.August)   // Special Holiday
                  || (d == 23 && m == Month.October)  // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             if ((y == 2015) &&
-                ((d == 2 && m == Month.January)     // Special Holiday
+                ((d == 2 && m == Month.January)  // Special Holiday
                  || (d == 4 && m == Month.March)    // Makha Bucha Day
                  || (d == 4 && m == Month.May)      // Special Holiday
                  || (d == 5 && m == Month.May)      // Coronation Day
@@ -241,11 +241,11 @@ namespace QLNet
                  || (d == 1 && m == Month.July)     // Mid Year Closing Day
                  || (d == 30 && m == Month.July)    // Asarnha Bucha Day 1/
                  || (d == 23 && m == Month.October) // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             if ((y == 2016) &&
-                ((d == 22 && m == Month.February)    // Makha Bucha Day
+                ((d == 22 && m == Month.February) // Makha Bucha Day
                  || (d == 5 && m == Month.May)       // Coronation Day
                  || (d == 6 && m == Month.May)       // Special Holiday
                  || (d == 20 && m == Month.May)      // Wisakha Bucha Day
@@ -253,21 +253,27 @@ namespace QLNet
                  || (d == 18 && m == Month.July)     // Special Holiday
                  || (d == 19 && m == Month.July)     // Asarnha Bucha Day 1/
                  || (d == 24 && m == Month.October)  // Substitution for Chulalongkorn Day (Sunday 23rd October)
-                ))
+                    ))
                return false;
 
-            // 2017 is missing
+            if ((y == 2017) &&
+                ((d == 13 && m == Month.February)  // Makha Bucha Day
+                    || (d == 10 && m == Month.May)       // Wisakha Bucha Day
+                    || (d == 10 && m == Month.July)      // Asarnha Bucha Day
+                    || (d == 23 && m == Month.October)   // Chulalongkorn Day
+                    || (d == 26 && m == Month.October)   // Special Holiday
+                    ))
+               return false;
 
             if ((y == 2018) &&
-                ((d == 1 && m == Month.March)       // Makha Bucha Day
+                ((d == 1 && m == Month.March)    // Makha Bucha Day
                  || (d == 29 && m == Month.May)     // Wisakha Bucha Day
                  || (d == 27 && m == Month.July)    // Asarnha Bucha Day1
                  || (d == 23 && m == Month.October) // Chulalongkorn Day
-                ))
+                    ))
                return false;
 
             return true;
-
          }
       }
    }

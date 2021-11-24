@@ -21,18 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_ShortRateModels
    {
 
@@ -49,11 +43,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedHullWhite()
       {
          //("Testing Hull-White calibration against cached values...");
@@ -134,11 +124,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testSwaps()
       {
          //BOOST_MESSAGE("Testing Hull-White swap pricing against known values...");
@@ -258,11 +244,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testFuturesConvexityBias()
       {
          //BOOST_MESSAGE("Testing Hull-White futures convexity bias...");

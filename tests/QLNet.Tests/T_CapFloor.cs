@@ -19,40 +19,23 @@
 
 using System;
 using System.Collections.Generic;
-#if NET452
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-#else
 using Xunit;
-#endif
 using QLNet;
 
 namespace TestSuite
 {
-#if NET452
-   [TestClass()]
-#endif
+   [Collection("QLNet CI Tests")]
    public class T_CapFloor : IDisposable
    {
 
       #region Initialize&Cleanup
       private SavedSettings backup;
-#if NET452
-      [TestInitialize]
-      public void testInitialize()
-      {
-#else
+
       public T_CapFloor()
       {
-#endif
          backup = new SavedSettings();
       }
-#if NET452
-      [TestCleanup]
-#endif
-      public void testCleanup()
-      {
-         Dispose();
-      }
+
       public void Dispose()
       {
          backup.Dispose();
@@ -155,11 +138,7 @@ namespace TestSuite
 
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testVega()
       {
          CommonVars vars = new CommonVars();
@@ -215,11 +194,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testStrikeDependency()
       {
 
@@ -279,11 +254,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testConsistency()
       {
          CommonVars vars = new CommonVars();
@@ -331,11 +302,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testParity()
       {
          CommonVars vars = new CommonVars();
@@ -383,11 +350,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testATMRate()
       {
          CommonVars vars = new CommonVars();
@@ -449,11 +412,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testImpliedVolatility()
       {
          CommonVars vars = new CommonVars();
@@ -548,11 +507,7 @@ namespace TestSuite
          }
       }
 
-#if NET452
-      [TestMethod()]
-#else
       [Fact]
-#endif
       public void testCachedValue()
       {
          CommonVars vars = new CommonVars();

@@ -78,10 +78,8 @@ namespace QLNet
                 // May Day
                 || (d == 1  && m == Month.May)
                 // June 6 id National Day but is not a holiday.
-                // It has been debated wheter or not this day should be
-                // declared as a holiday.
-                // As of 2002 the Stockholmborsen is open that day
-                // || (d == 6  && m == June)
+                // holiday since 2005
+                || (d == 6 && m == Month.June && y >= 2005)
                 // Midsummer Eve (Friday between June 19-25)
                 || (w == DayOfWeek.Friday && (d >= 19 && d <= 25) && m == Month.June)
                 // Christmas Eve

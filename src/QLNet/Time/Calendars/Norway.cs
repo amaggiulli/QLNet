@@ -77,6 +77,8 @@ namespace QLNet
                 || (d == 1 && m == Month.May)
                 // National Independence Day
                 || (d == 17 && m == Month.May)
+                // Christmas Eve
+                || (d == 24 && m == Month.December && y >= 2002)
                 // Christmas
                 || (d == 25 && m == Month.December)
                 // Boxing Day

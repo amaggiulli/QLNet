@@ -280,7 +280,112 @@ namespace QLNet
                )
                   return false;
             }
+            if (y == 2015)
+            {
+               if (// adjusted holidays
+                   (d == 2 && m == Month.January)
+                   // Lunar New Year
+                   || (d >= 18 && d <= 23 && m == Month.February)
+                   // adjusted holidays
+                   || (d == 27 && m == Month.February)
+                   // adjusted holidays
+                   || (d == 3 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 6 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 19 && m == Month.June)
+                   // adjusted holidays
+                   || (d == 28 && m == Month.September)
+                   // adjusted holidays
+                   || (d == 9 && m == Month.October)
+                   )
+                  return false;
+            }
+            if (y == 2016)
+            {
+               if (// Lunar New Year
+                   (d >= 8 && d <= 12 && m == Month.February)
+                   // adjusted holidays
+                   || (d == 29 && m == Month.February)
+                   // Children's Day
+                   || (d == 4 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 5 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 2 && m == Month.May)
+                   // Dragon Boat Festival
+                   || (d == 9 && m == Month.June)
+                   // adjusted holidays
+                   || (d == 10 && m == Month.June)
+                   // Mid-Autumn Festival
+                   || (d == 15 && m == Month.September)
+                   // adjusted holidays
+                   || (d == 16 && m == Month.September)
+                   )
+                  return false;
+            }
 
+            if (y == 2017)
+            {
+               if (// adjusted holidays
+                   (d == 2 && m == Month.January)
+                   // Lunar New Year
+                   || ((d >= 27 && m == Month.January) || (d == 1 && m == Month.February))
+                   // adjusted holidays
+                   || (d == 27 && m == Month.February)
+                   // adjusted holidays
+                   || (d == 3 && m == Month.April)
+                   // Children's Day
+                   || (d == 4 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 29 && m == Month.May)
+                   // Dragon Boat Festival
+                   || (d == 30 && m == Month.May)
+                   // Mid-Autumn Festival
+                   || (d == 4 && m == Month.October)
+                   // adjusted holidays
+                   || (d == 9 && m == Month.October)
+                   )
+                  return false;
+            }
+            if (y == 2018)
+            {
+               if (// Lunar New Year
+                   (d >= 15 && d <= 20 && m == Month.February)
+                   // Children's Day
+                   || (d == 4 && m == Month.April)
+                   // Tomb Sweeping Day
+                   || (d == 5 && m == Month.April)
+                   // adjusted holidays
+                   || (d == 6 && m == Month.April)
+                   // Dragon Boat Festival
+                   || (d == 18 && m == Month.June)
+                   // Mid-Autumn Festival
+                   || (d == 24 && m == Month.September)
+                   // adjusted holidays
+                   || (d == 31 && m == Month.December)
+                   )
+                  return false;
+            }
+            if (y == 2019)
+            {
+               if (// Lunar New Year
+                   (d >= 4 && d <= 8 && m == Month.February)
+                   // adjusted holidays
+                   || (d == 1 && m == Month.March)
+                   // Children's Day
+                   || (d == 4 && m == Month.April)
+                   // Tomb Sweeping Day
+                   || (d == 5 && m == Month.April)
+                   // Dragon Boat Festival
+                   || (d == 7 && m == Month.June)
+                   // Mid-Autumn Festival
+                   || (d == 13 && m == Month.September)
+                   // adjusted holidays
+                   || (d == 11 && m == Month.October)
+                   )
+                  return false;
+            }
             return true;
          }
       }

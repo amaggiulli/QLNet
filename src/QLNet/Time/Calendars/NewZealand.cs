@@ -74,8 +74,9 @@ namespace QLNet
                     m == Month.January)
                 // Anniversary Day, Monday nearest January 22nd
                 || ((d >= 19 && d <= 25) && w == DayOfWeek.Monday && m == Month.January)
-                // Waitangi Day. February 6th
+                // Waitangi Day. February 6th ("Mondayised" since 2013)
                 || (d == 6 && m == Month.February)
+                || ((d == 7 || d == 8) && w == DayOfWeek.Monday && m == Month.February && y > 2013)
                 // Good Friday
                 || (dd == em - 3)
                 // Easter Monday

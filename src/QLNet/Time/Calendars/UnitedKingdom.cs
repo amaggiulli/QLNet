@@ -97,7 +97,27 @@ namespace QLNet
          }
       }
 
-      private class Settlement : Calendar.WesternImpl
+      protected static bool isBankHoliday(int d, DayOfWeek w, Month m, int y)
+      {
+         return
+            // first Monday of May (Early May Bank Holiday)
+            // moved to May 8th in 1995 and 2020 for V.E. day
+            (d <= 7 && w == DayOfWeek.Monday && m == Month.May && y != 1995 && y != 2020)
+            || (d == 8 && m == Month.May && (y == 1995 || y == 2020))
+            // last Monday of May (Spring Bank Holiday)
+            // moved to in 2002, 2012 and 2022 for the Golden, Diamond and Platinum
+            // Jubilee with an additional holiday
+            || (d >= 25 && w == DayOfWeek.Monday && m == Month.May && y != 2002 && y != 2012 && y != 2022)
+            || ((d == 3 || d == 4) && m == Month.June && y == 2002)
+            || ((d == 4 || d == 5) && m == Month.June && y == 2012)
+            || ((d == 2 || d == 3) && m == Month.June && y == 2022)
+            // last Monday of August (Summer Bank Holiday)
+            || (d >= 25 && w == DayOfWeek.Monday && m == Month.August)
+            // April 29th, 2011 only (Royal Wedding Bank Holiday)
+            || (d == 29 && m == Month.April && y == 2011);
+      }
+
+   private class Settlement : Calendar.WesternImpl
       {
          public static readonly Settlement Singleton = new Settlement();
          private Settlement() { }
@@ -118,19 +138,11 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // first Monday of May (Early May Bank Holiday)
-                || (d <= 7 && w == DayOfWeek.Monday && m == Month.May)
-                // last Monday of May (Spring Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.May && y != 2002)
-                // last Monday of August (Summer Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.August)
+                || isBankHoliday(d, w, m, y)
                 // Christmas (possibly moved to Monday or Tuesday)
                 || ((d == 25 || (d == 27 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
                 // Boxing Day (possibly moved to Monday or Tuesday)
                 || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
-                // June 3rd, 2002 only (Golden Jubilee Bank Holiday)
-                // June 4rd, 2002 only (special Spring Bank Holiday)
-                || ((d == 3 || d == 4) && m == Month.June && y == 2002)
                 // December 31st, 1999 only
                 || (d == 31 && m == Month.December && y == 1999))
                return false;
@@ -157,19 +169,11 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // first Monday of May (Early May Bank Holiday)
-                || (d <= 7 && w == DayOfWeek.Monday && m == Month.May)
-                // last Monday of May (Spring Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.May && y != 2002)
-                // last Monday of August (Summer Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.August)
+                || isBankHoliday(d, w, m, y)
                 // Christmas (possibly moved to Monday or Tuesday)
                 || ((d == 25 || (d == 27 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
                 // Boxing Day (possibly moved to Monday or Tuesday)
                 || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
-                // June 3rd, 2002 only (Golden Jubilee Bank Holiday)
-                // June 4rd, 2002 only (special Spring Bank Holiday)
-                || ((d == 3 || d == 4) && m == Month.June && y == 2002)
                 // December 31st, 1999 only
                 || (d == 31 && m == Month.December && y == 1999))
                return false;
@@ -196,19 +200,11 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // first Monday of May (Early May Bank Holiday)
-                || (d <= 7 && w == DayOfWeek.Monday && m == Month.May)
-                // last Monday of May (Spring Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.May && y != 2002)
-                // last Monday of August (Summer Bank Holiday)
-                || (d >= 25 && w == DayOfWeek.Monday && m == Month.August)
+                || isBankHoliday(d, w, m, y)
                 // Christmas (possibly moved to Monday or Tuesday)
                 || ((d == 25 || (d == 27 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
                 // Boxing Day (possibly moved to Monday or Tuesday)
                 || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) && m == Month.December)
-                // June 3rd, 2002 only (Golden Jubilee Bank Holiday)
-                // June 4rd, 2002 only (special Spring Bank Holiday)
-                || ((d == 3 || d == 4) && m == Month.June && y == 2002)
                 // December 31st, 1999 only
                 || (d == 31 && m == Month.December && y == 1999))
                return false;

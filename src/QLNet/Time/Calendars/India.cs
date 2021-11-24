@@ -337,6 +337,70 @@ namespace QLNet
                )
                   return false;
             }
+
+            if (y == 2019)
+            {
+               if (// Chatrapati Shivaji Jayanti
+                   (d == 19 && m == Month.February)
+                   // Mahashivratri
+                   || (d == 4 && m == Month.March)
+                   // Holi
+                   || (d == 21 && m == Month.March)
+                   // Annual Bank Closing
+                   || (d == 1 && m == Month.April)
+                   // Mahavir Jayanti
+                   || (d == 17 && m == Month.April)
+                   // Parliamentary Elections
+                   || (d == 29 && m == Month.April)
+                   // Ramzan Id
+                   || (d == 05 && m == Month.June)
+                   // Bakri Id
+                   || (d == 12 && m == Month.August)
+                   // Ganesh Chaturthi
+                   || (d == 2 && m == Month.September)
+                   // Moharram
+                   || (d == 10 && m == Month.September)
+                   // Dasera
+                   || (d == 8 && m == Month.October)
+                   // General Assembly Elections in Maharashtra
+                   || (d == 21 && m == Month.October)
+                   // Diwali - Balipratipada
+                   || (d == 28 && m == Month.October)
+                   // Gurunank Jayanti
+                   || (d == 12 && m == Month.November)
+                   )
+                  return false;
+            }
+
+            if (y == 2020)
+            {
+               if (// Chatrapati Shivaji Jayanti
+                   (d == 19 && m == Month.February)
+                   // Mahashivratri
+                   || (d == 21 && m == Month.February)
+                   // Holi
+                   || (d == 10 && m == Month.March)
+                   // Gudi Padwa
+                   || (d == 25 && m == Month.March)
+                   // Annual Bank Closing
+                   || (d == 1 && m == Month.April)
+                   // Ram Navami
+                   || (d == 2 && m == Month.April)
+                   // Mahavir Jayanti
+                   || (d == 6 && m == Month.April)
+                   // Buddha Pournima
+                   || (d == 7 && m == Month.May)
+                   // Ramzan Id
+                   || (d == 25 && m == Month.May)
+                   // Id-E-Milad
+                   || (d == 30 && m == Month.October)
+                   // Diwali - Balipratipada
+                   || (d == 16 && m == Month.November)
+                   // Gurunank Jayanti
+                   || (d == 30 && m == Month.November)
+                   )
+                  return false;
+            }
             return true;
          }
       }

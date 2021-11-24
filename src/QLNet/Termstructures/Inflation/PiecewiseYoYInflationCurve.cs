@@ -229,6 +229,9 @@ namespace QLNet
          : base(referenceDate, calendar, dayCounter, baseZeroRate, lag, frequency, indexIsInterpolated, nominalTS)
       {
          _instruments_ = instruments;
+         // ensure helpers are sorted
+         _instruments_.Sort((x, y) => x.pillarDate().CompareTo(y.pillarDate()));
+
          accuracy_ = accuracy;
          if (bootstrap == null)
             bootstrap_ = FastActivator<Bootstrap>.Create();
