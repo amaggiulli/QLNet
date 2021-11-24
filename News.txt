@@ -1,38 +1,35 @@
-QLNet 1.11.4
+QLNet 1.12.0
 =========================
 
-QLNet 1.11.4
+QLNet 1.12.0
 A detailed list of changes is available in ChangeLog.txt.
-
-WARNING : This is the last version supporting old Visual Studio projects, with
-the upcoming version 1.12 the QLNetOld.sln will be removed and a general cleanup
-will be done. 
-
-MATH 
-
-+ Added Cumulative Gamma distribution
-
-INSTRUMENTS
-
-+ Fixed Weighted Average Life calculation for past dates
-
-TERMSTRUCTURES
-
-+ Added Quanto Term Structure
-
-METHODS
-
-+ Added Cranck-Nicholson, Method of Lines & TrBDF2 schemes 
-
-ENGINES
-
-+ Fixed Broadie-Kaya exact scheme [Heston process]
-+ Added Monte Carlo Barrier Engine
-+ Fixed AdaptiveRungeKutta
-+ Added Cumulative & Inverse Cumulative Chi² Distrib
 
 FRAMEWORK
 
-+ Added more QLNet Exceptions
-+ Bug fixing and refactoring.
++ Removed QLNet old framework solution
++ Updated tests to use only xunit
++ Updated library to netstandard 2.1
++ Updated test suite to .Net Core 5
++ Updated samples to .Net Core 5
+
+MATH 
+
++ Fixed LineSearchBasedMethod.minimize, thx @hhaldn for spotting it.
+
+CALENDARS
+
++ Fixed Denmark holidays, thx @hhaldn
++ Added Austrian, French and Chilean calendars
++ Updated all existing calendars up to 2021
+
+TIME
+
++ Added utility Date.ToDateTime() method
++ Fixed ActualActualISMA daycounter calculation for long/short final periods, thanks @kristofferpagels.
+ 
+
+TERMSTRUCTURES
+
++ Fixed helpers sort for Piecewise Curves
+
 
