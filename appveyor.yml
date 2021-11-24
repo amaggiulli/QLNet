@@ -31,13 +31,13 @@
     release: QLNet Version 1.12.0
     description: QLNet 1.12.0 
     auth_token:
-      secure: rK95hgNgZt9ybzXBJ/1W0nbqsG/aENQ22eyY2qxn5xjbi7ZEjv+5BmNjY/l1cAYH
+      secure: yPDUXqBIfD2IB3l3KMeERPZjvD7jFC7spFIkbE92e1uWcJ4j3XSei/a966C5Aa+M
     artifact: src\QLNet\bin\Release\netstandard2.1\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
     api_key:
-      secure: oy2pnbvgsshbfbaytd5awh7asekctxxepdcmw4bbbsetei
+      secure: f2WH9fKVEnIKoXOYcDXDkR8C35WgQFvLD4xQ/SzfhkZAnXhdjyUU/3MD+OQAqNDZ
     skip_symbols: true
     artifact: ng
 
