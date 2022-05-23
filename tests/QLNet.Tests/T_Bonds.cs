@@ -1957,19 +1957,5 @@ namespace TestSuite
 
          QAssert.Fail("Failed to capture QLNet exception");
       }
-
-
-      [Fact]
-      public void testFixedBuild()
-      {
-         var dates = new List<Date>() { new Date(01, 01, 2022), new Date(01, 06, 2022) };
-         var schedule = new Schedule(dates, new TARGET(),BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-            new Period(Frequency.Semiannual),null,null, new List<bool>(){true});
-         var coupons = new List<double>() { 0.02875 };
-
-         var fixed1 = new FixedRateBond(0, 100, schedule, coupons, new Actual360());
-
-         var yield = fixed1.yield(100, fixed1.dayCounter(), Compounding.Compounded, Frequency.Semiannual);
-      }
    }
 }
