@@ -1298,18 +1298,18 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833)]
-      [InlineData( 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
-      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53)]
-      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56)]
-      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42)]
-      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11)]
-      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00)]
-      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83)]
-      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25)]
-      [InlineData(5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 20.156)]
+      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833, 40)]
+      [InlineData(0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00, 0)]
+      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53, 25)]
+      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56, 25)]
+      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42, 41)]
+      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11, 55)]
+      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00, 36)]
+      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83, 55)]
+      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25, 41)]
+      [InlineData(5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 20.156, 135)]
       public void testAccruedInterest(double Coupon, string AccrualDate, string MaturityDate,
-         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest)
+         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest, int expectedAccruedDays)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -1341,6 +1341,18 @@ namespace TestSuite
             QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
+
+         var accruedDaysAndAmount = CashFlows.accruedDaysAndAmount(bond.cashflows(), false, settlementDate);
+         if (Math.Abs(accruedDaysAndAmount.accruedAmount - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+
+         if (accruedDaysAndAmount.accruedDays != expectedAccruedDays)
+            QAssert.Fail("Failed to reproduce accrual days at " + settlementDate
+                        + "\n    calculated: " + accruedDaysAndAmount.accruedDays
+                        + "\n    expected:   " + expectedAccruedDays);
+
       }
 
       public struct test_case
@@ -1944,6 +1956,20 @@ namespace TestSuite
          }
 
          QAssert.Fail("Failed to capture QLNet exception");
+      }
+
+
+      [Fact]
+      public void testFixedBuild()
+      {
+         var dates = new List<Date>() { new Date(01, 01, 2022), new Date(01, 06, 2022) };
+         var schedule = new Schedule(dates, new TARGET(),BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+            new Period(Frequency.Semiannual),null,null, new List<bool>(){true});
+         var coupons = new List<double>() { 0.02875 };
+
+         var fixed1 = new FixedRateBond(0, 100, schedule, coupons, new Actual360());
+
+         var yield = fixed1.yield(100, fixed1.dayCounter(), Compounding.Compounded, Frequency.Semiannual);
       }
    }
 }
