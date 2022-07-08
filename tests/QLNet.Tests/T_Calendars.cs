@@ -1222,19 +1222,23 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(24, true)]
-      [InlineData(25, false)]
-      public void testNZIB_matarikiDay(int day, bool expctedResult)
+      [InlineData("2022-06-24", false, true)] // matarikiDay holiday
+      [InlineData("2022-06-25", false, true)] // a sat
+      [InlineData("2022-07-08", true, false)] // a business day 
+      public void testNZIB_matarikiDay(string day, bool expectedIsBusinessDay, bool expectedIsHoliday)
       {
          // arrange
-         var matarikiDay = new Date(day, 6, 2022);
+         var testDay = new Date(DateTime.Parse(day));
 
          var nzCalendar = new NewZealand();
-         var isNzBusinessDay = nzCalendar.isBusinessDay(matarikiDay);
-         Equals(expctedResult, isNzBusinessDay);
+         var isNzBusinessDay = nzCalendar.isBusinessDay(testDay);
 
-         var isHoliday = nzCalendar.isHoliday(matarikiDay);
-         Equals(!expctedResult, isHoliday);
+         if (expectedIsBusinessDay != isNzBusinessDay)
+            QAssert.Fail($"expectedIsBusinessDay is {expectedIsBusinessDay}, but the test result is {isNzBusinessDay}");
+
+         var isHoliday = nzCalendar.isHoliday(testDay);
+         if (expectedIsHoliday != isHoliday)
+            QAssert.Fail($"expectedIsHoliday is {expectedIsHoliday}, but the test result is {isNzBusinessDay}");
       }
 
       [Fact]
