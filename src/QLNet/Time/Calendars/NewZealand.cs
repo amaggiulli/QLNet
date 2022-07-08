@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Linq;
 
 namespace QLNet
 {
@@ -38,6 +39,7 @@ namespace QLNet
        <li>Easter Monday</li>
        <li>ANZAC Day. April 25th</li>
        <li>Queen's Birthday, first Monday in June</li>
+       <li>Matariki Holiday Date, based on Maori lunar calendar, always a Friday</li>
        <li>Labour Day, fourth Monday in October</li>
        <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
        <li>Boxing Day, December 26th (possibly moved to Monday or
@@ -52,8 +54,43 @@ namespace QLNet
    {
       public NewZealand() : base(Impl.Singleton) { }
 
-      class Impl : Calendar.WesternImpl
+      class Impl : WesternImpl
       {
+         // https://www.beehive.govt.nz/release/matariki-holiday-dates-next-thirty-years-announced
+         public Date[] MatarikiHolidays = new[] {
+               new Date(24, 6, 2022),
+               new Date(14, 7, 2023),
+               new Date(28, 6, 2024),
+               new Date(20, 6, 2025),
+               new Date(10, 7, 2026),
+               new Date(25, 6, 2027),
+               new Date(14, 7, 2028),
+               new Date(6, 7, 2029),
+               new Date(21, 6, 2030),
+               new Date(11, 7, 2031),
+               new Date(2, 7, 2032),
+               new Date(24, 6, 2033),
+               new Date(7, 7, 2034),
+               new Date(29, 6, 2035),
+               new Date(18, 7, 2036),
+               new Date(10, 7, 2037),
+               new Date(25, 6, 2038),
+               new Date(15, 7, 2039),
+               new Date(6, 7, 2040),
+               new Date(19, 7, 2041),
+               new Date(11, 7, 2042),
+               new Date(3, 7, 2043),
+               new Date(24, 6, 2044),
+               new Date(7, 7, 2045),
+               new Date(29, 6, 2046),
+               new Date(19, 7, 2047),
+               new Date(3, 7, 2048),
+               new Date(25, 6, 2049),
+               new Date(15, 7, 2050),
+               new Date(30, 6, 2051),
+               new Date(21, 6, 2052)
+            };
+
          public static readonly Impl Singleton = new Impl();
          private Impl() { }
 
@@ -85,6 +122,8 @@ namespace QLNet
                 || (d == 25 && m == Month.April)
                 // Queen's Birthday, first Monday in June
                 || (d <= 7 && w == DayOfWeek.Monday && m == Month.June)
+                // Matariki Holiday
+                || MatarikiHolidays.Any(x => x == date)
                 // Labour Day, fourth Monday in October
                 || ((d >= 22 && d <= 28) && w == DayOfWeek.Monday && m == Month.October)
                 // Christmas, December 25th (possibly Monday or Tuesday)

@@ -1221,6 +1221,22 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
+      [Theory]
+      [InlineData(24, true)]
+      [InlineData(25, false)]
+      public void testNZIB_matarikiDay(int day, bool expctedResult)
+      {
+         // arrange
+         var matarikiDay = new Date(day, 6, 2022);
+
+         var nzCalendar = new NewZealand();
+         var isNzBusinessDay = nzCalendar.isBusinessDay(matarikiDay);
+         Equals(expctedResult, isNzBusinessDay);
+
+         var isHoliday = nzCalendar.isHoliday(matarikiDay);
+         Equals(!expctedResult, isHoliday);
+      }
+
       [Fact]
       public void testEndOfMonth()
       {
