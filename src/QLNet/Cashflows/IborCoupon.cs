@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -123,6 +123,10 @@ namespace QLNet
          return new IborCoupon(paymentDate, nominal, startDate, endDate, fixingDays,
                                (IborIndex)index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
       }
+
+      //! End of the deposit period underlying the coupon fixing
+      /*! This might be not the same as fixingMaturityDate if par coupons are used. */
+      public Date fixingEndDate() {return fixingEndDate_;}
 
       private IborIndex iborIndex_;
       private Date fixingDate_, fixingValueDate_, fixingEndDate_;
