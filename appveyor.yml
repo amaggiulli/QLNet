@@ -9,7 +9,7 @@
   version: 1.12.1
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2019
+  image: Visual Studio 2022
   test: off
   skip_tags: true
   pull_requests:
@@ -21,7 +21,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\netstandard2.1\QLNet.dll
+    - path: src\QLNet\bin\Release\net6.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
@@ -32,7 +32,7 @@
     description: QLNet 1.12.1
     auth_token:
       secure: yPDUXqBIfD2IB3l3KMeERPZjvD7jFC7spFIkbE92e1uWcJ4j3XSei/a966C5Aa+M
-    artifact: src\QLNet\bin\Release\netstandard2.1\QLNet.dll
+    artifact: src\QLNet\bin\Release\net6.0\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
@@ -50,7 +50,7 @@
   version: 1.12.1-preview.{build}
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2019
+  image: Visual Studio 2022
   skip_tags: true
   clone_folder: c:\projects\qlnet_develop
   pull_requests:
@@ -99,7 +99,7 @@
   version: 1.12.1-{build}
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2019
+  image: Visual Studio 2022
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
   init:
