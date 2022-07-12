@@ -15,10 +15,10 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
-using TestSuite;
+using QLNet;
 using Xunit;
 
-namespace QLNet.Tests
+namespace TestSuite
 {
    [Collection("QLNet CI Tests")]
    public class T_SofrFutures

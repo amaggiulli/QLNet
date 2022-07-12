@@ -21,14 +21,26 @@ using Xunit;
 namespace TestSuite
 {
    [Collection("QLNet CI Tests")]
-   public class T_OvernightIndexedCoupon
+   public class T_OvernightIndexedCoupon : IDisposable
    {
+      private SavedSettings backup;
+      private IndexHistoryCleaner cleaner;
+
+      public T_OvernightIndexedCoupon()
+      {
+
+         backup = new SavedSettings();
+         cleaner = new IndexHistoryCleaner();
+      }
+
+      public void Dispose()
+      {
+         backup.Dispose();
+         cleaner.Dispose();
+      }
+
       private class CommonVars
       {
-         // cleanup
-         //SavedSettings backup;
-         //IndexHistoryCleaner cleaner;
-
          public Date today;
          public double notional = 10000.0;
          public OvernightIndex sofr;
