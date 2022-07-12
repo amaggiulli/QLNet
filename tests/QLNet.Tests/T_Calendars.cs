@@ -1221,6 +1221,26 @@ namespace TestSuite
                          + " calculated holidays");
       }
 
+      [Theory]
+      [InlineData("2022-06-24", false, true)] // matarikiDay holiday
+      [InlineData("2022-06-25", false, true)] // a sat
+      [InlineData("2022-07-08", true, false)] // a business day 
+      public void testNZIB_matarikiDay(string day, bool expectedIsBusinessDay, bool expectedIsHoliday)
+      {
+         // arrange
+         var testDay = new Date(DateTime.Parse(day));
+
+         var nzCalendar = new NewZealand();
+         var isNzBusinessDay = nzCalendar.isBusinessDay(testDay);
+
+         if (expectedIsBusinessDay != isNzBusinessDay)
+            QAssert.Fail($"expectedIsBusinessDay is {expectedIsBusinessDay}, but the test result is {isNzBusinessDay}");
+
+         var isHoliday = nzCalendar.isHoliday(testDay);
+         if (expectedIsHoliday != isHoliday)
+            QAssert.Fail($"expectedIsHoliday is {expectedIsHoliday}, but the test result is {isNzBusinessDay}");
+      }
+
       [Fact]
       public void testEndOfMonth()
       {
