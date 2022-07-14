@@ -18,8 +18,10 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace QLNet
 {
@@ -130,34 +132,30 @@ namespace QLNet
       public int settlementDays() { return settlementDays_; }
       public Calendar calendar() { return calendar_; }
       public List<double> notionals() { return notionals_; }
+
       public virtual double notional(Date d = null)
+      {
+         return notional<double>();
+
+      }
+      public virtual TResult notional<TResult>(Date d = null)
+         where TResult : INumber<TResult>
       {
          if (d == null)
             d = settlementDate();
 
          if (d > notionalSchedule_.Last())
             // after maturity
-            return 0.0;
+            return TResult.Zero;
 
          // After the check above, d is between the schedule
          // boundaries.  We search starting from the second notional
          // date, since the first is null.  After the call to
          // lower_bound, *i is the earliest date which is greater or
          // equal than d.  Its index is greater or equal to 1.
-         int index = notionalSchedule_.FindIndex(x => d <= x);
+         var index = notionalSchedule_.FindIndex(x => d <= x);
 
-         if (d < notionalSchedule_[index])
-         {
-            // no doubt about what to return
-            return notionals_[index - 1];
-         }
-         else
-         {
-            // d is equal to a redemption date.
-            // As per bond conventions, the payment has occurred
-            // the bond already changed notional.
-            return notionals_[index];
-         }
+         return TResult.Create(d < notionalSchedule_[index] ? notionals_[index - 1] : notionals_[index]);
       }
       // \note returns all the cashflows, including the redemptions.
       public List<CashFlow> cashflows() { return cashflows_; }
@@ -196,7 +194,11 @@ namespace QLNet
           \warning the theoretical price calculated from a flat term structure might differ slightly from the price
                    calculated from the corresponding yield by means of the other overload of this function. If the
                    price from a constant yield is desired, it is advisable to use such other overload. */
-      public double cleanPrice() { return dirtyPrice() - accruedAmount(settlementDate()); }
+      public double cleanPrice() { return cleanPrice<double>(); }
+
+      public TResult cleanPrice<TResult>()
+         where TResult : INumber<TResult>
+      { return dirtyPrice<TResult>() - accruedAmount<TResult>(settlementDate()); }
 
       //! theoretical dirty price
       /*! The default bond settlement is used for calculation.
@@ -205,81 +207,117 @@ namespace QLNet
                    calculated from the corresponding yield by means of the other overload of this function. If the
                    price from a constant yield is desired, it is advisable to use such other overload.
       */
-      public double dirtyPrice()
+      public double dirtyPrice(){ return dirtyPrice<double>(); }
+      public TResult dirtyPrice<TResult>()
+         where TResult : INumber<TResult>
       {
-         double currentNotional = notional(settlementDate());
-         if (currentNotional.IsEqual(0.0))
-            return 0.0;
+         var currentNotional = notional<TResult>(settlementDate());
+         if (currentNotional.Equals(0.0))
+            return TResult.Create(0.0);
          else
-            return settlementValue() * 100 / currentNotional ;
+            return  settlementValue<TResult>() / currentNotional ;
       }
 
-      public double settlementValue()
+      public double settlementValue(){return settlementValue<double>();}
+      public TResult settlementValue<TResult>()
+         where TResult : INumber<TResult>
       {
          calculate();
          Utils.QL_REQUIRE(settlementValue_ != null, () => "settlement value not provided");
-         return settlementValue_.Value;
+         return TResult.Create(settlementValue_.GetValueOrDefault());
       }
 
       public double settlementValue(double cleanPrice)
       {
-         double dirtyPrice = cleanPrice + accruedAmount(settlementDate());
-         return dirtyPrice / 100.0 * notional(settlementDate());
+         return settlementValue<double>(cleanPrice);
+      }
+      public TResult settlementValue<TResult>(double cleanPrice)
+         where TResult : INumber<TResult>
+      {
+         var dirtyPrice = TResult.Create(cleanPrice) + accruedAmount<TResult>(settlementDate());
+         return dirtyPrice / TResult.Create(100.0) * notional<TResult>(settlementDate());
       }
 
       //! theoretical bond yield
       /*! The default bond settlement and theoretical price are used for calculation. */
-      public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100)
+      public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8,
+         int maxEvaluations = 100)
       {
-         double currentNotional = notional(settlementDate());
+         return yield<double>(dc, comp, freq, accuracy, maxEvaluations);
+      }
+      public TResult yield<TResult>(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100)
+         where TResult : INumber<TResult>
+      {
+         var currentNotional = notional<TResult>(settlementDate());
 
-         if (currentNotional.IsEqual(0.0))
-            return 0.0;
+         if (currentNotional.Equals(0.0))
+            return TResult.Zero;
 
-         return BondFunctions.yield(this, cleanPrice(), dc, comp, freq, settlementDate(), accuracy, maxEvaluations);
+         return BondFunctions.yield<TResult>(this, cleanPrice(), dc, comp, freq, settlementDate(), accuracy, maxEvaluations);
       }
 
       //! clean price given a yield and settlement date
       /*! The default bond settlement is used if no date is given. */
       public double cleanPrice(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
       {
-         return BondFunctions.cleanPrice(this, yield, dc, comp, freq, settlement);
+         return cleanPrice<double>(yield, dc, comp, freq, settlement);
+      }
+      public TResult cleanPrice<TResult>(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
+         where TResult : INumber<TResult>
+      {
+         return BondFunctions.cleanPrice<TResult>(this, yield, dc, comp, freq, settlement);
       }
 
       //! dirty price given a yield and settlement date
       /*! The default bond settlement is used if no date is given. */
       public double dirtyPrice(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
       {
-         double currentNotional = notional(settlement);
-         if (currentNotional.IsEqual(0.0))
-            return 0.0;
+         return dirtyPrice<double>(yield, dc, comp, freq, settlement);
+      }
+      public TResult dirtyPrice<TResult>(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
+         where TResult: INumber<TResult>
+      {
+         var currentNotional = notional<TResult>(settlement);
+         if (currentNotional.Equals(0.0))
+            return TResult.Zero;
 
-         return BondFunctions.cleanPrice(this, yield, dc, comp, freq, settlement) + accruedAmount(settlement);
+         return BondFunctions.cleanPrice<TResult>(this, yield, dc, comp, freq, settlement) + accruedAmount<TResult>(settlement);
       }
 
       //! yield given a (clean) price and settlement date
       /*! The default bond settlement is used if no date is given. */
       public double yield(double cleanPrice, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
-                          double accuracy = 1.0e-8, int maxEvaluations = 100)
+         double accuracy = 1.0e-8, int maxEvaluations = 100)
+      {
+         return yield<double>(cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
+      }
+      public TResult yield<TResult>(double cleanPrice, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
+         double accuracy = 1.0e-8, int maxEvaluations = 100)
+         where TResult : INumber<TResult>
       {
          double currentNotional = notional(settlement);
          if (currentNotional.IsEqual(0.0))
-            return 0.0;
+            return TResult.Zero;
 
-         return BondFunctions.yield(this, cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
+         return BondFunctions.yield<TResult>(this, cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
       }
 
       //! accrued amount at a given date
       /*! The default bond settlement is used if no date is given. */
       public virtual double accruedAmount(Date settlement = null)
       {
-         double currentNotional = notional(settlement);
+         return accruedAmount<double>();
+      }
 
-         if (currentNotional.IsEqual(0.0))
-            return 0.0;
+      public virtual TResult accruedAmount<TResult>(Date settlement = null)
+         where TResult : INumber<TResult>
+      {
+         var currentNotional = notional<TResult>(settlement);
 
-         return BondFunctions.accruedAmount(this, settlement);
+         if (currentNotional.Equals(0.0))
+            return TResult.Zero;
 
+         return BondFunctions.accruedAmount<TResult>(this, settlement);
       }
 
       #endregion

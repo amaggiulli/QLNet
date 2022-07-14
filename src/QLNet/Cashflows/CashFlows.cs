@@ -667,14 +667,21 @@ namespace QLNet
          }
          return 0;
       }
+
       public static double accruedAmount(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
+      {
+         return accruedAmount<double>(leg, includeSettlementDateFlows, settlementDate);
+      }
+
+      public static TResult accruedAmount<TResult>(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
+         where TResult : INumber<TResult>
       {
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
 
          CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
          if (cf == null)
-            return 0;
+            return TResult.Zero;
 
          Date paymentDate = cf.date();
          double result = 0.0;
@@ -685,7 +692,7 @@ namespace QLNet
             if (cp != null)
                result += cp.accruedAmount(settlementDate);
          }
-         return result;
+         return TResult.Create(result);
       }
       #endregion
 
@@ -693,11 +700,17 @@ namespace QLNet
 
       //! NPV of the cash flows. The NPV is the sum of the cash flows, each discounted according to the given term structure.
       public static double npv(Leg leg, YieldTermStructure discountCurve, bool includeSettlementDateFlows,
+         Date settlementDate = null, Date npvDate = null)
+      {
+         return npv<double>(leg, discountCurve, includeSettlementDateFlows, settlementDate, npvDate);
+      }
+      public static TResult npv<TResult>(Leg leg, YieldTermStructure discountCurve, bool includeSettlementDateFlows,
                                Date settlementDate = null, Date npvDate = null)
+         where TResult: INumber<TResult>
       {
 
          if (leg.empty())
-            return 0.0;
+            return TResult.Zero;
 
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
@@ -705,14 +718,14 @@ namespace QLNet
          if (npvDate == null)
             npvDate = settlementDate;
 
-         double totalNPV = 0.0;
-         for (int i = 0; i < leg.Count; ++i)
+         var totalNPV = 0.0;
+         for (var i = 0; i < leg.Count; ++i)
          {
             if (!leg[i].hasOccurred(settlementDate, includeSettlementDateFlows) && !leg[i].tradingExCoupon(settlementDate))
                totalNPV += leg[i].amount() * discountCurve.discount(leg[i].date());
          }
 
-         return totalNPV / discountCurve.discount(npvDate);
+         return TResult.Create(totalNPV / discountCurve.discount(npvDate));
       }
 
       // Basis-point sensitivity of the cash flows.
@@ -933,9 +946,19 @@ namespace QLNet
       // The function verifies
       // the theoretical existance of an IRR and numerically
       // establishes the IRR to the desired precision.
-      public static double yield(Leg leg, double npv, DayCounter dayCounter, Compounding compounding, Frequency frequency,
+      public static double yield(Leg leg, double npv, DayCounter dayCounter, Compounding compounding,
+         Frequency frequency,
+         bool includeSettlementDateFlows, Date settlementDate = null, Date npvDate = null,
+         double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
+      {
+         return yield<double>(leg, npv, dayCounter, compounding, frequency, includeSettlementDateFlows, settlementDate,
+            npvDate, accuracy, maxIterations, guess);
+
+      }
+      public static TResult yield<TResult>(Leg leg, double npv, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                  bool includeSettlementDateFlows, Date settlementDate = null, Date npvDate = null,
                                  double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
+         where TResult : INumber<TResult>
       {
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxIterations);
@@ -943,7 +966,7 @@ namespace QLNet
                                                dayCounter, compounding, frequency,
                                                includeSettlementDateFlows,
                                                settlementDate, npvDate);
-         return solver.solve(objFunction, accuracy, guess, guess / 10.0);
+         return TResult.Create(solver.solve(objFunction, accuracy, guess, guess / 10.0));
       }
 
       //! Cash-flow duration.
