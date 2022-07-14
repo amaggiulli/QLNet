@@ -192,6 +192,7 @@ namespace TestSuite
                      rate.setValue(yields[m]);
 
                      double price = bond.cleanPrice(yields[m], bondDayCount, Compounding.Continuous, frequencies[l]);
+                     double dirtyPrice = bond.dirtyPrice();
                      double calculatedPrice = bond.cleanPrice();
 
                      if (Math.Abs(price - calculatedPrice) > tolerance)

@@ -215,7 +215,7 @@ namespace QLNet
          if (currentNotional.Equals(0.0))
             return TResult.Create(0.0);
          else
-            return  settlementValue<TResult>() / currentNotional ;
+            return  settlementValue<TResult>() * TResult.Create(100) / currentNotional ;
       }
 
       public double settlementValue(){return settlementValue<double>();}
