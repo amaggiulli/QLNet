@@ -135,7 +135,7 @@ namespace QLNet
 
       public virtual double notional(Date d = null)
       {
-         return notional<double>();
+         return notional<double>(d);
 
       }
       public virtual TResult notional<TResult>(Date d = null)
@@ -306,7 +306,7 @@ namespace QLNet
       /*! The default bond settlement is used if no date is given. */
       public virtual double accruedAmount(Date settlement = null)
       {
-         return accruedAmount<double>();
+         return accruedAmount<double>(settlement);
       }
 
       public virtual TResult accruedAmount<TResult>(Date settlement = null)
