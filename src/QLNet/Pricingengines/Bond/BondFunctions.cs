@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace QLNet
 {
@@ -33,6 +34,7 @@ namespace QLNet
 
        Prices are always clean, as per market convention.
    */
+
    public class BondFunctions
    {
       #region Date inspectors
@@ -325,6 +327,18 @@ namespace QLNet
       {
          return bps(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
+
+   public static async Task<YieldResponse[]> calculateYieldsAsync(YieldRequest[] yieldRequest)
+      {
+         var dictOfTasks = yieldRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => yield(request.Bond, request.CleanPrice, request.DayCounter, request.Compounding, request.Frequency,
+               request.SettlementDate ?? null, request.Accuracy ?? 1.0e-10, request.MaxIterations ?? 100, request.Guess ?? 0.05)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new YieldResponse { Id = task.Key, Yield = task.Value.Result }).ToArray();
+      }
+
       public static double yield(Bond bond, double cleanPrice, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                  Date settlementDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
       {
@@ -484,8 +498,26 @@ namespace QLNet
 
          return today.AddDays(wal * 365).Date;
       }
-
       #endregion
+   }
 
+   public class YieldRequest
+   {
+      public int Id { get; set; }
+      public Bond Bond { get; set; }
+      public double CleanPrice { get; set; }
+      public DayCounter DayCounter { get; set; }
+      public Compounding Compounding { get; set; }
+      public Frequency Frequency { get; set; }
+      public Date SettlementDate { get; set; }
+      public double? Accuracy { get; set; }
+      public int? MaxIterations { get; set; }
+      public double? Guess { get; set; }
+   }
+
+   public class YieldResponse
+   {
+      public int Id { get; set; }
+      public double Yield { get; set; }
    }
 }
