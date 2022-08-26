@@ -41,7 +41,7 @@ namespace TestSuite
       public async Task testBatchYieldCalculation()
       {
          const int size = 2; // increase size to benchmark yield calculation
-         var request = YieldRequestFaker.createYieldRequest(size);
+         var request = YieldRequestFaker.CreateYieldRequest(size);
 
          var stopwatch = Stopwatch.StartNew();
          var response = await BondFunctions.calculateYieldsAsync(request);
@@ -56,7 +56,7 @@ namespace TestSuite
       public async Task testBatchWalCalculation()
       {
          const int size = 2; // increase size to benchmark wal calculation
-         var request = WalRequestFaker.createWalRequest(size);
+         var request = WalRequestFaker.CreateWalRequest(size);
 
          var stopwatch = Stopwatch.StartNew();
          var response = await BondFunctions.calculateWalAsync(request);
@@ -65,6 +65,35 @@ namespace TestSuite
          Assert.NotEmpty(response);
          Assert.Equal(size, response.Length);
          Assert.All(response, item => Assert.NotEqual(DateTime.MinValue, item.Wal));
+      }
+
+      [Fact]
+      public async Task testBatchDurationCalculation()
+      {
+         const int size = 2; // increase size to benchmark duration calculation
+         var request = DurationRequestFaker.CreateDurationRequest(size);
+
+         var stopwatch = Stopwatch.StartNew();
+         var response = await BondFunctions.calculateDurationAsync(request);
+         output.WriteLine($"Calculated {size} duration in {stopwatch.ElapsedMilliseconds}ms");
+
+         Assert.NotEmpty(response);
+         Assert.Equal(size, response.Length);
+         Assert.All(response, item => Assert.NotEqual(0, item.Duration));
+      }
+
+      [Fact]
+      public async Task testBatchAccruedDaysAndAmountCalculation()
+      {
+         const int size = 2; // increase size to benchmark duration calculation
+         var request = AccruedRequestFaker.CreateAccruedRequest(size);
+
+         var stopwatch = Stopwatch.StartNew();
+         var response = await BondFunctions.calculateAccruedDaysAndAmountAsync(request);
+         output.WriteLine($"Calculated {size} accrued days and amount in {stopwatch.ElapsedMilliseconds}ms");
+
+         Assert.NotEmpty(response);
+         Assert.Equal(size, response.Length);
       }
    }
 }

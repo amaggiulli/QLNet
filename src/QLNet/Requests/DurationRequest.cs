@@ -16,29 +16,17 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using System;
-using System.Collections.Generic;
-using AutoBogus;
-
-namespace QLNet.Tests.Fakers
+namespace QLNet
 {
-   public class WalRequestFaker
+   public class DurationRequest
    {
-      public static WalRequest[] CreateWalRequest(int count = 1)
-      {
-         var list = new List<WalRequest>();
-
-         for (var i = 0; i < count; i++)
-         {
-            list.Add(new AutoFaker<WalRequest>()
-               .RuleFor(x => x.Id, i)
-               .RuleFor(x => x.Today, DateTime.Today)
-               .RuleFor(x => x.Amounts, f => f.Make(10, () => f.Random.Double(0,100)))
-               .RuleFor(x => x.Schedule, f => f.Make(10, () => f.Date.Between(DateTime.Today, DateTime.Today.AddYears(30))))
-               .Generate());
-         }
-
-         return list.ToArray();
-      }
+      public int Id { get; set; }
+      public Bond Bond { get; set; }
+      public double Yield { get; set; }
+      public DayCounter DayCounter { get; set; }
+      public Compounding Compounding { get; set; }
+      public Frequency Frequency { get; set; }
+      public Duration.Type Type { get; set; }
+      public Date SettlementDate { get; set; }
    }
 }

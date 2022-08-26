@@ -23,7 +23,7 @@ namespace QLNet.Tests.Fakers
 {
    public  class YieldRequestFaker
    {
-      public static YieldRequest[] createYieldRequest(int count = 1)
+      public static YieldRequest[] CreateYieldRequest(int count = 1)
       {
          var list = new List<YieldRequest>();
 
@@ -31,7 +31,7 @@ namespace QLNet.Tests.Fakers
          {
             list.Add(new AutoFaker<YieldRequest>()
                .RuleFor(x => x.Id, i)
-               .RuleFor(x => x.Bond, FixedRateBondFaker.createFixedRateBond)
+               .RuleFor(x => x.Bond, FixedRateBondFaker.CreateFixedRateBond)
                .RuleFor(x => x.CleanPrice, x => x.Random.Double(0, 100))
                .RuleFor(x => x.DayCounter, x => new Thirty360(Thirty360.Thirty360Convention.BondBasis))
                .RuleFor(x => x.Compounding, x => Compounding.Compounded)

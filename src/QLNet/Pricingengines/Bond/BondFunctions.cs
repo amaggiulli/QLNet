@@ -204,6 +204,31 @@ namespace QLNet
 
          return CashFlows.accruedPeriod(bond.cashflows(), false, settlementDate);
       }
+
+      public static async Task<AccruedResponse[]> calculateAccruedDaysAndAmountAsync(AccruedRequest[] accruedRequest)
+      {
+         var dictOfTasks = accruedRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => accruedDaysAndAmount(request.Bond, request.SettlementDate)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new AccruedResponse { Id = task.Key, Days = task.Value.Result.accruedDays,
+            Amount = task.Value.Result.accruedAmount}).ToArray();
+      }
+
+      public static (int accruedDays, double accruedAmount) accruedDaysAndAmount(Bond bond, Date settlementDate = null)
+      {
+         if (settlementDate == null)
+            settlementDate = bond.settlementDate();
+
+         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
+               "non tradable at " + settlementDate +
+               " (maturity being " + bond.maturityDate() + ")",
+            QLNetExceptionEnum.NotTradableException);
+
+         return CashFlows.accruedDaysAndAmount(bond.cashflows(), false, settlementDate);
+      }
+
       public static double accruedDays(Bond bond, Date settlementDate = null)
       {
          if (settlementDate == null)
@@ -371,11 +396,24 @@ namespace QLNet
 
          return CashFlows.duration(bond.cashflows(), yield, type, false, settlementDate);
       }
+
       public static double duration(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                     Duration.Type type = Duration.Type.Modified, Date settlementDate = null)
       {
          return duration(bond, new InterestRate(yield, dayCounter, compounding, frequency), type, settlementDate);
       }
+
+      public static async Task<DurationResponse[]> calculateDurationAsync(DurationRequest[] durationRequest)
+      {
+         var dictOfTasks = durationRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => duration(request.Bond, request.Yield, request.DayCounter, request.Compounding,request.Frequency,
+               request.Type, request.SettlementDate)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new DurationResponse { Id = task.Key, Duration = task.Value.Result }).ToArray();
+      }
+
       public static double convexity(Bond bond, InterestRate yield, Date settlementDate = null)
       {
          if (settlementDate == null)

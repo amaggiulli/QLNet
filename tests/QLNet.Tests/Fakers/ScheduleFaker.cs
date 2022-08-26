@@ -23,7 +23,7 @@ namespace QLNet.Tests.Fakers
 {
    public class ScheduleFaker
    {
-      public static Schedule createSchedule()
+      public static Schedule CreateSchedule()
       {
          var faker = new Faker<Schedule>()
             .CustomInstantiator(f => new Schedule(DateTime.Now, DateTime.Now.AddYears(f.Random.Int(1,30)),
