@@ -16,19 +16,19 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using Bogus;
-
-namespace QLNet.Tests.Fakers
+namespace QLNet
 {
-   public class FixedRateBondFaker
+   public class YieldRequest
    {
-      public static FixedRateBond createFixedRateBond()
-      {
-         var faker = new Faker<FixedRateBond>()
-            .CustomInstantiator(f => new FixedRateBond(0, 1000, ScheduleFaker.createSchedule(), new InitializedList<double>(1, f.Random.Double(0.1)),
-               new Thirty360(Thirty360.Thirty360Convention.BondBasis),BusinessDayConvention.Unadjusted));
-
-         return faker.Generate();
-      }
+      public int Id { get; set; }
+      public Bond Bond { get; set; }
+      public double CleanPrice { get; set; }
+      public DayCounter DayCounter { get; set; }
+      public Compounding Compounding { get; set; }
+      public Frequency Frequency { get; set; }
+      public Date SettlementDate { get; set; }
+      public double? Accuracy { get; set; }
+      public int? MaxIterations { get; set; }
+      public double? Guess { get; set; }
    }
 }

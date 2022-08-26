@@ -328,7 +328,7 @@ namespace QLNet
          return bps(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
 
-   public static async Task<YieldResponse[]> calculateYieldsAsync(YieldRequest[] yieldRequest)
+      public static async Task<YieldResponse[]> calculateYieldsAsync(YieldRequest[] yieldRequest)
       {
          var dictOfTasks = yieldRequest.ToDictionary(request => request.Id,
             request => Task.Run(() => yield(request.Bond, request.CleanPrice, request.DayCounter, request.Compounding, request.Frequency,
@@ -474,6 +474,16 @@ namespace QLNet
 
       #region Raw Functions
 
+      public static async Task<WalResponse[]> calculateWalAsync(WalRequest[] walRequest)
+      {
+         var dictOfTasks = walRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => WeightedAverageLife(request.Today, request.Amounts, request.Schedule)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new WalResponse { Id = task.Key, Wal = task.Value.Result }).ToArray();
+      }
+
       public static DateTime WeightedAverageLife(DateTime today, List<double> amounts, List<DateTime> schedule)
       {
          Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
@@ -499,25 +509,5 @@ namespace QLNet
          return today.AddDays(wal * 365).Date;
       }
       #endregion
-   }
-
-   public class YieldRequest
-   {
-      public int Id { get; set; }
-      public Bond Bond { get; set; }
-      public double CleanPrice { get; set; }
-      public DayCounter DayCounter { get; set; }
-      public Compounding Compounding { get; set; }
-      public Frequency Frequency { get; set; }
-      public Date SettlementDate { get; set; }
-      public double? Accuracy { get; set; }
-      public int? MaxIterations { get; set; }
-      public double? Guess { get; set; }
-   }
-
-   public class YieldResponse
-   {
-      public int Id { get; set; }
-      public double Yield { get; set; }
    }
 }

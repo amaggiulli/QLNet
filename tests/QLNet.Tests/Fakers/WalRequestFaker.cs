@@ -16,19 +16,29 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-using Bogus;
+using System;
+using System.Collections.Generic;
+using AutoBogus;
 
 namespace QLNet.Tests.Fakers
 {
-   public class FixedRateBondFaker
+   public class WalRequestFaker
    {
-      public static FixedRateBond createFixedRateBond()
+      public static WalRequest[] createWalRequest(int count = 1)
       {
-         var faker = new Faker<FixedRateBond>()
-            .CustomInstantiator(f => new FixedRateBond(0, 1000, ScheduleFaker.createSchedule(), new InitializedList<double>(1, f.Random.Double(0.1)),
-               new Thirty360(Thirty360.Thirty360Convention.BondBasis),BusinessDayConvention.Unadjusted));
+         var list = new List<WalRequest>();
 
-         return faker.Generate();
+         for (var i = 0; i < count; i++)
+         {
+            list.Add(new AutoFaker<WalRequest>()
+               .RuleFor(x => x.Id, i)
+               .RuleFor(x => x.Today, DateTime.Today)
+               .RuleFor(x => x.Amounts, f => f.Make(10, () => f.Random.Double(0,100)))
+               .RuleFor(x => x.Schedule, f => f.Make(10, () => f.Date.Between(DateTime.Today, DateTime.Today.AddYears(30))))
+               .Generate());
+         }
+
+         return list.ToArray();
       }
    }
 }
