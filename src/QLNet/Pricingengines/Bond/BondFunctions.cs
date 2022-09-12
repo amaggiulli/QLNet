@@ -21,6 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QLNet.Requests;
+using QLNet.Responses;
 
 namespace QLNet
 {
@@ -547,5 +549,47 @@ namespace QLNet
          return today.AddDays(wal * 365).Date;
       }
       #endregion
+
+      #region Get all bonfunctions
+
+      public static async Task<BondFunctionsResponse[]> getAllBondFunctions(BondFunctionsRequest[] requests)
+      {
+         var dictOfTasks = requests.ToDictionary(request => request.Id,
+            request => Task.Run(() => getBondFunctions(request)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new BondFunctionsResponse
+         {
+            Id = task.Key,
+            AccruedDays = task.Value.Result.AccruedDays,
+            AccruedAmount = task.Value.Result.AccruedAmount,
+            WeightedAverageLife = task.Value.Result.WeightedAverageLife,
+            Yield = task.Value.Result.Yield,
+            ModifiedDuration = task.Value.Result.ModifiedDuration
+         }).ToArray();
+      }
+
+      public static BondFunctionsResponse getBondFunctions(BondFunctionsRequest request)
+      {
+         var response = new BondFunctionsResponse
+         {
+            Id = request.Id
+         };
+         var accrual = accruedDaysAndAmount(request.Bond, request.SettlementDate);
+         response.AccruedAmount = accrual.accruedAmount;
+         response.AccruedDays = accrual.accruedDays;
+         response.WeightedAverageLife = WeightedAverageLife(request.SettlementDate, request.SinkAmounts, request.SinkDates);
+         response.Yield = request.Bond.yield(request.Price, request.DayCounter, request.Comp, request.Frequency, request.SettlementDate, request.Accuracy);
+         response.ModifiedDuration = duration(request.Bond, response.Yield.GetValueOrDefault(), request.DayCounter, request.Comp, request.Frequency,
+            Duration.Type.Modified, request.SettlementDate);
+         return response;
+      }
+      #endregion
+
    }
+
+
+
+
 }

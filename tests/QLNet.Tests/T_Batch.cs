@@ -95,5 +95,19 @@ namespace TestSuite
          Assert.NotEmpty(response);
          Assert.Equal(size, response.Length);
       }
+
+      [Fact]
+      public async Task testBatchAllBondFunctionsCalculation()
+      {
+         const int size = 2; // increase size to benchmark bond functions calculation
+         var request = BondFunctionRequestFaker.CreateBondFunctions(size);
+
+         var stopwatch = Stopwatch.StartNew();
+         var response = await BondFunctions.getAllBondFunctions(request);
+         output.WriteLine($"Calculated {size} bond functions in {stopwatch.ElapsedMilliseconds}ms");
+
+         Assert.NotEmpty(response);
+         Assert.Equal(size, response.Length);
+      }
    }
 }
