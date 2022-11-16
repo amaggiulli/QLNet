@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -829,6 +829,59 @@ namespace TestSuite
          var t = dayCounter.yearFraction(d1, d2);
 
          Assert.Equal(expectedYearFraction, t);
+      }
+
+      [Fact]
+      public void testAct366()
+      {
+         // Testing Act/366 day counter
+
+         Date[] testDates = {
+            new Date(1,  Month.February, 2002),
+            new Date(4,  Month.February, 2002),
+            new Date(16, Month.May, 2003),
+            new Date(17, Month.December, 2003),
+            new Date(17, Month.December, 2004),
+            new Date(19, Month.December, 2005),
+            new Date(2,  Month.January, 2006),
+            new Date(13, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(17, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(26, Month.July, 2006),
+            new Date(28, Month.June, 2007),
+            new Date(16, Month.September, 2009),
+            new Date(26, Month.July, 2016)
+         };
+
+         double[] expected = {
+            0.00819672131147541,
+            1.27322404371585,
+            0.587431693989071,
+            1.0000000000000,
+            1.00273224043716,
+            0.0382513661202186,
+            0.191256830601093,
+            0.172131147540984,
+            -0.16120218579235,
+            0.16120218579235,
+            0.19672131147541,
+            0.920765027322404,
+            2.21584699453552,
+            6.84426229508197
+         };
+
+         DayCounter dayCounter = new Actual366();
+
+         for (var i=1; i<testDates.Length; i++)
+         {
+            var calculated = dayCounter.yearFraction(testDates[i-1],testDates[i]);
+            QAssert.IsTrue (Math.Abs(calculated-expected[i-1]) <= 1.0e-12, 
+               "from " + testDates[i-1]
+               + " to " + testDates[i] + ":\n"
+               + "    calculated: " + calculated + "\n"
+               + "    expected:   " + expected[i-1]);
+         }
       }
    }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -249,7 +249,7 @@ namespace QLNet
          index_ = index;
          baseCPI_ = baseCPI;
          observationLag_ = observationLag;
-         paymentDayCounter_ = new Thirty360();
+         paymentDayCounter_ = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          paymentAdjustment_ = BusinessDayConvention.ModifiedFollowing;
          paymentCalendar_ = schedule.calendar();
          fixingDays_ = new List<int>() { 0 };

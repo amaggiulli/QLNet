@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -184,7 +184,7 @@ namespace TestSuite
             RelinkableHandle<YieldTermStructure> discountCurve = new RelinkableHandle<YieldTermStructure>();
             discountCurve.linkTo(new InterpolatedDiscountCurve<LogLinear>(discountDates, dfs, curveDayCounter, null, null, null, new LogLinear()));
 
-            DayCounter dayCounter = new Thirty360();
+            DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
             List<Date> dates = new List<Date>();
             dates.Add(evalDate);
             dates.Add(calendar.advance(evalDate, 6, TimeUnit.Months, BusinessDayConvention.ModifiedFollowing));
@@ -219,7 +219,7 @@ namespace TestSuite
             }
 
             RelinkableHandle<DefaultProbabilityTermStructure> piecewiseFlatHazardRate = new RelinkableHandle<DefaultProbabilityTermStructure>();
-            piecewiseFlatHazardRate.linkTo(new InterpolatedHazardRateCurve<BackwardFlat>(dates, hazardRates, new Thirty360()));
+            piecewiseFlatHazardRate.linkTo(new InterpolatedHazardRateCurve<BackwardFlat>(dates, hazardRates, new Thirty360(Thirty360.Thirty360Convention.BondBasis)));
 
             // Testing credit default swap
 
@@ -563,7 +563,7 @@ namespace TestSuite
          for (int i = 0; i < swap_tenors.Length ; i++)
          {
             isdaRateHelpers.Add(new SwapRateHelper(swap_quotes[i], new Period(swap_tenors[i], TimeUnit.Years),
-                                                   new WeekendsOnly(), Frequency.Semiannual, BusinessDayConvention.ModifiedFollowing, new Thirty360(),
+                                                   new WeekendsOnly(), Frequency.Semiannual, BusinessDayConvention.ModifiedFollowing, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                    isda_ibor));
          }
 

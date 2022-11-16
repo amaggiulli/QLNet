@@ -75,7 +75,7 @@ namespace TestSuite
             settlementDays = 0;
             fixingDays = 0;
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
-            dc = new Thirty360();
+            dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             // yoy index
             //      fixing data

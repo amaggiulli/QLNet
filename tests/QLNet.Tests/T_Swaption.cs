@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
  Copyright (C) 2019 Jean-Camille Tournier (jean-camille.tournier@avivainvestors.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -103,7 +104,7 @@ namespace TestSuite
             fixedConvention = BusinessDayConvention.Unadjusted;
 
             fixedFrequency = Frequency.Annual;
-            fixedDayCount = new Thirty360();
+            fixedDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             index = new Euribor6M(termStructure);
             floatingConvention = index.businessDayConvention();
@@ -517,7 +518,7 @@ namespace TestSuite
                                                        DateGeneration.Rule.Forward, true);
                VanillaSwap swap_u360 =
                   new VanillaSwap(type[0], vars.nominal,
-                                  fixedSchedule_u, strike, new Thirty360(),
+                                  fixedSchedule_u, strike, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                   floatSchedule, vars.index, 0.0,
                                   vars.index.dayCounter());
 
@@ -536,7 +537,7 @@ namespace TestSuite
                                                        DateGeneration.Rule.Forward, true);
                VanillaSwap swap_a360 =
                   new VanillaSwap(type[0], vars.nominal,
-                                  fixedSchedule_a, strike, new Thirty360(),
+                                  fixedSchedule_a, strike, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                   floatSchedule, vars.index, 0.0,
                                   vars.index.dayCounter());
 
@@ -564,11 +565,11 @@ namespace TestSuite
                // FLOATING_POINT_EXCEPTION
                Handle<YieldTermStructure> termStructure_u360  = new Handle<YieldTermStructure>(
                   new FlatForward(vars.settlement, swap_u360.fairRate(),
-                                  new Thirty360(), Compounding.Compounded,
+                                  new Thirty360(Thirty360.Thirty360Convention.BondBasis), Compounding.Compounded,
                                   vars.fixedFrequency));
                Handle<YieldTermStructure> termStructure_a360 = new Handle<YieldTermStructure>(
                   new FlatForward(vars.settlement, swap_a360.fairRate(),
-                                  new Thirty360(), Compounding.Compounded,
+                                  new Thirty360(Thirty360.Thirty360Convention.BondBasis), Compounding.Compounded,
                                   vars.fixedFrequency));
                Handle<YieldTermStructure> termStructure_u365 = new Handle<YieldTermStructure>(
                   new FlatForward(vars.settlement, swap_u365.fairRate(),

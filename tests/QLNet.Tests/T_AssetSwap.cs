@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -597,7 +597,7 @@ namespace TestSuite
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond1 = new CmsRateBond(settlementDays, vars.faceAmount,
                                          cmsBondSchedule1,
-                                         vars.swapIndex, new Thirty360(),
+                                         vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                          BusinessDayConvention.Following, fixingDays,
          new List<double>() {1.0},
          new List<double>() {0.0},
@@ -635,7 +635,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
-                                         vars.swapIndex, new Thirty360(),
+                                         vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                          BusinessDayConvention.Following, fixingDays,
          new List<double>() {0.84}, new List<double>() {0.0},
          new List < double? >(), new List < double? >(),
@@ -937,7 +937,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
-                                         vars.swapIndex, new Thirty360(),
+                                         vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                          BusinessDayConvention.Following, fixingDays,
                                          new List<double> {1.0}, new List<double> {0.0},
                                          new List < double? > {0.055}, new List < double? > {0.025},
@@ -987,7 +987,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
-                                         vars.swapIndex, new Thirty360(),
+                                         vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                          BusinessDayConvention.Following, fixingDays,
                                          new List<double> {0.84}, new List<double> {0.0},
                                          new List < double? >(), new List < double? >(),
@@ -1273,7 +1273,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
-                                         vars.swapIndex, new Thirty360(),
+                                         vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                          BusinessDayConvention.Following, fixingDays,
                                          new List<double> {1.0}, new List<double> {0.0},
                                          new List < double? > {0.055}, new List < double? > {0.025},
@@ -1309,7 +1309,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          Bond cmsBond2 = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
-                                          vars.swapIndex, new Thirty360(),
+                                          vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                           BusinessDayConvention.Following, fixingDays,
                                           new List<double> {0.84}, new List<double> {0.0},
                                           new List < double? >(), new List < double? >(),
@@ -1602,7 +1602,7 @@ namespace TestSuite
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg1 = new CmsLeg(cmsBondSchedule1, vars.swapIndex)
          .withFixingDays(fixingDays)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withCaps(0.055)
          .withFloors(0.025)
          .inArrears(inArrears)
@@ -1648,7 +1648,7 @@ namespace TestSuite
          .withFixingDays(fixingDays)
          .withGearings(0.84)
          .inArrears(inArrears)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withNotionals(vars.faceAmount);
          Date cmsbondRedemption2 = bondCalendar.adjust(cmsBondMaturityDate2, BusinessDayConvention.Following);
          cmsBondLeg2.Add(new SimpleCashFlow(100.0, cmsbondRedemption2));
@@ -1979,7 +1979,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg1 = new CmsLeg(cmsBondSchedule1, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withCaps(0.055)
          .withFloors(0.025)
@@ -2033,7 +2033,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg2 = new CmsLeg(cmsBondSchedule2, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withGearings(0.84)
          .inArrears(inArrears)
@@ -2345,7 +2345,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg1 = new CmsLeg(cmsBondSchedule1, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withCaps(0.055)
          .withFloors(0.025)
@@ -2387,7 +2387,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg2 = new CmsLeg(cmsBondSchedule2, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withGearings(0.84)
          .inArrears(inArrears)
@@ -2769,7 +2769,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg1 = new CmsLeg(cmsBondSchedule1, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withCaps(0.055)
          .withFloors(0.025)
@@ -2784,7 +2784,7 @@ namespace TestSuite
 
          // equivalent specialized cms bond
          Bond cmsSpecializedBond1  = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
-                                                      vars.swapIndex, new Thirty360(),
+                                                      vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                       BusinessDayConvention.Following, fixingDays,
                                                       new List<double> {1.0}, new List<double> {0.0},
                                                       new List < double? > {0.055}, new List < double? > {0.025},
@@ -2833,7 +2833,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg2 = new CmsLeg(cmsBondSchedule2, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withGearings(0.84)
          .inArrears(inArrears)
@@ -2847,7 +2847,7 @@ namespace TestSuite
 
          // equivalent specialized cms bond
          Bond cmsSpecializedBond2 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
-                                                    vars.swapIndex, new Thirty360(),
+                                                    vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                     BusinessDayConvention.Following, fixingDays,
                                                     new List<double> {0.84}, new List<double> {0.0},
                                                     new List < double? >(), new List < double? >(),
@@ -3412,7 +3412,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg1 = new CmsLeg(cmsBondSchedule1, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withCaps(0.055)
          .withFloors(0.025)
@@ -3427,7 +3427,7 @@ namespace TestSuite
 
          // equivalent specialized cms bond
          Bond cmsSpecializedBond1 = new CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule1,
-                                                    vars.swapIndex, new Thirty360(),
+                                                    vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                     BusinessDayConvention.Following, fixingDays,
                                                     new List<double> {1.0}, new List<double> {0.0},
                                                     new List < double? > {0.055}, new List < double? > {0.025},
@@ -3509,7 +3509,7 @@ namespace TestSuite
                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
                                                   DateGeneration.Rule.Backward, false);
          List<CashFlow> cmsBondLeg2 = new CmsLeg(cmsBondSchedule2, vars.swapIndex)
-         .withPaymentDayCounter(new Thirty360())
+         .withPaymentDayCounter(new Thirty360(Thirty360.Thirty360Convention.BondBasis))
          .withFixingDays(fixingDays)
          .withGearings(0.84)
          .inArrears(inArrears)
@@ -3524,7 +3524,7 @@ namespace TestSuite
 
          // equivalent specialized cms bond
          Bond cmsSpecializedBond2 = new  CmsRateBond(settlementDays, vars.faceAmount, cmsBondSchedule2,
-                                                     vars.swapIndex, new Thirty360(),
+                                                     vars.swapIndex, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                      BusinessDayConvention.Following, fixingDays,
                                                      new List<double> {0.84}, new List<double> {0.0},
                                                      new List < double? >(), new List < double? >(),

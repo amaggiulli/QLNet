@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2017  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,48 +20,28 @@
 
 namespace QLNet
 {
-   //! Actual/360 day count convention
-   /*! Actual/360 day count convention, also known as "Act/360", or "A/360". */
+   /// <summary>
+   /// Actual/360 day count convention
+   /// </summary>
    public class Actual360 : DayCounter
    {
-      public enum Actual360Convention { excludeLastDay, includeLastDay }
+      public Actual360(bool includeLastDay = false) : base(new Impl(includeLastDay)) { }
 
-      public Actual360(bool c = false) : base(conventions(c)) { }
-
-      private static DayCounter conventions(bool c)
+      private class Impl : DayCounterImpl
       {
-         if (c)
-            return IncludedImpl.Singleton;
+         private readonly bool includeLastDay_;
 
-         return Impl.Singleton;
-      }
-
-      class Impl : DayCounter
-      {
-         public static readonly Impl Singleton = new Impl();
-         private Impl() { }
-
-         public override string name() { return "Actual/360"; }
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
-         public override double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
+         public Impl(bool includeLastDay)
          {
-            return Date.daysBetween(d1, d2) / 360.0;
+            includeLastDay_ = includeLastDay;
          }
 
-      }
-
-      class IncludedImpl : DayCounter
-      {
-         public static readonly IncludedImpl Singleton = new IncludedImpl();
-         private IncludedImpl() { }
-
-         public override string name() { return "Actual/360 (inc)"; }
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1) + 1; }
+         public override string name() { return includeLastDay_ ? "Actual/360 (inc)" : "Actual/360"; }
+         public override int dayCount(Date d1, Date d2) {  return (d2-d1) + (includeLastDay_ ? 1 : 0); }
          public override double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
          {
-            return (Date.daysBetween(d1, d2) + 1) / 360.0;
+            return (Date.daysBetween(d1, d2)  + (includeLastDay_ ? 1.0 : 0.0))/ 360.0;
          }
-
       }
    }
 }

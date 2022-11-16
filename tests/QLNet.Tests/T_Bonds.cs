@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -78,7 +78,7 @@ namespace TestSuite
          int settlementDays = 3;
          double[] coupons = new double[] { 0.02, 0.05, 0.08 };
          Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
-         DayCounter bondDayCount = new Thirty360();
+         DayCounter bondDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
          BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
          double redemption = 100.0;
@@ -752,7 +752,7 @@ namespace TestSuite
          double tolerance = 1.0e-4;
 
          List<InterestRate> couponRates = new InitializedList<InterestRate>(1);
-         couponRates[0] = new InterestRate(0.1, new Thirty360(), Compounding.Compounded, Frequency.Annual);
+         couponRates[0] = new InterestRate(0.1, new Thirty360(Thirty360.Thirty360Convention.BondBasis), Compounding.Compounded, Frequency.Annual);
 
          for (int bondIndex = 0; bondIndex < maturityDates.Count; bondIndex++)
          {
@@ -801,11 +801,11 @@ namespace TestSuite
          Settings.setEvaluationDate(startDate);
 
          Period bondLength = new Period(12, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
+         DayCounter dCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          Frequency payFrequency = Frequency.Monthly;
          double amount = 400000000;
          double rate = 0.06;
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360()));
+         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360(Thirty360.Thirty360Convention.BondBasis)));
 
          AmortizingFixedRateBond bond = BondFactory.makeAmortizingFixedBond(startDate, bondLength, dCounter, payFrequency, amount, rate);
          IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
@@ -978,14 +978,14 @@ namespace TestSuite
 
          Period bondLength = new Period(358, TimeUnit.Months);
          Period originalLenght = new Period(360, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
+         DayCounter dCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          Frequency payFrequency = Frequency.Monthly;
          double amount = 400000000;
          double WACrate = 0.06;
          double PassThroughRate = 0.055;
          PSACurve psa100 = new PSACurve(startDate);
 
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360()));
+         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360(Thirty360.Thirty360Convention.BondBasis)));
 
          // 400 Million Pass-Through with a 5.5% Pass-through Rate, a WAC of 6.0%, and a WAM of 358 Months,
          // Assuming 100% PSA

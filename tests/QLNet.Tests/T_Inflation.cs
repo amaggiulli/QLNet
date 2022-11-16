@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -242,7 +242,7 @@ namespace TestSuite
             };
 
             Period observationLag = new Period(2, TimeUnit.Months);
-            DayCounter dc = new Thirty360();
+            DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
             Frequency frequency = Frequency.Monthly;
             List<BootstrapHelper<ZeroInflationTermStructure>> helpers =
                makeHelpers(zcData, zcData.Length, ii,
@@ -846,7 +846,7 @@ namespace TestSuite
             };
 
             Period observationLag = new Period(2, TimeUnit.Months);
-            DayCounter dc = new Thirty360();
+            DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             // now build the helpers ...
             List<BootstrapHelper<YoYInflationTermStructure>> helpers =

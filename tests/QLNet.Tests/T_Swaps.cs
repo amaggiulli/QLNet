@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -78,7 +79,7 @@ namespace TestSuite
             floatingConvention = BusinessDayConvention.ModifiedFollowing;
             fixedFrequency = Frequency.Annual;
             floatingFrequency = Frequency.Semiannual;
-            fixedDayCount = new Thirty360();
+            fixedDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             index = new Euribor(new Period(floatingFrequency), termStructure);
 

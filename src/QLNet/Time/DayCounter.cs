@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -16,69 +16,78 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
+
 using System;
 
 namespace QLNet
 {
+   /// <summary>
+   /// Bridge Implementor
+   /// </summary>
+   public abstract class DayCounterImpl
+   {
+      public abstract string name();
+      public virtual int dayCount(Date d1,Date d2)
+      {
+         return d2-d1;
+      }
+     
+      public abstract double yearFraction(Date d1,Date d2,Date refPeriodStart,Date refPeriodEnd);
+   }
+
    // This class provides methods for determining the length of a time period according to given market convention,
    // both as a number of days and as a year fraction.
+   /// <summary>
+   /// This class provides methods for determining the length of a time period according to given market convention,
+   /// both as a number of days and as a year fraction.
+   /// 
+   /// The Bridge pattern is used to provide the base behavior of the day counter.
+   /// </summary>
    public class DayCounter
    {
-      // this is a placeholder for actual day counters for Singleton pattern use
-      protected DayCounter dayCounter_;
-      public DayCounter dayCounter
+      protected DayCounterImpl _impl;
+      protected DayCounter(DayCounterImpl impl) {_impl = impl;}
+
+      public DayCounter()
+      {}
+
+      public bool empty()
       {
-         get
-         {
-            return dayCounter_;
-         }
-         set
-         {
-            dayCounter_ = value;
-         }
+         return _impl == null;
       }
 
-      // constructors
-      /*! The default constructor returns a day counter with a null implementation, which is therefore unusable except as a
-          placeholder. */
-      public DayCounter() { }
-      public DayCounter(DayCounter d) { dayCounter_ = d; }
-
-      // comparison based on name
-      // Returns <tt>true</tt> iff the two day counters belong to the same derived class.
-      public static bool operator ==(DayCounter d1, DayCounter d2)
+      public string name()
       {
-         return ((Object)d1 == null || (Object)d2 == null) ?
-                ((Object)d1 == null && (Object)d2 == null) :
-                (d1.empty() && d2.empty()) || (!d1.empty() && !d2.empty() && d1.name() == d2.name());
-      }
-      public static bool operator !=(DayCounter d1, DayCounter d2) { return !(d1 == d2); }
-
-
-      public bool empty() { return dayCounter_ == null; }
-
-      public virtual string name()
-      {
-         if (empty())
-            return "No implementation provided";
-         return dayCounter_.name();
+         Utils.QL_REQUIRE(_impl!= null,()=> "no day counter implementation provided");
+         return _impl!.name();
       }
 
-      public virtual int dayCount(Date d1, Date d2)
+      public int dayCount(Date d1,Date d2)
       {
-         Utils.QL_REQUIRE(!empty(), () => "No implementation provided");
-         return dayCounter_.dayCount(d1, d2);
+         Utils.QL_REQUIRE(_impl != null,()=> "no day counter implementation provided");
+         return _impl!.dayCount(d1,d2);
       }
 
       public double yearFraction(Date d1, Date d2) { return yearFraction(d1, d2, d1, d2); }
-      public virtual double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
+      public double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
       {
-         Utils.QL_REQUIRE(!empty(), () => "No implementation provided");
-         return dayCounter_.yearFraction(d1, d2, refPeriodStart, refPeriodEnd);
+         Utils.QL_REQUIRE(_impl!=null,()=> "no day counter implementation provided");
+         return _impl!.yearFraction(d1,d2,refPeriodStart,refPeriodEnd);
       }
 
+      public static bool operator ==(DayCounter d1, DayCounter d2)
+      {
+         return d1 is null || d2 is null ?
+                d1 is null && d2 is null :
+                (d1.empty() && d2.empty()) || (!d1.empty() && !d2.empty() && d1.name() == d2.name());
+      }
+      public static bool operator!=(DayCounter d1, DayCounter d2)
+      {
+         return !(d1 == d2);
+      }
+
+      public override string ToString() { return this.name(); }
       public override bool Equals(object o) { return this == (DayCounter)o; }
       public override int GetHashCode() { return 0; }
-      public override string ToString() { return this.name(); }
    }
 }

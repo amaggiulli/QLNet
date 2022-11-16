@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -34,7 +34,7 @@ namespace QLNet
 
       public double getCPR(Date valDate)
       {
-         Thirty360 dayCounter = new Thirty360();
+         Thirty360 dayCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          int d = dayCounter.dayCount(_startDate, valDate) / 30 + 1;
 
          return (d <= 30 ? 0.06 * (d / 30d) : 0.06) * _multi;
