@@ -2,7 +2,7 @@ QLNet
 =====
 
 QLNet C# library official repository.
-QLNet is a financial library written in C# for the Windows enviroment derived primarily from its C++ counterpart, Quantlib, 
+QLNet is a financial library written in C# derived primarily from its C++ counterpart, Quantlib, 
 which has been used as a base reference for modelling various financial instruments.
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
