@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -21,45 +22,40 @@ using System;
 
 namespace QLNet
 {
-   //! Canadian calendar
-   /*! Banking holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Family Day, third Monday of February (since 2008)</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Victoria Day, The Monday on or preceding 24 May</li>
-       <li>Canada Day, July 1st (possibly moved to Monday)</li>
-       <li>Provincial Holiday, first Monday of August</li>
-       <li>Labour Day, first Monday of September</li>
-       <li>Thanksgiving Day, second Monday of October</li>
-       <li>Remembrance Day, November 11th (possibly moved to Monday)</li>
-       <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
-       <li>Boxing Day, December 26th (possibly moved to Monday or
-           Tuesday)</li>
-       </ul>
+   //  Canadian calendar
+   /*  Banking holidays:
+       
+       Saturdays
+       Sundays
+       New Year's Day, January 1st (possibly moved to Monday)
+       Family Day, third Monday of February (since 2008)
+       Good Friday
+       Easter Monday
+       Victoria Day, The Monday on or preceding 24 May
+       Canada Day, July 1st (possibly moved to Monday)
+       Provincial Holiday, first Monday of August
+       Labour Day, first Monday of September
+       Thanksgiving Day, second Monday of October
+       Remembrance Day, November 11th (possibly moved to Monday)
+       Christmas, December 25th (possibly moved to Monday or Tuesday)
+       Boxing Day, December 26th (possibly moved to Monday or Tuesday)
 
        Holidays for the Toronto stock exchange (TSX):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Family Day, third Monday of February (since 2008)</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Victoria Day, The Monday on or preceding 24 May</li>
-       <li>Canada Day, July 1st (possibly moved to Monday)</li>
-       <li>Provincial Holiday, first Monday of August</li>
-       <li>Labour Day, first Monday of September</li>
-       <li>Thanksgiving Day, second Monday of October</li>
-       <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
-       <li>Boxing Day, December 26th (possibly moved to Monday or
-           Tuesday)</li>
-       </ul>
+       
+       Saturdays
+       Sundays
+       New Year's Day, January 1st (possibly moved to Monday)
+       Family Day, third Monday of February (since 2008)
+       Good Friday
+       Easter Monday
+       Victoria Day, The Monday on or preceding 24 May
+       Canada Day, July 1st (possibly moved to Monday)
+       Provincial Holiday, first Monday of August
+       Labour Day, first Monday of September
+       Thanksgiving Day, second Monday of October
+       Christmas, December 25th (possibly moved to Monday or Tuesday)
+       Boxing Day, December 26th (possibly moved to Monday or Tuesday)
 
-       \ingroup calendars
    */
    public class Canada : Calendar
    {
@@ -75,32 +71,26 @@ namespace QLNet
       {
          // all calendar instances on the same market share the same
          // implementation instance
-         switch (m)
+         _impl = m switch
          {
-            case Market.Settlement:
-               calendar_ = Settlement.Singleton;
-               break;
-            case Market.TSX:
-               calendar_ = TSX.Singleton;
-               break;
-            default:
-               throw new ArgumentException("Unknown market: " + m);
-         }
+            Market.Settlement => Settlement.Singleton,
+            Market.TSX => TSX.Singleton,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
       }
 
-      class Settlement : Calendar.WesternImpl
+      private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
          private Settlement() { }
-
+         public static readonly Settlement Singleton = new();
          public override string name() { return "Canada"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
@@ -140,19 +130,18 @@ namespace QLNet
          }
       }
 
-      class TSX : Calendar.WesternImpl
+      private class TSX : WesternImpl
       {
-         public static readonly TSX Singleton = new TSX();
          private TSX() { }
-
+         public static readonly TSX Singleton = new();
          public override string name() { return "TSX"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)

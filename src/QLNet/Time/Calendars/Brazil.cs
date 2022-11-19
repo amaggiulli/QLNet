@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,57 +21,53 @@ using System;
 
 namespace QLNet
 {
-   //! Brazilian calendar
-   /*! Banking holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Tiradentes's Day, April 21th</li>
-       <li>Labour Day, May 1st</li>
-       <li>Independence Day, September 7th</li>
-       <li>Nossa Sra. Aparecida Day, October 12th</li>
-       <li>All Souls Day, November 2nd</li>
-       <li>Republic Day, November 15th</li>
-       <li>Christmas, December 25th</li>
-       <li>Passion of Christ</li>
-       <li>Carnival</li>
-       <li>Corpus Christi</li>
-       </ul>
+   //  Brazilian calendar
+   /*  Banking holidays:
+       
+       Saturdays
+       Sundays
+       New Year's Day, January 1st
+       Tiradentes's Day, April 21th
+       Labour Day, May 1st
+       Independence Day, September 7th
+       Nossa Sra. Aparecida Day, October 12th
+       All Souls Day, November 2nd
+       Republic Day, November 15th
+       Christmas, December 25th
+       Passion of Christ
+       Carnival
+       Corpus Christi
 
        Holidays for the Bovespa stock exchange
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Sao Paulo City Day, January 25th</li>
-       <li>Tiradentes's Day, April 21th</li>
-       <li>Labour Day, May 1st</li>
-       <li>Revolution Day, July 9th</li>
-       <li>Independence Day, September 7th</li>
-       <li>Nossa Sra. Aparecida Day, October 12th</li>
-       <li>All Souls Day, November 2nd</li>
-       <li>Republic Day, November 15th</li>
-       <li>Black Consciousness Day, November 20th (since 2007)</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Passion of Christ</li>
-       <li>Carnival</li>
-       <li>Corpus Christi</li>
-       <li>the last business day of the year</li>
-       </ul>
+       
+       Saturdays
+       Sundays
+       New Year's Day, January 1st
+       Sao Paulo City Day, January 25th
+       Tiradentes's Day, April 21th
+       Labour Day, May 1st
+       Revolution Day, July 9th
+       Independence Day, September 7th
+       Nossa Sra. Aparecida Day, October 12th
+       All Souls Day, November 2nd
+       Republic Day, November 15th
+       Black Consciousness Day, November 20th (since 2007)
+       Christmas Eve, December 24th
+       Christmas, December 25th
+       Passion of Christ
+       Carnival
+       Corpus Christi
+       the last business day of the year
 
-       \ingroup calendars
-
-       \test the correctness of the returned results is tested
-             against a list of known holidays.
    */
    public class Brazil : Calendar
    {
-      //! Brazilian calendars
-      public enum Market { Settlement,            //!< generic settlement calendar
-                           Exchange               //!< BOVESPA calendar
-                         }
+      // Brazilian calendars
+      public enum Market
+      {
+         Settlement, // generic settlement calendar
+         Exchange    // BOVESPA calendar
+      }
 
       public Brazil() : this(Market.Settlement) { }
       public Brazil(Market market)
@@ -79,10 +76,10 @@ namespace QLNet
          switch (market)
          {
             case Market.Settlement:
-               calendar_ = SettlementImpl.Singleton;
+               _impl = SettlementImpl.Singleton;
                break;
             case Market.Exchange:
-               calendar_  = ExchangeImpl.Singleton;
+               _impl  = ExchangeImpl.Singleton;
                break;
             default:
                Utils.QL_FAIL("unknown market");
@@ -91,20 +88,19 @@ namespace QLNet
       }
 
 
-      private class SettlementImpl : Calendar.WesternImpl
+      private class SettlementImpl : WesternImpl
       {
-         public static readonly SettlementImpl Singleton = new SettlementImpl();
          private SettlementImpl() { }
-
+         public static readonly SettlementImpl Singleton = new();
          public override string name() { return "Brazil"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int dd = date.DayOfYear;
-            int em = easterMonday(y);
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var dd = date.DayOfYear;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -135,20 +131,19 @@ namespace QLNet
          }
       }
 
-      private class ExchangeImpl : Calendar.WesternImpl
+      private class ExchangeImpl : WesternImpl
       {
-         public static readonly ExchangeImpl Singleton = new ExchangeImpl();
          private ExchangeImpl() { }
-
+         public static readonly ExchangeImpl Singleton = new();
          public override string name() { return "BOVESPA"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int dd = date.DayOfYear;
-            int em = easterMonday(y);
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var dd = date.DayOfYear;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day

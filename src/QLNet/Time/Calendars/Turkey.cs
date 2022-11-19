@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -43,23 +43,23 @@ namespace QLNet
    {
       public Turkey() : base(Impl.Singleton) { }
 
-      class Impl : Calendar
+      private class Impl : CalendarImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Turkey"; }
          public override bool isWeekend(DayOfWeek w)
          {
-            return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday;
+            return w is DayOfWeek.Saturday or DayOfWeek.Sunday;
          }
 
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if (isWeekend(w)
                 // New Year's Day

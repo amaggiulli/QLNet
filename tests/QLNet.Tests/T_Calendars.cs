@@ -163,7 +163,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2005));
 
          Calendar c = new UnitedStates(UnitedStates.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004),
                                                new Date(31, Month.December, 2005));
          if (hol.Count != expectedHol.Count)
             QAssert.Fail("there were " + expectedHol.Count
@@ -187,7 +187,7 @@ namespace TestSuite
          expectedHol.Add(new Date(23, Month.November, 1961));
          expectedHol.Add(new Date(25, Month.December, 1961));
 
-         hol = Calendar.holidayList(c, new Date(1, Month.January, 1961), new Date(31, Month.December, 1961));
+         hol = c.holidayList(new Date(1, Month.January, 1961), new Date(31, Month.December, 1961));
 
          if (hol.Count != expectedHol.Count)
             QAssert.Fail("there were " + expectedHol.Count +
@@ -221,7 +221,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2004));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -270,7 +270,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2006));
 
          Calendar c = new UnitedStates(UnitedStates.Market.NYSE);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2006));
 
          int i;
          for (i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
@@ -385,7 +385,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2006));
 
          Calendar c = new TARGET();
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 1999), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 1999), new Date(31, Month.December, 2006));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -419,7 +419,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.FrankfurtStockExchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -453,8 +453,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.Eurex);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003),
-                                               new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -486,7 +485,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.Xetra);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -542,7 +541,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -599,7 +598,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Exchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -656,7 +655,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Metals);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -703,7 +702,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Italy(Italy.Market.Exchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2002), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2002), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -750,7 +749,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2006));
 
          Calendar c = new Brazil();
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2005), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2005), new Date(31, Month.December, 2006));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -841,8 +840,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2007));
 
          Calendar c = new SouthKorea(SouthKorea.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
-                                               new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -936,8 +934,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2007));
 
          Calendar c = new SouthKorea(SouthKorea.Market.KRX);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
-                                               new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -1113,8 +1110,7 @@ namespace TestSuite
          expectedHol.Add(new Date(7, Month.October, 2021));
 
          Calendar c = new China(China.Market.SSE);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2014),
-                                               new Date(31, Month.December, 2021));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2014),  new Date(31, Month.December, 2021));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {

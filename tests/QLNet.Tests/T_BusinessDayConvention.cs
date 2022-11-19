@@ -108,7 +108,7 @@ namespace TestSuite
          int n = testCases.Length;
          for (int i = 0; i < n; i++)
          {
-            Calendar calendar = new Calendar(testCases[i].calendar);
+            Calendar calendar = testCases[i].calendar;
             Date result = calendar.advance(testCases[i].start, testCases[i].period, testCases[i].convention, testCases[i].endOfMonth);
 
             QAssert.IsTrue(result == testCases[i].result,

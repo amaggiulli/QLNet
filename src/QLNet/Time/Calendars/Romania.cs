@@ -1,18 +1,21 @@
-﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
-//
-//  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
-//  QLNet is free software: you can redistribute it and/or modify it
-//  under the terms of the QLNet license.  You should have received a
-//  copy of the license along with this program; if not, license is
-//  available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
-//
-//  QLNet is a based on QuantLib, a free-software/open-source library
-//  for financial quantitative analysts and developers - http://quantlib.org/
-//  The QuantLib license is available online at http://quantlib.org/license.shtml.
-//
-//  This program is distributed in the hope that it will be useful, but WITHOUT
-//  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-//  FOR A PARTICULAR PURPOSE.  See the license for more details.
+﻿/*
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
+
+ QLNet is free software: you can redistribute it and/or modify it
+ under the terms of the QLNet license.  You should have received a
+ copy of the license along with this program; if not, license is
+ available at <https://github.com/amaggiulli/QLNet/blob/develop/LICENSE>.
+
+ QLNet is a based on QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+ The QuantLib license is available online at http://quantlib.org/license.shtml.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
 using System;
 
 namespace QLNet
@@ -52,7 +55,7 @@ namespace QLNet
 
       public Romania(Market m) : base()
       {
-         calendar_ = m switch
+         _impl = m switch
          {
             Market.Public => PublicImpl.Singleton,
             Market.BVB => BVBImpl.Impl,
@@ -60,9 +63,9 @@ namespace QLNet
          };
       }
 
-      private class PublicImpl : Calendar.OrthodoxImpl
+      private class PublicImpl : OrthodoxImpl
       {
-         public static readonly PublicImpl Singleton = new PublicImpl();
+         public static readonly PublicImpl Singleton = new();
          protected PublicImpl() { }
          public override string name() { return "Romania"; }
 
@@ -105,7 +108,7 @@ namespace QLNet
 
       private class BVBImpl : PublicImpl
       {
-         public static readonly BVBImpl Impl = new BVBImpl();
+         public static readonly BVBImpl Impl = new();
          private BVBImpl() { }
          public override string name() { return "Romania"; }
          public override bool isBusinessDay(Date date)

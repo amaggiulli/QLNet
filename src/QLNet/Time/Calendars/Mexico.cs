@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -47,19 +47,19 @@ namespace QLNet
    {
       public Mexico() : base(Impl.Singleton) { }
 
-      class Impl : Calendar.WesternImpl
+      private class Impl : WesternImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Mexican stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day
                 || (d == 1 && m == Month.January)

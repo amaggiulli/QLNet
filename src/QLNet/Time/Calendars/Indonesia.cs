@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
 
@@ -69,31 +69,28 @@ namespace QLNet
       {
          // all calendar instances on the same market share the same
          // implementation instance
-         switch (m)
+         _impl = m switch
          {
-            case Market.BEJ:
-            case Market.JSX:
-            case Market.IDX:
-               calendar_ = BEJ.Singleton;
-               break;
-            default:
-               throw new ArgumentException("Unknown market: " + m);
-         }
+            Market.BEJ => BEJ.Singleton,
+            Market.JSX => BEJ.Singleton,
+            Market.IDX => BEJ.Singleton,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
       }
 
-      class BEJ : Calendar.WesternImpl
+      private class BEJ : WesternImpl
       {
-         public static readonly BEJ Singleton = new BEJ();
+         public static readonly BEJ Singleton = new();
          private BEJ() { }
 
          public override string name() { return "Jakarta stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day

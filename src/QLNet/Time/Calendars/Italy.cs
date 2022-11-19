@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -74,33 +75,28 @@ namespace QLNet
       {
          // all calendar instances on the same market share the same
          // implementation instance
-         switch (m)
+         _impl = m switch
          {
-            case Market.Settlement:
-               calendar_ = Settlement.Singleton;
-               break;
-            case Market.Exchange:
-               calendar_ = Exchange.Singleton;
-               break;
-            default:
-               throw new ArgumentException("Unknown market: " + m);
-         }
+            Market.Settlement => Settlement.Singleton,
+            Market.Exchange => Exchange.Singleton,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
       }
 
 
-      class Settlement : Calendar.WesternImpl
+      private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
+         public static readonly Settlement Singleton = new();
          private Settlement() { }
 
          public override string name() { return "Italian settlement"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -132,19 +128,19 @@ namespace QLNet
          }
       }
 
-      class Exchange : Calendar.WesternImpl
+      private class Exchange : WesternImpl
       {
-         public static readonly Exchange Singleton = new Exchange();
+         public static readonly Exchange Singleton = new();
          private Exchange() { }
 
          public override string name() { return "Milan stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day

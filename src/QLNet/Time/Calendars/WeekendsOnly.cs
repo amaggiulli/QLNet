@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -23,9 +23,9 @@ namespace QLNet
    {
       public WeekendsOnly() : base(Impl.Singleton) { }
 
-      class Impl : Calendar.WesternImpl
+      private class Impl : WesternImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "weekends only"; }

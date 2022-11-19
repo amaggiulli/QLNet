@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -26,9 +27,9 @@ namespace QLNet
    {
       public NullCalendar() : base(Impl.Singleton) { }
 
-      class Impl : Calendar
+      private class Impl : CalendarImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Null calendar"; }

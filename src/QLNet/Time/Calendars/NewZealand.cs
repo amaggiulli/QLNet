@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -54,7 +54,7 @@ namespace QLNet
    {
       public NewZealand() : base(Impl.Singleton) { }
 
-      class Impl : WesternImpl
+      private class Impl : WesternImpl
       {
          // https://www.beehive.govt.nz/release/matariki-holiday-dates-next-thirty-years-announced
          public Date[] MatarikiHolidays = new[] {
@@ -91,17 +91,17 @@ namespace QLNet
                new Date(21, 6, 2052)
             };
 
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "New Zealand"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday or Tuesday)
                 || ((d == 1 || (d == 3 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday))) &&

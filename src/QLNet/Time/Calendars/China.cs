@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
 
@@ -65,10 +65,10 @@ namespace QLNet
          switch (market)
          {
             case Market.SSE:
-               calendar_ = SseImpl.Singleton;
+               _impl = SseImpl.Singleton;
                break;
             case Market.IB:
-               calendar_ = IbImpl.Singleton;
+               _impl = IbImpl.Singleton;
                break;
             default:
                Utils.QL_FAIL("unknown market");
@@ -76,9 +76,9 @@ namespace QLNet
          }
       }
 
-      private class SseImpl : Calendar
+      private class SseImpl : CalendarImpl
       {
-         public static readonly SseImpl Singleton = new SseImpl();
+         public static readonly SseImpl Singleton = new();
          private SseImpl() { }
          public override string name() { return "Shanghai stock exchange"; }
 
@@ -89,10 +89,10 @@ namespace QLNet
 
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if (isWeekend(w)
                 // New Year's Day
@@ -222,22 +222,20 @@ namespace QLNet
          }
       }
 
-      private class IbImpl : Calendar
+      private class IbImpl : CalendarImpl
       {
-         public static readonly IbImpl Singleton = new IbImpl();
-
-         public IbImpl()
+         public static readonly IbImpl Singleton = new();
+         private IbImpl()
          {
             sseImpl = new China(Market.SSE);
          }
-
+         private readonly Calendar sseImpl;
          public override string name() { return "China inter bank market"; }
-
          public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
          public override bool isBusinessDay(Date date)
          {
 
-            List<Date> working_weekends = new List<Date>
+            var working_weekends = new List<Date>
             {
                // 2005
                new Date(5, Month.February, 2005),
@@ -372,9 +370,6 @@ namespace QLNet
             return sseImpl.isBusinessDay(date) || working_weekends.Contains(date);
 
          }
-
-         private Calendar sseImpl;
-
       }
 
    }

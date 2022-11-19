@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -84,13 +84,13 @@ namespace QLNet
          switch (m)
          {
             case Market.Settlement:
-               calendar_ = Settlement.Singleton;
+               _impl = Settlement.Singleton;
                break;
             case Market.Exchange:
-               calendar_ = Exchange.Singleton;
+               _impl = Exchange.Singleton;
                break;
             case Market.Metals:
-               calendar_ = Metals.Singleton;
+               _impl = Metals.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
@@ -125,11 +125,11 @@ namespace QLNet
          public override string name() { return "UK settlement"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
@@ -149,18 +149,19 @@ namespace QLNet
             return true;
          }
       }
-      private class Exchange : Calendar.WesternImpl
+
+      private class Exchange : WesternImpl
       {
-         internal static readonly Exchange Singleton = new Exchange();
+         internal static readonly Exchange Singleton = new();
          private Exchange() { }
 
          public override string name() { return "London stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var m = (Month)date.Month;
+            var y = date.Year;
             int em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
@@ -180,19 +181,20 @@ namespace QLNet
             return true;
          }
       }
-      private class Metals : Calendar.WesternImpl
+
+      private class Metals : WesternImpl
       {
-         internal static readonly Metals Singleton = new Metals();
+         internal static readonly Metals Singleton = new();
          private Metals() { }
 
          public override string name() { return "London metals exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
                 || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
