@@ -62,7 +62,7 @@ namespace QLNet
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
-                || (d == 1  && m == Month.January)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
                 // Australia Day, January 26th (possibly moved to Monday)
                 || ((d == 26 || ((d == 27 || d == 28) && w == DayOfWeek.Monday)) &&
                     m == Month.January)
@@ -70,8 +70,8 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // ANZAC Day, April 25th (possibly moved to Monday)
-                || ((d == 25 || (d == 26 && w == DayOfWeek.Monday)) && m == Month.April)
+                // ANZAC Day, April 25th
+                || (d == 25 && m == Month.April)
                 // Queen's Birthday, second Monday in June
                 || ((d > 7 && d <= 14) && w == DayOfWeek.Monday && m == Month.June)
                 // Bank Holiday, first Monday in August
@@ -83,7 +83,9 @@ namespace QLNet
                     && m == Month.December)
                 // Boxing Day, December 26th (possibly Monday or Tuesday)
                 || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday)))
-                    && m == Month.December))
+                    && m == Month.December)
+                // National Day of Mourning for Her Majesty, September 22 (only 2022)
+                || (d == 22 && m == Month.September && y == 2022))
                return false;
             return true;
          }

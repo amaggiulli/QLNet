@@ -118,8 +118,9 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // ANZAC Day. April 25th
+                // ANZAC Day. April 25th ("Mondayised" since 2013) 
                 || (d == 25 && m == Month.April)
+                || ((d == 26 || d == 27) && w == DayOfWeek.Monday && m == Month.April && y > 2013)
                 // Queen's Birthday, first Monday in June
                 || (d <= 7 && w == DayOfWeek.Monday && m == Month.June)
                 // Matariki Holiday

@@ -113,6 +113,7 @@ namespace QLNet
                 || (y == 2019 && d == 1 && m == Month.January)
                 || (y == 2020 && d == 1 && m == Month.January)
                 || (y == 2021 && d == 1 && m == Month.January)
+                || (y == 2022 && d == 3 && m == Month.January)
                 // Chinese New Year
                 || (y == 2004 && d >= 19 && d <= 28 && m == Month.January)
                 || (y == 2005 && d >= 7 && d <= 15 && m == Month.February)
@@ -135,6 +136,7 @@ namespace QLNet
                 || (y == 2019 && d >= 4 && d <= 8 && m == Month.February)
                 || (y == 2020 && (d == 24 || (d >= 27 && d <= 31)) && m == Month.January)
                 || (y == 2021 && (d == 11 || d == 12 || d == 15 || d == 16 || d == 17) && m == Month.February)
+                || (y == 2022 && ((d == 31 && m == Month.January) || (d <= 4 && m == Month.February)))
                 // Ching Ming Festival
                 || (y <= 2008 && d == 4 && m == Month.April)
                 || (y == 2009 && d == 6 && m == Month.April)
@@ -150,6 +152,7 @@ namespace QLNet
                 || (y == 2019 && d == 5 && m == Month.April)
                 || (y == 2020 && d == 6 && m == Month.April)
                 || (y == 2021 && d == 5 && m == Month.April)
+                || (y == 2022 && d >= 4 && d <= 5 && m == Month.April)
                 // Labor Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.May)
                 || (y == 2008 && d >= 1 && d <= 2 && m == Month.May)
@@ -168,6 +171,7 @@ namespace QLNet
                 || (y == 2019 && d >= 1 && d <= 3 && m == Month.May)
                 || (y == 2020 && (d == 1 || d == 4 || d == 5) && m == Month.May)
                 || (y == 2021 && (d == 3 || d == 4 || d == 5) && m == Month.May)
+                || (y == 2022 && d >= 2 && d <= 4 && m == Month.May)
                 // Tuen Ng Festival
                 || (y <= 2008 && d == 9 && m == Month.June)
                 || (y == 2009 && (d == 28 || d == 29) && m == Month.May)
@@ -183,6 +187,7 @@ namespace QLNet
                 || (y == 2019 && d == 7 && m == Month.June)
                 || (y == 2020 && d >= 25 && d <= 26 && m == Month.June)
                 || (y == 2021 && d == 14 && m == Month.June)
+                || (y == 2022 && d == 3 && m == Month.June)
                 // Mid-Autumn Festival
                 || (y <= 2008 && d == 15 && m == Month.September)
                 || (y == 2010 && d >= 22 && d <= 24 && m == Month.September)
@@ -195,6 +200,7 @@ namespace QLNet
                 || (y == 2018 && d == 24 && m == Month.September)
                 || (y == 2019 && d == 13 && m == Month.September)
                 || (y == 2021 && (d == 20 || d == 21) && m == Month.September)
+                || (y == 2022 && d == 12 && m == Month.September)
                 // National Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.October)
                 || (y == 2008 && ((d >= 29 && m == Month.September) ||
@@ -213,6 +219,7 @@ namespace QLNet
                 || (y == 2020 && d >= 1 && d <= 2 && m == Month.October)
                 || (y == 2020 && d >= 5 && d <= 8 && m == Month.October)
                 || (y == 2021 && (d == 1 || d == 4 || d == 5 || d == 6 || d == 7) && m == Month.October)
+                || (y == 2022 && d >= 3 && d <= 7 && m == Month.October)
                 // 70th anniversary of the victory of anti-Japaneses war
                 || (y == 2015 && d >= 3 && d <= 4 && m == Month.September)
                )
@@ -363,7 +370,15 @@ namespace QLNet
                new Date(8, Month.May, 2021),
                new Date(18, Month.September, 2021),
                new Date(26, Month.September, 2021),
-               new Date(9, Month.October, 2021)
+               new Date(9, Month.October, 2021),
+               // 2022
+               new Date(29, Month.January, 2022),
+               new Date(30, Month.January, 2022),
+               new Date(2, Month.April, 2022),
+               new Date(24, Month.April, 2022),
+               new Date(7, Month.May, 2022),
+               new Date(8, Month.October, 2022),
+               new Date(9, Month.October, 2022)
             };
 
             // If it is already a SSE business day, it must be a IB business day

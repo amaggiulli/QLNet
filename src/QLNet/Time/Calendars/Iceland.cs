@@ -63,9 +63,8 @@ namespace QLNet
             var em = easterMonday(y);
 
             if (isWeekend(w)
-                // New Year's Day (possibly moved to Monday)
-                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday))
-                    && m == Month.January)
+                // New Year's Day
+                || (d == 1 && m == Month.January)
                 // Holy Thursday
                 || (dd == em - 4)
                 // Good Friday

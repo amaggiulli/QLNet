@@ -114,7 +114,11 @@ namespace QLNet
             // last Monday of August (Summer Bank Holiday)
             || (d >= 25 && w == DayOfWeek.Monday && m == Month.August)
             // April 29th, 2011 only (Royal Wedding Bank Holiday)
-            || (d == 29 && m == Month.April && y == 2011);
+            || (d == 29 && m == Month.April && y == 2011)
+            // September 19th, 2022 only (The Queen's Funeral Bank Holiday)
+            || (d == 19 && m == Month.September && y == 2022)
+            // May 8th, 2023 (King Charles III Coronation Bank Holiday)
+            || (d == 8 && m == Month.May && y == 2023);
       }
 
    private class Settlement : Calendar.WesternImpl

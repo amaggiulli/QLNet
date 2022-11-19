@@ -64,6 +64,8 @@ namespace QLNet
             if (isWeekend(w)
                 // New Year's Day
                 || (d == 1 && m == Month.January)
+                // Good Friday
+                || (dd == em - 3 && y >= 2016)
                 // Easter Monday
                 || (dd == em)
                 // Labour Day
