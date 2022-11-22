@@ -592,6 +592,20 @@ namespace QLNet
       }
       public int Count { get { return dates_.Count; } }
 
+      public void addIrregularDates(DateTime[] dates)
+      {
+         Utils.QL_REQUIRE(dates is { Length: > 0 }, ()=> "invalid dates");
+         foreach (var date1 in dates)
+         {
+            if (!dates_.Exists(x => x == (Date)date1) &&
+                date1 < (DateTime)dates_.Max(x=>x)) 
+            {
+               var index = dates_.FindIndex((x => x > (Date)date1));
+               dates_.Insert(index, date1);
+               isRegular_.Insert(index, false);
+            }
+         }
+      }
 
       private Date nextTwentieth(Date d, DateGeneration.Rule rule)
       {
