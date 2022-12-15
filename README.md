@@ -19,7 +19,7 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=security_rating)](https://sonarcloud.io/dashboard?id=QLNet)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QLNet-develop)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QLNet)
 
 ## Development workflow 
 
