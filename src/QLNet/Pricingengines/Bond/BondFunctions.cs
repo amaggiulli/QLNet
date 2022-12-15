@@ -528,7 +528,7 @@ namespace QLNet
       {
          Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
 
-         double totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
+         var totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
 
          if (totAmount.IsEqual(0))
             return today;
@@ -536,18 +536,25 @@ namespace QLNet
          double wal = 0;
          DayCounter dc = new Actual365Fixed();
 
-         for (int x = 0; x < amounts.Count; x++)
+         for (var x = 0; x < amounts.Count; x++)
          {
             if (schedule[x] <= today)
                continue;
-            double per = amounts[x] / totAmount;
-            double years = dc.yearFraction(today, schedule[x]);
-            double yearw = years * per;
+            var per = amounts[x] / totAmount;
+            var years = dc.yearFraction(today, schedule[x]);
+            var yearw = years * per;
             wal += yearw;
          }
 
-         return today.AddDays(wal * 365).Date;
+         var value = wal * 365;
+         var millisValue = value * MILLIS_PER_DAY + (value >= 0 ? 0.5 : -0.5);
+
+         return today.AddTicks((long)millisValue * TICKS_PER_MILLISECOND).Date;
       }
+
+      private const double MILLIS_PER_DAY = 86400000;
+      private const long TICKS_PER_MILLISECOND = 10000;
+
       #endregion
 
       #region Get all bonfunctions
