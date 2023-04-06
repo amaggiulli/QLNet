@@ -270,22 +270,22 @@ namespace QLNet
 
       public static bool operator <(Date d1, Date d2)
       {
-         return d1.date < d2.date;
+         return d1?.date < d2?.date;
       }
 
       public static bool operator <=(Date d1, Date d2)
       {
-         return d1.date <= d2.date;
+         return d1?.date <= d2?.date;
       }
 
       public static bool operator >(Date d1, Date d2)
       {
-         return d1.date > d2.date;
+         return d1?.date > d2?.date;
       }
 
       public static bool operator >=(Date d1, Date d2)
       {
-         return d1.date >= d2.date;
+         return d1?.date >= d2?.date;
       }
 
       public DateTime ToDateTime() => date;
