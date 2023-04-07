@@ -568,8 +568,8 @@ namespace QLNet
             // remove later dates
             while (result.dates_.Last() > truncationDate)
             {
-               result.dates_.RemoveAt(dates_.Count - 1);
-               result.isRegular_.RemoveAt(isRegular_.Count - 1);
+               result.dates_.RemoveAt(result.dates_.Count - 1);
+               result.isRegular_.RemoveAt(result.isRegular_.Count - 1);
             }
 
             // add truncationDate if missing
