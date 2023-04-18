@@ -47,7 +47,7 @@
   branches:
     only:
       - develop
-  version: 1.12.1-preview.{build}
+  version: 1.13.1-preview.{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -96,7 +96,7 @@
   branches:
     only:
       - /feature/
-  version: 1.12.1-{build}
+  version: 1.13.1-{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
