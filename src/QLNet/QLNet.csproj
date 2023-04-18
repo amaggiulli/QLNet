@@ -7,7 +7,7 @@
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>QLNet</AssemblyName>
     <PackageId>QLNet</PackageId>
-    <PackageVersion>1.12.0</PackageVersion>
+    <PackageVersion>1.13.0</PackageVersion>
     <Authors>Andrea Maggiulli</Authors>
     <Company />
     <Description>A free/open-source library for quantitative finance</Description>
