@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008 Andrea Maggiulli
+ c
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2017 Francois Botha (igitur@gmail.com)
 
@@ -56,19 +56,18 @@ namespace QLNet
    {
       public Botswana() : base(Impl.Singleton) { }
 
-      class Impl : Calendar.WesternImpl
+      private class Impl : WesternImpl
       {
-         public static readonly Impl Singleton = new Impl();
          private Impl() { }
-
+         public static readonly Impl Singleton = new();
          public override string name() { return "South Africa"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday or Tuesday)

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -64,9 +64,11 @@ namespace QLNet
    */
    public class SouthKorea : Calendar
    {
-      public enum Market { Settlement,  //!< Public holidays
-                           KRX          //!< Korea exchange
-                         }
+      public enum Market
+      {
+         Settlement,  //!< Public holidays
+         KRX          //!< Korea exchange
+      }
 
       public SouthKorea() : this(Market.KRX) { }
       public SouthKorea(Market m)
@@ -77,20 +79,20 @@ namespace QLNet
          switch (m)
          {
             case Market.Settlement:
-               calendar_ = Settlement.Singleton;
+               _impl = Settlement.Singleton;
                break;
             case Market.KRX:
-               calendar_ = KRX.Singleton;
+               _impl = KRX.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
          }
       }
 
-      class Settlement : Calendar
+      private class Settlement : CalendarImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
-
+         public static readonly Settlement Singleton = new();
+         protected Settlement(){}
          public override string name() { return "South-Korean settlement"; }
          public override bool isWeekend(DayOfWeek w)
          {
@@ -98,10 +100,10 @@ namespace QLNet
          }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if (isWeekend(w)
                 // New Year's Day
@@ -246,10 +248,10 @@ namespace QLNet
          }
       }
 
-      class KRX : Settlement
+      private class KRX : Settlement
       {
-         public new static readonly KRX Singleton = new KRX();
-
+         public new static readonly KRX Singleton = new();
+         private KRX(){}
          public override string name() { return "South-Korea exchange"; }
          public override bool isBusinessDay(Date date)
          {
@@ -257,10 +259,10 @@ namespace QLNet
             if (!base.isBusinessDay(date))
                return false;
 
-            int d = date.Day;
-            DayOfWeek w = date.DayOfWeek;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var d = date.Day;
+            var w = date.DayOfWeek;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if ( // Year-end closing
                ((((d == 29 || d == 30) && w == DayOfWeek.Friday) || d == 31)

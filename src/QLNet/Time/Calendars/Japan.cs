@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -58,9 +58,9 @@ namespace QLNet
    {
       public Japan() : base(Impl.Singleton) { }
 
-      class Impl : Calendar
+      private class Impl : CalendarImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Japan"; }
@@ -70,19 +70,19 @@ namespace QLNet
          }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             // equinox calculation
-            double exact_vernal_equinox_time = 20.69115;
-            double exact_autumnal_equinox_time = 23.09;
-            double diff_per_year = 0.242194;
-            double moving_amount = (y - 2000) * diff_per_year;
-            int number_of_leap_years = (y - 2000) / 4 + (y - 2000) / 100 - (y - 2000) / 400;
-            int ve = (int)(exact_vernal_equinox_time + moving_amount - number_of_leap_years); // vernal equinox day
-            int ae = (int)(exact_autumnal_equinox_time + moving_amount - number_of_leap_years);   // autumnal equinox day
+            var exact_vernal_equinox_time = 20.69115;
+            var exact_autumnal_equinox_time = 23.09;
+            var diff_per_year = 0.242194;
+            var moving_amount = (y - 2000) * diff_per_year;
+            var number_of_leap_years = (y - 2000) / 4 + (y - 2000) / 100 - (y - 2000) / 400;
+            var ve = (int)(exact_vernal_equinox_time + moving_amount - number_of_leap_years); // vernal equinox day
+            var ae = (int)(exact_autumnal_equinox_time + moving_amount - number_of_leap_years);   // autumnal equinox day
             // checks
             if (isWeekend(w)
                 // New Year's Day

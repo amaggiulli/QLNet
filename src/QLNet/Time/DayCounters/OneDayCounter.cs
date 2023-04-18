@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -22,13 +23,10 @@ namespace QLNet
    //! 1/1 day count convention
    public class OneDayCounter : DayCounter
    {
-      public OneDayCounter() : base(Impl.Singleton) { }
+      public OneDayCounter() : base(new Impl()) { }
 
-      class Impl : DayCounter
+      private class Impl : DayCounterImpl
       {
-         public static readonly Impl Singleton = new Impl();
-         private Impl() { }
-
          public override string name() { return "1/1"; }
          public override int dayCount(Date d1, Date d2)
          {

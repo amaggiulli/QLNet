@@ -20,6 +20,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using QLNet.Requests;
+using QLNet.Responses;
 
 namespace QLNet
 {
@@ -33,6 +36,7 @@ namespace QLNet
 
        Prices are always clean, as per market convention.
    */
+
    public class BondFunctions
    {
       #region Date inspectors
@@ -202,6 +206,31 @@ namespace QLNet
 
          return CashFlows.accruedPeriod(bond.cashflows(), false, settlementDate);
       }
+
+      public static async Task<AccruedResponse[]> calculateAccruedDaysAndAmountAsync(AccruedRequest[] accruedRequest)
+      {
+         var dictOfTasks = accruedRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => accruedDaysAndAmount(request.Bond, request.SettlementDate)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new AccruedResponse { Id = task.Key, Days = task.Value.Result.accruedDays,
+            Amount = task.Value.Result.accruedAmount}).ToArray();
+      }
+
+      public static (int accruedDays, double accruedAmount) accruedDaysAndAmount(Bond bond, Date settlementDate = null)
+      {
+         if (settlementDate == null)
+            settlementDate = bond.settlementDate();
+
+         Utils.QL_REQUIRE(BondFunctions.isTradable(bond, settlementDate), () =>
+               "non tradable at " + settlementDate +
+               " (maturity being " + bond.maturityDate() + ")",
+            QLNetExceptionEnum.NotTradableException);
+
+         return CashFlows.accruedDaysAndAmount(bond.cashflows(), false, settlementDate);
+      }
+
       public static double accruedDays(Bond bond, Date settlementDate = null)
       {
          if (settlementDate == null)
@@ -325,6 +354,18 @@ namespace QLNet
       {
          return bps(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
+
+      public static async Task<YieldResponse[]> calculateYieldsAsync(YieldRequest[] yieldRequest)
+      {
+         var dictOfTasks = yieldRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => yield(request.Bond, request.CleanPrice, request.DayCounter, request.Compounding, request.Frequency,
+               request.SettlementDate ?? null, request.Accuracy ?? 1.0e-10, request.MaxIterations ?? 100, request.Guess ?? 0.05)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new YieldResponse { Id = task.Key, Yield = task.Value.Result }).ToArray();
+      }
+
       public static double yield(Bond bond, double cleanPrice, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                  Date settlementDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
       {
@@ -357,11 +398,24 @@ namespace QLNet
 
          return CashFlows.duration(bond.cashflows(), yield, type, false, settlementDate);
       }
+
       public static double duration(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                     Duration.Type type = Duration.Type.Modified, Date settlementDate = null)
       {
          return duration(bond, new InterestRate(yield, dayCounter, compounding, frequency), type, settlementDate);
       }
+
+      public static async Task<DurationResponse[]> calculateDurationAsync(DurationRequest[] durationRequest)
+      {
+         var dictOfTasks = durationRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => duration(request.Bond, request.Yield, request.DayCounter, request.Compounding,request.Frequency,
+               request.Type, request.SettlementDate)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new DurationResponse { Id = task.Key, Duration = task.Value.Result }).ToArray();
+      }
+
       public static double convexity(Bond bond, InterestRate yield, Date settlementDate = null)
       {
          if (settlementDate == null)
@@ -460,11 +514,21 @@ namespace QLNet
 
       #region Raw Functions
 
+      public static async Task<WalResponse[]> calculateWalAsync(WalRequest[] walRequest)
+      {
+         var dictOfTasks = walRequest.ToDictionary(request => request.Id,
+            request => Task.Run(() => WeightedAverageLife(request.Today, request.Amounts, request.Schedule)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new WalResponse { Id = task.Key, Wal = task.Value.Result }).ToArray();
+      }
+
       public static DateTime WeightedAverageLife(DateTime today, List<double> amounts, List<DateTime> schedule)
       {
          Utils.QL_REQUIRE(amounts.Count == schedule.Count, () => "Amount list is incompatible with schedule");
 
-         double totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
+         var totAmount = amounts.Where((t, x) => schedule[x] > today).Sum();
 
          if (totAmount.IsEqual(0))
             return today;
@@ -472,20 +536,67 @@ namespace QLNet
          double wal = 0;
          DayCounter dc = new Actual365Fixed();
 
-         for (int x = 0; x < amounts.Count; x++)
+         for (var x = 0; x < amounts.Count; x++)
          {
             if (schedule[x] <= today)
                continue;
-            double per = amounts[x] / totAmount;
-            double years = dc.yearFraction(today, schedule[x]);
-            double yearw = years * per;
+            var per = amounts[x] / totAmount;
+            var years = dc.yearFraction(today, schedule[x]);
+            var yearw = years * per;
             wal += yearw;
          }
 
-         return today.AddDays(wal * 365).Date;
+         var value = wal * 365;
+         var millisValue = value * MILLIS_PER_DAY + (value >= 0 ? 0.5 : -0.5);
+
+         return today.AddTicks((long)millisValue * TICKS_PER_MILLISECOND).Date;
       }
+
+      private const double MILLIS_PER_DAY = 86400000;
+      private const long TICKS_PER_MILLISECOND = 10000;
 
       #endregion
 
+      #region Get all bonfunctions
+
+      public static async Task<BondFunctionsResponse[]> getAllBondFunctions(BondFunctionsRequest[] requests)
+      {
+         var dictOfTasks = requests.ToDictionary(request => request.Id,
+            request => Task.Run(() => getBondFunctions(request)));
+
+         await Task.WhenAll(dictOfTasks.Values);
+
+         return dictOfTasks.Select(task => new BondFunctionsResponse
+         {
+            Id = task.Key,
+            AccruedDays = task.Value.Result.AccruedDays,
+            AccruedAmount = task.Value.Result.AccruedAmount,
+            WeightedAverageLife = task.Value.Result.WeightedAverageLife,
+            Yield = task.Value.Result.Yield,
+            ModifiedDuration = task.Value.Result.ModifiedDuration
+         }).ToArray();
+      }
+
+      public static BondFunctionsResponse getBondFunctions(BondFunctionsRequest request)
+      {
+         var response = new BondFunctionsResponse
+         {
+            Id = request.Id
+         };
+         var accrual = accruedDaysAndAmount(request.Bond, request.SettlementDate);
+         response.AccruedAmount = accrual.accruedAmount;
+         response.AccruedDays = accrual.accruedDays;
+         response.WeightedAverageLife = WeightedAverageLife(request.SettlementDate, request.SinkAmounts, request.SinkDates);
+         response.Yield = request.Bond.yield(request.Price, request.DayCounter, request.Comp, request.Frequency, request.SettlementDate, request.Accuracy);
+         response.ModifiedDuration = duration(request.Bond, response.Yield.GetValueOrDefault(), request.DayCounter, request.Comp, request.Frequency,
+            Duration.Type.Modified, request.SettlementDate);
+         return response;
+      }
+      #endregion
+
    }
+
+
+
+
 }

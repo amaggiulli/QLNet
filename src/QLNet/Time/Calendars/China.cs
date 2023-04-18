@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
 
@@ -65,10 +65,10 @@ namespace QLNet
          switch (market)
          {
             case Market.SSE:
-               calendar_ = SseImpl.Singleton;
+               _impl = SseImpl.Singleton;
                break;
             case Market.IB:
-               calendar_ = IbImpl.Singleton;
+               _impl = IbImpl.Singleton;
                break;
             default:
                Utils.QL_FAIL("unknown market");
@@ -76,9 +76,9 @@ namespace QLNet
          }
       }
 
-      private class SseImpl : Calendar
+      private class SseImpl : CalendarImpl
       {
-         public static readonly SseImpl Singleton = new SseImpl();
+         public static readonly SseImpl Singleton = new();
          private SseImpl() { }
          public override string name() { return "Shanghai stock exchange"; }
 
@@ -89,10 +89,10 @@ namespace QLNet
 
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if (isWeekend(w)
                 // New Year's Day
@@ -113,6 +113,8 @@ namespace QLNet
                 || (y == 2019 && d == 1 && m == Month.January)
                 || (y == 2020 && d == 1 && m == Month.January)
                 || (y == 2021 && d == 1 && m == Month.January)
+                || (y == 2022 && d == 3 && m == Month.January)
+                || (y == 2023 && d == 2 && m == Month.January)
                 // Chinese New Year
                 || (y == 2004 && d >= 19 && d <= 28 && m == Month.January)
                 || (y == 2005 && d >= 7 && d <= 15 && m == Month.February)
@@ -135,6 +137,8 @@ namespace QLNet
                 || (y == 2019 && d >= 4 && d <= 8 && m == Month.February)
                 || (y == 2020 && (d == 24 || (d >= 27 && d <= 31)) && m == Month.January)
                 || (y == 2021 && (d == 11 || d == 12 || d == 15 || d == 16 || d == 17) && m == Month.February)
+                || (y == 2022 && ((d == 31 && m == Month.January) || (d <= 4 && m == Month.February)))
+                || (y == 2023 && d >= 23 && d <= 27 && m == Month.January)
                 // Ching Ming Festival
                 || (y <= 2008 && d == 4 && m == Month.April)
                 || (y == 2009 && d == 6 && m == Month.April)
@@ -150,6 +154,8 @@ namespace QLNet
                 || (y == 2019 && d == 5 && m == Month.April)
                 || (y == 2020 && d == 6 && m == Month.April)
                 || (y == 2021 && d == 5 && m == Month.April)
+                || (y == 2022 && d >= 4 && d <= 5 && m == Month.April)
+                || (y == 2023 && d == 5 && m == Month.April)
                 // Labor Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.May)
                 || (y == 2008 && d >= 1 && d <= 2 && m == Month.May)
@@ -168,6 +174,8 @@ namespace QLNet
                 || (y == 2019 && d >= 1 && d <= 3 && m == Month.May)
                 || (y == 2020 && (d == 1 || d == 4 || d == 5) && m == Month.May)
                 || (y == 2021 && (d == 3 || d == 4 || d == 5) && m == Month.May)
+                || (y == 2022 && d >= 2 && d <= 4 && m == Month.May)
+                || (y == 2023 && d >= 1 && d <= 3 && m == Month.May)
                 // Tuen Ng Festival
                 || (y <= 2008 && d == 9 && m == Month.June)
                 || (y == 2009 && (d == 28 || d == 29) && m == Month.May)
@@ -183,6 +191,8 @@ namespace QLNet
                 || (y == 2019 && d == 7 && m == Month.June)
                 || (y == 2020 && d >= 25 && d <= 26 && m == Month.June)
                 || (y == 2021 && d == 14 && m == Month.June)
+                || (y == 2022 && d == 3 && m == Month.June)
+                || (y == 2023 && d >= 22 && d <= 23 && m == Month.June)
                 // Mid-Autumn Festival
                 || (y <= 2008 && d == 15 && m == Month.September)
                 || (y == 2010 && d >= 22 && d <= 24 && m == Month.September)
@@ -195,6 +205,8 @@ namespace QLNet
                 || (y == 2018 && d == 24 && m == Month.September)
                 || (y == 2019 && d == 13 && m == Month.September)
                 || (y == 2021 && (d == 20 || d == 21) && m == Month.September)
+                || (y == 2022 && d == 12 && m == Month.September)
+                || (y == 2023 && d == 29 && m == Month.September)
                 // National Day
                 || (y <= 2007 && d >= 1 && d <= 7 && m == Month.October)
                 || (y == 2008 && ((d >= 29 && m == Month.September) ||
@@ -213,6 +225,8 @@ namespace QLNet
                 || (y == 2020 && d >= 1 && d <= 2 && m == Month.October)
                 || (y == 2020 && d >= 5 && d <= 8 && m == Month.October)
                 || (y == 2021 && (d == 1 || d == 4 || d == 5 || d == 6 || d == 7) && m == Month.October)
+                || (y == 2022 && d >= 3 && d <= 7 && m == Month.October)
+                || (y == 2023 && d >= 2 && d <= 6 && m == Month.October)
                 // 70th anniversary of the victory of anti-Japaneses war
                 || (y == 2015 && d >= 3 && d <= 4 && m == Month.September)
                )
@@ -222,22 +236,20 @@ namespace QLNet
          }
       }
 
-      private class IbImpl : Calendar
+      private class IbImpl : CalendarImpl
       {
-         public static readonly IbImpl Singleton = new IbImpl();
-
-         public IbImpl()
+         public static readonly IbImpl Singleton = new();
+         private IbImpl()
          {
             sseImpl = new China(Market.SSE);
          }
-
+         private readonly Calendar sseImpl;
          public override string name() { return "China inter bank market"; }
-
          public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
          public override bool isBusinessDay(Date date)
          {
 
-            List<Date> working_weekends = new List<Date>
+            var working_weekends = new List<Date>
             {
                // 2005
                new Date(5, Month.February, 2005),
@@ -365,16 +377,28 @@ namespace QLNet
                new Date(8, Month.May, 2021),
                new Date(18, Month.September, 2021),
                new Date(26, Month.September, 2021),
-               new Date(9, Month.October, 2021)
+               new Date(9, Month.October, 2021),
+               // 2022
+               new Date(29, Month.January, 2022),
+               new Date(30, Month.January, 2022),
+               new Date(2, Month.April, 2022),
+               new Date(24, Month.April, 2022),
+               new Date(7, Month.May, 2022),
+               new Date(8, Month.October, 2022),
+               new Date(9, Month.October, 2022),
+               // 2023
+               new Date(28, Month.January, 2023),
+               new Date(29, Month.January, 2023),
+               new Date(23, Month.April, 2023),
+               new Date(6, Month.May, 2023),
+               new Date(25, Month.June, 2023),
+               new Date(7, Month.October, 2023),
+               new Date(8, Month.October, 2023)
             };
 
             // If it is already a SSE business day, it must be a IB business day
             return sseImpl.isBusinessDay(date) || working_weekends.Contains(date);
-
          }
-
-         private Calendar sseImpl;
-
       }
 
    }

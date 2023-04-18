@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
 
@@ -50,9 +50,9 @@ namespace QLNet
    {
       public Taiwan() : base(Impl.Singleton) { }
 
-      class Impl : Calendar
+      private class Impl : CalendarImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Taiwan stock exchange"; }
@@ -62,10 +62,10 @@ namespace QLNet
          }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             if (isWeekend(w)
                 // New Year's Day

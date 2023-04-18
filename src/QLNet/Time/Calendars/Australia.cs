@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -45,25 +45,41 @@ namespace QLNet
    */
    public class Australia : Calendar
    {
-      public Australia() : base(Impl.Singleton) { }
-
-      class Impl : Calendar.WesternImpl
+      // Australian calendars
+      public enum Market
       {
-         public static readonly Impl Singleton = new Impl();
-         private Impl() { }
+         Settlement, // generic settlement calendar
+         ASX         // Australia ASX calendar
+      }
 
-         public override string name() { return "Australia"; }
+      public Australia() : this(Market.Settlement)  {}
+
+      public Australia(Market m) : base()
+      {
+         _impl = m switch
+         {
+            Market.Settlement => Settlement.Singleton,
+            Market.ASX => Exchange.Singleton,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
+      }
+
+      private class Settlement : WesternImpl
+      {
+         private Settlement() { }
+         public static readonly Settlement Singleton = new();
+         public override string name() { return "Australia settlement"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
-                || (d == 1  && m == Month.January)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
                 // Australia Day, January 26th (possibly moved to Monday)
                 || ((d == 26 || ((d == 27 || d == 28) && w == DayOfWeek.Monday)) &&
                     m == Month.January)
@@ -71,8 +87,8 @@ namespace QLNet
                 || (dd == em - 3)
                 // Easter Monday
                 || (dd == em)
-                // ANZAC Day, April 25th (possibly moved to Monday)
-                || ((d == 25 || (d == 26 && w == DayOfWeek.Monday)) && m == Month.April)
+                // ANZAC Day, April 25th
+                || (d == 25 && m == Month.April)
                 // Queen's Birthday, second Monday in June
                 || ((d > 7 && d <= 14) && w == DayOfWeek.Monday && m == Month.June)
                 // Bank Holiday, first Monday in August
@@ -84,11 +100,54 @@ namespace QLNet
                     && m == Month.December)
                 // Boxing Day, December 26th (possibly Monday or Tuesday)
                 || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday)))
-                    && m == Month.December))
+                    && m == Month.December)
+                // National Day of Mourning for Her Majesty, September 22 (only 2022)
+                || (d == 22 && m == Month.September && y == 2022))
                return false;
             return true;
          }
       }
+
+      private class Exchange : WesternImpl
+      {
+         private Exchange() { }
+         public static readonly Exchange Singleton = new();
+         public override string name() { return "Australia exchange"; }
+         public override bool isBusinessDay(Date date)
+         {
+            var w = date.DayOfWeek;
+            int d = date.Day, dd = date.DayOfYear;
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
+
+            if (isWeekend(w)
+                // New Year's Day (possibly moved to Monday)
+                || ((d == 1 || ((d == 2 || d == 3) && w == DayOfWeek.Monday)) && m == Month.January)
+                // Australia Day, January 26th (possibly moved to Monday)
+                || ((d == 26 || ((d == 27 || d == 28) && w == DayOfWeek.Monday)) &&
+                    m == Month.January)
+                // Good Friday
+                || (dd == em-3)
+                // Easter Monday
+                || (dd == em)
+                // ANZAC Day, April 25th
+                || (d == 25 && m == Month.April)
+                // Queen's Birthday, second Monday in June
+                || ((d > 7 && d <= 14) && w == DayOfWeek.Monday && m == Month.June)
+                // Christmas, December 25th (possibly Monday or Tuesday)
+                || ((d == 25 || (d == 27 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday)))
+                    && m == Month.December)
+                // Boxing Day, December 26th (possibly Monday or Tuesday)
+                || ((d == 26 || (d == 28 && (w == DayOfWeek.Monday || w == DayOfWeek.Tuesday)))
+                    && m == Month.December)
+                // National Day of Mourning for Her Majesty, September 22 (only 2022)
+                || (d == 22 && m == Month.September && y == 2022))
+               return false;
+            return true;
+         }
+      }
+
    }
 
 }

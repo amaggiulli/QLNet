@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -51,19 +51,19 @@ namespace QLNet
    {
       public SouthAfrica() : base(Impl.Singleton) { }
 
-      class Impl : Calendar.WesternImpl
+      private class Impl : WesternImpl
       {
-         public static readonly Impl Singleton = new Impl();
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "South Africa"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)
@@ -101,6 +101,12 @@ namespace QLNet
                 // Day of Goodwill (possibly moved to Monday)
                 || ((d == 26 || (d == 27 && w == DayOfWeek.Monday))
                     && m == Month.December)
+                // one-shot: Election day 2009
+                || (d == 22 && m == Month.April && y == 2009)
+                // one-shot: Election day 2016
+                || (d == 3 && m == Month.August && y == 2016)
+                // one-shot: In lieu of Christmas falling on Sunday in 2022
+                || (d == 27 && m == Month.December && y == 2022)
                )
                return false;
             return true;

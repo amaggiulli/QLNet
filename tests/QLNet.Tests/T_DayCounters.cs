@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -20,11 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Numerics;
+using TestSuite;
 using Xunit;
-using QLNet;
-using Calendar = QLNet.Calendar;
 
-namespace TestSuite
+namespace QLNet.Tests
 {
    [Collection("QLNet CI Tests")]
    public class T_DayCounters
@@ -55,6 +55,19 @@ namespace TestSuite
          public Date _refStart;
          public Date _refEnd;
          public double _result;
+      }
+
+      public struct Thirty360Case
+      {
+         public Thirty360Case(Date start, Date end, int expected)
+         {
+            _start = start;
+            _end = end;
+            _expected = expected;
+         }
+         public Date _start;
+         public Date _end;
+         public int _expected;
       }
 
       private double actualActualDaycountComputation(Schedule schedule,
@@ -616,6 +629,32 @@ namespace TestSuite
       }
 
       [Fact]
+      public void testThirty365()
+      {
+         // Testing 30/365 day counter
+
+         Date d1 = new(17,Month.June,2011), d2 = new(30,Month.December,2012);
+         DayCounter dayCounter = new Thirty365();
+
+         BigInteger days = dayCounter.dayCount(d1,d2);
+         if (days != 553)
+         {
+            QAssert.Fail("from " + d1 + " to " + d2 + ":\n"
+                       + "    calculated: " + days + "\n"
+                       + "    expected:   " + 553);
+         }
+
+         var t = dayCounter.yearFraction(d1,d2);
+         var expected = 553/365.0;
+         if (Math.Abs(t-expected) > 1.0e-12)
+         {
+            QAssert.Fail("from " + d1 + " to " + d2 + ":\n"
+                         + "    calculated: " + t + "\n"
+                         + "    expected:   " + expected);
+         }
+      }
+
+      [Fact]
       public void testThirty360_BondBasis()
       {
          // Testing thirty/360 day counter (Bond Basis)
@@ -755,6 +794,138 @@ namespace TestSuite
       }
 
       [Fact]
+      public void testThirty360_ISDA()
+      {
+         // Testing 30/360 day counter (ISDA)
+         // See https://www.isda.org/2008/12/22/30-360-day-count-conventions/
+
+         Thirty360Case[] data1 =
+         {
+           // Example 1: End dates do not involve the last day of February
+           new Thirty360Case(new Date(20, Month.August, 2006), new Date(20, Month.February, 2007), 180),
+           new Thirty360Case(new Date(20, Month.February, 2007),  new Date(20, Month.August, 2007),   180),
+           new Thirty360Case(new Date(20, Month.August, 2007),    new Date(20, Month.February, 2008), 180),
+           new Thirty360Case(new Date(20, Month.February, 2008),  new Date(20, Month.August, 2008),   180),
+           new Thirty360Case(new Date(20, Month.August, 2008),    new Date(20, Month.February, 2009), 180),
+           new Thirty360Case(new Date(20, Month.February, 2009),  new Date(20, Month.August, 2009),   180)
+         };                                                                                                
+
+         var terminationDate = new Date(20, Month.August, 2009);
+         var dayCounter = new Thirty360(Thirty360.Thirty360Convention.ISDA, terminationDate);
+
+         foreach (var x in data1)
+         {
+           var calculated = dayCounter.dayCount(x._start, x._end);
+           if (calculated != x._expected)
+           {
+             QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+           }
+         }
+
+         Thirty360Case[] data2 =
+         {
+            // Example 2: End dates include some end-February dates
+            new Thirty360Case( new Date(28, Month.February, 2006),  new Date(31, Month.August, 2006),   180),
+            new Thirty360Case( new Date(31, Month.August, 2006),    new Date(28, Month.February, 2007), 180),
+            new Thirty360Case( new Date(28, Month.February, 2007),  new Date(31, Month.August, 2007),   180),
+            new Thirty360Case( new Date(31, Month.August, 2007),    new Date(29, Month.February, 2008), 180),
+            new Thirty360Case( new Date(29, Month.February, 2008),  new Date(31, Month.August, 2008),   180),
+            new Thirty360Case( new Date(31, Month.August, 2008),    new Date(28, Month.February, 2009), 180),
+            new Thirty360Case( new Date(28, Month.February, 2009),  new Date(31, Month.August, 2009),   180),
+            new Thirty360Case( new Date(31, Month.August, 2009),    new Date(28, Month.February, 2010), 180),
+            new Thirty360Case( new Date(28, Month.February, 2010),  new Date(31, Month.August, 2010),   180),
+            new Thirty360Case( new Date(31, Month.August, 2010),    new Date(28, Month.February, 2011), 180),
+            new Thirty360Case( new Date(28, Month.February, 2011),  new Date(31, Month.August, 2011),   180),
+            new Thirty360Case( new Date(31, Month.August, 2011),    new Date(29, Month.February, 2012), 179)
+         };                                                                                                 
+
+         terminationDate = new Date(29, Month.February, 2012);
+         dayCounter = new Thirty360(Thirty360.Thirty360Convention.ISDA, terminationDate);
+
+         foreach (var x in data2)
+         {
+            var calculated = dayCounter.dayCount(x._start, x._end);
+            if (calculated != x._expected)
+            {
+               QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+            }
+         }
+
+         Thirty360Case[] data3 =
+         {
+              // Example 3: Miscellaneous calculations
+              new Thirty360Case( new  Date(31, Month.January, 2006),   new Date(28, Month.February, 2006),  30),
+              new Thirty360Case( new  Date(30, Month.January, 2006),   new Date(28, Month.February, 2006),  30),
+              new Thirty360Case( new  Date(28, Month.February, 2006),  new Date(3,  Month.March, 2006),      3),
+              new Thirty360Case( new  Date(14, Month.February, 2006),  new Date(28, Month.February, 2006),  16),
+              new Thirty360Case( new  Date(30, Month.September, 2006), new Date(31, Month.October, 2006),   30),
+              new Thirty360Case( new  Date(31, Month.October, 2006),   new Date(28, Month.November, 2006),  28),
+              new Thirty360Case( new  Date(31, Month.August, 2007),    new Date(28, Month.February, 2008), 178),
+              new Thirty360Case( new  Date(28, Month.February, 2008),  new Date(28, Month.August, 2008),   180),
+              new Thirty360Case( new  Date(28, Month.February, 2008),  new Date(30, Month.August, 2008),   182),
+              new Thirty360Case( new  Date(28, Month.February, 2008),  new Date(31, Month.August, 2008),   182),
+              new Thirty360Case( new  Date(28, Month.February, 2007),  new Date(28, Month.February, 2008), 358),
+              new Thirty360Case( new  Date(28, Month.February, 2007),  new Date(29, Month.February, 2008), 359),
+              new Thirty360Case( new  Date(29, Month.February, 2008),  new Date(28, Month.February, 2009), 360),
+              new Thirty360Case( new  Date(29, Month.February, 2008),  new Date(30, Month.March, 2008),     30),
+              new Thirty360Case( new  Date(29, Month.February, 2008),  new Date(31, Month.March, 2008),     30)
+         };
+
+         terminationDate = new Date(29, Month.February, 2008);
+         dayCounter = new Thirty360(Thirty360.Thirty360Convention.ISDA, terminationDate);
+
+         foreach (var x in data3)
+         {
+            var calculated = dayCounter.dayCount(x._start, x._end);
+            if (calculated != x._expected)
+            {
+               QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+            }
+         }
+      }
+
+      [Fact]
+      public void testActual365_Canadian()
+      {
+         // Testing that Actual/365 (Canadian) throws when needed
+         var dayCounter = new Actual365Fixed(Actual365Fixed.Convention.Canadian);
+
+         try
+         {
+            // no reference period
+            dayCounter.yearFraction( new Date(10, Month.September, 2018), new Date(10, Month.September, 2019));
+            QAssert.Fail("Invalid call to yearFraction failed to throw");
+         }
+         catch 
+         {
+            ;  // expected
+         }
+
+         try
+         {
+            // reference period shorter than a month
+            dayCounter.yearFraction( new Date(10, Month.September, 2018),
+               new Date(12, Month.September, 2018),
+               new Date(10, Month.September, 2018),
+               new Date(15, Month.September, 2018));
+            QAssert.Fail("Invalid call to yearFraction failed to throw");
+         }
+         catch
+         {
+            ;  // expected
+         }
+      }
+
+      [Fact]
       public void testIntraday()
       {
          // Testing intraday behavior of day counter
@@ -829,6 +1000,154 @@ namespace TestSuite
          var t = dayCounter.yearFraction(d1, d2);
 
          Assert.Equal(expectedYearFraction, t);
+      }
+
+      [Fact]
+      public void testActualActualOutOfScheduleRange()
+      {
+         var today = new Date(10, Month.November, 2020);
+         var temp = Settings.evaluationDate();
+         Settings.setEvaluationDate(today);
+
+         var effectiveDate = new Date(21, Month.May, 2019);
+         var terminationDate = new Date(21, Month.May, 2029);
+         var tenor = new Period(1, TimeUnit.Years);
+         var calendar = new China(China.Market.IB);
+         var convention = BusinessDayConvention.Unadjusted;
+         var terminationDateConvention = convention;
+         var rule = DateGeneration.Rule.Backward;
+         var endOfMonth = false;
+
+         var schedule = new Schedule(effectiveDate, terminationDate, tenor, calendar, convention,
+            terminationDateConvention, rule, endOfMonth);
+         var dayCounter = new ActualActual(ActualActual.Convention.Bond, schedule);
+         var raised = false;
+
+         try
+         {
+            dayCounter.yearFraction(today, today + new Period(9, TimeUnit.Years));
+         }
+         catch
+         {
+            raised = true;
+         }
+       
+         if (!raised)
+         {
+            QAssert.Fail("Exception expected but did not happen!");
+         }
+
+         Settings.setEvaluationDate(temp);
+      }
+
+      [Fact]
+      public void testAct366()
+      {
+         // Testing Act/366 day counter
+
+         Date[] testDates = {
+            new Date(1,  Month.February, 2002),
+            new Date(4,  Month.February, 2002),
+            new Date(16, Month.May, 2003),
+            new Date(17, Month.December, 2003),
+            new Date(17, Month.December, 2004),
+            new Date(19, Month.December, 2005),
+            new Date(2,  Month.January, 2006),
+            new Date(13, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(17, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(26, Month.July, 2006),
+            new Date(28, Month.June, 2007),
+            new Date(16, Month.September, 2009),
+            new Date(26, Month.July, 2016)
+         };
+
+         double[] expected = {
+            0.00819672131147541,
+            1.27322404371585,
+            0.587431693989071,
+            1.0000000000000,
+            1.00273224043716,
+            0.0382513661202186,
+            0.191256830601093,
+            0.172131147540984,
+            -0.16120218579235,
+            0.16120218579235,
+            0.19672131147541,
+            0.920765027322404,
+            2.21584699453552,
+            6.84426229508197
+         };
+
+         DayCounter dayCounter = new Actual366();
+
+         for (var i=1; i<testDates.Length; i++)
+         {
+            var calculated = dayCounter.yearFraction(testDates[i-1],testDates[i]);
+            QAssert.IsTrue (Math.Abs(calculated-expected[i-1]) <= 1.0e-12, 
+               "from " + testDates[i-1]
+               + " to " + testDates[i] + ":\n"
+               + "    calculated: " + calculated + "\n"
+               + "    expected:   " + expected[i-1]);
+         }
+      }
+
+      [Fact]
+      public void testAct36525()
+      {
+         // Testing Act/365.25 day counter
+
+         Date[] testDates =
+         {
+            new Date(1,  Month.February, 2002),
+            new Date(4,  Month.February, 2002),
+            new Date(16, Month.May, 2003),
+            new Date(17, Month.December, 2003),
+            new Date(17, Month.December, 2004),
+            new Date(19, Month.December, 2005),
+            new Date(2,  Month.January, 2006),
+            new Date(13, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(17, Month.March, 2006),
+            new Date(15, Month.May, 2006),
+            new Date(26, Month.July, 2006),
+            new Date(28, Month.June, 2007),
+            new Date(16, Month.September, 2009),
+            new Date(26, Month.July, 2016)
+         };
+
+         double[] expected =
+         {
+            0.0082135523613963,
+            1.27583846680356,
+            0.588637919233402,
+            1.00205338809035,
+            1.00479123887748,
+            0.0383299110198494,
+            0.191649555099247,
+            0.172484599589322,
+            -0.161533196440794,
+            0.161533196440794,
+            0.197125256673511,
+            0.922655715263518,
+            2.22039698836413,
+            6.85831622176591
+         };
+
+         var dayCounter = new Actual36525();
+
+         for (var i=1; i<testDates.Length; i++)
+         {
+            var calculated = dayCounter.yearFraction(testDates[i-1],testDates[i]);
+            if (Math.Abs(calculated-expected[i-1]) > 1.0e-12)
+            {
+               QAssert.Fail("from " + testDates[i-1]
+                                    + " to " + testDates[i] + ":\n"
+                                    + "    calculated: " + calculated + "\n"
+                                    + "    expected:   " + expected[i-1]);
+            }
+         }
       }
    }
 }

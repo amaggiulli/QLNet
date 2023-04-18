@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -23,13 +23,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-
-   /*!
-       \ingroup datetime
-       \test the methods for adding and removing holidays are tested
-             by inspecting the calendar before and after their
-             invocation.
-   */
+   /// <summary>
+   /// Bridge implementor
+   /// </summary>
+   public abstract class CalendarImpl
+   {
+      public abstract string name();
+      public abstract bool isBusinessDay(Date date);
+      public abstract bool isWeekend(DayOfWeek w);
+      public SortedSet<Date> addedHolidays { get; set; } = new SortedSet<Date>();
+      public SortedSet<Date> removedHolidays { get; set; } = new SortedSet<Date>();
+   }
 
    /// <summary>
    /// This class provides methods for determining whether a date is a
@@ -42,85 +46,179 @@ namespace QLNet
    /// </summary>
    public class Calendar
    {
-      protected Calendar calendar_;
-      public List<Date> addedHolidays { get; set; }
-      public List<Date> removedHolidays { get; set; }
-
-      public Calendar calendar
-      {
-         get
-         {
-            return calendar_;
-         }
-         set
-         {
-            calendar_ = value;
-         }
-      }
+      protected CalendarImpl _impl;
 
       // constructors
       /*! The default constructor returns a calendar with a null
           implementation, which is therefore unusable except as a
           placeholder. */
       public Calendar()
-      {
-         addedHolidays = new List<Date>();
-         removedHolidays = new List<Date>();
-      }
+      {}
 
-      public Calendar(Calendar c)
+      /// <summary>
+      /// Create a calendar from implementation
+      /// </summary>
+      /// <param name="impl"></param>
+      protected Calendar(CalendarImpl impl)
       {
-         calendar_ = c;
-         addedHolidays = new List<Date>();
-         removedHolidays = new List<Date>();
+         _impl = impl;
       }
-
-      // Wrappers for interface
-      // <summary>
-      // This method is used for output and comparison between
-      // calendars. It is <b>not</b> meant to be used for writing
-      // switch-on-type code.
-      // </summary>
-      // <returns>
-      // The name of the calendar.
-      // </returns>
-      public virtual string name() { return calendar.name(); }
-      // <param name="d">Date</param>
-      // <returns>Returns <tt>true</tt> iff the date is a business day for the
-      // given market.</returns>
-      public virtual bool isBusinessDay(Date d)
-      {
-         if (calendar.addedHolidays.Contains(d))
-            return false;
-         if (calendar.removedHolidays.Contains(d))
-            return true;
-         return calendar.isBusinessDay(d);
-      }
-      //<summary>
-      // Returns <tt>true</tt> iff the weekday is part of the
-      // weekend for the given market.
-      //</summary>
-      public virtual bool isWeekend(DayOfWeek w) { return calendar.isWeekend(w); }
 
       // other functions
       // <summary>
       // Returns whether or not the calendar is initialized
       // </summary>
-      public bool empty() { return (object)calendar == null; }           //!  Returns whether or not the calendar is initialized
+      public bool empty() { return _impl == null; }           
+
+      // <summary>
+      // Returns the name of the calendar.
+      // This method is used for output and comparison between
+      // calendars. It is not> meant to be used for writing
+      // switch-on-type code.
+      // </summary>
+      // <returns>   
+      // The name of the calendar.
+      // </returns>
+      public string name()
+      {
+         Utils.QL_REQUIRE(_impl!=null,()=> "no calendar implementation provided");
+         return _impl.name();
+      }
+
+      // Returns the set of added holidays for the given calendar
+      public SortedSet<Date> addedHolidays()
+      {
+         Utils.QL_REQUIRE(_impl!=null,()=> "no calendar implementation provided");
+         return _impl.addedHolidays;
+      }
+
+      // Returns the set of removed holidays for the given calendar 
+      public SortedSet<Date> removedHolidays()
+      {
+         Utils.QL_REQUIRE(_impl!=null,()=> "no calendar implementation provided");
+         return _impl.removedHolidays;
+      }
+
+      // Clear the set of added and removed holidays 
+      public void resetAddedAndRemovedHolidays()
+      {
+         Utils.QL_REQUIRE(_impl!=null,()=> "no calendar implementation provided");
+         _impl.addedHolidays.Clear();
+         _impl.removedHolidays.Clear();
+      }
+
+      // Returns true iff the date is a holiday for the given market.
+      public bool isBusinessDay(Date d)
+      {
+         Utils.QL_REQUIRE(_impl != null, ()=> "no calendar implementation provided");
+
+         if (_impl != null && _impl.addedHolidays.Count != 0 && _impl.addedHolidays.Contains(d))
+            return false;
+
+         if (_impl != null && _impl.removedHolidays.Count != 0 && _impl.removedHolidays.Contains(d))
+            return true;
+
+         return _impl!.isBusinessDay(d);
+      }
+
       /// <summary>
-      /// Returns <tt>true</tt> iff the date is a holiday for the given
+      /// Returns true if the date is a holiday for the given
       /// market.
       /// </summary>
       public bool isHoliday(Date d) { return !isBusinessDay(d); }
+
+      ///<summary>
+      /// Returns true if the weekday is part of the
+      /// weekend for the given market.
+      ///</summary>
+      public virtual bool isWeekend(DayOfWeek w)
+      {
+         Utils.QL_REQUIRE(_impl != null, ()=> "no calendar implementation provided");
+         return _impl!.isWeekend(w);
+      }
+
       /// <summary>
-      /// Returns <tt>true</tt> iff the date is last business day for the
+      /// Returns true iff the date is last business day for the
       /// month in given market.
       /// </summary>
-      public bool isEndOfMonth(Date d) { return (d.Month != adjust(d + 1).Month); }
+      public bool isEndOfMonth(Date d)
+      {
+         return (d.Month != adjust(d + 1).Month);
+      }
+
       /// <summary>
       /// last business day of the month to which the given date belongs
       /// </summary>
-      public Date endOfMonth(Date d) { return adjust(Date.endOfMonth(d), BusinessDayConvention.Preceding); }
+      public Date endOfMonth(Date d)
+      {
+         return adjust(Date.endOfMonth(d), BusinessDayConvention.Preceding);
+      }
+
+      /// <summary>
+      /// Adds a date to the set of holidays for the given calendar.
+      /// </summary>
+      public void addHoliday(Date d)
+      {
+         Utils.QL_REQUIRE(_impl != null, ()=> "no calendar implementation provided");
+
+         // if d was a genuine holiday previously removed, revert the change
+         _impl!.removedHolidays.Remove(d);
+         // if it's already a holiday, leave the calendar alone.
+         // Otherwise, add it.
+         if (_impl.isBusinessDay(d))
+            _impl.addedHolidays.Add(d);
+      }
+
+      /// <summary>
+      /// Removes a date from the set of holidays for the given calendar.
+      /// </summary>
+      public void removeHoliday(Date d)
+      {
+         Utils.QL_REQUIRE(_impl != null, ()=> "no calendar implementation provided");
+
+         // if d was an artificially-added holiday, revert the change
+         _impl!.addedHolidays.Remove(d);
+         // if it's already a business day, leave the calendar alone.
+         // Otherwise, add it.
+         if (!_impl.isBusinessDay(d))
+            _impl.removedHolidays.Add(d);
+      }
+
+      /// <summary>
+      /// Returns the holidays between two dates
+      /// </summary>
+      public List<Date> holidayList(Date from, Date to, bool includeWeekEnds = false)
+      {
+         Utils.QL_REQUIRE(to >= from, () => "'from' date (" + from + ") must be equal to or earlier than 'to' date (" + to + ")");
+         var result = new List<Date>();
+
+         for (var d = from; d <= to; ++d)
+         {
+            if (isHoliday(d)
+                && (includeWeekEnds || !isWeekend(d.DayOfWeek)))
+               result.Add(d);
+         }
+         return result;
+      }
+
+      /// <summary>
+      /// Returns the business days between two dates. */
+      /// </summary>
+      /// <param name="from"></param>
+      /// <param name="to"></param>
+      /// <returns></returns>
+      public List<Date> businessDayList(Date from, Date to)
+      {
+         Utils.QL_REQUIRE(to >= from, () => "'from' date (" + from + ") must be equal to or earlier than 'to' date (" + to + ")");
+         var result = new List<Date>();
+
+         for (var d = from; d <= to; ++d)
+         {
+            if (isBusinessDay(d))
+               result.Add(d);
+         }
+         return result;
+      }
 
       /// <summary>
       /// Adjusts a non-business day to the appropriate near business day  with respect
@@ -128,18 +226,18 @@ namespace QLNet
       /// </summary>
       public Date adjust(Date d, BusinessDayConvention c = BusinessDayConvention.Following)
       {
-         if (d == null)
-            throw new ArgumentException("null date");
+         Utils.QL_REQUIRE(d != null,()=> "null date");
          if (c == BusinessDayConvention.Unadjusted)
             return d;
 
-         Date d1 = d;
-         if (c == BusinessDayConvention.Following || c == BusinessDayConvention.ModifiedFollowing ||
-             c == BusinessDayConvention.HalfMonthModifiedFollowing)
+         var d1 = d;
+         if (c is BusinessDayConvention.Following or
+             BusinessDayConvention.ModifiedFollowing or
+             BusinessDayConvention.HalfMonthModifiedFollowing)
          {
             while (isHoliday(d1))
                d1++;
-            if (c == BusinessDayConvention.ModifiedFollowing || c == BusinessDayConvention.HalfMonthModifiedFollowing)
+            if (c is BusinessDayConvention.ModifiedFollowing or BusinessDayConvention.HalfMonthModifiedFollowing)
             {
                if (d1.Month != d.Month)
                   return adjust(d, BusinessDayConvention.Preceding);
@@ -152,7 +250,7 @@ namespace QLNet
                }
             }
          }
-         else if (c == BusinessDayConvention.Preceding || c == BusinessDayConvention.ModifiedPreceding)
+         else if (c is BusinessDayConvention.Preceding or BusinessDayConvention.ModifiedPreceding)
          {
             while (isHoliday(d1))
                d1--;
@@ -184,8 +282,7 @@ namespace QLNet
       /// <remarks>The input date is not modified</remarks>
       public Date advance(Date d, int n, TimeUnit unit, BusinessDayConvention c = BusinessDayConvention.Following, bool endOfMonth = false)
       {
-         if (d == null)
-            throw new ArgumentException("null date");
+         Utils.QL_REQUIRE(d!=null,()=> "null date");
          if (n == 0)
             return adjust(d, c);
          else if (unit == TimeUnit.Days)
@@ -226,6 +323,7 @@ namespace QLNet
             return adjust(d1, c);
          }
       }
+
       /// <summary>
       /// Advances the given date as specified by the given period and
       /// returns the result.
@@ -284,58 +382,13 @@ namespace QLNet
       }
 
       /// <summary>
-      /// Adds a date to the set of holidays for the given calendar.
-      /// </summary>
-      public void addHoliday(Date d)
-      {
-         // if d was a genuine holiday previously removed, revert the change
-         calendar.removedHolidays.Remove(d);
-         // if it's already a holiday, leave the calendar alone.
-         // Otherwise, add it.
-         if (isBusinessDay(d))
-            calendar.addedHolidays.Add(d);
-      }
-      /// <summary>
-      /// Removes a date from the set of holidays for the given calendar.
-      /// </summary>
-      public void removeHoliday(Date d)
-      {
-         // if d was an artificially-added holiday, revert the change
-         calendar.addedHolidays.Remove(d);
-         // if it's already a business day, leave the calendar alone.
-         // Otherwise, add it.
-         if (!isBusinessDay(d))
-            calendar.removedHolidays.Add(d);
-      }
-      /// <summary>
-      /// Returns the holidays between two dates
-      /// </summary>
-      public static List<Date> holidayList(Calendar calendar, Date from, Date to, bool includeWeekEnds = false)
-      {
-         Utils.QL_REQUIRE(to > from, () => "'from' date (" + from + ") must be earlier than 'to' date (" + to + ")");
-         List<Date> result = new List<Date>();
-
-         for (Date d = from; d <= to; ++d)
-         {
-            if (calendar.isHoliday(d)
-                && (includeWeekEnds || !calendar.isWeekend(d.DayOfWeek)))
-               result.Add(d);
-         }
-         return result;
-      }
-
-      /// <summary>
       /// This class provides the means of determining the Easter
       /// Monday for a given year, as well as specifying Saturdays
       /// and Sundays as weekend days.
       /// </summary>
-      public class WesternImpl : Calendar
+      public abstract class WesternImpl : CalendarImpl
       {
-         // Western calendars
-         public WesternImpl() { }
-         public WesternImpl(Calendar c) : base(c) { }
-
-         int[] EasterMonday =
+         private static readonly int[] EasterMonday =
          {
             98,  90, 103,  95, 114, 106,  91, 111, 102,   // 1901-1909
             87, 107,  99,  83, 103,  95, 115,  99,  91, 111,   // 1910-1919
@@ -369,7 +422,14 @@ namespace QLNet
             116, 101,  93, 112,  97,  89, 109, 100,  85, 105    // 2190-2199
          };
 
-         public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
+         /// <summary>
+         /// Returns true if the weekday is part of the
+         /// weekend for the given market.
+         /// </summary>
+         /// <param name="w"></param>
+         /// <returns></returns>
+         public override bool isWeekend(DayOfWeek w) { return w is DayOfWeek.Saturday or DayOfWeek.Sunday; }
+
          /// <summary>
          /// Expressed relative to first day of year
          /// </summary>
@@ -380,18 +440,15 @@ namespace QLNet
             return EasterMonday[y - 1901];
          }
       }
+
       /// <summary>
       /// This class provides the means of determining the Orthodox
       /// Easter Monday for a given year, as well as specifying
       /// Saturdays and Sundays as weekend days.
       /// </summary>
-      public class OrthodoxImpl : Calendar
+      public abstract class OrthodoxImpl : CalendarImpl
       {
-         // Orthodox calendars
-         public OrthodoxImpl() { }
-         public OrthodoxImpl(Calendar c) : base(c) { }
-
-         int[] EasterMonday =
+         private static readonly int[] EasterMonday =
          {
             105, 118, 110, 102, 121, 106, 126, 118, 102,   // 1901-1909
             122, 114,  99, 118, 110,  95, 115, 106, 126, 111,   // 1910-1919
@@ -425,7 +482,10 @@ namespace QLNet
             116, 108, 128, 119, 104, 124, 116, 100, 120, 112    // 2190-2199
          };
 
-         public override bool isWeekend(DayOfWeek w) { return w == DayOfWeek.Saturday || w == DayOfWeek.Sunday; }
+         /// Returns true if the weekday is part of the
+         /// weekend for the given market.
+         public override bool isWeekend(DayOfWeek w) { return w is DayOfWeek.Saturday or DayOfWeek.Sunday; }
+
          /// <summary>
          /// expressed relative to first day of year
          /// </summary>

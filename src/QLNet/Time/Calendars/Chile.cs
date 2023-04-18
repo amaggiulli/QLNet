@@ -61,7 +61,7 @@ namespace QLNet
 
       public Chile(Market m)
       {
-         calendar_ = m switch
+         _impl = m switch
          {
             Market.SSE => Settlement.Singleton,
             _ => throw new ArgumentException("Unknown market: " + m)
@@ -70,7 +70,7 @@ namespace QLNet
 
       private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
+         public static readonly Settlement Singleton = new();
          private Settlement() {}
          public override string name() { return "Santiago Stock Exchange"; }
 

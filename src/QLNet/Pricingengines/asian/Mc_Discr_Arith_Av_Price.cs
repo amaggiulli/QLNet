@@ -153,8 +153,7 @@ namespace QLNet
 
       public double value(IPath path)
       {
-         Utils.QL_REQUIRE(path.length() > 0, () => "the path cannot be empty");
-         return payoff_.value(((Path) path).back()) * discount_;
+         return value((Path)path);
       }
    }
    //<class RNG = PseudoRandom, class S = Statistics>

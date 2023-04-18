@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2021 Andrea Maggiulli
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -68,7 +68,7 @@ namespace QLNet
 
       public France(Market m) : base()
       {
-         calendar_ = m switch
+         _impl = m switch
          {
             Market.Settlement => Settlement.Singleton,
             Market.Exchange => Exchange.Singleton,
@@ -76,9 +76,9 @@ namespace QLNet
          };
       }
 
-      private class Settlement : Calendar.WesternImpl
+      private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
+         public static readonly Settlement Singleton = new();
          private Settlement() { }
          public override string name() { return "French settlement"; }
          public override bool isBusinessDay(Date date)
@@ -116,9 +116,9 @@ namespace QLNet
          }
       }
 
-      private class Exchange : Calendar.WesternImpl
+      private class Exchange : WesternImpl
       {
-         public static readonly Exchange Singleton = new Exchange();
+         public static readonly Exchange Singleton = new();
          private Exchange() { }
          public override string name() { return "Paris stock exchange"; }
          public override bool isBusinessDay(Date date)

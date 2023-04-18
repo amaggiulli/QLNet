@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -37,49 +38,40 @@ namespace QLNet
    {
       public enum Convention { ISMA, Bond, ISDA, Historical, Actual365, AFB, Euro }
 
-      public ActualActual() : base(ISDA_Impl.Singleton) { }
-      public ActualActual(Convention c, Schedule schedule = null) : base(conventions(c, schedule)) { }
+      public ActualActual(Convention c = Convention.ISDA, Schedule schedule = null) : base(Conventions(c, schedule)) { }
 
-      private static DayCounter conventions(Convention c, Schedule schedule)
+      private static DayCounterImpl Conventions(Convention c, Schedule schedule)
       {
          switch (c)
          {
             case Convention.ISMA:
             case Convention.Bond:
-               if (schedule != null)
-                  return ISMA_Impl.Singleton(schedule);
-               else
-                  return Old_ISMA_Impl.Singleton;
+               if (schedule != null && !schedule.empty())
+                  return new ISMA_Impl(schedule);
+               return new Old_ISMA_Impl();
             case Convention.ISDA:
             case Convention.Historical:
             case Convention.Actual365:
-               return ISDA_Impl.Singleton;
+               return new ISDA_Impl();
             case Convention.AFB:
             case Convention.Euro:
-               return AFB_Impl.Singleton;
+               return new AFB_Impl();
             default:
-               throw new ArgumentException("Unknown day count convention: " + c);
+               throw new ArgumentException("Unknown act/act convention: " + c);
          }
       }
 
 
-      private class ISMA_Impl : DayCounter
+      private class ISMA_Impl : DayCounterImpl
       {
          private Schedule schedule_;
 
-         public static ISMA_Impl Singleton(Schedule schedule)
-         {
-            return new ISMA_Impl(schedule);
-         }
-
-         private ISMA_Impl(Schedule schedule)
+         public ISMA_Impl(Schedule schedule)
          {
             schedule_ = schedule;
          }
 
          public override string name() { return "Actual/Actual (ISMA)"; }
-
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
 
          public override double yearFraction(Date d1, Date d2, Date d3, Date d4)
          {
@@ -89,14 +81,19 @@ namespace QLNet
             if (d2 < d1)
                return -yearFraction(d2, d1, d3, d4);
 
-            List<Date> couponDates =
-               getListOfPeriodDatesIncludingQuasiPayments(schedule_);
+            var couponDates = getListOfPeriodDatesIncludingQuasiPayments(schedule_);
 
-            double yearFractionSum = 0.0;
-            for (int i = 0; i < couponDates.Count - 1; i++)
+            var firstDate = couponDates.Min();
+            var lastDate = couponDates.Max();
+
+            Utils.QL_REQUIRE(d1 >= firstDate && d2 <= lastDate, ()=>"Dates out of range of schedule: "
+                                                          + "date 1: " + d1 + ", date 2: " + d2 + ", first date: "
+                                                          + firstDate + ", last date: " + lastDate);
+            var yearFractionSum = 0.0;
+            for (var i = 0; i < couponDates.Count - 1; i++)
             {
-               Date startReferencePeriod = couponDates[i];
-               Date endReferencePeriod = couponDates[i + 1];
+               var startReferencePeriod = couponDates[i];
+               var endReferencePeriod = couponDates[i + 1];
                if (d1 < endReferencePeriod && d2 > startReferencePeriod)
                {
                   yearFractionSum +=
@@ -162,7 +159,7 @@ namespace QLNet
          }
 
          private double yearFractionWithReferenceDates<T>(T impl,
-                                                          Date d1, Date d2, Date d3, Date d4) where T: DayCounter
+                                                          Date d1, Date d2, Date d3, Date d4) where T: DayCounterImpl
          {
             Utils.QL_REQUIRE(d1 <= d2, () =>
                              "This function is only correct if d1 <= d2\n" +
@@ -183,7 +180,7 @@ namespace QLNet
             return impl.dayCount(d1, d2) / (referenceDayCount * couponsPerYear);
          }
 
-         private int findCouponsPerYear<T>(T impl, Date refStart, Date refEnd) where T : DayCounter
+         private int findCouponsPerYear<T>(T impl, Date refStart, Date refEnd) where T : DayCounterImpl
          {
             // This will only work for day counts longer than 15 days.
             int months = (int)(0.5 + 12 * (double)(impl.dayCount(refStart, refEnd)) / 365.0);
@@ -191,16 +188,9 @@ namespace QLNet
          }
       }
 
-      private class Old_ISMA_Impl : DayCounter
+      private class Old_ISMA_Impl : DayCounterImpl
       {
-         public static readonly Old_ISMA_Impl Singleton =  new Old_ISMA_Impl();
-
-         private Old_ISMA_Impl() {}
-
          public override string name() { return "Actual/Actual (ISMA)"; }
-
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
-
          public override double yearFraction(Date d1, Date d2, Date d3, Date d4)
          {
             if (d1 == d2)
@@ -209,26 +199,26 @@ namespace QLNet
                return -yearFraction(d2, d1, d3, d4);
 
             // when the reference period is not specified, try taking it equal to (d1,d2)
-            Date refPeriodStart = (d3 ?? d1);
-            Date refPeriodEnd = (d4 ?? d2);
+            var refPeriodStart = (d3 ?? d1);
+            var refPeriodEnd = (d4 ?? d2);
 
             Utils.QL_REQUIRE(refPeriodEnd > refPeriodStart && refPeriodEnd > d1, () =>
                              "Invalid reference period: date 1: " + d1 + ", date 2: " + d2 +
                              ", reference period start: " + refPeriodStart + ", reference period end: " + refPeriodEnd);
 
             // estimate roughly the length in months of a period
-            int months = (int)(0.5 + 12 * (refPeriodEnd - refPeriodStart) / 365.0);
+            var months = (int)Math.Round(12 * (double)(refPeriodEnd - refPeriodStart) / 365);
 
             // for short periods...
             if (months == 0)
             {
                // ...take the reference period as 1 year from d1
                refPeriodStart = d1;
-               refPeriodEnd = d1 + TimeUnit.Years;
+               refPeriodEnd = d1 + new Period(1, TimeUnit.Years);
                months = 12;
             }
 
-            double period = months / 12.0;
+            var period = months / 12.0;
 
             if (d2 <= refPeriodEnd)
             {
@@ -248,7 +238,7 @@ namespace QLNet
                   // this case is long first coupon
 
                   // the last notional payment date
-                  Date previousRef = refPeriodStart - new Period(months, TimeUnit.Months);
+                  var previousRef = refPeriodStart - new Period(months, TimeUnit.Months);
                   if (d2 > refPeriodStart)
                      return yearFraction(d1, refPeriodStart, previousRef, refPeriodStart) +
                             yearFraction(refPeriodStart, d2, refPeriodStart, refPeriodEnd);
@@ -291,15 +281,9 @@ namespace QLNet
          }
       }
 
-      private class ISDA_Impl : DayCounter
+      private class ISDA_Impl : DayCounterImpl
       {
-         public static readonly ISDA_Impl Singleton = new ISDA_Impl();
-
-         private ISDA_Impl() { }
-
          public override string name() { return "Actual/Actual (ISDA)"; }
-
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
 
          public override double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
          {
@@ -319,16 +303,9 @@ namespace QLNet
          }
       }
 
-      private class AFB_Impl : DayCounter
+      private class AFB_Impl : DayCounterImpl
       {
-         public static readonly AFB_Impl Singleton = new AFB_Impl();
-
-         private AFB_Impl() { }
-
          public override string name() { return "Actual/Actual (AFB)"; }
-
-         public override int dayCount(Date d1, Date d2) { return (d2 - d1); }
-
          public override double yearFraction(Date d1, Date d2, Date refPeriodStart, Date refPeriodEnd)
          {
             if (d1 == d2)

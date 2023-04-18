@@ -1,6 +1,6 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
- *
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
@@ -209,7 +209,7 @@ namespace TestSuite
             eoniaIndex = new Eonia(eoniaTermStructure);
             fixedSwapConvention = BusinessDayConvention.ModifiedFollowing;
             fixedSwapFrequency = Frequency.Annual;
-            fixedSwapDayCount = new Thirty360();
+            fixedSwapDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
             swapIndex = (IborIndex) new Euribor3M(swapTermStructure);
             calendar = eoniaIndex.fixingCalendar();
             today = new Date(5, Month.February, 2009);

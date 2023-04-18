@@ -1,4 +1,4 @@
-﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+﻿//  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 //
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
@@ -73,7 +73,7 @@ namespace TestSuite
                                              convention, convention, DateGeneration.Rule.Forward, false);
             List<double> coupons = new InitializedList<double>(len, 0.0);
             return new FixedRateLeg(schedule)
-                   .withCouponRates(coupons, new Thirty360())
+                   .withCouponRates(coupons, new Thirty360(Thirty360.Thirty360Convention.BondBasis))
                    .withNotionals(nominals);
          }
 

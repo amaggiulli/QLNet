@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -109,7 +109,7 @@ namespace TestSuite
             for (int i = 0; i < swaps; ++i)
             {
                instruments.Add(new SwapRateHelper(swapData[i].rate / 100, new Period(swapData[i].n, swapData[i].units),
-                                                  calendar, Frequency.Annual, BusinessDayConvention.Unadjusted, new Thirty360(), index));
+                                                  calendar, Frequency.Annual, BusinessDayConvention.Unadjusted, new Thirty360(Thirty360.Thirty360Convention.BondBasis), index));
             }
             termStructure = new PiecewiseYieldCurve<Discount, LogLinear>(settlement, instruments, new Actual360());
             dummyTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(settlement, instruments, new Actual360());

@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -81,7 +81,7 @@ namespace TestSuite
             fixingDays = 0;
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
             startDate = settlement;
-            dc = new Thirty360();
+            dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             // yoy index
             //      fixing data

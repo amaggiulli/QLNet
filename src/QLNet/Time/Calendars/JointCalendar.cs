@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -33,7 +34,7 @@ namespace QLNet
                                   for any of the given calendars */
       }
 
-      private class Impl : Calendar
+      private class Impl : CalendarImpl
       {
          private JointCalendarRule rule_;
          private List<Calendar> calendars_ = new List<Calendar>();

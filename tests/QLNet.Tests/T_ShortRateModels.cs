@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
- Copyright (C) 2008-2014 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -76,7 +76,7 @@ namespace TestSuite
                                   new Handle<Quote>(vol),
                                   index,
                                   new Period(1, TimeUnit.Years),
-                                  new Thirty360(),
+                                  new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                   new Actual360(),
                                   termStructure);
             helper.setPricingEngine(engine);
@@ -222,7 +222,7 @@ namespace TestSuite
                {
 
                   VanillaSwap swap = new VanillaSwap(VanillaSwap.Type.Payer, 1000000.0,
-                                                     fixedSchedule, rates[k], new Thirty360(),
+                                                     fixedSchedule, rates[k], new Thirty360(Thirty360.Thirty360Convention.BondBasis),
                                                      floatSchedule, euribor, 0.0, new Actual360());
                   swap.setPricingEngine(new DiscountingSwapEngine(termStructure));
                   double expected = swap.NPV();

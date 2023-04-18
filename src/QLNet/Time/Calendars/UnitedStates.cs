@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -207,40 +208,40 @@ namespace QLNet
          switch (m)
          {
             case Market.Settlement:
-               calendar_ = Settlement.Singleton;
+               _impl = Settlement.Singleton;
                break;
             case Market.NYSE:
-               calendar_ = NYSE.Singleton;
+               _impl = NYSE.Singleton;
                break;
             case Market.GovernmentBond:
-               calendar_ = GovernmentBond.Singleton;
+               _impl = GovernmentBond.Singleton;
                break;
             case Market.NERC:
-               calendar_ = NERC.Singleton;
+               _impl = NERC.Singleton;
                break;
             case Market.LiborImpact:
-               calendar_ = LiborImpact.Singleton;
+               _impl = LiborImpact.Singleton;
                break;
             case Market.FederalReserve:
-               calendar_ = FederalReserve.Singleton;
+               _impl = FederalReserve.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
          }
       }
 
-      private class Settlement : Calendar.WesternImpl
+      private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
+         public static readonly Settlement Singleton = new();
          protected Settlement() { }
 
          public override string name() { return "US settlement"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
@@ -272,19 +273,20 @@ namespace QLNet
             return true;
          }
       }
-      private class NYSE : Calendar.WesternImpl
+
+      private class NYSE : WesternImpl
       {
-         public static readonly NYSE Singleton = new NYSE();
+         public static readonly NYSE Singleton = new();
          private NYSE() { }
 
          public override string name() { return "New York stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
@@ -370,19 +372,20 @@ namespace QLNet
             return true;
          }
       }
-      private class GovernmentBond : Calendar.WesternImpl
+
+      private class GovernmentBond : WesternImpl
       {
-         public static readonly GovernmentBond Singleton = new GovernmentBond();
+         public static readonly GovernmentBond Singleton = new();
          private GovernmentBond() { }
 
          public override string name() { return "US government bond market"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
@@ -390,8 +393,9 @@ namespace QLNet
                 || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January && y >= 1983)
                 // Washington's birthday (third Monday in February)
                 || isWashingtonBirthday(d, m, y, w)
-                // Good Friday (2015 was half day due to NFP report)
-                || (dd == em - 3 && y != 2015)
+                // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
+                // see <https://www.sifma.org/resources/general/holiday-schedule/>)
+                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
                 // Juneteenth (Monday if Sunday or Friday if Saturday)
@@ -424,18 +428,19 @@ namespace QLNet
             return true;
          }
       }
-      private class NERC : Calendar.WesternImpl
+
+      private class NERC : WesternImpl
       {
-         public static readonly NERC Singleton = new NERC();
+         public static readonly NERC Singleton = new();
          private NERC() { }
 
          public override string name() { return "North American Energy Reliability Council"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.Year;
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
@@ -453,9 +458,10 @@ namespace QLNet
             return true;
          }
       }
+
       private class LiborImpact : Settlement
       {
-         public new static readonly LiborImpact Singleton = new LiborImpact();
+         public new static readonly LiborImpact Singleton = new();
          private LiborImpact() { }
 
          public override string name() { return "US with Libor impact"; }
@@ -463,10 +469,10 @@ namespace QLNet
          {
             // Since 2015 Independence Day only impacts Libor if it falls
             // on a weekday
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.year();
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.year();
             if (((d == 5 && w == DayOfWeek.Monday) ||
                  (d == 3 && w == DayOfWeek.Friday)) && m == Month.July && y >= 2015)
                return true;
@@ -474,21 +480,18 @@ namespace QLNet
          }
       }
 
-      private class FederalReserve : Calendar.WesternImpl
+      private class FederalReserve : WesternImpl
       {
-         public static readonly FederalReserve Singleton = new FederalReserve();
-
+         public static readonly FederalReserve Singleton = new();
          private FederalReserve() {}
-
          public override string name() { return "Federal Reserve Bankwire System"; }
-
          public override bool isBusinessDay(Date date)
          {
             // see https://www.frbservices.org/holidayschedules/ for details
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day;
-            Month m = (Month)date.Month;
-            int y = date.year();
+            var w = date.DayOfWeek;
+            var d = date.Day;
+            var m = (Month)date.Month;
+            var y = date.year();
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 || ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)

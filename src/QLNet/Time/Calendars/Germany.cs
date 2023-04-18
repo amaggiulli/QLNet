@@ -1,6 +1,7 @@
 /*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -127,38 +128,38 @@ namespace QLNet
          switch (m)
          {
             case Market.Settlement:
-               calendar_ = Settlement.Singleton;
+               _impl = Settlement.Singleton;
                break;
             case Market.FrankfurtStockExchange:
-               calendar_ = FrankfurtStockExchange.Singleton;
+               _impl = FrankfurtStockExchange.Singleton;
                break;
             case Market.Xetra:
-               calendar_ = Xetra.Singleton;
+               _impl = Xetra.Singleton;
                break;
             case Market.Eurex:
-               calendar_ = Eurex.Singleton;
+               _impl = Eurex.Singleton;
                break;
             case Market.Euwax:
-               calendar_ = Euwax.Singleton;
+               _impl = Euwax.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
          }
       }
 
-      class Settlement : Calendar.WesternImpl
+      private class Settlement : WesternImpl
       {
-         public static readonly Settlement Singleton = new Settlement();
+         public static readonly Settlement Singleton = new();
          private Settlement() { }
 
          public override string name() { return "German settlement"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -187,19 +188,20 @@ namespace QLNet
             return true;
          }
       }
-      class FrankfurtStockExchange : Calendar.WesternImpl
+
+      private class FrankfurtStockExchange : WesternImpl
       {
-         public static readonly FrankfurtStockExchange Singleton = new FrankfurtStockExchange();
+         public static readonly FrankfurtStockExchange Singleton = new();
          private FrankfurtStockExchange() { }
 
          public override string name() { return "Frankfurt stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -220,19 +222,20 @@ namespace QLNet
             return true;
          }
       }
-      class Xetra : Calendar.WesternImpl
+
+      private class Xetra : WesternImpl
       {
-         public static readonly Xetra Singleton = new Xetra();
+         public static readonly Xetra Singleton = new();
          private Xetra() { }
 
          public override string name() { return "Xetra"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -253,19 +256,20 @@ namespace QLNet
             return true;
          }
       }
-      class Eurex : Calendar.WesternImpl
+
+      private class Eurex : WesternImpl
       {
-         public static readonly Eurex Singleton = new Eurex();
+         public static readonly Eurex Singleton = new();
          private Eurex() { }
 
          public override string name() { return "Eurex"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day
@@ -288,19 +292,20 @@ namespace QLNet
             return true;
          }
       }
-      class Euwax : Calendar.WesternImpl
+
+      private class Euwax : WesternImpl
       {
-         public static readonly Euwax Singleton = new Euwax();
+         public static readonly Euwax Singleton = new();
          private Euwax() { }
 
          public override string name() { return "Euwax"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if ((w == DayOfWeek.Saturday || w == DayOfWeek.Sunday)
                 // New Year's Day

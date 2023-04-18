@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -32,35 +32,38 @@ namespace QLNet
    */
    public class BespokeCalendar : Calendar
    {
-      private string name_;
-      public override string name() { return name_; }
+      // here implementation does not follow a singleton pattern
+      private class Impl : CalendarImpl
+      {
+         private readonly string _Name;
+         private readonly SortedSet<DayOfWeek> _Weekend = new();
+
+         public Impl(string name)
+         {
+            _Name = name;
+         }
+         public override string name() { return _Name; }
+         public override bool isWeekend(DayOfWeek w) { return (_Weekend.Contains(w)); }
+         public override bool isBusinessDay(Date date) { return !isWeekend(date.DayOfWeek); }
+         public void addWeekend(DayOfWeek w) { _Weekend.Add(w); }
+      }
+
+      private Impl _BespokeImpl;
 
       /*! \warning different bespoke calendars created with the same
                    name (or different bespoke calendars created with
                    no name) will compare as equal.
       */
-      public BespokeCalendar() : this("") { }
-      public BespokeCalendar(string name) : base(new Impl())
+      public BespokeCalendar(string name = "") : base()
       {
-         name_ = name;
+         _BespokeImpl = new Impl(name);
+         _impl = _BespokeImpl;
       }
 
       //! marks the passed day as part of the weekend
       public void addWeekend(DayOfWeek w)
       {
-         Impl impl = calendar_ as Impl;
-         if (impl != null)
-            impl.addWeekend(w);
-      }
-
-      // here implementation does not follow a singleton pattern
-      class Impl : Calendar.WesternImpl
-      {
-         public override bool isWeekend(DayOfWeek w) { return (weekend_.Contains(w)); }
-         public override bool isBusinessDay(Date date) { return !isWeekend(date.DayOfWeek); }
-         public void addWeekend(DayOfWeek w) { weekend_.Add(w); }
-
-         private List<DayOfWeek> weekend_ = new List<DayOfWeek>();
+            _BespokeImpl.addWeekend(w);
       }
    }
 }

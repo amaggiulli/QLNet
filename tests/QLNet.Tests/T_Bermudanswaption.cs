@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2010 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -71,7 +72,7 @@ namespace TestSuite
             floatingConvention = BusinessDayConvention.ModifiedFollowing;
             fixedFrequency = Frequency.Annual;
             floatingFrequency = Frequency.Semiannual;
-            fixedDayCount = new Thirty360();
+            fixedDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
 
             termStructure = new RelinkableHandle<YieldTermStructure>();
             termStructure.linkTo(Utilities.flatRate(new Date(19, Month.February, 2002), 0.04875825, new Actual365Fixed()));

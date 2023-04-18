@@ -629,6 +629,26 @@ namespace QLNet
          }
          return 0;
       }
+      public static (int accruedDays, double accruedAmount) accruedDaysAndAmount(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
+      {
+         if (settlementDate == null)
+            settlementDate = Settings.evaluationDate();
+
+         CashFlow cf = nextCashFlow(leg, includeSettlementDateFlows, settlementDate);
+         if (cf == null)
+            return (0,0);
+         Date paymentDate = cf.date();
+
+         foreach (CashFlow x in leg.Where(x => x.date() == paymentDate))
+         {
+            Coupon cp = x as Coupon;
+            if (cp != null)
+            {
+               return (cp.accruedDays(settlementDate), cp.accruedAmount(settlementDate));
+            }
+         }
+         return (0,0);
+      }
       public static int accruedDays(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
       {
          if (settlementDate == null)

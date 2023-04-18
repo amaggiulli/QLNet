@@ -554,7 +554,9 @@ namespace QLNet
       //! truncated schedule
       public Schedule until(Date truncationDate)
       {
-         Schedule result = (Schedule)this.MemberwiseClone();
+         var result = (Schedule)MemberwiseClone();
+         result.dates_ = new List<Date>(dates_);
+         result.isRegular_ = new List<bool>(isRegular_);
 
          Utils.QL_REQUIRE(truncationDate > result.dates_[0], () =>
                           "truncation date " + truncationDate +
@@ -566,8 +568,8 @@ namespace QLNet
             // remove later dates
             while (result.dates_.Last() > truncationDate)
             {
-               result.dates_.RemoveAt(dates_.Count - 1);
-               result.isRegular_.RemoveAt(isRegular_.Count - 1);
+               result.dates_.RemoveAt(result.dates_.Count - 1);
+               result.isRegular_.RemoveAt(result.isRegular_.Count - 1);
             }
 
             // add truncationDate if missing
@@ -592,6 +594,20 @@ namespace QLNet
       }
       public int Count { get { return dates_.Count; } }
 
+      public void addIrregularDates(DateTime[] dates)
+      {
+         Utils.QL_REQUIRE(dates is { Length: > 0 }, ()=> "invalid dates");
+         foreach (var date1 in dates)
+         {
+            if (!dates_.Exists(x => x == (Date)date1) &&
+                date1 < (DateTime)dates_.Max(x=>x)) 
+            {
+               var index = dates_.FindIndex((x => x > (Date)date1));
+               dates_.Insert(index, date1);
+               isRegular_.Insert(index, false);
+            }
+         }
+      }
 
       private Date nextTwentieth(Date d, DateGeneration.Rule rule)
       {

@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2015  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -61,10 +61,10 @@ namespace QLNet
          switch (m)
          {
             case Market.Settlement:
-               calendar_ = SettlementImpl.Singleton;
+               _impl = SettlementImpl.Singleton;
                break;
             case Market.MOEX:
-               calendar_ = ExchangeImpl.Singleton;
+               _impl = ExchangeImpl.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
@@ -72,9 +72,9 @@ namespace QLNet
       }
 
 
-      class SettlementImpl : Calendar.OrthodoxImpl
+      private class SettlementImpl : OrthodoxImpl
       {
-         public static readonly SettlementImpl Singleton = new SettlementImpl();
+         public static readonly SettlementImpl Singleton = new();
          private SettlementImpl() { }
 
          public override string name() { return "Russian settlement"; }
@@ -120,11 +120,11 @@ namespace QLNet
          }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's holidays
@@ -161,9 +161,9 @@ namespace QLNet
          }
       }
 
-      class ExchangeImpl : Calendar.OrthodoxImpl
+      private class ExchangeImpl : OrthodoxImpl
       {
-         public static readonly ExchangeImpl Singleton = new ExchangeImpl();
+         public static readonly ExchangeImpl Singleton = new();
          private ExchangeImpl() { }
 
          private bool isWorkingWeekend(int d, Month month, int year)
@@ -279,10 +279,10 @@ namespace QLNet
          public override bool isBusinessDay(Date date)
          {
 
-            DayOfWeek w = date.DayOfWeek;
-            int d = date.Day ;
-            Month m = (Month)date.Month;
-            int y = date.Year;
+            var w = date.DayOfWeek;
+            var d = date.Day ;
+            var m = (Month)date.Month;
+            var y = date.Year;
 
             // the exchange was formally established in 2011, so data are only
             // available from 2012 to present

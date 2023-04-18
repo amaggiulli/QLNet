@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2015 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -50,7 +50,7 @@ namespace QLNet
          switch (m)
          {
             case Market.USE:
-               calendar_ = Impl.Singleton;
+               _impl = Impl.Singleton;
                break;
             default:
                Utils.QL_FAIL("unknown market");
@@ -58,22 +58,24 @@ namespace QLNet
          }
       }
 
-      public enum Market { USE    //!< Ukrainian stock exchange
-                         }
-
-      class Impl : Calendar.OrthodoxImpl
+      public enum Market
       {
-         public static readonly Impl Singleton = new Impl();
+         USE    //!< Ukrainian stock exchange
+      }
+
+      private class Impl : OrthodoxImpl
+      {
+         public static readonly Impl Singleton = new();
          private Impl() { }
 
          public override string name() { return "Ukrainian stock exchange"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day (possibly moved to Monday)

@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -78,7 +78,7 @@ namespace TestSuite
          int settlementDays = 3;
          double[] coupons = new double[] { 0.02, 0.05, 0.08 };
          Frequency[] frequencies = new Frequency[] { Frequency.Semiannual, Frequency.Annual };
-         DayCounter bondDayCount = new Thirty360();
+         DayCounter bondDayCount = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          BusinessDayConvention accrualConvention = BusinessDayConvention.Unadjusted;
          BusinessDayConvention paymentConvention = BusinessDayConvention.ModifiedFollowing;
          double redemption = 100.0;
@@ -752,7 +752,7 @@ namespace TestSuite
          double tolerance = 1.0e-4;
 
          List<InterestRate> couponRates = new InitializedList<InterestRate>(1);
-         couponRates[0] = new InterestRate(0.1, new Thirty360(), Compounding.Compounded, Frequency.Annual);
+         couponRates[0] = new InterestRate(0.1, new Thirty360(Thirty360.Thirty360Convention.BondBasis), Compounding.Compounded, Frequency.Annual);
 
          for (int bondIndex = 0; bondIndex < maturityDates.Count; bondIndex++)
          {
@@ -801,11 +801,11 @@ namespace TestSuite
          Settings.setEvaluationDate(startDate);
 
          Period bondLength = new Period(12, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
+         DayCounter dCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          Frequency payFrequency = Frequency.Monthly;
          double amount = 400000000;
          double rate = 0.06;
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360()));
+         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(rate), new Thirty360(Thirty360.Thirty360Convention.BondBasis)));
 
          AmortizingFixedRateBond bond = BondFactory.makeAmortizingFixedBond(startDate, bondLength, dCounter, payFrequency, amount, rate);
          IPricingEngine bondEngine = new DiscountingBondEngine(discountCurve);
@@ -978,14 +978,14 @@ namespace TestSuite
 
          Period bondLength = new Period(358, TimeUnit.Months);
          Period originalLenght = new Period(360, TimeUnit.Months);
-         DayCounter dCounter = new Thirty360();
+         DayCounter dCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
          Frequency payFrequency = Frequency.Monthly;
          double amount = 400000000;
          double WACrate = 0.06;
          double PassThroughRate = 0.055;
          PSACurve psa100 = new PSACurve(startDate);
 
-         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360()));
+         var discountCurve = new Handle<YieldTermStructure>(Utilities.flatRate(startDate, new SimpleQuote(WACrate), new Thirty360(Thirty360.Thirty360Convention.BondBasis)));
 
          // 400 Million Pass-Through with a 5.5% Pass-through Rate, a WAC of 6.0%, and a WAM of 358 Months,
          // Assuming 100% PSA
@@ -1298,18 +1298,18 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833)]
-      [InlineData( 0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00)]
-      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53)]
-      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56)]
-      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42)]
-      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11)]
-      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00)]
-      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83)]
-      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25)]
-      [InlineData(5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 20.156)]
+      [InlineData(5.25, "2/13/2018", "12/01/2032", "3/23/2018", "", 5.833, 40)]
+      [InlineData(0, "3/15/2018", "1/1/2054", "3/26/2018", "", 0.00, 0)]
+      [InlineData(2.2, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.53, 25)]
+      [InlineData(2.25, "3/1/2018", "3/1/2021", "3/26/2018", "", 1.56, 25)]
+      [InlineData(3, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.42, 41)]
+      [InlineData(4, "2/1/2018", "2/15/2027", "3/26/2018", "08/15/2018", 6.11, 55)]
+      [InlineData(4, "2/20/2018", "10/1/2036", "3/26/2018", "", 4.00, 36)]
+      [InlineData(1.85, "2/1/2018", "2/1/2021", "3/26/2018", "", 2.83, 55)]
+      [InlineData(2.85, "2/15/2018", "2/15/2031", "3/26/2018", "", 3.25, 41)]
+      [InlineData(5.375, "08/26/2010", "03/01/2023", "7/16/2018", "", 20.156, 135)]
       public void testAccruedInterest(double Coupon, string AccrualDate, string MaturityDate,
-         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest)
+         string SettlementDate, string FirstCouponDate, double expectedAccruedInterest, int expectedAccruedDays)
       {
          // Convert dates
          Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
@@ -1341,6 +1341,18 @@ namespace TestSuite
             QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
                          + "\n    calculated: " + accruedInterest
                          + "\n    expected:   " + expectedAccruedInterest);
+
+         var accruedDaysAndAmount = CashFlows.accruedDaysAndAmount(bond.cashflows(), false, settlementDate);
+         if (Math.Abs(accruedDaysAndAmount.accruedAmount - expectedAccruedInterest) > 1e-2)
+            QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate
+                         + "\n    calculated: " + accruedInterest
+                         + "\n    expected:   " + expectedAccruedInterest);
+
+         if (accruedDaysAndAmount.accruedDays != expectedAccruedDays)
+            QAssert.Fail("Failed to reproduce accrual days at " + settlementDate
+                        + "\n    calculated: " + accruedDaysAndAmount.accruedDays
+                        + "\n    expected:   " + expectedAccruedDays);
+
       }
 
       public struct test_case

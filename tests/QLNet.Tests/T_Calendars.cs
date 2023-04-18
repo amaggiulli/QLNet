@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008 Andrea Maggiulli
+ Copyright (C) 2008-2023 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using QLNet;
-using System.Diagnostics;
 
 namespace TestSuite
 {
@@ -163,7 +162,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2005));
 
          Calendar c = new UnitedStates(UnitedStates.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004),
                                                new Date(31, Month.December, 2005));
          if (hol.Count != expectedHol.Count)
             QAssert.Fail("there were " + expectedHol.Count
@@ -187,7 +186,7 @@ namespace TestSuite
          expectedHol.Add(new Date(23, Month.November, 1961));
          expectedHol.Add(new Date(25, Month.December, 1961));
 
-         hol = Calendar.holidayList(c, new Date(1, Month.January, 1961), new Date(31, Month.December, 1961));
+         hol = c.holidayList(new Date(1, Month.January, 1961), new Date(31, Month.December, 1961));
 
          if (hol.Count != expectedHol.Count)
             QAssert.Fail("there were " + expectedHol.Count +
@@ -221,7 +220,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2004));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -270,7 +269,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2006));
 
          Calendar c = new UnitedStates(UnitedStates.Market.NYSE);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2006));
 
          int i;
          for (i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
@@ -385,7 +384,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2006));
 
          Calendar c = new TARGET();
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 1999), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 1999), new Date(31, Month.December, 2006));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -419,7 +418,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.FrankfurtStockExchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -453,8 +452,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.Eurex);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003),
-                                               new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -486,7 +484,7 @@ namespace TestSuite
          expectedHol.Add(new Date(24, Month.December, 2004));
 
          Calendar c = new Germany(Germany.Market.Xetra);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2003), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -542,7 +540,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -599,7 +597,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Exchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -656,7 +654,7 @@ namespace TestSuite
          expectedHol.Add(new Date(26, Month.December, 2007));
 
          Calendar c = new UnitedKingdom(UnitedKingdom.Market.Metals);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -703,7 +701,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2004));
 
          Calendar c = new Italy(Italy.Market.Exchange);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2002), new Date(31, Month.December, 2004));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2002), new Date(31, Month.December, 2004));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -750,7 +748,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2006));
 
          Calendar c = new Brazil();
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2005), new Date(31, Month.December, 2006));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2005), new Date(31, Month.December, 2006));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -761,6 +759,64 @@ namespace TestSuite
             QAssert.Fail("there were " + expectedHol.Count
                          + " expected holidays, while there are " + hol.Count
                          + " calculated holidays");
+      }
+
+      [Fact]
+      public void testDenmark()
+      {
+         // Testing Denmark holiday list
+         var expectedHol = new List<Date>();
+         expectedHol.Add(new Date(1, Month.January, 2020));
+         expectedHol.Add(new Date(9, Month.April, 2020));
+         expectedHol.Add(new Date(10, Month.April, 2020));
+         expectedHol.Add(new Date(13, Month.April, 2020));
+         expectedHol.Add(new Date(8, Month.May, 2020));
+         expectedHol.Add(new Date(21, Month.May, 2020));
+         expectedHol.Add(new Date(22, Month.May, 2020));
+         expectedHol.Add(new Date(1, Month.June, 2020));
+         expectedHol.Add(new Date(5, Month.June, 2020));
+         expectedHol.Add(new Date(24, Month.December, 2020));
+         expectedHol.Add(new Date(25, Month.December, 2020));
+         // Saturday: expectedHol.emplace_back(26, December, 2020);
+         expectedHol.Add(new Date(31, Month.December, 2020));
+         expectedHol.Add(new Date(1, Month.January, 2021));
+         expectedHol.Add(new Date(1, Month.April, 2021));
+         expectedHol.Add(new Date(2, Month.April, 2021));
+         expectedHol.Add(new Date(5, Month.April, 2021));
+         expectedHol.Add(new Date(30, Month.April, 2021));
+         expectedHol.Add(new Date(13, Month.May, 2021));
+         expectedHol.Add(new Date(14, Month.May, 2021));
+         expectedHol.Add(new Date(24, Month.May, 2021));
+         // Saturday: expectedHol.emplace_back(5, June, 2021);
+         expectedHol.Add(new Date(24, Month.December, 2021));
+         // Saturday: expectedHol.emplace_back(25, December, 2021);
+         // Sunday: expectedHol.emplace_back(26, December, 2021);
+         expectedHol.Add(new Date(31, Month.December, 2021));
+         // Saturday: expectedHol.emplace_back(1, January, 2022);
+         expectedHol.Add(new Date(14, Month.April, 2022));
+         expectedHol.Add(new Date(15, Month.April, 2022));
+         expectedHol.Add(new Date(18, Month.April, 2022));
+         expectedHol.Add(new Date(13, Month.May, 2022));
+         expectedHol.Add(new Date(26, Month.May, 2022));
+         expectedHol.Add(new Date(27, Month.May, 2022));
+         // Sunday: expectedHol.emplace_back(5, June, 2022);
+         expectedHol.Add(new Date(6, Month.June, 2022));
+         // Saturday: expectedHol.emplace_back(24, December, 2022);
+         // Sunday: expectedHol.emplace_back(25, December, 2022);
+         expectedHol.Add(new Date(26, Month.December, 2022));
+         // Saturday: expectedHol.emplace_back(31, December, 2022);
+
+         Calendar c = new Denmark();
+         var hol = c.holidayList(new Date(1, Month.January, 2020), new Date(31, Month.December, 2022));
+
+         for (var i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
+         {
+           if (hol[i] != expectedHol[i])
+               QAssert.Fail("expected holiday was " + expectedHol[i] + " while calculated holiday is " + hol[i]);
+         }
+         if (hol.Count != expectedHol.Count)
+            QAssert.Fail("there were " + expectedHol.Count + " expected holidays, while there are "
+               + hol.Count + " calculated holidays");
       }
 
       [Fact]
@@ -841,8 +897,7 @@ namespace TestSuite
          expectedHol.Add(new Date(25, Month.December, 2007));
 
          Calendar c = new SouthKorea(SouthKorea.Market.Settlement);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
-                                               new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
             if (hol[i] != expectedHol[i])
@@ -936,8 +991,7 @@ namespace TestSuite
          expectedHol.Add(new Date(31, Month.December, 2007));
 
          Calendar c = new SouthKorea(SouthKorea.Market.KRX);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2004),
-                                               new Date(31, Month.December, 2007));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2004), new Date(31, Month.December, 2007));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -1112,9 +1166,49 @@ namespace TestSuite
          expectedHol.Add(new Date(6, Month.October, 2021));
          expectedHol.Add(new Date(7, Month.October, 2021));
 
+         // China Shanghai Securities Exchange holiday list in the year 2022
+         expectedHol.Add(new Date(3, Month.Jan, 2022));
+         expectedHol.Add(new Date(31, Month.Jan, 2022));
+         expectedHol.Add(new Date(1, Month.Feb, 2022));
+         expectedHol.Add(new Date(2, Month.Feb, 2022));
+         expectedHol.Add(new Date(3, Month.Feb, 2022));
+         expectedHol.Add(new Date(4, Month.Feb, 2022));
+         expectedHol.Add(new Date(4, Month.April, 2022));
+         expectedHol.Add(new Date(5, Month.April, 2022));
+         expectedHol.Add(new Date(2, Month.May, 2022));
+         expectedHol.Add(new Date(3, Month.May, 2022));
+         expectedHol.Add(new Date(4, Month.May, 2022));
+         expectedHol.Add(new Date(3, Month.June, 2022));
+         expectedHol.Add(new Date(12, Month.September, 2022));
+         expectedHol.Add(new Date(3, Month.October, 2022));
+         expectedHol.Add(new Date(4, Month.October, 2022));
+         expectedHol.Add(new Date(5, Month.October, 2022));
+         expectedHol.Add(new Date(6, Month.October, 2022));
+         expectedHol.Add(new Date(7, Month.October, 2022));
+
+         // China Shanghai Securities Exchange holiday list in the year 2023
+         expectedHol.Add(new Date(2, Month.Jan, 2023));
+         expectedHol.Add(new Date(23, Month.Jan, 2023));
+         expectedHol.Add(new Date(24, Month.Jan, 2023));
+         expectedHol.Add(new Date(25, Month.Jan, 2023));
+         expectedHol.Add(new Date(26, Month.Jan, 2023));
+         expectedHol.Add(new Date(27, Month.Jan, 2023));
+         expectedHol.Add(new Date(5, Month.April, 2023));
+         expectedHol.Add(new Date(1, Month.May, 2023));
+         expectedHol.Add(new Date(2, Month.May, 2023));
+         expectedHol.Add(new Date(3, Month.May, 2023));
+         expectedHol.Add(new Date(22, Month.June, 2023));
+         expectedHol.Add(new Date(23, Month.June, 2023));
+         expectedHol.Add(new Date(29, Month.September, 2023));
+         expectedHol.Add(new Date(2, Month.October, 2023));
+         expectedHol.Add(new Date(3, Month.October, 2023));
+         expectedHol.Add(new Date(4, Month.October, 2023));
+         expectedHol.Add(new Date(5, Month.October, 2023));
+         expectedHol.Add(new Date(6, Month.October, 2023));
+
+
          Calendar c = new China(China.Market.SSE);
-         List<Date> hol = Calendar.holidayList(c, new Date(1, Month.January, 2014),
-                                               new Date(31, Month.December, 2021));
+         List<Date> hol = c.holidayList(new Date(1, Month.January, 2014),  new Date(31, Month.December, 2023));
 
          for (int i = 0; i < Math.Min(hol.Count, expectedHol.Count); i++)
          {
@@ -1197,9 +1291,27 @@ namespace TestSuite
          expectedWorkingWeekEnds.Add(new Date(26, Month.September, 2021));
          expectedWorkingWeekEnds.Add(new Date(9, Month.October, 2021));
 
+         // China Inter Bank working weekends list in the year 2022
+         expectedWorkingWeekEnds.Add(new Date(29, Month.Jan, 2022));
+         expectedWorkingWeekEnds.Add(new Date(30, Month.Jan, 2022));
+         expectedWorkingWeekEnds.Add(new Date(2, Month.April, 2022));
+         expectedWorkingWeekEnds.Add(new Date(24, Month.April, 2022));
+         expectedWorkingWeekEnds.Add(new Date(7, Month.May, 2022));
+         expectedWorkingWeekEnds.Add(new Date(8, Month.October, 2022));
+         expectedWorkingWeekEnds.Add(new Date(9, Month.October, 2022));
+
+         // China Inter Bank working weekends list in the year 2023
+         expectedWorkingWeekEnds.Add(new Date(28, Month.Jan, 2023));
+         expectedWorkingWeekEnds.Add(new Date(29, Month.Jan, 2023));
+         expectedWorkingWeekEnds.Add(new Date(23, Month.April, 2023));
+         expectedWorkingWeekEnds.Add(new Date(6, Month.May, 2023));
+         expectedWorkingWeekEnds.Add(new Date(25, Month.June, 2023));
+         expectedWorkingWeekEnds.Add(new Date(7, Month.October, 2023));
+         expectedWorkingWeekEnds.Add(new Date(8, Month.October, 2023));
+
          Calendar c = new China(China.Market.IB);
          Date start = new Date(1, Month.Jan, 2014);
-         Date end = new Date(31, Month.Dec, 2021);
+         Date end = new Date(31, Month.Dec, 2023);
 
          int k = 0;
 
@@ -1219,6 +1331,26 @@ namespace TestSuite
             QAssert.Fail("there were " + expectedWorkingWeekEnds.Count
                          + " expected working weekends, while there are " + k
                          + " calculated holidays");
+      }
+
+      [Theory]
+      [InlineData("2022-06-24", false, true)] // matarikiDay holiday
+      [InlineData("2022-06-25", false, true)] // a sat
+      [InlineData("2022-07-08", true, false)] // a business day 
+      public void testNZIB_matarikiDay(string day, bool expectedIsBusinessDay, bool expectedIsHoliday)
+      {
+         // arrange
+         var testDay = new Date(DateTime.Parse(day));
+
+         var nzCalendar = new NewZealand();
+         var isNzBusinessDay = nzCalendar.isBusinessDay(testDay);
+
+         if (expectedIsBusinessDay != isNzBusinessDay)
+            QAssert.Fail($"expectedIsBusinessDay is {expectedIsBusinessDay}, but the test result is {isNzBusinessDay}");
+
+         var isHoliday = nzCalendar.isHoliday(testDay);
+         if (expectedIsHoliday != isHoliday)
+            QAssert.Fail($"expectedIsHoliday is {expectedIsHoliday}, but the test result is {isNzBusinessDay}");
       }
 
       [Fact]

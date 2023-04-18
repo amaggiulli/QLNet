@@ -1,5 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -38,19 +39,19 @@ namespace QLNet
    {
       public TARGET() : base(Impl.Singleton) {}
 
-      class Impl : Calendar.WesternImpl
+      private class Impl : WesternImpl
       {
-         internal static readonly Impl Singleton = new Impl();
+         internal static readonly Impl Singleton = new();
          private Impl() {}
 
          public override string name() { return "TARGET calendar"; }
          public override bool isBusinessDay(Date date)
          {
-            DayOfWeek w = date.DayOfWeek;
+            var w = date.DayOfWeek;
             int d = date.Day, dd = date.DayOfYear;
-            Month m = (Month)date.Month;
-            int y = date.Year;
-            int em = easterMonday(y);
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
 
             if (isWeekend(w)
                 // New Year's Day

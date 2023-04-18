@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  *
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -30,6 +30,89 @@ namespace QLNet
       {
          coupon_ = coupon as OvernightIndexedCoupon;
          Utils.QL_REQUIRE(coupon_ != null, () => "wrong coupon type");
+      }
+
+      public double averageRate(Date date)
+      {
+         Date today = Settings.evaluationDate();
+
+         OvernightIndex index = coupon_.index() as OvernightIndex;
+         var pastFixings = IndexManager.instance().getHistory(index?.name());
+
+         List<Date> fixingDates = coupon_.fixingDates();
+         List<Date> valueDates = coupon_.valueDates();
+         List<double> dt = coupon_.dt();
+
+         int i = 0;
+         int n = valueDates.FindIndex(x => date <= x); // std::lower_bound(valueDates.begin(), valueDates.end(), date) - valueDates.begin();
+         double compoundFactor = 1.0;
+
+         // already fixed part
+         while (i < n && fixingDates[i] < today)
+         {
+            // rate must have been fixed
+            double? fixing = pastFixings[fixingDates[i]];
+            Utils.QL_REQUIRE(fixing != null, ()=> "Missing " + index.name() + " fixing for " + fixingDates[i]);
+            double span = (date >= valueDates[i + 1] ? dt[i] : index.dayCounter().yearFraction(valueDates[i], date));
+            compoundFactor *= (1.0 + fixing.GetValueOrDefault() * span);
+            ++i;
+         }
+
+         // today is a border case
+         if (i < n && fixingDates[i] == today)
+         {
+            // might have been fixed
+            try
+            {
+               double? fixing = pastFixings[fixingDates[i]];
+               if (fixing != null)
+               {
+                  double span = (date >= valueDates[i + 1] ? dt[i] : index.dayCounter().yearFraction(valueDates[i], date));
+                  compoundFactor *= (1.0 + fixing.GetValueOrDefault() * span);
+                  ++i;
+               }
+               else
+               {
+                  ; // fall through and forecast
+               }
+            }
+            catch (Exception)
+            {
+               ; // fall through and forecast
+            }
+         }
+
+         // forward part using telescopic property in order
+         // to avoid the evaluation of multiple forward fixings
+         if (i < n)
+         {
+            var curve = index.forwardingTermStructure();
+            Utils.QL_REQUIRE(!curve.empty(),()=>
+                       "null term structure set to this instance of " + index.name());
+
+            double startDiscount = curve.link.discount(valueDates[i]);
+            if (valueDates[n] == date)
+            {
+               // full telescopic formula
+               double endDiscount = curve.link.discount(valueDates[n]);
+               compoundFactor *= startDiscount / endDiscount;
+            }
+            else
+            {
+               // The last fixing is not used for its full period (the date is between its
+               // start and end date).  We can use the telescopic formula until the previous
+               // date, then we'll add the missing bit.
+               var endDiscount = curve.link.discount(valueDates[n - 1]);
+               compoundFactor *= startDiscount / endDiscount;
+
+               var fixing = index.fixing(fixingDates[n - 1]);
+               var span = index.dayCounter().yearFraction(valueDates[n - 1], date);
+               compoundFactor *= (1.0 + fixing * span);
+            }
+         }
+
+         var rate = (compoundFactor - 1.0) / coupon_.accruedPeriod(date);
+         return coupon_.gearing() * rate + coupon_.spread();
       }
 
       public override double swapletRate()
@@ -177,6 +260,33 @@ namespace QLNet
       public List<double> dt() { return dt_; }
       //! value dates for the rates to be compounded
       public List<Date> valueDates() { return valueDates_; }
+
+      public override double accruedAmount(Date d)
+      {
+         if (d <= accrualStartDate_ || d > paymentDate_)
+         {
+            // out of coupon range
+            return 0.0;
+         }
+         else if (tradingExCoupon(d)) {
+            return nominal() * averageRate(d) * accruedPeriod(d);
+         }
+         else
+         {
+            // usual case
+            return nominal() * averageRate(Date.Min(d, accrualEndDate_)) * accruedPeriod(d);
+         }
+      }
+
+      private double averageRate(Date d)
+      {
+         Utils.QL_REQUIRE(pricer_!=null, ()=> "pricer not set");
+         pricer_.initialize(this);
+         if (pricer_ is OvernightIndexedCouponPricer overnightIndexPricer)
+            return overnightIndexPricer.averageRate(d);
+
+         return pricer_.swapletRate();
+      }
 
       private List<Date> valueDates_, fixingDates_;
       private List<double> fixings_;

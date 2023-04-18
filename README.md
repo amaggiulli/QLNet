@@ -2,11 +2,11 @@ QLNet
 =====
 
 QLNet C# library official repository.
-QLNet is a financial library written in C# for the Windows enviroment derived primarily from its C++ counterpart, Quantlib, 
+QLNet is a financial library written in C# derived primarily from its C++ counterpart, Quantlib, 
 which has been used as a base reference for modelling various financial instruments.
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/iii1m7n3cdq3v5xm?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet)
+[![Build status](https://ci.appveyor.com/api/projects/status/nn0a2mw6qu8mg481?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet-p0t4r)
 [![NuGet](https://buildstats.info/nuget/qlnet)](https://www.nuget.org/packages/qlnet/)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
 
@@ -19,7 +19,8 @@ QLNet also contains new developments on the bond market like MBS, Amortized Cost
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=QLNet)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=security_rating)](https://sonarcloud.io/dashboard?id=QLNet)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=QLNet-develop&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QLNet-develop)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=QLNet&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QLNet)
+
 
 ## Development workflow 
 
