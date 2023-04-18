@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.12.1
+  version: 1.13.0
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -21,18 +21,18 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net6.0\QLNet.dll
+    - path: src\QLNet\bin\Release\net7.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.12.1
-    release: QLNet Version 1.12.1
-    description: QLNet 1.12.1
+    tag: QLNet-v1.13.0
+    release: QLNet Version 1.13.0
+    description: QLNet 1.13.0
     auth_token:
-      secure: yPDUXqBIfD2IB3l3KMeERPZjvD7jFC7spFIkbE92e1uWcJ4j3XSei/a966C5Aa+M
-    artifact: src\QLNet\bin\Release\net6.0\QLNet.dll
+      secure: 4cCBgQRwNh1N6VbvMJTCUMoq7BVD0Cmj04AjQa8L3k5k6MirTm8dz5TFUuqRDbHhj5x2QJS4l2EfoTsAMgc8ZhWYVJ2CV1deITs7sHYG98BrXl8NGKdPivoOZZdZT9oo
+    artifact: src\QLNet\bin\Release\net7.0\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet

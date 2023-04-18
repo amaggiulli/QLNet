@@ -1,35 +1,42 @@
-QLNet 1.12.0
+QLNet 1.13.0
 =========================
 
-QLNet 1.12.0
+QLNet 1.13.0
+Mayor changes <https://github.com/amaggiulli/QLNet/milestone/4?closed=1>.
 A detailed list of changes is available in ChangeLog.txt.
 
 FRAMEWORK
 
-+ Removed QLNet old framework solution
-+ Updated tests to use only xunit
-+ Updated library to netstandard 2.1
-+ Updated test suite to .Net Core 5
-+ Updated samples to .Net Core 5
++ Updated to .NET 7.0 / netstandard 2.0
++ Removed AStyle formatting for more standard ediconfig setting
 
-MATH 
+PRICING ENGINES
 
-+ Fixed LineSearchBasedMethod.minimize, thx @hhaldn for spotting it.
++ Fixed MCDiscreteAveragingAsianEngine timeGrid and ArithmeticAPOPathPricer path value retrieval thanks @mookid8000 
+
+CASHFLOWS
+
++  Added new CashFlows method to return both accrued days and accrued amount.
+
+INDEXES  
+
++ Added SOFR Index 
 
 CALENDARS
 
-+ Fixed Denmark holidays, thx @hhaldn
-+ Added Austrian, French and Chilean calendars
-+ Updated all existing calendars up to 2021
++ Support New Zealand's new publish holiday: Matariki holiday, thanks @ninetiger
 
+MISC
+
++ Added batch calculations
+ 
 TIME
 
-+ Added utility Date.ToDateTime() method
-+ Fixed ActualActualISMA daycounter calculation for long/short final periods, thanks @kristofferpagels.
- 
-
-TERMSTRUCTURES
-
-+ Fixed helpers sort for Piecewise Curves
-
++ Refactoring DayCounters
++ Added Actual/366 daycounter. 
++ Added Actual364, Actual36525 and Thirty365 daycounters.
++ Refactoring Calendars 
++ Added Cyprus and Greece calendars, thanks @pamboscy
++ Fixed Schedule until method. 
++ Updated several caledars up to 2023
 
