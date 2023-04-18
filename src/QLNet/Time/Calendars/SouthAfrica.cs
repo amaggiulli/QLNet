@@ -101,6 +101,12 @@ namespace QLNet
                 // Day of Goodwill (possibly moved to Monday)
                 || ((d == 26 || (d == 27 && w == DayOfWeek.Monday))
                     && m == Month.December)
+                // one-shot: Election day 2009
+                || (d == 22 && m == Month.April && y == 2009)
+                // one-shot: Election day 2016
+                || (d == 3 && m == Month.August && y == 2016)
+                // one-shot: In lieu of Christmas falling on Sunday in 2022
+                || (d == 27 && m == Month.December && y == 2022)
                )
                return false;
             return true;

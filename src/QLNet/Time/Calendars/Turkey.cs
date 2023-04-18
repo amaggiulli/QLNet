@@ -25,7 +25,8 @@ namespace QLNet
 {
    //! Turkish calendar
    /*! Holidays for the Istanbul Stock Exchange:
-       (data from <http://borsaistanbul.com/en/products-and-markets/official-holidays>):
+       (data from <https://borsaistanbul.com/en/sayfa/3631/official-holidays>) and
+       <https://feiertagskalender.ch/index.php?geo=3539&hl=en>
        <ul>
        <li>Saturdays</li>
        <li>Sundays</li>
@@ -34,7 +35,7 @@ namespace QLNet
        <li>Youth and Sports Day, May 19th</li>
        <li>Victory Day, August 30th</li>
        <li>Republic Day, October 29th</li>
-       <li>Local Holidays (Kurban, Ramadan; 2004 to 2013 only) </li>
+       <li>Local Holidays (Kurban, Ramadan - dates need further validation for >= 2024) </li>
        </ul>
 
        \ingroup calendars
@@ -171,6 +172,169 @@ namespace QLNet
                    || (m == Month.October && d >= 4 && d <= 7)
                    // additional holiday for Republic Day
                    || (m == Month.October && d == 29))
+                  return false;
+            }
+            else if (y == 2015)
+            {
+			      // Ramadan
+			      if ((m == Month.July && d >= 17 && d <= 19)
+				      // Kurban
+				      || (m == Month.October && d >= 24 && d <= 27))
+				      return false;
+		      }
+            else if (y == 2016)
+            {
+			      // Ramadan
+			      if ((m == Month.July && d >= 5 && d <= 7)
+				      // Kurban
+				      || (m == Month.September && d >= 12 && d <= 15))
+				      return false;
+		      }
+            else if (y == 2017)
+            {
+			      // Ramadan
+			      if ((m == Month.June && d >= 25 && d <= 27)
+				      // Kurban
+				      || (m == Month.September && d >= 1 && d <= 4))
+				      return false;
+		      }
+            else if (y == 2018)
+            {
+			      // Ramadan
+			      if ((m == Month.June && d >= 15 && d <= 17)
+				      // Kurban
+				      || (m == Month.August && d >= 21 && d <= 24))
+				      return false;
+		      }
+            else if (y == 2019)
+            {
+			      // Ramadan
+			      if ((m == Month.June && d >= 4 && d <= 6)
+				      // Kurban
+				      || (m == Month.August && d >= 11 && d <= 14))
+				      return false;
+		      }
+            else if (y == 2020)
+            {
+			      // Ramadan
+			      if ((m == Month.May && d >= 24 && d <= 26)
+				      // Kurban
+				      || (m == Month.July && d == 31) || (m == Month.August && d >= 1 && d <= 3))
+				      return false;
+		      }
+            else if (y == 2021)
+            {
+			      // Ramadan
+			      if ((m == Month.May && d >= 13 && d <= 15)
+				      // Kurban
+				      || (m == Month.July && d >= 20 && d <= 23))
+				      return false;
+		      }
+            else if (y == 2022)
+            {
+			      // Ramadan
+			      if ((m == Month.May && d >= 2 && d <= 4)
+				      // Kurban
+				      || (m == Month.July && d >= 9 && d <= 12))
+				      return false;
+		      }
+            else if (y == 2023)
+            {
+			      // Ramadan
+			      if ((m == Month.April && d >= 21 && d <= 23)
+				      // Kurban
+                      // July 1 is also a holiday but falls on a Saturday which is already flagged
+				      || (m == Month.June && d >= 28 && d <= 30))
+				      return false;
+		      }
+            else if (y == 2024)
+            {
+		         // Note: Holidays >= 2024 are not yet officially anounced by borsaistanbul.com
+		         // and need further validation
+			      // Ramadan
+			      if ((m == Month.April && d >= 10 && d <= 12)
+				      // Kurban
+				      || (m == Month.June && d >= 17 && d <= 19))
+				      return false;
+		      }
+            else if (y == 2025)
+            {
+               // Ramadan
+      			if ((m == Month.March && d == 31) || (m == Month.April && d >= 1 && d <= 2)
+				   // Kurban
+				   || (m == Month.June && d >= 6 && d <= 9))
+				   return false;
+            }
+            else if (y == 2026)
+            {
+               // Ramadan
+			      if ((m == Month.March && d >= 20 && d <= 22)
+				      // Kurban
+				      || (m == Month.May && d >= 26 && d <= 29))
+                  return false;
+		      }
+            else if (y == 2027)
+            {
+			      // Ramadan
+			      if ((m == Month.March && d >= 10 && d <= 12)
+				      // Kurban
+				      || (m == Month.May && d >= 16 && d <= 19))
+				      return false;
+		      }
+            else if (y == 2028)
+            {
+			      // Ramadan
+			      if ((m == Month.February && d >= 27 && d <= 29)
+				      // Kurban
+				      || (m == Month.May && d >= 4 && d <= 7))
+				      return false;
+		      }
+            else if (y == 2029)
+            {
+			      // Ramadan
+			      if ((m == Month.February && d >= 15 && d <= 17)
+				      // Kurban
+				      || (m == Month.April && d >= 23 && d <= 26))
+				      return false;
+		      }
+            else if (y == 2030)
+            {
+			      // Ramadan
+			      if ((m == Month.February && d >= 5 && d <= 7)
+				      // Kurban
+				      || (m == Month.April && d >= 13 && d <= 16))
+				      return false;
+		      }
+            else if (y == 2031)
+            {
+			      // Ramadan
+			      if ((m == Month.January && d >= 25 && d <= 27)
+				      // Kurban
+				      || (m == Month.April && d >= 2 && d <= 5))
+				      return false;
+		      }
+            else if (y == 2032)
+            {
+               // Ramadan
+			      if ((m == Month.January && d >= 14 && d <= 16)
+				      // Kurban
+				      || (m == Month.March && d >= 21 && d <= 24))
+				      return false;
+		      }
+            else if (y == 2033)
+            {
+               // Ramadan
+			      if ((m == Month.January && d >= 3 && d <= 5) || (m == Month.December && d == 23)
+				      // Kurban
+				      || (m == Month.March && d >= 11 && d <= 14))
+				      return false;
+            }
+            else if (y == 2034)
+            {
+               // Ramadan
+               if ((m == Month.December && d >= 12 && d <= 14)
+                   // Kurban
+                   || (m == Month.February && d == 28) || (m == Month.March && d >= 1 && d <= 3))
                   return false;
             }
             return true;

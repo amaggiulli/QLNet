@@ -70,8 +70,8 @@ namespace QLNet
                 || (dd == em + 25)
                 // Ascension
                 || (dd == em + 38)
-                // Day after Ascension (bank holiday after year 2008)
-                || (dd == em + 39 && date.Year > 2008)
+                // Day after Ascension
+                || (dd == em + 39 && date.Year > 2009)
                 // Whit Monday
                 || (dd == em + 49)
                 // New Year's Day
@@ -84,8 +84,8 @@ namespace QLNet
                 || (d == 25 && m == Month.December)
                 // Boxing Day
                 || (d == 26 && m == Month.December)
-                // New Year's Eve (bank holiday from 2003)
-                || (d == 31 && m == Month.December && date.Year >= 2003))
+                // New Year's Eve
+                || (d == 31 && m == Month.December))
                return false;
             return true;
          }
