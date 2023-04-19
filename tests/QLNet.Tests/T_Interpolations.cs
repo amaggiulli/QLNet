@@ -1663,7 +1663,7 @@ namespace TestSuite
          double stepSize = 0.1;
          double orderOfConvergence = 1.0;
 
-         RichardsonExtrapolation.function f = delegate(double h)
+         RichardsonExtrapolation.Function f = delegate(double h)
          {
             return Math.Pow(1.0 + h, 1 / h);
          };

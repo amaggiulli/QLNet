@@ -21,7 +21,7 @@ namespace QLNet
 {
    public class DiscretizedConvertible : DiscretizedAsset
    {
-      public DiscretizedConvertible(ConvertibleBond.option.Arguments args,
+      public DiscretizedConvertible(ConvertibleBond.Option.Arguments args,
                                     GeneralizedBlackScholesProcess process, TimeGrid grid)
       {
          arguments_ = args;
@@ -236,7 +236,7 @@ namespace QLNet
          result.AddRange(couponTimes_);
          return result;
       }
-      public ConvertibleBond.option.Arguments arguments()
+      public ConvertibleBond.Option.Arguments arguments()
       {
          return arguments_;
       }
@@ -260,7 +260,7 @@ namespace QLNet
       public Vector spreadAdjustedRate_;
       public Vector dividendValues_;
 
-      private ConvertibleBond.option.Arguments arguments_;
+      private ConvertibleBond.Option.Arguments arguments_;
       private GeneralizedBlackScholesProcess process_;
       private List<double> stoppingTimes_;
       private List<double> callabilityTimes_;

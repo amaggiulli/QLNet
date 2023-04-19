@@ -517,7 +517,7 @@ namespace QLNet
 
                   return (x < upper)
                          ? Math.Max(0.0, Math.Min(1.0,
-                                                  gaussLaguerreIntegration.value(new ch(process, x, nu_0, nu_t, dt).value)))
+                                                  gaussLaguerreIntegration.value(new Ch(process, x, nu_0, nu_t, dt).value)))
                          : 1.0;
                }
                case Discretization.BroadieKayaExactSchemeLobatto:
@@ -529,7 +529,7 @@ namespace QLNet
 
                   return x < upper ?
                          Math.Max(0.0, Math.Min(1.0,
-                                                   new GaussLobattoIntegral(default(int), eps).value(new ch(process, x, nu_0, nu_t, dt).value, Const.QL_EPSILON, upper)))
+                                                   new GaussLobattoIntegral(default(int), eps).value(new Ch(process, x, nu_0, nu_t, dt).value, Const.QL_EPSILON, upper)))
                             : 1.0;
                   }
                case Discretization.BroadieKayaExactSchemeTrapezoidal:
@@ -565,15 +565,14 @@ namespace QLNet
 
       }
 
-
-      private class ch
+      private class Ch
       {
          private HestonProcess process;
          private double x, nu_0, nu_t;
          private double dt;
 
 
-         public ch(HestonProcess _process, double _x, double _nu_0, double _nu_t, double _dt)
+         public Ch(HestonProcess _process, double _x, double _nu_0, double _nu_t, double _dt)
          {
             process = _process;
             x = _x;

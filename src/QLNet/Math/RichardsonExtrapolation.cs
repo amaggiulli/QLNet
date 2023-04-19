@@ -58,9 +58,9 @@ namespace QLNet
          \param delta_h step size
          \param n if known, n is the order of convergence
       */
-      public delegate double function(double num);
+      public delegate double Function(double num);
 
-      public RichardsonExtrapolation(function f, double delta_h, double? n = null)
+      public RichardsonExtrapolation(Function f, double delta_h, double? n = null)
       {
          delta_h_ = delta_h;
          fdelta_h_ = f(delta_h);
@@ -104,6 +104,6 @@ namespace QLNet
       private double delta_h_;
       private double fdelta_h_;
       private double? n_;
-      private function f_;
+      private Function f_;
    }
 }
