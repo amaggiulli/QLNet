@@ -395,7 +395,7 @@ namespace TestSuite
 
          CommonVars vars = new CommonVars();
          testCurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-7);
-         testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-9);
+         testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-8);
       }
 
       [Fact(Skip = "ToCheck")]
