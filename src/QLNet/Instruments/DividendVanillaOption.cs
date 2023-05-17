@@ -84,7 +84,7 @@ namespace QLNet
       //! %Arguments for dividend vanilla option calculation
       public new class Arguments : OneAssetOption.Arguments
       {
-         public DividendSchedule cashFlow { get; set; }
+         public DividendSchedule cashFlow { get; set; } = new();
 
          public override void validate()
          {
