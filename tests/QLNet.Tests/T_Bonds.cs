@@ -1960,5 +1960,31 @@ namespace TestSuite
 
          QAssert.Fail("Failed to capture QLNet exception");
       }
+
+      [Theory]
+      [InlineData(98.5826771, "02/23/2022", "02/23/2023", "02/01/2023", 0.23852746)]
+      [InlineData(99.9788542, "01/01/2022", "05/10/2022", "03/29/2022", 0.00183806)]
+      [InlineData(99.9195, "06/09/2021", "06/09/2022", "03/29/2022", 0.00408419)]
+      [InlineData(99.5947639, "09/08/2021", "09/08/2022", "03/29/2022", 0.00911123)]
+      [InlineData(96.323, "02/22/2023", "02/22/2024", "05/17/2023", 0.04916139)]
+      [InlineData(98.5826771, "02/23/2023", "02/23/2023", "05/20/2022", 0.01874783)]
+      public void testBondEquivalentYield(decimal price, string IssueDate, string MaturityDate, string SettlementDate, double expectedYield)
+      {
+         const double delta = 0.00000001; 
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date issueDate = Convert.ToDateTime(IssueDate, new CultureInfo("en-US"));
+         var calendar = new TARGET();
+         var conv = BusinessDayConvention.Unadjusted;
+         var basis = new Actual360();
+
+         Settings.setEvaluationDate(settlementDate);
+
+         var sch = new Schedule(null, maturityDate, new Period(Frequency.Semiannual), calendar, conv, conv, DateGeneration.Rule.Backward, false);
+         var bond = new ZeroCouponBond(0, calendar, 1000, maturityDate, conv, 100, issueDate);
+         var bey = bond.bondEquivalentYield(Bond.BondEquivalentYearType.IssueFwdOneYear, settlementDate, price, basis, calendar, Frequency.Semiannual);
+
+         QAssert.AreEqual(expectedYield, bey, delta);
+      }
    }
 }

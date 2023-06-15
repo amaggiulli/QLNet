@@ -34,6 +34,15 @@ namespace QLNet
        - price/yield calculations are checked against known good values. */
    public class Bond : Instrument
    {
+      public enum BondEquivalentYearType
+      {
+         Always365,
+         Always366,
+         SettlementFwdOneYear,
+         IssueFwdOneYear,
+         MaturityBackOneYear
+      }
+
       /// <summary>
       /// Bond price information
       /// </summary>
@@ -310,6 +319,59 @@ namespace QLNet
 
          return BondFunctions.accruedAmount(this, settlement);
 
+      }
+
+      // Bond equivalent yield
+      public virtual double bondEquivalentYield(BondEquivalentYearType yearType, DateTime settlementDate, decimal price,
+         DayCounter dc, Calendar calendar, Frequency frequency)
+      {
+         Utils.QL_REQUIRE(settlementDate != DateTime.MinValue, () => "invalid settlement date");
+         Utils.QL_REQUIRE(maturityDate_ != null, () => "maturity date not provided");
+         double yearDays = 365;
+
+         // Year type calculation
+         bool eom;
+         Date endDate;
+         switch (yearType)
+         {
+            case BondEquivalentYearType.Always365:
+               break;
+            case BondEquivalentYearType.Always366:
+               yearDays = 366;
+               break;
+            case BondEquivalentYearType.SettlementFwdOneYear:
+               eom = calendar.isEndOfMonth(settlementDate);
+               endDate = calendar.advance(settlementDate, new Period(1, TimeUnit.Years), BusinessDayConvention.Unadjusted, eom);
+               yearDays = dc.dayCount(settlementDate, endDate);
+               break;
+            case BondEquivalentYearType.IssueFwdOneYear:
+               if (issueDate_ != null)
+               {
+                  eom = calendar.isEndOfMonth(issueDate_);
+                  endDate = calendar.advance(issueDate_, new Period(1, TimeUnit.Years), BusinessDayConvention.Unadjusted, eom);
+                  yearDays = dc.dayCount(issueDate_, endDate);
+               }
+               break;
+            case BondEquivalentYearType.MaturityBackOneYear:
+               eom = calendar.isEndOfMonth(maturityDate_);
+               endDate = calendar.advance(maturityDate_, new Period(-1, TimeUnit.Years), BusinessDayConvention.Unadjusted, eom);
+               yearDays = dc.dayCount(endDate, maturityDate_);
+               break;
+            default:
+               throw new ArgumentOutOfRangeException(nameof(yearType), yearType, null);
+         }
+
+         // BEY Calc
+         double daysToMaturity = dc.dayCount(settlementDate, maturityDate_);
+         var periodLenght = 365 / (int)frequency;
+         if (daysToMaturity <= periodLenght)
+         {
+            return (double)((100 - price) / price * ((decimal)yearDays /  dc.dayCount(settlementDate, maturityDate_)));
+         }
+         var numerator = ((-2 * daysToMaturity) / yearDays) + 2 * Math.Pow(
+            Math.Pow(daysToMaturity / yearDays, 2) - ((2 * daysToMaturity / yearDays - 1) * (1 - 100 / (double)price)), 0.5);
+         var denominator = 2 * daysToMaturity / yearDays - 1;
+         return numerator / denominator;
       }
 
       #endregion
