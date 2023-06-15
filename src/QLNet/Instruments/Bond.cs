@@ -18,6 +18,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,6 +34,35 @@ namespace QLNet
        - price/yield calculations are checked against known good values. */
    public class Bond : Instrument
    {
+      /// <summary>
+      /// Bond price information
+      /// </summary>
+      public class Price
+      {
+         private double? amount_;
+         private Type type_;
+         public enum Type { Dirty, Clean }
+
+         public Price()
+         {
+            amount_ = null;
+         }
+
+         public Price(double amount, Type type)
+         {
+            amount_ = amount;
+            type_ = type;
+         }
+
+         public double amount()
+         {
+            Utils.QL_REQUIRE(amount_ != null, () => "no amount given");
+            return amount_.Value;
+         }
+
+         public Type type() { return type_; }
+      }
+
       #region Constructors
       //! constructor for amortizing or non-amortizing bonds.
       /*! Redemptions and maturity are calculated from the coupon

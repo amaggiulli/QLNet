@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008, 2009 , 2010, 2011, 2012  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2023  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -35,6 +35,133 @@ namespace QLNet
    /// </summary>
    public class CallableBond : Bond
    {
+      protected DayCounter paymentDayCounter_;
+      protected Frequency frequency_;
+      protected CallabilitySchedule putCallSchedule_;
+      protected double faceAmount_;
+
+      /// <summary>
+      /// Ctor
+      /// </summary>
+      /// <param name="settlementDays"></param>
+      /// <param name="maturityDate"></param>
+      /// <param name="calendar"></param>
+      /// <param name="paymentDayCounter"></param>
+      /// <param name="faceAmount"></param>
+      /// <param name="issueDate"></param>
+      /// <param name="putCallSchedule"></param>
+      protected CallableBond(int settlementDays, Date maturityDate, Calendar calendar, DayCounter paymentDayCounter,
+         double faceAmount, Date issueDate = null, CallabilitySchedule putCallSchedule = null)
+         : base(settlementDays, calendar, issueDate)
+      {
+         paymentDayCounter_ = paymentDayCounter;
+         putCallSchedule_ = putCallSchedule ?? new CallabilitySchedule();
+         maturityDate_ = maturityDate;
+         faceAmount_ = faceAmount;
+
+         if (putCallSchedule_.empty()) return;
+
+         var finalOptionDate = Date.minDate();
+         foreach (var t in putCallSchedule_)
+         {
+            finalOptionDate = Date.Max(finalOptionDate, t.date());
+         }
+         Utils.QL_REQUIRE(finalOptionDate <= maturityDate_, () => "Bond cannot mature before last call/put date");
+
+         // derived classes must set cashflows_ and frequency_
+      }
+
+      /// <summary>
+      /// accrued interest used internally
+      /// <remarks>
+      /// accrued interest used internally, where includeToday = false
+      /// same as Bond::accruedAmount() but with enable early
+      /// payments true.  Forces accrued to be calculated in a
+      /// consistent way for future put/ call dates, which can be
+      /// problematic in lattice engines when option dates are also
+      /// coupon dates.
+      /// </remarks>
+      /// </summary>
+      /// <param name="settlement"></param>
+      /// <returns></returns>
+      private double accrued(Date settlement)
+      {
+         if (settlement == null)
+            settlement = settlementDate();
+
+         bool IncludeToday = false;
+         for (int i = 0; i < cashflows_.Count; ++i)
+         {
+            // the first coupon paying after d is the one we're after
+            if (!cashflows_[i].hasOccurred(settlement, IncludeToday))
+            {
+               Coupon coupon = cashflows_[i] as Coupon;
+               if (coupon != null)
+                  // !!!
+                  return coupon.accruedAmount(settlement) /
+                     notional(settlement) * 100.0;
+               else
+                  return 0.0;
+            }
+         }
+         return 0.0;
+      }
+
+      public override void setupArguments(IPricingEngineArguments args)
+      {
+         base.setupArguments(args);
+         CallableBond.Arguments arguments = args as CallableBond.Arguments;
+
+         Utils.QL_REQUIRE(arguments != null, () => "no arguments given");
+
+         Date settlement = arguments.settlementDate;
+
+         arguments.faceAmount = faceAmount_;
+         arguments.redemption = redemption().amount();
+         arguments.redemptionDate = redemption().date();
+
+         List<CashFlow> cfs = cashflows();
+
+         arguments.couponDates = new List<Date>(cfs.Count - 1);
+         arguments.couponAmounts = new List<double>(cfs.Count - 1);
+
+         for (int i = 0; i < cfs.Count ; i++)
+         {
+            if (!cfs[i].hasOccurred(settlement, false))
+            {
+               if (cfs[i] is QLNet.FixedRateCoupon)
+               {
+                  arguments.couponDates.Add(cfs[i].date());
+                  arguments.couponAmounts.Add(cfs[i].amount());
+               }
+            }
+         }
+
+         arguments.callabilityPrices = new List<double>(putCallSchedule_.Count);
+         arguments.callabilityDates = new List<Date>(putCallSchedule_.Count);
+         arguments.paymentDayCounter = paymentDayCounter_;
+         arguments.frequency = frequency_;
+         arguments.putCallSchedule = putCallSchedule_;
+
+         for (int i = 0; i < putCallSchedule_.Count; i++)
+         {
+            if (!putCallSchedule_[i].hasOccurred(settlement, false))
+            {
+               arguments.callabilityDates.Add(putCallSchedule_[i].date());
+               arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
+
+               if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
+               {
+                  /* calling accrued() forces accrued interest to be zero
+                     if future option date is also coupon date, so that dirty
+                     price = clean price. Use here because callability is
+                     always applied before coupon in the tree engine.
+                  */
+                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] += accrued(putCallSchedule_[i].date());
+               }
+            }
+         }
+      }
 
       /// <summary>
       /// Return the bond's put/call schedule
@@ -43,6 +170,46 @@ namespace QLNet
       public CallabilitySchedule callability()
       {
          return putCallSchedule_;
+      }
+
+      /// <summary>
+      /// returns the Black implied forward yield volatility
+      /// the forward yield volatility, see Hull, Fourth Edition,
+      /// Chapter 20, pg 536). Relevant only to European put/call
+      /// schedules
+      /// </summary>
+      /// <param name="targetPrice"></param>
+      /// <param name="discountCurve"></param>
+      /// <param name="accuracy"></param>
+      /// <param name="maxEvaluations"></param>
+      /// <param name="minVol"></param>
+      /// <param name="maxVol"></param>
+      /// <returns></returns>
+      public double impliedVolatility(Bond.Price targetPrice, Handle<YieldTermStructure> discountCurve,
+         double accuracy, int maxEvaluations, double minVol, double maxVol)
+      {
+         Utils.QL_REQUIRE(!isExpired(),()=> "instrument expired");
+
+         double dirtyTargetPrice = default;
+         switch (targetPrice.type())
+         {
+            case Price.Type.Dirty:
+               dirtyTargetPrice = targetPrice.amount();
+               break;
+            case Price.Type.Clean:
+               dirtyTargetPrice = targetPrice.amount() + accruedAmount();
+               break;
+            default:
+               Utils.QL_FAIL("unknown price type");
+               break;
+         }
+
+         var targetValue = dirtyTargetPrice * faceAmount_ / 100.0;
+         var guess = 0.5 * (minVol + maxVol);
+         var f = new ImpliedVolHelper(this, discountCurve, targetValue, false);
+         var solver = new Brent();
+         solver.setMaxEvaluations(maxEvaluations);
+         return solver.solve(f, accuracy, guess, minVol, maxVol);
       }
 
       /// <summary>
@@ -60,6 +227,7 @@ namespace QLNet
       /// <param name="minVol"></param>
       /// <param name="maxVol"></param>
       /// <returns></returns>
+      [Obsolete]
       public double impliedVolatility(double targetValue,
                                       Handle<YieldTermStructure> discountCurve,
                                       double accuracy,
@@ -67,11 +235,9 @@ namespace QLNet
                                       double minVol,
                                       double maxVol)
       {
-         calculate();
          Utils.QL_REQUIRE(!isExpired(), () => "instrument expired");
          double guess = 0.5 * (minVol + maxVol);
-         blackDiscountCurve_.linkTo(discountCurve, false);
-         ImpliedVolHelper f = new ImpliedVolHelper(this, targetValue);
+         ImpliedVolHelper f = new ImpliedVolHelper(this, discountCurve, targetValue, true);
          Brent solver = new Brent();
          solver.setMaxEvaluations(maxEvaluations);
          return solver.solve(f, accuracy, guess, minVol, maxVol);
@@ -225,78 +391,37 @@ namespace QLNet
 
          return (Ppp + Pmm - 2 * P) / (Math.Pow(bump, 2) * P);
       }
-
-      protected CallableBond(int settlementDays,
-                             Schedule schedule,
-                             DayCounter paymentDayCounter,
-                             Date issueDate = null,
-                             CallabilitySchedule putCallSchedule = null)
-         : base(settlementDays, schedule.calendar(), issueDate)
-      {
-         paymentDayCounter_ = paymentDayCounter;
-         putCallSchedule_ = putCallSchedule ?? new CallabilitySchedule();
-         maturityDate_ = schedule.dates().Last();
-
-         if (!putCallSchedule_.empty())
-         {
-            Date finalOptionDate = Date.minDate();
-            for (int i = 0; i < putCallSchedule_.Count; ++i)
-            {
-               finalOptionDate = Date.Max(finalOptionDate,
-                                          putCallSchedule_[i].date());
-            }
-            Utils.QL_REQUIRE(finalOptionDate <= maturityDate_, () => "Bond cannot mature before last call/put date");
-         }
-
-         // derived classes must set cashflows_ and frequency_
-      }
-
-      protected DayCounter paymentDayCounter_;
-      protected Frequency frequency_;
-      protected CallabilitySchedule putCallSchedule_;
-      //
-      /// <summary>
-      /// must be set by derived classes for impliedVolatility() to work
-      /// </summary>
-      protected IPricingEngine blackEngine_;
-      //
-      /// <summary>
-      /// Black fwd yield volatility quote handle to internal blackEngine_
-      /// </summary>
-      protected RelinkableHandle<Quote> blackVolQuote_ = new RelinkableHandle<Quote>();
-      //
-      /// <summary>
-      /// Black fwd yield volatility quote handle to internal blackEngine_
-      /// </summary>
-      protected RelinkableHandle<YieldTermStructure> blackDiscountCurve_ = new RelinkableHandle<YieldTermStructure>();
-      //
+      
+     
       /// <summary>
       /// helper class for Black implied volatility calculation
       /// </summary>
       protected class ImpliedVolHelper : ISolver1d
       {
-         public ImpliedVolHelper(CallableBond bond, double targetValue)
+         public ImpliedVolHelper(CallableBond bond, Handle<YieldTermStructure> discountCurve, double targetValue, bool matchNPV)
          {
             targetValue_ = targetValue;
+            matchNPV_ = matchNPV;
+
             vol_ = new SimpleQuote(0.0);
-            bond.blackVolQuote_.linkTo(vol_);
+            engine_ = new BlackCallableFixedRateBondEngine(new Handle<Quote>(vol_), discountCurve);
 
-            Utils.QL_REQUIRE(bond.blackEngine_ != null, () => "Must set blackEngine_ to use impliedVolatility");
-
-            engine_ = bond.blackEngine_;
             bond.setupArguments(engine_.getArguments());
-            results_ = engine_.getResults() as Instrument.Results;
+            results_ = engine_.getResults() as CallableBond.Results;
          }
          public override double value(double x)
          {
             vol_.setValue(x);
             engine_.calculate(); // get the Black NPV based on vol x
-            return results_.value.Value - targetValue_;
+            var value = matchNPV_ ? results_.value : results_.settlementValue;
+            return value.GetValueOrDefault() - targetValue_;
          }
+
          private IPricingEngine engine_;
          private double targetValue_;
+         private bool matchNPV_;
          private SimpleQuote vol_;
-         private Instrument.Results results_;
+         private CallableBond.Results results_;
       }
 
       /// <summary>
@@ -312,7 +437,7 @@ namespace QLNet
          }
          public double value(double x)
          {
-            CallableBond.Arguments args = bond_.engine_.getArguments() as CallableBond.Arguments;
+            var args = bond_.engine_.getArguments() as CallableBond.Arguments;
             // Pops the original value when function finishes
             double originalSpread =  args.spread;
             args.spread = x;
@@ -347,6 +472,8 @@ namespace QLNet
       {
          public List<Date> couponDates { get; set; }
          public List<double> couponAmounts { get; set; }
+         public double faceAmount { get; set; }
+         // redemption = face amount * redemption / 100.
          public double redemption { get; set; }
          public Date redemptionDate { get; set; }
          public DayCounter paymentDayCounter { get; set; }
@@ -470,129 +597,23 @@ namespace QLNet
                                    double redemption = 100.0,
                                    Date issueDate = null,
                                    CallabilitySchedule putCallSchedule = null)
-         : base(settlementDays, schedule, accrualDayCounter, issueDate, putCallSchedule)
+         : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate, putCallSchedule)
       {
          frequency_ = schedule.tenor().frequency();
 
-         bool isZeroCouponBond = (coupons.Count == 1 && Utils.close(coupons[0], 0.0));
+         cashflows_ = new FixedRateLeg(schedule)
+         .withCouponRates(coupons, accrualDayCounter)
+         .withNotionals(faceAmount)
+         .withPaymentAdjustment(paymentConvention);
 
-         if (!isZeroCouponBond)
-         {
-            cashflows_ = new FixedRateLeg(schedule)
-            .withCouponRates(coupons, accrualDayCounter)
-            .withNotionals(faceAmount)
-            .withPaymentAdjustment(paymentConvention);
-
-            addRedemptionsToCashflows(new List<double>() {redemption});
-         }
-         else
-         {
-            Date redemptionDate = calendar_.adjust(maturityDate_, paymentConvention);
-            setSingleRedemption(faceAmount, redemption, redemptionDate);
-         }
-
-         // used for impliedVolatility() calculation
-         SimpleQuote dummyVolQuote = new SimpleQuote(0.0);
-         blackVolQuote_.linkTo(dummyVolQuote);
-         blackEngine_ = new BlackCallableFixedRateBondEngine(blackVolQuote_, blackDiscountCurve_);
-      }
-
-      public override void setupArguments(IPricingEngineArguments args)
-      {
-         base.setupArguments(args);
-         CallableBond.Arguments arguments = args as CallableBond.Arguments;
-
-         Utils.QL_REQUIRE(arguments != null, () => "no arguments given");
-
-         Date settlement = arguments.settlementDate;
-
-         arguments.redemption = redemption().amount();
-         arguments.redemptionDate = redemption().date();
-
-         List<CashFlow> cfs = cashflows();
-
-         arguments.couponDates = new List<Date>(cfs.Count - 1);
-         arguments.couponAmounts = new List<double>(cfs.Count - 1);
-
-         for (int i = 0; i < cfs.Count ; i++)
-         {
-            if (!cfs[i].hasOccurred(settlement, false))
-            {
-               if (cfs[i] is QLNet.FixedRateCoupon)
-               {
-                  arguments.couponDates.Add(cfs[i].date());
-                  arguments.couponAmounts.Add(cfs[i].amount());
-               }
-            }
-         }
-
-         arguments.callabilityPrices = new List<double>(putCallSchedule_.Count);
-         arguments.callabilityDates = new List<Date>(putCallSchedule_.Count);
-         arguments.paymentDayCounter = paymentDayCounter_;
-         arguments.frequency = frequency_;
-         arguments.putCallSchedule = putCallSchedule_;
-
-         for (int i = 0; i < putCallSchedule_.Count; i++)
-         {
-            if (!putCallSchedule_[i].hasOccurred(settlement, false))
-            {
-               arguments.callabilityDates.Add(putCallSchedule_[i].date());
-               arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
-
-               if (putCallSchedule_[i].price().type() == Callability.Price.Type.Clean)
-               {
-                  /* calling accrued() forces accrued interest to be zero
-                     if future option date is also coupon date, so that dirty
-                     price = clean price. Use here because callability is
-                     always applied before coupon in the tree engine.
-                  */
-                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] += this.accrued(putCallSchedule_[i].date());
-               }
-            }
-         }
-      }
-
-      /// <summary>
-      /// accrued interest used internally
-      /// <remarks>
-      /// accrued interest used internally, where includeToday = false
-      /// same as Bond::accruedAmount() but with enable early
-      /// payments true.  Forces accrued to be calculated in a
-      /// consistent way for future put/ call dates, which can be
-      /// problematic in lattice engines when option dates are also
-      /// coupon dates.
-      /// </remarks>
-      /// </summary>
-      /// <param name="settlement"></param>
-      /// <returns></returns>
-      private double accrued(Date settlement)
-      {
-         if (settlement == null)
-            settlement = settlementDate();
-
-         bool IncludeToday = false;
-         for (int i = 0; i < cashflows_.Count; ++i)
-         {
-            // the first coupon paying after d is the one we're after
-            if (!cashflows_[i].hasOccurred(settlement, IncludeToday))
-            {
-               Coupon coupon = cashflows_[i] as Coupon;
-               if (coupon != null)
-                  // !!!
-                  return coupon.accruedAmount(settlement) /
-                         notional(settlement) * 100.0;
-               else
-                  return 0.0;
-            }
-         }
-         return 0.0;
+         addRedemptionsToCashflows(new List<double>() {redemption});
       }
    }
 
    /// <summary>
    /// Callable zero coupon bond class.
    /// </summary>
-   public class CallableZeroCouponBond : CallableFixedRateBond
+   public class CallableZeroCouponBond : CallableBond
    {
       public CallableZeroCouponBond(int settlementDays,
                                     double faceAmount,
@@ -603,14 +624,11 @@ namespace QLNet
                                     double redemption = 100.0,
                                     Date issueDate = null,
                                     CallabilitySchedule putCallSchedule = null)
-         : base(settlementDays, faceAmount, new Schedule(issueDate, maturityDate,
-                                                         new Period(Frequency.Once),
-                                                         calendar,
-                                                         paymentConvention,
-                                                         paymentConvention,
-                                                         DateGeneration.Rule.Backward,
-                                                         false),
-                new List<double>() {0.0}, dayCounter, paymentConvention, redemption, issueDate, putCallSchedule)
-      {}
+         : base(settlementDays, maturityDate, calendar,dayCounter,faceAmount,issueDate,putCallSchedule)
+      {
+         frequency_ = Frequency.Once;
+
+         var redemptionDate = calendar_.adjust(maturityDate_, paymentConvention);
+         setSingleRedemption(faceAmount, redemption, redemptionDate);}
    }
 }

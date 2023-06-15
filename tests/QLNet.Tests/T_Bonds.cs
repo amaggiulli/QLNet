@@ -1332,10 +1332,13 @@ namespace TestSuite
          Schedule schedule = new Schedule(datedDate, maturityDate, tenor, new NullCalendar(),
                                           BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false,
                                           firstCouponDate);
-
-         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
-                                                                dc, BusinessDayConvention.Unadjusted);
-
+         Bond bond;
+         if (Coupon != 0)
+            bond = new CallableFixedRateBond(settlementDays, 1000.0, schedule, new InitializedList<double>(1, Coupon),
+               dc, BusinessDayConvention.Unadjusted);
+         else
+            bond = new CallableZeroCouponBond(settlementDays, 1000.0, calendar, maturityDate, dc);
+         
          double accruedInterest = CashFlows.accruedAmount(bond.cashflows(), false, settlementDate);
          if (Math.Abs(accruedInterest - expectedAccruedInterest) > 1e-2)
             QAssert.Fail("Failed to reproduce accrual interest at " + settlementDate

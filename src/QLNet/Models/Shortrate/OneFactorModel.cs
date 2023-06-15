@@ -110,7 +110,7 @@ namespace QLNet
          public double discount(int i, int index)
          {
             double x = tree_.underlying(i, index);
-            double r = dynamics_.shortRate(timeGrid()[i], x);
+            double r = dynamics_.shortRate(timeGrid()[i], x) +spread_;;
             return Math.Exp(-r * timeGrid().dt(i));
          }
 
@@ -129,8 +129,14 @@ namespace QLNet
             return tree_.probability(i, index, branch);
          }
 
+         public void setSpread(double spread)
+         {
+            spread_= spread;
+         }
+
          private TrinomialTree tree_;
          private ShortRateDynamics dynamics_;
+         private double spread_;
 
          public class Helper : ISolver1d
          {

@@ -25,7 +25,7 @@ namespace QLNet
    //! %callability leaving to the holder the possibility to convert
    public class SoftCallability : Callability
    {
-      public SoftCallability(Callability.Price price, Date date, double trigger)
+      public SoftCallability(Bond.Price price, Date date, double trigger)
          : base(price, Callability.Type.Call, date)
       {
          trigger_ = trigger;
@@ -165,7 +165,7 @@ namespace QLNet
                   moreArgs.callabilityTypes.Add(callability_[i].type());
                   moreArgs.callabilityDates.Add(callability_[i].date());
 
-                  if (callability_[i].price().type() == Callability.Price.Type.Clean)
+                  if (callability_[i].price().type() == Bond.Price.Type.Clean)
                      moreArgs.callabilityPrices.Add(callability_[i].price().amount() +
                                                     bond_.accruedAmount(callability_[i].date()));
                   else
