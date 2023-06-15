@@ -112,6 +112,11 @@ namespace QLNet
                   return 1.0 + r_.Value * t;
                else
                   return Math.Pow(1.0 + r_.Value / freq_, freq_ * t);
+            case Compounding.CompoundedThenSimple:
+               if (t > 1.0 / freq_)
+                  return 1.0 + r_.Value * t;
+               else
+                  return Math.Pow(1.0 +r_.Value /freq_, freq_ * t);
             default:
                Utils.QL_FAIL("unknown compounding convention");
                return 0;
@@ -170,6 +175,12 @@ namespace QLNet
                   else
                      r = (Math.Pow(compound, 1.0 / (((double)freq) * t)) - 1.0) * ((double)freq);
                   break;
+               case Compounding.CompoundedThenSimple:
+                  if (t>1.0/(double)freq)
+                     r = (compound - 1.0)/t;
+                  else
+                     r = (Math.Pow(compound, 1.0/((double)freq*t))-1.0)*(double)freq;
+                  break;
                default:
                   Utils.QL_FAIL("unknown compounding convention (" + comp + ")");
                   break;
@@ -226,7 +237,7 @@ namespace QLNet
          if (r_ == null)
             return "null interest rate";
 
-         result += string.Format("{0:0.00%}", rate()) + " " + dayCounter().name() + " ";
+         result += $"{rate()}" + " " + dayCounter().name() + " ";
          switch (compounding())
          {
             case Compounding.Simple:
