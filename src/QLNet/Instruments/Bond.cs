@@ -363,7 +363,7 @@ namespace QLNet
 
          // BEY Calc
          double daysToMaturity = dc.dayCount(settlementDate, maturityDate_);
-         var periodLenght = 365 / (int)frequency;
+         var periodLenght = Math.Ceiling(365 / (double)frequency);
          if (daysToMaturity <= periodLenght)
          {
             return (double)((100 - price) / price * ((decimal)yearDays /  dc.dayCount(settlementDate, maturityDate_)));
