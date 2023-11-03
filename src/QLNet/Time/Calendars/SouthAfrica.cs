@@ -107,6 +107,8 @@ namespace QLNet
                 || (d == 3 && m == Month.August && y == 2016)
                 // one-shot: In lieu of Christmas falling on Sunday in 2022
                 || (d == 27 && m == Month.December && y == 2022)
+                // one-shot: Special holiday to celebrate winning of Rugby World Cup 2023
+                || (d == 15 && m == Month.December && y == 2023)
                )
                return false;
             return true;
