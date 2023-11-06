@@ -538,7 +538,7 @@ namespace QLNet
          public override string name() { return "Federal Reserve Bankwire System"; }
          public override bool isBusinessDay(Date date)
          {
-            // see https://www.frbservices.org/holidayschedules/ for details
+            // see https://www.frbservices.org/about/holiday-schedules for details
             var w = date.DayOfWeek;
             var d = date.Day;
             var m = (Month)date.Month;
