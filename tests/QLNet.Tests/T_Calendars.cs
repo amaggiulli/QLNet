@@ -1645,5 +1645,25 @@ namespace TestSuite
          if (a2.isBusinessDay(testDate4))
             QAssert.Fail(testDate4 + " (marked as holiday) not detected");
       }
+
+      [Theory]
+      [InlineData("2022/12/30")]
+      [InlineData("2023/04/07")]
+      [InlineData("2023/05/26")]
+      [InlineData("2023/07/03")]
+      [InlineData("2023/11/24")]
+      [InlineData("2023/12/22")]
+      [InlineData("2023/12/29")]
+      [InlineData("2024/03/28")]
+      [InlineData("2024/05/24")]
+      [InlineData("2024/07/03")]
+      [InlineData("2024/11/29")]
+      [InlineData("2024/12/24")]
+      [InlineData("2024/12/31")]
+      public void testUsGovernmentBondMarketEarlyClose(DateTime expectedEarlyClose)
+      {
+         Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
+         QAssert.IsTrue(c.isEarlyClose(expectedEarlyClose));
+      }
    }
 }
