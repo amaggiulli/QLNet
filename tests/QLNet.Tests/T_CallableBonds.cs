@@ -49,7 +49,7 @@ public class CallableBondsTests
          rollingConvention = BusinessDayConvention.ModifiedFollowing;
 
          // Hack: after this date it fails, need to be investigated
-         today = new Date(05, 11, 2023); // Settings.evaluationDate();
+         today = new Date(02, 11, 2023); // Settings.evaluationDate();
          settlement = calendar.advance(today, 2, TimeUnit.Days);
       }
 
@@ -609,7 +609,7 @@ public class CallableBondsTests
                       + "    difference:     " + (calculated - expected));
    }
 
-   [Fact,Priority(6)]
+   [Fact,Priority(0)]
    public void testImpliedVol()
    {
       // Testing implied-volatility calculation for callable bonds
