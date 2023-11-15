@@ -453,7 +453,7 @@ namespace QLNet
          /// <returns></returns>
          public int easterMonday(int y)
          {
-            return EasterMonday[y - 1901];
+            return y is < 1901 or > 2199 ? 0 : EasterMonday[y - 1901];
          }
       }
 
@@ -509,7 +509,7 @@ namespace QLNet
          /// <returns></returns>
          public int easterMonday(int y)
          {
-            return EasterMonday[y - 1901];
+            return y is < 1901 or > 2199 ? 0 : EasterMonday[y - 1901];
          }
       }
 
