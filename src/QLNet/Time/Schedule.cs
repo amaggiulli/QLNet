@@ -494,19 +494,33 @@ namespace QLNet
       public Date date(int i) { return this[i]; }
       public Date previousDate(Date d)
       {
-         int i = dates_.BinarySearch(d);
-         if (i <= 0)
-            return null;
+         int i = dates_.BinarySearch(d - 1);
+         if (i >= 0)
+            return dates_[i];
          else
-            return dates_[i - 1];
+         {
+            i = ~i;
+
+            if (i >= 1 && i <= dates_.Count)
+               return dates_[i - 1];
+            else
+               return null;
+         }
       }
       public Date nextDate(Date d)
       {
          int i = dates_.BinarySearch(d);
-         if (i < 0 || i == dates_.Count - 1)
-            return null;
+         if (i >= 0)
+            return dates_[i];
          else
-            return dates_[i + 1];
+         {
+            i = ~i;
+
+            if (i >= 0 && i < dates_.Count)
+               return dates_[i];
+            else
+               return null;
+         }
       }
       public List<Date> dates() { return dates_; }
       public bool isRegular(int i)
