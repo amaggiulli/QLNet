@@ -50,7 +50,7 @@ namespace QLNet
             case Futures.Type.Custom:
                break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -88,7 +88,7 @@ namespace QLNet
             case Futures.Type.Custom:
                break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
