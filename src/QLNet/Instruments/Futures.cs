@@ -13,11 +13,6 @@
 //  This program is distributed in the hope that it will be useful, but WITHOUT
 //  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace QLNet
 {
    public struct Futures
@@ -28,8 +23,9 @@ namespace QLNet
       {
          IMM, /*!< Chicago Mercantile Internation Money Market, i.e.
                       third Wednesday of March, June, September, December */
-         ASX  /*!< Australian Security Exchange, i.e. second Friday
+         ASX, /*!< Australian Security Exchange, i.e. second Friday
                       of March, June, September, December */
+         Custom /*!< Other rules */
       }
    }
 }
