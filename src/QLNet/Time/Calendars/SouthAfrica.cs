@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -109,6 +109,8 @@ namespace QLNet
                 || (d == 27 && m == Month.December && y == 2022)
                 // one-shot: Special holiday to celebrate winning of Rugby World Cup 2023
                 || (d == 15 && m == Month.December && y == 2023)
+                // one-shot: Election day 2024
+                || (d == 29 && m == Month.May && y == 2024)
                )
                return false;
             return true;

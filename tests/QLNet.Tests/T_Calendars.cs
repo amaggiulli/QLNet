@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2023 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -1644,6 +1644,78 @@ namespace TestSuite
             QAssert.Fail(testDate3 + " (marked as holiday) not detected");
          if (a2.isBusinessDay(testDate4))
             QAssert.Fail(testDate4 + " (marked as holiday) not detected");
+      }
+
+      [Fact]
+      public void testStartOfMonth()
+      {
+         // Testing start-of-month calculation
+         Calendar c = new TARGET(); // any calendar would be OK
+
+         Date som, counter = new Date(Date.minDate() + new Period(2 , TimeUnit.Months));
+         Date last = Date.maxDate();
+
+         while (counter < last)
+         {
+            som = c.startOfMonth(counter);
+            // check that som is som
+            if (!c.isStartOfMonth(som))
+               QAssert.Fail("\n  " + som.weekday() + " " + som + " is not the first business day in "
+                            + som.month() + " " + som.year() + " according to " + c.name());
+            // check that som is in the same month as counter
+            if (som.month() != counter.month())
+               QAssert.Fail("\n  " + som + " is not in the same month as " + counter);
+            // Check that previous business day is in a different month
+            if (c.advance(som, -1, TimeUnit.Days, BusinessDayConvention.Unadjusted).month() == som.month())
+               QAssert.Fail("\n  " + c.advance(som, -1, TimeUnit.Days, BusinessDayConvention.Unadjusted)
+                                   + " is in the same month as "
+                                   + som);
+            counter = counter + 1;
+         }
+      }
+
+      [Fact]
+      public void testMexicoInaugurationDay()
+      {
+         // Testing Mexican Inauguration Day holiday
+         // The first five Inauguration Days 2024 and later
+         var expectedHol = new[]
+         {
+            new Date(1, Month.Oct, 2024),
+            new Date(1, Month.Oct, 2030),
+            new Date(1, Month.Oct, 2036),
+            new Date(1, Month.Oct, 2042),
+            new Date(1, Month.Oct, 2048)
+         };
+         // Some years of non-Inaugurations
+         var expectedWorkingDays = new[]
+         {
+            new Date(1, Month.Oct, 2018),
+            new Date(1, Month.Oct, 2025),
+            new Date(1, Month.Oct, 2026),
+            new Date(1, Month.Oct, 2027),
+            // 2028 falls on a weekend
+            new Date(1, Month.Oct, 2029),
+            new Date(1, Month.Oct, 2031),
+            new Date(1, Month.Oct, 2032),
+            // 2033 and 2034 fall on weekends
+            new Date(1, Month.Oct, 2035)
+         };
+
+         Calendar mexico = new Mexico();
+         foreach (var holiday in expectedHol)
+         {
+            if (!mexico.isHoliday(holiday)) {
+               QAssert.Fail("Expected to have an Inauguration Day holiday in the Mexican calendar for date " + holiday);
+            }
+         }
+         foreach (var workingDay in expectedWorkingDays)
+         {
+            if (!mexico.isBusinessDay(workingDay))
+            {
+               QAssert.Fail("Did not expect to have a holiday in the Mexican calendar for date " + workingDay);
+            }
+         }
       }
 
       [Theory]

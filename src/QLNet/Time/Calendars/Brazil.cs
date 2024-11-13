@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -46,12 +46,12 @@ namespace QLNet
        Sao Paulo City Day, January 25th
        Tiradentes's Day, April 21th
        Labour Day, May 1st
-       Revolution Day, July 9th
+       Revolution Day, July 9th (up to 2021 included)
        Independence Day, September 7th
        Nossa Sra. Aparecida Day, October 12th
        All Souls Day, November 2nd
        Republic Day, November 15th
-       Black Consciousness Day, November 20th (since 2007)
+       Black Consciousness Day, November 20th (since 2007, except 2022 and 2023)
        Christmas Eve, December 24th
        Christmas, December 25th
        Passion of Christ
@@ -155,7 +155,7 @@ namespace QLNet
                 // Labor Day
                 || (d == 1 && m == Month.May)
                 // Revolution Day
-                || (d == 9 && m == Month.July)
+                || (d == 9 && m == Month.July && y < 2022)
                 // Independence Day
                 || (d == 7 && m == Month.September)
                 // Nossa Sra. Aparecida Day
@@ -165,7 +165,7 @@ namespace QLNet
                 // Republic Day
                 || (d == 15 && m == Month.November)
                 // Black Consciousness Day
-                || (d == 20 && m == Month.November && y >= 2007)
+                || (d == 20 && m == Month.November && y >= 2007 && y != 2022 && y != 2023)
                 // Christmas Eve
                 || (d == 24 && m == Month.December)
                 // Christmas

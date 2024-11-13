@@ -1,7 +1,7 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -245,6 +245,15 @@ namespace QLNet
          return d1 > d2 ? d1 : d2;
       }
 
+      public static Date startOfMonth(Date d)
+      {
+         return new Date(1, d.Month, d.Year);
+      }
+
+      public bool isStartOfMonth(Date d)
+      {
+         return d.Day == 1;
+      }
       // this is the overload for DateTime operations
       public static implicit operator DateTime(Date d)
       {

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -77,6 +77,8 @@ namespace QLNet
                 || (d == 1 && m == Month.May)
                 // National Day
                 || (d == 16 && m == Month.September)
+                // Inauguration Day
+                || (d == 1 && m == Month.October && y >= 2024 && (y - 2024) % 6 == 0)
                 // All Souls Day
                 || (d == 2 && m == Month.November)
                 // Revolution Day
