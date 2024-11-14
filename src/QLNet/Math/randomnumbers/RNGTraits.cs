@@ -81,7 +81,7 @@ namespace QLNet
    public class PoissonPseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativePoisson> { }
 
 
-   public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new () where IC : IValue, new ()
+   public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new () where IC : class, IValue, new ()
    {
       // data
       private static IC icInstance_ = FastActivator<IC>.Create();

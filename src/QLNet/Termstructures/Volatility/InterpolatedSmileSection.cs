@@ -21,7 +21,7 @@ using System.Linq;
 namespace QLNet
 {
    public class InterpolatedSmileSection<Interpolator> : SmileSection, InterpolatedCurve
-      where Interpolator : IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public InterpolatedSmileSection(double timeToExpiry,
                                       List<double> strikes,
