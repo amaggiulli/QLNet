@@ -111,7 +111,7 @@ namespace QLNet
          Vector x = new Vector(4);
          x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt(Math.Max(eps1(), y[0]) - eps1())
                 : (y[0] - eps1() + 25.0) / 10.0;
-         x[1] = y[1] == 0.0 ? 0.0 : Math.Sqrt(-Math.Log(y[1]));
+         x[1] = y[1].IsEqual(0.0) ? 0.0 : Math.Sqrt(-Math.Log(y[1]));
          x[2] = y[2] < 25.0 + eps1() ? Math.Sqrt(y[2] - eps1())
                 : (y[2] - eps1() + 25.0) / 10.0;
          x[3] = Math.Asin(y[3] / eps2());
@@ -123,7 +123,7 @@ namespace QLNet
          y[0] = Math.Abs(x[0]) < 5.0
                 ? x[0] * x[0] + eps1()
                 : (10.0 * Math.Abs(x[0]) - 25.0) + eps1();
-         y[1] = Math.Abs(x[1]) < Math.Sqrt(-Math.Log(eps1())) && x[1] != 0.0
+         y[1] = Math.Abs(x[1]) < Math.Sqrt(-Math.Log(eps1())) && x[1].IsNotEqual(0.0)
                 ? Math.Exp(-(x[1] * x[1]))
                 : (volatilityType_ == VolatilityType.ShiftedLognormal ? eps1() : 0.0);
          y[2] = Math.Abs(x[2]) < 5.0
@@ -142,7 +142,7 @@ namespace QLNet
       }
       public double weight(double strike, double forward, double stdDev, List < double? > addParams)
       {
-         if (Convert.ToDouble(addParams[1]) == 0.0)
+         if (Convert.ToDouble(addParams[1]).IsEqual(0.0))
             return Utils.blackFormulaStdDevDerivative(strike, forward, stdDev, 1.0, addParams[0].Value);
          else
             return Utils.bachelierBlackFormulaStdDevDerivative(strike, forward, stdDev, 1.0);

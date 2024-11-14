@@ -21,6 +21,7 @@ using System.Collections.Generic;
 namespace QLNet
 {
    public interface Curve<T> : ITraits<T>, InterpolatedCurve
+      where T : class
    {
       #region ITraits
 

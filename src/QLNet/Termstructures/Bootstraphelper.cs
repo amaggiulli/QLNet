@@ -38,6 +38,7 @@ namespace QLNet
     * class to ensure consistancy between the algorithms used during bootstrapping
       and later instrument pricing. This is not yet fully enforced in the available rate helpers. */
    public class BootstrapHelper<TS> : IObservable, IObserver
+      where TS : class
    {
       protected Handle<Quote> quote_;
       protected TS termStructure_;

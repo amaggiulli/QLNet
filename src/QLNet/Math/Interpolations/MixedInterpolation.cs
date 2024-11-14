@@ -32,8 +32,8 @@ namespace QLNet
    }
 
    public class MixedInterpolationImpl<Interpolator1, Interpolator2> : Interpolation.templateImpl
-      where Interpolator1 : IInterpolationFactory, new ()
-      where Interpolator2 : IInterpolationFactory, new ()
+      where Interpolator1 : class, IInterpolationFactory, new ()
+      where Interpolator2 : class, IInterpolationFactory, new ()
    {
       public MixedInterpolationImpl(List<double> xBegin, int xEnd,
                                     List<double> yBegin, int n,
@@ -41,8 +41,8 @@ namespace QLNet
                                     Interpolator1 factory1 = default(Interpolator1),
                                     Interpolator2 factory2 = default(Interpolator2))
          : base(xBegin, xEnd, yBegin,
-                Math.Max(factory1 == null ? (factory1 = new Interpolator1()).requiredPoints : factory1.requiredPoints,
-                         factory2 == null ? (factory2 = new Interpolator2()).requiredPoints : factory2.requiredPoints))
+                Math.Max(factory1?.requiredPoints ?? (factory1 = new Interpolator1()).requiredPoints,
+                         factory2?.requiredPoints ?? (factory2 = new Interpolator2()).requiredPoints))
 
       {
          n_ = n;

@@ -24,7 +24,7 @@ namespace QLNet
        pointer is relinked to another observable, the change will be propagated to all the copies.
        <tt>registerAsObserver</tt> is not needed since C# does automatic garbage collection */
 
-   public class Handle<T> where T : IObservable
+   public class Handle<T> where T : class, IObservable
    {
       protected Link link_;
 
@@ -41,7 +41,7 @@ namespace QLNet
       public T currentLink() { return link; }
 
       // this one is instead of c++ -> and () operators overload
-      public static implicit operator T(Handle<T> ImpliedObject) { return ImpliedObject.link; }
+      public static implicit operator T(Handle<T> impliedObject) { return impliedObject.link; }
 
       public T link
       {
@@ -153,7 +153,7 @@ namespace QLNet
    /*! An instance of this class can be relinked so that it points to another observable. The change will be propagated to all
        handles that were created as copies of such instance. */
 
-   public class RelinkableHandle<T> : Handle<T> where T : IObservable
+   public class RelinkableHandle<T> : Handle<T> where T : class, IObservable
    {
       public RelinkableHandle() : base(default(T), true) { }
 

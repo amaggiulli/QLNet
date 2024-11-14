@@ -66,7 +66,7 @@ namespace QLNet
          double dt = (from - to) / steps, t = from;
          evolver_.setStep(dt);
 
-         if (!stoppingTimes_.empty() && stoppingTimes_.Last() == from)
+         if (!stoppingTimes_.empty() && stoppingTimes_.Last().IsEqual(from))
          {
             if (condition != null)
                condition.applyTo(o, from);

@@ -59,10 +59,10 @@ namespace QLNet
       public void step(ref object a, double t, double theta = 1.0)
       {
          Utils.QL_REQUIRE(t - dt_ > -1e-8, () => "a step towards negative time given");
-         if (theta_ != 1.0)
+         if (theta_.IsNotEqual(1.0))
             explicit_.step(ref a, t, 1.0 - theta_);
 
-         if (theta_ != 0.0)
+         if (theta_.IsNotEqual(0.0))
             implicit_.step(ref a, t, theta_);
       }
 

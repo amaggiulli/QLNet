@@ -217,8 +217,8 @@ namespace QLNet
 
    public class PiecewiseZeroInflationCurve<Interpolator, Bootstrap, Traits> : PiecewiseZeroInflationCurve
       where Traits : ITraits<ZeroInflationTermStructure>, new ()
-      where Interpolator : IInterpolationFactory, new ()
-         where Bootstrap : IBootStrap<PiecewiseZeroInflationCurve>, new ()
+      where Interpolator : class, IInterpolationFactory, new ()
+         where Bootstrap : class, IBootStrap<PiecewiseZeroInflationCurve>, new ()
    {
 
       public PiecewiseZeroInflationCurve(Date referenceDate,
@@ -296,7 +296,7 @@ namespace QLNet
 
    // Allows for optional 3rd generic parameter defaulted to IterativeBootstrap
    public class PiecewiseZeroInflationCurve<Interpolator> : PiecewiseZeroInflationCurve<Interpolator, IterativeBootstrapForInflation, ZeroInflationTraits>
-      where Interpolator : IInterpolationFactory, new ()
+      where Interpolator : class, IInterpolationFactory, new ()
    {
       public PiecewiseZeroInflationCurve(Date referenceDate,
                                          Calendar calendar,

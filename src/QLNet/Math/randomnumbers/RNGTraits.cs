@@ -34,7 +34,7 @@ namespace QLNet
    }
 
    // random number traits
-   public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new () where IC : IValue, new ()
+   public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new () where IC : class, IValue, new ()
    {
       // data
       private static IC icInstance_ = FastActivator<IC>.Create();

@@ -77,7 +77,7 @@ namespace QLNet
             lattice = model_.link.tree(timeGrid);
          }
 
-         if (s != 0.0)
+         if (s.IsNotEqual(0.0))
          {
             var sr = lattice as OneFactorModel.ShortRateTree;
             Utils.QL_REQUIRE(sr != null, () => "Spread is not supported for trees other than OneFactorModel");

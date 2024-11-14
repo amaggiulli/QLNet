@@ -168,7 +168,7 @@ namespace QLNet
          if (firstDateIsZero)
             executeIntermediateStep(0);
 
-         results.value = prices_.valueAtCenter();
+         results!.value = prices_.valueAtCenter();
          results.delta = prices_.firstDerivativeAtCenter();
          results.gamma = prices_.secondDerivativeAtCenter();
          results.additionalResults["priceCurve"] = prices_;

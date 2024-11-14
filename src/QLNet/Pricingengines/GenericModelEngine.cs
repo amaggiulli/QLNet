@@ -25,7 +25,7 @@ namespace QLNet
       : GenericEngine<ArgumentsType, ResultsType>
         where ArgumentsType : IPricingEngineArguments, new ()
         where ResultsType : IPricingEngineResults, new ()
-           where ModelType : IObservable
+           where ModelType : class,IObservable
    {
       public GenericModelEngine() { }
       public GenericModelEngine(Handle<ModelType> model)

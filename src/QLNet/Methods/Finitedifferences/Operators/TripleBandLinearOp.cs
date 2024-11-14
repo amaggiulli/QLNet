@@ -130,9 +130,9 @@ namespace QLNet
          {
             List<int> coordinates = iter.coordinates();
             Utils.QL_REQUIRE(coordinates[direction_] != 0
-                             || lower_[iter.index()] == 0, () => "removing non zero entry!");
+                             || lower_[iter.index()].IsEqual(0), () => "removing non zero entry!");
             Utils.QL_REQUIRE(coordinates[direction_] != layout.dim()[direction_] - 1
-                             || upper_[iter.index()] == 0, () => "removing non zero entry!");
+                             || upper_[iter.index()].IsEqual(0), () => "removing non zero entry!");
          }
 
          Vector retVal = new Vector(r.size()), tmp = new Vector(r.size());
@@ -142,7 +142,7 @@ namespace QLNet
          // changed to fit for the triple band operator.
          int rim1 = reverseIndex_[0];
          double bet = 1.0 / (a * diag_[rim1] + b);
-         Utils.QL_REQUIRE(bet != 0.0, () => "division by zero");
+         Utils.QL_REQUIRE(bet.IsNotEqual(0.0), () => "division by zero");
          retVal[reverseIndex_[0]] = r[rim1] * bet;
 
          for (int j = 1; j <= layout.size() - 1; j++)
@@ -151,7 +151,7 @@ namespace QLNet
             tmp[j] = a * upper_[rim1] * bet;
 
             bet = b + a * (diag_[ri] - tmp[j] * lower_[ri]);
-            Utils.QL_REQUIRE(bet != 0.0, () => "division by zero"); //QL_ENSURE
+            Utils.QL_REQUIRE(bet.IsNotEqual(0.0), () => "division by zero"); //QL_ENSURE
             bet = 1.0 / bet;
 
             retVal[ri] = (r[ri] - a * lower_[ri] * retVal[rim1]) * bet;

@@ -32,7 +32,7 @@ namespace QLNet
 
       public void applyTo(object o, double t)
       {
-         if (t == t_)
+         if (t.IsEqual(t_))
             values_ = (Vector)o;
       }
 
