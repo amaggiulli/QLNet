@@ -298,7 +298,7 @@ namespace QLNet
             return 7 * p1.length() < p2.length();
 
          // inexact comparisons (handled by converting to days and using limits)
-         pair p1lim = new pair(p1), p2lim = new pair(p2);
+         Pair p1lim = new Pair(p1), p2lim = new Pair(p2);
          if (p1lim.hi < p2lim.lo || p2lim.hi < p1lim.lo)
             return p1lim.hi < p2lim.lo;
          Utils.QL_FAIL("Undecidable comparison between " + p1.ToString() + " and " + p2.ToString());
@@ -306,10 +306,10 @@ namespace QLNet
       }
 
       // required by operator <
-      struct pair
+      struct Pair
       {
          public int lo, hi;
-         public pair(Period p)
+         public Pair(Period p)
          {
             switch (p.units())
             {

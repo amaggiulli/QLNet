@@ -25,7 +25,7 @@ namespace QLNet
    //! %callability leaving to the holder the possibility to convert
    public class SoftCallability : Callability
    {
-      public SoftCallability(Callability.Price price, Date date, double trigger)
+      public SoftCallability(Bond.Price price, Date date, double trigger)
          : base(price, Callability.Type.Call, date)
       {
          trigger_ = trigger;
@@ -42,7 +42,7 @@ namespace QLNet
    //! base class for convertible bonds
    public class ConvertibleBond : Bond
    {
-      public class option : OneAssetOption
+      public class Option : OneAssetOption
       {
          public new class Arguments : OneAssetOption.Arguments
          {
@@ -95,10 +95,10 @@ namespace QLNet
                                 () => "different number of coupon dates and amounts");
             }
          }
-         public new class Engine : GenericEngine<ConvertibleBond.option.Arguments,
-            ConvertibleBond.option.Results> {}
+         public new class Engine : GenericEngine<ConvertibleBond.Option.Arguments,
+            ConvertibleBond.Option.Results> {}
 
-         public option(ConvertibleBond bond,
+         public Option(ConvertibleBond bond,
                        Exercise exercise,
                        double conversionRatio,
                        DividendSchedule dividends,
@@ -110,7 +110,7 @@ namespace QLNet
                        Date issueDate,
                        int settlementDays,
                        double redemption)
-            : base(new PlainVanillaPayoff(Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
+            : base(new PlainVanillaPayoff(QLNet.Option.Type.Call, (bond.notionals()[0]) / 100.0 * redemption / conversionRatio),
                    exercise)
          {
             bond_ = bond;
@@ -130,7 +130,7 @@ namespace QLNet
          {
             base.setupArguments(args);
 
-            ConvertibleBond.option.Arguments moreArgs = args as Arguments;
+            ConvertibleBond.Option.Arguments moreArgs = args as Arguments;
             Utils.QL_REQUIRE(moreArgs != null, () => "wrong argument type");
 
             moreArgs.conversionRatio = conversionRatio_;
@@ -165,7 +165,7 @@ namespace QLNet
                   moreArgs.callabilityTypes.Add(callability_[i].type());
                   moreArgs.callabilityDates.Add(callability_[i].date());
 
-                  if (callability_[i].price().type() == Callability.Price.Type.Clean)
+                  if (callability_[i].price().type() == Bond.Price.Type.Clean)
                      moreArgs.callabilityPrices.Add(callability_[i].price().amount() +
                                                     bond_.accruedAmount(callability_[i].date()));
                   else
@@ -300,7 +300,7 @@ namespace QLNet
       protected CallabilitySchedule callability_;
       protected DividendSchedule dividends_;
       protected Handle<Quote> creditSpread_;
-      protected option option_;
+      protected Option option_;
    }
 
    //! convertible zero-coupon bond
@@ -331,7 +331,7 @@ namespace QLNet
          // !!! notional forcibly set to 100
          setSingleRedemption(100.0, redemption, maturityDate_);
 
-         option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
+         option_ = new Option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
                               dayCounter, schedule,
                               issueDate, settlementDays, redemption);
       }
@@ -371,7 +371,7 @@ namespace QLNet
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
-         option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
+         option_ = new Option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
                               dayCounter, schedule,
                               issueDate, settlementDays, redemption);
       }
@@ -416,7 +416,7 @@ namespace QLNet
 
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
 
-         option_ = new option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
+         option_ = new Option(this, exercise, conversionRatio, dividends, callability, creditSpread, cashflows_,
                               dayCounter, schedule,
                               issueDate, settlementDays, redemption);
       }

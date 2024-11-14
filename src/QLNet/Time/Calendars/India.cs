@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
 
@@ -18,8 +18,6 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-
-using System;
 
 namespace QLNet
 {
@@ -400,6 +398,148 @@ namespace QLNet
                    || (d == 30 && m == Month.November)
                    )
                   return false;
+            }
+
+            if (y == 2021)
+            {
+               if (// Chatrapati Shivaji Jayanti
+                   (d == 19 && m == Month.February)
+                  // Mahashivratri
+                   || (d == 11 && m == Month.March)
+                  // Holi
+                   || (d == 29 && m == Month.March) 
+                   // Gudi Padwa
+                   || (d == 13 && m == Month.April)
+                   // Mahavir Jayanti
+                   || (d == 14 && m == Month.April)
+                   // Ram Navami
+                   || (d == 21 && m == Month.April)
+                   // Buddha Pournima
+                   || (d == 26 && m == Month.May)
+                   // Bakri Id
+                   || (d == 21 && m == Month.July)
+                   // Ganesh Chaturthi
+                   || (d == 10 && m == Month.September)
+                   // Dasera
+                   || (d == 15 && m == Month.October)
+                   // Id-E-Milad
+                   || (d == 19 && m == Month.October)
+                   // Diwali - Balipratipada
+                   || (d == 5 && m == Month.November)
+                   // Gurunank Jayanti
+                   || (d == 19 && m == Month.November))
+                return false;
+            }
+
+            if (y == 2022)
+            {
+               if ( // Mahashivratri
+               (d == 1 && m == Month.March)
+               // Holi
+                || (d == 18 && m == Month.March)
+                // Ramzan Id
+                || (d == 3 && m == Month.May)
+                // Buddha Pournima
+                || (d == 16 && m == Month.May)
+                // Ganesh Chaturthi
+                || (d == 31 && m == Month.August)
+                // Dasera
+                || (d == 5 && m == Month.October)
+                // Diwali - Balipratipada
+                || (d == 26 && m == Month.October)
+                // Gurunank Jayanti
+                || (d == 8 && m == Month.November))
+                return false;
+            }
+
+            if (y == 2023)
+            {
+               if (
+               // Holi
+                (d == 7 && m == Month.March)
+               // Gudi Padwa
+                || (d == 22 && m == Month.March)
+               // Ram Navami
+                || (d == 30 && m == Month.March)
+                // Mahavir Jayanti
+                || (d == 4 && m == Month.April)
+               // Buddha Pournima
+                || (d == 5 && m == Month.May)
+               // Bakri Id
+                || (d == 29 && m == Month.June)
+                // Parsi New year
+                || (d == 16 && m == Month.August)
+                // Ganesh Chaturthi
+                || (d == 19 && m == Month.September)
+                // Id-E-Milad (was moved to Friday 29th)
+                || (d == 29 && m == Month.September)
+                // Dasera
+                || (d == 24 && m == Month.October)
+                // Diwali - Balipratipada
+                || (d == 14 && m == Month.November)
+                // Gurunank Jayanti
+                || (d == 27 && m == Month.November))
+                return false;
+            }
+
+            if (y == 2024)
+            {
+               if ( // Special holiday
+                (d == 22 && m == Month.January)
+                // Chatrapati Shivaji Jayanti
+                || (d == 19 && m == Month.February)
+               // Mahashivratri
+                || (d == 8 && m == Month.March)
+               // Holi
+                || (d == 25 && m == Month.March)
+                // Annual Bank Closing
+                || (d == 1 && m == Month.April)
+                // Gudi Padwa
+                || (d == 9 && m == Month.April)
+                // Id-Ul-Fitr (Ramadan Eid)
+                || (d == 11 && m == Month.April)
+                // Ram Navami
+                || (d == 17 && m == Month.April)
+                // Mahavir Jayanti
+                || (d == 21 && m == Month.April)
+                // General Parliamentary Elections
+                || (d == 20 && m == Month.May)
+                // Buddha Pournima
+                || (d == 23 && m == Month.May)
+               // Bakri Eid
+                || (d == 17 && m == Month.June)
+                // Moharram
+                || (d == 17 && m == Month.July)
+                // Eid-E-Milad (estimated Sunday 15th or Monday 16th)
+                || (d == 16 && m == Month.September)
+                // Diwali-Laxmi Pujan
+                || (d == 1 && m == Month.November)
+                // Gurunank Jayanti
+                || (d == 15 && m == Month.November))
+                return false;
+            }
+
+            if (y == 2025)
+            {
+               if ( // Chatrapati Shivaji Jayanti
+                (d == 19 && m == Month.February)
+                // Mahashivratri
+                || (d == 26 && m == Month.February)
+               // Holi
+                || (d == 14 && m == Month.March)
+               // Ramzan Id (estimated Sunday 30th or Monday 31st)
+                || (d == 31  && m == Month.March)
+                // Mahavir Jayanti
+                || (d == 10 && m == Month.April)
+                // Buddha Pournima
+                || (d == 12 && m == Month.May)
+                // Id-E-Milad (estimated Thursday 4th or Friday 5th)
+                || (d == 5 && m == Month.September)
+                // Diwali - Balipratipada
+                || (d == 22 && m == Month.October)
+                // Gurunank Jayanti
+                || (d == 5 && m == Month.November))
+                return false;
             }
             return true;
          }

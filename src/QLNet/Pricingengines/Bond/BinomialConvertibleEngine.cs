@@ -20,7 +20,7 @@ namespace QLNet
    /// Binomial Tsiveriotis-Fernandes engine for convertible bonds
    /// </summary>
    /// <typeparam name="T"></typeparam>
-   public class BinomialConvertibleEngine<T> : ConvertibleBond.option.Engine where T : ITree, ITreeFactory<T>, new ()
+   public class BinomialConvertibleEngine<T> : ConvertibleBond.Option.Engine where T : ITree, ITreeFactory<T>, new ()
    {
       public BinomialConvertibleEngine(GeneralizedBlackScholesProcess process, int timeSteps)
       {
@@ -47,7 +47,7 @@ namespace QLNet
 
          // substract dividends
 
-         ConvertibleBond.option.Arguments args = arguments_ as ConvertibleBond.option.Arguments;
+         ConvertibleBond.Option.Arguments args = arguments_ as ConvertibleBond.Option.Arguments;
 
          for (int i = 0; i < args.dividends.Count; i++)
          {

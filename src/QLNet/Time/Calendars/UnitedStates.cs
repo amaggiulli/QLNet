@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -67,8 +67,7 @@ namespace QLNet
            http://www.nyse.com/pdfs/closings.pdf)</li>
        </ul>
 
-       Holidays for the government bond market (data from
-       http://www.bondmarkets.com):
+       Holidays for the government bond market (data from https://www.sifma.org/resources/general/holiday-schedule/):
        <ul>
        <li>Saturdays</li>
        <li>Sundays</li>
@@ -393,9 +392,18 @@ namespace QLNet
                 || ((d >= 15 && d <= 21) && w == DayOfWeek.Monday && m == Month.January && y >= 1983)
                 // Washington's birthday (third Monday in February)
                 || isWashingtonBirthday(d, m, y, w)
-                // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
-                // see <https://www.sifma.org/resources/general/holiday-schedule/>)
-                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023)
+                // Good Friday. Since 1996 it's an early close and not a full market
+                // close when it coincides with the NFP release date, which is the
+                // first Friday of the month(*).
+                // See <https://www.sifma.org/resources/general/holiday-schedule/>
+                //
+                // (*) The full rule is "the third Friday after the conclusion of the
+                // week which includes the 12th of the month". This is usually the
+                // first Friday of the next month, but can be the second Friday if the
+                // month has fewer than 31 days. Since Good Friday is always between
+                // March 20th and April 23rd, it can only coincide with the April NFP,
+                // which is always on the first Friday, because March has 31 days.
+                || (dd == em-3 && (y < 1996 || d > 7))
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
                 // Juneteenth (Monday if Sunday or Friday if Saturday)
@@ -426,6 +434,58 @@ namespace QLNet
             ) return false;
 
             return true;
+         }
+
+         /// <summary>
+         /// Early close ( half day ) check
+         /// </summary>
+         /// <param name="close"></param>
+         /// <returns></returns>
+         public override bool isEarlyClose(Date close)
+         {
+            // Holidays and we are not early close
+            if ( isWeekend(close.DayOfWeek) || !isBusinessDay(close))
+               return false;
+
+            // check next date skipping we
+            var date = close + 1;
+            while (isWeekend(date.DayOfWeek))
+               date +=  1;
+            var w = date.DayOfWeek;
+            int d = date.Day, dd = date.DayOfYear;
+            var m = (Month)date.Month;
+            var y = date.Year;
+            var em = easterMonday(y);
+            if (
+                // New Year's Day (possibly moved to Monday if on Sunday)
+                ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
+                // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
+                // see <https://www.sifma.org/resources/general/holiday-schedule/>)
+                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023)
+                // Memorial Day (last Monday in May)
+                || isMemorialDay(d, m, y, w)
+                // Independence Day (Monday if Sunday or Friday if Saturday)
+                || ((d == 4 || (d == 5 && w == DayOfWeek.Monday) ||
+                     (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
+                // Christmas (Monday if Sunday or Friday if Saturday)
+                || ((d == 25 || (d == 26 && w == DayOfWeek.Monday) ||
+                     (d == 24 && w == DayOfWeek.Friday)) && m == Month.December))
+               return true;
+
+            // Thanksgiving Day the early close is the following friday
+            date = close - 1;
+            d = date.Day;
+            w = date.DayOfWeek;
+            m = (Month)date.Month;
+            if (
+               // Thanksgiving Day (fourth Thursday in November)
+               ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November))
+               return true;
+
+            // Good Friday 2015, 2021, 2023 are early close
+            if ((close.DayOfYear == em-3 && y is 2015 or 2021 or 2023 )) return true;
+
+            return false;
          }
       }
 
@@ -487,7 +547,7 @@ namespace QLNet
          public override string name() { return "Federal Reserve Bankwire System"; }
          public override bool isBusinessDay(Date date)
          {
-            // see https://www.frbservices.org/holidayschedules/ for details
+            // see https://www.frbservices.org/about/holiday-schedules for details
             var w = date.DayOfWeek;
             var d = date.Day;
             var m = (Month)date.Month;

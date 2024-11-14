@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Alessandro Duci
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -45,14 +45,34 @@ namespace QLNet
    */
    public class Poland : Calendar
    {
-      public Poland() : base(Impl.Singleton) { }
-
-      private class Impl : WesternImpl
+      //! Polish calendars
+      public enum Market
       {
-         public static readonly Impl Singleton = new();
-         private Impl() { }
+         Settlement,  // Poland Settlement
+         Wse          // Warsaw stock exchange
+      }
 
-         public override string name() { return "Poland"; }
+      public Poland() : this(Market.Settlement) { }
+      public Poland(Market m)
+         : base()
+      {
+         // all calendar instances on the same market share the same
+         // implementation instance
+         _impl = m switch
+         {
+            Market.Settlement => Settlement.Singleton,
+            Market.Wse => Wse.Singleton,
+            _ => throw new ArgumentException("Unknown market: " + m)
+         };
+      }
+
+
+      private class Settlement : WesternImpl
+      {
+         public static readonly Settlement Singleton = new();
+         protected Settlement() { }
+
+         public override string name() { return "Poland Settlement"; }
          public override bool isBusinessDay(Date date)
          {
             var w = date.DayOfWeek;
@@ -86,6 +106,26 @@ namespace QLNet
                 || (d == 26 && m == Month.December))
                return false;
             return true;
+         }
+      }
+
+      private class Wse : Settlement
+      {
+         public new static readonly Wse Singleton = new();
+
+         public override string name() { return "Warsaw stock exchange"; }
+         public override bool isBusinessDay(Date date)
+         {
+            // Additional holidays for Warsaw Stock Exchange
+            // see https://www.gpw.pl/session-details
+            var d = date.Day;
+            var m = (Month)date.Month;
+
+            if ((d == 24  && m == Month.December) ||
+                (d == 31  && m == Month.December)
+            ) return false; 
+
+            return base.isBusinessDay(date);
          }
       }
    }

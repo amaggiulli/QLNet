@@ -35,19 +35,16 @@ namespace QLNet
       protected int timeSteps_;
       protected Lattice lattice_;
 
-      public LatticeShortRateModelEngine(ShortRateModel model,
-                                         int timeSteps)
+      public LatticeShortRateModelEngine(ShortRateModel model, int timeSteps)
          : base(model)
       {
-         timeSteps_ = timeSteps;
          Utils.QL_REQUIRE(timeSteps > 0, () => "timeSteps must be positive, " + timeSteps + " not allowed");
+         timeSteps_ = timeSteps;
       }
 
-      public LatticeShortRateModelEngine(ShortRateModel model,
-                                         TimeGrid timeGrid)
+      public LatticeShortRateModelEngine(ShortRateModel model, TimeGrid timeGrid)
          : base(model)
       {
-         timeGrid_ = new TimeGrid(timeGrid.Last(), timeGrid.size() - 1 /*timeGrid.dt(1) - timeGrid.dt(0)*/);
          timeGrid_ = timeGrid;
          timeSteps_ = 0;
          lattice_ = this.model_.link.tree(timeGrid);
@@ -57,7 +54,7 @@ namespace QLNet
       #region Observer & Observable
       public override void update()
       {
-         if (!timeGrid_.empty())
+         if (timeGrid_ != null && !timeGrid_.empty())
             lattice_ = this.model_.link.tree(timeGrid_);
          notifyObservers();
       }

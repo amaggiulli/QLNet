@@ -1,455 +1,279 @@
-commit 6e4f632f35ea14539c5aeea22491e6b79d4fcd67
+commit 696a418cb6ab47bf8caa571d1e7d69ddade6d0f3
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Apr 18 16:02:52 2023 +0200
+Date:   Thu Nov 14 00:03:37 2024 +0100
 
-    Updated to .NET 7.0
+    Calendars sync.
 
- src/QLNet/QLNet.csproj               | 2 +-
- tests/QLNet.Tests/QLNet.Tests.csproj | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ src/QLNet/Time/Calendar.cs               |  12 +++++-
+ src/QLNet/Time/Calendars/Brazil.cs       |  10 ++---
+ src/QLNet/Time/Calendars/India.cs        | 146 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ src/QLNet/Time/Calendars/Mexico.cs       |   4 +-
+ src/QLNet/Time/Calendars/Poland.cs       |  52 ++++++++++++++++++++++---
+ src/QLNet/Time/Calendars/Singapore.cs    | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ src/QLNet/Time/Calendars/SouthAfrica.cs  |   4 +-
+ src/QLNet/Time/Calendars/SouthKorea.cs   | 188 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------
+ src/QLNet/Time/Calendars/Thailand.cs     |  82 ++++++++++++++++++++++++++++++++------
+ src/QLNet/Time/Calendars/UnitedStates.cs |  17 ++++++--
+ src/QLNet/Time/Date.cs                   |  11 +++++-
+ tests/QLNet.Tests/T_Calendars.cs         |  74 ++++++++++++++++++++++++++++++++++-
+ 12 files changed, 611 insertions(+), 98 deletions(-)
 
-commit d3be509b333a0b6cc62b15912f922b5e3e25d3ca
+commit 18e33a000e02c874424a24cceb8b6e0381033ba0
+Author: bet0x10 <97778431+bet0x10@users.noreply.github.com>
+Date:   Tue Nov 12 12:35:40 2024 -0300
+
+    Fix Aboriginal people day in Chile calendar (#290)
+
+ src/QLNet/Time/Calendars/Chile.cs | 35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+commit 2c734128c5ec72b0da84d2b493095a33a4384256
 Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Tue Apr 18 15:42:13 2023 +0200
+Date:   Mon Aug 5 17:31:12 2024 +0200
 
-    Updated calendars for 2023 (#275)
+    [skip ci] Updated README.md
+    
+    Added latest nuget preview version
 
- src/QLNet/Time/Calendars/Australia.cs    |  68 +++++++++++++++++++++++++++++++++++++++++----
- src/QLNet/Time/Calendars/China.cs        |  18 ++++++++++--
- src/QLNet/Time/Calendars/Denmark.cs      |   8 +++---
- src/QLNet/Time/Calendars/NewZealand.cs   |  84 +++++++++++++++++++++++++++++++++++---------------------
- src/QLNet/Time/Calendars/SouthAfrica.cs  |   6 ++++
- src/QLNet/Time/Calendars/Turkey.cs       | 168 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- src/QLNet/Time/Calendars/UnitedStates.cs |   5 ++--
- tests/QLNet.Tests/T_Calendars.cs         | 124 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
- 8 files changed, 431 insertions(+), 50 deletions(-)
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
 
-commit fc48993c25f2c9e0afd57a3846962e940a3843d3
+commit 0eebec0446f6b091341fdbb208219e79740254e1
+Author: Konstantin Novitsky <37964436+novitk@users.noreply.github.com>
+Date:   Mon Aug 5 10:57:22 2024 -0400
+
+    Added CAD-CORRA overnight index (#289)
+    
+    * added Corra.cs
+    
+    * added Corra.cs
+
+ src/QLNet/Indexes/Ibor/Corra.cs | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+
+commit b532510c3bdd343c95d78a02a60438c6ab864eb4
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Apr 7 20:46:26 2023 +0200
+Date:   Thu Jul 18 22:06:27 2024 +0200
 
-    Fixing Schedule until method.
+    Updated Nuget token
 
- src/QLNet/Time/Schedule.cs | 4 ++--
+ appveyor.yml | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-commit 7ba4747bf048ba837489c9881d22e6cd11c112ec
+commit 26a731fcf36eca3177f22c0b1c851b7eb1453c8a
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Apr 7 20:01:54 2023 +0200
+Date:   Thu Jul 18 21:09:16 2024 +0200
 
-    Fixed Schedule DeepCopy
-
- src/QLNet/Time/Schedule.cs | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-commit 18f51e7b13e5217369878f5ac5d24f6cd89908e5
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Apr 7 00:55:41 2023 +0200
-
-    Added date comparison safety check
-
- src/QLNet/Time/Date.cs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-commit cb30c0917f3e2e0685906cb131d2bc942be26229
-Author: pamboscy <pamboscy@gmail.com>
-Date:   Tue Feb 21 16:57:15 2023 +0200
-
-    Added Cyprus and Greece calendars (#274)
-
- src/QLNet/Time/Calendars/Cyprus.cs | 143 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- src/QLNet/Time/Calendars/Greece.cs | 136 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 279 insertions(+)
-
-commit e05578f554a625c579637746e45c424c415d887d
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Thu Dec 15 19:06:04 2022 +0100
-
-    [skip ci] Update ReadMe
+    Force rebuild
 
  README.md | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-commit 5a215582721379da2d9b6809f1328094033602b6
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Thu Dec 15 18:57:12 2022 +0100
-
-    [skip ci] Update ReadMe
-
- README.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit 78511587c84e13dba99fc23a2bd98340efc35093
+commit 96ede3aabba7143ff5bf0ba319dbf064d3ef3721
+Merge: 296897c 470ffe5
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Dec 15 18:53:13 2022 +0100
-
-    Fixing WAL calculation.
-
- src/QLNet/Pricingengines/Bond/BondFunctions.cs | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
-
-commit e1eee4f71022ff6fc9a285126d45322b1d15c3f0
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Nov 22 21:56:24 2022 +0100
-
-    Added new method to Schedule to directly add irregular dates.
-
- src/QLNet/Time/Schedule.cs | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-commit e185ddc7a73286d143f197943f2104e8c569064f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Sat Nov 19 20:13:39 2022 +0100
-
-    Updated a bunch of calendars up to 2022.
-
- src/QLNet/Time/Calendars/Australia.cs     | 10 ++++++----
- src/QLNet/Time/Calendars/China.cs         | 17 ++++++++++++++++-
- src/QLNet/Time/Calendars/CzechRepublic.cs |  2 ++
- src/QLNet/Time/Calendars/Iceland.cs       |  5 ++---
- src/QLNet/Time/Calendars/NewZealand.cs    |  3 ++-
- src/QLNet/Time/Calendars/UnitedKingdom.cs |  6 +++++-
- 6 files changed, 33 insertions(+), 10 deletions(-)
-
-commit 3c45dc68fb959955348933941d06414f4c3ece5e
-Merge: 49ffacd b2fe6f6
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Sat Nov 19 19:19:33 2022 +0100
+Date:   Wed Apr 17 16:21:13 2024 +0200
 
     Merge branch 'develop' of github.com:amaggiulli/QLNet into develop
 
-commit 49ffacd9515affd037b06815633fc42707f9a0ac
+commit 296897c321cb3b1b57daa72b294b890c514852da
 Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Sat Nov 19 19:19:19 2022 +0100
+Date:   Wed Apr 17 16:20:49 2024 +0200
 
-    Refactoring Calendars
-     - Refactored and cleanup Calendar Bridge pattern
-     - Updated all calendars.
-
- src/QLNet/Time/Calendar.cs                   | 300 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------
- src/QLNet/Time/Calendars/Argentina.cs        |  13 ++---
- src/QLNet/Time/Calendars/Australia.cs        |  17 +++----
- src/QLNet/Time/Calendars/Austria.cs          |  16 +++---
- src/QLNet/Time/Calendars/BespokeCalendar.cs  |  41 ++++++++-------
- src/QLNet/Time/Calendars/Botswana.cs         |  15 +++---
- src/QLNet/Time/Calendars/Brazil.cs           | 125 ++++++++++++++++++++++-----------------------
- src/QLNet/Time/Calendars/Canada.cs           | 109 ++++++++++++++++++---------------------
- src/QLNet/Time/Calendars/Chile.cs            |   4 +-
- src/QLNet/Time/Calendars/China.cs            |  33 +++++-------
- src/QLNet/Time/Calendars/CzechRepublic.cs    |  13 ++---
- src/QLNet/Time/Calendars/Denmark.cs          |  14 ++---
- src/QLNet/Time/Calendars/Finland.cs          |  14 ++---
- src/QLNet/Time/Calendars/France.cs           |  12 ++---
- src/QLNet/Time/Calendars/Germany.cs          |  75 ++++++++++++++-------------
- src/QLNet/Time/Calendars/HongKong.cs         |  14 ++---
- src/QLNet/Time/Calendars/Hungary.cs          |  14 ++---
- src/QLNet/Time/Calendars/Iceland.cs          |  13 ++---
- src/QLNet/Time/Calendars/India.cs            |  14 ++---
- src/QLNet/Time/Calendars/Indonesia.cs        |  29 +++++------
- src/QLNet/Time/Calendars/Israel.cs           |  49 +++++++++---------
- src/QLNet/Time/Calendars/Italy.cs            |  40 +++++++--------
- src/QLNet/Time/Calendars/Japan.cs            |  26 +++++-----
- src/QLNet/Time/Calendars/JointCalendar.cs    |   3 +-
- src/QLNet/Time/Calendars/Mexico.cs           |  14 ++---
- src/QLNet/Time/Calendars/NewZealand.cs       |  14 ++---
- src/QLNet/Time/Calendars/Norway.cs           |  14 ++---
- src/QLNet/Time/Calendars/NullCalendar.cs     |   7 +--
- src/QLNet/Time/Calendars/Poland.cs           |  14 ++---
- src/QLNet/Time/Calendars/Romania.cs          |  41 ++++++++-------
- src/QLNet/Time/Calendars/Russia.cs           |  30 +++++------
- src/QLNet/Time/Calendars/SaudiArabia.cs      |  14 ++---
- src/QLNet/Time/Calendars/Singapore.cs        |  14 ++---
- src/QLNet/Time/Calendars/Slovakia.cs         |  13 ++---
- src/QLNet/Time/Calendars/SouthAfrica.cs      |  14 ++---
- src/QLNet/Time/Calendars/SouthKorea.cs       |  40 ++++++++-------
- src/QLNet/Time/Calendars/Sweden.cs           |  12 ++---
- src/QLNet/Time/Calendars/Switzerland.cs      |  14 ++---
- src/QLNet/Time/Calendars/TARGET.cs           |  15 +++---
- src/QLNet/Time/Calendars/Taiwan.cs           |  12 ++---
- src/QLNet/Time/Calendars/Thailand.cs         |  45 ++++++++--------
- src/QLNet/Time/Calendars/Turkey.cs           |  14 ++---
- src/QLNet/Time/Calendars/Ukraine.cs          |  22 ++++----
- src/QLNet/Time/Calendars/UnitedKingdom.cs    |  40 ++++++++-------
- src/QLNet/Time/Calendars/UnitedStates.cs     |  90 ++++++++++++++++----------------
- src/QLNet/Time/Calendars/WeekendsOnly.cs     |   6 +--
- tests/QLNet.Tests/T_BusinessDayConvention.cs |   2 +-
- tests/QLNet.Tests/T_Calendars.cs             |  36 ++++++-------
- 48 files changed, 800 insertions(+), 740 deletions(-)
-
-commit b2fe6f6e909d9b9bfaf7f32fcce74c30ad093b51
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri Nov 18 20:02:30 2022 +0100
-
-    [skip ci] Update ReadMe
-
- README.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit b598cd0b9551ca5b1e9402920e3054944ee8f15a
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Fri Nov 18 19:23:00 2022 +0100
-
-    Added Actual364, Actual36525 and Thirty365 daycounters.
-    Updated daycounters tests suite.
-
- src/QLNet/Time/DayCounters/Actual364.cs   |  39 ++++++++++++++++
- src/QLNet/Time/DayCounters/Actual36525.cs |  61 +++++++++++++++++++++++++
- src/QLNet/Time/DayCounters/Thirty365.cs   |  49 ++++++++++++++++++++
- tests/QLNet.Tests/T_DayCounters.cs        | 272 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- 4 files changed, 418 insertions(+), 3 deletions(-)
-
-commit b7baaedcb099e82d823a04b7a259ca17f230677d
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Nov 16 23:38:34 2022 +0100
-
-    Added Actual/366 daycounter.
-
- src/QLNet/Time/DayCounters/Actual366.cs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
-
-commit c523a9d2026604cc219661ca0d7797eddc0c3524
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Wed Nov 16 23:28:16 2022 +0100
-
-    Refactoring DayCounters :
-     - Refactored and cleanup DayCounter Bridge pattern
-     - Updated all daycounters.
-
- src/QLNet/Cashflows/CPICoupon.cs                     |   4 +-
- src/QLNet/Instruments/Bonds/PSACurve.cs              |   4 +-
- src/QLNet/Time/DayCounter.cs                         |  91 +++++++++++++++++++++++++---------------------
- src/QLNet/Time/DayCounters/Actual360.cs              |  44 ++++++----------------
- src/QLNet/Time/DayCounters/Actual365Fixed.cs         |  85 +++++++++++++++++++++++++++++++++++++++----
- src/QLNet/Time/DayCounters/Actual365NoLeap.cs        |  67 ----------------------------------
- src/QLNet/Time/DayCounters/ActualActual.cs           |  89 +++++++++++++++++----------------------------
- src/QLNet/Time/DayCounters/Business252.cs            | 147 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- src/QLNet/Time/DayCounters/OneDayCounter.cs          |  10 ++---
- src/QLNet/Time/DayCounters/SimpleDayCounter.cs       |  34 ++++++++++-------
- src/QLNet/Time/DayCounters/Thirty360.cs              | 197 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------
- tests/QLNet.Tests/T_AssetSwap.cs                     |  42 ++++++++++-----------
- tests/QLNet.Tests/T_Bermudanswaption.cs              |   3 +-
- tests/QLNet.Tests/T_Bonds.cs                         |  14 +++----
- tests/QLNet.Tests/T_CapFlooredCoupon.cs              |   4 +-
- tests/QLNet.Tests/T_CreditDefaultSwap.cs             |   8 ++--
- tests/QLNet.Tests/T_DayCounters.cs                   |  55 +++++++++++++++++++++++++++-
- tests/QLNet.Tests/T_Inflation.cs                     |   6 +--
- tests/QLNet.Tests/T_InflationCapFloorTest.cs         |   2 +-
- tests/QLNet.Tests/T_InflationCapFlooredCouponTest.cs |   4 +-
- tests/QLNet.Tests/T_OvernightIndexedSwap.cs          |   6 +--
- tests/QLNet.Tests/T_ShortRateModels.cs               |   6 +--
- tests/QLNet.Tests/T_Swaps.cs                         |   3 +-
- tests/QLNet.Tests/T_Swaption.cs                      |  11 +++---
- tests/QLNet.Tests/T_TermStructures.cs                |   4 +-
- 25 files changed, 598 insertions(+), 342 deletions(-)
-
-commit e2ec6a666b0e54bcf2ab6b0caaf5309aecc48d7f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Thu Sep 22 20:11:25 2022 +0200
-
-    Added back multi-target with netstandard 2.0 for .NET framework users. Should close #273.
-
- src/QLNet/QLNet.csproj | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-commit cfc7964ef5e90dcb6b6d6a53310ed8362861858d
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Mon Sep 12 16:04:50 2022 +0200
-
-    Added batch Bond Functions calculation with benchmark test.
-
- src/QLNet/Pricingengines/Bond/BondFunctions.cs       | 44 ++++++++++++++++++++++++++++++++++++++++++++
- src/QLNet/Requests/BondFunctionsRequest.cs           | 38 ++++++++++++++++++++++++++++++++++++++
- src/QLNet/Responses/BondFunctionsResponse.cs         | 32 ++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/BondFunctionRequestFaker.cs | 33 +++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/T_Batch.cs                         | 14 ++++++++++++++
- 5 files changed, 161 insertions(+)
-
-commit 66d3bac82dcc5be296e61cb551a55ec879b7e1b1
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri Aug 26 20:27:30 2022 +0200
-
-    [skip ci] Updated status badge
-
- README.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit cd4d7fbbc06134ce6265ae0d09917079013c6fff
-Author: Andrea Maggiulli <amaggiulli@users.noreply.github.com>
-Date:   Fri Aug 26 20:02:00 2022 +0200
-
-    Added batch calculations (#272)
-    
-    * Added batch yield calculation with benchmark tests.
-    
-    * Added batch Weighted Average Life calculation with benchmark test.
-    
-    * Added batch Duration and Accrued calculation with benchmark test.
-
- src/QLNet/Pricingengines/Bond/BondFunctions.cs   | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- src/QLNet/Requests/AccruedRequest.cs             | 27 +++++++++++++++++++++++++++
- src/QLNet/Requests/DurationRequest.cs            | 32 ++++++++++++++++++++++++++++++++
- src/QLNet/Requests/WalRequest.cs                 | 31 +++++++++++++++++++++++++++++++
- src/QLNet/Requests/YieldRequest.cs               | 34 ++++++++++++++++++++++++++++++++++
- src/QLNet/Responses/AccruedResponse.cs           | 27 +++++++++++++++++++++++++++
- src/QLNet/Responses/DurationResponse.cs          | 26 ++++++++++++++++++++++++++
- src/QLNet/Responses/WalResponse.cs               | 28 ++++++++++++++++++++++++++++
- src/QLNet/Responses/YieldResponse.cs             | 26 ++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/AccruedRequestFaker.cs  | 42 ++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/DurationRequestFaker.cs | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/FixedRateBondFaker.cs   | 34 ++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/ScheduleFaker.cs        | 38 ++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/WalRequestFaker.cs      | 44 ++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/Fakers/YieldRequestFaker.cs    | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/QLNet.Tests.csproj             |  1 +
- tests/QLNet.Tests/T_Batch.cs                     | 99 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 17 files changed, 646 insertions(+), 2 deletions(-)
-
-commit dbe969b82ba11d13bdf325e3d7259786bf4bb252
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 18:45:39 2022 +0200
-
-    Fixing AppVeyor Java Home
+    [skip ci] Token update
 
  appveyor.yml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-commit dcb271097e5cc3ad5674791a1772f45aef22d103
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 18:19:09 2022 +0200
-
-    Fixing AppVeyor Java Home
-
- appveyor.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-commit cc974824a0e73df122c04403e6c9d2945e975df1
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 17:51:49 2022 +0200
-
-    Updated appveyor.yml
-
- appveyor.yml | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-commit 29c5ef1225a157859091262963c065da232989c6
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 17:46:53 2022 +0200
-
-    Updated to .NET 6.0
-
- src/QLNet/Cashflows/OvernightIndexedCoupon.cs | 2 +-
- src/QLNet/QLNet.csproj                        | 6 ++----
- tests/QLNet.Tests/QLNet.Tests.csproj          | 2 +-
- 3 files changed, 4 insertions(+), 6 deletions(-)
-
-commit bcb57944fe3aeb77ae24336eed5f3e8cd8c5aed0
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 17:10:20 2022 +0200
-
-    Fixing tests.
-
- tests/QLNet.Tests/T_OvernightIndexedCoupon.cs | 22 +++++++++++++++++-----
- tests/QLNet.Tests/T_SofrFutures.cs            |  4 ++--
- 2 files changed, 19 insertions(+), 7 deletions(-)
-
-commit 1cf3e8eed251f4910cef1e0a48d5e2760ada41a8
-Merge: b057161 5ad17b8
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Jul 12 16:38:54 2022 +0200
-
-    Merge branch 'develop' of github.com:amaggiulli/QLNet into develop
-
-commit b057161a5dab98360602fd54a3c61012824024ff
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Sun Jul 10 13:35:46 2022 +0200
-
-    Added SOFR Index and OvernightIndexFuture instrument with helpers and tests.
-
- src/QLNet/Cashflows/IborCoupon.cs                                |   6 ++-
- src/QLNet/Cashflows/OvernightIndexedCoupon.cs                    | 112 ++++++++++++++++++++++++++++++++++++++-
- src/QLNet/Cashflows/RateAveragingType.cs                         |  31 +++++++++++
- src/QLNet/Indexes/Ibor/Sofr.cs                                   |  26 +++++++++
- src/QLNet/Instruments/OvernightIndexFuture.cs                    | 145 ++++++++++++++++++++++++++++++++++++++++++++++++++
- src/QLNet/Termstructures/Yield/BasisSwapRateHelpers.cs           | 213 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- src/QLNet/Termstructures/Yield/OvernightIndexFutureRateHelper.cs | 137 ++++++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/T_BasisSwapRateHelpers.cs                      | 241 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/T_OvernightIndexedCoupon.cs                    | 250 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- tests/QLNet.Tests/T_SofrFutures.cs                               | 104 ++++++++++++++++++++++++++++++++++++
- 10 files changed, 1263 insertions(+), 2 deletions(-)
-
-commit 5ad17b80d26c6da44a8878fb52e5c3b53d9fd9fb
+commit 470ffe5a5f167d89ab93ad21655b75ea30318eaf
 Author: ninetiger <ninetiger@gmail.com>
-Date:   Sun Jul 10 22:38:43 2022 +1200
+Date:   Wed Apr 17 03:57:14 2024 +1200
 
-    Support New Zealand's new publish holiday: Matariki holiday. (#271)
+    Added Futures Type - Custom; (#288)
     
-    * features/supportNzMatarikiHolidays
+    * Added Futures Type - Custom;
     
-    * Update unit test only
+    This is trnasfered from the C++ code: https://github.com/lballabio/QuantLib/pull/1915
+    This allows passing custom future dates. Closes #1855: https://github.com/lballabio/QuantLib/issues/1855
+    
+    * Update the default case message only
+    
+    ---------
     
     Co-authored-by: Xiao Gong <xiao.gong@nzfunds.co.nz>
 
- src/QLNet/Time/Calendars/NewZealand.cs | 41 ++++++++++++++++++++++++++++++++++++++++-
- tests/QLNet.Tests/T_Calendars.cs       | 20 ++++++++++++++++++++
- 2 files changed, 60 insertions(+), 1 deletion(-)
+ src/QLNet/Instruments/Futures.cs              |  8 ++------
+ src/QLNet/Termstructures/Yield/Ratehelpers.cs | 35 +++++++++++++++++++++++------------
+ 2 files changed, 25 insertions(+), 18 deletions(-)
 
-commit 762fa9e556689a05f585bda12d2bc76483262a8c
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Mon May 23 19:15:09 2022 +0200
+commit 9d1a564bf9835ffc47089101b115e2e2a6886af7
+Author: jerhat <2805041+jerhat@users.noreply.github.com>
+Date:   Sat Feb 17 00:00:10 2024 +0800
 
-    Removed local test example.
-
- appveyor.yml                 |  4 ++--
- tests/QLNet.Tests/T_Bonds.cs | 14 --------------
- 2 files changed, 2 insertions(+), 16 deletions(-)
-
-commit 3ab894402b6e076c21676ed1b7a7042923201b33
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Mon May 23 18:47:21 2022 +0200
-
-    Added new CashFlows method to return both accrued days and accrued amount.
-
- src/QLNet/Cashflows/CashFlows.cs | 20 ++++++++++++++++++++
- tests/QLNet.Tests/T_Bonds.cs     | 48 +++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 57 insertions(+), 11 deletions(-)
-
-commit 8bfee0f3ec000e17ab0fdbdcfdf67087e2edcf25
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Dec 7 19:04:21 2021 +0100
-
-    Removed AStyle formatting [skip ci]
-
- format_code.bat  |   2 --
- qlnet.astyle     |  28 ----------------------------
- tools/AStyle.exe | Bin 595456 -> 0 bytes
- 3 files changed, 30 deletions(-)
-
-commit 6b1872e8b41c7e720ba833594bcfffc1eaf89a2b
-Merge: 413ab5d 6ee6eb2
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Dec 7 18:53:54 2021 +0100
-
-    Merge branch 'develop' of github.com:amaggiulli/QLNet into develop
-
-commit 413ab5dd285942876eb10c06395ac691b24ac14f
-Author: Andrea Maggiulli <a.maggiulli@gmail.com>
-Date:   Tue Dec 7 18:53:41 2021 +0100
-
-    Updated editorconfig settings. Close #262 [skip ci]
-
- .editorconfig | 249 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 241 insertions(+), 8 deletions(-)
-
-commit 6ee6eb248b98edde0ab06f18233ef018a7f95444
-Author: Mogens Heller Grabe <mookid8000@gmail.com>
-Date:   Mon Dec 6 13:39:47 2021 +0100
-
-    Fixed MCDiscreteAveragingAsianEngine timeGrid and ArithmeticAPOPathPricer path value retrieval (#269)
+    Closes #283 (#285)
     
-    * don't add to InitializedList, put :)
-    
-    * actually use the 'value' function
+    Co-authored-by: Jeremy Bonnet <jeremy.bonnet@nittan.com.hk>
 
- src/QLNet/Pricingengines/asian/McDiscreteAsianEngine.cs   | 16 ++++++++--------
- src/QLNet/Pricingengines/asian/Mc_Discr_Arith_Av_Price.cs |  3 +--
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ appveyor.yml                         | 4 ++--
+ src/QLNet/QLNet.csproj               | 2 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit df15e394f4a9fec8b58f67a7b43f4e25323a6669
+Author: Francois Botha <igitur@gmail.com>
+Date:   Tue Dec 5 17:14:51 2023 +0200
+
+    Fix Schedule.previousDate and Schedule.nextDate (#284)
+
+ src/QLNet/Time/Schedule.cs      | 28 +++++++++++++++++++++-------
+ tests/QLNet.Tests/T_Schedule.cs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+), 7 deletions(-)
+
+commit e5d6e5da1ed59546e13028a41aa8c5a632221544
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Nov 16 18:19:53 2023 +0100
+
+    Revert "Updated to .NET 8"
+    
+    This reverts commit 0c8e87efa279e1b52a29050ac2fea2b6a714eb03.
+
+ appveyor.yml                         |  4 ++--
+ src/QLNet/QLNet.csproj               |  2 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj | 10 +++++-----
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+commit 0c8e87efa279e1b52a29050ac2fea2b6a714eb03
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Nov 16 18:12:42 2023 +0100
+
+    Updated to .NET 8
+
+ appveyor.yml                         |  4 ++--
+ src/QLNet/QLNet.csproj               |  2 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj | 10 +++++-----
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+commit 066d20070bedc385b49c3955899c65ba98e8a440
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Wed Nov 15 18:32:20 2023 +0100
+
+    Avoid exception on EasterMonday calculation when date out of range
+
+ src/QLNet/Time/Calendar.cs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 107ed94aa358c262667f72fd2de20d3cf0a733b4
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Mon Nov 6 20:27:12 2023 +0100
+
+    Fixing tests.
+
+ tests/QLNet.Tests/T_CallableBonds.cs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 27a0cb77c535e7cee3c227a644719ac61a8dbeb1
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Mon Nov 6 20:03:48 2023 +0100
+
+    Fixing tests.
+
+ src/QLNet/Time/Calendars/UnitedStates.cs | 2 +-
+ tests/QLNet.Tests/T_CallableBonds.cs     | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 9aea63cccb4d8dc936e0bf34d719f30ef39f3d2e
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Mon Nov 6 19:11:47 2023 +0100
+
+    #282 Added early close logic for US bond market.
+
+ src/QLNet/Time/Calendar.cs               | 16 ++++++++++++++++
+ src/QLNet/Time/Calendars/UnitedStates.cs | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ tests/QLNet.Tests/T_Calendars.cs         | 20 ++++++++++++++++++++
+ 3 files changed, 89 insertions(+), 2 deletions(-)
+
+commit 07dce8766239b4f25d0ead96302b52d698556f82
+Author: Francois Botha <igitur@gmail.com>
+Date:   Fri Nov 3 13:58:37 2023 +0200
+
+    Add 2023-12-15 as South African public holiday (#281)
+
+ src/QLNet/Time/Calendars/SouthAfrica.cs | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 7bbf04d29a1524c4c73c7ed1e49c40e3bbeef3dc
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Sep 28 18:11:20 2023 +0200
+
+    Fixing Bond equivalent yield edge date calculation
+
+ src/QLNet/Instruments/Bond.cs        |  2 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj | 11 ++++++-----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+commit e907016247941e17890cfa06a8cc2fdf36bec205
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Jun 15 20:23:48 2023 +0200
+
+    Updated NuGet settings
+
+ appveyor.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit bd3bc883cb036c69964e718e1ddc079003516909
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Jun 15 19:39:58 2023 +0200
+
+    [#279] Added Bond Equivalent Yield calculation.
+
+ src/QLNet/Instruments/Bond.cs | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ tests/QLNet.Tests/T_Bonds.cs  | 26 ++++++++++++++++++++++++++
+ 2 files changed, 88 insertions(+)
+
+commit 00f230a4d1f3d393461b36f11d024ea613083a34
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Jun 15 19:37:04 2023 +0200
+
+    [#278] Updated callable bonds with tests.
+
+ src/QLNet/Instruments/Bond.cs                                   |  30 +++
+ src/QLNet/Instruments/Bonds/CallableBond.cs                     | 378 ++++++++++++++++++-----------------
+ src/QLNet/Instruments/Bonds/ConvertibleBond.cs                  |   4 +-
+ src/QLNet/Instruments/Bonds/DiscretizedCallableFixedRateBond.cs | 104 +++++++---
+ src/QLNet/Instruments/Callability.cs                            |  34 +---
+ src/QLNet/Models/Shortrate/OneFactorModel.cs                    |   8 +-
+ src/QLNet/Pricingengines/Bond/BlackCallableBondEngine.cs        | 156 +++++++--------
+ src/QLNet/Pricingengines/Bond/TreeCallableBondEngine.cs         |  97 +++++----
+ src/QLNet/Pricingengines/LatticeShortRateModelEngine.cs         |  13 +-
+ tests/QLNet.Tests/QLNet.Tests.csproj                            |   1 +
+ tests/QLNet.Tests/T_Bonds.cs                                    |  11 +-
+ tests/QLNet.Tests/T_CallableBonds.cs                            | 692 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 12 files changed, 1158 insertions(+), 370 deletions(-)
+
+commit a84c79a5de76ca285207ba3b2a0a820aae8e1d66
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Jun 15 19:15:58 2023 +0200
+
+    [#280] Added Compounded Then Simple calculation.
+
+ src/QLNet/InterestRate.cs | 13 ++++++++++++-
+ src/QLNet/Types.cs        |  3 ++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+commit 518b39d7b6bdf61607d99a3f548f18c6dd3093fc
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Wed May 17 20:57:47 2023 +0200
+
+    [#277] Fixing DividendVanillaOption Engine.
+
+ src/QLNet/Instruments/DividendVanillaOption.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d3b709a76098d5765b11da83d0217786b118bd58
+Author: Andrea Maggiulli <a.maggiulli@gmail.com>
+Date:   Thu Apr 20 15:50:14 2023 +0200
+
+    Fixing tests.
+
+ tests/QLNet.Tests/T_Piecewiseyieldcurve.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

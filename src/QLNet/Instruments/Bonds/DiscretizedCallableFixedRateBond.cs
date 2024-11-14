@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2023  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -22,33 +22,82 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
+   public enum  CouponAdjustment { Pre, Post }
+
    public class DiscretizedCallableFixedRateBond : DiscretizedAsset
    {
-      public DiscretizedCallableFixedRateBond(CallableBond.Arguments args,
-                                              Date referenceDate,
-                                              DayCounter dayCounter)
+      private CallableBond.Arguments arguments_;
+      private double redemptionTime_;
+      private List<double> couponTimes_ = new List<double>();
+      private List<CouponAdjustment> couponAdjustments_;
+      private List<double> callabilityTimes_;
+      private List<double> adjustedCallabilityPrices_;
+
+      public DiscretizedCallableFixedRateBond(CallableBond.Arguments args, Handle<YieldTermStructure> termStructure)
       {
          arguments_ = args;
+         adjustedCallabilityPrices_ = args.callabilityPrices;
+
+         var dayCounter = termStructure.link.dayCounter();
+         var referenceDate = termStructure.link.referenceDate();
          redemptionTime_ = dayCounter.yearFraction(referenceDate, args.redemptionDate);
 
-         for (int i = 0; i < args.couponDates.Count ; ++i)
-            couponTimes_.Add(dayCounter.yearFraction(referenceDate, args.couponDates[i]));
+         /* By default the coupon adjustment should take place in
+          * DiscretizedCallableFixedRateBond::postAdjustValuesImpl(). */
+         couponAdjustments_ = new InitializedList<CouponAdjustment>(args.couponDates.Count, CouponAdjustment.Post);
 
-         for (int i = 0; i < args.callabilityDates.Count ; ++i)
-            callabilityTimes_.Add(dayCounter.yearFraction(referenceDate, args.callabilityDates[i]));
+         foreach (var t in args.couponDates)
+            couponTimes_.Add(dayCounter.yearFraction(referenceDate, t));
 
-         // similar to the tree swaption engine, we collapse similar coupon
-         // and exercise dates to avoid mispricing. Delete if unnecessary.
-
-         for (int i = 0; i < callabilityTimes_.Count; i++)
+         callabilityTimes_ = new InitializedList<double>(args.callabilityDates.Count,0);
+         for (var i = 0; i < args.callabilityDates.Count; i++)
          {
-            double exerciseTime = callabilityTimes_[i];
-            for (int j = 0; j < couponTimes_.Count ; j++)
+            var callabilityDate = args.callabilityDates[i];
+            var callabilityTime = dayCounter.yearFraction(referenceDate, args.callabilityDates[i]);
+
+            // To avoid mispricing, we snap exercise dates to the closest coupon date.
+            for (int j = 0; j < couponTimes_.Count; j++)
             {
-               if (withinNextWeek(exerciseTime, couponTimes_[j]))
-                  couponTimes_[j] = exerciseTime;
+               var couponTime = couponTimes_[j];
+               var couponDate = args.couponDates[j];
+
+               if (withinNextWeek(callabilityTime, couponTime) && callabilityDate < couponDate)
+               {
+                  // Snap the exercise date.
+                  callabilityTime = couponTime;
+
+                 /* The order of events must be changed here. In
+                  * DiscretizedCallableFixedRateBond::postAdjustValuesImpl() the callability is
+                  * done before adding of the coupon. However from the
+                  * DiscretizedAsset::rollback(Time to) perspective the coupon must be added
+                  * before the callability as it is later in time. */
+                 couponAdjustments_[j] = CouponAdjustment.Pre;
+
+                  /* We snapped the callabilityTime so we need to take into account the missing
+                   * discount factor including any possible spread e.g. set in the OAS
+                   * calculation. */
+                 var spread  = arguments_.spread;
+
+                 double CalcDiscountFactorInclSpread(Date date)
+                 {
+                    var time = termStructure.link.timeFromReference(date);
+                    var zeroRateInclSpread = termStructure.link.zeroRate(date, termStructure.link.dayCounter(), Compounding.Continuous, Frequency.NoFrequency).value() + spread;
+                    var df = Math.Exp(-zeroRateInclSpread * time);
+                    return df;
+                 }
+
+                 var dfTillCallDate = CalcDiscountFactorInclSpread(callabilityDate);
+                 var dfTillCouponDate = CalcDiscountFactorInclSpread(couponDate);
+                 adjustedCallabilityPrices_[i] *= dfTillCallDate / dfTillCouponDate;
+
+                 break;
+               }
             }
+
+            adjustedCallabilityPrices_[i] *= arguments_.faceAmount / 100.0;
+            callabilityTimes_[i] = callabilityTime;
          }
+          
       }
 
       public override void reset(int size)
@@ -56,7 +105,6 @@ namespace QLNet
          values_ = new Vector(size, arguments_.redemption);
          adjustValues();
       }
-
       public override List<double> mandatoryTimes()
       {
          List<double> times = new List<double>();
@@ -92,7 +140,17 @@ namespace QLNet
 
       protected override void preAdjustValuesImpl()
       {
-         // Nothing to do here
+         for (var i = 0; i < couponTimes_.Count; i++)
+         {
+            if (couponAdjustments_[i] == CouponAdjustment.Pre)
+            {
+               var t = couponTimes_[i];
+               if (t >= 0.0 && isOnTime(t))
+               {
+                  addCoupon(i);
+               }
+            }
+         }
       }
       protected override void postAdjustValuesImpl()
       {
@@ -114,10 +172,6 @@ namespace QLNet
          }
       }
 
-      private CallableBond.Arguments arguments_;
-      private double redemptionTime_;
-      private List<double> couponTimes_ = new List<double>();
-      private List<double> callabilityTimes_ = new List<double>();
       private void applyCallability(int i)
       {
          int j;
@@ -142,15 +196,13 @@ namespace QLNet
                break;
          }
       }
-
       private void addCoupon(int i)
       {
          values_ += arguments_.couponAmounts[i];
       }
-
-      private bool withinNextWeek(double t1, double t2)
+      private static bool withinNextWeek(double t1, double t2)
       {
-         double dt = 1.0 / 52;
+         var dt = 1.0 / 52;
          return t1 <= t2 && t2 <= t1 + dt;
       }
 

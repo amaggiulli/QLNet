@@ -1,6 +1,6 @@
 /*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -31,6 +31,11 @@ namespace QLNet
       public abstract string name();
       public abstract bool isBusinessDay(Date date);
       public abstract bool isWeekend(DayOfWeek w);
+      public virtual bool isEarlyClose(Date d)
+      {
+         throw new NotImplementedException("isEarlyClose not implemented for the given calendar");
+      }
+
       public SortedSet<Date> addedHolidays { get; set; } = new SortedSet<Date>();
       public SortedSet<Date> removedHolidays { get; set; } = new SortedSet<Date>();
    }
@@ -119,6 +124,17 @@ namespace QLNet
             return true;
 
          return _impl!.isBusinessDay(d);
+      }
+
+      /// <summary>
+      /// Return true if the date is an early close for the given market
+      /// </summary>
+      /// <param name="d"></param>
+      /// <returns></returns>
+      public bool isEarlyClose(Date d)
+      {
+         Utils.QL_REQUIRE(_impl != null, ()=> "no calendar implementation provided");
+         return _impl!.isEarlyClose(d);
       }
 
       /// <summary>
@@ -437,7 +453,7 @@ namespace QLNet
          /// <returns></returns>
          public int easterMonday(int y)
          {
-            return EasterMonday[y - 1901];
+            return y is < 1901 or > 2199 ? 0 : EasterMonday[y - 1901];
          }
       }
 
@@ -493,8 +509,18 @@ namespace QLNet
          /// <returns></returns>
          public int easterMonday(int y)
          {
-            return EasterMonday[y - 1901];
+            return y is < 1901 or > 2199 ? 0 : EasterMonday[y - 1901];
          }
+      }
+
+      public bool isStartOfMonth(Date d)
+      {
+         return d <= startOfMonth(d);
+      }
+
+      public Date startOfMonth(Date d)
+      {
+         return adjust(Date.startOfMonth(d), BusinessDayConvention.Following);
       }
 
       // Operators

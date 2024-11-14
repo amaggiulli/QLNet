@@ -39,16 +39,18 @@ namespace QLNet
 
          switch (type)
          {
-            case QLNet.Futures.Type.IMM:
-               Utils.QL_REQUIRE(QLNet.IMM.isIMMdate(iborStartDate, false), () =>
+            case Futures.Type.IMM:
+               Utils.QL_REQUIRE(IMM.isIMMdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid IMM date");
                break;
-            case QLNet.Futures.Type.ASX:
+            case Futures.Type.ASX:
                Utils.QL_REQUIRE(ASX.isASXdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid ASX date");
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -83,8 +85,10 @@ namespace QLNet
                Utils.QL_REQUIRE(ASX.isASXdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid ASX date");
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -124,7 +128,7 @@ namespace QLNet
                   maturityDate_ = iborEndDate;
                }
                break;
-            case QLNet.Futures.Type.ASX:
+            case Futures.Type.ASX:
                Utils.QL_REQUIRE(ASX.isASXdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid ASX date");
                if (iborEndDate == null)
@@ -143,8 +147,10 @@ namespace QLNet
                   maturityDate_ = iborEndDate;
                }
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -204,8 +210,10 @@ namespace QLNet
                   maturityDate_ = iborEndDate;
                }
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -232,8 +240,10 @@ namespace QLNet
                Utils.QL_REQUIRE(ASX.isASXdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid ASX date");
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -263,8 +273,10 @@ namespace QLNet
                Utils.QL_REQUIRE(ASX.isASXdate(iborStartDate, false), () =>
                                 iborStartDate + " is not a valid ASX date");
                break;
+            case Futures.Type.Custom:
+               break;
             default:
-               Utils.QL_FAIL("unknown futures type (" + type + ")");
+               Utils.QL_FAIL("unsupported futures type (" + type + ")");
                break;
          }
          earliestDate_ = iborStartDate;
@@ -281,11 +293,10 @@ namespace QLNet
 
          double forwardRate = (termStructure_.discount(earliestDate_) /
                                termStructure_.discount(maturityDate_) - 1) / yearFraction_;
-         double convAdj = convAdj_.empty() ? 0 : convAdj_.link.value();
          // Convexity, as FRA/futures adjustment, has been used in the
          // past to take into account futures margining vs FRA.
          // Therefore, there's no requirement for it to be non-negative.
-         double futureRate = forwardRate + convAdj;
+         double futureRate = forwardRate + convexityAdjustment();
          return 100.0 * (1.0 - futureRate);
       }
 

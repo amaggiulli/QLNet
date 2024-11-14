@@ -15,7 +15,6 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 
 using System.Collections.Generic;
-using component = System.Collections.Generic.KeyValuePair<QLNet.Instrument, double>;
 
 namespace QLNet
 {
@@ -33,8 +32,7 @@ namespace QLNet
    public class CompositeInstrument : Instrument
    {
       //! adds an instrument to the composite
-      public void add
-         (Instrument instrument, double multiplier = 1.0)
+      public void add(Instrument instrument, double multiplier = 1.0)
       {
          components_.Add(new KeyValuePair<Instrument, double>(instrument, multiplier));
          instrument.registerWith(update);
@@ -44,13 +42,13 @@ namespace QLNet
       //! shorts an instrument from the composite
       public void subtract(Instrument instrument, double multiplier = 1.0)
       {
-         add
-            (instrument, -multiplier);
+         add(instrument, -multiplier);
       }
+
       // Instrument interface
       public override bool isExpired()
       {
-         foreach (component c in components_)
+         foreach (var c in components_)
          {
             if (!c.Key.isExpired())
                return false;
@@ -61,13 +59,13 @@ namespace QLNet
       protected override void performCalculations()
       {
          NPV_ = 0.0;
-         foreach (component c in components_)
+         foreach (var c in components_)
          {
             NPV_ += c.Value * c.Key.NPV();
          }
       }
 
-      private List<component> components_ = new List<component>();
+      private List<KeyValuePair<Instrument, double>> components_ = new List<KeyValuePair<QLNet.Instrument, double>>();
 
    }
 }

@@ -316,5 +316,51 @@ namespace TestSuite
          if (schedule2.endOfMonth() != true)
             QAssert.Fail("schedule2 has end of month flag false, expected true");
       }
+
+      [Fact]
+      public void testPreviousDateAndNextDate()
+      {
+         // Testing next and previous date on schedules
+
+         Schedule s = new MakeSchedule()
+            .from(new Date(28, Month.February, 2012))
+            .to(new Date(31, Month.August, 2048))
+            .withCalendar(new NullCalendar())
+            .withTenor(new Period(6, TimeUnit.Months))
+            .withConvention(BusinessDayConvention.Unadjusted)
+            .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+            .backwards()
+            .endOfMonth().value();
+
+         // Previous date
+         QAssert.AreEqual(null, s.previousDate(new Date(01, 01, 2001)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(23, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(24, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(25, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(26, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(27, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(28, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2015), s.previousDate(new Date(29, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.previousDate(new Date(01, 03, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.previousDate(new Date(02, 03, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.previousDate(new Date(03, 03, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.previousDate(new Date(04, 03, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2048), s.previousDate(new Date(01, 01, 2060)));
+
+         // Next date
+         QAssert.AreEqual(new Date(28, 02, 2012), s.nextDate(new Date(01, 01, 2001)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(23, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(24, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(25, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(26, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(27, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(28, 02, 2016)));
+         QAssert.AreEqual(new Date(29, 02, 2016), s.nextDate(new Date(29, 02, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2016), s.nextDate(new Date(01, 03, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2016), s.nextDate(new Date(02, 03, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2016), s.nextDate(new Date(03, 03, 2016)));
+         QAssert.AreEqual(new Date(31, 08, 2016), s.nextDate(new Date(04, 03, 2016)));
+         QAssert.AreEqual(null, s.nextDate(new Date(01, 01, 2060)));
+      }
    }
 }

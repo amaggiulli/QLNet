@@ -34,7 +34,7 @@ namespace QLNet
    /// Easter Saturday
    /// Labour Day, May 1st
    /// Navy Day, May 21st
-   /// Day of Aboriginal People, June 21st (since 2021)
+   /// Day of Aboriginal People, celebrated on the Winter Solstice day, except in 2021, when it was the day after.
    /// Saint Peter and Saint Paul, June 29th (moved to the nearest Monday if it falls on a weekday)
    /// Our Lady of Mount Carmel, July 16th
    /// Assumption Day, August 15th
@@ -74,6 +74,37 @@ namespace QLNet
          private Settlement() {}
          public override string name() { return "Santiago Stock Exchange"; }
 
+         // <summary>
+         // Returns true if date is Aboriginal People Day
+         // Array int[] aboriginalPeopleDay represents days of June
+         // from 2021 to 2199 where Winter Solstice takes place.
+         // </summary>
+         private bool isAboriginalPeopleDay(int d, Month m, int y) 
+         {
+            int[] aboriginalPeopleDay = {
+                   21, 21, 21, 20, 20, 21, 21, 20, 20,   // 2021-2029
+               21, 21, 20, 20, 21, 21, 20, 20, 21, 21,   // 2030-2039
+               20, 20, 21, 21, 20, 20, 21, 21, 20, 20,   // 2040-2049
+               20, 21, 20, 20, 20, 21, 20, 20, 20, 21,   // 2050-2059
+               20, 20, 20, 21, 20, 20, 20, 21, 20, 20,   // 2060-2069
+               20, 21, 20, 20, 20, 21, 20, 20, 20, 20,   // 2070-2079
+               20, 20, 20, 20, 20, 20, 20, 20, 20, 20,   // 2080-2089
+               20, 20, 20, 20, 20, 20, 20, 20, 20, 20,   // 2090-2099
+               21, 21, 21, 21, 21, 21, 21, 21, 20, 21,   // 2100-2109
+               21, 21, 20, 21, 21, 21, 20, 21, 21, 21,   // 2110-2119
+               20, 21, 21, 21, 20, 21, 21, 21, 20, 21,   // 2120-2129
+               21, 21, 20, 21, 21, 21, 20, 20, 21, 21,   // 2130-2139
+               20, 20, 21, 21, 20, 20, 21, 21, 20, 20,   // 2140-2149
+               21, 21, 20, 20, 21, 21, 20, 20, 21, 21,   // 2150-2159
+               20, 20, 21, 21, 20, 20, 21, 21, 20, 20,   // 2160-2169
+               20, 21, 20, 20, 20, 21, 20, 20, 20, 21,   // 2170-2179
+               20, 20, 20, 21, 20, 20, 20, 21, 20, 20,   // 2180-2189
+               20, 21, 20, 20, 20, 21, 20, 20, 20, 20    // 2190-2199
+            };
+
+            return m == Month.June && y >= 2021 && d == aboriginalPeopleDay[y-2021];
+         }
+
          public override bool isBusinessDay(Date date)
          {
             var w = date.DayOfWeek;
@@ -96,7 +127,7 @@ namespace QLNet
                 // Navy Day
                 || (d == 21 && m == Month.May)
                 // Day of Aboriginal People
-                || (d == 21 && m == Month.June && y >= 2021)
+                || isAboriginalPeopleDay(d, Month.June, y)
                 // St. Peter and St. Paul
                 || (d >= 26 && d <= 29 && m == Month.June && w == DayOfWeek.Monday)
                 || (d == 2 && m == Month.July && w == DayOfWeek.Monday)

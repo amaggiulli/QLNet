@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.13.0
+  version: 1.13.1
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -21,23 +21,23 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net7.0\QLNet.dll
+    - path: src\QLNet\bin\Release\net8.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.13.0
-    release: QLNet Version 1.13.0
-    description: QLNet 1.13.0
+    tag: QLNet-v1.13.1
+    release: QLNet Version 1.13.1
+    description: QLNet 1.13.1
     auth_token:
-      secure: 4cCBgQRwNh1N6VbvMJTCUMoq7BVD0Cmj04AjQa8L3k5k6MirTm8dz5TFUuqRDbHhj5x2QJS4l2EfoTsAMgc8ZhWYVJ2CV1deITs7sHYG98BrXl8NGKdPivoOZZdZT9oo
-    artifact: src\QLNet\bin\Release\net7.0\QLNet.dll
+      secure: 4cCBgQRwNh1N6VbvMJTCUDVyo4z4acn5q6z4PXSgW5wOA0M2e6alGZms4fBx5Vw+6W8FieXgzRUvUfxmJ/xAnjxJZAFMeqI0mifvwMxjW9JAVC3EcFnV4NNZX/QoQRk6
+    artifact: src\QLNet\bin\Release\net8.0\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
     api_key:
-      secure: B/mINFQqQ7mV7FjaOEErtgDWsvkgcnajcscRwCm6tTVFnu8+fc1Xti79M9CAZcgd
+      secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
     skip_symbols: true
     artifact: ng
 
@@ -47,7 +47,7 @@
   branches:
     only:
       - develop
-  version: 1.12.1-preview.{build}
+  version: 1.13.2-preview.{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -86,7 +86,7 @@
   deploy:
     - provider: NuGet
       api_key:
-        secure: B/mINFQqQ7mV7FjaOEErtgDWsvkgcnajcscRwCm6tTVFnu8+fc1Xti79M9CAZcgd
+        secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
       skip_symbols: false
       artifact: ng
 
@@ -96,7 +96,7 @@
   branches:
     only:
       - /feature/
-  version: 1.12.1-{build}
+  version: 1.13.2-{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -105,7 +105,7 @@
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk11
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.12.1-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.13.2-%newVersion%"
   before_build:
     - cmd: dotnet restore qlnet.sln
   build_script:
