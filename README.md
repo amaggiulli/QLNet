@@ -7,10 +7,8 @@ which has been used as a base reference for modelling various financial instrume
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/iii1m7n3cdq3v5xm?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet)
-[![Release](https://img.shields.io/github/release/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/releases/latest)
-[![NuGet](https://buildstats.info/nuget/qlnet)](https://www.nuget.org/packages/qlnet/)
+[![Latest Release](https://img.shields.io/nuget/vpre/QLNet?style=flat-square)](https://www.nuget.org/packages/QLNet)
 [![Stars](https://img.shields.io/github/stars/amaggiulli/qlnet.svg)](https://github.com/amaggiulli/qlnet/stargazers)
-[![Coverity](https://scan.coverity.com/projects/7000/badge.svg)](https://scan.coverity.com/projects/amaggiulli-qlnet)
 
 ## Development workflow 
 
