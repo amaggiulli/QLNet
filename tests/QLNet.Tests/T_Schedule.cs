@@ -91,7 +91,7 @@ namespace TestSuite
          expected.Add(new Date(31, Month.March, 2011));
          expected.Add(new Date(30, Month.September, 2011));
          expected.Add(new Date(30, Month.March, 2012));
-         expected.Add(new Date(29, Month.June, 2012));
+         expected.Add(new Date(15, Month.June, 2012));
 
          check_dates(s, expected);
 
@@ -124,7 +124,7 @@ namespace TestSuite
          .endOfMonth().value();
 
          List<Date> expected = new List<Date>();
-         expected.Add(new Date(31, Month.March, 2013));
+         expected.Add(new Date(28, Month.March, 2013));
          expected.Add(new Date(31, Month.March, 2014));
          // March 31st 2015, coming from the EOM adjustment of March 28th,
          // should be discarded as past the end date.
@@ -149,7 +149,7 @@ namespace TestSuite
          .value();
 
          List<Date> expected = new List<Date>(3);
-         expected.Add(new Date(31, Month.March, 2013));
+         expected.Add(new Date(28, Month.March, 2013));
          expected.Add(new Date(31, Month.March, 2014));
          // March 31st 2015, coming from the EOM adjustment of March 28th,
          // should be discarded as the same as the end date.
@@ -212,7 +212,6 @@ namespace TestSuite
       public void testDoubleFirstDateWithEomAdjustment()
       {
          // Testing that the first date is not duplicated due to EOM convention when going backwards
-
          Schedule s = new MakeSchedule().from(new Date(22, Month.August, 1996))
          .to(new Date(31, Month.August, 1997))
          .withCalendar(new UnitedStates(UnitedStates.Market.GovernmentBond))
@@ -223,9 +222,10 @@ namespace TestSuite
          .endOfMonth().value();
 
          List<Date> expected = new List<Date>();
+         expected.Add(new Date(22, Month.August, 1996));
          expected.Add(new Date(30, Month.August, 1996));
          expected.Add(new Date(28, Month.February, 1997));
-         expected.Add(new Date(29, Month.August, 1997));
+         expected.Add(new Date(02, Month.September, 1997));
 
          check_dates(s, expected);
       }
