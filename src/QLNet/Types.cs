@@ -261,6 +261,8 @@ namespace QLNet
          Forward,       /*!< Forward from effective date to termination date. */
          Zero,          /*!< No intermediate dates between effective date and termination date. */
          ThirdWednesday,/*!< All dates but effective date and termination date are taken to be on the third wednesday of their month*/
+         ThirdWednesdayInclusive, /* All dates including effective date and termination date are taken to be on the third wednesday
+                                     of their month (with forward calculation.) */
          Twentieth,     /*!< All dates but the effective date are taken to be the twentieth of their
                               month (used for CDS schedules in emerging markets.)  The termination
                               date is also modified. */

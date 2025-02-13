@@ -162,7 +162,6 @@ namespace TestSuite
             QAssert.Fail("last period should be regular");
       }
 
-
       [Fact]
       public void testForwardDatesWithEomAdjustment()
       {
@@ -227,6 +226,124 @@ namespace TestSuite
          expected.Add(new Date(30, Month.August, 1996));
          expected.Add(new Date(28, Month.February, 1997));
          expected.Add(new Date(29, Month.August, 1997));
+
+         check_dates(s, expected);
+      }
+
+      [Fact]
+      public void testAccrualDateWithEomAdjustment()
+      {
+         // Testing accrual date is not changed when end-of-month adjustment
+         var s = new MakeSchedule().from(new Date(21, Month.November, 2024))
+            .to(new Date(31, Month.January, 2030))
+            .withCalendar(new TARGET())
+            .withTenor(new Period(6, TimeUnit.Months))
+            .withConvention(BusinessDayConvention.Unadjusted)
+            .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+            .withFirstDate(new Date(31, Month.July, 2025))
+            .forwards()
+            .endOfMonth().value();
+
+         var expected = new List<Date>
+         {
+            // The end date is adjusted, so it should also be moved to the end
+            // of the month.
+            new(21, Month.November, 2024),
+            new(31, Month.July, 2025),
+            new(31, Month.January, 2026),
+            new(31, Month.July, 2026),
+            new(31, Month.January, 2027),
+            new(31, Month.July, 2027),
+            new(31, Month.January, 2028),
+            new(31, Month.July, 2028),
+            new(31, Month.January, 2029),
+            new(31, Month.July, 2029),
+            new(31, Month.January, 2030)
+         };
+
+         check_dates(s, expected);
+      }
+
+      [Fact]
+      public void testFirstDateWithEomAdjustment()
+      {
+         // Testing schedule with first date and EOM adjustments
+
+         var schedule = new MakeSchedule()
+            .from(new Date(10, Month.August, 1996))
+            .to(new Date(10, Month.August, 1998))
+            .withFirstDate(new Date(28, Month.February, 1997))
+            .withCalendar(new UnitedStates(UnitedStates.Market.GovernmentBond))
+            .withTenor(new Period(6 , TimeUnit.Months))
+            .withConvention(BusinessDayConvention.Following)
+            .withTerminationDateConvention(BusinessDayConvention.Following)
+            .forwards()
+            .endOfMonth().value();
+
+         var expected = new List<Date>
+         {
+            new(12, Month.August, 1996),
+            new(28, Month.February, 1997),
+            new(29, Month.August, 1997),
+            new(27, Month.February, 1998),
+            new(10, Month.August, 1998)
+         };
+
+         check_dates(schedule, expected);
+      }
+
+      [Fact]
+      public void testNextToLastWithEomAdjustment()
+      {
+         // Testing schedule with next to last date and EOM adjustments
+
+         var schedule = new MakeSchedule()
+            .from(new Date(10, Month.August, 1996))
+            .to(new Date(10, Month.August, 1998))
+            .withNextToLastDate(new Date(28, Month.February, 1998))
+            .withCalendar(new UnitedStates(UnitedStates.Market.GovernmentBond))
+            .withTenor(new Period(6 , TimeUnit.Months))
+            .withConvention(BusinessDayConvention.Following)
+            .withTerminationDateConvention(BusinessDayConvention.Following)
+            .backwards()
+            .endOfMonth().value();
+
+         var expected = new List<Date>
+         {
+            new(12, Month.August, 1996),
+            new(30, Month.August, 1996),
+            new(28, Month.February, 1997),
+            new(29, Month.August, 1997),
+            new(27, Month.February, 1998),
+            new(10, Month.August, 1998)
+         };
+
+         check_dates(schedule, expected);
+      }
+
+      [Fact]
+      public void testEffectiveDateWithEomAdjustment()
+      {
+         // Testing forward schedule with EOM adjustment and effective date and first date in the same month
+
+         var s = new MakeSchedule().from(new Date(16,Month.January,2023))
+            .to(new Date(16,Month.March,2023))
+            .withFirstDate(new Date(31,Month.January,2023))
+            .withCalendar(new NullCalendar())
+            .withTenor(new Period(1,TimeUnit.Months))
+            .withConvention(BusinessDayConvention.Unadjusted)
+            .withTerminationDateConvention(BusinessDayConvention.Unadjusted)
+            .forwards()
+            .endOfMonth().value();
+
+         var expected = new List<Date>
+         {
+            // check that the effective date is not moved at the end of the month
+            new(16, Month.January, 2023),
+            new(31, Month.January, 2023),
+            new(28,Month.February,2023),
+            new(16,Month.March,2023)
+         };
 
          check_dates(s, expected);
       }

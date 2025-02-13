@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -589,6 +589,35 @@ namespace QLNet
 
       public abstract class Engine : GenericEngine<CreditDefaultSwap.Arguments, CreditDefaultSwap.Results>
       {}
+
+      public static Date cdsMaturity(Date tradeDate, Period tenor, DateGeneration.Rule rule)
+      {
+
+         Utils.QL_REQUIRE(rule == DateGeneration.Rule.CDS2015 || rule == DateGeneration.Rule.CDS || rule == DateGeneration.Rule.OldCDS,
+            ()=> "cdsMaturity should only be used with date generation rule CDS2015, CDS or OldCDS");
+
+         Utils.QL_REQUIRE(tenor.units() == TimeUnit.Years || (tenor.units() == TimeUnit.Months && tenor.length() % 3 == 0),
+            ()=> "cdsMaturity expects a tenor that is a multiple of 3 months.");
+
+         if (rule == DateGeneration.Rule.OldCDS)
+            Utils.QL_REQUIRE(tenor != new Period(0 , TimeUnit.Months), ()=> "A tenor of 0M is not supported for OldCDS.");
+         
+
+         Date anchorDate = Schedule.previousTwentieth(tradeDate, rule);
+         if (rule == DateGeneration.Rule.CDS2015 && (anchorDate == new Date(20, Month.Dec, anchorDate.year()) ||
+                                                 anchorDate == new Date(20, Month.Jun, anchorDate.year())))
+         {
+            if (tenor.length() == 0)
+               return new Date();
+            anchorDate -= new Period(3 ,  TimeUnit.Months);
+         }
+
+         var maturity = anchorDate + tenor + new Period(3 , TimeUnit.Months);
+         Utils.QL_REQUIRE(maturity > tradeDate, ()=> "error calculating CDS maturity. Tenor is " + tenor + ", trade date is " +
+            tradeDate + " generating a maturity of " + maturity + " <= trade date.");
+
+         return maturity;
+      }
 
    }
 }
