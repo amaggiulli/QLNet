@@ -151,7 +151,7 @@ namespace QLNet
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
                   Utils.QL_REQUIRE(firstDate_ > effectiveDate &&
-                                   firstDate_ < terminationDate, () =>
+                                   firstDate_ <= terminationDate, () =>
                                    "first date (" + firstDate_ + ") out of effective-termination date range [" +
                                    effectiveDate + ", " + terminationDate + ")");
                   // we should ensure that the above condition is still verified after adjustment
@@ -179,7 +179,7 @@ namespace QLNet
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
-                  Utils.QL_REQUIRE(nextToLastDate_ > effectiveDate&& nextToLastDate_ < terminationDate, () =>
+                  Utils.QL_REQUIRE(nextToLastDate_ >= effectiveDate&& nextToLastDate_ < terminationDate, () =>
                                    "next to last date (" + nextToLastDate_ + ") out of effective-termination date range (" +
                                    effectiveDate + ", " + terminationDate + "]");
                   // we should ensure that the above condition is still verified after adjustment
@@ -277,15 +277,18 @@ namespace QLNet
             goto case DateGeneration.Rule.Forward;       // fall through
 
             case DateGeneration.Rule.Forward:
-               if (rule_.Value == DateGeneration.Rule.CDS ||
-                   rule_.Value == DateGeneration.Rule.CDS2015)
+               if (rule_.Value is DateGeneration.Rule.CDS or DateGeneration.Rule.CDS2015)
                {
-                  dates_.Add(previousTwentieth(effectiveDate, rule_.Value));
+                  Date prev20th = previousTwentieth(effectiveDate, rule_.Value);
+                  if (calendar_.adjust(prev20th, convention) > effectiveDate)
+                  {
+                     dates_.Add(prev20th - new Period(3 , TimeUnit.Months));
+                     isRegular_.Add(true);
+                  }
+                  dates_.Add(prev20th);
                }
-               else
-               {
+               else 
                   dates_.Add(effectiveDate);
-               }
 
                seed = dates_.Last();
                if (firstDate_ != null)
@@ -364,19 +367,11 @@ namespace QLNet
                   if (rule_.Value == DateGeneration.Rule.Twentieth ||
                       rule_.Value == DateGeneration.Rule.TwentiethIMM ||
                       rule_.Value == DateGeneration.Rule.OldCDS ||
-                      rule_.Value == DateGeneration.Rule.CDS)
+                      rule_.Value == DateGeneration.Rule.CDS ||
+                      rule_.Value == DateGeneration.Rule.CDS2015)
                   {
                      dates_.Add(nextTwentieth(terminationDate, rule_.Value));
                      isRegular_.Add(true);
-                  }
-                  else if (rule_ == DateGeneration.Rule.CDS2015)
-                  {
-                     Date tentativeTerminationDate = nextTwentieth(terminationDate, rule_.Value);
-                     if (tentativeTerminationDate.month() % 2 == 0)
-                     {
-                        dates_.Add(tentativeTerminationDate);
-                        isRegular_.Add(true);
-                     }
                   }
                   else
                   {
@@ -593,6 +588,43 @@ namespace QLNet
                result.nextToLastDate_ = null;
             if (result.firstDate_ >= truncationDate)
                result.firstDate_ = null;
+         }
+
+         return result;
+      }
+      public Schedule after(Date truncationDate)
+      {
+         var result = this;
+
+         Utils.QL_REQUIRE(truncationDate < result.dates_.Last(),()=>
+            "truncation date " + truncationDate +
+            " must be before the last schedule date " +
+            result.dates_.Last());
+         if (truncationDate > result.dates_[0])
+         {
+            // remove earlier dates
+            while (result.dates_[0] < truncationDate)
+            {
+               result.dates_.RemoveAt(0);
+               if (!result.isRegular_.empty())
+                  result.isRegular_.RemoveAt(0);
+            }
+
+            // add truncationDate if missing
+            if (truncationDate != result.dates_.First())
+            {
+               result.dates_.Insert(0, truncationDate); // result.dates_.insert(result.dates_.begin(), truncationDate);
+               result.isRegular_.Insert(0, false); // result.isRegular_.insert(result.isRegular_.begin(), false);
+               result.terminationDateConvention_ = BusinessDayConvention.Unadjusted;
+            }
+            else 
+               result.terminationDateConvention_ = convention_;
+            
+
+            if (result.nextToLastDate_ <= truncationDate)
+               result.nextToLastDate_ = new Date();
+            if (result.firstDate_ <= truncationDate)
+               result.firstDate_ = new Date();
          }
 
          return result;
