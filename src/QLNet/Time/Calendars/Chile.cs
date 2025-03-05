@@ -127,7 +127,7 @@ namespace QLNet
                 // Navy Day
                 || (d == 21 && m == Month.May)
                 // Day of Aboriginal People
-                || isAboriginalPeopleDay(d, Month.June, y)
+                || isAboriginalPeopleDay(d, m, y)
                 // St. Peter and St. Paul
                 || (d >= 26 && d <= 29 && m == Month.June && w == DayOfWeek.Monday)
                 || (d == 2 && m == Month.July && w == DayOfWeek.Monday)
