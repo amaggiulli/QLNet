@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using QLNet;
 
@@ -1737,5 +1738,43 @@ namespace TestSuite
          Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
          QAssert.IsTrue(c.isEarlyClose(expectedEarlyClose));
       }
+
+      [Theory]
+      [InlineData(
+         "2025/01/01",
+         "2025/04/18",
+         "2025/05/01",
+         "2025/05/21",
+         "2025/06/20",
+         "2025/07/16",
+         "2025/08/15",
+         "2025/09/18",
+         "2025/09/19",
+         "2025/10/31",
+         "2025/12/08",
+         "2025/12/25"
+         )]
+      public void testChileCalendar2025(params String[] expectedHolidaysArray )
+      {
+         List<Date> expectedHolidays = expectedHolidaysArray.Select(x => new Date(DateTime.Parse(x))).ToList();
+         Calendar chileCalendar = new Chile();
+
+         List<Date> holidays = chileCalendar.holidayList(new Date(1, Month.Jan, 2025), new Date(31, Month.Dec, 2025))
+            .Where(dt => dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday).ToList(); // Exclude Saturdays and Sundays
+
+         for (int i = 0; i < Math.Min(expectedHolidays.Count, holidays.Count); i++)
+         {
+            if (holidays[i] != expectedHolidays[i])
+               QAssert.Fail("expected holiday was " + expectedHolidays[i]
+                                                    + " while calculated holiday is " + holidays[i]);
+         }
+
+         if (holidays.Count != expectedHolidays.Count)
+            QAssert.Fail("there were " + expectedHolidays.Count
+                                       + " expected holidays, while there are " + holidays.Count
+                                       + " calculated holidays");
+
+      }
+
    }
 }
