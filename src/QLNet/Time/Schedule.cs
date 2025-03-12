@@ -270,6 +270,7 @@ namespace QLNet
             case DateGeneration.Rule.Twentieth:
             case DateGeneration.Rule.TwentiethIMM:
             case DateGeneration.Rule.ThirdWednesday:
+            case DateGeneration.Rule.ThirdWednesdayInclusive:
             case DateGeneration.Rule.OldCDS:
             case DateGeneration.Rule.CDS:
             case DateGeneration.Rule.CDS2015:
@@ -388,10 +389,10 @@ namespace QLNet
 
          // adjustments
          if (rule_ == DateGeneration.Rule.ThirdWednesday)
-            for (int i = 1; i < dates_.Count - 1; ++i)
+            for (var i = 1; i < dates_.Count - 1; ++i)
                dates_[i] = Date.nthWeekday(3, DayOfWeek.Wednesday, dates_[i].Month, dates_[i].Year);
          else if (rule_ == DateGeneration.Rule.ThirdWednesdayInclusive)
-            for (var i = 0; i < dates_.Count - 1; ++i)
+            for (var i = 0; i < dates_.Count; ++i)
                dates_[i] = Date.nthWeekday(3, DayOfWeek.Wednesday, dates_[i].month(), dates_[i].year());
 
          // first date not adjusted for old CDS schedules
