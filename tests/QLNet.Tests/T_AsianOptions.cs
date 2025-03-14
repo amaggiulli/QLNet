@@ -24,6 +24,7 @@ using System.Linq;
 using Xunit;
 using QLNet;
 
+
 namespace TestSuite
 {
    [Collection("QLNet CI Tests")]
@@ -593,6 +594,123 @@ namespace TestSuite
                            vol.value(), expected, calculated, tolerance);
          }
       }
+
+      private void testDiscreteGeometricAveragePriceHeston(IPricingEngine engine, double[] tol)
+      {
+         // data from "A Recursive Method for Discretely Monitored Geometric Asian Option
+         // Prices", Kim, Kim, Kim & Wee, Bull. Korean Math. Soc. 53, 733-749, 2016
+         int[] days = [
+           30, 91, 182, 365, 730, 1095,
+           30, 91, 182, 365, 730, 1095,
+           30, 91, 182, 365, 730, 1095
+         ];
+         double[] strikes = [
+           90, 90, 90, 90, 90, 90,
+           100, 100, 100, 100, 100, 100,
+           110, 110, 110, 110, 110, 110
+         ];
+
+         // Prices from Tables 1, 2 and 3
+         double[] prices = [
+           10.2732, 10.9554, 11.9916, 13.6950, 16.1773, 18.0146,
+           2.4389, 3.7881, 5.2132, 7.2243, 9.9948, 12.0639,
+           0.1012, 0.5949, 1.4444, 2.9479, 5.3531, 7.3315
+         ];
+
+         DayCounter dc = new Actual365Fixed();
+         var today = new Date(16, 09, 2015);
+         Settings. setEvaluationDate(today);
+
+
+         var spot = new SimpleQuote(100);
+         var qRate = new SimpleQuote(0.0);
+         var rRate = new SimpleQuote(0.05);
+
+         var v0 = 0.09;
+
+         var type = Option.Type.Call;
+         var averageType = Average.Type.Geometric;
+
+         var runningAccumulator = 1.0;
+         var pastFixings = 0;
+
+         for (var i=0; i<strikes.Length; i++)
+         {
+           var strike = strikes[i];
+           var day = days[i];
+           var expected = prices[i];
+           var tolerance = tol[i];
+
+           var futureFixings = (int)Math.Floor(day/7.0);
+           List<Date> fixingDates = new InitializedList<Date>(futureFixings);
+
+           var expiryDate = today + new Period(day,TimeUnit.Days);
+
+           // I suppose "weekly fixings" roughly means this?
+           for (var j=futureFixings-1; j>=0; j--)
+           {
+               fixingDates[j] = expiryDate - j * 7;
+           }
+
+           var europeanExercise = new EuropeanExercise(expiryDate);
+           var payoff = new PlainVanillaPayoff(type, strike);
+
+           var  option = new DiscreteAveragingAsianOption(averageType, runningAccumulator, pastFixings,
+              fixingDates, payoff, europeanExercise);
+           option.setPricingEngine(engine);
+
+           var calculated = option.NPV();
+
+           if (Math.Abs(calculated-expected) > tolerance)
+           {
+               REPORT_FAILURE("value", averageType, 1.0, (int?)0.0,
+                          [], payoff, europeanExercise, spot.value(),
+                          qRate.value(), rRate.value(), today,
+                          Math.Sqrt(v0), expected, calculated, tolerance);
+           }
+         }
+      }
+
+      [Fact]
+      private void testMCDiscreteGeometricAveragePriceHeston()
+      {
+         // Testing MC discrete geometric average-price Asians under Heston
+
+         // 30-day options need wider tolerance due to uncertainty around what "weekly
+         // fixing" dates mean over a 30-day month!
+         double[] tol = [
+            4.0e-2, 2.0e-2, 2.0e-2, 4.0e-2, 8.0e-2, 2.0e-1,
+            1.0e-1, 4.0e-2, 3.0e-2, 2.0e-2, 9.0e-2, 2.0e-1,
+            2.0e-2, 1.0e-2, 2.0e-2, 2.0e-2, 7.0e-2, 2.0e-1
+         ];
+
+         DayCounter dc = new Actual365Fixed();
+         var today = new Date(16, 09, 2015);
+         Settings.setEvaluationDate(today);
+
+         var spot = new Handle<Quote>(new SimpleQuote(100));
+         var qRate = new SimpleQuote(0.0);
+         var qTS = Utilities.flatRate(today, qRate, dc);
+         var rRate = new SimpleQuote(0.05);
+         var rTS = Utilities.flatRate(today, rRate, dc);
+
+         var v0 = 0.09;
+         var kappa = 1.15;
+         var theta = 0.0348;
+         var sigma = 0.39;
+         var rho = -0.64;
+
+         var hestonProcess = new HestonProcess(new Handle<YieldTermStructure>(rTS), new Handle<YieldTermStructure>(qTS),
+               spot, v0, kappa, theta, sigma, rho);
+
+         IPricingEngine engine = new MakeMCDiscreteGeometricAPHestonEngine<LowDiscrepancy, Statistics>(hestonProcess)
+               .withSamples(8191)
+               .withSeed(43)
+               .value();
+
+         testDiscreteGeometricAveragePriceHeston(engine, tol);
+      }
+
 
       [Fact]
       public void testAnalyticDiscreteGeometricAveragePriceGreeks()

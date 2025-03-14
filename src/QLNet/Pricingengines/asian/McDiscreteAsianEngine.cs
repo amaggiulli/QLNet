@@ -29,14 +29,12 @@ namespace QLNet
    /// </summary>
    /// <typeparam name="RNG"></typeparam>
    /// <typeparam name="S"></typeparam>
-   public class MCDiscreteAveragingAsianEngine<RNG, S> : McSimulation<SingleVariate, RNG, S>, IGenericEngine
-      //DiscreteAveragingAsianOption.Engine,
-      //McSimulation<SingleVariate,RNG,S>
+   public class MCDiscreteAveragingAsianEngineBase<MC, RNG, S> : McSimulation<MC, RNG, S>, IGenericEngine
       where RNG : IRSG, new()
       where S : IGeneralStatistics, new()
    {
       // data members
-      protected GeneralizedBlackScholesProcess process_;
+      protected StochasticProcess process_;
       protected int? requiredSamples_, maxSamples_;
       protected int? timeSteps_, timeStepsPerYear_;
       protected double? requiredTolerance_;
@@ -44,8 +42,8 @@ namespace QLNet
       protected ulong seed_;
 
       // constructor
-      public MCDiscreteAveragingAsianEngine(
-         GeneralizedBlackScholesProcess process,
+      public MCDiscreteAveragingAsianEngineBase(
+         StochasticProcess process,
          bool brownianBridge,
          bool antitheticVariate,
          bool controlVariate,

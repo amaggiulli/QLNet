@@ -33,7 +33,7 @@ namespace QLNet
    /// <typeparam name="RNG"></typeparam>
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteArithmeticAPEngine<RNG, S>
-      : MCDiscreteAveragingAsianEngine<RNG, S>
+      : MCDiscreteAveragingAsianEngineBase<SingleVariate, RNG, S>
         where RNG : IRSG, new ()
         where S : IGeneralStatistics, new ()
    {
@@ -66,7 +66,7 @@ namespace QLNet
          return (PathPricer<IPath>)new ArithmeticAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(exercise!.lastDate()),
+                   process.riskFreeRate().link.discount(exercise!.lastDate()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
                    this.arguments_.pastFixings.GetValueOrDefault());
       }
@@ -87,11 +87,11 @@ namespace QLNet
          return (PathPricer<IPath>)new GeometricAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(this.timeGrid().Last()));
+                   process!.riskFreeRate().link.discount(this.timeGrid().Last()));
       }
       protected override IPricingEngine controlPricingEngine()
       {
-         GeneralizedBlackScholesProcess process =  this.process_;
+         GeneralizedBlackScholesProcess process =  (GeneralizedBlackScholesProcess) this.process_;
          Utils.QL_REQUIRE(process != null, ()=> "Black-Scholes process required");
          var engine = new AnalyticDiscreteGeometricAveragePriceAsianEngine(process);
          engine.setupArguments(this.arguments_);

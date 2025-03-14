@@ -27,7 +27,7 @@ namespace QLNet
    /// <typeparam name="RNG"></typeparam>
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteGeometricAPEngine<RNG, S>
-      : MCDiscreteAveragingAsianEngine<RNG, S>
+      : MCDiscreteAveragingAsianEngineBase<SingleVariate, RNG, S>
         where RNG : IRSG, new ()
         where S : IGeneralStatistics, new ()
    {
@@ -58,7 +58,7 @@ namespace QLNet
          return (PathPricer<IPath>) new GeometricAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(exercise!.lastDate()),
+                   process.riskFreeRate().link.discount(exercise!.lastDate()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
                    this.arguments_.pastFixings.GetValueOrDefault());
       }
