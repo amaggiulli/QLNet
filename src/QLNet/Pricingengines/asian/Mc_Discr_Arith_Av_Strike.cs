@@ -35,9 +35,9 @@ namespace QLNet
          GeneralizedBlackScholesProcess process,
          bool brownianBridge,
          bool antitheticVariate,
-         int requiredSamples,
-         double requiredTolerance,
-         int maxSamples,
+         int? requiredSamples,
+         double? requiredTolerance,
+         int? maxSamples,
          ulong seed)
          : base(process, brownianBridge, antitheticVariate, false,
                 requiredSamples, requiredTolerance, maxSamples, seed)
@@ -62,7 +62,7 @@ namespace QLNet
       }
    }
 
-   public class ArithmeticASOPathPricer : PathPricer<Path>
+   public class ArithmeticASOPathPricer : PathPricer<IPath>
    {
       private Option.Type type_;
       private double discount_;
@@ -99,6 +99,11 @@ namespace QLNet
          }
          return discount_
                 * new PlainVanillaPayoff(type_, averageStrike).value(path.back());
+      }
+
+      public double value(IPath path)
+      {
+         return value((Path)path);
       }
    }
 
@@ -173,8 +178,8 @@ namespace QLNet
          return new MCDiscreteArithmeticASEngine<RNG, S>(process_,
                                                          brownianBridge_,
                                                          antithetic_,
-                                                         samples_.Value, tolerance_.Value,
-                                                         maxSamples_.Value,
+                                                         samples_, tolerance_,
+                                                         maxSamples_,
                                                          seed_);
       }
    }
