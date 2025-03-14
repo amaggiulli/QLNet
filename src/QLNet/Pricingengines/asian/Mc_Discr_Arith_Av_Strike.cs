@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -38,9 +39,9 @@ namespace QLNet
          double requiredTolerance,
          int maxSamples,
          ulong seed)
-         : base(process, 1, brownianBridge, antitheticVariate, false,
+         : base(process, brownianBridge, antitheticVariate, false,
                 requiredSamples, requiredTolerance, maxSamples, seed)
-      { }
+      {}
 
       protected override PathPricer<IPath> pathPricer()
       {
@@ -50,9 +51,12 @@ namespace QLNet
          EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
+         GeneralizedBlackScholesProcess process = this.process_;
+         Utils.QL_REQUIRE(process != null, ()=> "Black-Scholes process required");
+
          return (PathPricer<IPath>) new ArithmeticASOPathPricer(
                    payoff.optionType(),
-                   this.process_.riskFreeRate().link.discount(this.timeGrid().Last()),
+                   this.process_.riskFreeRate().link.discount(exercise!.lastDate()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
                    this.arguments_.pastFixings.GetValueOrDefault());
       }
@@ -67,25 +71,14 @@ namespace QLNet
 
       public ArithmeticASOPathPricer(Option.Type type,
                                      double discount,
-                                     double runningSum,
-                                     int pastFixings)
+                                     double runningSum = 0.0,
+                                     int pastFixings = 0)
       {
          type_ = type;
          discount_ = discount;
          runningSum_ = runningSum;
          pastFixings_ = pastFixings;
       }
-
-      public ArithmeticASOPathPricer(Option.Type type,
-                                     double discount,
-                                     double runningSum)
-         : this(type, discount, runningSum, 0)
-      { }
-
-      public ArithmeticASOPathPricer(Option.Type type,
-                                     double discount)
-         : this(type, discount, 0.0, 0)
-      { }
 
       public double value(Path path)
       {
@@ -94,8 +87,6 @@ namespace QLNet
          double averageStrike = runningSum_;
          if (path.timeGrid().mandatoryTimes()[0].IsEqual(0.0))
          {
-            //averageStrike =
-            //std::accumulate(path.begin(),path.end(),runningSum_)/(pastFixings_ + n)
             for (int i = 0; i < path.length(); i++)
                averageStrike += path[i];
             averageStrike /= (pastFixings_ + n);
@@ -115,27 +106,26 @@ namespace QLNet
       where RNG : IRSG, new ()
       where S : Statistics, new ()
    {
+      private GeneralizedBlackScholesProcess process_;
+      private bool antithetic_ = false;
+      private int? samples_, maxSamples_;
+      private double? tolerance_;
+      private bool brownianBridge_ = true;
+      private ulong seed_ = 0;
+
       public MakeMCDiscreteArithmeticASEngine(GeneralizedBlackScholesProcess process)
       {
          process_ = process;
-         antithetic_ = false;
          samples_ = null;
          maxSamples_ = null;
          tolerance_ = null;
-         brownianBridge_ = true;
-         seed_ = 0;
       }
 
       // named parameters
-      public MakeMCDiscreteArithmeticASEngine<RNG, S> withBrownianBridge(bool b)
+      public MakeMCDiscreteArithmeticASEngine<RNG, S> withBrownianBridge(bool b = true)
       {
          brownianBridge_ = b;
          return this;
-      }
-
-      public MakeMCDiscreteArithmeticASEngine<RNG, S> withBrownianBridge()
-      {
-         return withBrownianBridge(true);
       }
 
       public MakeMCDiscreteArithmeticASEngine<RNG, S> withSamples(int samples)
@@ -145,7 +135,7 @@ namespace QLNet
          return this;
       }
 
-      public MakeMCDiscreteArithmeticASEngine<RNG, S> withTolerance(double tolerance)
+      public MakeMCDiscreteArithmeticASEngine<RNG, S> withAbsoluteTolerance(double tolerance)
       {
          Utils.QL_REQUIRE(samples_ == null, () => "number of samples already set");
          Utils.QL_REQUIRE(FastActivator<RNG>.Create().allowsErrorEstimate != 0, () =>
@@ -187,13 +177,6 @@ namespace QLNet
                                                          maxSamples_.Value,
                                                          seed_);
       }
-
-      private GeneralizedBlackScholesProcess process_;
-      private bool antithetic_;
-      private int? samples_, maxSamples_;
-      private double? tolerance_;
-      private bool brownianBridge_;
-      private ulong seed_;
    }
 }
 

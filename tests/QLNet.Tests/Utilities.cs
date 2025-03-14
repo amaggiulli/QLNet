@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -157,6 +157,11 @@ namespace TestSuite
 
          Utils.QL_FAIL("unknown payoff type");
          return String.Empty;
+      }
+
+      public static int timeToDays(double t, int daysPerYear = 360)
+      {
+         return (int)Math.Round(t * daysPerYear);
       }
    }
 
