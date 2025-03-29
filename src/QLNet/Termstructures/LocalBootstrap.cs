@@ -114,6 +114,9 @@ namespace QLNet
          Utils.QL_REQUIRE(n > localisation_, () =>
                           "not enough instruments: " + n + " provided, " + localisation_ + " required.");
 
+         Utils.QL_REQUIRE(ts.interpolator_ is ConvexMonotone, () =>
+                          "only ConvexMonoton interpolation is supported.");
+
          ts_.instruments_.ForEach((i, x) => ts_.registerWith(x));
       }
 
