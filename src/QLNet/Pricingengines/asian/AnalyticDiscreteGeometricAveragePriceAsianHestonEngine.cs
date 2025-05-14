@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 
 namespace QLNet
@@ -204,8 +203,8 @@ namespace QLNet
             fixingTimes.Add(this.process_.time(fixingDate));
         }
         fixingTimes.Sort();
-        tauK = fixingTimes;
-
+        fixingTimes.ForEach(time => tauK.Add(time));
+        
         // tauK is just a vector of the sorted future fixing times (ie. from the kStar element
         // onwards), with t pushed on the front and T pushed on the back!
         tauK.Insert(0, startTime);

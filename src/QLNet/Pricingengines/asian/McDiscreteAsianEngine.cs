@@ -107,11 +107,11 @@ namespace QLNet
 
          if (this.timeSteps_ != null)
          {
-            return new TimeGrid(fixingTimes.Last(), timeSteps_.Value);
+            return new TimeGrid(fixingTimes, timeSteps_.Value);
          }
          else if (this.timeStepsPerYear_ != null)
          {
-            return new TimeGrid(fixingTimes.Last(), (int)(this.timeStepsPerYear_.Value*s));
+            return new TimeGrid(fixingTimes, (int)(this.timeStepsPerYear_.Value*s));
          }
          // handle here maxStepsPerYear
          return new TimeGrid(fixingTimes);
@@ -122,8 +122,7 @@ namespace QLNet
          int dimensions = process_.factors();
          TimeGrid grid = this.timeGrid();
          IRNG gen = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
-         return new PathGenerator<IRNG>(process_, grid,
-                                        gen, brownianBridge_);
+         return new MultiPathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
       }
 
       protected override double? controlVariateValue()
@@ -133,7 +132,14 @@ namespace QLNet
 
          DiscreteAveragingAsianOption.Arguments controlArguments =
             (DiscreteAveragingAsianOption.Arguments)controlPE.getArguments();
-         controlArguments = arguments_;
+         // Clone arguments
+         controlArguments.exercise = arguments_.exercise;
+         controlArguments.payoff = arguments_.payoff;
+         controlArguments.averageType = arguments_.averageType; // Esempio: copia il tipo di media
+         controlArguments.runningAccumulator = arguments_.runningAccumulator;
+         controlArguments.pastFixings = arguments_.pastFixings;
+         controlArguments.fixingDates = new List<Date>(arguments_.fixingDates);
+
          controlPE.calculate();
 
          DiscreteAveragingAsianOption.Results controlResults =

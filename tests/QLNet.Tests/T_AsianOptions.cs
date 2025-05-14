@@ -748,7 +748,6 @@ namespace TestSuite
 
          foreach (var l in cases)
          {
-
             var payoff = new PlainVanillaPayoff(l.type, l.strike);
             var dt = l.length / (l.fixings - 1);
             var timeIncrements = new InitializedList<double>(l.fixings);
