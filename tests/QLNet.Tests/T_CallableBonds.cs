@@ -48,7 +48,7 @@ public class CallableBondsTests
          dayCounter = new Actual365Fixed();
          rollingConvention = BusinessDayConvention.ModifiedFollowing;
 
-         today = new Date(16, 09, 2015);
+         today = new Date(02, 11, 2023);
          Settings.setEvaluationDate(today);
          settlement = calendar.advance(today, 2, TimeUnit.Days);
       }
@@ -382,11 +382,12 @@ public class CallableBondsTests
          QAssert.Fail("failed to reproduce zero-coupon bond price:\n"
                       + "    calculated: " + bond1.cleanPrice() + "\n"
                       + "    expected:   " + zeroCouponBond.cleanPrice());
-
-      if (Math.Abs(bond2.cleanPrice() - couponBond.cleanPrice()) > tolerance)
+      var calculated = bond2.cleanPrice();
+      var expected = couponBond.cleanPrice();
+      if (Math.Abs(calculated - expected) > tolerance)
          QAssert.Fail("failed to reproduce fixed-rate bond price:\n"
-                      + "    calculated: " + bond2.cleanPrice() + "\n"
-                      + "    expected:   " + couponBond.cleanPrice());
+                      + "    calculated: " + calculated + "\n"
+                      + "    expected:   " + expected);
    }
 
    [Fact,Priority(4)]

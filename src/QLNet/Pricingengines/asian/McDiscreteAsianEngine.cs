@@ -40,6 +40,7 @@ namespace QLNet
       protected double? requiredTolerance_;
       protected bool brownianBridge_;
       protected ulong seed_;
+      protected bool isMultiPath_;
 
       // constructor
       public MCDiscreteAveragingAsianEngineBase(
@@ -52,8 +53,9 @@ namespace QLNet
          int? maxSamples,
          ulong seed,
          int? timeSteps = null,
-         int? timeStepsPerYear = null) : base(antitheticVariate, controlVariate)
-      {
+         int? timeStepsPerYear = null,
+         bool isMultiPath = false) : base(antitheticVariate, controlVariate)
+         {
          process_ = process;
          requiredSamples_ = requiredSamples;
          maxSamples_ = maxSamples;
@@ -62,6 +64,7 @@ namespace QLNet
          requiredTolerance_ = requiredTolerance;
          brownianBridge_ = brownianBridge;
          seed_ = seed;
+         isMultiPath_ = isMultiPath;
          process_.registerWith(update);
       }
 
@@ -122,7 +125,9 @@ namespace QLNet
          int dimensions = process_.factors();
          TimeGrid grid = this.timeGrid();
          IRNG gen = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
-         return new MultiPathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
+         if (isMultiPath_)
+            return new MultiPathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
+         return new PathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
       }
 
       protected override double? controlVariateValue()

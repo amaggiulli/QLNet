@@ -40,7 +40,7 @@ namespace QLNet
          double? requiredTolerance, int? maxSamples, ulong seed, int? timeSteps = null, int? timeStepsPerYear = null,
          bool controlVariate = false)
          : base(process, false, antitheticVariate, controlVariate, requiredSamples, requiredTolerance, maxSamples, seed,
-            timeSteps, timeStepsPerYear)
+            timeSteps, timeStepsPerYear, true)
 
       {
          Utils.QL_REQUIRE(timeSteps == null || timeStepsPerYear == null, ()=>
