@@ -87,5 +87,117 @@ namespace TestSuite
       {
          test(new Secant(), "Secant");
       }
+
+      class NanSolver : ISolver1d
+      {
+         public override double value(double x) { return (x < 1.25) ? double.NaN : x * x - 1.60; }
+         public override double derivative(double x) { return 2.0 * x; }
+      }
+
+      internal void testNan(Solver1D solver, string name)
+      {
+         double[] accuracy = new double[] { 1.0e-3, 1.0e-4, 1.0e-6 };
+         double expected = 1.2649110986579275;
+         for (int i = 0; i < accuracy.Length; i++)
+         {
+            double root = solver.solve(new NanSolver(), accuracy[i], 1.5, 0.1);
+            //double root = solver.solve(new NanSolver(), accuracy[i], 0.5, 0.1);
+            if (Math.Abs(root - expected) > accuracy[i])
+            {
+               QAssert.Fail(name + " solver:\n"
+                            + "    expected:   " + expected + "\n"
+                            + "    calculated: " + root + "\n"
+                            + "    accuracy:   " + accuracy[i]);
+            }
+            root = solver.solve(new NanSolver(), accuracy[i], 1.5, 1.25, 2.0);
+            if (Math.Abs(root - expected) > accuracy[i])
+            {
+               QAssert.Fail(name + " solver (bracketed):\n"
+                            + "    expected:   " + expected + "\n"
+                            + "    calculated: " + root + "\n"
+                            + "    accuracy:   " + accuracy[i]);
+            }
+         }
+      }
+
+      internal void testNanExceptionByStep(Solver1D solver, string name)
+      {
+         double accuracy = 1.0e-6;
+
+         try
+         {
+            double root = solver.solve(new NanSolver(), accuracy, 0.5, 0.1);
+         }
+         catch (RootNotBracketException)
+         {
+            return;
+         }
+         catch (Exception)
+         {
+            QAssert.Fail("Failed to handle QLNet exception");
+
+            throw;
+         }
+
+         QAssert.Fail("Failed to capture QLNet exception");
+      }
+
+      internal void testNanExceptionByRange(Solver1D solver, string name)
+      {
+         double accuracy = 1.0e-6;
+
+         try
+         {
+            double root = solver.solve(new NanSolver(), accuracy, 0.5, 0.0, 1.0);
+         }
+         catch (ArgumentException)
+         {
+            return;
+         }
+         catch (Exception)
+         {
+            QAssert.Fail("Failed to handle QLNet exception");
+
+            throw;
+         }
+
+         QAssert.Fail("Failed to capture QLNet exception");
+      }
+
+      [Fact]
+      public void testNanBrent()
+      {
+         testNan(new Brent(), "Brent");
+      }
+
+      [Fact]
+      public void testNanExceptionByStepBrent()
+      {
+         testNanExceptionByStep(new Brent(), "Brent");
+      }
+
+      [Fact]
+      public void testNanExceptionByRangeBrent()
+      {
+         testNanExceptionByRange(new Brent(), "Brent");
+      }
+
+      [Fact]
+      public void testNanNewton()
+      {
+         testNan(new Newton(), "Newton");
+      }
+
+      [Fact]
+      public void testNanExceptionByStepNewton()
+      {
+         testNanExceptionByStep(new Newton(), "Newton");
+      }
+
+      [Fact]
+      public void testNanExceptionByRangeNewton()
+      {
+         testNanExceptionByRange(new Newton(), "Newton");
+      }
    }
 }

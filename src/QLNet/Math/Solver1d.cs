@@ -91,6 +91,15 @@ namespace QLNet
             fxMax_ = f.value(xMax_);
          }
 
+         if (double.IsNaN(fxMax_) || double.IsNaN(fxMin_))
+         {
+            Utils.QL_FAIL("unable to bracket root function evaluations (Undefined value on initial bracket: "
+                          + "f[" + xMin_ + "," + xMax_ +
+                          "] "
+                          + "-> [" + fxMin_ + "," + fxMax_ + "])",
+                          QLNetExceptionEnum.RootNotBracketException);
+         }
+
          evaluationNumber_ = 2;
          while (evaluationNumber_ <= maxEvaluations_)
          {
@@ -101,29 +110,37 @@ namespace QLNet
                if (Utils.close(fxMax_, 0.0))
                   return xMax_;
                root_ = (xMax_ + xMin_) / 2.0;
+
+               if (double.IsInfinity(fxMin_) || double.IsInfinity(fxMax_))
+               {
+                  Utils.QL_FAIL("unable to bracket root function evaluations (Undefined value on initial bracket: "
+                          + "f[" + xMin_ + "," + xMax_ +
+                          "] "
+                          + "-> [" + fxMin_ + "," + fxMax_ + "])",
+                          QLNetExceptionEnum.RootNotBracketException);
+               }
+
                return solveImpl(f, accuracy);
             }
             if (Math.Abs(fxMin_) < Math.Abs(fxMax_))
             {
-               xMin_ = enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_));
-               fxMin_ = f.value(xMin_);
+               (xMin_, fxMin_) = computeGrowthStep(f, xMin_, enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_)));
             }
             else if (Math.Abs(fxMin_) > Math.Abs(fxMax_))
             {
-               xMax_ = enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_));
-               fxMax_ = f.value(xMax_);
+               (xMax_, fxMax_) = computeGrowthStep(f, xMax_, enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_)));
             }
             else if (flipflop == -1)
             {
-               xMin_ = enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_));
-               fxMin_ = f.value(xMin_);
+               (xMin_, fxMin_) = computeGrowthStep(f, xMin_, enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_)));
+
                evaluationNumber_++;
                flipflop = 1;
             }
             else if (flipflop == 1)
             {
-               xMax_ = enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_));
-               fxMax_ = f.value(xMax_);
+               (xMax_, fxMax_) = computeGrowthStep(f, xMax_, enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_)));
+
                flipflop = -1;
             }
             evaluationNumber_++;
@@ -210,6 +227,21 @@ namespace QLNet
          if (lowerBoundEnforced_ && x < lowerBound_) return lowerBound_;
          if (upperBoundEnforced_ && x > upperBound_) return upperBound_;
          return x;
+      }
+
+      private (double x, double fx) computeGrowthStep(ISolver1d f, double previousX, double x)
+      {
+         double fx = f.value(x);
+
+         while (double.IsNaN(fx) && Math.Abs(x - previousX) > double.Epsilon && evaluationNumber_ <= maxEvaluations_)
+         {
+            x = (x + previousX) / 2;
+            fx = f.value(x);
+
+            evaluationNumber_++;
+         }
+
+         return (x, fx);
       }
 
       protected abstract double solveImpl(ISolver1d f, double xAccuracy);
