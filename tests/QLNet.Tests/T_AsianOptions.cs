@@ -24,7 +24,6 @@ using System.Linq;
 using Xunit;
 using QLNet;
 
-
 namespace TestSuite
 {
    [Collection("QLNet CI Tests")]
@@ -1855,6 +1854,165 @@ namespace TestSuite
                   + "\n    reference date:  " + today + "\n    length:          " + l.length
                   + "\n    elapsed:         " + l.elapsed + "\n    expected value:  " + expected
                   + "\n    calculated:      " + calculated + "\n    error:           " + error);
+            }
+         }
+      }
+
+      [Fact]
+      public void testAnalyticContinuousGeometricAveragePriceHeston()
+      {
+         // Testing analytic continuous geometric Asians under Heston
+         // data from "Pricing of Geometric Asian Options under Heston's Stochastic
+         // Volatility Model", Kim & Wee, Quantitative Finance, 14:10, 1795-1809, 2011
+         // 73, 348 and 1095 are 0.2, 1.5 and 3.0 years respectively in Actual365Fixed
+         int[] days = [73, 73, 73, 73, 73, 548, 548, 548, 548, 548, 1095, 1095, 1095, 1095, 1095];
+         double[] strikes = [90.0, 95.0, 100.0, 105.0, 110.0, 90.0, 95.0, 100.0, 105.0, 110.0, 90.0, 95.0,
+            100.0, 105.0, 110.0];
+
+         // Prices from Table 1 (params obey Feller condition)
+         double[] prices = [10.6571, 6.5871, 3.4478, 1.4552, 0.4724, 16.5030, 13.7625, 11.3374, 9.2245,
+            7.4122, 20.5102, 18.3060, 16.2895, 14.4531, 12.7882];
+
+         // Prices from Table 4 (params do not obey Feller condition)
+         double[] prices_2 = [10.6425, 6.4362, 3.1578, 1.1936, 0.3609, 14.9955, 11.6707, 8.7767, 6.3818,
+            4.5118, 18.1219, 15.2009, 12.5707, 10.2539, 8.2611];
+
+         // 0.2 and 3.0 match to 1e-4. Unfortunatly 1.5 corresponds to 547.5 days, 547 and 548
+         // bound the expected answer but are both out by ~5e-3
+         var tolerance = 1.0e-2;
+
+         DayCounter dc = new Actual365Fixed();
+         var today = new Date(16, 09, 2015);
+         Settings.setEvaluationDate(today);
+         var type = Option.Type.Call;
+         var averageType = Average.Type.Geometric;
+
+         var spot = new Handle<Quote>(new SimpleQuote(100));
+         var qRate = new SimpleQuote(0.0);
+         var qTS = Utilities.flatRate(today, qRate, dc);
+         var rRate = new SimpleQuote(0.05);
+         var rTS = Utilities.flatRate(today, rRate, dc);
+
+         var v0 = 0.09;
+         var kappa = 1.15;
+         var theta = 0.348;
+         var sigma = 0.39;
+         var rho = -0.64;
+
+         var hestonProcess = new HestonProcess(new Handle<YieldTermStructure>(rTS),
+            new Handle<YieldTermStructure>(qTS), spot, v0, kappa, theta, sigma, rho);
+
+         var engine = new AnalyticContinuousGeometricAveragePriceAsianHestonEngine(hestonProcess);
+
+         for (var i = 0; i < strikes.Length; i++)
+         {
+            var strike = strikes[i];
+            var day = days[i];
+            var expected = prices[i];
+
+            var expiryDate = today + new Period(day, TimeUnit.Days);
+
+            var europeanExercise = new EuropeanExercise(expiryDate);
+            var payoff = new PlainVanillaPayoff(type, strike);
+
+            var option = new ContinuousAveragingAsianOption(averageType, payoff, europeanExercise);
+            option.setPricingEngine(engine);
+
+            var calculated = option.NPV();
+
+            if (Math.Abs(calculated - expected) > tolerance)
+            {
+               REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
+                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance);
+            }
+         }
+
+         var v0_2 = 0.09;
+         var kappa_2 = 2.0;
+         var theta_2 = 0.09;
+         var sigma_2 = 1.0;
+         var rho_2 = -0.3;
+
+         var hestonProcess_2 = new HestonProcess(new Handle<YieldTermStructure>(rTS),
+            new Handle<YieldTermStructure>(qTS), spot, v0_2, kappa_2, theta_2, sigma_2, rho_2);
+
+         var engine_2 = new AnalyticContinuousGeometricAveragePriceAsianHestonEngine(hestonProcess_2);
+
+         for (var i = 0; i < strikes.Length; i++)
+         {
+            var strike = strikes[i];
+            var day = days[i];
+            var expected = prices_2[i];
+
+            var expiryDate = today + new Period(day, TimeUnit.Days);
+
+            var europeanExercise = new EuropeanExercise(expiryDate);
+            var payoff = new PlainVanillaPayoff(type, strike);
+
+            var option = new ContinuousAveragingAsianOption(averageType, payoff, europeanExercise);
+            option.setPricingEngine(engine_2);
+
+            var calculated = option.NPV();
+
+            if (Math.Abs(calculated - expected) > tolerance)
+            {
+               REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
+                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance);
+            }
+         }
+
+         // Also test the continuous data from the authors' subsequent paper
+         // data from "A Recursive Method for Discretely Monitored Geometric Asian Option
+         // Prices", Kim, Kim, Kim & Wee, Bull. Korean Math. Soc. 53, 733-749, 2016
+         // 73, 348 and 1095 are 0.2, 1.5 and 3.0 years respectively in Actual365Fixed
+         int[] days_3 = [30, 91, 182, 365, 730, 1095, 30, 91, 182, 365, 730, 1095, 30,
+            91, 182, 365, 730, 1095];
+         double[] strikes_3 = [90, 90, 90, 90, 90, 90, 100, 100, 100, 100, 100, 100, 110,
+            110, 110, 110, 110, 110];
+
+         // 30-day options need wider tolerance due to the day-bracket issue discussed above
+         double[] tol_3 = [2.0e-2, 1.0e-2, 1.0e-2, 1.0e-2, 1.0e-2, 1.0e-2, 2.0e-2, 1.0e-2,
+            1.0e-2, 1.0e-2, 1.0e-2, 1.0e-2, 2.0e-2, 1.0e-2, 1.0e-2, 1.0e-2,
+            1.0e-2, 1.0e-2];
+
+         // Prices from Tables 1, 2 and 3
+         double[] prices_3 =  [10.1513, 10.8175, 11.8664, 13.5931, 16.0988, 17.9475, 2.0472,
+            3.5735, 5.0588, 7.1132, 9.9139, 11.9959, 0.0350, 0.4869,
+            1.3376, 2.8569, 5.2804, 7.2682];
+
+         // Note that although these parameters look similar to the first set above, theta
+         // is a factor of 10 smaller. I guess there is a mis-transcription somewhere!
+         var v0_3 = 0.09;
+         var kappa_3 = 1.15;
+         var theta_3 = 0.0348;
+         var sigma_3 = 0.39;
+         var rho_3 = -0.64;
+
+         var hestonProcess_3 = new HestonProcess(new Handle<YieldTermStructure>(rTS),
+            new Handle<YieldTermStructure>(qTS), spot, v0_3, kappa_3, theta_3, sigma_3, rho_3);
+
+         var engine_3 = new AnalyticContinuousGeometricAveragePriceAsianHestonEngine(hestonProcess_3);
+
+         for (var i = 0; i < strikes_3.Length; i++)
+         {
+            var strike = strikes_3[i];
+            var day = days_3[i];
+            var expected = prices_3[i];
+            var tolerance2 = tol_3[i];
+
+            var expiryDate = today + new Period(day, TimeUnit.Days);
+            var europeanExercise = new EuropeanExercise(expiryDate);
+            var payoff = new PlainVanillaPayoff(type, strike);
+
+            var option = new ContinuousAveragingAsianOption(averageType, payoff, europeanExercise);
+            option.setPricingEngine(engine_3);
+
+            var calculated = option.NPV();
+
+            if (Math.Abs(calculated - expected) > tolerance2)
+            {
+               REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
+                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance2);
             }
          }
       }
