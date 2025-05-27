@@ -23,13 +23,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using QLNet;
-using System.Drawing;
 
 namespace TestSuite
 {
    [Collection("QLNet CI Tests")]
    public class T_AsianOptions
    {
+      private readonly Date today_ = new(16, 09, 2015);
+
       internal void REPORT_FAILURE(string greekName, Average.Type averageType,
                                  double? runningAccumulator, int? pastFixings,
                                  List<Date> fixingDates, StrikedTypePayoff payoff,
@@ -618,8 +619,7 @@ namespace TestSuite
          ];
 
          DayCounter dc = new Actual365Fixed();
-         var today = new Date(16, 09, 2015);
-         Settings. setEvaluationDate(today);
+         Settings. setEvaluationDate(today_);
 
 
          var spot = new SimpleQuote(100);
@@ -644,7 +644,7 @@ namespace TestSuite
            var futureFixings = (int)Math.Floor(day/7.0);
            List<Date> fixingDates = new InitializedList<Date>(futureFixings);
 
-           var expiryDate = today + new Period(day,TimeUnit.Days);
+           var expiryDate = today_ + new Period(day,TimeUnit.Days);
 
            // I suppose "weekly fixings" roughly means this?
            for (var j=futureFixings-1; j>=0; j--)
@@ -665,7 +665,7 @@ namespace TestSuite
            {
                REPORT_FAILURE("value", averageType, 1.0, (int?)0.0,
                           [], payoff, europeanExercise, spot.value(),
-                          qRate.value(), rRate.value(), today,
+                          qRate.value(), rRate.value(), today_,
                           Math.Sqrt(v0), expected, calculated, tolerance);
            }
          }
@@ -685,14 +685,13 @@ namespace TestSuite
          ];
 
          DayCounter dc = new Actual365Fixed();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          var spot = new Handle<Quote>(new SimpleQuote(100));
          var qRate = new SimpleQuote(0.0);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.05);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
 
          var v0 = 0.09;
          var kappa = 1.15;
@@ -733,14 +732,13 @@ namespace TestSuite
          var rho = -0.5;
 
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          var spot = new SimpleQuote(100.0);
          var qRate = new SimpleQuote(0.03);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.06);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
 
          var averageType = Average.Type.Arithmetic;
          var runningSum = 0.0;
@@ -753,11 +751,11 @@ namespace TestSuite
             var timeIncrements = new InitializedList<double>(l.fixings);
             var fixingDates = new InitializedList<Date>(l.fixings);
             timeIncrements[0] = l.first;
-            fixingDates[0] = today + (int)(timeIncrements[0] * 365.25);
+            fixingDates[0] = today_ + (int)(timeIncrements[0] * 365.25);
             for (var i = 1; i < l.fixings; i++)
             {
                timeIncrements[i] = i * dt + l.first;
-               fixingDates[i] = today + (int)(timeIncrements[i] * 365.25);
+               fixingDates[i] = today_ + (int)(timeIncrements[i] * 365.25);
             }
 
             var exercise = new EuropeanExercise(fixingDates[l.fixings - 1]);
@@ -787,7 +785,7 @@ namespace TestSuite
             {
                REPORT_FAILURE("value", averageType, runningSum, pastFixings,
                   fixingDates, payoff, exercise, spot.value(),
-                  qRate.value(), rRate.value(), today,
+                  qRate.value(), rRate.value(), today_,
                   vol, expected, calculated, tolerance);
             }
 
@@ -808,7 +806,7 @@ namespace TestSuite
             {
                REPORT_FAILURE("value", averageType, runningSum, pastFixings,
                   fixingDates, payoff, exercise, spot.value(),
-                  qRate.value(), rRate.value(), today,
+                  qRate.value(), rRate.value(), today_,
                   vol, expectedCV, calculatedCV, tolerance);
             }
          }
@@ -1029,15 +1027,14 @@ namespace TestSuite
          ];
 
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings. setEvaluationDate(today);
+         Settings. setEvaluationDate(today_);
          var spot = new SimpleQuote(100.0);
          var qRate = new SimpleQuote(0.03);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.06);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
          var vol = new SimpleQuote(0.20);
-         var volTS = Utilities.flatVol(today, vol, dc);
+         var volTS = Utilities.flatVol(today_, vol, dc);
 
          var averageType = Average.Type.Arithmetic;
          var runningSum = 0.0;
@@ -1051,11 +1048,11 @@ namespace TestSuite
             List<double> timeIncrements = new InitializedList<double>(l.fixings);
             List<Date> fixingDates = new InitializedList<Date>(l.fixings);
             timeIncrements[0] = l.first;
-            fixingDates[0] = today + Utilities.timeToDays(timeIncrements[0]);
+            fixingDates[0] = today_ + Utilities.timeToDays(timeIncrements[0]);
             for (var i = 1; i < l.fixings; i++)
             {
                timeIncrements[i] = i * dt + l.first;
-               fixingDates[i] = today + Utilities.timeToDays(timeIncrements[i]);
+               fixingDates[i] = today_ + Utilities.timeToDays(timeIncrements[i]);
             }
             Exercise exercise = new EuropeanExercise(fixingDates[l.fixings - 1]);
 
@@ -1084,7 +1081,7 @@ namespace TestSuite
             {
                REPORT_FAILURE("value", averageType, runningSum, pastFixings,
                            fixingDates, payoff, exercise, spot.value(),
-                           qRate.value(), rRate.value(), today,
+                           qRate.value(), rRate.value(), today_,
                            vol.value(), expected, calculated, tolerance);
             }
          }
@@ -1134,16 +1131,15 @@ namespace TestSuite
          ];
 
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings. setEvaluationDate(today);
+         Settings. setEvaluationDate(today_);
 
          var spot = new SimpleQuote(100.0);
          var qRate = new SimpleQuote(0.03);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.06);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
          var vol = new SimpleQuote(0.20);
-         var volTS = Utilities.flatVol(today, vol, dc);
+         var volTS = Utilities.flatVol(today_, vol, dc);
 
          var averageType = QLNet.Average.Type.Arithmetic;
          var runningSum = 0.0;
@@ -1156,11 +1152,11 @@ namespace TestSuite
             List<double> timeIncrements = new InitializedList<double>(cases5[l].fixings);
             List<Date> fixingDates = new InitializedList<Date>(cases5[l].fixings);
             timeIncrements[0] = cases5[l].first;
-            fixingDates[0] = today + (int)(timeIncrements[0] * 360 + 0.5);
+            fixingDates[0] = today_ + (int)(timeIncrements[0] * 360 + 0.5);
             for (var i = 1; i < cases5[l].fixings; i++)
             {
                timeIncrements[i] = i * dt + cases5[l].first;
-               fixingDates[i] = today + Utilities.timeToDays(timeIncrements[i]);
+               fixingDates[i] = today_ + Utilities.timeToDays(timeIncrements[i]);
             }
             Exercise exercise = new EuropeanExercise(fixingDates[cases5[l].fixings - 1]);
 
@@ -1194,7 +1190,7 @@ namespace TestSuite
             {
                REPORT_FAILURE("value", averageType, runningSum, pastFixings,
                               fixingDates, payoff, exercise, spot.value(),
-                              qRate.value(), rRate.value(), today,
+                              qRate.value(), rRate.value(), today_,
                               vol.value(), expected, calculated, tolerance);
             }
          }
@@ -1205,21 +1201,20 @@ namespace TestSuite
       {
          // Testing use of past fixings in Asian options...");
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          SimpleQuote spot = new SimpleQuote(100.0);
          SimpleQuote qRate = new SimpleQuote(0.03);
-         YieldTermStructure qTS = Utilities.flatRate(today, qRate, dc);
+         YieldTermStructure qTS = Utilities.flatRate(today_, qRate, dc);
          SimpleQuote rRate = new SimpleQuote(0.06);
-         YieldTermStructure rTS = Utilities.flatRate(today, rRate, dc);
+         YieldTermStructure rTS = Utilities.flatRate(today_, rRate, dc);
          SimpleQuote vol = new SimpleQuote(0.20);
-         BlackVolTermStructure volTS = Utilities.flatVol(today, vol, dc);
+         BlackVolTermStructure volTS = Utilities.flatVol(today_, vol, dc);
 
          StrikedTypePayoff payoff = new PlainVanillaPayoff(Option.Type.Put, 100.0);
 
 
-         Exercise exercise = new EuropeanExercise(today + new Period(1, TimeUnit.Years));
+         Exercise exercise = new EuropeanExercise(today_ + new Period(1, TimeUnit.Years));
 
          BlackScholesMertonProcess stochProcess =
              new BlackScholesMertonProcess(new Handle<Quote>(spot),
@@ -1232,7 +1227,7 @@ namespace TestSuite
          int pastFixings = 0;
          List<Date> fixingDates1 = new InitializedList<Date>();
          for (int i = 0; i <= 12; ++i)
-            fixingDates1.Add(today + new Period(i, TimeUnit.Months));
+            fixingDates1.Add(today_ + new Period(i, TimeUnit.Months));
 
          DiscreteAveragingAsianOption option1 =
              new DiscreteAveragingAsianOption(Average.Type.Arithmetic, runningSum,
@@ -1243,7 +1238,7 @@ namespace TestSuite
          runningSum = pastFixings * spot.value() * 0.8;
          List<Date> fixingDates2 = new InitializedList<Date>();
          for (int i = -2; i <= 12; ++i)
-            fixingDates2.Add(today + new Period(i, TimeUnit.Months));
+            fixingDates2.Add(today_ + new Period(i, TimeUnit.Months));
 
          DiscreteAveragingAsianOption option2 =
              new DiscreteAveragingAsianOption(Average.Type.Arithmetic, runningSum,
@@ -1346,29 +1341,28 @@ namespace TestSuite
       {
           // Testing use of past fixings in Asian options where model dependency is flagged
           DayCounter dc = new Actual360();
-          var today = new Date(16, 09, 2015);
-          Settings.setEvaluationDate(today);
+          Settings.setEvaluationDate(today_);
 
           var spot = new SimpleQuote(100.0);
           var qRate = new SimpleQuote(0.03);
-          var qTS = Utilities.flatRate(today, qRate, dc);
+          var qTS = Utilities.flatRate(today_, qRate, dc);
           var rRate = new SimpleQuote(0.06);
-          var rTS = Utilities.flatRate(today, rRate, dc);
+          var rTS = Utilities.flatRate(today_, rRate, dc);
           var vol = new SimpleQuote(0.20);
-          var volTS = Utilities.flatVol(today, vol, dc);
+          var volTS = Utilities.flatVol(today_, vol, dc);
 
           StrikedTypePayoff call_payoff = new PlainVanillaPayoff(Option.Type.Call, 20.0);
           StrikedTypePayoff put_payoff = new PlainVanillaPayoff(Option.Type.Put, 20.0);
 
           var fixingDates = new List<Date>
           {
-             today - new Period(6, TimeUnit.Weeks),
-             today - new Period(2, TimeUnit.Weeks),
-             today + new Period(2 , TimeUnit.Weeks),
-             today + new Period(6, TimeUnit.Weeks)
+             today_ - new Period(6, TimeUnit.Weeks),
+             today_ - new Period(2, TimeUnit.Weeks),
+             today_ + new Period(2 , TimeUnit.Weeks),
+             today_ + new Period(6, TimeUnit.Weeks)
           };
 
-         var exercise = new EuropeanExercise(today + new Period(6 , TimeUnit.Weeks));
+         var exercise = new EuropeanExercise(today_ + new Period(6 , TimeUnit.Weeks));
 
          var stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), new Handle<YieldTermStructure>(qTS),
             new Handle<YieldTermStructure>(rTS), new Handle<BlackVolTermStructure>(volTS));
@@ -1470,8 +1464,7 @@ namespace TestSuite
       {
          // Testing Asian options with all fixing dates in the past
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          var spot = new SimpleQuote(100.0);
          var qRate = new SimpleQuote(0.005);
@@ -1484,9 +1477,9 @@ namespace TestSuite
          var stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), new Handle<YieldTermStructure>(qTS),
             new Handle<YieldTermStructure>(rTS), new Handle<BlackVolTermStructure>(volTS));
 
-         Date exerciseDate = today + new Period(2,TimeUnit.Weeks);
-         Date startDate = exerciseDate - new Period(1,TimeUnit.Years);
-         List<Date> fixingDates = new List<Date>();
+         var exerciseDate = today_ + new Period(2,TimeUnit.Weeks);
+         var startDate = exerciseDate - new Period(1,TimeUnit.Years);
+         var fixingDates = new List<Date>();
          for (var i = 0; i < 12; ++i)
            fixingDates.Add(startDate + new Period(i,TimeUnit.Months));
          var pastFixings = 12;
@@ -1655,27 +1648,26 @@ namespace TestSuite
          new(Option.Type.Put, 100, 120, 0, 0.05, 1.0 / 52, 0.5, 26, 0.2, "down", 19.7609)];
 
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          foreach (var l in cases)
          {
             var dt = (l.expiry - l.first) / (l.fixings - 1);
             var fixingDates= new List<Date>();
-            fixingDates.Add(today + Utilities.timeToDays(l.first, 360));
+            fixingDates.Add(today_ + Utilities.timeToDays(l.first, 360));
 
             for (var i = 1; i < l.fixings; i++)
-               fixingDates.Add(today + Utilities.timeToDays(i * dt + l.first, 360));
+               fixingDates.Add(today_ + Utilities.timeToDays(i * dt + l.first, 360));
 
             // Set up market data
             var spot = new SimpleQuote(l.underlying);
-            var qTS = Utilities.flatRate(today, l.b + l.riskFreeRate, dc);
-            var rTS = Utilities.flatRate(today, l.riskFreeRate, dc);
+            var qTS = Utilities.flatRate(today_, l.b + l.riskFreeRate, dc);
+            var rTS = Utilities.flatRate(today_, l.riskFreeRate, dc);
             BlackVolTermStructure volTS = null;
             var volSlope = 0.005;
             if (l.slope == "flat")
             {
-               volTS = Utilities.flatVol(today, l.volatility, dc);
+               volTS = Utilities.flatVol(today_, l.volatility, dc);
             }
             else if (l.slope == "up")
             {
@@ -1685,7 +1677,7 @@ namespace TestSuite
                   // Loop to fill a vector of vols from 7.5 % to 20 %
                   volatilities.Add(l.volatility - (l.fixings - 1) * volSlope + i * volSlope);
                }
-               volTS = new BlackVarianceCurve(today, fixingDates, volatilities, dc, true);
+               volTS = new BlackVarianceCurve(today_, fixingDates, volatilities, dc, true);
             }
             else if (l.slope == "down")
             {
@@ -1695,7 +1687,7 @@ namespace TestSuite
                   // Loop to fill a vector of vols from 32.5 % to 20 %
                   volatilities.Add(l.volatility + (l.fixings - 1) * volSlope - i * volSlope);
                }
-               volTS = new BlackVarianceCurve(today, fixingDates, volatilities, dc, false);
+               volTS = new BlackVarianceCurve(today_, fixingDates, volatilities, dc, false);
             }
             else
             {
@@ -1704,7 +1696,7 @@ namespace TestSuite
 
             var averageType = Average.Type.Arithmetic;
             var payoff = new PlainVanillaPayoff(l.type, l.strike);
-            Date maturity = today + Utilities.timeToDays(l.expiry, 360);
+            var maturity = today_ + Utilities.timeToDays(l.expiry, 360);
             var exercise = new EuropeanExercise(maturity);
             var stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), new Handle<YieldTermStructure>(qTS),
                new Handle<YieldTermStructure>(rTS),new Handle<BlackVolTermStructure>(volTS));
@@ -1727,7 +1719,7 @@ namespace TestSuite
                   + "\n    strike:          " + l.strike + "\n    dividend yield:  "
                   + l.b + l.riskFreeRate + "\n    risk-free rate:  " + l.riskFreeRate
                   + "\n    volatility:      " + l.volatility + "\n    slope:           " + l.slope
-                  + "\n    reference date:  " + today + "\n    expiry:          " + l.expiry
+                  + "\n    reference date:  " + today_ + "\n    expiry:          " + l.expiry
                   + "\n    expected value:  " + expected + "\n    calculated:      " + calculated
                   + "\n    error:           " + error);
             }
@@ -1768,7 +1760,7 @@ namespace TestSuite
                   + "\n    strike:          " + l.strike + "\n    dividend yield:  "
                   + l.b + l.riskFreeRate + "\n    risk-free rate:  " + l.riskFreeRate
                   + "\n    volatility:      " + l.volatility + "\n    slope:           " + l.slope
-                  + "\n    reference date:  " + today + "\n    expiry:          " + l.expiry
+                  + "\n    reference date:  " + today_ + "\n    expiry:          " + l.expiry
                   + "\n    analytic delta:  " + delta + "\n    bump delta:      " + deltaBump
                   + "\n    error:           " + deltaError);
             }
@@ -1782,7 +1774,7 @@ namespace TestSuite
                   + "\n    strike:          " + l.strike + "\n    dividend yield:  "
                   + l.b + l.riskFreeRate + "\n    risk-free rate:  " + l.riskFreeRate
                   + "\n    volatility:      " + l.volatility + "\n    slope:           " + l.slope
-                  + "\n    reference date:  " + today + "\n    expiry:          " + l.expiry
+                  + "\n    reference date:  " + today_ + "\n    expiry:          " + l.expiry
                   + "\n    analytic gamma:  " + gamma + "\n    bump gamma:      " + gammaBump
                   + "\n    error:           " + gammaError);
             }
@@ -1818,19 +1810,18 @@ namespace TestSuite
            new(Option.Type.Call, 100.0, 100.0, 105.0, 0.05, 0.1, 0.35, 270, 180, 0.1552 )];
 
          DayCounter dc = new Actual360();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          foreach (var l in cases)
          {
             var spot = new SimpleQuote(l.spot);
-            var qTS = Utilities.flatRate(today, l.dividendYield, dc);
-            var rTS = Utilities.flatRate(today, l.riskFreeRate, dc);
-            var volTS = Utilities.flatVol(today, l.volatility, dc);
+            var qTS = Utilities.flatRate(today_, l.dividendYield, dc);
+            var rTS = Utilities.flatRate(today_, l.riskFreeRate, dc);
+            var volTS = Utilities.flatVol(today_, l.volatility, dc);
             var averageType = Average.Type.Arithmetic;
             var average = new SimpleQuote(l.currentAverage);
             var payoff = new PlainVanillaPayoff(l.type, l.strike);
-            var startDate = today - (int)l.elapsed;
+            var startDate = today_ - (int)l.elapsed;
             var maturity = startDate + l.length;
             var exercise = new EuropeanExercise(maturity);
             var stochProcess = new BlackScholesMertonProcess(new Handle<Quote>(spot), new Handle<YieldTermStructure>(qTS),
@@ -1852,7 +1843,7 @@ namespace TestSuite
                   + l.currentAverage + "\n    strike:          " + l.strike
                   + "\n    dividend yield:  " + l.dividendYield + "\n    risk-free rate:  "
                   + l.riskFreeRate + "\n    volatility:      " + l.volatility
-                  + "\n    reference date:  " + today + "\n    length:          " + l.length
+                  + "\n    reference date:  " + today_ + "\n    length:          " + l.length
                   + "\n    elapsed:         " + l.elapsed + "\n    expected value:  " + expected
                   + "\n    calculated:      " + calculated + "\n    error:           " + error);
             }
@@ -1883,16 +1874,15 @@ namespace TestSuite
          var tolerance = 1.0e-2;
 
          DayCounter dc = new Actual365Fixed();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
          var type = Option.Type.Call;
          var averageType = Average.Type.Geometric;
 
          var spot = new Handle<Quote>(new SimpleQuote(100));
          var qRate = new SimpleQuote(0.0);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.05);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
 
          var v0 = 0.09;
          var kappa = 1.15;
@@ -1911,7 +1901,7 @@ namespace TestSuite
             var day = days[i];
             var expected = prices[i];
 
-            var expiryDate = today + new Period(day, TimeUnit.Days);
+            var expiryDate = today_ + new Period(day, TimeUnit.Days);
 
             var europeanExercise = new EuropeanExercise(expiryDate);
             var payoff = new PlainVanillaPayoff(type, strike);
@@ -1924,7 +1914,7 @@ namespace TestSuite
             if (Math.Abs(calculated - expected) > tolerance)
             {
                REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
-                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance);
+                  spot.link.value(), qRate.value(), rRate.value(), today_, Math.Sqrt(v0), expected, calculated, tolerance);
             }
          }
 
@@ -1945,7 +1935,7 @@ namespace TestSuite
             var day = days[i];
             var expected = prices_2[i];
 
-            var expiryDate = today + new Period(day, TimeUnit.Days);
+            var expiryDate = today_ + new Period(day, TimeUnit.Days);
 
             var europeanExercise = new EuropeanExercise(expiryDate);
             var payoff = new PlainVanillaPayoff(type, strike);
@@ -1958,7 +1948,7 @@ namespace TestSuite
             if (Math.Abs(calculated - expected) > tolerance)
             {
                REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
-                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance);
+                  spot.link.value(), qRate.value(), rRate.value(), today_, Math.Sqrt(v0), expected, calculated, tolerance);
             }
          }
 
@@ -2001,7 +1991,7 @@ namespace TestSuite
             var expected = prices_3[i];
             var tolerance2 = tol_3[i];
 
-            var expiryDate = today + new Period(day, TimeUnit.Days);
+            var expiryDate = today_ + new Period(day, TimeUnit.Days);
             var europeanExercise = new EuropeanExercise(expiryDate);
             var payoff = new PlainVanillaPayoff(type, strike);
 
@@ -2013,7 +2003,7 @@ namespace TestSuite
             if (Math.Abs(calculated - expected) > tolerance2)
             {
                REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
-                  spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance2);
+                  spot.link.value(), qRate.value(), rRate.value(), today_, Math.Sqrt(v0), expected, calculated, tolerance2);
             }
          }
       }
@@ -2029,14 +2019,13 @@ namespace TestSuite
             3.0e-2, 4.0e-2];
 
          DayCounter dc = new Actual365Fixed();
-         var today = new Date(16, 09, 2015);
-         Settings.setEvaluationDate(today);
+         Settings.setEvaluationDate(today_);
 
          var spot = new Handle<Quote>(new SimpleQuote(100));
          var qRate = new SimpleQuote(0.0);
-         var qTS = Utilities.flatRate(today, qRate, dc);
+         var qTS = Utilities.flatRate(today_, qRate, dc);
          var rRate = new SimpleQuote(0.05);
-         var rTS = Utilities.flatRate(today, rRate, dc);
+         var rTS = Utilities.flatRate(today_, rRate, dc);
 
          var v0 = 0.09;
          var kappa = 1.15;
@@ -2127,14 +2116,13 @@ namespace TestSuite
                           ]]];
 
           DayCounter dc = new Actual365Fixed();
-          var today = new Date(16, 09, 2015);
-          Settings.setEvaluationDate(today);
+          Settings.setEvaluationDate(today_);
 
           var spot=new Handle<Quote>(new SimpleQuote(100));
           var qRate = new SimpleQuote(0.0);
-          var qTS = Utilities.flatRate(today, qRate, dc);
+          var qTS = Utilities.flatRate(today_, qRate, dc);
           var rRate = new SimpleQuote(0.05);
-          var rTS = Utilities.flatRate(today, rRate, dc);
+          var rTS = Utilities.flatRate(today_, rRate, dc);
 
           var v0 = 0.09;
           var kappa = 1.15;
@@ -2162,7 +2150,7 @@ namespace TestSuite
                {
                   var futureFixings = (int)Math.Floor(days[day_index] / 30.0);
                   var fixingDates = new InitializedList<Date>(futureFixings);
-                  var expiryDate = today + new Period(days[day_index] , TimeUnit.Days);
+                  var expiryDate = today_ + new Period(days[day_index] , TimeUnit.Days);
 
                   for (var i=futureFixings-1; i>=0; i--)
                   {
@@ -2199,7 +2187,7 @@ namespace TestSuite
                   if (Math.Abs(analyticPrice-mcPrice) > tolerance) {
                     REPORT_FAILURE("value", averageType, runningAccumulator, pastFixingsCount,
                                    [], payoff, europeanExercise, spot.link.value(),
-                                   qRate.value(), rRate.value(), today,
+                                   qRate.value(), rRate.value(), today_,
                                    Math.Sqrt(v0), analyticPrice, mcPrice, tolerance);
                   }
                }
