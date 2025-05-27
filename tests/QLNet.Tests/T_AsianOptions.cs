@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using QLNet;
+using System.Drawing;
 
 namespace TestSuite
 {
@@ -2013,6 +2014,195 @@ namespace TestSuite
             {
                REPORT_FAILURE("value", averageType, 1.0, 0, [], payoff, europeanExercise,
                   spot.link.value(), qRate.value(), rRate.value(), today, Math.Sqrt(v0), expected, calculated, tolerance2);
+            }
+         }
+      }
+
+      [Fact]
+      public void testAnalyticDiscreteGeometricAveragePriceHeston()
+      {
+         // Testing analytic discrete geometric average-price Asians under Heston
+         // 30-day options need wider tolerance due to uncertainty around what "weekly
+         // fixing" dates mean over a 30-day month!
+         double[] tol = [3.0e-2, 2.0e-2, 2.0e-2, 2.0e-2, 3.0e-2, 4.0e-2, 8.0e-2, 1.0e-2,
+            2.0e-2, 3.0e-2, 3.0e-2, 4.0e-2, 2.0e-2, 1.0e-2, 1.0e-2, 2.0e-2,
+            3.0e-2, 4.0e-2];
+
+         DayCounter dc = new Actual365Fixed();
+         var today = new Date(16, 09, 2015);
+         Settings.setEvaluationDate(today);
+
+         var spot = new Handle<Quote>(new SimpleQuote(100));
+         var qRate = new SimpleQuote(0.0);
+         var qTS = Utilities.flatRate(today, qRate, dc);
+         var rRate = new SimpleQuote(0.05);
+         var rTS = Utilities.flatRate(today, rRate, dc);
+
+         var v0 = 0.09;
+         var kappa = 1.15;
+         var theta = 0.0348;
+         var sigma = 0.39;
+         var rho = -0.64;
+
+         var hestonProcess = new HestonProcess(new Handle<YieldTermStructure>(rTS),
+            new Handle<YieldTermStructure>(qTS), spot, v0, kappa, theta, sigma, rho);
+
+         var engine = new AnalyticDiscreteGeometricAveragePriceAsianHestonEngine(hestonProcess);
+
+         testDiscreteGeometricAveragePriceHeston(engine, tol);
+      }
+
+      [Fact]
+      public void testDiscreteGeometricAveragePriceHestonPastFixings()
+      {
+
+         // Testing Analytic vs MC for seasoned discrete geometric Asians under Heston
+         // 30-day options need wider tolerance due to uncertainty around what "weekly
+         // fixing" dates mean over a 30-day month!
+
+         int[] days = [30, 90, 180, 360, 720];
+         double[] strikes = [90, 100, 110];
+
+         double[][][] tol = [[[
+                              0.04, // strike=90, days=30, k=0
+                              0.04, // strike=90, days=30, k=1
+                          ],
+                          [
+                              0.04, // strike=90, days=90, k=0
+                              0.04, // strike=90, days=90, k=1
+                          ],
+                          [
+                              0.04, // strike=90, days=180, k=0
+                              0.04, // strike=90, days=180, k=1
+                          ],
+                          [
+                              0.05, // strike=90, days=360, k=0
+                              0.04, // strike=90, days=360, k=1
+                          ],
+                          [
+                              0.04, // strike=90, days=720, k=0
+                              0.04, // strike=90, days=720, k=1
+                          ]],
+
+                          [[
+                              0.04, // strike=100, days=30, k=0
+                              0.04, // strike=100, days=30, k=1
+                          ],
+                          [
+                              0.04, // strike=100, days=90, k=0
+                              0.04, // strike=100, days=90, k=1
+                          ],
+                          [
+                              0.04, // strike=100, days=180, k=0
+                              0.04, // strike=100, days=180, k=1
+                          ],
+                          [
+                              0.06, // strike=100, days=360, k=0
+                              0.06, // strike=100, days=360, k=1
+                          ],
+                          [
+                              0.06, // strike=100, days=720, k=0
+                              0.05, // strike=100, days=720, k=1
+                          ]],
+
+                         [[
+                              0.04, // strike=110, days=30, k=0
+                              0.04, // strike=110, days=30, k=1
+                          ],
+                          [
+                              0.04, // strike=110, days=90, k=0
+                              0.04, // strike=110, days=90, k=1
+                          ],
+                          [
+                              0.04, // strike=110, days=180, k=0
+                              0.04, // strike=110, days=180, k=1
+                          ],
+                          [
+                              0.05, // strike=110, days=360, k=0
+                              0.04, // strike=110, days=360, k=1
+                          ],
+                          [
+                              0.06, // strike=110, days=720, k=0
+                              0.05, // strike=110, days=720, k=1
+                          ]]];
+
+          DayCounter dc = new Actual365Fixed();
+          var today = new Date(16, 09, 2015);
+          Settings.setEvaluationDate(today);
+
+          var spot=new Handle<Quote>(new SimpleQuote(100));
+          var qRate = new SimpleQuote(0.0);
+          var qTS = Utilities.flatRate(today, qRate, dc);
+          var rRate = new SimpleQuote(0.05);
+          var rTS = Utilities.flatRate(today, rRate, dc);
+
+          var v0 = 0.09;
+          var kappa = 1.15;
+          var theta = 0.0348;
+          var sigma = 0.39;
+          var rho = -0.64;
+
+          var hestonProcess = new HestonProcess(new Handle<YieldTermStructure>(rTS),
+             new Handle<YieldTermStructure>(qTS), spot, v0, kappa, theta, sigma, rho);
+
+          var analyticEngine = new AnalyticDiscreteGeometricAveragePriceAsianHestonEngine(hestonProcess);
+
+          var mcEngine = new MakeMCDiscreteGeometricAPHestonEngine<LowDiscrepancy, Statistics>(hestonProcess)
+                  .withSamples(8191)
+                  .withSeed(43).value();
+
+          var type = Option.Type.Call;
+          var averageType = Average.Type.Geometric;
+
+         for (var strike_index = 0; strike_index < strikes.Length; strike_index++)
+         {
+            for (var day_index = 0; day_index < days.Length; day_index++)
+            {
+               for (var k=0; k<2; k++)
+               {
+                  var futureFixings = (int)Math.Floor(days[day_index] / 30.0);
+                  var fixingDates = new InitializedList<Date>(futureFixings);
+                  var expiryDate = today + new Period(days[day_index] , TimeUnit.Days);
+
+                  for (var i=futureFixings-1; i>=0; i--)
+                  {
+                     fixingDates[i] = expiryDate - i * 30;
+                  }
+
+                  var europeanExercise = new EuropeanExercise(expiryDate);
+                  var payoff = new PlainVanillaPayoff(type, strikes[strike_index]);
+
+                  var runningAccumulator = 1.0;
+                  var pastFixingsCount = 0;
+                  if (k == 0)
+                  {
+                     runningAccumulator = 100.0;
+                     pastFixingsCount = 1;
+                  }
+                  else
+                  {
+                     runningAccumulator = 95.0 * 100.0 * 105.0;
+                     pastFixingsCount = 3;
+                  }
+
+                  var option = new DiscreteAveragingAsianOption(averageType, runningAccumulator, pastFixingsCount,
+                     fixingDates, payoff, europeanExercise);
+
+                  option.setPricingEngine(analyticEngine);
+                  var analyticPrice = option.NPV();
+
+                  option.setPricingEngine(mcEngine);
+                  var mcPrice = option.NPV();
+
+                  var tolerance = tol[strike_index][day_index][k];
+
+                  if (Math.Abs(analyticPrice-mcPrice) > tolerance) {
+                    REPORT_FAILURE("value", averageType, runningAccumulator, pastFixingsCount,
+                                   [], payoff, europeanExercise, spot.link.value(),
+                                   qRate.value(), rRate.value(), today,
+                                   Math.Sqrt(v0), analyticPrice, mcPrice, tolerance);
+                  }
+               }
             }
          }
       }
