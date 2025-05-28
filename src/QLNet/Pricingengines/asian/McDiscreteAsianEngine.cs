@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -17,50 +18,53 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace QLNet
 {
-   //! Pricing engine for discrete average Asians using Monte Carlo simulation
-   /*! \warning control-variate calculation is disabled under VC++6.
-
-       \ingroup asianengines
-   */
-
-   public class MCDiscreteAveragingAsianEngine<RNG, S> : McSimulation<SingleVariate, RNG, S>, IGenericEngine
-      //DiscreteAveragingAsianOption.Engine,
-      //McSimulation<SingleVariate,RNG,S>
+   /// <summary>
+   /// Pricing engine for discrete average Asians using Monte Carlo simulation
+   /// </summary>
+   /// <typeparam name="RNG"></typeparam>
+   /// <typeparam name="S"></typeparam>
+   public class MCDiscreteAveragingAsianEngineBase<MC, RNG, S> : McSimulation<MC, RNG, S>, IGenericEngine
       where RNG : IRSG, new()
       where S : IGeneralStatistics, new()
    {
       // data members
-      protected GeneralizedBlackScholesProcess process_;
-      protected int maxTimeStepsPerYear_;
-      protected int requiredSamples_, maxSamples_;
-      double requiredTolerance_;
-      bool brownianBridge_;
-      ulong seed_;
+      protected StochasticProcess process_;
+      protected int? requiredSamples_, maxSamples_;
+      protected int? timeSteps_, timeStepsPerYear_;
+      protected double? requiredTolerance_;
+      protected bool brownianBridge_;
+      protected ulong seed_;
+      protected bool isMultiPath_;
 
       // constructor
-      public MCDiscreteAveragingAsianEngine(
-         GeneralizedBlackScholesProcess process,
-         int maxTimeStepsPerYear,
+      public MCDiscreteAveragingAsianEngineBase(
+         StochasticProcess process,
          bool brownianBridge,
          bool antitheticVariate,
          bool controlVariate,
-         int requiredSamples,
-         double requiredTolerance,
-         int maxSamples,
-         ulong seed) : base(antitheticVariate, controlVariate)
-      {
+         int? requiredSamples,
+         double? requiredTolerance,
+         int? maxSamples,
+         ulong seed,
+         int? timeSteps = null,
+         int? timeStepsPerYear = null,
+         bool isMultiPath = false) : base(antitheticVariate, controlVariate)
+         {
          process_ = process;
-         maxTimeStepsPerYear_ = maxTimeStepsPerYear;
          requiredSamples_ = requiredSamples;
          maxSamples_ = maxSamples;
+         timeSteps_ = timeSteps;
+         timeStepsPerYear_ = timeStepsPerYear;
          requiredTolerance_ = requiredTolerance;
          brownianBridge_ = brownianBridge;
          seed_ = seed;
+         isMultiPath_ = isMultiPath;
          process_.registerWith(update);
       }
 
@@ -68,38 +72,62 @@ namespace QLNet
       {
          base.calculate(requiredTolerance_, requiredSamples_, maxSamples_);
          results_.value = this.mcModel_.sampleAccumulator().mean();
+         if (this.controlVariate_) {
+            // control variate might lead to small negative
+            // option values for deep OTM options
+            this.results_.value = Math.Max(0.0, this.results_.value.Value);
+         }
          if (FastActivator<RNG>.Create().allowsErrorEstimate != 0)
             results_.errorEstimate =
                this.mcModel_.sampleAccumulator().errorEstimate();
+
+         // Allow inspection of the timeGrid via additional results
+         this.results_.additionalResults["TimeGrid"] = this.timeGrid();
       }
 
       // McSimulation implementation
       protected override TimeGrid timeGrid()
       {
-         Date referenceDate = process_.riskFreeRate().link.referenceDate();
-         DayCounter voldc = process_.blackVolatility().link.dayCounter();
          List<double> fixingTimes = new InitializedList<double>(arguments_.fixingDates.Count);
 
          for (int i = 0; i < arguments_.fixingDates.Count; i++)
          {
-            if (arguments_.fixingDates[i] >= referenceDate)
+            double t = process_.time(arguments_.fixingDates[i]);
+            if (t>=0)
             {
-               double t = voldc.yearFraction(referenceDate,
-                                             arguments_.fixingDates[i]);
                fixingTimes[i] = t;
             }
          }
+
+         if (fixingTimes.empty() ||
+             (fixingTimes.Count() == 1 && fixingTimes.First() == 0.0))
+            Utils.QL_FAIL("all fixings are in the past");
+
+         // Some models (eg. Heston) might request additional points in
+         // the time grid to improve the accuracy of the discretization
+         Date lastExerciseDate = this.arguments_.exercise.lastDate();
+         double s = process_.time(lastExerciseDate);
+
+         if (this.timeSteps_ != null)
+         {
+            return new TimeGrid(fixingTimes, timeSteps_.Value);
+         }
+         else if (this.timeStepsPerYear_ != null)
+         {
+            return new TimeGrid(fixingTimes, (int)(this.timeStepsPerYear_.Value*s));
+         }
          // handle here maxStepsPerYear
-         return new TimeGrid(fixingTimes.Last(), fixingTimes.Count);
+         return new TimeGrid(fixingTimes);
       }
 
       protected override IPathGenerator<IRNG> pathGenerator()
       {
-
+         int dimensions = process_.factors();
          TimeGrid grid = this.timeGrid();
-         IRNG gen = (IRNG)new RNG().make_sequence_generator(grid.size() - 1, seed_);
-         return new PathGenerator<IRNG>(process_, grid,
-                                        gen, brownianBridge_);
+         IRNG gen = (IRNG)new RNG().make_sequence_generator(dimensions * (grid.size() - 1), seed_);
+         if (isMultiPath_)
+            return new MultiPathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
+         return new PathGenerator<IRNG>(process_, grid, gen, brownianBridge_);
       }
 
       protected override double? controlVariateValue()
@@ -109,7 +137,14 @@ namespace QLNet
 
          DiscreteAveragingAsianOption.Arguments controlArguments =
             (DiscreteAveragingAsianOption.Arguments)controlPE.getArguments();
-         controlArguments = arguments_;
+         // Clone arguments
+         controlArguments.exercise = arguments_.exercise;
+         controlArguments.payoff = arguments_.payoff;
+         controlArguments.averageType = arguments_.averageType; // Esempio: copia il tipo di media
+         controlArguments.runningAccumulator = arguments_.runningAccumulator;
+         controlArguments.pastFixings = arguments_.pastFixings;
+         controlArguments.fixingDates = new List<Date>(arguments_.fixingDates);
+
          controlPE.calculate();
 
          DiscreteAveragingAsianOption.Results controlResults =

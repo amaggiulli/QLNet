@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -19,21 +20,20 @@
 
 namespace QLNet
 {
-   //!  Monte Carlo pricing engine for discrete arithmetic average price Asian
-   /*!  Monte Carlo pricing engine for discrete arithmetic average price
-        Asian options. It can use MCDiscreteGeometricAPEngine (Monte Carlo
-        discrete arithmetic average price engine) and
-        AnalyticDiscreteGeometricAveragePriceAsianEngine (analytic discrete
-        arithmetic average price engine) for control variation.
-
-        \ingroup asianengines
-
-        \test the correctness of the returned value is tested by
-              reproducing results available in literature.
-   */
-   //template <class RNG = PseudoRandom, class S = Statistics>
+   /// <summary>
+   /// Monte Carlo pricing engine for discrete arithmetic average price Asian
+   /// </summary>
+   /// <remarks>
+   /// Monte Carlo pricing engine for discrete arithmetic average price
+   /// Asian options. It can use MCDiscreteGeometricAPEngine (Monte Carlo
+   /// discrete arithmetic average price engine) and
+   /// AnalyticDiscreteGeometricAveragePriceAsianEngine (analytic discrete
+   ///  arithmetic average price engine) for control variation.
+   /// </remarks>
+   /// <typeparam name="RNG"></typeparam>
+   /// <typeparam name="S"></typeparam>
    public class MCDiscreteArithmeticAPEngine<RNG, S>
-      : MCDiscreteAveragingAsianEngine<RNG, S>
+      : MCDiscreteAveragingAsianEngineBase<SingleVariate, RNG, S>
         where RNG : IRSG, new ()
         where S : IGeneralStatistics, new ()
    {
@@ -41,18 +41,16 @@ namespace QLNet
       // constructor
       public MCDiscreteArithmeticAPEngine(
          GeneralizedBlackScholesProcess process,
-         int maxTimeStepPerYear,
          bool brownianBridge,
          bool antitheticVariate,
          bool controlVariate,
-         int requiredSamples,
-         double requiredTolerance,
-         int maxSamples,
+         int? requiredSamples,
+         double? requiredTolerance,
+         int? maxSamples,
          ulong seed)
-         : base(process, maxTimeStepPerYear, brownianBridge, antitheticVariate,
+         : base(process, brownianBridge, antitheticVariate,
                 controlVariate, requiredSamples, requiredTolerance, maxSamples, seed)
-      {
-      }
+      {}
 
       protected override PathPricer<IPath> pathPricer()
       {
@@ -62,14 +60,16 @@ namespace QLNet
          EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
+         GeneralizedBlackScholesProcess process = (GeneralizedBlackScholesProcess) this.process_;
+         Utils.QL_REQUIRE(process != null, ()=> "Black-Scholes process required");
+
          return (PathPricer<IPath>)new ArithmeticAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(this.timeGrid().Last()),
+                   process.riskFreeRate().link.discount(exercise!.lastDate()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
                    this.arguments_.pastFixings.GetValueOrDefault());
       }
-
       protected override PathPricer<IPath> controlPathPricer()
       {
          PlainVanillaPayoff payoff = (PlainVanillaPayoff)this.arguments_.payoff;
@@ -78,18 +78,24 @@ namespace QLNet
          EuropeanExercise exercise = (EuropeanExercise)this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
+         GeneralizedBlackScholesProcess process = (GeneralizedBlackScholesProcess) this.process_;
+         Utils.QL_REQUIRE(process != null, ()=> "Black-Scholes process required");
+
          // for seasoned option the geometric strike might be rescaled
          // to obtain an equivalent arithmetic strike.
          // Any change applied here MUST be applied to the analytic engine too
          return (PathPricer<IPath>)new GeometricAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(this.timeGrid().Last()));
+                   process!.riskFreeRate().link.discount(this.timeGrid().Last()));
       }
-
       protected override IPricingEngine controlPricingEngine()
       {
-         return new AnalyticDiscreteGeometricAveragePriceAsianEngine(this.process_);
+         GeneralizedBlackScholesProcess process =  (GeneralizedBlackScholesProcess) this.process_;
+         Utils.QL_REQUIRE(process != null, ()=> "Black-Scholes process required");
+         var engine = new AnalyticDiscreteGeometricAveragePriceAsianEngine(process);
+         engine.setupArguments(this.arguments_);
+         return engine;
       }
    }
 
@@ -104,8 +110,8 @@ namespace QLNet
       public ArithmeticAPOPathPricer(Option.Type type,
                                      double strike,
                                      double discount,
-                                     double runningSum,
-                                     int pastFixings)
+                                     double runningSum = 0.0,
+                                     int pastFixings = 0)
       {
          payoff_ = new PlainVanillaPayoff(type, strike);
          discount_ = discount;
@@ -113,18 +119,6 @@ namespace QLNet
          pastFixings_ = pastFixings;
          Utils.QL_REQUIRE(strike >= 0.0, () => "strike less than zero not allowed");
       }
-
-      public ArithmeticAPOPathPricer(Option.Type type,
-                                     double strike,
-                                     double discount,
-                                     double runningSum)
-         : this(type, strike, discount, runningSum, 0) { }
-
-      public ArithmeticAPOPathPricer(Option.Type type,
-                                     double strike,
-                                     double discount)
-         : this(type, strike, discount, 0.0, 0) { }
-
 
       public double value(Path path)
       {
@@ -156,40 +150,31 @@ namespace QLNet
          return value((Path)path);
       }
    }
-   //<class RNG = PseudoRandom, class S = Statistics>
+
    public class MakeMCDiscreteArithmeticAPEngine<RNG, S>
       where RNG : IRSG, new ()
       where S : Statistics, new ()
    {
+      private GeneralizedBlackScholesProcess process_;
+      private bool antithetic_ = false, controlVariate_ = false;
+      private int? samples_, maxSamples_;
+      private double? tolerance_;
+      private bool brownianBridge_ = true;
+      private ulong seed_ = 0;
+
       public MakeMCDiscreteArithmeticAPEngine(GeneralizedBlackScholesProcess process)
       {
          process_ = process;
-         antithetic_ = false;
-         controlVariate_ = false;
-         steps_ = null;
          samples_ = null;
          maxSamples_ = null;
          tolerance_ = null;
-         brownianBridge_ = true;
-         seed_ = 0;
       }
 
       // named parameters
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withStepsPerYear(int maxSteps)
-      {
-         steps_ = maxSteps;
-         return this;
-      }
-
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withBrownianBridge(bool b)
+      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withBrownianBridge(bool b = true)
       {
          brownianBridge_ = b;
          return this;
-      }
-
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withBrownianBridge()
-      {
-         return withBrownianBridge(true);
       }
 
       public MakeMCDiscreteArithmeticAPEngine<RNG, S> withSamples(int samples)
@@ -199,7 +184,7 @@ namespace QLNet
          return this;
       }
 
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withTolerance(double tolerance)
+      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withAbsoluteTolerance(double tolerance)
       {
          Utils.QL_REQUIRE(samples_ == null, () => "number of samples already set");
          Utils.QL_REQUIRE(FastActivator<RNG>.Create().allowsErrorEstimate != 0, () =>
@@ -220,49 +205,29 @@ namespace QLNet
          return this;
       }
 
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withAntitheticVariate(bool b)
+      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withAntitheticVariate(bool b = true)
       {
          antithetic_ = b;
          return this;
       }
 
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withAntitheticVariate()
-      {
-         return this.withAntitheticVariate(true);
-      }
 
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withControlVariate(bool b)
+      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withControlVariate(bool b = true)
       {
          controlVariate_ = b;
          return this;
-      }
-
-      public MakeMCDiscreteArithmeticAPEngine<RNG, S> withControlVariate()
-      {
-         return this.withControlVariate(true);
       }
 
 
       // conversion to pricing engine
       public IPricingEngine value()
       {
-         Utils.QL_REQUIRE(steps_ != null, () => "max number of steps per year not given");
          return (IPricingEngine)new MCDiscreteArithmeticAPEngine<RNG, S>(process_,
-                                                                         steps_.Value,
                                                                          brownianBridge_,
                                                                          antithetic_, controlVariate_,
-                                                                         samples_.Value, tolerance_.Value,
-                                                                         maxSamples_.Value,
+                                                                         samples_, tolerance_,
+                                                                         maxSamples_,
                                                                          seed_);
-
       }
-
-      private GeneralizedBlackScholesProcess process_;
-      private bool antithetic_, controlVariate_;
-      private int? steps_, samples_, maxSamples_;
-      private double? tolerance_;
-      private bool brownianBridge_;
-      private ulong seed_;
    }
-
 }

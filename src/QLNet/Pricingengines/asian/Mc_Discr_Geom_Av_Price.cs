@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -21,33 +22,25 @@ using System;
 namespace QLNet
 {
    /// <summary>
-   /// Analytic engine for discrete geometric average price Asian
+   /// Monte Carlo pricing engine for discrete geometric average price Asian
    /// </summary>
-   /// <remarks>
-   /// This class implements a discrete geometric average price Asian
-   /// option, with European exercise.  The formula is from "Asian
-   /// Option", E. Levy (1997) in "Exotic Options: The State of the
-   /// Art", edited by L. Clewlow, C. Strickland, pag 65-97
-   /// </remarks>
    /// <typeparam name="RNG"></typeparam>
    /// <typeparam name="S"></typeparam>
    public class MCDiscreteGeometricAPEngine<RNG, S>
-      : MCDiscreteAveragingAsianEngine<RNG, S>
+      : MCDiscreteAveragingAsianEngineBase<SingleVariate, RNG, S>
         where RNG : IRSG, new ()
         where S : IGeneralStatistics, new ()
    {
       public MCDiscreteGeometricAPEngine(
          GeneralizedBlackScholesProcess process,
-         int maxTimeStepPerYear,
          bool brownianBridge,
          bool antitheticVariate,
-         bool controlVariate,
-         int requiredSamples,
-         double requiredTolerance,
-         int maxSamples,
+         int? requiredSamples,
+         double? requiredTolerance,
+         int? maxSamples,
          ulong seed)
-         : base(process, maxTimeStepPerYear, brownianBridge, antitheticVariate,
-                controlVariate, requiredSamples, requiredTolerance, maxSamples, seed)
+         : base(process, brownianBridge, antitheticVariate,
+                false, requiredSamples, requiredTolerance, maxSamples, seed)
       { }
 
       // conversion to pricing engine
@@ -59,17 +52,19 @@ namespace QLNet
          EuropeanExercise exercise = (EuropeanExercise) this.arguments_.exercise;
          Utils.QL_REQUIRE(exercise != null, () => "wrong exercise given");
 
+         GeneralizedBlackScholesProcess process = (GeneralizedBlackScholesProcess) this.process_;
+         Utils.QL_REQUIRE(process != null,() =>  "Black-Scholes process required");
+
          return (PathPricer<IPath>) new GeometricAPOPathPricer(
                    payoff.optionType(),
                    payoff.strike(),
-                   this.process_.riskFreeRate().link.discount(
-                      this.timeGrid().Last()),
+                   process.riskFreeRate().link.discount(exercise!.lastDate()),
                    this.arguments_.runningAccumulator.GetValueOrDefault(),
                    this.arguments_.pastFixings.GetValueOrDefault());
       }
    }
 
-   public class GeometricAPOPathPricer : PathPricer<Path>
+   public class GeometricAPOPathPricer : PathPricer<IPath>
    {
       private PlainVanillaPayoff payoff_;
       private double discount_;
@@ -79,8 +74,8 @@ namespace QLNet
       public GeometricAPOPathPricer(Option.Type type,
                                     double strike,
                                     double discount,
-                                    double runningProduct,
-                                    int pastFixings)
+                                    double runningProduct = 1.0,
+                                    int pastFixings = 0)
       {
          payoff_ = new PlainVanillaPayoff(type, strike);
          discount_ = discount;
@@ -88,19 +83,6 @@ namespace QLNet
          pastFixings_ = pastFixings;
          Utils.QL_REQUIRE(strike >= 0.0, () => "negative strike given");
       }
-
-      public GeometricAPOPathPricer(Option.Type type,
-                                    double strike,
-                                    double discount,
-                                    double runningProduct)
-         : this(type, strike, discount, runningProduct, 0)
-      { }
-
-      public GeometricAPOPathPricer(Option.Type type,
-                                    double strike,
-                                    double discount)
-         : this(type, strike, discount, 1.0, 0)
-      { }
 
       public double value(Path path)
       {
@@ -134,6 +116,11 @@ namespace QLNet
          averagePrice *= Math.Pow(product, 1.0 / fixings);
          return discount_ * payoff_.value(averagePrice);
       }
+
+      public double value(IPath path)
+      {
+         return value((Path)path);
+      }
    }
 
    //<class RNG = PseudoRandom, class S = Statistics>
@@ -141,35 +128,27 @@ namespace QLNet
       where RNG : IRSG, new ()
       where S : Statistics, new ()
    {
+      private GeneralizedBlackScholesProcess process_;
+      private bool antithetic_;
+      private int? samples_, maxSamples_;
+      private double? tolerance_;
+      private bool brownianBridge_ = true;
+      private ulong seed_ = 0;
+
       public MakeMCDiscreteGeometricAPEngine(GeneralizedBlackScholesProcess process)
       {
          process_ = process;
          antithetic_ = false;
-         controlVariate_ = false;
-         steps_ = null;
          samples_ = null;
          maxSamples_ = null;
          tolerance_ = null;
-         brownianBridge_ = true;
-         seed_ = 0;
       }
 
       // named parameters
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withStepsPerYear(int maxSteps)
-      {
-         steps_ = maxSteps;
-         return this;
-      }
-
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withBrownianBridge(bool b)
+      public MakeMCDiscreteGeometricAPEngine<RNG, S> withBrownianBridge(bool b = true)
       {
          brownianBridge_ = b;
          return this;
-      }
-
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withBrownianBridge()
-      {
-         return withBrownianBridge(true);
       }
 
       public MakeMCDiscreteGeometricAPEngine<RNG, S> withSamples(int samples)
@@ -179,7 +158,7 @@ namespace QLNet
          return this;
       }
 
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withTolerance(double tolerance)
+      public MakeMCDiscreteGeometricAPEngine<RNG, S> withAbsoluteTolerance(double tolerance)
       {
          Utils.QL_REQUIRE(samples_ == null, () => "number of samples already set");
          Utils.QL_REQUIRE(FastActivator<RNG>.Create().allowsErrorEstimate != 0, () =>
@@ -200,47 +179,25 @@ namespace QLNet
          return this;
       }
 
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withAntitheticVariate(bool b)
+      public MakeMCDiscreteGeometricAPEngine<RNG, S> withAntitheticVariate(bool b = true)
       {
          antithetic_ = b;
          return this;
       }
 
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withAntitheticVariate()
-      {
-         return this.withAntitheticVariate(true);
-      }
-
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withControlVariate(bool b)
-      {
-         controlVariate_ = b;
-         return this;
-      }
-
-      public MakeMCDiscreteGeometricAPEngine<RNG, S> withControlVariate()
-      {
-         return this.withControlVariate(true);
-      }
-
       // conversion to pricing engine
       public IPricingEngine value()
       {
-         Utils.QL_REQUIRE(steps_ != null, () => "max number of steps per year not given");
          return (IPricingEngine) new MCDiscreteGeometricAPEngine<RNG, S>(process_,
-                                                                         steps_.Value,
                                                                          brownianBridge_,
-                                                                         antithetic_, controlVariate_,
-                                                                         samples_.Value, tolerance_.Value,
-                                                                         maxSamples_.Value,
+                                                                         antithetic_, 
+                                                                         samples_,
+                                                                         tolerance_,
+                                                                         maxSamples_,
                                                                          seed_);
       }
 
-      private GeneralizedBlackScholesProcess process_;
-      private bool antithetic_, controlVariate_;
-      private int? steps_, samples_, maxSamples_;
-      private double? tolerance_;
-      private bool brownianBridge_;
-      private ulong seed_;
+
    }
 }
 

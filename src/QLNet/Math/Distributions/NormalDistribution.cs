@@ -405,9 +405,8 @@ namespace QLNet
       const double x_low_ = 0.02425;
       const double x_high_ = 1.0 - x_low_;
 
-
-      public InverseCumulativeNormal() : this(0.0, 1.0) { }
-      public InverseCumulativeNormal(double average, double sigma)
+      public InverseCumulativeNormal() : this(0.0) {}
+      public InverseCumulativeNormal(double average = 0.0, double sigma = 1.0)
       {
          average_ = average;
          sigma_ = sigma;

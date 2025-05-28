@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2025  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -39,11 +40,25 @@ namespace QLNet
          forward_ = forward;
          stdDev_ = stdDev;
          discount_ = discount;
-         variance_ = stdDev * stdDev;
+         variance_ = (stdDev * stdDev);
+         initialize(payoff);
+      }
 
-         Utils.QL_REQUIRE(forward > 0.0, () => "positive forward value required: " + forward + " not allowed");
-         Utils.QL_REQUIRE(stdDev >= 0.0, () => "non-negative standard deviation required: " + stdDev + " not allowed");
-         Utils.QL_REQUIRE(discount > 0.0, () => "positive discount required: " + discount + " not allowed");
+      public BlackCalculator(Option.Type optionType, double strike, double forward, double stdDev, double discount = 1.0)
+      {
+         strike_ = strike;
+         forward_ = forward;
+         stdDev_ = stdDev;
+         discount_ = discount;
+         variance_ = stdDev * stdDev;
+         initialize(new PlainVanillaPayoff(optionType, strike));
+      }
+
+      public void initialize(StrikedTypePayoff payoff)
+      {
+         Utils.QL_REQUIRE(forward_ > 0.0, () => "positive forward value required: " + forward_ + " not allowed");
+         Utils.QL_REQUIRE(stdDev_ >= 0.0, () => "non-negative standard deviation required: " + stdDev_ + " not allowed");
+         Utils.QL_REQUIRE(discount_ > 0.0, () => "positive discount required: " + discount_ + " not allowed");
 
          if (stdDev_ >= Const.QL_EPSILON)
          {
@@ -56,7 +71,7 @@ namespace QLNet
             }
             else
             {
-               D1_ = Math.Log(forward / strike_) / stdDev_ + 0.5 * stdDev_;
+               D1_ = Math.Log(forward_ / strike_) / stdDev_ + 0.5 * stdDev_;
                D2_ = D1_ - stdDev_;
                CumulativeNormalDistribution f = new CumulativeNormalDistribution();
                cum_d1_ = f.value(D1_);
@@ -67,7 +82,7 @@ namespace QLNet
          }
          else
          {
-            if (forward > strike_)
+            if (forward_ > strike_)
             {
                cum_d1_ = 1.0;
                cum_d2_ = 1.0;

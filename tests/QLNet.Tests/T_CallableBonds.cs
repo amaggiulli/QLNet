@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2023 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -48,8 +48,8 @@ public class CallableBondsTests
          dayCounter = new Actual365Fixed();
          rollingConvention = BusinessDayConvention.ModifiedFollowing;
 
-         // Hack: after this date it fails, need to be investigated
-         today = new Date(02, 11, 2023); // Settings.evaluationDate();
+         today = new Date(02, 11, 2023);
+         Settings.setEvaluationDate(today);
          settlement = calendar.advance(today, 2, TimeUnit.Days);
       }
 
@@ -382,11 +382,12 @@ public class CallableBondsTests
          QAssert.Fail("failed to reproduce zero-coupon bond price:\n"
                       + "    calculated: " + bond1.cleanPrice() + "\n"
                       + "    expected:   " + zeroCouponBond.cleanPrice());
-
-      if (Math.Abs(bond2.cleanPrice() - couponBond.cleanPrice()) > tolerance)
+      var calculated = bond2.cleanPrice();
+      var expected = couponBond.cleanPrice();
+      if (Math.Abs(calculated - expected) > tolerance)
          QAssert.Fail("failed to reproduce fixed-rate bond price:\n"
-                      + "    calculated: " + bond2.cleanPrice() + "\n"
-                      + "    expected:   " + couponBond.cleanPrice());
+                      + "    calculated: " + calculated + "\n"
+                      + "    expected:   " + expected);
    }
 
    [Fact,Priority(4)]
@@ -627,7 +628,7 @@ public class CallableBondsTests
       var coupons = new InitializedList<double>(1, 0.01);
 
 
-      var callabilities = new CallabilitySchedule{new (new Bond.Price(100.0, Bond.Price.Type.Clean),
+      var callabilities = new CallabilitySchedule{new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean),
          Callability.Type.Call, schedule.at(8))};
 
       var bond = new CallableFixedRateBond(3, 10000.0, schedule,
