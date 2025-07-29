@@ -64,7 +64,7 @@
   - cmd: "SET runner_args=\"\""
   - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit_new%"
   - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr_new%"
-  - cmd: "dotnet sonarscanner begin %runner_args%"
+  - cmd: "dotnet sonarscanner begin %runner_args% /d:sonar.projectBaseDir=C:\\projects\\qlnet_develop"
   build_script:
    - cmd:  dotnet build -c Release
   artifacts:
