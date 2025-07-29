@@ -36,7 +36,7 @@ namespace QLNet
       public DiscretizedCallableFixedRateBond(CallableBond.Arguments args, Handle<YieldTermStructure> termStructure)
       {
          arguments_ = args;
-         adjustedCallabilityPrices_ = args.callabilityPrices;
+         adjustedCallabilityPrices_ = new List<double>(args.callabilityPrices); 
 
          var dayCounter = termStructure.link.dayCounter();
          var referenceDate = termStructure.link.referenceDate();
@@ -164,10 +164,13 @@ namespace QLNet
          }
          for (int i = 0; i < couponTimes_.Count; i++)
          {
-            double t = couponTimes_[i];
-            if (t >= 0.0 && isOnTime(t))
+            if (couponAdjustments_[i] == CouponAdjustment.Post)
             {
-               addCoupon(i);
+               var t = couponTimes_[i];
+               if (t >= 0.0 && isOnTime(t))
+               {
+                  addCoupon(i);
+               }
             }
          }
       }
@@ -180,14 +183,14 @@ namespace QLNet
             case Callability.Type.Call:
                for (j = 0; j < values_.size(); j++)
                {
-                  values_[j] = Math.Min(arguments_.callabilityPrices[i], values_[j]);
+                  values_[j] = Math.Min(adjustedCallabilityPrices_[i], values_[j]);
                }
                break;
 
             case Callability.Type.Put:
                for (j = 0; j < values_.size(); j++)
                {
-                  values_[j] = Math.Max(values_[j], arguments_.callabilityPrices[i]);
+                  values_[j] = Math.Max(values_[j], adjustedCallabilityPrices_[i]);
                }
                break;
 

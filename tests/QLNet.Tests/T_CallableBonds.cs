@@ -477,7 +477,8 @@ public class CallableBondsTests
                       + "    expected:   " + storedPrice3);
    }
 
-   [Fact(Skip = "To be fixed, Callable bond NPV looks wrong")]
+   //[Fact(Skip = "To be fixed, Callable bond NPV looks wrong")]
+   [Fact]
    public void testSnappingExerciseDate2ClosestCouponDate()
    {
       // Testing snap of callability dates to the closest coupon date
