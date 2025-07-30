@@ -65,7 +65,7 @@
   - cmd: "SET runner_args=\"\""
   - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit_new%"
   - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr_new%"
-  - cmd: "dotnet sonarscanner begin %runner_args% /d:sonar.projectBaseDir=C:\\projects\\qlnet_develop"
+  - cmd: "dotnet sonarscanner begin %runner_args% /d:sonar.projectBaseDir=."
   build_script:
    - cmd:  dotnet build -c Release
   artifacts:
@@ -82,7 +82,7 @@
 #  test_script:
 #    - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
   after_build:
-    - cmd: dotnet sonarscanner end /d:sonar.login="9370b399eed214f7e8c41f439af49800b9860e8a"  
+    - cmd: dotnet sonarscanner end /d:sonar.login=9370b399eed214f7e8c41f439af49800b9860e8a  
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   deploy:
     - provider: NuGet
