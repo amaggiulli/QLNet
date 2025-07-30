@@ -82,7 +82,7 @@
 #  test_script:
 #    - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
   after_build:
-    - cmd: dotnet sonarscanner end /d:sonar.login=%sonar_token_new%  
+    - cmd: dotnet sonarscanner end /d:sonar.login="9370b399eed214f7e8c41f439af49800b9860e8a"  
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   deploy:
     - provider: NuGet
