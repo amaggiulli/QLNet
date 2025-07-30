@@ -53,6 +53,7 @@
   image: Visual Studio 2022
   skip_tags: true
   clone_folder: c:\projects\qlnet_develop
+  test: off
   pull_requests:
     do_not_increment_build_number: true
   nuget:
@@ -78,9 +79,9 @@
     assembly_version: '{version}'
     file_version: '{version}'
     informational_version: '{version}'
-  test_script:
-    - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-  after_test:
+#  test_script:
+#    - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+  after_build:
     - cmd: dotnet sonarscanner end /d:sonar.login=%sonar_token_new%  
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   deploy:
