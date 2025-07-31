@@ -37,7 +37,7 @@
     force_update: false
   - provider: NuGet
     api_key:
-      secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
+      secure: WDVmUaci14iyrgVt+7h5cy6GfoWEsOufkdTqfjIHSKEhC4OTsdMqdDv6H2GwZSog
     skip_symbols: true
     artifact: ng
 
@@ -88,7 +88,7 @@
   deploy:
     - provider: NuGet
       api_key:
-        secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
+        secure: WDVmUaci14iyrgVt+7h5cy6GfoWEsOufkdTqfjIHSKEhC4OTsdMqdDv6H2GwZSog
       skip_symbols: false
       artifact: ng
 
