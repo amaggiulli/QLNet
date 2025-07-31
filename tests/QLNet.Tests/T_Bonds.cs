@@ -1902,8 +1902,49 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
       [InlineData(2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+      public void testSolverNaNCase(double Coupon,
+                                      string AccrualDate, string MaturityDate, string SettlementDate,
+                                      string FirstCouponDate, double Price)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 0;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, calendar,
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                          DateGeneration.Rule.Backward, false, firstCouponDate);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 100.0, schedule,
+                                                                new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted);
+
+         double ytm = BondFunctions.yield(bond, Price, dc, comp, freq, settlementDate);
+
+         double price = BondFunctions.cleanPrice(bond, ytm, dc, comp, freq, settlementDate);
+
+         if (Math.Abs(price - Price) > 1e-2)
+            QAssert.Fail("Failed to retrieve the clean price from the computed yield " + settlementDate
+                         + "\n    calculated yield: " + ytm
+                         + "\n    retrieved clean price: " + price
+                         + "\n    expected:   " + Price);
+      }
+
+      [Theory]
+      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(2.200, "10/22/2014", "10/22/2019", "10/01/2019", "4/22/2015", 994.263)]
       public void testQLNetExceptions(double Coupon,
                                       string AccrualDate, string MaturityDate, string SettlementDate,
                                       string FirstCouponDate, double Price)
