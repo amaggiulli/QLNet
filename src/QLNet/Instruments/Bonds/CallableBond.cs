@@ -391,8 +391,29 @@ namespace QLNet
 
          return (Ppp + Pmm - 2 * P) / (Math.Pow(bump, 2) * P);
       }
-      
-     
+
+      /// <summary>
+      /// Calculate yield for each callability date 
+      /// </summary>
+      /// <param name="settlement"></param>
+      /// <param name="price"></param>
+      /// <param name="accuracy"></param>
+      /// <returns></returns>
+      public virtual CallableCalcs[] yieldToCalls(Date settlement, double price, double accuracy = 1.0e-10)
+      {
+         throw new NotImplementedException("YieldsToCall not implemented for the given bond");
+      }
+
+      /// <summary>
+      /// Calculate clean price for each callability date 
+      /// </summary>
+      /// <param name="settlement"></param>
+      /// <param name="price"></param>
+      /// <returns></returns>
+      public virtual CallableCalcs[] priceToCalls(Date settlement, double price)
+      {
+         throw new NotImplementedException("PriceToCall not implemented for the given bond");
+      }
       /// <summary>
       /// helper class for Black implied volatility calculation
       /// </summary>
@@ -578,35 +599,114 @@ namespace QLNet
          return sr - br;
       }
 
+      protected Compounding GetSecurityCompounding(Bond bond, CouponType couponType, DateTime settlementDate)
+      {
+         if (bond.nextCashFlowDate(settlementDate) == bond.maturityDate())
+         {
+            if (couponType is not CouponType.ZeroCoupon) 
+               return Compounding.Simple;
 
+            if ((Date)settlementDate + new Period(Frequency.Semiannual) >= bond.maturityDate())
+               return Compounding.Simple;
+         }
+         return Compounding.Compounded;
+      }
 
+      protected enum CouponType { FixedRate, ZeroCoupon}
 
+      public class CallableCalcs
+      {
+         public Date CallDate { get; set; }
+         public double CallPrice { get; set; }
+         public double? CalcYield { get; set; }
+         public double? CalcPrice { get; set; }
+         public double? CalcModifiedDuration { get; set; }
+      }
    }
 
-/// <summary>
-/// Callable fixed rate bond class.
-/// </summary>
+   /// <summary>
+   /// Callable fixed rate bond class.
+   /// </summary>
    public class CallableFixedRateBond : CallableBond
    {
+      protected Schedule mainSchedule_;
+      protected List<double> coupons_;
+      protected double redemption_;
+
       public CallableFixedRateBond(int settlementDays,
-                                   double faceAmount,
-                                   Schedule schedule,
-                                   List<double> coupons,
-                                   DayCounter accrualDayCounter,
-                                   BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
-                                   double redemption = 100.0,
-                                   Date issueDate = null,
-                                   CallabilitySchedule putCallSchedule = null)
-         : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate, putCallSchedule)
+         double faceAmount,
+         Schedule schedule,
+         List<double> coupons,
+         DayCounter accrualDayCounter,
+         BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+         double redemption = 100.0,
+         Date issueDate = null,
+         CallabilitySchedule putCallSchedule = null)
+         : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate,
+            putCallSchedule)
       {
+         mainSchedule_ = schedule;
+         coupons_ = coupons;
+         redemption_ = redemption;
          frequency_ = schedule.tenor().frequency();
-
          cashflows_ = new FixedRateLeg(schedule)
-         .withCouponRates(coupons, accrualDayCounter)
-         .withNotionals(faceAmount)
-         .withPaymentAdjustment(paymentConvention);
+            .withCouponRates(coupons, accrualDayCounter)
+            .withNotionals(faceAmount)
+            .withPaymentAdjustment(paymentConvention);
 
-         addRedemptionsToCashflows(new List<double>() {redemption});
+         addRedemptionsToCashflows([redemption]);
+      }
+
+      public override CallableCalcs[] yieldToCalls(Date settlement, double price, double accuracy = 1.0e-10)
+      {
+         var cc = new List<CallableCalcs>();
+         var bonds = GetCallableFixedRateBonds();
+         var calls = putCallSchedule_.ToList();
+
+         for (var i = 0; i < bonds.Length; i++)
+         {
+            var fixedRateBond = bonds[i];
+            var call = calls[i];
+            var comp = GetSecurityCompounding(fixedRateBond, CouponType.FixedRate, settlement);
+            var yield = fixedRateBond.yield(price, paymentDayCounter_, comp, frequency_, settlement, accuracy);
+            if (yield == 0.0) continue;
+            var modDuration =  BondFunctions.duration(fixedRateBond, yield, paymentDayCounter_,
+               comp, frequency_, Duration.Type.Modified, settlement);
+
+            cc.Add(new CallableCalcs(){CallDate = fixedRateBond.maturityDate(), CallPrice = call.price().amount() ,
+               CalcYield = yield, CalcModifiedDuration = modDuration});
+         }
+         return cc.ToArray();
+      }
+
+      public override CallableCalcs[] priceToCalls(Date settlement, double price)
+      {
+         var cc = new List<CallableCalcs>();
+         var bonds = GetCallableFixedRateBonds();
+         var calls = putCallSchedule_.ToList();
+
+         for (var i = 0; i < bonds.Length; i++)
+         {
+            var fixedRateBond = bonds[i];
+            var call = calls[i];
+            var comp = GetSecurityCompounding(fixedRateBond, CouponType.FixedRate, settlement);
+            var priceToCall = fixedRateBond.cleanPrice(price , paymentDayCounter_, comp,
+               frequency_, settlement);
+
+            cc.Add(new CallableCalcs(){CallDate = fixedRateBond.maturityDate(), CallPrice = call.price().amount() ,
+               CalcPrice = priceToCall});
+         }
+         return cc.ToArray();
+      }
+
+      private Bond[] GetCallableFixedRateBonds()
+      {
+         return (from call in putCallSchedule_
+               let fixedRateBondSchedule = mainSchedule_.until(call.date())
+               let fixedRateBondCoupons = coupons_.Take(mainSchedule_.size() - 1).ToList()
+               select new FixedRateBond(settlementDays_, faceAmount_, fixedRateBondSchedule, fixedRateBondCoupons,
+                  paymentDayCounter_, BusinessDayConvention.Unadjusted, call.price().amount(), issueDate_)).Cast<Bond>()
+            .ToArray();
       }
    }
 
