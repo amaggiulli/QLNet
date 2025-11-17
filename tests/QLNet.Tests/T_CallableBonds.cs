@@ -692,4 +692,51 @@ public class CallableBondsTests
                       + "    expected:       " + targetNPV + "\n"
                       + "    difference:     " + (bond.NPV() - targetNPV));
    }
+
+   [Fact]
+   public void testCallableCalcsWithKnownValues()
+   {
+      var settlementDate = new Date(27, 06, 2022);
+      Settings.setEvaluationDate(settlementDate);
+      var accrualDate = new Date(29,01,2020);
+      var maturityDate = new Date(01, 07, 2050);
+      var firstCouponDate = new Date(01, 07, 2020);
+      var calendar = new TARGET();
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var price = 110.096;
+      var accuracy = 1.0e-06;
+      var expectedYtm = 0.043715026855468755;
+      var expectedYtc1 = 0.03590721130371094;
+      var expectedYtc2 = 0.034762252807617189;
+      var expectedModDuration1 = 5.8830214161503545;
+      var expectedModDuration2 = 6.2283054674626808;
+
+
+      var sch = new Schedule( accrualDate, maturityDate, new Period(Frequency.Semiannual),
+         calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward,
+         false, firstCouponDate);
+
+      var callSchedule = new CallabilitySchedule
+      {
+         new Callability( new Bond.Price(101.7209999,Bond.Price.Type.Clean),Callability.Type.Call, new Date (31,07,2029)),
+         new Callability( new Bond.Price(100,Bond.Price.Type.Clean),Callability.Type.Call, new Date (31,01,2030))
+      };
+
+      var callableBond = new CallableFixedRateBond(0, 1000, sch, [0.05],dc,
+         BusinessDayConvention.Unadjusted, 100, accrualDate, callSchedule);
+
+      var ytm = callableBond.yield(price, dc, Compounding.Compounded, Frequency.Semiannual, settlementDate, accuracy);
+
+      var cc = callableBond.yieldToCalls(settlementDate, price, accuracy);
+
+      QAssert.AreEqual(expectedYtm, ytm);
+      QAssert.AreEqual(expectedYtc1, cc[0].CalcYield);
+      QAssert.AreEqual(expectedYtc2, cc[1].CalcYield);
+      QAssert.AreEqual(expectedModDuration1, cc[0].CalcModifiedDuration);
+      QAssert.AreEqual(expectedModDuration2, cc[1].CalcModifiedDuration);
+
+   }
+
+
+
 }
