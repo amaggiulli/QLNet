@@ -710,9 +710,10 @@ public class CallableBondsTests
       var expectedYtc2 = 0.034762252807617189;
       var expectedModDuration1 = 5.8830214161503545;
       var expectedModDuration2 = 6.2283054674626808;
+      var frequency = Frequency.Semiannual;
 
 
-      var sch = new Schedule( accrualDate, maturityDate, new Period(Frequency.Semiannual),
+      var sch = new Schedule( accrualDate, maturityDate, new Period(frequency),
          calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward,
          false, firstCouponDate);
 
@@ -727,7 +728,7 @@ public class CallableBondsTests
 
       var ytm = callableBond.yield(price, dc, Compounding.Compounded, Frequency.Semiannual, settlementDate, accuracy);
 
-      var cc = callableBond.yieldToCalls(settlementDate, price, accuracy);
+      var cc = callableBond.yieldToCalls(settlementDate, price, frequency, accuracy);
 
       QAssert.AreEqual(expectedYtm, ytm);
       QAssert.AreEqual(expectedYtc1, cc[0].CalcYield);
@@ -735,6 +736,38 @@ public class CallableBondsTests
       QAssert.AreEqual(expectedModDuration1, cc[0].CalcModifiedDuration);
       QAssert.AreEqual(expectedModDuration2, cc[1].CalcModifiedDuration);
 
+   }
+
+   [Fact]
+   public void testCallableCalcsZeroCouponWithKnownValues()
+   {
+      var settlementDate = new Date(22, 09, 2017);
+      Settings.setEvaluationDate(settlementDate);
+      var issueDate = new Date(29,01,2020);
+      var maturityDate = new Date(01, 08, 2030);
+      var calendar = new TARGET();
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var price = 48.349;
+      var accuracy = 1.0e-06;
+      var expectedYtm = 0.057324401855468748;
+      var expectedYtc = 0.01350558258056641;
+      var expectedModDuration = 3.8324535742169465;
+
+      var callSchedule = new CallabilitySchedule
+      {
+         new Callability( new Bond.Price(50.9262336,Bond.Price.Type.Clean),Callability.Type.Call, new Date (01,08,2021)),
+      };
+
+      var callableBond = new CallableZeroCouponBond(0, 1000, calendar, maturityDate,dc, BusinessDayConvention.Unadjusted , 100, null,
+        callSchedule);
+
+      var ytm = callableBond.yield(price, dc, Compounding.Compounded, Frequency.Semiannual, settlementDate, accuracy);
+
+      var cc = callableBond.yieldToCalls(settlementDate, price, Frequency.Semiannual, accuracy);
+
+      QAssert.AreEqual(expectedYtm, ytm);
+      QAssert.AreEqual(expectedYtc, cc[0].CalcYield);
+      QAssert.AreEqual(expectedModDuration, cc[0].CalcModifiedDuration);
    }
 
 
