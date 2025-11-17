@@ -694,7 +694,7 @@ public class CallableBondsTests
    }
 
    [Fact]
-   public void TestCallableCalcsWithKnownValues()
+   public void testCallableCalcsWithKnownValues()
    {
       var settlementDate = new Date(27, 06, 2022);
       Settings.setEvaluationDate(settlementDate);
