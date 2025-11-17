@@ -400,6 +400,7 @@ namespace QLNet
       /// </summary>
       /// <param name="settlement"></param>
       /// <param name="price"></param>
+      /// <param name="frequency"></param>
       /// <param name="accuracy"></param>
       /// <returns></returns>
       /// 
@@ -443,13 +444,14 @@ namespace QLNet
       /// </summary>
       /// <param name="settlement"></param>
       /// <param name="price"></param>
+      /// <param name="frequency"></param>
       /// <returns></returns>
-      public virtual CallableCalcs[] priceToCalls(Date settlement, double price)
+      public virtual CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
          throw new NotImplementedException("PriceToCall not implemented for the given bond");
       }
 
-      protected CallableCalcs[] priceToCallsInternal(Date settlement, double price, CouponType couponType)
+      protected CallableCalcs[] priceToCallsInternal(Date settlement, double price, CouponType couponType, Frequency frequency)
       {
          var cc = new List<CallableCalcs>();
          var bonds = GetCallableBonds(couponType);
@@ -461,7 +463,7 @@ namespace QLNet
             var call = calls[i];
             var comp = GetSecurityCompounding(bond,couponType, settlement);
             var priceToCall = bond.cleanPrice(price , paymentDayCounter_, comp,
-               frequency_, settlement);
+               frequency, settlement);
 
             cc.Add(new CallableCalcs(){CallDate = bond.maturityDate(), CallPrice = call.price().amount() ,
                CalcPrice = priceToCall});
@@ -739,9 +741,9 @@ namespace QLNet
          return yieldToCallsInternal(settlement, price, CouponType.FixedRate, frequency, accuracy);
       }
 
-      public override CallableCalcs[] priceToCalls(Date settlement, double price)
+      public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternal(settlement, price, CouponType.FixedRate);
+         return priceToCallsInternal(settlement, price, CouponType.FixedRate, frequency);
       }
    }
 
@@ -772,9 +774,9 @@ namespace QLNet
          return yieldToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
       }
 
-      public override CallableCalcs[] priceToCalls(Date settlement, double price)
+      public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternal(settlement, price, CouponType.ZeroCoupon);
+         return priceToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency);
       }
 
    }

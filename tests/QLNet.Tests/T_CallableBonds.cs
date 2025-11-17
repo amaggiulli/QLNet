@@ -694,7 +694,7 @@ public class CallableBondsTests
    }
 
    [Fact]
-   public void testCallableCalcsWithKnownValues()
+   public void testYieldToCallFixedRatesWithKnownValues()
    {
       var settlementDate = new Date(27, 06, 2022);
       Settings.setEvaluationDate(settlementDate);
@@ -739,11 +739,10 @@ public class CallableBondsTests
    }
 
    [Fact]
-   public void testCallableCalcsZeroCouponWithKnownValues()
+   public void testYieldToCallZeroCouponWithKnownValues()
    {
       var settlementDate = new Date(22, 09, 2017);
       Settings.setEvaluationDate(settlementDate);
-      var issueDate = new Date(29,01,2020);
       var maturityDate = new Date(01, 08, 2030);
       var calendar = new TARGET();
       var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
@@ -768,6 +767,31 @@ public class CallableBondsTests
       QAssert.AreEqual(expectedYtm, ytm);
       QAssert.AreEqual(expectedYtc, cc[0].CalcYield);
       QAssert.AreEqual(expectedModDuration, cc[0].CalcModifiedDuration);
+   }
+
+   [Fact]
+   public void testPriceToCallZeroCouponWithKnownValues()
+   {
+      var settlementDate = new Date(28, 09, 2017);
+      Settings.setEvaluationDate(settlementDate);
+      var maturityDate = new Date(15, 02, 2028);
+      var calendar = new TARGET();
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var price = 0.02423;
+      var accuracy = 1.0e-06;
+      var expectedPrice = 71.963680745821122;
+
+      var callSchedule = new CallabilitySchedule
+      {
+         new Callability( new Bond.Price(79.9710438,Bond.Price.Type.Clean),Callability.Type.Call, new Date (15,02,2022)),
+      };
+
+      var callableBond = new CallableZeroCouponBond(0, 1000, calendar, maturityDate,dc, BusinessDayConvention.Unadjusted , 100, null,
+         callSchedule);
+
+      var pp = callableBond.priceToCalls(settlementDate, price, Frequency.Semiannual);
+
+      QAssert.AreEqual(expectedPrice, pp[0].CalcPrice);
    }
 
 
