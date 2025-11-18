@@ -421,6 +421,8 @@ namespace QLNet
          {
             var bond = bonds[i];
             var call = calls[i];
+            // Skip not tradable bonds
+            if (bond.maturityDate() <= settlement) continue;
             var comp = GetSecurityCompounding(bond, couponType, settlement);
             var yield = bond.yield(price, paymentDayCounter_, comp, frequency, settlement, accuracy);
             if (yield == 0.0) continue;
@@ -461,6 +463,8 @@ namespace QLNet
          {
             var bond = bonds[i];
             var call = calls[i];
+            // Skip not tradable bonds
+            if (bond.maturityDate() <= settlement) continue;
             var comp = GetSecurityCompounding(bond,couponType, settlement);
             var priceToCall = bond.cleanPrice(price , paymentDayCounter_, comp,
                frequency, settlement);
