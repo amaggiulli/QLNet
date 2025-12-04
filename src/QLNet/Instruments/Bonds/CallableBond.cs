@@ -424,18 +424,30 @@ namespace QLNet
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
             var comp = GetSecurityCompounding(bond, couponType, settlement);
-            var yield = bond.yield(price, paymentDayCounter_, comp, frequency, settlement, accuracy);
-            if (yield == 0.0) continue;
-            var modDuration = BondFunctions.duration(bond, yield, paymentDayCounter_,
-               comp, frequency, Duration.Type.Modified, settlement);
-
-            cc.Add(new CallableCalcs()
+            try 
             {
-               CallDate = bond.maturityDate(),
-               CallPrice = call.price().amount(),
-               CalcYield = yield,
-               CalcModifiedDuration = modDuration
-            });
+               var yield = bond.yield(price, paymentDayCounter_, comp, frequency, settlement, accuracy);
+               if (yield == 0.0) continue;
+               var modDuration = BondFunctions.duration(bond, yield, paymentDayCounter_,
+                  comp, frequency, Duration.Type.Modified, settlement);
+
+               cc.Add(new CallableCalcs()
+               {
+                  CallDate = bond.maturityDate(),
+                  CallPrice = call.price().amount(),
+                  CalcYield = yield,
+                  CalcModifiedDuration = modDuration
+               });
+            }
+            catch (Exception ex)
+            {
+               cc.Add(new CallableCalcs()
+               {
+                  CallDate = bond.maturityDate(),
+                  CallPrice = call.price().amount(),
+                  ErrorMessage = ex.Message,
+               });
+            }
          }
          return cc.ToArray();
       }
@@ -466,11 +478,25 @@ namespace QLNet
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
             var comp = GetSecurityCompounding(bond,couponType, settlement);
-            var priceToCall = bond.cleanPrice(price , paymentDayCounter_, comp,
-               frequency, settlement);
+            try
+            {
+               var priceToCall = bond.cleanPrice(price, paymentDayCounter_, comp,
+                  frequency, settlement);
 
-            cc.Add(new CallableCalcs(){CallDate = bond.maturityDate(), CallPrice = call.price().amount() ,
-               CalcPrice = priceToCall});
+               cc.Add(new CallableCalcs()
+               {
+                  CallDate = bond.maturityDate(), CallPrice = call.price().amount(),
+                  CalcPrice = priceToCall
+               });
+            }
+            catch (Exception ex)
+            {
+               cc.Add(new CallableCalcs()
+               {
+                  CallDate = bond.maturityDate(), CallPrice = call.price().amount(),
+                  ErrorMessage = ex.Message
+               });
+            }
          }
          return cc.ToArray();
       }
@@ -706,6 +732,7 @@ namespace QLNet
          public double? CalcYield { get; set; }
          public double? CalcPrice { get; set; }
          public double? CalcModifiedDuration { get; set; }
+         public string ErrorMessage { get; set; }
       }
    }
 

@@ -778,7 +778,6 @@ public class CallableBondsTests
       var calendar = new TARGET();
       var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
       var price = 0.02423;
-      var accuracy = 1.0e-06;
       var expectedPrice = 71.963680745821122;
 
       var callSchedule = new CallabilitySchedule
