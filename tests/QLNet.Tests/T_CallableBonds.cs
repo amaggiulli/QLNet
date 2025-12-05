@@ -17,12 +17,13 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using QLNet;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Xunit;
 using Xunit.Priority;
-using QLNet;
 
 namespace TestSuite;
 
@@ -30,10 +31,12 @@ namespace TestSuite;
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 public class CallableBondsTests
 {
+   private readonly double _tolerance = 1.0e-3;
+
    public class Globals
    {
       public Date today, settlement;
-      public Calendar calendar;
+      public QLNet.Calendar calendar;
       public DayCounter dayCounter;
       public BusinessDayConvention rollingConvention;
 
@@ -793,6 +796,55 @@ public class CallableBondsTests
       QAssert.AreEqual(expectedPrice, pp[0].CalcPrice);
    }
 
+   [Theory]
+   [InlineData(0, CallableBond.CouponType.ZeroCoupon, "06/01/2061", "09/08/2017", 3.7101424, "02/07/2006", 1.5307142, 7.7, "10/13/2017", 3, 8.2, null, 8.2, null)]
+   [InlineData(5, CallableBond.CouponType.FixedRate, "07/01/2060", "07/01/2025", 100d, "09/09/2015", 103.2828783, 4.58, "10/13/2017", 111.7, 4.391, 3.272, 3.272, null)]
+   [InlineData(5, CallableBond.CouponType.FixedRate, "10/01/2021", "10/01/2020", 100d, "04/21/2010", 114.91, 3.3, "09/07/2018", 106.709, 2.705, 1.683, 1.683, 21.666)]
+   public void testYieldAt(double coupon, CallableBond.CouponType couponType, string MaturityDate, string NextCallDate, double? nextCallPrice,
+                           string AccrualDate, double? originalPrice, decimal originalYield,
+                           string SettlementDate, double price, double expectedYTM, double? expectedYTC,
+                           double expectedYTW, double? expectedAccruedInterest)
+   {
+      var settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+      Settings.setEvaluationDate(settlementDate);
+      Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+      Date accrualDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+      var nextCallDate = new Date();
+      if (NextCallDate != "") nextCallDate = Convert.ToDateTime(NextCallDate, new CultureInfo("en-US"));
+      var calendar = new TARGET();
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var frequency = Frequency.Semiannual;
+      var accuracy = 1.0e-06;
+      CallableBond callableBond = null;
 
+      var callSchedule = new CallabilitySchedule
+      {
+         new Callability( new Bond.Price(nextCallPrice.GetValueOrDefault(),Bond.Price.Type.Clean),Callability.Type.Call, nextCallDate),
+      };
 
+      if ( couponType == CallableBond.CouponType.FixedRate)
+      {
+         var sch = new Schedule( accrualDate, maturityDate, new Period(frequency), calendar, BusinessDayConvention.Unadjusted,
+            BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false, null);
+
+         callableBond = new CallableFixedRateBond(0, 1000, sch, [coupon/100], dc, BusinessDayConvention.Unadjusted,
+            100, accrualDate, callSchedule);
+      }
+      else
+      {
+         callableBond = new CallableZeroCouponBond(0, 1000, calendar, maturityDate,dc, BusinessDayConvention.Unadjusted,
+            100, null, callSchedule);
+      }
+
+      var yieldToMaturity = callableBond.yieldAt(settlementDate, price, frequency, accuracy) * 100;
+
+      QAssert.IsTrue(Math.Abs(yieldToMaturity - expectedYTM) <= _tolerance,
+         $"testYieldAt: YTM calculation failed, expected: {expectedYTM}, calculated: {yieldToMaturity}");
+
+      var yieldToCall = callableBond.yieldAt(settlementDate, price, frequency, accuracy, nextCallDate, nextCallPrice) * 100;
+
+      QAssert.IsTrue(Math.Abs(yieldToCall - expectedYTC.GetValueOrDefault()) <= _tolerance,
+         $"testYieldAt: YTC calculation failed, expected: {expectedYTC}, calculated: {yieldToCall}");
+
+   }
 }
