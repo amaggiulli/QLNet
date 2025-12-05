@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2023  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -474,6 +474,46 @@ namespace QLNet
          }
          return cc.ToArray();
       }
+
+      public virtual double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
+         Date? maturityDate = null, double? redemption = null)
+      {
+
+         throw new NotImplementedException("yieldToDate not implemented for the given bond");
+      }
+
+      protected double yieldAtInternal(CouponType couponType, Date settlementDate, double price, Frequency frequency,
+         double accuracy, Date? maturityDate = null, double? redemption = null)
+      {
+         Bond bond = this;
+         if (maturityDate != null && redemption is > 0)
+         {
+            bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
+         }
+
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+         return bond.yield(price, paymentDayCounter_, comp, frequency, settlementDate, accuracy);
+      }
+
+      public virtual double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency)
+      {
+
+         throw new NotImplementedException("yieldToDate not implemented for the given bond");
+      }
+
+      protected double priceAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency)
+      {
+         Bond bond = this;
+         if (maturityDate != null && redemption is > 0)
+         {
+            bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
+         }
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+         return bond.cleanPrice(yield, paymentDayCounter_, comp, frequency, settlementDate);
+      }
+
       /// <summary>
       /// helper class for Black implied volatility calculation
       /// </summary>
@@ -666,24 +706,31 @@ namespace QLNet
          for (var i = 0; i < putCallSchedule_.Count; i++)
          {
             var call = putCallSchedule_[i];
-            if (couponType == CouponType.FixedRate)
-            {
-               var fixedRateBondSchedule = mainSchedule_.until(call.date());
-               var fixedRateBondCoupons = coupons_.Take(mainSchedule_.size() - 1).ToList();
-               var bond = new FixedRateBond(settlementDays_, faceAmount_, fixedRateBondSchedule, fixedRateBondCoupons,
-                  paymentDayCounter_, BusinessDayConvention.Unadjusted, call.price().amount(), issueDate_);
-               bonds.Add(bond);
-            }
-            else
-            {
-               var bond = new ZeroCouponBond(settlementDays_, calendar_, faceAmount_, call.date(),
-                  BusinessDayConvention.Unadjusted, call.price().amount(), issueDate_);
-               bonds.Add(bond);
-            }
+            var bond = CreateFixedRateBond(call.date(), call.price().amount(), couponType);
+            bonds.Add(bond);
            
          }
          return bonds.ToArray();
       }
+
+      protected Bond CreateFixedRateBond (Date maturityDate, double redemption, CouponType couponType)
+      {
+         if (couponType == CouponType.FixedRate)
+         {
+            var fixedRateBondSchedule = mainSchedule_.until(maturityDate);
+            var fixedRateBondCoupons = coupons_.Take(mainSchedule_.size() - 1).ToList();
+            var bond = new FixedRateBond(settlementDays_, faceAmount_, fixedRateBondSchedule, fixedRateBondCoupons,
+               paymentDayCounter_, BusinessDayConvention.Unadjusted, redemption, issueDate_);
+            return bond;
+         }
+         else
+         {
+            var bond = new ZeroCouponBond(settlementDays_, calendar_, faceAmount_, maturityDate,
+               BusinessDayConvention.Unadjusted, redemption, issueDate_);
+            return bond;
+         }
+      }
+
       protected Compounding GetSecurityCompounding(Bond bond, CouponType couponType, DateTime settlementDate)
       {
          if (bond.nextCashFlowDate(settlementDate) == bond.maturityDate())
@@ -697,7 +744,7 @@ namespace QLNet
          return Compounding.Compounded;
       }
 
-      protected enum CouponType {FixedRate, ZeroCoupon}
+      public enum CouponType {FixedRate, ZeroCoupon}
 
       public class CallableCalcs
       {
@@ -749,6 +796,12 @@ namespace QLNet
       {
          return priceToCallsInternal(settlement, price, CouponType.FixedRate, frequency);
       }
+
+      public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
+         Date? maturityDate = null, double? redemption = null)
+      {
+         return yieldAtInternal(CouponType.FixedRate, settlementDate,price,frequency,accuracy, maturityDate, redemption);
+      }
    }
 
    /// <summary>
@@ -783,6 +836,11 @@ namespace QLNet
          return priceToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency);
       }
 
+      public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
+         Date? maturityDate, double? redemption = null)
+      {
+         return yieldAtInternal(CouponType.ZeroCoupon, settlementDate,price,frequency,accuracy, maturityDate, redemption);
+      }
    }
 
 }
