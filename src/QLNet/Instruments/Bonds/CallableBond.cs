@@ -68,6 +68,7 @@ namespace QLNet
          {
             finalOptionDate = Date.Max(finalOptionDate, t.date());
          }
+
          Utils.QL_REQUIRE(finalOptionDate <= maturityDate_, () => "Bond cannot mature before last call/put date");
 
          // derived classes must set cashflows_ and frequency_
@@ -106,6 +107,7 @@ namespace QLNet
                   return 0.0;
             }
          }
+
          return 0.0;
       }
 
@@ -127,7 +129,7 @@ namespace QLNet
          arguments.couponDates = new List<Date>(cfs.Count - 1);
          arguments.couponAmounts = new List<double>(cfs.Count - 1);
 
-         for (int i = 0; i < cfs.Count ; i++)
+         for (int i = 0; i < cfs.Count; i++)
          {
             if (!cfs[i].hasOccurred(settlement, false))
             {
@@ -159,7 +161,8 @@ namespace QLNet
                      price = clean price. Use here because callability is
                      always applied before coupon in the tree engine.
                   */
-                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] += accrued(putCallSchedule_[i].date());
+                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] +=
+                     accrued(putCallSchedule_[i].date());
                }
             }
          }
@@ -190,7 +193,7 @@ namespace QLNet
       public double impliedVolatility(Bond.Price targetPrice, Handle<YieldTermStructure> discountCurve,
          double accuracy, int maxEvaluations, double minVol, double maxVol)
       {
-         Utils.QL_REQUIRE(!isExpired(),()=> "instrument expired");
+         Utils.QL_REQUIRE(!isExpired(), () => "instrument expired");
 
          double dirtyTargetPrice = default;
          switch (targetPrice.type())
@@ -231,11 +234,11 @@ namespace QLNet
       /// <returns></returns>
       [Obsolete]
       public double impliedVolatility(double targetValue,
-                                      Handle<YieldTermStructure> discountCurve,
-                                      double accuracy,
-                                      int maxEvaluations,
-                                      double minVol,
-                                      double maxVol)
+         Handle<YieldTermStructure> discountCurve,
+         double accuracy,
+         int maxEvaluations,
+         double minVol,
+         double maxVol)
       {
          Utils.QL_REQUIRE(!isExpired(), () => "instrument expired");
          double guess = 0.5 * (minVol + maxVol);
@@ -264,14 +267,14 @@ namespace QLNet
       /// <param name="guess"></param>
       /// <returns></returns>
       public double OAS(double cleanPrice,
-                        Handle<YieldTermStructure> engineTS,
-                        DayCounter dayCounter,
-                        Compounding compounding,
-                        Frequency frequency,
-                        Date settlement = null,
-                        double accuracy = 1.0e-10,
-                        int maxIterations = 100,
-                        double guess = 0.0)
+         Handle<YieldTermStructure> engineTS,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency,
+         Date settlement = null,
+         double accuracy = 1.0e-10,
+         int maxIterations = 100,
+         double guess = 0.0)
       {
          if (settlement == null)
             settlement = settlementDate();
@@ -288,11 +291,11 @@ namespace QLNet
          double oas = solver.solve(obj, accuracy, guess, step);
 
          return continuousToConv(oas,
-                                 this,
-                                 engineTS,
-                                 dayCounter,
-                                 compounding,
-                                 frequency);
+            this,
+            engineTS,
+            dayCounter,
+            compounding,
+            frequency);
       }
 
       /// <summary>
@@ -308,11 +311,11 @@ namespace QLNet
       /// <param name="settlement"></param>
       /// <returns></returns>
       public double cleanPriceOAS(double oas,
-                                  Handle<YieldTermStructure> engineTS,
-                                  DayCounter dayCounter,
-                                  Compounding compounding,
-                                  Frequency frequency,
-                                  Date settlement = null)
+         Handle<YieldTermStructure> engineTS,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency,
+         Date settlement = null)
       {
          if (settlement == null)
             settlement = settlementDate();
@@ -342,11 +345,11 @@ namespace QLNet
       /// <param name="bump"></param>
       /// <returns></returns>
       public double effectiveDuration(double oas,
-                                      Handle<YieldTermStructure> engineTS,
-                                      DayCounter dayCounter,
-                                      Compounding compounding,
-                                      Frequency frequency,
-                                      double bump = 2e-4)
+         Handle<YieldTermStructure> engineTS,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency,
+         double bump = 2e-4)
       {
          double P = cleanPriceOAS(oas, engineTS, dayCounter, compounding, frequency);
 
@@ -376,11 +379,11 @@ namespace QLNet
       /// <param name="bump"></param>
       /// <returns></returns>
       public double effectiveConvexity(double oas,
-                                       Handle<YieldTermStructure> engineTS,
-                                       DayCounter dayCounter,
-                                       Compounding compounding,
-                                       Frequency frequency,
-                                       double bump = 2e-4)
+         Handle<YieldTermStructure> engineTS,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency,
+         double bump = 2e-4)
       {
          double P = cleanPriceOAS(oas, engineTS, dayCounter, compounding, frequency);
 
@@ -424,7 +427,7 @@ namespace QLNet
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
             var comp = GetSecurityCompounding(bond, couponType, settlement);
-            try 
+            try
             {
                var yield = bond.yield(price, paymentDayCounter_, comp, frequency, settlement, accuracy);
                if (yield == 0.0) continue;
@@ -449,6 +452,7 @@ namespace QLNet
                });
             }
          }
+
          return cc.ToArray();
       }
 
@@ -465,7 +469,8 @@ namespace QLNet
          throw new NotImplementedException("PriceToCall not implemented for the given bond");
       }
 
-      protected CallableCalcs[] priceToCallsInternal(Date settlement, double price, CouponType couponType, Frequency frequency)
+      protected CallableCalcs[] priceToCallsInternal(Date settlement, double price, CouponType couponType,
+         Frequency frequency)
       {
          var cc = new List<CallableCalcs>();
          var bonds = GetCallableBonds(couponType);
@@ -477,7 +482,7 @@ namespace QLNet
             var call = calls[i];
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
-            var comp = GetSecurityCompounding(bond,couponType, settlement);
+            var comp = GetSecurityCompounding(bond, couponType, settlement);
             try
             {
                var priceToCall = bond.cleanPrice(price, paymentDayCounter_, comp,
@@ -498,13 +503,13 @@ namespace QLNet
                });
             }
          }
+
          return cc.ToArray();
       }
 
       public virtual double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
          Date? maturityDate = null, double? redemption = null)
       {
-
          throw new NotImplementedException("yieldToDate not implemented for the given bond");
       }
 
@@ -528,7 +533,8 @@ namespace QLNet
          throw new NotImplementedException("yieldToDate not implemented for the given bond");
       }
 
-      protected double priceAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      protected double priceAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate,
+         double? redemption, double yield,
          Frequency frequency)
       {
          Bond bond = this;
@@ -536,8 +542,31 @@ namespace QLNet
          {
             bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
          }
+
          var comp = GetSecurityCompounding(bond, couponType, settlementDate);
          return bond.cleanPrice(yield, paymentDayCounter_, comp, frequency, settlementDate);
+      }
+
+      public virtual double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency, Duration.Type durationType)
+      {
+
+         throw new NotImplementedException("yieldToDate not implemented for the given bond");
+      }
+
+      protected double durationAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate,
+         double? redemption, double yield,
+         Frequency frequency, Duration.Type durationType)
+      {
+         Bond bond = this;
+         if (maturityDate != null && redemption is > 0)
+         {
+            bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
+         }
+
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+
+         return BondFunctions.duration(bond, yield, paymentDayCounter_, comp, frequency, durationType, settlementDate);
       }
 
       /// <summary>
@@ -545,7 +574,8 @@ namespace QLNet
       /// </summary>
       protected class ImpliedVolHelper : ISolver1d
       {
-         public ImpliedVolHelper(CallableBond bond, Handle<YieldTermStructure> discountCurve, double targetValue, bool matchNPV)
+         public ImpliedVolHelper(CallableBond bond, Handle<YieldTermStructure> discountCurve, double targetValue,
+            bool matchNPV)
          {
             targetValue_ = targetValue;
             matchNPV_ = matchNPV;
@@ -556,6 +586,7 @@ namespace QLNet
             bond.setupArguments(engine_.getArguments());
             results_ = engine_.getResults() as CallableBond.Results;
          }
+
          public override double value(double x)
          {
             vol_.setValue(x);
@@ -582,11 +613,12 @@ namespace QLNet
             results_ = bond.engine_.getResults() as Instrument.Results;
             bond.setupArguments(bond.engine_.getArguments());
          }
+
          public double value(double x)
          {
             var args = bond_.engine_.getArguments() as CallableBond.Arguments;
             // Pops the original value when function finishes
-            double originalSpread =  args.spread;
+            double originalSpread = args.spread;
             args.spread = x;
             bond_.engine_.calculate();
             args.spread = originalSpread;
@@ -619,16 +651,21 @@ namespace QLNet
       {
          public List<Date> couponDates { get; set; }
          public List<double> couponAmounts { get; set; }
+
          public double faceAmount { get; set; }
+
          // redemption = face amount * redemption / 100.
          public double redemption { get; set; }
          public Date redemptionDate { get; set; }
          public DayCounter paymentDayCounter { get; set; }
          public Frequency frequency { get; set; }
+
          public CallabilitySchedule putCallSchedule { get; set; }
+
          //! bond full/dirty/cash prices
          public List<double> callabilityPrices { get; set; }
          public List<Date> callabilityDates { get; set; }
+
          /// <summary>
          /// Spread to apply to the valuation.
          /// <remarks>
@@ -643,8 +680,10 @@ namespace QLNet
          {
             Utils.QL_REQUIRE(settlementDate != null, () => "null settlement date");
             Utils.QL_REQUIRE(redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed");
-            Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count, () => "different number of callability dates and prices");
-            Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count, () => "different number of coupon dates and amounts");
+            Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count,
+               () => "different number of callability dates and prices");
+            Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count,
+               () => "different number of coupon dates and amounts");
          }
       }
 
@@ -659,7 +698,9 @@ namespace QLNet
       /// <summary>
       /// base class for callable fixed rate bond engine
       /// </summary>
-      public new class Engine : GenericEngine<CallableBond.Arguments, CallableBond.Results> { }
+      public new class Engine : GenericEngine<CallableBond.Arguments, CallableBond.Results>
+      {
+      }
 
       /// <summary>
       /// Convert a continuous spread to a conventional spread to a
@@ -673,21 +714,25 @@ namespace QLNet
       /// <param name="frequency"></param>
       /// <returns></returns>
       private double continuousToConv(double oas,
-                                      Bond b,
-                                      Handle<YieldTermStructure> yts,
-                                      DayCounter dayCounter,
-                                      Compounding compounding,
-                                      Frequency frequency)
+         Bond b,
+         Handle<YieldTermStructure> yts,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency)
       {
-         double zz = yts.link.zeroRate(b.maturityDate(), dayCounter, Compounding.Continuous, Frequency.NoFrequency).value();
+         double zz = yts.link.zeroRate(b.maturityDate(), dayCounter, Compounding.Continuous, Frequency.NoFrequency)
+            .value();
 
          InterestRate baseRate = new InterestRate(zz, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
 
-         InterestRate spreadedRate = new InterestRate(oas + zz, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+         InterestRate spreadedRate =
+            new InterestRate(oas + zz, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
 
-         double br = baseRate.equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
+         double br = baseRate
+            .equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
 
-         double sr = spreadedRate.equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
+         double sr = spreadedRate
+            .equivalentRate(dayCounter, compounding, frequency, yts.link.referenceDate(), b.maturityDate()).rate();
 
          // Return the spread
          return sr - br;
@@ -705,21 +750,23 @@ namespace QLNet
       /// <param name="frequency"></param>
       /// <returns></returns>
       private double convToContinuous(double oas,
-                                      Bond b,
-                                      Handle<YieldTermStructure> yts,
-                                      DayCounter dayCounter,
-                                      Compounding compounding,
-                                      Frequency frequency)
+         Bond b,
+         Handle<YieldTermStructure> yts,
+         DayCounter dayCounter,
+         Compounding compounding,
+         Frequency frequency)
       {
          double zz = yts.link.zeroRate(b.maturityDate(), dayCounter, compounding, frequency).value();
 
          InterestRate baseRate = new InterestRate(zz, dayCounter, compounding, frequency);
 
-         InterestRate spreadedRate  = new InterestRate(oas + zz, dayCounter, compounding, frequency);
+         InterestRate spreadedRate = new InterestRate(oas + zz, dayCounter, compounding, frequency);
 
-         double br = baseRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency, yts.link.referenceDate(), b.maturityDate()).rate();
+         double br = baseRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency,
+            yts.link.referenceDate(), b.maturityDate()).rate();
 
-         double sr = spreadedRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency, yts.link.referenceDate(), b.maturityDate()).rate();
+         double sr = spreadedRate.equivalentRate(dayCounter, Compounding.Continuous, Frequency.NoFrequency,
+            yts.link.referenceDate(), b.maturityDate()).rate();
 
          // Return the spread
          return sr - br;
@@ -734,12 +781,13 @@ namespace QLNet
             var call = putCallSchedule_[i];
             var bond = CreateFixedRateBond(call.date(), call.price().amount(), couponType);
             bonds.Add(bond);
-           
+
          }
+
          return bonds.ToArray();
       }
 
-      protected Bond CreateFixedRateBond (Date maturityDate, double redemption, CouponType couponType)
+      protected Bond CreateFixedRateBond(Date maturityDate, double redemption, CouponType couponType)
       {
          if (couponType == CouponType.FixedRate)
          {
@@ -761,16 +809,21 @@ namespace QLNet
       {
          if (bond.nextCashFlowDate(settlementDate) == bond.maturityDate())
          {
-            if (couponType is not CouponType.ZeroCoupon) 
+            if (couponType is not CouponType.ZeroCoupon)
                return Compounding.Simple;
 
             if ((Date)settlementDate + new Period(Frequency.Semiannual) >= bond.maturityDate())
                return Compounding.Simple;
          }
+
          return Compounding.Compounded;
       }
 
-      public enum CouponType {FixedRate, ZeroCoupon}
+      public enum CouponType
+      {
+         FixedRate,
+         ZeroCoupon
+      }
 
       public class CallableCalcs
       {
@@ -814,7 +867,8 @@ namespace QLNet
          addRedemptionsToCashflows([redemption]);
       }
 
-      public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency, double accuracy = 1.0e-10)
+      public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
+         double accuracy = 1.0e-10)
       {
          return yieldToCallsInternal(settlement, price, CouponType.FixedRate, frequency, accuracy);
       }
@@ -827,8 +881,23 @@ namespace QLNet
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
          Date? maturityDate = null, double? redemption = null)
       {
-         return yieldAtInternal(CouponType.FixedRate, settlementDate,price,frequency,accuracy, maturityDate, redemption);
+         return yieldAtInternal(CouponType.FixedRate, settlementDate, price, frequency, accuracy, maturityDate,
+            redemption);
       }
+
+      public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency)
+      {
+         return priceAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency);
+      }
+
+      public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency, Duration.Type durationType)
+      {
+         return durationAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency,
+            durationType);
+      }
+
    }
 
    /// <summary>
@@ -853,7 +922,8 @@ namespace QLNet
          setSingleRedemption(faceAmount, redemption, redemptionDate);
       }
 
-      public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency, double accuracy = 1.0e-10)
+      public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
+         double accuracy = 1.0e-10)
       {
          return yieldToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
       }
@@ -866,8 +936,22 @@ namespace QLNet
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
          Date? maturityDate, double? redemption = null)
       {
-         return yieldAtInternal(CouponType.ZeroCoupon, settlementDate,price,frequency,accuracy, maturityDate, redemption);
+         return yieldAtInternal(CouponType.ZeroCoupon, settlementDate, price, frequency, accuracy, maturityDate,
+            redemption);
       }
-   }
 
+      public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency)
+      {
+         return priceAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency);
+      }
+
+      public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+         Frequency frequency, Duration.Type durationType)
+      {
+         return durationAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency,
+            durationType);
+      }
+
+   }
 }
