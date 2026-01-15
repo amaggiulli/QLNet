@@ -6,6 +6,21 @@ QLNet is a financial library written in C# derived primarily from its C++ counte
 which has been used as a base reference for modelling various financial instruments.
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
+## Library Overview Presentation
+
+📊 **[QLNet_Library_Overview.pptx](QLNet_Library_Overview.pptx)** - A comprehensive PowerPoint presentation providing a high-level overview of QLNet's capabilities and utility code available to users.
+
+The presentation covers:
+- Financial instruments (150+ instruments: Options, Bonds, Swaps, Derivatives)
+- Pricing engines (70+ engines: Analytical, Monte Carlo, Tree-based, Finite Differences)
+- Mathematical infrastructure (100+ utilities: Interpolation, Optimization, Solvers, Distributions)
+- Interest rate & volatility models (Hull-White, Heston, LIBOR Market Model)
+- Term structures and curve construction
+- Utility code and helper functions
+- Special features (MBS, Callable Bonds, Credit Products)
+
+See [PRESENTATION_README.md](PRESENTATION_README.md) for detailed slide-by-slide description.
+
 [![Build status](https://ci.appveyor.com/api/projects/status/nn0a2mw6qu8mg481?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet-p0t4r)
 [![NuGet](https://img.shields.io/nuget/vpre/QLNet?style=flat-square)](https://www.nuget.org/packages/QLNet)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
