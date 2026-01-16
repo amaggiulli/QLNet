@@ -417,7 +417,7 @@ namespace QLNet
          Frequency frequency, double accuracy = 1.0e-10)
       {
          var cc = new List<CallableCalcs>();
-         var bonds = GetCallableBonds(couponType);
+         var bonds = GetCallableBonds(couponType,settlement);
          var calls = putCallSchedule_.ToList();
 
          for (var i = 0; i < bonds.Length; i++)
@@ -473,7 +473,7 @@ namespace QLNet
          Frequency frequency)
       {
          var cc = new List<CallableCalcs>();
-         var bonds = GetCallableBonds(couponType);
+         var bonds = GetCallableBonds(couponType,settlement);
          var calls = putCallSchedule_.ToList();
 
          for (var i = 0; i < bonds.Length; i++)
@@ -772,13 +772,14 @@ namespace QLNet
          return sr - br;
       }
 
-      protected Bond[] GetCallableBonds(CouponType couponType)
+      protected Bond[] GetCallableBonds(CouponType couponType, Date settlementDate)
       {
          var bonds = new List<Bond>();
          var calls = putCallSchedule_.ToList();
          for (var i = 0; i < putCallSchedule_.Count; i++)
          {
             var call = putCallSchedule_[i];
+            if (call.date() <= settlementDate) continue;
             var bond = CreateFixedRateBond(call.date(), call.price().amount(), couponType);
             bonds.Add(bond);
 
