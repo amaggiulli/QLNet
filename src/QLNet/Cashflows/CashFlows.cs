@@ -240,6 +240,10 @@ namespace QLNet
          private bool includeSettlementDateFlows_;
          private Date settlementDate_, npvDate_;
 
+         // INSTRUMENTATION: Track iterations and timing
+         private int iterationCount_ = 0;
+         private System.Diagnostics.Stopwatch npvStopwatch_ = new System.Diagnostics.Stopwatch();
+
          public IrrFinder(Leg leg, double npv, DayCounter dayCounter, Compounding comp, Frequency freq,
                           bool includeSettlementDateFlows, Date settlementDate, Date npvDate)
          {
@@ -263,10 +267,20 @@ namespace QLNet
 
          public override double value(double y)
          {
+            // INSTRUMENTATION: Track iteration count and NPV calculation time
+            iterationCount_++;
+            npvStopwatch_.Start();
+
             InterestRate yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
             double NPV = CashFlows.npv(leg_, yield, includeSettlementDateFlows_, settlementDate_, npvDate_);
+
+            npvStopwatch_.Stop();
             return npv_ - NPV;
          }
+
+         // INSTRUMENTATION: Expose diagnostics
+         public int IterationCount => iterationCount_;
+         public long TotalNpvMicroseconds => npvStopwatch_.ElapsedTicks * 1000000 / System.Diagnostics.Stopwatch.Frequency;
 
          public override double derivative(double y)
          {
@@ -937,13 +951,35 @@ namespace QLNet
                                  bool includeSettlementDateFlows, Date settlementDate = null, Date npvDate = null,
                                  double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
       {
+         // INSTRUMENTATION: Track overall solve time
+         var overallStopwatch = System.Diagnostics.Stopwatch.StartNew();
+
          NewtonSafe solver = new NewtonSafe();
          solver.setMaxEvaluations(maxIterations);
          IrrFinder objFunction = new IrrFinder(leg, npv,
                                                dayCounter, compounding, frequency,
                                                includeSettlementDateFlows,
                                                settlementDate, npvDate);
-         return solver.solve(objFunction, accuracy, guess, guess / 10.0);
+
+         double result = solver.solve(objFunction, accuracy, guess, guess / 10.0);
+
+         overallStopwatch.Stop();
+
+         // INSTRUMENTATION: Calculate maturity for logging
+         Date settlement = settlementDate ?? Settings.evaluationDate();
+         Date maturity = leg.Count > 0 ? leg[leg.Count - 1].date() : settlement;
+         double maturityYears = (maturity - settlement) / 365.25;
+         int cashflowCount = leg.Count;
+
+         // INSTRUMENTATION: Output diagnostics
+         long totalMicroseconds = overallStopwatch.ElapsedTicks * 1000000 / System.Diagnostics.Stopwatch.Frequency;
+         System.Console.WriteLine($"[PROFILE] Cashflows: {cashflowCount,3}, Maturity: {maturityYears,5:F1}y, " +
+                                  $"Iterations: {objFunction.IterationCount,3}, " +
+                                  $"NPV time: {objFunction.TotalNpvMicroseconds,6}μs, " +
+                                  $"Total: {totalMicroseconds,6}μs, " +
+                                  $"Avg per iter: {(objFunction.IterationCount > 0 ? objFunction.TotalNpvMicroseconds / objFunction.IterationCount : 0),5:F1}μs");
+
+         return result;
       }
 
       //! Cash-flow duration.
