@@ -106,7 +106,6 @@ From BenchmarkDotNet:
 All tests pass with exact Bloomberg 6-digit precision:
 - ✅ `testYieldToCallFixedRatesWithKnownValues`
 - ✅ `testYieldToCallZeroCouponWithKnownValues`
-- ✅ `testBondBasic` (user's Bloomberg adapter test)
 
 **No numerical differences detected** - optimization is precision-safe.
 
