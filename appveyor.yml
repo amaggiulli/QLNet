@@ -128,7 +128,7 @@
     - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release
   after_test:
     - cmd: echo Running performance benchmarks...
-    - cmd: cd tests\QLNet.Benchmarks && dotnet run -c Release -- --job Short --exporters json,markdown
+    - cmd: cd tests\QLNet.Benchmarks && dotnet run -c Release -- --job Short --exporters json markdown html
     - cmd: cd ..\..
   artifacts:
     - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.json

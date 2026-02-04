@@ -31,7 +31,7 @@ public class BondYieldBenchmarks
     public void IterationSetup()
     {
         // Find the current batch
-        var currentBatch = _batches.First(b => b.BatchName == BatchName);
+        var currentBatch = _batches!.First(b => b.BatchName == BatchName);
 
         // Pre-construct all bonds for this batch
         _bonds = new List<(Bond, double, DayCounter, Compounding, Frequency, Date)>();
