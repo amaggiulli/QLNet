@@ -1,8 +1,8 @@
 # Resume Optimization Session - Quick Start Guide
 
-**Last Updated**: February 3, 2026 - End of Day 1
+**Last Updated**: February 4, 2026
 **Branch**: `feature/GH-310-optimize-longterm`
-**Current Status**: Tasks 1.1 and 1.3 Complete, Ready for Task 1.2
+**Current Status**: Task 1.1 Complete, Task 1.3 SKIPPED, Ready for Task 1.2
 
 ---
 
@@ -15,7 +15,7 @@
 - Added instrumentation to track iterations and timing
 - Collected 18,000 profiling data points
 - **Key Finding**: Bottleneck is NPV calculation (scales linearly with cashflows)
-- Iteration count is consistent (~35), but each iteration is expensive for long-term bonds
+- Iteration count is consistent (~17-22), but each iteration is expensive for long-term bonds
 
 **Files Modified**:
 - `src/QLNet/Cashflows/CashFlows.cs` - Added profiling instrumentation
@@ -24,18 +24,12 @@
 - `tests/QLNet.Benchmarks/profiling_analysis.md` - Complete analysis
 - `tests/QLNet.Benchmarks/instrumentation_longterm.txt` - 18K profiling entries
 
-#### ✅ Task 1.3: Improve Initial Guess (COMPLETE)
-**Commit**: `cdbc7ca`
-- Replaced fixed guess (0.05) with smart price-based heuristic
-- **Results**: 28% iteration reduction (35 → 25 iterations)
-- Memory improved by 21% (55.42 MB → 43.64 MB)
-- Overall performance: 1.2% faster (modest due to solver overhead)
-
-**Files Modified**:
-- `src/QLNet/Pricingengines/Bond/BondFunctions.cs` - Smart initial guess logic
-
-**Deliverables**:
-- `tests/QLNet.Benchmarks/task_1.3_results.md` - Detailed results
+#### ❌ Task 1.3: Improve Initial Guess (SKIPPED)
+**Commit**: `789d482` (REVERTED)
+- **Decision**: Task 1.3 was attempted but reverted
+- **Reason**: Optimization changed numerical convergence, breaking 6-digit precision with Bloomberg
+- **Impact**: User has hundreds of adapter tests requiring exact Bloomberg precision
+- **Conclusion**: Skip Task 1.3, focus on Task 1.2 which won't affect numerical results
 
 ### Current State 📊
 
@@ -43,15 +37,15 @@
 - Short-term bonds (1-10 years): ~9 μs per calculation ✅ Good
 - Long-term bonds (20-30 years): ~354 μs per calculation ⚠️ Still 40x slower
 
-**After Optimizations**:
-- Iterations reduced: 35 → 25 (28% improvement)
-- Memory reduced: 55.42 MB → 43.64 MB (21% improvement)
-- Time: ~37 ms → ~33-37 ms (modest improvement)
+**Current Status**:
+- Iterations: ~17-22 per yield calculation (baseline)
+- All tests passing with Bloomberg-compatible precision ✅
+- Profiling instrumentation still active
 
 **Why Still Slow?**
-Each of the 25 iterations still processes ALL cashflows:
-- 81 cashflows × 25 iterations = 2,025 evaluations per yield calculation
-- This is still the bottleneck!
+Each of the 17-22 iterations processes ALL cashflows:
+- 81 cashflows × 20 iterations = 1,620 evaluations per yield calculation
+- This is the bottleneck!
 
 ---
 
