@@ -380,41 +380,6 @@ namespace QLNet
          double dirtyPrice = cleanPrice + bond.accruedAmount(settlementDate);
          dirtyPrice /= 100.0 / bond.notional(settlementDate);
 
-         // OPTIMIZATION: Calculate smarter initial guess based on bond characteristics
-         // This reduces solver iterations from ~35 to ~20-25 (30-40% faster)
-         if (guess == 0.05) // Only override default guess
-         {
-            // Estimate coupon rate from first coupon cashflow
-            double estimatedCouponRate = 0.05; // fallback
-            var cashflows = bond.cashflows();
-            if (cashflows != null && cashflows.Count > 0)
-            {
-               // Find first coupon
-               foreach (var cf in cashflows)
-               {
-                  if (cf is FixedRateCoupon coupon)
-                  {
-                     estimatedCouponRate = coupon.rate();
-                     break;
-                  }
-               }
-            }
-
-            // Calculate years to maturity
-            double yearsToMaturity = (bond.maturityDate() - settlementDate) / 365.25;
-            if (yearsToMaturity <= 0) yearsToMaturity = 0.5; // Avoid division by zero
-
-            // Price-based heuristic:
-            // - Discount bonds (price < 100): yield > coupon
-            // - Premium bonds (price > 100): yield < coupon
-            // Formula approximates yield based on price deviation from par
-            double priceDeviation = (100.0 - dirtyPrice) / 100.0;
-            guess = estimatedCouponRate + (priceDeviation / yearsToMaturity);
-
-            // Clamp to reasonable range [0.1%, 20%]
-            guess = System.Math.Max(0.001, System.Math.Min(guess, 0.20));
-         }
-
          return CashFlows.yield(bond.cashflows(), dirtyPrice,
                                 dayCounter, compounding, frequency,
                                 false, settlementDate, settlementDate,
