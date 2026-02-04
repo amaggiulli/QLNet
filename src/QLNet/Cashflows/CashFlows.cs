@@ -334,8 +334,57 @@ namespace QLNet
 
          public override double derivative(double y)
          {
+            // OPTIMIZATION: Use cached data to calculate modified duration faster
             InterestRate yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
-            return modifiedDuration(leg_, yield, includeSettlementDateFlows_, settlementDate_, npvDate_);
+
+            double P = 0.0;
+            double dPdy = 0.0;
+            double r = yield.rate();
+            int N = (int)yield.frequency();
+            double t = 0.0;
+
+            for (int i = 0; i < validCashflowIndices_.Count; ++i)
+            {
+               // Use cached time fraction instead of recalculating
+               t += cachedTimeFractions_[i];
+
+               double B = yield.discountFactor(t);
+               double c = cachedAmounts_[i];
+               P += c * B;
+
+               // Calculate derivative based on compounding type
+               switch (yield.compounding())
+               {
+                  case Compounding.Simple:
+                     dPdy -= c * B * B * t;
+                     break;
+                  case Compounding.Compounded:
+                     dPdy -= c * t * B / (1 + r / N);
+                     break;
+                  case Compounding.Continuous:
+                     dPdy -= c * B * t;
+                     break;
+                  case Compounding.SimpleThenCompounded:
+                     if (t <= 1.0 / N)
+                        dPdy -= c * B * B * t;
+                     else
+                        dPdy -= c * t * B / (1 + r / N);
+                     break;
+                  case Compounding.CompoundedThenSimple:
+                     if (t > 1.0 / N)
+                        dPdy -= c * B * B * t;
+                     else
+                        dPdy -= c * t * B / (1 + r / N);
+                     break;
+                  default:
+                     throw new Exception("unknown compounding convention");
+               }
+            }
+
+            if (P.IsEqual(0.0))
+               return 0.0;
+
+            return dPdy / P;
          }
 
          private void checkSign()
