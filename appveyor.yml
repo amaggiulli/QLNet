@@ -125,5 +125,16 @@
   nuget:
     disable_publish_on_pr: true
   test_script:
-    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release   
+    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release
+  after_test:
+    - cmd: echo Running performance benchmarks...
+    - cmd: cd tests\QLNet.Benchmarks && dotnet run -c Release -- --job Short --exporters json,markdown
+    - cmd: cd ..\..
+  artifacts:
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.json
+      name: benchmark-json
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.md
+      name: benchmark-markdown
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.html
+      name: benchmark-html
 
