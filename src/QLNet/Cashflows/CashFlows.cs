@@ -240,6 +240,11 @@ namespace QLNet
          private bool includeSettlementDateFlows_;
          private Date settlementDate_, npvDate_;
 
+         // OPTIMIZATION: Cache data that doesn't change between iterations
+         private List<double> cachedTimeFractions_;
+         private List<double> cachedAmounts_;
+         private List<int> validCashflowIndices_;
+
          // INSTRUMENTATION: Track iterations and timing
          private int iterationCount_ = 0;
          private System.Diagnostics.Stopwatch npvStopwatch_ = new System.Diagnostics.Stopwatch();
@@ -263,6 +268,39 @@ namespace QLNet
                npvDate_ = settlementDate_;
 
             checkSign();
+            precomputeCashflowData();
+         }
+
+         // OPTIMIZATION: Pre-calculate time fractions and amounts that don't change
+         private void precomputeCashflowData()
+         {
+            cachedTimeFractions_ = new List<double>();
+            cachedAmounts_ = new List<double>();
+            validCashflowIndices_ = new List<int>();
+
+            Date lastDate = npvDate_;
+            DayCounter dc = dayCounter_;
+
+            for (int i = 0; i < leg_.Count; ++i)
+            {
+               if (leg_[i].hasOccurred(settlementDate_, includeSettlementDateFlows_))
+                  continue;
+
+               double amount = leg_[i].amount();
+               if (leg_[i].tradingExCoupon(settlementDate_))
+               {
+                  amount = 0.0;
+               }
+
+               // Calculate and cache the time fraction for this cashflow
+               double timeFraction = getStepwiseDiscountTime(leg_[i], dc, npvDate_, lastDate);
+
+               validCashflowIndices_.Add(i);
+               cachedTimeFractions_.Add(timeFraction);
+               cachedAmounts_.Add(amount);
+
+               lastDate = leg_[i].date();
+            }
          }
 
          public override double value(double y)
@@ -271,8 +309,20 @@ namespace QLNet
             iterationCount_++;
             npvStopwatch_.Start();
 
+            // OPTIMIZATION: Use cached data to calculate NPV faster
             InterestRate yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
-            double NPV = CashFlows.npv(leg_, yield, includeSettlementDateFlows_, settlementDate_, npvDate_);
+            double NPV = 0.0;
+            double discount = 1.0;
+
+            for (int i = 0; i < validCashflowIndices_.Count; ++i)
+            {
+               // Use cached time fraction instead of recalculating
+               double b = yield.discountFactor(cachedTimeFractions_[i]);
+               discount *= b;
+
+               // Use cached amount instead of accessing leg and checking conditions
+               NPV += cachedAmounts_[i] * discount;
+            }
 
             npvStopwatch_.Stop();
             return npv_ - NPV;
