@@ -355,3 +355,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+tests/QLNet.Tests/T_280.cs
+
+# Claude Code CLI
+.claude/
