@@ -656,6 +656,12 @@ namespace QLNet
             return this.yield(price, paymentDayCounter_, compounding, frequency, settlementDate, accuracy);
          }
 
+         // If maturity date is in the past, no future cashflows, return 0 yield         
+         if (maturityDate <= settlementDate)
+         {
+            return 0.0;
+         }
+
          // Build cashflows using utility function
          var (cashflows, comp, effectiveMaturityDate) = BuildCashflowsForMaturity(couponType, settlementDate, maturityDate, redemption);
 
@@ -701,6 +707,12 @@ namespace QLNet
          {
             var compounding = GetSecurityCompounding(this, couponType, settlementDate);
             return this.cleanPrice(yield, paymentDayCounter_, compounding, frequency, settlementDate);
+         }
+
+         // If maturity date is in the past, no future cashflows, return 0 yield         
+         if (maturityDate <= settlementDate)
+         {
+            return 0.0;
          }
 
          // Build cashflows using utility function
@@ -752,6 +764,12 @@ namespace QLNet
          {
             var compounding = GetSecurityCompounding(this, couponType, settlementDate);
             return BondFunctions.duration(this, yield, paymentDayCounter_, compounding, frequency, durationType, settlementDate);
+         }
+
+         // If maturity date is in the past, no future cashflows, return 0 yield         
+         if (maturityDate <= settlementDate)
+         {
+            return 0.0;
          }
 
          // Build cashflows using utility function
@@ -1043,12 +1061,14 @@ namespace QLNet
       {
          // Build cashflows directly without creating Bond object
          var effectiveMaturityDate = targetMaturityDate ?? maturityDate_;
-         var truncatedSchedule = mainSchedule_.until(effectiveMaturityDate);
 
          Leg cashflows;
 
          if (couponType == CouponType.FixedRate)
          {
+            // For fixed rate bonds, truncate schedule to maturity date
+            var truncatedSchedule = mainSchedule_.until(effectiveMaturityDate);
+
             // Use FixedRateLeg to create coupon cashflows (including stubs)
             var truncatedCoupons = coupons_.Take(truncatedSchedule.size() - 1).ToList();
             cashflows = new FixedRateLeg(truncatedSchedule)
@@ -1061,7 +1081,7 @@ namespace QLNet
          }
          else
          {
-            // Zero coupon: just the redemption
+            // Zero coupon: just the redemption (no schedule needed)
             cashflows = [];
          }
 
@@ -1126,86 +1146,33 @@ namespace QLNet
       public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
          double accuracy = 1.0e-10)
       {
-         return yieldToCallsInternal(settlement, price, CouponType.FixedRate, frequency, accuracy);
-      }
-
-      /// <summary>
-      /// Optimized version of yieldToCalls that avoids creating Bond objects.
-      /// For benchmarking and testing purposes.
-      /// </summary>
-      public CallableCalcs[] yieldToCallsOptimized(Date settlement, double price, Frequency frequency,
-         double accuracy = 1.0e-10)
-      {
          return yieldToCallsInternalOptimized(settlement, price, CouponType.FixedRate, frequency, accuracy);
       }
 
       public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternal(settlement, price, CouponType.FixedRate, frequency);
-      }
-
-      /// <summary>
-      /// Optimized version of priceToCalls that avoids creating Bond objects.
-      /// For benchmarking and testing purposes.
-      /// </summary>
-      public CallableCalcs[] priceToCallsOptimized(Date settlement, double yield, Frequency frequency)
-      {
-         return priceToCallsInternalOptimized(settlement, yield, CouponType.FixedRate, frequency);
+         return priceToCallsInternalOptimized(settlement, price, CouponType.FixedRate, frequency);
       }
 
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
          Date? maturityDate = null, double? redemption = null)
       {
-         return yieldAtInternal(CouponType.FixedRate, settlementDate, price, frequency, accuracy, maturityDate,
+         return yieldAtInternalOptimized(CouponType.FixedRate, settlementDate, price, frequency, accuracy, maturityDate,
             redemption);
-      }
-
-      /// <summary>
-      /// Optimized version of yieldAt that avoids creating Bond objects.
-      /// For benchmarking and testing purposes.
-      /// </summary>
-      public double yieldAtOptimized(Date settlementDate, double price, Frequency frequency, double accuracy = 1.0e-10,
-         Date? maturityDate = null, double? redemption = null)
-      {
-         return yieldAtInternalOptimized(CouponType.FixedRate, settlementDate, price, frequency, accuracy,
-            maturityDate, redemption);
       }
 
       public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
          Frequency frequency)
       {
-         return priceAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency);
-      }
-
-      /// <summary>
-      /// Optimized version of priceAt that avoids creating Bond objects.
-      /// For benchmarking and testing purposes.
-      /// </summary>
-      public double priceAtOptimized(Date settlementDate, Date? maturityDate, double? redemption, double yield,
-         Frequency frequency)
-      {
-         return priceAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield,
-            frequency);
+         return priceAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency);
       }
 
       public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
          Frequency frequency, Duration.Type durationType)
       {
-         return durationAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency,
+         return durationAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency,
             durationType);
       }
-
-      /// <summary>
-      /// Optimized version of durationAt that avoids creating Bond objects.
-      /// For benchmarking and testing purposes.
-      /// </summary>
-      public double durationAtOptimized(Date settlementDate, Date? maturityDate, double? redemption, double yield,
-         Frequency frequency, Duration.Type durationType)
-      {
-         return durationAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield,
-            frequency, durationType);
-      }
-
    }
 
    /// <summary>
@@ -1233,31 +1200,31 @@ namespace QLNet
       public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
          double accuracy = 1.0e-10)
       {
-         return yieldToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
+         return yieldToCallsInternalOptimized(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
       }
 
       public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency);
+         return priceToCallsInternalOptimized(settlement, price, CouponType.ZeroCoupon, frequency);
       }
 
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
          Date? maturityDate, double? redemption = null)
       {
-         return yieldAtInternal(CouponType.ZeroCoupon, settlementDate, price, frequency, accuracy, maturityDate,
+         return yieldAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, price, frequency, accuracy, maturityDate,
             redemption);
       }
 
       public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
          Frequency frequency)
       {
-         return priceAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency);
+         return priceAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency);
       }
 
       public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
          Frequency frequency, Duration.Type durationType)
       {
-         return durationAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency,
+         return durationAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency,
             durationType);
       }
 

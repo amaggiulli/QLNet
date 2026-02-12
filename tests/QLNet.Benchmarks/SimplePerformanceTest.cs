@@ -66,7 +66,7 @@ namespace QLNet.Benchmarks
             for (int i = 0; i < 5; i++)
             {
                 callableBond.yieldToCalls(settlementDate, price, Frequency.Semiannual, 1.0e-8);
-                callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
+                // callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
             }
             Console.WriteLine("Warmup complete.");
             Console.WriteLine();
@@ -88,7 +88,8 @@ namespace QLNet.Benchmarks
             Stopwatch sw2 = Stopwatch.StartNew();
             for (int i = 0; i < iterations; i++)
             {
-                var results = callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
+                var results = callableBond.yieldToCalls(settlementDate, price, Frequency.Semiannual, 1.0e-8);
+                // var results = callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
             }
             sw2.Stop();
             double optimizedMs = sw2.Elapsed.TotalMilliseconds;

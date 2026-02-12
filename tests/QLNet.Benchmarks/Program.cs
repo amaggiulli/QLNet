@@ -10,7 +10,7 @@ public class Program
         // SimplePerformanceTest.Run(args);
 
         // Use BenchmarkDotNet framework for detailed statistics:
-        var config = args.Length > 0 ? null : new BenchmarkConfig();
-        var summary = BenchmarkRunner.Run<CallableBondYieldBenchmarks>(config, args);
+        // Don't pass config to avoid duplicate jobs (benchmark class already has job attributes)
+        var summary = BenchmarkRunner.Run<CallableBondYieldBenchmarks>(args: args);
     }
 }

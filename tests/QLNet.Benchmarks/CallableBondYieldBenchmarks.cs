@@ -82,17 +82,17 @@ namespace QLNet.Benchmarks
             return totalCalculations;
         }
 
-        [Benchmark(Description = "YieldToCalls optimized - no bond creation")]
-        public int YieldToCallsOptimized()
-        {
-            var totalCalculations = 0;
-            // Calculate yields 100 times to show real-world impact
-            for (var i = 0; i < Iterations; i++)
-            {
-                var results = callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
-                totalCalculations += results.Length;
-            }
-            return totalCalculations;
-        }
+        // [Benchmark(Description = "YieldToCalls optimized - no bond creation")]
+        // public int YieldToCallsOptimized()
+        // {
+        //     var totalCalculations = 0;
+        //     // Calculate yields 100 times to show real-world impact
+        //     for (var i = 0; i < Iterations; i++)
+        //     {
+        //         var results = callableBond.yieldToCallsOptimized(settlementDate, price, Frequency.Semiannual, 1.0e-8);
+        //         totalCalculations += results.Length;
+        //     }
+        //     return totalCalculations;
+        // }
     }
 }
