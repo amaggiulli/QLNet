@@ -299,118 +299,70 @@ namespace QLNet
 
          public override double value(double y)
          {
-            // OPTIMIZATION: Use cached data and inline discount factor calculation
+            // OPTIMIZATION: Use cached data to calculate NPV faster
+            var yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
             var NPV = 0.0;
             var discount = 1.0;
-            
-            // Pre-calculate compounding-specific values to avoid switch in loop
-            var N = (int)frequency_;
-            
+
             for (var i = 0; i < validCount_; ++i)
             {
-               // Inline discountFactor calculation to avoid method call overhead
-               var t = cachedTimeFractions_[i];
-               double b;
-               
-               switch (compounding_)
-               {
-                  case Compounding.Simple:
-                     b = 1.0 / (1.0 + y * t);
-                     break;
-                  case Compounding.Compounded:
-                     b = 1.0 / Math.Pow(1.0 + y / N, N * t);
-                     break;
-                  case Compounding.Continuous:
-                     b = Math.Exp(-y * t);
-                     break;
-                  case Compounding.SimpleThenCompounded:
-                     b = (t <= 1.0 / N) 
-                        ? 1.0 / (1.0 + y * t)
-                        : 1.0 / Math.Pow(1.0 + y / N, N * t);
-                     break;
-                  case Compounding.CompoundedThenSimple:
-                     b = (t > 1.0 / N)
-                        ? 1.0 / (1.0 + y * t)
-                        : 1.0 / Math.Pow(1.0 + y / N, N * t);
-                     break;
-                  default:
-                     throw new Exception("unknown compounding convention");
-               }
-               
+               // Use cached time fraction instead of recalculating
+               var b = yield.discountFactor(cachedTimeFractions_[i]);
                discount *= b;
+
+               // Use cached amount instead of accessing leg and checking conditions
                NPV += cachedAmounts_[i] * discount;
             }
-
             return npv_ - NPV;
          }
 
          public override double derivative(double y)
          {
-            // OPTIMIZATION: Use cached data and inline calculations
+            // OPTIMIZATION: Use cached data to calculate modified duration faster
+            var yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
+
             var P = 0.0;
             var dPdy = 0.0;
-            var N = (int)frequency_;
+            var r = yield.rate();
+            var N = (int)yield.frequency();
             var t = 0.0;
-            var oneOverNplusY = 0.0;
             
-            // Pre-calculate for Compounded case
-            if (compounding_ == Compounding.Compounded || 
-                compounding_ == Compounding.SimpleThenCompounded ||
-                compounding_ == Compounding.CompoundedThenSimple)
-            {
-               oneOverNplusY = 1.0 / (1.0 + y / N);
-            }
-
             for (var i = 0; i < validCount_; ++i)
             {
+               // Use cached time fraction instead of recalculating
                t += cachedTimeFractions_[i];
+
+               var B = yield.discountFactor(t);
                var c = cachedAmounts_[i];
-               
-               // Inline discount factor calculation
-               double B;
-               switch (compounding_)
+               P += c * B;
+
+               // Calculate derivative based on compounding type
+               switch (yield.compounding())
                {
                   case Compounding.Simple:
-                     B = 1.0 / (1.0 + y * t);
                      dPdy -= c * B * B * t;
                      break;
                   case Compounding.Compounded:
-                     B = 1.0 / Math.Pow(1.0 + y / N, N * t);
-                     dPdy -= c * t * B * oneOverNplusY;
+                     dPdy -= c * t * B / (1 + r / N);
                      break;
                   case Compounding.Continuous:
-                     B = Math.Exp(-y * t);
                      dPdy -= c * B * t;
                      break;
                   case Compounding.SimpleThenCompounded:
                      if (t <= 1.0 / N)
-                     {
-                        B = 1.0 / (1.0 + y * t);
                         dPdy -= c * B * B * t;
-                     }
                      else
-                     {
-                        B = 1.0 / Math.Pow(1.0 + y / N, N * t);
-                        dPdy -= c * t * B * oneOverNplusY;
-                     }
+                        dPdy -= c * t * B / (1 + r / N);
                      break;
                   case Compounding.CompoundedThenSimple:
                      if (t > 1.0 / N)
-                     {
-                        B = 1.0 / (1.0 + y * t);
                         dPdy -= c * B * B * t;
-                     }
                      else
-                     {
-                        B = 1.0 / Math.Pow(1.0 + y / N, N * t);
-                        dPdy -= c * t * B * oneOverNplusY;
-                     }
+                        dPdy -= c * t * B / (1 + r / N);
                      break;
                   default:
                      throw new Exception("unknown compounding convention");
                }
-               
-               P += c * B;
             }
 
             if (P.IsEqual(0.0))
