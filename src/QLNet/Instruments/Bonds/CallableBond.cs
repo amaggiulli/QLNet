@@ -427,7 +427,7 @@ namespace QLNet
             var call = calls[i];
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
-            var comp = GetSecurityCompounding(bond, couponType, settlement);
+            var comp = GetSecurityCompounding(bond, couponType, settlement,frequency);
             try
             {
                var yield = bond.yield(price, paymentDayCounter_, comp, frequency, settlement, accuracy);
@@ -449,121 +449,6 @@ namespace QLNet
                {
                   CallDate = bond.maturityDate(),
                   CallPrice = call.price().amount(),
-                  ErrorMessage = ex.Message,
-               });
-            }
-         }
-
-         return cc.ToArray();
-      }
-
-      /// <summary>
-      /// Optimized version of priceToCallsInternal that avoids creating Bond objects.
-      /// Uses FixedRateLeg directly to generate cashflows without Bond overhead.
-      /// </summary>
-      protected CallableCalcs[] priceToCallsInternalOptimized(Date settlement, double yield, CouponType couponType,
-         Frequency frequency)
-      {
-         var cc = new List<CallableCalcs>();
-         var calls = putCallSchedule_.ToList();
-
-         for (var i = 0; i < calls.Count; i++)
-         {
-            var call = calls[i];
-            Date callDate = call.date();
-            double callPrice = call.price().amount();
-
-            // Skip not tradable
-            if (callDate <= settlement) continue;
-
-            try
-            {
-               // Build cashflows using utility function
-               var (cashflows, comp, maturityDate) = BuildCashflowsForMaturity(couponType, settlement, callDate, callPrice);
-
-               // Calculate clean price using CashFlows - NO BOND OBJECT CREATED!
-               // Keep in currency, convert once at the end
-               double dirtyPriceCurrency = CashFlows.npv(cashflows,
-                  new InterestRate(yield, paymentDayCounter_, comp, frequency),
-                  false, settlement);
-
-               double accruedCurrency = CashFlows.accruedAmount(cashflows, false, settlement);
-               var priceToCall = (dirtyPriceCurrency - accruedCurrency) * 100.0 / faceAmount_;
-
-               cc.Add(new CallableCalcs()
-               {
-                  CallDate = callDate,
-                  CallPrice = callPrice,
-                  CalcPrice = priceToCall
-               });
-            }
-            catch (Exception ex)
-            {
-               cc.Add(new CallableCalcs()
-               {
-                  CallDate = callDate,
-                  CallPrice = callPrice,
-                  ErrorMessage = ex.Message,
-               });
-            }
-         }
-
-         return cc.ToArray();
-      }
-
-      /// <summary>
-      /// Optimized version of yieldToCallsInternal that avoids creating Bond objects.
-      /// Uses FixedRateLeg directly to generate cashflows without Bond overhead.
-      /// </summary>
-      protected CallableCalcs[] yieldToCallsInternalOptimized(Date settlement, double price, CouponType couponType,
-         Frequency frequency, double accuracy = 1.0e-10)
-      {
-         var cc = new List<CallableCalcs>();
-         var calls = putCallSchedule_.ToList();
-
-         for (var i = 0; i < calls.Count; i++)
-         {
-            var call = calls[i];
-            Date callDate = call.date();
-            double callPrice = call.price().amount();
-
-            // Skip not tradable
-            if (callDate <= settlement) continue;
-
-            try
-            {
-               // Build cashflows using utility function
-               var (cashflows, comp, maturityDate) = BuildCashflowsForMaturity(couponType, settlement, callDate, callPrice);
-
-               // Calculate dirty price directly (convert clean price to currency and add accrued)
-               double accruedAmountCurrency = CashFlows.accruedAmount(cashflows, false, settlement);
-               double dirtyPrice = price * faceAmount_ / 100.0 + accruedAmountCurrency;
-
-               // Call CashFlows.yield directly - NO BOND OBJECT CREATED!
-               double yield = CashFlows.yield(cashflows, dirtyPrice, paymentDayCounter_, comp, frequency,
-                                             false, settlement, settlement, accuracy, 100, 0.05);
-
-               if (yield == 0.0) continue;
-
-               // Calculate modified duration
-               var modDuration = CashFlows.duration(cashflows,
-                  new InterestRate(yield, paymentDayCounter_, comp, frequency),
-                  Duration.Type.Modified, false, settlement, settlement);
-
-               cc.Add(new CallableCalcs()
-               {
-                  CallDate = callDate,
-                  CallPrice = callPrice,
-                  CalcYield = yield,
-                  CalcModifiedDuration = modDuration
-               });
-            }
-            catch (Exception ex)
-            {
-               cc.Add(new CallableCalcs()
-               {
-                  CallDate = callDate,
-                  CallPrice = callPrice,
                   ErrorMessage = ex.Message,
                });
             }
@@ -598,7 +483,7 @@ namespace QLNet
             var call = calls[i];
             // Skip not tradable bonds
             if (bond.maturityDate() <= settlement) continue;
-            var comp = GetSecurityCompounding(bond, couponType, settlement);
+            var comp = GetSecurityCompounding(bond, couponType, settlement, frequency);
             try
             {
                var priceToCall = bond.cleanPrice(price, paymentDayCounter_, comp,
@@ -624,13 +509,13 @@ namespace QLNet
       }
 
       public virtual double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
-         Date? maturityDate = null, double? redemption = null)
+         Date maturityDate = null, double? redemption = null)
       {
          throw new NotImplementedException("yieldToDate not implemented for the given bond");
       }
 
       protected double yieldAtInternal(CouponType couponType, Date settlementDate, double price, Frequency frequency,
-         double accuracy, Date? maturityDate = null, double? redemption = null)
+         double accuracy, Date maturityDate = null, double? redemption = null)
       {
          Bond bond = this;
          if (maturityDate != null && redemption is > 0)
@@ -638,50 +523,19 @@ namespace QLNet
             bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
          }
 
-         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate, frequency);
          return bond.yield(price, paymentDayCounter_, comp, frequency, settlementDate, accuracy);
       }
 
-      /// <summary>
-      /// Optimized version of yieldAtInternal that avoids creating Bond objects.
-      /// Uses FixedRateLeg directly to generate cashflows without Bond overhead.
-      /// </summary>
-      protected double yieldAtInternalOptimized(CouponType couponType, Date settlementDate, double price,
-         Frequency frequency, double accuracy, Date? maturityDate = null, double? redemption = null)
-      {
-         // If no custom maturity/redemption, use the bond directly
-         if (maturityDate == null || redemption <= 0)
-         {
-            var compounding = GetSecurityCompounding(this, couponType, settlementDate);
-            return this.yield(price, paymentDayCounter_, compounding, frequency, settlementDate, accuracy);
-         }
 
-         // If maturity date is in the past, no future cashflows, return 0 yield         
-         if (maturityDate <= settlementDate)
-         {
-            return 0.0;
-         }
-
-         // Build cashflows using utility function
-         var (cashflows, comp, effectiveMaturityDate) = BuildCashflowsForMaturity(couponType, settlementDate, maturityDate, redemption);
-
-         // Calculate dirty price directly (convert clean price to currency and add accrued)
-         var accruedAmountCurrency = CashFlows.accruedAmount(cashflows, false, settlementDate);
-         var dirtyPrice = price * faceAmount_ / 100.0 + accruedAmountCurrency;
-
-         // Call CashFlows.yield directly
-         return CashFlows.yield(cashflows, dirtyPrice, paymentDayCounter_, comp, frequency,
-                               false, settlementDate, settlementDate, accuracy);
-      }
-
-      public virtual double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public virtual double priceAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency)
       {
 
          throw new NotImplementedException("yieldToDate not implemented for the given bond");
       }
 
-      protected double priceAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate,
+      protected double priceAtInternal(CouponType couponType, Date settlementDate, Date maturityDate,
          double? redemption, double yield,
          Frequency frequency)
       {
@@ -691,55 +545,19 @@ namespace QLNet
             bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
          }
 
-         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate, frequency);
          return bond.cleanPrice(yield, paymentDayCounter_, comp, frequency, settlementDate);
       }
 
-      /// <summary>
-      /// Optimized version of priceAtInternal that avoids creating Bond objects.
-      /// Uses FixedRateLeg directly to generate cashflows without Bond overhead.
-      /// </summary>
-      protected double priceAtInternalOptimized(CouponType couponType, Date settlementDate, Date? maturityDate,
-         double? redemption, double yield, Frequency frequency)
-      {
-         // If no custom maturity/redemption, use the bond directly
-         if (maturityDate == null || redemption <= 0)
-         {
-            var compounding = GetSecurityCompounding(this, couponType, settlementDate);
-            return this.cleanPrice(yield, paymentDayCounter_, compounding, frequency, settlementDate);
-         }
-
-         // If maturity date is in the past, no future cashflows, return 0 yield         
-         if (maturityDate <= settlementDate)
-         {
-            return 0.0;
-         }
-
-         // Build cashflows using utility function
-         var (cashflows, comp, effectiveMaturityDate) = BuildCashflowsForMaturity(couponType, settlementDate, maturityDate, redemption);
-
-         // Calculate clean price using CashFlows - NO BOND OBJECT CREATED!
-         // Keep everything in currency units, convert to percentage once at the end
-         var dirtyPriceCurrency = CashFlows.npv(cashflows,
-            new InterestRate(yield, paymentDayCounter_, comp, frequency),
-            false, settlementDate);
-
-         var accruedCurrency = CashFlows.accruedAmount(cashflows, false, settlementDate);
-         var cleanPriceCurrency = dirtyPriceCurrency - accruedCurrency;
-
-         return cleanPriceCurrency * 100.0 / faceAmount_;
-      }
-
-      public virtual double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public virtual double durationAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency, Duration.Type durationType)
       {
 
          throw new NotImplementedException("yieldToDate not implemented for the given bond");
       }
 
-      protected double durationAtInternal(CouponType couponType, Date settlementDate, Date? maturityDate,
-         double? redemption, double yield,
-         Frequency frequency, Duration.Type durationType)
+      protected double durationAtInternal(CouponType couponType, Date settlementDate, Date maturityDate,
+         double? redemption, double yield, Frequency frequency, Duration.Type durationType)
       {
          Bond bond = this;
          if (maturityDate != null && redemption is > 0)
@@ -747,38 +565,9 @@ namespace QLNet
             bond = CreateFixedRateBond(maturityDate, redemption.Value, couponType);
          }
 
-         var comp = GetSecurityCompounding(bond, couponType, settlementDate);
+         var comp = GetSecurityCompounding(bond, couponType, settlementDate, frequency);
 
          return BondFunctions.duration(bond, yield, paymentDayCounter_, comp, frequency, durationType, settlementDate);
-      }
-
-      /// <summary>
-      /// Optimized version of durationAtInternal that avoids creating Bond objects.
-      /// Uses FixedRateLeg directly to generate cashflows without Bond overhead.
-      /// </summary>
-      protected double durationAtInternalOptimized(CouponType couponType, Date settlementDate, Date? maturityDate,
-         double? redemption, double yield, Frequency frequency, Duration.Type durationType)
-      {
-         // If no custom maturity/redemption, use the bond directly
-         if (maturityDate == null || redemption <= 0)
-         {
-            var compounding = GetSecurityCompounding(this, couponType, settlementDate);
-            return BondFunctions.duration(this, yield, paymentDayCounter_, compounding, frequency, durationType, settlementDate);
-         }
-
-         // If maturity date is in the past, no future cashflows, return 0 yield         
-         if (maturityDate <= settlementDate)
-         {
-            return 0.0;
-         }
-
-         // Build cashflows using utility function
-         var (cashflows, comp, effectiveMaturityDate) = BuildCashflowsForMaturity(couponType, settlementDate, maturityDate, redemption);
-
-         // Calculate duration using CashFlows
-         return CashFlows.duration(cashflows,
-            new InterestRate(yield, paymentDayCounter_, comp, frequency),
-            durationType, false, settlementDate, settlementDate);
       }
 
       /// <summary>
@@ -1018,14 +807,15 @@ namespace QLNet
          }
       }
 
-      protected Compounding GetSecurityCompounding(Bond bond, CouponType couponType, DateTime settlementDate)
+      protected Compounding GetSecurityCompounding(Bond bond, CouponType couponType, DateTime settlementDate,
+         Frequency frequency)
       {
          if (bond.nextCashFlowDate(settlementDate) == bond.maturityDate())
          {
             if (couponType is not CouponType.ZeroCoupon)
                return Compounding.Simple;
 
-            if ((Date)settlementDate + new Period(Frequency.Semiannual) >= bond.maturityDate())
+            if ((Date)settlementDate + new Period(frequency) >= bond.maturityDate())
                return Compounding.Simple;
          }
 
@@ -1057,7 +847,7 @@ namespace QLNet
       /// Returns the cashflows, compounding method, and effective maturity date.
       /// </summary>
       protected (Leg cashflows, Compounding comp, Date maturityDate) BuildCashflowsForMaturity(
-         CouponType couponType, Date settlementDate, Date? targetMaturityDate, double? redemption)
+         CouponType couponType, Date settlementDate, Date targetMaturityDate, double? redemption)
       {
          // Build cashflows directly without creating Bond object
          var effectiveMaturityDate = targetMaturityDate ?? maturityDate_;
@@ -1146,31 +936,31 @@ namespace QLNet
       public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
          double accuracy = 1.0e-10)
       {
-         return yieldToCallsInternalOptimized(settlement, price, CouponType.FixedRate, frequency, accuracy);
+         return yieldToCallsInternal(settlement, price, CouponType.FixedRate, frequency, accuracy);
       }
 
       public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternalOptimized(settlement, price, CouponType.FixedRate, frequency);
+         return priceToCallsInternal(settlement, price, CouponType.FixedRate, frequency);
       }
 
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
-         Date? maturityDate = null, double? redemption = null)
+         Date maturityDate = null, double? redemption = null)
       {
-         return yieldAtInternalOptimized(CouponType.FixedRate, settlementDate, price, frequency, accuracy, maturityDate,
+         return yieldAtInternal(CouponType.FixedRate, settlementDate, price, frequency, accuracy, maturityDate,
             redemption);
       }
 
-      public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public override double priceAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency)
       {
-         return priceAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency);
+         return priceAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency);
       }
 
-      public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public override double durationAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency, Duration.Type durationType)
       {
-         return durationAtInternalOptimized(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency,
+         return durationAtInternal(CouponType.FixedRate, settlementDate, maturityDate, redemption, yield, frequency,
             durationType);
       }
    }
@@ -1200,31 +990,31 @@ namespace QLNet
       public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
          double accuracy = 1.0e-10)
       {
-         return yieldToCallsInternalOptimized(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
+         return yieldToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency, accuracy);
       }
 
       public override CallableCalcs[] priceToCalls(Date settlement, double price, Frequency frequency)
       {
-         return priceToCallsInternalOptimized(settlement, price, CouponType.ZeroCoupon, frequency);
+         return priceToCallsInternal(settlement, price, CouponType.ZeroCoupon, frequency);
       }
 
       public override double yieldAt(Date settlementDate, double price, Frequency frequency, double accuracy,
-         Date? maturityDate, double? redemption = null)
+         Date maturityDate, double? redemption = null)
       {
-         return yieldAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, price, frequency, accuracy, maturityDate,
+         return yieldAtInternal(CouponType.ZeroCoupon, settlementDate, price, frequency, accuracy, maturityDate,
             redemption);
       }
 
-      public override double priceAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public override double priceAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency)
       {
-         return priceAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency);
+         return priceAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency);
       }
 
-      public override double durationAt(Date settlementDate, Date? maturityDate, double? redemption, double yield,
+      public override double durationAt(Date settlementDate, Date maturityDate, double? redemption, double yield,
          Frequency frequency, Duration.Type durationType)
       {
-         return durationAtInternalOptimized(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency,
+         return durationAtInternal(CouponType.ZeroCoupon, settlementDate, maturityDate, redemption, yield, frequency,
             durationType);
       }
 
