@@ -5,6 +5,7 @@ using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 
 namespace QLNet.Benchmarks;
 
@@ -12,8 +13,12 @@ public class BenchmarkConfig : ManualConfig
 {
     public BenchmarkConfig()
     {
-        // Job configuration
-        AddJob(Job.Default
+        // Add console logger to see progress
+        AddLogger(ConsoleLogger.Default);
+
+        // Job configuration - Use ShortRun for faster benchmarks during development
+        // For production benchmarks, use Job.Default instead
+        AddJob(Job.ShortRun
             .WithRuntime(CoreRuntime.Core90)
             .WithPlatform(Platform.X64)
             .WithJit(Jit.RyuJit));
