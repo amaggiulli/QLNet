@@ -241,9 +241,9 @@ namespace QLNet
          private Date settlementDate_, npvDate_;
 
          // OPTIMIZATION: Cache data that doesn't change between iterations
-         private List<double> cachedTimeFractions_;
-         private List<double> cachedAmounts_;
-         private List<int> validCashflowIndices_;
+         private double[] cachedTimeFractions_;
+         private double[] cachedAmounts_;
+         private int validCount_ ;
 
          public IrrFinder(Leg leg, double npv, DayCounter dayCounter, Compounding comp, Frequency freq,
                           bool includeSettlementDateFlows, Date settlementDate, Date npvDate)
@@ -270,30 +270,28 @@ namespace QLNet
          // OPTIMIZATION: Pre-calculate time fractions and amounts that don't change
          private void precomputeCashflowData()
          {
-            cachedTimeFractions_ = new List<double>();
-            cachedAmounts_ = new List<double>();
-            validCashflowIndices_ = new List<int>();
+            cachedTimeFractions_ = new double[leg_.Count];
+            cachedAmounts_ = new double[leg_.Count];
+            validCount_ = 0;
 
-            Date lastDate = npvDate_;
-            DayCounter dc = dayCounter_;
+            var lastDate = npvDate_;
+            var dc = dayCounter_;
 
-            for (int i = 0; i < leg_.Count; ++i)
+            for (var i = 0; i < leg_.Count; ++i)
             {
                if (leg_[i].hasOccurred(settlementDate_, includeSettlementDateFlows_))
                   continue;
 
-               double amount = leg_[i].amount();
+               var amount = leg_[i].amount();
                if (leg_[i].tradingExCoupon(settlementDate_))
                {
                   amount = 0.0;
                }
 
                // Calculate and cache the time fraction for this cashflow
-               double timeFraction = getStepwiseDiscountTime(leg_[i], dc, npvDate_, lastDate);
-
-               validCashflowIndices_.Add(i);
-               cachedTimeFractions_.Add(timeFraction);
-               cachedAmounts_.Add(amount);
+               cachedTimeFractions_[validCount_] = getStepwiseDiscountTime(leg_[i], dc, npvDate_, lastDate);
+               cachedAmounts_[validCount_] = amount;
+               validCount_++;
 
                lastDate = leg_[i].date();
             }
@@ -301,18 +299,45 @@ namespace QLNet
 
          public override double value(double y)
          {
-            // OPTIMIZATION: Use cached data to calculate NPV faster
-            InterestRate yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
-            double NPV = 0.0;
-            double discount = 1.0;
-
-            for (int i = 0; i < validCashflowIndices_.Count; ++i)
+            // OPTIMIZATION: Use cached data and inline discount factor calculation
+            var NPV = 0.0;
+            var discount = 1.0;
+            
+            // Pre-calculate compounding-specific values to avoid switch in loop
+            var N = (int)frequency_;
+            
+            for (var i = 0; i < validCount_; ++i)
             {
-               // Use cached time fraction instead of recalculating
-               double b = yield.discountFactor(cachedTimeFractions_[i]);
+               // Inline discountFactor calculation to avoid method call overhead
+               var t = cachedTimeFractions_[i];
+               double b;
+               
+               switch (compounding_)
+               {
+                  case Compounding.Simple:
+                     b = 1.0 / (1.0 + y * t);
+                     break;
+                  case Compounding.Compounded:
+                     b = 1.0 / Math.Pow(1.0 + y / N, N * t);
+                     break;
+                  case Compounding.Continuous:
+                     b = Math.Exp(-y * t);
+                     break;
+                  case Compounding.SimpleThenCompounded:
+                     b = (t <= 1.0 / N) 
+                        ? 1.0 / (1.0 + y * t)
+                        : 1.0 / Math.Pow(1.0 + y / N, N * t);
+                     break;
+                  case Compounding.CompoundedThenSimple:
+                     b = (t > 1.0 / N)
+                        ? 1.0 / (1.0 + y * t)
+                        : 1.0 / Math.Pow(1.0 + y / N, N * t);
+                     break;
+                  default:
+                     throw new Exception("unknown compounding convention");
+               }
+               
                discount *= b;
-
-               // Use cached amount instead of accessing leg and checking conditions
                NPV += cachedAmounts_[i] * discount;
             }
 
@@ -321,51 +346,71 @@ namespace QLNet
 
          public override double derivative(double y)
          {
-            // OPTIMIZATION: Use cached data to calculate modified duration faster
-            InterestRate yield = new InterestRate(y, dayCounter_, compounding_, frequency_);
-
-            double P = 0.0;
-            double dPdy = 0.0;
-            double r = yield.rate();
-            int N = (int)yield.frequency();
-            double t = 0.0;
-
-            for (int i = 0; i < validCashflowIndices_.Count; ++i)
+            // OPTIMIZATION: Use cached data and inline calculations
+            var P = 0.0;
+            var dPdy = 0.0;
+            var N = (int)frequency_;
+            var t = 0.0;
+            var oneOverNplusY = 0.0;
+            
+            // Pre-calculate for Compounded case
+            if (compounding_ == Compounding.Compounded || 
+                compounding_ == Compounding.SimpleThenCompounded ||
+                compounding_ == Compounding.CompoundedThenSimple)
             {
-               // Use cached time fraction instead of recalculating
+               oneOverNplusY = 1.0 / (1.0 + y / N);
+            }
+
+            for (var i = 0; i < validCount_; ++i)
+            {
                t += cachedTimeFractions_[i];
-
-               double B = yield.discountFactor(t);
-               double c = cachedAmounts_[i];
-               P += c * B;
-
-               // Calculate derivative based on compounding type
-               switch (yield.compounding())
+               var c = cachedAmounts_[i];
+               
+               // Inline discount factor calculation
+               double B;
+               switch (compounding_)
                {
                   case Compounding.Simple:
+                     B = 1.0 / (1.0 + y * t);
                      dPdy -= c * B * B * t;
                      break;
                   case Compounding.Compounded:
-                     dPdy -= c * t * B / (1 + r / N);
+                     B = 1.0 / Math.Pow(1.0 + y / N, N * t);
+                     dPdy -= c * t * B * oneOverNplusY;
                      break;
                   case Compounding.Continuous:
+                     B = Math.Exp(-y * t);
                      dPdy -= c * B * t;
                      break;
                   case Compounding.SimpleThenCompounded:
                      if (t <= 1.0 / N)
+                     {
+                        B = 1.0 / (1.0 + y * t);
                         dPdy -= c * B * B * t;
+                     }
                      else
-                        dPdy -= c * t * B / (1 + r / N);
+                     {
+                        B = 1.0 / Math.Pow(1.0 + y / N, N * t);
+                        dPdy -= c * t * B * oneOverNplusY;
+                     }
                      break;
                   case Compounding.CompoundedThenSimple:
                      if (t > 1.0 / N)
+                     {
+                        B = 1.0 / (1.0 + y * t);
                         dPdy -= c * B * B * t;
+                     }
                      else
-                        dPdy -= c * t * B / (1 + r / N);
+                     {
+                        B = 1.0 / Math.Pow(1.0 + y / N, N * t);
+                        dPdy -= c * t * B * oneOverNplusY;
+                     }
                      break;
                   default:
                      throw new Exception("unknown compounding convention");
                }
+               
+               P += c * B;
             }
 
             if (P.IsEqual(0.0))

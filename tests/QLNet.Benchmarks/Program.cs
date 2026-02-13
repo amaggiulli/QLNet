@@ -10,7 +10,8 @@ public class Program
         // SimplePerformanceTest.Run(args);
 
         // Use BenchmarkDotNet framework for detailed statistics:
-        // Don't pass config to avoid duplicate jobs (benchmark class already has job attributes)
-        var summary = BenchmarkRunner.Run<CallableBondYieldBenchmarks>(args: args);
+        // Use BenchmarkSwitcher to allow running any benchmark via command line
+        // Example: dotnet run -c Release -- --filter *BondYieldProfile*
+        var summary = BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
     }
 }

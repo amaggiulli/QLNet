@@ -555,51 +555,26 @@ namespace QLNet
       //! truncated schedule
       public Schedule until(Date truncationDate)
       {
-         Utils.QL_REQUIRE(truncationDate > dates_[0], () =>
+         var result = (Schedule)MemberwiseClone();
+         result.dates_ = new List<Date>(dates_);
+         result.isRegular_ = new List<bool>(isRegular_);
+
+         Utils.QL_REQUIRE(truncationDate > result.dates_[0], () =>
                           "truncation date " + truncationDate +
                           " must be later than schedule first date " +
-                          dates_[0]);
+                          result.dates_[0]);
 
-         var result = (Schedule)MemberwiseClone();
-         var lastDate = dates_[dates_.Count - 1];
-
-         if (truncationDate < lastDate)
+         if (truncationDate < result.dates_.Last())
          {
-            // Use binary search to find the position to truncate
-            // BinarySearch returns: index if found, or ~index of first element greater than the search value
-            int searchResult = dates_.BinarySearch(truncationDate);
-            int truncateIndex;
-            bool truncationDateExists;
-
-            if (searchResult >= 0)
+            // remove later dates
+            while (result.dates_.Last() > truncationDate)
             {
-               // Exact match found - truncate after this date
-               truncateIndex = searchResult + 1;
-               truncationDateExists = true;
-            }
-            else
-            {
-               // No exact match - ~searchResult is the index of the first element greater than truncationDate
-               truncateIndex = ~searchResult;
-               truncationDateExists = false;
+               result.dates_.RemoveAt(result.dates_.Count - 1);
+               result.isRegular_.RemoveAt(result.isRegular_.Count - 1);
             }
 
-            // Copy only the dates we need
-            result.dates_ = new List<Date>(truncateIndex + (truncationDateExists ? 0 : 1));
-            for (int i = 0; i < truncateIndex; i++)
-            {
-               result.dates_.Add(dates_[i]);
-            }
-
-            // Copy corresponding isRegular values (which has one less element than dates)
-            result.isRegular_ = new List<bool>(truncateIndex);
-            for (int i = 0; i < truncateIndex - 1; i++)
-            {
-               result.isRegular_.Add(isRegular_[i]);
-            }
-
-            // Add truncationDate if it wasn't in the schedule
-            if (!truncationDateExists)
+            // add truncationDate if missing
+            if (truncationDate != result.dates_.Last())
             {
                result.dates_.Add(truncationDate);
                result.isRegular_.Add(false);
@@ -614,12 +589,6 @@ namespace QLNet
                result.nextToLastDate_ = null;
             if (result.firstDate_ >= truncationDate)
                result.firstDate_ = null;
-         }
-         else
-         {
-            // No truncation needed - just copy the lists
-            result.dates_ = new List<Date>(dates_);
-            result.isRegular_ = new List<bool>(isRegular_);
          }
 
          return result;
