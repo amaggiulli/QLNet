@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 using Xunit.Priority;
 
 namespace TestSuite;
@@ -31,7 +32,13 @@ namespace TestSuite;
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 public class CallableBondsTests
 {
+   private readonly ITestOutputHelper testOutputHelper;
    private readonly double _tolerance = 1.0e-3;
+
+   public CallableBondsTests(ITestOutputHelper testOutputHelper)
+   {
+      this.testOutputHelper = testOutputHelper;
+   }
 
    public class Globals
    {
@@ -847,5 +854,154 @@ public class CallableBondsTests
       QAssert.IsTrue(Math.Abs(yieldToCall - expectedYTC.GetValueOrDefault()) <= _tolerance,
          $"testYieldAt: YTC calculation failed, expected: {expectedYTC}, calculated: {yieldToCall}");
 
+   }
+
+   [Fact(Skip = "Manual reporting test — run locally to inspect Taylor approximation accuracy table")]
+   public void testYieldApproximationAccuracyByPriceDelta()
+   {
+      // Sweep over increasing price moves and print how the Taylor approximation error grows,
+      // so desk traders can decide when basisPointValue is good enough vs running the full solver.
+
+      var vars = new Globals();
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.05));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var compounding = Compounding.Compounded;
+      var freq = Frequency.Semiannual;
+
+      var schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(freq)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var coupons = new InitializedList<double>(1, 0.05);
+      var callabilities = new CallabilitySchedule();
+      callabilities.AddRange(vars.evenYears().Select(d =>
+         new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, d)));
+
+      var bond = new CallableFixedRateBond(3, 100.0, schedule, coupons, dc,
+         vars.rollingConvention, 100.0, vars.issueDate(), callabilities);
+      var engine = new TreeCallableFixedRateBondEngine(vars.model, 240, vars.termStructure);
+      bond.setPricingEngine(engine);
+
+      var price0  = bond.cleanPrice();
+      var yield0  = bond.yield(price0, dc, compounding, freq, vars.settlement);
+      var bpv     = BondFunctions.basisPointValue(bond, yield0, dc, compounding, freq, vars.settlement);
+      var modDur  = BondFunctions.duration(bond, yield0, dc, compounding, freq, Duration.Type.Modified, vars.settlement);
+      var conv    = BondFunctions.convexity(bond, yield0, dc, compounding, freq, vars.settlement);
+
+      // Price deltas to sweep: 1, 5, 10, 25, 50, 100, 200, 500, 1000 bps of price
+      double[] deltaBps = { 1, 5, 10, 25, 50, 100, 200, 500, 1000 };
+
+      testOutputHelper.WriteLine("");
+      testOutputHelper.WriteLine("=== Taylor Approximation Accuracy — Callable 5% 10Y Bond ===");
+      testOutputHelper.WriteLine($"  Base price  : {price0:F4}");
+      testOutputHelper.WriteLine($"  Base yield  : {yield0 * 100:F4}%");
+      testOutputHelper.WriteLine($"  Mod. Dur.   : {modDur:F4}");
+      testOutputHelper.WriteLine($"  Convexity   : {conv:F4}");
+      testOutputHelper.WriteLine($"  BPV (1bp)   : {bpv:F6}");
+      testOutputHelper.WriteLine("");
+      testOutputHelper.WriteLine($"  {"ΔPrice(bps)",12}  {"ΔPrice",8}  {"New Price",10}  {"Taylor Yield%",14}  {"Exact Yield%",13}  {"Error(bps)",11}  {"Usable?",8}");
+      testOutputHelper.WriteLine($"  {new string('-', 87)}");
+
+      foreach (var dBps in deltaBps)
+      {
+         foreach (var sign in new[] { +1.0, -1.0 })
+         {
+            var deltaPrice = sign * dBps * 0.01;
+            var price2     = price0 + deltaPrice;
+
+            var yieldApprox = yield0 + (deltaPrice / bpv) * 0.0001;
+            var yieldExact  = bond.yield(price2, dc, compounding, freq, vars.settlement);
+            var errorBps    = (yieldApprox - yieldExact) * 10000.0;
+            var usable      = Math.Abs(errorBps) < 0.5 ? "✓ YES" : (Math.Abs(errorBps) < 2.0 ? "~ MARGINAL" : "✗ NO");
+
+            testOutputHelper.WriteLine($"  {sign * dBps,+12:+0;-0}  {deltaPrice,+8:+0.00;-0.00}  {price2,10:F4}  {yieldApprox * 100,14:F6}  {yieldExact * 100,13:F6}  {errorBps,+11:+0.0000;-0.0000}  {usable,8}");
+         }
+      }
+      testOutputHelper.WriteLine("");
+      testOutputHelper.WriteLine("  Rule of thumb: Taylor (BPV) is reliable within ±50bps price move.");
+      testOutputHelper.WriteLine("  Beyond that, run bond.yield() iterative solver.");
+   }
+
+   [Fact]
+   public void testYieldApproximationVsDurationConvexity()
+   {
+      // Build a callable fixed-rate bond, price it with a Hull-White tree engine,
+      // then verify that the BPV (2nd-order Taylor via BondFunctions.basisPointValue) yield
+      // approximation for a +10bps price move is within 0.5bps of the iterative bond.yield() result.
+      // Modified Duration and Convexity are also computed for reporting purposes only;
+      // they are NOT needed for the approximation because BPV already encapsulates both.
+
+      var vars = new Globals();
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.05));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var compounding = Compounding.Compounded;
+      var freq = Frequency.Semiannual;
+
+      // 10Y semiannual schedule with 5% coupon
+      var schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(freq)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var coupons = new InitializedList<double>(1, 0.05);
+
+      // Call schedule: callable at par every even year
+      var callabilities = new CallabilitySchedule();
+      callabilities.AddRange(vars.evenYears().Select(d =>
+         new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, d)));
+
+      var bond = new CallableFixedRateBond(3, 100.0, schedule, coupons, dc,
+         vars.rollingConvention, 100.0, vars.issueDate(), callabilities);
+
+      var engine = new TreeCallableFixedRateBondEngine(vars.model, 240, vars.termStructure);
+      bond.setPricingEngine(engine);
+
+      // Step 1: engine price and exact yield via iterative solver
+      var price1 = bond.cleanPrice();
+      var yield1 = bond.yield(price1, dc, compounding, freq, vars.settlement);
+
+      // Step 2: Modified Duration and Convexity at yield1 — for reporting only, not used in the approximation
+      var modDur = BondFunctions.duration(bond, yield1, dc, compounding, freq,
+         Duration.Type.Modified, vars.settlement);
+      var convexity = BondFunctions.convexity(bond, yield1, dc, compounding, freq, vars.settlement);
+
+      // Step 3: +10bps price move (10 bps of price = +0.10 on a 100-par bond)
+      var deltaPrice = 0.10;
+      var price2 = price1 + deltaPrice;
+
+      // Step 4: BPV-based Taylor approximation using BondFunctions.basisPointValue
+      //   bpv = price change for +1bp yield move (2nd-order Taylor encapsulating ModDur+Convexity)
+      //   Inverting: Δyield = (ΔPrice / bpv) × 0.0001
+      var bpv = BondFunctions.basisPointValue(bond, yield1, dc, compounding, freq, vars.settlement);
+      var yieldApprox = yield1 + (deltaPrice / bpv) * 0.0001;
+
+      // Step 5: exact yield at price2 via iterative solver (reference)
+      var yieldExact = bond.yield(price2, dc, compounding, freq, vars.settlement);
+
+      // The approximation error must be below 0.5 bps
+      var errorBps = Math.Abs(yieldApprox - yieldExact) * 10000.0;
+
+      QAssert.IsTrue(errorBps < 0.5,
+         $"BPV approximation error {errorBps:F4} bps exceeds 0.5 bps tolerance\n" +
+         $"    price1        : {price1:F6}\n" +
+         $"    yield1        : {yield1 * 100.0:F6}%\n" +
+         $"    modifiedDur   : {modDur:F6}\n" +
+         $"    convexity     : {convexity:F6}\n" +
+         $"    bpv           : {bpv:F6}\n" +
+         $"    price2        : {price2:F6}  (+{deltaPrice * 100.0:F0} bps)\n" +
+         $"    yieldApprox   : {yieldApprox * 100.0:F6}%\n" +
+         $"    yieldExact    : {yieldExact * 100.0:F6}%\n" +
+         $"    error         : {errorBps:F4} bps");
    }
 }

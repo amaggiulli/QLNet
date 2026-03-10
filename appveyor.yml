@@ -21,7 +21,7 @@
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net9.0\QLNet.dll
+    - path: src\QLNet\bin\Release\net10.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
@@ -101,7 +101,7 @@
   version: 1.13.2-{build}
   configuration: Release
   platform: Any CPU
-  image: Visual Studio 2022
+  image: Visual Studio 2026
   skip_tags: true
   clone_folder: c:\projects\qlnet_feature
   init:
