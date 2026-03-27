@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! Vanilla option (no discrete dividends, no barriers) on a single asset
+   /// <summary>
+   /// Vanilla option (no discrete dividends, no barriers) on a single asset
+   /// </summary>
    public class VanillaOption : OneAssetOption
    {
       public VanillaOption(StrikedTypePayoff payoff, Exercise exercise)

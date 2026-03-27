@@ -29,7 +29,9 @@ namespace QLNet
       Vector lowerBound(Vector parameters);
    }
 
-   //! Base constraint class
+   /// <summary>
+   /// Base constraint class
+   /// </summary>
    public class Constraint
    {
       protected IConstraint impl_;
@@ -86,7 +88,9 @@ namespace QLNet
       }
    }
 
-   //! No constraint
+   /// <summary>
+   /// No constraint
+   /// </summary>
    public class NoConstraint : Constraint
    {
       private class Impl : IConstraint
@@ -105,7 +109,9 @@ namespace QLNet
       public NoConstraint() : base(new Impl()) { }
    }
 
-   //! %Constraint imposing positivity to all arguments
+   /// <summary>
+   /// Constraint imposing positivity to all arguments
+   /// </summary>
    public class PositiveConstraint : Constraint
    {
       public PositiveConstraint()
@@ -137,7 +143,9 @@ namespace QLNet
       }
    }
 
-   //! %Constraint imposing all arguments to be in [low,high]
+   /// <summary>
+   /// Constraint imposing all arguments to be in [low,high]
+   /// </summary>
    public class BoundaryConstraint : Constraint
    {
       public BoundaryConstraint(double low, double high)
@@ -177,7 +185,9 @@ namespace QLNet
       }
    }
 
-   //! %Constraint enforcing both given sub-constraints
+   /// <summary>
+   /// Constraint enforcing both given sub-constraints
+   /// </summary>
    public class CompositeConstraint : Constraint
    {
       public CompositeConstraint(Constraint c1, Constraint c2) : base(new Impl(c1, c2)) { }
@@ -228,7 +238,9 @@ namespace QLNet
       }
    }
 
-   //! %Constraint imposing i-th argument to be in [low_i,high_i] for all i
+   /// <summary>
+   /// Constraint imposing i-th argument to be in [low_i,high_i] for all i
+   /// </summary>
    public class NonhomogeneousBoundaryConstraint: Constraint
    {
       private class Impl: IConstraint

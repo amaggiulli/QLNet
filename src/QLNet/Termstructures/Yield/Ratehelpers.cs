@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Rate helper for bootstrapping over interest-rate futures prices
+   /// <summary>
+   /// Rate helper for bootstrapping over interest-rate futures prices
+   /// </summary>
    public class FuturesRateHelper : RateHelper
    {
 
@@ -430,7 +432,9 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over %FRA rates
+   /// <summary>
+   /// Rate helper for bootstrapping over FRA rates
+   /// </summary>
    public class FraRateHelper : RelativeDateRateHelper
    {
 
@@ -935,7 +939,9 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over BMA swap rates
+   /// <summary>
+   /// Rate helper for bootstrapping over BMA swap rates
+   /// </summary>
    public class BMASwapRateHelper : RelativeDateRateHelper
    {
       public BMASwapRateHelper(Handle<Quote> liborFraction,

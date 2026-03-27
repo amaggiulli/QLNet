@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! EU HICP index
+   /// <summary>
+   /// EU HICP index
+   /// </summary>
    public class EUHICP : ZeroInflationIndex
    {
       public EUHICP(bool interpolated)
@@ -31,7 +33,9 @@ namespace QLNet
                 new EURCurrency(), ts) {}
    }
 
-   //! Genuine year-on-year EU HICP (i.e. not a ratio of EU HICP)
+   /// <summary>
+   /// Genuine year-on-year EU HICP (i.e. not a ratio of EU HICP)
+   /// </summary>
    public class YYEUHICP : YoYInflationIndex
    {
       public YYEUHICP(bool interpolated)
@@ -43,7 +47,9 @@ namespace QLNet
    }
 
 
-   //! Fake year-on-year EU HICP (i.e. a ratio of EU HICP)
+   /// <summary>
+   /// Fake year-on-year EU HICP (i.e. a ratio of EU HICP)
+   /// </summary>
    public class YYEUHICPr : YoYInflationIndex
    {
       public YYEUHICPr(bool interpolated)

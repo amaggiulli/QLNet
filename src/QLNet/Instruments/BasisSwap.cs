@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Basis swap. Simple Libor swap vs Libor swap
+   /// <summary>
+   /// Basis swap. Simple Libor swap vs Libor swap
+   /// </summary>
    public class BasisSwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }

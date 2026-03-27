@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Euler discretization for stochastic processes
+   /// <summary>
+   /// Euler discretization for stochastic processes
+   /// </summary>
    public class EulerDiscretization : IDiscretization, IDiscretization1D
    {
       /*! Returns an approximation of the drift defined as

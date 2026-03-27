@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Abstract boundary condition class for finite difference problems
+   /// <summary>
+   /// Abstract boundary condition class for finite difference problems
+   /// </summary>
    public class BoundaryCondition<Operator> where Operator : IOperator
    {
       /// <summary>

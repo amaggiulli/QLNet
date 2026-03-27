@@ -23,7 +23,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Base exercise class
+   /// <summary>
+   /// Base exercise class
+   /// </summary>
    public class Exercise
    {
       public enum Type

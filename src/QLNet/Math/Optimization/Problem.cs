@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Constrained optimization problem
+   /// <summary>
+   /// Constrained optimization problem
+   /// </summary>
    public class Problem
    {
       //! Unconstrained cost function

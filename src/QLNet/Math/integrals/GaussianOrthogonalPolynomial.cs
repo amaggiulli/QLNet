@@ -60,7 +60,9 @@ namespace QLNet
       }
    }
 
-   //! Gauss-Laguerre polynomial
+   /// <summary>
+   /// Gauss-Laguerre polynomial
+   /// </summary>
    public class GaussLaguerrePolynomial : GaussianOrthogonalPolynomial
    {
       private double s_;
@@ -78,7 +80,9 @@ namespace QLNet
       public override double w(double x) { return Math.Pow(x, s_) * Math.Exp(-x); }
    }
 
-   //! Gauss-Hermite polynomial
+   /// <summary>
+   /// Gauss-Hermite polynomial
+   /// </summary>
    public class GaussHermitePolynomial : GaussianOrthogonalPolynomial
    {
       private double mu_;
@@ -96,7 +100,9 @@ namespace QLNet
       public override double w(double x) { return Math.Pow(Math.Abs(x), 2 * mu_) * Math.Exp(-x * x); }
    }
 
-   //! Gauss-Jacobi polynomial
+   /// <summary>
+   /// Gauss-Jacobi polynomial
+   /// </summary>
    public class GaussJacobiPolynomial : GaussianOrthogonalPolynomial
    {
       private double alpha_;
@@ -171,31 +177,41 @@ namespace QLNet
       }
    }
 
-   //! Gauss-Legendre polynomial
+   /// <summary>
+   /// Gauss-Legendre polynomial
+   /// </summary>
    public class GaussLegendrePolynomial : GaussJacobiPolynomial
    {
       public GaussLegendrePolynomial() : base(0.0, 0.0) { }
    }
 
-   //! Gauss-Chebyshev polynomial
+   /// <summary>
+   /// Gauss-Chebyshev polynomial
+   /// </summary>
    public class GaussChebyshevPolynomial : GaussJacobiPolynomial
    {
       public GaussChebyshevPolynomial() : base(-0.5, -0.5) { }
    }
 
-   //! Gauss-Chebyshev polynomial (second kind)
+   /// <summary>
+   /// Gauss-Chebyshev polynomial (second kind)
+   /// </summary>
    public class GaussChebyshev2ndPolynomial : GaussJacobiPolynomial
    {
       public GaussChebyshev2ndPolynomial() : base(0.5, 0.5) { }
    }
 
-   //! Gauss-Gegenbauer polynomial
+   /// <summary>
+   /// Gauss-Gegenbauer polynomial
+   /// </summary>
    public class GaussGegenbauerPolynomial : GaussJacobiPolynomial
    {
       public GaussGegenbauerPolynomial(double lambda) : base(lambda - 0.5, lambda - 0.5) { }
    }
 
-   //! Gauss hyperbolic polynomial
+   /// <summary>
+   /// Gauss hyperbolic polynomial
+   /// </summary>
    public class GaussHyperbolicPolynomial : GaussianOrthogonalPolynomial
    {
       public override double mu_0() { return Const.M_PI; }

@@ -35,7 +35,9 @@ namespace QLNet
       }
    }
 
-   //! 1-month %Bbsw index
+   /// <summary>
+   /// 1-month Bbsw index
+   /// </summary>
    public class Bbsw1M : Bbsw
    {
       public Bbsw1M(Handle<YieldTermStructure> h = null)
@@ -43,7 +45,9 @@ namespace QLNet
       {}
    }
 
-   //! 2-month %Bbsw index
+   /// <summary>
+   /// 2-month Bbsw index
+   /// </summary>
    public class Bbsw2M : Bbsw
    {
       public Bbsw2M(Handle<YieldTermStructure> h = null)
@@ -51,7 +55,9 @@ namespace QLNet
       { }
    }
 
-   //! 3-month %Bbsw index
+   /// <summary>
+   /// 3-month Bbsw index
+   /// </summary>
    public class Bbsw3M : Bbsw
    {
       public Bbsw3M(Handle<YieldTermStructure> h = null)
@@ -59,7 +65,9 @@ namespace QLNet
       { }
    }
 
-   //! 4-month %Bbsw index
+   /// <summary>
+   /// 4-month Bbsw index
+   /// </summary>
    public class Bbsw4M : Bbsw
    {
       public Bbsw4M(Handle<YieldTermStructure> h = null)
@@ -67,7 +75,9 @@ namespace QLNet
       { }
    }
 
-   //! 5-month %Bbsw index
+   /// <summary>
+   /// 5-month Bbsw index
+   /// </summary>
    public class Bbsw5M : Bbsw
    {
       public Bbsw5M(Handle<YieldTermStructure> h = null)
@@ -75,7 +85,9 @@ namespace QLNet
       { }
    }
 
-   //! 6-month %Bbsw index
+   /// <summary>
+   /// 6-month Bbsw index
+   /// </summary>
    public class Bbsw6M : Bbsw
    {
       public Bbsw6M(Handle<YieldTermStructure> h = null)

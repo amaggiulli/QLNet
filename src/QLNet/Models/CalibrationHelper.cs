@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! liquid market instrument used during calibration
+   /// <summary>
+   /// liquid market instrument used during calibration
+   /// </summary>
    public abstract class CalibrationHelper : LazyObject
    {
       public enum CalibrationErrorType

@@ -30,7 +30,9 @@ namespace QLNet
       protected OneFactorModel(int nArguments) : base(nArguments)
       {}
 
-      //! Base class describing the short-rate dynamics
+      /// <summary>
+      /// Base class describing the short-rate dynamics
+      /// </summary>
       public abstract class ShortRateDynamics
       {
          private StochasticProcess1D process_;
@@ -62,7 +64,9 @@ namespace QLNet
          return new ShortRateTree(trinomial, dynamics(), grid);
       }
 
-      //! Recombining trinomial tree discretizing the state variable
+      /// <summary>
+      /// Recombining trinomial tree discretizing the state variable
+      /// </summary>
       public class ShortRateTree : TreeLattice1D<ShortRateTree>, IGenericLattice
       {
          protected override ShortRateTree impl()

@@ -18,7 +18,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! calibration helper for Heston model
+   /// <summary>
+   /// calibration helper for Heston model
+   /// </summary>
    public class HestonModelHelper : CalibrationHelper
    {
       public HestonModelHelper(Period maturity,

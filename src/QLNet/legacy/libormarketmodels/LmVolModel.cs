@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! caplet volatility model
+   /// <summary>
+   /// caplet volatility model
+   /// </summary>
    public abstract class LmVolatilityModel
    {
       protected LmVolatilityModel(int size, int nArguments)

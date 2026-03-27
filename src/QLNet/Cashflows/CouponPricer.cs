@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -25,7 +25,9 @@ using System.Reflection;
 namespace QLNet
 {
 
-   //! generic pricer for floating-rate coupons
+   /// <summary>
+   /// generic pricer for floating-rate coupons
+   /// </summary>
    public abstract class FloatingRateCouponPricer : IObservable, IObserver
    {
       // required interface
@@ -63,7 +65,9 @@ namespace QLNet
       #endregion
    }
 
-   //! base pricer for capped/floored Ibor coupons
+   /// <summary>
+   /// base pricer for capped/floored Ibor coupons
+   /// </summary>
    public abstract class IborCouponPricer : FloatingRateCouponPricer
    {
       protected IborCouponPricer(Handle<OptionletVolatilityStructure> v = null)
@@ -270,7 +274,9 @@ namespace QLNet
 
    }
 
-   //! base pricer for vanilla CMS coupons
+   /// <summary>
+   /// base pricer for vanilla CMS coupons
+   /// </summary>
    public abstract class CmsCouponPricer : FloatingRateCouponPricer
    {
       protected CmsCouponPricer(Handle<SwaptionVolatilityStructure> v = null)

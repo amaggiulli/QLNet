@@ -16,7 +16,9 @@
 
 namespace QLNet
 {
-   //! Continuous-floating lookback option
+   /// <summary>
+   /// Continuous-floating lookback option
+   /// </summary>
    public class ContinuousFloatingLookbackOption : OneAssetOption
    {
       //! %Arguments for continuous fixed lookback option calculation
@@ -55,7 +57,9 @@ namespace QLNet
       protected double? minmax_;
    }
 
-   //! Continuous-fixed lookback option
+   /// <summary>
+   /// Continuous-fixed lookback option
+   /// </summary>
    public class ContinuousFixedLookbackOption : OneAssetOption
    {
       //! %Arguments for continuous fixed lookback option calculation

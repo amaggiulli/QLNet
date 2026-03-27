@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! Base class for options on a single asset
+   /// <summary>
+   /// Base class for options on a single asset
+   /// </summary>
    public class OneAssetOption : Option
    {
       // results

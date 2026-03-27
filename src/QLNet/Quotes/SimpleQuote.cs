@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,7 +21,9 @@ using System;
 namespace QLNet
 {
    // simple quote class
-   //! market element returning a stored value
+   /// <summary>
+   /// market element returning a stored value
+   /// </summary>
    public class SimpleQuote : Quote
    {
       private double? value_;

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -377,7 +377,9 @@ namespace QLNet
       protected abstract double zeroRateImpl(double t);
    }
 
-   //! Base class for year-on-year inflation term structures.
+   /// <summary>
+   /// Base class for year-on-year inflation term structures.
+   /// </summary>
    public abstract class YoYInflationTermStructure : InflationTermStructure
    {
       protected YoYInflationTermStructure()

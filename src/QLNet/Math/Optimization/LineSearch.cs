@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  *
@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Base class for line search
+   /// <summary>
+   /// Base class for line search
+   /// </summary>
    public abstract class LineSearch
    {
       //! Default constructor

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Basic term-structure functionality
+   /// <summary>
+   /// Basic term-structure functionality
+   /// </summary>
    public abstract class TermStructure : Extrapolator
    {
 

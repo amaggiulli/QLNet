@@ -255,7 +255,9 @@ namespace QLNet
       protected bool indexIsInterpolated_;
    }
 
-   //! Constant surface, no K or T dependence.
+   /// <summary>
+   /// Constant surface, no K or T dependence.
+   /// </summary>
    public class ConstantYoYOptionletVolatility  : YoYOptionletVolatilitySurface
    {
 

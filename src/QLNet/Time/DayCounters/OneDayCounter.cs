@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! 1/1 day count convention
+   /// <summary>
+   /// 1/1 day count convention
+   /// </summary>
    public class OneDayCounter : DayCounter
    {
       public OneDayCounter() : base(new Impl()) { }

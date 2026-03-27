@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! Base class for cash flows. This class is purely virtual and acts as a base class for the actual cash flow implementations.
+   /// <summary>
+   /// Base class for cash flows. This class is purely virtual and acts as a base class for the actual cash flow implementations.
+   /// </summary>
    public abstract class CashFlow : Event, IComparable<CashFlow>
    {
       #region Event interface

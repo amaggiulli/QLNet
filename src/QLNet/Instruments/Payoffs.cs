@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Intermediate class for put/call payoffs
+   /// <summary>
+   /// Intermediate class for put/call payoffs
+   /// </summary>
    public class TypePayoff : Payoff
    {
       protected Option.Type type_;
@@ -35,7 +37,9 @@ namespace QLNet
       public override string description() { return name() + " " + optionType(); }
    }
 
-   //! %Payoff based on a floating strike
+   /// <summary>
+   /// Payoff based on a floating strike
+   /// </summary>
    public class FloatingTypePayoff : TypePayoff
    {
       public FloatingTypePayoff(Option.Type type) : base(type) {}
@@ -46,7 +50,9 @@ namespace QLNet
       public override double value(double k) { throw new NotSupportedException("floating payoff not handled"); }
    }
 
-   //! Intermediate class for payoffs based on a fixed strike
+   /// <summary>
+   /// Intermediate class for payoffs based on a fixed strike
+   /// </summary>
    public class StrikedTypePayoff : TypePayoff
    {
       protected double strike_;
@@ -71,7 +77,9 @@ namespace QLNet
       public double strike() { return strike_; }
    }
 
-   //! Plain-vanilla payoff
+   /// <summary>
+   /// Plain-vanilla payoff
+   /// </summary>
    public class PlainVanillaPayoff : StrikedTypePayoff
    {
       public PlainVanillaPayoff(Option.Type type, double strike) : base(type, strike) {}
@@ -92,7 +100,9 @@ namespace QLNet
       }
    }
 
-   //! %Payoff with strike expressed as percentage
+   /// <summary>
+   /// Payoff with strike expressed as percentage
+   /// </summary>
    public class PercentageStrikePayoff : StrikedTypePayoff
    {
       public PercentageStrikePayoff(Option.Type type, double moneyness) : base(type, moneyness) {}
@@ -117,7 +127,9 @@ namespace QLNet
        can be found in M. Rubinstein, E. Reiner:"Unscrambling The Binary Code", Risk, Vol.4 no.9,1991.
        (see: http://www.in-the-money.com/artandpap/Binary%20Options.doc)
    */
-   //! Binary asset-or-nothing payoff
+   /// <summary>
+   /// Binary asset-or-nothing payoff
+   /// </summary>
    public class AssetOrNothingPayoff : StrikedTypePayoff
    {
       public AssetOrNothingPayoff(Option.Type type, double strike) : base(type, strike) {}
@@ -138,7 +150,9 @@ namespace QLNet
       }
    }
 
-   //! Binary cash-or-nothing payoff
+   /// <summary>
+   /// Binary cash-or-nothing payoff
+   /// </summary>
    public class CashOrNothingPayoff : StrikedTypePayoff
    {
       protected double cashPayoff_;
@@ -240,7 +254,9 @@ namespace QLNet
       }
    }
 
-   //! Binary supershare payoff
+   /// <summary>
+   /// Binary supershare payoff
+   /// </summary>
    public class SuperSharePayoff : StrikedTypePayoff
    {
       protected double secondStrike_;

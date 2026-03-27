@@ -234,7 +234,9 @@ namespace QLNet
       double spreadLegValue_;
    }
 
-   //! Black-formula pricer for capped/floored yoy inflation coupons
+   /// <summary>
+   /// Black-formula pricer for capped/floored yoy inflation coupons
+   /// </summary>
    public class BlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
 
@@ -253,7 +255,9 @@ namespace QLNet
 
    }
 
-   //! Unit-Displaced-Black-formula pricer for capped/floored yoy inflation coupons
+   /// <summary>
+   /// Unit-Displaced-Black-formula pricer for capped/floored yoy inflation coupons
+   /// </summary>
    public class UnitDisplacedBlackYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public UnitDisplacedBlackYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)
@@ -271,7 +275,9 @@ namespace QLNet
       }
    }
 
-   //! Bachelier-formula pricer for capped/floored yoy inflation coupons
+   /// <summary>
+   /// Bachelier-formula pricer for capped/floored yoy inflation coupons
+   /// </summary>
    public class BachelierYoYInflationCouponPricer : YoYInflationCouponPricer
    {
       public BachelierYoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)

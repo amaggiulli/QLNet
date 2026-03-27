@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! discretization of a stochastic process over a given time interval
+   /// <summary>
+   /// discretization of a stochastic process over a given time interval
+   /// </summary>
    public interface IDiscretization
    {
       Vector drift(StochasticProcess sp, double t0, Vector x0, double dt);
@@ -28,7 +30,9 @@ namespace QLNet
       Matrix covariance(StochasticProcess sp, double t0, Vector x0, double dt);
    }
 
-   //! discretization of a 1D stochastic process over a given time interval
+   /// <summary>
+   /// discretization of a 1D stochastic process over a given time interval
+   /// </summary>
    public interface IDiscretization1D
    {
       double drift(StochasticProcess1D sp, double t0, double x0, double dt);
@@ -153,7 +157,9 @@ namespace QLNet
       #endregion
    }
 
-   //! 1-dimensional stochastic process
+   /// <summary>
+   /// 1-dimensional stochastic process
+   /// </summary>
    public abstract class StochasticProcess1D : StochasticProcess
    {
       protected new IDiscretization1D discretization_;

@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Abstract class for constrained optimization method
+   /// <summary>
+   /// Abstract class for constrained optimization method
+   /// </summary>
    public abstract class OptimizationMethod
    {
       //! minimize the optimization problem P

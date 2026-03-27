@@ -80,7 +80,9 @@ namespace QLNet
          public abstract StochasticProcess process();
       }
 
-      //! Recombining two-dimensional tree discretizing the state variable
+      /// <summary>
+      /// Recombining two-dimensional tree discretizing the state variable
+      /// </summary>
       public class ShortRateTree : TreeLattice2D<ShortRateTree, TrinomialTree>, IGenericLattice
       {
          protected override ShortRateTree impl()

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -63,7 +63,9 @@ namespace QLNet
       public override double secondDerivative(double x) { return 0.0; }
    }
 
-   //! %Linear interpolation between discrete points
+   /// <summary>
+   /// Linear interpolation between discrete points
+   /// </summary>
    public class LinearInterpolation : Interpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
@@ -74,7 +76,9 @@ namespace QLNet
       }
    }
 
-   //! %Linear-interpolation factory and traits
+   /// <summary>
+   /// Linear-interpolation factory and traits
+   /// </summary>
    public class Linear : IInterpolationFactory
    {
       public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin)

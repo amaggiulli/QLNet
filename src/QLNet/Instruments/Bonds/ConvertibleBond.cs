@@ -22,7 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! %callability leaving to the holder the possibility to convert
+   /// <summary>
+   /// callability leaving to the holder the possibility to convert
+   /// </summary>
    public class SoftCallability : Callability
    {
       public SoftCallability(Bond.Price price, Date date, double trigger)
@@ -39,7 +41,9 @@ namespace QLNet
       private double trigger_;
    }
 
-   //! base class for convertible bonds
+   /// <summary>
+   /// base class for convertible bonds
+   /// </summary>
    public class ConvertibleBond : Bond
    {
       public class Option : OneAssetOption

@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! %Lattice (tree, finite-differences) base class
+   /// <summary>
+   /// Lattice (tree, finite-differences) base class
+   /// </summary>
    public abstract class Lattice
    {
       protected TimeGrid t_;

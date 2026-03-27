@@ -20,7 +20,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! amortizing floating-rate bond (possibly capped and/or floored)
+   /// <summary>
+   /// amortizing floating-rate bond (possibly capped and/or floored)
+   /// </summary>
    public class AmortizingFloatingRateBond : Bond
    {
       public AmortizingFloatingRateBond(int settlementDays,

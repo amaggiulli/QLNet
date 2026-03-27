@@ -134,7 +134,9 @@ namespace QLNet
       }
    }
 
-   //! Class for forward type payoffs
+   /// <summary>
+   /// Class for forward type payoffs
+   /// </summary>
    public class ForwardTypePayoff : Payoff
    {
       protected Position.Type type_;

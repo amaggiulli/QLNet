@@ -20,7 +20,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Coupon paying a YoY-inflation type index
+   /// <summary>
+   /// Coupon paying a YoY-inflation type index
+   /// </summary>
    public class YoYInflationCoupon : InflationCoupon
    {
       public YoYInflationCoupon(Date paymentDate,
@@ -64,7 +66,9 @@ namespace QLNet
 
 
    //! Helper class building a sequence of capped/floored yoy inflation coupons
-   //! payoff is: spread + gearing x index
+   /// <summary>
+   /// payoff is: spread + gearing x index
+   /// </summary>
    public class yoyInflationLeg : yoyInflationLegBase
    {
       public yoyInflationLeg(Schedule schedule, Calendar cal,

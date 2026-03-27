@@ -97,7 +97,9 @@ namespace QLNet
       }
    }
 
-   //! linear regression y_i = a_0 + a_1*x_0 +..+a_n*x_{n-1} + eps
+   /// <summary>
+   /// linear regression y_i = a_0 + a_1*x_0 +..+a_n*x_{n-1} + eps
+   /// </summary>
    public class LinearRegression
    {
       private LinearLeastSquaresRegression<List<double>> reg_;

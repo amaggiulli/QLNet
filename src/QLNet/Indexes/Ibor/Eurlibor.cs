@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -146,7 +146,9 @@ namespace QLNet
 
    }
 
-   //! Overnight %EUR %Libor index
+   /// <summary>
+   /// Overnight EUR Libor index
+   /// </summary>
    public class EURLiborON : DailyTenorEURLibor
    {
       public EURLiborON()
@@ -158,7 +160,9 @@ namespace QLNet
       {}
    }
 
-   //! 1-week %EUR %Libor index
+   /// <summary>
+   /// 1-week EUR Libor index
+   /// </summary>
    public class EURLiborSW : EURLibor
    {
       public EURLiborSW()
@@ -169,7 +173,9 @@ namespace QLNet
       {}
    }
 
-   //! 2-weeks %EUR %Libor index
+   /// <summary>
+   /// 2-weeks EUR Libor index
+   /// </summary>
    public class EURLibor2W : EURLibor
    {
       public EURLibor2W()
@@ -183,7 +189,9 @@ namespace QLNet
    }
 
 
-   //! 1-month %EUR %Libor index
+   /// <summary>
+   /// 1-month EUR Libor index
+   /// </summary>
    public class EURLibor1M : EURLibor
    {
       public EURLibor1M()
@@ -196,7 +204,9 @@ namespace QLNet
 
    }
 
-   //! 2-months %EUR %Libor index
+   /// <summary>
+   /// 2-months EUR Libor index
+   /// </summary>
    public class EURLibor2M : EURLibor
    {
       public EURLibor2M()
@@ -209,7 +219,9 @@ namespace QLNet
 
    }
 
-   //! 3-months %EUR %Libor index
+   /// <summary>
+   /// 3-months EUR Libor index
+   /// </summary>
    public class EURLibor3M : EURLibor
    {
       public EURLibor3M()
@@ -222,7 +234,9 @@ namespace QLNet
 
    }
 
-   //! 4-months %EUR %Libor index
+   /// <summary>
+   /// 4-months EUR Libor index
+   /// </summary>
    public class EURLibor4M : EURLibor
    {
       public EURLibor4M()
@@ -235,7 +249,9 @@ namespace QLNet
 
    }
 
-   //! 5-months %EUR %Libor index
+   /// <summary>
+   /// 5-months EUR Libor index
+   /// </summary>
    public class EURLibor5M : EURLibor
    {
       public EURLibor5M()
@@ -248,7 +264,9 @@ namespace QLNet
 
    }
 
-   //! 6-months %EUR %Libor index
+   /// <summary>
+   /// 6-months EUR Libor index
+   /// </summary>
    public class EURLibor6M : EURLibor
    {
       public EURLibor6M()
@@ -261,7 +279,9 @@ namespace QLNet
 
    }
 
-   //! 7-months %EUR %Libor index
+   /// <summary>
+   /// 7-months EUR Libor index
+   /// </summary>
    public class EURLibor7M : EURLibor
    {
       public EURLibor7M()
@@ -274,7 +294,9 @@ namespace QLNet
 
    }
 
-   //! 8-months %EUR %Libor index
+   /// <summary>
+   /// 8-months EUR Libor index
+   /// </summary>
    public class EURLibor8M : EURLibor
    {
       public EURLibor8M()
@@ -287,7 +309,9 @@ namespace QLNet
 
    }
 
-   //! 9-months %EUR %Libor index
+   /// <summary>
+   /// 9-months EUR Libor index
+   /// </summary>
    public class EURLibor9M : EURLibor
    {
       public EURLibor9M()
@@ -300,7 +324,9 @@ namespace QLNet
 
    }
 
-   //! 10-months %EUR %Libor index
+   /// <summary>
+   /// 10-months EUR Libor index
+   /// </summary>
    public class EURLibor10M : EURLibor
    {
       public EURLibor10M()
@@ -313,7 +339,9 @@ namespace QLNet
 
    }
 
-   //! 11-months %EUR %Libor index
+   /// <summary>
+   /// 11-months EUR Libor index
+   /// </summary>
    public class EURLibor11M : EURLibor
    {
       public EURLibor11M()
@@ -326,7 +354,9 @@ namespace QLNet
 
    }
 
-   //! 1-year %EUR %Libor index
+   /// <summary>
+   /// 1-year EUR Libor index
+   /// </summary>
    public class EURLibor1Y : EURLibor
    {
       public EURLibor1Y()

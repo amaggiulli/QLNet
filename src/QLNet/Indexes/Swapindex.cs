@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -21,7 +21,9 @@
 
 namespace QLNet
 {
-   //! base class for swap-rate indexes
+   /// <summary>
+   /// base class for swap-rate indexes
+   /// </summary>
    public class SwapIndex : InterestRateIndex
    {
       // need by CashFlowVectors
@@ -199,7 +201,9 @@ namespace QLNet
       protected Date lastFixingDate_;
    }
 
-   //! base class for overnight indexed swap indexes
+   /// <summary>
+   /// base class for overnight indexed swap indexes
+   /// </summary>
    public class OvernightIndexedSwapIndex : SwapIndex
    {
       public OvernightIndexedSwapIndex(string familyName,

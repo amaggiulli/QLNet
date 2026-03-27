@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! One-dimensional tree-based lattice.
+   /// <summary>
+   /// One-dimensional tree-based lattice.
+   /// </summary>
    public class TreeLattice1D<T> : TreeLattice<T> where T : IGenericLattice
    {
       public TreeLattice1D(TimeGrid timeGrid, int n) : base(timeGrid, n) { }

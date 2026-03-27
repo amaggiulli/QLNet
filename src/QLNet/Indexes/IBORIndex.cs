@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
@@ -22,7 +22,9 @@ using System;
 
 namespace QLNet
 {
-   //! base class for Inter-Bank-Offered-Rate indexes (e.g. %Libor, etc.)
+   /// <summary>
+   /// base class for Inter-Bank-Offered-Rate indexes (e.g. Libor, etc.)
+   /// </summary>
    public class IborIndex : InterestRateIndex
    {
       public IborIndex(string familyName,

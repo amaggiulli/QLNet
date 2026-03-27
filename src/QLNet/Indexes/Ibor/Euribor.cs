@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -90,35 +90,45 @@ namespace QLNet
       }
    }
 
-   //! 1-week %Euribor index
+   /// <summary>
+   /// 1-week Euribor index
+   /// </summary>
    public class EuriborSW : Euribor
    {
       public EuriborSW() : this(new Handle<YieldTermStructure>()) { }
       public EuriborSW(Handle<YieldTermStructure> h) : base(new Period(1, TimeUnit.Weeks), h) { }
    }
 
-   //! 2-weeks %Euribor index
+   /// <summary>
+   /// 2-weeks Euribor index
+   /// </summary>
    public class Euribor2W : Euribor
    {
       public Euribor2W() : this(new Handle<YieldTermStructure>()) { }
       public Euribor2W(Handle<YieldTermStructure> h) : base(new Period(2, TimeUnit.Weeks), h) { }
    }
 
-   //! 3-weeks %Euribor index
+   /// <summary>
+   /// 3-weeks Euribor index
+   /// </summary>
    public class Euribor3W : Euribor
    {
       public Euribor3W() : this(new Handle<YieldTermStructure>()) { }
       public Euribor3W(Handle<YieldTermStructure> h) : base(new Period(3, TimeUnit.Weeks), h) { }
    }
 
-   //! 1-month %Euribor index
+   /// <summary>
+   /// 1-month Euribor index
+   /// </summary>
    public class Euribor1M : Euribor
    {
       public Euribor1M() : this(new Handle<YieldTermStructure>()) { }
       public Euribor1M(Handle<YieldTermStructure> h) : base(new Period(1, TimeUnit.Months), h) { }
    }
 
-   //! 2-months %Euribor index
+   /// <summary>
+   /// 2-months Euribor index
+   /// </summary>
    public class Euribor2M : Euribor
    {
       public Euribor2M() : this(new Handle<YieldTermStructure>()) { }

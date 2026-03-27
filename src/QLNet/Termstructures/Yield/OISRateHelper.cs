@@ -78,7 +78,9 @@ namespace QLNet
    }
 
 
-   //! Rate helper for bootstrapping over Overnight Indexed Swap rates
+   /// <summary>
+   /// Rate helper for bootstrapping over Overnight Indexed Swap rates
+   /// </summary>
    public class DatedOISRateHelper : RateHelper
    {
 

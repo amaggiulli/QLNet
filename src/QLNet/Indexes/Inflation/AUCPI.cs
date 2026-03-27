@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! AU CPI index (either quarterly or annual)
+   /// <summary>
+   /// AU CPI index (either quarterly or annual)
+   /// </summary>
    public class AUCPI : ZeroInflationIndex
    {
       public AUCPI(Frequency frequency,
@@ -42,7 +44,9 @@ namespace QLNet
 
    }
 
-   //! Genuine year-on-year AU CPI (i.e. not a ratio)
+   /// <summary>
+   /// Genuine year-on-year AU CPI (i.e. not a ratio)
+   /// </summary>
    public class YYAUCPI : YoYInflationIndex
    {
       public YYAUCPI(Frequency frequency,
@@ -66,7 +70,9 @@ namespace QLNet
    }
 
 
-   //! Fake year-on-year AUCPI (i.e. a ratio)
+   /// <summary>
+   /// Fake year-on-year AUCPI (i.e. a ratio)
+   /// </summary>
    public class YYAUCPIr : YoYInflationIndex
    {
       public YYAUCPIr(Frequency frequency,

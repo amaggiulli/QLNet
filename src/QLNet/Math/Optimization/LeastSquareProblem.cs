@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,7 +22,9 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   //! Base class for least square problem
+   /// <summary>
+   /// Base class for least square problem
+   /// </summary>
    public abstract class LeastSquareProblem
    {
       //! size of the problem ie size of target vector

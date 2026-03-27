@@ -351,7 +351,9 @@ namespace QLNet
       { }
    }
 
-   //! No constraint
+   /// <summary>
+   /// No constraint
+   /// </summary>
    public class NoXABRConstraint : XABRConstraint
    {
       private class Impl : IConstraint

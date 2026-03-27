@@ -116,7 +116,9 @@ namespace QLNet
 
    }
 
-   //! %VannaVolga-interpolation factory and traits
+   /// <summary>
+   /// VannaVolga-interpolation factory and traits
+   /// </summary>
    public class VannaVolga
    {
       public VannaVolga(double spot, double dDiscount, double fDiscount, double T)

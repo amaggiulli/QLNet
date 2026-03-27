@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Constant swaption volatility, no time-strike dependence
+   /// <summary>
+   /// Constant swaption volatility, no time-strike dependence
+   /// </summary>
    public class ConstantSwaptionVolatility : SwaptionVolatilityStructure
    {
       private Handle<Quote> volatility_;

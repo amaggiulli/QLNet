@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,7 +21,9 @@
 namespace QLNet
 {
    //! Base class for event
-   //! This class acts as a base class for the actual event implementations.
+   /// <summary>
+   /// This class acts as a base class for the actual event implementations.
+   /// </summary>
    public abstract class Event : IObservable
    {
       #region Event interface

@@ -209,7 +209,9 @@ namespace QLNet
       private List<double> capRates_;
       private List<double> floorRates_;
 
-      //! %Arguments for YoY Inflation cap/floor calculation
+      /// <summary>
+      /// Arguments for YoY Inflation cap/floor calculation
+      /// </summary>
       public class Arguments : IPricingEngineArguments
       {
          public CapFloorType type { get; set; }
@@ -259,7 +261,9 @@ namespace QLNet
          }
       }
 
-      //! base class for cap/floor engines
+      /// <summary>
+      /// base class for cap/floor engines
+      /// </summary>
       public class Engine : GenericEngine<YoYInflationCapFloor.Arguments, YoYInflationCapFloor.Results>
       {}
 

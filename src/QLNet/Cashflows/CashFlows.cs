@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -27,7 +27,9 @@ using Leg = System.Collections.Generic.List<QLNet.CashFlow>;
 
 namespace QLNet
 {
-   //! %cashflow-analysis functions
+   /// <summary>
+   /// cashflow-analysis functions
+   /// </summary>
    public class CashFlows
    {
       #region utility functions

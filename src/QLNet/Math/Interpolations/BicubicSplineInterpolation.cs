@@ -173,7 +173,9 @@ namespace QLNet
       }
    }
 
-   //! bicubic-spline-interpolation factory
+   /// <summary>
+   /// bicubic-spline-interpolation factory
+   /// </summary>
    public  class Bicubic : IInterpolationFactory2D
    {
       public Interpolation2D interpolate(List<double> xBegin, int size, List<double> yBegin, int ySize, Matrix zData)

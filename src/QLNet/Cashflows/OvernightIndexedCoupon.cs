@@ -294,7 +294,9 @@ namespace QLNet
       List<double> dt_;
    }
 
-   //! helper class building a sequence of overnight coupons
+   /// <summary>
+   /// helper class building a sequence of overnight coupons
+   /// </summary>
    public class OvernightLeg : RateLegBase
    {
       public OvernightLeg(Schedule schedule, OvernightIndex overnightIndex)

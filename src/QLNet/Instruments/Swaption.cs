@@ -23,7 +23,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! %settlement information
+   /// <summary>
+   /// settlement information
+   /// </summary>
    public struct Settlement
    {
       public enum Type { Physical, Cash };
@@ -181,7 +183,9 @@ namespace QLNet
       }
    }
 
-   //! base class for swaption engines
+   /// <summary>
+   /// base class for swaption engines
+   /// </summary>
    public abstract class SwaptionEngine : GenericEngine<Swaption.Arguments, Swaption.Results> { }
 
    public class ImpliedVolHelper_ : ISolver1d

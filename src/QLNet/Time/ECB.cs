@@ -22,7 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! European Central Bank reserve maintenance dates
+   /// <summary>
+   /// European Central Bank reserve maintenance dates
+   /// </summary>
    public struct ECB
    {
       static List<Date> knownDateSet = new List<Date>();

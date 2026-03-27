@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -41,7 +41,9 @@ namespace QLNet
 
    }
 
-   //! base class for the one day deposit ICE %JPY %LIBOR indexes
+   /// <summary>
+   /// base class for the one day deposit ICE JPY LIBOR indexes
+   /// </summary>
    public class DailyTenorJPYLibor : DailyTenorLibor
    {
       public DailyTenorJPYLibor(int settlementDays) : this(settlementDays, new Handle<YieldTermStructure>())

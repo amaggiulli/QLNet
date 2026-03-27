@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Abstract base class for option payoffs
+   /// <summary>
+   /// Abstract base class for option payoffs
+   /// </summary>
    public class Payoff
    {
       // Payoff interface

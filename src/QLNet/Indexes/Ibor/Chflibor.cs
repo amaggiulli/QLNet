@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -40,7 +40,9 @@ namespace QLNet
       {}
    }
 
-   //! base class for the one day deposit BBA %CHF %LIBOR indexes
+   /// <summary>
+   /// base class for the one day deposit BBA CHF LIBOR indexes
+   /// </summary>
    public class DailyTenorCHFLibor : DailyTenorLibor
    {
       public DailyTenorCHFLibor(int settlementDays, Handle<YieldTermStructure> h)

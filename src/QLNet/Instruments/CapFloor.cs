@@ -372,7 +372,9 @@ namespace QLNet
          : base(CapFloorType.Collar, floatingLeg, capRates, floorRates) { }
    }
 
-   //! base class for cap/floor engines
+   /// <summary>
+   /// base class for cap/floor engines
+   /// </summary>
    public abstract class CapFloorEngine
       : GenericEngine<CapFloor.Arguments, CapFloor.Results> {}
 

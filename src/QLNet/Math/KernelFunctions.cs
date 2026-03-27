@@ -31,7 +31,9 @@ namespace QLNet
    }
 
 
-   //! Gaussian kernel function
+   /// <summary>
+   /// Gaussian kernel function
+   /// </summary>
    public class GaussianKernel : IKernelFunction
    {
       public GaussianKernel(double average, double sigma)

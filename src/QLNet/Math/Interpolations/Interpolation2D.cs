@@ -81,7 +81,9 @@ namespace QLNet
                                         + "]: extrapolation at (" + x + ", " + y + " not allowed");
       }
 
-      //! abstract base class for 2-D interpolation implementations
+      /// <summary>
+      /// abstract base class for 2-D interpolation implementations
+      /// </summary>
       protected interface Impl //: IValue
       {
          void calculate();

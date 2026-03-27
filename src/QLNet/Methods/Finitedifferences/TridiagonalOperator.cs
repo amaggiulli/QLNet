@@ -258,7 +258,9 @@ namespace QLNet
             timeSetter_.setTime(t, this);
       }
 
-      //! encapsulation of time-setting logic
+      /// <summary>
+      /// encapsulation of time-setting logic
+      /// </summary>
       public abstract class TimeSetter
       {
          public abstract void setTime(double t, IOperator L);

@@ -122,7 +122,9 @@ namespace QLNet
       public SVIWrapper modelInstance_ { get; set; }
    }
 
-   //! %SABR smile interpolation between discrete volatility points.
+   /// <summary>
+   /// SABR smile interpolation between discrete volatility points.
+   /// </summary>
    public class SviInterpolation : Interpolation
    {
       public SviInterpolation(List<double> xBegin,  // x = strikes
@@ -171,7 +173,9 @@ namespace QLNet
       private XABRCoeffHolder<SVISpecs> coeffs_;
    }
 
-   //! %SABR interpolation factory and traits
+   /// <summary>
+   /// SABR interpolation factory and traits
+   /// </summary>
    public class SVI
    {
       public SVI(double t, double forward, double a, double b, double sigma, double rho, double m,

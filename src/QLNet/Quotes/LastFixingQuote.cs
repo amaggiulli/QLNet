@@ -22,7 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Quote adapter for the last fixing available of a given Index
+   /// <summary>
+   /// Quote adapter for the last fixing available of a given Index
+   /// </summary>
    class LastFixingQuote : Quote, IObserver
    {
       protected Index index_;

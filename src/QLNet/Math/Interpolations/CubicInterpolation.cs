@@ -263,7 +263,9 @@ namespace QLNet
       {}
    }
 
-   //! %Cubic interpolation factory and traits
+   /// <summary>
+   /// Cubic interpolation factory and traits
+   /// </summary>
    public class Cubic : IInterpolationFactory
    {
       private CubicInterpolation.DerivativeApprox da_;

@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! Constant callable-bond volatility, no time-strike dependence
+   /// <summary>
+   /// Constant callable-bond volatility, no time-strike dependence
+   /// </summary>
    public class CallableBondConstantVolatility : CallableBondVolatilityStructure
    {
       public CallableBondConstantVolatility(Date referenceDate, double volatility, DayCounter dayCounter)

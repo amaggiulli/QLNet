@@ -20,7 +20,9 @@
 namespace QLNet
 {
 
-   //! FR HICP index
+   /// <summary>
+   /// FR HICP index
+   /// </summary>
    public class FRHICP : ZeroInflationIndex
    {
       public FRHICP(bool interpolated)
@@ -38,7 +40,9 @@ namespace QLNet
                 ts) {}
    }
 
-   //! Genuine year-on-year FR HICP (i.e. not a ratio)
+   /// <summary>
+   /// Genuine year-on-year FR HICP (i.e. not a ratio)
+   /// </summary>
    public class YYFRHICP : YoYInflationIndex
    {
       public YYFRHICP(bool interpolated)
@@ -57,7 +61,9 @@ namespace QLNet
                 ts) {}
    }
 
-   //! Fake year-on-year FR HICP (i.e. a ratio)
+   /// <summary>
+   /// Fake year-on-year FR HICP (i.e. a ratio)
+   /// </summary>
    public class YYFRHICPr : YoYInflationIndex
    {
       public YYFRHICPr(bool interpolated)

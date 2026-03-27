@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -23,7 +23,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! %Coupon paying a fixed interest rate
+   /// <summary>
+   /// Coupon paying a fixed interest rate
+   /// </summary>
    public class FixedRateCoupon : Coupon
    {
       // constructors
@@ -78,7 +80,9 @@ namespace QLNet
 
    }
 
-   //! helper class building a sequence of fixed rate coupons
+   /// <summary>
+   /// helper class building a sequence of fixed rate coupons
+   /// </summary>
    public class FixedRateLeg : RateLegBase
    {
       // properties

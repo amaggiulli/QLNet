@@ -120,7 +120,9 @@ namespace QLNet
 
    }
 
-   //! mixed linear/cubic interpolation between discrete points
+   /// <summary>
+   /// mixed linear/cubic interpolation between discrete points
+   /// </summary>
    public class MixedLinearCubicInterpolation : Interpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */

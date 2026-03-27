@@ -150,7 +150,9 @@ namespace QLNet
          : base(n, new GaussJacobiPolynomial(lambda - 0.5, lambda - 0.5)) {}
    }
 
-   //! tabulated Gauss-Legendre quadratures
+   /// <summary>
+   /// tabulated Gauss-Legendre quadratures
+   /// </summary>
    public class TabulatedGaussLegendre
    {
       public TabulatedGaussLegendre(int n = 20) { order(n); }

@@ -62,7 +62,9 @@ namespace QLNet
    }
 
 
-   //! Backward-flat interpolation between discrete points
+   /// <summary>
+   /// Backward-flat interpolation between discrete points
+   /// </summary>
    public class BackwardFlatInterpolation : Interpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
@@ -73,7 +75,9 @@ namespace QLNet
       }
    }
 
-   //! Backward-flat interpolation factory and traits
+   /// <summary>
+   /// Backward-flat interpolation factory and traits
+   /// </summary>
    public class BackwardFlat : IInterpolationFactory
    {
       public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin)

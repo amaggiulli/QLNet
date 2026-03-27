@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2022  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -133,7 +133,9 @@ namespace QLNet
       private double spanningTime_;
    }
 
-   //! helper class building a sequence of capped/floored ibor-rate coupons
+   /// <summary>
+   /// helper class building a sequence of capped/floored ibor-rate coupons
+   /// </summary>
    public class IborLeg : FloatingLegBase
    {
       // constructor

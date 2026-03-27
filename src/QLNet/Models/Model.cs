@@ -110,7 +110,9 @@ namespace QLNet
       void update();
    }
 
-   //! Calibrated model class
+   /// <summary>
+   /// Calibrated model class
+   /// </summary>
    public class CalibratedModel : IObserver, IObservable
    {
       protected List<Parameter> arguments_;
@@ -215,7 +217,9 @@ namespace QLNet
       protected virtual void generateArguments() {}
 
 
-      //! Constraint imposed on arguments
+      /// <summary>
+      /// Constraint imposed on arguments
+      /// </summary>
       private class PrivateConstraint : Constraint
       {
          public PrivateConstraint(List<Parameter> arguments) : base(new Impl(arguments)) { }
@@ -291,7 +295,9 @@ namespace QLNet
          }
       }
 
-      //! Calibration cost function class
+      /// <summary>
+      /// Calibration cost function class
+      /// </summary>
       private class CalibrationFunction : CostFunction
       {
          public CalibrationFunction(CalibratedModel model,

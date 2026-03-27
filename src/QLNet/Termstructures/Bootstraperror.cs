@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2014  Edem Dawui (edawui@gmail.com)
@@ -21,7 +21,9 @@
 
 namespace QLNet
 {
-   //! bootstrap error
+   /// <summary>
+   /// bootstrap error
+   /// </summary>
    public class BootstrapError<T, U> : ISolver1d
       where T : Curve<U>
       where U : TermStructure

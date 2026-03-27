@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,7 +21,9 @@ using System;
 namespace QLNet
 {
 
-   //! Black-Scholes 1973 calculator class
+   /// <summary>
+   /// Black-Scholes 1973 calculator class
+   /// </summary>
    public class BlackScholesCalculator : BlackCalculator
    {
       protected double spot_;

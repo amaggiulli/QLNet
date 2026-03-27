@@ -494,7 +494,9 @@ namespace QLNet
       protected List<double> discounts_;
    }
 
-   //! Monte Carlo barrier-option engine factory
+   /// <summary>
+   /// Monte Carlo barrier-option engine factory
+   /// </summary>
    public class MakeMCBarrierEngine<RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

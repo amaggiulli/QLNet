@@ -169,11 +169,15 @@ namespace QLNet
       }
    }
 
-   //! default gaussian statistic tool
+   /// <summary>
+   /// default gaussian statistic tool
+   /// </summary>
    public class GaussianStatistics : GenericGaussianStatistics<GeneralStatistics> { }
 
 
-   //! Helper class for precomputed distributions
+   /// <summary>
+   /// Helper class for precomputed distributions
+   /// </summary>
    public class StatsHolder : IGeneralStatistics
    {
       private double mean_, standardDeviation_;

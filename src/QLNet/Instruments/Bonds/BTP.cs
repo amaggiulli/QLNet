@@ -408,7 +408,9 @@ namespace QLNet
       private List < double? > swapBondYields_, swapRates_;
    }
 
-   //! RendistatoCalculator equivalent swap lenth Quote adapter
+   /// <summary>
+   /// RendistatoCalculator equivalent swap lenth Quote adapter
+   /// </summary>
    public class RendistatoEquivalentSwapLengthQuote : Quote
    {
       public RendistatoEquivalentSwapLengthQuote(RendistatoCalculator r) { r_ = r; }
@@ -429,7 +431,9 @@ namespace QLNet
       private RendistatoCalculator r_;
    }
 
-   //! RendistatoCalculator equivalent swap spread Quote adapter
+   /// <summary>
+   /// RendistatoCalculator equivalent swap spread Quote adapter
+   /// </summary>
    public class RendistatoEquivalentSwapSpreadQuote : Quote
    {
       public RendistatoEquivalentSwapSpreadQuote(RendistatoCalculator r) { r_ = r; }

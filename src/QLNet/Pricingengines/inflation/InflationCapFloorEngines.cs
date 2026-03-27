@@ -150,7 +150,9 @@ namespace QLNet
       protected  Handle<YoYOptionletVolatilitySurface> volatility_;
    }
 
-   //! Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationBlackCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationBlackCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> volatility)
@@ -165,7 +167,9 @@ namespace QLNet
 
    }
 
-   //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationUnitDisplacedBlackCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationUnitDisplacedBlackCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> vol)
@@ -182,7 +186,9 @@ namespace QLNet
 
    }
 
-   //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationBachelierCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationBachelierCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> vol)

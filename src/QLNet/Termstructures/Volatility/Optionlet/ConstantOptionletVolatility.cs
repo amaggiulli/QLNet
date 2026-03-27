@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! Constant caplet volatility, no time-strike dependence
+   /// <summary>
+   /// Constant caplet volatility, no time-strike dependence
+   /// </summary>
    public class ConstantOptionletVolatility : OptionletVolatilityStructure
    {
       private Handle<Quote> volatility_;

@@ -17,7 +17,9 @@ using System;
 
 namespace QLNet
 {
-   //! Hull-White stochastic process
+   /// <summary>
+   /// Hull-White stochastic process
+   /// </summary>
    public class HullWhiteProcess : StochasticProcess1D
    {
       public HullWhiteProcess(Handle<YieldTermStructure> h, double a, double sigma)

@@ -110,6 +110,8 @@ namespace QLNet
       }
    }
 
-   //! default traits for low-discrepancy sequence generation
+   /// <summary>
+   /// default traits for low-discrepancy sequence generation
+   /// </summary>
    public class LowDiscrepancy : GenericLowDiscrepancy<SobolRsg, InverseCumulativeNormal> { }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  *
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -41,7 +41,9 @@ namespace QLNet
 
    }
 
-   //! Multi-dimensional simplex class
+   /// <summary>
+   /// Multi-dimensional simplex class
+   /// </summary>
    public class Simplex : OptimizationMethod
    {
       //! Constructor taking as input the characteristic length

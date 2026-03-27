@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! UK Retail Price Inflation Index
+   /// <summary>
+   /// UK Retail Price Inflation Index
+   /// </summary>
    public class UKRPI : ZeroInflationIndex
    {
       public UKRPI(bool interpolated)
@@ -30,7 +32,9 @@ namespace QLNet
                 new Period(1, TimeUnit.Months), new GBPCurrency(), ts) {}
    }
 
-   //! Genuine year-on-year UK RPI (i.e. not a ratio of UK RPI)
+   /// <summary>
+   /// Genuine year-on-year UK RPI (i.e. not a ratio of UK RPI)
+   /// </summary>
    public class YYUKRPI : YoYInflationIndex
    {
       public YYUKRPI(bool interpolated)
@@ -41,7 +45,9 @@ namespace QLNet
                 new Period(1, TimeUnit.Months), new GBPCurrency(), ts) {}
    }
 
-   //! Fake year-on-year UK RPI (i.e. a ratio of UK RPI)
+   /// <summary>
+   /// Fake year-on-year UK RPI (i.e. a ratio of UK RPI)
+   /// </summary>
    public class YYUKRPIr : YoYInflationIndex
    {
       public YYUKRPIr(bool interpolated)

@@ -208,7 +208,9 @@ namespace QLNet
       private XABRCoeffHolder<SABRSpecs> coeffs_;
    }
 
-   //! %SABR interpolation factory and traits
+   /// <summary>
+   /// SABR interpolation factory and traits
+   /// </summary>
    public class SABR
    {
       public SABR(double t, double forward, double alpha, double beta, double nu, double rho,

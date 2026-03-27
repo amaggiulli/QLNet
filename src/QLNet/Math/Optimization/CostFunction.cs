@@ -24,7 +24,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //!  Cost function abstract class for optimization problem
+   /// <summary>
+   /// Cost function abstract class for optimization problem
+   /// </summary>
    public abstract class CostFunction
    {
       //! method to overload to compute the cost function value in x

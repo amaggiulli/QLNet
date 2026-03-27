@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -94,7 +94,9 @@ namespace QLNet
       }
    }
 
-   //! Zero-curve traits
+   /// <summary>
+   /// Zero-curve traits
+   /// </summary>
    public class ZeroYield : ITraits<YieldTermStructure>
    {
       const double maxRate = 3;
@@ -173,7 +175,9 @@ namespace QLNet
       }
    }
 
-   //! Forward-curve traits
+   /// <summary>
+   /// Forward-curve traits
+   /// </summary>
    public class ForwardRate : ITraits<YieldTermStructure>
    {
       const double maxRate = 3;

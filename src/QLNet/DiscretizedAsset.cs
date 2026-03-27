@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Discretized asset class used by numerical
+   /// <summary>
+   /// Discretized asset class used by numerical
+   /// </summary>
    public abstract class DiscretizedAsset
    {
       private Lattice method_;
@@ -183,7 +185,9 @@ namespace QLNet
       }
    }
 
-   //! Useful discretized discount bond asset
+   /// <summary>
+   /// Useful discretized discount bond asset
+   /// </summary>
    public class DiscretizedDiscountBond : DiscretizedAsset
    {
       public override void reset(int size)

@@ -57,7 +57,9 @@ namespace QLNet
       public override double secondDerivative(double x) { return 0.0; }
    }
 
-   //! Forward-flat interpolation between discrete points
+   /// <summary>
+   /// Forward-flat interpolation between discrete points
+   /// </summary>
    public class ForwardFlatInterpolation : Interpolation
    {
       /*! \pre the \f$ x \f$ values must be sorted. */
@@ -68,7 +70,9 @@ namespace QLNet
       }
    }
 
-   //! Forward-flat interpolation factory and traits
+   /// <summary>
+   /// Forward-flat interpolation factory and traits
+   /// </summary>
    public class ForwardFlat : IInterpolationFactory
    {
       public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin)

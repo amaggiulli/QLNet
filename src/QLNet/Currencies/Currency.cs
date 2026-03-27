@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! %Currency specification
+   /// <summary>
+   /// Currency specification
+   /// </summary>
    public class Currency
    {
       protected string name_, code_;

@@ -20,7 +20,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %instrument callability
+   /// <summary>
+   /// instrument callability
+   /// </summary>
    public class Callability : Event
    {
       /// <summary>

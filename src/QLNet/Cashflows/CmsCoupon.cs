@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -69,7 +69,9 @@ namespace QLNet
    }
 
 
-   //! helper class building a sequence of capped/floored cms-rate coupons
+   /// <summary>
+   /// helper class building a sequence of capped/floored cms-rate coupons
+   /// </summary>
    public class CmsLeg : FloatingLegBase
    {
       public CmsLeg(Schedule schedule, SwapIndex swapIndex)

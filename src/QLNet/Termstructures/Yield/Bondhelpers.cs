@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -80,7 +80,9 @@ namespace QLNet
 
    }
 
-   //! Fixed-coupon bond helper for curve bootstrap
+   /// <summary>
+   /// Fixed-coupon bond helper for curve bootstrap
+   /// </summary>
    public class FixedRateBondHelper : BondHelper
    {
       public FixedRateBondHelper(Handle<Quote> price,
@@ -111,7 +113,9 @@ namespace QLNet
       protected FixedRateBond fixedRateBond_;
    }
 
-   //! CPI bond helper for curve bootstrap
+   /// <summary>
+   /// CPI bond helper for curve bootstrap
+   /// </summary>
    public class CPIBondHelper : BondHelper
    {
       public CPIBondHelper(Handle<Quote> price,

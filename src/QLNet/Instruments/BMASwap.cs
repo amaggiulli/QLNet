@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! swap paying Libor against BMA coupons
+   /// <summary>
+   /// swap paying Libor against BMA coupons
+   /// </summary>
    public class BMASwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }

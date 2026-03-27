@@ -817,7 +817,9 @@ namespace QLNet
    }
 
 
-   //! Convex-monotone interpolation factory and traits
+   /// <summary>
+   /// Convex-monotone interpolation factory and traits
+   /// </summary>
    public class ConvexMonotone : IInterpolationFactory
    {
       private double quadraticity_, monotonicity_;

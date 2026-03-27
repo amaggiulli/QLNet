@@ -53,7 +53,9 @@ namespace QLNet
 
    }
 
-   //! Monte Carlo Heston European engine factory
+   /// <summary>
+   /// Monte Carlo Heston European engine factory
+   /// </summary>
    public class MakeMCEuropeanHestonEngine<RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

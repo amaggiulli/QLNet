@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Base class for inflation-rate indexes,
+   /// <summary>
+   /// Base class for inflation-rate indexes,
+   /// </summary>
    public class InflationIndex : Index, IObserver
    {
       /*! An inflation index may return interpolated
@@ -140,7 +142,9 @@ namespace QLNet
    }
 
 
-   //! Base class for zero inflation indices.
+   /// <summary>
+   /// Base class for zero inflation indices.
+   /// </summary>
    public class ZeroInflationIndex : InflationIndex
    {
       //! Always use the evaluation date as the reference date

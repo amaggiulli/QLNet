@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,7 +21,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Main cycle of the International %Money Market (a.k.a. %IMM) months
+   /// <summary>
+   /// Main cycle of the International Money Market (a.k.a. IMM) months
+   /// </summary>
    public struct IMM
    {
       enum Month
