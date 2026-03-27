@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! %Factorial numbers calculator
-   /*! \test the correctness of the returned value is tested by
-             checking it against numerical calculations.
-   */
+   /// <summary>
+   /// Factorial numbers calculator
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against numerical calculations.
+   /// </remarks>
    public static class Factorial
    {
       public static double get(uint i)

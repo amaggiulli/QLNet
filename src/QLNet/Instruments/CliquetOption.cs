@@ -18,18 +18,19 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! cliquet (Ratchet) option
-   /*! A cliquet option, also known as Ratchet option, is a series of
-       forward-starting (a.k.a. deferred strike) options where the
-       strike for each forward start option is set equal to a fixed
-       percentage of the spot price at the beginning of each period.
-
-       \todo
-       - add local/global caps/floors
-       - add accrued coupon and last fixing
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// cliquet (Ratchet) option
+   /// </summary>
+   /// <remarks>
+   /// A cliquet option, also known as Ratchet option, is a series of
+   /// forward-starting (a.k.a. deferred strike) options where the
+   /// strike for each forward start option is set equal to a fixed
+   /// percentage of the spot price at the beginning of each period.
+   ///
+   /// TODO:
+   /// - add local/global caps/floors
+   /// - add accrued coupon and last fixing
+   /// </remarks>
    public class CliquetOption : OneAssetOption
    {
       public CliquetOption(PercentageStrikePayoff payoff, EuropeanExercise maturity, List<Date> resetDates)

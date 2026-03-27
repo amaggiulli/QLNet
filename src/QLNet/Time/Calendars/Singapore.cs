@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -24,32 +24,29 @@ using System.Text;
 
 namespace QLNet
 {
-   //! %Singapore calendars
-   /*! Holidays for the Singapore exchange
-       (data from <http://www.sgx.com/wps/portal/sgxweb/home/trading/securities/trading_hours_calendar>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Labour Day, May 1st</li>
-       <li>National Day, August 9th</li>
-       <li>Christmas, December 25th </li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2004-2010, 2012-2014,  2019-2024 only:)
-       <ul>
-       <li>Chinese New Year</li>
-       <li>Hari Raya Haji</li>
-       <li>Vesak Poya Day</li>
-       <li>Deepavali</li>
-       <li>Diwali</li>
-       <li>Hari Raya Puasa</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Singapore calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Singapore exchange
+   /// (data from &lt;http://www.sgx.com/wps/portal/sgxweb/home/trading/securities/trading_hours_calendar&gt;):
+   /// Saturdays
+   /// Sundays
+   /// New Year's day, January 1st
+   /// Good Friday
+   /// Labour Day, May 1st
+   /// National Day, August 9th
+   /// Christmas, December 25th 
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2004-2010, 2012-2014,  2019-2024 only:)
+   /// Chinese New Year
+   /// Hari Raya Haji
+   /// Vesak Poya Day
+   /// Deepavali
+   /// Diwali
+   /// Hari Raya Puasa
+   /// </remarks>
    public class Singapore : Calendar
    {
       public Singapore() : base(Impl.Singleton) { }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,8 +22,12 @@ using System;
 
 namespace QLNet
 {
-   //! base class for interest rate indexes
-   /*! \todo add methods returning InterestRate */
+   /// <summary>
+   /// base class for interest rate indexes
+   /// </summary>
+   /// <remarks>
+   /// TODO: add methods returning InterestRate
+   /// </remarks>
    public abstract class InterestRateIndex : Index, IObserver
    {
       protected InterestRateIndex(string familyName,

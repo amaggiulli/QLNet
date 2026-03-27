@@ -17,20 +17,22 @@ using System;
 
 namespace QLNet
 {
-   //! Analytic pricing engine for American binary barriers options
-   /*! The formulas are taken from "The complete guide to option pricing formulas 2nd Ed",
-        E.G. Haug, McGraw-Hill, p.176 and following.
-
-       \ingroup barrierengines
-
-       \test
-       - the correctness of the returned value in case of
-         cash-or-nothing at-expiry binary payoff is tested by
-         reproducing results available in literature.
-       - the correctness of the returned value in case of
-         asset-or-nothing at-expiry binary payoff is tested by
-         reproducing results available in literature.
-   */
+   /// <summary>
+   /// Analytic pricing engine for American binary barriers options
+   /// </summary>
+   /// <remarks>
+   /// The formulas are taken from "The complete guide to option pricing formulas 2nd Ed",
+   /// E.G. Haug, McGraw-Hill, p.176 and following.
+   ///
+   ///
+   /// Test:
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing at-expiry binary payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing at-expiry binary payoff is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class AnalyticBinaryBarrierEngine : BarrierOption.Engine
    {
       public AnalyticBinaryBarrierEngine(GeneralizedBlackScholesProcess process)

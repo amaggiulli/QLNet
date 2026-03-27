@@ -19,16 +19,18 @@
 
 namespace QLNet
 {
-   //! Term structure with added spread on the instantaneous forward rate
-   /*! \note This term structure will remain linked to the original structure, i.e., any changes in the latter will be
-             reflected in this structure as well.
-
-       \ingroup yieldtermstructures
-
-       \test
-       - the correctness of the returned values is tested by checking them against numerical calculations.
-       - observability against changes in the underlying term structure and in the added spread is checked.
-   */
+   /// <summary>
+   /// Term structure with added spread on the instantaneous forward rate
+   /// </summary>
+   /// <remarks>
+   /// Note: This term structure will remain linked to the original structure, i.e., any changes in the latter will be
+   /// reflected in this structure as well.
+   ///
+   ///
+   /// Test:
+   /// - the correctness of the returned values is tested by checking them against numerical calculations.
+   /// - observability against changes in the underlying term structure and in the added spread is checked.
+   /// </remarks>
    public class ForwardSpreadedTermStructure : ForwardRateStructure
    {
       private Handle<YieldTermStructure> originalCurve_;

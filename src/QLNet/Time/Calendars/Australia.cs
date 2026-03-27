@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,26 +23,25 @@ using System;
 
 namespace QLNet
 {
-   //! Australian calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Australia Day, January 26th (possibly moved to Monday)</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>ANZAC Day. April 25th (possibly moved to Monday)</li>
-       <li>Queen's Birthday, second Monday in June</li>
-       <li>Bank Holiday, first Monday in August</li>
-       <li>Labour Day, first Monday in October</li>
-       <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
-       <li>Boxing Day, December 26th (possibly moved to Monday or
-           Tuesday)</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Australian calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Australia Day, January 26th (possibly moved to Monday)
+   /// Good Friday
+   /// Easter Monday
+   /// ANZAC Day. April 25th (possibly moved to Monday)
+   /// Queen's Birthday, second Monday in June
+   /// Bank Holiday, first Monday in August
+   /// Labour Day, first Monday in October
+   /// Christmas, December 25th (possibly moved to Monday or Tuesday)
+   /// Boxing Day, December 26th (possibly moved to Monday or
+   /// Tuesday)
+   /// </remarks>
    public class Australia : Calendar
    {
       // Australian calendars

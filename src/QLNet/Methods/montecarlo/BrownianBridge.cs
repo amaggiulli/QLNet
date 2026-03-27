@@ -29,15 +29,16 @@ using System.Collections.Generic;
 // ===========================================================================
 namespace QLNet
 {
-   //! Builds Wiener process paths using Gaussian variates
-   /*! This class generates normalized (i.e., unit-variance) paths as
-       sequences of variations. In order to obtain the actual path of
-       the underlying, the returned variations must be multiplied by
-       the integrated variance (including time) over the
-       corresponding time step.
-
-       \ingroup mcarlo
-   */
+   /// <summary>
+   /// Builds Wiener process paths using Gaussian variates
+   /// </summary>
+   /// <remarks>
+   /// This class generates normalized (i.e., unit-variance) paths as
+   /// sequences of variations. In order to obtain the actual path of
+   /// the underlying, the returned variations must be multiplied by
+   /// the integrated variance (including time) over the
+   /// corresponding time step.
+   /// </remarks>
    public class BrownianBridge
    {
       private int size_;

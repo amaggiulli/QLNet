@@ -22,11 +22,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Finite-differences pricing engine for BSM one asset options
-   /*! The name is a misnomer as this is a base class for any finite difference scheme.  Its main job is to handle grid layout.
-
-       \ingroup vanillaengines
-   */
+   /// <summary>
+   /// Finite-differences pricing engine for BSM one asset options
+   /// </summary>
+   /// <remarks>
+   /// The name is a misnomer as this is a base class for any finite difference scheme.  Its main job is to handle grid layout.
+   /// </remarks>
    public class FDVanillaEngine
    {
       protected GeneralizedBlackScholesProcess process_;

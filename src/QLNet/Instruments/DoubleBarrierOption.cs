@@ -27,11 +27,12 @@ namespace QLNet
       }
    }
 
-   //! %Double Barrier option on a single asset.
-   /*! The analytic pricing engine will be used if none if passed.
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Double Barrier option on a single asset.
+   /// </summary>
+   /// <remarks>
+   /// The analytic pricing engine will be used if none if passed.
+   /// </remarks>
    public class DoubleBarrierOption : OneAssetOption
    {
 

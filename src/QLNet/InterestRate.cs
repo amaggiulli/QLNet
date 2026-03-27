@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,14 +20,17 @@ using System;
 
 namespace QLNet
 {
-   //! Concrete interest rate class
-   /*! This class encapsulate the interest rate compounding algebra.
-       It manages day-counting conventions, compounding conventions,
-       conversion between different conventions, discount/compound factor
-       calculations, and implied/equivalent rate calculations.
-
-       \test Converted rates are checked against known good results
-   */
+   /// <summary>
+   /// Concrete interest rate class
+   /// </summary>
+   /// <remarks>
+   /// This class encapsulate the interest rate compounding algebra.
+   /// It manages day-counting conventions, compounding conventions,
+   /// conversion between different conventions, discount/compound factor
+   /// calculations, and implied/equivalent rate calculations.
+   ///
+   /// Test: Converted rates are checked against known good results
+   /// </remarks>
    public class InterestRate
    {
       #region Constructors

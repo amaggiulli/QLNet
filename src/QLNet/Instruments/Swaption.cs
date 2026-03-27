@@ -52,28 +52,29 @@ namespace QLNet
       }
    }
 
-   //! %Swaption class
-   /*! \ingroup instruments
-
-       \test
-       - the correctness of the returned value is tested by checking
-         that the price of a payer (resp. receiver) swaption
-         decreases (resp. increases) with the strike.
-       - the correctness of the returned value is tested by checking
-         that the price of a payer (resp. receiver) swaption
-         increases (resp. decreases) with the spread.
-       - the correctness of the returned value is tested by checking
-         it against that of a swaption on a swap with no spread and a
-         correspondingly adjusted fixed rate.
-       - the correctness of the returned value is tested by checking
-         it against a known good value.
-       - the correctness of the returned value of cash settled swaptions
-         is tested by checking the modified annuity against a value
-         calculated without using the Swaption class.
-
-
-       \todo add greeks and explicit exercise lag
-   */
+   /// <summary>
+   /// Swaption class
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned value is tested by checking
+   /// that the price of a payer (resp. receiver) swaption
+   /// decreases (resp. increases) with the strike.
+   /// - the correctness of the returned value is tested by checking
+   /// that the price of a payer (resp. receiver) swaption
+   /// increases (resp. decreases) with the spread.
+   /// - the correctness of the returned value is tested by checking
+   /// it against that of a swaption on a swap with no spread and a
+   /// correspondingly adjusted fixed rate.
+   /// - the correctness of the returned value is tested by checking
+   /// it against a known good value.
+   /// - the correctness of the returned value of cash settled swaptions
+   /// is tested by checking the modified annuity against a value
+   /// calculated without using the Swaption class.
+   ///
+   ///
+   /// TODO: add greeks and explicit exercise lag
+   /// </remarks>
 
    public class Swaption : Option
    {

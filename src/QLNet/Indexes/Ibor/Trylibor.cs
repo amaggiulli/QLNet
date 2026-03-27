@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,13 +20,16 @@
 namespace QLNet
 {
 
-   //! %TRY %LIBOR rate
-   /*! TRY LIBOR fixed by TBA.
-
-       See <http://www.trlibor.org/trlibor/english/>
-
-       \todo check end-of-month adjustment.
-   */
+   /// <summary>
+   /// TRY LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// TRY LIBOR fixed by TBA.
+   ///
+   /// See http://www.trlibor.org/trlibor/english/
+   ///
+   /// TODO: check end-of-month adjustment.
+   /// </remarks>
    public class TRLibor : IborIndex
    {
       public TRLibor(Period tenor)

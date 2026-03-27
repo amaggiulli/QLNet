@@ -17,16 +17,19 @@ using System;
 
 namespace QLNet
 {
-   //! Heston model for the stochastic volatility of an asset
-   /*! References:
-
-       Heston, Steven L., 1993. A Closed-Form Solution for Options
-       with Stochastic Volatility with Applications to Bond and
-       Currency Options.  The review of Financial Studies, Volume 6,
-       Issue 2, 327-343.
-
-       \test calibration is tested against known good values.
-   */
+   /// <summary>
+   /// Heston model for the stochastic volatility of an asset
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Heston, Steven L., 1993. A Closed-Form Solution for Options
+   /// with Stochastic Volatility with Applications to Bond and
+   /// Currency Options.  The review of Financial Studies, Volume 6,
+   /// Issue 2, 327-343.
+   ///
+   /// Test: calibration is tested against known good values.
+   /// </remarks>
    public class HestonModel : CalibratedModel
    {
       public HestonModel(HestonProcess process)

@@ -20,8 +20,12 @@ using System;
 
 namespace QLNet
 {
-   //! American exercise condition.
-   /*! \todo unify the intrinsicValues/Payoff thing */
+   /// <summary>
+   /// American exercise condition.
+   /// </summary>
+   /// <remarks>
+   /// TODO: unify the intrinsicValues/Payoff thing
+   /// </remarks>
    public class AmericanCondition : CurveDependentStepCondition<Vector>
    {
       public AmericanCondition(Option.Type type, double strike) : base(type, strike) { }

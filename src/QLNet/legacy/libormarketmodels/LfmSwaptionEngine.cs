@@ -22,8 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! %Libor forward model swaption engine based on Black formula
-   /*! \ingroup swaptionengines */
+   /// <summary>
+   /// Libor forward model swaption engine based on Black formula
+   /// </summary>
    public class LfmSwaptionEngine : GenericModelEngine<LiborForwardModel,
       Swaption.Arguments,
       Swaption.Results>

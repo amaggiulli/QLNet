@@ -21,8 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Array of correlated 1-D stochastic processes
-   /*! \ingroup processes */
+   /// <summary>
+   /// Array of correlated 1-D stochastic processes
+   /// </summary>
    public class StochasticProcessArray : StochasticProcess
    {
       protected List<StochasticProcess1D> processes_;

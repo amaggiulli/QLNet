@@ -21,24 +21,27 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! symmetric threshold Jacobi algorithm.
-   /*! Given a real symmetric matrix S, the Schur decomposition
-       finds the eigenvalues and eigenvectors of S. If D is the
-       diagonal matrix formed by the eigenvalues and U the
-       unitarian matrix of the eigenvectors we can write the
-       Schur decomposition as
-       \f[ S = U \cdot D \cdot U^T \, ,\f]
-       where \f$ \cdot \f$ is the standard matrix product
-       and  \f$ ^T  \f$ is the transpose operator.
-       This class implements the Schur decomposition using the
-       symmetric threshold Jacobi algorithm. For details on the
-       different Jacobi transfomations see "Matrix computation,"
-       second edition, by Golub and Van Loan,
-       The Johns Hopkins University Press
-
-       \test the correctness of the returned values is tested by
-             checking their properties.
-   */
+   /// <summary>
+   /// symmetric threshold Jacobi algorithm.
+   /// </summary>
+   /// <remarks>
+   /// Given a real symmetric matrix S, the Schur decomposition
+   /// finds the eigenvalues and eigenvectors of S. If D is the
+   /// diagonal matrix formed by the eigenvalues and U the
+   /// unitarian matrix of the eigenvectors we can write the
+   /// Schur decomposition as
+   /// \f[ S = U \cdot D \cdot U^T \, ,\f]
+   /// where \f$ \cdot \f$ is the standard matrix product
+   /// and  \f$ ^T  \f$ is the transpose operator.
+   /// This class implements the Schur decomposition using the
+   /// symmetric threshold Jacobi algorithm. For details on the
+   /// different Jacobi transfomations see "Matrix computation,"
+   /// second edition, by Golub and Van Loan,
+   /// The Johns Hopkins University Press
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking their properties.
+   /// </remarks>
    public class SymmetricSchurDecomposition
    {
       private Vector diagonal_;

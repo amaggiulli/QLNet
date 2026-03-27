@@ -18,17 +18,18 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for double barrier options using binomial trees
-   /*! \ingroup barrierengines
-
-       \note This engine requires a the discretized option classes.
-       By default uses a standard binomial implementation, but it can
-       also work with DiscretizedDermanKaniDoubleBarrierOption to
-       implement a Derman-Kani optimization.
-
-       \test the correctness of the returned values is tested by
-             checking it against analytic results.
-   */
+   /// <summary>
+   /// Pricing engine for double barrier options using binomial trees
+   /// </summary>
+   /// <remarks>
+   /// Note: This engine requires a the discretized option classes.
+   /// By default uses a standard binomial implementation, but it can
+   /// also work with DiscretizedDermanKaniDoubleBarrierOption to
+   /// implement a Derman-Kani optimization.
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking it against analytic results.
+   /// </remarks>
    public class BinomialDoubleBarrierEngine : DoubleBarrierOption.Engine
    {
       public delegate ITree GetTree(StochasticProcess1D process, double end, int steps, double strike);

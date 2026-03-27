@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -24,14 +24,18 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Base bond class
-   /*! Derived classes must fill the unitialized data members.
-
-       \warning Most methods assume that the cashflows are stored sorted by date, the redemption being the last one.
-
-       \test
-       - price/yield calculations are cross-checked for consistency.
-       - price/yield calculations are checked against known good values. */
+   /// <summary>
+   /// Base bond class
+   /// </summary>
+   /// <remarks>
+   /// Derived classes must fill the unitialized data members.
+   ///
+   /// Warning: Most methods assume that the cashflows are stored sorted by date, the redemption being the last one.
+   ///
+   /// Test:
+   /// - price/yield calculations are cross-checked for consistency.
+   /// - price/yield calculations are checked against known good values.
+   /// </remarks>
    public class Bond : Instrument
    {
       public enum BondEquivalentYearType

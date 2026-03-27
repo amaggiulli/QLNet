@@ -19,8 +19,9 @@
 
 namespace QLNet
 {
-   //! Black-Scholes-Merton differential operator
-   /*! \ingroup findiff */
+   /// <summary>
+   /// Black-Scholes-Merton differential operator
+   /// </summary>
    public class BSMOperator : TridiagonalOperator
    {
       public BSMOperator() { }

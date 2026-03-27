@@ -21,15 +21,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Bespoke calendar
-   /*! This calendar has no predefined set of business days. Holidays
-       and weekdays can be defined by means of the provided
-       interface. Instances constructed by copying remain linked to
-       the original one; adding a new holiday or weekday will affect
-       all linked instances.
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Bespoke calendar
+   /// </summary>
+   /// <remarks>
+   /// This calendar has no predefined set of business days. Holidays
+   /// and weekdays can be defined by means of the provided
+   /// interface. Instances constructed by copying remain linked to
+   /// the original one; adding a new holiday or weekday will affect
+   /// all linked instances.
+   /// </remarks>
    public class BespokeCalendar : Calendar
    {
       // here implementation does not follow a singleton pattern

@@ -17,16 +17,17 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for barrier options using binomial trees
-   /*! \ingroup barrierengines
-
-       \note Timesteps for Cox-Ross-Rubinstein trees are adjusted using Boyle and Lau algorithm.
-             See Journal of Derivatives, 1/1994,
-             "Bumping up against the barrier with the binomial method"
-
-       \test the correctness of the returned values is tested by
-             checking it against analytic european results.
-   */
+   /// <summary>
+   /// Pricing engine for barrier options using binomial trees
+   /// </summary>
+   /// <remarks>
+   /// Note: Timesteps for Cox-Ross-Rubinstein trees are adjusted using Boyle and Lau algorithm.
+   /// See Journal of Derivatives, 1/1994,
+   /// "Bumping up against the barrier with the binomial method"
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking it against analytic european results.
+   /// </remarks>
    public class BinomialBarrierEngine : BarrierOption.Engine
    {
       public delegate ITree GetTree(StochasticProcess1D process, double end, int steps, double strike);

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,91 +22,83 @@ using System;
 
 namespace QLNet
 {
-   //! German calendars
-   /*! Public holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Ascension Thursday</li>
-       <li>Whit Monday</li>
-       <li>Corpus Christi</li>
-       <li>Labour Day, May 1st</li>
-       <li>National Day, October 3rd</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       Holidays for the Frankfurt Stock exchange
-       (data from http://deutsche-boerse.com/):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Christmas' Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Christmas Holiday, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       Holidays for the Xetra exchange
-       (data from http://deutsche-boerse.com/):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Christmas' Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Christmas Holiday, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       Holidays for the Eurex exchange
-       (data from http://www.eurexchange.com/index.html):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Christmas' Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Christmas Holiday, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       Holidays for the Euwax exchange
-       (data from http://www.boerse-stuttgart.de):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Whit Monday</li>
-       <li>Christmas' Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Christmas Holiday, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       \ingroup calendars
-
-       \test the correctness of the returned results is tested
-             against a list of known holidays.
-   */
+   /// <summary>
+   /// German calendars
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Ascension Thursday
+   /// Whit Monday
+   /// Corpus Christi
+   /// Labour Day, May 1st
+   /// National Day, October 3rd
+   /// Christmas Eve, December 24th
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   /// Holidays for the Frankfurt Stock exchange
+   /// (data from http://deutsche-boerse.com/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Christmas' Eve, December 24th
+   /// Christmas, December 25th
+   /// Christmas Holiday, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   /// Holidays for the Xetra exchange
+   /// (data from http://deutsche-boerse.com/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Christmas' Eve, December 24th
+   /// Christmas, December 25th
+   /// Christmas Holiday, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   /// Holidays for the Eurex exchange
+   /// (data from http://www.eurexchange.com/index.html):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Christmas' Eve, December 24th
+   /// Christmas, December 25th
+   /// Christmas Holiday, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   /// Holidays for the Euwax exchange
+   /// (data from http://www.boerse-stuttgart.de):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Whit Monday
+   /// Christmas' Eve, December 24th
+   /// Christmas, December 25th
+   /// Christmas Holiday, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   ///
+   /// Test: the correctness of the returned results is tested
+   /// against a list of known holidays.
+   /// </remarks>
    public class Germany : Calendar
    {
       /// <summary>

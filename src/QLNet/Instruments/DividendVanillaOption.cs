@@ -22,8 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Single-asset vanilla option (no barriers) with discrete dividends
-   /*! \ingroup instruments */
+   /// <summary>
+   /// Single-asset vanilla option (no barriers) with discrete dividends
+   /// </summary>
    public class DividendVanillaOption : OneAssetOption
    {
       private DividendSchedule cashFlow_;

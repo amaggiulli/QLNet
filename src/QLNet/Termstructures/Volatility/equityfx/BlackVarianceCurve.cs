@@ -22,20 +22,22 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Black volatility curve modelled as variance curve
-   /*! This class calculates time-dependent Black volatilities using
-       as input a vector of (ATM) Black volatilities observed in the
-       market.
-
-       The calculation is performed interpolating on the variance curve.
-       Linear interpolation is used as default; this can be changed
-       by the setInterpolation() method.
-
-       For strike dependence, see BlackVarianceSurface.
-
-       \todo check time extrapolation
-
-   */
+   /// <summary>
+   /// Black volatility curve modelled as variance curve
+   /// </summary>
+   /// <remarks>
+   /// This class calculates time-dependent Black volatilities using
+   /// as input a vector of (ATM) Black volatilities observed in the
+   /// market.
+   ///
+   /// The calculation is performed interpolating on the variance curve.
+   /// Linear interpolation is used as default; this can be changed
+   /// by the setInterpolation() method.
+   ///
+   /// For strike dependence, see BlackVarianceSurface.
+   ///
+   /// TODO: check time extrapolation
+   /// </remarks>
    public class BlackVarianceCurve : BlackVarianceTermStructure
    {
       DayCounter dayCounter_;

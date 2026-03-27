@@ -19,18 +19,20 @@
 
 namespace QLNet
 {
-   //! Implied term structure at a given date in the future
-   /*! The given date will be the implied reference date.
-
-       \note This term structure will remain linked to the original structure, i.e., any changes in the latter will be
-             reflected in this structure as well.
-
-       \ingroup yieldtermstructures
-
-       \test
-       - the correctness of the returned values is tested by checking them against numerical calculations.
-       - observability against changes in the underlying term structure is checked.
-   */
+   /// <summary>
+   /// Implied term structure at a given date in the future
+   /// </summary>
+   /// <remarks>
+   /// The given date will be the implied reference date.
+   ///
+   /// Note: This term structure will remain linked to the original structure, i.e., any changes in the latter will be
+   /// reflected in this structure as well.
+   ///
+   ///
+   /// Test:
+   /// - the correctness of the returned values is tested by checking them against numerical calculations.
+   /// - observability against changes in the underlying term structure is checked.
+   /// </remarks>
    public class ImpliedTermStructure : YieldTermStructure
    {
       private Handle<YieldTermStructure> originalCurve_;

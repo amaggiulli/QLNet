@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,28 +23,27 @@ using System;
 
 namespace QLNet
 {
-   //! Swedish calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Epiphany, January 6th</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Ascension</li>
-       <li>Whit(Pentecost) Monday </li>
-       <li>May Day, May 1st</li>
-       <li>National Day, June 6th</li>
-       <li>Midsummer Eve (Friday between June 19-25)</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas Day, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       <li>New Year's Eve, December 31th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Swedish calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Epiphany, January 6th
+   /// Good Friday
+   /// Easter Monday
+   /// Ascension
+   /// Whit(Pentecost) Monday 
+   /// May Day, May 1st
+   /// National Day, June 6th
+   /// Midsummer Eve (Friday between June 19-25)
+   /// Christmas Eve, December 24th
+   /// Christmas Day, December 25th
+   /// Boxing Day, December 26th
+   /// New Year's Eve, December 31th
+   /// </remarks>
    public class Sweden :  Calendar
    {
       public Sweden() : base(Impl.Singleton) { }

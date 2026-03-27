@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -21,43 +21,40 @@
 
 namespace QLNet
 {
-   //! Indian calendars
-   /*! Holidays for the National Stock Exchange
-       (data from <http://www.nse-india.com/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>Republic Day, January 26th</li>
-       <li>Good Friday</li>
-       <li>Ambedkar Jayanti, April 14th</li>
-       <li>May Day, May 1st</li>
-       <li>Independence Day, August 15th</li>
-       <li>Gandhi Jayanti, October 2nd</li>
-       <li>Christmas, December 25th</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2005-2013 only:)
-       <ul>
-       <li>Bakri Id</li>
-       <li>Moharram</li>
-       <li>Mahashivratri</li>
-       <li>Holi</li>
-       <li>Ram Navami</li>
-       <li>Mahavir Jayanti</li>
-       <li>Id-E-Milad</li>
-       <li>Maharashtra Day</li>
-       <li>Buddha Pournima</li>
-       <li>Ganesh Chaturthi</li>
-       <li>Dasara</li>
-       <li>Laxmi Puja</li>
-       <li>Bhaubeej</li>
-       <li>Ramzan Id</li>
-       <li>Guru Nanak Jayanti</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Indian calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the National Stock Exchange
+   /// (data from &lt;http://www.nse-india.com/&gt;):
+   /// Saturdays
+   /// Sundays
+   /// Republic Day, January 26th
+   /// Good Friday
+   /// Ambedkar Jayanti, April 14th
+   /// May Day, May 1st
+   /// Independence Day, August 15th
+   /// Gandhi Jayanti, October 2nd
+   /// Christmas, December 25th
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2005-2013 only:)
+   /// Bakri Id
+   /// Moharram
+   /// Mahashivratri
+   /// Holi
+   /// Ram Navami
+   /// Mahavir Jayanti
+   /// Id-E-Milad
+   /// Maharashtra Day
+   /// Buddha Pournima
+   /// Ganesh Chaturthi
+   /// Dasara
+   /// Laxmi Puja
+   /// Bhaubeej
+   /// Ramzan Id
+   /// Guru Nanak Jayanti
+   /// </remarks>
    public class India : Calendar
    {
       public India() : base(Impl.Singleton) { }

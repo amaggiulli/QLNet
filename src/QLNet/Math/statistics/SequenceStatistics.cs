@@ -22,22 +22,25 @@ using System.Reflection;
 
 namespace QLNet
 {
-   //! Statistics analysis of N-dimensional (sequence) data
-   /*! It provides 1-dimensional statistics as discrepancy plus
-       N-dimensional (sequence) statistics (e.g. mean,
-       variance, skewness, kurtosis, etc.) with one component for each
-       dimension of the sample space.
-
-       For most of the statistics this class relies on
-       the StatisticsType underlying class to provide 1-D methods that
-       will be iterated for all the components of the N-D data. These
-       lifted methods are the union of all the methods that might be
-       requested to the 1-D underlying StatisticsType class, with the
-       usual compile-time checks provided by the template approach.
-
-       \test the correctness of the returned values is tested by
-             checking them against numerical calculations.
-   */
+   /// <summary>
+   /// Statistics analysis of N-dimensional (sequence) data
+   /// </summary>
+   /// <remarks>
+   /// It provides 1-dimensional statistics as discrepancy plus
+   /// N-dimensional (sequence) statistics (e.g. mean,
+   /// variance, skewness, kurtosis, etc.) with one component for each
+   /// dimension of the sample space.
+   ///
+   /// For most of the statistics this class relies on
+   /// the StatisticsType underlying class to provide 1-D methods that
+   /// will be iterated for all the components of the N-D data. These
+   /// lifted methods are the union of all the methods that might be
+   /// requested to the 1-D underlying StatisticsType class, with the
+   /// usual compile-time checks provided by the template approach.
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking them against numerical calculations.
+   /// </remarks>
    public class GenericSequenceStatistics<S> where S : IGeneralStatistics, new ()
    {
       protected int dimension_;
@@ -258,10 +261,13 @@ namespace QLNet
       }
    }
 
-   //! default multi-dimensional statistics tool
-   /*! \test the correctness of the returned values is tested by
-             checking them against numerical calculations.
-   */
+   /// <summary>
+   /// default multi-dimensional statistics tool
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by
+   /// checking them against numerical calculations.
+   /// </remarks>
    public class SequenceStatistics : GenericSequenceStatistics<RiskStatistics>
    {
       public SequenceStatistics(int dimension) : base(dimension) { }

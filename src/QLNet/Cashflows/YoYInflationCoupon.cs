@@ -65,10 +65,12 @@ namespace QLNet
    }
 
 
-   //! Helper class building a sequence of capped/floored yoy inflation coupons
    /// <summary>
-   /// payoff is: spread + gearing x index
+   /// Helper class building a sequence of capped/floored yoy inflation coupons
    /// </summary>
+   /// <remarks>
+   /// payoff is: spread + gearing x index
+   /// </remarks>
    public class yoyInflationLeg : yoyInflationLegBase
    {
       public yoyInflationLeg(Schedule schedule, Calendar cal,

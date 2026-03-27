@@ -63,10 +63,9 @@ namespace QLNet
 
    }
 
-   //! Italian BTP (Buono Poliennali del Tesoro) fixed rate bond
-   /*! \ingroup instruments
-
-   */
+   /// <summary>
+   /// Italian BTP (Buono Poliennali del Tesoro) fixed rate bond
+   /// </summary>
    public class BTP : FixedRateBond
    {
       public BTP(Date maturityDate, double fixedRate, Date startDate = null, Date issueDate = null)

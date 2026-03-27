@@ -21,16 +21,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Forward-rate term structure
-   /*! This abstract class acts as an adapter to YieldTermStructure allowing
-       the programmer to implement only the <tt>forwardImpl(Time)</tt> method
-       in derived classes.
-
-       Zero yields and discounts are calculated from forwards.
-       Forward rates are assumed to be annual continuous compounding.
-
-       \ingroup yieldtermstructures
-   */
+   /// <summary>
+   /// Forward-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to YieldTermStructure allowing
+   /// the programmer to implement only the &lt;tt&gt;forwardImpl(Time)&lt;/tt&gt; method
+   /// in derived classes.
+   ///
+   /// Zero yields and discounts are calculated from forwards.
+   /// Forward rates are assumed to be annual continuous compounding.
+   /// </remarks>
    public abstract class ForwardRateStructure : YieldTermStructure
    {
       #region Constructors

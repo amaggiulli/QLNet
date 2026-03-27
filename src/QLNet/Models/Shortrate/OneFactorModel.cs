@@ -22,8 +22,9 @@ using System;
 
 namespace QLNet
 {
-   //! Single-factor short-rate model abstract class
-   /*! \ingroup shortrate */
+   /// <summary>
+   /// Single-factor short-rate model abstract class
+   /// </summary>
 
    public abstract class OneFactorModel : ShortRateModel
    {

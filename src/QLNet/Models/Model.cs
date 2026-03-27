@@ -21,11 +21,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Affine model class
-   /*! Base class for analytically tractable models.
-
-       \ingroup shortrate
-   */
+   /// <summary>
+   /// Affine model class
+   /// </summary>
+   /// <remarks>
+   /// Base class for analytically tractable models.
+   /// </remarks>
    public abstract class AffineModel : IObservable
    {
       //! Implied discount curve
@@ -377,8 +378,9 @@ namespace QLNet
       #endregion
    }
 
-   //! Abstract short-rate model class
-   /*! \ingroup shortrate */
+   /// <summary>
+   /// Abstract short-rate model class
+   /// </summary>
    public abstract class ShortRateModel : CalibratedModel
    {
       protected ShortRateModel(int nArguments) : base(nArguments) { }

@@ -18,17 +18,18 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Composite instrument
-   /*! This instrument is an aggregate of other instruments. Its NPV
-       is the sum of the NPVs of its components, each possibly
-       multiplied by a given factor.
-
-       \warning Methods that drive the calculation directly (such as
-                recalculate(), freeze() and others) might not work
-                correctly.
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Composite instrument
+   /// </summary>
+   /// <remarks>
+   /// This instrument is an aggregate of other instruments. Its NPV
+   /// is the sum of the NPVs of its components, each possibly
+   /// multiplied by a given factor.
+   ///
+   /// Warning: Methods that drive the calculation directly (such as
+   /// recalculate(), freeze() and others) might not work
+   /// correctly.
+   /// </remarks>
    public class CompositeInstrument : Instrument
    {
       //! adds an instrument to the composite

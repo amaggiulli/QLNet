@@ -143,8 +143,9 @@ namespace QLNet
       }
    }
 
-   //! mixed linear/cubic interpolation factory and traits
-   /*! \ingroup interpolations */
+   /// <summary>
+   /// mixed linear/cubic interpolation factory and traits
+   /// </summary>
    public class MixedLinearCubic: IInterpolationFactory
    {
       public MixedLinearCubic(int n,

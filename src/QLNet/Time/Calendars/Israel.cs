@@ -20,35 +20,31 @@ using System;
 
 namespace QLNet
 {
-   //! Israel calendar
-   /*! Due to the lack of reliable sources, the settlement calendar
-       has the same holidays as the Tel Aviv stock-exchange.
-
-       Holidays for the Tel-Aviv Stock Exchange
-       (data from <http://www.tase.co.il>):
-       <ul>
-       <li>Friday</li>
-       <li>Saturday</li>
-       </ul>
-       Other holidays for wich no rule is given
-       (data available for 2013-2044 only:)
-       <ul>
-       <li>Purim, Adar 14th (between Feb 24th & Mar 26th)</li>
-       <li>Passover I, Nisan 15th (between Mar 26th & Apr 25th)</li>
-       <li>Passover VII, Nisan 21st (between Apr 1st & May 1st)</li>
-       <li>Memorial Day, Nisan 27th (between Apr 7th & May 7th)</li>
-       <li>Indipendence Day, Iyar 5th (between Apr 15th & May 15th)</li>
-       <li>Pentecost (Shavuot), Sivan 6th (between May 15th & June 14th)</li>
-       <li>Fast Day</li>
-       <li>Jewish New Year, Tishrei 1st & 2nd (between Sep 5th & Oct 5th)</li>
-       <li>Yom Kippur, Tishrei 10th (between Sep 14th & Oct 14th)</li>
-       <li>Sukkoth, Tishrei 15th (between Sep 19th & Oct 19th)</li>
-       <li>Simchat Tora, Tishrei 22nd (between Sep 26th & Oct 26th)</li>
-       </ul>
-
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Israel calendar
+   /// </summary>
+   /// <remarks>
+   /// Due to the lack of reliable sources, the settlement calendar
+   /// has the same holidays as the Tel Aviv stock-exchange.
+   ///
+   /// Holidays for the Tel-Aviv Stock Exchange
+   /// (data from &lt;http://www.tase.co.il&gt;):
+   /// Friday
+   /// Saturday
+   /// Other holidays for wich no rule is given
+   /// (data available for 2013-2044 only:)
+   /// Purim, Adar 14th (between Feb 24th &amp; Mar 26th)
+   /// Passover I, Nisan 15th (between Mar 26th &amp; Apr 25th)
+   /// Passover VII, Nisan 21st (between Apr 1st &amp; May 1st)
+   /// Memorial Day, Nisan 27th (between Apr 7th &amp; May 7th)
+   /// Indipendence Day, Iyar 5th (between Apr 15th &amp; May 15th)
+   /// Pentecost (Shavuot), Sivan 6th (between May 15th &amp; June 14th)
+   /// Fast Day
+   /// Jewish New Year, Tishrei 1st &amp; 2nd (between Sep 5th &amp; Oct 5th)
+   /// Yom Kippur, Tishrei 10th (between Sep 14th &amp; Oct 14th)
+   /// Sukkoth, Tishrei 15th (between Sep 19th &amp; Oct 19th)
+   /// Simchat Tora, Tishrei 22nd (between Sep 26th &amp; Oct 26th)
+   /// </remarks>
    public class Israel : Calendar
    {
       /// <summary>

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,44 +22,42 @@ using System;
 
 namespace QLNet
 {
-   //! Italian calendars
-   /*! Public holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Epiphany, January 6th</li>
-       <li>Easter Monday</li>
-       <li>Liberation Day, April 25th</li>
-       <li>Labour Day, May 1st</li>
-       <li>Republic Day, June 2nd (since 2000)</li>
-       <li>Assumption, August 15th</li>
-       <li>All Saint's Day, November 1st</li>
-       <li>Immaculate Conception Day, December 8th</li>
-       <li>Christmas Day, December 25th</li>
-       <li>St. Stephen's Day, December 26th</li>
-       </ul>
-
-       Holidays for the stock exchange (data from http://www.borsaitalia.it):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Assumption, August 15th</li>
-       <li>Christmas' Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>St. Stephen, December 26th</li>
-       <li>New Year's Eve, December 31st</li>
-       </ul>
-
-       \ingroup calendars
-
-       \test the correctness of the returned results is tested against a
-             list of known holidays.
-   */
+   /// <summary>
+   /// Italian calendars
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Epiphany, January 6th
+   /// Easter Monday
+   /// Liberation Day, April 25th
+   /// Labour Day, May 1st
+   /// Republic Day, June 2nd (since 2000)
+   /// Assumption, August 15th
+   /// All Saint's Day, November 1st
+   /// Immaculate Conception Day, December 8th
+   /// Christmas Day, December 25th
+   /// St. Stephen's Day, December 26th
+   ///
+   /// Holidays for the stock exchange (data from http://www.borsaitalia.it):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Assumption, August 15th
+   /// Christmas' Eve, December 24th
+   /// Christmas, December 25th
+   /// St. Stephen, December 26th
+   /// New Year's Eve, December 31st
+   ///
+   ///
+   /// Test: the correctness of the returned results is tested against a
+   /// list of known holidays.
+   /// </remarks>
    public class Italy : Calendar
    {
       /// <summary>

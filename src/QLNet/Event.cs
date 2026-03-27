@@ -20,10 +20,12 @@
 
 namespace QLNet
 {
-   //! Base class for event
    /// <summary>
-   /// This class acts as a base class for the actual event implementations.
+   /// Base class for event
    /// </summary>
+   /// <remarks>
+   /// This class acts as a base class for the actual event implementations.
+   /// </remarks>
    public abstract class Event : IObservable
    {
       #region Event interface

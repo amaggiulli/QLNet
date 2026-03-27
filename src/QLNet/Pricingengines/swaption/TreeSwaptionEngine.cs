@@ -23,17 +23,18 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Numerical lattice engine for swaptions
-   /*! \ingroup swaptionengines
-
-       \warning This engine is not guaranteed to work if the
-                underlying swap has a start date in the past, i.e.,
-                before today's date. When using this engine, prune
-                the initial part of the swap so that it starts at
-                \f$ t \geq 0 \f$.
-
-       \test calculations are checked against cached results
-   */
+   /// <summary>
+   /// Numerical lattice engine for swaptions
+   /// </summary>
+   /// <remarks>
+   /// Warning: This engine is not guaranteed to work if the
+   /// underlying swap has a start date in the past, i.e.,
+   /// before today's date. When using this engine, prune
+   /// the initial part of the swap so that it starts at
+   /// \f$ t \geq 0 \f$.
+   ///
+   /// Test: calculations are checked against cached results
+   /// </remarks>
    public class TreeSwaptionEngine
       : LatticeShortRateModelEngine<Swaption.Arguments,
         Swaption.Results>

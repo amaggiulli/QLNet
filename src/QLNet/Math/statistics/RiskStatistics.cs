@@ -21,14 +21,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! empirical-distribution risk measures
-   /*! This class wraps a somewhat generic statistic tool and adds
-       a number of risk measures (e.g.: value-at-risk, expected
-       shortfall, etc.) based on the data distribution as reported by
-       the underlying statistic tool.
-
-       \todo add historical annualized volatility
-   */
+   /// <summary>
+   /// empirical-distribution risk measures
+   /// </summary>
+   /// <remarks>
+   /// This class wraps a somewhat generic statistic tool and adds
+   /// a number of risk measures (e.g.: value-at-risk, expected
+   /// shortfall, etc.) based on the data distribution as reported by
+   /// the underlying statistic tool.
+   ///
+   /// TODO: add historical annualized volatility
+   /// </remarks>
    public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
    {
 
@@ -150,8 +153,12 @@ namespace QLNet
       }
    }
 
-   //! default risk measures tool
-   /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
+   /// <summary>
+   /// default risk measures tool
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by checking them against numerical calculations.
+   /// </remarks>
    public class RiskStatistics : GenericRiskStatistics<GaussianStatistics>
    {
       public double gaussianPercentile(double value)
@@ -188,7 +195,11 @@ namespace QLNet
       }
    }
 
-   //! default statistics tool
-   /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
+   /// <summary>
+   /// default statistics tool
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by checking them against numerical calculations.
+   /// </remarks>
    public class Statistics : RiskStatistics { }
 }

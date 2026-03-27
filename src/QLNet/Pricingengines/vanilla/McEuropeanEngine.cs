@@ -21,12 +21,13 @@ using System;
 
 namespace QLNet
 {
-   //! European option pricing engine using Monte Carlo simulation
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             checking it against analytic results.
-   */
+   /// <summary>
+   /// European option pricing engine using Monte Carlo simulation
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against analytic results.
+   /// </remarks>
    public class MCEuropeanEngine<RNG, S> : MCVanillaEngine<SingleVariate, RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

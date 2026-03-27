@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,26 +23,25 @@ using System;
 
 namespace QLNet
 {
-   //! Polish calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>Easter Monday</li>
-       <li>Corpus Christi</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Epiphany, January 6th (since 2011)</li>
-       <li>May Day, May 1st</li>
-       <li>Constitution Day, May 3rd</li>
-       <li>Assumption of the Blessed Virgin Mary, August 15th</li>
-       <li>All Saints Day, November 1st</li>
-       <li>Independence Day, November 11th</li>
-       <li>Christmas, December 25th</li>
-       <li>2nd Day of Christmas, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Polish calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// Easter Monday
+   /// Corpus Christi
+   /// New Year's Day, January 1st
+   /// Epiphany, January 6th (since 2011)
+   /// May Day, May 1st
+   /// Constitution Day, May 3rd
+   /// Assumption of the Blessed Virgin Mary, August 15th
+   /// All Saints Day, November 1st
+   /// Independence Day, November 11th
+   /// Christmas, December 25th
+   /// 2nd Day of Christmas, December 26th
+   /// </remarks>
    public class Poland : Calendar
    {
       /// <summary>

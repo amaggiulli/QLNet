@@ -22,18 +22,20 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Black volatility surface modelled as variance surface
-   /*! This class calculates time/strike dependent Black volatilities
-       using as input a matrix of Black volatilities observed in the
-       market.
-
-       The calculation is performed interpolating on the variance
-       surface.  Bilinear interpolation is used as default; this can
-       be changed by the setInterpolation() method.
-
-       \todo check time extrapolation
-
-   */
+   /// <summary>
+   /// Black volatility surface modelled as variance surface
+   /// </summary>
+   /// <remarks>
+   /// This class calculates time/strike dependent Black volatilities
+   /// using as input a matrix of Black volatilities observed in the
+   /// market.
+   ///
+   /// The calculation is performed interpolating on the variance
+   /// surface.  Bilinear interpolation is used as default; this can
+   /// be changed by the setInterpolation() method.
+   ///
+   /// TODO: check time extrapolation
+   /// </remarks>
 
    public class BlackVarianceSurface : BlackVarianceTermStructure
    {

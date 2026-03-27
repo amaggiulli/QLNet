@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -22,17 +22,18 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Zero-yield term structure
-   /*! This abstract class acts as an adapter to YieldTermStructure
-      allowing the programmer to implement only the
-      <tt>zeroYieldImpl(Time)</tt> method in derived classes.
-
-      Discount and forward are calculated from zero yields.
-
-      Zero rates are assumed to be annual continuous compounding.
-
-      \ingroup yieldtermstructures
-   */
+   /// <summary>
+   /// Zero-yield term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to YieldTermStructure
+   /// allowing the programmer to implement only the
+   /// &lt;tt&gt;zeroYieldImpl(Time)&lt;/tt&gt; method in derived classes.
+   ///
+   /// Discount and forward are calculated from zero yields.
+   ///
+   /// Zero rates are assumed to be annual continuous compounding.
+   /// </remarks>
    public abstract class ZeroYieldStructure : YieldTermStructure
    {
       #region Constructors

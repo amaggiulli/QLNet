@@ -24,34 +24,31 @@ using System;
 
 namespace QLNet
 {
-   //! Botswana calendar
-   /*! Holidays:
-   From the Botswana <a href="http://www.ilo.org/dyn/travail/docs/1766/Public%20Holidays%20Act.pdf">Public Holidays Act</a>
-   The days named in the Schedule shall be public holidays within Botswana:
-   Provided that
-   <ul>
-   <li>when any of the said days fall on a Sunday the following Monday shall be observed as a public holiday;</li>
-   <li>if 2nd January, 1st October or Boxing Day falls on a Monday, the following Tuesday shall be observed as a public holiday;</li>
-   <li>when Botswana Day referred to in the Schedule falls on a Saturday, the next following Monday shall be observed as a public holiday.</li>
-   </ul>
-   <ul>
-   <li>Saturdays</li>
-   <li>Sundays</li>
-   <li>New Year's Day, January 1st</li>
-   <li>Good Friday</li>
-   <li>Easter Monday</li>
-   <li>Labour Day, May 1st</li>
-   <li>Ascension</li>
-   <li>Sir Seretse Khama Day, July 1st</li>
-   <li>Presidents' Day</li>
-   <li>Independence Day, September 30th</li>
-   <li>Botswana Day, October 1st</li>
-   <li>Christmas, December 25th </li>
-   <li>Boxing Day, December 26th</li>
-   </ul>
-
-   \ingroup calendars
-   */
+   /// <summary>
+   /// Botswana calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// From the Botswana &lt;a href="http://www.ilo.org/dyn/travail/docs/1766/Public20Holidays20Act.pdf"&gt;Public Holidays Act&lt;/a&gt;
+   /// The days named in the Schedule shall be public holidays within Botswana:
+   /// Provided that
+   /// when any of the said days fall on a Sunday the following Monday shall be observed as a public holiday;
+   /// if 2nd January, 1st October or Boxing Day falls on a Monday, the following Tuesday shall be observed as a public holiday;
+   /// when Botswana Day referred to in the Schedule falls on a Saturday, the next following Monday shall be observed as a public holiday.
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Ascension
+   /// Sir Seretse Khama Day, July 1st
+   /// Presidents' Day
+   /// Independence Day, September 30th
+   /// Botswana Day, October 1st
+   /// Christmas, December 25th 
+   /// Boxing Day, December 26th
+   /// </remarks>
    public class Botswana : Calendar
    {
       public Botswana() : base(Impl.Singleton) { }

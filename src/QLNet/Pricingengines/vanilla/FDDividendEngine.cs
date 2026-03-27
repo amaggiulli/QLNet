@@ -22,10 +22,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Abstract base class for dividend engines
-   /*! \todo The dividend class really needs to be made more
-             sophisticated to distinguish between fixed dividends and fractional dividends
-   */
+   /// <summary>
+   /// Abstract base class for dividend engines
+   /// </summary>
+   /// <remarks>
+   /// TODO: The dividend class really needs to be made more
+   /// sophisticated to distinguish between fixed dividends and fractional dividends
+   /// </remarks>
    public abstract class FDDividendEngineBase : FDMultiPeriodEngine
    {
       // required for generics

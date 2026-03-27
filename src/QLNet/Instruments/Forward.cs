@@ -19,26 +19,27 @@
 
 namespace QLNet
 {
-   //! Abstract base forward class
-   /*! Derived classes must implement the virtual functions spotValue() (NPV or spot price) and spotIncome() associated
-      with the specific relevant underlying (e.g. bond, stock, commodity, loan/deposit). These functions must be used to set the
-      protected member variables underlyingSpotValue_ and underlyingIncome_ within performCalculations() in the derived
-      class before the base-class implementation is called.
-
-      spotIncome() refers generically to the present value of coupons, dividends or storage costs.
-
-      discountCurve_ is the curve used to discount forward contract cash flows back to the evaluation day, as well as to obtain
-      forward values for spot values/prices.
-
-      incomeDiscountCurve_, which for generality is not automatically set to the discountCurve_, is the curve used to
-      discount future income/dividends/storage-costs etc back to the evaluation date.
-
-      \todo Add preconditions and tests
-
-      \warning This class still needs to be rigorously tested
-
-      \ingroup instruments
-   */
+   /// <summary>
+   /// Abstract base forward class
+   /// </summary>
+   /// <remarks>
+   /// Derived classes must implement the virtual functions spotValue() (NPV or spot price) and spotIncome() associated
+   /// with the specific relevant underlying (e.g. bond, stock, commodity, loan/deposit). These functions must be used to set the
+   /// protected member variables underlyingSpotValue_ and underlyingIncome_ within performCalculations() in the derived
+   /// class before the base-class implementation is called.
+   ///
+   /// spotIncome() refers generically to the present value of coupons, dividends or storage costs.
+   ///
+   /// discountCurve_ is the curve used to discount forward contract cash flows back to the evaluation day, as well as to obtain
+   /// forward values for spot values/prices.
+   ///
+   /// incomeDiscountCurve_, which for generality is not automatically set to the discountCurve_, is the curve used to
+   /// discount future income/dividends/storage-costs etc back to the evaluation date.
+   ///
+   /// TODO: Add preconditions and tests
+   ///
+   /// Warning: This class still needs to be rigorously tested
+   /// </remarks>
    public abstract class Forward : Instrument
    {
       /*! derived classes must set this, typically via spotIncome() */

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,12 +21,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Default probability term structure
-   /*! This abstract class defines the interface of concrete
-      credit structures which will be derived from this one.
-
-      \ingroup defaultprobabilitytermstructures
-   */
+   /// <summary>
+   /// Default probability term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// credit structures which will be derived from this one.
+   /// </remarks>
    public abstract class DefaultProbabilityTermStructure : TermStructure
    {
       #region Constructors

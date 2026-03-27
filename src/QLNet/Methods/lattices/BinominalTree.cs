@@ -36,8 +36,9 @@ namespace QLNet
       double probability(int x, int y, int z);
    }
 
-   //! Binomial tree base class
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Binomial tree base class
+   /// </summary>
 
    public abstract class BinomialTree<T> : Tree<T>, ITree
    {
@@ -75,8 +76,9 @@ namespace QLNet
       public abstract double probability(int x, int y, int z);
    }
 
-   //! Base class for equal probabilities binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Base class for equal probabilities binomial tree
+   /// </summary>
 
    public class EqualProbabilitiesBinomialTree<T> : BinomialTree<T>
    {
@@ -103,8 +105,9 @@ namespace QLNet
       }
    }
 
-   //! Base class for equal jumps binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Base class for equal jumps binomial tree
+   /// </summary>
 
    public class EqualJumpsBinomialTree<T> : BinomialTree<T>
    {
@@ -131,8 +134,9 @@ namespace QLNet
       }
    }
 
-   //! Jarrow-Rudd (multiplicative) equal probabilities binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Jarrow-Rudd (multiplicative) equal probabilities binomial tree
+   /// </summary>
 
    public class JarrowRudd : EqualProbabilitiesBinomialTree<JarrowRudd>, ITreeFactory<JarrowRudd>
    {
@@ -153,8 +157,9 @@ namespace QLNet
       }
    }
 
-   //! Cox-Ross-Rubinstein (multiplicative) equal jumps binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Cox-Ross-Rubinstein (multiplicative) equal jumps binomial tree
+   /// </summary>
 
    public class CoxRossRubinstein : EqualJumpsBinomialTree<CoxRossRubinstein>, ITreeFactory<CoxRossRubinstein>
    {
@@ -179,8 +184,9 @@ namespace QLNet
       }
    }
 
-   //! Additive equal probabilities binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Additive equal probabilities binomial tree
+   /// </summary>
 
    public class AdditiveEQPBinomialTree : EqualProbabilitiesBinomialTree<AdditiveEQPBinomialTree>,
       ITreeFactory<AdditiveEQPBinomialTree>
@@ -202,8 +208,9 @@ namespace QLNet
       }
    }
 
-   //! %Trigeorgis (additive equal jumps) binomial tree
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Trigeorgis (additive equal jumps) binomial tree
+   /// </summary>
 
    public class Trigeorgis : EqualJumpsBinomialTree<Trigeorgis>, ITreeFactory<Trigeorgis>
    {
@@ -228,8 +235,9 @@ namespace QLNet
       }
    }
 
-   //! %Tian tree: third moment matching, multiplicative approach
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Tian tree: third moment matching, multiplicative approach
+   /// </summary>
 
    public class Tian : BinomialTree<Tian>, ITreeFactory<Tian>
    {
@@ -271,8 +279,9 @@ namespace QLNet
       }
    }
 
-   //! Leisen & Reimer tree: multiplicative approach
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Leisen &amp; Reimer tree: multiplicative approach
+   /// </summary>
 
    public class LeisenReimer : BinomialTree<LeisenReimer>, ITreeFactory<LeisenReimer>
    {

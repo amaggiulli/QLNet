@@ -22,14 +22,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Uniform random number generator
-   /*! Mersenne Twister random number generator of period 2**19937-1
-
-       For more details see http://www.math.keio.ac.jp/matumoto/emt.html
-
-       \test the correctness of the returned values is tested by
-             checking them against known good results.
-   */
+   /// <summary>
+   /// Uniform random number generator
+   /// </summary>
+   /// <remarks>
+   /// Mersenne Twister random number generator of period 2**19937-1
+   ///
+   /// For more details see http://www.math.keio.ac.jp/matumoto/emt.html
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking them against known good results.
+   /// </remarks>
    public class MersenneTwisterUniformRng : IRNGTraits
    {
       private static int N = 624; // state size

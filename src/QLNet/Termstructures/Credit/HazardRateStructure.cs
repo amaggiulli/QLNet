@@ -21,19 +21,20 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Hazard-rate term structure
-   /*! This abstract class acts as an adapter to
-      DefaultProbabilityTermStructure allowing the programmer to implement
-      only the <tt>hazardRateImpl(Time)</tt> method in derived classes.
-
-      Survival/default probabilities and default densities are calculated
-      from hazard rates.
-
-      Hazard rates are defined with annual frequency and continuous
-      compounding.
-
-      \ingroup defaultprobabilitytermstructures
-   */
+   /// <summary>
+   /// Hazard-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to
+   /// DefaultProbabilityTermStructure allowing the programmer to implement
+   /// only the &lt;tt&gt;hazardRateImpl(Time)&lt;/tt&gt; method in derived classes.
+   ///
+   /// Survival/default probabilities and default densities are calculated
+   /// from hazard rates.
+   ///
+   /// Hazard rates are defined with annual frequency and continuous
+   /// compounding.
+   /// </remarks>
    public abstract class HazardRateStructure : DefaultProbabilityTermStructure
    {
       #region Constructors

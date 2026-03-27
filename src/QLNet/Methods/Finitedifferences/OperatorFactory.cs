@@ -21,11 +21,12 @@ using System;
 
 namespace QLNet
 {
-   //! Black-Scholes-Merton differential operator
-   /*! \ingroup findiff
-
-       \test coefficients are tested against constant BSM operator
-   */
+   /// <summary>
+   /// Black-Scholes-Merton differential operator
+   /// </summary>
+   /// <remarks>
+   /// Test: coefficients are tested against constant BSM operator
+   /// </remarks>
 
    public static class OperatorFactory
    {

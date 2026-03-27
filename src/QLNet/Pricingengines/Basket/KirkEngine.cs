@@ -20,17 +20,19 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for spread option on two futures
-   /*! This class implements formulae from
-       "Correlation in the Energy Markets", E. Kirk
-       Managing Energy Price Risk.
-       London: Risk Publications and Enron, pp. 71-78
-
-       \ingroup basketengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in literature.
-   */
+   /// <summary>
+   /// Pricing engine for spread option on two futures
+   /// </summary>
+   /// <remarks>
+   /// This class implements formulae from
+   /// "Correlation in the Energy Markets", E. Kirk
+   /// Managing Energy Price Risk.
+   /// London: Risk Publications and Enron, pp. 71-78
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class KirkEngine : BasketOption.Engine
    {
       public KirkEngine(BlackProcess process1,

@@ -137,8 +137,12 @@ namespace QLNet
    }
 
 
-   //! bicubic-spline interpolation between discrete points
-   /*! \todo revise end conditions */
+   /// <summary>
+   /// bicubic-spline interpolation between discrete points
+   /// </summary>
+   /// <remarks>
+   /// TODO: revise end conditions
+   /// </remarks>
    public class BicubicSpline : Interpolation2D
    {
       /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */

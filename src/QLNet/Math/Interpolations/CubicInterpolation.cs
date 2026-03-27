@@ -22,46 +22,49 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Cubic interpolation between discrete points.
-   /*! Cubic interpolation is fully defined when the ${f_i}$ function values
-       at points ${x_i}$ are supplemented with ${f_i}$ function derivative
-       values.
-
-       Different type of first derivative approximations are implemented, both
-       local and non-local. Local schemes (Fourth-order, Parabolic,
-       Modified Parabolic, Fritsch-Butland, Akima, Kruger) use only $f$ values
-       near $x_i$ to calculate $f_i$. Non-local schemes (Spline with different
-       boundary conditions) use all ${f_i}$ values and obtain ${f_i}$ by
-       solving a linear system of equations. Local schemes produce $C^1$
-       interpolants, while the spline scheme generates $C^2$ interpolants.
-
-       Hyman's monotonicity constraint filter is also implemented: it can be
-       applied to all schemes to ensure that in the regions of local
-       monotoniticity of the input (three successive increasing or decreasing
-       values) the interpolating cubic remains monotonic. If the interpolating
-       cubic is already monotonic, the Hyman filter leaves it unchanged
-       preserving all its original features.
-
-       In the case of $C^2$ interpolants the Hyman filter ensures local
-       monotonicity at the expense of the second derivative of the interpolant
-       which will no longer be continuous in the points where the filter has
-       been applied.
-
-       While some non-linear schemes (Modified Parabolic, Fritsch-Butland,
-       Kruger) are guaranteed to be locally monotone in their original
-       approximation, all other schemes must be filtered according to the
-       Hyman criteria at the expense of their linearity.
-
-       See R. L. Dougherty, A. Edelman, and J. M. Hyman,
-       "Nonnegativity-, Monotonicity-, or Convexity-Preserving CubicSpline and
-       Quintic Hermite Interpolation"
-       Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
-
-       \todo implement missing schemes (FourthOrder and ModifiedParabolic) and
-             missing boundary conditions (Periodic and Lagrange).
-
-       \test to be adapted from old ones.
-   */
+   /// <summary>
+   /// Cubic interpolation between discrete points.
+   /// </summary>
+   /// <remarks>
+   /// Cubic interpolation is fully defined when the ${f_i}$ function values
+   /// at points ${x_i}$ are supplemented with ${f_i}$ function derivative
+   /// values.
+   ///
+   /// Different type of first derivative approximations are implemented, both
+   /// local and non-local. Local schemes (Fourth-order, Parabolic,
+   /// Modified Parabolic, Fritsch-Butland, Akima, Kruger) use only $f$ values
+   /// near $x_i$ to calculate $f_i$. Non-local schemes (Spline with different
+   /// boundary conditions) use all ${f_i}$ values and obtain ${f_i}$ by
+   /// solving a linear system of equations. Local schemes produce $C^1$
+   /// interpolants, while the spline scheme generates $C^2$ interpolants.
+   ///
+   /// Hyman's monotonicity constraint filter is also implemented: it can be
+   /// applied to all schemes to ensure that in the regions of local
+   /// monotoniticity of the input (three successive increasing or decreasing
+   /// values) the interpolating cubic remains monotonic. If the interpolating
+   /// cubic is already monotonic, the Hyman filter leaves it unchanged
+   /// preserving all its original features.
+   ///
+   /// In the case of $C^2$ interpolants the Hyman filter ensures local
+   /// monotonicity at the expense of the second derivative of the interpolant
+   /// which will no longer be continuous in the points where the filter has
+   /// been applied.
+   ///
+   /// While some non-linear schemes (Modified Parabolic, Fritsch-Butland,
+   /// Kruger) are guaranteed to be locally monotone in their original
+   /// approximation, all other schemes must be filtered according to the
+   /// Hyman criteria at the expense of their linearity.
+   ///
+   /// See R. L. Dougherty, A. Edelman, and J. M. Hyman,
+   /// "Nonnegativity-, Monotonicity-, or Convexity-Preserving CubicSpline and
+   /// Quintic Hermite Interpolation"
+   /// Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
+   ///
+   /// TODO: implement missing schemes (FourthOrder and ModifiedParabolic) and
+   /// missing boundary conditions (Periodic and Lagrange).
+   ///
+   /// Test: to be adapted from old ones.
+   /// </remarks>
 
    public class CubicInterpolation : Interpolation
    {

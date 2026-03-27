@@ -37,13 +37,14 @@ namespace QLNet
       void setTime(double t);
    }
 
-   //! Base implementation for tridiagonal operator
-   /*! \warning to use real time-dependant algebra, you must overload
-                the corresponding operators in the inheriting
-                time-dependent class.
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// Base implementation for tridiagonal operator
+   /// </summary>
+   /// <remarks>
+   /// Warning: to use real time-dependant algebra, you must overload
+   /// the corresponding operators in the inheriting
+   /// time-dependent class.
+   /// </remarks>
    public class TridiagonalOperator : IOperator
    {
       protected TimeSetter timeSetter_;

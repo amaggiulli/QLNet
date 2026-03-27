@@ -20,18 +20,19 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for vanilla options using binomial trees
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned values is tested by
-             checking it against analytic results.
-
-       \todo Greeks are not overly accurate. They could be improved
-             by building a tree so that it has three points at the
-             current time. The value would be fetched from the middle
-             one, while the two side points would be used for
-             estimating partial derivatives.
-   */
+   /// <summary>
+   /// Pricing engine for vanilla options using binomial trees
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by
+   /// checking it against analytic results.
+   ///
+   /// TODO: Greeks are not overly accurate. They could be improved
+   /// by building a tree so that it has three points at the
+   /// current time. The value would be fetched from the middle
+   /// one, while the two side points would be used for
+   /// estimating partial derivatives.
+   /// </remarks>
    public class BinomialVanillaEngine<T> : VanillaOption.Engine where T : ITreeFactory<T>, ITree, new ()
    {
       private GeneralizedBlackScholesProcess process_;

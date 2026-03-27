@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -24,32 +24,29 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Chinese calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's day, January 1st (possibly followed by one or
-           two more holidays)</li>
-       <li>Labour Day, first week in May</li>
-       <li>National Day, one week from October 1st</li>
-       </ul>
-
-       Other holidays for which no rule is given (data available for
-       2004-2019 only):
-       <ul>
-       <li>Chinese New Year</li>
-       <li>Ching Ming Festival</li>
-       <li>Tuen Ng Festival</li>
-       <li>Mid-Autumn Festival</li>
-       <li>70th anniversary of the victory of anti-Japaneses war</li>
-       </ul>
-
-       SSE data from <http://www.sse.com.cn/>
-       IB data from <http://www.chinamoney.com.cn/>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Chinese calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's day, January 1st (possibly followed by one or
+   /// two more holidays)
+   /// Labour Day, first week in May
+   /// National Day, one week from October 1st
+   ///
+   /// Other holidays for which no rule is given (data available for
+   /// 2004-2019 only):
+   /// Chinese New Year
+   /// Ching Ming Festival
+   /// Tuen Ng Festival
+   /// Mid-Autumn Festival
+   /// 70th anniversary of the victory of anti-Japaneses war
+   ///
+   /// SSE data from &lt;http://www.sse.com.cn/&gt;
+   /// IB data from &lt;http://www.chinamoney.com.cn/&gt;
+   /// </remarks>
    public class China : Calendar
    {
       /// <summary>

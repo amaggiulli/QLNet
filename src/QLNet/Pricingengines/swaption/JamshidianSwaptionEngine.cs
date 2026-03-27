@@ -23,12 +23,13 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Jamshidian swaption engine
-   /*! \ingroup swaptionengines
-
-       \warning The engine assumes that the exercise date equals the
-                start date of the passed swap.
-   */
+   /// <summary>
+   /// Jamshidian swaption engine
+   /// </summary>
+   /// <remarks>
+   /// Warning: The engine assumes that the exercise date equals the
+   /// start date of the passed swap.
+   /// </remarks>
 
    public class JamshidianSwaptionEngine : GenericModelEngine<OneFactorAffineModel,
       Swaption.Arguments,

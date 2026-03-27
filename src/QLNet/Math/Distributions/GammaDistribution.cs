@@ -79,19 +79,22 @@ namespace QLNet
       }
    }
 
-   //! Gamma function class
-   /*! This is a function defined by
-       \f[
-           \Gamma(z) = \int_0^{\infty}t^{z-1}e^{-t}dt
-       \f]
-
-       The implementation of the algorithm was inspired by
-       "Numerical Recipes in C", 2nd edition,
-       Press, Teukolsky, Vetterling, Flannery, chapter 6
-
-       \test the correctness of the returned value is tested by
-             checking it against known good results.
-   */
+   /// <summary>
+   /// Gamma function class
+   /// </summary>
+   /// <remarks>
+   /// This is a function defined by
+   /// \f[
+   /// \Gamma(z) = \int_0^{\infty}t^{z-1}e^{-t}dt
+   /// \f]
+   ///
+   /// The implementation of the algorithm was inspired by
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery, chapter 6
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against known good results.
+   /// </remarks>
 
    public static class GammaFunction
    {

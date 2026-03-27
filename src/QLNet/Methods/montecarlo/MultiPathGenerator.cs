@@ -21,11 +21,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Generates a multipath from a random number generator.
-   /*! RSG is a sample generator which returns a random sequence.
-
-       \test the generated paths are checked against cached results
-   */
+   /// <summary>
+   /// Generates a multipath from a random number generator.
+   /// </summary>
+   /// <remarks>
+   /// RSG is a sample generator which returns a random sequence.
+   ///
+   /// Test: the generated paths are checked against cached results
+   /// </remarks>
 
    public class MultiPathGenerator<GSG> : IPathGenerator<GSG> where GSG : IRNG
    {

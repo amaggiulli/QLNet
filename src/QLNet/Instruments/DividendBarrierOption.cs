@@ -18,8 +18,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Single-asset barrier option with discrete dividends
-   /*! \ingroup instruments */
+   /// <summary>
+   /// Single-asset barrier option with discrete dividends
+   /// </summary>
    public class DividendBarrierOption : BarrierOption
    {
       public DividendBarrierOption(Barrier.Type barrierType,

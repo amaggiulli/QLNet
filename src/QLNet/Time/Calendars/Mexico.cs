@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,26 +23,25 @@ using System;
 
 namespace QLNet
 {
-   //! %Mexican calendars
-   /*! Holidays for the Mexican stock exchange
-       (data from <http://www.bmv.com.mx/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Constitution Day, first Monday in February (February 5th before 2006)</li>
-       <li>Birthday of Benito Juarez, third Monday in February (March 21st before 2006)</li>
-       <li>Holy Thursday</li>
-       <li>Good Friday</li>
-       <li>Labour Day, May 1st</li>
-       <li>National Day, September 16th</li>
-       <li>Revolution Day, third Monday in November (November 20th before 2006)</li>
-       <li>Our Lady of Guadalupe, December 12th</li>
-       <li>Christmas, December 25th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Mexican calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Mexican stock exchange
+   /// (data from &lt;http://www.bmv.com.mx/&gt;):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Constitution Day, first Monday in February (February 5th before 2006)
+   /// Birthday of Benito Juarez, third Monday in February (March 21st before 2006)
+   /// Holy Thursday
+   /// Good Friday
+   /// Labour Day, May 1st
+   /// National Day, September 16th
+   /// Revolution Day, third Monday in November (November 20th before 2006)
+   /// Our Lady of Guadalupe, December 12th
+   /// Christmas, December 25th
+   /// </remarks>
    public class Mexico : Calendar
    {
       public Mexico() : base(Impl.Singleton) { }

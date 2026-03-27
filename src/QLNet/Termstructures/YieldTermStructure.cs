@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -22,14 +22,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Interest-rate term structure
-   /*! This abstract class defines the interface of concrete
-      interest rate structures which will be derived from this one.
-
-      \ingroup yieldtermstructures
-
-      \test observability against evaluation date changes is checked.
-   */
+   /// <summary>
+   /// Interest-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// interest rate structures which will be derived from this one.
+   ///
+   ///
+   /// Test: observability against evaluation date changes is checked.
+   /// </remarks>
    public abstract class YieldTermStructure : TermStructure
    {
       private const double dt = 0.0001;

@@ -70,14 +70,21 @@ namespace QLNet
       }
    }
 
-   //! default traits for pseudo-random number generation
-   /*! \test a sequence generator is generated and tested by comparing samples against known good values. */
+   /// <summary>
+   /// default traits for pseudo-random number generation
+   /// </summary>
+   /// <remarks>
+   /// Test: a sequence generator is generated and tested by comparing samples against known good values.
+   /// </remarks>
    public class PseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativeNormal> { }
 
-   //! traits for Poisson-distributed pseudo-random number generation
-   /*! \test sequence generators are generated and tested by comparing
-             samples against known good values.
-   */
+   /// <summary>
+   /// traits for Poisson-distributed pseudo-random number generation
+   /// </summary>
+   /// <remarks>
+   /// Test: sequence generators are generated and tested by comparing
+   /// samples against known good values.
+   /// </remarks>
    public class PoissonPseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativePoisson> { }
 
 

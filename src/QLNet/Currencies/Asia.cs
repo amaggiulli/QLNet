@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Andrea Maggiulli
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,90 +19,99 @@
 
 namespace QLNet
 {
-   //! Bangladesh taka
-   /*! The ISO three-letter code is BDT; the numeric code is 50.
-       It is divided in 100 paisa.
-          \ingroup currencies
-   */
+   /// <summary>
+   /// Bangladesh taka
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is BDT; the numeric code is 50.
+   /// It is divided in 100 paisa.
+   /// </remarks>
    public class BDTCurrency : Currency
    {
       public BDTCurrency() : base("Bangladesh taka", "BDT", 50, "Bt", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Chinese yuan
-   /*! The ISO three-letter code is CNY; the numeric code is 156.
-      It is divided in 100 fen.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Chinese yuan
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is CNY; the numeric code is 156.
+   /// It is divided in 100 fen.
+   /// </remarks>
    public class CNYCurrency : Currency
    {
       public CNYCurrency() : base("Chinese yuan", "CNY", 156, "Y", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Hong Kong dollar
-   /*! The ISO three-letter code is HKD; the numeric code is 344.
-      It is divided in 100 cents.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Hong Kong dollar
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is HKD; the numeric code is 344.
+   /// It is divided in 100 cents.
+   /// </remarks>
    public class HKDCurrency : Currency
    {
       public HKDCurrency() : base("Hong Kong dollar", "HKD", 344, "HK$", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
-   //! Indonesian Rupiah
-   /*! The ISO three-letter code is IDR; the numeric code is 360.
-       It is divided in 100 sen.
-
-       \ingroup currencies
-   */
+   /// <summary>
+   /// Indonesian Rupiah
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is IDR; the numeric code is 360.
+   /// It is divided in 100 sen.
+   /// </remarks>
    public class IDRCurrency : Currency
    {
       public IDRCurrency(): base("Indonesian Rupiah", "IDR", 360, "Rp", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
-   //! Israeli shekel
-   /*! The ISO three-letter code is ILS; the numeric code is 376.
-      It is divided in 100 agorot.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Israeli shekel
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is ILS; the numeric code is 376.
+   /// It is divided in 100 agorot.
+   /// </remarks>
    public class ILSCurrency : Currency
    {
       public ILSCurrency() : base("Israeli shekel", "ILS", 376, "NIS", "", 100, new Rounding(), "%1$.2f %3%") { }
    }
 
-   //! Indian rupee
-   /*! The ISO three-letter code is INR; the numeric code is 356.
-      It is divided in 100 paise.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Indian rupee
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is INR; the numeric code is 356.
+   /// It is divided in 100 paise.
+   /// </remarks>
    public class INRCurrency : Currency
    {
       public INRCurrency()
          : base("Indian rupee", "INR", 356, "Rs", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
-   //! Iraqi dinar
-   /*! The ISO three-letter code is IQD; the numeric code is 368.
-      It is divided in 1000 fils.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Iraqi dinar
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is IQD; the numeric code is 368.
+   /// It is divided in 1000 fils.
+   /// </remarks>
    public class IQDCurrency : Currency
    {
       public IQDCurrency()
          : base("Iraqi dinar", "IQD", 368, "ID", "", 1000, new Rounding(), "%2% %1$.3f") { }
    }
 
-   //! Iranian rial
-   /*! The ISO three-letter code is IRR; the numeric code is 364.
-      It has no subdivisions.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Iranian rial
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is IRR; the numeric code is 364.
+   /// It has no subdivisions.
+   /// </remarks>
    public class IRRCurrency : Currency
    {
       public IRRCurrency() : base("Iranian rial", "IRR", 364, "Rls", "", 1, new Rounding(), "%3% %1$.2f") { }
@@ -118,111 +127,121 @@ namespace QLNet
       public JPYCurrency() : base("Japanese yen", "JPY", 392, "\xA5", "", 100, new Rounding(), "%3% %1$.0f") { }
    }
 
-   //! South-Korean won
-   /*! The ISO three-letter code is KRW; the numeric code is 410.
-      It is divided in 100 chon.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// South-Korean won
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is KRW; the numeric code is 410.
+   /// It is divided in 100 chon.
+   /// </remarks>
    public class KRWCurrency : Currency
    {
       public KRWCurrency() : base("South-Korean won", "KRW", 410, "W", "", 100, new Rounding(), "%3% %1$.0f") { }
    }
 
-   //! Kuwaiti dinar
-   /*! The ISO three-letter code is KWD; the numeric code is 414.
-      It is divided in 1000 fils.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Kuwaiti dinar
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is KWD; the numeric code is 414.
+   /// It is divided in 1000 fils.
+   /// </remarks>
    public class KWDCurrency : Currency
    {
       public KWDCurrency() : base("Kuwaiti dinar", "KWD", 414, "KD", "", 1000, new Rounding(), "%3% %1$.3f") {}
    }
 
-   //! Malaysian Ringgit
-   /*! The ISO three-letter code is MYR; the numeric code is 458.
-       It is divided in 100 sen.
-
-       \ingroup currencies
-   */
+   /// <summary>
+   /// Malaysian Ringgit
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is MYR; the numeric code is 458.
+   /// It is divided in 100 sen.
+   /// </remarks>
    public class MYRCurrency : Currency
    {
       public MYRCurrency() : base("Malaysian Ringgit", "MYR", 458, "RM", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Nepal rupee
-   /*! The ISO three-letter code is NPR; the numeric code is 524.
-      It is divided in 100 paise.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Nepal rupee
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is NPR; the numeric code is 524.
+   /// It is divided in 100 paise.
+   /// </remarks>
    public class NPRCurrency : Currency
    {
       public NPRCurrency() : base("Nepal rupee", "NPR", 524, "NRs", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Pakistani rupee
-   /*! The ISO three-letter code is PKR; the numeric code is 586.
-      It is divided in 100 paisa.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Pakistani rupee
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is PKR; the numeric code is 586.
+   /// It is divided in 100 paisa.
+   /// </remarks>
    public class PKRCurrency : Currency
    {
       public PKRCurrency() : base("Pakistani rupee", "PKR", 586, "Rs", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Saudi riyal
-   /*! The ISO three-letter code is SAR; the numeric code is 682.
-      It is divided in 100 halalat.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Saudi riyal
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is SAR; the numeric code is 682.
+   /// It is divided in 100 halalat.
+   /// </remarks>
    public class SARCurrency : Currency
    {
       public SARCurrency() : base("Saudi riyal", "SAR", 682, "SRls", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! %Singapore dollar
-   /*! The ISO three-letter code is SGD; the numeric code is 702.
-      It is divided in 100 cents.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Singapore dollar
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is SGD; the numeric code is 702.
+   /// It is divided in 100 cents.
+   /// </remarks>
    public class SGDCurrency : Currency
    {
       public SGDCurrency() : base("Singapore dollar", "SGD", 702, "S$", "", 100, new Rounding(), "%3% %1$.2f") {}
    }
 
-   //! Thai baht
-   /*! The ISO three-letter code is THB; the numeric code is 764.
-      It is divided in 100 stang.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Thai baht
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is THB; the numeric code is 764.
+   /// It is divided in 100 stang.
+   /// </remarks>
    public class THBCurrency : Currency
    {
       public THBCurrency() : base("Thai baht", "THB", 764, "Bht", "", 100, new Rounding(), "%1$.2f %3%") {}
    }
 
-   //! %Taiwan dollar
-   /*! The ISO three-letter code is TWD; the numeric code is 901.
-      It is divided in 100 cents.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Taiwan dollar
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is TWD; the numeric code is 901.
+   /// It is divided in 100 cents.
+   /// </remarks>
    public class TWDCurrency : Currency
    {
       public TWDCurrency() : base("Taiwan dollar", "TWD", 901, "NT$", "", 100, new Rounding(), "%3% %1$.2f") { }
    }
 
-   //! Vietnamese Dong
-   /*! The ISO three-letter code is VND; the numeric code is 704.
-       It was divided in 100 xu.
-
-       \ingroup currencies
-   */
+   /// <summary>
+   /// Vietnamese Dong
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is VND; the numeric code is 704.
+   /// It was divided in 100 xu.
+   /// </remarks>
    public class VNDCurrency : Currency
    {
       public VNDCurrency() : base("Vietnamese Dong", "VND", 704, "", "", 100, new Rounding(), "%1$.0f %3%") {}

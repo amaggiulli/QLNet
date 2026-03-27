@@ -21,11 +21,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! single-factor random walk
-   /*! \ingroup mcarlo
-
-       \note the path includes the initial asset value as its first point.
-   */
+   /// <summary>
+   /// single-factor random walk
+   /// </summary>
+   /// <remarks>
+   /// Note: the path includes the initial asset value as its first point.
+   /// </remarks>
 
    public interface IPath : ICloneable
    {

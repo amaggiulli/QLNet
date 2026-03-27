@@ -22,19 +22,22 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Integral of a 1-dimensional function using the Gauss quadratures method
-   /*! References:
-      Gauss quadratures and orthogonal polynomials
-
-      G.H. Gloub and J.H. Welsch: Calculation of Gauss quadrature rule.
-      Math. Comput. 23 (1986), 221-230
-
-      "Numerical Recipes in C", 2nd edition,
-      Press, Teukolsky, Vetterling, Flannery,
-
-      \test the correctness of the result is tested by checking it
-            against known good values.
-   */
+   /// <summary>
+   /// Integral of a 1-dimensional function using the Gauss quadratures method
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// Gauss quadratures and orthogonal polynomials
+   ///
+   /// G.H. Gloub and J.H. Welsch: Calculation of Gauss quadrature rule.
+   /// Math. Comput. 23 (1986), 221-230
+   ///
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery,
+   ///
+   /// Test: the correctness of the result is tested by checking it
+   /// against known good values.
+   /// </remarks>
    public class GaussianQuadrature
    {
       public GaussianQuadrature(int n, GaussianOrthogonalPolynomial orthPoly)

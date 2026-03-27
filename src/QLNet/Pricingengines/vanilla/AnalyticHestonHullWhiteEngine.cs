@@ -18,25 +18,26 @@ using System.Numerics;
 
 namespace QLNet
 {
-   //! Analytic Heston engine incl. stochastic interest rates
-   /*!
-       References:
-
-       Karel in't Hout, Joris Bierkens, Antoine von der Ploeg,
-       Joe in't Panhuis, A Semi closed-from analytic pricing formula for
-       call options in a hybrid Heston-Hull-White Model.
-
-       A. Sepp, Pricing European-Style Options under Jump Diffusion
-       Processes with Stochastic Volatility: Applications of Fourier
-       Transform (<http://math.ut.ee/~spartak/papers/stochjumpvols.pdf>)
-
-       \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature, testing
-             against QuantLib's analytic Heston and
-             Black-Scholes-Merton Hull-White engine
-   */
+   /// <summary>
+   /// Analytic Heston engine incl. stochastic interest rates
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Karel in't Hout, Joris Bierkens, Antoine von der Ploeg,
+   /// Joe in't Panhuis, A Semi closed-from analytic pricing formula for
+   /// call options in a hybrid Heston-Hull-White Model.
+   ///
+   /// A. Sepp, Pricing European-Style Options under Jump Diffusion
+   /// Processes with Stochastic Volatility: Applications of Fourier
+   /// Transform (&lt;http://math.ut.ee/~spartak/papers/stochjumpvols.pdf&gt;)
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature, testing
+   /// against QuantLib's analytic Heston and
+   /// Black-Scholes-Merton Hull-White engine
+   /// </remarks>
    public class AnalyticHestonHullWhiteEngine : AnalyticHestonEngine
    {
 

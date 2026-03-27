@@ -22,14 +22,17 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! general linear least squares regression
-   /*! References:
-      "Numerical Recipes in C", 2nd edition,
-       Press, Teukolsky, Vetterling, Flannery,
-
-       \test the correctness of the returned values is tested by
-             checking their properties.
-   */
+   /// <summary>
+   /// general linear least squares regression
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery,
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking their properties.
+   /// </remarks>
    public class LinearLeastSquaresRegression : LinearLeastSquaresRegression<double>
    {
       public LinearLeastSquaresRegression(List<double> x, List<double> y, List<Func<double, double>> v)

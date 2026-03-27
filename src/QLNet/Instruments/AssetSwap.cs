@@ -22,19 +22,21 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Bullet bond vs %Libor swap
-   /*! for mechanics of par asset swap and market asset swap, refer to
-       "Introduction to Asset Swap", Lehman Brothers European Fixed
-       Income Research - January 2000, D. O'Kane
-
-       \ingroup instruments
-
-       \warning bondCleanPrice must be the (forward) price at the
-                floatSchedule start date
-
-       \bug fair prices are not calculated correctly when using
-            indexed coupons.
-   */
+   /// <summary>
+   /// Bullet bond vs Libor swap
+   /// </summary>
+   /// <remarks>
+   /// for mechanics of par asset swap and market asset swap, refer to
+   /// "Introduction to Asset Swap", Lehman Brothers European Fixed
+   /// Income Research - January 2000, D. O'Kane
+   ///
+   ///
+   /// Warning: bondCleanPrice must be the (forward) price at the
+   /// floatSchedule start date
+   ///
+   /// Bug: fair prices are not calculated correctly when using
+   /// indexed coupons.
+   /// </remarks>
    public class AssetSwap : Swap
    {
       public AssetSwap(bool payBondCoupon,

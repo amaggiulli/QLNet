@@ -21,14 +21,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Generates random paths using a sequence generator
-   /*! Generates random paths with drift(S,t) and variance(S,t)
-       using a gaussian sequence generator
-
-       \ingroup mcarlo
-
-       \test the generated paths are checked against cached results
-   */
+   /// <summary>
+   /// Generates random paths using a sequence generator
+   /// </summary>
+   /// <remarks>
+   /// Generates random paths with drift(S,t) and variance(S,t)
+   /// using a gaussian sequence generator
+   ///
+   ///
+   /// Test: the generated paths are checked against cached results
+   /// </remarks>
 
    public class PathGenerator<GSG> : IPathGenerator<GSG> where GSG : IRNG
    {

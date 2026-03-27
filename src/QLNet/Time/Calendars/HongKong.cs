@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -23,37 +23,34 @@ using System;
 
 namespace QLNet
 {
-   //! Hong Kong calendars
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Labor Day, May 1st (possibly moved to Monday)</li>
-       <li>SAR Establishment Day, July 1st (possibly moved to Monday)</li>
-       <li>National Day, October 1st (possibly moved to Monday)</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2004-2013 only:)
-       <ul>
-       <li>Lunar New Year</li>
-       <li>Chinese New Year</li>
-       <li>Ching Ming Festival</li>
-       <li>Buddha's birthday</li>
-       <li>Tuen NG Festival</li>
-       <li>Mid-autumn Festival</li>
-       <li>Chung Yeung Festival</li>
-       </ul>
-
-       Data from <http://www.hkex.com.hk>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Hong Kong calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday)
+   /// Good Friday
+   /// Easter Monday
+   /// Labor Day, May 1st (possibly moved to Monday)
+   /// SAR Establishment Day, July 1st (possibly moved to Monday)
+   /// National Day, October 1st (possibly moved to Monday)
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2004-2013 only:)
+   /// Lunar New Year
+   /// Chinese New Year
+   /// Ching Ming Festival
+   /// Buddha's birthday
+   /// Tuen NG Festival
+   /// Mid-autumn Festival
+   /// Chung Yeung Festival
+   ///
+   /// Data from &lt;http://www.hkex.com.hk&gt;
+   /// </remarks>
    public class HongKong : Calendar
    {
       public HongKong() : base(Impl.Singleton) { }

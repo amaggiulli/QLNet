@@ -18,10 +18,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! This engine only adds timing functionality (e.g. different lag)
    /// <summary>
-   /// w.r.t. an existing interpolated price surface.
+   /// This engine only adds timing functionality (e.g. different lag)
    /// </summary>
+   /// <remarks>
+   /// w.r.t. an existing interpolated price surface.
+   /// </remarks>
    public class InterpolatingCPICapFloorEngine : CPICapFloor.Engine
    {
       public InterpolatingCPICapFloorEngine(Handle<CPICapFloorTermPriceSurface> priceSurf)

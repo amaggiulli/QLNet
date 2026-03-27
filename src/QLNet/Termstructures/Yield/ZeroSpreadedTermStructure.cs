@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,19 +19,21 @@
 
 namespace QLNet
 {
-   //! Term structure with an added spread on the zero yield rate
-   /*! \note This term structure will remain linked to the original
-         structure, i.e., any changes in the latter will be
-         reflected in this structure as well.
-
-   \ingroup yieldtermstructures
-
-   \test
-   - the correctness of the returned values is tested by
-      checking them against numerical calculations.
-   - observability against changes in the underlying term
-      structure and in the added spread is checked.
-   */
+   /// <summary>
+   /// Term structure with an added spread on the zero yield rate
+   /// </summary>
+   /// <remarks>
+   /// Note: This term structure will remain linked to the original
+   /// structure, i.e., any changes in the latter will be
+   /// reflected in this structure as well.
+   ///
+   ///
+   /// Test:
+   /// - the correctness of the returned values is tested by
+   /// checking them against numerical calculations.
+   /// - observability against changes in the underlying term
+   /// structure and in the added spread is checked.
+   /// </remarks>
    public class ZeroSpreadedTermStructure : ZeroYieldStructure
    {
       public ZeroSpreadedTermStructure(Handle<YieldTermStructure> h,
