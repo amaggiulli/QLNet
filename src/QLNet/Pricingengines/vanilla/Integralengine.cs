@@ -47,7 +47,6 @@ namespace QLNet
    //! Pricing engine for European vanilla options using integral approach
 //    ! \todo define tolerance for calculate()
 //
-//        \ingroup vanillaengines
 //
    public class IntegralEngine : VanillaOption.Engine
    {

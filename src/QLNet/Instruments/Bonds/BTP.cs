@@ -25,8 +25,6 @@ namespace QLNet
    /*! Italian CCTEU (Certificato di credito del tesoro)
         Euribor6M indexed floating rate bond
 
-        \ingroup instruments
-
    */
    public class CCTEU : FloatingRateBond
    {

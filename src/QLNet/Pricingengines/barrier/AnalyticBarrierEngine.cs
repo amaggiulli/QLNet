@@ -25,7 +25,6 @@ namespace QLNet
 //    ! The formulas are taken from "Option pricing formulas",
 //         E.G. Haug, McGraw-Hill, p.69 and following.
 //
-//        \ingroup barrierengines
 //
 //        \test the correctness of the returned value is tested by
 //              reproducing results available in literature.

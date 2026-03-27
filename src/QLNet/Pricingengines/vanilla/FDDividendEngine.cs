@@ -83,7 +83,6 @@ namespace QLNet
 
    //! Finite-differences pricing engine for dividend options using
    // escowed dividend model
-   /*! \ingroup vanillaengines */
    /* The merton 73 engine is the classic engine described in most
       derivatives texts.  However, Haug, Haug, and Lewis in
       "Back to Basics: a new approach to the discrete dividend
@@ -146,7 +145,6 @@ namespace QLNet
 
 
    //! Finite-differences engine for dividend options using shifted dividends
-   /*! \ingroup vanillaengines */
    /* This engine uses the same algorithm that was used in quantlib
       in versions 0.3.11 and earlier.  It produces results that
       are different from the Merton 73 engine.

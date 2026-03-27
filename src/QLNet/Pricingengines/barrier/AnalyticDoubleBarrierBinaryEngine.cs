@@ -35,8 +35,6 @@ namespace QLNet
        This engine thus requires European esercise for Double Knock options,
        and American exercise for KIKO/KOKI.
 
-       \ingroup barrierengines
-
        greeks are calculated by simple numeric derivation
 
        \test

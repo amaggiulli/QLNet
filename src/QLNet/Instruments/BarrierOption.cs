@@ -22,7 +22,6 @@ namespace QLNet
    //! %Barrier option on a single asset.
    //    ! The analytic pricing Engine will be used if none if passed.
    //
-   //        \ingroup instruments
    //
    public class BarrierOption : OneAssetOption
    {

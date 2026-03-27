@@ -51,8 +51,6 @@ namespace QLNet
        J. Gatheral, The Volatility Surface: A Practitioner's Guide,
        Wiley Finance
 
-       \ingroup vanillaengines
-
        \test the correctness of the returned value is tested by
              reproducing results available in web/literature
              and comparison with Black pricing.

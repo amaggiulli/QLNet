@@ -24,7 +24,6 @@ namespace QLNet
 //    ! The ISO three-letter code is AUD; the numeric code is 36.
 //        It is divided into 100 cents.
 //
-//        \ingroup currencies
 //
    public class AUDCurrency : Currency
    {
@@ -35,7 +34,6 @@ namespace QLNet
 //    ! The ISO three-letter code is NZD; the numeric code is 554.
 //        It is divided in 100 cents.
 //
-//        \ingroup currencies
 //
    public class NZDCurrency : Currency
    {

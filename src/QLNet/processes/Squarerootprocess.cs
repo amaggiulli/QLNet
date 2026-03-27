@@ -27,7 +27,6 @@ namespace QLNet
 //            dx = a (b - x_t) dt + \sigma \sqrt{x_t} dW_t.
 //        \f]
 //
-//        \ingroup processes
 //
    public class SquareRootProcess : StochasticProcess1D
    {

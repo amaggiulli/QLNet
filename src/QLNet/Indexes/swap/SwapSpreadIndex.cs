@@ -101,7 +101,6 @@ namespace QLNet
       }
       public override bool allowsNativeFixings() { return false; }
 
-      //! \name Inspectors
       public SwapIndex swapIndex1() { return swapIndex1_; }
       public SwapIndex swapIndex2() { return swapIndex2_; }
       public double gearing1() { return gearing1_; }

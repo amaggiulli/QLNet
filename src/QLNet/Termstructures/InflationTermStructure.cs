@@ -87,7 +87,6 @@ namespace QLNet
    }
 
    //! Interface for inflation term structures.
-   //! \ingroup inflationtermstructures
    public abstract class InflationTermStructure : TermStructure
    {
       protected InflationTermStructure()

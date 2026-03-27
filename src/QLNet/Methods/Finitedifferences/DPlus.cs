@@ -27,7 +27,6 @@ namespace QLNet
            \frac{u_{i+1}-u_{i}}{h} = D_{+} u_{i}
        \f]
 
-       \ingroup findiff
    */
    public class DPlus : TridiagonalOperator
    {

@@ -25,7 +25,6 @@ namespace QLNet
    //! Continuous-averaging Asian option
 //    ! \todo add running average
 //
-//        \ingroup instruments
 //
    public class ContinuousAveragingAsianOption : OneAssetOption
    {
@@ -64,7 +63,6 @@ namespace QLNet
    }
 
    //! Discrete-averaging Asian option
-   //! \ingroup instruments
    public class DiscreteAveragingAsianOption : OneAssetOption
    {
       protected Average.Type averageType_;

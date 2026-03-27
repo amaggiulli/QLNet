@@ -24,9 +24,10 @@ namespace QLNet
    public class CompositeQuote : Quote
    {
       //! market element whose value depends on two other market element
-      /*! \test the correctness of the returned values is tested by
-                checking them against numerical calculations.
-      */
+      /// <internalremarks>
+      /// Tests: the correctness of the returned values is tested by
+      /// checking them against numerical calculations.
+      /// </internalremarks>
       private Handle<Quote> element1_;
       private Handle<Quote> element2_;
       private Func<double, double, double> f_;

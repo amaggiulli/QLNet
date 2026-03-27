@@ -23,8 +23,6 @@ namespace QLNet
    /*! The differential operator \f$  D_{+}D_{-} \f$ discretizes the
        second derivative with the second-order formula
 
-       \ingroup findiff
-
        \test the correctness of the returned values is tested by
              checking them against numerical calculations.
    */

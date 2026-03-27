@@ -39,7 +39,6 @@ namespace QLNet
    //        The evaluation of the coupon is made using the call/put spread
    //        replication method.
    //
-   //    ! \ingroup instruments
    //
    //        \test
    //        - the correctness of the returned value in case of Asset-or-nothing

@@ -30,7 +30,6 @@ namespace QLNet
        This class is intended to be run in situations where there are parallel
        differential equations such as with some convertible bond models.
    */
-   /*! \ingroup findiff */
 
    public class StepConditionSet<array_type> : List<IStepCondition<array_type>>, IStepCondition<array_type>
       where array_type : Vector

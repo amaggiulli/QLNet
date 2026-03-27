@@ -85,9 +85,6 @@ namespace QLNet
          initializeDates();
       }
 
-      //! \name RateHelper interface
-      //@{
-
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "Term structure needs to be set");
@@ -95,11 +92,7 @@ namespace QLNet
          return (spreadOnShort_ ? swap_.fairShortSpread() : swap_.fairLongSpread());
       }
 
-      //@}
-      //! \name inspectors
-      //@{
       public BasisSwap swap() { return swap_; }
-      //@}
 
       protected override void initializeDates()
       {

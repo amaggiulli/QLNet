@@ -115,7 +115,6 @@ namespace QLNet
          init(paymentConvention1, paymentConvention2);
       }
 
-      //! \name Inspectors
       public VanillaSwap.Type type() { return type_; }
       public List<double> nominal1() { return nominal1_; }
       public List<double> nominal2() { return nominal2_; }

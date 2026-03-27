@@ -23,8 +23,6 @@ namespace QLNet
 {
    public class SabrInterpolatedSmileSection : SmileSection
    {
-      //! \name Constructors
-      //@{
       //! all market data are quotes
       public SabrInterpolatedSmileSection(
          Date optionDate,

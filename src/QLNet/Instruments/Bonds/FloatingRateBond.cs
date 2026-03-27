@@ -22,7 +22,9 @@ using System.Collections.Generic;
 namespace QLNet
 {
    //! floating-rate bond (possibly capped and/or floored)
-   //! \test calculations are tested by checking results against cached values.
+   /// <internalremarks>
+   /// Tests: calculations are tested by checking results against cached values.
+   /// </internalremarks>
    public class FloatingRateBond : Bond
    {
       public FloatingRateBond(int settlementDays, double faceAmount, Schedule schedule, IborIndex index,

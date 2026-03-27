@@ -54,7 +54,6 @@ namespace QLNet
        \warning The differential operator must be linear for
                 this evolver to work.
 
-       \ingroup findiff
    */
 
    // NOTE: There is room for performance improvement especially in

@@ -24,9 +24,10 @@ namespace QLNet
    public class DerivedQuote : Quote
    {
       //! market quote whose value depends on another quote
-      /*! \test the correctness of the returned values is tested by
-                checking them against numerical calculations.
-      */
+      /// <internalremarks>
+      /// Tests: the correctness of the returned values is tested by
+      /// checking them against numerical calculations.
+      /// </internalremarks>
       private Handle<Quote> element_;
       private Func<double, double> f_;
 

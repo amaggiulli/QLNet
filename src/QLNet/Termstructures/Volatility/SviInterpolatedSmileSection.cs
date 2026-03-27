@@ -23,8 +23,6 @@ namespace QLNet
 {
    public class SviInterpolatedSmileSection : SmileSection
    {
-      //! \name Constructors
-      //@{
       //! all market data are quotes
       public SviInterpolatedSmileSection(
          Date optionDate,

@@ -115,7 +115,6 @@ namespace QLNet
    }
 
    //! Basket option on a number of assets
-   //! \ingroup instruments
    public class BasketOption : MultiAssetOption
    {
       public new class Engine : GenericEngine<BasketOption.Arguments, BasketOption.Results>

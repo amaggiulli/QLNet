@@ -25,7 +25,6 @@ namespace QLNet
    //    ! The ISO three-letter code is ARS; the numeric code is 32.
    //        It is divided in 100 centavos.
    //
-   //        \ingroup currencies
    //
    public class ARSCurrency : Currency
    {
@@ -36,7 +35,6 @@ namespace QLNet
    //    ! The ISO three-letter code is BRL; the numeric code is 986.
    //        It is divided in 100 centavos.
    //
-   //        \ingroup currencies
    //
    public class BRLCurrency : Currency
    {
@@ -47,7 +45,6 @@ namespace QLNet
    //    ! The ISO three-letter code is CAD; the numeric code is 124.
    //        It is divided into 100 cents.
    //
-   //        \ingroup currencies
    //
    public class CADCurrency : Currency
    {
@@ -58,7 +55,6 @@ namespace QLNet
    //    ! The ISO three-letter code is CLP; the numeric code is 152.
    //        It is divided in 100 centavos.
    //
-   //        \ingroup currencies
    //
    public class CLPCurrency : Currency
    {
@@ -69,7 +65,6 @@ namespace QLNet
    //    ! The ISO three-letter code is COP; the numeric code is 170.
    //        It is divided in 100 centavos.
    //
-   //        \ingroup currencies
    //
    public class COPCurrency : Currency
    {
@@ -80,7 +75,6 @@ namespace QLNet
    //    ! The ISO three-letter code is MXN; the numeric code is 484.
    //        It is divided in 100 centavos.
    //
-   //        \ingroup currencies
    //
    public class MXNCurrency : Currency
    {
@@ -91,7 +85,6 @@ namespace QLNet
    //    ! The ISO three-letter code is PEN; the numeric code is 604.
    //        It is divided in 100 centimos.
    //
-   //        \ingroup currencies
    //
    public class PENCurrency : Currency
    {
@@ -105,7 +98,6 @@ namespace QLNet
    //
    //        Obsoleted by the nuevo sol since July 1991.
    //
-   //        \ingroup currencies
    //
    public class PEICurrency : Currency
    {
@@ -119,7 +111,6 @@ namespace QLNet
    //
    //        Obsoleted by the inti since February 1985.
    //
-   //        \ingroup currencies
    //
    public class PEHCurrency : Currency
    {
@@ -130,7 +121,6 @@ namespace QLNet
    //    ! The ISO three-letter code is TTD; the numeric code is 780.
    //        It is divided in 100 cents.
    //
-   //        \ingroup currencies
    //
    public class TTDCurrency : Currency
    {
@@ -141,7 +131,6 @@ namespace QLNet
    //    ! The ISO three-letter code is USD; the numeric code is 840.
    //        It is divided in 100 cents.
    //
-   //        \ingroup currencies
    //
    public class USDCurrency : Currency
    {
@@ -152,7 +141,6 @@ namespace QLNet
    //    ! The ISO three-letter code is VEB; the numeric code is 862.
    //        It is divided in 100 centimos.
    //
-   //        \ingroup currencies
    //
    public class VEBCurrency : Currency
    {

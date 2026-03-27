@@ -80,7 +80,6 @@ namespace QLNet
                 difference between f[0] and f[1].
        \todo generalize to time-dependent conditions.
 
-       \ingroup findiff
    */
    // NeumanBC works on TridiagonalOperator. IOperator here is for type compatobility with options
    public class NeumannBC : BoundaryCondition<IOperator>

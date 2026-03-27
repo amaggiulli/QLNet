@@ -24,7 +24,6 @@ using System.Linq;
 //! Finite-Differences Black Scholes barrier option rebate helper engine
 
 /*!
-    \ingroup barrierengines
 */
 
 namespace QLNet

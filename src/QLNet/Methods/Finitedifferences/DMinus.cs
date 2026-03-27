@@ -27,7 +27,6 @@ namespace QLNet
            \frac{u_{i}-u_{i-1}}{h} = D_{-} u_{i}
        \f]
 
-       \ingroup findiff
    */
    public class DMinus : TridiagonalOperator
    {
