@@ -40,13 +40,16 @@ namespace QLNet
       double variance(StochasticProcess1D sp, double t0, double x0, double dt);
    }
 
-   //! multi-dimensional stochastic process class.
-   /*! This class describes a stochastic process governed by
-       \f[
-       d\mathrm{x}_t = \mu(t, x_t)\mathrm{d}t
-                     + \sigma(t, \mathrm{x}_t) \cdot d\mathrm{W}_t.
-       \f]
-   */
+   /// <summary>
+   /// multi-dimensional stochastic process class.
+   /// </summary>
+   /// <remarks>
+   /// This class describes a stochastic process governed by
+   /// \f[
+   /// d\mathrm{x}_t = \mu(t, x_t)\mathrm{d}t
+   /// + \sigma(t, \mathrm{x}_t) \cdot d\mathrm{W}_t.
+   /// \f]
+   /// </remarks>
    public abstract class StochasticProcess : IObservable, IObserver
    {
       protected IDiscretization discretization_;

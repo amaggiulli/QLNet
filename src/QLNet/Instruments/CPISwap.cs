@@ -20,33 +20,32 @@ using System.Text;
 
 namespace QLNet
 {
-   //! zero-inflation-indexed swap,
-   /*! fixed x zero-inflation, i.e. fixed x CPI(i'th fixing)/CPI(base)
-       versus floating + spread
-
-       Note that this does ony the inflation-vs-floating-leg.
-       Extension to inflation-vs-fixed-leg.  is simple - just replace
-       the floating leg with a fixed leg.
-
-       Typically there are notional exchanges at the end: either
-       inflated-notional vs notional; or just (inflated-notional -
-       notional) vs zero.  The latter is perhaphs more typical.
-       \warning Setting subtractInflationNominal to true means that
-       the original inflation nominal is subtracted from both
-       nominals before they are exchanged, even if they are
-       different.
-
-       This swap can mimic a ZCIIS where [(1+q)^n - 1] is exchanged
-       against (cpi ratio - 1), by using differnt nominals on each
-       leg and setting subtractInflationNominal to true.  ALSO -
-       there must be just one date in each schedule.
-
-       The two legs can have different schedules, fixing (days vs
-       lag), settlement, and roll conventions.  N.B. accrual
-       adjustment periods are already in the schedules.  Trade date
-       and swap settlement date are outside the scope of the
-       instrument.
-   */
+   /// <summary>
+   /// zero-inflation-indexed swap,
+   /// </summary>
+   /// <remarks>
+   /// fixed x zero-inflation, i.e. fixed x CPI(i'th fixing)/CPI(base)
+   /// versus floating + spread
+   /// Note that this does ony the inflation-vs-floating-leg.
+   /// Extension to inflation-vs-fixed-leg.  is simple - just replace
+   /// the floating leg with a fixed leg.
+   /// Typically there are notional exchanges at the end: either
+   /// inflated-notional vs notional; or just (inflated-notional -
+   /// notional) vs zero.  The latter is perhaphs more typical.
+   /// Warning: Setting subtractInflationNominal to true means that
+   /// the original inflation nominal is subtracted from both
+   /// nominals before they are exchanged, even if they are
+   /// different.
+   /// This swap can mimic a ZCIIS where [(1+q)^n - 1] is exchanged
+   /// against (cpi ratio - 1), by using differnt nominals on each
+   /// leg and setting subtractInflationNominal to true.  ALSO -
+   /// there must be just one date in each schedule.
+   /// The two legs can have different schedules, fixing (days vs
+   /// lag), settlement, and roll conventions.  N.B. accrual
+   /// adjustment periods are already in the schedules.  Trade date
+   /// and swap settlement date are outside the scope of the
+   /// instrument.
+   /// </remarks>
    public class CPISwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }

@@ -20,14 +20,16 @@ using System;
 
 namespace QLNet
 {
-   //! Base inflation-coupon class
-   /*! The day counter is usually obtained from the inflation term
-       structure that the inflation index uses for forecasting.
-       There is no gearing or spread because these are relevant for
-       YoY coupons but not zero inflation coupons.
-
-       \note inflation indices do not contain day counters or calendars.
-   */
+   /// <summary>
+   /// Base inflation-coupon class
+   /// </summary>
+   /// <remarks>
+   /// The day counter is usually obtained from the inflation term
+   /// structure that the inflation index uses for forecasting.
+   /// There is no gearing or spread because these are relevant for
+   /// YoY coupons but not zero inflation coupons.
+   /// Note: inflation indices do not contain day counters or calendars.
+   /// </remarks>
    public class InflationCoupon : Coupon, IObserver
    {
 

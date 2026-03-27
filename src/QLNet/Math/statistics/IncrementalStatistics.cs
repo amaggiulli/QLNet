@@ -21,13 +21,15 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Statistics tool based on incremental accumulation
-   /*! It can accumulate a set of data and return statistics (e.g: mean,
-       variance, skewness, kurtosis, error estimation, etc.)
-
-       \warning high moments are numerically unstable for high
-                average/standardDeviation ratios.
-   */
+   /// <summary>
+   /// Statistics tool based on incremental accumulation
+   /// </summary>
+   /// <remarks>
+   /// It can accumulate a set of data and return statistics (e.g: mean,
+   /// variance, skewness, kurtosis, error estimation, etc.)
+   /// Warning: high moments are numerically unstable for high
+   /// average/standardDeviation ratios.
+   /// </remarks>
    public class IncrementalStatistics : IGeneralStatistics
    {
       protected int sampleNumber_, downsideSampleNumber_;

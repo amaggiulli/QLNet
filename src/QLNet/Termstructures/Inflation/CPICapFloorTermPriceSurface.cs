@@ -19,25 +19,25 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Provides cpi cap/floor prices by interpolation and put/call parity (not cap/floor/swap* parity).
-   /*!
-       The inflation index MUST contain a ZeroInflationTermStructure as
-       this is used to create ATM.  Unlike YoY price surfaces we
-       assume that 1) an ATM ZeroInflationTermStructure is available
-       and 2) that it is safe to use it.  This is supported by the
-       fact that no stripping is required for CPI cap/floors as they
-       only give one flow.
-
-       cpi cap/floors have a single (one) flow (unlike nominal
-       caps) because they observe cumulative inflation up to
-       their maturity.  Options are on CPI(T)/CPI(0) but strikes
-       are quoted for yearly average inflation, so require transformation
-       via (1+quote)^T to obtain actual strikes.  These are consistent
-       with ZCIIS quoting conventions.
-
-       The observationLag is that for the referenced instrument prices.
-       Strikes are as-quoted not as-used.
-   */
+   /// <summary>
+   /// Provides cpi cap/floor prices by interpolation and put/call parity (not cap/floor/swap* parity).
+   /// </summary>
+   /// <remarks>
+   /// The inflation index MUST contain a ZeroInflationTermStructure as
+   /// this is used to create ATM.  Unlike YoY price surfaces we
+   /// assume that 1) an ATM ZeroInflationTermStructure is available
+   /// and 2) that it is safe to use it.  This is supported by the
+   /// fact that no stripping is required for CPI cap/floors as they
+   /// only give one flow.
+   /// cpi cap/floors have a single (one) flow (unlike nominal
+   /// caps) because they observe cumulative inflation up to
+   /// their maturity.  Options are on CPI(T)/CPI(0) but strikes
+   /// are quoted for yearly average inflation, so require transformation
+   /// via (1+quote)^T to obtain actual strikes.  These are consistent
+   /// with ZCIIS quoting conventions.
+   /// The observationLag is that for the referenced instrument prices.
+   /// Strikes are as-quoted not as-used.
+   /// </remarks>
    public abstract class CPICapFloorTermPriceSurface : InflationTermStructure
    {
       protected CPICapFloorTermPriceSurface(double nominal,

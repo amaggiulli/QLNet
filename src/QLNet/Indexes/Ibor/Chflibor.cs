@@ -21,14 +21,15 @@
 namespace QLNet
 {
 
-   //! %CHF %LIBOR rate
-   /*! Swiss Franc LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by BBA. Use ZIBOR if
-                you're interested in the Zurich fixing.
-   */
+   /// <summary>
+   /// CHF LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Swiss Franc LIBOR fixed by ICE.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// Warning: This is the rate fixed in London by BBA. Use ZIBOR if
+   /// you're interested in the Zurich fixing.
+   /// </remarks>
    public class CHFLibor : Libor
    {
       public CHFLibor(Period tenor)

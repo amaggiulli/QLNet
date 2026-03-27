@@ -121,10 +121,13 @@ namespace QLNet
       protected Parameter sigma_;
       protected Parameter lambda_;
 
-      //! Short-rate dynamics in the %Vasicek model
-      /*! The short-rate follows an Ornstein-Uhlenbeck process with mean
-          \f$ b \f$.
-      */
+      /// <summary>
+      /// Short-rate dynamics in the Vasicek model
+      /// </summary>
+      /// <remarks>
+      /// The short-rate follows an Ornstein-Uhlenbeck process with mean
+      /// \f$ b \f$.
+      /// </remarks>
       public class Dynamics : ShortRateDynamics
       {
          public Dynamics(double a, double b, double sigma, double r0)

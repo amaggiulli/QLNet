@@ -45,16 +45,18 @@ namespace QLNet
                                                  Func<KeyValuePair<double, double>, bool> inRange);
    }
 
-   //! Statistics tool
-   /*! This class accumulates a set of data and returns their
-       statistics (e.g: mean, variance, skewness, kurtosis,
-       error estimation, percentile, etc.) based on the empirical
-       distribution (no gaussian assumption)
-
-       It doesn't suffer the numerical instability problem of
-       IncrementalStatistics. The downside is that it stores all
-       samples, thus increasing the memory requirements.
-   */
+   /// <summary>
+   /// Statistics tool
+   /// </summary>
+   /// <remarks>
+   /// This class accumulates a set of data and returns their
+   /// statistics (e.g: mean, variance, skewness, kurtosis,
+   /// error estimation, percentile, etc.) based on the empirical
+   /// distribution (no gaussian assumption)
+   /// It doesn't suffer the numerical instability problem of
+   /// IncrementalStatistics. The downside is that it stores all
+   /// samples, thus increasing the memory requirements.
+   /// </remarks>
    public class GeneralStatistics : IGeneralStatistics
    {
       private List<KeyValuePair<double, double>> samples_;

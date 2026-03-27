@@ -182,14 +182,17 @@ namespace QLNet
       }
    }
 
-   //! Binary gap payoff
-   /*! This payoff is equivalent to being a) long a PlainVanillaPayoff at
-       the first strike (same Call/Put type) and b) short a
-       CashOrNothingPayoff at the first strike (same Call/Put type) with
-       cash payoff equal to the difference between the second and the first
-       strike.
-       \warning this payoff can be negative depending on the strikes
-   */
+   /// <summary>
+   /// Binary gap payoff
+   /// </summary>
+   /// <remarks>
+   /// This payoff is equivalent to being a) long a PlainVanillaPayoff at
+   /// the first strike (same Call/Put type) and b) short a
+   /// CashOrNothingPayoff at the first strike (same Call/Put type) with
+   /// cash payoff equal to the difference between the second and the first
+   /// strike.
+   /// Warning: this payoff can be negative depending on the strikes
+   /// </remarks>
    public class GapPayoff : StrikedTypePayoff
    {
       protected double secondStrike_;
@@ -228,10 +231,11 @@ namespace QLNet
        the terms supershare and superfund are used consistently according to the definitions in
        Bloomberg OVX function's help pages.
    */
-   /*! This payoff is equivalent to being (1/lowerstrike) a) long (short) an AssetOrNothing
-       Call (Put) at the lower strike and b) short (long) an AssetOrNothing
-       Call (Put) at the higher strike
-   */
+   /// <summary>
+   /// This payoff is equivalent to being (1/lowerstrike) a) long (short) an AssetOrNothing
+   /// Call (Put) at the lower strike and b) short (long) an AssetOrNothing
+   /// Call (Put) at the higher strike
+   /// </summary>
    public class SuperFundPayoff : StrikedTypePayoff
    {
       protected double secondStrike_;

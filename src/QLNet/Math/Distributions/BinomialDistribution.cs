@@ -21,11 +21,14 @@ using System;
 
 namespace QLNet
 {
-   //! Binomial probability distribution function
-   /*! formula here ...
-       Given an integer k it returns its probability in a Binomial
-       distribution with parameters p and n.
-   */
+   /// <summary>
+   /// Binomial probability distribution function
+   /// </summary>
+   /// <remarks>
+   /// formula here ...
+   /// Given an integer k it returns its probability in a Binomial
+   /// distribution with parameters p and n.
+   /// </remarks>
 
    public class BinomialDistribution
    {
@@ -69,11 +72,14 @@ namespace QLNet
       }
    }
 
-   //! Cumulative binomial distribution function
-   /*! Given an integer k it provides the cumulative probability
-       of observing kk<=k:
-       formula here ...
-   */
+   /// <summary>
+   /// Cumulative binomial distribution function
+   /// </summary>
+   /// <remarks>
+   /// Given an integer k it provides the cumulative probability
+   /// of observing kk&amp;lt;=k:
+   /// formula here ...
+   /// </remarks>
 
    public class CumulativeBinomialDistribution
    {

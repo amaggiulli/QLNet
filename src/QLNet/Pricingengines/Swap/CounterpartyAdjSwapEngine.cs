@@ -18,23 +18,23 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! Bilateral (CVA and DVA) default adjusted vanilla swap pricing
-    engine. Collateral is not considered. No wrong way risk is
-    considered (rates and counterparty default are uncorrelated).
-    Based on:
-    Sorensen,  E.H.  and  Bollier,  T.F.,  Pricing  swap  default
-    risk. Financial Analysts Journal, 1994, 50, 23–33
-    Also see sect. II-5 in: Risk Neutral Pricing of Counterparty Risk
-    D. Brigo, M. Masetti, 2004
-    or in sections 3 and 4 of "A Formula for Interest Rate Swaps
-      Valuation under Counterparty Risk in presence of Netting Agreements"
-    D. Brigo and M. Masetti; May 4, 2005
-
-    to do: Compute fair rate through iteration instead of the
-    current approximation .
-    to do: write Issuer based constructors (event type)
-    to do: Check consistency between option engine discount and the one given
-   */
+   /// <summary>
+   /// Bilateral (CVA and DVA) default adjusted vanilla swap pricing
+   /// engine. Collateral is not considered. No wrong way risk is
+   /// considered (rates and counterparty default are uncorrelated).
+   /// Based on:
+   /// Sorensen,  E.H.  and  Bollier,  T.F.,  Pricing  swap  default
+   /// risk. Financial Analysts Journal, 1994, 50, 23–33
+   /// Also see sect. II-5 in: Risk Neutral Pricing of Counterparty Risk
+   /// D. Brigo, M. Masetti, 2004
+   /// or in sections 3 and 4 of "A Formula for Interest Rate Swaps
+   /// Valuation under Counterparty Risk in presence of Netting Agreements"
+   /// D. Brigo and M. Masetti; May 4, 2005
+   /// to do: Compute fair rate through iteration instead of the
+   /// current approximation .
+   /// to do: write Issuer based constructors (event type)
+   /// to do: Check consistency between option engine discount and the one given
+   /// </summary>
    public class CounterpartyAdjSwapEngine : VanillaSwap.Engine
    {
       // Constructors

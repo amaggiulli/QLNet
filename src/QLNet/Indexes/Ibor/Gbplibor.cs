@@ -21,11 +21,13 @@
 namespace QLNet
 {
 
-   //! %GBP %LIBOR rate
-   /*! Pound Sterling LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// GBP LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Pound Sterling LIBOR fixed by ICE.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// </remarks>
    public class GBPLibor : Libor
    {
       public GBPLibor(Period tenor)

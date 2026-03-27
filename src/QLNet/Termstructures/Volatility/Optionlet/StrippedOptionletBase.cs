@@ -18,9 +18,10 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   /*! Abstract base class interface for a (double indexed) vector of (strike
-       indexed) optionlet (i.e. caplet/floorlet) volatilities.
-   */
+   /// <summary>
+   /// Abstract base class interface for a (double indexed) vector of (strike
+   /// indexed) optionlet (i.e. caplet/floorlet) volatilities.
+   /// </summary>
    public abstract class StrippedOptionletBase : LazyObject
    {
       public abstract List<double> optionletStrikes(int i) ;

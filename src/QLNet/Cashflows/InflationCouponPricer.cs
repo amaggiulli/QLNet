@@ -20,25 +20,25 @@ using System;
 
 namespace QLNet
 {
-   //! Base inflation-coupon pricer.
-   /*! The main reason we can't use FloatingRateCouponPricer as the
-       base is that it takes a FloatingRateCoupon which takes an
-       InterestRateIndex and we need an inflation index (these are
-       lagged).
-
-       The basic inflation-specific thing that the pricer has to do
-       is deal with different lags in the index and the option
-       e.g. the option could look 3 months back and the index 2.
-
-       We add the requirement that pricers do inverseCap/Floor-lets.
-       These are cap/floor-lets as usually defined, i.e. pay out if
-       underlying is above/below a strike.  The non-inverse (usual)
-       versions are from a coupon point of view (a capped coupon has
-       a maximum at the strike).
-
-       We add the inverse prices so that conventional caps can be
-       priced simply.
-   */
+   /// <summary>
+   /// Base inflation-coupon pricer.
+   /// </summary>
+   /// <remarks>
+   /// The main reason we can't use FloatingRateCouponPricer as the
+   /// base is that it takes a FloatingRateCoupon which takes an
+   /// InterestRateIndex and we need an inflation index (these are
+   /// lagged).
+   /// The basic inflation-specific thing that the pricer has to do
+   /// is deal with different lags in the index and the option
+   /// e.g. the option could look 3 months back and the index 2.
+   /// We add the requirement that pricers do inverseCap/Floor-lets.
+   /// These are cap/floor-lets as usually defined, i.e. pay out if
+   /// underlying is above/below a strike.  The non-inverse (usual)
+   /// versions are from a coupon point of view (a capped coupon has
+   /// a maximum at the strike).
+   /// We add the inverse prices so that conventional caps can be
+   /// priced simply.
+   /// </remarks>
    public class InflationCouponPricer : IObserver, IObservable
    {
       // Interface
@@ -80,10 +80,13 @@ namespace QLNet
 
    }
 
-   //! base pricer for capped/floored YoY inflation coupons
-   /*! \note this pricer can already do swaplets but to get
-             volatility-dependent coupons you need the descendents.
-   */
+   /// <summary>
+   /// base pricer for capped/floored YoY inflation coupons
+   /// </summary>
+   /// <remarks>
+   /// Note: this pricer can already do swaplets but to get
+   /// volatility-dependent coupons you need the descendents.
+   /// </remarks>
    public class YoYInflationCouponPricer : InflationCouponPricer
    {
       public YoYInflationCouponPricer(Handle<YoYOptionletVolatilitySurface> capletVol = null)

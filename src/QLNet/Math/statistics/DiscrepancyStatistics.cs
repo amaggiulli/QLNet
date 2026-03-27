@@ -23,10 +23,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Statistic tool for sequences with discrepancy calculation
-   /*! It inherit from SequenceStatistics<Statistics> and adds
-       \f$ L^2 \f$ discrepancy calculation
-   */
+   /// <summary>
+   /// Statistic tool for sequences with discrepancy calculation
+   /// </summary>
+   /// <remarks>
+   /// It inherit from SequenceStatistics&amp;lt;Statistics&amp;gt; and adds
+   /// \f$ L^2 \f$ discrepancy calculation
+   /// </remarks>
 
    public sealed class DiscrepancyStatistics : SequenceStatistics
    {

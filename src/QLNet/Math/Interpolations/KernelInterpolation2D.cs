@@ -173,13 +173,13 @@ namespace QLNet
 
    }
 
-   /*! Implementation of the 2D kernel interpolation approach, which
-         can be found in "Foreign Exchange Risk" by Hakala, Wystup page
-         256.
-
-         The kernel in the implementation is kept general, although a
-         Gaussian is considered in the cited text.
-   */
+   /// <summary>
+   /// Implementation of the 2D kernel interpolation approach, which
+   /// can be found in "Foreign Exchange Risk" by Hakala, Wystup page
+   /// 256.
+   /// The kernel in the implementation is kept general, although a
+   /// Gaussian is considered in the cited text.
+   /// </summary>
    public class KernelInterpolation2D : Interpolation2D
    {
 

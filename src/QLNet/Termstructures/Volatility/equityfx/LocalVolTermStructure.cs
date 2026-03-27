@@ -22,11 +22,11 @@ using System;
 
 namespace QLNet
 {
-   /*! This abstract class defines the interface of concrete
-       local-volatility term structures which will be derived from this one.
-
-       Volatilities are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// This abstract class defines the interface of concrete
+   /// local-volatility term structures which will be derived from this one.
+   /// Volatilities are assumed to be expressed on an annual basis.
+   /// </summary>
    public abstract class LocalVolTermStructure : VolatilityTermStructure
    {
       #region Constructors

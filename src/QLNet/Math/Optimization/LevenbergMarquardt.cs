@@ -22,21 +22,24 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Levenberg-Marquardt optimization method
-   /*! This implementation is based on MINPACK
-       (<http://www.netlib.org/minpack>,
-       <http://www.netlib.org/cephes/linalg.tgz>)
-       It has a built in fd scheme to compute
-       the jacobian, which is used by default.
-       If useCostFunctionsJacobian is true the
-       corresponding method in the cost function
-       of the problem is used instead. Note that
-       the default implementation of the jacobian
-       in CostFunction uses a central difference
-       (oder 2, but requiring more function
-       evaluations) compared to the forward
-       difference implemented here (order 1).
-   */
+   /// <summary>
+   /// Levenberg-Marquardt optimization method
+   /// </summary>
+   /// <remarks>
+   /// This implementation is based on MINPACK
+   /// (&amp;lt;http://www.netlib.org/minpack&amp;gt;,
+   /// &amp;lt;http://www.netlib.org/cephes/linalg.tgz&amp;gt;)
+   /// It has a built in fd scheme to compute
+   /// the jacobian, which is used by default.
+   /// If useCostFunctionsJacobian is true the
+   /// corresponding method in the cost function
+   /// of the problem is used instead. Note that
+   /// the default implementation of the jacobian
+   /// in CostFunction uses a central difference
+   /// (oder 2, but requiring more function
+   /// evaluations) compared to the forward
+   /// difference implemented here (order 1).
+   /// </remarks>
    public class LevenbergMarquardt : OptimizationMethod
    {
       private Problem currentProblem_;

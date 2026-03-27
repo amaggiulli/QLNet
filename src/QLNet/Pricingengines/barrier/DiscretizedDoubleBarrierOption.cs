@@ -179,15 +179,17 @@ namespace QLNet
 
    }
 
-   //! Derman-Kani-Ergener-Bardhan discretized option helper class
-   /*! This class is used with the BinomialDoubleBarrierEngine to
-       implement the enhanced binomial algorithm of E.Derman, I.Kani,
-       D.Ergener, I.Bardhan ("Enhanced Numerical Methods for Options with
-       Barriers", 1995)
-
-       \note This algorithm is only suitable if the payoff can be approximated
-       linearly, e.g. is not usable for cash-or-nothing payoffs.
-   */
+   /// <summary>
+   /// Derman-Kani-Ergener-Bardhan discretized option helper class
+   /// </summary>
+   /// <remarks>
+   /// This class is used with the BinomialDoubleBarrierEngine to
+   /// implement the enhanced binomial algorithm of E.Derman, I.Kani,
+   /// D.Ergener, I.Bardhan ("Enhanced Numerical Methods for Options with
+   /// Barriers", 1995)
+   /// Note: This algorithm is only suitable if the payoff can be approximated
+   /// linearly, e.g. is not usable for cash-or-nothing payoffs.
+   /// </remarks>
    public class DiscretizedDermanKaniDoubleBarrierOption : DiscretizedAsset
    {
       public DiscretizedDermanKaniDoubleBarrierOption(DoubleBarrierOption.Arguments args,

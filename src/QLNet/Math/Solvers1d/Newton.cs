@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,10 +21,13 @@ using System;
 
 namespace QLNet
 {
-   //! %Newton 1-D solver
-   /*! \note This solver requires that the passed function object
-             implement a method <tt>Real derivative(Real)</tt>.
-   */
+   /// <summary>
+   /// Newton 1-D solver
+   /// </summary>
+   /// <remarks>
+   /// Note: This solver requires that the passed function object
+   /// implement a method &amp;lt;tt&amp;gt;Real derivative(Real)&amp;lt;/tt&amp;gt;.
+   /// </remarks>
    public class Newton : Solver1D
    {
       protected override double solveImpl(ISolver1d f, double xAccuracy)

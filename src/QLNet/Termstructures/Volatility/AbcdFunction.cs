@@ -17,9 +17,13 @@ using System;
 
 namespace QLNet
 {
-   //! %Abcd functional form for instantaneous volatility
-   /*! \f[ f(T-t) = [ a + b(T-t) ] e^{-c(T-t)} + d \f]
-       following Rebonato's notation. */
+   /// <summary>
+   /// Abcd functional form for instantaneous volatility
+   /// </summary>
+   /// <remarks>
+   /// \f[ f(T-t) = [ a + b(T-t) ] e^{-c(T-t)} + d \f]
+   /// following Rebonato's notation.
+   /// </remarks>
    public class AbcdFunction : AbcdMathFunction
    {
       public AbcdFunction(double a = -0.06, double b =  0.17, double c =  0.54, double d =  0.17)

@@ -201,11 +201,14 @@ namespace QLNet
       }
    }
 
-   //! Discretized option on a given asset
-   /*! \warning it is advised that derived classes take care of
-                creating and initializing themselves an instance of
-                the underlying.
-   */
+   /// <summary>
+   /// Discretized option on a given asset
+   /// </summary>
+   /// <remarks>
+   /// Warning: it is advised that derived classes take care of
+   /// creating and initializing themselves an instance of
+   /// the underlying.
+   /// </remarks>
 
    public class DiscretizedOption : DiscretizedAsset
    {

@@ -22,11 +22,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Tree-based lattice-method base class
-   /*! This class defines a lattice method that is able to rollback
-       (with discount) a discretized asset object. It will be based
-       on one or more trees.
-   */
+   /// <summary>
+   /// Tree-based lattice-method base class
+   /// </summary>
+   /// <remarks>
+   /// This class defines a lattice method that is able to rollback
+   /// (with discount) a discretized asset object. It will be based
+   /// on one or more trees.
+   /// </remarks>
    public interface IGenericLattice
    {
       int size(int i);

@@ -307,12 +307,15 @@ namespace QLNet
       protected Option option_;
    }
 
-   //! convertible zero-coupon bond
-   /*! \warning Most methods inherited from Bond (such as yield or
-               the yield-based dirtyPrice and cleanPrice) refer to
-               the underlying plain-vanilla bond and do not take
-               convertibility and callability into account.
-   */
+   /// <summary>
+   /// convertible zero-coupon bond
+   /// </summary>
+   /// <remarks>
+   /// Warning: Most methods inherited from Bond (such as yield or
+   /// the yield-based dirtyPrice and cleanPrice) refer to
+   /// the underlying plain-vanilla bond and do not take
+   /// convertibility and callability into account.
+   /// </remarks>
 
    public class ConvertibleZeroCouponBond : ConvertibleBond
    {
@@ -341,12 +344,15 @@ namespace QLNet
       }
    }
 
-   //! convertible fixed-coupon bond
-   /*! \warning Most methods inherited from Bond (such as yield or
-                the yield-based dirtyPrice and cleanPrice) refer to
-                the underlying plain-vanilla bond and do not take
-                convertibility and callability into account.
-   */
+   /// <summary>
+   /// convertible fixed-coupon bond
+   /// </summary>
+   /// <remarks>
+   /// Warning: Most methods inherited from Bond (such as yield or
+   /// the yield-based dirtyPrice and cleanPrice) refer to
+   /// the underlying plain-vanilla bond and do not take
+   /// convertibility and callability into account.
+   /// </remarks>
 
    public class ConvertibleFixedCouponBond : ConvertibleBond
    {
@@ -381,12 +387,15 @@ namespace QLNet
       }
    }
 
-   //! convertible floating-rate bond
-   /*! \warning Most methods inherited from Bond (such as yield or
-                the yield-based dirtyPrice and cleanPrice) refer to
-                the underlying plain-vanilla bond and do not take
-                convertibility and callability into account.
-   */
+   /// <summary>
+   /// convertible floating-rate bond
+   /// </summary>
+   /// <remarks>
+   /// Warning: Most methods inherited from Bond (such as yield or
+   /// the yield-based dirtyPrice and cleanPrice) refer to
+   /// the underlying plain-vanilla bond and do not take
+   /// convertibility and callability into account.
+   /// </remarks>
 
    public class ConvertibleFloatingRateBond : ConvertibleBond
    {

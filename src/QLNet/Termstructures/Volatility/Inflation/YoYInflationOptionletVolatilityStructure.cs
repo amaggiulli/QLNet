@@ -22,12 +22,12 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   /*! Abstract interface ... no data, only results.
-
-    Basically used to change the BlackVariance() methods to
-    totalVariance.  Also deal with lagged observations of an index
-    with a (usually different) availability lag.
-    */
+   /// <summary>
+   /// Abstract interface ... no data, only results.
+   /// Basically used to change the BlackVariance() methods to
+   /// totalVariance.  Also deal with lagged observations of an index
+   /// with a (usually different) availability lag.
+   /// </summary>
 
    public abstract class YoYOptionletVolatilitySurface :  VolatilityTermStructure
    {

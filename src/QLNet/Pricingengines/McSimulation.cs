@@ -23,13 +23,15 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! base class for Monte Carlo engines
-   /*! Eventually this class might offer greeks methods.  Deriving a
-       class from McSimulation gives an easy way to write a Monte
-       Carlo engine.
-
-       See McVanillaEngine as an example.
-   */
+   /// <summary>
+   /// base class for Monte Carlo engines
+   /// </summary>
+   /// <remarks>
+   /// Eventually this class might offer greeks methods.  Deriving a
+   /// class from McSimulation gives an easy way to write a Monte
+   /// Carlo engine.
+   /// See McVanillaEngine as an example.
+   /// </remarks>
    public abstract class McSimulation<MC, RNG, S> where S : IGeneralStatistics, new ()
    {
       protected McSimulation(bool antitheticVariate, bool controlVariate)

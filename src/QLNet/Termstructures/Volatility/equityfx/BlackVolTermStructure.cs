@@ -21,13 +21,15 @@ using System;
 
 namespace QLNet
 {
-   //! Black-volatility term structure
-   /*! This abstract class defines the interface of concrete
-      Black-volatility term structures which will be derived from
-      this one.
-
-      Volatilities are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black-volatility term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// Black-volatility term structures which will be derived from
+   /// this one.
+   /// Volatilities are assumed to be expressed on an annual basis.
+   /// </remarks>
    public abstract class BlackVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
@@ -180,13 +182,15 @@ namespace QLNet
 
    }
 
-   //! Black-volatility term structure
-   /*! This abstract class acts as an adapter to BlackVolTermStructure
-       allowing the programmer to implement only the
-       <tt>blackVolImpl(Time, Real, bool)</tt> method in derived classes.
-
-       Volatility are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black-volatility term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to BlackVolTermStructure
+   /// allowing the programmer to implement only the
+   /// &amp;lt;tt&amp;gt;blackVolImpl(Time, Real, bool)&amp;lt;/tt&amp;gt; method in derived classes.
+   /// Volatility are assumed to be expressed on an annual basis.
+   /// </remarks>
 
    public abstract class BlackVolatilityTermStructure : BlackVolTermStructure
    {
@@ -228,14 +232,16 @@ namespace QLNet
    }
 
 
-   //! Black variance term structure
-   /*! This abstract class acts as an adapter to VolTermStructure allowing
-       the programmer to implement only the
-       <tt>blackVarianceImpl(Time, Real, bool)</tt> method in derived
-       classes.
-
-       Volatility are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black variance term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to VolTermStructure allowing
+   /// the programmer to implement only the
+   /// &amp;lt;tt&amp;gt;blackVarianceImpl(Time, Real, bool)&amp;lt;/tt&amp;gt; method in derived
+   /// classes.
+   /// Volatility are assumed to be expressed on an annual basis.
+   /// </remarks>
 
    public abstract class BlackVarianceTermStructure : BlackVolTermStructure
    {

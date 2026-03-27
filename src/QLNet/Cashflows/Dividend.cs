@@ -20,8 +20,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public abstract class Dividend : CashFlow
    {
       protected Date date_;
@@ -36,8 +40,12 @@ namespace QLNet
       public abstract double amount(double underlying);
    }
 
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public class FixedDividend : Dividend
    {
       protected double amount_;
@@ -51,8 +59,12 @@ namespace QLNet
       }
    }
 
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public class FractionalDividend : Dividend
    {
       protected double rate_;

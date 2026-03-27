@@ -21,8 +21,12 @@ using System;
 
 namespace QLNet
 {
-   //! This class contains a sampled curve.
-   /*! Initially the class will contain one indexed curve */
+   /// <summary>
+   /// This class contains a sampled curve.
+   /// </summary>
+   /// <remarks>
+   /// Initially the class will contain one indexed curve
+   /// </remarks>
 
    public class SampledCurve : ICloneable
    {

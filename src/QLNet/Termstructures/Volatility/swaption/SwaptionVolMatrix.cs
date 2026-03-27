@@ -22,18 +22,20 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! At-the-money swaption-volatility matrix
-   /*! This class provides the at-the-money volatility for a given
-       swaption by interpolating a volatility matrix whose elements
-       are the market volatilities of a set of swaption with given
-       option date and swapLength.
-
-       The volatility matrix <tt>M</tt> must be defined so that:
-       - the number of rows equals the number of option dates
-       - the number of columns equals the number of swap tenors
-       - <tt>M[i][j]</tt> contains the volatility corresponding
-         to the <tt>i</tt>-th option and <tt>j</tt>-th tenor.
-   */
+   /// <summary>
+   /// At-the-money swaption-volatility matrix
+   /// </summary>
+   /// <remarks>
+   /// This class provides the at-the-money volatility for a given
+   /// swaption by interpolating a volatility matrix whose elements
+   /// are the market volatilities of a set of swaption with given
+   /// option date and swapLength.
+   /// The volatility matrix &amp;lt;tt&amp;gt;M&amp;lt;/tt&amp;gt; must be defined so that:
+   /// - the number of rows equals the number of option dates
+   /// - the number of columns equals the number of swap tenors
+   /// - &amp;lt;tt&amp;gt;M[i][j]&amp;lt;/tt&amp;gt; contains the volatility corresponding
+   /// to the &amp;lt;tt&amp;gt;i&amp;lt;/tt&amp;gt;-th option and &amp;lt;tt&amp;gt;j&amp;lt;/tt&amp;gt;-th tenor.
+   /// </remarks>
    public class SwaptionVolatilityMatrix : SwaptionVolatilityDiscrete
    {
       //! floating reference date, floating market data

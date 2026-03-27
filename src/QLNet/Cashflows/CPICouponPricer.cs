@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! base pricer for capped/floored CPI coupons N.B. vol-dependent parts are a TODO
-   /*! \note this pricer can already do swaplets but to get
-             volatility-dependent coupons you need to implement the descendents.
-   */
+   /// <summary>
+   /// base pricer for capped/floored CPI coupons N.B. vol-dependent parts are a TODO
+   /// </summary>
+   /// <remarks>
+   /// Note: this pricer can already do swaplets but to get
+   /// volatility-dependent coupons you need to implement the descendents.
+   /// </remarks>
    public class CPICouponPricer : InflationCouponPricer
    {
       public CPICouponPricer(Handle<CPIVolatilitySurface> capletVol = null)

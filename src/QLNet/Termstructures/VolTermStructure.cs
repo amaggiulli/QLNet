@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,11 +21,13 @@ using System;
 
 namespace QLNet
 {
-   //! Volatility term structure
-   /*! This abstract class defines the interface of concrete
-       volatility structures which will be derived from this one.
-
-   */
+   /// <summary>
+   /// Volatility term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// volatility structures which will be derived from this one.
+   /// </remarks>
    public abstract class VolatilityTermStructure : TermStructure
    {
       #region Constructors

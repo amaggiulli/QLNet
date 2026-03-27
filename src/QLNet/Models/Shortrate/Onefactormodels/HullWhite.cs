@@ -190,13 +190,16 @@ namespace QLNet
          private Parameter fitting_;
       }
 
-      //! Analytical term-structure fitting parameter \f$ \varphi(t) \f$.
-      /*! \f$ \varphi(t) \f$ is analytically defined by
-          \f[
-              \varphi(t) = f(t) + \frac{1}{2}[\frac{\sigma(1-e^{-at})}{a}]^2,
-          \f]
-          where \f$ f(t) \f$ is the instantaneous forward rate at \f$ t \f$.
-      */
+      /// <summary>
+      /// Analytical term-structure fitting parameter \f$ \varphi(t) \f$.
+      /// </summary>
+      /// <remarks>
+      /// \f$ \varphi(t) \f$ is analytically defined by
+      /// \f[
+      /// \varphi(t) = f(t) + \frac{1}{2}[\frac{\sigma(1-e^{-at})}{a}]^2,
+      /// \f]
+      /// where \f$ f(t) \f$ is the instantaneous forward rate at \f$ t \f$.
+      /// </remarks>
       public class FittingParameter : TermStructureFittingParameter
       {
          private new class Impl : Parameter.Impl

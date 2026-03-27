@@ -21,11 +21,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Callable-bond volatility structure
-   /*! This class is purely abstract and defines the interface of
-       concrete callable-bond volatility structures which will be
-       derived from this one.
-   */
+   /// <summary>
+   /// Callable-bond volatility structure
+   /// </summary>
+   /// <remarks>
+   /// This class is purely abstract and defines the interface of
+   /// concrete callable-bond volatility structures which will be
+   /// derived from this one.
+   /// </remarks>
    public abstract class CallableBondVolatilityStructure : TermStructure
    {
       //! default constructor

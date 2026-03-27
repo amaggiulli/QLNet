@@ -1042,11 +1042,14 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over Fx Swap rates
-   /*! fwdFx = spotFx + fwdPoint
-      isFxBaseCurrencyCollateralCurrency indicates if the base currency
-      of the fx currency pair is the one used as collateral
-   */
+   /// <summary>
+   /// Rate helper for bootstrapping over Fx Swap rates
+   /// </summary>
+   /// <remarks>
+   /// fwdFx = spotFx + fwdPoint
+   /// isFxBaseCurrencyCollateralCurrency indicates if the base currency
+   /// of the fx currency pair is the one used as collateral
+   /// </remarks>
    public class FxSwapRateHelper : RelativeDateRateHelper
    {
       public FxSwapRateHelper(Handle<Quote> fwdPoint,

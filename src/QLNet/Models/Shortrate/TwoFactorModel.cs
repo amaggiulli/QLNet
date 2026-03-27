@@ -37,10 +37,13 @@ namespace QLNet
          return (Lattice)(new ShortRateTree(tree1, tree2, dyn));
       }
 
-      //! Class describing the dynamics of the two state variables
-      /*! We assume here that the short-rate is a function of two state
-          variables x and y.
-      */
+      /// <summary>
+      /// Class describing the dynamics of the two state variables
+      /// </summary>
+      /// <remarks>
+      /// We assume here that the short-rate is a function of two state
+      /// variables x and y.
+      /// </remarks>
 
       public abstract class ShortRateDynamics
       {

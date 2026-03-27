@@ -16,11 +16,13 @@
 
 namespace QLNet
 {
-   //! %Nzocr index
-   /*! %Nzocr (New Zealand official cash rate) rate fixed by the RBNZ.
-
-       See <http://www.rbnz.govt.nz/monetary-policy/official-cash-rate-decisions>.
-   */
+   /// <summary>
+   /// Nzocr index
+   /// </summary>
+   /// <remarks>
+   /// Nzocr (New Zealand official cash rate) rate fixed by the RBNZ.
+   /// See &amp;lt;http://www.rbnz.govt.nz/monetary-policy/official-cash-rate-decisions&amp;gt;.
+   /// </remarks>
    public class Nzocr : OvernightIndex
    {
       public Nzocr(Handle<YieldTermStructure> h = null)

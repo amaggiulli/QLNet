@@ -23,16 +23,15 @@ namespace QLNet
        calculated by means of the Gauss-Lobatto formula
    */
 
-   /*! References:
-      This algorithm is a C++ implementation of the algorithm outlined in
-
-      W. Gander and W. Gautschi, Adaptive Quadrature - Revisited.
-      BIT, 40(1):84-101, March 2000. CS technical report:
-      ftp.inf.ethz.ch/pub/publications/tech-reports/3xx/306.ps.gz
-
-      The original MATLAB version can be downloaded here
-      http://www.inf.ethz.ch/personal/gander/adaptlob.m
-   */
+   /// <summary>
+   /// References:
+   /// This algorithm is a C++ implementation of the algorithm outlined in
+   /// W. Gander and W. Gautschi, Adaptive Quadrature - Revisited.
+   /// BIT, 40(1):84-101, March 2000. CS technical report:
+   /// ftp.inf.ethz.ch/pub/publications/tech-reports/3xx/306.ps.gz
+   /// The original MATLAB version can be downloaded here
+   /// http://www.inf.ethz.ch/personal/gander/adaptlob.m
+   /// </summary>
    public class GaussLobattoIntegral : Integrator
    {
 

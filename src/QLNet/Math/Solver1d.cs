@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -34,13 +34,16 @@ namespace QLNet
       }
    }
 
-   //! Base class for 1-D solvers
-   /*! Before calling <tt>solveImpl</tt>, the base class will set its protected data members so that:
-       - <tt>xMin_</tt> and  <tt>xMax_</tt> form a valid bracket
-       - <tt>fxMin_</tt> and <tt>fxMax_</tt> contain the values of the function in <tt>xMin_</tt> and <tt>xMax_</tt>
-       - <tt>root_</tt> is a valid initial guess.
-       The implementation of <tt>solveImpl</tt> can safely assume all of the above.
-   */
+   /// <summary>
+   /// Base class for 1-D solvers
+   /// </summary>
+   /// <remarks>
+   /// Before calling &amp;lt;tt&amp;gt;solveImpl&amp;lt;/tt&amp;gt;, the base class will set its protected data members so that:
+   /// - &amp;lt;tt&amp;gt;xMin_&amp;lt;/tt&amp;gt; and  &amp;lt;tt&amp;gt;xMax_&amp;lt;/tt&amp;gt; form a valid bracket
+   /// - &amp;lt;tt&amp;gt;fxMin_&amp;lt;/tt&amp;gt; and &amp;lt;tt&amp;gt;fxMax_&amp;lt;/tt&amp;gt; contain the values of the function in &amp;lt;tt&amp;gt;xMin_&amp;lt;/tt&amp;gt; and &amp;lt;tt&amp;gt;xMax_&amp;lt;/tt&amp;gt;
+   /// - &amp;lt;tt&amp;gt;root_&amp;lt;/tt&amp;gt; is a valid initial guess.
+   /// The implementation of &amp;lt;tt&amp;gt;solveImpl&amp;lt;/tt&amp;gt; can safely assume all of the above.
+   /// </remarks>
 
    public abstract class Solver1D
    {

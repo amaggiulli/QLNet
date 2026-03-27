@@ -19,17 +19,18 @@
 
 namespace QLNet
 {
-   //! Cash flow dependent on an index ratio.
-
-   /*! This cash flow is not a coupon, i.e., there's no accrual.  The
-       amount is either i(T)/i(0) or i(T)/i(0) - 1, depending on the
-       growthOnly parameter.
-
-       We expect this to be used inside an instrument that does all the date
-       adjustment etc., so this takes just dates and does not change them.
-       growthOnly = false means i(T)/i(0), which is a bond-type setting.
-       growthOnly = true means i(T)/i(0) - 1, which is a swap-type setting.
-   */
+   /// <summary>
+   /// Cash flow dependent on an index ratio.
+   /// </summary>
+   /// <remarks>
+   /// This cash flow is not a coupon, i.e., there's no accrual.  The
+   /// amount is either i(T)/i(0) or i(T)/i(0) - 1, depending on the
+   /// growthOnly parameter.
+   /// We expect this to be used inside an instrument that does all the date
+   /// adjustment etc., so this takes just dates and does not change them.
+   /// growthOnly = false means i(T)/i(0), which is a bond-type setting.
+   /// growthOnly = true means i(T)/i(0) - 1, which is a swap-type setting.
+   /// </remarks>
    public class IndexedCashFlow : CashFlow
    {
       public IndexedCashFlow(double notional,

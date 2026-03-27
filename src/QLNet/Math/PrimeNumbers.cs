@@ -33,9 +33,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Prime numbers calculator
-   /*! Taken from "Monte Carlo Methods in Finance", by Peter Jäckel
-    */
+   /// <summary>
+   /// Prime numbers calculator
+   /// </summary>
+   /// <remarks>
+   /// Taken from "Monte Carlo Methods in Finance", by Peter Jäckel
+   /// </remarks>
    public class PrimeNumbers
    {
       //! Get and store one after another.

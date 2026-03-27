@@ -22,15 +22,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Inverse cumulative random sequence generator
-   /*! It uses a sequence of uniform deviate in (0, 1) as the
-       source of cumulative distribution values.
-       Then an inverse cumulative distribution is used to calculate
-       the distribution deviate.
-
-       The uniform deviate sequence is supplied by USG.
-       The inverse cumulative distribution is supplied by IC.
-   */
+   /// <summary>
+   /// Inverse cumulative random sequence generator
+   /// </summary>
+   /// <remarks>
+   /// It uses a sequence of uniform deviate in (0, 1) as the
+   /// source of cumulative distribution values.
+   /// Then an inverse cumulative distribution is used to calculate
+   /// the distribution deviate.
+   /// The uniform deviate sequence is supplied by USG.
+   /// The inverse cumulative distribution is supplied by IC.
+   /// </remarks>
 
    public class InverseCumulativeRsg<USG, IC> : IRNG where USG : IRNG where IC : IValue
    {

@@ -19,10 +19,13 @@
 
 namespace QLNet
 {
-   //! Cap/floor term-volatility structure
-   /*! This class is purely abstract and defines the interface of concrete
-       structures which will be derived from this one.
-   */
+   /// <summary>
+   /// Cap/floor term-volatility structure
+   /// </summary>
+   /// <remarks>
+   /// This class is purely abstract and defines the interface of concrete
+   /// structures which will be derived from this one.
+   /// </remarks>
    public abstract class CapFloorTermVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors

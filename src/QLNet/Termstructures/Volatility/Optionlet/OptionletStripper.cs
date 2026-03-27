@@ -19,9 +19,10 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! StrippedOptionletBase specialization. It's up to derived
-        classes to implement LazyObject::performCalculations
-    */
+   /// <summary>
+   /// StrippedOptionletBase specialization. It's up to derived
+   /// classes to implement LazyObject::performCalculations
+   /// </summary>
    public enum VolatilityType { ShiftedLognormal, Normal }
    public class OptionletStripper : StrippedOptionletBase
    {

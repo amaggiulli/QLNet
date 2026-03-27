@@ -16,11 +16,13 @@
 
 namespace QLNet
 {
-   //! %Bbsw index
-   /*! Bbsw rate fixed by AFMA.
-
-       See <http://www.afma.com.au/data/BBSW>.
-   */
+   /// <summary>
+   /// Bbsw index
+   /// </summary>
+   /// <remarks>
+   /// Bbsw rate fixed by AFMA.
+   /// See &amp;lt;http://www.afma.com.au/data/BBSW&amp;gt;.
+   /// </remarks>
    public class Bbsw : IborIndex
    {
       public Bbsw(Period tenor, Handle<YieldTermStructure> h = null)

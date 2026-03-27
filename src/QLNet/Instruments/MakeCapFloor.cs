@@ -18,10 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! helper class
-   /*! This class provides a more comfortable way
-       to instantiate standard market cap and floor.
-   */
+   /// <summary>
+   /// helper class
+   /// </summary>
+   /// <remarks>
+   /// This class provides a more comfortable way
+   /// to instantiate standard market cap and floor.
+   /// </remarks>
    public class MakeCapFloor
    {
       public MakeCapFloor(CapFloorType capFloorType, Period tenor, IborIndex iborIndex, double? strike = null,

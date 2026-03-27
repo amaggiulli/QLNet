@@ -16,11 +16,13 @@
 
 namespace QLNet
 {
-   //! %Bkbm index
-   /*! Bkbm rate fixed by NZFMA.
-
-       See <http://www.nzfma.org/Site/data/default.aspx>.
-   */
+   /// <summary>
+   /// Bkbm index
+   /// </summary>
+   /// <remarks>
+   /// Bkbm rate fixed by NZFMA.
+   /// See &amp;lt;http://www.nzfma.org/Site/data/default.aspx&amp;gt;.
+   /// </remarks>
    public class Bkbm : IborIndex
    {
       public Bkbm(Period tenor, Handle<YieldTermStructure> h = null)

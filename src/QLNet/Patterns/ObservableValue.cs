@@ -19,16 +19,19 @@
 
 namespace QLNet
 {
-   //! %observable and assignable proxy to concrete value
-   /*! Observers can be registered with instances of this class so
-       that they are notified when a different value is assigned to
-       such instances. Client code can copy the contained value or
-       pass it to functions via implicit conversion.
-       \note it is not possible to call non-const method on the
-             returned value. This is by design, as this possibility
-             would necessarily bypass the notification code; client
-             code should modify the value via re-assignment instead.
-   */
+   /// <summary>
+   /// observable and assignable proxy to concrete value
+   /// </summary>
+   /// <remarks>
+   /// Observers can be registered with instances of this class so
+   /// that they are notified when a different value is assigned to
+   /// such instances. Client code can copy the contained value or
+   /// pass it to functions via implicit conversion.
+   /// Note: it is not possible to call non-const method on the
+   /// returned value. This is by design, as this possibility
+   /// would necessarily bypass the notification code; client
+   /// code should modify the value via re-assignment instead.
+   /// </remarks>
    public class ObservableValue<T> : IObservable where T : new ()
    {
       private T value_;

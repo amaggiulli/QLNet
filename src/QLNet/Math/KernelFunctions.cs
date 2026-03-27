@@ -19,11 +19,11 @@
 
 namespace QLNet
 {
-   /*! Kernel function in the statistical sense, e.g. a nonnegative,
-       real-valued function which integrates to one and is symmetric.
-
-       Derived classes will serve as functors.
-   */
+   /// <summary>
+   /// Kernel function in the statistical sense, e.g. a nonnegative,
+   /// real-valued function which integrates to one and is symmetric.
+   /// Derived classes will serve as functors.
+   /// </summary>
 
    public interface IKernelFunction
    {

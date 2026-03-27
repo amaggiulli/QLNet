@@ -54,14 +54,15 @@ namespace QLNet
       }
    }
 
-   //! base class for all ICE %EUR %LIBOR indexes but the O/N
-   /*! Euro LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by BBA. Use Euribor if
-                you're interested in the fixing by the ECB.
-   */
+   /// <summary>
+   /// base class for all ICE EUR LIBOR indexes but the O/N
+   /// </summary>
+   /// <remarks>
+   /// Euro LIBOR fixed by ICE.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// Warning: This is the rate fixed in London by BBA. Use Euribor if
+   /// you're interested in the fixing by the ECB.
+   /// </remarks>
    public class EURLibor : IborIndex
    {
       private Calendar target_;
@@ -114,15 +115,16 @@ namespace QLNet
       }
    }
 
-   //! base class for the one day deposit ICE %EUR %LIBOR indexes
-   /*! Euro O/N LIBOR fixed by ICE. It can be also used for T/N and S/N
-       indexes, even if such indexes do not have ICE fixing.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by ICE. Use Eonia if
-                you're interested in the fixing by the ECB.
-   */
+   /// <summary>
+   /// base class for the one day deposit ICE EUR LIBOR indexes
+   /// </summary>
+   /// <remarks>
+   /// Euro O/N LIBOR fixed by ICE. It can be also used for T/N and S/N
+   /// indexes, even if such indexes do not have ICE fixing.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// Warning: This is the rate fixed in London by ICE. Use Eonia if
+   /// you're interested in the fixing by the ECB.
+   /// </remarks>
    public class DailyTenorEURLibor : IborIndex
    {
 

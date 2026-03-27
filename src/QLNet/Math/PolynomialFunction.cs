@@ -18,8 +18,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Cubic functional form
-   /*! \f[ f(t) = \sum_{i=0}^n{c_i t^i} \f] */
+   /// <summary>
+   /// Cubic functional form
+   /// </summary>
+   /// <remarks>
+   /// \f[ f(t) = \sum_{i=0}^n{c_i t^i} \f]
+   /// </remarks>
    public class PolynomialFunction
    {
       public PolynomialFunction(List<double> coeff)

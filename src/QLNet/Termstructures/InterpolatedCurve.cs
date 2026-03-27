@@ -22,11 +22,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Helper class to build interpolated term structures
-   /*! Interpolated term structures can use protected or private
-       inheritance from this class to obtain the relevant data
-       members and implement correct copy behavior.
-   */
+   /// <summary>
+   /// Helper class to build interpolated term structures
+   /// </summary>
+   /// <remarks>
+   /// Interpolated term structures can use protected or private
+   /// inheritance from this class to obtain the relevant data
+   /// members and implement correct copy behavior.
+   /// </remarks>
    public interface InterpolatedCurve : ICloneable
    {
       List<double> times_ { get; set; }

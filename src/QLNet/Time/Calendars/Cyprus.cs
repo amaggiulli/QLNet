@@ -21,33 +21,33 @@ using System;
 
 namespace QLNet
 {
-   //! Cyprus calendar
-   /*! Public holidays:
-   <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day</li>
-       <li>Epiphany</li>
-       <li>Greek Independence Day</li>
-       <li>Cyprus National Day</li>
-       <li>Ash Monday / Clean Monday</li>
-       <li>Good Friday</li>
-       <li>Orthodox Easter (Sunday)</li>
-       <li>Orthodox Easter (Monday)</li>
-       <li>Orthodox Easter (Tuesday)</li>
-       <li>Labour Day</li>
-       <li>Holy Spirit Day</li>
-       <li>Assumption Day</li>
-       <li>Cyprus Independence Day</li>
-       <li>Greek National Day</li>
-       <li>Christmas Eve</li>
-       <li>Christmas Day</li>
-       <li>Boxing Day</li>
-   </ul>
-   Holidays for the Cyprus stock exchange
-   All public holidays plus Catholic Good Friday, Catholic Easter Monday
-   //https://www.cse.com.cy/en-GB/regulated-market/market-indices/other-information/%CE%9B%CE%B9%CF%83%CF%84%CE%B1-%CE%BC%CE%B5-%CE%B1%CF%81%CE%B3%CE%B9%CE%B5%CF%82-2014/
-   */
+   /// <summary>
+   /// Cyprus calendar
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day
+   /// Epiphany
+   /// Greek Independence Day
+   /// Cyprus National Day
+   /// Ash Monday / Clean Monday
+   /// Good Friday
+   /// Orthodox Easter (Sunday)
+   /// Orthodox Easter (Monday)
+   /// Orthodox Easter (Tuesday)
+   /// Labour Day
+   /// Holy Spirit Day
+   /// Assumption Day
+   /// Cyprus Independence Day
+   /// Greek National Day
+   /// Christmas Eve
+   /// Christmas Day
+   /// Boxing Day
+   /// Holidays for the Cyprus stock exchange
+   /// All public holidays plus Catholic Good Friday, Catholic Easter Monday
+   /// </remarks>
    public class Cyprus : Calendar
    {
       /// <summary>

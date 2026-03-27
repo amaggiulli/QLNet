@@ -20,18 +20,19 @@ using System.Text;
 
 namespace QLNet
 {
-   //! Piecewise time dependent Heston model
-   /*! References:
-
-       Heston, Steven L., 1993. A Closed-Form Solution for Options
-       with Stochastic Volatility with Applications to Bond and
-       Currency Options.  The review of Financial Studies, Volume 6,
-       Issue 2, 327-343.
-
-       A. Elices, Models with time-dependent parameters using
-       transform methods: application to Heston’s model,
-       http://arxiv.org/pdf/0708.2020
-   */
+   /// <summary>
+   /// Piecewise time dependent Heston model
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// Heston, Steven L., 1993. A Closed-Form Solution for Options
+   /// with Stochastic Volatility with Applications to Bond and
+   /// Currency Options.  The review of Financial Studies, Volume 6,
+   /// Issue 2, 327-343.
+   /// A. Elices, Models with time-dependent parameters using
+   /// transform methods: application to Heston’s model,
+   /// http://arxiv.org/pdf/0708.2020
+   /// </remarks>
    public class PiecewiseTimeDependentHestonModel : CalibratedModel
    {
       public PiecewiseTimeDependentHestonModel(Handle<YieldTermStructure> riskFreeRate,

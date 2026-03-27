@@ -19,13 +19,16 @@
 
 namespace QLNet
 {
-   //! Constant local volatility, no time-strike dependence
-   /*! This class implements the LocalVolatilityTermStructure
-       interface for a constant local volatility (no time/asset
-       dependence).  Local volatility and Black volatility are the
-       same when volatility is at most time dependent, so this class
-       is basically a proxy for BlackVolatilityTermStructure.
-   */
+   /// <summary>
+   /// Constant local volatility, no time-strike dependence
+   /// </summary>
+   /// <remarks>
+   /// This class implements the LocalVolatilityTermStructure
+   /// interface for a constant local volatility (no time/asset
+   /// dependence).  Local volatility and Black volatility are the
+   /// same when volatility is at most time dependent, so this class
+   /// is basically a proxy for BlackVolatilityTermStructure.
+   /// </remarks>
    public class LocalConstantVol : LocalVolTermStructure
    {
       Handle<Quote> volatility_;

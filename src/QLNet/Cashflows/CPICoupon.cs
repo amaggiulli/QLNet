@@ -43,23 +43,23 @@ namespace QLNet
       Linear
    }
 
-   //! %Coupon paying the performance of a CPI (zero inflation) index
-   /*! The performance is relative to the index value on the base date.
-
-      The other inflation value is taken from the refPeriodEnd date
-      with observation lag, so any roll/calendar etc. will be built
-      in by the caller.  By default this is done in the
-      InflationCoupon which uses ModifiedPreceding with fixing days
-      assumed positive meaning earlier, i.e. always stay in same
-      month (relative to referencePeriodEnd).
-
-      This is more sophisticated than an %IndexedCashFlow because it
-      does date calculations itself.
-
-      We do not do any convexity adjustment for lags different
-      to the natural ZCIIS lag that was used to create the
-      forward inflation curve.
-   */
+   /// <summary>
+   /// Coupon paying the performance of a CPI (zero inflation) index
+   /// </summary>
+   /// <remarks>
+   /// The performance is relative to the index value on the base date.
+   /// The other inflation value is taken from the refPeriodEnd date
+   /// with observation lag, so any roll/calendar etc. will be built
+   /// in by the caller.  By default this is done in the
+   /// InflationCoupon which uses ModifiedPreceding with fixing days
+   /// assumed positive meaning earlier, i.e. always stay in same
+   /// month (relative to referencePeriodEnd).
+   /// This is more sophisticated than an IndexedCashFlow because it
+   /// does date calculations itself.
+   /// We do not do any convexity adjustment for lags different
+   /// to the natural ZCIIS lag that was used to create the
+   /// forward inflation curve.
+   /// </remarks>
    public class CPICoupon : InflationCoupon
    {
       protected double baseCPI_;
@@ -158,8 +158,12 @@ namespace QLNet
       public ZeroInflationIndex cpiIndex() { return index() as ZeroInflationIndex; }
    }
 
-   //! Cash flow paying the performance of a CPI (zero inflation) index
-   /*! It is NOT a coupon, i.e. no accruals. */
+   /// <summary>
+   /// Cash flow paying the performance of a CPI (zero inflation) index
+   /// </summary>
+   /// <remarks>
+   /// It is NOT a coupon, i.e. no accruals.
+   /// </remarks>
    public class CPICashFlow : IndexedCashFlow
    {
       public CPICashFlow(double notional,
@@ -243,14 +247,16 @@ namespace QLNet
       protected Frequency frequency_;
    }
 
-   //! Helper class building a sequence of capped/floored CPI coupons.
-   /*! Also allowing for the inflated notional at the end...
-       especially if there is only one date in the schedule.
-       If a fixedRate is zero you get a FixedRateCoupon, otherwise
-       you get a ZeroInflationCoupon.
-
-       payoff is: spread + fixedRate x index
-   */
+   /// <summary>
+   /// Helper class building a sequence of capped/floored CPI coupons.
+   /// </summary>
+   /// <remarks>
+   /// Also allowing for the inflated notional at the end...
+   /// especially if there is only one date in the schedule.
+   /// If a fixedRate is zero you get a FixedRateCoupon, otherwise
+   /// you get a ZeroInflationCoupon.
+   /// payoff is: spread + fixedRate x index
+   /// </remarks>
    public class CPILeg : CPILegBase
    {
       public CPILeg(Schedule schedule,

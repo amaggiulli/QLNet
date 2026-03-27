@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,10 +20,13 @@
 
 namespace QLNet
 {
-   //! Optionlet (caplet/floorlet) volatility structure
-   /*! This class is purely abstract and defines the interface of
-      concrete structures which will be derived from this one.
-   */
+   /// <summary>
+   /// Optionlet (caplet/floorlet) volatility structure
+   /// </summary>
+   /// <remarks>
+   /// This class is purely abstract and defines the interface of
+   /// concrete structures which will be derived from this one.
+   /// </remarks>
    public abstract class OptionletVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors

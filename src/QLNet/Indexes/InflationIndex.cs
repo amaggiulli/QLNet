@@ -293,11 +293,14 @@ namespace QLNet
 
    }
 
-   //! Base class for year-on-year inflation indices.
-   /*! These may be genuine indices published on, say, Bloomberg, or
-       "fake" indices that are defined as the ratio of an index at
-       different time points.
-   */
+   /// <summary>
+   /// Base class for year-on-year inflation indices.
+   /// </summary>
+   /// <remarks>
+   /// These may be genuine indices published on, say, Bloomberg, or
+   /// "fake" indices that are defined as the ratio of an index at
+   /// different time points.
+   /// </remarks>
    public class YoYInflationIndex : InflationIndex
    {
       public YoYInflationIndex(string familyName,

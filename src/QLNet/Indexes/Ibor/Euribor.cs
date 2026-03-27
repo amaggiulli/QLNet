@@ -71,11 +71,14 @@ namespace QLNet
       }
    }
 
-   //! Actual/365 %Euribor index
-   /*! Euribor rate adjusted for the mismatch between the actual/360
-       convention used for Euribor and the actual/365 convention
-       previously used by a few pre-EUR currencies.
-   */
+   /// <summary>
+   /// Actual/365 Euribor index
+   /// </summary>
+   /// <remarks>
+   /// Euribor rate adjusted for the mismatch between the actual/360
+   /// convention used for Euribor and the actual/365 convention
+   /// previously used by a few pre-EUR currencies.
+   /// </remarks>
    public class Euribor365 : IborIndex
    {
       public Euribor365(Period tenor) : this(tenor, new Handle<YieldTermStructure>()) { }

@@ -16,11 +16,13 @@
 
 namespace QLNet
 {
-   //! %Aonia index
-   /*! Aonia (Australia Overnight Index Average) rate fixed by the RBA.
-
-   See <http://www.isda.org/publications/pdf/Supplement-13-to-2000DefinitionsAnnex.pdf>.
-   */
+   /// <summary>
+   /// Aonia index
+   /// </summary>
+   /// <remarks>
+   /// Aonia (Australia Overnight Index Average) rate fixed by the RBA.
+   /// See &amp;lt;http://www.isda.org/publications/pdf/Supplement-13-to-2000DefinitionsAnnex.pdf&amp;gt;.
+   /// </remarks>
    public class Aonia : OvernightIndex
    {
       public Aonia(Handle<YieldTermStructure> h = null)

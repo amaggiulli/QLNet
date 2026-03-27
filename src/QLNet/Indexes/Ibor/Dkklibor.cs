@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,9 +20,12 @@
 namespace QLNet
 {
 
-   //! %DKK %LIBOR rate
-   /*! Danish Krona LIBOR discontinued as of 2013.
-   */
+   /// <summary>
+   /// DKK LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Danish Krona LIBOR discontinued as of 2013.
+   /// </remarks>
    public class DKKLibor : Libor
    {
       public DKKLibor(Period tenor)

@@ -21,12 +21,15 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Statistics tool for gaussian-assumption risk measures
-   /*! This class wraps a somewhat generic statistic tool and adds
-       a number of gaussian risk measures (e.g.: value-at-risk, expected
-       shortfall, etc.) based on the mean and variance provided by
-       the underlying statistic tool.
-   */
+   /// <summary>
+   /// Statistics tool for gaussian-assumption risk measures
+   /// </summary>
+   /// <remarks>
+   /// This class wraps a somewhat generic statistic tool and adds
+   /// a number of gaussian risk measures (e.g.: value-at-risk, expected
+   /// shortfall, etc.) based on the mean and variance provided by
+   /// the underlying statistic tool.
+   /// </remarks>
    public class GenericGaussianStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
    {
       public GenericGaussianStatistics() { }

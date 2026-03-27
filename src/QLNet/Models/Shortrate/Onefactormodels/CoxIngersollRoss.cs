@@ -174,10 +174,13 @@ namespace QLNet
          }
       }
 
-      //! %Dynamics of the short-rate under the Cox-Ingersoll-Ross model
-      /*! The state variable \f$ y_t \f$ will here be the square-root of the
-          short-rate.
-      */
+      /// <summary>
+      /// Dynamics of the short-rate under the Cox-Ingersoll-Ross model
+      /// </summary>
+      /// <remarks>
+      /// The state variable \f$ y_t \f$ will here be the square-root of the
+      /// short-rate.
+      /// </remarks>
       public class Dynamics : ShortRateDynamics
       {
          public Dynamics(double theta,

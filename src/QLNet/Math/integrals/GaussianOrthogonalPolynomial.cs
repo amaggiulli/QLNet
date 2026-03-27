@@ -20,19 +20,18 @@ using System;
 
 namespace QLNet
 {
-   //! orthogonal polynomial for Gaussian quadratures
-   /*! References:
-       Gauss quadratures and orthogonal polynomials
-
-       G.H. Gloub and J.H. Welsch: Calculation of Gauss quadrature rule.
-       Math. Comput. 23 (1986), 221-230
-
-       "Numerical Recipes in C", 2nd edition,
-       Press, Teukolsky, Vetterling, Flannery,
-
-       The polynomials are defined by the three-term recurrence relation
-
-   */
+   /// <summary>
+   /// orthogonal polynomial for Gaussian quadratures
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// Gauss quadratures and orthogonal polynomials
+   /// G.H. Gloub and J.H. Welsch: Calculation of Gauss quadrature rule.
+   /// Math. Comput. 23 (1986), 221-230
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery,
+   /// The polynomials are defined by the three-term recurrence relation
+   /// </remarks>
    public abstract class GaussianOrthogonalPolynomial
    {
       public abstract double mu_0();

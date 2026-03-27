@@ -17,10 +17,13 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for European continuous partial-time fixed-strike lookback options
-   /*! Formula from "Option Pricing Formulas, Second Edition",
-       E.G. Haug, 2006, p.148
-   */
+   /// <summary>
+   /// Pricing engine for European continuous partial-time fixed-strike lookback options
+   /// </summary>
+   /// <remarks>
+   /// Formula from "Option Pricing Formulas, Second Edition",
+   /// E.G. Haug, 2006, p.148
+   /// </remarks>
    public class AnalyticContinuousPartialFixedLookbackEngine : ContinuousPartialFixedLookbackOption.Engine
    {
       public AnalyticContinuousPartialFixedLookbackEngine(GeneralizedBlackScholesProcess process)

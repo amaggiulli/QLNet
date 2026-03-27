@@ -21,11 +21,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! zero inflation (i.e. CPI/RPI/HICP/etc.) volatility structures
-   /*! Abstract interface. CPI volatility is always with respect to
-       some base date.  Also deal with lagged observations of an index
-       with a (usually different) availability lag.
-   */
+   /// <summary>
+   /// zero inflation (i.e. CPI/RPI/HICP/etc.) volatility structures
+   /// </summary>
+   /// <remarks>
+   /// Abstract interface. CPI volatility is always with respect to
+   /// some base date.  Also deal with lagged observations of an index
+   /// with a (usually different) availability lag.
+   /// </remarks>
    public abstract class CPIVolatilitySurface : VolatilityTermStructure
    {
       /*! calculates the reference date based on the global

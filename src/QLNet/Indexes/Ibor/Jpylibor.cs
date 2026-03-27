@@ -21,14 +21,15 @@
 namespace QLNet
 {
 
-   //! %JPY %LIBOR rate
-   /*! Japanese Yen LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by ICE. Use TIBOR if
-                you're interested in the Tokio fixing.
-   */
+   /// <summary>
+   /// JPY LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Japanese Yen LIBOR fixed by ICE.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// Warning: This is the rate fixed in London by ICE. Use TIBOR if
+   /// you're interested in the Tokio fixing.
+   /// </remarks>
    public class JPYLibor : Libor
    {
       public JPYLibor(Period tenor)

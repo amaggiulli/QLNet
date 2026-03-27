@@ -94,13 +94,15 @@ namespace QLNet
       private Handle<OptionletVolatilityStructure> capletVol_;
    }
 
-   /*! Black-formula pricer for capped/floored Ibor coupons
-       References for timing adjustments
-       Black76             Hull, Options, Futures and other
-                           derivatives, 4th ed., page 550
-       BivariateLognormal  http://ssrn.com/abstract=2170721
-       The bivariate lognormal adjustment implementation is
-       still considered experimental */
+   /// <summary>
+   /// Black-formula pricer for capped/floored Ibor coupons
+   /// References for timing adjustments
+   /// Black76             Hull, Options, Futures and other
+   /// derivatives, 4th ed., page 550
+   /// BivariateLognormal  http://ssrn.com/abstract=2170721
+   /// The bivariate lognormal adjustment implementation is
+   /// still considered experimental
+   /// </summary>
    public class BlackIborCouponPricer : IborCouponPricer
    {
       public enum TimingAdjustment { Black76, BivariateLognormal }
@@ -297,8 +299,10 @@ namespace QLNet
       private Handle<SwaptionVolatilityStructure> swaptionVol_;
    }
 
-   /*! (CMS) coupon pricer that has a mean reversion parameter which can be
-      used to calibrate to cms market quotes */
+   /// <summary>
+   /// (CMS) coupon pricer that has a mean reversion parameter which can be
+   /// used to calibrate to cms market quotes
+   /// </summary>
    public interface IMeanRevertingPricer
    {
       double meanReversion() ;

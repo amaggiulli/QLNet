@@ -67,8 +67,12 @@ namespace QLNet
       }
    }
 
-   //! Early-exercise base class
-   /*! The payoff can be at exercise (the default) or at expiry */
+   /// <summary>
+   /// Early-exercise base class
+   /// </summary>
+   /// <remarks>
+   /// The payoff can be at exercise (the default) or at expiry
+   /// </remarks>
 
    public class EarlyExercise : Exercise
    {
@@ -85,14 +89,17 @@ namespace QLNet
       }
    }
 
-   //! American exercise
-   /*! An American option can be exercised at any time between two
-       predefined dates; the first date might be omitted, in which
-       case the option can be exercised at any time before the expiry.
-
-       \todo check that everywhere the American condition is applied
-             from earliestDate and not earlier
-   */
+   /// <summary>
+   /// American exercise
+   /// </summary>
+   /// <remarks>
+   /// An American option can be exercised at any time between two
+   /// predefined dates; the first date might be omitted, in which
+   /// case the option can be exercised at any time before the expiry.
+   ///
+   /// TODO: check that everywhere the American condition is applied
+   /// from earliestDate and not earlier
+   /// </remarks>
 
    public class AmericanExercise : EarlyExercise
    {
@@ -113,8 +120,12 @@ namespace QLNet
       }
    }
 
-   //! Bermudan exercise
-   /*! A Bermudan option can only be exercised at a set of fixed dates. */
+   /// <summary>
+   /// Bermudan exercise
+   /// </summary>
+   /// <remarks>
+   /// A Bermudan option can only be exercised at a set of fixed dates.
+   /// </remarks>
 
    public class BermudanExercise : EarlyExercise
    {
@@ -131,8 +142,12 @@ namespace QLNet
       }
    }
 
-   //! European exercise
-   /*! A European option can only be exercised at one (expiry) date. */
+   /// <summary>
+   /// European exercise
+   /// </summary>
+   /// <remarks>
+   /// A European option can only be exercised at one (expiry) date.
+   /// </remarks>
 
    public class EuropeanExercise : Exercise
    {

@@ -23,10 +23,13 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Bond helper for curve bootstrap
-   /*! \warning This class assumes that the reference date
-                does not change between calls of setTermStructure().
-   */
+   /// <summary>
+   /// Bond helper for curve bootstrap
+   /// </summary>
+   /// <remarks>
+   /// Warning: This class assumes that the reference date
+   /// does not change between calls of setTermStructure().
+   /// </remarks>
    public class BondHelper : RateHelper
    {
       /*! \warning Setting a pricing engine to the passed bond from

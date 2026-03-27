@@ -20,29 +20,28 @@ using System;
 
 namespace QLNet
 {
-   //! Romanian calendars
-   /*! Public holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li> Day after New Year's Day, January 2nd</li>
-       <li>Unification Day, January 24th</li>
-       <li>Orthodox Easter (only Sunday and Monday)</li>
-       <li>Labour Day, May 1st</li>
-       <li>Pentecost with Monday (50th and 51st days after the
-           Othodox Easter)</li>
-       <li>St Marys Day, August 15th</li>
-       <li>Feast of St Andrew, November 30th</li>
-       <li>National Day, December 1st</li>
-       <li>Christmas, December 25th</li>
-       <li>2nd Day of Christmas, December 26th</li>
-       </ul>
-
-       Holidays for the Bucharest stock exchange
-       (data from <http://www.bvb.ro/Marketplace/TradingCalendar/index.aspx>):
-       all public holidays, plus a few one-off closing days (2014 only).      
-   */
+   /// <summary>
+   /// Romanian calendars
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Day after New Year's Day, January 2nd
+   /// Unification Day, January 24th
+   /// Orthodox Easter (only Sunday and Monday)
+   /// Labour Day, May 1st
+   /// Pentecost with Monday (50th and 51st days after the Orthodox Easter)
+   /// St Marys Day, August 15th
+   /// Feast of St Andrew, November 30th
+   /// National Day, December 1st
+   /// Christmas, December 25th
+   /// 2nd Day of Christmas, December 26th
+   /// Holidays for the Bucharest stock exchange
+   /// (data from http://www.bvb.ro/Marketplace/TradingCalendar/index.aspx):
+   /// all public holidays, plus a few one-off closing days (2014 only).
+   /// </remarks>
    public class Romania : Calendar
    {
       /// <summary>

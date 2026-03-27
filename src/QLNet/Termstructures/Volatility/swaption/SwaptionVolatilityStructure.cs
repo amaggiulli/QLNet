@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,10 +20,13 @@
 
 namespace QLNet
 {
-   //! %Swaption-volatility structure
-   /*! This abstract class defines the interface of concrete swaption
-      volatility structures which will be derived from this one.
-   */
+   /// <summary>
+   /// Swaption-volatility structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete swaption
+   /// volatility structures which will be derived from this one.
+   /// </remarks>
    public abstract class SwaptionVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors

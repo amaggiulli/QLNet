@@ -27,9 +27,10 @@ namespace QLNet
      \f]
     */
 
-   /*! References:
-       http://en.wikipedia.org/wiki/Richardson_extrapolation
-   */
+   /// <summary>
+   /// References:
+   /// http://en.wikipedia.org/wiki/Richardson_extrapolation
+   /// </summary>
 
    public class RichardsonEqn : ISolver1d
    {

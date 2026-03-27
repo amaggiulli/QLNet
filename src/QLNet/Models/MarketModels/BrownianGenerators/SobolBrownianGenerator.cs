@@ -18,10 +18,13 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Sobol Brownian generator for market-model simulations
-   /*! Incremental Brownian generator using a Sobol generator,
-       inverse-cumulative Gaussian method, and Brownian bridging.
-   */
+   /// <summary>
+   /// Sobol Brownian generator for market-model simulations
+   /// </summary>
+   /// <remarks>
+   /// Incremental Brownian generator using a Sobol generator,
+   /// inverse-cumulative Gaussian method, and Brownian bridging.
+   /// </remarks>
    public class SobolBrownianGenerator : IBrownianGenerator
    {
        /// <summary>

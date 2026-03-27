@@ -24,11 +24,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Matrix used in linear algebra.
-   /*! This class implements the concept of Matrix as used in linear
-       algebra. As such, it is <b>not</b> meant to be used as a
-       container.
-   */
+   /// <summary>
+   /// Matrix used in linear algebra.
+   /// </summary>
+   /// <remarks>
+   /// This class implements the concept of Matrix as used in linear
+   /// algebra. As such, it is &amp;lt;b&amp;gt;not&amp;lt;/b&amp;gt; meant to be used as a
+   /// container.
+   /// </remarks>
    public class Matrix
    {
       #region properties

@@ -21,16 +21,17 @@ using System;
 
 namespace QLNet
 {
-   //! Local volatility surface derived from a Black vol surface
-   /*! For details about this implementation refer to
-       "Stochastic Volatility and Local Volatility," in
-       "Case Studies and Financial Modelling Course Notes," by
-       Jim Gatheral, Fall Term, 2003
-
-       see www.math.nyu.edu/fellows_fin_math/gatheral/Lecture1_Fall02.pdf
-
-       \bug this class is untested, probably unreliable.
-   */
+   /// <summary>
+   /// Local volatility surface derived from a Black vol surface
+   /// </summary>
+   /// <remarks>
+   /// For details about this implementation refer to
+   /// "Stochastic Volatility and Local Volatility," in
+   /// "Case Studies and Financial Modelling Course Notes," by
+   /// Jim Gatheral, Fall Term, 2003
+   /// see www.math.nyu.edu/fellows_fin_math/gatheral/Lecture1_Fall02.pdf
+   /// Bug: this class is untested, probably unreliable.
+   /// </remarks>
    public class LocalVolSurface : LocalVolTermStructure
    {
       Handle<BlackVolTermStructure> blackTS_;

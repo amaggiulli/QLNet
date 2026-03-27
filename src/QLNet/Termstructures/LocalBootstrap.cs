@@ -70,23 +70,24 @@ namespace QLNet
    }
 
 
-   //! Localised-term-structure bootstrapper for most curve types.
-   /*! This algorithm enables a localised fitting for non-local
-       interpolation methods.
-
-       As in the similar class (IterativeBootstrap) the input term
-       structure is solved on a number of market instruments which
-       are passed as a vector of handles to BootstrapHelper
-       instances. Their maturities mark the boundaries of the
-       interpolated segments.
-
-       Unlike the IterativeBootstrap class, the solution for each
-       interpolated segment is derived using a local
-       approximation. This restricts the risk profile s.t.  the risk
-       is localised. Therefore, we obtain a local IR risk profile
-       whilst using a smoother interpolation method. Particularly
-       good for the convex-monotone spline method.
-   */
+   /// <summary>
+   /// Localised-term-structure bootstrapper for most curve types.
+   /// </summary>
+   /// <remarks>
+   /// This algorithm enables a localised fitting for non-local
+   /// interpolation methods.
+   /// As in the similar class (IterativeBootstrap) the input term
+   /// structure is solved on a number of market instruments which
+   /// are passed as a vector of handles to BootstrapHelper
+   /// instances. Their maturities mark the boundaries of the
+   /// interpolated segments.
+   /// Unlike the IterativeBootstrap class, the solution for each
+   /// interpolated segment is derived using a local
+   /// approximation. This restricts the risk profile s.t.  the risk
+   /// is localised. Therefore, we obtain a local IR risk profile
+   /// whilst using a smoother interpolation method. Particularly
+   /// good for the convex-monotone spline method.
+   /// </remarks>
    public class LocalBootstrap <T, U>: IBootStrap<T>
       where T : Curve<U>, new ()
       where U : TermStructure

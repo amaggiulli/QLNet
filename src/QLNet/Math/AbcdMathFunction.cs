@@ -18,9 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Abcd functional form
-   /*! \f[ f(t) = [ a + b*t ] e^{-c*t} + d \f]
-       following Rebonato's notation. */
+   /// <summary>
+   /// Abcd functional form
+   /// </summary>
+   /// <remarks>
+   /// \f[ f(t) = [ a + b*t ] e^{-c*t} + d \f]
+   /// following Rebonato's notation.
+   /// </remarks>
    public class AbcdMathFunction
    {
       public AbcdMathFunction(double a = 0.002, double b = 0.001, double c = 0.16, double d = 0.0005)

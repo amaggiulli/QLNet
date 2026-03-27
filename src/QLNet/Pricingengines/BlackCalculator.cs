@@ -22,11 +22,14 @@ using System.Reflection;
 
 namespace QLNet
 {
-   //! Black 1976 calculator class
-   /*! \bug When the variance is null, division by zero occur during
-            the calculation of delta, delta forward, gamma, gamma
-            forward, rho, dividend rho, vega, and strike sensitivity.
-   */
+   /// <summary>
+   /// Black 1976 calculator class
+   /// </summary>
+   /// <remarks>
+   /// Bug: When the variance is null, division by zero occur during
+   /// the calculation of delta, delta forward, gamma, gamma
+   /// forward, rho, dividend rho, vega, and strike sensitivity.
+   /// </remarks>
    public class BlackCalculator
    {
       protected double strike_, forward_, stdDev_, discount_, variance_;

@@ -17,17 +17,19 @@ using System;
 
 namespace QLNet
 {
-   //! Implied vol term structure at a given date in the future
-   /*! The given date will be the implied reference date.
-       \note This term structure will remain linked to the original
-             structure, i.e., any changes in the latter will be reflected
-             in this structure as well.
-
-       \warning It doesn't make financial sense to have an
-                asset-dependant implied Vol Term Structure.  This
-                class should be used with term structures that are
-                time dependant only.
-   */
+   /// <summary>
+   /// Implied vol term structure at a given date in the future
+   /// </summary>
+   /// <remarks>
+   /// The given date will be the implied reference date.
+   /// Note: This term structure will remain linked to the original
+   /// structure, i.e., any changes in the latter will be reflected
+   /// in this structure as well.
+   /// Warning: It doesn't make financial sense to have an
+   /// asset-dependant implied Vol Term Structure.  This
+   /// class should be used with term structures that are
+   /// time dependant only.
+   /// </remarks>
    public class ImpliedVolTermStructure : BlackVarianceTermStructure
    {
       public ImpliedVolTermStructure(Handle<BlackVolTermStructure> originalTS, Date referenceDate)

@@ -21,16 +21,17 @@ using System;
 
 namespace QLNet
 {
-   //! exponential correlation model
-   /*! This class describes a exponential correlation model
-
-       References:
-
-       Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,
-       Different Covariance Parameterizations of Libor Market Model and Joint
-       Caps/Swaptions Calibration,
-       (<http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf>)
-   */
+   /// <summary>
+   /// exponential correlation model
+   /// </summary>
+   /// <remarks>
+   /// This class describes a exponential correlation model
+   /// References:
+   /// Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,
+   /// Different Covariance Parameterizations of Libor Market Model and Joint
+   /// Caps/Swaptions Calibration,
+   /// (&amp;lt;http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf&amp;gt;)
+   /// </remarks>
 
    public class LmExponentialCorrelationModel : LmCorrelationModel
    {

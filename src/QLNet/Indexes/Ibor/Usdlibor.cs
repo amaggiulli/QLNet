@@ -19,11 +19,13 @@
 
 namespace QLNet
 {
-   //! %USD %LIBOR rate
-   /*! US Dollar LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// USD LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// US Dollar LIBOR fixed by ICE.
+   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// </remarks>
    public class USDLibor : Libor
    {
       public USDLibor(Period tenor) : this(tenor, new Handle<YieldTermStructure>())
