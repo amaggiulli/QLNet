@@ -32,12 +32,13 @@ namespace QLNet
    /// </remarks>
    public class BondHelper : RateHelper
    {
-      /*! \warning Setting a pricing engine to the passed bond from
-                   external code will cause the bootstrap to fail or
-                   to give wrong results. It is advised to discard
-                   the bond after creating the helper, so that the
-                   helper has sole ownership of it.
-      */
+      /// <remarks>
+      /// Warning: Setting a pricing engine to the passed bond from
+      /// external code will cause the bootstrap to fail or
+      /// to give wrong results. It is advised to discard
+      /// the bond after creating the helper, so that the
+      /// helper has sole ownership of it.
+      /// </remarks>
       public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice = true)
          : base(price)
       {

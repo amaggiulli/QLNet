@@ -23,11 +23,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! CMS coupon class
-   //    ! \warning This class does not perform any date adjustment,
-   //                 i.e., the start and end date passed upon construction
-   //                 should be already rolled to a business day.
-   //
+   /// <summary>
+   /// CMS coupon class
+   /// </summary>
+   /// <remarks>
+   /// Warning: This class does not perform any date adjustment,
+   /// i.e., the start and end date passed upon construction
+   /// should be already rolled to a business day.
+   /// </remarks>
    public class CmsCoupon : FloatingRateCoupon
    {
       // need by CashFlowVectors

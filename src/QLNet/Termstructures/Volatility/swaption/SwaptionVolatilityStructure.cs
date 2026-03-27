@@ -30,10 +30,11 @@ namespace QLNet
    public abstract class SwaptionVolatilityStructure : VolatilityTermStructure
    {
       #region Constructors
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected SwaptionVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(bdc, dc) {}

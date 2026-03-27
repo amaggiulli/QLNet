@@ -30,11 +30,14 @@ namespace QLNet
    public abstract class LocalVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(bdc, dc) {}

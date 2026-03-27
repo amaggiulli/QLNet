@@ -47,11 +47,14 @@ namespace QLNet
       // return the appropriate date.
 
 
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-        */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected TermStructure(DayCounter dc = null)
       {

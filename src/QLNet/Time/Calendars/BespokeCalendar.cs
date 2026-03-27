@@ -51,10 +51,11 @@ namespace QLNet
 
       private Impl _BespokeImpl;
 
-      /*! \warning different bespoke calendars created with the same
-                   name (or different bespoke calendars created with
-                   no name) will compare as equal.
-      */
+      /// <remarks>
+      /// Warning: different bespoke calendars created with the same
+      /// name (or different bespoke calendars created with
+      /// no name) will compare as equal.
+      /// </remarks>
       public BespokeCalendar(string name = "") : base()
       {
          _BespokeImpl = new Impl(name);

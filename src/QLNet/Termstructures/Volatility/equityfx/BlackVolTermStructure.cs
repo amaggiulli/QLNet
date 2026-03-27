@@ -33,11 +33,14 @@ namespace QLNet
    public abstract class BlackVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(bdc, dc)
@@ -196,11 +199,14 @@ namespace QLNet
    {
       #region Constructors
 
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVolatilityTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
                                              DayCounter dc = null)
@@ -246,11 +252,14 @@ namespace QLNet
    public abstract class BlackVarianceTermStructure : BlackVolTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVarianceTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
                                            DayCounter dc = null)

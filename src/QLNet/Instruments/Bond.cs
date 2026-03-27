@@ -109,11 +109,14 @@ namespace QLNet
          Settings.registerWith(update);
       }
 
-      //! old constructor for non amortizing bonds.
-      /*! \warning The last passed cash flow must be the bond
-                   redemption. No other cash flow can have a date
-                   later than the redemption date.
-      */
+      /// <summary>
+      /// old constructor for non amortizing bonds.
+      /// </summary>
+      /// <remarks>
+      /// Warning: The last passed cash flow must be the bond
+      /// redemption. No other cash flow can have a date
+      /// later than the redemption date.
+      /// </remarks>
       public Bond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate, Date issueDate = null,
                   List<CashFlow> cashflows = null)
       {
@@ -233,21 +236,26 @@ namespace QLNet
 
       #region Calculations
 
-      //! theoretical clean price
-      /*! The default bond settlement is used for calculation.
-
-          \warning the theoretical price calculated from a flat term structure might differ slightly from the price
-                   calculated from the corresponding yield by means of the other overload of this function. If the
-                   price from a constant yield is desired, it is advisable to use such other overload. */
+      /// <summary>
+      /// theoretical clean price
+      /// The default bond settlement is used for calculation.
+      /// </summary>
+      /// <remarks>
+      /// Warning: the theoretical price calculated from a flat term structure might differ slightly from the price
+      /// calculated from the corresponding yield by means of the other overload of this function. If the
+      /// price from a constant yield is desired, it is advisable to use such other overload.
+      /// </remarks>
       public double cleanPrice() { return dirtyPrice() - accruedAmount(settlementDate()); }
 
-      //! theoretical dirty price
-      /*! The default bond settlement is used for calculation.
-
-          \warning the theoretical price calculated from a flat term structure might differ slightly from the price
-                   calculated from the corresponding yield by means of the other overload of this function. If the
-                   price from a constant yield is desired, it is advisable to use such other overload.
-      */
+      /// <summary>
+      /// theoretical dirty price
+      /// The default bond settlement is used for calculation.
+      /// </summary>
+      /// <remarks>
+      /// Warning: the theoretical price calculated from a flat term structure might differ slightly from the price
+      /// calculated from the corresponding yield by means of the other overload of this function. If the
+      /// price from a constant yield is desired, it is advisable to use such other overload.
+      /// </remarks>
       public double dirtyPrice()
       {
          double currentNotional = notional(settlementDate());
