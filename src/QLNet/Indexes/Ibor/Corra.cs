@@ -21,7 +21,7 @@ namespace QLNet
 {
    /// <summary>
    /// CORRA (Canadian Overnight Repo Rate Average) rate fixed by the RBA.
-   /// See &lt;https://www.isda.org/2023/10/16/overview-of-the-canadian-derivatives-market/&gt;.
+   /// See https://www.isda.org/2023/10/16/overview-of-the-canadian-derivatives-market/.
    /// </summary>
    public class Corra : OvernightIndex
    {

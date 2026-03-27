@@ -28,7 +28,7 @@ namespace QLNet
    /// has the same holidays as the Tel Aviv stock-exchange.
    ///
    /// Holidays for the Tel-Aviv Stock Exchange
-   /// (data from &lt;http://www.tase.co.il&gt;):
+   /// (data from http://www.tase.co.il):
    /// Friday
    /// Saturday
    /// Other holidays for wich no rule is given

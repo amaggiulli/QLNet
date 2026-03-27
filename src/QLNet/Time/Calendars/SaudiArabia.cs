@@ -28,7 +28,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Tadawul financial market
-   /// (data from &lt;http://www.tadawul.com.sa&gt;):
+   /// (data from http://www.tadawul.com.sa):
    /// Thursdays
    /// Fridays
    /// National Day of Saudi Arabia, September 23rd

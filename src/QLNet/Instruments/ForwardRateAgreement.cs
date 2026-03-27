@@ -47,7 +47,7 @@ namespace QLNet
    /// forwardRate(). In this case, the strike variable in the
    /// constructor is irrelevant and will be ignored.
    ///
-   /// &lt;b&gt;Example: &lt;/b&gt;
+   /// Example:
    /// \link FRA.cs
    /// valuation of a forward-rate agreement
    /// \endlink

@@ -27,7 +27,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Iceland stock exchange
-   /// (data from &lt;http://www.icex.is/is/calendar?languageID=1&gt;):
+   /// (data from http://www.icex.is/is/calendar?languageID=1):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st (possibly moved to Monday)

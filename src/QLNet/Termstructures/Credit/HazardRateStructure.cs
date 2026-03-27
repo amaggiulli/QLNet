@@ -27,7 +27,7 @@ namespace QLNet
    /// <remarks>
    /// This abstract class acts as an adapter to
    /// DefaultProbabilityTermStructure allowing the programmer to implement
-   /// only the &lt;tt&gt;hazardRateImpl(Time)&lt;/tt&gt; method in derived classes.
+   /// only the <c>hazardRateImpl(Time)</c> method in derived classes.
    ///
    /// Survival/default probabilities and default densities are calculated
    /// from hazard rates.

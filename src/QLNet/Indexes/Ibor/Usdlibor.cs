@@ -24,7 +24,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// US Dollar LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// </remarks>
    public class USDLibor : Libor
    {

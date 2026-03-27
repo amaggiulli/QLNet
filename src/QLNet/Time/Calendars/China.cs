@@ -44,8 +44,8 @@ namespace QLNet
    /// Mid-Autumn Festival
    /// 70th anniversary of the victory of anti-Japaneses war
    ///
-   /// SSE data from &lt;http://www.sse.com.cn/&gt;
-   /// IB data from &lt;http://www.chinamoney.com.cn/&gt;
+   /// SSE data from http://www.sse.com.cn/
+   /// IB data from http://www.chinamoney.com.cn/
    /// </remarks>
    public class China : Calendar
    {

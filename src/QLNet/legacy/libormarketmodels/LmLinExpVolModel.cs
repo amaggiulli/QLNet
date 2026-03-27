@@ -34,7 +34,7 @@ namespace QLNet
    /// Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,
    /// Different Covariance Parameterizations of Libor Market Model and Joint
    /// Caps/Swaptions Calibration,
-   /// (&amp;lt;http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf&amp;gt;)
+   /// (http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf)
    /// </remarks>
    public class LmLinearExponentialVolatilityModel : LmVolatilityModel
    {

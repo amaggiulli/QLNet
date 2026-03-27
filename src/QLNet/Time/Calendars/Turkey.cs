@@ -28,8 +28,8 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Istanbul Stock Exchange:
-   /// (data from &lt;https://borsaistanbul.com/en/sayfa/3631/official-holidays&gt;) and
-   /// &lt;https://feiertagskalender.ch/index.php?geo=3539&amp;hl=en&gt;
+   /// (data from https://borsaistanbul.com/en/sayfa/3631/official-holidays) and
+   /// https://feiertagskalender.ch/index.php?geo=3539&amp;hl=en
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

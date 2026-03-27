@@ -30,7 +30,7 @@ namespace QLNet
    ///
    /// A. Sepp, Pricing European-Style Options under Jump Diffusion
    /// Processes with Stochastic Volatility: Applications of Fourier
-   /// Transform (&lt;http://math.ut.ee/~spartak/papers/stochjumpvols.pdf&gt;)
+   /// Transform (http://math.ut.ee/~spartak/papers/stochjumpvols.pdf)
    ///
    ///
    /// Test: the correctness of the returned value is tested by

@@ -52,8 +52,8 @@ namespace QLNet
    /// Harvest Moon Day
    ///
    /// Holidays for the Korea exchange
-   /// (data from &lt;http://www.krx.co.kr&gt; or
-   /// &lt;http://www.dooriworld.com/daishin/holiday/holiday.html&gt;):
+   /// (data from http://www.krx.co.kr or
+   /// http://www.dooriworld.com/daishin/holiday/holiday.html):
    /// Public holidays as listed above
    /// Year-end closing
    /// </remarks>

@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Note: This solver requires that the passed function object
-   /// implement a method &amp;lt;tt&amp;gt;Real derivative(Real)&amp;lt;/tt&amp;gt;.
+   /// implement a method <c>Real derivative(Real)</c>.
    /// </remarks>
    public class Newton : Solver1D
    {

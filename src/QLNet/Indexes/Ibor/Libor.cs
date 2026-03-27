@@ -24,7 +24,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// </remarks>
    public class Libor : IborIndex
    {
@@ -97,7 +97,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// One day deposit LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// </remarks>
    public class DailyTenorLibor : IborIndex
    {

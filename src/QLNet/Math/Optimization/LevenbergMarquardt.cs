@@ -27,8 +27,8 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// This implementation is based on MINPACK
-   /// (&amp;lt;http://www.netlib.org/minpack&amp;gt;,
-   /// &amp;lt;http://www.netlib.org/cephes/linalg.tgz&amp;gt;)
+   /// (http://www.netlib.org/minpack,
+   /// http://www.netlib.org/cephes/linalg.tgz)
    /// It has a built in fd scheme to compute
    /// the jacobian, which is used by default.
    /// If useCostFunctionsJacobian is true the

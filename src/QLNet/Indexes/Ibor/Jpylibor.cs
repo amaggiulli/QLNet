@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Japanese Yen LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// Warning: This is the rate fixed in London by ICE. Use TIBOR if
    /// you're interested in the Tokio fixing.
    /// </remarks>

@@ -27,7 +27,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Bratislava stock exchange
-   /// (data from &lt;http://www.bsse.sk/&gt;):
+   /// (data from http://www.bsse.sk/):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Pound Sterling LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// </remarks>
    public class GBPLibor : Libor
    {

@@ -25,7 +25,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Ukrainian stock exchange
-   /// (data from &lt;http://www.ukrse.kiev.ua/eng/&gt;):
+   /// (data from http://www.ukrse.kiev.ua/eng/):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

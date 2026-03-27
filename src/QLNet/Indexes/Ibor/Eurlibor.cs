@@ -59,7 +59,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Euro LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// Warning: This is the rate fixed in London by BBA. Use Euribor if
    /// you're interested in the fixing by the ECB.
    /// </remarks>
@@ -121,7 +121,7 @@ namespace QLNet
    /// <remarks>
    /// Euro O/N LIBOR fixed by ICE. It can be also used for T/N and S/N
    /// indexes, even if such indexes do not have ICE fixing.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// Warning: This is the rate fixed in London by ICE. Use Eonia if
    /// you're interested in the fixing by the ECB.
    /// </remarks>

@@ -21,7 +21,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Bkbm rate fixed by NZFMA.
-   /// See &amp;lt;http://www.nzfma.org/Site/data/default.aspx&amp;gt;.
+   /// See http://www.nzfma.org/Site/data/default.aspx.
    /// </remarks>
    public class Bkbm : IborIndex
    {

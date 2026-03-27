@@ -28,7 +28,7 @@ namespace QLNet
    /// <remarks>
    /// This abstract class acts as an adapter to YieldTermStructure
    /// allowing the programmer to implement only the
-   /// &lt;tt&gt;zeroYieldImpl(Time)&lt;/tt&gt; method in derived classes.
+   /// <c>zeroYieldImpl(Time)</c> method in derived classes.
    ///
    /// Discount and forward are calculated from zero yields.
    ///

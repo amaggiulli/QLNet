@@ -29,7 +29,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// This class implements the concept of Matrix as used in linear
-   /// algebra. As such, it is &amp;lt;b&amp;gt;not&amp;lt;/b&amp;gt; meant to be used as a
+   /// algebra. As such, it is not meant to be used as a
    /// container.
    /// </remarks>
    public class Matrix

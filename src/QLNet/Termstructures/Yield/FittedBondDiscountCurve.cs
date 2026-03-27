@@ -35,7 +35,7 @@ namespace QLNet
    /// implementation details. Developers thus need only derive new
    /// fitting methods from the latter.
    ///
-   /// &lt;b&gt; Example: &lt;/b&gt;
+   /// Example:
    /// \link FittedBondCurve.cpp
    /// compares various bond discount curve fitting methodologies
    /// \endlink

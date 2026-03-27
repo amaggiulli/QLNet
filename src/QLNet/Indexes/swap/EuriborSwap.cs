@@ -27,7 +27,7 @@ namespace QLNet
    /// Reuters and Intercapital Brokers at 11am Frankfurt.
    /// Annual 30/360 vs 6M Euribor, 1Y vs 3M Euribor.
    /// Reuters page ISDAFIX2 or EURSFIXA=.
-   /// Further info can be found at &amp;lt;http://www.isda.org/fix/isdafix.html&amp;gt; or
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
    /// Reuters page ISDAFIX.
    /// </remarks>
    public  class EuriborSwapIsdaFixA : SwapIndex
@@ -73,7 +73,7 @@ namespace QLNet
    /// Reuters and Intercapital Brokers at 12am Frankfurt.
    /// Annual 30/360 vs 6M Euribor, 1Y vs 3M Euribor.
    /// Reuters page ISDAFIX2 or EURSFIXB=.
-   /// Further info can be found at &amp;lt;http://www.isda.org/fix/isdafix.html&amp;gt; or
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
    /// Reuters page ISDAFIX.
    /// </remarks>
    public class EuriborSwapIsdaFixB : SwapIndex
@@ -119,7 +119,7 @@ namespace QLNet
    /// Euribor Swap indexes published by IFR Markets and
    /// distributed by Reuters page TGM42281 and by Telerate.
    /// Annual 30/360 vs 6M Euribor, 1Y vs 3M Euribor.
-   /// For more info see &amp;lt;http://www.ifrmarkets.com&amp;gt;.
+   /// For more info see http://www.ifrmarkets.com.
    /// </remarks>
    public class EuriborSwapIfrFix : SwapIndex
    {

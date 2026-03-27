@@ -28,7 +28,7 @@ namespace QLNet
    /// Reuters and Intercapital Brokers at 11am London.
    /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
    /// Reuters page ISDAFIX4 or CHFSFIX=.
-   /// Further info can be found at &amp;lt;http://www.isda.org/fix/isdafix.html&amp;gt; or
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
    /// Reuters page ISDAFIX.
    /// </remarks>
    public class ChfLiborSwapIsdaFix : SwapIndex

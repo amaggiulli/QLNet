@@ -25,7 +25,7 @@ namespace QLNet
    /// <remarks>
    /// All copies of an instance of this class refer to the same observable by means of a relinkable smart pointer. When such
    /// pointer is relinked to another observable, the change will be propagated to all the copies.
-   /// &amp;lt;tt&amp;gt;registerAsObserver&amp;lt;/tt&amp;gt; is not needed since C# does automatic garbage collection
+   /// <c>registerAsObserver</c> is not needed since C# does automatic garbage collection
    /// </remarks>
 
    public class Handle<T> where T : class, IObservable

@@ -21,7 +21,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Nzocr (New Zealand official cash rate) rate fixed by the RBNZ.
-   /// See &amp;lt;http://www.rbnz.govt.nz/monetary-policy/official-cash-rate-decisions&amp;gt;.
+   /// See http://www.rbnz.govt.nz/monetary-policy/official-cash-rate-decisions.
    /// </remarks>
    public class Nzocr : OvernightIndex
    {

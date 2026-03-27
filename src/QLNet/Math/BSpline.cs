@@ -24,7 +24,7 @@ namespace QLNet
    /// <remarks>
    /// Follows treatment and notation from:
    /// Weisstein, Eric W. "B-Spline." From MathWorld--A Wolfram Web
-   /// Resource.  &amp;lt;http://mathworld.wolfram.com/B-Spline.html&amp;gt;
+   /// Resource.  http://mathworld.wolfram.com/B-Spline.html
    /// \f$ (p+1) \f$-th order B-spline (or p degree polynomial) basis
    /// functions \f$ N_{i,p}(x), i = 0,1,2 \ldots n \f$, with \f$ n+1 \f$
    /// control points, or equivalently, an associated knot vector

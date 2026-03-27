@@ -24,7 +24,7 @@ namespace QLNet
    /// Russian calendar
    /// </summary>
    /// <remarks>
-   /// Public holidays (see &lt;http://www.cbr.ru/eng/&gt;:):
+   /// Public holidays (see http://www.cbr.ru/eng/:):
    /// Saturdays
    /// Sundays
    /// New Year holidays and Christmas, January 1st to 8th
@@ -38,7 +38,7 @@ namespace QLNet
    /// Unity Day, November 4th (possibly moved to Monday)
    ///
    /// Holidays for the Moscow Exchange (MOEX) taken from
-   /// &lt;http://moex.com/s726&gt; and related pages.  These holidays are
+   /// http://moex.com/s726 and related pages.  These holidays are
    /// &lt;em&gt;not&lt;/em&gt; consistent year-to-year, may or may not correlate
    /// to public holidays, and are only available for dates since the
    /// introduction of the MOEX 'brand' (a merger of the stock and

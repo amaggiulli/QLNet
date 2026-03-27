@@ -28,7 +28,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Mexican stock exchange
-   /// (data from &lt;http://www.bmv.com.mx/&gt;):
+   /// (data from http://www.bmv.com.mx/):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

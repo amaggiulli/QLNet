@@ -29,7 +29,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Singapore exchange
-   /// (data from &lt;http://www.sgx.com/wps/portal/sgxweb/home/trading/securities/trading_hours_calendar&gt;):
+   /// (data from http://www.sgx.com/wps/portal/sgxweb/home/trading/securities/trading_hours_calendar):
    /// Saturdays
    /// Sundays
    /// New Year's day, January 1st

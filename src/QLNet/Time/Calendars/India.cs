@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the National Stock Exchange
-   /// (data from &lt;http://www.nse-india.com/&gt;):
+   /// (data from http://www.nse-india.com/):
    /// Saturdays
    /// Sundays
    /// Republic Day, January 26th

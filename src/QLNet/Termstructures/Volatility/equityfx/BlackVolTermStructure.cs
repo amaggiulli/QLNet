@@ -188,7 +188,7 @@ namespace QLNet
    /// <remarks>
    /// This abstract class acts as an adapter to BlackVolTermStructure
    /// allowing the programmer to implement only the
-   /// &amp;lt;tt&amp;gt;blackVolImpl(Time, Real, bool)&amp;lt;/tt&amp;gt; method in derived classes.
+   /// <c>blackVolImpl(Time, Real, bool)</c> method in derived classes.
    /// Volatility are assumed to be expressed on an annual basis.
    /// </remarks>
 
@@ -238,7 +238,7 @@ namespace QLNet
    /// <remarks>
    /// This abstract class acts as an adapter to VolTermStructure allowing
    /// the programmer to implement only the
-   /// &amp;lt;tt&amp;gt;blackVarianceImpl(Time, Real, bool)&amp;lt;/tt&amp;gt; method in derived
+   /// <c>blackVarianceImpl(Time, Real, bool)</c> method in derived
    /// classes.
    /// Volatility are assumed to be expressed on an annual basis.
    /// </remarks>

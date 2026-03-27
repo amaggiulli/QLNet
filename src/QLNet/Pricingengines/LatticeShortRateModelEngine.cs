@@ -25,7 +25,7 @@ namespace QLNet
    /// Engine for a short-rate model specialized on a lattice
    /// </summary>
    /// <remarks>
-   /// Derived engines only need to implement the &amp;lt;tt&amp;gt;calculate()&amp;lt;/tt&amp;gt;
+   /// Derived engines only need to implement the <c>calculate()</c>
    /// method
    /// </remarks>
    public class LatticeShortRateModelEngine<ArgumentsType, ResultsType>

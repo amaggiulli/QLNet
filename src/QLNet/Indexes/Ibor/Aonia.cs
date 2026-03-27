@@ -21,7 +21,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Aonia (Australia Overnight Index Average) rate fixed by the RBA.
-   /// See &amp;lt;http://www.isda.org/publications/pdf/Supplement-13-to-2000DefinitionsAnnex.pdf&amp;gt;.
+   /// See http://www.isda.org/publications/pdf/Supplement-13-to-2000DefinitionsAnnex.pdf.
    /// </remarks>
    public class Aonia : OvernightIndex
    {

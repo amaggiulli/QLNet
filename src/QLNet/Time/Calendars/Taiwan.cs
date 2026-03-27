@@ -28,7 +28,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Taiwan stock exchange
-   /// (data from &lt;http://www.tse.com.tw/en/trading/trading_days.php&gt;):
+   /// (data from http://www.tse.com.tw/en/trading/trading_days.php):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

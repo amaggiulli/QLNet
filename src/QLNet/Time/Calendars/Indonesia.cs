@@ -28,7 +28,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Indonesia stock exchange
-   /// (data from &lt;http://www.idx.co.id/&gt;):
+   /// (data from http://www.idx.co.id/):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

@@ -21,7 +21,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Bbsw rate fixed by AFMA.
-   /// See &amp;lt;http://www.afma.com.au/data/BBSW&amp;gt;.
+   /// See http://www.afma.com.au/data/BBSW.
    /// </remarks>
    public class Bbsw : IborIndex
    {

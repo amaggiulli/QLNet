@@ -47,7 +47,7 @@ namespace QLNet
    /// between the settlementDate and the deliveryDate. (Note
    /// the two different discount curves used in b. and c.)
    ///
-   /// &lt;b&gt;Example: &lt;/b&gt;
+   /// Example:
    /// \link Repo.cpp
    /// valuation of a repo on a fixed-rate bond
    /// \endlink

@@ -49,7 +49,7 @@ namespace QLNet
    /// Mid-autumn Festival
    /// Chung Yeung Festival
    ///
-   /// Data from &lt;http://www.hkex.com.hk&gt;
+   /// Data from http://www.hkex.com.hk
    /// </remarks>
    public class HongKong : Calendar
    {

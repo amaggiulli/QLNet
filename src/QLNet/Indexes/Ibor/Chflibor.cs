@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Swiss Franc LIBOR fixed by ICE.
-   /// See &amp;lt;https://www.theice.com/marketdata/reports/170&amp;gt;.
+   /// See https://www.theice.com/marketdata/reports/170.
    /// Warning: This is the rate fixed in London by BBA. Use ZIBOR if
    /// you're interested in the Zurich fixing.
    /// </remarks>

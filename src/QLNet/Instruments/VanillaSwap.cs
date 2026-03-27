@@ -26,8 +26,8 @@ namespace QLNet
    /// Plain-vanilla swap: fix vs floating leg
    /// </summary>
    /// <remarks>
-   /// Warning: if &lt;tt&gt;Settings::includeReferenceDateCashFlows()&lt;/tt&gt;
-   /// is set to &lt;tt&gt;true&lt;/tt&gt;, payments occurring at the
+   /// Warning: if <c>Settings::includeReferenceDateCashFlows()</c>
+   /// is set to <c>true</c>, payments occurring at the
    /// settlement date of the swap might be included in the
    /// NPV and therefore affect the fair-rate and
    /// fair-spread calculation. This might not be what you

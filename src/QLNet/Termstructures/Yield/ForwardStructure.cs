@@ -26,7 +26,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// This abstract class acts as an adapter to YieldTermStructure allowing
-   /// the programmer to implement only the &lt;tt&gt;forwardImpl(Time)&lt;/tt&gt; method
+   /// the programmer to implement only the <c>forwardImpl(Time)</c> method
    /// in derived classes.
    ///
    /// Zero yields and discounts are calculated from forwards.

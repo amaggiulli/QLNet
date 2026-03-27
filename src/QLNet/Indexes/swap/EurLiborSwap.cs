@@ -27,7 +27,7 @@ namespace QLNet
    /// Reuters and Intercapital Brokers at 10am London.
    /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
    /// Reuters page ISDAFIX2 or EURSFIXLA=.
-   /// Further info can be found at &amp;lt;http://www.isda.org/fix/isdafix.html&amp;gt; or
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
    /// Reuters page ISDAFIX.
    /// </remarks>
    public class EurLiborSwapIsdaFixA : SwapIndex
@@ -73,7 +73,7 @@ namespace QLNet
    /// Reuters and Intercapital Brokers at 11am London.
    /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
    /// Reuters page ISDAFIX2 or EURSFIXLB=.
-   /// Further info can be found at &amp;lt;http://www.isda.org/fix/isdafix.html&amp;gt; or
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
    /// Reuters page ISDAFIX.
    /// </remarks>
    public class EurLiborSwapIsdaFixB : SwapIndex
@@ -118,7 +118,7 @@ namespace QLNet
    /// EUR Libor Swap indexes published by IFR Markets and
    /// distributed by Reuters page TGM42281 and by Telerate.
    /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
-   /// For more info see &amp;lt;http://www.ifrmarkets.com&amp;gt;.
+   /// For more info see http://www.ifrmarkets.com.
    /// </remarks>
    public class EurLiborSwapIfrFix : SwapIndex
    {
