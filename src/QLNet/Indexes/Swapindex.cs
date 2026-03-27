@@ -87,8 +87,9 @@ namespace QLNet
       public Handle<YieldTermStructure> forwardingTermStructure() { return iborIndex_.forwardingTermStructure(); }
       public Handle<YieldTermStructure> discountingTermStructure() { return discount_; }
       public bool exogenousDiscount() { return exogenousDiscount_; }
-      // \warning Relinking the term structure underlying the index will not have effect on the returned swap.
-      // recheck
+      /// <remarks>
+      /// Warning: relinking the term structure underlying the index will not have effect on the returned swap.
+      /// </remarks>
       public VanillaSwap underlyingSwap(Date fixingDate)
       {
          Utils.QL_REQUIRE(fixingDate != null, () => "null fixing date");

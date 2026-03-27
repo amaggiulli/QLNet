@@ -140,10 +140,13 @@ namespace QLNet
       public Handle<ZeroInflationIndex> zeroInflationIndex() { return zii_; }
 
 
-      //! inspectors
-      /*! \note you don't know if price() is a cap or a floor
-               without checking the ZeroInflation ATM level.
-      */
+      /// <summary>
+      /// inspectors
+      /// </summary>
+      /// <remarks>
+      /// Note: you don't know if price() is a cap or a floor
+      /// without checking the ZeroInflation ATM level.
+      /// </remarks>
       public virtual double nominal() {return nominal_;}
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
 

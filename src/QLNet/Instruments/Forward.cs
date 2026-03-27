@@ -97,10 +97,13 @@ namespace QLNet
       public abstract double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve);
 
       // Calculations
-      //! forward value/price of underlying, discounting income/dividends
-      /*! \note if this is a bond forward price, is must be a dirty
-              forward price.
-      */
+      /// <summary>
+      /// forward value/price of underlying, discounting income/dividends
+      /// </summary>
+      /// <remarks>
+      /// Note: if this is a bond forward price, is must be a dirty
+      /// forward price.
+      /// </remarks>
       public virtual double forwardValue()
       {
          calculate();

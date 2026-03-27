@@ -144,11 +144,14 @@ namespace QLNet
       public double adjustedFixing() { return (rate() - spread()) / fixedRate(); }
       //! allows for a different interpolation from the index
       public override double indexFixing() { return indexFixing(fixingDate()); }
-      //! base value for the CPI index
-      /*! \warning make sure that the interpolation used to create
-                  this is what you are using for the fixing,
-                  i.e. the observationInterpolation.
-      */
+      /// <summary>
+      /// base value for the CPI index
+      /// </summary>
+      /// <remarks>
+      /// Warning: make sure that the interpolation used to create
+      /// this is what you are using for the fixing,
+      /// i.e. the observationInterpolation.
+      /// </remarks>
       public double baseCPI() { return baseCPI_; }
       //! how do you observe the index?  as-is, flat, linear?
       public InterpolationType observationInterpolation() { return observationInterpolation_; }

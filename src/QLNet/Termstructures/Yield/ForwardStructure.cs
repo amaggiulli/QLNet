@@ -59,17 +59,19 @@ namespace QLNet
 
       //! instantaneous forward-rate calculation
       protected abstract double forwardImpl(double s);
-      /*! Returns the zero yield rate for the given date calculating it
-          from the instantaneous forward rate \f$ f(t) \f$ as
-          \f[
-          z(t) = \int_0^t f(\tau) d\tau
-          \f]
-
-          \warning This default implementation uses an highly inefficient
-                   and possibly wildly inaccurate numerical integration.
-                   Derived classes should override it if a more efficient
-                   implementation is available.
-      */
+      /// <summary>
+      /// Returns the zero yield rate for the given date calculating it
+      /// from the instantaneous forward rate \f$ f(t) \f$ as
+      /// \f[
+      /// z(t) = \int_0^t f(\tau) d\tau
+      /// \f]
+      /// </summary>
+      /// <remarks>
+      /// Warning: This default implementation uses an highly inefficient
+      /// and possibly wildly inaccurate numerical integration.
+      /// Derived classes should override it if a more efficient
+      /// implementation is available.
+      /// </remarks>
       protected virtual double zeroYieldImpl(double t)
       {
          if (t.IsEqual(0.0))
