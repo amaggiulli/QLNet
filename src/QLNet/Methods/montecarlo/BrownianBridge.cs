@@ -52,7 +52,9 @@ namespace QLNet
       private List<double> leftWeight_, rightWeight_, stdDev_;
 
 
-      //! unit-time path
+      /// <summary>
+      /// unit-time path
+      /// </summary>
       public BrownianBridge(int steps)
       {
          size_ = steps;
@@ -69,8 +71,12 @@ namespace QLNet
          initialize();
       }
 
-      //! generic times
-      /*! \note the starting time of the path is assumed to be 0 and must not be included */
+      /// <summary>
+      /// generic times
+      /// </summary>
+      /// <remarks>
+      /// Note: the starting time of the path is assumed to be 0 and must not be included
+      /// </remarks>
       public BrownianBridge(List<double> times)
       {
          size_ = times.Count;

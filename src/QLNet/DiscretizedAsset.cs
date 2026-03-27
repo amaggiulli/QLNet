@@ -146,12 +146,14 @@ namespace QLNet
          postAdjustValues();
       }
 
-      /*! This method returns the times at which the numerical
-          method should stop while rolling back the asset. Typical
-          examples include payment times, exercise times and such.
-
-          \note The returned values are not guaranteed to be sorted.
-      */
+      /// <summary>
+      /// This method returns the times at which the numerical
+      /// method should stop while rolling back the asset. Typical
+      /// examples include payment times, exercise times and such.
+      /// </summary>
+      /// <remarks>
+      /// Note: The returned values are not guaranteed to be sorted.
+      /// </remarks>
       public abstract List<double> mandatoryTimes();
 
       /*! This method checks whether the asset was rolled at the given time. */

@@ -26,10 +26,11 @@ namespace QLNet
    public class Payoff
    {
       // Payoff interface
-      /*! \warning This method is used for output and comparison between
-              payoffs. It is <b>not</b> meant to be used for writing
-              switch-on-type code.
-      */
+      /// <remarks>
+      /// Warning: This method is used for output and comparison between
+      /// payoffs. It is not meant to be used for writing
+      /// switch-on-type code.
+      /// </remarks>
       public virtual string name() { throw new NotImplementedException(); }
       public virtual string description() { throw new NotImplementedException(); }
       public virtual double value(double price) { throw new NotImplementedException(); }

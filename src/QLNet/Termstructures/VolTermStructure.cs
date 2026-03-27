@@ -32,10 +32,11 @@ namespace QLNet
    {
       #region Constructors
 
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected VolatilityTermStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(dc)

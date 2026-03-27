@@ -23,10 +23,13 @@ namespace QLNet
 {
    public class NewtonSafe : Solver1D
    {
-      //! safe %Newton 1-D solver
-      /*! \note This solver requires that the passed function object
-                implement a method <tt>Real derivative(Real)</tt>.
-      */
+      /// <summary>
+      /// safe %Newton 1-D solver
+      /// </summary>
+      /// <remarks>
+      /// Note: This solver requires that the passed function object
+      /// implement a method <c>Real derivative(Real)</c>.
+      /// </remarks>
       protected override double solveImpl(ISolver1d f, double xAccuracy)
       {
          /* The implementation of the algorithm was inspired by Press, Teukolsky, Vetterling, and Flannery,

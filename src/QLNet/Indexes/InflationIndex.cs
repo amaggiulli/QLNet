@@ -163,9 +163,10 @@ namespace QLNet
          zeroInflation_.registerWith(update);
       }
 
-      /*! \warning the forecastTodaysFixing parameter (required by
-                   the Index interface) is currently ignored.
-      */
+      /// <remarks>
+      /// Warning: the forecastTodaysFixing parameter (required by
+      /// the Index interface) is currently ignored.
+      /// </remarks>
       public override double fixing(Date aFixingDate, bool forecastTodaysFixing = false)
       {
          if (!needsForecast(aFixingDate))

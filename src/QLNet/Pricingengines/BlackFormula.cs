@@ -21,10 +21,13 @@ namespace QLNet
 
    public partial class Utils
    {
-      /*! Black 1976 formula
-        \warning instead of volatility it uses standard deviation,
-                 i.e. volatility*sqrt(timeToMaturity)
-      */
+      /// <summary>
+      /// Black 1976 formula
+      /// </summary>
+      /// <remarks>
+      /// Warning: instead of volatility it uses standard deviation,
+      /// i.e. volatility*sqrt(timeToMaturity)
+      /// </remarks>
       public static double blackFormula(Option.Type optionType,
                                         double strike,
                                         double forward,
@@ -275,10 +278,13 @@ namespace QLNet
       }
 
 
-      /*! Black 1976 probability of being in the money (in the bond martingale measure), i.e. N(d2).
-            It is a risk-neutral probability, not the real world one.
-             \warning instead of volatility it uses standard deviation, i.e. volatility*sqrt(timeToMaturity)
-      */
+      /// <summary>
+      /// Black 1976 probability of being in the money (in the bond martingale measure), i.e. N(d2).
+      /// It is a risk-neutral probability, not the real world one.
+      /// </summary>
+      /// <remarks>
+      /// Warning: instead of volatility it uses standard deviation, i.e. volatility*sqrt(timeToMaturity)
+      /// </remarks>
       public static double blackFormulaCashItmProbability(Option.Type optionType,
                                                           double strike,
                                                           double forward,
@@ -307,13 +313,16 @@ namespace QLNet
                                                payoff.strike(), forward, stdDev, displacement);
       }
 
-      /*! Black 1976 formula for standard deviation derivative
-          \warning instead of volatility it uses standard deviation, i.e.
-                   volatility*sqrt(timeToMaturity), and it returns the
-                   derivative with respect to the standard deviation.
-                   If T is the time to maturity Black vega would be
-                   blackStdDevDerivative(strike, forward, stdDev)*sqrt(T)
-      */
+      /// <summary>
+      /// Black 1976 formula for standard deviation derivative
+      /// </summary>
+      /// <remarks>
+      /// Warning: instead of volatility it uses standard deviation, i.e.
+      /// volatility*sqrt(timeToMaturity), and it returns the
+      /// derivative with respect to the standard deviation.
+      /// If T is the time to maturity Black vega would be
+      /// blackStdDevDerivative(strike, forward, stdDev)*sqrt(T)
+      /// </remarks>
       public static double blackFormulaStdDevDerivative(double strike,
                                                         double forward,
                                                         double stdDev,
@@ -358,11 +367,14 @@ namespace QLNet
          return blackFormulaStdDevDerivative(payoff.strike(), forward, stdDev, discount, displacement);
       }
 
-      /*! Black 1976 formula for second derivative by standard deviation
-            \warning instead of volatility it uses standard deviation, i.e.
-             volatility*sqrt(timeToMaturity), and it returns the
-             derivative with respect to the standard deviation.
-      */
+      /// <summary>
+      /// Black 1976 formula for second derivative by standard deviation
+      /// </summary>
+      /// <remarks>
+      /// Warning: instead of volatility it uses standard deviation, i.e.
+      /// volatility*sqrt(timeToMaturity), and it returns the
+      /// derivative with respect to the standard deviation.
+      /// </remarks>
       public static double blackFormulaStdDevSecondDerivative(double strike,
                                                               double forward,
                                                               double stdDev,
@@ -396,13 +408,15 @@ namespace QLNet
          return blackFormulaStdDevSecondDerivative(payoff.strike(), forward, stdDev, discount, displacement);
       }
 
-      /*! Black style formula when forward is normal rather than
-         log-normal. This is essentially the model of Bachelier.
-
-          \warning Bachelier model needs absolute volatility, not
-             percentage volatility. Standard deviation is
-             absoluteVolatility*sqrt(timeToMaturity)
-      */
+      /// <summary>
+      /// Black style formula when forward is normal rather than
+      /// log-normal. This is essentially the model of Bachelier.
+      /// </summary>
+      /// <remarks>
+      /// Warning: Bachelier model needs absolute volatility, not
+      /// percentage volatility. Standard deviation is
+      /// absoluteVolatility*sqrt(timeToMaturity)
+      /// </remarks>
       public static double bachelierBlackFormula(Option.Type optionType,
                                                  double strike,
                                                  double forward,
@@ -517,13 +531,16 @@ namespace QLNet
 
       }
 
-      /*! Bachelier formula for standard deviation derivative
-            \warning instead of volatility it uses standard deviation, i.e.
-             volatility*sqrt(timeToMaturity), and it returns the
-             derivative with respect to the standard deviation.
-             If T is the time to maturity Black vega would be
-             blackStdDevDerivative(strike, forward, stdDev)*sqrt(T)
-      */
+      /// <summary>
+      /// Bachelier formula for standard deviation derivative
+      /// </summary>
+      /// <remarks>
+      /// Warning: instead of volatility it uses standard deviation, i.e.
+      /// volatility*sqrt(timeToMaturity), and it returns the
+      /// derivative with respect to the standard deviation.
+      /// If T is the time to maturity Black vega would be
+      /// blackStdDevDerivative(strike, forward, stdDev)*sqrt(T)
+      /// </remarks>
 
       public static double bachelierBlackFormulaStdDevDerivative(double strike,
                                                                  double forward,

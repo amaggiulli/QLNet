@@ -62,9 +62,10 @@ namespace QLNet
          moreArgs.rebate = rebate_;
       }
 
-      /*! \warning see VanillaOption for notes on implied-volatility
-                  calculation.
-      */
+      /// <remarks>
+      /// Warning: see VanillaOption for notes on implied-volatility
+      /// calculation.
+      /// </remarks>
       public double impliedVolatility(double targetValue,
                                       GeneralizedBlackScholesProcess process,
                                       double accuracy = 1.0e-4,
