@@ -45,11 +45,20 @@ namespace QLNet
    */
    public class Poland : Calendar
    {
-      //! Polish calendars
+      /// <summary>
+      /// Available Polish calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,  // Poland Settlement
-         Wse          // Warsaw stock exchange
+         /// <summary>
+         /// Poland settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Warsaw Stock Exchange calendar.
+         /// </summary>
+         Wse
       }
 
       public Poland() : this(Market.Settlement) { }

@@ -190,15 +190,40 @@ namespace QLNet
       }
 
 
-      //! US calendars
+      /// <summary>
+      /// Available United States calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,     //!< generic settlement calendar
-         NYSE,           //!< New York stock exchange calendar
-         GovernmentBond, //!< government-bond calendar
-         NERC,            //!< off-peak days for NERC
-         LiborImpact,    //!< Libor impact calendar
-         FederalReserve  //!< Federal Reserve Bankwire System
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// New York Stock Exchange calendar.
+         /// </summary>
+         NYSE,
+
+         /// <summary>
+         /// Government bond calendar.
+         /// </summary>
+         GovernmentBond,
+
+         /// <summary>
+         /// Off-peak days for NERC.
+         /// </summary>
+         NERC,
+
+         /// <summary>
+         /// Libor impact calendar.
+         /// </summary>
+         LiborImpact,
+
+         /// <summary>
+         /// Federal Reserve Bankwire System calendar.
+         /// </summary>
+         FederalReserve
       }
 
       public UnitedStates() : this(Market.Settlement) { }

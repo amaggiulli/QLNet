@@ -45,10 +45,20 @@ namespace QLNet
    */
    public class Romania : Calendar
    {
+      /// <summary>
+      /// Available Romanian calendar markets.
+      /// </summary>
       public enum Market
       {
-         Public,     //!< Public holidays
-         BVB         //!< Bucharest stock-exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Public,
+
+         /// <summary>
+         /// Bucharest Stock Exchange calendar.
+         /// </summary>
+         BVB
       }
 
       public Romania() : this(Market.BVB) { }

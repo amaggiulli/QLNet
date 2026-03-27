@@ -64,10 +64,20 @@ namespace QLNet
    */
    public class SouthKorea : Calendar
    {
+      /// <summary>
+      /// Available South Korean calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,  //!< Public holidays
-         KRX          //!< Korea exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Korea Exchange calendar.
+         /// </summary>
+         KRX
       }
 
       public SouthKorea() : this(Market.KRX) { }

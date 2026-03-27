@@ -22,12 +22,25 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! when you observe an index, how do you interpolate between fixings?
+   /// <summary>
+   /// Describes how index values are interpolated between fixings when an index is observed.
+   /// </summary>
    public enum InterpolationType
    {
-      AsIndex,   //!< same interpolation as index
-      Flat,      //!< flat from previous fixing
-      Linear     //!< linearly between bracketing fixings
+      /// <summary>
+      /// Uses the same interpolation as the index.
+      /// </summary>
+      AsIndex,
+
+      /// <summary>
+      /// Uses a flat interpolation from the previous fixing.
+      /// </summary>
+      Flat,
+
+      /// <summary>
+      /// Interpolates linearly between the bracketing fixings.
+      /// </summary>
+      Linear
    }
 
    //! %Coupon paying the performance of a CPI (zero inflation) index

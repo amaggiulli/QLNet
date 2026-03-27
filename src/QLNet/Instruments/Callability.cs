@@ -23,8 +23,21 @@ namespace QLNet
    //! %instrument callability
    public class Callability : Event
    {
-      //! type of the callability
-      public enum Type { Call, Put }
+      /// <summary>
+      /// Type of the callability.
+      /// </summary>
+      public enum Type
+      {
+         /// <summary>
+         /// Callable instrument.
+         /// </summary>
+         Call,
+
+         /// <summary>
+         /// Puttable instrument.
+         /// </summary>
+         Put
+      }
 
       public Callability(Bond.Price price, Type type, Date date)
       {

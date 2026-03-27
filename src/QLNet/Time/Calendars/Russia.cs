@@ -47,10 +47,20 @@ namespace QLNet
    */
    public class Russia : Calendar
    {
+      /// <summary>
+      /// Available Russian calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,     //!< generic settlement calendar
-         MOEX            //!< Moscow Exchange calendar
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Moscow Exchange calendar.
+         /// </summary>
+         MOEX
       }
 
       public Russia() : this(Market.Settlement) { }

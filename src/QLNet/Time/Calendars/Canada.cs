@@ -59,10 +59,20 @@ namespace QLNet
    */
    public class Canada : Calendar
    {
+      /// <summary>
+      /// Available Canadian calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,       //!< generic settlement calendar
-         TSX               //!< Toronto stock exchange calendar
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Toronto Stock Exchange calendar.
+         /// </summary>
+         TSX
       }
 
       public Canada() : this(Market.Settlement) { }

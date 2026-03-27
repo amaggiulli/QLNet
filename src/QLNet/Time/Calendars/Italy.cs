@@ -62,11 +62,20 @@ namespace QLNet
    */
    public class Italy : Calendar
    {
-      //! Italian calendars
+      /// <summary>
+      /// Available Italian calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,     //!< generic settlement calendar
-         Exchange        //!< Milan stock-exchange calendar
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Milan Stock Exchange calendar.
+         /// </summary>
+         Exchange
       }
 
       public Italy() : this(Market.Settlement) { }

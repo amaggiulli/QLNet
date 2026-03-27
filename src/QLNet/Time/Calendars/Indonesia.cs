@@ -56,11 +56,25 @@ namespace QLNet
    */
    public class Indonesia : Calendar
    {
+      /// <summary>
+      /// Available Indonesian calendar markets.
+      /// </summary>
       public enum Market
       {
-         BEJ,  //!< Jakarta stock exchange (merged into IDX)
-         JSX,  //!< Jakarta stock exchange (merged into IDX)
-         IDX   //!< Indonesia stock exchange
+         /// <summary>
+         /// Jakarta Stock Exchange calendar (merged into IDX).
+         /// </summary>
+         BEJ,
+
+         /// <summary>
+         /// Jakarta Stock Exchange calendar (merged into IDX).
+         /// </summary>
+         JSX,
+
+         /// <summary>
+         /// Indonesia Stock Exchange calendar.
+         /// </summary>
+         IDX
       }
 
       public Indonesia() : this(Market.IDX) { }

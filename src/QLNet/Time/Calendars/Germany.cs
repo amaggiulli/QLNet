@@ -109,14 +109,35 @@ namespace QLNet
    */
    public class Germany : Calendar
    {
-      //! German calendars
+      /// <summary>
+      /// Available German calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,             //!< generic settlement calendar
-         FrankfurtStockExchange, //!< Frankfurt stock-exchange
-         Xetra,                  //!< Xetra
-         Eurex,                  //!< Eurex
-         Euwax                   //!< Euwax
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Frankfurt Stock Exchange calendar.
+         /// </summary>
+         FrankfurtStockExchange,
+
+         /// <summary>
+         /// Xetra calendar.
+         /// </summary>
+         Xetra,
+
+         /// <summary>
+         /// Eurex calendar.
+         /// </summary>
+         Eurex,
+
+         /// <summary>
+         /// Euwax calendar.
+         /// </summary>
+         Euwax
       }
 
       public Germany() : this(Market.FrankfurtStockExchange) { }

@@ -50,10 +50,20 @@ namespace QLNet
    */
    public class Cyprus : Calendar
    {
+      /// <summary>
+      /// Available Cyprus calendar markets.
+      /// </summary>
       public enum Market
       {
-         Public,     //!< Public holidays
-         CSE        //!< Cyprus stock-exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Public,
+
+         /// <summary>
+         /// Cyprus Stock Exchange calendar.
+         /// </summary>
+         CSE
       }
       public Cyprus() : this(Market.CSE) { }
 

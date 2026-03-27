@@ -23,8 +23,29 @@ namespace QLNet
    //! Abstract boundary condition class for finite difference problems
    public class BoundaryCondition<Operator> where Operator : IOperator
    {
-      //! \todo Generalize for n-dimensional conditions
-      public enum Side { None, Upper, Lower }
+      /// <summary>
+      /// Identifies the side of the boundary condition.
+      /// </summary>
+      /// <remarks>
+      /// TODO: Generalize for n-dimensional conditions.
+      /// </remarks>
+      public enum Side
+      {
+         /// <summary>
+         /// No side specified.
+         /// </summary>
+         None,
+
+         /// <summary>
+         /// Upper side.
+         /// </summary>
+         Upper,
+
+         /// <summary>
+         /// Lower side.
+         /// </summary>
+         Lower
+      }
 
       // interface
       /*! This method modifies an operator \f$ L \f$ before it is

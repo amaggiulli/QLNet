@@ -22,10 +22,35 @@ namespace QLNet
 {
    public static partial class MatrixUtilitites
    {
-      //! algorithm used for matricial pseudo square root
+      /// <summary>
+      /// Algorithm used for the matrix pseudo square root.
+      /// </summary>
       public enum SalvagingAlgorithm
       {
-         None, Spectral, Hypersphere, LowerDiagonal, Higham
+         /// <summary>
+         /// No salvaging algorithm.
+         /// </summary>
+         None,
+
+         /// <summary>
+         /// Spectral salvaging algorithm.
+         /// </summary>
+         Spectral,
+
+         /// <summary>
+         /// Hypersphere salvaging algorithm.
+         /// </summary>
+         Hypersphere,
+
+         /// <summary>
+         /// Lower-diagonal salvaging algorithm.
+         /// </summary>
+         LowerDiagonal,
+
+         /// <summary>
+         /// Higham salvaging algorithm.
+         /// </summary>
+         Higham
       }
 
       public static void normalizePseudoRoot(Matrix matrix, Matrix pseudo)

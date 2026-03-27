@@ -47,10 +47,20 @@ namespace QLNet
    */
    public class Greece : Calendar
    {
+      /// <summary>
+      /// Available Greek calendar markets.
+      /// </summary>
       public enum Market
       {
-         Public,     //!< Public holidays
-         ASE        //!< Athens stock-exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Public,
+
+         /// <summary>
+         /// Athens Stock Exchange calendar.
+         /// </summary>
+         ASE
       }
       public Greece() : this(Market.ASE) { }
 

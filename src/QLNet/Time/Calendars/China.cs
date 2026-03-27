@@ -52,10 +52,20 @@ namespace QLNet
    */
    public class China : Calendar
    {
+      /// <summary>
+      /// Available Chinese calendar markets.
+      /// </summary>
       public enum Market
       {
-         SSE,    //!< Shanghai stock exchange
-         IB      //!< Interbank calendar
+         /// <summary>
+         /// Shanghai Stock Exchange calendar.
+         /// </summary>
+         SSE,
+
+         /// <summary>
+         /// Interbank calendar.
+         /// </summary>
+         IB
       }
 
       public China(Market market = Market.SSE)

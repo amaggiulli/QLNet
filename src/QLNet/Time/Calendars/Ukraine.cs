@@ -58,9 +58,15 @@ namespace QLNet
          }
       }
 
+      /// <summary>
+      /// Available Ukrainian calendar markets.
+      /// </summary>
       public enum Market
       {
-         USE    //!< Ukrainian stock exchange
+         /// <summary>
+         /// Ukrainian Stock Exchange calendar.
+         /// </summary>
+         USE
       }
 
       private class Impl : OrthodoxImpl

@@ -23,14 +23,26 @@ namespace QLNet
 {
    public struct Pillar
    {
-      //! Enumeration for pillar determination alternatives
-      /*! These alternatives specify the determination of the pillar date. */
-      public enum Choice
-      {
-         MaturityDate,     //! instruments maturity date
-         LastRelevantDate, //! last date relevant for instrument pricing
-         CustomDate        //! custom choice
-      }
+       /// <summary>
+       /// Specifies the alternatives for determining the pillar date.
+       /// </summary>
+       public enum Choice
+       {
+          /// <summary>
+          /// Uses the instrument maturity date.
+          /// </summary>
+          MaturityDate,
+
+          /// <summary>
+          /// Uses the last date relevant for instrument pricing.
+          /// </summary>
+          LastRelevantDate,
+
+          /// <summary>
+          /// Uses a custom date.
+          /// </summary>
+          CustomDate
+       }
    }
    // Base helper class for bootstrapping
    /* This class provides an abstraction for the instruments used to bootstrap a term structure.

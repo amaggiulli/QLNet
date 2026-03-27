@@ -25,13 +25,20 @@ namespace QLNet
 {
    public class JointCalendar : Calendar
    {
-      //! rules for joining calendars
+      /// <summary>
+      /// Rules for combining multiple calendars.
+      /// </summary>
       public enum JointCalendarRule
       {
-         JoinHolidays,    /*!< A date is a holiday for the joint calendar if it is a holiday
-                                  for any of the given calendars */
-         JoinBusinessDays /*!< A date is a business day for the joint calendar if it is a business day
-                                  for any of the given calendars */
+         /// <summary>
+         /// A date is a holiday for the joint calendar if it is a holiday for any of the given calendars.
+         /// </summary>
+         JoinHolidays,
+
+         /// <summary>
+         /// A date is a business day for the joint calendar if it is a business day for any of the given calendars.
+         /// </summary>
+         JoinBusinessDays
       }
 
       private class Impl : CalendarImpl

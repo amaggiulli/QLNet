@@ -51,10 +51,20 @@ namespace QLNet
    */
    public class Israel : Calendar
    {
+      /// <summary>
+      /// Available Israeli calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,  //!< generic settlement calendar
-         TASE         //!< Tel-Aviv stock exchange calendar
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Tel-Aviv Stock Exchange calendar.
+         /// </summary>
+         TASE
       }
 
       public Israel(Market m = Market.Settlement)

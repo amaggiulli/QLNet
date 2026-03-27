@@ -19,16 +19,22 @@ using System.Linq;
 
 namespace QLNet
 {
-   // mixed interpolation between discrete points
+   /// <summary>
+   /// Defines how the two interpolations are applied over the input ranges.
+   /// </summary>
    public enum Behavior
    {
-      ShareRanges,  /*!< Define both interpolations over the
-                               whole range defined by the passed
-                               iterators. This is the default
-                               behavior. */
-      SplitRanges   /*!< Define the first interpolation over the
-                               first part of the range, and the second
-                               interpolation over the second part. */
+      /// <summary>
+      /// Defines both interpolations over the whole range defined by the passed iterators.
+      /// This is the default behavior.
+      /// </summary>
+      ShareRanges,
+
+      /// <summary>
+      /// Defines the first interpolation over the first part of the range, and the second
+      /// interpolation over the second part.
+      /// </summary>
+      SplitRanges
    }
 
    public class MixedInterpolationImpl<Interpolator1, Interpolator2> : Interpolation.templateImpl

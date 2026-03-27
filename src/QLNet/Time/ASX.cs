@@ -22,14 +22,35 @@ namespace QLNet
 {
    public static partial class ASX
    {
-      //! Main cycle of the Australian Securities Exchange (a.k.a. ASX) months
-
+      /// <summary>
+      /// Main cycle months of the Australian Securities Exchange (ASX).
+      /// </summary>
       enum Months
       {
-         F = 1, G = 2, H = 3,
-         J = 4, K = 5, M = 6,
-         N = 7, Q = 8, U = 9,
-         V = 10, X = 11, Z = 12
+         /// <summary>January.</summary>
+         F = 1,
+         /// <summary>February.</summary>
+         G = 2,
+         /// <summary>March.</summary>
+         H = 3,
+         /// <summary>April.</summary>
+         J = 4,
+         /// <summary>May.</summary>
+         K = 5,
+         /// <summary>June.</summary>
+         M = 6,
+         /// <summary>July.</summary>
+         N = 7,
+         /// <summary>August.</summary>
+         Q = 8,
+         /// <summary>September.</summary>
+         U = 9,
+         /// <summary>October.</summary>
+         V = 10,
+         /// <summary>November.</summary>
+         X = 11,
+         /// <summary>December.</summary>
+         Z = 12
       }
 
       //! returns whether or not the given date is an ASX date
