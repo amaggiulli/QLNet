@@ -21,24 +21,21 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for American options with Ju quadratic approximation
-   //    ! Reference:
-   //        An Approximate Formula for Pricing American Options,
-   //        Journal of Derivatives Winter 1999,
-   //        Ju, N.
-   //
-   //        \warning Barone-Adesi-Whaley critical commodity price
-   //                 calculation is used, it has not been modified to see
-   //                 whether the method of Ju is faster. Ju does not say
-   //                 how he solves the equation for the critical stock
-   //                 price, e.g. Newton method. He just gives the
-   //                 solution.  The method of BAW gives answers to the
-   //                 same accuracy as in Ju (1999).
-   //
-   //
-   //        \test the correctness of the returned value is tested by
-   //              reproducing results available in literature.
-   //
+   /// <summary>
+   /// Pricing engine for American options with Ju quadratic approximation.
+   /// </summary>
+   /// <remarks>
+   /// Reference: "An Approximate Formula for Pricing American Options",
+   /// Journal of Derivatives, Winter 1999, Ju, N.
+   /// Warning: the Barone-Adesi-Whaley critical commodity price calculation is used.
+   /// It has not been modified to determine whether Ju's method is faster; Ju does not
+   /// specify how the critical stock-price equation is solved. The BAW method gives
+   /// answers with the same accuracy as reported in Ju (1999).
+   /// </remarks>
+   /// <internalremarks>
+   /// TEST: the correctness of the returned value is tested by reproducing results
+   /// available in the literature.
+   /// </internalremarks>
    public class JuQuadraticApproximationEngine : VanillaOption.Engine
    {
       //     An Approximate Formula for Pricing American Options

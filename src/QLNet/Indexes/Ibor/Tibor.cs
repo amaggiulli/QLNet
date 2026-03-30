@@ -20,14 +20,17 @@
 namespace QLNet
 {
 
-   //! %JPY %TIBOR index
-//    ! Tokyo Interbank Offered Rate.
-//
-//        \warning This is the rate fixed in Tokio by JBA. Use JPYLibor
-//                 if you're interested in the London fixing by BBA.
-//
-//        \todo check settlement days and end-of-month adjustment.
-//
+   /// <summary>
+   /// JPY TIBOR index.
+   /// </summary>
+   /// <remarks>
+   /// Tokyo Interbank Offered Rate.
+   /// Warning: this is the rate fixed in Tokio by JBA. Use <see cref="JPYLibor"/>
+   /// if you're interested in the London fixing by BBA.
+   /// </remarks>
+   /// <internalremarks>
+   /// TODO: check settlement days and end-of-month adjustment.
+   /// </internalremarks>
    public class Tibor : IborIndex
    {
       public Tibor(Period tenor)
