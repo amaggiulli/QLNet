@@ -526,7 +526,9 @@ namespace QLNet
       #endregion
 
       #region CashFlow functions
-      //! the last cashflow paying before or at the given date
+      /// <summary>
+      /// Returns the last cash flow paying before or on the given date.
+      /// </summary>
       public static CashFlow previousCashFlow(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
       {
          if (leg.empty())
@@ -535,7 +537,9 @@ namespace QLNet
          Date d = (settlementDate ?? Settings.evaluationDate());
          return  leg.LastOrDefault(x => x.hasOccurred(d, includeSettlementDateFlows));
       }
-      //! the first cashflow paying after the given date
+      /// <summary>
+      /// Returns the first cash flow paying after the given date.
+      /// </summary>
       public static CashFlow nextCashFlow(Leg leg, bool includeSettlementDateFlows, Date settlementDate = null)
       {
          if (leg.empty())
@@ -790,7 +794,9 @@ namespace QLNet
 
       #region YieldTermStructure functions
 
-      //! NPV of the cash flows. The NPV is the sum of the cash flows, each discounted according to the given term structure.
+      /// <summary>
+      /// Returns the net present value of the cash flows using the given yield term structure.
+      /// </summary>
       public static double npv(Leg leg, YieldTermStructure discountCurve, bool includeSettlementDateFlows,
                                Date settlementDate = null, Date npvDate = null)
       {
@@ -837,8 +843,12 @@ namespace QLNet
          }
          return Const.BASIS_POINT * calc.bps() / discountCurve.discount(npvDate);
       }
-      //! NPV and BPS of the cash flows.
-      // The NPV and BPS of the cash flows calculated together for performance reason
+      /// <summary>
+      /// Calculates the net present value and basis-point sensitivity of the cash flows together.
+      /// </summary>
+      /// <remarks>
+      /// Both values are computed in one pass for performance reasons.
+      /// </remarks>
       public static void npvbps(Leg leg, YieldTermStructure discountCurve, bool includeSettlementDateFlows,
                                 Date settlementDate, Date npvDate, out double npv, out double bps)
       {
@@ -958,13 +968,12 @@ namespace QLNet
                     includeSettlementDateFlows, settlementDate, npvDate);
       }
 
-      //! Basis-point sensitivity of the cash flows.
-      // The result is the change in NPV due to a uniform
-      // 1-basis-point change in the rate paid by the cash
-      // flows. The change for each coupon is discounted according
-      // to the given constant interest rate.  The result is
-      // affected by the choice of the interest-rate compounding
-      // and the relative frequency and day counter.
+      /// <summary>
+      /// Returns the basis-point sensitivity of the cash flows for the given constant interest rate.
+      /// </summary>
+      /// <remarks>
+      /// This is the change in NPV caused by a uniform one-basis-point change in the rate paid by the cash flows.
+      /// </remarks>
 
       public static double bps(Leg leg, InterestRate yield, bool includeSettlementDateFlows,
                                Date settlementDate = null, Date npvDate = null)
@@ -990,7 +999,9 @@ namespace QLNet
                     includeSettlementDateFlows, settlementDate, npvDate);
       }
 
-      //! NPV of a single cash flows
+      /// <summary>
+      /// Returns the net present value of a single cash flow.
+      /// </summary>
       public static double npv(CashFlow cashflow, YieldTermStructure discountCurve,
                                Date settlementDate = null, Date npvDate = null, int exDividendDays = 0)
       {
@@ -1013,7 +1024,9 @@ namespace QLNet
       }
 
 
-      //! CASH of the cash flows. The CASH is the sum of the cash flows.
+      /// <summary>
+      /// Returns the undiscounted cash amount of the remaining cash flows.
+      /// </summary>
       public static double cash(List<CashFlow> cashflows, Date settlementDate = null, int exDividendDays = 0)
       {
          if (cashflows.Count == 0)
@@ -1028,10 +1041,12 @@ namespace QLNet
          return totalCASH;
       }
 
-      //! Implied internal rate of return.
-      // The function verifies
-      // the theoretical existance of an IRR and numerically
-      // establishes the IRR to the desired precision.
+      /// <summary>
+      /// Returns the implied internal rate of return.
+      /// </summary>
+      /// <remarks>
+      /// The method checks that an IRR can exist and then solves for it to the requested accuracy.
+      /// </remarks>
       public static double yield(Leg leg, double npv, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                  bool includeSettlementDateFlows, Date settlementDate = null, Date npvDate = null,
                                  double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.05)
@@ -1046,7 +1061,9 @@ namespace QLNet
          return solver.solve(objFunction, accuracy, guess, guess / 10.0);
       }
 
-      //! Cash-flow duration.
+      /// <summary>
+      /// Returns the duration of the cash flows.
+      /// </summary>
       public static double duration(Leg leg, InterestRate rate, Duration.Type type, bool includeSettlementDateFlows,
                                     Date settlementDate = null, Date npvDate = null)
       {
@@ -1082,7 +1099,9 @@ namespace QLNet
                          type, includeSettlementDateFlows,   settlementDate, npvDate);
       }
 
-      //! Cash-flow convexity
+      /// <summary>
+      /// Returns the convexity of the cash flows.
+      /// </summary>
       public static double convexity(Leg leg, InterestRate yield, bool includeSettlementDateFlows,
                                      Date settlementDate = null, Date npvDate = null)
       {
@@ -1158,10 +1177,12 @@ namespace QLNet
                           includeSettlementDateFlows, settlementDate, npvDate);
       }
 
-      //! Basis-point value
-      /*! Obtained by setting dy = 0.0001 in the 2nd-order Taylor
-          series expansion.
-      */
+      /// <summary>
+      /// Returns the basis-point value of the cash flows.
+      /// </summary>
+      /// <remarks>
+      /// This is obtained by setting <c>dy = 0.0001</c> in the second-order Taylor expansion.
+      /// </remarks>
       public static double basisPointValue(Leg leg, InterestRate yield, bool includeSettlementDateFlows,
                                            Date settlementDate = null, Date npvDate = null)
       {
@@ -1194,13 +1215,14 @@ namespace QLNet
                                 includeSettlementDateFlows, settlementDate, npvDate);
       }
 
-      //! Yield value of a basis point
-      /*! The yield value of a one basis point change in price is
-          the derivative of the yield with respect to the price
-          multiplied by 0.01
-      */
+      /// <summary>
+      /// Returns the yield value of one basis point.
+      /// </summary>
+      /// <remarks>
+      /// This is the derivative of the yield with respect to price, multiplied by 0.01.
+      /// </remarks>
       public static double yieldValueBasisPoint(Leg leg, InterestRate yield, bool includeSettlementDateFlows,
-                                                Date settlementDate = null, Date npvDate = null)
+                                                 Date settlementDate = null, Date npvDate = null)
       {
          if (leg.empty())
             return 0.0;
@@ -1258,10 +1280,12 @@ namespace QLNet
 
          return npv(leg, spreadedCurve, includeSettlementDateFlows, settlementDate, npvDate);
       }
-      //! implied Z-spread.
+      /// <summary>
+      /// Returns the implied Z-spread.
+      /// </summary>
       public static double zSpread(Leg leg, double npv, YieldTermStructure discount, DayCounter dayCounter, Compounding compounding,
-                                   Frequency frequency, bool includeSettlementDateFlows, Date settlementDate = null,
-                                   Date npvDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.0)
+                                    Frequency frequency, bool includeSettlementDateFlows, Date settlementDate = null,
+                                    Date npvDate = null, double accuracy = 1.0e-10, int maxIterations = 100, double guess = 0.0)
       {
          if (settlementDate == null)
             settlementDate = Settings.evaluationDate();
@@ -1276,10 +1300,12 @@ namespace QLNet
          double step = 0.01;
          return solver.solve(objFunction, accuracy, guess, step);
       }
-      //! deprecated implied Z-spread.
+      /// <summary>
+      /// Returns the implied Z-spread using the deprecated parameter order.
+      /// </summary>
       public static double zSpread(Leg leg, YieldTermStructure d, double npv, DayCounter dayCounter, Compounding compounding,
-                                   Frequency frequency, bool includeSettlementDateFlows, Date settlementDate = null,
-                                   Date npvDate = null, double accuracy = 1.0e-10, int maxIterations = 100,
+                                    Frequency frequency, bool includeSettlementDateFlows, Date settlementDate = null,
+                                    Date npvDate = null, double accuracy = 1.0e-10, int maxIterations = 100,
                                    double guess = 0.0)
       {
          return zSpread(leg, npv, d, dayCounter, compounding, frequency,
