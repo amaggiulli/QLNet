@@ -19,13 +19,12 @@
 
 namespace QLNet
 {
-   //! \f$ D_{+}D_{-} \f$ matricial representation
-   /*! The differential operator \f$  D_{+}D_{-} \f$ discretizes the
-       second derivative with the second-order formula
-
-       \test the correctness of the returned values is tested by
-             checking them against numerical calculations.
-   */
+   /// <summary>
+   /// Matrix representation of <c>D+ D-</c>.
+   /// </summary>
+   /// <remarks>
+   /// This differential operator discretizes the second derivative with a second-order formula.
+   /// </remarks>
    public class DPlusDMinus : TridiagonalOperator
    {
       public DPlusDMinus(int gridPoints, double h)

@@ -150,7 +150,9 @@ namespace QLNet
          return swap_;
       }
 
-      //! implied volatility
+      /// <summary>
+      /// Returns the implied volatility.
+      /// </summary>
       public double impliedVolatility(double targetValue,
                                       Handle<YieldTermStructure> discountCurve,
                                       double guess,

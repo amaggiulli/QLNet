@@ -165,7 +165,9 @@ namespace QLNet
          itmCashProbability_ = results.itmCashProbability;
       }
 
-      //! %Results from single-asset option calculation
+      /// <summary>
+      /// Results from a single-asset option calculation.
+      /// </summary>
       public new class Results : Instrument.Results
       {
          public double? delta { get; set; }

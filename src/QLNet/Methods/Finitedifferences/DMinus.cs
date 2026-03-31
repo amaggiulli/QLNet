@@ -20,14 +20,12 @@
 
 namespace QLNet
 {
-   //! \f$ D_{-} \f$ matricial representation
-   /*! The differential operator \f$ D_{-} \f$ discretizes the
-       first derivative with the first-order formula
-       \f[ \frac{\partial u_{i}}{\partial x} \approx
-           \frac{u_{i}-u_{i-1}}{h} = D_{-} u_{i}
-       \f]
-
-   */
+   /// <summary>
+   /// Matrix representation of <c>D-</c>.
+   /// </summary>
+   /// <remarks>
+   /// This differential operator discretizes the first derivative with a first-order backward formula.
+   /// </remarks>
    public class DMinus : TridiagonalOperator
    {
       public DMinus(int gridPoints, double h)

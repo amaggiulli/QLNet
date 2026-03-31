@@ -663,7 +663,9 @@ namespace QLNet
 
          public CallabilitySchedule putCallSchedule { get; set; }
 
-         //! bond full/dirty/cash prices
+         /// <summary>
+         /// Full, dirty, or cash bond prices associated with the callability schedule.
+         /// </summary>
          public List<double> callabilityPrices { get; set; }
          public List<Date> callabilityDates { get; set; }
 

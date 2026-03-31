@@ -114,7 +114,9 @@ namespace QLNet
       }
    }
 
-   //! Basket option on a number of assets
+   /// <summary>
+   /// Basket option on multiple assets.
+   /// </summary>
    public class BasketOption : MultiAssetOption
    {
       public new class Engine : GenericEngine<BasketOption.Arguments, BasketOption.Results>

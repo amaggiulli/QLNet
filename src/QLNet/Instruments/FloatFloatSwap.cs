@@ -657,7 +657,9 @@ namespace QLNet
 
       }
 
-      //! %Results from float float swap calculation
+      /// <summary>
+      /// Results from a float-float swap calculation.
+      /// </summary>
       public new class Results : Swap.Results
       {}
 

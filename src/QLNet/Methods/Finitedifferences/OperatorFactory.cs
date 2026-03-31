@@ -34,11 +34,7 @@ namespace QLNet
                                                     double residualTime, bool timeDependent)
       {
          if (timeDependent)
-            //! Black-Scholes-Merton differential operator
-            /*! \ingroup findiff
-
-                \test coefficients are tested against constant BSM operator
-            */
+            // Black-Scholes-Merton differential operator.
             return new PdeOperator<PdeBSM>(grid, process, residualTime);
          return new BSMOperator(grid, process, residualTime);
       }

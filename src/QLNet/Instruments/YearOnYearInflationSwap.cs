@@ -259,7 +259,9 @@ namespace QLNet
       private double? fairRate_;
       private double? fairSpread_;
 
-      //! %Arguments for YoY swap calculation
+      /// <summary>
+      /// Arguments for year-on-year inflation swap valuation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public Arguments()
@@ -302,7 +304,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from YoY swap calculation
+      /// <summary>
+      /// Results from year-on-year inflation swap valuation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairRate { get; set; }

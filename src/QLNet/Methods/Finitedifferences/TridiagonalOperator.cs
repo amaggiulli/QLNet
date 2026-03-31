@@ -126,7 +126,9 @@ namespace QLNet
       }
 
 
-      //! apply operator to a given array
+      /// <summary>
+      /// Applies the operator to the given vector.
+      /// </summary>
       public Vector applyTo(Vector v)
       {
          Utils.QL_REQUIRE(v.Count == size(), () => "vector of the wrong size (" + v.Count + "instead of " + size() + ")");
@@ -146,7 +148,9 @@ namespace QLNet
          return result;
       }
 
-      //! solve linear system for a given right-hand side
+      /// <summary>
+      /// Solves the linear system for the given right-hand side.
+      /// </summary>
       public Vector solveFor(Vector rhs)
       {
          Utils.QL_REQUIRE(rhs.Count == size(), () => "rhs has the wrong size");
@@ -171,7 +175,9 @@ namespace QLNet
          return result;
       }
 
-      //! solve linear system with SOR approach
+      /// <summary>
+      /// Solves the linear system using a successive over-relaxation approach.
+      /// </summary>
       public Vector SOR(Vector rhs, double tol)
       {
          Utils.QL_REQUIRE(rhs.Count == size(), () => "rhs has the wrong size");
@@ -214,7 +220,9 @@ namespace QLNet
          return result;
       }
 
-      //! identity instance
+      /// <summary>
+      /// Returns an identity operator of the requested size.
+      /// </summary>
       public IOperator identity(int size)
       {
          TridiagonalOperator I = new TridiagonalOperator(new Vector(size - 1, 0.0),     // lower diagonal

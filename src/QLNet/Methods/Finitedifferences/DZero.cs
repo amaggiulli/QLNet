@@ -19,13 +19,12 @@
 
 namespace QLNet
 {
-   //! \f$ D_{0} \f$ matricial representation
-   /*! The differential operator \f$ D_{0} \f$ discretizes the
-       first derivative with the second-order formula
-
-       \test the correctness of the returned values is tested by
-             checking them against numerical calculations.
-   */
+   /// <summary>
+   /// Matrix representation of <c>D0</c>.
+   /// </summary>
+   /// <remarks>
+   /// This differential operator discretizes the first derivative with a second-order formula.
+   /// </remarks>
    public class DZero : TridiagonalOperator
    {
       public DZero(int gridPoints, double h)
