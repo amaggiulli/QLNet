@@ -31,7 +31,9 @@ namespace QLNet
       public SimpleQuote() { }
       public SimpleQuote(double? value) { value_ = value; }
 
-      //! Quote interface
+      /// <summary>
+      /// Returns the stored quote value.
+      /// </summary>
       public override double value()
       {
          if (!isValid())
@@ -40,7 +42,9 @@ namespace QLNet
       }
       public override bool isValid() { return value_ != null; }
 
-      //! returns the difference between the new value and the old value
+      /// <summary>
+      /// Sets a new value and returns the difference from the previous one.
+      /// </summary>
       public double setValue(double? value)
       {
          double? diff = value - value_;

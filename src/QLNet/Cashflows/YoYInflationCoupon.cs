@@ -49,9 +49,19 @@ namespace QLNet
       // Inspectors
       // index gearing, i.e. multiplicative coefficient for the index
       public double gearing() { return gearing_; }
-      //! spread paid over the fixing of the underlying index
+      /// <summary>
+      /// Returns the spread paid over the fixing of the underlying index.
+      /// </summary>
       public double spread() { return spread_; }
+
+      /// <summary>
+      /// Returns the adjusted fixing.
+      /// </summary>
       public double adjustedFixing() { return (rate() - spread()) / gearing(); }
+
+      /// <summary>
+      /// Returns the underlying year-on-year inflation index.
+      /// </summary>
       public YoYInflationIndex yoyIndex() { return yoyIndex_; }
 
       private YoYInflationIndex yoyIndex_;

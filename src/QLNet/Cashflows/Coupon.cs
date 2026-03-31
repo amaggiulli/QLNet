@@ -20,9 +20,13 @@
 
 namespace QLNet
 {
-   //! %coupon accruing over a fixed period
-   //! This class implements part of the CashFlow interface but it is
-   //  still abstract and provides derived classes with methods for accrual period calculations.
+   /// <summary>
+   /// Coupon accruing over a fixed period.
+   /// </summary>
+   /// <remarks>
+   /// This class implements part of the <see cref="CashFlow"/> interface and
+   /// provides derived classes with methods for accrual-period calculations.
+   /// </remarks>
    public abstract class Coupon : CashFlow
    {
       // Constructors
@@ -59,15 +63,25 @@ namespace QLNet
 
       // Inspectors
       public double nominal() { return nominal_; }
-      //! start of the accrual period
+      /// <summary>
+      /// Returns the start of the accrual period.
+      /// </summary>
       public Date accrualStartDate() { return accrualStartDate_; }
-      //! end of the accrual period
+      /// <summary>
+      /// Returns the end of the accrual period.
+      /// </summary>
       public Date accrualEndDate() { return accrualEndDate_; }
-      //! start date of the reference period
+      /// <summary>
+      /// Returns the start date of the reference period.
+      /// </summary>
       public Date referencePeriodStart { get { return refPeriodStart_; } }
-      //! end date of the reference period
+      /// <summary>
+      /// Returns the end date of the reference period.
+      /// </summary>
       public Date referencePeriodEnd { get { return refPeriodEnd_; } }
-      //! accrual period as fraction of year
+      /// <summary>
+      /// Returns the accrual period as a fraction of a year.
+      /// </summary>
       public double accrualPeriod()
       {
          if (accrualPeriod_ == null)
@@ -75,16 +89,24 @@ namespace QLNet
                                                        accrualEndDate_, refPeriodStart_, refPeriodEnd_);
          return accrualPeriod_.Value;
       }
-      //! accrual period in days
+      /// <summary>
+      /// Returns the accrual period in days.
+      /// </summary>
       public int accrualDays()
       {
          return dayCounter().dayCount(accrualStartDate_, accrualEndDate_);
       }
-      //! accrued rate
+      /// <summary>
+      /// Returns the accrued rate.
+      /// </summary>
       public abstract double rate();
-      //! day counter for accrual calculation
+      /// <summary>
+      /// Returns the day counter used for accrual calculations.
+      /// </summary>
       public abstract DayCounter dayCounter();
-      //! accrued period as fraction of year at the given date
+      /// <summary>
+      /// Returns the accrued period as a fraction of a year at the given date.
+      /// </summary>
       public double accruedPeriod(Date d)
       {
          if (d <= accrualStartDate_ || d > paymentDate_)
@@ -96,7 +118,9 @@ namespace QLNet
                                              refPeriodEnd_);
 
       }
-      //! accrued days at the given date
+      /// <summary>
+      /// Returns the accrued days at the given date.
+      /// </summary>
       public int accruedDays(Date d)
       {
          if (d <= accrualStartDate_ || d > paymentDate_)
@@ -104,7 +128,9 @@ namespace QLNet
          else
             return dayCounter().dayCount(accrualStartDate_, Date.Min(d, accrualEndDate_));
       }
-      //! accrued amount at the given date
+      /// <summary>
+      /// Returns the accrued amount at the given date.
+      /// </summary>
       public abstract double accruedAmount(Date d);
 
       protected double nominal_;

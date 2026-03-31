@@ -46,7 +46,9 @@ namespace QLNet
          rate_ = interestRate;
       }
 
-      //! CashFlow interface
+      /// <summary>
+      /// Returns the cash-flow amount.
+      /// </summary>
       public override double amount()
       {
          if (amount_ != null)
@@ -55,9 +57,19 @@ namespace QLNet
          return nominal() * (rate_.compoundFactor(accrualStartDate_, accrualEndDate_, refPeriodStart_, refPeriodEnd_) - 1.0);
       }
 
-      //! Coupon interface
+      /// <summary>
+      /// Returns the coupon rate.
+      /// </summary>
       public override double rate() { return rate_.rate(); }
+
+      /// <summary>
+      /// Returns the underlying interest rate.
+      /// </summary>
       public InterestRate interestRate() { return rate_; }
+
+      /// <summary>
+      /// Returns the day counter used by the coupon.
+      /// </summary>
       public override DayCounter dayCounter() { return rate_.dayCounter(); }
       public override double accruedAmount(Date d)
       {
