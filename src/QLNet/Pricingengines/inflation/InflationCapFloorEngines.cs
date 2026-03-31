@@ -143,7 +143,9 @@ namespace QLNet
       }
 
 
-      //! descendents only need to implement this
+      /// <summary>
+      /// Derived classes only need to implement this method.
+      /// </summary>
       protected virtual double optionletImpl(Option.Type type, double strike, double forward, double stdDev,
                                              double d) { throw new NotImplementedException("not implemented"); }
 

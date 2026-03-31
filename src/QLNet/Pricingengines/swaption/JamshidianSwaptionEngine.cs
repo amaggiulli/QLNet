@@ -36,9 +36,12 @@ namespace QLNet
       Swaption.Results>
    {
 
-      /*! \note the term structure is only needed when the short-rate
-               model cannot provide one itself.
-      */
+      /// <summary>
+      /// Initializes the engine.
+      /// </summary>
+      /// <remarks>
+      /// The term structure is only needed when the short-rate model cannot provide one itself.
+      /// </remarks>
       public JamshidianSwaptionEngine(OneFactorAffineModel model,
                                       Handle<YieldTermStructure> termStructure)
          : base(model)

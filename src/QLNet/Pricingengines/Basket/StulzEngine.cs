@@ -19,7 +19,7 @@
 
 using System;
 
-//! default bivariate implementation
+// Default bivariate implementation.
 using BivariateCumulativeNormalDistribution = QLNet.BivariateCumulativeNormalDistributionWe04DP;
 
 namespace QLNet
