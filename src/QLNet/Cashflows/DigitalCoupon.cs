@@ -23,54 +23,26 @@ using System;
 namespace QLNet
 {
 
-   //! Digital-payoff coupon
-   //    ! Implementation of a floating-rate coupon with digital call/put option.
-   //        Payoffs:
-   //        - Coupon with cash-or-nothing Digital Call
-   //          rate + csi * payoffRate * Heaviside(rate-strike)
-   //        - Coupon with cash-or-nothing Digital Put
-   //          rate + csi * payoffRate * Heaviside(strike-rate)
-   //        where csi=+1 or csi=-1.
-   //        - Coupon with asset-or-nothing Digital Call
-   //          rate + csi * rate * Heaviside(rate-strike)
-   //        - Coupon with asset-or-nothing Digital Put
-   //          rate + csi * rate * Heaviside(strike-rate)
-   //        where csi=+1 or csi=-1.
-   //        The evaluation of the coupon is made using the call/put spread
-   //        replication method.
-   //
-   //
-   //        \test
-   //        - the correctness of the returned value in case of Asset-or-nothing
-   //          embedded option is tested by pricing the digital option with
-   //          Cox-Rubinstein formula.
-   //        - the correctness of the returned value in case of deep-in-the-money
-   //          Asset-or-nothing embedded option is tested vs the expected values of
-   //          coupon and option.
-   //        - the correctness of the returned value in case of deep-out-of-the-money
-   //          Asset-or-nothing embedded option is tested vs the expected values of
-   //          coupon and option.
-   //        - the correctness of the returned value in case of Cash-or-nothing
-   //          embedded option is tested by pricing the digital option with
-   //          Reiner-Rubinstein formula.
-   //        - the correctness of the returned value in case of deep-in-the-money
-   //          Cash-or-nothing embedded option is tested vs the expected values of
-   //          coupon and option.
-   //        - the correctness of the returned value in case of deep-out-of-the-money
-   //          Cash-or-nothing embedded option is tested vs the expected values of
-   //          coupon and option.
-   //        - the correctness of the returned value is tested checking the correctness
-   //          of the call-put parity relation.
-   //        - the correctness of the returned value is tested by the relationship
-   //          between prices in case of different replication types.
-   //
+   /// <summary>
+   /// Floating-rate coupon with a digital payoff.
+   /// </summary>
+   /// <remarks>
+   /// This implements a floating-rate coupon with an embedded digital
+   /// call and/or put option, evaluated using call/put spread replication.
+   /// </remarks>
+   /// <internalremarks>
+   /// Tests cover asset-or-nothing and cash-or-nothing cases, deep
+   /// in/out-of-the-money scenarios, call-put parity, and relationships
+   /// between different replication types.
+   /// </internalremarks>
    public class DigitalCoupon : FloatingRateCoupon
    {
       // need by CashFlowVectors
       public DigitalCoupon() { }
 
-      //! Constructors
-      //! general constructor
+      /// <summary>
+      /// Initializes a digital coupon from an underlying floating-rate coupon.
+      /// </summary>
       public DigitalCoupon(FloatingRateCoupon underlying,
                            double? callStrike = null,
                            Position.Type callPosition = Position.Type.Long,
@@ -400,36 +372,36 @@ namespace QLNet
 
       // Data members
       protected FloatingRateCoupon underlying_;
-      //! strike rate for the the call option
+      // strike rate for the call option
       protected double callStrike_;
-      //! strike rate for the the put option
+      // strike rate for the put option
       protected double putStrike_;
-      //! multiplicative factor of call payoff
+      // multiplicative factor of the call payoff
       protected double callCsi_;
-      //! multiplicative factor of put payoff
+      // multiplicative factor of the put payoff
       protected double putCsi_;
-      //! inclusion flag og the call payoff if the call option ends at-the-money
+      // inclusion flag for the call payoff if the call option ends at the money
       protected bool isCallATMIncluded_;
-      //! inclusion flag og the put payoff if the put option ends at-the-money
+      // inclusion flag for the put payoff if the put option ends at the money
       protected bool isPutATMIncluded_;
-      //! digital call option type: if true, cash-or-nothing, if false asset-or-nothing
+      // digital call option type: true for cash-or-nothing, false for asset-or-nothing
       protected bool isCallCashOrNothing_;
-      //! digital put option type: if true, cash-or-nothing, if false asset-or-nothing
+      // digital put option type: true for cash-or-nothing, false for asset-or-nothing
       protected bool isPutCashOrNothing_;
-      //! digital call option payoff rate, if any
+      // digital call option payoff rate, if any
       protected double callDigitalPayoff_;
-      //! digital put option payoff rate, if any
+      // digital put option payoff rate, if any
       protected double putDigitalPayoff_;
-      //! the left and right gaps applied in payoff replication for call
+      // left and right gaps applied in payoff replication for the call
       protected double callLeftEps_;
       protected double callRightEps_;
-      //! the left and right gaps applied in payoff replication for puf
+      // left and right gaps applied in payoff replication for the put
       protected double putLeftEps_;
       protected double putRightEps_;
-      //!
+      // option availability flags
       protected bool hasPutStrike_;
       protected bool hasCallStrike_;
-      //! Type of replication
+      // type of replication
       protected Replication.Type replicationType_;
 
       private double callPayoff()

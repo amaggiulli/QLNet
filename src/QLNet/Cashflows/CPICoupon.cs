@@ -137,12 +137,19 @@ namespace QLNet
       // Inspectors
       // fixed rate that will be inflated by the index ratio
       public double fixedRate() { return fixedRate_; }
-      //! spread paid over the fixing of the underlying index
+      /// <summary>
+      /// Returns the spread paid over the fixing of the underlying index.
+      /// </summary>
       public double spread() { return spread_; }
 
-      //! adjusted fixing (already divided by the base fixing)
+      /// <summary>
+      /// Returns the adjusted fixing, already divided by the base fixing.
+      /// </summary>
       public double adjustedFixing() { return (rate() - spread()) / fixedRate(); }
-      //! allows for a different interpolation from the index
+
+      /// <summary>
+      /// Returns the fixing, allowing for a different interpolation from the index.
+      /// </summary>
       public override double indexFixing() { return indexFixing(fixingDate()); }
       /// <summary>
       /// base value for the CPI index
@@ -153,11 +160,19 @@ namespace QLNet
       /// i.e. the observationInterpolation.
       /// </remarks>
       public double baseCPI() { return baseCPI_; }
-      //! how do you observe the index?  as-is, flat, linear?
+      /// <summary>
+      /// Returns how the coupon observes the index.
+      /// </summary>
       public InterpolationType observationInterpolation() { return observationInterpolation_; }
-      //! utility method, calls indexFixing
+
+      /// <summary>
+      /// Returns the index observation for the given date.
+      /// </summary>
       public double indexObservation(Date onDate) { return indexFixing(onDate); }
-      //! index used
+
+      /// <summary>
+      /// Returns the underlying CPI index.
+      /// </summary>
       public ZeroInflationIndex cpiIndex() { return index() as ZeroInflationIndex; }
    }
 
@@ -192,23 +207,36 @@ namespace QLNet
          }
       }
 
-      //! value used on base date
-      /*! This does not have to agree with index on that date. */
+      /// <summary>
+      /// Returns the value used on the base date.
+      /// </summary>
+      /// <remarks>
+      /// This does not have to agree with the index on that date.
+      /// </remarks>
       public virtual double baseFixing() {return baseFixing_;}
 
-      //! you may not have a valid date
+      /// <summary>
+      /// Returns the base date.
+      /// </summary>
+      /// <remarks>
+      /// A valid base date may not be available.
+      /// </remarks>
       public override Date baseDate()
       {
          Utils.QL_FAIL("no base date specified");
          return null;
       }
 
-      //! do you want linear/constant/as-index interpolation of future data?
+      /// <summary>
+      /// Returns the interpolation used for future data.
+      /// </summary>
       public virtual InterpolationType interpolation() { return interpolation_; }
 
       public virtual Frequency frequency() { return frequency_; }
 
-      //! redefined to use baseFixing() and interpolation
+      /// <summary>
+      /// Returns the cash-flow amount using the base fixing and interpolation.
+      /// </summary>
       public override double amount()
       {
          double I0 = baseFixing();

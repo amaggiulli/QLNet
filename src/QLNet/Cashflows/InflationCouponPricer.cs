@@ -167,7 +167,9 @@ namespace QLNet
          spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
-      //! car replace this if really required
+      /// <summary>
+      /// Returns the optionlet price.
+      /// </summary>
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
       {
 
@@ -205,8 +207,9 @@ namespace QLNet
          }
       }
 
-      //! usually only need implement this (of course they may need
-      //! to re-implement initialize too ...)
+      /// <summary>
+      /// Returns the implementation-specific optionlet price contribution.
+      /// </summary>
       protected virtual double optionletPriceImp(Option.Type t, double strike,
                                                  double forward, double stdDev)
       {
@@ -228,7 +231,7 @@ namespace QLNet
          return fixing.Value;
       }
 
-      //! data
+      // pricing data
       Handle<YoYOptionletVolatilitySurface> capletVol_;
       YoYInflationCoupon coupon_;
       double gearing_;
