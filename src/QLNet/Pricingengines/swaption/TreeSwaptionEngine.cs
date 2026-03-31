@@ -40,12 +40,10 @@ namespace QLNet
         Swaption.Results>
    {
 
+      // The term structure is only needed when the short-rate model
+      // cannot provide one itself.
       private Handle<YieldTermStructure> termStructure_;
 
-      /* Constructors
-          \note the term structure is only needed when the short-rate
-                model cannot provide one itself.
-      */
       public TreeSwaptionEngine(ShortRateModel model,
                                 int timeSteps)
          : this(model, timeSteps, new Handle<YieldTermStructure>())

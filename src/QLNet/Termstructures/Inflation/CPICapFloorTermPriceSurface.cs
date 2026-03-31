@@ -150,9 +150,11 @@ namespace QLNet
       public virtual double nominal() {return nominal_;}
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
 
-      //! \warning you MUST remind the compiler in any descendants with the using:: mechanism
-      //!          because you overload the names
-      //! remember that the strikes use the quoting convention
+      /// <remarks>
+      /// Warning: in descendants, you must remind the compiler with the
+      /// <c>using</c> mechanism because this overload hides other members with
+      /// the same name. Remember that the strikes use the quoting convention.
+      /// </remarks>
       public virtual double price(Period d, double k)
       {
          return this.price(cpiOptionDateFromTenor(d), k);

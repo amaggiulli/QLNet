@@ -21,16 +21,16 @@ using System;
 namespace QLNet
 {
    /// <summary>
-   /// Single-factor Hull-White (extended %Vasicek) model class.
+   /// Single-factor Hull-White (extended Vasicek) model class.
+   /// </summary>
    /// <remarks>
    /// This class implements the standard single-factor Hull-White model defined by
-   /// dr_t = (\theta(t) - \alpha r_t)dt + \sigma dW_t
-   /// where alpha and sigma are constants.
-   /// calibration results are tested against cached values
-   /// When the term structure is relinked, the r0 parameter of
+   /// <c>dr_t = (theta(t) - alpha r_t)dt + sigma dW_t</c>, where <c>alpha</c> and
+   /// <c>sigma</c> are constants.
+   /// Calibration results are tested against cached values.
+   /// Warning: when the term structure is relinked, the <c>r0</c> parameter of
    /// the underlying Vasicek model is not updated.
    /// </remarks>
-   /// </summary>
    public class HullWhite : Vasicek, ITermStructureConsistentModel
    {
       public HullWhite(Handle<YieldTermStructure> termStructure,
@@ -110,14 +110,17 @@ namespace QLNet
          return Utils.blackFormula(type, k, f, v);
       }
 
-      /*! Futures convexity bias (i.e., the difference between
-          futures implied rate and forward rate) calculated as in
-          G. Kirikos, D. Novak, "Convexity Conundrums", Risk
-          Magazine, March 1997.
-
-          \note t and T should be expressed in yearfraction using
-                deposit day counter, F_quoted is futures' market price.
-      */
+      /// <summary>
+      /// Calculates the futures convexity bias, i.e. the difference between
+      /// the futures-implied rate and the forward rate.
+      /// </summary>
+      /// <remarks>
+      /// Calculated as in G. Kirikos and D. Novak, "Convexity Conundrums",
+      /// Risk Magazine, March 1997.
+      /// Note: <paramref name="t"/> and <paramref name="T"/> should be expressed
+      /// as year fractions using the deposit day counter, and
+      /// <paramref name="futuresPrice"/> is the futures market price.
+      /// </remarks>
       public static double convexityBias(double futuresPrice,
                                          double t,
                                          double T,
@@ -168,7 +171,9 @@ namespace QLNet
 
       private Parameter phi_;
 
-      //! Short-rate dynamics in the Hull-White model
+      /// <summary>
+      /// Short-rate dynamics in the Hull-White model.
+      /// </summary>
       public new class Dynamics : ShortRateDynamics
       {
          public Dynamics(Parameter fitting, double a, double sigma)
