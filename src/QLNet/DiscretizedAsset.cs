@@ -97,19 +97,23 @@ namespace QLNet
           partialRollback().
       */
 
-      /*! This method should initialize the asset values to an Array
-          of the given size and with values depending on the
-          particular asset.
-      */
+      /// <summary>
+      /// Initializes the asset values to an array of the given size.
+      /// </summary>
+      /// <remarks>
+      /// The actual values depend on the particular asset.
+      /// </remarks>
       public abstract void reset(int size);
 
-      /*! This method will be invoked after rollback and before any
-      other asset (i.e., an option on this one) has any chance to
-      look at the values. For instance, payments happening at times
-      already spanned by the rollback will be added here.
-
-      This method is not virtual; derived classes must override
-      the protected preAdjustValuesImpl() method instead. */
+      /// <summary>
+      /// Performs pre-adjustment after rollback.
+      /// </summary>
+      /// <remarks>
+      /// This is invoked after rollback and before any other asset has a
+      /// chance to inspect the values. For instance, payments happening at
+      /// times already spanned by the rollback are added here. Derived
+      /// classes must override <see cref="preAdjustValuesImpl"/> instead.
+      /// </remarks>
 
       public void preAdjustValues()
       {
@@ -120,14 +124,15 @@ namespace QLNet
          }
       }
 
-      /*! This method will be invoked after rollback and after any
-      other asset had their chance to look at the values. For
-      instance, payments happening at the present time (and therefore
-      not included in an option to be exercised at this time) will be
-      added here.
-
-      This method is not virtual; derived classes must override
-      the protected postAdjustValuesImpl() method instead. */
+      /// <summary>
+      /// Performs post-adjustment after rollback.
+      /// </summary>
+      /// <remarks>
+      /// This is invoked after rollback and after any other asset had a
+      /// chance to inspect the values. For instance, payments happening at
+      /// the present time are added here. Derived classes must override
+      /// <see cref="postAdjustValuesImpl"/> instead.
+      /// </remarks>
 
       public void postAdjustValues()
       {
@@ -138,7 +143,9 @@ namespace QLNet
          }
       }
 
-      /*! This method performs both pre- and post-adjustment */
+      /// <summary>
+      /// Performs both pre-adjustment and post-adjustment.
+      /// </summary>
 
       public void adjustValues()
       {
@@ -156,7 +163,9 @@ namespace QLNet
       /// </remarks>
       public abstract List<double> mandatoryTimes();
 
-      /*! This method checks whether the asset was rolled at the given time. */
+      /// <summary>
+      /// Returns true if the asset was rolled at the given time.
+      /// </summary>
 
       protected bool isOnTime(double t)
       {
@@ -164,12 +173,16 @@ namespace QLNet
          return Utils.close(grid[grid.index(t)], time());
       }
 
-      /*! This method performs the actual pre-adjustment */
+      /// <summary>
+      /// Performs the actual pre-adjustment.
+      /// </summary>
 
       protected virtual void preAdjustValuesImpl()
       {}
 
-      /*! This method performs the actual post-adjustment */
+      /// <summary>
+      /// Performs the actual post-adjustment.
+      /// </summary>
 
       protected virtual void postAdjustValuesImpl()
       {}

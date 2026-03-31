@@ -91,7 +91,9 @@ namespace QLNet
          initialize();
       }
 
-      //! generic times
+      /// <summary>
+      /// Initializes the bridge from a generic time grid.
+      /// </summary>
       public BrownianBridge(TimeGrid timeGrid)
       {
          size_ = timeGrid.size() - 1;

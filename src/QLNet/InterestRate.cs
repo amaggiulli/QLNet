@@ -35,13 +35,17 @@ namespace QLNet
    {
       #region Constructors
 
-      //! Default constructor returning a null interest rate.
+      /// <summary>
+      /// Initializes a null interest rate.
+      /// </summary>
       public InterestRate()
       {
          r_ = null;
       }
 
-      //! Standard constructor
+      /// <summary>
+      /// Initializes an interest rate with the given conventions.
+      /// </summary>
       public InterestRate(double r, DayCounter dc, Compounding comp, Frequency freq)
       {
          r_ = r;
@@ -77,13 +81,17 @@ namespace QLNet
 
       #region discount/compound factor calculations
 
-      //! discount factor implied by the rate compounded at time t.
-      /*! \warning Time must be measured using InterestRate's own
-                   day counter.
-      */
+      /// <summary>
+      /// Returns the discount factor implied by the rate compounded at time <paramref name="t"/>.
+      /// </summary>
+      /// <remarks>
+      /// Time must be measured using this interest rate's own day counter.
+      /// </remarks>
       public double discountFactor(double t) { return 1.0 / compoundFactor(t); }
 
-      //! discount factor implied by the rate compounded between two dates
+      /// <summary>
+      /// Returns the discount factor implied by the rate compounded between two dates.
+      /// </summary>
       public double discountFactor(Date d1, Date d2, Date refStart = null, Date refEnd = null)
       {
          Utils.QL_REQUIRE(d2 >= d1, () => "d1 (" + d1 + ") later than d2 (" + d2 + ")");
@@ -91,13 +99,12 @@ namespace QLNet
          return discountFactor(t);
       }
 
-      //! compound factor implied by the rate compounded at time t.
-      /*! returns the compound (a.k.a capitalization) factor
-          implied by the rate compounded at time t.
-
-          \warning Time must be measured using InterestRate's own
-                   day counter.
-      */
+      /// <summary>
+      /// Returns the compound factor implied by the rate compounded at time <paramref name="t"/>.
+      /// </summary>
+      /// <remarks>
+      /// Time must be measured using this interest rate's own day counter.
+      /// </remarks>
       public double compoundFactor(double t)
       {
          Utils.QL_REQUIRE(t >= 0.0, () => "negative time not allowed");
@@ -126,10 +133,9 @@ namespace QLNet
          }
       }
 
-      //! compound factor implied by the rate compounded between two dates
-      /*! returns the compound (a.k.a capitalization) factor
-          implied by the rate compounded between two dates.
-      */
+      /// <summary>
+      /// Returns the compound factor implied by the rate compounded between two dates.
+      /// </summary>
       public double compoundFactor(Date d1, Date d2, Date refStart = null, Date refEnd = null)
       {
          Utils.QL_REQUIRE(d2 >= d1, () => "d1 (" + d1 + ") later than d2 (" + d2 + ")");
@@ -142,12 +148,13 @@ namespace QLNet
       #region implied rate calculations
 
 
-      //! implied interest rate for a given compound factor at a given time.
-      /*! The resulting InterestRate has the day-counter provided as input.
-
-          \warning Time must be measured using the day-counter provided
-                   as input.
-      */
+      /// <summary>
+      /// Returns the implied interest rate for a given compound factor at a given time.
+      /// </summary>
+      /// <remarks>
+      /// The resulting <see cref="InterestRate"/> uses the supplied day counter.
+      /// Time must be measured using that same day counter.
+      /// </remarks>
       public static InterestRate impliedRate(double compound, DayCounter resultDC, Compounding comp, Frequency freq, double t)
       {
          Utils.QL_REQUIRE(compound > 0.0, () => "positive compound factor required");
@@ -192,10 +199,9 @@ namespace QLNet
          return new InterestRate(r, resultDC, comp, freq);
       }
 
-      //! implied rate for a given compound factor between two dates.
-      /*! The resulting rate is calculated taking the required
-          day-counting rule into account.
-      */
+      /// <summary>
+      /// Returns the implied rate for a given compound factor between two dates.
+      /// </summary>
       public static InterestRate impliedRate(double compound, DayCounter resultDC, Compounding comp, Frequency freq, Date d1, Date d2,
                                              Date refStart = null, Date refEnd = null)
       {
@@ -209,22 +215,22 @@ namespace QLNet
       #region equivalent rate calculations
 
 
-      //! equivalent interest rate for a compounding period t.
-      /*! The resulting InterestRate shares the same implicit
-          day-counting rule of the original InterestRate instance.
-
-          \warning Time must be measured using the InterestRate's
-                   own day counter.
-      */
+      /// <summary>
+      /// Returns the equivalent interest rate for a compounding period.
+      /// </summary>
+      /// <remarks>
+      /// The resulting <see cref="InterestRate"/> shares the same implicit
+      /// day-counting rule as the original instance. Time must be measured
+      /// using this interest rate's own day counter.
+      /// </remarks>
       public InterestRate equivalentRate(Compounding comp, Frequency freq, double t)
       {
          return impliedRate(compoundFactor(t), dc_, comp, freq, t);
       }
 
-      //! equivalent rate for a compounding period between two dates
-      /*! The resulting rate is calculated taking the required
-          day-counting rule into account.
-      */
+      /// <summary>
+      /// Returns the equivalent rate for a compounding period between two dates.
+      /// </summary>
       public InterestRate equivalentRate(DayCounter resultDC, Compounding comp, Frequency freq, Date d1, Date d2,
                                          Date refStart = null, Date refEnd = null)
       {
