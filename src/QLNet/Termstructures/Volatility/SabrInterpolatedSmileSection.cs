@@ -23,7 +23,9 @@ namespace QLNet
 {
    public class SabrInterpolatedSmileSection : SmileSection
    {
-      //! all market data are quotes
+      /// <summary>
+      /// Initializes the smile section using quoted market data.
+      /// </summary>
       public SabrInterpolatedSmileSection(
          Date optionDate,
          Handle<Quote> forward,
@@ -166,9 +168,13 @@ namespace QLNet
       private List<double> vols_;
 
       #region sabr
-      //! Svi parameters
+      /// <summary>
+      /// SABR parameters.
+      /// </summary>
       private double alpha_, beta_, nu_, rho_;
-      //! Svi interpolation settings
+      /// <summary>
+      /// SABR interpolation settings.
+      /// </summary>
       bool isAlphaFixed_, isBetaFixed_, isNuFixed_, isRhoFixed_;
       bool vegaWeighted_;
       EndCriteria endCriteria_;

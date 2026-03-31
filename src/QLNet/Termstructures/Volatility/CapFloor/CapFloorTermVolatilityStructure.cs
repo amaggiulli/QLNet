@@ -38,11 +38,15 @@ namespace QLNet
       protected CapFloorTermVolatilityStructure(BusinessDayConvention bdc, DayCounter dc = null)
          : base(bdc, dc) {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected CapFloorTermVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected CapFloorTermVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
 
@@ -50,7 +54,9 @@ namespace QLNet
 
       #region Volatility
 
-      //! returns the volatility for a given cap/floor length and strike rate
+      /// <summary>
+      /// Returns the volatility for the given cap/floor tenor and strike.
+      /// </summary>
       public double volatility(Period length, double strike, bool extrapolate = false)
       {
          Date d = optionDateFromTenor(length);
@@ -64,7 +70,9 @@ namespace QLNet
          return volatility(t, strike, extrapolate);
       }
 
-      //! returns the volatility for a given end time and strike rate
+      /// <summary>
+      /// Returns the volatility for the given option time and strike.
+      /// </summary>
       public double volatility(double t, double strike, bool extrapolate = false)
       {
          checkRange(t, extrapolate);
@@ -74,7 +82,9 @@ namespace QLNet
 
       #endregion
 
-      //! implements the actual volatility calculation in derived classes
+      /// <summary>
+      /// Implements the actual volatility calculation in derived classes.
+      /// </summary>
       protected abstract double volatilityImpl(double length, double strike);
    }
 }

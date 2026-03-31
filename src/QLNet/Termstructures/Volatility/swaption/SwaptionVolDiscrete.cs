@@ -179,7 +179,9 @@ namespace QLNet
          }
       }
 
-      //! additional inspectors
+      /// <summary>
+      /// Additional inspectors.
+      /// </summary>
       public Date optionDateFromTime(double optionTime)
       {
          return new Date((int) optionInterpolator_.value(optionTime));

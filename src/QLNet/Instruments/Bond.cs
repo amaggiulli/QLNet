@@ -77,11 +77,12 @@ namespace QLNet
       }
 
       #region Constructors
-      //! constructor for amortizing or non-amortizing bonds.
-      /*! Redemptions and maturity are calculated from the coupon
-          data, if available.  Therefore, redemptions must not be
-          included in the passed cash flows.
-      */
+      /// <summary>
+      /// Initializes an amortizing or non-amortizing bond.
+      /// </summary>
+      /// <remarks>
+      /// Redemptions and maturity are calculated from the coupon data, if available. Therefore, redemption flows must not be included in the passed cash flows.
+      /// </remarks>
       public Bond(int settlementDays, Calendar calendar, Date issueDate = null, List<CashFlow> coupons = null)
       {
          settlementDays_ = settlementDays;
@@ -205,9 +206,13 @@ namespace QLNet
             return notionals_[index];
          }
       }
-      // \note returns all the cashflows, including the redemptions.
+      /// <summary>
+      /// Returns all cash flows, including redemption flows.
+      /// </summary>
       public List<CashFlow> cashflows() { return cashflows_; }
-      //! returns just the redemption flows (not interest payments)
+      /// <summary>
+      /// Returns only the redemption flows, excluding interest payments.
+      /// </summary>
       public List<CashFlow> redemptions() { return redemptions_; }
       // returns the redemption, if only one is defined
       public CashFlow redemption()
@@ -278,8 +283,12 @@ namespace QLNet
          return dirtyPrice / 100.0 * notional(settlementDate());
       }
 
-      //! theoretical bond yield
-      /*! The default bond settlement and theoretical price are used for calculation. */
+      /// <summary>
+      /// Returns the theoretical bond yield.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement and theoretical price are used for the calculation.
+      /// </remarks>
       public double yield(DayCounter dc, Compounding comp, Frequency freq, double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
          double currentNotional = notional(settlementDate());
@@ -290,15 +299,23 @@ namespace QLNet
          return BondFunctions.yield(this, cleanPrice(), dc, comp, freq, settlementDate(), accuracy, maxEvaluations);
       }
 
-      //! clean price given a yield and settlement date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the clean price for the given yield and settlement date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public double cleanPrice(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
       {
          return BondFunctions.cleanPrice(this, yield, dc, comp, freq, settlement);
       }
 
-      //! dirty price given a yield and settlement date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the dirty price for the given yield and settlement date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public double dirtyPrice(double yield, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null)
       {
          double currentNotional = notional(settlement);
@@ -308,8 +325,12 @@ namespace QLNet
          return BondFunctions.cleanPrice(this, yield, dc, comp, freq, settlement) + accruedAmount(settlement);
       }
 
-      //! yield given a (clean) price and settlement date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the yield implied by the given clean price and settlement date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public double yield(double cleanPrice, DayCounter dc, Compounding comp, Frequency freq, Date settlement = null,
                           double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
@@ -320,8 +341,12 @@ namespace QLNet
          return BondFunctions.yield(this, cleanPrice, dc, comp, freq, settlement, accuracy, maxEvaluations);
       }
 
-      //! accrued amount at a given date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the accrued amount at the given date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public virtual double accruedAmount(Date settlement = null)
       {
          double currentNotional = notional(settlement);
@@ -388,26 +413,25 @@ namespace QLNet
 
       #endregion
 
-      /*! Expected next coupon: depending on (the bond and) the given date
-          the coupon can be historic, deterministic or expected in a
-          stochastic sense. When the bond settlement date is used the coupon
-          is the already-fixed not-yet-paid one.
-
-          The current bond settlement is used if no date is given.
-      */
+      /// <summary>
+      /// Returns the expected next coupon rate.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the bond and the given date, the coupon can be historic, deterministic, or expected in a stochastic sense. When the bond settlement date is used, the coupon is the already fixed but not yet paid one.
+      /// The current bond settlement is used if no date is given.
+      /// </remarks>
       public virtual double nextCouponRate(Date settlement = null)
       {
          return BondFunctions.nextCouponRate(this, settlement);
       }
 
-      //! Previous coupon already paid at a given date
-      /*! Expected previous coupon: depending on (the bond and) the given
-          date the coupon can be historic, deterministic or expected in a
-          stochastic sense. When the bond settlement date is used the coupon
-          is the last paid one.
-
-          The current bond settlement is used if no date is given.
-      */
+      /// <summary>
+      /// Returns the expected previous coupon rate.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the bond and the given date, the coupon can be historic, deterministic, or expected in a stochastic sense. When the bond settlement date is used, the coupon is the last paid one.
+      /// The current bond settlement is used if no date is given.
+      /// </remarks>
       public double previousCouponRate(Date settlement = null)
       {
          return BondFunctions.previousCouponRate(this, settlement);
@@ -449,20 +473,14 @@ namespace QLNet
          settlementValue_ = results.settlementValue;
       }
 
-      /*! This method can be called by derived classes in order to
-          build redemption payments from the existing cash flows.
-          It must be called after setting up the cashflows_ vector
-          and will fill the notionalSchedule_, notionals_, and
-          redemptions_ data members.
-
-          If given, the elements of the redemptions vector will
-          multiply the amount of the redemption cash flow.  The
-          elements will be taken in base 100, i.e., a redemption
-          equal to 100 does not modify the amount.
-
-          \pre The cashflows_ vector must contain at least one
-               coupon and must be sorted by date.
-      */
+      /// <summary>
+      /// Builds redemption payments from the existing cash flows.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can call this method after setting up <c>cashflows_</c>. It fills <c>notionalSchedule_</c>, <c>notionals_</c>, and <c>redemptions_</c>.
+      /// If provided, each element of <paramref name="redemptions" /> multiplies the corresponding redemption cash-flow amount on a base-100 scale, so a value of 100 leaves the amount unchanged.
+      /// The <c>cashflows_</c> vector must contain at least one coupon and must be sorted by date.
+      /// </remarks>
       protected void addRedemptionsToCashflows(List<double> redemptions = null)
       {
          if (redemptions == null)
@@ -494,11 +512,12 @@ namespace QLNet
          cashflows_ = cashflows_.OrderBy(x => x.date()).ToList();
       }
 
-      /*! This method can be called by derived classes in order to
-          build a bond with a single redemption payment.  It will
-          fill the notionalSchedule_, notionals_, and redemptions_
-          data members.
-      */
+      /// <summary>
+      /// Builds a bond with a single redemption payment.
+      /// </summary>
+      /// <remarks>
+      /// This method fills <c>notionalSchedule_</c>, <c>notionals_</c>, and <c>redemptions_</c>.
+      /// </remarks>
       protected void setSingleRedemption(double notional, double redemption, Date date)
       {
          CashFlow redemptionCashflow = new Redemption(notional * redemption / 100.0, date);
@@ -521,13 +540,13 @@ namespace QLNet
          redemptions_.Add(redemption);
       }
 
-      /*! used internally to collect notional information from the
-          coupons. It should not be called by derived classes,
-          unless they already provide redemption cash flows (in
-          which case they must set up the redemptions_ data member
-          independently).  It will fill the notionalSchedule_ and
-          notionals_ data members.
-      */
+      /// <summary>
+      /// Collects notional information from the coupons.
+      /// </summary>
+      /// <remarks>
+      /// This method is used internally and should not be called by derived classes unless they already provide redemption cash flows, in which case they must set up <c>redemptions_</c> independently.
+      /// It fills <c>notionalSchedule_</c> and <c>notionals_</c>.
+      /// </remarks>
       protected void calculateNotionalsFromCashflows()
       {
          notionalSchedule_.Clear();

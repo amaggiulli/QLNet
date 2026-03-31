@@ -43,11 +43,15 @@ namespace QLNet
                                              DayCounter dc = null)
          : base(bdc, dc) {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected OptionletVolatilityStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected OptionletVolatilityStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
 
@@ -55,14 +59,18 @@ namespace QLNet
 
       #region Volatility and Variance
 
-      //! returns the volatility for a given option tenor and strike rate
+      /// <summary>
+      /// Returns the volatility for the given option tenor and strike.
+      /// </summary>
       public double volatility(Period optionTenor, double strike, bool extrapolate = false)
       {
          Date optionDate = optionDateFromTenor(optionTenor);
          return volatility(optionDate, strike, extrapolate);
       }
 
-      //! returns the volatility for a given option date and strike rate
+      /// <summary>
+      /// Returns the volatility for the given option date and strike.
+      /// </summary>
       public double volatility(Date optionDate, double strike, bool extrapolate = false)
       {
          checkRange(optionDate, extrapolate);
@@ -70,7 +78,9 @@ namespace QLNet
          return volatilityImpl(optionDate, strike);
       }
 
-      //! returns the volatility for a given option time and strike rate
+      /// <summary>
+      /// Returns the volatility for the given option time and strike.
+      /// </summary>
       public double volatility(double optionTime, double strike, bool extrapolate = false)
       {
          checkRange(optionTime, extrapolate);
@@ -78,14 +88,18 @@ namespace QLNet
          return volatilityImpl(optionTime, strike);
       }
 
-      //! returns the Black variance for a given option tenor and strike rate
+      /// <summary>
+      /// Returns the Black variance for the given option tenor and strike.
+      /// </summary>
       public double blackVariance(Period optionTenor, double strike, bool extrapolate = false)
       {
          Date optionDate = optionDateFromTenor(optionTenor);
          return blackVariance(optionDate, strike, extrapolate);
       }
 
-      //! returns the Black variance for a given option date and strike rate
+      /// <summary>
+      /// Returns the Black variance for the given option date and strike.
+      /// </summary>
       public double blackVariance(Date optionDate, double strike, bool extrapolate = false)
       {
          double v = volatility(optionDate, strike, extrapolate);
@@ -93,28 +107,36 @@ namespace QLNet
          return v * v * t;
       }
 
-      //! returns the Black variance for a given option time and strike rate
+      /// <summary>
+      /// Returns the Black variance for the given option time and strike.
+      /// </summary>
       public double blackVariance(double optionTime,  double strike,  bool extrapolate = false)
       {
          double v = volatility(optionTime, strike, extrapolate);
          return v * v * optionTime;
       }
 
-      //! returns the smile for a given option tenor
+      /// <summary>
+      /// Returns the smile section for the given option tenor.
+      /// </summary>
       public SmileSection smileSection(Period optionTenor, bool extr = false)
       {
          Date optionDate = optionDateFromTenor(optionTenor);
          return smileSection(optionDate, extrapolate);
       }
 
-      //! returns the smile for a given option date
+      /// <summary>
+      /// Returns the smile section for the given option date.
+      /// </summary>
       public SmileSection smileSection(Date optionDate, bool extr = false)
       {
          checkRange(optionDate, extrapolate);
          return smileSectionImpl(optionDate);
       }
 
-      //! returns the smile for a given option time
+      /// <summary>
+      /// Returns the smile section for the given option time.
+      /// </summary>
       public SmileSection smileSection(double optionTime,  bool extr = false)
       {
          checkRange(optionTime, extrapolate);
@@ -131,7 +153,9 @@ namespace QLNet
          return smileSectionImpl(timeFromReference(optionDate));
       }
 
-      //! implements the actual smile calculation in derived classes
+      /// <summary>
+      /// Implements the actual smile-section calculation in derived classes.
+      /// </summary>
       protected abstract SmileSection smileSectionImpl(double optionTime);
 
       protected double volatilityImpl(Date optionDate, double strike)
@@ -139,7 +163,9 @@ namespace QLNet
          return volatilityImpl(timeFromReference(optionDate), strike);
       }
 
-      //! implements the actual volatility calculation in derived classes
+      /// <summary>
+      /// Implements the actual volatility calculation in derived classes.
+      /// </summary>
       protected abstract double volatilityImpl(double optionTime, double strike);
 
 

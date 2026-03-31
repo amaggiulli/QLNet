@@ -26,7 +26,9 @@ namespace QLNet
    {
       private Handle<Quote> volatility_;
 
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the structure with a floating reference date and floating market data.
+      /// </summary>
       public ConstantOptionletVolatility(int settlementDays, Calendar cal, BusinessDayConvention bdc,
                                          Handle<Quote> vol, DayCounter dc)
          : base(settlementDays, cal, bdc, dc)
@@ -36,7 +38,9 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the structure with a fixed reference date and floating market data.
+      /// </summary>
       public ConstantOptionletVolatility(Date referenceDate, Calendar cal, BusinessDayConvention bdc,
                                          Handle<Quote> vol, DayCounter dc)
          : base(referenceDate, cal, bdc, dc)
@@ -46,7 +50,9 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the structure with a floating reference date and fixed market data.
+      /// </summary>
       public ConstantOptionletVolatility(int settlementDays, Calendar cal, BusinessDayConvention bdc,
                                          double vol, DayCounter dc)
          : base(settlementDays, cal, bdc, dc)
@@ -54,7 +60,9 @@ namespace QLNet
          volatility_ = new Handle<Quote>(new SimpleQuote(vol));
       }
 
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the structure with a fixed reference date and fixed market data.
+      /// </summary>
       public ConstantOptionletVolatility(Date referenceDate, Calendar cal, BusinessDayConvention bdc,
                                          double vol, DayCounter dc)
          : base(referenceDate, cal, bdc, dc)

@@ -42,12 +42,16 @@ namespace QLNet
       protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(bdc, dc) {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected LocalVolTermStructure(Date referenceDate, Calendar cal = null,
                                       BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected LocalVolTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
                                       DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
@@ -79,7 +83,9 @@ namespace QLNet
           assume that extrapolation is required.
       */
 
-      //! local vol calculation
+      /// <summary>
+      /// Implements local-volatility calculation in derived classes.
+      /// </summary>
       protected abstract double localVolImpl(double t, double strike);
 
       #endregion

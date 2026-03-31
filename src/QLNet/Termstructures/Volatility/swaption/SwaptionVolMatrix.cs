@@ -38,7 +38,9 @@ namespace QLNet
    /// </remarks>
    public class SwaptionVolatilityMatrix : SwaptionVolatilityDiscrete
    {
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the matrix with a floating reference date and floating market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Calendar calendar,
          BusinessDayConvention bdc,
@@ -97,7 +99,9 @@ namespace QLNet
          }
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the matrix with a fixed reference date and floating market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Date referenceDate,
          Calendar calendar,
@@ -157,7 +161,9 @@ namespace QLNet
          }
       }
 
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the matrix with a floating reference date and fixed market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Calendar calendar,
          BusinessDayConvention bdc,
@@ -213,7 +219,9 @@ namespace QLNet
          }
       }
 
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the matrix with a fixed reference date and fixed market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Date referenceDate,
          Calendar calendar,
@@ -370,7 +378,9 @@ namespace QLNet
       }
 
       // Other inspectors
-      //! returns the lower indexes of surrounding volatility matrix corners
+      /// <summary>
+      /// Returns the lower indexes of the surrounding volatility-matrix corners.
+      /// </summary>
       public KeyValuePair<int, int> locate(Date optionDate,
                                            Period swapTenor)
       {
@@ -378,7 +388,9 @@ namespace QLNet
                        swapLength(swapTenor));
       }
 
-      //! returns the lower indexes of surrounding volatility matrix corners
+      /// <summary>
+      /// Returns the lower indexes of the surrounding volatility-matrix corners.
+      /// </summary>
       public KeyValuePair<int, int> locate(double optionTime,
                                            double swapLength)
       {

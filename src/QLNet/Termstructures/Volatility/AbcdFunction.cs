@@ -30,25 +30,32 @@ namespace QLNet
          : base(a, b, c, d)
       {}
 
-      //! maximum value of the volatility function
+      /// <summary>
+      /// Returns the maximum value of the volatility function.
+      /// </summary>
       public double maximumVolatility() { return maximumValue(); }
 
-      //! volatility function value at time 0: \f[ f(0) \f]
+      /// <summary>
+      /// Returns the value of the volatility function at time 0.
+      /// </summary>
       public double shortTermVolatility() { return new AbcdFunction().value(0.0); }
 
-      //! volatility function value at time +inf: \f[ f(\inf) \f]
+      /// <summary>
+      /// Returns the asymptotic long-term value of the volatility function.
+      /// </summary>
       public double longTermVolatility() { return longTermValue(); }
 
-      /*! instantaneous covariance function at time t between T-fixing and
-         S-fixing rates \f[ f(T-t)f(S-t) \f] */
+      /// <summary>
+      /// Returns the instantaneous covariance at time <paramref name="t" /> between the <paramref name="T" />- and <paramref name="S" />-fixing rates.
+      /// </summary>
       public double covariance(double t, double T, double S)
       {
          return new AbcdFunction().value(T - t) * new AbcdFunction().value(S - t);
       }
 
-      /*! integral of the instantaneous covariance function between
-         time t1 and t2 for T-fixing and S-fixing rates
-         \f[ \int_{t1}^{t2} f(T-t)f(S-t)dt \f] */
+      /// <summary>
+      /// Returns the integral of the instantaneous covariance between <paramref name="t1" /> and <paramref name="t2" /> for the <paramref name="T" />- and <paramref name="S" />-fixing rates.
+      /// </summary>
       public double covariance(double t1, double t2, double T, double S)
       {
          Utils.QL_REQUIRE(t1 <= t2, () => "integrations bounds (" + t1 + "," + t2 + ") are in reverse order");
@@ -64,8 +71,9 @@ namespace QLNet
          }
       }
 
-      /*! average volatility in [tMin,tMax] of T-fixing rate:
-         \f[ \sqrt{ \frac{\int_{tMin}^{tMax} f^2(T-u)du}{tMax-tMin} } \f] */
+      /// <summary>
+      /// Returns the average volatility over <c>[tMin, tMax]</c> for the <paramref name="T" />-fixing rate.
+      /// </summary>
       public double volatility(double tMin, double tMax, double T)
       {
          if (tMax.IsEqual(tMin))
@@ -74,8 +82,9 @@ namespace QLNet
          return Math.Sqrt(variance(tMin, tMax, T) / (tMax - tMin));
       }
 
-      /*! variance between tMin and tMax of T-fixing rate:
-         \f[ \frac{\int_{tMin}^{tMax} f^2(T-u)du}{tMax-tMin} \f] */
+      /// <summary>
+      /// Returns the variance over <c>[tMin, tMax]</c> for the <paramref name="T" />-fixing rate.
+      /// </summary>
       public double variance(double tMin, double tMax, double T)
       {
          return covariance(tMin, tMax, T, T);
@@ -84,31 +93,34 @@ namespace QLNet
 
 
       // INSTANTANEOUS
-      /*! instantaneous volatility at time t of the T-fixing rate:
-         \f[ f(T-t) \f] */
+      /// <summary>
+      /// Returns the instantaneous volatility at time <paramref name="u" /> for the <paramref name="T" />-fixing rate.
+      /// </summary>
       public double instantaneousVolatility(double u, double T)
       {
          return Math.Sqrt(instantaneousVariance(u, T));
       }
 
-      /*! instantaneous variance at time t of T-fixing rate:
-         \f[ f(T-t)f(T-t) \f] */
+      /// <summary>
+      /// Returns the instantaneous variance at time <paramref name="u" /> for the <paramref name="T" />-fixing rate.
+      /// </summary>
       public double instantaneousVariance(double u, double T)
       {
          return instantaneousCovariance(u, T, T);
       }
 
-      /*! instantaneous covariance at time t between T and S fixing rates:
-         \f[ f(T-u)f(S-u) \f] */
+      /// <summary>
+      /// Returns the instantaneous covariance at time <paramref name="u" /> between the <paramref name="T" />- and <paramref name="S" />-fixing rates.
+      /// </summary>
       public double instantaneousCovariance(double u, double T, double S)
       {
          return new AbcdFunction().value(T - u) * new AbcdFunction().value(S - u);
       }
 
       // PRIMITIVE
-      /*! indefinite integral of the instantaneous covariance function at
-         time t between T-fixing and S-fixing rates
-         \f[ \int f(T-t)f(S-t)dt \f] */
+      /// <summary>
+      /// Returns the primitive of the instantaneous covariance at time <paramref name="t" /> between the <paramref name="T" />- and <paramref name="S" />-fixing rates.
+      /// </summary>
       public double primitive(double t, double T, double S)
       {
          if (T < t || S < t)

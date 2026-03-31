@@ -52,7 +52,7 @@ namespace QLNet
       protected override void performCalculations()
       {
          base.performCalculations();
-         //! set volSpreadsMatrix_ by volSpreads_ quotes
+         // Set volSpreadsMatrix_ from the volSpreads_ quotes.
          for (int i = 0; i < nStrikes_; i++)
             for (int j = 0; j < nOptionTenors_; j++)
                for (int k = 0; k < nSwapTenors_; k++)
@@ -60,7 +60,7 @@ namespace QLNet
                   Matrix p = volSpreadsMatrix_[i];
                   p[j, k] = volSpreads_[j * nSwapTenors_ + k][i].link.value();
                }
-         //! create volSpreadsInterpolator_
+         // Create volSpreadsInterpolator_.
          for (int i = 0; i < nStrikes_; i++)
          {
             volSpreadsInterpolator_.Add(new BilinearInterpolation(swapLengths_, swapLengths_.Count,

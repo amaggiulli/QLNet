@@ -23,7 +23,9 @@ namespace QLNet
 {
    public class SviInterpolatedSmileSection : SmileSection
    {
-      //! all market data are quotes
+      /// <summary>
+      /// Initializes the smile section using quoted market data.
+      /// </summary>
       public SviInterpolatedSmileSection(
          Date optionDate,
          Handle<Quote> forward,
@@ -168,9 +170,13 @@ namespace QLNet
       private List<double> vols_;
 
       #region svi
-      //! Svi parameters
+      /// <summary>
+      /// SVI parameters.
+      /// </summary>
       private double a_, b_, sigma_, rho_, m_;
-      //! Svi interpolation settings
+      /// <summary>
+      /// SVI interpolation settings.
+      /// </summary>
       bool isAFixed_, isBFixed_, isSigmaFixed_, isRhoFixed_, isMFixed_;
       bool vegaWeighted_;
       EndCriteria endCriteria_;
