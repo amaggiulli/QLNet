@@ -61,25 +61,33 @@ namespace QLNet
 
          public abstract double shortRate(double t, double x, double y);
 
-         //! Risk-neutral dynamics of the first state variable x
+         /// <summary>
+         /// Returns the risk-neutral dynamics of the first state variable.
+         /// </summary>
          public StochasticProcess1D xProcess()
          {
             return xProcess_;
          }
 
-         //! Risk-neutral dynamics of the second state variable y
+         /// <summary>
+         /// Returns the risk-neutral dynamics of the second state variable.
+         /// </summary>
          public StochasticProcess1D yProcess()
          {
             return yProcess_;
          }
 
-         //! Correlation \f$ \rho \f$ between the two brownian motions.
+         /// <summary>
+         /// Returns the correlation between the two Brownian motions.
+         /// </summary>
          public double correlation()
          {
             return correlation_;
          }
 
-         //! Joint process of the two variables
+         /// <summary>
+         /// Returns the joint process of the two state variables.
+         /// </summary>
          public abstract StochasticProcess process();
       }
 
@@ -95,7 +103,9 @@ namespace QLNet
 
          ShortRateDynamics dynamics_;
 
-         //! Plain tree build-up from short-rate dynamics
+         /// <summary>
+         /// Initializes a tree directly from the short-rate dynamics.
+         /// </summary>
          public ShortRateTree(TrinomialTree tree1,
                               TrinomialTree tree2,
                               ShortRateDynamics dynamics)

@@ -34,7 +34,9 @@ namespace QLNet
          V = 10, X = 11, Z = 12
       }
 
-      //! returns whether or not the given date is an IMM date
+      /// <summary>
+      /// Returns whether the given date is an IMM date.
+      /// </summary>
       public static bool isIMMdate(Date date) { return isIMMdate(date, true); }
       public static bool isIMMdate(Date date, bool mainCycle)
       {
@@ -59,7 +61,9 @@ namespace QLNet
          }
       }
 
-      //! returns whether or not the given string is an IMM code
+      /// <summary>
+      /// Returns whether the given string is a valid IMM code.
+      /// </summary>
       public static bool isIMMcode(string s) { return isIMMcode(s, true); }
       public static bool isIMMcode(string s, bool mainCycle)
       {
@@ -119,9 +123,12 @@ namespace QLNet
          return result;
       }
 
-      //! next IMM date following the given date
-      /*! returns the 1st delivery date for next contract listed in the
-          International Money Market section of the Chicago Mercantile Exchange. */
+      /// <summary>
+      /// Returns the next IMM date following the given date.
+      /// </summary>
+      /// <remarks>
+      /// This is the first delivery date for the next contract listed in the International Money Market section of the Chicago Mercantile Exchange.
+      /// </remarks>
       public static Date nextDate() { return nextDate((Date)null, true); }
       public static Date nextDate(Date d) { return nextDate(d, true); }
       public static Date nextDate(Date date, bool mainCycle)
@@ -153,9 +160,12 @@ namespace QLNet
          return result;
       }
 
-      //! next IMM date following the given IMM code
-      /*! returns the 1st delivery date for next contract listed in the
-          International Money Market section of the Chicago Mercantile Exchange. */
+      /// <summary>
+      /// Returns the next IMM date following the given IMM code.
+      /// </summary>
+      /// <remarks>
+      /// This is the first delivery date for the next contract listed in the International Money Market section of the Chicago Mercantile Exchange.
+      /// </remarks>
       public static Date nextDate(string immCode) { return nextDate(immCode, true, null); }
       public static Date nextDate(string immCode, bool mainCycle) { return nextDate(immCode, mainCycle, null); }
       public static Date nextDate(string immCode, bool mainCycle, Date referenceDate)
@@ -164,8 +174,9 @@ namespace QLNet
          return nextDate(immDate + 1, mainCycle);
       }
 
-      /*! returns the IMM code for next contract listed in the
-          International Money Market section of the Chicago Mercantile Exchange.*/
+      /// <summary>
+      /// Returns the IMM code for the next listed contract.
+      /// </summary>
       public static string nextCode() { return nextCode((Date)null, true); }
       public static string nextCode(Date d) { return nextCode(d, true); }
       public static string nextCode(Date d, bool mainCycle)
@@ -174,8 +185,9 @@ namespace QLNet
          return code(date);
       }
 
-      /*! returns the IMM code for next contract listed in the
-          International Money Market section of the Chicago Mercantile Exchange. */
+      /// <summary>
+      /// Returns the IMM code for the next listed contract following the given code.
+      /// </summary>
       public static string nextCode(string immCode) { return nextCode(immCode, true, null); }
       public static string nextCode(string immCode, bool mainCycle) { return nextCode(immCode, mainCycle, null); }
       public static string nextCode(string immCode, bool mainCycle, Date referenceDate)

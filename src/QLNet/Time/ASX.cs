@@ -53,7 +53,9 @@ namespace QLNet
          Z = 12
       }
 
-      //! returns whether or not the given date is an ASX date
+      /// <summary>
+      /// Returns whether the given date is an ASX date.
+      /// </summary>
       public static bool isASXdate(Date date, bool mainCycle = true)
       {
          if (date.weekday() != (int)DayOfWeek.Friday + 1)
@@ -78,7 +80,9 @@ namespace QLNet
          }
       }
 
-      //! returns whether or not the given string is an ASX code
+      /// <summary>
+      /// Returns whether the given string is a valid ASX code.
+      /// </summary>
       public static bool isASXcode(String inString, bool mainCycle = true)
       {
          if (inString.Length != 2)
@@ -100,9 +104,12 @@ namespace QLNet
          return true;
       }
 
-      /*! returns the ASX code for the given date
-         (e.g. M5 for June 12th, 2015).
-      */
+      /// <summary>
+      /// Returns the ASX code for the given date.
+      /// </summary>
+      /// <remarks>
+      /// For example, <c>M5</c> represents June 12th, 2015.
+      /// </remarks>
       public static String code(Date date)
       {
 
@@ -156,12 +163,12 @@ namespace QLNet
          return ASXcode;
       }
 
-      /*! returns the ASX date for the given ASX code
-         (e.g. June 12th, 2015 for M5).
-
-         \warning It raises an exception if the input
-                  string is not an ASX code
-      */
+      /// <summary>
+      /// Returns the ASX date for the given ASX code.
+      /// </summary>
+      /// <remarks>
+      /// For example, <c>M5</c> maps to June 12th, 2015. An exception is raised if the input string is not a valid ASX code.
+      /// </remarks>
       public static Date date(String asxCode, Date refDate = null)
       {
          Utils.QL_REQUIRE(isASXcode(asxCode, false), () =>
@@ -216,10 +223,12 @@ namespace QLNet
       }
 
 
-      //! next ASX date following the given date
-      /*! returns the 1st delivery date for next contract listed in the
-         Australian Securities Exchange.
-      */
+      /// <summary>
+      /// Returns the next ASX date following the given date.
+      /// </summary>
+      /// <remarks>
+      /// This is the first delivery date for the next contract listed on the Australian Securities Exchange.
+      /// </remarks>
       public static Date nextDate(Date date = null, bool mainCycle = true)
       {
          Date refDate = date ?? Settings.evaluationDate();
@@ -248,30 +257,30 @@ namespace QLNet
          return result;
       }
 
-      //! next ASX date following the given ASX code
-      /*! returns the 1st delivery date for next contract listed in the
-         Australian Securities Exchange
-      */
+      /// <summary>
+      /// Returns the next ASX date following the given ASX code.
+      /// </summary>
+      /// <remarks>
+      /// This is the first delivery date for the next contract listed on the Australian Securities Exchange.
+      /// </remarks>
       public static Date nextDate(String ASXcode, bool mainCycle = true, Date referenceDate = null)
       {
          Date asxDate = date(ASXcode, referenceDate);
          return nextDate(asxDate + 1, mainCycle);
       }
 
-      //! next ASX code following the given date
-      /*! returns the ASX code for next contract listed in the
-         Australian Securities Exchange
-      */
+      /// <summary>
+      /// Returns the next ASX code following the given date.
+      /// </summary>
       public static String nextCode(Date d = null, bool mainCycle = true)
       {
          Date date = nextDate(d, mainCycle);
          return code(date);
       }
 
-      //! next ASX code following the given code
-      /*! returns the ASX code for next contract listed in the
-         Australian Securities Exchange
-      */
+      /// <summary>
+      /// Returns the next ASX code following the given code.
+      /// </summary>
       public static String nextCode(String asxCode, bool mainCycle = true, Date referenceDate = null)
       {
          Date date = nextDate(asxCode, mainCycle, referenceDate);

@@ -175,7 +175,9 @@ namespace QLNet
    /// </summary>
    public class AbcdInterpolation : Interpolation
    {
-      /*! Constructor */
+      /// <summary>
+      /// Initializes an abcd interpolation.
+      /// </summary>
       public AbcdInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                double a = -0.06,
                                double b =  0.17,

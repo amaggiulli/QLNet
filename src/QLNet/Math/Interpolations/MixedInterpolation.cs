@@ -125,7 +125,12 @@ namespace QLNet
    /// </summary>
    public class MixedLinearCubicInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearCubicInterpolation(List<double> xBegin, int xEnd,
                                            List<double> yBegin, int n,
                                            Behavior behavior,
@@ -194,7 +199,12 @@ namespace QLNet
 
    public class MixedLinearCubicNaturalSpline : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearCubicNaturalSpline(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                            Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -206,7 +216,12 @@ namespace QLNet
 
    public class MixedLinearMonotonicCubicNaturalSpline : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/monotonic cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int  xEnd, List<double> yBegin, int n,
                                                     Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -218,7 +233,12 @@ namespace QLNet
 
    public class MixedLinearKrugerCubic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/Kruger cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearKrugerCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                     Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -230,7 +250,12 @@ namespace QLNet
 
    public class MixedLinearFritschButlandCubic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/Fritsch-Butland cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearFritschButlandCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                             Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -242,7 +267,12 @@ namespace QLNet
 
    public class MixedLinearParabolic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                   Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -254,7 +284,12 @@ namespace QLNet
 
    public class MixedLinearMonotonicParabolic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/monotonic parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearMonotonicParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                            Behavior behavior =  Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,

@@ -68,7 +68,12 @@ namespace QLNet
    /// </summary>
    public class LinearInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a linear interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public LinearInterpolation(List<double> xBegin, int size, List<double> yBegin)
       {
          impl_ = new LinearInterpolationImpl(xBegin, size, yBegin);

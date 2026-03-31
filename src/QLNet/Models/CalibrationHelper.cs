@@ -53,19 +53,29 @@ namespace QLNet
          marketValue_ = blackPrice(volatility_.link.value());
       }
 
-      //! returns the volatility Handle
+      /// <summary>
+      /// Returns the volatility handle.
+      /// </summary>
       public Handle<Quote> volatility() { return volatility_; }
 
-      //! returns the volatility type
+      /// <summary>
+      /// Returns the volatility type.
+      /// </summary>
       public VolatilityType volatilityType() { return volatilityType_; }
 
-      //! returns the actual price of the instrument (from volatility)
+      /// <summary>
+      /// Returns the market price of the instrument implied by the input volatility.
+      /// </summary>
       public double marketValue() { calculate(); return marketValue_; }
 
-      //! returns the price of the instrument according to the model
+      /// <summary>
+      /// Returns the model price of the instrument.
+      /// </summary>
       public abstract double modelValue();
 
-      //! returns the error resulting from the model valuation
+      /// <summary>
+      /// Returns the calibration error implied by the current model valuation.
+      /// </summary>
       public virtual double calibrationError()
       {
          double error = 0 ;
@@ -107,7 +117,9 @@ namespace QLNet
 
       public abstract void addTimesTo(List<double> times);
 
-      //! Black volatility implied by the model
+      /// <summary>
+      /// Returns the Black volatility implied by the model.
+      /// </summary>
       public double impliedVolatility(double targetValue,
                                       double accuracy, int maxEvaluations, double minVol, double maxVol)
       {
@@ -118,7 +130,9 @@ namespace QLNet
          return solver.solve(f, accuracy, volatility_.link.value(), minVol, maxVol);
       }
 
-      //! Black price given a volatility
+      /// <summary>
+      /// Returns the Black price for the given volatility.
+      /// </summary>
       public abstract double blackPrice(double volatility);
 
       public void setPricingEngine(IPricingEngine engine) {engine_ = engine;}

@@ -132,10 +132,12 @@ namespace QLNet
       }
 
 
-      //! Joint calendar
-      /*! Depending on the chosen rule, this calendar has a set of business days given by either the union or the intersection
-          of the sets of business days of the given calendars.
-          \test the correctness of the returned results is tested by reproducing the calculations. */
+      /// <summary>
+      /// Initializes a joint calendar.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the chosen rule, business days are defined by either the union or the intersection of the business days in the supplied calendars.
+      /// </remarks>
       public JointCalendar(Calendar c1, Calendar c2)
          : this(c1, c2, JointCalendarRule.JoinHolidays) { }
       public JointCalendar(Calendar c1, Calendar c2, JointCalendarRule r)

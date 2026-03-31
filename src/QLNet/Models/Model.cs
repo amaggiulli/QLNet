@@ -29,7 +29,9 @@ namespace QLNet
    /// </remarks>
    public abstract class AffineModel : IObservable
    {
-      //! Implied discount curve
+      /// <summary>
+      /// Returns the implied discount factor at the given time.
+      /// </summary>
       public abstract double discount(double t);
       public abstract double discountBond(double now, double maturity, Vector factors);
       public abstract double discountBondOption(Option.Type type, double strike, double maturity, double bondMaturity);
@@ -132,10 +134,12 @@ namespace QLNet
          shortRateEndCriteria_ = EndCriteria.Type.None;
       }
 
-      //! Calibrate to a set of market instruments (caps/swaptions)
-      /*! An additional constraint can be passed which must be
-          satisfied in addition to the constraints of the model.
-      */
+      /// <summary>
+      /// Calibrates the model to a set of market instruments.
+      /// </summary>
+      /// <remarks>
+      /// An additional constraint can be provided and is enforced together with the model constraints.
+      /// </remarks>
       public void calibrate(List<CalibrationHelper> instruments,
                             OptimizationMethod method,
                             EndCriteria endCriteria,
@@ -181,7 +185,9 @@ namespace QLNet
          return f.value(parameters);
       }
 
-      //! Returns array of arguments on which calibration is done
+      /// <summary>
+      /// Returns the parameter array used for calibration.
+      /// </summary>
       public Vector parameters()
       {
          int size = 0, i;

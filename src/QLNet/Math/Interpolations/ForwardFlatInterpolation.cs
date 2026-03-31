@@ -62,7 +62,12 @@ namespace QLNet
    /// </summary>
    public class ForwardFlatInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a forward-flat interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public ForwardFlatInterpolation(List<double> xBegin, int size, List<double> yBegin)
       {
          impl_ = new ForwardFlatInterpolationImpl(xBegin, size, yBegin);

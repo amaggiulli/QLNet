@@ -146,9 +146,12 @@ namespace QLNet
    public class KernelInterpolation : Interpolation
    {
 
-      /*! \pre the \f$ x \f$ values must be sorted.
-         \pre kernel needs a Real operator()(Real x) implementation
-      */
+      /// <summary>
+      /// Initializes a kernel interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted, and the kernel must implement an operator that evaluates the kernel at a given point.
+      /// </remarks>
       public KernelInterpolation(List<double> xBegin, int size, List<double> yBegin, IKernelFunction kernel)
       {
          impl_ = new KernelInterpolationImpl<IKernelFunction>(xBegin, size, yBegin, kernel);

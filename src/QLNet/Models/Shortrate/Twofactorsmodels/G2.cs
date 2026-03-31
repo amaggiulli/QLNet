@@ -269,16 +269,12 @@ namespace QLNet
             throw new NotImplementedException();
          }
 
-         //! Analytical term-structure fitting parameter \f$ \varphi(t) \f$.
-         /*! \f$ \varphi(t) \f$ is analytically defined by
-             \f[
-                 \varphi(t) = f(t) +
-                      \frac{1}{2}(\frac{\sigma(1-e^{-at})}{a})^2 +
-                      \frac{1}{2}(\frac{\eta(1-e^{-bt})}{b})^2 +
-                      \rho\frac{\sigma(1-e^{-at})}{a}\frac{\eta(1-e^{-bt})}{b},
-             \f]
-             where \f$ f(t) \f$ is the instantaneous forward rate at \f$ t \f$.
-         */
+         /// <summary>
+         /// Analytical term-structure fitting parameter <c>phi(t)</c>.
+         /// </summary>
+         /// <remarks>
+         /// This parameter is defined analytically in terms of the instantaneous forward rate and the G2 model parameters.
+         /// </remarks>
       }
 
       public class FittingParameter : TermStructureFittingParameter

@@ -183,12 +183,12 @@ namespace QLNet
    public class KernelInterpolation2D : Interpolation2D
    {
 
-      /*! \pre the \f$ x \f$ values must be sorted.
-            \pre kernel needs a Real operator()(Real x) implementation
-
-       */
-
-
+      /// <summary>
+      /// Initializes a two-dimensional kernel interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted, and the kernel must implement an operator that evaluates the kernel at a given point.
+      /// </remarks>
       public KernelInterpolation2D(List<double> xBegin, int size, List<double> yBegin, int ySize,
                                    Matrix zData, IKernelFunction kernel)
       {

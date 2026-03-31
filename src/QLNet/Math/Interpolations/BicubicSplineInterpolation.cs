@@ -145,7 +145,12 @@ namespace QLNet
    /// </remarks>
    public class BicubicSpline : Interpolation2D
    {
-      /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a bicubic spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> and <c>y</c> values must be sorted.
+      /// </remarks>
       public BicubicSpline(List<double> xBegin, int size, List<double> yBegin, int ySize, Matrix zData)
       {
          impl_ = new BicubicSplineImpl(xBegin, size, yBegin, ySize, zData);

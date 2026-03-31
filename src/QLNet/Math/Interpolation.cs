@@ -23,9 +23,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! base class for 1-D interpolations.
-   /* Classes derived from this class will provide interpolated values from two sequences of equal length,
-    * representing discretized values of a variable and a function of the former, respectively. */
+   /// <summary>
+   /// Base class for one-dimensional interpolations.
+   /// </summary>
+   /// <remarks>
+   /// Derived classes provide interpolated values from two sequences of equal length representing a discretized variable and the corresponding function values.
+   /// </remarks>
 
    // Interpolation factory
    public interface IInterpolationFactory

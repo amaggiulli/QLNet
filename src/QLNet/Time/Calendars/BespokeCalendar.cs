@@ -62,7 +62,9 @@ namespace QLNet
          _impl = _BespokeImpl;
       }
 
-      //! marks the passed day as part of the weekend
+      /// <summary>
+      /// Marks the given day as part of the weekend.
+      /// </summary>
       public void addWeekend(DayOfWeek w)
       {
             _BespokeImpl.addWeekend(w);

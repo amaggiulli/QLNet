@@ -109,7 +109,9 @@ namespace QLNet
       }
    }
 
-   //! Piecewise-constant parameter
+   /// <summary>
+   /// Piecewise-constant parameter.
+   /// </summary>
    //    ! \f$ a(t) = a_i if t_{i-1} \geq t < t_i \f$.
    //        This kind of parameter is usually used to enhance the fitting of a
    //        model

@@ -103,7 +103,12 @@ namespace QLNet
    /// </summary>
    public class LogLinearInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a log-linear interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
 
       public LogLinearInterpolation(List<double> xBegin, int size, List<double> yBegin)
       {
@@ -165,7 +170,12 @@ namespace QLNet
    /// </summary>
    public class LogCubicInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a log-cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
 
       public LogCubicInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                    CubicInterpolation.DerivativeApprox da,
