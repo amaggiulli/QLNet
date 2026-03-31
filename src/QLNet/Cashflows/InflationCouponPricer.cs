@@ -81,7 +81,7 @@ namespace QLNet
    }
 
    /// <summary>
-   /// base pricer for capped/floored YoY inflation coupons
+   /// Base pricer for capped/floored year-on-year inflation coupons.
    /// </summary>
    /// <remarks>
    /// Note: this pricer can already do swaplets but to get

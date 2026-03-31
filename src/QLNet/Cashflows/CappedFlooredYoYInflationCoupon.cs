@@ -128,7 +128,9 @@ namespace QLNet
          return swapletRate + floorletRate - capletRate;
 
       }
-      //! cap
+      /// <summary>
+      /// Returns the cap, if any.
+      /// </summary>
       public double? cap()
       {
          if ((gearing_ > 0) && isCapped_)
@@ -139,7 +141,9 @@ namespace QLNet
 
          return null;
       }
-      //! floor
+      /// <summary>
+      /// Returns the floor, if any.
+      /// </summary>
       public double? floor()
       {
          if ((gearing_ > 0) && isFloored_)
@@ -150,12 +154,16 @@ namespace QLNet
 
          return null;
       }
-      //! effective cap of fixing
+      /// <summary>
+      /// Returns the effective cap of the fixing.
+      /// </summary>
       public double effectiveCap()
       {
          return (cap_ - spread()) / gearing();
       }
-      //! effective floor of fixing
+      /// <summary>
+      /// Returns the effective floor of the fixing.
+      /// </summary>
       public double effectiveFloor()
       {
          return (floor_ - spread()) / gearing();

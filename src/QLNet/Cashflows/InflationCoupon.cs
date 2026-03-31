@@ -92,20 +92,33 @@ namespace QLNet
       }
 
       // Inspectors
-      //! yoy inflation index
+      /// <summary>
+      /// Returns the inflation index.
+      /// </summary>
       public InflationIndex index() { return index_; }
-      //! how the coupon observes the index
+
+      /// <summary>
+      /// Returns the observation lag.
+      /// </summary>
       public Period observationLag() { return observationLag_; }
-      //! fixing days
+
+      /// <summary>
+      /// Returns the fixing days.
+      /// </summary>
       public int fixingDays() { return fixingDays_; }
-      //! fixing date
+
+      /// <summary>
+      /// Returns the fixing date.
+      /// </summary>
       public virtual Date fixingDate()
       {
          // fixing calendar is usually the null calendar for inflation indices
          return index_.fixingCalendar().advance(refPeriodEnd_ - observationLag_,
                                                 -(fixingDays_), TimeUnit.Days, BusinessDayConvention.ModifiedPreceding);
       }
-      //! fixing of the underlying index, as observed by the coupon
+      /// <summary>
+      /// Returns the fixing of the underlying index as observed by the coupon.
+      /// </summary>
       public virtual double indexFixing()
       {
          return index_.fixing(fixingDate());
@@ -137,7 +150,9 @@ namespace QLNet
       protected DayCounter dayCounter_;
       protected int fixingDays_;
 
-      //! makes sure you were given the correct type of pricer
+      /// <summary>
+      /// Returns true if the supplied pricer is of the correct type.
+      /// </summary>
       // this can also done in external pricer setter classes via
       // accept/visit mechanism
       protected virtual bool checkPricerImpl(InflationCouponPricer i) { return false; }

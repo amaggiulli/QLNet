@@ -105,7 +105,9 @@ namespace QLNet
          spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
-      //! can replace this if really required
+      /// <summary>
+      /// Returns the optionlet price.
+      /// </summary>
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
       {
          Date fixingDate = coupon_.fixingDate();
@@ -138,8 +140,9 @@ namespace QLNet
          }
       }
 
-      //! usually only need implement this (of course they may need
-      //! to re-implement initialize too ...)
+      /// <summary>
+      /// Returns the implementation-specific optionlet price contribution.
+      /// </summary>
       protected virtual double optionletPriceImp(Option.Type optionType, double strike, double forward, double stdDev)
       {
          Utils.QL_FAIL("you must implement this to get a vol-dependent price");
@@ -154,7 +157,7 @@ namespace QLNet
          return fixing.Value;
       }
 
-      //! data
+      // pricing data
       protected Handle<CPIVolatilitySurface> capletVol_;
       protected CPICoupon coupon_;
       protected double gearing_;
