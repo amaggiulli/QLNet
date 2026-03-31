@@ -50,37 +50,48 @@ namespace QLNet
       }
 
       // interface
-      /*! This method modifies an operator \f$ L \f$ before it is
-          applied to an array \f$ u \f$ so that \f$ v = Lu \f$ will
-          satisfy the given condition. */
+      /// <summary>
+      /// Modifies an operator before it is applied to an array so that
+      /// the resulting value satisfies the given condition.
+      /// </summary>
       public virtual void applyBeforeApplying(IOperator o) { throw new NotSupportedException(); }
 
-      /*! This method modifies an array \f$ u \f$ so that it satisfies the given condition. */
+      /// <summary>
+      /// Modifies an array so that it satisfies the given condition.
+      /// </summary>
       public virtual void applyAfterApplying(Vector v) { throw new NotSupportedException(); }
 
-      /*! This method modifies an operator \f$ L \f$ before the linear
-          system \f$ Lu' = u \f$ is solved so that \f$ u' \f$ will
-          satisfy the given condition. */
+      /// <summary>
+      /// Modifies an operator before the linear system is solved so that
+      /// the solution satisfies the given condition.
+      /// </summary>
       public virtual void applyBeforeSolving(IOperator o, Vector v) { throw new NotSupportedException(); }
 
-      /*! This method modifies an array \f$ u \f$ so that it satisfies the given condition. */
+      /// <summary>
+      /// Modifies an array so that it satisfies the given condition.
+      /// </summary>
       public virtual void applyAfterSolving(Vector v) { throw new NotSupportedException(); }
 
-      /*! This method sets the current time for time-dependent boundary conditions. */
+      /// <summary>
+      /// Sets the current time for time-dependent boundary conditions.
+      /// </summary>
       public virtual void setTime(double t) { throw new NotSupportedException(); }
    }
 
 
    // Time-independent boundary conditions for tridiagonal operators
 
-   //! Neumann boundary condition (i.e., constant derivative)
-   /*! \warning The value passed must not be the value of the derivative.
-                Instead, it must be comprehensive of the grid step
-                between the first two points--i.e., it must be the
-                difference between f[0] and f[1].
-       \todo generalize to time-dependent conditions.
-
-   */
+   /// <summary>
+   /// Neumann boundary condition, i.e. constant derivative.
+   /// </summary>
+   /// <remarks>
+   /// Warning: the value passed must not be the value of the derivative.
+   /// Instead, it must include the grid step between the first two points,
+   /// i.e. it must be the difference between <c>f[0]</c> and <c>f[1]</c>.
+   /// </remarks>
+   /// <internalremarks>
+   /// TODO: generalize to time-dependent conditions.
+   /// </internalremarks>
    // NeumanBC works on TridiagonalOperator. IOperator here is for type compatobility with options
    public class NeumannBC : BoundaryCondition<IOperator>
    {

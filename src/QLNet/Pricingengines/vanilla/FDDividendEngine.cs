@@ -81,15 +81,18 @@ namespace QLNet
    }
 
 
-   //! Finite-differences pricing engine for dividend options using
-   // escowed dividend model
-   /* The merton 73 engine is the classic engine described in most
-      derivatives texts.  However, Haug, Haug, and Lewis in
-      "Back to Basics: a new approach to the discrete dividend
-      problem" argues that this scheme underprices call options.
-      This is set as the default engine, because it is consistent
-      with the analytic version.
-   */
+   /// <summary>
+   /// Finite-differences pricing engine for dividend options using
+   /// the escrowed dividend model.
+   /// </summary>
+   /// <remarks>
+   /// The Merton 73 engine is the classic engine described in most
+   /// derivatives texts. However, Haug, Haug, and Lewis in
+   /// "Back to Basics: a new approach to the discrete dividend problem"
+   /// argue that this scheme underprices call options.
+   /// This is set as the default engine because it is consistent with
+   /// the analytic version.
+   /// </remarks>
    public class FDDividendEngineMerton73 : FDDividendEngineBase
    {
       // required for generics
@@ -144,13 +147,17 @@ namespace QLNet
    }
 
 
-   //! Finite-differences engine for dividend options using shifted dividends
-   /* This engine uses the same algorithm that was used in quantlib
-      in versions 0.3.11 and earlier.  It produces results that
-      are different from the Merton 73 engine.
-
-      \todo Review literature to see whether this is described
-   */
+   /// <summary>
+   /// Finite-differences engine for dividend options using shifted dividends.
+   /// </summary>
+   /// <remarks>
+   /// This engine uses the same algorithm that was used in QuantLib
+   /// in versions 0.3.11 and earlier. It produces results that are
+   /// different from the Merton 73 engine.
+   /// </remarks>
+   /// <internalremarks>
+   /// TODO: review literature to see whether this is described.
+   /// </internalremarks>
    public class FDDividendEngineShiftScale : FDDividendEngineBase
    {
       public FDDividendEngineShiftScale(GeneralizedBlackScholesProcess process, int timeSteps, int gridPoints, bool timeDependent)
