@@ -64,7 +64,9 @@ namespace QLNet
          dayCounter_ = dc;
       }
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the term structure with a fixed reference date.
+      /// </summary>
       protected TermStructure(Date referenceDate, Calendar calendar = null, DayCounter dc = null)
       {
          moving_ = false;
@@ -75,7 +77,9 @@ namespace QLNet
          dayCounter_ = dc;
       }
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the term structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected TermStructure(int settlementDays, Calendar cal, DayCounter dc = null)
       {
          moving_ = true;
@@ -92,15 +96,25 @@ namespace QLNet
 
       #region Dates and Time
 
-      //! the day counter used for date/time conversion
+      /// <summary>
+      /// Returns the day counter used for date-to-time conversion.
+      /// </summary>
       public virtual DayCounter dayCounter() {return dayCounter_;}
-      //! date/time conversion
+      /// <summary>
+      /// Converts a date to a time measured from the reference date.
+      /// </summary>
       public double timeFromReference(Date date) { return dayCounter().yearFraction(referenceDate(), date);}
-      //! the latest date for which the curve can return values
+      /// <summary>
+      /// Returns the latest date for which the term structure can return values.
+      /// </summary>
       public abstract Date maxDate();
-      //! the latest time for which the curve can return values
+      /// <summary>
+      /// Returns the latest time for which the term structure can return values.
+      /// </summary>
       public virtual double maxTime() {return timeFromReference(maxDate());}
-      //! the date at which discount = 1.0 and/or variance = 0.0
+      /// <summary>
+      /// Returns the reference date at which discount is 1.0 or variance is 0.0.
+      /// </summary>
       public virtual Date referenceDate()
       {
          if (!updated_)
@@ -111,9 +125,13 @@ namespace QLNet
          }
          return referenceDate_;
       }
-      //! the calendar used for reference and/or option date calculation
+      /// <summary>
+      /// Returns the calendar used for reference-date and option-date calculations.
+      /// </summary>
       public virtual Calendar calendar() {return calendar_;}
-      //! the settlementDays used for reference date calculation
+      /// <summary>
+      /// Returns the settlement days used to calculate the reference date.
+      /// </summary>
       public virtual int settlementDays()
       {
          Utils.QL_REQUIRE(settlementDays_ != null, () => "settlement days not provided for this instance");
@@ -138,7 +156,9 @@ namespace QLNet
       }
       #endregion
 
-      //! date-range check
+      /// <summary>
+      /// Checks that the given date lies within the supported range.
+      /// </summary>
       protected virtual void checkRange(Date d, bool extrapolate)
       {
          Utils.QL_REQUIRE(d >= referenceDate(), () =>
@@ -149,7 +169,9 @@ namespace QLNet
                           + maxDate() + ")");
       }
 
-      //! time-range check
+      /// <summary>
+      /// Checks that the given time lies within the supported range.
+      /// </summary>
       protected void checkRange(double t, bool extrapolate)
       {
          Utils.QL_REQUIRE(t >= 0.0, () =>

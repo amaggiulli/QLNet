@@ -25,7 +25,9 @@ namespace QLNet
 {
    public static partial class Utils
    {
-      //! utility function giving the inflation period for a given date
+      /// <summary>
+      /// Returns the inflation period containing the given date.
+      /// </summary>
       public static KeyValuePair<Date, Date> inflationPeriod(Date d, Frequency frequency)
       {
          Month month = (Month) d.Month;
@@ -86,7 +88,9 @@ namespace QLNet
       }
    }
 
-   //! Interface for inflation term structures.
+   /// <summary>
+   /// Base interface for inflation term structures.
+   /// </summary>
    public abstract class InflationTermStructure : TermStructure
    {
       protected InflationTermStructure()
@@ -152,9 +156,12 @@ namespace QLNet
       }
 
       // Inflation interface
-      //! The TS observes with a lag that is usually different from the
-      //! availability lag of the index.  An inflation rate is given,
-      //! by default, for the maturity requested assuming this lag.
+      /// <summary>
+      /// Returns the observation lag used by the term structure.
+      /// </summary>
+      /// <remarks>
+      /// This lag is usually different from the availability lag of the corresponding index and is used by default when quoting rates at a requested maturity.
+      /// </remarks>
       public virtual Period observationLag()
       {
          return observationLag_;
@@ -180,22 +187,20 @@ namespace QLNet
          return nominalTermStructure_;
       }
 
-      //! minimum (base) date
-      /*! Important in inflation since it starts before nominal
-          reference date.  Changes depending whether index is
-          interpolated or not.  When interpolated the base date
-          is just observation lag before nominal.  When not
-          interpolated it is the beginning of the relevant period
-          (hence it is easy to create interpolated fixings from
-           a not-interpolated curve because interpolation, usually,
-           of fixings is forward looking).
-      */
+      /// <summary>
+      /// Returns the minimum, or base, date of the term structure.
+      /// </summary>
+      /// <remarks>
+      /// In inflation term structures this can precede the nominal reference date. For interpolated indexes it is typically one observation lag before the nominal date; otherwise it is the start of the relevant inflation period.
+      /// </remarks>
       public abstract Date baseDate();
 
-      //! Functions to set and get seasonality.
-      /*! Calling setSeasonality with no arguments means unsetting
-          as the default is used to choose unsetting.
-      */
+      /// <summary>
+      /// Sets the seasonality adjustment used by the term structure.
+      /// </summary>
+      /// <remarks>
+      /// Passing <see langword="null"/> removes any previously configured seasonality.
+      /// </remarks>
 
       public void setSeasonality(Seasonality seasonality = null)
       {
@@ -247,7 +252,9 @@ namespace QLNet
       private Seasonality seasonality_;
    }
 
-   //! Interface for zero inflation term structures.
+   /// <summary>
+   /// Base interface for zero inflation term structures.
+   /// </summary>
    // Child classes use templates but do not want that exposed to
    // general users.
    public abstract class ZeroInflationTermStructure : InflationTermStructure
@@ -294,18 +301,12 @@ namespace QLNet
       {}
 
       // Inspectors
-      //! zero-coupon inflation rate for an instrument with maturity (pay date) d
-      //! that observes with given lag and interpolation.
-      //! Since inflation is highly linked to dates (lags, interpolation, months for seasonality, etc)
-      //! we do NOT provide a "time" version of the rate lookup.
-      /*! Essentially the fair rate for a zero-coupon inflation swap
-          (by definition), i.e. the zero term structure uses yearly
-          compounding, which is assumed for ZCIIS instrument quotes.
-          N.B. by default you get the same as lag and interpolation
-          as the term structure.
-          If you want to get predictions of RPI/CPI/etc then use an
-          index.
-      */
+      /// <summary>
+      /// Returns the zero-coupon inflation rate for the given maturity date.
+      /// </summary>
+      /// <remarks>
+      /// The lookup uses the supplied observation lag and interpolation choice. No time-based overload is provided because inflation calculations depend strongly on calendar dates. The returned rate is the fair zero-coupon inflation swap rate implied by the curve.
+      /// </remarks>
 
       public double zeroRate(Date d)
       {
@@ -372,7 +373,9 @@ namespace QLNet
          return zeroRate;
       }
 
-      //! to be defined in derived classes
+      /// <summary>
+      /// Calculates the zero inflation rate at the given time.
+      /// </summary>
       protected abstract double zeroRateImpl(double t);
    }
 
@@ -424,11 +427,12 @@ namespace QLNet
       {}
 
       // Inspectors
-      //! year-on-year inflation rate, forceLinearInterpolation
-      //! is relative to the frequency of the TS.
-      //! Since inflation is highly linked to dates (lags, interpolation, months for seasonality etc)
-      //! we do NOT provide a "time" version of the rate lookup.
-      /*! \note this is not the year-on-year swap (YYIIS) rate. */
+      /// <summary>
+      /// Returns the year-on-year inflation rate for the given maturity date.
+      /// </summary>
+      /// <remarks>
+      /// The interpolation setting is relative to the term-structure frequency. No time-based overload is provided because inflation calculations depend strongly on calendar dates. This is not the year-on-year inflation swap rate.
+      /// </remarks>
 
       public double yoyRate(Date d)
       {
@@ -492,7 +496,9 @@ namespace QLNet
          return yoyRate;
       }
 
-      //! to be defined in derived classes
+      /// <summary>
+      /// Calculates the year-on-year inflation rate at the given time.
+      /// </summary>
       protected abstract double yoyRateImpl(double time);
    }
 }
