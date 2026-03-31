@@ -40,7 +40,9 @@ namespace QLNet
          reset(dimension);
       }
 
-      //!  1-dimensional inspectors
+      /// <summary>
+      /// Returns the discrepancy measure.
+      /// </summary>
       public double discrepancy()
       {
          int N = samples();

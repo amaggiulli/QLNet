@@ -56,7 +56,9 @@ namespace QLNet
          reset(dimension);
       }
 
-      //! returns the covariance Matrix
+      /// <summary>
+      /// Returns the covariance matrix.
+      /// </summary>
       public Matrix covariance()
       {
          double sampleWeight = weightSum();
@@ -74,7 +76,9 @@ namespace QLNet
          result *= (sampleNumber / (sampleNumber - 1.0));
          return result;
       }
-      //! returns the correlation Matrix
+      /// <summary>
+      /// Returns the correlation matrix.
+      /// </summary>
       public Matrix correlation()
       {
          Matrix correlation = covariance();

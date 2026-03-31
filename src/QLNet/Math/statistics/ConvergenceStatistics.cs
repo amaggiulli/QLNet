@@ -109,14 +109,18 @@ namespace QLNet
          }
       }
 
-      //! adds a sequence of data to the set, with default weight
+      /// <summary>
+      /// Adds a sequence of data to the set with default weight.
+      /// </summary>
       public void addSequence(List<double> list)
       {
          foreach (double v in list)
             add
                (v, 1);
       }
-      //! adds a sequence of data to the set, each with its weight
+      /// <summary>
+      /// Adds a sequence of data to the set, each with its own weight.
+      /// </summary>
       public void addSequence(List<double> data, List<double> weight)
       {
          for (int i = 0; i < data.Count; i++)
