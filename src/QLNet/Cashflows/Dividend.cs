@@ -102,7 +102,9 @@ namespace QLNet
 
    public static partial class Utils
    {
-      //! helper function building a sequence of fixed dividends
+      /// <summary>
+      /// Helper function building a sequence of fixed dividends.
+      /// </summary>
       public static DividendSchedule DividendVector(List<Date> dividendDates, List<double> dividends)
       {
          QL_REQUIRE(dividendDates.Count == dividends.Count, () => "size mismatch between dividend dates and amounts");

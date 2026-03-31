@@ -27,9 +27,13 @@ namespace QLNet
       // recheck this abstract implementations of methods which otherwise should throw "notimplemented"
       // such default implementation is needed for Handles
 
-      //! returns the current value, 0 by default
+      /// <summary>
+      /// Returns the current value, 0 by default.
+      /// </summary>
       public virtual double value() { return 0; }
-      //! returns true if the Quote holds a valid value, true by default
+      /// <summary>
+      /// Returns true if the quote holds a valid value, true by default.
+      /// </summary>
       public virtual bool isValid() { return true; }
 
       // observable interface

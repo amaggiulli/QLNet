@@ -30,14 +30,19 @@ namespace QLNet
    {
       #region Event interface
 
-      //! returns the date at which the event occurs
+      /// <summary>
+      /// Returns the date at which the event occurs.
+      /// </summary>
       public abstract Date date();
 
-      //! returns true if an event has already occurred before a date
-      /*! If includeRefDate is true, then an event has not occurred if its
-          date is the same as the refDate, i.e. this method returns false if
-          the event date is the same as the refDate.
-      */
+      /// <summary>
+      /// Returns true if an event has already occurred before a date.
+      /// </summary>
+      /// <remarks>
+      /// If <paramref name="includeRefDate"/> is true, then an event has not occurred
+      /// if its date is the same as <paramref name="d"/>, i.e. this method returns
+      /// false when the event date and reference date are equal.
+      /// </remarks>
       public virtual bool hasOccurred(Date d = null, bool? includeRefDate = null)
       {
          Date refDate = d ?? Settings.evaluationDate();

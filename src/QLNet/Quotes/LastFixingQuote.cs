@@ -35,7 +35,9 @@ namespace QLNet
          index_.registerWith(update);
       }
 
-      //! Quote interface
+      /// <summary>
+      /// Returns the current fixing value.
+      /// </summary>
       public override double value()
       {
          if (!isValid())

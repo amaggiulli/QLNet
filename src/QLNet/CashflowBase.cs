@@ -57,12 +57,21 @@ namespace QLNet
 
       #region CashFlow interface
 
-      //! returns the amount of the cash flow
-      //! The amount is not discounted, i.e., it is the actual  amount paid at the cash flow date.
+      /// <summary>
+      /// Returns the amount of the cash flow.
+      /// </summary>
+      /// <remarks>
+      /// The amount is not discounted, i.e. it is the actual amount paid
+      /// at the cash-flow date.
+      /// </remarks>
       public abstract double amount();
-      //! returns the date that the cash flow trades exCoupon
+      /// <summary>
+      /// Returns the date on which the cash flow trades ex-coupon.
+      /// </summary>
       public virtual Date exCouponDate() {return null;}
-      //! returns true if the cashflow is trading ex-coupon on the refDate
+      /// <summary>
+      /// Returns true if the cash flow is trading ex-coupon on the reference date.
+      /// </summary>
       public bool tradingExCoupon(Date refDate = null)
       {
          Date ecd = exCouponDate();
