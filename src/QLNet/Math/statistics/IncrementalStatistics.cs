@@ -48,25 +48,28 @@ namespace QLNet
       public double percentile(double percent) { throw new NotSupportedException(); }
       #endregion
 
-      //! number of samples collected
+      /// <summary>
+      /// Returns the number of collected samples.
+      /// </summary>
       public int samples() { return sampleNumber_; }
 
-      //! sum of data weights
+      /// <summary>
+      /// Returns the sum of data weights.
+      /// </summary>
       public double weightSum() { return sampleWeight_; }
 
-      /*! returns the mean, defined as
-          \f[ \langle x \rangle = \frac{\sum w_i x_i}{\sum w_i}. \f]
-      */
+      /// <summary>
+      /// Returns the weighted mean.
+      /// </summary>
       public double mean()
       {
          Utils.QL_REQUIRE(sampleWeight_ > 0.0, () => "sampleWeight_=0, insufficient");
          return sum_ / sampleWeight_;
       }
 
-      /*! returns the variance, defined as
-          \f[ \frac{N}{N-1} \left\langle \left(
-              x-\langle x \rangle \right)^2 \right\rangle. \f]
-      */
+      /// <summary>
+      /// Returns the variance.
+      /// </summary>
       public double variance()
       {
          Utils.QL_REQUIRE(sampleWeight_ > 0.0, () => "sampleWeight_=0, insufficient");
@@ -81,11 +84,14 @@ namespace QLNet
          return v;
       }
 
-      /*! returns the standard deviation \f$ \sigma \f$, defined as the square root of the variance. */
+      /// <summary>
+      /// Returns the standard deviation, defined as the square root of the variance.
+      /// </summary>
       public double standardDeviation() { return Math.Sqrt(variance()); }
 
-      /*! returns the downside variance
-      */
+      /// <summary>
+      /// Returns the downside variance.
+      /// </summary>
       public double downsideVariance()
       {
          if (downsideSampleWeight_.IsEqual(0.0))
@@ -100,8 +106,13 @@ namespace QLNet
       }
 
 
-      /*! returns the error estimate \f$ \epsilon \f$, defined as the
-       * square root of the ratio of the variance to the number of samples. */
+      /// <summary>
+      /// Returns the error estimate.
+      /// </summary>
+      /// <remarks>
+      /// The estimate is the square root of the ratio of the variance to
+      /// the number of samples.
+      /// </remarks>
       public double errorEstimate()
       {
          double var = variance();
@@ -109,11 +120,12 @@ namespace QLNet
          return Math.Sqrt(var / samples());
       }
 
-      /*! returns the skewness, defined as
-          \f[ \frac{N^2}{(N-1)(N-2)} \frac{\left\langle \left(
-              x-\langle x \rangle \right)^3 \right\rangle}{\sigma^3}. \f]
-          The above evaluates to 0 for a Gaussian distribution.
-      */
+      /// <summary>
+      /// Returns the skewness.
+      /// </summary>
+      /// <remarks>
+      /// This evaluates to 0 for a Gaussian distribution.
+      /// </remarks>
       public double skewness()
       {
          Utils.QL_REQUIRE(sampleNumber_ > 2, () => "sample number <=2, insufficient");
@@ -132,9 +144,12 @@ namespace QLNet
          return result;
       }
 
-      /*! returns the excess kurtosis
-          The above evaluates to 0 for a Gaussian distribution.
-      */
+      /// <summary>
+      /// Returns the excess kurtosis.
+      /// </summary>
+      /// <remarks>
+      /// This evaluates to 0 for a Gaussian distribution.
+      /// </remarks>
       public double kurtosis()
       {
          Utils.QL_REQUIRE(sampleNumber_ > 3, () => "sample number <=3, insufficient");
@@ -161,27 +176,37 @@ namespace QLNet
          return result - c;
       }
 
-      /*! returns the minimum sample value */
+      /// <summary>
+      /// Returns the minimum sample value.
+      /// </summary>
       public double min()
       {
          Utils.QL_REQUIRE(samples() > 0, () => "empty sample set");
          return min_;
       }
 
-      /*! returns the maximum sample value */
+      /// <summary>
+      /// Returns the maximum sample value.
+      /// </summary>
       public double max()
       {
          Utils.QL_REQUIRE(samples() > 0, () => "empty sample set");
          return max_;
       }
 
-      /*! returns the downside deviation, defined as the square root of the downside variance. */
+      /// <summary>
+      /// Returns the downside deviation, defined as the square root of the downside variance.
+      /// </summary>
       public double downsideDeviation() { return Math.Sqrt(downsideVariance()); }
 
 
       // Modifiers
-      //! adds a datum to the set, possibly with a weight
-      /*! \pre weight must be positive or null */
+      /// <summary>
+      /// Adds a datum to the set, optionally with a weight.
+      /// </summary>
+      /// <internalremarks>
+      /// Precondition: the weight must be positive or null.
+      /// </internalremarks>
       public void add
          (double value) { add(value, 1); }
       public void add
@@ -220,7 +245,9 @@ namespace QLNet
          }
       }
 
-      //! resets the data to a null set
+      /// <summary>
+      /// Resets the data to an empty set.
+      /// </summary>
       public void reset()
       {
          min_ = double.MaxValue;
@@ -236,15 +263,21 @@ namespace QLNet
          fourthPowerSum_ = 0.0;
       }
 
-      //! adds a sequence of data to the set, with default weight
+      /// <summary>
+      /// Adds a sequence of data to the set with default weight.
+      /// </summary>
       public void addSequence(List<double> list)
       {
          foreach (double v in list)
             add
                (v, 1);
       }
-      //! adds a sequence of data to the set, each with its weight
-      /*! \pre weights must be positive or null */
+      /// <summary>
+      /// Adds a sequence of data to the set, each with its own weight.
+      /// </summary>
+      /// <internalremarks>
+      /// Precondition: weights must be positive or null.
+      /// </internalremarks>
       public void addSequence(List<double> data, List<double> weight)
       {
          for (int i = 0; i < data.Count; i++)
