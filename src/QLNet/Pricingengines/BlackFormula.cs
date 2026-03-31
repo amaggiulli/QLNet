@@ -74,13 +74,12 @@ namespace QLNet
          return blackFormula(payoff.optionType(), payoff.strike(), forward, stdDev, discount, displacement);
       }
 
-      /*! Approximated Black 1976 implied standard deviation,
-          i.e. volatility*sqrt(timeToMaturity).
-
-          It is calculated using Brenner and Subrahmanyan (1988) and Feinstein
-          (1988) approximation for at-the-money forward option, with the
-          extended moneyness approximation by Corrado and Miller (1996)
-      */
+      /// <summary>
+      /// Returns an approximate Black 1976 implied standard deviation.
+      /// </summary>
+      /// <remarks>
+      /// This is the implied volatility multiplied by the square root of time to maturity. It uses the Brenner-Subrahmanyan and Feinstein approximation for at-the-money forward options, extended by the Corrado-Miller moneyness approximation.
+      /// </remarks>
       public static double blackFormulaImpliedStdDevApproximation(Option.Type optionType,
                                                                   double strike,
                                                                   double forward,
@@ -133,14 +132,12 @@ namespace QLNet
       }
 
 
-      /*! Approximated Black 1976 implied standard deviation,
-          i.e. volatility*sqrt(timeToMaturity).
-
-          It is calculated following "An improved approach to computing
-          implied volatility", Chambers, Nawalkha, The Financial Review,
-          2001, 89-100. The atm option price must be known to use this
-          method.
-      */
+      /// <summary>
+      /// Returns an approximate Black 1976 implied standard deviation using the Chambers-Nawalkha method.
+      /// </summary>
+      /// <remarks>
+      /// This is the implied volatility multiplied by the square root of time to maturity. The at-the-money option price must be known to use this method.
+      /// </remarks>
       public static double blackFormulaImpliedStdDevChambers(Option.Type optionType,
                                                              double strike,
                                                              double forward,
@@ -202,9 +199,12 @@ namespace QLNet
       }
 
 
-      /*! Black 1976 implied standard deviation,
-            i.e. volatility*sqrt(timeToMaturity)
-      */
+      /// <summary>
+      /// Returns the Black 1976 implied standard deviation.
+      /// </summary>
+      /// <remarks>
+      /// This is the implied volatility multiplied by the square root of time to maturity.
+      /// </remarks>
       public static double blackFormulaImpliedStdDev(Option.Type optionType,
                                                      double strike,
                                                      double forward,
@@ -345,9 +345,12 @@ namespace QLNet
          return discount * forward *
                 new CumulativeNormalDistribution().derivative(d1);
       }
-      /*! Black 1976 formula for  derivative with respect to implied vol, this
-        is basically the vega, but if you want 1% change multiply by 1%
-      */
+      /// <summary>
+      /// Returns the derivative of the Black 1976 formula with respect to implied volatility.
+      /// </summary>
+      /// <remarks>
+      /// This is effectively the vega. To scale it to a 1% volatility change, multiply by 1%.
+      /// </remarks>
       public static double blackFormulaVolDerivative(double strike,
                                                      double forward,
                                                      double stdDev,
@@ -449,13 +452,12 @@ namespace QLNet
          return bachelierBlackFormula(payoff.optionType(), payoff.strike(), forward, stdDev, discount);
       }
 
-      /*! Approximated Bachelier implied volatility
-
-         It is calculated using  the analytic implied volatility approximation
-         of J. Choi, K Kim and M. Kwak (2009), “Numerical Approximation of the
-         Implied Volatility Under Arithmetic Brownian Motion”,
-         Applied Math. Finance, 16(3), pp. 261-268.
-      */
+      /// <summary>
+      /// Returns an approximate Bachelier implied volatility.
+      /// </summary>
+      /// <remarks>
+      /// It uses the analytic implied-volatility approximation of Choi, Kim, and Kwak (2009).
+      /// </remarks>
       public static double bachelierBlackFormulaImpliedVol(Option.Type optionType,
                                                            double strike,
                                                            double forward,

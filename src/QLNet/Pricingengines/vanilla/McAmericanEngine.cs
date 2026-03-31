@@ -162,7 +162,9 @@ namespace QLNet
    }
 
 
-   //! Monte Carlo American engine factory
+   /// <summary>
+   /// Monte Carlo American engine factory.
+   /// </summary>
    //template <class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCAmericanEngine<RNG> : MakeMCAmericanEngine<RNG, Statistics>
       where RNG : IRSG, new ()

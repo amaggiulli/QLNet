@@ -22,7 +22,9 @@ namespace QLNet
 {
    public static partial class Utils
    {
-      //! default theta calculation for Black-Scholes options
+      /// <summary>
+      /// Returns the default theta for Black-Scholes options.
+      /// </summary>
       public static double blackScholesTheta(GeneralizedBlackScholesProcess p, double value, double delta, double gamma)
       {
 
@@ -34,7 +36,9 @@ namespace QLNet
          return r * value - (r - q) * u * delta - 0.5 * v * v * u * u * gamma;
       }
 
-      //! default theta-per-day calculation
+      /// <summary>
+      /// Returns the default theta-per-day value.
+      /// </summary>
       public static double defaultThetaPerDay(double theta)
       {
          return theta / 365.0;

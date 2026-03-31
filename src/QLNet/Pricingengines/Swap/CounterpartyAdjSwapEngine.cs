@@ -38,18 +38,12 @@ namespace QLNet
    public class CounterpartyAdjSwapEngine : VanillaSwap.Engine
    {
       // Constructors
-      //!
-      /*! Creates the engine from an arbitrary swaption engine.
-        If the investor default model is not given a default
-        free one is assumed.
-        @param discountCurve Used in pricing.
-        @param swaptionEngine Determines the volatility and thus the
-        exposure model.
-        @param ctptyDTS Counterparty default curve.
-        @param ctptyRecoveryRate Counterparty recovey rate.
-        @param invstDTS Investor (swap holder) default curve.
-        @param invstRecoveryRate Investor recovery rate.
-       */
+      /// <summary>
+      /// Creates the engine from an arbitrary swaption engine.
+      /// </summary>
+      /// <remarks>
+      /// If the investor default model is not provided, a default-free one is assumed.
+      /// </remarks>
       public CounterpartyAdjSwapEngine(Handle<YieldTermStructure> discountCurve,
                                        Handle<IPricingEngine> swaptionEngine, Handle<DefaultProbabilityTermStructure> ctptyDTS, double ctptyRecoveryRate,
                                        Handle<DefaultProbabilityTermStructure> invstDTS = null, double invstRecoveryRate = 0.999)
@@ -69,17 +63,12 @@ namespace QLNet
          swaptionEngine.registerWith(update) ;
       }
 
-      /*! Creates an engine with a black volatility model for the
-        exposure.
-        If the investor default model is not given a default
-        free one is assumed.
-        @param discountCurve Used in pricing.
-        @param blackVol Black volatility used in the exposure model.
-        @param ctptyDTS Counterparty default curve.
-        @param ctptyRecoveryRate Counterparty recovey rate.
-        @param invstDTS Investor (swap holder) default curve.
-        @param invstRecoveryRate Investor recovery rate.
-       */
+      /// <summary>
+      /// Creates the engine with a Black-volatility exposure model.
+      /// </summary>
+      /// <remarks>
+      /// If the investor default model is not provided, a default-free one is assumed.
+      /// </remarks>
       public CounterpartyAdjSwapEngine(Handle<YieldTermStructure> discountCurve, double blackVol,
                                        Handle<DefaultProbabilityTermStructure> ctptyDTS, double ctptyRecoveryRate,
                                        Handle<DefaultProbabilityTermStructure> invstDTS = null, double invstRecoveryRate = 0.999)
@@ -98,17 +87,12 @@ namespace QLNet
          invstDTS_.registerWith(update) ;
       }
 
-      /*! Creates an engine with a black volatility model for the
-        exposure. The volatility is given as a quote.
-        If the investor default model is not given a default
-        free one is assumed.
-        @param discountCurve Used in pricing.
-        @param blackVol Black volatility used in the exposure model.
-        @param ctptyDTS Counterparty default curve.
-        @param ctptyRecoveryRate Counterparty recovey rate.
-        @param invstDTS Investor (swap holder) default curve.
-        @param invstRecoveryRate Investor recovery rate.
-      */
+      /// <summary>
+      /// Creates the engine with a Black-volatility exposure model using quoted volatility.
+      /// </summary>
+      /// <remarks>
+      /// If the investor default model is not provided, a default-free one is assumed.
+      /// </remarks>
       public CounterpartyAdjSwapEngine(Handle<YieldTermStructure> discountCurve, Handle<Quote> blackVol,
                                        Handle<DefaultProbabilityTermStructure> ctptyDTS, double ctptyRecoveryRate,
                                        Handle<DefaultProbabilityTermStructure> invstDTS = null, double invstRecoveryRate = 0.999)

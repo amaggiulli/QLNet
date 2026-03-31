@@ -59,7 +59,9 @@ namespace QLNet
    }
 
 
-   //! Monte Carlo European engine factory
+   /// <summary>
+   /// Monte Carlo European engine factory.
+   /// </summary>
    // template <class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCEuropeanEngine<RNG> : MakeMCEuropeanEngine<RNG, Statistics> where RNG : IRSG, new ()
    {

@@ -39,7 +39,9 @@ namespace QLNet
          Utils.QL_REQUIRE(growth_ >= 0.0, () => "positive growth value required: " + growth_ + " not allowed");
       }
 
-      //! Sensitivity to change in the underlying spot price.
+      /// <summary>
+      /// Returns the sensitivity to a change in the underlying spot price.
+      /// </summary>
 
       public double delta()
       {
@@ -59,7 +61,9 @@ namespace QLNet
       {
          return base.gamma(spot_);
       }
-      //! Sensitivity to time to maturity.
+      /// <summary>
+      /// Returns the sensitivity to time to maturity.
+      /// </summary>
       public double theta(double maturity)
       {
          return base.theta(spot_, maturity);
