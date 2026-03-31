@@ -21,13 +21,15 @@ using System;
 
 namespace QLNet
 {
+   /// <summary>
+   /// Market quote whose value depends on two other quotes.
+   /// </summary>
+   /// <internalremarks>
+   /// Tests: the correctness of the returned values is tested by
+   /// checking them against numerical calculations.
+   /// </internalremarks>
    public class CompositeQuote : Quote
    {
-      //! market element whose value depends on two other market element
-      /// <internalremarks>
-      /// Tests: the correctness of the returned values is tested by
-      /// checking them against numerical calculations.
-      /// </internalremarks>
       private Handle<Quote> element1_;
       private Handle<Quote> element2_;
       private Func<double, double, double> f_;
@@ -51,7 +53,9 @@ namespace QLNet
          notifyObservers();
       }
 
-      //! Quote interface
+      /// <summary>
+      /// Returns the composite quote value.
+      /// </summary>
       public override double value()
       {
          if (!isValid())

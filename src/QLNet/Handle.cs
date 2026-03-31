@@ -41,7 +41,9 @@ namespace QLNet
          link_ = new Link(h, registerAsObserver);
       }
 
-      //! dereferencing
+      /// <summary>
+      /// Returns the linked observable.
+      /// </summary>
       public T currentLink() { return link; }
 
       // this one is instead of c++ -> and () operators overload
@@ -61,7 +63,9 @@ namespace QLNet
 
       public void unregisterWith(Callback handler) { link_.unregisterWith(handler); }
 
-      //! checks if the contained shared pointer points to anything
+      /// <summary>
+      /// Returns true if the handle does not point to an observable.
+      /// </summary>
       public bool empty() { return link_.empty(); }
 
       #region operator overload

@@ -20,8 +20,12 @@ using System;
 
 namespace QLNet
 {
-   // Framework for calculation on demand and result caching.
-   // Introduces Observer pattern
+   /// <summary>
+   /// Framework for on-demand calculation and result caching.
+   /// </summary>
+   /// <remarks>
+   /// This class combines lazy calculation with the observer pattern.
+   /// </remarks>
    public abstract class LazyObject : IObservable, IObserver
    {
       protected bool calculated_;
@@ -62,11 +66,14 @@ namespace QLNet
       #endregion
 
       #region Calculation methods
-      /*! This method forces recalculation of any results which would otherwise be cached.
-       * It needs to call the <i><b>LazyCalculationEvent</b></i> event.
-         Explicit invocation of this method is <b>not</b> necessary if the object has registered itself as
-         observer with the structures on which such results depend.  It is strongly advised to follow this
-         policy when possible. */
+      /// <summary>
+      /// Forces recalculation of any results which would otherwise be cached.
+      /// </summary>
+      /// <remarks>
+      /// Explicit invocation of this method is not necessary if the object
+      /// has registered itself as observer with the structures on which such
+      /// results depend. Following that policy is strongly advised when possible.
+      /// </remarks>
       public virtual void recalculate()
       {
          bool wasFrozen = frozen_;
@@ -85,8 +92,9 @@ namespace QLNet
          notifyObservers();
       }
 
-      /*! This method constrains the object to return the presently cached results on successive invocations,
-       * even if arguments upon which they depend should change. */
+      /// <summary>
+      /// Freezes the object so successive calls keep returning the currently cached results.
+      /// </summary>
       public void freeze() { frozen_ = true; }
 
       // This method reverts the effect of the <i><b>freeze</b></i> method, thus re-enabling recalculations.
@@ -96,13 +104,17 @@ namespace QLNet
          notifyObservers();              // send notification, just in case we lost any
       }
 
-      /*! This method performs all needed calculations by calling the <i><b>performCalculations</b></i> method.
-          Objects cache the results of the previous calculation. Such results will be returned upon
-          later invocations of <i><b>calculate</b></i>. When the results depend
-          on arguments which could change between invocations, the lazy object must register itself
-          as observer of such objects for the calculations to be performed again when they change.
-          Should this method be redefined in derived classes, LazyObject::calculate() should be called
-          in the overriding method. */
+      /// <summary>
+      /// Performs all needed calculations by calling <see cref="performCalculations"/>.
+      /// </summary>
+      /// <remarks>
+      /// Objects cache the results of the previous calculation. Such results
+      /// are returned by later invocations of this method. When the results
+      /// depend on arguments that can change between invocations, the lazy object
+      /// must register itself as observer of such objects so calculations are
+      /// performed again when they change. If this method is redefined in a
+      /// derived class, the overriding method should call the base implementation.
+      /// </remarks>
       protected virtual void calculate()
       {
          if (!calculated_ && !frozen_)
@@ -120,8 +132,9 @@ namespace QLNet
          }
       }
 
-      /* This method must implement any calculations which must be (re)done
-       * in order to calculate the desired results. */
+      /// <summary>
+      /// Performs the calculations required to produce the desired results.
+      /// </summary>
       protected virtual void performCalculations()
       {
          throw new NotSupportedException();

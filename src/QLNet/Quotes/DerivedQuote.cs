@@ -21,13 +21,15 @@ using System;
 
 namespace QLNet
 {
+   /// <summary>
+   /// Market quote whose value depends on another quote.
+   /// </summary>
+   /// <internalremarks>
+   /// Tests: the correctness of the returned values is tested by
+   /// checking them against numerical calculations.
+   /// </internalremarks>
    public class DerivedQuote : Quote
    {
-      //! market quote whose value depends on another quote
-      /// <internalremarks>
-      /// Tests: the correctness of the returned values is tested by
-      /// checking them against numerical calculations.
-      /// </internalremarks>
       private Handle<Quote> element_;
       private Func<double, double> f_;
 
@@ -39,7 +41,9 @@ namespace QLNet
          element_.registerWith(this.update);
       }
 
-      //! Quote interface
+      /// <summary>
+      /// Returns the derived quote value.
+      /// </summary>
       public override double value()
       {
          if (!isValid())

@@ -67,7 +67,9 @@ namespace QLNet
          return this;
       }
 
-      //! explicit inspector
+      /// <summary>
+      /// Returns the contained value.
+      /// </summary>
       public T value() { return value_; }
 
 
