@@ -120,7 +120,12 @@ namespace QLNet
       // required for generics
       public SobolRsg() { }
 
-      /*! \pre dimensionality must be <= PPMT_MAX_DIM */
+      /// <summary>
+      /// Initializes a Sobol sequence generator with the given dimensionality.
+      /// </summary>
+      /// <remarks>
+      /// The dimensionality must not exceed <c>PPMT_MAX_DIM</c>.
+      /// </remarks>
       public SobolRsg(int dimensionality) : this(dimensionality, 0, DirectionIntegers.Jaeckel) { }
       public SobolRsg(int dimensionality, ulong seed) : this(dimensionality, seed, DirectionIntegers.Jaeckel) { }
       public SobolRsg(int dimensionality, ulong seed, DirectionIntegers directionIntegers)
@@ -430,7 +435,9 @@ namespace QLNet
          }
       }
 
-      /*! skip to the n-th sample in the low-discrepancy sequence */
+      /// <summary>
+      /// Skips to the specified sample in the low-discrepancy sequence.
+      /// </summary>
       public void skipTo(ulong skip)
       {
          ulong N = skip + 1;

@@ -22,10 +22,13 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   //! Parameterized cost function
-//    ! This class creates a proxy cost function which can depend
-//        on any arbitrary subset of parameters (the other being fixed)
-//
+   /// <summary>
+   /// Parameterized cost function.
+   /// </summary>
+   /// <remarks>
+   /// This proxy cost function can depend on any chosen subset of parameters while the
+   /// remaining ones are kept fixed.
+   /// </remarks>
    public class ProjectedCostFunction : CostFunction
    {
       private int numberOfFreeParameters_;
@@ -64,8 +67,9 @@ namespace QLNet
          return costFunction_.values(actualParameters_);
       }
 
-      //! returns the subset of free parameters corresponding
-      // to set of parameters
+      /// <summary>
+      /// Returns the subset of free parameters corresponding to a full parameter set.
+      /// </summary>
       public Vector project(Vector parameters)
       {
          Utils.QL_REQUIRE(parameters.Count == parametersFreedoms_.Count, () => "parameters.Count!=parametersFreedoms_.Count");
@@ -78,8 +82,9 @@ namespace QLNet
          return projectedParameters;
       }
 
-      //! returns whole set of parameters corresponding to the set
-      // of projected parameters
+      /// <summary>
+      /// Rebuilds the full parameter set from the projected free parameters.
+      /// </summary>
       public Vector include(Vector projectedParameters)
       {
          Utils.QL_REQUIRE(projectedParameters.Count == numberOfFreeParameters_, () =>

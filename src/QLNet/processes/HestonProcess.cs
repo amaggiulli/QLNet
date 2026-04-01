@@ -18,8 +18,9 @@ using System.Numerics;
 
 namespace QLNet
 {
-   //! Square-root stochastic-volatility Heston process
-   // This class describes the square root stochastic volatility
+   /// <summary>
+   /// Square-root stochastic-volatility Heston process.
+   /// </summary>
    public class HestonProcess : StochasticProcess
    {
       public enum Discretization { PartialTruncation,

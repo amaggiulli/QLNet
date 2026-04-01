@@ -20,18 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Richardson Extrapolation
-   /*! Richardson Extrapolation is a sequence acceleration technique for
-     \f[
-         f(\Delta h) = f_0 + \alpha\cdot (\Delta h)^n + O((\Delta h)^{n+1})
-     \f]
-    */
-
    /// <summary>
-   /// References:
-   /// http://en.wikipedia.org/wiki/Richardson_extrapolation
+   /// Equation used to infer the convergence order for Richardson extrapolation.
    /// </summary>
-
    public class RichardsonEqn : ISolver1d
    {
       public RichardsonEqn(double fh, double ft, double fs, double t, double s)
@@ -54,11 +45,9 @@ namespace QLNet
 
    public class RichardsonExtrapolation
    {
-      /*! Richardon Extrapolation
-         \param f function to be extrapolated to delta_h -> 0
-         \param delta_h step size
-         \param n if known, n is the order of convergence
-      */
+      /// <summary>
+      /// Function to be extrapolated as the step size tends to zero.
+      /// </summary>
       public delegate double Function(double num);
 
       public RichardsonExtrapolation(Function f, double delta_h, double? n = null)
@@ -69,9 +58,9 @@ namespace QLNet
          f_ = f;
       }
 
-      /*! Extrapolation for known order of convergence
-         \param t scaling factor for the step size
-      */
+      /// <summary>
+      /// Performs the extrapolation when the order of convergence is known.
+      /// </summary>
       public double value(double t = 2.0)
       {
          Utils.QL_REQUIRE(t > 1, () => "scaling factor must be greater than 1");
@@ -82,10 +71,9 @@ namespace QLNet
          return (tk * f_(delta_h_ / t) - fdelta_h_) / (tk - 1.0);
       }
 
-      /*! Extrapolation for unknown order of convergence
-         \param t first scaling factor for the step size
-         \param s second scaling factor for the step size
-      */
+      /// <summary>
+      /// Performs the extrapolation when the order of convergence is unknown.
+      /// </summary>
       public double value(double t, double s)
       {
          Utils.QL_REQUIRE(t > 1 && s > 1, () => "scaling factors must be greater than 1");

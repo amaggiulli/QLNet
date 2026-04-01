@@ -98,7 +98,9 @@ namespace QLNet
          }
       }
 
-      //! Computes the present value of an asset using Arrow-Debrew prices
+      /// <summary>
+      /// Computes the present value of an asset using Arrow-Debreu prices.
+      /// </summary>
       public override double presentValue(DiscretizedAsset asset)
       {
          int i = t_.index(asset.time());

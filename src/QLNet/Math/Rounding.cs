@@ -20,14 +20,14 @@ using System;
 
 namespace QLNet
 {
-   //! rounding methods
-   /*! The rounding methods follow the OMG specification available
-       at ftp://ftp.omg.org/pub/docs/formal/00-06-29.pdf
-       \warning the names of the Floor and Ceiling methods might be misleading. Check the provided reference. */
-
    /// <summary>
-   /// Basic rounding class
+   /// Basic rounding class.
    /// </summary>
+   /// <remarks>
+   /// The rounding methods follow the OMG specification. The names of the
+   /// <c>Floor</c> and <c>Ceiling</c> methods might be misleading; see the
+   /// original specification for details.
+   /// </remarks>
    public class Rounding
    {
       private int precision_;
@@ -202,7 +202,6 @@ namespace QLNet
       public ClosestRounding(int precision, int digit) : base(precision, Type.Closest, digit) { }
    }
 
-   //!
    /// <summary>
    /// Ceiling truncation.
    /// </summary>

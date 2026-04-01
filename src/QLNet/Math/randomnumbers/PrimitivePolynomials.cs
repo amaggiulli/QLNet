@@ -21453,12 +21453,15 @@ namespace QLNet
       };
       //#endif
 
-      /*! You can access the following array as in PrimitivePolynomials[i][j]
-      with i and j counting from 0 in C convention. PrimitivePolynomials[i][j]
-      will get you the j-th (counting from zero) primitive polynomial of degree
-      i+1. Each one-dimensional array of primitive polynomials of a given
-      degree is terminated with an entry of -1. Accessing beyond this entry
-      will result in a memory violation and must be avoided.  */
+      /// <summary>
+      /// Gets the primitive polynomials indexed by degree and position.
+      /// </summary>
+      /// <remarks>
+      /// The array is accessed as <c>PrimitivePolynomials[i][j]</c>, with both indices
+      /// using zero-based C-style conventions. <c>PrimitivePolynomials[i][j]</c> returns
+      /// the <c>j</c>-th primitive polynomial of degree <c>i + 1</c>. Each one-dimensional
+      /// array is terminated with <c>-1</c>.
+      /// </remarks>
       public static long[][] PrimitivePolynomials { get { return PrimitivePolynomials_; } }
       private static long[][] PrimitivePolynomials_  = new long[N_MAX_DEGREE][]
       {

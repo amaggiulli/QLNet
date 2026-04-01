@@ -25,7 +25,9 @@ namespace QLNet
    /// </summary>
    public abstract class OptimizationMethod
    {
-      //! minimize the optimization problem P
+      /// <summary>
+      /// Minimizes the given optimization problem.
+      /// </summary>
       public abstract EndCriteria.Type minimize(Problem P, EndCriteria endCriteria);
    }
 }

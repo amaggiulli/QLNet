@@ -18,13 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   /// <summary>
-   /// Cubic functional form
-   /// </summary>
-   /// <remarks>
-   /// \f[ f(t) = \sum_{i=0}^n{c_i t^i} \f]
-   /// </remarks>
-   public class PolynomialFunction
+    /// <summary>
+    /// Cubic functional form
+    /// </summary>
+    /// <remarks>
+    /// The polynomial is defined as <c>f(t) = sum(c_i * t^i)</c>.
+    /// </remarks>
+    public class PolynomialFunction
    {
       public PolynomialFunction(List<double> coeff)
       {
@@ -45,7 +45,9 @@ namespace QLNet
          prC_[i] = c_[i] / (i + 1);
       }
 
-      //! function value at time t: \f[ f(t) = \sum_{i=0}^n{c_i t^i} \f]
+      /// <summary>
+      /// Returns the function value at time <paramref name="t"/>.
+      /// </summary>
       public double value(double t)
       {
          double result = 0.0, tPower = 1.0;
@@ -57,8 +59,9 @@ namespace QLNet
          return result;
       }
 
-      /*! first derivative of the function at time t
-         \f[ f'(t) = \sum_{i=0}^{n-1}{(i+1) c_{i+1} t^i} \f] */
+      /// <summary>
+      /// Returns the first derivative of the function at time <paramref name="t"/>.
+      /// </summary>
       public double derivative(double t)
       {
          double result = 0.0, tPower = 1.0;
@@ -70,8 +73,9 @@ namespace QLNet
          return result;
       }
 
-      /*! indefinite integral of the function at time t
-         \f[ \int f(t)dt = \sum_{i=0}^n{c_i t^{i+1} / (i+1)} + K \f] */
+      /// <summary>
+      /// Returns the primitive of the function evaluated at time <paramref name="t"/>.
+      /// </summary>
       public double primitive(double t)
       {
          double result = K_, tPower = t;
@@ -83,21 +87,23 @@ namespace QLNet
          return result;
       }
 
-      /*! definite integral of the function between t1 and t2
-         \f[ \int_{t1}^{t2} f(t)dt \f] */
+      /// <summary>
+      /// Returns the definite integral of the function between <paramref name="t1"/> and <paramref name="t2"/>.
+      /// </summary>
       public double definiteIntegral(double t1, double t2)
       {
          return primitive(t2) - primitive(t1);
       }
 
-      /*! Inspectors */
+      // Inspectors.
       public int order()  { return order_; }
       public List<double> coefficients() { return c_; }
       public List<double> derivativeCoefficients() { return derC_; }
       public List<double> primitiveCoefficients() { return prC_; }
 
-      /*! coefficients of a PolynomialFunction defined as definite
-         integral on a rolling window of length tau, with tau = t2-t */
+      /// <summary>
+      /// Returns the coefficients of the polynomial defined by the rolling-window definite integral on <c>[t, t2]</c>.
+      /// </summary>
       public List<double> definiteIntegralCoefficients(double t, double t2)
       {
          Vector k = new Vector(c_);
@@ -107,8 +113,9 @@ namespace QLNet
          return result;
       }
 
-      /*! coefficients of a PolynomialFunction defined as definite
-         derivative on a rolling window of length tau, with tau = t2-t */
+      /// <summary>
+      /// Returns the coefficients of the polynomial defined by the rolling-window derivative on <c>[t, t2]</c>.
+      /// </summary>
       public List<double> definiteDerivativeCoefficients(double t, double t2)
       {
          Vector k = new Vector(c_);

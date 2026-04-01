@@ -89,64 +89,72 @@ namespace QLNet
       private Vector x_, w_;
    }
 
-   //! generalized Gauss-Laguerre integration
-   // This class performs a 1-dimensional Gauss-Laguerre integration.
+   /// <summary>
+   /// Generalized Gauss-Laguerre integration.
+   /// </summary>
    public class GaussLaguerreIntegration : GaussianQuadrature
    {
       public GaussLaguerreIntegration(int n, double s = 0.0)
          : base(n, new GaussLaguerrePolynomial(s)) {}
    }
 
-   //! generalized Gauss-Hermite integration
-   // This class performs a 1-dimensional Gauss-Hermite integration.
+   /// <summary>
+   /// Generalized Gauss-Hermite integration.
+   /// </summary>
    public class GaussHermiteIntegration : GaussianQuadrature
    {
       public GaussHermiteIntegration(int n, double mu = 0.0)
          : base(n, new GaussHermitePolynomial(mu)) {}
    }
 
-   //! Gauss-Jacobi integration
-   // This class performs a 1-dimensional Gauss-Jacobi integration.
+   /// <summary>
+   /// Gauss-Jacobi integration.
+   /// </summary>
    public class GaussJacobiIntegration : GaussianQuadrature
    {
       public GaussJacobiIntegration(int n, double alpha, double beta)
          : base(n, new GaussJacobiPolynomial(alpha, beta)) {}
    }
 
-   //! Gauss-Hyperbolic integration
-   // This class performs a 1-dimensional Gauss-Hyperbolic integration.
+   /// <summary>
+   /// Gauss-Hyperbolic integration.
+   /// </summary>
    public class GaussHyperbolicIntegration : GaussianQuadrature
    {
       public GaussHyperbolicIntegration(int n)
          : base(n, new GaussHyperbolicPolynomial()) {}
    }
 
-   //! Gauss-Legendre integration
-   // This class performs a 1-dimensional Gauss-Legendre integration.
+   /// <summary>
+   /// Gauss-Legendre integration.
+   /// </summary>
    public class GaussLegendreIntegration : GaussianQuadrature
    {
       public GaussLegendreIntegration(int n)
          : base(n, new GaussJacobiPolynomial(0.0, 0.0)) {}
    }
 
-   //! Gauss-Chebyshev integration
-   // This class performs a 1-dimensional Gauss-Chebyshev integration.
+   /// <summary>
+   /// Gauss-Chebyshev integration.
+   /// </summary>
    public class GaussChebyshevIntegration : GaussianQuadrature
    {
       public GaussChebyshevIntegration(int n)
          : base(n, new GaussJacobiPolynomial(-0.5, -0.5)) {}
    }
 
-   //! Gauss-Chebyshev integration (second kind)
-   // This class performs a 1-dimensional Gauss-Chebyshev integration.
+   /// <summary>
+   /// Gauss-Chebyshev integration of the second kind.
+   /// </summary>
    public class GaussChebyshev2ndIntegration : GaussianQuadrature
    {
       public GaussChebyshev2ndIntegration(int n)
          : base(n, new GaussJacobiPolynomial(0.5, 0.5)) {}
    }
 
-   //! Gauss-Gegenbauer integration
-   // This class performs a 1-dimensional Gauss-Gegenbauer integration.
+   /// <summary>
+   /// Gauss-Gegenbauer integration.
+   /// </summary>
    public class GaussGegenbauerIntegration : GaussianQuadrature
    {
       public GaussGegenbauerIntegration(int n, double lambda)

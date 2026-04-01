@@ -78,7 +78,7 @@ namespace QLNet
          return x0_.link.value();
       }
 
-      /*! \todo revise extrapolation */
+      // TODO: revise extrapolation.
       public override double drift(double t, double x)
       {
          double sigma = diffusion(t, x);
@@ -89,7 +89,7 @@ namespace QLNet
                 - 0.5 * sigma * sigma;
       }
 
-      /*! \todo revise extrapolation */
+      // TODO: revise extrapolation.
       public override double diffusion(double t, double x)
       {
          return localVolatility().link.localVol(t, x, true);
@@ -100,10 +100,13 @@ namespace QLNet
          return x0 * Math.Exp(dx);
       }
 
-      /*! \warning raises a "not implemented" exception.  It should
-             be rewritten to return the expectation E(S) of
-             the process, not exp(E(log S)).
-      */
+      /// <summary>
+      /// Returns the expectation of the process over the given time step.
+      /// </summary>
+      /// <remarks>
+      /// For strike-dependent local volatility this override is not implemented yet.
+      /// It should return <c>E(S)</c> for the process, not <c>exp(E(log S))</c>.
+      /// </remarks>
       public override double expectation(double t0, double x0, double dt)
       {
          localVolatility(); // trigger update

@@ -41,7 +41,9 @@ namespace QLNet
          uniformGenerator_ = uniformGenerator;
       }
 
-      //! returns a sample from a Gaussian distribution
+      /// <summary>
+      /// Returns the next sample obtained by applying the inverse cumulative distribution.
+      /// </summary>
       public Sample<double> next()
       {
          Sample<double> sample = uniformGenerator_.next();

@@ -25,31 +25,32 @@ namespace QLNet
    /// </summary>
    public class Problem
    {
-      //! Unconstrained cost function
+      // Cost function.
       protected CostFunction costFunction_;
       public CostFunction costFunction() { return costFunction_; }
 
-      //! Constraint
+      // Constraint.
       protected Constraint constraint_;
       public Constraint constraint() { return constraint_; }
 
-      //! current value of the local minimum
+      // Current value of the local minimum.
       protected Vector currentValue_;
       public Vector currentValue() { return currentValue_; }
 
-      //! function and gradient norm values at the curentValue_ (i.e. the last step)
+      // Function and gradient norm values at currentValue_.
       protected double? functionValue_, squaredNorm_;
       public double functionValue() { return functionValue_.GetValueOrDefault(); }
       public double gradientNormValue() { return squaredNorm_.GetValueOrDefault(); }
 
-      //! number of evaluation of cost function and its gradient
+      // Number of evaluations of the cost function and its gradient.
       protected int functionEvaluation_, gradientEvaluation_;
       public int functionEvaluation() { return functionEvaluation_; }
       public int gradientEvaluation() { return gradientEvaluation_; }
 
 
-      //! default constructor
-      //public Problem(CostFunction costFunction, Constraint constraint, Vector initialValue = Array())
+      /// <summary>
+      /// Initializes the optimization problem with a cost function, a constraint, and an initial value.
+      /// </summary>
       public Problem(CostFunction costFunction, Constraint constraint, Vector initialValue)
       {
          costFunction_ = costFunction;
@@ -58,37 +59,48 @@ namespace QLNet
          Utils.QL_REQUIRE(!constraint.empty(), () => "empty constraint given");
       }
 
-      /*! \warning it does not reset the current minumum to any initial value
-      */
+      /// <summary>
+      /// Resets the cached function, gradient, and evaluation counters.
+      /// </summary>
+      /// <remarks>
+      /// This does not restore the current minimum to an initial value.
+      /// </remarks>
       public void reset()
       {
          functionEvaluation_ = gradientEvaluation_ = 0;
          functionValue_ = squaredNorm_ = null;
       }
 
-      //! call cost function computation and increment evaluation counter
+      /// <summary>
+      /// Evaluates the cost function and increments the evaluation counter.
+      /// </summary>
       public double value(Vector x)
       {
          ++functionEvaluation_;
          return costFunction_.value(x);
       }
 
-      //! call cost values computation and increment evaluation counter
+      /// <summary>
+      /// Evaluates the vector of cost-function values and increments the evaluation counter.
+      /// </summary>
       public Vector values(Vector x)
       {
          ++functionEvaluation_;
          return costFunction_.values(x);
       }
 
-      //! call cost function gradient computation and increment
-      //  evaluation counter
+      /// <summary>
+      /// Evaluates the gradient and increments the gradient evaluation counter.
+      /// </summary>
       public void gradient(ref Vector grad_f, Vector x)
       {
          ++gradientEvaluation_;
          costFunction_.gradient(ref grad_f, x);
       }
 
-      //! call cost function computation and it gradient
+      /// <summary>
+      /// Evaluates both the cost function and its gradient and increments both counters.
+      /// </summary>
       public double valueAndGradient(ref Vector grad_f, Vector x)
       {
          ++functionEvaluation_;

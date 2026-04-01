@@ -17,21 +17,15 @@ using System;
 
 namespace QLNet
 {
-   //! Integral of a one-dimensional function
-   /*! Given a target accuracy \f$ \epsilon \f$, the integral of
-       a function \f$ f \f$ between \f$ a \f$ and \f$ b \f$ is
-       calculated by means of the Gauss-Lobatto formula
-   */
-
    /// <summary>
-   /// References:
-   /// This algorithm is a C++ implementation of the algorithm outlined in
-   /// W. Gander and W. Gautschi, Adaptive Quadrature - Revisited.
-   /// BIT, 40(1):84-101, March 2000. CS technical report:
-   /// ftp.inf.ethz.ch/pub/publications/tech-reports/3xx/306.ps.gz
-   /// The original MATLAB version can be downloaded here
-   /// http://www.inf.ethz.ch/personal/gander/adaptlob.m
+   /// Integral of a one-dimensional function using adaptive Gauss-Lobatto quadrature.
    /// </summary>
+   /// <remarks>
+   /// Given a target accuracy, the integral of a function between two bounds is
+   /// calculated by means of the Gauss-Lobatto formula.
+   /// This implementation follows the algorithm described in W. Gander and
+   /// W. Gautschi, "Adaptive Quadrature - Revisited", BIT 40(1):84-101.
+   /// </remarks>
    public class GaussLobattoIntegral : Integrator
    {
 

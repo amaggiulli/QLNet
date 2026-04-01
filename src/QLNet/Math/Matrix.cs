@@ -113,10 +113,14 @@ namespace QLNet
 
       #region Constructors
 
-      //! creates an empty matrix
+      /// <summary>
+      /// Creates an empty matrix.
+      /// </summary>
       public Matrix() { }
 
-      //! creates a matrix with the given dimensions
+      /// <summary>
+      /// Creates a matrix with the given dimensions.
+      /// </summary>
       public Matrix(int rows, int columns)
       {
          data_ = new double[rows * columns];
@@ -124,7 +128,9 @@ namespace QLNet
          columns_ = columns;
       }
 
-      //! creates the matrix and fills it with <tt>value</tt>
+      /// <summary>
+      /// Creates a matrix with the given dimensions and fills it with <paramref name="value"/>.
+      /// </summary>
       public Matrix(int rows, int columns, double value)
       {
          data_ = new double[rows * columns];
@@ -145,7 +151,9 @@ namespace QLNet
 
       #region Algebraic operators
 
-      /*! \pre all matrices involved in an algebraic expression must have the same size. */
+      /// <summary>
+      /// Adds two matrices of the same size.
+      /// </summary>
       public static Matrix operator +(Matrix m1, Matrix m2)
       {
          return operMatrix(ref m1, ref m2, (x, y) => x + y);
@@ -208,7 +216,9 @@ namespace QLNet
          return result;
       }
 
-      /*! \relates Matrix */
+      /// <summary>
+      /// Multiplies a matrix by a vector.
+      /// </summary>
       public static Vector operator *(Matrix m, Vector v)
       {
          Utils.QL_REQUIRE(v.Count == m.columns(), () => "vectors and matrices with different sizes ("
@@ -220,7 +230,9 @@ namespace QLNet
          return result;
       }
 
-      /*! \relates Matrix */
+      /// <summary>
+      /// Multiplies two matrices.
+      /// </summary>
       public static Matrix operator *(Matrix m1, Matrix m2)
       {
          Utils.QL_REQUIRE(m1.columns() == m2.rows(), () => "matrices with different sizes (" +

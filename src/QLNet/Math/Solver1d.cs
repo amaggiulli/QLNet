@@ -56,14 +56,14 @@ namespace QLNet
       private double lowerBound_, upperBound_;
       private bool lowerBoundEnforced_ = false, upperBoundEnforced_ = false;
 
-      /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
-                  depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
-                  \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
-
-                  This method contains a bracketing routine to which an initial guess must be supplied as well as a step used to
-                  scan the range of the possible bracketing values.
-              */
-
+      /// <summary>
+      /// Solves for a root starting from an initial guess and a bracketing step.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the solver, the requested accuracy can refer either to the function
+      /// value or to the distance from the actual root. This overload performs its own
+      /// bracketing search around the supplied guess.
+      /// </remarks>
       public double solve(ISolver1d f, double accuracy, double guess, double step)
       {
          Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
@@ -157,15 +157,14 @@ namespace QLNet
          return 0;
       }
 
-      /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
-          depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
-          \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
-
-          An initial guess must be supplied, as well as two values \f$ x_\mathrm{min} \f$ and \f$ x_\mathrm{max} \f$ which
-          must bracket the zero (i.e., either \f$ f(x_\mathrm{min}) \leq 0 \leq f(x_\mathrm{max}) \f$, or \f$
-          f(x_\mathrm{max}) \leq 0 \leq f(x_\mathrm{min}) \f$ must be true).
-      */
-
+      /// <summary>
+      /// Solves for a root inside a pre-existing bracket.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the solver, the requested accuracy can refer either to the function
+      /// value or to the distance from the actual root. The interval
+      /// <paramref name="xMin"/>-<paramref name="xMax"/> must bracket the root.
+      /// </remarks>
       public double solve(ISolver1d f, double accuracy, double guess, double xMin, double xMax)
       {
          Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
@@ -202,23 +201,26 @@ namespace QLNet
          return solveImpl(f, accuracy);
       }
 
-      /*! This method sets the maximum number of function evaluations for the bracketing routine. An error is thrown
-          if a bracket is not found after this number of evaluations.
-      */
-
+      /// <summary>
+      /// Sets the maximum number of function evaluations allowed during bracketing.
+      /// </summary>
       public void setMaxEvaluations(int evaluations)
       {
          maxEvaluations_ = evaluations;
       }
 
-      //! sets the lower bound for the function domain
+      /// <summary>
+      /// Sets the lower bound for the function domain.
+      /// </summary>
       public void setLowerBound(double lowerBound)
       {
          lowerBound_ = lowerBound;
          lowerBoundEnforced_ = true;
       }
 
-      //! sets the upper bound for the function domain
+      /// <summary>
+      /// Sets the upper bound for the function domain.
+      /// </summary>
       public void setUpperBound(double upperBound)
       {
          upperBound_ = upperBound;

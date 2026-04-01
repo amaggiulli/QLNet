@@ -25,7 +25,6 @@ namespace QLNet
    /// </summary>
    public abstract class LineSearch
    {
-      //! Default constructor
       protected LineSearch() : this(0.0)
       {}
 
@@ -36,25 +35,33 @@ namespace QLNet
          succeed_ = true;
       }
 
-      //! return last x value
+      /// <summary>
+      /// Returns the last point evaluated by the line search.
+      /// </summary>
       public Vector lastX()
       {
          return xtd_;
       }
 
-      //! return last cost function value
+      /// <summary>
+      /// Returns the last cost-function value.
+      /// </summary>
       public double lastFunctionValue()
       {
          return qt_;
       }
 
-      //! return last gradient
+      /// <summary>
+      /// Returns the last gradient computed by the line search.
+      /// </summary>
       public Vector lastGradient()
       {
          return gradient_;
       }
 
-      //! return square norm of last gradient
+      /// <summary>
+      /// Returns the squared norm of the last gradient.
+      /// </summary>
       public double lastGradientNorm2()
       {
          return qpt_;
@@ -65,7 +72,9 @@ namespace QLNet
          return succeed_;
       }
 
-      //! Perform line search
+      /// <summary>
+      /// Performs the line search.
+      /// </summary>
       public abstract double value(Problem P, ref EndCriteria.Type ecType, EndCriteria NamelessParameter3, double t_ini); // initial value of line-search step
 
       public double update(ref Vector data, Vector direction, double beta, Constraint constraint)
@@ -86,7 +95,9 @@ namespace QLNet
          return diff;
       }
 
-      //! current value of the search direction
+      /// <summary>
+      /// Gets or sets the current search direction.
+      /// </summary>
       public Vector searchDirection
       {
          get
@@ -99,15 +110,15 @@ namespace QLNet
          }
       }
 
-      //! current values of the search direction
+      // Current value of the search direction.
       protected Vector searchDirection_;
-      //! new x and its gradient
+      // New point and its gradient.
       protected Vector xtd_;
       protected Vector gradient_ = new Vector();
-      //! cost function value and gradient norm corresponding to xtd_
+      // Cost-function value and gradient norm corresponding to xtd_.
       protected double qt_;
       protected double qpt_;
-      //! flag to know if linesearch succeed
+      // Flag indicating whether the line search succeeded.
       protected bool succeed_;
    }
 }

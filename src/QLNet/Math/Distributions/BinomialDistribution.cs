@@ -106,14 +106,15 @@ namespace QLNet
 
    public static partial class Utils
    {
-      /*! Given an odd integer n and a real number z it returns p such that:
-      1 - CumulativeBinomialDistribution((n-1)/2, n, p) =
-                             CumulativeNormalDistribution(z)
-
-      \pre n must be odd
-      */
-
-      public static double PeizerPrattMethod2Inversion(double z, int n)
+       /// <summary>
+       /// Returns the Peizer-Pratt inversion for an odd number of trials and a normal deviate.
+       /// </summary>
+       /// <remarks>
+       /// The result is the probability <c>p</c> such that
+       /// <c>1 - CumulativeBinomialDistribution((n - 1) / 2, n, p) = CumulativeNormalDistribution(z)</c>.
+       /// The input <paramref name="n"/> must be odd.
+       /// </remarks>
+       public static double PeizerPrattMethod2Inversion(double z, int n)
       {
          QL_REQUIRE(n % 2 == 1, () => "n must be an odd number: " + n + " not allowed");
 

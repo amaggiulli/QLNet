@@ -41,7 +41,9 @@ namespace QLNet
    /// </remarks>
    public class PrimeNumbers
    {
-      //! Get and store one after another.
+      /// <summary>
+      /// Returns the prime number at the given absolute index, extending the cached sequence as needed.
+      /// </summary>
 
       private static readonly ulong[] firstPrimes =
       {

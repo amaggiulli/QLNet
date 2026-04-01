@@ -55,7 +55,9 @@ namespace QLNet
 
       #region IRNG interface
 
-      //! returns next sample from the Gaussian distribution
+      /// <summary>
+      /// Returns the next sample obtained by applying the inverse cumulative distribution to the sequence.
+      /// </summary>
       public Sample<List<double>> nextSequence()
       {
          Sample<List<double>> sample = uniformSequenceGenerator_.nextSequence();

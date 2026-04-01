@@ -46,7 +46,9 @@ namespace QLNet
    /// </summary>
    public class Simplex : OptimizationMethod
    {
-      //! Constructor taking as input the characteristic length
+      /// <summary>
+      /// Initializes the simplex method with the given characteristic length.
+      /// </summary>
       public Simplex(double lambda)
       {
          lambda_ = lambda;

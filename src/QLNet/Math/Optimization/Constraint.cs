@@ -62,10 +62,14 @@ namespace QLNet
          return diff;
       }
 
-      //! Tests if params satisfy the constraint
+      /// <summary>
+      /// Tests whether the given parameters satisfy the constraint.
+      /// </summary>
       public virtual bool test(Vector p) { return impl_.test(p); }
 
-      //! Returns upper bound for given parameters
+      /// <summary>
+      /// Returns the upper bound for the given parameters.
+      /// </summary>
       public virtual Vector upperBound(Vector parameters)
       {
          Vector result = impl_.upperBound(parameters);
@@ -76,7 +80,9 @@ namespace QLNet
          return result;
       }
 
-      //! Returns lower bound for given parameters
+      /// <summary>
+      /// Returns the lower bound for the given parameters.
+      /// </summary>
       public virtual Vector lowerBound(Vector parameters)
       {
          Vector result = impl_.lowerBound(parameters);

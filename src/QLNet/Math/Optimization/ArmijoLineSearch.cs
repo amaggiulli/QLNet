@@ -28,7 +28,6 @@ namespace QLNet
    //
    public class ArmijoLineSearch : LineSearch
    {
-      //! Default constructor
       public ArmijoLineSearch(double eps, double alpha) : this(eps, alpha, 0.65)
       {}
 
@@ -45,7 +44,9 @@ namespace QLNet
          beta_ = beta;
       }
 
-      //! Perform line search
+      /// <summary>
+      /// Performs the Armijo line search.
+      /// </summary>
       public override double value(Problem P, ref EndCriteria.Type ecType, EndCriteria endCriteria, double t_ini)
       {
          Constraint constraint = P.constraint();
