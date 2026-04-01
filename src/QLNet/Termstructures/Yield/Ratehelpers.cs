@@ -288,7 +288,9 @@ namespace QLNet
          pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
       }
 
-      //! RateHelper interface
+      /// <summary>
+      /// Returns the implied quote.
+      /// </summary>
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");
@@ -302,7 +304,9 @@ namespace QLNet
          return 100.0 * (1.0 - futureRate);
       }
 
-      //! FuturesRateHelper inspectors
+      /// <summary>
+      /// Returns the convexity adjustment.
+      /// </summary>
       public double convexityAdjustment()
       {
          return convAdj_.empty() ? 0.0 : convAdj_.link.value();
@@ -337,7 +341,9 @@ namespace QLNet
 
 
       //////////////////////////////////////
-      //! Observer interface
+      /// <summary>
+      /// Updates the helper when the evaluation date changes.
+      /// </summary>
       public override void update()
       {
          if (evaluationDate_ != Settings.evaluationDate())
@@ -398,7 +404,9 @@ namespace QLNet
 
 
       /////////////////////////////////////////
-      //! RateHelper interface
+      /// <summary>
+      /// Returns the implied quote.
+      /// </summary>
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");

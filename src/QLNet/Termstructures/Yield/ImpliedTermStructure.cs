@@ -50,9 +50,12 @@ namespace QLNet
       public override int settlementDays() { return originalCurve_.link.settlementDays(); }
       public override Date maxDate() { return originalCurve_.link.maxDate(); }
 
-      //! returns the discount factor as seen from the evaluation date
-      /* t is relative to the current reference date and needs to be converted to the time relative
-         to the reference date of the original curve */
+      /// <summary>
+      /// Returns the discount factor as seen from the evaluation date.
+      /// </summary>
+      /// <remarks>
+      /// <paramref name="t"/> is relative to the current reference date and is converted to the time relative to the original curve reference date.
+      /// </remarks>
       protected override double discountImpl(double t)
       {
          Date refDate = referenceDate();

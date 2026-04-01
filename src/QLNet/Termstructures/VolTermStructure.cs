@@ -43,13 +43,17 @@ namespace QLNet
       {
          bdc_ = bdc;
       }
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the volatility term structure with a fixed reference date.
+      /// </summary>
       protected VolatilityTermStructure(Date referenceDate, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(referenceDate, cal, dc)
       {
          bdc_ = bdc;
       }
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the volatility term structure with a reference date based on the global evaluation date.
+      /// </summary>
       protected VolatilityTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc, DayCounter dc = null)
          : base(settlementDays, cal, dc)
       {
@@ -58,23 +62,33 @@ namespace QLNet
 
       #endregion
 
-      //! the business day convention used in tenor to date conversion
+      /// <summary>
+      /// Returns the business-day convention used in tenor-to-date conversion.
+      /// </summary>
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
 
-      //! period/date conversion
+      /// <summary>
+      /// Converts a tenor into the corresponding option date.
+      /// </summary>
       public virtual Date optionDateFromTenor(Period p)
       {
          // swaption style
          return calendar().advance(referenceDate(), p, businessDayConvention());
       }
 
-      //! the minimum strike for which the term structure can return vols
+      /// <summary>
+      /// Returns the minimum strike for which the term structure can return volatilities.
+      /// </summary>
       public abstract double minStrike();
 
-      //! the maximum strike for which the term structure can return vols
+      /// <summary>
+      /// Returns the maximum strike for which the term structure can return volatilities.
+      /// </summary>
       public abstract double maxStrike();
 
-      //! strike-range check
+      /// <summary>
+      /// Checks whether the strike is within the supported range.
+      /// </summary>
       protected void checkStrike(double k, bool extrapolate)
       {
          Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() ||

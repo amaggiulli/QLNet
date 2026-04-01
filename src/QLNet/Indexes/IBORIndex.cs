@@ -110,7 +110,9 @@ namespace QLNet
               currency, fixingCalendar, BusinessDayConvention.Following, false, dayCounter, h)
       {}
 
-      //! returns a copy of itself linked to a different forwarding curve
+      /// <summary>
+      /// Returns a copy of the index linked to a different forwarding curve.
+      /// </summary>
       public new OvernightIndex clone(Handle<YieldTermStructure> h)
       {
          return new OvernightIndex(familyName(), fixingDays(), currency(), fixingCalendar(),

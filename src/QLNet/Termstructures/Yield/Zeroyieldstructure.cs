@@ -58,16 +58,18 @@ namespace QLNet
       // range check has already been performed; therefore, it
       // must assume that extrapolation is required.
 
-      //! zero-yield calculation
+      /// <summary>
+      /// Performs the zero-yield calculation.
+      /// </summary>
       protected abstract double zeroYieldImpl(double t);
 
       #endregion
 
       #region YieldTermStructure implementation
 
-      /*! Returns the discount factor for the given date calculating it
-          from the zero yield.
-      */
+      /// <summary>
+      /// Returns the discount factor for the given date, calculated from the zero yield.
+      /// </summary>
       protected override double discountImpl(double t)
       {
          if (t.IsEqual(0.0))     // this acts as a safe guard in cases where

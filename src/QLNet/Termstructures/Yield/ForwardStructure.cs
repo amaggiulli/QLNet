@@ -57,7 +57,9 @@ namespace QLNet
       // range check has already been performed; therefore, they
       // must assume that extrapolation is required.
 
-      //! instantaneous forward-rate calculation
+      /// <summary>
+      /// Performs the instantaneous forward-rate calculation.
+      /// </summary>
       protected abstract double forwardImpl(double s);
       /// <summary>
       /// Returns the zero yield rate for the given date calculating it
@@ -89,9 +91,9 @@ namespace QLNet
       #endregion
 
       #region YieldTermStructure implementation
-      /*! Returns the discount factor for the given date calculating it
-          from the zero rate as \f$ d(t) = \exp \left( -z(t) t \right) \f$
-      */
+      /// <summary>
+      /// Returns the discount factor for the given date, calculated from the zero rate.
+      /// </summary>
       protected override double discountImpl(double t)
       {
          if (t.IsEqual(0.0))     // this acts as a safe guard in cases where

@@ -20,11 +20,10 @@
 namespace QLNet
 {
 
-   //! %JIBAR rate
-//    ! Johannesburg Interbank Agreed Rate
-//
-//        \todo check settlement days and day-count convention.
-//
+   /// <summary>
+   /// JIBAR (Johannesburg Interbank Agreed Rate).
+   /// </summary>
+   // TODO: check settlement days and day-count convention.
    public class Jibar : IborIndex
    {
       public Jibar(Period tenor)

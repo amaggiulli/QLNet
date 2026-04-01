@@ -199,7 +199,9 @@ namespace QLNet
 
       }
 
-      //! cubic B-spline basis functions
+      /// <summary>
+      /// Returns the cubic B-spline basis function value.
+      /// </summary>
       public double basisFunction(int i, double t) { return splines_.value(i, t); }
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
@@ -247,15 +249,16 @@ namespace QLNet
 
       private BSpline splines_;
       private int size_;
-      //! N_th basis function coefficient to solve for when d(0)=1
+      // N-th basis-function coefficient to solve for when d(0) = 1.
       private int N_;
    }
 
-   //! Simple polynomial fitting method
-   /*
-         This is a simple/crude, but fast and robust, means of fitting
-         a yield curve.
-   */
+   /// <summary>
+   /// Simple polynomial fitting method.
+   /// </summary>
+   /// <remarks>
+   /// This is a simple but fast and robust way to fit a yield curve.
+   /// </remarks>
    public class SimplePolynomialFitting : FittedBondDiscountCurve.FittingMethod
    {
       public SimplePolynomialFitting(int degree,
@@ -294,9 +297,12 @@ namespace QLNet
       private int size_;
    }
 
-   //! Spread fitting method helper
-   /*  Fits a spread curve on top of a discount function according to given parametric method
-   */
+   /// <summary>
+   /// Spread fitting method helper.
+   /// </summary>
+   /// <remarks>
+   /// Fits a spread curve on top of a discount function according to the given parametric method.
+   /// </remarks>
    public class SpreadFittingMethod : FittedBondDiscountCurve.FittingMethod
    {
       public SpreadFittingMethod(FittedBondDiscountCurve.FittingMethod method, Handle<YieldTermStructure> discountCurve)

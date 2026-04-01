@@ -65,7 +65,9 @@ namespace QLNet
       #endregion
 
 
-      //! returns the spreaded zero yield rate
+      /// <summary>
+      /// Returns the spreaded zero-yield rate.
+      /// </summary>
       protected override double zeroYieldImpl(double t)
       {
          // to be fixed: user-defined daycounter should be used
@@ -77,7 +79,9 @@ namespace QLNet
                                                       zeroRate.frequency());
          return spreadedRate.equivalentRate(Compounding.Continuous, Frequency.NoFrequency, t).value();
       }
-      //! returns the spreaded forward rate
+      /// <summary>
+      /// Returns the spreaded forward rate.
+      /// </summary>
       /* This method must disappear should the spread become a curve */
       protected   double forwardImpl(double t)
       {

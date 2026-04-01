@@ -136,7 +136,9 @@ namespace QLNet
          return zeroInflationIndex().link.zeroInflationTermStructure().link.baseDate();
       }
 
-      //! is based on
+      /// <summary>
+      /// Returns the zero-inflation index on which the surface is based.
+      /// </summary>
       public Handle<ZeroInflationIndex> zeroInflationIndex() { return zii_; }
 
 
@@ -241,10 +243,9 @@ namespace QLNet
       // LazyObject interface
       public override void update() { notifyObservers(); }
 
-      //! set up the interpolations for capPrice_ and floorPrice_
-      //! since we know ATM, and we have single flows,
-      //! we can use put/call parity to extend the surfaces
-      //! across all strikes
+      // Set up the interpolations for capPrice_ and floorPrice_.
+      // Since ATM prices are known for single flows, put/call parity
+      // can be used to extend the surfaces across all strikes.
       protected override void performCalculations()
       {
          allStrikes_ = new List<double>();
@@ -313,7 +314,12 @@ namespace QLNet
          floorPrice_.enableExtrapolation();
       }
 
-      //! remember that the strikes use the quoting convention
+      /// <summary>
+      /// Returns the price at the given date and strike.
+      /// </summary>
+      /// <remarks>
+      /// The strike uses the quoting convention of the surface.
+      /// </remarks>
       public override double price(Date d, double k)
       {
          double atm = zeroInflationIndex().link.zeroInflationTermStructure().link.zeroRate(d);

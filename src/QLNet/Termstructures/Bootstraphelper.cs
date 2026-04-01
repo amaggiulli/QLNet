@@ -70,7 +70,9 @@ namespace QLNet
       }
 
 
-      //! BootstrapHelper interface
+      /// <summary>
+      /// Returns the quote handle associated with the bootstrap helper.
+      /// </summary>
       public Handle<Quote> quote() { return quote_; }
       public double quoteError() { return quote_.link.value() - impliedQuote(); }
       public double quoteValue() { return quote_.link.value(); }
@@ -78,16 +80,12 @@ namespace QLNet
       public virtual double impliedQuote() { throw new NotSupportedException(); }
 
 
-      //! sets the term structure to be used for pricing
-      /*! \warning Being a pointer and not a shared_ptr, the term
-                           structure is not guaranteed to remain allocated
-                           for the whole life of the rate helper. It is
-                           responsibility of the programmer to ensure that
-                           the pointer remains valid. It is advised that
-                           this method is called only inside the term
-                           structure being bootstrapped, setting the pointer
-                           to <b>this</b>, i.e., the term structure itself.
-      */
+      /// <summary>
+      /// Sets the term structure to be used for pricing.
+      /// </summary>
+      /// <remarks>
+      /// The caller is responsible for keeping the term structure alive for the whole life of the helper. This method is normally called from inside the term structure being bootstrapped, passing <c>this</c>.
+      /// </remarks>
       public virtual void setTermStructure(TS ts)
       {
          if (ts == null)
@@ -99,7 +97,9 @@ namespace QLNet
       // The earliest date at which discounts are needed by the helper in order to provide a quote.
       public virtual Date earliestDate() { return earliestDate_; }
 
-      //! instrument's maturity date
+      /// <summary>
+      /// Returns the instrument maturity date.
+      /// </summary>
       public virtual Date maturityDate()
       {
          if (maturityDate_ == null)
@@ -107,11 +107,12 @@ namespace QLNet
          return maturityDate_;
       }
 
-      //! latest relevant date
-      /*! The latest date at which data are needed by the helper
-          in order to provide a quote. It does not necessarily
-          equal the maturity of the underlying instrument.
-      */
+      /// <summary>
+      /// Returns the latest relevant date.
+      /// </summary>
+      /// <remarks>
+      /// This is the latest date for which data are needed by the helper to provide a quote, and it does not necessarily match the maturity of the underlying instrument.
+      /// </remarks>
       public virtual Date latestRelevantDate()
       {
          if (latestRelevantDate_ == null)
@@ -119,7 +120,9 @@ namespace QLNet
          return latestRelevantDate_;
       }
 
-      //! pillar date
+      /// <summary>
+      /// Returns the pillar date.
+      /// </summary>
       public virtual Date pillarDate()
       {
          if (pillarDate_ == null)

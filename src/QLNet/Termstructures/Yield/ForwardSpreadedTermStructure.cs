@@ -52,14 +52,18 @@ namespace QLNet
       public override Date maxDate() { return originalCurve_.link.maxDate(); }
       public override double maxTime() { return originalCurve_.link.maxTime(); }
 
-      //! returns the spreaded forward rate
+      /// <summary>
+      /// Returns the spreaded forward rate.
+      /// </summary>
       protected override double forwardImpl(double t)
       {
          return originalCurve_.link.forwardRate(t, t, Compounding.Continuous, Frequency.NoFrequency, true).rate()
                 + spread_.link.value();
       }
 
-      //! returns the spreaded zero yield rate
+      /// <summary>
+      /// Returns the spreaded zero-yield rate.
+      /// </summary>
       /* This method must disappear should the spread become a curve */
       protected override double zeroYieldImpl(double t)
       {

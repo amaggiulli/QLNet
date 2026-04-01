@@ -57,16 +57,12 @@ namespace QLNet
          return 0;
       }
 
-      /*! It is possible for multi-year seasonalities to be
-          inconsistent with the inflation term structure they are
-          given to.  This method enables testing - but programmers
-          are not required to implement it.  E.g. for price
-          seasonality the corrections at whole years after the
-          inflation curve base date should be the same or else there
-          can be an inconsistency with quoted instruments.
-          Alternatively, the seasonality can be set _before_ the
-          inflation curve is bootstrapped.
-      */
+      /// <summary>
+      /// Checks whether the seasonality is consistent with the given inflation term structure.
+      /// </summary>
+      /// <remarks>
+      /// Multi-year seasonalities can be inconsistent with the inflation term structure they are applied to. For instance, whole-year corrections after the inflation-curve base date should match for price seasonality, or quoted instruments can become inconsistent. Alternatively, the seasonality can be set before the inflation curve is bootstrapped.
+      /// </remarks>
       public virtual bool isConsistent(InflationTermStructure iTS)
       {
          return true;
@@ -143,11 +139,18 @@ namespace QLNet
          validate();
       }
 
-      //! inspectors
+      /// <summary>
+      /// Returns the seasonality base date.
+      /// </summary>
       public virtual Date seasonalityBaseDate() { return seasonalityBaseDate_; }
       public virtual Frequency frequency() { return frequency_; }
       public virtual List<double> seasonalityFactors() { return seasonalityFactors_; }
-      //! The factor returned is NOT normalized relative to ANYTHING.
+      /// <summary>
+      /// Returns the raw seasonality factor.
+      /// </summary>
+      /// <remarks>
+      /// The returned factor is not normalized relative to any reference.
+      /// </remarks>
       public virtual double seasonalityFactor(Date to)
       {
          Date from = seasonalityBaseDate();

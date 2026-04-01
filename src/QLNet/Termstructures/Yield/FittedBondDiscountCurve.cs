@@ -70,7 +70,9 @@ namespace QLNet
    public class FittedBondDiscountCurve : YieldTermStructure
    {
       // Constructors
-      //! reference date based on current evaluation date
+      /// <summary>
+      /// Initializes the curve using a reference date based on the current evaluation date.
+      /// </summary>
       public FittedBondDiscountCurve(int settlementDays,
                                      Calendar calendar,
                                      List<BondHelper> bondHelpers,
@@ -95,7 +97,9 @@ namespace QLNet
          setup();
       }
 
-      //! curve reference date fixed for life of curve
+      /// <summary>
+      /// Initializes the curve with a reference date fixed for the life of the curve.
+      /// </summary>
       public FittedBondDiscountCurve(Date referenceDate,
                                      List<BondHelper> bondHelpers,
                                      DayCounter dayCounter,
@@ -120,15 +124,21 @@ namespace QLNet
       }
 
       // Inspectors
-      //! total number of bonds used to fit the yield curve
+      /// <summary>
+      /// Returns the total number of bonds used to fit the yield curve.
+      /// </summary>
       public int numberOfBonds() {return bondHelpers_.Count;}
-      //! the latest date for which the curve can return values
+      /// <summary>
+      /// Returns the latest date for which the curve can provide values.
+      /// </summary>
       public override Date maxDate()
       {
          calculate();
          return maxDate_;
       }
-      //! class holding the results of the fit
+      /// <summary>
+      /// Returns the fitting results.
+      /// </summary>
       public FittingMethod fitResults()
       {
          calculate();
@@ -290,26 +300,46 @@ namespace QLNet
 
          }
 
-         //! total number of coefficients to fit/solve for
+         /// <summary>
+         /// Returns the total number of coefficients to fit or solve for.
+         /// </summary>
          public virtual int size() { throw new NotImplementedException(); }
-         //! output array of results of optimization problem
+         /// <summary>
+         /// Returns the solution vector of the optimization problem.
+         /// </summary>
          public Vector solution() { return solution_;}
-         //! final number of iterations used in the optimization problem
+         /// <summary>
+         /// Returns the final number of iterations used by the optimization problem.
+         /// </summary>
          public int numberOfIterations() {return numberOfIterations_;}
-         //! final value of cost function after optimization
+         /// <summary>
+         /// Returns the final value of the cost function after optimization.
+         /// </summary>
          public double minimumCostValue() { return costValue_;}
-         //! clone of the current object
+         /// <summary>
+         /// Returns a clone of the current fitting method.
+         /// </summary>
          public virtual FittingMethod clone() { throw new NotImplementedException(); }
-         //! return whether there is a constraint at zero
+         /// <summary>
+         /// Returns whether the discount function is constrained at zero.
+         /// </summary>
          public bool constrainAtZero() {return constrainAtZero_;}
-         //! return weights being used
+         /// <summary>
+         /// Returns the weights being used.
+         /// </summary>
          public Vector weights() {return weights_;}
-         //! return optimization method being used
+         /// <summary>
+         /// Returns the optimization method being used.
+         /// </summary>
          public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
-         //! open discountFunction to public
+         /// <summary>
+         /// Exposes the discount function publicly.
+         /// </summary>
          public double discount(Vector x, double t) {return discountFunction(x, t);}
 
-         //! constructor
+         /// <summary>
+         /// Initializes the fitting method.
+         /// </summary>
          protected FittingMethod(bool constrainAtZero = true,
                                  Vector weights = null,
                                  OptimizationMethod optimizationMethod = null)
@@ -319,7 +349,9 @@ namespace QLNet
             calculateWeights_ = weights_.empty();
             optimizationMethod_ = optimizationMethod;
          }
-         //! rerun every time instruments/referenceDate changes
+         /// <summary>
+         /// Reinitializes the fitting state whenever the instruments or reference date change.
+         /// </summary>
          internal virtual void init()
          {
             // yield conventions
@@ -374,21 +406,21 @@ namespace QLNet
 
          }
 
-         //! discount function called by FittedBondDiscountCurve
+         /// <summary>
+         /// Calculates the discount function used by <see cref="FittedBondDiscountCurve"/>.
+         /// </summary>
          internal virtual double discountFunction(Vector x, double t) { throw new NotImplementedException(); }
 
-         //! constrains discount function to unity at \f$ T=0 \f$, if true
+         // Constrains the discount function to unity at T = 0 when true.
          protected bool constrainAtZero_;
-         //! internal reference to the FittedBondDiscountCurve instance
+         // Internal reference to the fitted bond discount curve instance.
          internal FittedBondDiscountCurve curve_;
-         //! solution array found from optimization, set in calculate()
+         // Solution vector found by the optimization and set in calculate().
          internal Vector solution_;
-         //! optional guess solution to be passed into constructor.
-         /*! The idea is to use a previous solution as a guess solution to
-            the discount curve, in an attempt to speed up calculations.
-         */
+         // Optional guess solution passed into the constructor.
+         // A previous solution can be reused as a starting point to speed up calculations.
          protected Vector guessSolution_;
-         //! base class sets this cost function used in the optimization routine
+         // Cost function used by the optimization routine.
          protected FittingCost costFunction_;
 
          // curve optimization called here- adjust optimization parameters here

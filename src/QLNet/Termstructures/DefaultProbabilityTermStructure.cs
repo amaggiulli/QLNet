@@ -106,9 +106,12 @@ namespace QLNet
          return survivalProbability(timeFromReference(d), extrapolate);
       }
 
-      /*! The same day-counting rule used by the term structure
-          should be used for calculating the passed time t.
-      */
+      /// <summary>
+      /// Returns the survival probability at the given time.
+      /// </summary>
+      /// <remarks>
+      /// The same day-counting rule used by the term structure should be used when calculating <paramref name="t"/>.
+      /// </remarks>
       public double survivalProbability(double t, bool extrapolate = false)
       {
          checkRange(t, extrapolate);
@@ -141,22 +144,29 @@ namespace QLNet
          return 1.0 - survivalProbability(d, extrapolate);
       }
 
-      /*! The same day-counting rule used by the term structure
-          should be used for calculating the passed time t.
-      */
+      /// <summary>
+      /// Returns the default probability at the given time.
+      /// </summary>
+      /// <remarks>
+      /// The same day-counting rule used by the term structure should be used when calculating <paramref name="t"/>.
+      /// </remarks>
       public double defaultProbability(double t, bool extrapolate = false)
       {
          return 1.0 - survivalProbability(t, extrapolate);
       }
 
-      //! probability of default between two given dates
+      /// <summary>
+      /// Returns the probability of default between two given dates.
+      /// </summary>
       public double defaultProbability(Date d1, Date d2, bool extrapolate = false)
       {
          Utils.QL_REQUIRE(d1 <= d2, () => "initial date (" + d1 + ") later than final date (" + d2 + ")");
          double p1 = d1 < referenceDate() ? 0.0 : defaultProbability(d1, extrapolate), p2 = defaultProbability(d2, extrapolate);
          return p2 - p1;
       }
-      //! probability of default between two given times
+      /// <summary>
+      /// Returns the probability of default between two given times.
+      /// </summary>
       public double defaultProbability(double t1, double t2, bool extrapo = false)
       {
          Utils.QL_REQUIRE(t1 <= t2, () => "initial time (" + t1 + ") later than final time (" + t2 + ")");
@@ -233,10 +243,14 @@ namespace QLNet
       // range check has already been performed; therefore, they
       // must assume that extrapolation is required.
 
-      //! survival probability calculation
+      /// <summary>
+      /// Performs the survival-probability calculation.
+      /// </summary>
       protected abstract double survivalProbabilityImpl(double t);
 
-      //! default density calculation
+      /// <summary>
+      /// Performs the default-density calculation.
+      /// </summary>
       protected abstract double defaultDensityImpl(double t);
 
       #endregion

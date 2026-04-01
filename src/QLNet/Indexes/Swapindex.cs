@@ -146,7 +146,9 @@ namespace QLNet
                                  dayCounter(),
                                  iborIndex_.clone(forwarding));
       }
-      //! returns a copy of itself linked to a different curves
+      /// <summary>
+      /// Returns a copy of the index linked to different curves.
+      /// </summary>
       public virtual SwapIndex clone(Handle<YieldTermStructure> forwarding, Handle<YieldTermStructure> discounting)
       {
          return new SwapIndex(familyName(),
@@ -160,7 +162,9 @@ namespace QLNet
                               iborIndex_.clone(forwarding),
                               discounting);
       }
-      //! returns a copy of itself linked to a different tenor
+      /// <summary>
+      /// Returns a copy of the index linked to a different tenor.
+      /// </summary>
       public virtual SwapIndex clone(Period tenor)
       {
          if (exogenousDiscount_)
@@ -221,9 +225,12 @@ namespace QLNet
       }
       // Inspectors
       public OvernightIndex overnightIndex() { return overnightIndex_; }
-      /*! \warning Relinking the term structure underlying the index will
-                   not have effect on the returned swap.
-      */
+      /// <summary>
+      /// Returns the underlying overnight-indexed swap.
+      /// </summary>
+      /// <remarks>
+      /// Relinking the term structure underlying the index does not affect the returned swap.
+      /// </remarks>
       public new OvernightIndexedSwap underlyingSwap(Date fixingDate)
       {
          Utils.QL_REQUIRE(fixingDate != null, () => "null fixing date");

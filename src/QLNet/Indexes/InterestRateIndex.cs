@@ -135,7 +135,9 @@ namespace QLNet
       public abstract Date maturityDate(Date valueDate);
 
       // Fixing calculations
-      //! It can be overridden to implement particular conventions
+      /// <summary>
+      /// Forecasts the fixing and can be overridden to implement specific conventions.
+      /// </summary>
       public abstract double forecastFixing(Date fixingDate);
       public virtual double? pastFixing(Date fixingDate)
       {
