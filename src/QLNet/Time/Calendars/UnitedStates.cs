@@ -489,7 +489,7 @@ namespace QLNet
                 ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
                 // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
                 // see <https://www.sifma.org/resources/general/holiday-schedule/>)
-                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023)
+                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023 && y!=2026)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
                 // Independence Day (Monday if Sunday or Friday if Saturday)
