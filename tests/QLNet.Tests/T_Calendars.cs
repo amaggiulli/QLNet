@@ -336,6 +336,32 @@ namespace TestSuite
       }
 
       [Fact]
+      public void testSOFR()
+      {
+         // Testing holidays for SOFR
+         var calendar = new UnitedStates(UnitedStates.Market.SOFR);
+
+         // Good Friday
+         foreach (var goodFriday in new List<Date>
+                  {
+                     new Date(14, Month.April, 2017), new Date(30, Month.March, 2018), new Date(19, Month.April, 2019),
+                     new Date(10, Month.April, 2020), new Date(2, Month.April, 2021), new Date(15, Month.April, 2022),
+                     new Date(7, Month.April, 2023),
+                     new Date(29, Month.March, 2024), new Date(18, Month.April, 2025), new Date(3, Month.April, 2026),
+                     new Date(26, Month.March, 2027),
+                     new Date(14, Month.April, 2028), new Date(30, Month.March, 2029), new Date(19, Month.April, 2030),
+                     new Date(11, Month.April, 2031)
+                  })
+         {
+            QAssert.IsTrue(calendar.isHoliday(goodFriday));
+            QAssert.IsFalse(calendar.isBusinessDay(goodFriday));
+            QAssert.IsFalse(calendar.isEarlyClose(goodFriday));
+         }
+
+      }
+
+
+   [Fact]
       public void testTARGET()
       {
          List<Date> expectedHol = new List<Date>();

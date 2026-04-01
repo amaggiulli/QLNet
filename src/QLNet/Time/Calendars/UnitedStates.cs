@@ -218,7 +218,12 @@ namespace QLNet
          /// <summary>
          /// Federal Reserve Bankwire System calendar.
          /// </summary>
-         FederalReserve
+         FederalReserve,
+
+         /// <summary>
+         /// SOFR fixing calendar.
+         /// </summary>
+         SOFR
       }
 
       public UnitedStates() : this(Market.Settlement) { }
@@ -243,6 +248,9 @@ namespace QLNet
                break;
             case Market.FederalReserve:
                _impl = FederalReserve.Singleton;
+               break;
+            case Market.SOFR:
+               _impl = SOFR.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
@@ -395,7 +403,7 @@ namespace QLNet
       private class GovernmentBond : WesternImpl
       {
          public static readonly GovernmentBond Singleton = new();
-         private GovernmentBond() { }
+         protected GovernmentBond() { }
 
          public override string name() { return "US government bond market"; }
          public override bool isBusinessDay(Date date)
@@ -601,6 +609,29 @@ namespace QLNet
                return false;
             return true;
          }
+      }
+
+      private class SOFR : GovernmentBond
+      {
+         public static readonly SOFR Singleton = new();
+         private SOFR() { }
+
+         public override string name() { return "SOFR fixing calendar"; }
+         public override bool isBusinessDay(Date date)
+         {
+            // so far (that is, up to 2026 at the time of this change) SOFR never fixed
+            // on Good Friday.  We're extrapolating that pattern.  This might change if
+            // a fixing on Good Friday occurs in future years.
+            var dY = date.DayOfYear;
+            var y = date.Year;
+
+            // Good Friday
+            if (dY == (easterMonday(y) - 3))
+               return false;
+
+            return base.isBusinessDay(date);
+         }
+
       }
    }
 }
