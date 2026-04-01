@@ -512,8 +512,8 @@ namespace QLNet
                ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November))
                return true;
 
-            // Good Friday 2015, 2021, 2023 are early close
-            if ((close.DayOfYear == em-3 && y is 2015 or 2021 or 2023 )) return true;
+            // Good Friday 2015, 2021, 2023 , 2026 are early close
+            if ((close.DayOfYear == em-3 && y is 2015 or 2021 or 2023 or 2026 )) return true;
 
             return false;
          }
