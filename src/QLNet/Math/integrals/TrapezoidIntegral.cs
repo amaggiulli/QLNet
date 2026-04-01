@@ -20,23 +20,26 @@ using System;
 
 namespace QLNet
 {
-   //! Integral of a one-dimensional function
-   /*! Given a target accuracy \f$ \epsilon \f$, the integral of
-       a function \f$ f \f$ between \f$ a \f$ and \f$ b \f$ is
-       calculated by means of the trapezoid formula
-       \f[
-       \int_{a}^{b} f \mathrm{d}x =
-       \frac{1}{2} f(x_{0}) + f(x_{1}) + f(x_{2}) + \dots
-       + f(x_{N-1}) + \frac{1}{2} f(x_{N})
-       \f]
-       where \f$ x_0 = a \f$, \f$ x_N = b \f$, and
-       \f$ x_i = a+i \Delta x \f$ with
-       \f$ \Delta x = (b-a)/N \f$. The number \f$ N \f$ of intervals
-       is repeatedly increased until the target accuracy is reached.
-
-       \test the correctness of the result is tested by checking it
-             against known good values.
-   */
+   /// <summary>
+   /// Integral of a one-dimensional function
+   /// </summary>
+   /// <remarks>
+   /// Given a target accuracy \f$ \epsilon \f$, the integral of
+   /// a function \f$ f \f$ between \f$ a \f$ and \f$ b \f$ is
+   /// calculated by means of the trapezoid formula
+   /// \f[
+   /// \int_{a}^{b} f \mathrm{d}x =
+   /// \frac{1}{2} f(x_{0}) + f(x_{1}) + f(x_{2}) + \dots
+   /// + f(x_{N-1}) + \frac{1}{2} f(x_{N})
+   /// \f]
+   /// where \f$ x_0 = a \f$, \f$ x_N = b \f$, and
+   /// \f$ x_i = a+i \Delta x \f$ with
+   /// \f$ \Delta x = (b-a)/N \f$. The number \f$ N \f$ of intervals
+   /// is repeatedly increased until the target accuracy is reached.
+   ///
+   /// Test: the correctness of the result is tested by checking it
+   /// against known good values.
+   /// </remarks>
    public class TrapezoidIntegral<IntegrationPolicy> : Integrator where IntegrationPolicy : IIntegrationPolicy, new ()
    {
       public TrapezoidIntegral(double accuracy, int maxIterations) : base(accuracy, maxIterations) { }

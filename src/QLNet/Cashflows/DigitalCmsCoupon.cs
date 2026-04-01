@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -23,7 +23,9 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   //! Cms-rate coupon with digital digital call/put option
+   /// <summary>
+   /// Cms-rate coupon with digital digital call/put option
+   /// </summary>
    public class DigitalCmsCoupon : DigitalCoupon
    {
       // need by CashFlowVectors
@@ -51,7 +53,9 @@ namespace QLNet
    }
 
 
-   //! helper class building a sequence of digital ibor-rate coupons
+   /// <summary>
+   /// helper class building a sequence of digital ibor-rate coupons
+   /// </summary>
    public class DigitalCmsLeg
    {
       public DigitalCmsLeg(Schedule schedule, SwapIndex index)

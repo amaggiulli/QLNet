@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -23,18 +23,22 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Bond helper for curve bootstrap
-   /*! \warning This class assumes that the reference date
-                does not change between calls of setTermStructure().
-   */
+   /// <summary>
+   /// Bond helper for curve bootstrap
+   /// </summary>
+   /// <remarks>
+   /// Warning: This class assumes that the reference date
+   /// does not change between calls of setTermStructure().
+   /// </remarks>
    public class BondHelper : RateHelper
    {
-      /*! \warning Setting a pricing engine to the passed bond from
-                   external code will cause the bootstrap to fail or
-                   to give wrong results. It is advised to discard
-                   the bond after creating the helper, so that the
-                   helper has sole ownership of it.
-      */
+      /// <remarks>
+      /// Warning: Setting a pricing engine to the passed bond from
+      /// external code will cause the bootstrap to fail or
+      /// to give wrong results. It is advised to discard
+      /// the bond after creating the helper, so that the
+      /// helper has sole ownership of it.
+      /// </remarks>
       public BondHelper(Handle<Quote> price, Bond bond, bool useCleanPrice = true)
          : base(price)
       {
@@ -80,7 +84,9 @@ namespace QLNet
 
    }
 
-   //! Fixed-coupon bond helper for curve bootstrap
+   /// <summary>
+   /// Fixed-coupon bond helper for curve bootstrap
+   /// </summary>
    public class FixedRateBondHelper : BondHelper
    {
       public FixedRateBondHelper(Handle<Quote> price,
@@ -111,7 +117,9 @@ namespace QLNet
       protected FixedRateBond fixedRateBond_;
    }
 
-   //! CPI bond helper for curve bootstrap
+   /// <summary>
+   /// CPI bond helper for curve bootstrap
+   /// </summary>
    public class CPIBondHelper : BondHelper
    {
       public CPIBondHelper(Handle<Quote> price,

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,7 +21,9 @@ using System;
 namespace QLNet
 {
 
-   //! Black-Scholes 1973 calculator class
+   /// <summary>
+   /// Black-Scholes 1973 calculator class
+   /// </summary>
    public class BlackScholesCalculator : BlackCalculator
    {
       protected double spot_;
@@ -37,7 +39,9 @@ namespace QLNet
          Utils.QL_REQUIRE(growth_ >= 0.0, () => "positive growth value required: " + growth_ + " not allowed");
       }
 
-      //! Sensitivity to change in the underlying spot price.
+      /// <summary>
+      /// Returns the sensitivity to a change in the underlying spot price.
+      /// </summary>
 
       public double delta()
       {
@@ -57,7 +61,9 @@ namespace QLNet
       {
          return base.gamma(spot_);
       }
-      //! Sensitivity to time to maturity.
+      /// <summary>
+      /// Returns the sensitivity to time to maturity.
+      /// </summary>
       public double theta(double maturity)
       {
          return base.theta(spot_, maturity);

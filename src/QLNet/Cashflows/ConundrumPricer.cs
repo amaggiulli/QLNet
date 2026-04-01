@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -516,7 +516,9 @@ namespace QLNet
    //===========================================================================//
    //                             HaganPricer                               //
    //===========================================================================//
-   //! Base class for the pricing of a CMS coupon via static replication as in Hagan's "Conundrums..." article
+   /// <summary>
+   /// Base class for the pricing of a CMS coupon via static replication as in Hagan's "Conundrums..." article
+   /// </summary>
    public abstract class HaganPricer : CmsCouponPricer
    {
       public override double swapletRate()

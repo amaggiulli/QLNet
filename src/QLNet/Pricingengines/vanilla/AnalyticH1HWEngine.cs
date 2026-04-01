@@ -18,26 +18,28 @@ using System.Numerics;
 
 namespace QLNet
 {
-   //! Analytic Heston-Hull-White engine based on the H1-HW approximation
-   /*! References:
-
-       Lech A. Grzelak, Cornelis W. Oosterlee,
-       On The Heston Model with Stochastic,
-       http://papers.ssrn.com/sol3/papers.cfm?abstract_id=1382902
-
-       Lech A. Grzelak,
-       Equity and Foreign Exchange Hybrid Models for
-       Pricing Long-Maturity Financial Derivatives,
-       http://repository.tudelft.nl/assets/uuid:a8e1a007-bd89-481a-aee3-0e22f15ade6b/PhDThesis_main.pdf
-
-       \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature, testing
-             against QuantLib's analytic Heston,
-             the Black-Scholes-Merton Hull-White engine and
-             the finite difference Heston-Hull-White engine
-   */
+   /// <summary>
+   /// Analytic Heston-Hull-White engine based on the H1-HW approximation
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Lech A. Grzelak, Cornelis W. Oosterlee,
+   /// On The Heston Model with Stochastic,
+   /// http://papers.ssrn.com/sol3/papers.cfm?abstract_id=1382902
+   ///
+   /// Lech A. Grzelak,
+   /// Equity and Foreign Exchange Hybrid Models for
+   /// Pricing Long-Maturity Financial Derivatives,
+   /// http://repository.tudelft.nl/assets/uuid:a8e1a007-bd89-481a-aee3-0e22f15ade6b/PhDThesis_main.pdf
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature, testing
+   /// against QuantLib's analytic Heston,
+   /// the Black-Scholes-Merton Hull-White engine and
+   /// the finite difference Heston-Hull-White engine
+   /// </remarks>
    public class AnalyticH1HWEngine : AnalyticHestonHullWhiteEngine
    {
       public AnalyticH1HWEngine(HestonModel model, HullWhite hullWhiteModel, double rhoSr, int integrationOrder = 144)

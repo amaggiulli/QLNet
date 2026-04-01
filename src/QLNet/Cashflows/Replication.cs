@@ -22,10 +22,13 @@
 namespace QLNet
 {
 
-   //! Digital option replication strategy
-//    ! Specification of replication strategies used to price
-//        the embedded digital option in a digital coupon.
-//
+   /// <summary>
+   /// Digital option replication strategy.
+   /// </summary>
+   /// <remarks>
+   /// Specifies the replication strategies used to price the embedded
+   /// digital option in a digital coupon.
+   /// </remarks>
    public struct Replication
    {
       public enum Type
@@ -36,6 +39,9 @@ namespace QLNet
       }
    }
 
+   /// <summary>
+   /// Digital replication settings.
+   /// </summary>
    public class DigitalReplication
    {
       private double gap_;

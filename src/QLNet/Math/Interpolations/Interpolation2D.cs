@@ -22,13 +22,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! base class for 2-D interpolations.
-   /*! Classes derived from this class will provide interpolated
-       values from two sequences of length \f$ N \f$ and \f$ M \f$,
-       representing the discretized values of the \f$ x \f$ and \f$ y
-       \f$ variables, and a \f$ N \times M \f$ matrix representing
-       the tabulated function values.
-   */
+   /// <summary>
+   /// Base class for two-dimensional interpolations.
+   /// </summary>
+   /// <remarks>
+   /// Derived classes provide interpolated values from two input grids and a matrix of tabulated function values.
+   /// </remarks>
 
    // Interpolation factory
    public interface IInterpolationFactory2D
@@ -81,7 +80,9 @@ namespace QLNet
                                         + "]: extrapolation at (" + x + ", " + y + " not allowed");
       }
 
-      //! abstract base class for 2-D interpolation implementations
+      /// <summary>
+      /// abstract base class for 2-D interpolation implementations
+      /// </summary>
       protected interface Impl //: IValue
       {
          void calculate();

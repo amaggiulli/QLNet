@@ -18,12 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Pricing engine for performance options using analytical formulae
-   /*! \ingroup cliquetengines
-
-       \test the correctness of the returned greeks is tested by
-             reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Pricing engine for performance options using analytical formulae
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class AnalyticPerformanceEngine : CliquetOption.Engine
    {
       public AnalyticPerformanceEngine(GeneralizedBlackScholesProcess process)

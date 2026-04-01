@@ -22,20 +22,20 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %linear exponential volatility model
-   /*! This class describes a linear-exponential volatility model
-
-       \f[
-       \sigma_i(t)=(a*(T_{i}-t)+d)*e^{-b(T_{i}-t)}+c
-       \f]
-
-       References:
-
-       Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,
-       Different Covariance Parameterizations of Libor Market Model and Joint
-       Caps/Swaptions Calibration,
-       (<http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf>)
-   */
+   /// <summary>
+   /// linear exponential volatility model
+   /// </summary>
+   /// <remarks>
+   /// This class describes a linear-exponential volatility model
+   /// \f[
+   /// \sigma_i(t)=(a*(T_{i}-t)+d)*e^{-b(T_{i}-t)}+c
+   /// \f]
+   /// References:
+   /// Damiano Brigo, Fabio Mercurio, Massimo Morini, 2003,
+   /// Different Covariance Parameterizations of Libor Market Model and Joint
+   /// Caps/Swaptions Calibration,
+   /// (http://www.business.uts.edu.au/qfrc/conferences/qmf2001/Brigo_D.pdf)
+   /// </remarks>
    public class LmLinearExponentialVolatilityModel : LmVolatilityModel
    {
       public LmLinearExponentialVolatilityModel(List<double> fixingTimes, double a, double b, double c, double d)

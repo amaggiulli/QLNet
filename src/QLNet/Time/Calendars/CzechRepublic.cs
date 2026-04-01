@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,27 +22,26 @@ using System;
 
 namespace QLNet
 {
-   //! Czech calendars
-   /*! Holidays for the Prague stock exchange (see http://www.pse.cz/):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Easter Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Liberation Day, May 8th</li>
-       <li>SS. Cyril and Methodius, July 5th</li>
-       <li>Jan Hus Day, July 6th</li>
-       <li>Czech Statehood Day, September 28th</li>
-       <li>Independence Day, October 28th</li>
-       <li>Struggle for Freedom and Democracy Day, November 17th</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>St. Stephen, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Czech calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Prague stock exchange (see http://www.pse.cz/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Easter Monday
+   /// Labour Day, May 1st
+   /// Liberation Day, May 8th
+   /// SS. Cyril and Methodius, July 5th
+   /// Jan Hus Day, July 6th
+   /// Czech Statehood Day, September 28th
+   /// Independence Day, October 28th
+   /// Struggle for Freedom and Democracy Day, November 17th
+   /// Christmas Eve, December 24th
+   /// Christmas, December 25th
+   /// St. Stephen, December 26th
+   /// </remarks>
    public class CzechRepublic : Calendar
    {
       public CzechRepublic() : base(Impl.Singleton) { }

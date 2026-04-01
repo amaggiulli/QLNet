@@ -22,10 +22,11 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! In one dimension the Crank-Nicolson scheme is equivalent to the
-       Douglas scheme and in higher dimensions it is usually inferior to
-       operator splitting methods like Craig-Sneyd or Hundsdorfer-Verwer.
-   */
+   /// <summary>
+   /// In one dimension the Crank-Nicolson scheme is equivalent to the
+   /// Douglas scheme and in higher dimensions it is usually inferior to
+   /// operator splitting methods like Craig-Sneyd or Hundsdorfer-Verwer.
+   /// </summary>
    public class MethodOfLinesScheme : IMixedScheme, ISchemeFactory
    {
       public MethodOfLinesScheme()

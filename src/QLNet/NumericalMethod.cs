@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! %Lattice (tree, finite-differences) base class
+   /// <summary>
+   /// Lattice (tree, finite-differences) base class
+   /// </summary>
    public abstract class Lattice
    {
       protected TimeGrid t_;
@@ -44,18 +46,24 @@ namespace QLNet
           methods of DiscretizedAsset instead.
       */
 
-      //! initialize an asset at the given time.
+      /// <summary>
+      /// Initializes an asset at the given time.
+      /// </summary>
       public abstract void initialize(DiscretizedAsset a, double time);
 
-      /*! Roll back an asset until the given time, performing any needed adjustment. */
+      /// <summary>
+      /// Rolls back an asset to the given time, performing any needed adjustment.
+      /// </summary>
       public abstract void rollback(DiscretizedAsset a, double to);
 
-      /*! Roll back an asset until the given time, but do not perform
-          the final adjustment.
-      */
+      /// <summary>
+      /// Rolls back an asset to the given time without performing the final adjustment.
+      /// </summary>
       public abstract void partialRollback(DiscretizedAsset a, double to);
 
-      //! computes the present value of an asset.
+      /// <summary>
+      /// Computes the present value of an asset.
+      /// </summary>
       public abstract double presentValue(DiscretizedAsset a);
 
       // this is a smell, but we need it. We'll rethink it later.

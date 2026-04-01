@@ -19,14 +19,19 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Cap/floor at-the-money term-volatility vector
-   /*! This class provides the at-the-money volatility for a given cap/floor
-       interpolating a volatility vector whose elements are the market
-       volatilities of a set of caps/floors with given length.
-   */
+   /// <summary>
+   /// Cap/floor at-the-money term-volatility vector
+   /// </summary>
+   /// <remarks>
+   /// This class provides the at-the-money volatility for a given cap/floor
+   /// interpolating a volatility vector whose elements are the market
+   /// volatilities of a set of caps/floors with given length.
+   /// </remarks>
    public class CapFloorTermVolCurve : CapFloorTermVolatilityStructure
    {
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the curve with a floating reference date and floating market data.
+      /// </summary>
       public CapFloorTermVolCurve(int settlementDays,
                                   Calendar calendar,
                                   BusinessDayConvention bdc,
@@ -48,7 +53,9 @@ namespace QLNet
          interpolate();
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the curve with a fixed reference date and floating market data.
+      /// </summary>
       public CapFloorTermVolCurve(Date settlementDate,
                                   Calendar calendar,
                                   BusinessDayConvention bdc,
@@ -69,7 +76,9 @@ namespace QLNet
          registerWithMarketData();
          interpolate();
       }
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the curve with a fixed reference date and fixed market data.
+      /// </summary>
       public CapFloorTermVolCurve(Date settlementDate,
                                   Calendar calendar,
                                   BusinessDayConvention bdc,
@@ -92,7 +101,9 @@ namespace QLNet
             volHandles_[i] = new Handle<Quote>(new SimpleQuote(vols_[i]));
          interpolate();
       }
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the curve with a floating reference date and fixed market data.
+      /// </summary>
       public CapFloorTermVolCurve(int settlementDays,
                                   Calendar calendar,
                                   BusinessDayConvention bdc,

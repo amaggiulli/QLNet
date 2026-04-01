@@ -19,16 +19,18 @@
 
 namespace QLNet
 {
-   //! Term structure with added spread on the instantaneous forward rate
-   /*! \note This term structure will remain linked to the original structure, i.e., any changes in the latter will be
-             reflected in this structure as well.
-
-       \ingroup yieldtermstructures
-
-       \test
-       - the correctness of the returned values is tested by checking them against numerical calculations.
-       - observability against changes in the underlying term structure and in the added spread is checked.
-   */
+   /// <summary>
+   /// Term structure with added spread on the instantaneous forward rate
+   /// </summary>
+   /// <remarks>
+   /// Note: This term structure will remain linked to the original structure, i.e., any changes in the latter will be
+   /// reflected in this structure as well.
+   ///
+   ///
+   /// Test:
+   /// - the correctness of the returned values is tested by checking them against numerical calculations.
+   /// - observability against changes in the underlying term structure and in the added spread is checked.
+   /// </remarks>
    public class ForwardSpreadedTermStructure : ForwardRateStructure
    {
       private Handle<YieldTermStructure> originalCurve_;
@@ -50,14 +52,18 @@ namespace QLNet
       public override Date maxDate() { return originalCurve_.link.maxDate(); }
       public override double maxTime() { return originalCurve_.link.maxTime(); }
 
-      //! returns the spreaded forward rate
+      /// <summary>
+      /// Returns the spreaded forward rate.
+      /// </summary>
       protected override double forwardImpl(double t)
       {
          return originalCurve_.link.forwardRate(t, t, Compounding.Continuous, Frequency.NoFrequency, true).rate()
                 + spread_.link.value();
       }
 
-      //! returns the spreaded zero yield rate
+      /// <summary>
+      /// Returns the spreaded zero-yield rate.
+      /// </summary>
       /* This method must disappear should the spread become a curve */
       protected override double zeroYieldImpl(double t)
       {

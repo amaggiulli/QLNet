@@ -19,16 +19,17 @@
 
 namespace QLNet
 {
-   //! %EurLiborSwapIsdaFixA index base class
-   /*! %EUR %Libor %Swap indexes fixed by ISDA in cooperation with
-       Reuters and Intercapital Brokers at 10am London.
-       Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
-       Reuters page ISDAFIX2 or EURSFIXLA=.
-
-       Further info can be found at <http://www.isda.org/fix/isdafix.html> or
-       Reuters page ISDAFIX.
-
-   */
+   /// <summary>
+   /// EurLiborSwapIsdaFixA index base class
+   /// </summary>
+   /// <remarks>
+   /// EUR Libor Swap indexes fixed by ISDA in cooperation with
+   /// Reuters and Intercapital Brokers at 10am London.
+   /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
+   /// Reuters page ISDAFIX2 or EURSFIXLA=.
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
+   /// Reuters page ISDAFIX.
+   /// </remarks>
    public class EurLiborSwapIsdaFixA : SwapIndex
    {
       public EurLiborSwapIsdaFixA(Period tenor)
@@ -64,16 +65,17 @@ namespace QLNet
                 discounting) {}
    }
 
-   //! %EurLiborSwapIsdaFixB index base class
-   /*! %EUR %Libor %Swap indexes fixed by ISDA in cooperation with
-       Reuters and Intercapital Brokers at 11am London.
-       Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
-       Reuters page ISDAFIX2 or EURSFIXLB=.
-
-       Further info can be found at <http://www.isda.org/fix/isdafix.html> or
-       Reuters page ISDAFIX.
-
-   */
+   /// <summary>
+   /// EurLiborSwapIsdaFixB index base class
+   /// </summary>
+   /// <remarks>
+   /// EUR Libor Swap indexes fixed by ISDA in cooperation with
+   /// Reuters and Intercapital Brokers at 11am London.
+   /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
+   /// Reuters page ISDAFIX2 or EURSFIXLB=.
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
+   /// Reuters page ISDAFIX.
+   /// </remarks>
    public class EurLiborSwapIsdaFixB : SwapIndex
    {
       public EurLiborSwapIsdaFixB(Period tenor)
@@ -109,13 +111,15 @@ namespace QLNet
                 discounting) {}
    }
 
-   //! %EurLiborSwapIfrFix index base class
-   /*! %EUR %Libor %Swap indexes published by IFR Markets and
-       distributed by Reuters page TGM42281 and by Telerate.
-       Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
-       For more info see <http://www.ifrmarkets.com>.
-
-   */
+   /// <summary>
+   /// EurLiborSwapIfrFix index base class
+   /// </summary>
+   /// <remarks>
+   /// EUR Libor Swap indexes published by IFR Markets and
+   /// distributed by Reuters page TGM42281 and by Telerate.
+   /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
+   /// For more info see http://www.ifrmarkets.com.
+   /// </remarks>
    public class EurLiborSwapIfrFix : SwapIndex
    {
       public EurLiborSwapIfrFix(Period tenor)

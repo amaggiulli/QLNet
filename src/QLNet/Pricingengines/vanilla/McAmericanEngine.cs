@@ -22,14 +22,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! American Monte Carlo engine
-   /*! References:
-
-       \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature
-   */
+   /// <summary>
+   /// American Monte Carlo engine
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature
+   /// </remarks>
    public class MCAmericanEngine<RNG, S> : MCLongstaffSchwartzEngine<VanillaOption.Engine, SingleVariate, RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()
@@ -160,7 +162,9 @@ namespace QLNet
    }
 
 
-   //! Monte Carlo American engine factory
+   /// <summary>
+   /// Monte Carlo American engine factory.
+   /// </summary>
    //template <class RNG = PseudoRandom, class S = Statistics>
    public class MakeMCAmericanEngine<RNG> : MakeMCAmericanEngine<RNG, Statistics>
       where RNG : IRSG, new ()

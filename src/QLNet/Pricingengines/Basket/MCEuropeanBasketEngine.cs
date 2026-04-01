@@ -15,13 +15,13 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 namespace QLNet
 {
-   //! Pricing engine for European basket options using Monte Carlo simulation
-   /*! \ingroup basketengines
-
-       \test the correctness of the returned value is tested by
-              reproducing results available in literature.
-
-   */
+   /// <summary>
+   /// Pricing engine for European basket options using Monte Carlo simulation
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    class MCEuropeanBasketEngine
    {
    }

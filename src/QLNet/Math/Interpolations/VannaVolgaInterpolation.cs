@@ -106,7 +106,12 @@ namespace QLNet
    }
    public class VannaVolgaInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a Vanna-Volga interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public VannaVolgaInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                      double spot, double dDiscount, double fDiscount, double T)
       {
@@ -116,7 +121,9 @@ namespace QLNet
 
    }
 
-   //! %VannaVolga-interpolation factory and traits
+   /// <summary>
+   /// VannaVolga-interpolation factory and traits
+   /// </summary>
    public class VannaVolga
    {
       public VannaVolga(double spot, double dDiscount, double fDiscount, double T)

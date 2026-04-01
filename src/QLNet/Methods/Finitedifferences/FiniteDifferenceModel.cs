@@ -50,8 +50,12 @@ namespace QLNet
          stoppingTimes_ = stoppingTimes_.Distinct().ToList();
       }
 
-      /*! solves the problem between the given times, applying a condition at every step.
-          \warning being this a rollback, <tt>from</tt> must be a later time than <tt>to</tt>. */
+      /// <summary>
+      /// Solves the problem between the given times, applying a condition at every step.
+      /// </summary>
+      /// <remarks>
+      /// Since this is a rollback, <paramref name="from" /> must be later than <paramref name="to" />.
+      /// </remarks>
       public void rollback(ref object a, double from, double to, int steps) { rollbackImpl(ref a, from, to, steps, null); }
       public void rollback(ref object a, double from, double to, int steps, IStepCondition<Vector> condition)
       {

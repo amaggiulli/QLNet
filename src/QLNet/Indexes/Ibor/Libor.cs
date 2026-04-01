@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,11 +19,13 @@
 
 namespace QLNet
 {
-   //! base class for all ICE LIBOR indexes but the EUR, O/N, and S/N ones
-   /*! LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// base class for all ICE LIBOR indexes but the EUR, O/N, and S/N ones
+   /// </summary>
+   /// <remarks>
+   /// LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// </remarks>
    public class Libor : IborIndex
    {
       private Calendar financialCenterCalendar_;
@@ -90,11 +92,13 @@ namespace QLNet
       }
    }
 
-   //! base class for all O/N-S/N BBA LIBOR indexes but the EUR ones
-   /*! One day deposit LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// base class for all O/N-S/N BBA LIBOR indexes but the EUR ones
+   /// </summary>
+   /// <remarks>
+   /// One day deposit LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// </remarks>
    public class DailyTenorLibor : IborIndex
    {
       // http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412 :

@@ -18,14 +18,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Exponential-splines fitting method
-   /*! Fits a discount function to the exponential form
-       See:Li, B., E. DeWetering, G. Lucas, R. Brenner
-       and A. Shapiro (2001): "Merrill Lynch Exponential Spline
-       Model." Merrill Lynch Working Paper
-
-       \warning convergence may be slow
-   */
+   /// <summary>
+   /// Exponential-splines fitting method
+   /// </summary>
+   /// <remarks>
+   /// Fits a discount function to the exponential form
+   /// See:Li, B., E. DeWetering, G. Lucas, R. Brenner
+   /// and A. Shapiro (2001): "Merrill Lynch Exponential Spline
+   /// Model." Merrill Lynch Working Paper
+   /// Warning: convergence may be slow
+   /// </remarks>
    public class ExponentialSplinesFitting : FittedBondDiscountCurve.FittingMethod
    {
       public ExponentialSplinesFitting(bool constrainAtZero = true,
@@ -72,16 +74,19 @@ namespace QLNet
       }
    }
 
-   //! Nelson-Siegel fitting method
-   /*! Fits a discount function to the form
-       \f$ d(t) = \exp^{-r t}, \f$ where the zero rate \f$r\f$ is defined as
-       \f[
-       r \equiv c_0 + (c_0 + c_1)*(1 - exp^{-\kappa*t}/(\kappa t) -
-       c_2 exp^{ - \kappa t}.
-       \f]
-       See: Nelson, C. and A. Siegel (1985): "Parsimonious modeling of yield
-       curves for US Treasury bills." NBER Working Paper Series, no 1594.
-   */
+   /// <summary>
+   /// Nelson-Siegel fitting method
+   /// </summary>
+   /// <remarks>
+   /// Fits a discount function to the form
+   /// \f$ d(t) = \exp^{-r t}, \f$ where the zero rate \f$r\f$ is defined as
+   /// \f[
+   /// r \equiv c_0 + (c_0 + c_1)*(1 - exp^{-\kappa*t}/(\kappa t) -
+   /// c_2 exp^{ - \kappa t}.
+   /// \f]
+   /// See: Nelson, C. and A. Siegel (1985): "Parsimonious modeling of yield
+   /// curves for US Treasury bills." NBER Working Paper Series, no 1594.
+   /// </remarks>
    public class NelsonSiegelFitting :  FittedBondDiscountCurve.FittingMethod
    {
       public NelsonSiegelFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
@@ -107,13 +112,15 @@ namespace QLNet
       }
    }
 
-   //! Svensson Fitting method
-   /*! Fits a discount function to the form
-
-       See: Svensson, L. (1994). Estimating and interpreting forward
-       interest rates: Sweden 1992-4.
-       Discussion paper, Centre for Economic Policy Research(1051).
-   */
+   /// <summary>
+   /// Svensson Fitting method
+   /// </summary>
+   /// <remarks>
+   /// Fits a discount function to the form
+   /// See: Svensson, L. (1994). Estimating and interpreting forward
+   /// interest rates: Sweden 1992-4.
+   /// Discussion paper, Centre for Economic Policy Research(1051).
+   /// </remarks>
    public class SvenssonFitting : FittedBondDiscountCurve.FittingMethod
    {
       public SvenssonFitting(Vector weights = null, OptimizationMethod optimizationMethod = null)
@@ -143,25 +150,25 @@ namespace QLNet
 
    }
 
-   //! CubicSpline B-splines fitting method
-   /*! Fits a discount function to a set of cubic B-splines
-       \f$ N_{i,3}(t) \f$, i.e.,
-       \f[
-       d(t) = \sum_{i=0}^{n}  c_i * N_{i,3}(t)
-       \f]
-
-       See: McCulloch, J. 1971, "Measuring the Term Structure of
-       Interest Rates." Journal of Business, 44: 19-31
-
-       McCulloch, J. 1975, "The tax adjusted yield curve."
-       Journal of Finance, XXX811-30
-
-       \warning "The results are extremely sensitive to the number
-                 and location of the knot points, and there is no
-                 optimal way of selecting them." James, J. and
-                 N. Webber, "Interest Rate Modelling" John Wiley,
-                 2000, pp. 440.
-   */
+   /// <summary>
+   /// CubicSpline B-splines fitting method
+   /// </summary>
+   /// <remarks>
+   /// Fits a discount function to a set of cubic B-splines
+   /// \f$ N_{i,3}(t) \f$, i.e.,
+   /// \f[
+   /// d(t) = \sum_{i=0}^{n}  c_i * N_{i,3}(t)
+   /// \f]
+   /// See: McCulloch, J. 1971, "Measuring the Term Structure of
+   /// Interest Rates." Journal of Business, 44: 19-31
+   /// McCulloch, J. 1975, "The tax adjusted yield curve."
+   /// Journal of Finance, XXX811-30
+   /// Warning: "The results are extremely sensitive to the number
+   /// and location of the knot points, and there is no
+   /// optimal way of selecting them." James, J. and
+   /// N. Webber, "Interest Rate Modelling" John Wiley,
+   /// 2000, pp. 440.
+   /// </remarks>
    public class CubicBSplinesFitting : FittedBondDiscountCurve.FittingMethod
    {
       public CubicBSplinesFitting(List<double> knots, bool constrainAtZero = true, Vector weights = null,
@@ -192,7 +199,9 @@ namespace QLNet
 
       }
 
-      //! cubic B-spline basis functions
+      /// <summary>
+      /// Returns the cubic B-spline basis function value.
+      /// </summary>
       public double basisFunction(int i, double t) { return splines_.value(i, t); }
       public override FittedBondDiscountCurve.FittingMethod clone()
       {
@@ -240,15 +249,16 @@ namespace QLNet
 
       private BSpline splines_;
       private int size_;
-      //! N_th basis function coefficient to solve for when d(0)=1
+      // N-th basis-function coefficient to solve for when d(0) = 1.
       private int N_;
    }
 
-   //! Simple polynomial fitting method
-   /*
-         This is a simple/crude, but fast and robust, means of fitting
-         a yield curve.
-   */
+   /// <summary>
+   /// Simple polynomial fitting method.
+   /// </summary>
+   /// <remarks>
+   /// This is a simple but fast and robust way to fit a yield curve.
+   /// </remarks>
    public class SimplePolynomialFitting : FittedBondDiscountCurve.FittingMethod
    {
       public SimplePolynomialFitting(int degree,
@@ -287,9 +297,12 @@ namespace QLNet
       private int size_;
    }
 
-   //! Spread fitting method helper
-   /*  Fits a spread curve on top of a discount function according to given parametric method
-   */
+   /// <summary>
+   /// Spread fitting method helper.
+   /// </summary>
+   /// <remarks>
+   /// Fits a spread curve on top of a discount function according to the given parametric method.
+   /// </remarks>
    public class SpreadFittingMethod : FittedBondDiscountCurve.FittingMethod
    {
       public SpreadFittingMethod(FittedBondDiscountCurve.FittingMethod method, Handle<YieldTermStructure> discountCurve)

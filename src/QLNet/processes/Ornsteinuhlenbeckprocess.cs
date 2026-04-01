@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,14 +20,15 @@ using System;
 
 namespace QLNet
 {
-   //! Ornstein-Uhlenbeck process class
-   /*! This class describes the Ornstein-Uhlenbeck process governed by
-       \f[
-           dx = a (r - x_t) dt + \sigma dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Ornstein-Uhlenbeck process class
+   /// </summary>
+   /// <remarks>
+   /// This class describes the Ornstein-Uhlenbeck process governed by
+   /// \f[
+   /// dx = a (r - x_t) dt + \sigma dW_t.
+   /// \f]
+   /// </remarks>
    public class OrnsteinUhlenbeckProcess : StochasticProcess1D
    {
       public OrnsteinUhlenbeckProcess(double speed, double vol, double x0 = 0.0, double level = 0.0)

@@ -22,7 +22,6 @@ namespace QLNet
    // Goldstein and Price line-search class
    public class GoldsteinLineSearch : LineSearch
    {
-      //! Default constructor
       public GoldsteinLineSearch(double eps = 1e-8, double alpha = 0.05, double beta = 0.65, double extrapolation = 1.5)
          : base(eps)
       {
@@ -31,7 +30,9 @@ namespace QLNet
          extrapolation_ = extrapolation;
       }
 
-      //! Perform line search
+      /// <summary>
+      /// Performs the Goldstein line search.
+      /// </summary>
       public override double value(Problem P,             // Optimization problem
                                    ref EndCriteria.Type ecType,
                                    EndCriteria endCriteria,

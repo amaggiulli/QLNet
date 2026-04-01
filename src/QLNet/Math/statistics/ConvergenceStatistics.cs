@@ -34,24 +34,27 @@ namespace QLNet
       public int nextSamples(int current) { return 2 * current + 1; }
    }
 
-   //! statistics class with convergence table
-   /*! This class decorates another statistics class adding a
-       convergence table calculation. The table tracks the
-       convergence of the mean.
-
-       It is possible to specify the number of samples at which the
-       mean should be stored by mean of the second template
-       parameter; the default is to store \f$ 2^{n-1} \f$ samples at
-       the \f$ n \f$-th step. Any passed class must implement the
-       following interface:
-       \code
-       Size initialSamples() const
-       Size nextSamples(Size currentSamples) const
-       \endcode
-       as well as a copy constructor.
-
-       \test results are tested against known good values.
-   */
+   /// <summary>
+   /// statistics class with convergence table
+   /// </summary>
+   /// <remarks>
+   /// This class decorates another statistics class adding a
+   /// convergence table calculation. The table tracks the
+   /// convergence of the mean.
+   ///
+   /// It is possible to specify the number of samples at which the
+   /// mean should be stored by mean of the second template
+   /// parameter; the default is to store \f$ 2^{n-1} \f$ samples at
+   /// the \f$ n \f$-th step. Any passed class must implement the
+   /// following interface:
+   /// \code
+   /// Size initialSamples() const
+   /// Size nextSamples(Size currentSamples) const
+   /// \endcode
+   /// as well as a copy constructor.
+   ///
+   /// Test: results are tested against known good values.
+   /// </remarks>
    public class ConvergenceStatistics<T> : ConvergenceStatistics<T, DoublingConvergenceSteps>
       where T : IGeneralStatistics, new ()
    {
@@ -106,14 +109,18 @@ namespace QLNet
          }
       }
 
-      //! adds a sequence of data to the set, with default weight
+      /// <summary>
+      /// Adds a sequence of data to the set with default weight.
+      /// </summary>
       public void addSequence(List<double> list)
       {
          foreach (double v in list)
             add
                (v, 1);
       }
-      //! adds a sequence of data to the set, each with its weight
+      /// <summary>
+      /// Adds a sequence of data to the set, each with its own weight.
+      /// </summary>
       public void addSequence(List<double> data, List<double> weight)
       {
          for (int i = 0; i < data.Count; i++)

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2022  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -77,8 +77,12 @@ namespace QLNet
       // Inspectors
       public IborIndex iborIndex()  {return iborIndex_;}
 
-      //! FloatingRateCoupon interface
-      //! Implemented in order to manage the case of par coupon
+      /// <summary>
+      /// Returns the coupon fixing.
+      /// </summary>
+      /// <remarks>
+      /// Implemented separately in order to manage the case of a par coupon.
+      /// </remarks>
       public override double indexFixing()
       {
          /* instead of just returning index_->fixing(fixingValueDate_)
@@ -124,8 +128,13 @@ namespace QLNet
                                (IborIndex)index, gearing, spread, refPeriodStart, refPeriodEnd, dayCounter, isInArrears);
       }
 
-      //! End of the deposit period underlying the coupon fixing
-      /*! This might be not the same as fixingMaturityDate if par coupons are used. */
+      /// <summary>
+      /// Returns the end of the deposit period underlying the coupon fixing.
+      /// </summary>
+      /// <remarks>
+      /// This might not be the same as the fixing maturity date if par
+      /// coupons are used.
+      /// </remarks>
       public Date fixingEndDate() {return fixingEndDate_;}
 
       private IborIndex iborIndex_;
@@ -133,7 +142,9 @@ namespace QLNet
       private double spanningTime_;
    }
 
-   //! helper class building a sequence of capped/floored ibor-rate coupons
+   /// <summary>
+   /// helper class building a sequence of capped/floored ibor-rate coupons
+   /// </summary>
    public class IborLeg : FloatingLegBase
    {
       // constructor

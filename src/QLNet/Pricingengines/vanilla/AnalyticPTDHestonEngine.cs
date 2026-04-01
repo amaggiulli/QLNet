@@ -19,24 +19,24 @@ using System.Numerics;
 
 namespace QLNet
 {
-   //! analytic piecewise constant time dependent Heston-model engine
-
-   /*! References:
-
-       Heston, Steven L., 1993. A Closed-Form Solution for Options
-       with Stochastic Volatility with Applications to Bond and
-       Currency Options.  The review of Financial Studies, Volume 6,
-       Issue 2, 327-343.
-
-       J. Gatheral, The Volatility Surface: A Practitioner's Guide,
-       Wiley Finance
-
-       A. Elices, Models with time-dependent parameters using
-       transform methods: application to Heston’s model,
-       http://arxiv.org/pdf/0708.2020
-
-       \ingroup vanillaengines
-   */
+   /// <summary>
+   /// analytic piecewise constant time dependent Heston-model engine
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Heston, Steven L., 1993. A Closed-Form Solution for Options
+   /// with Stochastic Volatility with Applications to Bond and
+   /// Currency Options.  The review of Financial Studies, Volume 6,
+   /// Issue 2, 327-343.
+   ///
+   /// J. Gatheral, The Volatility Surface: A Practitioner's Guide,
+   /// Wiley Finance
+   ///
+   /// A. Elices, Models with time-dependent parameters using
+   /// transform methods: application to Heston’s model,
+   /// http://arxiv.org/pdf/0708.2020
+   /// </remarks>
    public class AnalyticPTDHestonEngine : GenericModelEngine<PiecewiseTimeDependentHestonModel,
       VanillaOption.Arguments, VanillaOption.Results>
    {

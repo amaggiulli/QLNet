@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! base pricer for capped/floored CPI coupons N.B. vol-dependent parts are a TODO
-   /*! \note this pricer can already do swaplets but to get
-             volatility-dependent coupons you need to implement the descendents.
-   */
+   /// <summary>
+   /// base pricer for capped/floored CPI coupons N.B. vol-dependent parts are a TODO
+   /// </summary>
+   /// <remarks>
+   /// Note: this pricer can already do swaplets but to get
+   /// volatility-dependent coupons you need to implement the descendents.
+   /// </remarks>
    public class CPICouponPricer : InflationCouponPricer
    {
       public CPICouponPricer(Handle<CPIVolatilitySurface> capletVol = null)
@@ -102,7 +105,9 @@ namespace QLNet
          spreadLegValue_ = spread_ * coupon_.accrualPeriod() * discount_;
       }
 
-      //! can replace this if really required
+      /// <summary>
+      /// Returns the optionlet price.
+      /// </summary>
       protected virtual double optionletPrice(Option.Type optionType, double effStrike)
       {
          Date fixingDate = coupon_.fixingDate();
@@ -135,8 +140,9 @@ namespace QLNet
          }
       }
 
-      //! usually only need implement this (of course they may need
-      //! to re-implement initialize too ...)
+      /// <summary>
+      /// Returns the implementation-specific optionlet price contribution.
+      /// </summary>
       protected virtual double optionletPriceImp(Option.Type optionType, double strike, double forward, double stdDev)
       {
          Utils.QL_FAIL("you must implement this to get a vol-dependent price");
@@ -151,7 +157,7 @@ namespace QLNet
          return fixing.Value;
       }
 
-      //! data
+      // pricing data
       protected Handle<CPIVolatilitySurface> capletVol_;
       protected CPICoupon coupon_;
       protected double gearing_;

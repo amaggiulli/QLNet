@@ -552,7 +552,9 @@ namespace QLNet
          return endOfMonth_.Value;
       }
 
-      //! truncated schedule
+      /// <summary>
+      /// Returns a truncated schedule ending at the given date.
+      /// </summary>
       public Schedule until(Date truncationDate)
       {
          var result = (Schedule)MemberwiseClone();

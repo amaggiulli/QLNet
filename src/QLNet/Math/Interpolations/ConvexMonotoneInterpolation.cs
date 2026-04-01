@@ -782,18 +782,20 @@ namespace QLNet
       }
    }
 
-   //! Convex monotone yield-curve interpolation method.
-   /*! Enhances implementation of the convex monotone method
-       described in "Interpolation Methods for Curve Construction" by
-       Hagan & West AMF Vol 13, No2 2006.
-
-       A setting of monotonicity = 1 and quadraticity = 0 will
-       reproduce the basic Hagan/West method. However, this can
-       produce excessive gradients which can mean P&L swings for some
-       curves.  Setting monotonicity < 1 and/or quadraticity > 0
-       produces smoother curves.  Extra enhancement to avoid negative
-       values (if required) is in place.
-   */
+   /// <summary>
+   /// Convex monotone yield-curve interpolation method.
+   /// </summary>
+   /// <remarks>
+   /// Enhances implementation of the convex monotone method
+   /// described in "Interpolation Methods for Curve Construction" by
+   /// Hagan &amp;amp; West AMF Vol 13, No2 2006.
+   /// A setting of monotonicity = 1 and quadraticity = 0 will
+   /// reproduce the basic Hagan/West method. However, this can
+   /// produce excessive gradients which can mean P&amp;amp;L swings for some
+   /// curves.  Setting monotonicity &amp;lt; 1 and/or quadraticity &amp;gt; 0
+   /// produces smoother curves.  Extra enhancement to avoid negative
+   /// values (if required) is in place.
+   /// </remarks>
    public class ConvexMonotoneInterpolation : Interpolation
    {
       public ConvexMonotoneInterpolation(List<double> xBegin, int size, List<double> yBegin, double quadraticity,
@@ -817,7 +819,9 @@ namespace QLNet
    }
 
 
-   //! Convex-monotone interpolation factory and traits
+   /// <summary>
+   /// Convex-monotone interpolation factory and traits
+   /// </summary>
    public class ConvexMonotone : IInterpolationFactory
    {
       private double quadraticity_, monotonicity_;

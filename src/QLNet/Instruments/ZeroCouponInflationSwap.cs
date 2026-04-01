@@ -22,35 +22,34 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Zero-coupon inflation-indexed swap
-   /*! Quoted as a fixed rate \f$ K \f$.  At start:
-       \f[
-       P_n(0,T) N [(1+K)^{T}-1] =
-       P_n(0,T) N \left[ \frac{I(T)}{I(0)} -1 \right]
-       \f]
-       where \f$ T \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
-       nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
-       notional, and \f$ I(t) \f$ is the inflation index value at
-       time \f$ t \f$.
-
-       This inherits from swap and has two very simple legs: a fixed
-       leg, from the quote (K); and an indexed leg.  At maturity the
-       two single cashflows are swapped.  These are the notional
-       versus the inflation-indexed notional Because the coupons are
-       zero there are no accruals (and no coupons).
-
-       Inflation is generally available on every day, including
-       holidays and weekends.  Hence there is a variable to state
-       whether the observe/fix dates for inflation are adjusted or
-       not.  The default is not to adjust.
-
-       A zero inflation swap is a simple enough instrument that the
-       standard discounting pricing engine that works for a vanilla
-       swap also works.
-
-       \note we do not need Schedules on the legs because they use
-             one or two dates only per leg.
-   */
+   /// <summary>
+   /// Zero-coupon inflation-indexed swap
+   /// </summary>
+   /// <remarks>
+   /// Quoted as a fixed rate \f$ K \f$.  At start:
+   /// \f[
+   /// P_n(0,T) N [(1+K)^{T}-1] =
+   /// P_n(0,T) N \left[ \frac{I(T)}{I(0)} -1 \right]
+   /// \f]
+   /// where \f$ T \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
+   /// nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
+   /// notional, and \f$ I(t) \f$ is the inflation index value at
+   /// time \f$ t \f$.
+   /// This inherits from swap and has two very simple legs: a fixed
+   /// leg, from the quote (K); and an indexed leg.  At maturity the
+   /// two single cashflows are swapped.  These are the notional
+   /// versus the inflation-indexed notional Because the coupons are
+   /// zero there are no accruals (and no coupons).
+   /// Inflation is generally available on every day, including
+   /// holidays and weekends.  Hence there is a variable to state
+   /// whether the observe/fix dates for inflation are adjusted or
+   /// not.  The default is not to adjust.
+   /// A zero inflation swap is a simple enough instrument that the
+   /// standard discounting pricing engine that works for a vanilla
+   /// swap also works.
+   /// Note: we do not need Schedules on the legs because they use
+   /// one or two dates only per leg.
+   /// </remarks>
    public class ZeroCouponInflationSwap : Swap
    {
 
@@ -163,7 +162,9 @@ namespace QLNet
 
       #region Inspectors
 
-      //! "payer" or "receiver" refer to the inflation-indexed leg
+      /// <summary>
+      /// Returns the swap type, where payer and receiver refer to the inflation-indexed leg.
+      /// </summary>
       public Type type() { return type_; }
       public double nominal() { return nominal_; }
       public new Date startDate() { return startDate_; }
@@ -171,16 +172,22 @@ namespace QLNet
       public Calendar fixedCalendar() { return fixCalendar_; }
       public BusinessDayConvention fixedConvention()  { return fixConvention_; }
       public DayCounter dayCounter() { return dayCounter_; }
-      //! \f$ K \f$ in the above formula.
+      /// <summary>
+      /// Returns the fixed rate used in the swap formula.
+      /// </summary>
       public double fixedRate()  { return fixedRate_; }
       public ZeroInflationIndex inflationIndex()  { return infIndex_; }
       public Period observationLag()  { return observationLag_; }
       public bool adjustObservationDates()  { return adjustInfObsDates_; }
       public Calendar inflationCalendar()  { return infCalendar_; }
       public BusinessDayConvention inflationConvention()  { return infConvention_; }
-      //! just one cashflow (that is not a coupon) in each leg
+      /// <summary>
+      /// Returns the fixed leg, which contains a single non-coupon cash flow.
+      /// </summary>
       public List<CashFlow> fixedLeg() { return legs_[0]; }
-      //! just one cashflow (that is not a coupon) in each leg
+      /// <summary>
+      /// Returns the inflation leg, which contains a single non-coupon cash flow.
+      /// </summary>
       public List<CashFlow> inflationLeg() { return legs_[1]; }
 
       #endregion

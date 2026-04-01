@@ -19,12 +19,13 @@
 
 namespace QLNet
 {
-   //! Pricing engine for European options using finite-differences
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             checking it against analytic results.
-   */
+   /// <summary>
+   /// Pricing engine for European options using finite-differences
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against analytic results.
+   /// </remarks>
    public class FDEuropeanEngine : FDVanillaEngine, IGenericEngine
    {
       private SampledCurve prices_;

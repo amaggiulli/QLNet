@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -71,7 +71,9 @@ namespace QLNet
       }
    }
 
-   //! log-linear interpolation factory and traits
+   /// <summary>
+   /// log-linear interpolation factory and traits
+   /// </summary>
    public class LogLinear : IInterpolationFactory
    {
       public Interpolation interpolate(List<double> xBegin, int size, List<double> yBegin)
@@ -96,10 +98,17 @@ namespace QLNet
       }
    }
 
-   //! %log-linear interpolation between discrete points
+   /// <summary>
+   /// log-linear interpolation between discrete points
+   /// </summary>
    public class LogLinearInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a log-linear interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
 
       public LogLinearInterpolation(List<double> xBegin, int size, List<double> yBegin)
       {
@@ -108,7 +117,9 @@ namespace QLNet
       }
    }
 
-   //! log-cubic interpolation factory and traits
+   /// <summary>
+   /// log-cubic interpolation factory and traits
+   /// </summary>
    public class LogCubic : IInterpolationFactory
    {
       private CubicInterpolation.DerivativeApprox da_;
@@ -154,10 +165,17 @@ namespace QLNet
       }
    }
 
-   //! %log-cubic interpolation between discrete points
+   /// <summary>
+   /// log-cubic interpolation between discrete points
+   /// </summary>
    public class LogCubicInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a log-cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
 
       public LogCubicInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                    CubicInterpolation.DerivativeApprox da,

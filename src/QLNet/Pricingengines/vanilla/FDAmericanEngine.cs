@@ -20,13 +20,14 @@
 
 namespace QLNet
 {
-   //! Finite-differences pricing engine for American one asset options
-   /*! \ingroup vanillaengines
-
-       \test
-       - the correctness of the returned value is tested by reproducing results available in literature.
-       - the correctness of the returned greeks is tested by reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Finite-differences pricing engine for American one asset options
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned value is tested by reproducing results available in literature.
+   /// - the correctness of the returned greeks is tested by reproducing numerical derivatives.
+   /// </remarks>
    public class FDAmericanEngine : FDEngineAdapter<FDAmericanCondition<FDStepConditionEngine>, OneAssetOption.Engine>,
       IFDEngine
    {

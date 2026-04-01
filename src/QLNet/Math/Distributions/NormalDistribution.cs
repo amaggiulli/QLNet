@@ -20,16 +20,19 @@ using System;
 
 namespace QLNet
 {
-   //! Normal distribution function
-   /*! Given x, it returns its probability in a Gaussian normal distribution.
-       It provides the first derivative too.
-
-       \test the correctness of the returned value is tested by
-             checking it against numerical calculations. Cross-checks
-             are also performed against the
-             CumulativeNormalDistribution and InverseCumulativeNormal
-             classes.
-   */
+   /// <summary>
+   /// Normal distribution function
+   /// </summary>
+   /// <remarks>
+   /// Given x, it returns its probability in a Gaussian normal distribution.
+   /// It provides the first derivative too.
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against numerical calculations. Cross-checks
+   /// are also performed against the
+   /// CumulativeNormalDistribution and InverseCumulativeNormal
+   /// classes.
+   /// </remarks>
    public class NormalDistribution : IValue
    {
       private double average_, sigma_, normalizationFactor_, denominator_, derNormalizationFactor_;
@@ -64,15 +67,17 @@ namespace QLNet
    }
 
 
-   //! Cumulative normal distribution function
-   /*! Given x it provides an approximation to the
-       integral of the gaussian normal distribution:
-       formula here ...
-
-       For this implementation see M. Abramowitz and I. Stegun,
-       Handbook of Mathematical Functions,
-       Dover Publications, New York (1972)
-   */
+   /// <summary>
+   /// Cumulative normal distribution function
+   /// </summary>
+   /// <remarks>
+   /// Given x it provides an approximation to the
+   /// integral of the gaussian normal distribution:
+   /// formula here ...
+   /// For this implementation see M. Abramowitz and I. Stegun,
+   /// Handbook of Mathematical Functions,
+   /// Dover Publications, New York (1972)
+   /// </remarks>
    public class CumulativeNormalDistribution : IValue
    {
       private double average_, sigma_;
@@ -353,24 +358,24 @@ namespace QLNet
    }
 
 
-   //! Inverse cumulative normal distribution function
-   /*! Given x between zero and one as
-     the integral value of a gaussian normal distribution
-     this class provides the value y such that
-     formula here ...
-
-     It use Acklam's approximation:
-     by Peter J. Acklam, University of Oslo, Statistics Division.
-     URL: http://home.online.no/~pjacklam/notes/invnorm/index.html
-
-     This class can also be used to generate a gaussian normal
-     distribution from a uniform distribution.
-     This is especially useful when a gaussian normal distribution
-     is generated from a low discrepancy uniform distribution:
-     in this case the traditional Box-Muller approach and its
-     variants would not preserve the sequence's low-discrepancy.
-
-   */
+   /// <summary>
+   /// Inverse cumulative normal distribution function
+   /// </summary>
+   /// <remarks>
+   /// Given x between zero and one as
+   /// the integral value of a gaussian normal distribution
+   /// this class provides the value y such that
+   /// formula here ...
+   /// It use Acklam's approximation:
+   /// by Peter J. Acklam, University of Oslo, Statistics Division.
+   /// URL: http://home.online.no/~pjacklam/notes/invnorm/index.html
+   /// This class can also be used to generate a gaussian normal
+   /// distribution from a uniform distribution.
+   /// This is especially useful when a gaussian normal distribution
+   /// is generated from a low discrepancy uniform distribution:
+   /// in this case the traditional Box-Muller approach and its
+   /// variants would not preserve the sequence's low-discrepancy.
+   /// </remarks>
    public class InverseCumulativeNormal : IValue
    {
       double average_, sigma_;
@@ -477,26 +482,26 @@ namespace QLNet
    }
 
 
-   //! Moro Inverse cumulative normal distribution class
-   /*! Given x between zero and one as
-       the integral value of a gaussian normal distribution
-       this class provides the value y such that
-       formula here ...
-
-       It uses Beasly and Springer approximation, with an improved
-       approximation for the tails. See Boris Moro,
-       "The Full Monte", 1995, Risk Magazine.
-
-       This class can also be used to generate a gaussian normal
-       distribution from a uniform distribution.
-       This is especially useful when a gaussian normal distribution
-       is generated from a low discrepancy uniform distribution:
-       in this case the traditional Box-Muller approach and its
-       variants would not preserve the sequence's low-discrepancy.
-
-       Peter J. Acklam's approximation is better and is available
-       as QuantLib::InverseCumulativeNormal
-   */
+   /// <summary>
+   /// Moro Inverse cumulative normal distribution class
+   /// </summary>
+   /// <remarks>
+   /// Given x between zero and one as
+   /// the integral value of a gaussian normal distribution
+   /// this class provides the value y such that
+   /// formula here ...
+   /// It uses Beasly and Springer approximation, with an improved
+   /// approximation for the tails. See Boris Moro,
+   /// "The Full Monte", 1995, Risk Magazine.
+   /// This class can also be used to generate a gaussian normal
+   /// distribution from a uniform distribution.
+   /// This is especially useful when a gaussian normal distribution
+   /// is generated from a low discrepancy uniform distribution:
+   /// in this case the traditional Box-Muller approach and its
+   /// variants would not preserve the sequence's low-discrepancy.
+   /// Peter J. Acklam's approximation is better and is available
+   /// as QuantLib::InverseCumulativeNormal
+   /// </remarks>
    public class MoroInverseCumulativeNormal : IValue
    {
       private double average_, sigma_;

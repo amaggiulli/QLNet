@@ -23,7 +23,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Base class for model arguments
+   /// <summary>
+   /// Base class for model arguments
+   /// </summary>
    public class Parameter
    {
       protected Impl impl_;
@@ -53,14 +55,18 @@ namespace QLNet
       public double value(double t) { return impl_.value(params_, t); }
       public Constraint constraint() { return constraint_; }
 
-      //! Base class for model parameter implementation
+      /// <summary>
+      /// Base class for model parameter implementation
+      /// </summary>
       public abstract class Impl
       {
          public abstract double value(Vector p, double t);
       }
    }
 
-   //! Standard constant parameter \f$ a(t) = a \f$
+   /// <summary>
+   /// Standard constant parameter \f$ a(t) = a \f$
+   /// </summary>
    public class ConstantParameter : Parameter
    {
       private new class Impl : Parameter.Impl
@@ -85,7 +91,9 @@ namespace QLNet
 
    }
 
-   //! %Parameter which is always zero \f$ a(t) = 0 \f$
+   /// <summary>
+   /// Parameter which is always zero \f$ a(t) = 0 \f$
+   /// </summary>
    public class NullParameter : Parameter
    {
       private new class Impl : Parameter.Impl
@@ -101,7 +109,9 @@ namespace QLNet
       }
    }
 
-   //! Piecewise-constant parameter
+   /// <summary>
+   /// Piecewise-constant parameter.
+   /// </summary>
    //    ! \f$ a(t) = a_i if t_{i-1} \geq t < t_i \f$.
    //        This kind of parameter is usually used to enhance the fitting of a
    //        model
@@ -133,7 +143,9 @@ namespace QLNet
       }
    }
 
-   //! Deterministic time-dependent parameter used for yield-curve fitting
+   /// <summary>
+   /// Deterministic time-dependent parameter used for yield-curve fitting
+   /// </summary>
    public class TermStructureFittingParameter : Parameter
    {
       public class NumericalImpl : Parameter.Impl

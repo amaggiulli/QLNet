@@ -19,31 +19,32 @@
 
 namespace QLNet
 {
-   //! Abstract base forward class
-   /*! Derived classes must implement the virtual functions spotValue() (NPV or spot price) and spotIncome() associated
-      with the specific relevant underlying (e.g. bond, stock, commodity, loan/deposit). These functions must be used to set the
-      protected member variables underlyingSpotValue_ and underlyingIncome_ within performCalculations() in the derived
-      class before the base-class implementation is called.
-
-      spotIncome() refers generically to the present value of coupons, dividends or storage costs.
-
-      discountCurve_ is the curve used to discount forward contract cash flows back to the evaluation day, as well as to obtain
-      forward values for spot values/prices.
-
-      incomeDiscountCurve_, which for generality is not automatically set to the discountCurve_, is the curve used to
-      discount future income/dividends/storage-costs etc back to the evaluation date.
-
-      \todo Add preconditions and tests
-
-      \warning This class still needs to be rigorously tested
-
-      \ingroup instruments
-   */
+   /// <summary>
+   /// Abstract base forward class
+   /// </summary>
+   /// <remarks>
+   /// Derived classes must implement the virtual functions spotValue() (NPV or spot price) and spotIncome() associated
+   /// with the specific relevant underlying (e.g. bond, stock, commodity, loan/deposit). These functions must be used to set the
+   /// protected member variables underlyingSpotValue_ and underlyingIncome_ within performCalculations() in the derived
+   /// class before the base-class implementation is called.
+   ///
+   /// spotIncome() refers generically to the present value of coupons, dividends or storage costs.
+   ///
+   /// discountCurve_ is the curve used to discount forward contract cash flows back to the evaluation day, as well as to obtain
+   /// forward values for spot values/prices.
+   ///
+   /// incomeDiscountCurve_, which for generality is not automatically set to the discountCurve_, is the curve used to
+   /// discount future income/dividends/storage-costs etc back to the evaluation date.
+   ///
+   /// TODO: Add preconditions and tests
+   ///
+   /// Warning: This class still needs to be rigorously tested
+   /// </remarks>
    public abstract class Forward : Instrument
    {
-      /*! derived classes must set this, typically via spotIncome() */
+      // Derived classes must set this, typically via spotIncome().
       protected double underlyingIncome_;
-      /*! derived classes must set this, typically via spotValue() */
+      // Derived classes must set this, typically via spotValue().
       protected double underlyingSpotValue_;
 
       protected DayCounter dayCounter_;
@@ -51,12 +52,12 @@ namespace QLNet
       protected BusinessDayConvention businessDayConvention_;
       protected int settlementDays_;
       protected Payoff payoff_;
-      /*! valueDate = settlement date (date the fwd contract starts accruing) */
+      // valueDate is the settlement date, i.e. the date the forward contract starts accruing.
       protected Date valueDate_;
-      //! maturityDate of the forward contract or delivery date of underlying
+      // maturityDate of the forward contract or delivery date of the underlying.
       protected Date maturityDate_;
       protected Handle<YieldTermStructure> discountCurve_;
-      /*! must set this in derived classes, based on particular underlying */
+      // Must be set in derived classes based on the particular underlying.
       protected Handle<YieldTermStructure> incomeDiscountCurve_;
 
       protected Forward(DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
@@ -90,31 +91,35 @@ namespace QLNet
       }
 
 
-      //! returns spot value/price of an underlying financial instrument
+      /// <summary>
+      /// Returns the spot value or spot price of the underlying financial instrument.
+      /// </summary>
       public abstract double spotValue();
-      //! NPV of income/dividends/storage-costs etc. of underlying instrument
+      /// <summary>
+      /// Returns the present value of income, dividends, storage costs, and similar carry of the underlying instrument.
+      /// </summary>
       public abstract double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve);
 
       // Calculations
-      //! forward value/price of underlying, discounting income/dividends
-      /*! \note if this is a bond forward price, is must be a dirty
-              forward price.
-      */
+      /// <summary>
+      /// forward value/price of underlying, discounting income/dividends
+      /// </summary>
+      /// <remarks>
+      /// Note: if this is a bond forward price, is must be a dirty
+      /// forward price.
+      /// </remarks>
       public virtual double forwardValue()
       {
          calculate();
          return (underlyingSpotValue_ - underlyingIncome_) / discountCurve_.link.discount(maturityDate_);
       }
 
-      /*! Simple yield calculation based on underlying spot and
-      forward values, taking into account underlying income.
-      When \f$ t>0 \f$, call with:
-      underlyingSpotValue=spotValue(t),
-      forwardValue=strikePrice, to get current yield. For a
-      repo, if \f$ t=0 \f$, impliedYield should reproduce the
-      spot repo rate. For FRA's, this should reproduce the
-      relevant zero rate at the FRA's maturityDate_
-      */
+      /// <summary>
+      /// Calculates a simple implied yield from the spot and forward values.
+      /// </summary>
+      /// <remarks>
+      /// The calculation takes the underlying income into account. When <c>t &gt; 0</c>, call with <c>underlyingSpotValue = spotValue(t)</c> and <c>forwardValue = strikePrice</c> to obtain the current yield. For repos with <c>t = 0</c>, this should reproduce the spot repo rate; for FRAs, it should reproduce the relevant zero rate at the FRA maturity.
+      /// </remarks>
       public InterestRate impliedYield(double underlyingSpotValue, double forwardValue, Date settlementDate,
                                        Compounding compoundingConvention, DayCounter dayCounter)
       {
@@ -134,7 +139,9 @@ namespace QLNet
       }
    }
 
-   //! Class for forward type payoffs
+   /// <summary>
+   /// Class for forward type payoffs
+   /// </summary>
    public class ForwardTypePayoff : Payoff
    {
       protected Position.Type type_;

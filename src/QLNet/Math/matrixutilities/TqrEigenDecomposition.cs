@@ -21,18 +21,21 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! tridiag. QR eigen decomposition with explicite shift aka Wilkinson
-   /*! References:
-
-      Wilkinson, J.H. and Reinsch, C. 1971, Linear Algebra, vol. II of
-      Handbook for Automatic Computation (New York: Springer-Verlag)
-
-      "Numerical Recipes in C", 2nd edition,
-      Press, Teukolsky, Vetterling, Flannery,
-
-      \test the correctness of the result is tested by checking it
-            against known good values.
-   */
+   /// <summary>
+   /// tridiag. QR eigen decomposition with explicite shift aka Wilkinson
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Wilkinson, J.H. and Reinsch, C. 1971, Linear Algebra, vol. II of
+   /// Handbook for Automatic Computation (New York: Springer-Verlag)
+   ///
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery,
+   ///
+   /// Test: the correctness of the result is tested by checking it
+   /// against known good values.
+   /// </remarks>
    public class TqrEigenDecomposition
    {
 

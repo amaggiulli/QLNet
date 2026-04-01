@@ -22,12 +22,13 @@ using System;
 namespace QLNet
 {
 
-   //! Two-dimensional tree-based lattice.
-   /*! This lattice is based on two trinomial trees and primarily used
-       for the G2 short-rate model.
-
-       \ingroup lattices
-   */
+   /// <summary>
+   /// Two-dimensional tree-based lattice.
+   /// </summary>
+   /// <remarks>
+   /// This lattice is based on two trinomial trees and primarily used
+   /// for the G2 short-rate model.
+   /// </remarks>
    public class TreeLattice2D<T, Tl> : TreeLattice<T>
       where T : IGenericLattice
       where Tl  : TrinomialTree

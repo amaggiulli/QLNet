@@ -20,15 +20,16 @@ using System.Text;
 
 namespace QLNet
 {
-   //! %Forward engine for vanilla options
-   /*! \ingroup forwardengines
-
-       \test
-       - the correctness of the returned value is tested by
-         reproducing results available in literature.
-       - the correctness of the returned greeks is tested by
-         reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Forward engine for vanilla options
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class ForwardVanillaEngine : GenericEngine<ForwardVanillaOption.Arguments, OneAssetOption.Results>
    {
 

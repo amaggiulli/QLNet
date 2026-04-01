@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! discretization of a stochastic process over a given time interval
+   /// <summary>
+   /// discretization of a stochastic process over a given time interval
+   /// </summary>
    public interface IDiscretization
    {
       Vector drift(StochasticProcess sp, double t0, Vector x0, double dt);
@@ -28,7 +30,9 @@ namespace QLNet
       Matrix covariance(StochasticProcess sp, double t0, Vector x0, double dt);
    }
 
-   //! discretization of a 1D stochastic process over a given time interval
+   /// <summary>
+   /// discretization of a 1D stochastic process over a given time interval
+   /// </summary>
    public interface IDiscretization1D
    {
       double drift(StochasticProcess1D sp, double t0, double x0, double dt);
@@ -36,13 +40,16 @@ namespace QLNet
       double variance(StochasticProcess1D sp, double t0, double x0, double dt);
    }
 
-   //! multi-dimensional stochastic process class.
-   /*! This class describes a stochastic process governed by
-       \f[
-       d\mathrm{x}_t = \mu(t, x_t)\mathrm{d}t
-                     + \sigma(t, \mathrm{x}_t) \cdot d\mathrm{W}_t.
-       \f]
-   */
+   /// <summary>
+   /// multi-dimensional stochastic process class.
+   /// </summary>
+   /// <remarks>
+   /// This class describes a stochastic process governed by
+   /// \f[
+   /// d\mathrm{x}_t = \mu(t, x_t)\mathrm{d}t
+   /// + \sigma(t, \mathrm{x}_t) \cdot d\mathrm{W}_t.
+   /// \f]
+   /// </remarks>
    public abstract class StochasticProcess : IObservable, IObserver
    {
       protected IDiscretization discretization_;
@@ -54,45 +61,59 @@ namespace QLNet
       }
 
       // Stochastic process interface
-      //! returns the number of dimensions of the stochastic process
+      /// <summary>
+      /// Returns the number of dimensions of the stochastic process.
+      /// </summary>
       public abstract int size();
 
-      //! returns the number of independent factors of the process
+      /// <summary>
+      /// Returns the number of independent factors of the process.
+      /// </summary>
       public virtual int factors() { return size(); }
 
-      //! returns the initial values of the state variables
+      /// <summary>
+      /// Returns the initial values of the state variables.
+      /// </summary>
       public abstract Vector initialValues();
 
-      /*! \brief returns the drift part of the equation, i.e.,
-                 \f$ \mu(t, \mathrm{x}_t) \f$ */
+      /// <summary>
+      /// Returns the drift term of the process.
+      /// </summary>
       public abstract Vector drift(double t, Vector x);
 
-      /*! \brief returns the diffusion part of the equation, i.e.
-                 \f$ \sigma(t, \mathrm{x}_t) \f$ */
+      /// <summary>
+      /// Returns the diffusion term of the process.
+      /// </summary>
       public abstract Matrix diffusion(double t, Vector x);
 
-      /*! This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the expected state after the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual Vector expectation(double t0, Vector x0, double dt)
       {
          return apply(x0, discretization_.drift(this, t0, x0, dt));
       }
 
-      /*! returns the standard deviation. This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the standard deviation over the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual Matrix stdDeviation(double t0, Vector x0, double dt)
       {
          return discretization_.diffusion(this, t0, x0, dt);
       }
 
-      /*! returns the covariance. This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the covariance over the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual Matrix covariance(double t0, Vector x0, double dt)
       {
          return discretization_.covariance(this, t0, x0, dt);
@@ -111,13 +132,12 @@ namespace QLNet
       }
 
       // utilities
-      /*! returns the time value corresponding to the given date
-          in the reference system of the stochastic process.
-
-          \note As a number of processes might not need this
-                functionality, a default implementation is given
-                which raises an exception.
-      */
+      /// <summary>
+      /// Returns the time corresponding to the given date in the reference system of the process.
+      /// </summary>
+      /// <remarks>
+      /// The default implementation throws because some processes do not support date-to-time conversion.
+      /// </remarks>
       public virtual double time(Date d)
       {
          throw new NotSupportedException("date/time conversion not supported");
@@ -153,7 +173,9 @@ namespace QLNet
       #endregion
    }
 
-   //! 1-dimensional stochastic process
+   /// <summary>
+   /// 1-dimensional stochastic process
+   /// </summary>
    public abstract class StochasticProcess1D : StochasticProcess
    {
       protected new IDiscretization1D discretization_;
@@ -165,10 +187,14 @@ namespace QLNet
       }
 
       // 1-D stochastic process interface
-      //! returns the initial value of the state variable
+      /// <summary>
+      /// Returns the initial value of the state variable.
+      /// </summary>
       public abstract double x0();
 
-      //! returns the drift part of the equation, i.e. \f$ \mu(t, x_t) \f$
+      /// <summary>
+      /// Returns the drift term of the process.
+      /// </summary>
       public abstract double drift(double t, double x);
       public override Vector drift(double t, Vector x)
       {
@@ -179,7 +205,9 @@ namespace QLNet
          return a;
       }
 
-      // \brief returns the diffusion part of the equation
+      /// <summary>
+      /// Returns the diffusion term of the process.
+      /// </summary>
       public abstract double diffusion(double t, double x);
       public override Matrix diffusion(double t, Vector x)
       {
@@ -190,10 +218,12 @@ namespace QLNet
          return m;
       }
 
-      /*! returns the expectation. This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the expected state after the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual double expectation(double t0, double x0, double dt)
       {
          return apply(x0, discretization_.drift(this, t0, x0, dt));
@@ -207,10 +237,12 @@ namespace QLNet
          return a;
       }
 
-      /*! returns the standard deviation. This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the standard deviation over the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual double stdDeviation(double t0, double x0, double dt)
       {
          return discretization_.diffusion(this, t0, x0, dt);
@@ -224,10 +256,12 @@ namespace QLNet
          return m;
       }
 
-      /*! returns the variance. This method can be
-          overridden in derived classes which want to hard-code a
-          particular discretization.
-      */
+      /// <summary>
+      /// Returns the variance over the given time increment.
+      /// </summary>
+      /// <remarks>
+      /// Derived classes can override this method to hard-code a specific discretization.
+      /// </remarks>
       public virtual double variance(double t0, double x0, double dt)
       {
          return discretization_.variance(this, t0, x0, dt);
@@ -268,7 +302,9 @@ namespace QLNet
          return a;
       }
 
-      //! returns the initial values of the state variables
+      /// <summary>
+      /// Returns the initial values of the state variables.
+      /// </summary>
       public override Vector initialValues()
       {
          Vector a = new Vector(1, x0());

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,30 +22,29 @@ using System;
 
 namespace QLNet
 {
-   //! Argentinian calendars
-   /*! Holidays for the Buenos Aires stock exchange
-       (data from <http://www.merval.sba.com.ar/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Holy Thursday</li>
-       <li>Good Friday</li>
-       <li>Labour Day, May 1st</li>
-       <li>May Revolution, May 25th</li>
-       <li>Death of General Manuel Belgrano, third Monday of June</li>
-       <li>Independence Day, July 9th</li>
-       <li>Death of General José de San Martín, third Monday of August</li>
-       <li>Columbus Day, October 12th (moved to preceding Monday if
-           on Tuesday or Wednesday and to following if on Thursday
-           or Friday)</li>
-       <li>Immaculate Conception, December 8th</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>New Year's Eve, December 31th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Argentinian calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Buenos Aires stock exchange
+   /// (data from http://www.merval.sba.com.ar/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Holy Thursday
+   /// Good Friday
+   /// Labour Day, May 1st
+   /// May Revolution, May 25th
+   /// Death of General Manuel Belgrano, third Monday of June
+   /// Independence Day, July 9th
+   /// Death of General José de San Martín, third Monday of August
+   /// Columbus Day, October 12th (moved to preceding Monday if
+   /// on Tuesday or Wednesday and to following if on Thursday
+   /// or Friday)
+   /// Immaculate Conception, December 8th
+   /// Christmas Eve, December 24th
+   /// New Year's Eve, December 31th
+   /// </remarks>
    public class Argentina : Calendar
    {
       public Argentina() : base(Impl.Singleton) { }

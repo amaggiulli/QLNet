@@ -21,14 +21,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-//! Finite-Differences Black Scholes barrier option rebate helper engine
-
-/*!
-    \ingroup barrierengines
-*/
-
 namespace QLNet
 {
+   /// <summary>
+   /// Finite-difference Black-Scholes rebate helper engine for barrier options.
+   /// </summary>
    public class FdBlackScholesRebateEngine : DividendBarrierOption.Engine
    {
       // Constructor

@@ -17,15 +17,25 @@ namespace QLNet
 {
    public struct Futures
    {
-      //! Futures type enumeration
-      /*! These conventions specify the kind of futures type. */
+      /// <summary>
+      /// Specifies the kind of futures type.
+      /// </summary>
       public enum Type
       {
-         IMM, /*!< Chicago Mercantile Internation Money Market, i.e.
-                      third Wednesday of March, June, September, December */
-         ASX, /*!< Australian Security Exchange, i.e. second Friday
-                      of March, June, September, December */
-         Custom /*!< Other rules */
+         /// <summary>
+         /// Chicago Mercantile International Money Market, i.e. third Wednesday of March, June, September, December.
+         /// </summary>
+         IMM,
+
+         /// <summary>
+         /// Australian Securities Exchange, i.e. second Friday of March, June, September, December.
+         /// </summary>
+         ASX,
+
+         /// <summary>
+         /// Other rules.
+         /// </summary>
+         Custom
       }
    }
 }

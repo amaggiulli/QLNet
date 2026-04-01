@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! %Currency specification
+   /// <summary>
+   /// Currency specification
+   /// </summary>
    public class Currency
    {
       protected string name_, code_;
@@ -31,18 +33,49 @@ namespace QLNet
       protected string formatString_;
 
       // Inspectors
-      public string name { get { return name_; } }            //! currency name, e.g, "U.S. Dollar"
-      public string code { get { return code_; } }            //! ISO 4217 three-letter code, e.g, "USD"
-      public int numericCode { get { return numeric_; } }     //! ISO 4217 numeric code, e.g, "840"
-      public string symbol { get { return symbol_; } }        //! symbol, e.g, "$"
+      /// <summary>
+      /// Gets the currency name, e.g. "U.S. Dollar".
+      /// </summary>
+      public string name { get { return name_; } }
+
+      /// <summary>
+      /// Gets the ISO 4217 three-letter code, e.g. "USD".
+      /// </summary>
+      public string code { get { return code_; } }
+
+      /// <summary>
+      /// Gets the ISO 4217 numeric code, e.g. 840.
+      /// </summary>
+      public int numericCode { get { return numeric_; } }
+
+      /// <summary>
+      /// Gets the symbol, e.g. "$".
+      /// </summary>
+      public string symbol { get { return symbol_; } }
+
+      /// <summary>
+      /// Gets the fraction symbol, e.g. "¢".
+      /// </summary>
       public string fractionSymbol
-      { get { return fractionSymbol_; } }                 //! fraction symbol, e.g, "¢"
+      { get { return fractionSymbol_; } }
+
+      /// <summary>
+      /// Gets the number of fractional parts in a unit, e.g. 100.
+      /// </summary>
       public int fractionsPerUnit
-      { get { return fractionsPerUnit_; } }               //! number of fractionary parts in a unit, e.g, 100
+      { get { return fractionsPerUnit_; } }
+
+      /// <summary>
+      /// Gets the rounding convention.
+      /// </summary>
       public Rounding rounding
-      { get { return rounding_; } }                       //! rounding convention
+      { get { return rounding_; } }
+
+      /// <summary>
+      /// Gets the currency used for triangulated exchange when required.
+      /// </summary>
       public Currency triangulationCurrency
-      { get { return triangulated_; } }                   //! currency used for triangulated exchange when required
+      { get { return triangulated_; } }
       // output format
       // The format will be fed three positional parameters, namely, value, code, and symbol, in this order.
       public string format { get { return formatString_; } }
@@ -72,13 +105,13 @@ namespace QLNet
       }
 
 
-      //! Other information
-      //! is this a usable instance?
+      /// <summary>
+      /// Returns true if this is a usable currency instance.
+      /// </summary>
       public bool empty() { return (name_ == null); }
 
       public override string ToString() { return code; }
 
-      /*! \relates Currency */
       public static bool operator ==(Currency c1, Currency c2)
       {
          if ((object)c1 == null && (object)c2 == null)

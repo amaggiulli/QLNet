@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -21,14 +21,15 @@
 namespace QLNet
 {
 
-   //! %CHF %LIBOR rate
-   /*! Swiss Franc LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by BBA. Use ZIBOR if
-                you're interested in the Zurich fixing.
-   */
+   /// <summary>
+   /// CHF LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Swiss Franc LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// Warning: This is the rate fixed in London by BBA. Use ZIBOR if
+   /// you're interested in the Zurich fixing.
+   /// </remarks>
    public class CHFLibor : Libor
    {
       public CHFLibor(Period tenor)
@@ -40,7 +41,9 @@ namespace QLNet
       {}
    }
 
-   //! base class for the one day deposit BBA %CHF %LIBOR indexes
+   /// <summary>
+   /// base class for the one day deposit BBA CHF LIBOR indexes
+   /// </summary>
    public class DailyTenorCHFLibor : DailyTenorLibor
    {
       public DailyTenorCHFLibor(int settlementDays, Handle<YieldTermStructure> h)

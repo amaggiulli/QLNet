@@ -16,10 +16,13 @@
 
 namespace QLNet
 {
-   //! Class for the quotation of delta vs vol.
-   /*! It includes the various delta quotation types
-       in FX markets as well as ATM types.
-   */
+   /// <summary>
+   /// Class for the quotation of delta vs vol.
+   /// </summary>
+   /// <remarks>
+   /// It includes the various delta quotation types
+   /// in FX markets as well as ATM types.
+   /// </remarks>
    public class DeltaVolQuote : Quote, IObserver
    {
       public enum DeltaType

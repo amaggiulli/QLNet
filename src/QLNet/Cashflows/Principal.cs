@@ -19,9 +19,13 @@
 
 namespace QLNet
 {
-   //! %principal payment over a fixed period
-   //! This class implements part of the CashFlow interface but it is
-   //  still abstract and provides derived classes with methods for accrual period calculations.
+   /// <summary>
+   /// Principal payment over a fixed period.
+   /// </summary>
+   /// <remarks>
+   /// This class implements part of the <see cref="CashFlow"/> interface and
+   /// provides derived classes with methods for accrual-period calculations.
+   /// </remarks>
    public class Principal : CashFlow
    {
       protected double nominal_;

@@ -16,12 +16,13 @@
 
 namespace QLNet
 {
-   //! Monte Carlo Heston-model engine for European options
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature
-   */
+   /// <summary>
+   /// Monte Carlo Heston-model engine for European options
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature
+   /// </remarks>
    public class MCEuropeanHestonEngine<RNG, S> : MCVanillaEngine<MultiVariate, RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()
@@ -53,7 +54,9 @@ namespace QLNet
 
    }
 
-   //! Monte Carlo Heston European engine factory
+   /// <summary>
+   /// Monte Carlo Heston European engine factory
+   /// </summary>
    public class MakeMCEuropeanHestonEngine<RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

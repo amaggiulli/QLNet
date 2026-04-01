@@ -22,11 +22,10 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   //! Continuous-averaging Asian option
-//    ! \todo add running average
-//
-//        \ingroup instruments
-//
+   /// <summary>
+   /// Continuous-averaging Asian option.
+   /// </summary>
+   // TODO: add running average.
    public class ContinuousAveragingAsianOption : OneAssetOption
    {
       public new class Arguments : OneAssetOption.Arguments
@@ -63,8 +62,9 @@ namespace QLNet
       protected Average.Type averageType_;
    }
 
-   //! Discrete-averaging Asian option
-   //! \ingroup instruments
+   /// <summary>
+   /// Discrete-averaging Asian option.
+   /// </summary>
    public class DiscreteAveragingAsianOption : OneAssetOption
    {
       protected Average.Type averageType_;

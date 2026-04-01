@@ -22,10 +22,35 @@ namespace QLNet
 {
    public static partial class MatrixUtilitites
    {
-      //! algorithm used for matricial pseudo square root
+      /// <summary>
+      /// Algorithm used for the matrix pseudo square root.
+      /// </summary>
       public enum SalvagingAlgorithm
       {
-         None, Spectral, Hypersphere, LowerDiagonal, Higham
+         /// <summary>
+         /// No salvaging algorithm.
+         /// </summary>
+         None,
+
+         /// <summary>
+         /// Spectral salvaging algorithm.
+         /// </summary>
+         Spectral,
+
+         /// <summary>
+         /// Hypersphere salvaging algorithm.
+         /// </summary>
+         Hypersphere,
+
+         /// <summary>
+         /// Lower-diagonal salvaging algorithm.
+         /// </summary>
+         LowerDiagonal,
+
+         /// <summary>
+         /// Higham salvaging algorithm.
+         /// </summary>
+         Higham
       }
 
       public static void normalizePseudoRoot(Matrix matrix, Matrix pseudo)
@@ -374,34 +399,32 @@ namespace QLNet
       }
 
 
-      //! Returns the pseudo square root of a real symmetric matrix
-      /*! Given a matrix \f$ M \f$, the result \f$ S \f$ is defined
-          as the matrix such that \f$ S S^T = M. \f$
-          If the matrix is not positive semi definite, it can
-          return an approximation of the pseudo square root
-          using a (user selected) salvaging algorithm.
-
-          For more information see: "The most general methodology to create
-          a valid correlation matrix for risk management and option pricing
-          purposes", by R. Rebonato and P. Jдckel.
-          The Journal of Risk, 2(2), Winter 1999/2000
-          http://www.rebonato.com/correlationmatrix.pdf
-
-          Revised and extended in "Monte Carlo Methods in Finance",
-          by Peter Jдckel, Chapter 6.
-
-          \pre the given matrix must be symmetric.
-
-          \relates Matrix
-
-          \warning Higham algorithm only works for correlation matrices.
-
-          \test
-          - the correctness of the results is tested by reproducing
-            known good data.
-          - the correctness of the results is tested by checking
-            returned values against numerical calculations.
-      */
+      /// <summary>
+      /// Returns the pseudo square root of a real symmetric matrix.
+      /// </summary>
+      /// <remarks>
+      /// Given a matrix M, the result S is defined as the matrix such that
+      /// S * S^T = M. If the matrix is not positive semidefinite, this method
+      /// can return an approximation of the pseudo square root using a
+      /// user-selected salvaging algorithm.
+      ///
+      /// For more information see "The most general methodology to create
+      /// a valid correlation matrix for risk management and option pricing
+      /// purposes", by R. Rebonato and P. Jackel, The Journal of Risk, 2(2),
+      /// Winter 1999/2000, http://www.rebonato.com/correlationmatrix.pdf.
+      ///
+      /// Revised and extended in "Monte Carlo Methods in Finance",
+      /// by Peter Jackel, Chapter 6.
+      ///
+      /// Warning: the Higham algorithm only works for correlation matrices.
+      /// </remarks>
+      /// <internalremarks>
+      /// PRE: the given matrix must be symmetric.
+      /// TEST:
+      /// - the correctness of the results is tested by reproducing known good data.
+      /// - the correctness of the results is tested by checking returned values
+      ///   against numerical calculations.
+      /// </internalremarks>
       public static Matrix pseudoSqrt(Matrix matrix, SalvagingAlgorithm sa)
       {
          int size = matrix.rows();

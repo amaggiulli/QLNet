@@ -20,28 +20,27 @@ using System;
 
 namespace QLNet
 {
-   //! Ukrainian calendars
-   /*! Holidays for the Ukrainian stock exchange
-       (data from <http://www.ukrse.kiev.ua/eng/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Orthodox Christmas, January 7th</li>
-       <li>International Women's Day, March 8th</li>
-       <li>Easter Monday</li>
-       <li>Holy Trinity Day, 50 days after Easter</li>
-       <li>International Workers' Solidarity Days, May 1st and 2nd</li>
-       <li>Victory Day, May 9th</li>
-       <li>Constitution Day, June 28th</li>
-       <li>Independence Day, August 24th</li>
-       <li>Defender's Day, October 14th (since 2015)</li>
-       </ul>
-       Holidays falling on a Saturday or Sunday are moved to the
-       following Monday.
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Ukrainian calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Ukrainian stock exchange
+   /// (data from http://www.ukrse.kiev.ua/eng/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Orthodox Christmas, January 7th
+   /// International Women's Day, March 8th
+   /// Easter Monday
+   /// Holy Trinity Day, 50 days after Easter
+   /// International Workers' Solidarity Days, May 1st and 2nd
+   /// Victory Day, May 9th
+   /// Constitution Day, June 28th
+   /// Independence Day, August 24th
+   /// Defender's Day, October 14th (since 2015)
+   /// Holidays falling on a Saturday or Sunday are moved to the
+   /// following Monday.
+   /// </remarks>
    public class Ukraine : Calendar
    {
       public Ukraine(Market m = Market.USE)
@@ -58,9 +57,15 @@ namespace QLNet
          }
       }
 
+      /// <summary>
+      /// Available Ukrainian calendar markets.
+      /// </summary>
       public enum Market
       {
-         USE    //!< Ukrainian stock exchange
+         /// <summary>
+         /// Ukrainian Stock Exchange calendar.
+         /// </summary>
+         USE
       }
 
       private class Impl : OrthodoxImpl

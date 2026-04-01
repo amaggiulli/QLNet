@@ -22,7 +22,9 @@ using System;
 
 namespace QLNet
 {
-   //! Local volatility curve derived from a Black curve
+   /// <summary>
+   /// Local volatility curve derived from a Black curve
+   /// </summary>
    public class LocalVolCurve : LocalVolTermStructure
    {
       public LocalVolCurve(Handle<BlackVarianceCurve> curve)

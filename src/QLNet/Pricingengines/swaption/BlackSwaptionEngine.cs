@@ -36,8 +36,10 @@ namespace QLNet
                   double displacement = 0.0);
    }
 
-   /*! Generic Black-style-formula swaption engine
-       This is the base class for the Black and Bachelier swaption engines */
+   /// <summary>
+   /// Generic Black-style-formula swaption engine
+   /// This is the base class for the Black and Bachelier swaption engines
+   /// </summary>
    public class BlackStyleSwaptionEngine<Spec> : SwaptionEngine
       where Spec : ISwaptionEngineSpec, new ()
    {

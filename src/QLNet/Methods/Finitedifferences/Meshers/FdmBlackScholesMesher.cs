@@ -21,9 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/*! \file fdmblackscholesmesher.cpp
-    \brief 1-d mesher for the Black-Scholes process (in ln(S))
-*/
+/// <summary>
+/// One-dimensional mesher for the Black-Scholes process in <c>ln(S)</c>.
+/// </summary>
 
 namespace QLNet
 {

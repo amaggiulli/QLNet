@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,10 +19,14 @@
 
 namespace QLNet
 {
-   //! Shared handle to an observable
-   /*! All copies of an instance of this class refer to the same observable by means of a relinkable smart pointer. When such
-       pointer is relinked to another observable, the change will be propagated to all the copies.
-       <tt>registerAsObserver</tt> is not needed since C# does automatic garbage collection */
+   /// <summary>
+   /// Shared handle to an observable
+   /// </summary>
+   /// <remarks>
+   /// All copies of an instance of this class refer to the same observable by means of a relinkable smart pointer. When such
+   /// pointer is relinked to another observable, the change will be propagated to all the copies.
+   /// <c>registerAsObserver</c> is not needed since C# does automatic garbage collection
+   /// </remarks>
 
    public class Handle<T> where T : class, IObservable
    {
@@ -37,7 +41,9 @@ namespace QLNet
          link_ = new Link(h, registerAsObserver);
       }
 
-      //! dereferencing
+      /// <summary>
+      /// Returns the linked observable.
+      /// </summary>
       public T currentLink() { return link; }
 
       // this one is instead of c++ -> and () operators overload
@@ -57,7 +63,9 @@ namespace QLNet
 
       public void unregisterWith(Callback handler) { link_.unregisterWith(handler); }
 
-      //! checks if the contained shared pointer points to anything
+      /// <summary>
+      /// Returns true if the handle does not point to an observable.
+      /// </summary>
       public bool empty() { return link_.empty(); }
 
       #region operator overload
@@ -149,9 +157,13 @@ namespace QLNet
       }
    }
 
-   //! Relinkable handle to an observable
-   /*! An instance of this class can be relinked so that it points to another observable. The change will be propagated to all
-       handles that were created as copies of such instance. */
+   /// <summary>
+   /// Relinkable handle to an observable
+   /// </summary>
+   /// <remarks>
+   /// An instance of this class can be relinked so that it points to another observable. The change will be propagated to all
+   /// handles that were created as copies of such instance.
+   /// </remarks>
 
    public class RelinkableHandle<T> : Handle<T> where T : class, IObservable
    {

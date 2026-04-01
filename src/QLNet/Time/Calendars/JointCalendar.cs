@@ -25,13 +25,20 @@ namespace QLNet
 {
    public class JointCalendar : Calendar
    {
-      //! rules for joining calendars
+      /// <summary>
+      /// Rules for combining multiple calendars.
+      /// </summary>
       public enum JointCalendarRule
       {
-         JoinHolidays,    /*!< A date is a holiday for the joint calendar if it is a holiday
-                                  for any of the given calendars */
-         JoinBusinessDays /*!< A date is a business day for the joint calendar if it is a business day
-                                  for any of the given calendars */
+         /// <summary>
+         /// A date is a holiday for the joint calendar if it is a holiday for any of the given calendars.
+         /// </summary>
+         JoinHolidays,
+
+         /// <summary>
+         /// A date is a business day for the joint calendar if it is a business day for any of the given calendars.
+         /// </summary>
+         JoinBusinessDays
       }
 
       private class Impl : CalendarImpl
@@ -125,10 +132,12 @@ namespace QLNet
       }
 
 
-      //! Joint calendar
-      /*! Depending on the chosen rule, this calendar has a set of business days given by either the union or the intersection
-          of the sets of business days of the given calendars.
-          \test the correctness of the returned results is tested by reproducing the calculations. */
+      /// <summary>
+      /// Initializes a joint calendar.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the chosen rule, business days are defined by either the union or the intersection of the business days in the supplied calendars.
+      /// </remarks>
       public JointCalendar(Calendar c1, Calendar c2)
          : this(c1, c2, JointCalendarRule.JoinHolidays) { }
       public JointCalendar(Calendar c1, Calendar c2, JointCalendarRule r)

@@ -19,57 +19,58 @@
 
 namespace QLNet
 {
-   //! %Forward rate agreement (FRA) class
-   /*! 1. Unlike the forward contract conventions on carryable
-          financial assets (stocks, bonds, commodities), the
-          valueDate for a FRA is taken to be the day when the forward
-          loan or deposit begins and when full settlement takes place
-          (based on the NPV of the contract on that date).
-          maturityDate is the date when the forward loan or deposit
-          ends. In fact, the FRA settles and expires on the
-          valueDate, not on the (later) maturityDate. It follows that
-          (maturityDate - valueDate) is the tenor/term of the
-          underlying loan or deposit
-
-       2. Choose position type = Long for an "FRA purchase" (future
-          long loan, short deposit [borrower])
-
-       3. Choose position type = Short for an "FRA sale" (future short
-          loan, long deposit [lender])
-
-       4. If strike is given in the constructor, can calculate the NPV
-          of the contract via NPV().
-
-       5. If forward rate is desired/unknown, it can be obtained via
-          forwardRate(). In this case, the strike variable in the
-          constructor is irrelevant and will be ignored.
-
-       <b>Example: </b>
-       \link FRA.cs
-       valuation of a forward-rate agreement
-       \endlink
-
-       \todo Add preconditions and tests
-
-       \todo Should put an instance of ForwardRateAgreement in the
-             FraRateHelper to ensure consistency with the piecewise
-             yield curve.
-
-       \todo Differentiate between BBA (British)/AFB (French)
-             [assumed here] and ABA (Australian) banker conventions
-             in the calculations.
-
-       \warning This class still needs to be rigorously tested
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Forward rate agreement (FRA) class
+   /// </summary>
+   /// <remarks>
+   /// 1. Unlike the forward contract conventions on carryable
+   /// financial assets (stocks, bonds, commodities), the
+   /// valueDate for a FRA is taken to be the day when the forward
+   /// loan or deposit begins and when full settlement takes place
+   /// (based on the NPV of the contract on that date).
+   /// maturityDate is the date when the forward loan or deposit
+   /// ends. In fact, the FRA settles and expires on the
+   /// valueDate, not on the (later) maturityDate. It follows that
+   /// (maturityDate - valueDate) is the tenor/term of the
+   /// underlying loan or deposit
+   ///
+   /// 2. Choose position type = Long for an "FRA purchase" (future
+   /// long loan, short deposit [borrower])
+   ///
+   /// 3. Choose position type = Short for an "FRA sale" (future short
+   /// loan, long deposit [lender])
+   ///
+   /// 4. If strike is given in the constructor, can calculate the NPV
+   /// of the contract via NPV().
+   ///
+   /// 5. If forward rate is desired/unknown, it can be obtained via
+   /// forwardRate(). In this case, the strike variable in the
+   /// constructor is irrelevant and will be ignored.
+   ///
+   /// Example:
+   /// \link FRA.cs
+   /// valuation of a forward-rate agreement
+   /// \endlink
+   ///
+   /// TODO: Add preconditions and tests
+   ///
+   /// TODO: Should put an instance of ForwardRateAgreement in the
+   /// FraRateHelper to ensure consistency with the piecewise
+   /// yield curve.
+   ///
+   /// TODO: Differentiate between BBA (British)/AFB (French)
+   /// [assumed here] and ABA (Australian) banker conventions
+   /// in the calculations.
+   ///
+   /// Warning: This class still needs to be rigorously tested
+   /// </remarks>
 
    public class ForwardRateAgreement : Forward
    {
       protected Position.Type fraType_;
-      //! aka FRA rate (the market forward rate)
+      // FRA market forward rate.
       protected InterestRate forwardRate_;
-      //! aka FRA fixing rate, contract rate
+      // FRA fixing rate, i.e. the contract rate.
       protected InterestRate strikeForwardRate_;
       protected double notionalAmount_;
       protected IborIndex index_;
@@ -106,23 +107,34 @@ namespace QLNet
          return calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
       }
 
-      /*! A FRA expires/settles on the valueDate */
-
+      /// <summary>
+      /// Returns whether the FRA has expired.
+      /// </summary>
+      /// <remarks>
+      /// A FRA expires and settles on the value date.
+      /// </remarks>
       public override bool isExpired()
       {
          return new simple_event(valueDate_).hasOccurred(settlementDate());
       }
 
-      /*!  Income is zero for a FRA */
-
+      /// <summary>
+      /// Returns the income on the underlying position.
+      /// </summary>
+      /// <remarks>
+      /// Income is zero for a FRA.
+      /// </remarks>
       public override double spotIncome(Handle<YieldTermStructure> t)
       {
          return 0.0;
       }
 
-      //! Spot value (NPV) of the underlying loan
-      /*! This has always a positive value (asset), even if short the FRA */
-
+      /// <summary>
+      /// Returns the spot value of the underlying loan.
+      /// </summary>
+      /// <remarks>
+      /// This is always a positive asset value, even when the FRA position is short.
+      /// </remarks>
       public override double spotValue()
       {
          calculate();
@@ -132,7 +144,9 @@ namespace QLNet
          return result;
       }
 
-      //! Returns the relevant forward rate associated with the FRA term
+      /// <summary>
+      /// Returns the forward rate associated with the FRA term.
+      /// </summary>
       public InterestRate forwardRate()
       {
          calculate();

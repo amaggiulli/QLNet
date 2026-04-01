@@ -17,16 +17,18 @@ using System;
 
 namespace QLNet
 {
-   //! analytic european option pricer including stochastic interest rates
-   /*! References:
-
-       Brigo, Mercurio, Interest Rate Models
-
-       \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature
-   */
+   /// <summary>
+   /// analytic european option pricer including stochastic interest rates
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Brigo, Mercurio, Interest Rate Models
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature
+   /// </remarks>
    public class AnalyticBSMHullWhiteEngine : GenericModelEngine<HullWhite, VanillaOption.Arguments,
       VanillaOption.Results>
    {

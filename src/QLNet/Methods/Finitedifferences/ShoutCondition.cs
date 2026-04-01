@@ -20,12 +20,15 @@ using System;
 
 namespace QLNet
 {
-   //! Shout option condition
-   /*! A shout option is an option where the holder has the right to
-       lock in a minimum value for the payoff at one (shout) time
-       during the option's life. The minimum value is the option's
-       intrinsic value at the shout time.
-   */
+   /// <summary>
+   /// Shout option condition
+   /// </summary>
+   /// <remarks>
+   /// A shout option is an option where the holder has the right to
+   /// lock in a minimum value for the payoff at one (shout) time
+   /// during the option's life. The minimum value is the option's
+   /// intrinsic value at the shout time.
+   /// </remarks>
    public class ShoutCondition : CurveDependentStepCondition<Vector>
    {
       double resTime_;

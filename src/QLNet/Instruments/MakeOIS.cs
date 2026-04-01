@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! helper class
-   /*! This class provides a more comfortable way
-       to instantiate overnight indexed swaps.
-   */
+   /// <summary>
+   /// helper class
+   /// </summary>
+   /// <remarks>
+   /// This class provides a more comfortable way
+   /// to instantiate overnight indexed swaps.
+   /// </remarks>
    public class MakeOIS
    {
       private Period swapTenor_;

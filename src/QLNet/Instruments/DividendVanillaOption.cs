@@ -22,8 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Single-asset vanilla option (no barriers) with discrete dividends
-   /*! \ingroup instruments */
+   /// <summary>
+   /// Single-asset vanilla option (no barriers) with discrete dividends
+   /// </summary>
    public class DividendVanillaOption : OneAssetOption
    {
       private DividendSchedule cashFlow_;
@@ -36,9 +37,10 @@ namespace QLNet
       }
 
 
-      /*! \warning see VanillaOption for notes on implied-volatility
-                   calculation.
-      */
+      /// <remarks>
+      /// Warning: see VanillaOption for notes on implied-volatility
+      /// calculation.
+      /// </remarks>
       public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process,
                                       double accuracy = 1.0e-4, int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
       {
@@ -81,7 +83,9 @@ namespace QLNet
          arguments.cashFlow = cashFlow_;
       }
 
-      //! %Arguments for dividend vanilla option calculation
+      /// <summary>
+      /// Arguments for dividend vanilla option calculation.
+      /// </summary>
       public new class Arguments : OneAssetOption.Arguments
       {
          public DividendSchedule cashFlow { get; set; } = new();
@@ -101,7 +105,9 @@ namespace QLNet
          }
       }
 
-      //! %Dividend-vanilla-option %engine base class
+      /// <summary>
+      /// Dividend vanilla option engine base class.
+      /// </summary>
       public new class Engine : GenericEngine<Arguments, Results> { }
    }
 }

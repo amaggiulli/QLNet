@@ -20,15 +20,16 @@
 
 namespace QLNet
 {
-   //! Finite-differences pricing engine for dividend American options
-   /*! \ingroup vanillaengines
-
-       \test
-       - the correctness of the returned greeks is tested by
-         reproducing numerical derivatives.
-       - the invariance of the results upon addition of null
-         dividends is tested.
-   */
+   /// <summary>
+   /// Finite-differences pricing engine for dividend American options
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// - the invariance of the results upon addition of null
+   /// dividends is tested.
+   /// </remarks>
    public class FDDividendAmericanEngine: FDEngineAdapter<FDAmericanCondition<FDDividendEngine>, DividendVanillaOption.Engine>,
       IFDEngine
    {

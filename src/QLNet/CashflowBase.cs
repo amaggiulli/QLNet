@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! Base class for cash flows. This class is purely virtual and acts as a base class for the actual cash flow implementations.
+   /// <summary>
+   /// Base class for cash flows. This class is purely virtual and acts as a base class for the actual cash flow implementations.
+   /// </summary>
    public abstract class CashFlow : Event, IComparable<CashFlow>
    {
       #region Event interface
@@ -55,12 +57,21 @@ namespace QLNet
 
       #region CashFlow interface
 
-      //! returns the amount of the cash flow
-      //! The amount is not discounted, i.e., it is the actual  amount paid at the cash flow date.
+      /// <summary>
+      /// Returns the amount of the cash flow.
+      /// </summary>
+      /// <remarks>
+      /// The amount is not discounted, i.e. it is the actual amount paid
+      /// at the cash-flow date.
+      /// </remarks>
       public abstract double amount();
-      //! returns the date that the cash flow trades exCoupon
+      /// <summary>
+      /// Returns the date on which the cash flow trades ex-coupon.
+      /// </summary>
       public virtual Date exCouponDate() {return null;}
-      //! returns true if the cashflow is trading ex-coupon on the refDate
+      /// <summary>
+      /// Returns true if the cash flow is trading ex-coupon on the reference date.
+      /// </summary>
       public bool tradingExCoupon(Date refDate = null)
       {
          Date ecd = exCouponDate();

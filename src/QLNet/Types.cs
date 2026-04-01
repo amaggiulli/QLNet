@@ -146,25 +146,100 @@ namespace QLNet
       public ICollection<T> Values { get { return backingDictionary_.Values; } }
    }
 
+   /// <summary>
+   /// Duration calculation types
+   /// </summary>
    public struct Duration
    {
-      public enum Type { Simple, Macaulay, Modified }
+      /// <summary>
+      /// Duration type
+      /// </summary>
+      public enum Type
+      {
+         /// <summary>
+         /// Simple duration
+         /// </summary>
+         Simple,
+
+         /// <summary>
+         /// Macaulay duration
+         /// </summary>
+         Macaulay,
+
+         /// <summary>
+         /// Modified duration
+         /// </summary>
+         Modified
+      }
    }
 
+   /// <summary>
+   /// Position in a financial instrument
+   /// </summary>
    public struct Position
    {
-      public enum Type { Long, Short }
+      /// <summary>
+      /// Position type
+      /// </summary>
+      public enum Type
+      {
+         /// <summary>
+         /// Long position
+         /// </summary>
+         Long,
+
+         /// <summary>
+         /// Short position
+         /// </summary>
+         Short
+      }
    }
 
-   public enum InterestRateType { Fixed, Floating }
-   //! Interest rate coumpounding rule
+   /// <summary>
+   /// Interest rate type
+   /// </summary>
+   public enum InterestRateType
+   {
+      /// <summary>
+      /// Fixed interest rate
+      /// </summary>
+      Fixed,
+
+      /// <summary>
+      /// Floating interest rate
+      /// </summary>
+      Floating
+   }
+
+   /// <summary>
+   /// Interest rate compounding rule
+   /// </summary>
    public enum Compounding
    {
-      Simple = 0,          //!< \f$ 1+rt \f$
-      Compounded = 1,      //!< \f$ (1+r)^t \f$
-      Continuous = 2,      //!< \f$ e^{rt} \f$
-      SimpleThenCompounded, //!< Simple up to the first period then Compounded
-      CompoundedThenSimple //!< Compounded up to the first period then Simple
+      /// <summary>
+      /// Simple compounding: 1+rt
+      /// </summary>
+      Simple = 0,
+
+      /// <summary>
+      /// Compounded: (1+r)^t
+      /// </summary>
+      Compounded = 1,
+
+      /// <summary>
+      /// Continuous compounding: e^(rt)
+      /// </summary>
+      Continuous = 2,
+
+      /// <summary>
+      /// Simple up to the first period then Compounded
+      /// </summary>
+      SimpleThenCompounded,
+
+      /// <summary>
+      /// Compounded up to the first period then Simple
+      /// </summary>
+      CompoundedThenSimple
    }
 
    public enum Month
@@ -194,87 +269,233 @@ namespace QLNet
       Dec = 12
    }
 
+   /// <summary>
+   /// Business day convention rules
+   /// </summary>
    public enum BusinessDayConvention
    {
-      // ISDA
-      Following,          /*!< Choose the first business day after
-                              the given holiday. */
-      ModifiedFollowing,  /*!< Choose the first business day after
-                              the given holiday unless it belongs
-                              to a different month, in which case
-                              choose the first business day before
-                              the holiday. */
-      Preceding,          /*!< Choose the first business day before
-                              the given holiday. */
-      // NON ISDA
-      ModifiedPreceding,  /*!< Choose the first business day before
-                              the given holiday unless it belongs
-                              to a different month, in which case
-                              choose the first business day after
-                              the holiday. */
-      Unadjusted,          /*!< Do not adjust. */
-      HalfMonthModifiedFollowing,   /*!< Choose the first business day after
-                                       the given holiday unless that day
-                                       crosses the mid-month (15th) or the
-                                       end of month, in which case choose
-                                       the first business day before the
-                                       holiday. */
-      Nearest                      /*!< Choose the nearest business day
-                                       to the given holiday. If both the
-                                       preceding and following business
-                                       days are equally far away, default
-                                       to following business day. */
+      /// <summary>
+      /// Choose the first business day after the given holiday.
+      /// </summary>
+      Following,
+      
+      /// <summary>
+      /// Choose the first business day after the given holiday unless it belongs
+      /// to a different month, in which case choose the first business day before
+      /// the holiday.
+      /// </summary>
+      ModifiedFollowing,
+      
+      /// <summary>
+      /// Choose the first business day before the given holiday.
+      /// </summary>
+      Preceding,
+      
+      /// <summary>
+      /// Choose the first business day before the given holiday unless it belongs
+      /// to a different month, in which case choose the first business day after
+      /// the holiday.
+      /// </summary>
+      ModifiedPreceding,
+      
+      /// <summary>
+      /// Do not adjust.
+      /// </summary>
+      Unadjusted,
+      
+      /// <summary>
+      /// Choose the first business day after the given holiday unless that day
+      /// crosses the mid-month (15th) or the end of month, in which case choose
+      /// the first business day before the holiday.
+      /// </summary>
+      HalfMonthModifiedFollowing,
+      
+      /// <summary>
+      /// Choose the nearest business day to the given holiday. If both the
+      /// preceding and following business days are equally far away, default
+      /// to following business day.
+      /// </summary>
+      Nearest
    }
 
-   //! Units used to describe time periods
+   /// <summary>
+   /// Units used to describe time periods
+   /// </summary>
    public enum TimeUnit
    {
+      /// <summary>
+      /// Days
+      /// </summary>
       Days,
+
+      /// <summary>
+      /// Weeks
+      /// </summary>
       Weeks,
+
+      /// <summary>
+      /// Months
+      /// </summary>
       Months,
+
+      /// <summary>
+      /// Years
+      /// </summary>
       Years
    }
 
+   /// <summary>
+   /// Payment frequency enumeration
+   /// </summary>
    public enum Frequency
    {
-      NoFrequency = -1,     //!< null frequency
-      Once = 0,             //!< only once, e.g., a zero-coupon
-      Annual = 1,           //!< once a year
-      Semiannual = 2,       //!< twice a year
-      EveryFourthMonth = 3, //!< every fourth month
-      Quarterly = 4,        //!< every third month
-      Bimonthly = 6,        //!< every second month
-      Monthly = 12,         //!< once a month
-      EveryFourthWeek = 13, //!< every fourth week
-      Biweekly = 26,        //!< every second week
-      Weekly = 52,          //!< once a week
-      Daily = 365,          //!< once a day
-      OtherFrequency = 999  //!< some other unknown frequency
+      /// <summary>
+      /// Null frequency
+      /// </summary>
+      NoFrequency = -1,
+
+      /// <summary>
+      /// Only once, e.g., a zero-coupon
+      /// </summary>
+      Once = 0,
+
+      /// <summary>
+      /// Once a year
+      /// </summary>
+      Annual = 1,
+
+      /// <summary>
+      /// Twice a year
+      /// </summary>
+      Semiannual = 2,
+
+      /// <summary>
+      /// Every fourth month
+      /// </summary>
+      EveryFourthMonth = 3,
+
+      /// <summary>
+      /// Every third month
+      /// </summary>
+      Quarterly = 4,
+
+      /// <summary>
+      /// Every second month
+      /// </summary>
+      Bimonthly = 6,
+
+      /// <summary>
+      /// Once a month
+      /// </summary>
+      Monthly = 12,
+
+      /// <summary>
+      /// Every fourth week
+      /// </summary>
+      EveryFourthWeek = 13,
+
+      /// <summary>
+      /// Every second week
+      /// </summary>
+      Biweekly = 26,
+
+      /// <summary>
+      /// Once a week
+      /// </summary>
+      Weekly = 52,
+
+      /// <summary>
+      /// Once a day
+      /// </summary>
+      Daily = 365,
+
+      /// <summary>
+      /// Some other unknown frequency
+      /// </summary>
+      OtherFrequency = 999
    }
 
-   // These conventions specify the rule used to generate dates in a Schedule.
+   /// <summary>
+   /// Conventions used to generate dates in a Schedule
+   /// </summary>
    public struct DateGeneration
    {
+      /// <summary>
+      /// Date generation rule
+      /// </summary>
       public enum Rule
       {
-         Backward,      /*!< Backward from termination date to effective date. */
-         Forward,       /*!< Forward from effective date to termination date. */
-         Zero,          /*!< No intermediate dates between effective date and termination date. */
-         ThirdWednesday,/*!< All dates but effective date and termination date are taken to be on the third wednesday of their month*/
-         ThirdWednesdayInclusive, /* All dates including effective date and termination date are taken to be on the third wednesday
-                                     of their month (with forward calculation.) */
-         Twentieth,     /*!< All dates but the effective date are taken to be the twentieth of their
-                              month (used for CDS schedules in emerging markets.)  The termination
-                              date is also modified. */
-         TwentiethIMM,   /*!< All dates but the effective date are taken to be the twentieth of an IMM
-                              month (used for CDS schedules.)  The termination date is also modified. */
-         OldCDS,         /*!< Same as TwentiethIMM with unrestricted date ends and log/short stub
-                              coupon period (old CDS convention). */
-         CDS,            /*!< Credit derivatives standard rule since 'Big Bang' changes in 2009.  */
-         CDS2015         /*!< Credit derivatives standard rule since December 20th, 2015.  */
+         /// <summary>
+         /// Backward from termination date to effective date
+         /// </summary>
+         Backward,
+         
+         /// <summary>
+         /// Forward from effective date to termination date
+         /// </summary>
+         Forward,
+         
+         /// <summary>
+         /// No intermediate dates between effective date and termination date
+         /// </summary>
+         Zero,
+         
+         /// <summary>
+         /// All dates but effective date and termination date are taken to be on the third Wednesday of their month
+         /// </summary>
+         ThirdWednesday,
+         
+         /// <summary>
+         /// All dates including effective date and termination date are taken to be on the third Wednesday of their month (with forward calculation)
+         /// </summary>
+         ThirdWednesdayInclusive,
+         
+         /// <summary>
+         /// All dates but the effective date are taken to be the twentieth of their month (used for CDS schedules in emerging markets). The termination date is also modified.
+         /// </summary>
+         Twentieth,
+         
+         /// <summary>
+         /// All dates but the effective date are taken to be the twentieth of an IMM month (used for CDS schedules). The termination date is also modified.
+         /// </summary>
+         TwentiethIMM,
+         
+         /// <summary>
+         /// Same as TwentiethIMM with unrestricted date ends and long/short stub coupon period (old CDS convention)
+         /// </summary>
+         OldCDS,
+         
+         /// <summary>
+         /// Credit derivatives standard rule since 'Big Bang' changes in 2009
+         /// </summary>
+         CDS,
+         
+         /// <summary>
+         /// Credit derivatives standard rule since December 20th, 2015
+         /// </summary>
+         CDS2015
       }
    }
 
-   public enum CapFloorType { Cap, Floor, Collar }
+   /// <summary>
+   /// Cap/Floor type
+   /// </summary>
+   public enum CapFloorType
+   {
+      /// <summary>
+      /// Interest rate cap
+      /// </summary>
+      Cap,
+
+      /// <summary>
+      /// Interest rate floor
+      /// </summary>
+      Floor,
+
+      /// <summary>
+      /// Interest rate collar
+      /// </summary>
+      Collar
+   }
 
 }

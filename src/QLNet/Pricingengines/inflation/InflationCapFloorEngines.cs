@@ -20,14 +20,15 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Base YoY inflation cap/floor engine
-   /*! This class doesn't know yet what sort of vol it is.  The
-       inflation index must be linked to a yoy inflation term
-       structure.  This provides the curves, hence the call uses a
-       shared_ptr<> not a handle<> to the index.
-
-       \ingroup inflationcapfloorengines
-   */
+   /// <summary>
+   /// Base YoY inflation cap/floor engine
+   /// </summary>
+   /// <remarks>
+   /// This class doesn't know yet what sort of vol it is.  The
+   /// inflation index must be linked to a yoy inflation term
+   /// structure.  This provides the curves, hence the call uses a
+   /// shared_ptr&lt;&gt; not a handle&lt;&gt; to the index.
+   /// </remarks>
 
    public class YoYInflationCapFloorEngine : YoYInflationCapFloor.Engine
    {
@@ -142,7 +143,9 @@ namespace QLNet
       }
 
 
-      //! descendents only need to implement this
+      /// <summary>
+      /// Derived classes only need to implement this method.
+      /// </summary>
       protected virtual double optionletImpl(Option.Type type, double strike, double forward, double stdDev,
                                              double d) { throw new NotImplementedException("not implemented"); }
 
@@ -150,7 +153,9 @@ namespace QLNet
       protected  Handle<YoYOptionletVolatilitySurface> volatility_;
    }
 
-   //! Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationBlackCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationBlackCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> volatility)
@@ -165,7 +170,9 @@ namespace QLNet
 
    }
 
-   //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationUnitDisplacedBlackCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationUnitDisplacedBlackCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> vol)
@@ -182,7 +189,9 @@ namespace QLNet
 
    }
 
-   //! Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// <summary>
+   /// Unit Displaced Black-formula inflation cap/floor engine (standalone, i.e. no coupon pricer)
+   /// </summary>
    public class YoYInflationBachelierCapFloorEngine : YoYInflationCapFloorEngine
    {
       public YoYInflationBachelierCapFloorEngine(YoYInflationIndex index, Handle<YoYOptionletVolatilitySurface> vol)

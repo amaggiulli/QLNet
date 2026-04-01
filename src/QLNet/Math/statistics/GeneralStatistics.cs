@@ -45,22 +45,28 @@ namespace QLNet
                                                  Func<KeyValuePair<double, double>, bool> inRange);
    }
 
-   //! Statistics tool
-   /*! This class accumulates a set of data and returns their
-       statistics (e.g: mean, variance, skewness, kurtosis,
-       error estimation, percentile, etc.) based on the empirical
-       distribution (no gaussian assumption)
-
-       It doesn't suffer the numerical instability problem of
-       IncrementalStatistics. The downside is that it stores all
-       samples, thus increasing the memory requirements.
-   */
+   /// <summary>
+   /// Statistics tool
+   /// </summary>
+   /// <remarks>
+   /// This class accumulates a set of data and returns their
+   /// statistics (e.g: mean, variance, skewness, kurtosis,
+   /// error estimation, percentile, etc.) based on the empirical
+   /// distribution (no gaussian assumption)
+   /// It doesn't suffer the numerical instability problem of
+   /// IncrementalStatistics. The downside is that it stores all
+   /// samples, thus increasing the memory requirements.
+   /// </remarks>
    public class GeneralStatistics : IGeneralStatistics
    {
       private List<KeyValuePair<double, double>> samples_;
-      //! number of samples collected
+      /// <summary>
+      /// Returns the number of collected samples.
+      /// </summary>
       public int samples() { return samples_.Count; }
-      //! collected data
+      /// <summary>
+      /// Returns the collected data.
+      /// </summary>
       public List<KeyValuePair<double, double>> data() { return samples_; }
 
       private bool sorted_;
@@ -70,18 +76,27 @@ namespace QLNet
       public GeneralStatistics() { reset(); }
 
 
-      /*! returns the error estimate on the mean value, defined as
-          \f$ \epsilon = \sigma/\sqrt{N}. \f$ */
+      /// <summary>
+      /// Returns the error estimate on the mean value.
+      /// </summary>
+      /// <remarks>
+      /// The estimate is defined as the standard deviation divided by the
+      /// square root of the sample count.
+      /// </remarks>
       public double errorEstimate() { return Math.Sqrt(variance() / samples()); }
 
-      /*! returns the minimum sample value */
+      /// <summary>
+      /// Returns the minimum sample value.
+      /// </summary>
       public double min()
       {
          Utils.QL_REQUIRE(samples() > 0, () => "empty sample set");
          return samples_.Min(x => x.Key);
       }
 
-      /*! returns the maximum sample value */
+      /// <summary>
+      /// Returns the maximum sample value.
+      /// </summary>
       public double max()
       {
          Utils.QL_REQUIRE(samples() > 0, () => "empty sample set");
@@ -89,7 +104,9 @@ namespace QLNet
       }
 
 
-      //! adds a datum to the set, possibly with a weight
+      /// <summary>
+      /// Adds a datum to the set, optionally with a weight.
+      /// </summary>
       public void add
          (double value) { add(value, 1); }
       public void add
@@ -102,7 +119,9 @@ namespace QLNet
          mean_ = weightSum_ = variance_ = skewness_ = kurtosis_ = null;
       }
 
-      //! resets the data to a null set
+      /// <summary>
+      /// Resets the data to an empty set.
+      /// </summary>
       public void reset()
       {
          samples_ = new List<KeyValuePair<double, double>>();
@@ -111,7 +130,9 @@ namespace QLNet
          mean_ = weightSum_ = variance_ = skewness_ = kurtosis_ = null;
       }
 
-      //! sort the data set in increasing order
+      /// <summary>
+      /// Sorts the data set in increasing order.
+      /// </summary>
       public void sort()
       {
          if (!sorted_)
@@ -122,7 +143,9 @@ namespace QLNet
       }
 
 
-      //! sum of data weights
+      /// <summary>
+      /// Returns the sum of data weights.
+      /// </summary>
       public double weightSum()
       {
          if (weightSum_ == null)
@@ -130,8 +153,9 @@ namespace QLNet
          return weightSum_.GetValueOrDefault();
       }
 
-      /*! returns the mean, defined as
-          \f[ \langle x \rangle = \frac{\sum w_i x_i}{\sum w_i}. \f] */
+      /// <summary>
+      /// Returns the weighted mean.
+      /// </summary>
       public double mean()
       {
          if (mean_ == null)
@@ -144,13 +168,14 @@ namespace QLNet
          return mean_.GetValueOrDefault();
       }
 
-      /*! returns the standard deviation \f$ \sigma \f$, defined as the
-      square root of the variance. */
+      /// <summary>
+      /// Returns the standard deviation, defined as the square root of the variance.
+      /// </summary>
       public double standardDeviation() { return Math.Sqrt(variance()); }
 
-      /*! returns the variance, defined as
-          \f[ \sigma^2 = \frac{N}{N-1} \left\langle \left(
-              x-\langle x \rangle \right)^2 \right\rangle. \f] */
+      /// <summary>
+      /// Returns the variance.
+      /// </summary>
       public double variance()
       {
          if (variance_ == null)
@@ -165,11 +190,12 @@ namespace QLNet
          return variance_.GetValueOrDefault();
       }
 
-      /*! returns the skewness, defined as
-          \f[ \frac{N^2}{(N-1)(N-2)} \frac{\left\langle \left(
-              x-\langle x \rangle \right)^3 \right\rangle}{\sigma^3}. \f]
-          The above evaluates to 0 for a Gaussian distribution.
-      */
+      /// <summary>
+      /// Returns the skewness.
+      /// </summary>
+      /// <remarks>
+      /// This evaluates to 0 for a Gaussian distribution.
+      /// </remarks>
       public double skewness()
       {
          if (skewness_ == null)
@@ -185,9 +211,12 @@ namespace QLNet
          return skewness_.GetValueOrDefault();
       }
 
-      /*! returns the excess kurtosis
-          The above evaluates to 0 for a Gaussian distribution.
-      */
+      /// <summary>
+      /// Returns the excess kurtosis.
+      /// </summary>
+      /// <remarks>
+      /// This evaluates to 0 for a Gaussian distribution.
+      /// </remarks>
       public double kurtosis()
       {
          if (kurtosis_ == null)
@@ -206,13 +235,14 @@ namespace QLNet
          return kurtosis_.GetValueOrDefault();
       }
 
-      /*! Expectation value of a function \f$ f \f$ on a given range \f$ \mathcal{R} \f$, i.e.,
-
-          The range is passed as a boolean function returning
-          <tt>true</tt> if the argument belongs to the range
-          or <tt>false</tt> otherwise.
-
-          The function returns a pair made of the result and the number of observations in the given range. */
+      /// <summary>
+      /// Returns the expectation value of a function over a selected range.
+      /// </summary>
+      /// <remarks>
+      /// The range is passed as a Boolean function returning true if the
+      /// argument belongs to the range and false otherwise. The function
+      /// returns both the result and the number of observations in that range.
+      /// </remarks>
       public KeyValuePair<double, int> expectationValue(Func<KeyValuePair<double, double>, double> f,
                                                         Func<KeyValuePair<double, double>, bool> inRange)
       {
@@ -231,9 +261,12 @@ namespace QLNet
          return new KeyValuePair<double, int>(num / den, N);
       }
 
-      /*! \f$ y \f$-th percentile, defined as the value \f$ \bar{x} \f$
-          \pre \f$ y \f$ must be in the range \f$ (0-1]. \f$
-      */
+      /// <summary>
+      /// Returns the percentile value.
+      /// </summary>
+      /// <internalremarks>
+      /// Precondition: the percentile must be in the range (0, 1].
+      /// </internalremarks>
       public double percentile(double percent)
       {
 
@@ -249,9 +282,12 @@ namespace QLNet
          return samples_[pos].Key;
       }
 
-      /*! \f$ y \f$-th top percentile, defined as the value
-          \pre \f$ y \f$ must be in the range \f$ (0-1]. \f$
-      */
+      /// <summary>
+      /// Returns the top percentile value.
+      /// </summary>
+      /// <internalremarks>
+      /// Precondition: the percentile must be in the range (0, 1].
+      /// </internalremarks>
       public double topPercentile(double percent)
       {
          Utils.QL_REQUIRE(percent > 0.0 && percent <= 1.0, () => "percentile (" + percent + ") must be in (0.0, 1.0]");
@@ -266,14 +302,18 @@ namespace QLNet
          return samples_[pos].Key;
       }
 
-      //! adds a sequence of data to the set, with default weight
+      /// <summary>
+      /// Adds a sequence of data to the set with default weight.
+      /// </summary>
       public void addSequence(List<double> list)
       {
          foreach (double v in list)
             add
                (v, 1);
       }
-      //! adds a sequence of data to the set, each with its weight
+      /// <summary>
+      /// Adds a sequence of data to the set, each with its own weight.
+      /// </summary>
       public void addSequence(List<double> data, List<double> weight)
       {
          for (int i = 0; i < data.Count; i++)

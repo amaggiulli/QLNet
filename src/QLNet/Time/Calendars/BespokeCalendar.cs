@@ -21,15 +21,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Bespoke calendar
-   /*! This calendar has no predefined set of business days. Holidays
-       and weekdays can be defined by means of the provided
-       interface. Instances constructed by copying remain linked to
-       the original one; adding a new holiday or weekday will affect
-       all linked instances.
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Bespoke calendar
+   /// </summary>
+   /// <remarks>
+   /// This calendar has no predefined set of business days. Holidays
+   /// and weekdays can be defined by means of the provided
+   /// interface. Instances constructed by copying remain linked to
+   /// the original one; adding a new holiday or weekday will affect
+   /// all linked instances.
+   /// </remarks>
    public class BespokeCalendar : Calendar
    {
       // here implementation does not follow a singleton pattern
@@ -50,17 +51,20 @@ namespace QLNet
 
       private Impl _BespokeImpl;
 
-      /*! \warning different bespoke calendars created with the same
-                   name (or different bespoke calendars created with
-                   no name) will compare as equal.
-      */
+      /// <remarks>
+      /// Warning: different bespoke calendars created with the same
+      /// name (or different bespoke calendars created with
+      /// no name) will compare as equal.
+      /// </remarks>
       public BespokeCalendar(string name = "") : base()
       {
          _BespokeImpl = new Impl(name);
          _impl = _BespokeImpl;
       }
 
-      //! marks the passed day as part of the weekend
+      /// <summary>
+      /// Marks the given day as part of the weekend.
+      /// </summary>
       public void addWeekend(DayOfWeek w)
       {
             _BespokeImpl.addWeekend(w);

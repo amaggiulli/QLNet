@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -22,12 +22,18 @@ using System.Collections.Generic;
 namespace QLNet
 {
 
-   //! Base class for least square problem
+   /// <summary>
+   /// Base class for least square problem
+   /// </summary>
    public abstract class LeastSquareProblem
    {
-      //! size of the problem ie size of target vector
+      /// <summary>
+      /// Returns the size of the problem, namely the size of the target vector.
+      /// </summary>
       public abstract int size();
-      //! compute the target vector and the values of the function to fit
+      /// <summary>
+      /// Computes the target vector and the values of the function being fitted.
+      /// </summary>
       public abstract void targetAndValue(Vector x, ref Vector target, ref Vector fct2fit);
       //        ! compute the target vector, the values of the function to fit
       //            and the matrix of derivatives
@@ -35,22 +41,29 @@ namespace QLNet
       public abstract void targetValueAndGradient(Vector x, ref Matrix grad_fct2fit, ref Vector target, ref Vector fct2fit);
    }
 
-   //! Cost function for least-square problems
-   //    ! Implements a cost function using the interface provided by
-   //        the LeastSquareProblem class.
-   //
+   /// <summary>
+   /// Cost function for least-square problems.
+   /// </summary>
+   /// <remarks>
+   /// This class adapts a <see cref="LeastSquareProblem"/> to the generic optimization
+   /// interfaces used by QLNet.
+   /// </remarks>
    public class LeastSquareFunction : CostFunction
    {
-      //! least square problem
+      // Least-square problem.
       protected LeastSquareProblem lsp_ = null;
 
-      //! Default constructor
+      /// <summary>
+      /// Initializes the cost function from a least-square problem.
+      /// </summary>
       public LeastSquareFunction(LeastSquareProblem lsp)
       {
          lsp_ = lsp;
       }
 
-      //! compute value of the least square function
+      /// <summary>
+      /// Computes the value of the least-square objective function.
+      /// </summary>
       public override double value(Vector x)
       {
          // size of target and function to fit vectors
@@ -74,7 +87,9 @@ namespace QLNet
          Vector diff = target - fct2fit;
          return Vector.DirectMultiply(diff, diff);
       }
-      //! compute vector of derivatives of the least square function
+      /// <summary>
+      /// Computes the gradient of the least-square objective function.
+      /// </summary>
       public override void gradient(ref Vector grad_f, Vector x)
       {
          // size of target and function to fit vectors
@@ -89,7 +104,9 @@ namespace QLNet
          // compute derivative
          grad_f = -2.0 * (Matrix.transpose(grad_fct2fit) * diff);
       }
-      //! compute value and gradient of the least square function
+      /// <summary>
+      /// Computes both the value and gradient of the least-square objective function.
+      /// </summary>
       public override double valueAndGradient(ref Vector grad_f, Vector x)
       {
          // size of target and function to fit vectors
@@ -108,43 +125,36 @@ namespace QLNet
       }
    }
 
-   //! Non-linear least-square method.
-   //    ! Using a given optimization algorithm (default is conjugate
-   //        gradient),
-   //
-   //        \f[ min \{ r(x) : x in R^n \} \f]
-   //
-   //        where \f$ r(x) = |f(x)|^2 \f$ is the Euclidean norm of \f$
-   //        f(x) \f$ for some vector-valued function \f$ f \f$ from
-   //        \f$ R^n \f$ to \f$ R^m \f$,
-   //        \f[ f = (f_1, ..., f_m) \f]
-   //        with \f$ f_i(x) = b_i - \phi(x,t_i) \f$ where \f$ b \f$ is the
-   //        vector of target data and \f$ phi \f$ is a scalar function.
-   //
-   //        Assuming the differentiability of \f$ f \f$, the gradient of
-   //        \f$ r \f$ is defined by
-   //        \f[ grad r(x) = f'(x)^t.f(x) \f]
-   //
+   /// <summary>
+   /// Non-linear least-square solver.
+   /// </summary>
+   /// <remarks>
+   /// This class minimizes the squared Euclidean norm of a vector-valued residual function
+   /// by delegating to a configurable optimization method. The default optimization method
+   /// is conjugate gradient.
+   /// </remarks>
    public class NonLinearLeastSquare
    {
-      //! solution vector
+      // Solution vector.
       private Vector results_;
       private Vector initialValue_;
-      //! least square residual norm
+      // Least-square residual norm.
       private double resnorm_;
-      //! Exit flag of the optimization process
+      // Exit flag of the optimization process.
       private int exitFlag_;
-      //! required accuracy of the solver
+      // Required accuracy of the solver.
       private double accuracy_;
       private double bestAccuracy_;
-      //! maximum and real number of iterations
+      // Maximum and realized number of iterations.
       private int maxIterations_;
-      //! Optimization method
+      // Optimization method.
       private OptimizationMethod om_;
       //constraint
       private Constraint c_;
 
-      //! Default constructor
+      /// <summary>
+      /// Initializes the solver with the given constraint and accuracy.
+      /// </summary>
       public NonLinearLeastSquare(Constraint c, double accuracy)
          : this(c, accuracy, 100)
       {
@@ -161,7 +171,9 @@ namespace QLNet
          om_ = new ConjugateGradient();
          c_ = c;
       }
-      //! Default constructor
+      /// <summary>
+      /// Initializes the solver with the given constraint, accuracy, iteration limit, and optimization method.
+      /// </summary>
       public NonLinearLeastSquare(Constraint c, double accuracy, int maxiter, OptimizationMethod om)
       {
          exitFlag_ = -1;
@@ -171,7 +183,9 @@ namespace QLNet
          c_ = c;
       }
 
-      //! Solve least square problem using numerix solver
+      /// <summary>
+      /// Solves the least-square problem using the configured optimization method.
+      /// </summary>
       public Vector perform(ref LeastSquareProblem lsProblem)
       {
          double eps = accuracy_;
@@ -198,25 +212,33 @@ namespace QLNet
          initialValue_ = initialValue;
       }
 
-      //! return the results
+      /// <summary>
+      /// Returns the solution vector.
+      /// </summary>
       public Vector results()
       {
          return results_;
       }
 
-      //! return the least square residual norm
+      /// <summary>
+      /// Returns the least-square residual norm.
+      /// </summary>
       public double residualNorm()
       {
          return resnorm_;
       }
 
-      //! return last function value
+      /// <summary>
+      /// Returns the last objective-function value.
+      /// </summary>
       public double lastValue()
       {
          return bestAccuracy_;
       }
 
-      //! return exit flag
+      /// <summary>
+      /// Returns the exit flag from the optimization process.
+      /// </summary>
       public int exitFlag()
       {
          return exitFlag_;

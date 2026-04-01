@@ -21,11 +21,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! single-factor random walk
-   /*! \ingroup mcarlo
-
-       \note the path includes the initial asset value as its first point.
-   */
+   /// <summary>
+   /// single-factor random walk
+   /// </summary>
+   /// <remarks>
+   /// Note: the path includes the initial asset value as its first point.
+   /// </remarks>
 
    public interface IPath : ICloneable
    {
@@ -61,21 +62,31 @@ namespace QLNet
       public bool empty() { return timeGrid_.empty(); }
       public int length() { return timeGrid_.size(); }
 
-      //! asset value at the \f$ i \f$-th point
+      /// <summary>
+      /// Returns the asset value at the <paramref name="i"/>-th point.
+      /// </summary>
       public double this[int i] { get { return values_[i]; } set { values_[i] = value; } }
       public double value(int i) { return values_[i]; }
 
-      //! time at the \f$ i \f$-th point
+      /// <summary>
+      /// Returns the time at the <paramref name="i"/>-th point.
+      /// </summary>
       public double time(int i) { return timeGrid_[i]; }
 
-      //! initial asset value
+      /// <summary>
+      /// Returns the initial asset value.
+      /// </summary>
       public double front() { return values_.First(); }
       public void setFront(double value) { values_[0] = value; }
 
-      //! final asset value
+      /// <summary>
+      /// Returns the final asset value.
+      /// </summary>
       public double back() { return values_.Last(); }
 
-      //! time grid
+      /// <summary>
+      /// Returns the time grid.
+      /// </summary>
       public TimeGrid timeGrid() { return timeGrid_; }
 
       // ICloneable interface

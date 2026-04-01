@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Overnight indexed swap: fix vs compounded overnight rate
+   /// <summary>
+   /// Overnight indexed swap: fix vs compounded overnight rate
+   /// </summary>
    public class OvernightIndexedSwap : Swap
    {
       private Type type_;

@@ -22,21 +22,23 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Year-on-year inflation-indexed swap
-   /*! Quoted as a fixed rate \f$ K \f$.  At start:
-       \f[
-       \sum_{i=1}^{M} P_n(0,t_i) N K =
-       \sum_{i=1}^{M} P_n(0,t_i) N \left[ \frac{I(t_i)}{I(t_i-1)} - 1 \right]
-       \f]
-       where \f$ t_M \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
-       nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
-       notional, and \f$ I(t) \f$ is the inflation index value at
-       time \f$ t \f$.
-
-       \note These instruments have now been changed to follow
-             typical VanillaSwap type design conventions
-             w.r.t. Schedules etc.
-   */
+   /// <summary>
+   /// Year-on-year inflation-indexed swap
+   /// </summary>
+   /// <remarks>
+   /// Quoted as a fixed rate \f$ K \f$.  At start:
+   /// \f[
+   /// \sum_{i=1}^{M} P_n(0,t_i) N K =
+   /// \sum_{i=1}^{M} P_n(0,t_i) N \left[ \frac{I(t_i)}{I(t_i-1)} - 1 \right]
+   /// \f]
+   /// where \f$ t_M \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
+   /// nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
+   /// notional, and \f$ I(t) \f$ is the inflation index value at
+   /// time \f$ t \f$.
+   /// Note: These instruments have now been changed to follow
+   /// typical VanillaSwap type design conventions
+   /// w.r.t. Schedules etc.
+   /// </remarks>
    public class YearOnYearInflationSwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }
@@ -257,7 +259,9 @@ namespace QLNet
       private double? fairRate_;
       private double? fairSpread_;
 
-      //! %Arguments for YoY swap calculation
+      /// <summary>
+      /// Arguments for year-on-year inflation swap valuation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public Arguments()
@@ -300,7 +304,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from YoY swap calculation
+      /// <summary>
+      /// Results from year-on-year inflation swap valuation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairRate { get; set; }

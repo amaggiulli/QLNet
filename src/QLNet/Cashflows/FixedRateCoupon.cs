@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2013 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -23,7 +23,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! %Coupon paying a fixed interest rate
+   /// <summary>
+   /// Coupon paying a fixed interest rate
+   /// </summary>
    public class FixedRateCoupon : Coupon
    {
       // constructors
@@ -44,7 +46,9 @@ namespace QLNet
          rate_ = interestRate;
       }
 
-      //! CashFlow interface
+      /// <summary>
+      /// Returns the cash-flow amount.
+      /// </summary>
       public override double amount()
       {
          if (amount_ != null)
@@ -53,9 +57,19 @@ namespace QLNet
          return nominal() * (rate_.compoundFactor(accrualStartDate_, accrualEndDate_, refPeriodStart_, refPeriodEnd_) - 1.0);
       }
 
-      //! Coupon interface
+      /// <summary>
+      /// Returns the coupon rate.
+      /// </summary>
       public override double rate() { return rate_.rate(); }
+
+      /// <summary>
+      /// Returns the underlying interest rate.
+      /// </summary>
       public InterestRate interestRate() { return rate_; }
+
+      /// <summary>
+      /// Returns the day counter used by the coupon.
+      /// </summary>
       public override DayCounter dayCounter() { return rate_.dayCounter(); }
       public override double accruedAmount(Date d)
       {
@@ -78,7 +92,9 @@ namespace QLNet
 
    }
 
-   //! helper class building a sequence of fixed rate coupons
+   /// <summary>
+   /// helper class building a sequence of fixed rate coupons
+   /// </summary>
    public class FixedRateLeg : RateLegBase
    {
       // properties

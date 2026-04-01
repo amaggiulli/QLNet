@@ -31,7 +31,12 @@ namespace QLNet
    /// </summary>
    public class BlackCallableFixedRateBondEngine : CallableFixedRateBond.Engine
    {
-      //! volatility is the quoted fwd yield volatility, not price vol
+      /// <summary>
+      /// Initializes the engine from quoted forward-yield volatility.
+      /// </summary>
+      /// <remarks>
+      /// The volatility is the quoted forward-yield volatility, not price volatility.
+      /// </remarks>
       public BlackCallableFixedRateBondEngine(Handle<Quote> fwdYieldVol, Handle<YieldTermStructure> discountCurve)
       {
          volatility_ = new Handle<CallableBondVolatilityStructure>(new CallableBondConstantVolatility(0, new NullCalendar(),
@@ -40,7 +45,12 @@ namespace QLNet
          volatility_.registerWith(update);
          discountCurve_.registerWith(update);
       }
-      //! volatility is the quoted fwd yield volatility, not price vol
+      /// <summary>
+      /// Initializes the engine from a callable-bond volatility structure.
+      /// </summary>
+      /// <remarks>
+      /// The volatility is the quoted forward-yield volatility, not price volatility.
+      /// </remarks>
       public BlackCallableFixedRateBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
                                               Handle<YieldTermStructure> discountCurve)
       {

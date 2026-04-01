@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! Rate helper for bootstrapping over interest-rate futures prices
+   /// <summary>
+   /// Rate helper for bootstrapping over interest-rate futures prices
+   /// </summary>
    public class FuturesRateHelper : RateHelper
    {
 
@@ -286,7 +288,9 @@ namespace QLNet
          pillarDate_ = latestDate_ = latestRelevantDate_ = maturityDate_;
       }
 
-      //! RateHelper interface
+      /// <summary>
+      /// Returns the implied quote.
+      /// </summary>
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");
@@ -300,7 +304,9 @@ namespace QLNet
          return 100.0 * (1.0 - futureRate);
       }
 
-      //! FuturesRateHelper inspectors
+      /// <summary>
+      /// Returns the convexity adjustment.
+      /// </summary>
       public double convexityAdjustment()
       {
          return convAdj_.empty() ? 0.0 : convAdj_.link.value();
@@ -335,7 +341,9 @@ namespace QLNet
 
 
       //////////////////////////////////////
-      //! Observer interface
+      /// <summary>
+      /// Updates the helper when the evaluation date changes.
+      /// </summary>
       public override void update()
       {
          if (evaluationDate_ != Settings.evaluationDate())
@@ -396,7 +404,9 @@ namespace QLNet
 
 
       /////////////////////////////////////////
-      //! RateHelper interface
+      /// <summary>
+      /// Returns the implied quote.
+      /// </summary>
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "term structure not set");
@@ -430,7 +440,9 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over %FRA rates
+   /// <summary>
+   /// Rate helper for bootstrapping over FRA rates
+   /// </summary>
    public class FraRateHelper : RelativeDateRateHelper
    {
 
@@ -935,7 +947,9 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over BMA swap rates
+   /// <summary>
+   /// Rate helper for bootstrapping over BMA swap rates
+   /// </summary>
    public class BMASwapRateHelper : RelativeDateRateHelper
    {
       public BMASwapRateHelper(Handle<Quote> liborFraction,
@@ -1036,11 +1050,14 @@ namespace QLNet
 
    }
 
-   //! Rate helper for bootstrapping over Fx Swap rates
-   /*! fwdFx = spotFx + fwdPoint
-      isFxBaseCurrencyCollateralCurrency indicates if the base currency
-      of the fx currency pair is the one used as collateral
-   */
+   /// <summary>
+   /// Rate helper for bootstrapping over Fx Swap rates
+   /// </summary>
+   /// <remarks>
+   /// fwdFx = spotFx + fwdPoint
+   /// isFxBaseCurrencyCollateralCurrency indicates if the base currency
+   /// of the fx currency pair is the one used as collateral
+   /// </remarks>
    public class FxSwapRateHelper : RelativeDateRateHelper
    {
       public FxSwapRateHelper(Handle<Quote> fwdPoint,

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,11 +19,13 @@
 
 namespace QLNet
 {
-   //! %USD %LIBOR rate
-   /*! US Dollar LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// USD LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// US Dollar LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// </remarks>
    public class USDLibor : Libor
    {
       public USDLibor(Period tenor) : this(tenor, new Handle<YieldTermStructure>())
@@ -35,7 +37,9 @@ namespace QLNet
 
    }
 
-   //! base class for the one day deposit ICE %USD %LIBOR indexes
+   /// <summary>
+   /// base class for the one day deposit ICE USD LIBOR indexes
+   /// </summary>
    public class DailyTenorUSDLibor : DailyTenorLibor
    {
       public DailyTenorUSDLibor(int settlementDays) : this(settlementDays, new Handle<YieldTermStructure>())
@@ -46,7 +50,9 @@ namespace QLNet
 
    }
 
-   //! Overnight %USD %Libor index
+   /// <summary>
+   /// Overnight USD Libor index
+   /// </summary>
    public class USDLiborON : DailyTenorUSDLibor
    {
       public USDLiborON() : this(new Handle<YieldTermStructure>())

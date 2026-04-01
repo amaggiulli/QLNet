@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -24,25 +24,24 @@ using System;
 namespace QLNet
 {
 
-   //! Swiss calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Berchtoldstag, January 2nd</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Ascension Day</li>
-       <li>Whit Monday</li>
-       <li>Labour Day, May 1st</li>
-       <li>National Day, August 1st</li>
-       <li>Christmas, December 25th</li>
-       <li>St. Stephen's Day, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Swiss calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Berchtoldstag, January 2nd
+   /// Good Friday
+   /// Easter Monday
+   /// Ascension Day
+   /// Whit Monday
+   /// Labour Day, May 1st
+   /// National Day, August 1st
+   /// Christmas, December 25th
+   /// St. Stephen's Day, December 26th
+   /// </remarks>
    public class Switzerland : Calendar
    {
       public Switzerland() : base(Impl.Singleton) { }

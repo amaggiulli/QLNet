@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -22,17 +22,18 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Zero-yield term structure
-   /*! This abstract class acts as an adapter to YieldTermStructure
-      allowing the programmer to implement only the
-      <tt>zeroYieldImpl(Time)</tt> method in derived classes.
-
-      Discount and forward are calculated from zero yields.
-
-      Zero rates are assumed to be annual continuous compounding.
-
-      \ingroup yieldtermstructures
-   */
+   /// <summary>
+   /// Zero-yield term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to YieldTermStructure
+   /// allowing the programmer to implement only the
+   /// <c>zeroYieldImpl(Time)</c> method in derived classes.
+   ///
+   /// Discount and forward are calculated from zero yields.
+   ///
+   /// Zero rates are assumed to be annual continuous compounding.
+   /// </remarks>
    public abstract class ZeroYieldStructure : YieldTermStructure
    {
       #region Constructors
@@ -57,16 +58,18 @@ namespace QLNet
       // range check has already been performed; therefore, it
       // must assume that extrapolation is required.
 
-      //! zero-yield calculation
+      /// <summary>
+      /// Performs the zero-yield calculation.
+      /// </summary>
       protected abstract double zeroYieldImpl(double t);
 
       #endregion
 
       #region YieldTermStructure implementation
 
-      /*! Returns the discount factor for the given date calculating it
-          from the zero yield.
-      */
+      /// <summary>
+      /// Returns the discount factor for the given date, calculated from the zero yield.
+      /// </summary>
       protected override double discountImpl(double t)
       {
          if (t.IsEqual(0.0))     // this acts as a safe guard in cases where

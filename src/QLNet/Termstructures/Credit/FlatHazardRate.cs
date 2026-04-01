@@ -20,8 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Flat hazard-rate curve
-   /*! \ingroup defaultprobabilitytermstructures */
+   /// <summary>
+   /// Flat hazard-rate curve
+   /// </summary>
    public class FlatHazardRate : HazardRateStructure
    {
       #region Constructors

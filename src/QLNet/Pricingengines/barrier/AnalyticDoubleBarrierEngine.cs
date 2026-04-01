@@ -17,20 +17,22 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for double barrier european options using analytical formulae
-   /*! The formulas are taken from "The complete guide to option pricing formulas 2nd Ed",
-        E.G. Haug, McGraw-Hill, p.156 and following.
-        Implements the Ikeda and Kunitomo series (see "Pricing Options with
-        Curved Boundaries" Mathematical Finance 2/1992").
-        This code handles only flat barriers
-
-       \ingroup barrierengines
-
-       \note the formula holds only when strike is in the barrier range
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in literature.
-   */
+   /// <summary>
+   /// Pricing engine for double barrier european options using analytical formulae
+   /// </summary>
+   /// <remarks>
+   /// The formulas are taken from "The complete guide to option pricing formulas 2nd Ed",
+   /// E.G. Haug, McGraw-Hill, p.156 and following.
+   /// Implements the Ikeda and Kunitomo series (see "Pricing Options with
+   /// Curved Boundaries" Mathematical Finance 2/1992").
+   /// This code handles only flat barriers
+   ///
+   ///
+   /// Note: the formula holds only when strike is in the barrier range
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class AnalyticDoubleBarrierEngine : DoubleBarrierOption.Engine
    {
       public AnalyticDoubleBarrierEngine(GeneralizedBlackScholesProcess process, int series = 5)

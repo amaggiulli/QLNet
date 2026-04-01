@@ -17,29 +17,28 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for barrier options using binomial trees
-   /*! \ingroup barrierengines
-
-       \note Timesteps for Cox-Ross-Rubinstein trees are adjusted using Boyle and Lau algorithm.
-             See Journal of Derivatives, 1/1994,
-             "Bumping up against the barrier with the binomial method"
-
-       \test the correctness of the returned values is tested by
-             checking it against analytic european results.
-   */
+   /// <summary>
+   /// Pricing engine for barrier options using binomial trees
+   /// </summary>
+   /// <remarks>
+   /// Note: Timesteps for Cox-Ross-Rubinstein trees are adjusted using Boyle and Lau algorithm.
+   /// See Journal of Derivatives, 1/1994,
+   /// "Bumping up against the barrier with the binomial method"
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking it against analytic european results.
+   /// </remarks>
    public class BinomialBarrierEngine : BarrierOption.Engine
    {
       public delegate ITree GetTree(StochasticProcess1D process, double end, int steps, double strike);
       public delegate DiscretizedAsset GetAsset(BarrierOption.Arguments args, StochasticProcess process, TimeGrid grid = null);
 
-      /*! \param maxTimeSteps is used to limit timeSteps when using Boyle-Lau
-                   optimization. If zero (the default) the maximum number of
-                   steps is calculated by an heuristic: anything when < 1000,
-                   otherwise no more than 5*timeSteps.
-                   If maxTimeSteps is equal to timeSteps Boyle-Lau is disabled.
-                   Likewise if the lattice is not CoxRossRubinstein Boyle-Lau is
-                   disabled and maxTimeSteps ignored.
-      */
+      /// <summary>
+      /// Initializes the engine.
+      /// </summary>
+      /// <remarks>
+      /// <paramref name="maxTimeSteps" /> limits the number of time steps used by Boyle-Lau optimization. If it is zero, the maximum is chosen heuristically: any value below 1000, otherwise no more than <c>5 * timeSteps</c>. If <paramref name="maxTimeSteps" /> equals <paramref name="timeSteps" />, Boyle-Lau is disabled. It is also disabled, and <paramref name="maxTimeSteps" /> ignored, when the lattice is not Cox-Ross-Rubinstein.
+      /// </remarks>
       public BinomialBarrierEngine(GetTree getTree, GetAsset getAsset,
                                    GeneralizedBlackScholesProcess process, int timeSteps, int maxTimeSteps = 0)
       {

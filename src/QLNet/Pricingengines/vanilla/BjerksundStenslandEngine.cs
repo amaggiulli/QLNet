@@ -20,12 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! Bjerksund and Stensland pricing engine for American options (1993)
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in literature.
-   */
+   /// <summary>
+   /// Bjerksund and Stensland pricing engine for American options (1993)
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class BjerksundStenslandApproximationEngine : VanillaOption.Engine
    {
       private GeneralizedBlackScholesProcess process_;

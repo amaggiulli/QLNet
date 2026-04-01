@@ -142,7 +142,9 @@ namespace QLNet
          }
       }
 
-      //! adjustment factors needed to match Black vols
+      /// <summary>
+      /// Returns the adjustment factors needed to match the input Black volatilities.
+      /// </summary>
       public List<double> k(List<double> t, List<double> blackVols)
       {
          Utils.QL_REQUIRE(blackVols.Count == t.Count, () =>
@@ -281,7 +283,9 @@ namespace QLNet
       private OptimizationMethod optMethod_;
       private List<double> weights_;
       private bool vegaWeighted_;
-      //! Parameters
+      /// <summary>
+      /// Calibration input parameters.
+      /// </summary>
       private List<double> times_, blackVols_;
 
    }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -23,44 +23,56 @@ using System;
 
 namespace QLNet
 {
-   //! %Indonesian calendars
-   /*! Holidays for the Indonesia stock exchange
-       (data from <http://www.idx.co.id/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Good Friday</li>
-       <li>Ascension of Jesus Christ</li>
-       <li>Independence Day, August 17th</li>
-       <li>Christmas, December 25th</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2005-2013 only:)
-       <ul>
-       <li>Idul Adha</li>
-       <li>Ied Adha</li>
-       <li>Imlek</li>
-       <li>Moslem's New Year Day</li>
-       <li>Chinese New Year</li>
-       <li>Nyepi (Saka's New Year)</li>
-       <li>Birthday of Prophet Muhammad SAW</li>
-       <li>Waisak</li>
-       <li>Ascension of Prophet Muhammad SAW</li>
-       <li>Idul Fitri</li>
-       <li>Ied Fitri</li>
-       <li>Other national leaves</li>
-       </ul>
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Indonesian calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Indonesia stock exchange
+   /// (data from http://www.idx.co.id/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Good Friday
+   /// Ascension of Jesus Christ
+   /// Independence Day, August 17th
+   /// Christmas, December 25th
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2005-2013 only:)
+   /// Idul Adha
+   /// Ied Adha
+   /// Imlek
+   /// Moslem's New Year Day
+   /// Chinese New Year
+   /// Nyepi (Saka's New Year)
+   /// Birthday of Prophet Muhammad SAW
+   /// Waisak
+   /// Ascension of Prophet Muhammad SAW
+   /// Idul Fitri
+   /// Ied Fitri
+   /// Other national leaves
+   /// </remarks>
    public class Indonesia : Calendar
    {
+      /// <summary>
+      /// Available Indonesian calendar markets.
+      /// </summary>
       public enum Market
       {
-         BEJ,  //!< Jakarta stock exchange (merged into IDX)
-         JSX,  //!< Jakarta stock exchange (merged into IDX)
-         IDX   //!< Indonesia stock exchange
+         /// <summary>
+         /// Jakarta Stock Exchange calendar (merged into IDX).
+         /// </summary>
+         BEJ,
+
+         /// <summary>
+         /// Jakarta Stock Exchange calendar (merged into IDX).
+         /// </summary>
+         JSX,
+
+         /// <summary>
+         /// Indonesia Stock Exchange calendar.
+         /// </summary>
+         IDX
       }
 
       public Indonesia() : this(Market.IDX) { }

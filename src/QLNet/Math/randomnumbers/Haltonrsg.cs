@@ -30,17 +30,20 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Halton low-discrepancy sequence generator
-   /*! Halton algorithm for low-discrepancy sequence.  For more
-       details see chapter 8, paragraph 2 of "Monte Carlo Methods in
-       Finance", by Peter Jäckel
-
-       \test
-       - the correctness of the returned values is tested by
-         reproducing known good values.
-       - the correctness of the returned values is tested by checking
-         their discrepancy against known good values.
-   */
+   /// <summary>
+   /// Halton low-discrepancy sequence generator
+   /// </summary>
+   /// <remarks>
+   /// Halton algorithm for low-discrepancy sequence.  For more
+   /// details see chapter 8, paragraph 2 of "Monte Carlo Methods in
+   /// Finance", by Peter Jäckel
+   ///
+   /// Test:
+   /// - the correctness of the returned values is tested by
+   /// reproducing known good values.
+   /// - the correctness of the returned values is tested by checking
+   /// their discrepancy against known good values.
+   /// </remarks>
 
    public class HaltonRsg : IRNG
    {

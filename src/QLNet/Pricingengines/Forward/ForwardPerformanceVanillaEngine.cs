@@ -20,15 +20,16 @@ using System.Text;
 
 namespace QLNet
 {
-   //! %Forward performance engine for vanilla options
-   /*! \ingroup forwardengines
-
-       \test
-       - the correctness of the returned value is tested by
-         reproducing results available in literature.
-       - the correctness of the returned greeks is tested by
-         reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Forward performance engine for vanilla options
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class ForwardPerformanceVanillaEngine : ForwardVanillaEngine
    {
       public ForwardPerformanceVanillaEngine(GeneralizedBlackScholesProcess process, GetOriginalEngine getEngine)

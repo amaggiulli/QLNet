@@ -20,18 +20,6 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   /*! \brief Parallel evolver for multiple arrays
-
-       This class takes the evolver class and creates a new class which evolves
-       each of the evolvers in parallel.  Part of what this does is to take the
-       types for each evolver class and then wrapper them so that they create
-       new types which are sets of the old types.
-
-       This class is intended to be run in situations where there are parallel
-       differential equations such as with some convertible bond models.
-   */
-   /*! \ingroup findiff */
-
    public class StepConditionSet<array_type> : List<IStepCondition<array_type>>, IStepCondition<array_type>
       where array_type : Vector
    {
@@ -47,6 +35,12 @@ namespace QLNet
 
    public class BoundaryConditionSet : List<List<BoundaryCondition<IOperator>>> { }
 
+   /// <summary>
+   /// Parallel evolver for multiple arrays.
+   /// </summary>
+   /// <remarks>
+   /// This class builds an evolver that advances multiple component evolvers in parallel. It is intended for systems of parallel differential equations such as some convertible-bond models.
+   /// </remarks>
    public class ParallelEvolver<Evolver> : IMixedScheme, ISchemeFactory where Evolver : IMixedScheme, ISchemeFactory, new ()
    {
       private List<IMixedScheme> evolvers_;

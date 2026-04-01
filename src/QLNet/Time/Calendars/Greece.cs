@@ -21,36 +21,46 @@ using System;
 
 namespace QLNet
 {
-   //! Cyprus calendar
-   /*! Public holidays:
-   <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day</li>
-       <li>Epiphany</li>
-       <li>Greek Independence Day</li>
-       <li>Ash Monday / Clean Monday</li>
-       <li>Good Friday</li>
-       <li>Orthodox Easter (Sunday)</li>
-       <li>Orthodox Easter (Monday)</li>
-       <li>Labour Day</li>
-       <li>Holy Spirit Day</li>
-       <li>Assumption Day</li>
-       <li>Greek National Day</li>
-       <li>Christmas Eve</li>
-       <li>Christmas Day</li>
-       <li>Boxing Day</li>
-   </ul>
-   Holidays for the Cyprus stock exchange
-   All public holidays plus Catholic Good Friday, Catholic Easter Monday
-   //https://www.athexgroup.gr/market-alternative-holidays
-   */
+   /// <summary>
+   /// Cyprus calendar
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day
+   /// Epiphany
+   /// Greek Independence Day
+   /// Ash Monday / Clean Monday
+   /// Good Friday
+   /// Orthodox Easter (Sunday)
+   /// Orthodox Easter (Monday)
+   /// Labour Day
+   /// Holy Spirit Day
+   /// Assumption Day
+   /// Greek National Day
+   /// Christmas Eve
+   /// Christmas Day
+   /// Boxing Day
+   /// Holidays for the Cyprus stock exchange
+   /// All public holidays plus Catholic Good Friday, Catholic Easter Monday
+   /// </remarks>
    public class Greece : Calendar
    {
+      /// <summary>
+      /// Available Greek calendar markets.
+      /// </summary>
       public enum Market
       {
-         Public,     //!< Public holidays
-         ASE        //!< Athens stock-exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Public,
+
+         /// <summary>
+         /// Athens Stock Exchange calendar.
+         /// </summary>
+         ASE
       }
       public Greece() : this(Market.ASE) { }
 

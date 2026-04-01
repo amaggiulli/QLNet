@@ -22,7 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Quote adapter for the last fixing available of a given Index
+   /// <summary>
+   /// Quote adapter for the last fixing available of a given Index
+   /// </summary>
    class LastFixingQuote : Quote, IObserver
    {
       protected Index index_;
@@ -33,7 +35,9 @@ namespace QLNet
          index_.registerWith(update);
       }
 
-      //! Quote interface
+      /// <summary>
+      /// Returns the current fixing value.
+      /// </summary>
       public override double value()
       {
          if (!isValid())

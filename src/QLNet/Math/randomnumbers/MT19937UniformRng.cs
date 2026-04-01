@@ -22,20 +22,28 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Uniform random number generator
-   /*! Mersenne Twister random number generator of period 2**19937-1
-
-       For more details see http://www.math.keio.ac.jp/matumoto/emt.html
-
-       \test the correctness of the returned values is tested by
-             checking them against known good results.
-   */
+   /// <summary>
+   /// Uniform random number generator
+   /// </summary>
+   /// <remarks>
+   /// Mersenne Twister random number generator of period 2**19937-1
+   ///
+   /// For more details see http://www.math.keio.ac.jp/matumoto/emt.html
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking them against known good results.
+   /// </remarks>
    public class MersenneTwisterUniformRng : IRNGTraits
    {
       private static int N = 624; // state size
       private static int M = 397; // shift size
 
-      /*! if the given seed is 0, a random seed will be chosen based on clock() */
+      /// <summary>
+      /// Initializes the generator.
+      /// </summary>
+      /// <remarks>
+      /// If the seed is zero, a random seed is chosen from the shared seed generator.
+      /// </remarks>
       public MersenneTwisterUniformRng() : this(0) {}
 
       public MersenneTwisterUniformRng(ulong seed)
@@ -81,19 +89,25 @@ namespace QLNet
       public IRNGTraits factory(ulong seed) { return new MersenneTwisterUniformRng(seed); }
 
 
-      /*! returns a sample with weight 1.0 containing a random number on (0.0, 1.0)-real-interval  */
+      /// <summary>
+      /// Returns a sample with unit weight containing a random number in the open interval <c>(0, 1)</c>.
+      /// </summary>
       public Sample<double> next()
       {
          return new Sample<double>(nextReal(), 1.0);
       }
 
-      //! return a random number in the (0.0, 1.0)-interval
+      /// <summary>
+      /// Returns a random number in the open interval <c>(0, 1)</c>.
+      /// </summary>
       public double nextReal()
       {
          return (nextInt32() + 0.5) / 4294967296.0;
       }
 
-      //! return  a random number on [0,0xffffffff]-interval
+      /// <summary>
+      /// Returns a random 32-bit unsigned integer.
+      /// </summary>
       public ulong nextInt32()
       {
          if (mti == N)

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
@@ -22,7 +22,9 @@ using System;
 
 namespace QLNet
 {
-   //! base class for Inter-Bank-Offered-Rate indexes (e.g. %Libor, etc.)
+   /// <summary>
+   /// base class for Inter-Bank-Offered-Rate indexes (e.g. Libor, etc.)
+   /// </summary>
    public class IborIndex : InterestRateIndex
    {
       public IborIndex(string familyName,
@@ -108,7 +110,9 @@ namespace QLNet
               currency, fixingCalendar, BusinessDayConvention.Following, false, dayCounter, h)
       {}
 
-      //! returns a copy of itself linked to a different forwarding curve
+      /// <summary>
+      /// Returns a copy of the index linked to a different forwarding curve.
+      /// </summary>
       public new OvernightIndex clone(Handle<YieldTermStructure> h)
       {
          return new OvernightIndex(familyName(), fixingDays(), currency(), fixingCalendar(),

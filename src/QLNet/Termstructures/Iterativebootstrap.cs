@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2014 Edem Dawui (edawui@gmail.com)
@@ -42,7 +42,9 @@ namespace QLNet
    }
 
 
-   //! Universal piecewise-term-structure boostrapper.
+   /// <summary>
+   /// Universal piecewise-term-structure boostrapper.
+   /// </summary>
    public class IterativeBootstrap<T, U>: IBootStrap<T>
       where T : Curve<U>, new ()
       where U : TermStructure

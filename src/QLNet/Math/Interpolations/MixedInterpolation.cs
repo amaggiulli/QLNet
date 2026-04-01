@@ -19,16 +19,22 @@ using System.Linq;
 
 namespace QLNet
 {
-   // mixed interpolation between discrete points
+   /// <summary>
+   /// Defines how the two interpolations are applied over the input ranges.
+   /// </summary>
    public enum Behavior
    {
-      ShareRanges,  /*!< Define both interpolations over the
-                               whole range defined by the passed
-                               iterators. This is the default
-                               behavior. */
-      SplitRanges   /*!< Define the first interpolation over the
-                               first part of the range, and the second
-                               interpolation over the second part. */
+      /// <summary>
+      /// Defines both interpolations over the whole range defined by the passed iterators.
+      /// This is the default behavior.
+      /// </summary>
+      ShareRanges,
+
+      /// <summary>
+      /// Defines the first interpolation over the first part of the range, and the second
+      /// interpolation over the second part.
+      /// </summary>
+      SplitRanges
    }
 
    public class MixedInterpolationImpl<Interpolator1, Interpolator2> : Interpolation.templateImpl
@@ -114,10 +120,17 @@ namespace QLNet
 
    }
 
-   //! mixed linear/cubic interpolation between discrete points
+   /// <summary>
+   /// mixed linear/cubic interpolation between discrete points
+   /// </summary>
    public class MixedLinearCubicInterpolation : Interpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearCubicInterpolation(List<double> xBegin, int xEnd,
                                            List<double> yBegin, int n,
                                            Behavior behavior,
@@ -135,8 +148,9 @@ namespace QLNet
       }
    }
 
-   //! mixed linear/cubic interpolation factory and traits
-   /*! \ingroup interpolations */
+   /// <summary>
+   /// mixed linear/cubic interpolation factory and traits
+   /// </summary>
    public class MixedLinearCubic: IInterpolationFactory
    {
       public MixedLinearCubic(int n,
@@ -185,7 +199,12 @@ namespace QLNet
 
    public class MixedLinearCubicNaturalSpline : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearCubicNaturalSpline(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                            Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -197,7 +216,12 @@ namespace QLNet
 
    public class MixedLinearMonotonicCubicNaturalSpline : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/monotonic cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearMonotonicCubicNaturalSpline(List<double> xBegin, int  xEnd, List<double> yBegin, int n,
                                                     Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -209,7 +233,12 @@ namespace QLNet
 
    public class MixedLinearKrugerCubic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/Kruger cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearKrugerCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                     Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -221,7 +250,12 @@ namespace QLNet
 
    public class MixedLinearFritschButlandCubic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/Fritsch-Butland cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearFritschButlandCubic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                             Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -233,7 +267,12 @@ namespace QLNet
 
    public class MixedLinearParabolic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                   Behavior behavior = Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,
@@ -245,7 +284,12 @@ namespace QLNet
 
    public class MixedLinearMonotonicParabolic : MixedLinearCubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a mixed linear/monotonic parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MixedLinearMonotonicParabolic(List<double> xBegin, int xEnd, List<double> yBegin, int n,
                                            Behavior behavior =  Behavior.ShareRanges)
          : base(xBegin, xEnd, yBegin, n, behavior,

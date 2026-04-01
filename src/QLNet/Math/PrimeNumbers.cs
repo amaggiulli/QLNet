@@ -33,12 +33,17 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Prime numbers calculator
-   /*! Taken from "Monte Carlo Methods in Finance", by Peter Jäckel
-    */
+   /// <summary>
+   /// Prime numbers calculator
+   /// </summary>
+   /// <remarks>
+   /// Taken from "Monte Carlo Methods in Finance", by Peter Jäckel
+   /// </remarks>
    public class PrimeNumbers
    {
-      //! Get and store one after another.
+      /// <summary>
+      /// Returns the prime number at the given absolute index, extending the cached sequence as needed.
+      /// </summary>
 
       private static readonly ulong[] firstPrimes =
       {

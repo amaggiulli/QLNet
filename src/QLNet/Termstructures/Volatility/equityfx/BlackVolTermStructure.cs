@@ -21,33 +21,42 @@ using System;
 
 namespace QLNet
 {
-   //! Black-volatility term structure
-   /*! This abstract class defines the interface of concrete
-      Black-volatility term structures which will be derived from
-      this one.
-
-      Volatilities are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black-volatility term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// Black-volatility term structures which will be derived from
+   /// this one.
+   /// Volatilities are assumed to be expressed on an annual basis.
+   /// </remarks>
    public abstract class BlackVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(bdc, dc)
       {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected BlackVolTermStructure(Date referenceDate, Calendar cal = null,
                                       BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc)
       {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected BlackVolTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
                                       DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc)
@@ -57,7 +66,9 @@ namespace QLNet
 
       #region Black Volatility
 
-      //! spot volatility
+      /// <summary>
+      /// Returns the spot volatility for the given maturity date and strike.
+      /// </summary>
       public double blackVol(Date maturity, double strike, bool extrapolate = false)
       {
          checkRange(maturity, extrapolate);
@@ -66,7 +77,9 @@ namespace QLNet
          return blackVolImpl(t, strike);
       }
 
-      //! spot volatility
+      /// <summary>
+      /// Returns the spot volatility for the given maturity time and strike.
+      /// </summary>
       public double blackVol(double maturity, double strike, bool extrapolate = false)
       {
          checkRange(maturity, extrapolate);
@@ -74,7 +87,9 @@ namespace QLNet
          return blackVolImpl(maturity, strike);
       }
 
-      //! spot variance
+      /// <summary>
+      /// Returns the spot variance for the given maturity date and strike.
+      /// </summary>
       public double blackVariance(Date maturity, double strike, bool extrapolate = false)
       {
          checkRange(maturity, extrapolate);
@@ -83,7 +98,9 @@ namespace QLNet
          return blackVarianceImpl(t, strike);
       }
 
-      //! spot variance
+      /// <summary>
+      /// Returns the spot variance for the given maturity time and strike.
+      /// </summary>
       public double blackVariance(double maturity, double strike, bool extrapolate = false)
       {
          checkRange(maturity, extrapolate);
@@ -91,7 +108,9 @@ namespace QLNet
          return blackVarianceImpl(maturity, strike);
       }
 
-      //! forward (at-the-money) volatility
+      /// <summary>
+      /// Returns the forward volatility between the given dates.
+      /// </summary>
       public double blackForwardVol(Date date1, Date date2, double strike, bool extrapolate = false)
       {
          // (redundant) date-based checks
@@ -104,7 +123,9 @@ namespace QLNet
          return blackForwardVol(time1, time2, strike, extrapolate);
       }
 
-      //! forward (at-the-money) volatility
+      /// <summary>
+      /// Returns the forward volatility between the given times.
+      /// </summary>
       public double blackForwardVol(double time1, double time2, double strike, bool extrapolate = false)
       {
          Utils.QL_REQUIRE(time1 <= time2, () => time1 + " later than " + time2);
@@ -136,7 +157,9 @@ namespace QLNet
          }
       }
 
-      //! forward (at-the-money) variance
+      /// <summary>
+      /// Returns the forward variance between the given dates.
+      /// </summary>
       public double blackForwardVariance(Date date1, Date date2,  double strike, bool extrapolate = false)
       {
          // (redundant) date-based checks
@@ -149,7 +172,9 @@ namespace QLNet
          return blackForwardVariance(time1, time2, strike, extrapolate);
       }
 
-      //! forward (at-the-money) variance
+      /// <summary>
+      /// Returns the forward variance between the given times.
+      /// </summary>
       public double blackForwardVariance(double time1, double time2,  double strike, bool extrapolate = false)
       {
          Utils.QL_REQUIRE(time1 <= time2, () => time1 + " later than " + time2);
@@ -170,46 +195,59 @@ namespace QLNet
       //   range check has already been performed; therefore, they must
       //   assume that extrapolation is required.
 
-      //! Black variance calculation
+      /// <summary>
+      /// Implements Black-variance calculation in derived classes.
+      /// </summary>
       protected abstract double blackVarianceImpl(double t, double strike);
 
-      //! Black volatility calculation
+      /// <summary>
+      /// Implements Black-volatility calculation in derived classes.
+      /// </summary>
       protected abstract double blackVolImpl(double t, double strike);
 
       #endregion
 
    }
 
-   //! Black-volatility term structure
-   /*! This abstract class acts as an adapter to BlackVolTermStructure
-       allowing the programmer to implement only the
-       <tt>blackVolImpl(Time, Real, bool)</tt> method in derived classes.
-
-       Volatility are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black-volatility term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to BlackVolTermStructure
+   /// allowing the programmer to implement only the
+   /// <c>blackVolImpl(Time, Real, bool)</c> method in derived classes.
+   /// Volatility are assumed to be expressed on an annual basis.
+   /// </remarks>
 
    public abstract class BlackVolatilityTermStructure : BlackVolTermStructure
    {
       #region Constructors
 
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVolatilityTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
                                              DayCounter dc = null)
          : base(bdc, dc)
       {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected BlackVolatilityTermStructure(Date referenceDate, Calendar cal = null,
                                              BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc)
       {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected BlackVolatilityTermStructure(int settlementDays, Calendar cal,
                                              BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc)
@@ -217,9 +255,9 @@ namespace QLNet
 
       #endregion
 
-      /*! Returns the variance for the given strike and date calculating it
-          from the volatility.
-      */
+      /// <summary>
+      /// Returns the variance for the given strike and maturity, derived from the volatility.
+      /// </summary>
       protected override double blackVarianceImpl(double maturity, double strike)
       {
          double vol = blackVolImpl(maturity, strike);
@@ -228,36 +266,45 @@ namespace QLNet
    }
 
 
-   //! Black variance term structure
-   /*! This abstract class acts as an adapter to VolTermStructure allowing
-       the programmer to implement only the
-       <tt>blackVarianceImpl(Time, Real, bool)</tt> method in derived
-       classes.
-
-       Volatility are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// Black variance term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to VolTermStructure allowing
+   /// the programmer to implement only the
+   /// <c>blackVarianceImpl(Time, Real, bool)</c> method in derived
+   /// classes.
+   /// Volatility are assumed to be expressed on an annual basis.
+   /// </remarks>
 
    public abstract class BlackVarianceTermStructure : BlackVolTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected BlackVarianceTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following,
                                            DayCounter dc = null)
          : base(bdc, dc)
       {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected BlackVarianceTermStructure(Date referenceDate, Calendar cal = null,
                                            BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc)
       {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected BlackVarianceTermStructure(int settlementDays, Calendar cal,
                                            BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc)
@@ -265,9 +312,9 @@ namespace QLNet
 
       #endregion
 
-      /*! Returns the volatility for the given strike and date calculating it
-          from the variance.
-      */
+      /// <summary>
+      /// Returns the volatility for the given strike and maturity, derived from the variance.
+      /// </summary>
       protected override double blackVolImpl(double t, double strike)
       {
          double nonZeroMaturity = t.IsEqual(0.0) ? 0.00001 : t;

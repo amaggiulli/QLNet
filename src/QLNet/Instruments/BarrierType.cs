@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,7 +20,9 @@
 namespace QLNet
 {
 
-   //! Placeholder for enumerated barrier types
+   /// <summary>
+   /// Placeholder for enumerated barrier types
+   /// </summary>
    public struct Barrier
    {
       public enum Type

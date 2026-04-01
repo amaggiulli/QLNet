@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,31 +22,30 @@ using System;
 
 namespace QLNet
 {
-   //! Slovak calendars
-   /*! Holidays for the Bratislava stock exchange
-       (data from <http://www.bsse.sk/>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Epiphany, January 6th</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>May Day, May 1st</li>
-       <li>Liberation of the Republic, May 8th</li>
-       <li>SS. Cyril and Methodius, July 5th</li>
-       <li>Slovak National Uprising, August 29th</li>
-       <li>Constitution of the Slovak Republic, September 1st</li>
-       <li>Our Lady of the Seven Sorrows, September 15th</li>
-       <li>All Saints Day, November 1st</li>
-       <li>Freedom and Democracy of the Slovak Republic, November 17th</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>St. Stephen, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Slovak calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Bratislava stock exchange
+   /// (data from http://www.bsse.sk/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Epiphany, January 6th
+   /// Good Friday
+   /// Easter Monday
+   /// May Day, May 1st
+   /// Liberation of the Republic, May 8th
+   /// SS. Cyril and Methodius, July 5th
+   /// Slovak National Uprising, August 29th
+   /// Constitution of the Slovak Republic, September 1st
+   /// Our Lady of the Seven Sorrows, September 15th
+   /// All Saints Day, November 1st
+   /// Freedom and Democracy of the Slovak Republic, November 17th
+   /// Christmas Eve, December 24th
+   /// Christmas, December 25th
+   /// St. Stephen, December 26th
+   /// </remarks>
    public class Slovakia :  Calendar
    {
       public Slovakia() : base(Impl.Singleton) { }

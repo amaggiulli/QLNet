@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Intermediate class for put/call payoffs
+   /// <summary>
+   /// Intermediate class for put/call payoffs
+   /// </summary>
    public class TypePayoff : Payoff
    {
       protected Option.Type type_;
@@ -35,7 +37,9 @@ namespace QLNet
       public override string description() { return name() + " " + optionType(); }
    }
 
-   //! %Payoff based on a floating strike
+   /// <summary>
+   /// Payoff based on a floating strike
+   /// </summary>
    public class FloatingTypePayoff : TypePayoff
    {
       public FloatingTypePayoff(Option.Type type) : base(type) {}
@@ -46,7 +50,9 @@ namespace QLNet
       public override double value(double k) { throw new NotSupportedException("floating payoff not handled"); }
    }
 
-   //! Intermediate class for payoffs based on a fixed strike
+   /// <summary>
+   /// Intermediate class for payoffs based on a fixed strike
+   /// </summary>
    public class StrikedTypePayoff : TypePayoff
    {
       protected double strike_;
@@ -71,7 +77,9 @@ namespace QLNet
       public double strike() { return strike_; }
    }
 
-   //! Plain-vanilla payoff
+   /// <summary>
+   /// Plain-vanilla payoff
+   /// </summary>
    public class PlainVanillaPayoff : StrikedTypePayoff
    {
       public PlainVanillaPayoff(Option.Type type, double strike) : base(type, strike) {}
@@ -92,7 +100,9 @@ namespace QLNet
       }
    }
 
-   //! %Payoff with strike expressed as percentage
+   /// <summary>
+   /// Payoff with strike expressed as percentage
+   /// </summary>
    public class PercentageStrikePayoff : StrikedTypePayoff
    {
       public PercentageStrikePayoff(Option.Type type, double moneyness) : base(type, moneyness) {}
@@ -113,11 +123,11 @@ namespace QLNet
       }
    }
 
-   /*! Definitions of Binary path-independent payoffs used below,
-       can be found in M. Rubinstein, E. Reiner:"Unscrambling The Binary Code", Risk, Vol.4 no.9,1991.
-       (see: http://www.in-the-money.com/artandpap/Binary%20Options.doc)
-   */
-   //! Binary asset-or-nothing payoff
+   // Definitions of binary path-independent payoffs used below can be found in:
+   // M. Rubinstein and E. Reiner, "Unscrambling The Binary Code", Risk, Vol. 4 no. 9, 1991.
+   /// <summary>
+   /// Binary asset-or-nothing payoff
+   /// </summary>
    public class AssetOrNothingPayoff : StrikedTypePayoff
    {
       public AssetOrNothingPayoff(Option.Type type, double strike) : base(type, strike) {}
@@ -138,7 +148,9 @@ namespace QLNet
       }
    }
 
-   //! Binary cash-or-nothing payoff
+   /// <summary>
+   /// Binary cash-or-nothing payoff
+   /// </summary>
    public class CashOrNothingPayoff : StrikedTypePayoff
    {
       protected double cashPayoff_;
@@ -168,14 +180,17 @@ namespace QLNet
       }
    }
 
-   //! Binary gap payoff
-   /*! This payoff is equivalent to being a) long a PlainVanillaPayoff at
-       the first strike (same Call/Put type) and b) short a
-       CashOrNothingPayoff at the first strike (same Call/Put type) with
-       cash payoff equal to the difference between the second and the first
-       strike.
-       \warning this payoff can be negative depending on the strikes
-   */
+   /// <summary>
+   /// Binary gap payoff
+   /// </summary>
+   /// <remarks>
+   /// This payoff is equivalent to being a) long a PlainVanillaPayoff at
+   /// the first strike (same Call/Put type) and b) short a
+   /// CashOrNothingPayoff at the first strike (same Call/Put type) with
+   /// cash payoff equal to the difference between the second and the first
+   /// strike.
+   /// Warning: this payoff can be negative depending on the strikes
+   /// </remarks>
    public class GapPayoff : StrikedTypePayoff
    {
       protected double secondStrike_;
@@ -207,17 +222,15 @@ namespace QLNet
       }
    }
 
-   //! Binary supershare and superfund payoffs
+   // Binary supershare and superfund payoffs.
 
-   //! Binary superfund payoff
-   /*! Superfund sometimes also called "supershare", which can lead to ambiguity; within QuantLib
-       the terms supershare and superfund are used consistently according to the definitions in
-       Bloomberg OVX function's help pages.
-   */
-   /*! This payoff is equivalent to being (1/lowerstrike) a) long (short) an AssetOrNothing
-       Call (Put) at the lower strike and b) short (long) an AssetOrNothing
-       Call (Put) at the higher strike
-   */
+   /// <summary>
+   /// Binary superfund payoff.
+   /// </summary>
+   /// <remarks>
+   /// Superfund is sometimes also called supershare, which can lead to ambiguity. Within QuantLib, the terms supershare and superfund are used consistently according to the definitions in Bloomberg OVX help.
+   /// This payoff is equivalent to being <c>1 / lowerStrike</c> long (short) an <c>AssetOrNothing</c> call (put) at the lower strike and short (long) an <c>AssetOrNothing</c> call (put) at the higher strike.
+   /// </remarks>
    public class SuperFundPayoff : StrikedTypePayoff
    {
       protected double secondStrike_;
@@ -240,7 +253,9 @@ namespace QLNet
       }
    }
 
-   //! Binary supershare payoff
+   /// <summary>
+   /// Binary supershare payoff
+   /// </summary>
    public class SuperSharePayoff : StrikedTypePayoff
    {
       protected double secondStrike_;

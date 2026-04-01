@@ -26,16 +26,17 @@ using QLNet.Responses;
 
 namespace QLNet
 {
-   //! Bond adapters of CashFlows functions
-   /*! See CashFlows for functions' documentation.
-
-       These adapters calls into CashFlows functions passing as input the
-       Bond cashflows, the dirty price (i.e. npv) calculated from clean
-       price, the bond settlementDate date (unless another date is given), zero
-       ex-dividend days, and excluding any cashflow on the settlementDate date.
-
-       Prices are always clean, as per market convention.
-   */
+   /// <summary>
+   /// Bond adapters of CashFlows functions
+   /// </summary>
+   /// <remarks>
+   /// See CashFlows for functions' documentation.
+   /// These adapters calls into CashFlows functions passing as input the
+   /// Bond cashflows, the dirty price (i.e. npv) calculated from clean
+   /// price, the bond settlementDate date (unless another date is given), zero
+   /// ex-dividend days, and excluding any cashflow on the settlementDate date.
+   /// Prices are always clean, as per market convention.
+   /// </remarks>
 
    public class BondFunctions
    {

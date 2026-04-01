@@ -152,7 +152,9 @@ namespace QLNet
       private double shift_;
    }
 
-   //! %SABR smile interpolation between discrete volatility points.
+   /// <summary>
+   /// SABR smile interpolation between discrete volatility points.
+   /// </summary>
    // For volatility type Normal and when the forward < 0, it is suggested to fix beta = 0.0
    public class SABRInterpolation : Interpolation
    {
@@ -208,7 +210,9 @@ namespace QLNet
       private XABRCoeffHolder<SABRSpecs> coeffs_;
    }
 
-   //! %SABR interpolation factory and traits
+   /// <summary>
+   /// SABR interpolation factory and traits
+   /// </summary>
    public class SABR
    {
       public SABR(double t, double forward, double alpha, double beta, double nu, double rho,

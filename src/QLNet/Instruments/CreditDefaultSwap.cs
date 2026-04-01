@@ -294,9 +294,9 @@ namespace QLNet
          Utils.QL_REQUIRE(fairSpread_ != null, () => "fair spread not available");
          return fairSpread_.Value;
       }
-      /*! Returns the variation of the fixed-leg value given a
-          one-basis-point change in the running spread.
-      */
+      /// <summary>
+      /// Returns the variation of the fixed-leg value for a one-basis-point change in the running spread.
+      /// </summary>
       public double couponLegBPS()
       {
          calculate();

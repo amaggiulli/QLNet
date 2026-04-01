@@ -22,9 +22,9 @@ namespace QLNet
 {
    public class StrippedOptionletAdapter : OptionletVolatilityStructure
    {
-      /*! Adapter class for turning a StrippedOptionletBase object into an
-       OptionletVolatilityStructure.
-      */
+      /// <summary>
+      /// Adapts a <see cref="StrippedOptionletBase" /> into an <see cref="OptionletVolatilityStructure" />.
+      /// </summary>
       public StrippedOptionletAdapter(StrippedOptionletBase s)
          : base(s.settlementDays(), s.calendar(), s.businessDayConvention(), s.dayCounter())
       {

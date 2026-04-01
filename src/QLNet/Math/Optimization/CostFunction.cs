@@ -24,20 +24,27 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //!  Cost function abstract class for optimization problem
+   /// <summary>
+   /// Cost function abstract class for optimization problem
+   /// </summary>
    public abstract class CostFunction
    {
-      //! method to overload to compute the cost function value in x
+      /// <summary>
+      /// Computes the cost-function value at <paramref name="x"/>.
+      /// </summary>
       public virtual double value(Vector x)
       {
          Vector v = Vector.Sqrt(x);
          return Math.Sqrt(v.Sum(a => a) / Convert.ToDouble(v.size()));
       }
-      //! method to overload to compute the cost function values in x
+      /// <summary>
+      /// Computes the component-wise cost-function values at <paramref name="x"/>.
+      /// </summary>
       public abstract Vector values(Vector x);
 
-      //! method to overload to compute grad_f, the first derivative of
-      //  the cost function with respect to x
+      /// <summary>
+      /// Computes the gradient of the cost function with respect to <paramref name="x"/>.
+      /// </summary>
       public virtual void gradient(ref Vector grad, Vector x)
       {
          double eps = finiteDifferenceEpsilon(), fp, fm;
@@ -53,16 +60,18 @@ namespace QLNet
          }
       }
 
-      //! method to overload to compute grad_f, the first derivative of
-      //  the cost function with respect to x and also the cost function
+      /// <summary>
+      /// Computes both the cost-function value and its gradient at <paramref name="x"/>.
+      /// </summary>
       public virtual double valueAndGradient(ref Vector grad, Vector x)
       {
          gradient(ref grad, x);
          return value(x);
       }
 
-      //! method to overload to compute J_f, the jacobian of
-      // the cost function with respect to x
+      /// <summary>
+      /// Computes the Jacobian of the cost function with respect to <paramref name="x"/>.
+      /// </summary>
       public virtual void jacobian(Matrix jac, Vector x)
       {
          double eps = finiteDifferenceEpsilon();
@@ -83,15 +92,18 @@ namespace QLNet
          }
       }
 
-      //! method to overload to compute J_f, the jacobian of
-      // the cost function with respect to x and also the cost function
+      /// <summary>
+      /// Computes both the vector of values and its Jacobian at <paramref name="x"/>.
+      /// </summary>
       public virtual Vector valuesAndJacobian(Matrix jac, Vector x)
       {
          jacobian(jac, x);
          return values(x);
       }
 
-      //! Default epsilon for finite difference method :
+      /// <summary>
+      /// Returns the default finite-difference epsilon.
+      /// </summary>
       public virtual double finiteDifferenceEpsilon() { return 1e-8; }
    }
 

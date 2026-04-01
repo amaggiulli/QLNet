@@ -21,14 +21,13 @@ using System;
 namespace QLNet
 {
 
-   //! Square-root process class
-//    ! This class describes a square-root process governed by
-//        \f[
-//            dx = a (b - x_t) dt + \sigma \sqrt{x_t} dW_t.
-//        \f]
-//
-//        \ingroup processes
-//
+   /// <summary>
+   /// Square-root process.
+   /// </summary>
+   /// <remarks>
+   /// This class describes a square-root process governed by
+   /// <c>dx = a * (b - x_t) * dt + sigma * sqrt(x_t) * dW_t</c>.
+   /// </remarks>
    public class SquareRootProcess : StochasticProcess1D
    {
       private double x0_;

@@ -18,23 +18,36 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Sobol Brownian generator for market-model simulations
-   /*! Incremental Brownian generator using a Sobol generator,
-       inverse-cumulative Gaussian method, and Brownian bridging.
-   */
+   /// <summary>
+   /// Sobol Brownian generator for market-model simulations
+   /// </summary>
+   /// <remarks>
+   /// Incremental Brownian generator using a Sobol generator,
+   /// inverse-cumulative Gaussian method, and Brownian bridging.
+   /// </remarks>
    public class SobolBrownianGenerator : IBrownianGenerator
    {
-      public enum Ordering
-      {
-         Factors,  /*!< The variates with the best quality will be
-                        used for the evolution of the first factor. */
-         Steps,    /*!< The variates with the best quality will be
-                        used for the largest steps of all factors. */
-         Diagonal  /*!< A diagonal schema will be used to assign
-                        the variates with the best quality to the
-                        most important factors and the largest
-                        steps. */
-      }
+       /// <summary>
+       /// Defines how Sobol variates are assigned in the Brownian generator.
+       /// </summary>
+       public enum Ordering
+       {
+          /// <summary>
+          /// Uses the variates with the best quality for the evolution of the first factor.
+          /// </summary>
+          Factors,
+
+          /// <summary>
+          /// Uses the variates with the best quality for the largest steps of all factors.
+          /// </summary>
+          Steps,
+
+          /// <summary>
+          /// Uses a diagonal scheme to assign the variates with the best quality to the most
+          /// important factors and the largest steps.
+          /// </summary>
+          Diagonal
+       }
       public SobolBrownianGenerator(int factors, int steps, Ordering ordering, ulong seed = 0,
                                     SobolRsg.DirectionIntegers directionIntegers = SobolRsg.DirectionIntegers.Jaeckel)
       {

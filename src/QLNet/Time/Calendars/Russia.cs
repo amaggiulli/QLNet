@@ -20,37 +20,46 @@ using System;
 
 namespace QLNet
 {
-   //! Russian calendar
-   /*! Public holidays (see <http://www.cbr.ru/eng/>:):
-   <ul>
-   <li>Saturdays</li>
-   <li>Sundays</li>
-   <li>New Year holidays and Christmas, January 1st to 8th</li>
-   <li>Defender of the Fatherland Day, February 23rd (possibly
-   moved to Monday)</li>
-   <li>International Women's Day, March 8th (possibly moved to
-   Monday)</li>
-   <li>Labour Day, May 1st (possibly moved to Monday)</li>
-   <li>Victory Day, May 9th (possibly moved to Monday)</li>
-   <li>Russia Day, June 12th (possibly moved to Monday)</li>
-   <li>Unity Day, November 4th (possibly moved to Monday)</li>
-   </ul>
-
-   Holidays for the Moscow Exchange (MOEX) taken from
-   <http://moex.com/s726> and related pages.  These holidays are
-   <em>not</em> consistent year-to-year, may or may not correlate
-   to public holidays, and are only available for dates since the
-   introduction of the MOEX 'brand' (a merger of the stock and
-   futures markets).
-
-   \ingroup calendars
-   */
+   /// <summary>
+   /// Russian calendar
+   /// </summary>
+   /// <remarks>
+   /// Public holidays (see http://www.cbr.ru/eng/:):
+   /// Saturdays
+   /// Sundays
+   /// New Year holidays and Christmas, January 1st to 8th
+   /// Defender of the Fatherland Day, February 23rd (possibly
+   /// moved to Monday)
+   /// International Women's Day, March 8th (possibly moved to
+   /// Monday)
+   /// Labour Day, May 1st (possibly moved to Monday)
+   /// Victory Day, May 9th (possibly moved to Monday)
+   /// Russia Day, June 12th (possibly moved to Monday)
+   /// Unity Day, November 4th (possibly moved to Monday)
+   ///
+   /// Holidays for the Moscow Exchange (MOEX) taken from
+   /// http://moex.com/s726 and related pages.  These holidays are
+   /// &lt;em&gt;not&lt;/em&gt; consistent year-to-year, may or may not correlate
+   /// to public holidays, and are only available for dates since the
+   /// introduction of the MOEX 'brand' (a merger of the stock and
+   /// futures markets).
+   /// </remarks>
    public class Russia : Calendar
    {
+      /// <summary>
+      /// Available Russian calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,     //!< generic settlement calendar
-         MOEX            //!< Moscow Exchange calendar
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Moscow Exchange calendar.
+         /// </summary>
+         MOEX
       }
 
       public Russia() : this(Market.Settlement) { }

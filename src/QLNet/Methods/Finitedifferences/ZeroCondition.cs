@@ -22,8 +22,12 @@ using System;
 
 namespace QLNet
 {
-   //! Zero exercise condition.
-   /*! Used in CEV models */
+   /// <summary>
+   /// Zero exercise condition.
+   /// </summary>
+   /// <remarks>
+   /// Used in CEV models
+   /// </remarks>
    public class ZeroCondition<array_type> : IStepCondition<array_type> where array_type : Vector
    {
       public void applyTo(object a, double t)

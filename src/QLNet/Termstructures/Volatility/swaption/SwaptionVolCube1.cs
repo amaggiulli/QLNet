@@ -360,7 +360,7 @@ namespace QLNet
       {
          base.performCalculations();
 
-         //! set marketVolCube_ by volSpreads_ quotes
+         // Set marketVolCube_ from the volSpreads_ quotes.
          marketVolCube_ = new Cube(optionDates_, swapTenors_, optionTimes_, swapLengths_, nStrikes_);
          double atmForward;
          double atmVol, vol;
@@ -599,7 +599,7 @@ namespace QLNet
       }
       protected void setParameterGuess()
       {
-         //! set parametersGuess_ by parametersGuessQuotes_
+         // Set parametersGuess_ from the parametersGuessQuotes_ handles.
          parametersGuess_ = new Cube(optionDates_, swapTenors_, optionTimes_, swapLengths_, 4, true, backwardFlat_);
          int i;
          for (i = 0; i < 4; i++)

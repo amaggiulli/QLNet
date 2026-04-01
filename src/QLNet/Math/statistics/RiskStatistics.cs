@@ -21,14 +21,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! empirical-distribution risk measures
-   /*! This class wraps a somewhat generic statistic tool and adds
-       a number of risk measures (e.g.: value-at-risk, expected
-       shortfall, etc.) based on the data distribution as reported by
-       the underlying statistic tool.
-
-       \todo add historical annualized volatility
-   */
+   /// <summary>
+   /// empirical-distribution risk measures
+   /// </summary>
+   /// <remarks>
+   /// This class wraps a somewhat generic statistic tool and adds
+   /// a number of risk measures (e.g.: value-at-risk, expected
+   /// shortfall, etc.) based on the data distribution as reported by
+   /// the underlying statistic tool.
+   ///
+   /// TODO: add historical annualized volatility
+   /// </remarks>
    public class GenericRiskStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
    {
 
@@ -60,23 +63,33 @@ namespace QLNet
       #endregion
 
 
-      /*! returns the variance of observations below the mean,
-          See Markowitz (1959).
-      */
+      /// <summary>
+      /// Returns the variance of observations below the mean.
+      /// </summary>
+      /// <remarks>
+      /// See Markowitz (1959).
+      /// </remarks>
       public double semiVariance() { return regret(this.mean()); }
 
-      /*! returns the semi deviation, defined as the square root of the semi variance. */
+      /// <summary>
+      /// Returns the semi deviation, defined as the square root of the semi variance.
+      /// </summary>
       public double semiDeviation() { return Math.Sqrt(semiVariance()); }
 
       // returns the variance of observations below 0.0,
       public double downsideVariance() { return regret(0.0); }
 
-      /*! returns the downside deviation, defined as the square root of the downside variance. */
+      /// <summary>
+      /// Returns the downside deviation, defined as the square root of the downside variance.
+      /// </summary>
       public double downsideDeviation() { return Math.Sqrt(downsideVariance()); }
 
-      /*! returns the variance of observations below target,
-          See Dembo and Freeman, "The Rules Of Risk", Wiley (2001).
-      */
+      /// <summary>
+      /// Returns the variance of observations below a target value.
+      /// </summary>
+      /// <remarks>
+      /// See Dembo and Freeman, "The Rules Of Risk", Wiley (2001).
+      /// </remarks>
       public double regret(double target)
       {
          // average over the range below the target
@@ -88,7 +101,9 @@ namespace QLNet
          return (N / (N - 1.0)) * x;
       }
 
-      //! potential upside (the reciprocal of VAR) at a given percentile
+      /// <summary>
+      /// Returns the potential upside at a given percentile.
+      /// </summary>
       public double potentialUpside(double centile)
       {
          Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9, () => "percentile (" + centile + ") out of range [0.9, 1)");
@@ -97,7 +112,9 @@ namespace QLNet
          return Math.Max(percentile(centile), 0.0);
       }
 
-      //! value-at-risk at a given percentile
+      /// <summary>
+      /// Returns the value-at-risk at a given percentile.
+      /// </summary>
       public double valueAtRisk(double centile)
       {
          Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9, () => "percentile (" + centile + ") out of range [0.9, 1)");
@@ -106,17 +123,17 @@ namespace QLNet
          return -Math.Min(percentile(1.0 - centile), 0.0);
       }
 
-      //! expected shortfall at a given percentile
-      /*! returns the expected loss in case that the loss exceeded
-          a VaR threshold,
-
-          that is the average of observations below the
-          given percentile \f$ p \f$.
-          Also know as conditional value-at-risk.
-
-          See Artzner, Delbaen, Eber and Heath,
-          "Coherent measures of risk", Mathematical Finance 9 (1999)
-      */
+      /// <summary>
+      /// Returns the expected shortfall at a given percentile.
+      /// </summary>
+      /// <remarks>
+      /// This is the expected loss when the loss exceeds a VaR threshold,
+      /// i.e. the average of observations below the given percentile. It is
+      /// also known as conditional value-at-risk.
+      ///
+      /// See Artzner, Delbaen, Eber and Heath, "Coherent measures of risk",
+      /// Mathematical Finance 9 (1999).
+      /// </remarks>
       public double expectedShortfall(double centile)
       {
          Utils.QL_REQUIRE(centile < 1.0 && centile >= 0.9, () => "percentile (" + centile + ") out of range [0.9, 1)");
@@ -150,8 +167,12 @@ namespace QLNet
       }
    }
 
-   //! default risk measures tool
-   /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
+   /// <summary>
+   /// default risk measures tool
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by checking them against numerical calculations.
+   /// </remarks>
    public class RiskStatistics : GenericRiskStatistics<GaussianStatistics>
    {
       public double gaussianPercentile(double value)
@@ -188,7 +209,11 @@ namespace QLNet
       }
    }
 
-   //! default statistics tool
-   /*! \test the correctness of the returned values is tested by checking them against numerical calculations. */
+   /// <summary>
+   /// default statistics tool
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned values is tested by checking them against numerical calculations.
+   /// </remarks>
    public class Statistics : RiskStatistics { }
 }

@@ -137,11 +137,20 @@ namespace QLNet
    }
 
 
-   //! bicubic-spline interpolation between discrete points
-   /*! \todo revise end conditions */
+   /// <summary>
+   /// bicubic-spline interpolation between discrete points
+   /// </summary>
+   /// <remarks>
+   /// TODO: revise end conditions
+   /// </remarks>
    public class BicubicSpline : Interpolation2D
    {
-      /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a bicubic spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> and <c>y</c> values must be sorted.
+      /// </remarks>
       public BicubicSpline(List<double> xBegin, int size, List<double> yBegin, int ySize, Matrix zData)
       {
          impl_ = new BicubicSplineImpl(xBegin, size, yBegin, ySize, zData);
@@ -173,7 +182,9 @@ namespace QLNet
       }
    }
 
-   //! bicubic-spline-interpolation factory
+   /// <summary>
+   /// bicubic-spline-interpolation factory
+   /// </summary>
    public  class Bicubic : IInterpolationFactory2D
    {
       public Interpolation2D interpolate(List<double> xBegin, int size, List<double> yBegin, int ySize, Matrix zData)

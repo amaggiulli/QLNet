@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -21,11 +21,13 @@
 namespace QLNet
 {
 
-   //! %GBP %LIBOR rate
-   /*! Pound Sterling LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-   */
+   /// <summary>
+   /// GBP LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Pound Sterling LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// </remarks>
    public class GBPLibor : Libor
    {
       public GBPLibor(Period tenor)
@@ -39,7 +41,9 @@ namespace QLNet
 
    }
 
-   //! Base class for the one day deposit ICE %GBP %LIBOR indexes
+   /// <summary>
+   /// Base class for the one day deposit ICE GBP LIBOR indexes
+   /// </summary>
    public class DailyTenorGBPLibor : DailyTenorLibor
    {
       public DailyTenorGBPLibor(int settlementDays, Handle<YieldTermStructure> h)
@@ -48,7 +52,9 @@ namespace QLNet
       {}
    }
 
-   //! Overnight %GBP %Libor index
+   /// <summary>
+   /// Overnight GBP Libor index
+   /// </summary>
    public class GBPLiborON : DailyTenorGBPLibor
    {
       public GBPLiborON(Handle<YieldTermStructure> h) : base(0, h)

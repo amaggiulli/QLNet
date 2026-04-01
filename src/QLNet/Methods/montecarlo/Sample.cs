@@ -19,8 +19,9 @@
 
 namespace QLNet
 {
-   //! weighted sample
-   /*! \ingroup mcarlo */
+   /// <summary>
+   /// Weighted sample.
+   /// </summary>
    // todo check for Sample for value types and Sample for object types to take care of proper object copying
    public class Sample<T>
    {

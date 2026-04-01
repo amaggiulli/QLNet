@@ -20,12 +20,13 @@
 
 namespace QLNet
 {
-   //! Finite-differences pricing engine for shout vanilla options
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned greeks is tested by
-             reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Finite-differences pricing engine for shout vanilla options
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class FDShoutEngine : FDEngineAdapter<FDShoutCondition<FDStepConditionEngine>, VanillaOption.Engine>,
       IFDEngine
    {

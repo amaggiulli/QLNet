@@ -18,30 +18,32 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! CMS-coupon pricer
-   /*! Prices a cms coupon using a linear terminal swap rate model
-      The slope parameter is linked to a gaussian short rate model.
-      Reference: Andersen, Piterbarg, Interest Rate Modeling, 16.3.2
-
-      The cut off point for integration can be set
-      - by explicitly specifying the lower and upper bound
-      - by defining the lower and upper bound to be the strike where
-         a vanilla swaption has 1% or less vega of the atm swaption
-      - by defining the lower and upper bound to be the strike where
-         undeflated (!) payer resp. receiver prices are below a given
-         threshold
-      - by specificying a number of standard deviations to cover
-         using a Black Scholes process with an atm volatility as
-         a benchmark
-      In every case the lower and upper bound are applied though.
-      In case the smile section is shifted lognormal, the specified
-      lower and upper bound are applied to strike + shift so that
-      e.g. a zero lower bound always refers to the lower bound of
-      the rates in the shifted lognormal model.
-      Note that for normal volatility input the lower rate bound
-      should probably be adjusted to an appropriate negative value,
-      there is no automatic adjustment in this case.
-   */
+   /// <summary>
+   /// CMS-coupon pricer
+   /// </summary>
+   /// <remarks>
+   /// Prices a cms coupon using a linear terminal swap rate model
+   /// The slope parameter is linked to a gaussian short rate model.
+   /// Reference: Andersen, Piterbarg, Interest Rate Modeling, 16.3.2
+   /// The cut off point for integration can be set
+   /// - by explicitly specifying the lower and upper bound
+   /// - by defining the lower and upper bound to be the strike where
+   /// a vanilla swaption has 1 or less vega of the atm swaption
+   /// - by defining the lower and upper bound to be the strike where
+   /// undeflated (!) payer resp. receiver prices are below a given
+   /// threshold
+   /// - by specificying a number of standard deviations to cover
+   /// using a Black Scholes process with an atm volatility as
+   /// a benchmark
+   /// In every case the lower and upper bound are applied though.
+   /// In case the smile section is shifted lognormal, the specified
+   /// lower and upper bound are applied to strike + shift so that
+   /// e.g. a zero lower bound always refers to the lower bound of
+   /// the rates in the shifted lognormal model.
+   /// Note that for normal volatility input the lower rate bound
+   /// should probably be adjusted to an appropriate negative value,
+   /// there is no automatic adjustment in this case.
+   /// </remarks>
    public class LinearTsrPricer : CmsCouponPricer, IMeanRevertingPricer
    {
       public class Settings

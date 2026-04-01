@@ -21,7 +21,9 @@ namespace QLNet
 {
    public class CapFloorTermVolSurface : CapFloorTermVolatilityStructure
    {
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the surface with a floating reference date and floating market data.
+      /// </summary>
       public CapFloorTermVolSurface(int settlementDays,
                                     Calendar calendar,
                                     BusinessDayConvention bdc,
@@ -54,7 +56,9 @@ namespace QLNet
          interpolate();
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the surface with a fixed reference date and floating market data.
+      /// </summary>
       public CapFloorTermVolSurface(Date settlementDate,
                                     Calendar calendar,
                                     BusinessDayConvention bdc,
@@ -85,7 +89,9 @@ namespace QLNet
          interpolate();
       }
 
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the surface with a fixed reference date and fixed market data.
+      /// </summary>
       public CapFloorTermVolSurface(Date settlementDate,
                                     Calendar calendar,
                                     BusinessDayConvention bdc,
@@ -116,7 +122,9 @@ namespace QLNet
          interpolate();
       }
 
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the surface with a floating reference date and fixed market data.
+      /// </summary>
       public CapFloorTermVolSurface(int settlementDays,
                                     Calendar calendar,
                                     BusinessDayConvention bdc,

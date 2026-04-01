@@ -21,7 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! Black volatility surface backed by Heston model
+   /// <summary>
+   /// Black volatility surface backed by Heston model
+   /// </summary>
    public class HestonBlackVolSurface : BlackVolTermStructure
    {
       private Handle<HestonModel> hestonModel_;

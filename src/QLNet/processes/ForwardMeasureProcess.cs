@@ -17,12 +17,13 @@ using System;
 
 namespace QLNet
 {
-   //! forward-measure stochastic process
-   /*! stochastic process whose dynamics are expressed in the forward
-       measure.
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// forward-measure stochastic process
+   /// </summary>
+   /// <remarks>
+   /// stochastic process whose dynamics are expressed in the forward
+   /// measure.
+   /// </remarks>
    public class ForwardMeasureProcess : StochasticProcess
    {
       public virtual void setForwardMeasureTime(double T)
@@ -63,12 +64,13 @@ namespace QLNet
       }
    }
 
-   //! forward-measure 1-D stochastic process
-   /*! 1-D stochastic process whose dynamics are expressed in the
-        forward measure.
-
-        \ingroup processes
-   */
+   /// <summary>
+   /// forward-measure 1-D stochastic process
+   /// </summary>
+   /// <remarks>
+   /// 1-D stochastic process whose dynamics are expressed in the
+   /// forward measure.
+   /// </remarks>
    public class ForwardMeasureProcess1D : StochasticProcess1D
    {
       public virtual void setForwardMeasureTime(double T)

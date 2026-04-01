@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,25 +23,24 @@ using System;
 
 namespace QLNet
 {
-   //! Danish calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>Maundy Thursday</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>General Prayer Day, 25 days after Easter Monday</li>
-       <li>Ascension</li>
-       <li>Whit (Pentecost) Monday </li>
-       <li>New Year's Day, January 1st</li>
-       <li>Constitution Day, June 5th</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Danish calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// Maundy Thursday
+   /// Good Friday
+   /// Easter Monday
+   /// General Prayer Day, 25 days after Easter Monday
+   /// Ascension
+   /// Whit (Pentecost) Monday 
+   /// New Year's Day, January 1st
+   /// Constitution Day, June 5th
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   /// </remarks>
    public class Denmark : Calendar
    {
       public Denmark() : base(Impl.Singleton) { }

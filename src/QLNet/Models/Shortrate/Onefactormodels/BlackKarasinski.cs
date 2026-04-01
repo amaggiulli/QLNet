@@ -95,7 +95,9 @@ namespace QLNet
       #endregion
    }
 
-   //! Short-rate dynamics in the Black-Karasinski model
+   /// <summary>
+   /// Short-rate dynamics in the Black-Karasinski model
+   /// </summary>
    public class Dynamics : OneFactorModel.ShortRateDynamics
    {
 

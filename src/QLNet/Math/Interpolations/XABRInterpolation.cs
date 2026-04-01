@@ -85,25 +85,33 @@ namespace QLNet
          modelInstance_ = model_.instance(t_, forward_, params_, addParams_);
       }
 
-      /*! Expiry, Forward */
+      /// <summary>
+      /// Gets or sets the expiry and forward-related state.
+      /// </summary>
       public double t_ { get; set; }
 
       public double forward_ { get; set; }
 
-      /*! Parameters */
+      /// <summary>
+      /// Gets or sets the model parameters.
+      /// </summary>
       public List < double? > params_ { get; set; }
       public List<bool> paramIsFixed_ { get; set; }
       public List < double? > addParams_ { get; set; }
 
       public List<double> weights_ { get; set; }
 
-      /*! Interpolation results */
+      /// <summary>
+      /// Gets or sets interpolation result metrics.
+      /// </summary>
       public double? error_ { get; set; }
       public double? maxError_ { get; set; }
 
       public EndCriteria.Type XABREndCriteria_ { get; set; }
 
-      /*! Model instance (if required) */
+      /// <summary>
+      /// Gets or sets the model instance when one is required.
+      /// </summary>
       public IWrapper modelInstance_ { get; set; }
       public IModel model_ { get; set; }
    }
@@ -351,7 +359,9 @@ namespace QLNet
       { }
    }
 
-   //! No constraint
+   /// <summary>
+   /// No constraint
+   /// </summary>
    public class NoXABRConstraint : XABRConstraint
    {
       private class Impl : IConstraint

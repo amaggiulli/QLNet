@@ -17,19 +17,20 @@ using System;
 
 namespace QLNet
 {
-   //! Heston-model engine for European options based on analytic expansions
-   /*! References:
-
-       M Forde, A Jacquier, R Lee, The small-time smile and term
-       structure of implied volatility under the Heston model
-       SIAM Journal on Financial Mathematics, 2012 - SIAM
-
-       M Lorig, S Pagliarani, A Pascucci, Explicit implied vols for
-       multifactor local-stochastic vol models
-       arXiv preprint arXiv:1306.5447v3, 2014 - arxiv.org
-
-       \ingroup vanillaengines
-   */
+   /// <summary>
+   /// Heston-model engine for European options based on analytic expansions
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// M Forde, A Jacquier, R Lee, The small-time smile and term
+   /// structure of implied volatility under the Heston model
+   /// SIAM Journal on Financial Mathematics, 2012 - SIAM
+   ///
+   /// M Lorig, S Pagliarani, A Pascucci, Explicit implied vols for
+   /// multifactor local-stochastic vol models
+   /// arXiv preprint arXiv:1306.5447v3, 2014 - arxiv.org
+   /// </remarks>
    public class HestonExpansionEngine : GenericModelEngine<HestonModel, VanillaOption.Arguments,
       VanillaOption.Results>
    {
@@ -100,12 +101,13 @@ namespace QLNet
       private HestonExpansionFormula formula_;
    }
 
-   /*! Interface to represent some Heston expansion formula.
-        During calibration, it would typically be initialized once per
-        implied volatility surface slice, then calls for each surface
-        strike to impliedVolatility(strike, forward) would be
-        performed.
-    */
+   /// <summary>
+   /// Interface to represent some Heston expansion formula.
+   /// During calibration, it would typically be initialized once per
+   /// implied volatility surface slice, then calls for each surface
+   /// strike to impliedVolatility(strike, forward) would be
+   /// performed.
+   /// </summary>
 
    public abstract class HestonExpansion
    {
@@ -115,12 +117,13 @@ namespace QLNet
    }
 
 
-   /*! Lorig Pagliarani Pascucci expansion of order-2 for the Heston model.
-       During calibration, it can be initialized once per expiry, and
-       called many times with different strikes.  The formula is also
-       available in the Mathematica notebook from the authors at
-       http://explicitsolutions.wordpress.com/
-    */
+   /// <summary>
+   /// Lorig Pagliarani Pascucci expansion of order-2 for the Heston model.
+   /// During calibration, it can be initialized once per expiry, and
+   /// called many times with different strikes.  The formula is also
+   /// available in the Mathematica notebook from the authors at
+   /// http://explicitsolutions.wordpress.com/
+   /// </summary>
 
    public class LPP2HestonExpansion : HestonExpansion
    {
@@ -214,12 +217,13 @@ namespace QLNet
    }
 
 
-   /*! Lorig Pagliarani Pascucci expansion of order-3 for the Heston model.
-       During calibration, it can be initialized once per expiry, and
-       called many times with different strikes.  The formula is also
-       available in the Mathematica notebook from the authors at
-       http://explicitsolutions.wordpress.com/
-   */
+   /// <summary>
+   /// Lorig Pagliarani Pascucci expansion of order-3 for the Heston model.
+   /// During calibration, it can be initialized once per expiry, and
+   /// called many times with different strikes.  The formula is also
+   /// available in the Mathematica notebook from the authors at
+   /// http://explicitsolutions.wordpress.com/
+   /// </summary>
    public class LPP3HestonExpansion : HestonExpansion
    {
       public LPP3HestonExpansion(double kappa, double theta, double sigma, double v0, double rho, double term)
@@ -746,11 +750,12 @@ namespace QLNet
       }
    }
 
-   /*! Small-time expansion from
-       "The small-time smile and term structure of implied volatility
-       under the Heston model" M Forde, A Jacquier, R Lee - SIAM
-       Journal on Financial Mathematics, 2012 - SIAM
-   */
+   /// <summary>
+   /// Small-time expansion from
+   /// "The small-time smile and term structure of implied volatility
+   /// under the Heston model" M Forde, A Jacquier, R Lee - SIAM
+   /// Journal on Financial Mathematics, 2012 - SIAM
+   /// </summary>
    public class FordeHestonExpansion : HestonExpansion
    {
       public FordeHestonExpansion(double kappa, double theta, double sigma, double v0, double rho, double term)

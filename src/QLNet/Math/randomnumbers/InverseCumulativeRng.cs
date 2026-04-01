@@ -19,15 +19,17 @@
 
 namespace QLNet
 {
-   //! Inverse cumulative random number generator
-   /*! It uses a uniform deviate in (0, 1) as the source of cumulative
-       distribution values.
-       Then an inverse cumulative distribution is used to calculate
-       the distribution deviate.
-
-       The uniform deviate is supplied by RNG.
-       The inverse cumulative distribution is supplied by IC.
-   */
+   /// <summary>
+   /// Inverse cumulative random number generator
+   /// </summary>
+   /// <remarks>
+   /// It uses a uniform deviate in (0, 1) as the source of cumulative
+   /// distribution values.
+   /// Then an inverse cumulative distribution is used to calculate
+   /// the distribution deviate.
+   /// The uniform deviate is supplied by RNG.
+   /// The inverse cumulative distribution is supplied by IC.
+   /// </remarks>
 
    public class InverseCumulativeRng<RNG, IC> where RNG : IRNGTraits where IC : IValue, new ()
    {
@@ -39,7 +41,9 @@ namespace QLNet
          uniformGenerator_ = uniformGenerator;
       }
 
-      //! returns a sample from a Gaussian distribution
+      /// <summary>
+      /// Returns the next sample obtained by applying the inverse cumulative distribution.
+      /// </summary>
       public Sample<double> next()
       {
          Sample<double> sample = uniformGenerator_.next();

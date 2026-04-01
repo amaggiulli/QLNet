@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,25 +23,24 @@ using System;
 
 namespace QLNet
 {
-   //! Norwegian calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>Holy Thursday</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Ascension</li>
-       <li>Whit(Pentecost) Monday </li>
-       <li>New Year's Day, January 1st</li>
-       <li>May Day, May 1st</li>
-       <li>National Independence Day, May 17st</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Norwegian calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// Holy Thursday
+   /// Good Friday
+   /// Easter Monday
+   /// Ascension
+   /// Whit(Pentecost) Monday 
+   /// New Year's Day, January 1st
+   /// May Day, May 1st
+   /// National Independence Day, May 17st
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   /// </remarks>
    public class Norway : Calendar
    {
       public Norway() : base(Impl.Singleton) { }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -21,7 +21,9 @@ namespace QLNet
 {
 
 
-   //! Placeholder for enumerated averaging types
+   /// <summary>
+   /// Placeholder for enumerated averaging types
+   /// </summary>
    public struct Average
    {
       public enum Type

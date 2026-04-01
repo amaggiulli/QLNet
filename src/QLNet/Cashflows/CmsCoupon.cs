@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2009 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010  Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -23,11 +23,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! CMS coupon class
-   //    ! \warning This class does not perform any date adjustment,
-   //                 i.e., the start and end date passed upon construction
-   //                 should be already rolled to a business day.
-   //
+   /// <summary>
+   /// CMS coupon class
+   /// </summary>
+   /// <remarks>
+   /// Warning: This class does not perform any date adjustment,
+   /// i.e., the start and end date passed upon construction
+   /// should be already rolled to a business day.
+   /// </remarks>
    public class CmsCoupon : FloatingRateCoupon
    {
       // need by CashFlowVectors
@@ -69,7 +72,9 @@ namespace QLNet
    }
 
 
-   //! helper class building a sequence of capped/floored cms-rate coupons
+   /// <summary>
+   /// helper class building a sequence of capped/floored cms-rate coupons
+   /// </summary>
    public class CmsLeg : FloatingLegBase
    {
       public CmsLeg(Schedule schedule, SwapIndex swapIndex)

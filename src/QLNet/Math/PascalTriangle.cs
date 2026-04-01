@@ -18,10 +18,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Pascal triangle coefficients calculator
+   /// <summary>
+   /// Pascal triangle coefficients calculator
+   /// </summary>
    public class PascalTriangle
    {
-      //! Get and store one vector of coefficients after another.
+      /// <summary>
+      /// Returns the Pascal-triangle coefficients for the given order, extending the cache as needed.
+      /// </summary>
       public static List<ulong> get(int order)
       {
          if (coefficients_.empty())
