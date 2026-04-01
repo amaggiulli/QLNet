@@ -169,7 +169,9 @@ namespace QLNet
          YoYInflationCoupon lastYoYInflationCoupon = yoyLeg_.Last() as YoYInflationCoupon;
          return lastYoYInflationCoupon;
       }
-      //! Returns the n-th optionlet as a cap/floor with only one cash flow.
+      /// <summary>
+      /// Returns the n-th optionlet as a cap or floor with a single cash flow.
+      /// </summary>
       public YoYInflationCapFloor optionlet(int i)
       {
          Utils.QL_REQUIRE(i < yoyLeg().Count, () => " optionlet does not exist, only " + yoyLeg().Count);
@@ -191,7 +193,9 @@ namespace QLNet
                                   false, discountCurve.referenceDate());
       }
 
-      //! implied term volatility
+      /// <summary>
+      /// Returns the implied term volatility.
+      /// </summary>
       public virtual double impliedVolatility(
          double price,
          Handle<YoYInflationTermStructure> yoyCurve,

@@ -125,9 +125,16 @@ namespace QLNet
       // Inspectors
       public Option.Type type()  { return type_; }
       public double nominal() { return nominal_; }
-      //! \f$ K \f$ in the above formula.
+      /// <summary>
+      /// Returns the strike used in the pricing formula.
+      /// </summary>
       public double strike() { return strike_; }
-      //! when you fix - but remember that there is an observation interpolation factor as well
+      /// <summary>
+      /// Returns the fixing date.
+      /// </summary>
+      /// <remarks>
+      /// The observation interpolation factor must also be taken into account.
+      /// </remarks>
       public Date fixingDate() { return fixCalendar_.adjust(maturity_ - observationLag_, fixConvention_); }
       public Date payDate() { return payCalendar_.adjust(maturity_, payConvention_); }
       public Handle<ZeroInflationIndex> inflationIndex() { return infIndex_; }

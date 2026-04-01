@@ -48,7 +48,9 @@ namespace QLNet
       }
       private List<Date> resetDates_;
 
-      //! %Arguments for cliquet option calculation
+      /// <summary>
+      /// Arguments for cliquet option calculation.
+      /// </summary>
       // should inherit from a strikeless version of VanillaOption::arguments
       public new class Arguments : OneAssetOption.Arguments
       {
@@ -87,7 +89,9 @@ namespace QLNet
          public List<Date> resetDates { get; set; }
       }
 
-      //! Cliquet %engine base class
+      /// <summary>
+      /// Cliquet option engine base class.
+      /// </summary>
       public new class Engine : GenericEngine<CliquetOption.Arguments, CliquetOption.Results>
       {}
    }

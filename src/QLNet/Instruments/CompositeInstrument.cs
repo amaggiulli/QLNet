@@ -32,7 +32,9 @@ namespace QLNet
    /// </remarks>
    public class CompositeInstrument : Instrument
    {
-      //! adds an instrument to the composite
+      /// <summary>
+      /// Adds an instrument to the composite.
+      /// </summary>
       public void add(Instrument instrument, double multiplier = 1.0)
       {
          components_.Add(new KeyValuePair<Instrument, double>(instrument, multiplier));
@@ -40,7 +42,9 @@ namespace QLNet
          update();
       }
 
-      //! shorts an instrument from the composite
+      /// <summary>
+      /// Subtracts an instrument from the composite.
+      /// </summary>
       public void subtract(Instrument instrument, double multiplier = 1.0)
       {
          add(instrument, -multiplier);

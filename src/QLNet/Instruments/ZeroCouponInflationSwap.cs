@@ -162,7 +162,9 @@ namespace QLNet
 
       #region Inspectors
 
-      //! "payer" or "receiver" refer to the inflation-indexed leg
+      /// <summary>
+      /// Returns the swap type, where payer and receiver refer to the inflation-indexed leg.
+      /// </summary>
       public Type type() { return type_; }
       public double nominal() { return nominal_; }
       public new Date startDate() { return startDate_; }
@@ -170,16 +172,22 @@ namespace QLNet
       public Calendar fixedCalendar() { return fixCalendar_; }
       public BusinessDayConvention fixedConvention()  { return fixConvention_; }
       public DayCounter dayCounter() { return dayCounter_; }
-      //! \f$ K \f$ in the above formula.
+      /// <summary>
+      /// Returns the fixed rate used in the swap formula.
+      /// </summary>
       public double fixedRate()  { return fixedRate_; }
       public ZeroInflationIndex inflationIndex()  { return infIndex_; }
       public Period observationLag()  { return observationLag_; }
       public bool adjustObservationDates()  { return adjustInfObsDates_; }
       public Calendar inflationCalendar()  { return infCalendar_; }
       public BusinessDayConvention inflationConvention()  { return infConvention_; }
-      //! just one cashflow (that is not a coupon) in each leg
+      /// <summary>
+      /// Returns the fixed leg, which contains a single non-coupon cash flow.
+      /// </summary>
       public List<CashFlow> fixedLeg() { return legs_[0]; }
-      //! just one cashflow (that is not a coupon) in each leg
+      /// <summary>
+      /// Returns the inflation leg, which contains a single non-coupon cash flow.
+      /// </summary>
       public List<CashFlow> inflationLeg() { return legs_[1]; }
 
       #endregion

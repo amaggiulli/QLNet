@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! floating-rate bond (possibly capped and/or floored)
+   /// <summary>
+   /// Floating-rate bond, possibly capped or floored.
+   /// </summary>
    /// <internalremarks>
    /// Tests: calculations are tested by checking results against cached values.
    /// </internalremarks>

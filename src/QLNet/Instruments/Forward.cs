@@ -42,9 +42,9 @@ namespace QLNet
    /// </remarks>
    public abstract class Forward : Instrument
    {
-      /*! derived classes must set this, typically via spotIncome() */
+      // Derived classes must set this, typically via spotIncome().
       protected double underlyingIncome_;
-      /*! derived classes must set this, typically via spotValue() */
+      // Derived classes must set this, typically via spotValue().
       protected double underlyingSpotValue_;
 
       protected DayCounter dayCounter_;
@@ -52,12 +52,12 @@ namespace QLNet
       protected BusinessDayConvention businessDayConvention_;
       protected int settlementDays_;
       protected Payoff payoff_;
-      /*! valueDate = settlement date (date the fwd contract starts accruing) */
+      // valueDate is the settlement date, i.e. the date the forward contract starts accruing.
       protected Date valueDate_;
-      //! maturityDate of the forward contract or delivery date of underlying
+      // maturityDate of the forward contract or delivery date of the underlying.
       protected Date maturityDate_;
       protected Handle<YieldTermStructure> discountCurve_;
-      /*! must set this in derived classes, based on particular underlying */
+      // Must be set in derived classes based on the particular underlying.
       protected Handle<YieldTermStructure> incomeDiscountCurve_;
 
       protected Forward(DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
@@ -91,9 +91,13 @@ namespace QLNet
       }
 
 
-      //! returns spot value/price of an underlying financial instrument
+      /// <summary>
+      /// Returns the spot value or spot price of the underlying financial instrument.
+      /// </summary>
       public abstract double spotValue();
-      //! NPV of income/dividends/storage-costs etc. of underlying instrument
+      /// <summary>
+      /// Returns the present value of income, dividends, storage costs, and similar carry of the underlying instrument.
+      /// </summary>
       public abstract double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve);
 
       // Calculations
@@ -110,15 +114,12 @@ namespace QLNet
          return (underlyingSpotValue_ - underlyingIncome_) / discountCurve_.link.discount(maturityDate_);
       }
 
-      /*! Simple yield calculation based on underlying spot and
-      forward values, taking into account underlying income.
-      When \f$ t>0 \f$, call with:
-      underlyingSpotValue=spotValue(t),
-      forwardValue=strikePrice, to get current yield. For a
-      repo, if \f$ t=0 \f$, impliedYield should reproduce the
-      spot repo rate. For FRA's, this should reproduce the
-      relevant zero rate at the FRA's maturityDate_
-      */
+      /// <summary>
+      /// Calculates a simple implied yield from the spot and forward values.
+      /// </summary>
+      /// <remarks>
+      /// The calculation takes the underlying income into account. When <c>t &gt; 0</c>, call with <c>underlyingSpotValue = spotValue(t)</c> and <c>forwardValue = strikePrice</c> to obtain the current yield. For repos with <c>t = 0</c>, this should reproduce the spot repo rate; for FRAs, it should reproduce the relevant zero rate at the FRA maturity.
+      /// </remarks>
       public InterestRate impliedYield(double underlyingSpotValue, double forwardValue, Date settlementDate,
                                        Compounding compoundingConvention, DayCounter dayCounter)
       {

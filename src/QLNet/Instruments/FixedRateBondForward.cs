@@ -69,13 +69,12 @@ namespace QLNet
       protected FixedRateBond fixedCouponBond_;
 
       // Constructors
-      /*! If strike is given in the constructor, can calculate the
-          NPV of the contract via NPV().
-
-          If strike/forward price is desired, it can be obtained via
-          forwardPrice(). In this case, the strike variable in the
-          constructor is irrelevant and will be ignored.
-      */
+      /// <summary>
+      /// Initializes a fixed-rate bond forward.
+      /// </summary>
+      /// <remarks>
+      /// If a strike is provided, the contract NPV can be obtained via <c>NPV()</c>. If the strike or forward price is desired directly, it can be obtained via <c>forwardPrice()</c>; in that case the constructor strike is ignored.
+      /// </remarks>
       public FixedRateBondForward(Date valueDate, Date maturityDate, Position.Type type, double strike,
                                   int settlementDays,
                                   DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
@@ -92,24 +91,28 @@ namespace QLNet
 
       // Calculations
 
-      //! (dirty) forward bond price
+      /// <summary>
+      /// Returns the dirty forward bond price.
+      /// </summary>
       public double forwardPrice()
       {
          return forwardValue();
       }
 
-      //! (dirty) forward bond price minus accrued on bond at delivery
+      /// <summary>
+      /// Returns the clean forward bond price.
+      /// </summary>
       public double cleanForwardPrice()
       {
          return forwardValue() - fixedCouponBond_.accruedAmount(maturityDate_);
       }
 
-      //!  NPV of bond coupons discounted using incomeDiscountCurve
-      /*! Here only coupons between max(evaluation date,settlement
-          date) and maturity date of bond forward contract are
-          considered income.
-      */
-
+      /// <summary>
+      /// Returns the present value of bond coupons discounted using the income discount curve.
+      /// </summary>
+      /// <remarks>
+      /// Only coupons between the later of the evaluation date and settlement date, and the maturity date of the bond-forward contract, are treated as income.
+      /// </remarks>
       public override double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve)
       {
          double income = 0.0;
@@ -139,7 +142,9 @@ namespace QLNet
          return income;
       }
 
-      //!  NPV of underlying bond
+      /// <summary>
+      /// Returns the present value of the underlying bond.
+      /// </summary>
       public override double spotValue()
       {
          return fixedCouponBond_.dirtyPrice();

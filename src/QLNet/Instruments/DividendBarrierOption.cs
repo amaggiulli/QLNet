@@ -48,7 +48,9 @@ namespace QLNet
       private DividendSchedule cashFlow_;
 
 
-      //! %Arguments for dividend barrier option calculation
+      /// <summary>
+      /// Arguments for dividend barrier option calculation.
+      /// </summary>
       public new class Arguments : BarrierOption.Arguments
       {
          public DividendSchedule cashFlow { get; set; }
@@ -70,7 +72,9 @@ namespace QLNet
             }
          }
       }
-      //! %Dividend-barrier-option %engine base class
+      /// <summary>
+      /// Dividend barrier option engine base class.
+      /// </summary>
       public new class Engine :  GenericEngine<DividendBarrierOption.Arguments, DividendBarrierOption.Results> {}
 
    }

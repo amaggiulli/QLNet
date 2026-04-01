@@ -83,7 +83,9 @@ namespace QLNet
          arguments.cashFlow = cashFlow_;
       }
 
-      //! %Arguments for dividend vanilla option calculation
+      /// <summary>
+      /// Arguments for dividend vanilla option calculation.
+      /// </summary>
       public new class Arguments : OneAssetOption.Arguments
       {
          public DividendSchedule cashFlow { get; set; } = new();
@@ -103,7 +105,9 @@ namespace QLNet
          }
       }
 
-      //! %Dividend-vanilla-option %engine base class
+      /// <summary>
+      /// Dividend vanilla option engine base class.
+      /// </summary>
       public new class Engine : GenericEngine<Arguments, Results> { }
    }
 }

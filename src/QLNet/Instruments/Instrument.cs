@@ -31,9 +31,12 @@ namespace QLNet
       protected IPricingEngine engine_;
       protected Date valuationDate_ = null;
 
-      //! sets the pricing engine to be used.
-      /*! calling this method will have no effects in case the performCalculation method
-          was overridden in a derived class. */
+      /// <summary>
+      /// Sets the pricing engine to be used.
+      /// </summary>
+      /// <remarks>
+      /// Calling this method has no effect if <c>performCalculations</c> is overridden in a derived class.
+      /// </remarks>
       public void setPricingEngine(IPricingEngine e)
       {
          if (engine_ != null)
@@ -46,9 +49,12 @@ namespace QLNet
       }
 
 
-      /*! When a derived argument structure is defined for an instrument,
-       * this method should be overridden to fill it.
-       * This is mandatory in case a pricing engine is used. */
+      /// <summary>
+      /// Populates the pricing-engine arguments for the instrument.
+      /// </summary>
+      /// <remarks>
+      /// Override this when a derived argument structure is defined. This is mandatory when a pricing engine is used.
+      /// </remarks>
       public virtual void setupArguments(IPricingEngineArguments a) { throw new NotImplementedException(); }
 
 
@@ -82,9 +88,12 @@ namespace QLNet
       #endregion
 
       #region Results
-      /*! When a derived result structure is defined for an instrument,
-       * this method should be overridden to read from it.
-       * This is mandatory in case a pricing engine is used.  */
+      /// <summary>
+      /// Reads the pricing-engine results for the instrument.
+      /// </summary>
+      /// <remarks>
+      /// Override this when a derived result structure is defined. This is mandatory when a pricing engine is used.
+      /// </remarks>
       public virtual void fetchResults(IPricingEngineResults r)
       {
          Instrument.Results results = r as Instrument.Results;
@@ -99,7 +108,6 @@ namespace QLNet
 
       public double NPV()
       {
-         //! returns the net present value of the instrument.
          calculate();
          if (NPV_ == null)
             throw new ArgumentException("NPV not provided");
@@ -108,7 +116,6 @@ namespace QLNet
 
       public double CASH()
       {
-         //! returns the net present value of the instrument.
          calculate();
          if (CASH_ == null)
             throw new ArgumentException("CASH not provided");
@@ -117,13 +124,14 @@ namespace QLNet
 
       public double errorEstimate()
       {
-         //! returns the error estimate on the NPV when available.
          calculate();
          if (errorEstimate_ == null)
             throw new ArgumentException("error estimate not provided");
          return errorEstimate_.GetValueOrDefault();
       }
-      //! returns the date the net present value refers to.
+      /// <summary>
+      /// Returns the date to which the net present value refers.
+      /// </summary>
       public Date valuationDate()
       {
          calculate();
@@ -157,7 +165,9 @@ namespace QLNet
          additionalResults_.Clear();
       }
 
-      //! returns whether the instrument is still tradable.
+      /// <summary>
+      /// Returns whether the instrument is still tradable.
+      /// </summary>
       public virtual bool isExpired() { throw new NotSupportedException(); }
 
 

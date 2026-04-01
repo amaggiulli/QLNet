@@ -462,7 +462,9 @@ namespace QLNet
       private double? fairSpread_;
       private double? fairCleanPrice_, fairNonParRepayment_;
 
-      //! %Arguments for asset swap calculation
+      /// <summary>
+      /// Arguments for asset-swap calculation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public List<Date> fixedResetDates { get; set; }
@@ -496,7 +498,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from simple swap calculation
+      /// <summary>
+      /// Results from asset-swap calculation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairSpread { get; set; }

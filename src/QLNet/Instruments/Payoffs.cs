@@ -123,10 +123,8 @@ namespace QLNet
       }
    }
 
-   /*! Definitions of Binary path-independent payoffs used below,
-       can be found in M. Rubinstein, E. Reiner:"Unscrambling The Binary Code", Risk, Vol.4 no.9,1991.
-       (see: http://www.in-the-money.com/artandpap/Binary%20Options.doc)
-   */
+   // Definitions of binary path-independent payoffs used below can be found in:
+   // M. Rubinstein and E. Reiner, "Unscrambling The Binary Code", Risk, Vol. 4 no. 9, 1991.
    /// <summary>
    /// Binary asset-or-nothing payoff
    /// </summary>
@@ -224,18 +222,15 @@ namespace QLNet
       }
    }
 
-   //! Binary supershare and superfund payoffs
+   // Binary supershare and superfund payoffs.
 
-   //! Binary superfund payoff
-   /*! Superfund sometimes also called "supershare", which can lead to ambiguity; within QuantLib
-       the terms supershare and superfund are used consistently according to the definitions in
-       Bloomberg OVX function's help pages.
-   */
    /// <summary>
-   /// This payoff is equivalent to being (1/lowerstrike) a) long (short) an AssetOrNothing
-   /// Call (Put) at the lower strike and b) short (long) an AssetOrNothing
-   /// Call (Put) at the higher strike
+   /// Binary superfund payoff.
    /// </summary>
+   /// <remarks>
+   /// Superfund is sometimes also called supershare, which can lead to ambiguity. Within QuantLib, the terms supershare and superfund are used consistently according to the definitions in Bloomberg OVX help.
+   /// This payoff is equivalent to being <c>1 / lowerStrike</c> long (short) an <c>AssetOrNothing</c> call (put) at the lower strike and short (long) an <c>AssetOrNothing</c> call (put) at the higher strike.
+   /// </remarks>
    public class SuperFundPayoff : StrikedTypePayoff
    {
       protected double secondStrike_;

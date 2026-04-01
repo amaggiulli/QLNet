@@ -22,8 +22,8 @@ namespace QLNet
       {
          KnockIn,
          KnockOut,
-         KIKO,     //! lower barrier KI, upper KO
-         KOKI      //! lower barrier KO, upper KI
+         KIKO,     // lower barrier KI, upper KO
+         KOKI      // lower barrier KO, upper KI
       }
    }
 
@@ -106,7 +106,9 @@ namespace QLNet
       protected double barrier_hi_;
       protected double rebate_;
 
-      //! %Arguments for double barrier option calculation
+      /// <summary>
+      /// Arguments for double-barrier option calculation.
+      /// </summary>
       public new class Arguments : OneAssetOption.Arguments
       {
          public Arguments()
@@ -135,7 +137,9 @@ namespace QLNet
          }
       }
 
-      //! %Double-Barrier-option %engine base class
+      /// <summary>
+      /// Double-barrier option engine base class.
+      /// </summary>
       public new class Engine : GenericEngine<DoubleBarrierOption.Arguments, DoubleBarrierOption.Results>
       {
          protected bool triggered(double underlying)

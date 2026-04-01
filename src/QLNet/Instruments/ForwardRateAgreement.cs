@@ -68,9 +68,9 @@ namespace QLNet
    public class ForwardRateAgreement : Forward
    {
       protected Position.Type fraType_;
-      //! aka FRA rate (the market forward rate)
+      // FRA market forward rate.
       protected InterestRate forwardRate_;
-      //! aka FRA fixing rate, contract rate
+      // FRA fixing rate, i.e. the contract rate.
       protected InterestRate strikeForwardRate_;
       protected double notionalAmount_;
       protected IborIndex index_;
@@ -107,23 +107,34 @@ namespace QLNet
          return calendar_.advance(Settings.evaluationDate(), settlementDays_, TimeUnit.Days);
       }
 
-      /*! A FRA expires/settles on the valueDate */
-
+      /// <summary>
+      /// Returns whether the FRA has expired.
+      /// </summary>
+      /// <remarks>
+      /// A FRA expires and settles on the value date.
+      /// </remarks>
       public override bool isExpired()
       {
          return new simple_event(valueDate_).hasOccurred(settlementDate());
       }
 
-      /*!  Income is zero for a FRA */
-
+      /// <summary>
+      /// Returns the income on the underlying position.
+      /// </summary>
+      /// <remarks>
+      /// Income is zero for a FRA.
+      /// </remarks>
       public override double spotIncome(Handle<YieldTermStructure> t)
       {
          return 0.0;
       }
 
-      //! Spot value (NPV) of the underlying loan
-      /*! This has always a positive value (asset), even if short the FRA */
-
+      /// <summary>
+      /// Returns the spot value of the underlying loan.
+      /// </summary>
+      /// <remarks>
+      /// This is always a positive asset value, even when the FRA position is short.
+      /// </remarks>
       public override double spotValue()
       {
          calculate();
@@ -133,7 +144,9 @@ namespace QLNet
          return result;
       }
 
-      //! Returns the relevant forward rate associated with the FRA term
+      /// <summary>
+      /// Returns the forward rate associated with the FRA term.
+      /// </summary>
       public InterestRate forwardRate()
       {
          calculate();

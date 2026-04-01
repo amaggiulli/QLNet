@@ -149,7 +149,9 @@ namespace QLNet
          return this;
       }
 
-      //! only get last coupon
+      /// <summary>
+      /// Restricts the builder to the last coupon only.
+      /// </summary>
       public MakeCapFloor asOptionlet(bool b = true)
       {
          asOptionlet_ = b;

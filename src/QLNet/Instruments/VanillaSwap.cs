@@ -277,7 +277,9 @@ namespace QLNet
       }
 
 
-      //! %Arguments for simple swap calculation
+      /// <summary>
+      /// Arguments for vanilla-swap calculation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public Type type { get; set; }
@@ -323,7 +325,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from simple swap calculation
+      /// <summary>
+      /// Results from vanilla-swap calculation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairRate { get; set; }
