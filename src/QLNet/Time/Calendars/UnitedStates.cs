@@ -487,7 +487,7 @@ namespace QLNet
             if (
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
-                // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
+                // Good Friday (2015, 2021, 2023, 2026 are half day due to NFP/SIFMA;
                 // see <https://www.sifma.org/resources/general/holiday-schedule/>)
                 || (dd == em-3 && y != 2015 && y != 2021 && y != 2023 && y!=2026)
                 // Memorial Day (last Monday in May)
@@ -613,7 +613,7 @@ namespace QLNet
 
       private class SOFR : GovernmentBond
       {
-         public static readonly SOFR Singleton = new();
+         public new static readonly SOFR Singleton = new();
          private SOFR() { }
 
          public override string name() { return "SOFR fixing calendar"; }

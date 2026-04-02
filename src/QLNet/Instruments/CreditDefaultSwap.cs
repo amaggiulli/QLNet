@@ -364,6 +364,7 @@ namespace QLNet
       /// <param name="dayCounter"></param>
       /// <param name="recoveryRate"></param>
       /// <param name="accuracy"></param>
+      /// <param name="model"></param>
       /// <returns></returns>
       public double impliedHazardRate(double targetNPV,
                                       Handle<YieldTermStructure> discountCurve,
@@ -437,6 +438,7 @@ namespace QLNet
       /// <param name="conventionalRecovery"></param>
       /// <param name="discountCurve"></param>
       /// <param name="dayCounter"></param>
+      /// <param name="model"></param>
       /// <returns></returns>
       public double? conventionalSpread(double conventionalRecovery,
                                         Handle<YieldTermStructure> discountCurve,

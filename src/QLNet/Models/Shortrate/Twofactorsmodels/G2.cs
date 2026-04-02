@@ -19,8 +19,6 @@
 using System;
 using System.Collections.Generic;
 
-// Two-factor additive Gaussian Model G2 + +
-
 namespace QLNet
 {
 
@@ -268,13 +266,6 @@ namespace QLNet
          {
             throw new NotImplementedException();
          }
-
-         /// <summary>
-         /// Analytical term-structure fitting parameter <c>phi(t)</c>.
-         /// </summary>
-         /// <remarks>
-         /// This parameter is defined analytically in terms of the instantaneous forward rate and the G2 model parameters.
-         /// </remarks>
       }
 
       public class FittingParameter : TermStructureFittingParameter

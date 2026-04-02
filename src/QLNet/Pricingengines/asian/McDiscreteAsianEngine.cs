@@ -29,6 +29,7 @@ namespace QLNet
    /// </summary>
    /// <typeparam name="RNG"></typeparam>
    /// <typeparam name="S"></typeparam>
+   /// <typeparam name="MC"></typeparam>
    public class MCDiscreteAveragingAsianEngineBase<MC, RNG, S> : McSimulation<MC, RNG, S>, IGenericEngine
       where RNG : IRSG, new()
       where S : IGeneralStatistics, new()

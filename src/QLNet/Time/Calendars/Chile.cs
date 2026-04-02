@@ -25,7 +25,7 @@ namespace QLNet
    /// </summary>
    /// <remarks>
    /// Holidays for the Santiago Stock Exchange
-   /// (data from <https://en.wikipedia.org/wiki/Public_holidays_in_Chile>):
+   /// (data from https://en.wikipedia.org/wiki/Public_holidays_in_Chile):
    /// Saturdays
    /// Sundays
    /// New Year's Day, January 1st

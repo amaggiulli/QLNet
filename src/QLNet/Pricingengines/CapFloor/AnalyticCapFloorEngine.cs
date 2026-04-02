@@ -52,7 +52,6 @@ namespace QLNet
          try
          {
             TermStructureConsistentModel tsmodel = (TermStructureConsistentModel)model_.link;
-            ///if (tsmodel != null)
             referenceDate = tsmodel.termStructure().link.referenceDate();
             dayCounter = tsmodel.termStructure().link.dayCounter();
          }

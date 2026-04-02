@@ -26,24 +26,20 @@ namespace QLNet
    /// <summary>
    /// Pricing engine for barrier options using Monte Carlo simulation
    /// </summary>
-   /// <remarks>
+   /// <internalremarks>
    /// Uses the Brownian-bridge correction for the barrier found in
-   
    /// Going to Extremes: Correcting Simulation Bias in Exotic
    /// Option Valuation - D.R. Beaglehole, P.H. Dybvig and G. Zhou
    /// Financial Analysts Journal; Jan/Feb 1997; 53, 1. pg. 62-68
-   
    /// and
-   
    /// Simulating path-dependent options: A new approach -
    /// M. El Babsiri and G. Noel
    /// Journal of Derivatives; Winter 1998; 6, 2; pg. 65-83
-   
    ///
    ///
    /// Test: the correctness of the returned value is tested by
    /// reproducing results available in literature.
-   /// </remarks>
+   /// </internalremarks>
    public class MCBarrierEngine<RNG, S> : McSimulation<SingleVariate, RNG, S>, IGenericEngine
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

@@ -9,12 +9,16 @@ namespace QLNet.Benchmarks
    // Use ShortRunJob for faster benchmarks (3 warmup, 3 iterations instead of ~15-100)
    [ShortRunJob(RuntimeMoniker.Net90)]
    [MemoryDiagnoser]
-   public class ScheduleUntilBenchmark
+   public class ScheduleUntilBenchmark(
+       Schedule schedule10Years,
+       Schedule schedule30Years,
+       Date truncationDate5Years,
+       Date truncationDate15Years)
    {
-      private Schedule schedule10Years;
-      private Schedule schedule30Years;
-      private Date truncationDate5Years;
-      private Date truncationDate15Years;
+      private Schedule schedule10Years = schedule10Years;
+      private Schedule schedule30Years = schedule30Years;
+      private Date truncationDate5Years = truncationDate5Years;
+      private Date truncationDate15Years = truncationDate15Years;
 
       [GlobalSetup]
       public void Setup()

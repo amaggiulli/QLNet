@@ -1760,6 +1760,11 @@ namespace TestSuite
       [InlineData("2024/12/24")]
       [InlineData("2024/12/31")]
       [InlineData("2026/04/03")]
+      [InlineData("2026/05/22")]
+      [InlineData("2026/07/02")]
+      [InlineData("2026/11/27")]
+      [InlineData("2026/12/24")]
+      [InlineData("2026/12/31")]
       public void testUsGovernmentBondMarketEarlyClose(DateTime expectedEarlyClose)
       {
          Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
