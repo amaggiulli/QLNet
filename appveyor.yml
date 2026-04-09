@@ -34,7 +34,7 @@
     release: QLNet Version 1.13.1
     description: QLNet 1.13.1
     auth_token:
-      secure: 4cCBgQRwNh1N6VbvMJTCUFYGWK1stgZ4qwZxvs6FDfdBb25+lJNFig7wQN3avJSozSRxknaj9p4f/ogiEWhEQ+Ec1L79hOwg1+WYVr8fXeYUfGM09D83ZV5uoglTJ1lv
+      secure: 4cCBgQRwNh1N6VbvMJTCUKpp1EYpNHGlXj/LFfVgcCMnTYk5yDX/7vURrRGrLy+zflAFBotCGVgLQ1WkdIXPBrpS9fs4n43oKDWPezRFLt22jYdTeIWxGDdS9vF7y+zI
     artifact: src\QLNet\bin\Release\net10.0\QLNet.dll
     draft: false
     force_update: false

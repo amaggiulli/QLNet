@@ -20,6 +20,10 @@
 
 namespace QLNet
 {
+   /// <summary>
+   /// Discounting engine for bonds
+   /// This engine discounts future bond cashflows to the settlement date.
+   /// </summary>
    public class DiscountingBondEngine : Bond.Engine
    {
       private Handle<YieldTermStructure> discountCurve_;
