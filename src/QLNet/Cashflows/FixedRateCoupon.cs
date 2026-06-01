@@ -105,6 +105,7 @@ namespace QLNet
       private   Calendar exCouponCalendar_;
       private   BusinessDayConvention exCouponAdjustment_;
       private   bool exCouponEndOfMonth_;
+      private int paymentLag_ = 0;
 
       // constructor
       public FixedRateLeg(Schedule schedule)
@@ -182,6 +183,18 @@ namespace QLNet
          return this;
       }
 
+      public FixedRateLeg withPaymentLag(int lag)
+      {
+         paymentLag_ = lag;
+         return this;
+      }
+
+      private Date calcPayDate(Date periodEnd)
+      {
+         var d = calendar_.adjust(periodEnd, paymentAdjustment_);
+         return paymentLag_ == 0 ? d : calendar_.advance(d, paymentLag_, TimeUnit.Days);
+      }
+
       public FixedRateLeg withExCouponPeriod(Period period, Calendar cal, BusinessDayConvention convention, bool endOfMonth = false)
       {
          exCouponPeriod_ = period;
@@ -206,7 +219,7 @@ namespace QLNet
 
          // first period might be short or long
          Date start = schedule_[0], end = schedule_[1];
-         Date paymentDate = calendar_.adjust(end, paymentAdjustment_);
+         Date paymentDate = calcPayDate(end);
          Date exCouponDate = null;
          InterestRate rate = couponRates_[0];
          double nominal = notionals_[0];
@@ -238,7 +251,7 @@ namespace QLNet
          for (int i = 2; i < schedule_.Count - 1; ++i)
          {
             start = end; end = schedule_[i];
-            paymentDate = calendar_.adjust(end, paymentAdjustment_);
+            paymentDate = calcPayDate(end);
             if (exCouponPeriod_ != null)
             {
                exCouponDate = exCouponCalendar_.advance(paymentDate,
@@ -263,7 +276,7 @@ namespace QLNet
             // last period might be short or long
             int N = schedule_.Count;
             start = end; end = schedule_[N - 1];
-            paymentDate = calendar_.adjust(end, paymentAdjustment_);
+            paymentDate = calcPayDate(end);
             if (exCouponPeriod_ != null)
             {
                exCouponDate = exCouponCalendar_.advance(paymentDate,

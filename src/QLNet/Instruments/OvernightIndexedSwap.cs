@@ -45,7 +45,8 @@ namespace QLNet
                                   double fixedRate,
                                   DayCounter fixedDC,
                                   OvernightIndex overnightIndex,
-                                  double spread) :
+                                  double spread,
+                                  int paymentLag = 0) :
          base(2)
       {
 
@@ -64,11 +65,13 @@ namespace QLNet
 
          legs_[0] = new FixedRateLeg(schedule)
          .withCouponRates(fixedRate_, fixedDC_)
+         .withPaymentLag(paymentLag)
          .withNotionals(nominal);
 
          legs_[1] = new OvernightLeg(schedule, overnightIndex_)
-         .withNotionals(nominal)
-         .withSpreads(spread_);
+         .withSpreads(spread_)
+         .withPaymentLag(paymentLag)
+         .withNotionals(nominal);
 
          for (int j = 0; j < 2; ++j)
          {

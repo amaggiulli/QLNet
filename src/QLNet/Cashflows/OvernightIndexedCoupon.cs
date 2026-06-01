@@ -333,6 +333,12 @@ namespace QLNet
          paymentAdjustment_ = convention;
          return this;
       }
+      private int paymentLag_ = 0;
+      public OvernightLeg withPaymentLag(int lag)
+      {
+         paymentLag_ = lag;
+         return this;
+      }
       public OvernightLeg withGearings(double gearing)
       {
          gearings_ = new List<double>(); gearings_.Add(gearing);
@@ -356,7 +362,7 @@ namespace QLNet
 
       public override List<CashFlow> value()
       {
-         return CashFlowVectors.OvernightLeg(notionals_, schedule_, paymentAdjustment_, overnightIndex_, gearings_, spreads_, paymentDayCounter_);
+         return CashFlowVectors.OvernightLeg(notionals_, schedule_, paymentAdjustment_, overnightIndex_, gearings_, spreads_, paymentDayCounter_, paymentLag_);
       }
 
       private OvernightIndex overnightIndex_;

@@ -229,7 +229,8 @@ namespace QLNet
                                                 OvernightIndex overnightIndex,
                                                 List<double> gearings,
                                                 List<double> spreads,
-                                                DayCounter paymentDayCounter)
+                                                DayCounter paymentDayCounter,
+                                                int paymentLag = 0)
       {
          Utils.QL_REQUIRE(!nominals.empty(), () => "no nominal given");
 
@@ -247,6 +248,8 @@ namespace QLNet
             refStart = start = schedule.date(i);
             refEnd = end = schedule.date(i + 1);
             paymentDate = calendar.adjust(end, paymentAdjustment);
+            if (paymentLag != 0)
+               paymentDate = calendar.advance(paymentDate, paymentLag, TimeUnit.Days);
             if (i == 0 && !schedule.isRegular(i + 1))
                refStart = calendar.adjust(end - schedule.tenor(), paymentAdjustment);
             if (i == n - 1 && !schedule.isRegular(i + 1))
