@@ -17,6 +17,7 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 using System;
+using System.Linq;
 
 namespace QLNet
 {
@@ -25,12 +26,14 @@ namespace QLNet
       public OISRateHelper(int settlementDays,
                            Period tenor, // swap maturity
                            Handle<Quote> fixedRate,
-                           OvernightIndex overnightIndex)
+                           OvernightIndex overnightIndex,
+                           int paymentLag = 0)
          : base(fixedRate)
       {
          settlementDays_ = settlementDays;
          tenor_ = tenor;
          overnightIndex_ = overnightIndex;
+         paymentLag_ = paymentLag;
          overnightIndex_.registerWith(update);
          initializeDates();
       }
@@ -47,10 +50,14 @@ namespace QLNet
 
          swap_ = new MakeOIS(tenor_, clonedOvernightIndex, 0.0)
          .withSettlementDays(settlementDays_)
+         .withPaymentLag(paymentLag_)
          .withDiscountingTermStructure(termStructureHandle_);
 
          earliestDate_ = swap_.startDate();
          latestDate_ = swap_.maturityDate();
+         Date lastFixedLegPaymentDate = swap_.fixedLeg().Last().date();
+         Date lastOvernightLegPaymentDate = swap_.overnightLeg().Last().date();
+         latestRelevantDate_ = Date.Max(lastFixedLegPaymentDate, lastOvernightLegPaymentDate);         
       }
 
       public override void setTermStructure(YieldTermStructure t)
@@ -73,6 +80,7 @@ namespace QLNet
       protected int settlementDays_;
       protected Period tenor_;
       protected OvernightIndex overnightIndex_;
+      protected int paymentLag_;
       protected OvernightIndexedSwap swap_;
       protected RelinkableHandle<YieldTermStructure> termStructureHandle_ = new RelinkableHandle<YieldTermStructure>();
    }
@@ -87,7 +95,8 @@ namespace QLNet
       public DatedOISRateHelper(Date startDate,
                                 Date endDate,
                                 Handle<Quote> fixedRate,
-                                OvernightIndex overnightIndex)
+                                OvernightIndex overnightIndex,
+                                int paymentLag = 0)
 
          : base(fixedRate)
       {
@@ -102,11 +111,14 @@ namespace QLNet
          swap_ = new MakeOIS(new Period(), clonedOvernightIndex, 0.0)
          .withEffectiveDate(startDate)
          .withTerminationDate(endDate)
+          .withPaymentLag(paymentLag)
          .withDiscountingTermStructure(termStructureHandle_);
 
          earliestDate_ = swap_.startDate();
          latestDate_ = swap_.maturityDate();
-
+         Date lastFixedLegPaymentDate = swap_.fixedLeg().Last().date();
+         Date lastOvernightLegPaymentDate = swap_.overnightLeg().Last().date();
+         latestRelevantDate_ = Date.Max(lastFixedLegPaymentDate, lastOvernightLegPaymentDate);
       }
 
 
