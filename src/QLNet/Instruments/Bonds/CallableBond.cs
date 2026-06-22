@@ -42,6 +42,9 @@ namespace QLNet
       protected double faceAmount_;
       protected Schedule mainSchedule_;
       protected List<double> coupons_;
+      protected List<double> notionalsByPeriod_;
+      protected bool hasAmortizingSchedule_;
+      protected BusinessDayConvention paymentConvention_;
 
       /// <summary>
       /// Ctor
@@ -124,47 +127,64 @@ namespace QLNet
          arguments.faceAmount = faceAmount_;
          arguments.redemption = redemption().amount();
          arguments.redemptionDate = redemption().date();
-
-         List<CashFlow> cfs = cashflows();
-
-         arguments.couponDates = new List<Date>(cfs.Count - 1);
-         arguments.couponAmounts = new List<double>(cfs.Count - 1);
-
-         for (int i = 0; i < cfs.Count; i++)
-         {
-            if (!cfs[i].hasOccurred(settlement, false))
-            {
-               if (cfs[i] is QLNet.FixedRateCoupon)
-               {
-                  arguments.couponDates.Add(cfs[i].date());
-                  arguments.couponAmounts.Add(cfs[i].amount());
-               }
-            }
-         }
-
          arguments.callabilityPrices = new List<double>(putCallSchedule_.Count);
          arguments.callabilityDates = new List<Date>(putCallSchedule_.Count);
          arguments.paymentDayCounter = paymentDayCounter_;
          arguments.frequency = frequency_;
          arguments.putCallSchedule = putCallSchedule_;
 
+         if (!HasAmortizingSchedule())
+         {
+            List<CashFlow> cfs = cashflows();
+
+            arguments.couponDates = new List<Date>(cfs.Count - 1);
+            arguments.couponAmounts = new List<double>(cfs.Count - 1);
+
+            for (int i = 0; i < cfs.Count; i++)
+            {
+               if (!cfs[i].hasOccurred(settlement, false))
+               {
+                  if (cfs[i] is QLNet.FixedRateCoupon)
+                  {
+                     arguments.couponDates.Add(cfs[i].date());
+                     arguments.couponAmounts.Add(cfs[i].amount());
+                  }
+               }
+            }
+
+            for (int i = 0; i < putCallSchedule_.Count; i++)
+            {
+               if (!putCallSchedule_[i].hasOccurred(settlement, false))
+               {
+                  arguments.callabilityDates.Add(putCallSchedule_[i].date());
+                  arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
+
+                  if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
+                  {
+                     /* calling accrued() forces accrued interest to be zero
+                        if future option date is also coupon date, so that dirty
+                        price = clean price. Use here because callability is
+                        always applied before coupon in the tree engine.
+                     */
+                     arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] +=
+                        accrued(putCallSchedule_[i].date());
+                  }
+               }
+            }
+
+            return;
+         }
+
+         var deterministicCashflows = AggregateDeterministicCashflows(settlement);
+         arguments.couponDates = deterministicCashflows.Select(item => item.Date).ToList();
+         arguments.couponAmounts = deterministicCashflows.Select(item => item.Amount).ToList();
+
          for (int i = 0; i < putCallSchedule_.Count; i++)
          {
             if (!putCallSchedule_[i].hasOccurred(settlement, false))
             {
                arguments.callabilityDates.Add(putCallSchedule_[i].date());
-               arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
-
-               if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
-               {
-                  /* calling accrued() forces accrued interest to be zero
-                     if future option date is also coupon date, so that dirty
-                     price = clean price. Use here because callability is
-                     always applied before coupon in the tree engine.
-                  */
-                  arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] +=
-                     accrued(putCallSchedule_[i].date());
-               }
+               arguments.callabilityPrices.Add(CalculateCallabilityPrice(putCallSchedule_[i]));
             }
          }
       }
@@ -611,8 +631,8 @@ namespace QLNet
          public NpvSpreadHelper(CallableBond bond)
          {
             bond_ = bond;
-            results_ = bond.engine_.getResults() as Instrument.Results;
             bond.setupArguments(bond.engine_.getArguments());
+            results_ = bond.engine_.getResults() as CallableBond.Results;
          }
 
          public double value(double x)
@@ -623,11 +643,18 @@ namespace QLNet
             args.spread = x;
             bond_.engine_.calculate();
             args.spread = originalSpread;
-            return results_.value.Value;
+
+            var currentNotional = bond_.notional(args.settlementDate);
+            if (currentNotional.IsEqual(0.0))
+            {
+               return 0.0;
+            }
+
+            return results_.settlementValue.Value * 100.0 / currentNotional;
          }
 
          private CallableBond bond_;
-         private Instrument.Results results_;
+         private CallableBond.Results results_;
       }
 
       protected class OasHelper : ISolver1d
@@ -796,9 +823,22 @@ namespace QLNet
          if (couponType == CouponType.FixedRate)
          {
             var fixedRateBondSchedule = mainSchedule_.until(maturityDate);
-            var fixedRateBondCoupons = coupons_.Take(mainSchedule_.size() - 1).ToList();
-            var bond = new FixedRateBond(settlementDays_, faceAmount_, fixedRateBondSchedule, fixedRateBondCoupons,
-               paymentDayCounter_, BusinessDayConvention.Unadjusted, redemption, issueDate_);
+            var fixedRateBondCoupons = coupons_.Take(fixedRateBondSchedule.size() - 1).ToList();
+            Bond bond;
+
+            if (HasAmortizingSchedule())
+            {
+               var fixedRateBondNotionals = notionalsByPeriod_.Take(fixedRateBondSchedule.size() - 1).ToList();
+               var redemptionMultipliers = CreateRedemptionMultipliers(fixedRateBondSchedule, fixedRateBondNotionals, redemption);
+               bond = new CallableSupportFixedRateBond(settlementDays_, fixedRateBondSchedule, fixedRateBondCoupons,
+                  fixedRateBondNotionals, paymentDayCounter_, paymentConvention_, issueDate_, redemptionMultipliers);
+            }
+            else
+            {
+               bond = new FixedRateBond(settlementDays_, faceAmount_, fixedRateBondSchedule, fixedRateBondCoupons,
+                  paymentDayCounter_, BusinessDayConvention.Unadjusted, redemption, issueDate_);
+            }
+
             return bond;
          }
          else
@@ -866,7 +906,7 @@ namespace QLNet
             cashflows = new FixedRateLeg(truncatedSchedule)
                .withCouponRates(truncatedCoupons, paymentDayCounter_)
                .withPaymentCalendar(calendar_)
-               .withNotionals(faceAmount_)
+               .withNotionals(HasAmortizingSchedule() ? notionalsByPeriod_.Take(truncatedSchedule.size() - 1).ToList() : [faceAmount_])
                .withPaymentAdjustment(BusinessDayConvention.Unadjusted);
 
             effectiveMaturityDate = truncatedSchedule.endDate();
@@ -877,9 +917,19 @@ namespace QLNet
             cashflows = [];
          }
 
-         // Add redemption cashflow
-         var redemptionAmount = redemption.GetValueOrDefault(100.0) * faceAmount_ / 100.0;
-         cashflows.Add(new SimpleCashFlow(redemptionAmount, effectiveMaturityDate));
+         if (HasAmortizingSchedule())
+         {
+            var redemptionMultipliers = CreateRedemptionMultipliers(
+               mainSchedule_.until(effectiveMaturityDate),
+               notionalsByPeriod_.Take(mainSchedule_.until(effectiveMaturityDate).size() - 1).ToList(),
+               redemption.GetValueOrDefault(100.0));
+            AddPrincipalCashflows(cashflows, redemptionMultipliers);
+         }
+         else
+         {
+            var redemptionAmount = redemption.GetValueOrDefault(100.0) * faceAmount_ / 100.0;
+            cashflows.Add(new SimpleCashFlow(redemptionAmount, effectiveMaturityDate));
+         }
 
          // Determine compounding based on maturity
          var comp = GetCompounding(cashflows, settlementDate, effectiveMaturityDate, couponType);
@@ -901,6 +951,189 @@ namespace QLNet
          public double? CalcPrice { get; set; }
          public double? CalcModifiedDuration { get; set; }
          public string ErrorMessage { get; set; }
+      }
+
+      protected bool HasAmortizingSchedule()
+      {
+         return hasAmortizingSchedule_;
+      }
+
+      protected List<(Date Date, double Amount)> AggregateDeterministicCashflows(Date settlement)
+      {
+         return cashflows_
+            .Where(cashflow => !cashflow.hasOccurred(settlement, false) && cashflow != redemption())
+            .GroupBy(cashflow => cashflow.date())
+            .Select(group => (group.Key, group.Sum(cashflow => cashflow.amount())))
+            .OrderBy(item => item.Key)
+            .ToList();
+      }
+
+      protected double CalculateCallabilityPrice(Callability call)
+      {
+         var callPrice = call.price().amount();
+         if (HasAmortizingSchedule())
+         {
+            callPrice *= GetOutstandingNotionalAtExercise(call.date()) / faceAmount_;
+         }
+
+         if (call.price().type() != Bond.Price.Type.Clean)
+         {
+            return callPrice;
+         }
+
+         if (HasAmortizingSchedule())
+         {
+            return callPrice + GetAccruedAmountAt(call.date()) * 100.0 / faceAmount_;
+         }
+
+         return callPrice + accrued(call.date());
+      }
+
+      protected double GetOutstandingNotionalAtExercise(Date exerciseDate)
+      {
+         if (!HasAmortizingSchedule())
+         {
+            return faceAmount_;
+         }
+
+         for (var i = 0; i < mainSchedule_.Count - 1; i++)
+         {
+            if (exerciseDate <= mainSchedule_[i + 1])
+            {
+               return notionalsByPeriod_[Math.Min(i, notionalsByPeriod_.Count - 1)];
+            }
+         }
+
+         return notionalsByPeriod_.Last();
+      }
+
+      protected double GetAccruedAmountAt(Date settlement)
+      {
+         const bool includeToday = false;
+         for (int i = 0; i < cashflows_.Count; ++i)
+         {
+            if (!cashflows_[i].hasOccurred(settlement, includeToday))
+            {
+               if (cashflows_[i] is Coupon coupon)
+               {
+                  return coupon.accruedAmount(settlement);
+               }
+
+               return 0.0;
+            }
+         }
+
+         return 0.0;
+      }
+
+      protected List<double> CreateRedemptionMultipliers(Schedule schedule, List<double> notionals, double finalRedemption)
+      {
+         var redemptionMultipliers = new List<double> { 100.0 };
+         for (var i = 0; i < schedule.Count - 1; i++)
+         {
+            var currentNotional = notionals[Math.Min(i, notionals.Count - 1)];
+            var nextNotional = i + 1 < notionals.Count ? notionals[i + 1] : 0.0;
+            if (nextNotional < currentNotional)
+            {
+               redemptionMultipliers.Add(i == schedule.Count - 2 ? finalRedemption : 100.0);
+            }
+         }
+
+         return redemptionMultipliers;
+      }
+
+      protected void AddPrincipalCashflows(List<CashFlow> cashflows, List<double> redemptionMultipliers)
+      {
+         var notionals = new List<double>();
+         var notionalSchedule = new List<Date>();
+         Date lastPaymentDate = new Date();
+         notionalSchedule.Add(new Date());
+
+         foreach (var cashflow in cashflows)
+         {
+            if (cashflow is not Coupon coupon)
+            {
+               continue;
+            }
+
+            var notional = coupon.nominal();
+            if (notionals.empty())
+            {
+               notionals.Add(notional);
+               lastPaymentDate = coupon.date();
+            }
+            else if (!Utils.close(notional, notionals.Last()))
+            {
+               notionals.Add(notional);
+               notionalSchedule.Add(lastPaymentDate);
+               lastPaymentDate = coupon.date();
+            }
+            else
+            {
+               lastPaymentDate = coupon.date();
+            }
+         }
+
+         notionals.Add(0.0);
+         notionalSchedule.Add(lastPaymentDate);
+
+         for (int i = 1; i < notionalSchedule.Count; ++i)
+         {
+            var redemptionMultiplier = i < redemptionMultipliers.Count ? redemptionMultipliers[i] : redemptionMultipliers.Last();
+            var amount = (redemptionMultiplier / 100.0) * (notionals[i - 1] - notionals[i]);
+            CashFlow payment = i < notionalSchedule.Count - 1
+               ? new AmortizingPayment(amount, notionalSchedule[i])
+               : new Redemption(amount, notionalSchedule[i]);
+            cashflows.Add(payment);
+         }
+
+         cashflows.Sort((left, right) => left.date().CompareTo(right.date()));
+      }
+
+      protected class CallableSupportFixedRateBond : Bond
+      {
+         public CallableSupportFixedRateBond(
+            int settlementDays,
+            Schedule schedule,
+            List<double> coupons,
+            List<double> notionals,
+            DayCounter accrualDayCounter,
+            BusinessDayConvention paymentConvention,
+            Date issueDate,
+            List<double> redemptionMultipliers)
+            : base(settlementDays, schedule.calendar(), issueDate)
+         {
+            maturityDate_ = schedule.endDate();
+
+            cashflows_ = new FixedRateLeg(schedule)
+               .withCouponRates(coupons, accrualDayCounter)
+               .withNotionals(notionals)
+               .withPaymentAdjustment(paymentConvention)
+               .value();
+
+            calculateNotionalsFromCashflows();
+            AddPrincipalCashflows(redemptionMultipliers);
+         }
+
+         private void AddPrincipalCashflows(List<double> redemptionMultipliers)
+         {
+            for (int i = 1; i < notionalSchedule_.Count; ++i)
+            {
+               var redemptionMultiplier = i < redemptionMultipliers.Count ? redemptionMultipliers[i] : redemptionMultipliers.Last();
+               var amount = (redemptionMultiplier / 100.0) * (notionals_[i - 1] - notionals_[i]);
+               CashFlow payment = i < notionalSchedule_.Count - 1
+                  ? new AmortizingPayment(amount, notionalSchedule_[i])
+                  : new Redemption(amount, notionalSchedule_[i]);
+
+               cashflows_.Add(payment);
+               if (payment is Redemption redemption)
+               {
+                  redemptions_.Add(redemption);
+               }
+            }
+
+            cashflows_ = cashflows_.OrderBy(cashflow => cashflow.date()).ToList();
+         }
       }
    }
 
@@ -925,14 +1158,48 @@ namespace QLNet
       {
          mainSchedule_ = schedule;
          coupons_ = coupons;
+         hasAmortizingSchedule_ = false;
          redemption_ = redemption;
          frequency_ = schedule.tenor().frequency();
+         paymentConvention_ = paymentConvention;
          cashflows_ = new FixedRateLeg(schedule)
-            .withCouponRates(coupons, accrualDayCounter)
-            .withNotionals(faceAmount)
-            .withPaymentAdjustment(paymentConvention);
+           .withCouponRates(coupons, accrualDayCounter)
+           .withNotionals(faceAmount)
+           .withPaymentAdjustment(paymentConvention);
 
          addRedemptionsToCashflows([redemption]);
+      }
+
+      public CallableFixedRateBond(int settlementDays,
+         double faceAmount,
+         Schedule schedule,
+         List<double> coupons,
+         List<double> notionals,
+         DayCounter accrualDayCounter,
+         BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
+         double redemption = 100.0,
+         Date issueDate = null,
+         CallabilitySchedule putCallSchedule = null)
+         : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate,
+           putCallSchedule)
+      {
+         mainSchedule_ = schedule;
+         coupons_ = coupons;
+         notionalsByPeriod_ = notionals;
+         hasAmortizingSchedule_ = notionals is { Count: > 0 };
+         redemption_ = redemption;
+         frequency_ = schedule.tenor().frequency();
+         paymentConvention_ = paymentConvention;
+         cashflows_ = new FixedRateLeg(schedule)
+           .withCouponRates(coupons, accrualDayCounter)
+           .withNotionals(notionals)
+           .withPaymentAdjustment(paymentConvention)
+           .value();
+
+         calculateNotionalsFromCashflows();
+         AddPrincipalCashflows(cashflows_, CreateRedemptionMultipliers(schedule, notionals, redemption));
+         redemptions_.Clear();
+         redemptions_.Add(cashflows_.OfType<Redemption>().Last());
       }
 
       public override CallableCalcs[] yieldToCalls(Date settlement, double price, Frequency frequency,
