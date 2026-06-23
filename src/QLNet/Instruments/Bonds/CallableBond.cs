@@ -1087,7 +1087,9 @@ namespace QLNet
             cashflows.Add(payment);
          }
 
-         cashflows.Sort((left, right) => left.date().CompareTo(right.date()));
+         var orderedCashflows = cashflows.OrderBy(cashflow => cashflow.date()).ToList();
+         cashflows.Clear();
+         cashflows.AddRange(orderedCashflows);
       }
 
       protected class CallableSupportFixedRateBond : Bond
@@ -1185,8 +1187,9 @@ namespace QLNet
       {
          mainSchedule_ = schedule;
          coupons_ = coupons;
+         Utils.QL_REQUIRE(notionals is { Count: > 0 }, () => "no notionals provided");
          notionalsByPeriod_ = notionals;
-         hasAmortizingSchedule_ = notionals is { Count: > 0 };
+         hasAmortizingSchedule_ = true;
          redemption_ = redemption;
          frequency_ = schedule.tenor().frequency();
          paymentConvention_ = paymentConvention;

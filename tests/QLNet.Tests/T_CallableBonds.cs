@@ -1125,7 +1125,7 @@ public class CallableBondsTests
             .Where(sinkTerm => sinkTerm.SinkDate >= periodEndDate)
             .Sum(sinkTerm => sinkTerm.Amount);
 
-         notionals.Add(faceAmount * outstandingPrincipal / faceAmount);
+         notionals.Add(outstandingPrincipal);
       }
 
       return notionals;
