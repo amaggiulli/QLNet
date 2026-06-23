@@ -1004,4 +1004,130 @@ public class CallableBondsTests
          $"    yieldExact    : {yieldExact * 100.0:F6}%\n" +
          $"    error         : {errorBps:F4} bps");
    }
+
+   [Fact]
+   public void testSinkableCallableMatchesReferenceDurations()
+   {
+      var settlementDate = new DateTime(2026, 6, 11);
+      var maturityDate = new DateTime(2052, 7, 1);
+      var firstCallDate = new DateTime(2036, 7, 1);
+      var faceAmount = 39755000.0;
+      const double baseOas = 0.0;
+      const double referenceCleanPrice = 104.582;
+      const double referenceEffectiveDuration = 7.91;
+      const double effectiveDurationTolerance = 0.15;
+      const double referenceOasDuration = 13.94;
+      const double oasDurationTolerance = 0.02;
+
+      Settings.setEvaluationDate(settlementDate);
+
+      var curveDayCounter = new ActualActual(ActualActual.Convention.Bond);
+      var curve = buildReferenceCurve(settlementDate, curveDayCounter);
+      var termStructure = new Handle<YieldTermStructure>(curve);
+      var model = new HullWhite(termStructure, 0.03, 1.0e-12);
+
+      var scheduleStart = maturityDate;
+      while (scheduleStart > settlementDate)
+         scheduleStart = scheduleStart.AddMonths(-6);
+
+      var schedule = new Schedule(
+         scheduleStart,
+         maturityDate,
+         new Period(Frequency.Semiannual),
+         new TARGET(),
+         BusinessDayConvention.Unadjusted,
+         BusinessDayConvention.Unadjusted,
+         DateGeneration.Rule.Backward,
+         false);
+
+      var notionals = buildSinkableNotionals(schedule, faceAmount);
+      var callSchedule = new CallabilitySchedule();
+      for (var callDate = firstCallDate; callDate <= maturityDate; callDate = callDate.AddMonths(6))
+      {
+         callSchedule.Add(new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, callDate));
+      }
+
+      var bond = new CallableFixedRateBond(
+         0,
+         faceAmount,
+         schedule,
+         [0.05],
+         notionals,
+         new Thirty360(Thirty360.Thirty360Convention.BondBasis),
+         BusinessDayConvention.Unadjusted,
+         100.0,
+         new Date(),
+         callSchedule);
+
+      bond.setPricingEngine(new TreeCallableFixedRateBondEngine(model, 240, termStructure));
+
+      var effectiveDuration = bond.effectiveDuration(baseOas, termStructure, curveDayCounter, Compounding.Compounded, Frequency.Semiannual);
+      var oas = bond.OAS(referenceCleanPrice, termStructure, curveDayCounter, Compounding.Compounded, Frequency.Semiannual, settlementDate);
+      var oasDuration = bond.effectiveDuration(oas, termStructure, curveDayCounter, Compounding.Compounded, Frequency.Semiannual);
+
+      if (Math.Abs(effectiveDuration - referenceEffectiveDuration) > effectiveDurationTolerance)
+         QAssert.Fail("failed to reproduce sinkable callable effective duration:\n"
+                      + "    calculated: " + effectiveDuration + "\n"
+                      + "    expected:   " + referenceEffectiveDuration + " +/- " + effectiveDurationTolerance);
+
+      if (Math.Abs(oasDuration - referenceOasDuration) > oasDurationTolerance)
+         QAssert.Fail("failed to reproduce sinkable callable OAS duration:\n"
+                      + "    calculated: " + oasDuration + "\n"
+                      + "    expected:   " + referenceOasDuration + " +/- " + oasDurationTolerance);
+   }
+
+   private static InterpolatedZeroCurve<Linear> buildReferenceCurve(DateTime settlementDate, DayCounter dayCounter)
+   {
+      var dates = new List<Date>
+      {
+         new Date(settlementDate),
+         new Date(settlementDate.AddMonths(3)),
+         new Date(settlementDate.AddMonths(6)),
+      };
+
+      var rates = new List<double>
+      {
+         0.0253,
+         0.0253,
+         0.0239,
+      };
+
+      var parCurveRates = new[]
+      {
+         2.38, 2.40, 2.42, 2.50, 2.56, 2.64, 2.72, 2.77, 2.86, 2.95,
+         3.04, 3.12, 3.19, 3.22, 3.26, 3.36, 3.46, 3.59, 3.73, 3.85,
+         3.93, 4.00, 4.05, 4.11, 4.13, 4.16, 4.17, 4.20, 4.21, 4.23
+      };
+
+      for (var year = 1; year <= parCurveRates.Length; year++)
+      {
+         dates.Add(new Date(settlementDate.AddYears(year)));
+         rates.Add(parCurveRates[year - 1] / 100.0);
+      }
+
+      return new InterpolatedZeroCurve<Linear>(dates, rates, dayCounter);
+   }
+
+   private static List<double> buildSinkableNotionals(Schedule schedule, double faceAmount)
+   {
+      var sinkTerms = new List<(DateTime SinkDate, double Amount)>
+      {
+         (new DateTime(2050, 7, 1), 11905000.0),
+         (new DateTime(2051, 7, 1), 12505000.0),
+         (new DateTime(2052, 7, 1), 14145000.0),
+      };
+
+      var notionals = new List<double>(schedule.Count - 1);
+      for (var periodIndex = 0; periodIndex < schedule.Count - 1; periodIndex++)
+      {
+         var periodEndDate = DateTime.SpecifyKind(schedule[periodIndex + 1], DateTimeKind.Utc);
+         var outstandingPrincipal = sinkTerms
+            .Where(sinkTerm => sinkTerm.SinkDate >= periodEndDate)
+            .Sum(sinkTerm => sinkTerm.Amount);
+
+         notionals.Add(outstandingPrincipal);
+      }
+
+      return notionals;
+   }
 }
