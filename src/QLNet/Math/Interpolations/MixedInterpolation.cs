@@ -83,14 +83,14 @@ namespace QLNet
 
       public override double value(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (xBegin2_.Count == 0 || x < (xBegin2_.First()))
             return interpolation1_.value(x, true);
          return interpolation2_.value(x, true);
       }
 
       public override double primitive(double x)
       {
-         if (x<(xBegin2_.First()))
+         if (xBegin2_.Count == 0 ||  x<(xBegin2_.First()))
             return interpolation1_.primitive(x, true);
          return interpolation2_.primitive(x, true) -
                 interpolation2_.primitive(xBegin2_.First(), true) +
@@ -99,14 +99,14 @@ namespace QLNet
 
       public override double derivative(double x)
       {
-         if (x < (xBegin2_.First()))
+         if (xBegin2_.Count == 0 || x < (xBegin2_.First()))
             return interpolation1_.derivative(x, true);
          return interpolation2_.derivative(x, true);
       }
 
       public override double secondDerivative(double x)
       {
-         if (x < (xBegin2_.First()))
+         if (xBegin2_.Count == 0 || x < (xBegin2_.First()))
             return interpolation1_.secondDerivative(x, true);
          return interpolation2_.secondDerivative(x, true);
       }
