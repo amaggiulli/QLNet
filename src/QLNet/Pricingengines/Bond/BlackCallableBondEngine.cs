@@ -82,6 +82,8 @@ namespace QLNet
          var exerciseTime = volatility_.link.dayCounter().yearFraction(
                                   volatility_.link.referenceDate(),
                                   exerciseDate);
+         var discount = discountCurve_.link.discount(exerciseDate);
+         var discountToSettlement = discount / discountCurve_.link.discount(settle);
          var embeddedOptionValue = Utils.blackFormula(type,
                                                          cashStrike,
                                                          fwdCashPrice,
@@ -89,13 +91,13 @@ namespace QLNet
 
          if (type == Option.Type.Call)
          {
-            results_.value = npv - embeddedOptionValue;
-            results_.settlementValue = value - embeddedOptionValue;
+            results_.value = npv - embeddedOptionValue * discount;
+            results_.settlementValue = value - embeddedOptionValue * discountToSettlement;
          }
          else
          {
-            results_.value = npv + embeddedOptionValue;
-            results_.settlementValue = value + embeddedOptionValue;
+            results_.value = npv + embeddedOptionValue * discount;
+            results_.settlementValue = value + embeddedOptionValue * discountToSettlement;
          }
       }
 

@@ -611,14 +611,14 @@ public class CallableBondsTests
 
       bond.setPricingEngine(new BlackCallableZeroCouponBondEngine(new Handle<Quote>(new SimpleQuote(0.3)), vars.termStructure));
 
-      var expected = 74.52915084;
+      var cached = 74.54521578;
       var calculated = bond.cleanPrice();
 
-      if (Math.Abs(calculated - expected) > 1.0e-4)
+      if (Math.Abs(calculated - cached) > 1.0e-4)
          QAssert.Fail("failed to reproduce cached price:\n"
                       + "    calculated NPV: " + calculated + "\n"
-                      + "    expected:       " + expected + "\n"
-                      + "    difference:     " + (calculated - expected));
+                      + "    cached:         " + cached + "\n"
+                      + "    difference:     " + (calculated - cached));
    }
 
    [Fact,Priority(0)]
@@ -656,7 +656,7 @@ public class CallableBondsTests
          1e-4,  // min vol
          1.0);  // max vol
 
-      bond.setPricingEngine(new BlackCallableZeroCouponBondEngine(new Handle<Quote>(
+      bond.setPricingEngine(new BlackCallableFixedRateBondEngine(new Handle<Quote>(
          new SimpleQuote(volatility)), vars.termStructure));
 
       if (Math.Abs(bond.dirtyPrice() - targetPrice.amount()) > 1.0e-4)
@@ -673,7 +673,7 @@ public class CallableBondsTests
          1e-4,  // min vol
          1.0);  // max vol
 
-      bond.setPricingEngine(new BlackCallableZeroCouponBondEngine(new Handle<Quote>(
+      bond.setPricingEngine(new BlackCallableFixedRateBondEngine(new Handle<Quote>(
          new SimpleQuote(volatility)), vars.termStructure));
 
       if (Math.Abs(bond.cleanPrice() - targetPrice.amount()) > 1.0e-4)
@@ -1074,6 +1074,60 @@ public class CallableBondsTests
          QAssert.Fail("failed to reproduce sinkable callable OAS duration:\n"
                       + "    calculated: " + oasDuration + "\n"
                       + "    expected:   " + referenceOasDuration + " +/- " + oasDurationTolerance);
+   }
+
+   [Fact]
+   public void testBlackEngineDeepInTheMoney()
+   {
+      // Testing Black engine for deep ITM European callable bond
+      var vars = new Globals();
+
+      vars.today = new Date(20, Month.September, 2022);
+      Settings.setEvaluationDate(vars.today);
+      vars.settlement = vars.calendar.advance(vars.today, 3, TimeUnit.Days);
+
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.05));
+
+      var schedule =
+          new MakeSchedule()
+          .from(vars.issueDate())
+          .to(vars.maturityDate())
+          .withCalendar(vars.calendar)
+          .withFrequency(Frequency.Semiannual)
+          .withConvention(vars.rollingConvention)
+          .withRule(DateGeneration.Rule.Backward)
+          .value();
+
+      List<double> coupons = [0.0];
+
+      var callabilityDate = schedule.at(6);
+      var strike = 50.0;  // definitely ITM; see also the volatility value below
+
+      var callabilities = new CallabilitySchedule
+      {
+         new Callability(new Bond.Price(50.0, Bond.Price.Type.Clean), Callability.Type.Call,callabilityDate),
+
+      };
+
+      var bond = new CallableFixedRateBond(3, 10000.0, schedule,
+                               coupons, new Thirty360(Thirty360.Thirty360Convention.BondBasis),
+                               vars.rollingConvention,
+                               100.0, vars.issueDate(),
+                               callabilities);
+
+      var vol = 1e-10;
+      bond.setPricingEngine(new BlackCallableFixedRateBondEngine(new Handle<Quote>(new SimpleQuote(vol)), vars.termStructure));
+
+      var expected = strike * vars.termStructure.link.discount(callabilityDate)
+                     / vars.termStructure.link.discount(bond.settlementDate());
+      var calculated = bond.cleanPrice();
+
+      if (Math.Abs(calculated - expected) > 1.0e-8)
+         QAssert.Fail(
+             "failed to reproduce expected price:\n"
+             + "    calculated NPV: " + calculated + "\n"
+             + "    expected:       " + expected + "\n"
+             + "    difference:     " + (calculated - expected));
    }
 
    private static InterpolatedZeroCurve<Linear> buildReferenceCurve(DateTime settlementDate, DayCounter dayCounter)
