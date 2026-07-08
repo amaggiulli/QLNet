@@ -1162,7 +1162,7 @@ namespace QLNet
          coupons_ = coupons;
          hasAmortizingSchedule_ = false;
          redemption_ = redemption;
-         frequency_ = schedule.tenor().frequency();
+         frequency_ = schedule.hasTenor() ? schedule.tenor().frequency() : Frequency.NoFrequency;
          paymentConvention_ = paymentConvention;
          cashflows_ = new FixedRateLeg(schedule)
            .withCouponRates(coupons, accrualDayCounter)
@@ -1191,7 +1191,7 @@ namespace QLNet
          notionalsByPeriod_ = notionals;
          hasAmortizingSchedule_ = true;
          redemption_ = redemption;
-         frequency_ = schedule.tenor().frequency();
+         frequency_ = schedule.hasTenor() ? schedule.tenor().frequency() : Frequency.NoFrequency;
          paymentConvention_ = paymentConvention;
          cashflows_ = new FixedRateLeg(schedule)
            .withCouponRates(coupons, accrualDayCounter)

@@ -527,6 +527,8 @@ namespace QLNet
       public Calendar calendar() { return calendar_; }
       public Date startDate() { return dates_.First(); }
       public Date endDate() { return dates_.Last(); }
+      public bool hasTenor() { return tenor_ != null; }
+      public bool hasIsRegular() { return isRegular_.Count > 0; }
       public Period tenor()
       {
          Utils.QL_REQUIRE(tenor_ != null, () => "full interface (tenor) not available");

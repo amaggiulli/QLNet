@@ -1130,6 +1130,47 @@ public class CallableBondsTests
              + "    difference:     " + (calculated - expected));
    }
 
+   [Fact]
+   public void testCallableFixedRateBondWithArbitrarySchedule()
+   {
+      // Testing callable fixed-rate bond with arbitrary schedule
+      var vars = new Globals();
+
+      var settlementDays = 2;
+      vars.today = new Date(10, Month.January, 2020);
+      Settings.setEvaluationDate(vars.today);
+      vars.settlement = vars.calendar.advance(vars.today, settlementDays, TimeUnit.Days);
+
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.03));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      var engine = new TreeCallableFixedRateBondEngine(vars.model, 240, vars.termStructure);
+
+      var dates = new List<Date>
+      {
+         new Date(20, Month.February, 2020),
+         new Date(15, Month.August, 2020),
+         new Date(25, Month.September, 2021),
+         new Date(27, Month.January, 2022)
+      };
+
+      var schedule = new Schedule(dates, vars.calendar, BusinessDayConvention.Unadjusted);
+
+      var callabilities = new CallabilitySchedule
+      {
+         new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, dates[2])
+      };
+
+      List<double> coupons = [0.06];
+
+      var callableBond = new CallableFixedRateBond(settlementDays, 100.0, schedule, coupons, vars.dayCounter,
+         vars.rollingConvention, 100.0, vars.issueDate(), callabilities);
+      callableBond.setPricingEngine(engine);
+
+      var ex = Record.Exception(() => callableBond.cleanPrice());
+      Assert.Null(ex);
+   }
+
    private static InterpolatedZeroCurve<Linear> buildReferenceCurve(DateTime settlementDate, DayCounter dayCounter)
    {
       var dates = new List<Date>

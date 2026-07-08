@@ -231,21 +231,14 @@ namespace QLNet
                                                      exCouponAdjustment_,
                                                      exCouponEndOfMonth_);
          }
-         if (schedule_.isRegular(1))
-         {
-            if (!(firstPeriodDC_ == null || firstPeriodDC_ == rate.dayCounter()))
-               throw new ArgumentException("regular first coupon does not allow a first-period day count");
-            leg.Add(new FixedRateCoupon(paymentDate, nominal, rate, start, end, start, end, exCouponDate));
-         }
-         else
-         {
-            Date refer = end - schedule_.tenor();
-            refer = schCalendar.adjust(refer, schedule_.businessDayConvention());
-            InterestRate r = new InterestRate(rate.rate(),
-                                              (firstPeriodDC_ == null || firstPeriodDC_.empty()) ? rate.dayCounter() : firstPeriodDC_,
-                                              rate.compounding(), rate.frequency());
-            leg.Add(new FixedRateCoupon(paymentDate, nominal, r, start, end, refer, end, exCouponDate));
-         }
+         Date referenceStart =
+            schedule_.hasTenor() && schedule_.hasIsRegular() && !schedule_.isRegular(1)
+               ? schCalendar.advance(end, -schedule_.tenor(), schedule_.businessDayConvention(), schedule_.endOfMonth())
+               : start;
+         InterestRate firstCouponRate = new InterestRate(rate.rate(),
+            (firstPeriodDC_ == null || firstPeriodDC_.empty()) ? rate.dayCounter() : firstPeriodDC_,
+            rate.compounding(), rate.frequency());
+         leg.Add(new FixedRateCoupon(paymentDate, nominal, firstCouponRate, start, end, referenceStart, end, exCouponDate));
 
          // regular periods
          for (int i = 2; i < schedule_.Count - 1; ++i)
@@ -296,7 +289,7 @@ namespace QLNet
 
             InterestRate r = new InterestRate(rate.rate(),
                                               lastPeriodDC_ == null ? rate.dayCounter() : lastPeriodDC_, rate.compounding(), rate.frequency());
-            if (schedule_.isRegular(N - 1))
+            if ((schedule_.hasIsRegular() && schedule_.isRegular(N - 1)) || !schedule_.hasTenor())
                leg.Add(new FixedRateCoupon(paymentDate, nominal, r, start, end, start, end, exCouponDate));
             else
             {
