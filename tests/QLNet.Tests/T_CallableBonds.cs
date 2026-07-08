@@ -1171,6 +1171,146 @@ public class CallableBondsTests
       Assert.Null(ex);
    }
 
+   [Fact]
+   public void testCallableBondOasWithDifferentNotionals()
+   {
+      // Testing callable fixed-rate bond OAS with different notionals
+      var vars = new Globals();
+
+      var settlementDays = 2;
+      vars.today = new Date(10, Month.January, 2020);
+      Settings.setEvaluationDate(vars.today);
+      vars.settlement = vars.calendar.advance(vars.today, settlementDays, TimeUnit.Days);
+
+      List<double> coupons = [0.055];
+      var dc = vars.dayCounter;
+      var compounding = Compounding.Compounded;
+      var frequency = Frequency.Semiannual;
+
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.03));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      var engine = new TreeCallableFixedRateBondEngine(vars.model, 240, vars.termStructure);
+
+      var schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(frequency)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward)
+         .value();
+
+      var firstCallDate = schedule.at(schedule.Count - 5);
+      var lastCallDate = schedule.at(schedule.Count - 2);
+      var callabilityDates = schedule.after(firstCallDate).until(lastCallDate);
+
+      var callSchedule = new CallabilitySchedule();
+      foreach (var callDate in callabilityDates.dates())
+      {
+         callSchedule.Add(new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, callDate));
+      }
+
+      var callableBond100 = new CallableFixedRateBond(settlementDays, 100.0, schedule, coupons, vars.dayCounter,
+         vars.rollingConvention, 100.0, vars.issueDate(), callSchedule);
+      callableBond100.setPricingEngine(engine);
+
+      var callableBond25 = new CallableFixedRateBond(settlementDays, 25.0, schedule, coupons, vars.dayCounter,
+         vars.rollingConvention, 100.0, vars.issueDate(), callSchedule);
+      callableBond25.setPricingEngine(engine);
+
+      var cleanPrice = 96.0;
+      var oas100 = callableBond100.OAS(cleanPrice, vars.termStructure, dc, compounding, frequency);
+      var oas25 = callableBond25.OAS(cleanPrice, vars.termStructure, dc, compounding, frequency);
+      if (Math.Abs(oas100 - oas25) > 1.0e-8)
+         QAssert.Fail("failed to reproduce equal OAS with different notionals:\n"
+                      + "    OAS(bps) with notional 100.0:   " + oas100 * 10000 + "\n"
+                      + "    OAS(bps) with notional 25.0:    " + oas25 * 10000 + "\n");
+
+      var oas = 0.0300;
+      var cleanPrice100 = callableBond100.cleanPriceOAS(oas, vars.termStructure, dc, compounding, frequency);
+      var cleanPrice25 = callableBond25.cleanPriceOAS(oas, vars.termStructure, dc, compounding, frequency);
+      if (Math.Abs(cleanPrice100 - cleanPrice25) > 1.0e-8)
+         QAssert.Fail("failed to reproduce equal clean price given OAS with different notionals:\n"
+                      + "    clean price with notional 100.0:   " + cleanPrice100 + "\n"
+                      + "    clean price with notional 25.0:    " + cleanPrice25 + "\n");
+   }
+
+   [Fact]
+   public void testOasContinuityThroughExCouponWindow()
+   {
+      // Testing OAS continuity when call date crosses ex-coupon period
+      var today = new Date(31, Month.January, 2024);
+      Settings.setEvaluationDate(today);
+
+      var settlementDays = 0;
+      var calendar = new UnitedStates(UnitedStates.Market.NYSE);
+      var dc = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var bdc = BusinessDayConvention.Unadjusted;
+      var frequency = Frequency.Quarterly;
+      var exCouponPeriod = new Period(14, TimeUnit.Days);
+
+      var issueDate = today;
+      var maturityDate = new Date(31, Month.January, 2029);
+      var faceAmount = 100.0;
+      List<double> coupons = [0.06];
+      var redemption = 100.0;
+
+      var termStructure = new Handle<YieldTermStructure>(new FlatForward(today, 0.04, dc));
+      var model = new HullWhite(termStructure);
+
+      var schedule = new MakeSchedule()
+         .from(issueDate)
+         .to(maturityDate)
+         .withFrequency(frequency)
+         .withCalendar(calendar)
+         .withConvention(bdc)
+         .withTerminationDateConvention(bdc)
+         .backwards()
+         .endOfMonth(true)
+         .value();
+
+      var firstPaymentDate = schedule[1];
+      var exCouponDate = firstPaymentDate - exCouponPeriod;
+
+      var sweepStart = exCouponDate - 7;
+      var sweepEnd = firstPaymentDate + 7;
+
+      var cleanPrice = 100.0;
+      var compounding = Compounding.Compounded;
+
+      var maxOas = double.MinValue;
+      var minOas = double.MaxValue;
+
+      for (Date callDate = sweepStart; callDate <= sweepEnd; callDate++)
+      {
+         var callSchedule = new CallabilitySchedule
+         {
+            new Callability(new Bond.Price(redemption, Bond.Price.Type.Clean), Callability.Type.Call, callDate)
+         };
+
+         var bond = new CallableFixedRateBond(
+            settlementDays, faceAmount, schedule, coupons, dc,
+            bdc, redemption, issueDate, callSchedule,
+            exCouponPeriod, new NullCalendar());
+         bond.setPricingEngine(new TreeCallableFixedRateBondEngine(model, 100, termStructure));
+
+         var oas = bond.OAS(cleanPrice, termStructure, dc, compounding, frequency) * 10000.0;
+         maxOas = Math.Max(maxOas, oas);
+         minOas = Math.Min(minOas, oas);
+      }
+
+      var oasRange = maxOas - minOas;
+      var tolerance = 50.0;
+      if (oasRange > tolerance)
+         QAssert.Fail("OAS discontinuity across ex-coupon window:\n"
+                      + "    min OAS: " + minOas.ToString("F2", CultureInfo.InvariantCulture) + " bps\n"
+                      + "    max OAS: " + maxOas.ToString("F2", CultureInfo.InvariantCulture) + " bps\n"
+                      + "    range:   " + oasRange.ToString("F2", CultureInfo.InvariantCulture) + " bps\n"
+                      + "    tolerance: " + tolerance.ToString("F2", CultureInfo.InvariantCulture) + " bps\n"
+                      + "    (sweep from " + sweepStart + " to " + sweepEnd + ")");
+   }
+
    private static InterpolatedZeroCurve<Linear> buildReferenceCurve(DateTime settlementDate, DayCounter dayCounter)
    {
       var dates = new List<Date>

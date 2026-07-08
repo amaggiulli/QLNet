@@ -115,6 +115,30 @@ namespace QLNet
          return 0.0;
       }
 
+      private double callAccrued(Date callDate)
+      {
+         foreach (var cashflow in cashflows_)
+         {
+            if (!cashflow.hasOccurred(callDate, false))
+            {
+               if (cashflow is Coupon coupon)
+               {
+                  var acc = coupon.accruedAmount(callDate);
+                  if (coupon.tradingExCoupon(callDate))
+                  {
+                     acc = coupon.amount() + acc;
+                  }
+
+                  return acc / notional(callDate) * 100.0;
+               }
+
+               return 0.0;
+            }
+         }
+
+         return 0.0;
+      }
+
       public override void setupArguments(IPricingEngineArguments args)
       {
          base.setupArguments(args);
@@ -161,13 +185,8 @@ namespace QLNet
 
                   if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
                   {
-                     /* calling accrued() forces accrued interest to be zero
-                        if future option date is also coupon date, so that dirty
-                        price = clean price. Use here because callability is
-                        always applied before coupon in the tree engine.
-                     */
                      arguments.callabilityPrices[arguments.callabilityPrices.Count - 1] +=
-                        accrued(putCallSchedule_[i].date());
+                        callAccrued(putCallSchedule_[i].date());
                   }
                }
             }
@@ -986,7 +1005,7 @@ namespace QLNet
             return callPrice + GetAccruedAmountAt(call.date()) * 100.0 / faceAmount_;
          }
 
-         return callPrice + accrued(call.date());
+         return callPrice + callAccrued(call.date());
       }
 
       protected double GetOutstandingNotionalAtExercise(Date exerciseDate)
@@ -1154,7 +1173,11 @@ namespace QLNet
          BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
          double redemption = 100.0,
          Date issueDate = null,
-         CallabilitySchedule putCallSchedule = null)
+         CallabilitySchedule putCallSchedule = null,
+         Period exCouponPeriod = null,
+         Calendar exCouponCalendar = null,
+         BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+         bool exCouponEndOfMonth = false)
          : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate,
             putCallSchedule)
       {
@@ -1166,6 +1189,7 @@ namespace QLNet
          paymentConvention_ = paymentConvention;
          cashflows_ = new FixedRateLeg(schedule)
            .withCouponRates(coupons, accrualDayCounter)
+           .withExCouponPeriod(exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth)
            .withNotionals(faceAmount)
            .withPaymentAdjustment(paymentConvention);
 
@@ -1181,7 +1205,11 @@ namespace QLNet
          BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
          double redemption = 100.0,
          Date issueDate = null,
-         CallabilitySchedule putCallSchedule = null)
+         CallabilitySchedule putCallSchedule = null,
+         Period exCouponPeriod = null,
+         Calendar exCouponCalendar = null,
+         BusinessDayConvention exCouponConvention = BusinessDayConvention.Unadjusted,
+         bool exCouponEndOfMonth = false)
          : base(settlementDays, schedule.dates().Last(), schedule.calendar(), accrualDayCounter, faceAmount, issueDate,
            putCallSchedule)
       {
@@ -1195,6 +1223,7 @@ namespace QLNet
          paymentConvention_ = paymentConvention;
          cashflows_ = new FixedRateLeg(schedule)
            .withCouponRates(coupons, accrualDayCounter)
+           .withExCouponPeriod(exCouponPeriod, exCouponCalendar, exCouponConvention, exCouponEndOfMonth)
            .withNotionals(notionals)
            .withPaymentAdjustment(paymentConvention)
            .value();
