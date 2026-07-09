@@ -98,7 +98,7 @@ namespace QLNet
 
       public override double primitive(double x)
       {
-         if (xBegin2_.Count == 0 ||  x<(xBegin2_.First()))
+         if (xBegin2_.Count == 0 || x < (xBegin2_.First()))
             return interpolation1_.primitive(x, true);
          return interpolation2_.primitive(x, true) -
                 interpolation2_.primitive(xBegin2_.First(), true) +
