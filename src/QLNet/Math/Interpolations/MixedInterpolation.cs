@@ -56,7 +56,7 @@ namespace QLNet
          xBegin2_ = xBegin.GetRange(n_, xBegin.Count - n_);
          yBegin2_ = yBegin.GetRange(n_, yBegin.Count - n_);
 
-         Utils.QL_REQUIRE(xBegin2_.Count < size_, () => "too large n (" + n + ") for " + size_ + "-element x sequence");
+         Utils.QL_REQUIRE(xBegin2_.Count < xBegin.Count, () => "too large n (" + n + ") for " + size_ + "-element x sequence");
 
          switch (behavior)
          {
@@ -65,8 +65,16 @@ namespace QLNet
                interpolation2_ = factory2.interpolate(xBegin_, size_, yBegin_);
                break;
             case Behavior.SplitRanges:
-               interpolation1_ = factory1.interpolate(xBegin_, n_, yBegin_);
-               interpolation2_ = factory2.interpolate(xBegin2_, size_ - n, yBegin2_);
+               if (size_ <= n_)
+               {
+                  interpolation1_ = factory1.interpolate(xBegin_, size_, yBegin_);
+                  interpolation2_ = interpolation1_;
+               }
+               else
+               {
+                  interpolation1_ = factory1.interpolate(xBegin_, n_, yBegin_);
+                  interpolation2_ = factory2.interpolate(xBegin2_, size_- n_, yBegin2_);
+               }
                break;
             default:
                Utils.QL_FAIL("unknown mixed-interpolation behavior: " + behavior);
