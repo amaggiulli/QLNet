@@ -127,13 +127,12 @@ namespace QLNet
 
          public override double value(Vector parameters, double t)
          {
-            int size = times_.Count;
-            for (int i = 0; i < size; i++)
-            {
-               if (t < times_[i])
-                  return parameters[i];
-            }
-            return parameters[size];
+            int i = times_.BinarySearch(t);
+            if (i >= 0)
+               return parameters[i + 1];
+
+            i = ~i;
+            return parameters[i];
          }
          private List<double> times_;
       }
