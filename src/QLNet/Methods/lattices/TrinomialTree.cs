@@ -23,6 +23,8 @@ namespace QLNet
 {
    public class TrinomialTree : Tree<TrinomialTree>
    {
+      private const double FloorThreshold = 0.01;
+
       public enum Branches { branches = 3 }
       private  List<Branching> branchings_;
       protected double x0_;
@@ -38,12 +40,27 @@ namespace QLNet
                            bool isPositive /*= false*/)
          : base(timeGrid.size())
       {
+         Utils.QL_REQUIRE(timeGrid.size() > 1, () => "null time steps for trinomial tree");
+
          branchings_ = new List<Branching>();
          dx_ = new InitializedList<double>(1);
          timeGrid_ = timeGrid;
          x0_ = process.x0();
 
          int nTimeSteps = timeGrid.size() - 1;
+         var v2Cache = new InitializedList<double>(nTimeSteps);
+         double dtMax = 0.0;
+         double dxFloorVariance = 0.0;
+         for (int i = 0; i < nTimeSteps; i++)
+         {
+            double dt = timeGrid.dt(i);
+            dtMax = Math.Max(dtMax, dt);
+            double v2 = process.variance(timeGrid[i], 0.0, dt);
+            v2Cache[i] = v2;
+            dxFloorVariance = Math.Max(dxFloorVariance, v2);
+         }
+         double dxFloor = Math.Sqrt(3.0 * dxFloorVariance);
+
          int jMin = 0;
          int jMax = 0;
 
@@ -53,9 +70,16 @@ namespace QLNet
             double dt = timeGrid.dt(i);
 
             //Variance must be independent of x
-            double v2 = process.variance(t, 0.0, dt);
+            double v2 = v2Cache[i];
             double v = Math.Sqrt(v2);
-            dx_.Add(v * Math.Sqrt(3.0));
+            double dxNatural = v * Math.Sqrt(3.0);
+            double dxNext = dt < FloorThreshold * dtMax
+               ? Math.Max(dxNatural, dxFloor)
+               : dxNatural;
+            dx_.Add(dxNext);
+
+            bool dxIsFloored = dxNext > dxNatural;
+            double dx2 = dxNext * dxNext;
 
             Branching branching = new Branching();
             for (int j = jMin; j <= jMax; j++)
@@ -63,22 +87,48 @@ namespace QLNet
                double x = x0_ + j * dx_[i];
                double m = process.expectation(t, x, dt);
                int temp = (int)(Math.Floor((m - x0_) / dx_[i + 1] + 0.5));
+               bool tempBumped = false;
 
                if (isPositive)
                {
                   while (x0_ + (temp - 1)*dx_[i + 1] <= 0)
                   {
                      temp++;
+                     tempBumped = true;
                   }
                }
 
                double e = m - (x0_ + temp * dx_[i + 1]);
                double e2 = e * e;
-               double e3 = e * Math.Sqrt(3.0);
+               double p1, p2, p3;
 
-               double p1 = (1.0 + e2 / v2 - e3 / v) / 6.0;
-               double p2 = (2.0 - e2 / v2) / 3.0;
-               double p3 = (1.0 + e2 / v2 + e3 / v) / 6.0;
+               if (dxIsFloored)
+               {
+                  p1 = (v2 + e2 - e * dxNext) / (2.0 * dx2);
+                  p2 = 1.0 - (v2 + e2) / dx2;
+                  p3 = (v2 + e2 + e * dxNext) / (2.0 * dx2);
+               }
+               else
+               {
+                  double e3 = e * Math.Sqrt(3.0);
+                  p1 = (1.0 + e2 / v2 - e3 / v) / 6.0;
+                  p2 = (2.0 - e2 / v2) / 3.0;
+                  p3 = (1.0 + e2 / v2 + e3 / v) / 6.0;
+               }
+
+               if (!dxIsFloored && !tempBumped)
+               {
+                  Utils.QL_REQUIRE(p1 >= 0.0 && p2 >= 0.0 && p3 >= 0.0,
+                     () => "negative probability in trinomial tree "
+                           + "(unfloored regime) at step " + i
+                           + ", node " + j
+                           + ": p1=" + p1
+                           + ", p2=" + p2
+                           + ", p3=" + p3
+                           + " (v=" + v
+                           + ", dx=" + dxNext
+                           + ", e=" + e + ")");
+               }
 
                branching.add(temp, p1, p2, p3);
             }
