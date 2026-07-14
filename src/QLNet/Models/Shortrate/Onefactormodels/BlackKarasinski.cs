@@ -20,7 +20,14 @@ using System;
 
 namespace QLNet
 {
-
+   /// <summary>
+   /// Standard Black-Karasinski model.
+   /// </summary>
+   /// <remarks>
+   /// This class implements the standard Black-Karasinski model defined by:
+   /// d ln(r_t) = (theta(t) - alpha ln(r_t)) dt + sigma dW_t
+   /// where alpha and sigma are constants.
+   /// </remarks>
    public class BlackKarasinski :   OneFactorModel,
       ITermStructureConsistentModel
    {
