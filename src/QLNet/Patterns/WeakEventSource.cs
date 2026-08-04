@@ -47,27 +47,36 @@ namespace QLNet
 
       public static SuppressionScope SuppressNotifications()
       {
-         return new SuppressionScope(Environment.CurrentManagedThreadId);
+         return new SuppressionScope(true);
       }
 
-      // Public, non-allocating value-type scope: SuppressNotifications() is meant to be used in hot paths, so
-      // it returns this concrete struct (rather than IDisposable) to let `using (WeakEventSource.
+      // Public, non-allocating, stack-only scope: SuppressNotifications() is meant to be used in hot paths, so
+      // it returns this concrete `ref struct` (rather than IDisposable) to let `using (WeakEventSource.
       // SuppressNotifications())` dispose it via the C# pattern-based using support with no heap allocation and
-      // no boxing. It cannot be a `readonly struct` because Dispose() needs to mutate the _disposed field to
-      // stay idempotent (safe to call more than once), per the usual IDisposable contract.
-      public struct SuppressionScope : IDisposable
+      // no boxing. Being a `ref struct` also means the compiler forbids storing it in a field, capturing it in
+      // a lambda/closure, or using it across an `await`: it simply cannot leave the stack frame/thread that
+      // created it, so it can never be disposed on a different thread than the one that created it (unlike a
+      // normal class/struct, this is enforced at compile time, not by a runtime check). It cannot be a
+      // `readonly struct` because Dispose() needs to mutate the _disposed field to stay idempotent (safe to
+      // call more than once) for the *same* scope instance - a deliberate design choice for this API, not a
+      // requirement of IDisposable itself; note that, as
+      // with any mutable struct, explicitly copying a scope (e.g. `var copy = scope;`) and disposing both is a
+      // caller misuse this type does not protect against - the intended (and only realistic, given it cannot
+      // escape the method) usage is the `using (WeakEventSource.SuppressNotifications())` pattern.
+      public ref struct SuppressionScope
       {
-         private readonly int _creatingThreadId;
          private bool _disposed;
 
-         internal SuppressionScope(int creatingThreadId)
+         // The increment lives in this constructor (rather than in SuppressNotifications() before the
+         // struct value is created) so that it is only ever paired with an actual, real scope instance
+         // being handed back to the caller - i.e. every increment has exactly one corresponding scope
+         // whose Dispose() will decrement it. The unused parameter only exists to disambiguate this
+         // constructor from the compiler-provided public parameterless struct constructor (which must
+         // remain a trivial default and must not bump the counter, since callers can invoke it directly
+         // via `default(SuppressionScope)`).
+         internal SuppressionScope(bool _)
          {
-            _creatingThreadId = creatingThreadId;
             _disposed = false;
-            // Increment only once construction is actually underway, not before allocating this object: if
-            // allocation/construction itself were to throw (e.g. OutOfMemoryException), the counter would
-            // otherwise have already been bumped with no scope ever handed back to the caller to dispose it,
-            // permanently (for this thread) suppressing notifications.
             _suppressionDepth++;
          }
 
@@ -75,15 +84,6 @@ namespace QLNet
          {
             if (_disposed)
                return;
-
-            // _suppressionDepth is [ThreadStatic]: disposing this scope on a thread other than the one that
-            // created it (e.g. after an `await` resumes on a different thread pool thread, or the scope is
-            // otherwise handed off across threads) would decrement the *wrong* thread's counter, silently
-            // corrupting suppression state and potentially leaving the creating thread permanently suppressed.
-            // Fail loudly instead so the misuse is caught immediately.
-            if (Environment.CurrentManagedThreadId != _creatingThreadId)
-               throw new InvalidOperationException(
-                  "WeakEventSource.SuppressNotifications() scope must be disposed on the same thread that created it.");
 
             // Guard against underflow: if _suppressionDepth were ever corrupted (e.g. a misbalanced/duplicated
             // scope elsewhere), decrementing past 0 would silently leave suppression permanently disabled

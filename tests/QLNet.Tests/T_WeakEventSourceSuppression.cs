@@ -99,9 +99,10 @@ namespace TestSuite
          scope.Dispose();
          Assert.False(WeakEventSource.NotificationsSuppressed);
 
-         // A second Dispose() call must be a safe no-op (standard IDisposable contract), and must
-         // not decrement _suppressionDepth a second time (which would trigger the underflow guard
-         // on a subsequent, unrelated SuppressNotifications()/Dispose() pair on this thread).
+         // A second Dispose() call must be a safe no-op: this API is explicitly designed to be
+         // idempotent (IDisposable itself doesn't require this, it's just a common convention), and
+         // must not decrement _suppressionDepth a second time (which would trigger the underflow
+         // guard on a subsequent, unrelated SuppressNotifications()/Dispose() pair on this thread).
          scope.Dispose();
          Assert.False(WeakEventSource.NotificationsSuppressed);
 
@@ -112,6 +113,10 @@ namespace TestSuite
 
          Assert.False(WeakEventSource.NotificationsSuppressed);
       }
+
+      // Bounded so that a real deadlock/logic bug in the suppression scope fails the test quickly
+      // with a clear assertion instead of hanging the whole suite indefinitely.
+      private static readonly TimeSpan WaitTimeout = TimeSpan.FromSeconds(10);
 
       [Fact]
       public void SuppressNotifications_IsThreadLocal_OtherThreadsAreUnaffected()
@@ -130,7 +135,7 @@ namespace TestSuite
             {
                // Wait until the main thread has entered its suppression scope before raising, so
                // this genuinely exercises "another thread while suppression is active elsewhere".
-               suppressionEntered.Wait();
+               Assert.True(suppressionEntered.Wait(WaitTimeout));
                Assert.False(WeakEventSource.NotificationsSuppressed);
                source.Raise();
             }
@@ -150,44 +155,20 @@ namespace TestSuite
          {
             Assert.True(WeakEventSource.NotificationsSuppressed);
             suppressionEntered.Set();
-            releaseOtherThread.Wait();
+            Assert.True(releaseOtherThread.Wait(WaitTimeout));
          }
 
-         otherThread.Join();
+         Assert.True(otherThread.Join(WaitTimeout));
 
          Assert.Null(otherThreadException);
          // The other thread was never suppressed, so its Raise() must have invoked the handler.
          Assert.Equal(1, counter.Count);
       }
 
-      [Fact]
-      public void SuppressNotifications_DisposingOnADifferentThreadThrows()
-      {
-         var scope = WeakEventSource.SuppressNotifications();
-         Exception otherThreadException = null;
-
-         var otherThread = new Thread(() =>
-         {
-            try
-            {
-               scope.Dispose();
-            }
-            catch (Exception ex)
-            {
-               otherThreadException = ex;
-            }
-         });
-         otherThread.IsBackground = true;
-         otherThread.Start();
-         otherThread.Join();
-
-         Assert.IsType<InvalidOperationException>(otherThreadException);
-
-         // The mismatched Dispose() must not have decremented the creating thread's counter: it
-         // is still active here and must be disposed on this (the creating) thread to clean up.
-         Assert.True(WeakEventSource.NotificationsSuppressed);
-         scope.Dispose();
-         Assert.False(WeakEventSource.NotificationsSuppressed);
-      }
+      // There is deliberately no "dispose on a different thread" test: SuppressionScope is a `ref
+      // struct`, so the compiler itself forbids capturing it in a lambda/closure (e.g. the body of
+      // `new Thread(() => scope.Dispose())` below would not compile), storing it in a field, or
+      // using it across an `await`. Cross-thread misuse of the scope is therefore a compile-time
+      // error, not something that can be exercised or asserted on at runtime.
    }
 }
