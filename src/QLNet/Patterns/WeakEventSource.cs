@@ -46,17 +46,33 @@ namespace QLNet
       public static IDisposable SuppressNotifications()
       {
          _suppressionDepth++;
-         return new SuppressionScope();
+         return new SuppressionScope(Environment.CurrentManagedThreadId);
       }
 
       private sealed class SuppressionScope : IDisposable
       {
+         private readonly int _creatingThreadId;
          private bool _disposed;
+
+         public SuppressionScope(int creatingThreadId)
+         {
+            _creatingThreadId = creatingThreadId;
+         }
 
          public void Dispose()
          {
             if (_disposed)
                return;
+
+            // _suppressionDepth is [ThreadStatic]: disposing this scope on a thread other than the one that
+            // created it (e.g. after an `await` resumes on a different thread pool thread, or the scope is
+            // otherwise handed off across threads) would decrement the *wrong* thread's counter, silently
+            // corrupting suppression state and potentially leaving the creating thread permanently suppressed.
+            // Fail loudly instead so the misuse is caught immediately.
+            if (Environment.CurrentManagedThreadId != _creatingThreadId)
+               throw new InvalidOperationException(
+                  "WeakEventSource.SuppressNotifications() scope must be disposed on the same thread that created it.");
+
             _disposed = true;
             _suppressionDepth--;
          }
