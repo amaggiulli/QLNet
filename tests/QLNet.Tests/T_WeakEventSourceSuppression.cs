@@ -44,7 +44,9 @@ namespace TestSuite
          {
             // Subscribe should be a no-op inside the scope.
             source.Subscribe(counter.Increment);
-            // Raise should be a no-op inside the scope, even if a handler were registered.
+            // No handler is registered yet at this point (the Subscribe() above was itself
+            // suppressed), so this call alone doesn't prove Raise() suppression - that is verified
+            // further down with a genuinely registered handler.
             source.Raise();
          }
 
@@ -58,6 +60,15 @@ namespace TestSuite
          // Subscribe for real, outside any suppression scope.
          source.Subscribe(counter.Increment);
          source.Raise();
+         Assert.Equal(1, counter.Count);
+
+         using (WeakEventSource.SuppressNotifications())
+         {
+            // With a real handler registered, Raise() must genuinely be suppressed here: without the
+            // suppression check, this call would increment counter, which the assertion below rules out.
+            source.Raise();
+         }
+
          Assert.Equal(1, counter.Count);
 
          using (WeakEventSource.SuppressNotifications())
