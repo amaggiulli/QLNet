@@ -45,7 +45,6 @@ namespace QLNet
 
       public static IDisposable SuppressNotifications()
       {
-         _suppressionDepth++;
          return new SuppressionScope(Environment.CurrentManagedThreadId);
       }
 
@@ -57,6 +56,11 @@ namespace QLNet
          public SuppressionScope(int creatingThreadId)
          {
             _creatingThreadId = creatingThreadId;
+            // Increment only once construction is actually underway, not before allocating this object: if
+            // allocation/construction itself were to throw (e.g. OutOfMemoryException), the counter would
+            // otherwise have already been bumped with no scope ever handed back to the caller to dispose it,
+            // permanently (for this thread) suppressing notifications.
+            _suppressionDepth++;
          }
 
          public void Dispose()
@@ -72,6 +76,13 @@ namespace QLNet
             if (Environment.CurrentManagedThreadId != _creatingThreadId)
                throw new InvalidOperationException(
                   "WeakEventSource.SuppressNotifications() scope must be disposed on the same thread that created it.");
+
+            // Guard against underflow: if _suppressionDepth were ever corrupted (e.g. a misbalanced/duplicated
+            // scope elsewhere), decrementing past 0 would silently leave suppression permanently disabled
+            // (NotificationsSuppressed only checks > 0) instead of failing fast.
+            if (_suppressionDepth <= 0)
+               throw new InvalidOperationException(
+                  "WeakEventSource.SuppressNotifications() scope disposed more times than it was entered on this thread.");
 
             _disposed = true;
             _suppressionDepth--;
