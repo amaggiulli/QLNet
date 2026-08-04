@@ -110,11 +110,15 @@ namespace QLNet
             int mm1 = d1.Month, mm2 = d2.Month;
             int yy1 = d1.Year, yy2 = d2.Year;
 
-            if (dd1 == 31) { dd1 = 30; }
+            // See https://en.wikipedia.org/wiki/Day_count_convention#30/360_US
+            // NOTE: the order of checks is important
+            if (IsLastOfFebruary(dd1, mm1, yy1))
+            {
+               if (IsLastOfFebruary(dd2, mm2, yy2)) { dd2 = 30; }
+               dd1 = 30;
+            }
             if (dd2 == 31 && dd1 >= 30) { dd2 = 30; }
-
-            if (IsLastOfFebruary(dd2, mm2, yy2) && IsLastOfFebruary(dd1, mm1, yy1)) { dd2 = 30; }
-            if (IsLastOfFebruary(dd1, mm1, yy1)) { dd1 = 30; }
+            if (dd1 == 31) { dd1 = 30; }
 
             return 360*(yy2-yy1) + 30*(mm2-mm1) + (dd2-dd1);
          }

@@ -72,6 +72,7 @@ namespace QLNet
             var months = (int)(Math.Round(12 * dcc / 365));
             Utils.QL_REQUIRE(months != 0, ()=> "invalid reference period for Act/365 Canadian; must be longer than a month");
             var frequency = (int)(12 / months);
+            Utils.QL_REQUIRE(frequency != 0, ()=> "invalid reference period for Act/365 Canadian; must not be longer than a year");
 
             if (dcs < (int)(365/frequency))
                return dcs/365.0;
