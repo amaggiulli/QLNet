@@ -57,7 +57,7 @@ namespace QLNet
       // a lambda/closure, or using it across an `await`: it simply cannot leave the stack frame/thread that
       // created it, so it can never be disposed on a different thread than the one that created it (unlike a
       // normal class/struct, this is enforced at compile time, not by a runtime check). It cannot be a
-      // `readonly struct` because Dispose() needs to mutate the _disposed field to stay idempotent (safe to
+      // `readonly struct` because Dispose() needs to mutate the _active field to stay idempotent (safe to
       // call more than once) for the *same* scope instance - a deliberate design choice for this API, not a
       // requirement of IDisposable itself; note that, as
       // with any mutable struct, explicitly copying a scope (e.g. `var copy = scope;`) and disposing both is a
@@ -65,7 +65,15 @@ namespace QLNet
       // escape the method) usage is the `using (WeakEventSource.SuppressNotifications())` pattern.
       public ref struct SuppressionScope
       {
-         private bool _disposed;
+         // Tracks whether this specific scope instance has actually entered a suppression (i.e. was
+         // constructed via SuppressNotifications() and therefore incremented _suppressionDepth), as
+         // opposed to being disposed. This is named/oriented so that `false` is the default bool value:
+         // default(SuppressionScope) (which callers can construct directly, bypassing SuppressNotifications())
+         // is therefore inactive out of the box, and disposing it is a safe no-op that never touches
+         // _suppressionDepth - unlike a "_disposed" flag, whose default (false) would be indistinguishable
+         // from a real, entered-but-not-yet-disposed scope and would let default(SuppressionScope).Dispose()
+         // incorrectly decrement _suppressionDepth for a scope that never incremented it.
+         private bool _active;
 
          // The increment lives in this constructor (rather than in SuppressNotifications() before the
          // struct value is created) so that it is only ever paired with an actual, real scope instance
@@ -76,13 +84,13 @@ namespace QLNet
          // via `default(SuppressionScope)`).
          internal SuppressionScope(bool _)
          {
-            _disposed = false;
+            _active = true;
             _suppressionDepth++;
          }
 
          public void Dispose()
          {
-            if (_disposed)
+            if (!_active)
                return;
 
             // Guard against underflow: if _suppressionDepth were ever corrupted (e.g. a misbalanced/duplicated
@@ -92,7 +100,7 @@ namespace QLNet
                throw new InvalidOperationException(
                   "WeakEventSource.SuppressNotifications() scope disposed more times than it was entered on this thread.");
 
-            _disposed = true;
+            _active = false;
             _suppressionDepth--;
          }
       }

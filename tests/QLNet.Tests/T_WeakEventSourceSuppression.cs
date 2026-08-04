@@ -76,17 +76,33 @@ namespace TestSuite
          Assert.False(WeakEventSource.NotificationsSuppressed);
 
          var outer = WeakEventSource.SuppressNotifications();
-         Assert.True(WeakEventSource.NotificationsSuppressed);
+         try
+         {
+            Assert.True(WeakEventSource.NotificationsSuppressed);
 
-         var inner = WeakEventSource.SuppressNotifications();
-         Assert.True(WeakEventSource.NotificationsSuppressed);
+            var inner = WeakEventSource.SuppressNotifications();
+            try
+            {
+               Assert.True(WeakEventSource.NotificationsSuppressed);
+            }
+            finally
+            {
+               inner.Dispose();
+            }
 
-         inner.Dispose();
-         // The outer scope is still active: notifications must remain suppressed until it, too,
-         // is disposed (depth-counter semantics, not a simple bool).
-         Assert.True(WeakEventSource.NotificationsSuppressed);
+            // The outer scope is still active: notifications must remain suppressed until it, too,
+            // is disposed (depth-counter semantics, not a simple bool).
+            Assert.True(WeakEventSource.NotificationsSuppressed);
+         }
+         finally
+         {
+            // Guarantees cleanup (and thus test isolation on this [ThreadStatic] state) even if one
+            // of the assertions above throws before the explicit Dispose() calls below would run.
+            // Dispose() is idempotent, so this is a safe no-op on the success path where outer/inner
+            // were already disposed as part of the assertions they were guarding.
+            outer.Dispose();
+         }
 
-         outer.Dispose();
          Assert.False(WeakEventSource.NotificationsSuppressed);
       }
 
@@ -94,9 +110,17 @@ namespace TestSuite
       public void SuppressNotifications_DisposingTwiceIsIdempotentAndDoesNotUnderflow()
       {
          var scope = WeakEventSource.SuppressNotifications();
-         Assert.True(WeakEventSource.NotificationsSuppressed);
+         try
+         {
+            Assert.True(WeakEventSource.NotificationsSuppressed);
+         }
+         finally
+         {
+            // Guarantees cleanup even if the assertion above throws, so suppression state can't leak
+            // to other tests sharing this thread.
+            scope.Dispose();
+         }
 
-         scope.Dispose();
          Assert.False(WeakEventSource.NotificationsSuppressed);
 
          // A second Dispose() call must be a safe no-op: this API is explicitly designed to be
@@ -108,6 +132,31 @@ namespace TestSuite
 
          using (WeakEventSource.SuppressNotifications())
          {
+            Assert.True(WeakEventSource.NotificationsSuppressed);
+         }
+
+         Assert.False(WeakEventSource.NotificationsSuppressed);
+      }
+
+      [Fact]
+      public void DefaultSuppressionScope_DisposeIsANoOpAndDoesNotTouchSuppressionDepth()
+      {
+         Assert.False(WeakEventSource.NotificationsSuppressed);
+
+         // default(SuppressionScope) bypasses SuppressNotifications() entirely (e.g. a field or local
+         // never assigned), so it never incremented _suppressionDepth. Disposing it must be a no-op:
+         // it must not decrement _suppressionDepth (which would otherwise falsely suppress/underflow),
+         // regardless of whether another, real scope happens to be active on this thread at the time.
+         default(WeakEventSource.SuppressionScope).Dispose();
+         Assert.False(WeakEventSource.NotificationsSuppressed);
+
+         using (WeakEventSource.SuppressNotifications())
+         {
+            Assert.True(WeakEventSource.NotificationsSuppressed);
+
+            default(WeakEventSource.SuppressionScope).Dispose();
+
+            // The real, active scope above must be unaffected by disposing an unrelated default value.
             Assert.True(WeakEventSource.NotificationsSuppressed);
          }
 
