@@ -1,6 +1,7 @@
 ﻿/*
  Copyright (C) 2016 Thomas Levesque // http://www.thomaslevesque.com/2015/08/16/weak-events-in-c-take-two
  Copyright (C) 2016 Francois Botha (igitur@gmail.com)
+ Copyright (C) 2008-2026  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -31,6 +32,36 @@ namespace QLNet
    {
       private readonly List<WeakDelegate> _handlers;
 
+      // Per-thread opt-out for the whole Subscribe/Unsubscribe/Raise pipeline. Some callers construct large
+      // numbers of short-lived, single-use IObservable/IObserver graphs (e.g. one-off bond pricing) where the
+      // observer-notification machinery (reflection-based weak-delegate wrapping, list mutation under lock) is
+      // pure overhead: nothing outlives the call, and nothing needs to be notified of anything. Wrapping such a
+      // call in a using(WeakEventSource.SuppressNotifications()) scope makes every WeakEventSource instance a
+      // complete no-op for that thread only, for the scope's lifetime, with no effect on other threads.
+      [ThreadStatic]
+      private static int _suppressionDepth;
+
+      public static bool NotificationsSuppressed => _suppressionDepth > 0;
+
+      public static IDisposable SuppressNotifications()
+      {
+         _suppressionDepth++;
+         return new SuppressionScope();
+      }
+
+      private sealed class SuppressionScope : IDisposable
+      {
+         private bool _disposed;
+
+         public void Dispose()
+         {
+            if (_disposed)
+               return;
+            _disposed = true;
+            _suppressionDepth--;
+         }
+      }
+
       public WeakEventSource()
       {
          _handlers = new List<WeakDelegate>();
@@ -38,6 +69,9 @@ namespace QLNet
 
       public void Raise()
       {
+         if (NotificationsSuppressed)
+            return;
+
          lock (_handlers)
          {
             _handlers.RemoveAll(h => !h.Invoke());
@@ -46,6 +80,9 @@ namespace QLNet
 
       public void Subscribe(Callback handler)
       {
+         if (NotificationsSuppressed)
+            return;
+
          var weakHandlers = handler
                             .GetInvocationList()
                             .Select(d => new WeakDelegate(d))
@@ -59,6 +96,9 @@ namespace QLNet
 
       public void Unsubscribe(Callback handler)
       {
+         if (NotificationsSuppressed)
+            return;
+
          lock (_handlers)
          {
             int index = _handlers.FindIndex(h => h.IsMatch(handler));
