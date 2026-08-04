@@ -32,30 +32,38 @@ namespace QLNet
    {
       private readonly List<WeakDelegate> _handlers;
 
-      // Per-thread opt-out for the whole Subscribe/Unsubscribe/Raise pipeline. Some callers construct large
+      // Per-thread opt-out for the Subscribe/Unsubscribe/Raise pipeline. Some callers construct large
       // numbers of short-lived, single-use IObservable/IObserver graphs (e.g. one-off bond pricing) where the
       // observer-notification machinery (reflection-based weak-delegate wrapping, list mutation under lock) is
       // pure overhead: nothing outlives the call, and nothing needs to be notified of anything. Wrapping such a
-      // call in a using(WeakEventSource.SuppressNotifications()) scope makes every WeakEventSource instance a
-      // complete no-op for that thread only, for the scope's lifetime, with no effect on other threads.
+      // call in a using(WeakEventSource.SuppressNotifications()) scope makes Subscribe/Unsubscribe/Raise no-ops
+      // on every WeakEventSource instance, for that thread only, for the scope's lifetime, with no effect on
+      // other threads. Clear() is intentionally NOT suppressed: it discards handlers rather than notifying them,
+      // so it remains active (and still affects the shared handler list for all threads) even inside the scope.
       [ThreadStatic]
       private static int _suppressionDepth;
 
       public static bool NotificationsSuppressed => _suppressionDepth > 0;
 
-      public static IDisposable SuppressNotifications()
+      public static SuppressionScope SuppressNotifications()
       {
          return new SuppressionScope(Environment.CurrentManagedThreadId);
       }
 
-      private sealed class SuppressionScope : IDisposable
+      // Public, non-allocating value-type scope: SuppressNotifications() is meant to be used in hot paths, so
+      // it returns this concrete struct (rather than IDisposable) to let `using (WeakEventSource.
+      // SuppressNotifications())` dispose it via the C# pattern-based using support with no heap allocation and
+      // no boxing. It cannot be a `readonly struct` because Dispose() needs to mutate the _disposed field to
+      // stay idempotent (safe to call more than once), per the usual IDisposable contract.
+      public struct SuppressionScope : IDisposable
       {
          private readonly int _creatingThreadId;
          private bool _disposed;
 
-         public SuppressionScope(int creatingThreadId)
+         internal SuppressionScope(int creatingThreadId)
          {
             _creatingThreadId = creatingThreadId;
+            _disposed = false;
             // Increment only once construction is actually underway, not before allocating this object: if
             // allocation/construction itself were to throw (e.g. OutOfMemoryException), the counter would
             // otherwise have already been bumped with no scope ever handed back to the caller to dispose it,
@@ -134,6 +142,9 @@ namespace QLNet
          }
       }
 
+      // Clear() is intentionally left unaffected by SuppressNotifications(): it discards existing handlers
+      // rather than notifying/adding/removing them, so suppressing it would not save any of the overhead the
+      // scope targets and would instead risk silently keeping stale handlers alive.
       public void Clear()
       {
          lock (_handlers)
