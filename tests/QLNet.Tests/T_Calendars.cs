@@ -1762,6 +1762,8 @@ namespace TestSuite
       [InlineData("2026/04/03")]
       [InlineData("2026/05/22")]
       [InlineData("2026/07/02")]
+      [InlineData("2026/09/04")]
+      [InlineData("2026/11/25")]
       [InlineData("2026/11/27")]
       [InlineData("2026/12/24")]
       [InlineData("2026/12/31")]

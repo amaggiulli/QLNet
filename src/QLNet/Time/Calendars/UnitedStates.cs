@@ -495,6 +495,10 @@ namespace QLNet
                 // Independence Day (Monday if Sunday or Friday if Saturday)
                 || ((d == 4 || (d == 5 && w == DayOfWeek.Monday) ||
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
+                // Labor Day (first Monday in September)
+                || isLaborDay(d, m, y, w)
+                // Day before Thanksgiving Day (fourth Thursday in November)
+                || ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November)
                 // Christmas (Monday if Sunday or Friday if Saturday)
                 || ((d == 25 || (d == 26 && w == DayOfWeek.Monday) ||
                      (d == 24 && w == DayOfWeek.Friday)) && m == Month.December)
