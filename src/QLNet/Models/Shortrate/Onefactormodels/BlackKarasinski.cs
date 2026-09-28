@@ -43,7 +43,7 @@ namespace QLNet
       {
          a_ = arguments_[0];
          sigma_ = arguments_[1];
-         a_ = arguments_[0] = new ConstantParameter(a, new PositiveConstraint());
+         a_ = arguments_[0] = new ConstantParameter(a, new BoundaryConstraint(0.0, double.MaxValue));
          sigma_ = arguments_[1] = new ConstantParameter(sigma, new PositiveConstraint());
          termStructure_ = new Handle<YieldTermStructure>();
          termStructure_ = termStructure;
