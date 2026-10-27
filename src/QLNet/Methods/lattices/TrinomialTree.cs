@@ -81,7 +81,7 @@ namespace QLNet
             bool dxIsFloored = dxNext > dxNatural;
             double dx2 = dxNext * dxNext;
 
-            Branching branching = new Branching();
+            Branching branching = new Branching(jMax - jMin + 1);
             for (int j = jMin; j <= jMax; j++)
             {
                double x = x0_ + j * dx_[i];
@@ -118,16 +118,16 @@ namespace QLNet
 
                if (!dxIsFloored && !tempBumped)
                {
-                  Utils.QL_REQUIRE(p1 >= 0.0 && p2 >= 0.0 && p3 >= 0.0,
-                     () => "negative probability in trinomial tree "
-                           + "(unfloored regime) at step " + i
-                           + ", node " + j
-                           + ": p1=" + p1
-                           + ", p2=" + p2
-                           + ", p3=" + p3
-                           + " (v=" + v
-                           + ", dx=" + dxNext
-                           + ", e=" + e + ")");
+                  if (!(p1 >= 0.0 && p2 >= 0.0 && p3 >= 0.0))
+                     Utils.QL_FAIL("negative probability in trinomial tree "
+                                   + "(unfloored regime) at step " + i
+                                   + ", node " + j
+                                   + ": p1=" + p1
+                                   + ", p2=" + p2
+                                   + ", p3=" + p3
+                                   + " (v=" + v
+                                   + ", dx=" + dxNext
+                                   + ", e=" + e + ")");
                }
 
                branching.add(temp, p1, p2, p3);
@@ -174,10 +174,15 @@ namespace QLNet
          private List<List<double>> probs_;
          private int kMin_, jMin_, kMax_, jMax_;
 
-         public Branching()
+         public Branching(int size)
          {
-            k_ = new List<int>();
-            probs_ = new InitializedList<List<double>>(3);
+            k_ = new List<int>(size);
+            probs_ = new List<List<double>>(3)
+            {
+               new List<double>(size),
+               new List<double>(size),
+               new List<double>(size)
+            };
             kMin_ = int.MaxValue  ;
             jMin_ = int.MaxValue ;
             kMax_ = int.MinValue;
