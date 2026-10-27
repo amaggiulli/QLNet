@@ -161,11 +161,11 @@ namespace QLNet
       /// </summary>
       protected virtual void checkRange(Date d, bool extrapolate)
       {
-         Utils.QL_REQUIRE(d >= referenceDate(), () =>
-                          "date (" + d + ") before reference date (" +
+         if (!(d >= referenceDate()))
+            Utils.QL_FAIL("date (" + d + ") before reference date (" +
                           referenceDate() + ")");
-         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation() || d <= maxDate(), () =>
-                          "date (" + d + ") is past max curve date ("
+         if (!(extrapolate || allowsExtrapolation() || d <= maxDate()))
+            Utils.QL_FAIL("date (" + d + ") is past max curve date ("
                           + maxDate() + ")");
       }
 
@@ -174,11 +174,11 @@ namespace QLNet
       /// </summary>
       protected void checkRange(double t, bool extrapolate)
       {
-         Utils.QL_REQUIRE(t >= 0.0, () =>
-                          "negative time (" + t + ") given");
-         Utils.QL_REQUIRE(extrapolate || allowsExtrapolation()
-                          || t <= maxTime() || Utils.close_enough(t, maxTime()), () =>
-                          "time (" + t + ") is past max curve time ("
+         if (!(t >= 0.0))
+            Utils.QL_FAIL("negative time (" + t + ") given");
+         if (!(extrapolate || allowsExtrapolation()
+               || t <= maxTime() || Utils.close_enough(t, maxTime())))
+            Utils.QL_FAIL("time (" + t + ") is past max curve time ("
                           + maxTime() + ")");
       }
 

@@ -81,7 +81,8 @@ namespace QLNet
          if (Utils.close(from, to))
             return;
 
-         Utils.QL_REQUIRE(from > to, () => "cannot roll the asset back to" + to + " (it is already at t = " + from + ")");
+         if (!(from > to))
+            Utils.QL_FAIL("cannot roll the asset back to" + to + " (it is already at t = " + from + ")");
 
          int iFrom = t_.index(from);
          int iTo = t_.index(to);
@@ -116,17 +117,16 @@ namespace QLNet
 
       public virtual void stepback(int i, Vector values, Vector newValues)
       {
-         for (int j = 0; j < impl().size(i); j++)
+         T lattice = impl();
+         int size = lattice.size(i);
+         for (int j = 0; j < size; j++)
          {
             double value = 0.0;
             for (int l = 0; l < n_; l++)
             {
-               double d1, d2;
-               d1 = impl().probability(i, j, l);
-               d2 = values[impl().descendant(i, j, l)];
-               value += impl().probability(i, j, l) * values[impl().descendant(i, j, l)];
+               value += lattice.probability(i, j, l) * values[lattice.descendant(i, j, l)];
             }
-            value *= impl().discount(i, j);
+            value *= lattice.discount(i, j);
             newValues[j] = value;
          }
       }

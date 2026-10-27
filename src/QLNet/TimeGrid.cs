@@ -256,11 +256,11 @@ namespace QLNet
          {
             return i;
          }
-         Utils.QL_REQUIRE(t >= times_.First(), () =>
-                          "using inadequate time grid: all nodes are later than the required time t = "
+         if (!(t >= times_.First()))
+            Utils.QL_FAIL("using inadequate time grid: all nodes are later than the required time t = "
                           + t + " (earliest node is t1 = " + times_.First() + ")");
-         Utils.QL_REQUIRE(t <= times_.Last(), () =>
-                          "using inadequate time grid: all nodes are earlier than the required time t = "
+         if (!(t <= times_.Last()))
+            Utils.QL_FAIL("using inadequate time grid: all nodes are earlier than the required time t = "
                           + t + " (latest node is t1 = " + times_.Last() + ")");
          int j, k;
          if (t > times_[i])

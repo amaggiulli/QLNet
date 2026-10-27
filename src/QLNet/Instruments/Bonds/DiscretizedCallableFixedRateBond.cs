@@ -140,12 +140,13 @@ namespace QLNet
 
       protected override void preAdjustValuesImpl()
       {
+         checkGridTimes();
          for (var i = 0; i < couponTimes_.Count; i++)
          {
             if (couponAdjustments_[i] == CouponAdjustment.Pre)
             {
                var t = couponTimes_[i];
-               if (t >= 0.0 && isOnTime(t))
+               if (t >= 0.0 && isOnGridTime(t, couponGridTimes_, i))
                {
                   addCoupon(i);
                }
@@ -154,10 +155,11 @@ namespace QLNet
       }
       protected override void postAdjustValuesImpl()
       {
+         checkGridTimes();
          for (int i = 0; i < callabilityTimes_.Count; i++)
          {
             double t = callabilityTimes_[i];
-            if (t >= 0.0 && isOnTime(t))
+            if (t >= 0.0 && isOnGridTime(t, callabilityGridTimes_, i))
             {
                applyCallability(i);
             }
@@ -167,12 +169,45 @@ namespace QLNet
             if (couponAdjustments_[i] == CouponAdjustment.Post)
             {
                var t = couponTimes_[i];
-               if (t >= 0.0 && isOnTime(t))
+               if (t >= 0.0 && isOnGridTime(t, couponGridTimes_, i))
                {
                   addCoupon(i);
                }
             }
          }
+      }
+
+      // Grid times of the coupon and callability events on the current lattice, filled on first use
+      // (NaN until then) so each event's grid lookup runs once per lattice rather than at every step.
+      private Lattice gridTimesMethod_;
+      private double[] couponGridTimes_;
+      private double[] callabilityGridTimes_;
+
+      private void checkGridTimes()
+      {
+         if (ReferenceEquals(gridTimesMethod_, method()))
+            return;
+         couponGridTimes_ = newGridTimes(couponTimes_.Count);
+         callabilityGridTimes_ = newGridTimes(callabilityTimes_.Count);
+         gridTimesMethod_ = method();
+      }
+
+      private static double[] newGridTimes(int size)
+      {
+         var gridTimes = new double[size];
+         for (int i = 0; i < size; i++)
+            gridTimes[i] = double.NaN;
+         return gridTimes;
+      }
+
+      private bool isOnGridTime(double t, double[] gridTimes, int i)
+      {
+         if (double.IsNaN(gridTimes[i]))
+         {
+            TimeGrid grid = method().timeGrid();
+            gridTimes[i] = grid[grid.index(t)];
+         }
+         return Utils.close(gridTimes[i], time());
       }
 
       private void applyCallability(int i)
