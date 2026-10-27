@@ -77,12 +77,12 @@ namespace QLNet
             lattice = model_.link.tree(timeGrid);
          }
 
-         if (s.IsNotEqual(0.0))
-         {
-            var sr = lattice as OneFactorModel.ShortRateTree;
-            Utils.QL_REQUIRE(sr != null, () => "Spread is not supported for trees other than OneFactorModel");
+         // The spread is set even when zero: the TimeGrid constructor reuses its lattice, which
+         // still carries the previous one.
+         if (lattice is OneFactorModel.ShortRateTree sr)
             sr.setSpread(s);
-         }
+         else
+            Utils.QL_REQUIRE(s.IsEqual(0.0), () => "Spread is not supported for trees other than OneFactorModel");
 
          var referenceDate = discountCurve.link.referenceDate();
          var dayCounter = discountCurve.link.dayCounter();
