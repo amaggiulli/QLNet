@@ -17,6 +17,9 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+using System.Collections.Generic;
+using System.Linq;
+
 // Numerical lattice engines for callable/puttable bonds
 namespace QLNet
 {
@@ -55,7 +58,25 @@ namespace QLNet
          calculateWithSpread(arguments_.spread);
       }
 
+      /// <summary>
+      /// Drops the lattice cached for the <c>timeSteps</c> constructor, since a change in the
+      /// model or the term structure invalidates its calibration.
+      /// </summary>
+      public override void update()
+      {
+         cachedLattice_ = null;
+         cachedTimes_ = null;
+         base.update();
+      }
+
       private Handle<YieldTermStructure> termStructure_;
+
+      // With the timeSteps constructor the lattice depends only on the model and on the bond's
+      // mandatory times, not on the spread: it is reused across calculate() calls (e.g. every
+      // iteration of an OAS solve) until either changes.
+      private Lattice cachedLattice_;
+      private List<double> cachedTimes_;
+
       private void calculateWithSpread(double s)
       {
          Utils.QL_REQUIRE(model_ != null,()=> "no model specified");
@@ -73,12 +94,16 @@ namespace QLNet
          else
          {
             var times = callableBond.mandatoryTimes();
-            var timeGrid = new TimeGrid(times, times.Count, timeSteps_);
-            lattice = model_.link.tree(timeGrid);
+            if (cachedLattice_ == null || !times.SequenceEqual(cachedTimes_))
+            {
+               var timeGrid = new TimeGrid(times, times.Count, timeSteps_);
+               cachedLattice_ = model_.link.tree(timeGrid);
+               cachedTimes_ = times;
+            }
+            lattice = cachedLattice_;
          }
 
-         // The spread is set even when zero: the TimeGrid constructor reuses its lattice, which
-         // still carries the previous one.
+         // The spread is set even when zero: a reused lattice still carries the previous one.
          if (lattice is OneFactorModel.ShortRateTree sr)
             sr.setSpread(s);
          else
