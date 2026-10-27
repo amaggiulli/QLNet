@@ -487,6 +487,66 @@ public class CallableBondsTests
                       + "    expected:   " + storedPrice3);
    }
 
+   [Fact]
+   public void testLatticeReuseAcrossSpreads()
+   {
+      // Testing that an engine reused across spreads prices like a fresh one
+      var vars = new Globals();
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.04));
+
+      Schedule schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(Frequency.Semiannual)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var callabilities = new CallabilitySchedule();
+      foreach (var callabilityDate in vars.evenYears())
+         callabilities.Add(new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, callabilityDate));
+
+      var bond = new CallableFixedRateBond(3, 100.0, schedule,
+         new InitializedList<double>(1, 0.05), new Thirty360(Thirty360.Thirty360Convention.BondBasis),
+         vars.rollingConvention, 100.0, vars.issueDate(), callabilities);
+
+      var dayCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var timeSteps = 100;
+
+      double FreshPrice(double spread)
+      {
+         var model = new BlackKarasinski(vars.termStructure, 0.03, 0.08);
+         bond.setPricingEngine(new TreeCallableFixedRateBondEngine(model, timeSteps, vars.termStructure));
+         return bond.cleanPriceOAS(spread, vars.termStructure, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+      }
+
+      var expectedAtZero = FreshPrice(0.0);
+      var expectedAtSpread = FreshPrice(0.01);
+
+      var engines = new List<IPricingEngine>
+      {
+         new TreeCallableFixedRateBondEngine(new BlackKarasinski(vars.termStructure, 0.03, 0.08), timeSteps, vars.termStructure),
+      };
+      var arguments = new CallableBond.Arguments();
+      bond.setupArguments(arguments);
+      var times = new DiscretizedCallableFixedRateBond(arguments, vars.termStructure).mandatoryTimes();
+      engines.Add(new TreeCallableFixedRateBondEngine(
+         new BlackKarasinski(vars.termStructure, 0.03, 0.08), new TimeGrid(times, times.Count, timeSteps), vars.termStructure));
+
+      foreach (var engine in engines)
+      {
+         bond.setPricingEngine(engine);
+         var atSpread = bond.cleanPriceOAS(0.01, vars.termStructure, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+         var atZero = bond.cleanPriceOAS(0.0, vars.termStructure, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+
+         QAssert.AreEqual(expectedAtSpread, atSpread, 1.0e-12);
+         QAssert.AreEqual(expectedAtZero, atZero, 1.0e-12);
+
+         var oas = bond.OAS(expectedAtSpread, vars.termStructure, dayCounter, Compounding.Continuous, Frequency.NoFrequency);
+         QAssert.AreEqual(0.01, oas, 1.0e-8);
+      }
+   }
+
    //[Fact(Skip = "To be fixed, Callable bond NPV looks wrong")]
    [Fact]
    public void testSnappingExerciseDate2ClosestCouponDate()
