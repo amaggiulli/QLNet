@@ -23,7 +23,6 @@ namespace QLNet
 {
    /// <summary>
    /// Black-formula cap/floor engine
-   /// \ingroup capfloorengines
    /// </summary>
    public class BlackCapFloorEngine : CapFloorEngine
    {

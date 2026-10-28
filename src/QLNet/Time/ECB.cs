@@ -22,7 +22,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! European Central Bank reserve maintenance dates
+   /// <summary>
+   /// European Central Bank reserve maintenance dates
+   /// </summary>
    public struct ECB
    {
       static List<Date> knownDateSet = new List<Date>();
@@ -75,15 +77,17 @@ namespace QLNet
          knownDateSet.Remove(d);
       }
 
-      //! maintenance period start date in the given month/year
+      /// <summary>
+      /// Returns the maintenance-period start date in the given month and year.
+      /// </summary>
       public static Date date(Month m, int y) { return nextDate(new Date(1, m, y) - 1); }
 
-      /*! returns the ECB date for the given ECB code
-         (e.g. March xxth, 2013 for MAR10).
-
-         \warning It raises an exception if the input
-                  string is not an ECB code
-      */
+      /// <summary>
+      /// Returns the ECB date for the given ECB code.
+      /// </summary>
+      /// <remarks>
+      /// For example, <c>MAR10</c> maps to the March 2010 maintenance-period start date. An exception is raised if the input string is not a valid ECB code.
+      /// </remarks>
       public static Date date(string ecbCode, Date refDate = null)
       {
          Utils.QL_REQUIRE(isECBcode(ecbCode), () => ecbCode + " is not a valid ECB code");
@@ -129,12 +133,12 @@ namespace QLNet
          return ECB.nextDate(new Date(1, m, y));
       }
 
-      /*! returns the ECB code for the given date
-         (e.g. MAR10 for March xxth, 2010).
-
-         \warning It raises an exception if the input
-                  date is not an ECB date
-      */
+      /// <summary>
+      /// Returns the ECB code for the given date.
+      /// </summary>
+      /// <remarks>
+      /// For example, a March 2010 ECB date maps to <c>MAR10</c>. An exception is raised if the input date is not a valid ECB date.
+      /// </remarks>
       public static string code(Date ecbDate)
       {
          Utils.QL_REQUIRE(isECBdate(ecbDate), () => ecbDate + " is not a valid ECB date");
@@ -195,7 +199,9 @@ namespace QLNet
          return ECBcode;
       }
 
-      //! next maintenance period start date following the given date
+      /// <summary>
+      /// Returns the next maintenance-period start date following the given date.
+      /// </summary>
       public static Date nextDate(Date date = null)
       {
          Date d = (date ?? Settings.evaluationDate());
@@ -207,13 +213,17 @@ namespace QLNet
          return knownDates()[i];
       }
 
-      //! next maintenance period start date following the given ECB code
+      /// <summary>
+      /// Returns the next maintenance-period start date following the given ECB code.
+      /// </summary>
       public static Date nextDate(string ecbCode, Date referenceDate = null)
       {
          return nextDate(date(ecbCode, referenceDate));
       }
 
-      //! next maintenance period start dates following the given date
+      /// <summary>
+      /// Returns the maintenance-period start dates following the given date.
+      /// </summary>
       public static List<Date> nextDates(Date date = null)
       {
          Date d = (date ?? Settings.evaluationDate());
@@ -226,21 +236,26 @@ namespace QLNet
          return new List<Date>(knownDates().GetRange(i, knownDates().Count - i));
       }
 
-      //! next maintenance period start dates following the given code
+      /// <summary>
+      /// Returns the maintenance-period start dates following the given ECB code.
+      /// </summary>
       public static List<Date> nextDates(string ecbCode, Date referenceDate = null)
       {
          return nextDates(date(ecbCode, referenceDate));
       }
 
-      /*! returns whether or not the given date is
-         a maintenance period start date */
+      /// <summary>
+      /// Returns whether the given date is a maintenance-period start date.
+      /// </summary>
       public static bool isECBdate(Date d)
       {
          Date date = nextDate(d - 1);
          return d == date;
       }
 
-      //! returns whether or not the given string is an ECB code
+      /// <summary>
+      /// Returns whether the given string is a valid ECB code.
+      /// </summary>
       public static bool isECBcode(String ecbCode)
       {
          if (ecbCode.Length != 5)
@@ -283,13 +298,17 @@ namespace QLNet
             return false;
       }
 
-      //! next ECB code following the given date
+      /// <summary>
+      /// Returns the next ECB code following the given date.
+      /// </summary>
       public static string nextCode(Date d = null)
       {
          return code(nextDate(d));
       }
 
-      //! next ECB code following the given code
+      /// <summary>
+      /// Returns the next ECB code following the given code.
+      /// </summary>
       public static string nextCode(String ecbCode)
       {
          Utils.QL_REQUIRE(isECBcode(ecbCode), () =>

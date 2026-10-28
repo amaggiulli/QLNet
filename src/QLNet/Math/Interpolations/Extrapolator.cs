@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! base class for classes possibly allowing extrapolation
+   /// <summary>
+   /// Base class for objects that can optionally allow extrapolation.
+   /// </summary>
    // LazyObject should not be here but it is because of the InterpolatedYieldCurve
    public abstract class Extrapolator : LazyObject
    {
@@ -28,8 +30,19 @@ namespace QLNet
       public bool extrapolate { get { return extrapolate_; } set { extrapolate_ = value; } }
 
       // some extra functionality
-      public bool allowsExtrapolation() { return extrapolate_; }      //! tells whether extrapolation is enabled
-      public void enableExtrapolation(bool b = true) { extrapolate_ = b; }      //! enable extrapolation in subsequent calls
-      public void disableExtrapolation(bool b = true) { extrapolate_ = !b; }    //! disable extrapolation in subsequent calls
+      /// <summary>
+      /// Returns whether extrapolation is currently enabled.
+      /// </summary>
+      public bool allowsExtrapolation() { return extrapolate_; }
+
+      /// <summary>
+      /// Enables extrapolation for subsequent calls.
+      /// </summary>
+      public void enableExtrapolation(bool b = true) { extrapolate_ = b; }
+
+      /// <summary>
+      /// Disables extrapolation for subsequent calls.
+      /// </summary>
+      public void disableExtrapolation(bool b = true) { extrapolate_ = !b; }
    }
 }

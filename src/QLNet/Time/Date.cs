@@ -27,10 +27,15 @@ namespace QLNet
    {
       private readonly DateTime date;
 
-      //! Default constructor returning a null date.
+      /// <summary>
+      /// Initializes a null date.
+      /// </summary>
       public Date()
       {}
-      //! Constructor taking a serial number as given by Excel.
+
+      /// <summary>
+      /// Initializes a date from an Excel-style serial number.
+      /// </summary>
       // Serial numbers in Excel have a known problem with leap year 1900
       public Date(int serialNumber)
       {
@@ -41,17 +46,25 @@ namespace QLNet
          : this(new DateTime(y, (int)m, d, h, mi, s, ms))
       { }
 
-      public Date(int d, int m, int y) : //! More traditional constructor.
+      /// <summary>
+      /// Initializes a date from day, month, and year values.
+      /// </summary>
+      public Date(int d, int m, int y) :
          this(new DateTime(y, m, d))
       {}
 
-      public Date(int d, int m, int y, int h, int mi, int s, int ms) :     //! More traditional constructor.
+      /// <summary>
+      /// Initializes a date and time from individual components.
+      /// </summary>
+      public Date(int d, int m, int y, int h, int mi, int s, int ms) :
          this(new DateTime(y, m, d, h, mi, s, ms))
       {}
 
+      /// <summary>
+      /// Initializes a date from a <see cref="DateTime" /> instance.
+      /// </summary>
       public Date(DateTime d)
       {
-         //! System DateTime constructor
          date = d;
       }
 
@@ -134,14 +147,21 @@ namespace QLNet
          return (d2.date - d1.date).TotalDays;
       }
 
-      //! next given weekday following or equal to the given date
+      /// <summary>
+      /// Returns the next given weekday following or equal to the given date.
+      /// </summary>
       public static Date nextWeekday(Date d, DayOfWeek dayOfWeek)
       {
          int wd = dayOfWeek - d.DayOfWeek;
          return d + (wd >= 0 ? wd : (7 + wd));
       }
 
-      //! n-th given weekday in the given month and year, e.g., the 4th Thursday of March, 1998 was March 26th, 1998.
+      /// <summary>
+      /// Returns the n-th given weekday in the specified month and year.
+      /// </summary>
+      /// <remarks>
+      /// For example, the fourth Thursday of March 1998 was March 26th, 1998.
+      /// </remarks>
       public static Date nthWeekday(int nth, DayOfWeek dayOfWeek, int m, int y)
       {
          Utils.QL_REQUIRE(nth > 0, () => "zeroth day of week in a given (month, year) is undefined");

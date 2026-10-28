@@ -30,9 +30,10 @@ namespace QLNet
       IRNG factory(int dimensionality, ulong seed);
    }
 
-   /*! Random sequence generator based on a pseudo-random number generator RNG.
-       Do not use with low-discrepancy sequence generator.
-   */
+   /// <summary>
+   /// Random sequence generator based on a pseudo-random number generator RNG.
+   /// Do not use with low-discrepancy sequence generator.
+   /// </summary>
    public class RandomSequenceGenerator<RNG> : IRNG where RNG : IRNGTraits, new ()
    {
       private int dimensionality_;

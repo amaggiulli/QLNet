@@ -1,4 +1,4 @@
-﻿//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+//  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 //
 //  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 //  QLNet is free software: you can redistribute it and/or modify it
@@ -15,7 +15,9 @@
 //  FOR A PARTICULAR PURPOSE.  See the license for more details.
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using QLNet;
+using Calendar = QLNet.Calendar;
 
 namespace CVAIRS
 {
@@ -150,20 +152,20 @@ namespace CVAIRS
                riskySwaps[i].setPricingEngine(riskFreeEngine);
                // should recover the input here:
                double nonRiskyFair = riskySwaps[i].fairRate();
-               Console.Write((tenorsSwapMkt[i]).ToString("0").PadLeft(6));
-               Console.Write(" | " + nonRiskyFair.ToString("P3").PadLeft(6));
+               Console.Write((tenorsSwapMkt[i]).ToString("0",CultureInfo.InvariantCulture).PadLeft(6));
+               Console.Write(" | " + nonRiskyFair.ToString("P3",CultureInfo.InvariantCulture).PadLeft(6));
                // Low Risk:
                riskySwaps[i].setPricingEngine(ctptySwapCvaLow);
-               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00").PadLeft(6));
+               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00",CultureInfo.InvariantCulture).PadLeft(6));
                //cout << " | " << setw(6) << riskySwaps[i].NPV() ;
 
                // Medium Risk:
                riskySwaps[i].setPricingEngine(ctptySwapCvaMedium);
-               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00").PadLeft(6));
+               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00",CultureInfo.InvariantCulture).PadLeft(6));
                //cout << " | " << setw(6) << riskySwaps[i].NPV() ;
 
                riskySwaps[i].setPricingEngine(ctptySwapCvaHigh);
-               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00").PadLeft(6));
+               Console.Write(" | " + (10000.0 * (riskySwaps[i].fairRate() - nonRiskyFair)).ToString("#0.00",CultureInfo.InvariantCulture).PadLeft(6));
                //cout << " | " << setw(6) << riskySwaps[i].NPV() ;
 
                Console.WriteLine();

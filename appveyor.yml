@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.13.1
+  version: 1.13.2
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -16,28 +16,31 @@
     do_not_increment_build_number: true  
   nuget:
     disable_publish_on_pr: true
+  install:
+    - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
+    - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   build_script:
    - cmd:  dotnet build -c Release
   after_build:
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   artifacts:
-    - path: src\QLNet\bin\Release\net8.0\QLNet.dll
+    - path: src\QLNet\bin\Release\net10.0\QLNet.dll
       name: Windows
     - path: .\*.nupkg
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.13.1
-    release: QLNet Version 1.13.1
-    description: QLNet 1.13.1
+    tag: QLNet-v1.13.2
+    release: QLNet Version 1.13.2
+    description: QLNet 1.13.2
     auth_token:
-      secure: 4cCBgQRwNh1N6VbvMJTCUDVyo4z4acn5q6z4PXSgW5wOA0M2e6alGZms4fBx5Vw+6W8FieXgzRUvUfxmJ/xAnjxJZAFMeqI0mifvwMxjW9JAVC3EcFnV4NNZX/QoQRk6
-    artifact: src\QLNet\bin\Release\net8.0\QLNet.dll
+      secure: 4cCBgQRwNh1N6VbvMJTCUKpp1EYpNHGlXj/LFfVgcCMnTYk5yDX/7vURrRGrLy+zflAFBotCGVgLQ1WkdIXPBrpS9fs4n43oKDWPezRFLt22jYdTeIWxGDdS9vF7y+zI
+    artifact: src\QLNet\bin\Release\net10.0\QLNet.dll
     draft: false
     force_update: false
   - provider: NuGet
     api_key:
-      secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
+      secure: x09Q6zCKQK3MfQ7T2AYMj/wvexWR1/e0Rp16l5jM/ziXAyf5t3g4KyAT0psO3iAi
     skip_symbols: true
     artifact: ng
 
@@ -47,24 +50,28 @@
   branches:
     only:
       - develop
-  version: 1.13.2-preview.{build}
+  version: 1.13.3-preview.{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
   skip_tags: true
   clone_folder: c:\projects\qlnet_develop
+  test: off
   pull_requests:
     do_not_increment_build_number: true
   nuget:
     disable_publish_on_pr: true
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk17
+  install:
+    - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
+    - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
   - cmd: "dotnet tool install --global dotnet-sonarscanner"
   - cmd: "SET runner_args=\"\""
   - cmd: "if \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_commit_new%"
   - cmd: "if not \"%APPVEYOR_PULL_REQUEST_NUMBER%\"==\"\" SET runner_args=%sonar_pr_new%"
-  - cmd: "dotnet sonarscanner begin %runner_args%"
+  - cmd: "dotnet sonarscanner begin %runner_args% /d:sonar.projectBaseDir=%CD%"
   build_script:
    - cmd:  dotnet build -c Release
   artifacts:
@@ -81,12 +88,13 @@
   test_script:
     - cmd: dotnet test -v=normal --no-build -p:Configuration=Release --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
   after_test:
-    - cmd: "dotnet sonarscanner end /d:\"sonar.login=%sonar_token_new%\""  
+    - cmd: if exist C:\projects\qlnet_develop\.sonarqube\out\sonar-project.properties (echo FOUND) else (echo MISSING)
+    - cmd: dotnet sonarscanner end /d:sonar.login=%sonar_token_new%  
     - cmd: dotnet pack src/qlnet/qlnet.csproj -c Release -o ./
   deploy:
     - provider: NuGet
       api_key:
-        secure: LfB0vicMVT0ZgtDL1NtPmI+zC4he3BfQcO+2BlaN/0qlEnH4F6cz8K5QrM78OnoZ
+        secure: x09Q6zCKQK3MfQ7T2AYMj/wvexWR1/e0Rp16l5jM/ziXAyf5t3g4KyAT0psO3iAi
       skip_symbols: false
       artifact: ng
 
@@ -96,7 +104,7 @@
   branches:
     only:
       - /feature/
-  version: 1.13.2-{build}
+  version: 1.13.3-{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -105,7 +113,10 @@
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk11
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.13.2-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.13.3-%newVersion%"
+  install:
+    - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
+    - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
     - cmd: dotnet restore qlnet.sln
   build_script:
@@ -123,5 +134,16 @@
   nuget:
     disable_publish_on_pr: true
   test_script:
-    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release   
+    - cmd:  dotnet test -v=normal --no-build -p:Configuration=Release
+  after_test:
+    - cmd: echo Running performance benchmarks...
+    - cmd: cd tests\QLNet.Benchmarks && dotnet run -c Release -- --filter *BondYieldBenchmarks* --job Short --exporters json markdown html
+    - cmd: cd ..\..
+  artifacts:
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.json
+      name: benchmark-json
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.md
+      name: benchmark-markdown
+    - path: tests\QLNet.Benchmarks\BenchmarkDotNet.Artifacts\results\*.html
+      name: benchmark-html
 

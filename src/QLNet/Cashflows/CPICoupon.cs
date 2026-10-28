@@ -22,31 +22,44 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! when you observe an index, how do you interpolate between fixings?
+   /// <summary>
+   /// Describes how index values are interpolated between fixings when an index is observed.
+   /// </summary>
    public enum InterpolationType
    {
-      AsIndex,   //!< same interpolation as index
-      Flat,      //!< flat from previous fixing
-      Linear     //!< linearly between bracketing fixings
+      /// <summary>
+      /// Uses the same interpolation as the index.
+      /// </summary>
+      AsIndex,
+
+      /// <summary>
+      /// Uses a flat interpolation from the previous fixing.
+      /// </summary>
+      Flat,
+
+      /// <summary>
+      /// Interpolates linearly between the bracketing fixings.
+      /// </summary>
+      Linear
    }
 
-   //! %Coupon paying the performance of a CPI (zero inflation) index
-   /*! The performance is relative to the index value on the base date.
-
-      The other inflation value is taken from the refPeriodEnd date
-      with observation lag, so any roll/calendar etc. will be built
-      in by the caller.  By default this is done in the
-      InflationCoupon which uses ModifiedPreceding with fixing days
-      assumed positive meaning earlier, i.e. always stay in same
-      month (relative to referencePeriodEnd).
-
-      This is more sophisticated than an %IndexedCashFlow because it
-      does date calculations itself.
-
-      We do not do any convexity adjustment for lags different
-      to the natural ZCIIS lag that was used to create the
-      forward inflation curve.
-   */
+   /// <summary>
+   /// Coupon paying the performance of a CPI (zero inflation) index
+   /// </summary>
+   /// <remarks>
+   /// The performance is relative to the index value on the base date.
+   /// The other inflation value is taken from the refPeriodEnd date
+   /// with observation lag, so any roll/calendar etc. will be built
+   /// in by the caller.  By default this is done in the
+   /// InflationCoupon which uses ModifiedPreceding with fixing days
+   /// assumed positive meaning earlier, i.e. always stay in same
+   /// month (relative to referencePeriodEnd).
+   /// This is more sophisticated than an IndexedCashFlow because it
+   /// does date calculations itself.
+   /// We do not do any convexity adjustment for lags different
+   /// to the natural ZCIIS lag that was used to create the
+   /// forward inflation curve.
+   /// </remarks>
    public class CPICoupon : InflationCoupon
    {
       protected double baseCPI_;
@@ -124,29 +137,51 @@ namespace QLNet
       // Inspectors
       // fixed rate that will be inflated by the index ratio
       public double fixedRate() { return fixedRate_; }
-      //! spread paid over the fixing of the underlying index
+      /// <summary>
+      /// Returns the spread paid over the fixing of the underlying index.
+      /// </summary>
       public double spread() { return spread_; }
 
-      //! adjusted fixing (already divided by the base fixing)
+      /// <summary>
+      /// Returns the adjusted fixing, already divided by the base fixing.
+      /// </summary>
       public double adjustedFixing() { return (rate() - spread()) / fixedRate(); }
-      //! allows for a different interpolation from the index
+
+      /// <summary>
+      /// Returns the fixing, allowing for a different interpolation from the index.
+      /// </summary>
       public override double indexFixing() { return indexFixing(fixingDate()); }
-      //! base value for the CPI index
-      /*! \warning make sure that the interpolation used to create
-                  this is what you are using for the fixing,
-                  i.e. the observationInterpolation.
-      */
+      /// <summary>
+      /// base value for the CPI index
+      /// </summary>
+      /// <remarks>
+      /// Warning: make sure that the interpolation used to create
+      /// this is what you are using for the fixing,
+      /// i.e. the observationInterpolation.
+      /// </remarks>
       public double baseCPI() { return baseCPI_; }
-      //! how do you observe the index?  as-is, flat, linear?
+      /// <summary>
+      /// Returns how the coupon observes the index.
+      /// </summary>
       public InterpolationType observationInterpolation() { return observationInterpolation_; }
-      //! utility method, calls indexFixing
+
+      /// <summary>
+      /// Returns the index observation for the given date.
+      /// </summary>
       public double indexObservation(Date onDate) { return indexFixing(onDate); }
-      //! index used
+
+      /// <summary>
+      /// Returns the underlying CPI index.
+      /// </summary>
       public ZeroInflationIndex cpiIndex() { return index() as ZeroInflationIndex; }
    }
 
-   //! Cash flow paying the performance of a CPI (zero inflation) index
-   /*! It is NOT a coupon, i.e. no accruals. */
+   /// <summary>
+   /// Cash flow paying the performance of a CPI (zero inflation) index
+   /// </summary>
+   /// <remarks>
+   /// It is NOT a coupon, i.e. no accruals.
+   /// </remarks>
    public class CPICashFlow : IndexedCashFlow
    {
       public CPICashFlow(double notional,
@@ -172,23 +207,36 @@ namespace QLNet
          }
       }
 
-      //! value used on base date
-      /*! This does not have to agree with index on that date. */
+      /// <summary>
+      /// Returns the value used on the base date.
+      /// </summary>
+      /// <remarks>
+      /// This does not have to agree with the index on that date.
+      /// </remarks>
       public virtual double baseFixing() {return baseFixing_;}
 
-      //! you may not have a valid date
+      /// <summary>
+      /// Returns the base date.
+      /// </summary>
+      /// <remarks>
+      /// A valid base date may not be available.
+      /// </remarks>
       public override Date baseDate()
       {
          Utils.QL_FAIL("no base date specified");
          return null;
       }
 
-      //! do you want linear/constant/as-index interpolation of future data?
+      /// <summary>
+      /// Returns the interpolation used for future data.
+      /// </summary>
       public virtual InterpolationType interpolation() { return interpolation_; }
 
       public virtual Frequency frequency() { return frequency_; }
 
-      //! redefined to use baseFixing() and interpolation
+      /// <summary>
+      /// Returns the cash-flow amount using the base fixing and interpolation.
+      /// </summary>
       public override double amount()
       {
          double I0 = baseFixing();
@@ -230,14 +278,16 @@ namespace QLNet
       protected Frequency frequency_;
    }
 
-   //! Helper class building a sequence of capped/floored CPI coupons.
-   /*! Also allowing for the inflated notional at the end...
-       especially if there is only one date in the schedule.
-       If a fixedRate is zero you get a FixedRateCoupon, otherwise
-       you get a ZeroInflationCoupon.
-
-       payoff is: spread + fixedRate x index
-   */
+   /// <summary>
+   /// Helper class building a sequence of capped/floored CPI coupons.
+   /// </summary>
+   /// <remarks>
+   /// Also allowing for the inflated notional at the end...
+   /// especially if there is only one date in the schedule.
+   /// If a fixedRate is zero you get a FixedRateCoupon, otherwise
+   /// you get a ZeroInflationCoupon.
+   /// payoff is: spread + fixedRate x index
+   /// </remarks>
    public class CPILeg : CPILegBase
    {
       public CPILeg(Schedule schedule,

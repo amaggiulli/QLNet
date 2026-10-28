@@ -19,22 +19,24 @@
 
 using System;
 
-//! default bivariate implementation
+// Default bivariate implementation.
 using BivariateCumulativeNormalDistribution = QLNet.BivariateCumulativeNormalDistributionWe04DP;
 
 namespace QLNet
 {
-   //! Pricing engine for 2D European Baskets
-   /*! This class implements formulae from
-       "Options on the Minimum or the Maximum of Two Risky Assets",
-           Rene Stulz,
-           Journal of Financial Ecomomics (1982) 10, 161-185.
-
-       \ingroup basketengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in literature.
-   */
+   /// <summary>
+   /// Pricing engine for 2D European Baskets
+   /// </summary>
+   /// <remarks>
+   /// This class implements formulae from
+   /// "Options on the Minimum or the Maximum of Two Risky Assets",
+   /// Rene Stulz,
+   /// Journal of Financial Ecomomics (1982) 10, 161-185.
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class StulzEngine : BasketOption.Engine
    {
       public StulzEngine(GeneralizedBlackScholesProcess process1, GeneralizedBlackScholesProcess process2, double correlation)

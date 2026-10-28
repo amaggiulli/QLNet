@@ -19,30 +19,29 @@
 using System;
 using System.Collections.Generic;
 
-// Two-factor additive Gaussian Model G2 + +
-
 namespace QLNet
 {
 
-   //! Two-additive-factor gaussian model class.
-   /*! This class implements a two-additive-factor model defined by
-       \f[
-           dr_t = \varphi(t) + x_t + y_t
-       \f]
-       where \f$ x_t \f$ and \f$ y_t \f$ are defined by
-       \f[
-           dx_t = -a x_t dt + \sigma dW^1_t, x_0 = 0
-       \f]
-       \f[
-           dy_t = -b y_t dt + \sigma dW^2_t, y_0 = 0
-       \f]
-       and \f$ dW^1_t dW^2_t = \rho dt \f$.
-
-       \bug This class was not tested enough to guarantee
-            its functionality.
-
-       \ingroup shortrate
-   */
+   /// <summary>
+   /// Two-additive-factor gaussian model class.
+   /// </summary>
+   /// <remarks>
+   /// This class implements a two-additive-factor model defined by
+   /// \f[
+   /// dr_t = \varphi(t) + x_t + y_t
+   /// \f]
+   /// where \f$ x_t \f$ and \f$ y_t \f$ are defined by
+   /// \f[
+   /// dx_t = -a x_t dt + \sigma dW^1_t, x_0 = 0
+   /// \f]
+   /// \f[
+   /// dy_t = -b y_t dt + \sigma dW^2_t, y_0 = 0
+   /// \f]
+   /// and \f$ dW^1_t dW^2_t = \rho dt \f$.
+   ///
+   /// Bug: This class was not tested enough to guarantee
+   /// its functionality.
+   /// </remarks>
    public class G2 : TwoFactorModel,
       IAffineModel,
       ITermStructureConsistentModel
@@ -267,17 +266,6 @@ namespace QLNet
          {
             throw new NotImplementedException();
          }
-
-         //! Analytical term-structure fitting parameter \f$ \varphi(t) \f$.
-         /*! \f$ \varphi(t) \f$ is analytically defined by
-             \f[
-                 \varphi(t) = f(t) +
-                      \frac{1}{2}(\frac{\sigma(1-e^{-at})}{a})^2 +
-                      \frac{1}{2}(\frac{\eta(1-e^{-bt})}{b})^2 +
-                      \rho\frac{\sigma(1-e^{-at})}{a}\frac{\eta(1-e^{-bt})}{b},
-             \f]
-             where \f$ f(t) \f$ is the instantaneous forward rate at \f$ t \f$.
-         */
       }
 
       public class FittingParameter : TermStructureFittingParameter

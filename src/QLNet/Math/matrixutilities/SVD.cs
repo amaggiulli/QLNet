@@ -20,13 +20,16 @@ using System;
 
 namespace QLNet
 {
-   //! Singular value decomposition
-   /*! Refer to Golub and Van Loan: Matrix computation,
-       The Johns Hopkins University Press
-
-       \test the correctness of the returned values is tested by
-             checking their properties.
-   */
+   /// <summary>
+   /// Singular value decomposition
+   /// </summary>
+   /// <remarks>
+   /// Refer to Golub and Van Loan: Matrix computation,
+   /// The Johns Hopkins University Press
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking their properties.
+   /// </remarks>
    public class SVD
    {
       private Matrix U_, V_;

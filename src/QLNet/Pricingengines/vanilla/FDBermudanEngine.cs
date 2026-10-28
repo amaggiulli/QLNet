@@ -20,8 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Finite-differences Bermudan engine
-   /*! \ingroup vanillaengines */
+   /// <summary>
+   /// Finite-differences Bermudan engine
+   /// </summary>
    public class FDBermudanEngine : FDMultiPeriodEngine, IGenericEngine
    {
       protected double extraTermInBermudan;

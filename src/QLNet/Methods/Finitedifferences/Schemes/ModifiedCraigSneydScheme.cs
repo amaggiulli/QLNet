@@ -23,13 +23,15 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! modified Craig-Sneyd scheme
-
-   /*! References:
-       K. J. in ’t Hout and S. Foulon,
-       ADI finite difference schemes for option pricing in the Heston
-       model with correlation, http://arxiv.org/pdf/0811.3427
-   */
+   /// <summary>
+   /// modified Craig-Sneyd scheme
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// K. J. in ’t Hout and S. Foulon,
+   /// ADI finite difference schemes for option pricing in the Heston
+   /// model with correlation, http://arxiv.org/pdf/0811.3427
+   /// </remarks>
    public class ModifiedCraigSneydScheme : IMixedScheme, ISchemeFactory
    {
       public ModifiedCraigSneydScheme() { }

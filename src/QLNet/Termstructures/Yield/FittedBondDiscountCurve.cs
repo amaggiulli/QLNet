@@ -18,58 +18,61 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Discount curve fitted to a set of fixed-coupon bonds
-   /*! This class fits a discount function \f$ d(t) \f$ over a set of
-       bonds, using a user defined fitting method. The discount
-       function is fit in such a way so that all cashflows of all
-       input bonds, when discounted using \f$ d(t) \f$, will
-       reproduce the set of input bond prices in an optimized
-       sense. Minimized price errors are weighted by the inverse of
-       their respective bond duration.
-
-       The FittedBondDiscountCurve class acts as a generic wrapper,
-       while its inner class FittingMethod provides the
-       implementation details. Developers thus need only derive new
-       fitting methods from the latter.
-
-       <b> Example: </b>
-       \link FittedBondCurve.cpp
-       compares various bond discount curve fitting methodologies
-       \endlink
-
-       \warning The method can be slow if there are many bonds to
-                fit. Speed also depends on the particular choice of
-                fitting method chosen and its convergence properties
-                under optimization.  See also todo list for
-                BondDiscountCurveFittingMethod.
-
-       \todo refactor the bond helper class so that it is pure
-             virtual and returns a generic bond or its cash
-             flows. Derived classes would include helpers for
-             fixed-rate and zero-coupon bonds. In this way, both
-             bonds and bills can be used to fit a discount curve
-             using the exact same machinery. At present, only
-             fixed-coupon bonds are supported. An even better way to
-             move forward might be to get rate helpers to return
-             cashflows, in which case this class could be used to fit
-             any set of cash flows, not just bonds.
-
-       \todo add more fitting diagnostics: smoothness, standard
-             deviation, student-t test, etc. Generic smoothness
-             method may be useful for smoothing splines fitting. See
-             Fisher, M., D. Nychka and D. Zervos: "Fitting the term
-             structure of interest rates with smoothing splines."
-             Board of Governors of the Federal Reserve System,
-             Federal Resere Board Working Paper, 95-1.
-
-       \todo add extrapolation routines
-
-       \ingroup yieldtermstructures
-   */
+   /// <summary>
+   /// Discount curve fitted to a set of fixed-coupon bonds
+   /// </summary>
+   /// <remarks>
+   /// This class fits a discount function \f$ d(t) \f$ over a set of
+   /// bonds, using a user defined fitting method. The discount
+   /// function is fit in such a way so that all cashflows of all
+   /// input bonds, when discounted using \f$ d(t) \f$, will
+   /// reproduce the set of input bond prices in an optimized
+   /// sense. Minimized price errors are weighted by the inverse of
+   /// their respective bond duration.
+   ///
+   /// The FittedBondDiscountCurve class acts as a generic wrapper,
+   /// while its inner class FittingMethod provides the
+   /// implementation details. Developers thus need only derive new
+   /// fitting methods from the latter.
+   ///
+   /// Example:
+   /// \link FittedBondCurve.cpp
+   /// compares various bond discount curve fitting methodologies
+   /// \endlink
+   ///
+   /// Warning: The method can be slow if there are many bonds to
+   /// fit. Speed also depends on the particular choice of
+   /// fitting method chosen and its convergence properties
+   /// under optimization.  See also todo list for
+   /// BondDiscountCurveFittingMethod.
+   ///
+   /// TODO: refactor the bond helper class so that it is pure
+   /// virtual and returns a generic bond or its cash
+   /// flows. Derived classes would include helpers for
+   /// fixed-rate and zero-coupon bonds. In this way, both
+   /// bonds and bills can be used to fit a discount curve
+   /// using the exact same machinery. At present, only
+   /// fixed-coupon bonds are supported. An even better way to
+   /// move forward might be to get rate helpers to return
+   /// cashflows, in which case this class could be used to fit
+   /// any set of cash flows, not just bonds.
+   ///
+   /// TODO: add more fitting diagnostics: smoothness, standard
+   /// deviation, student-t test, etc. Generic smoothness
+   /// method may be useful for smoothing splines fitting. See
+   /// Fisher, M., D. Nychka and D. Zervos: "Fitting the term
+   /// structure of interest rates with smoothing splines."
+   /// Board of Governors of the Federal Reserve System,
+   /// Federal Resere Board Working Paper, 95-1.
+   ///
+   /// TODO: add extrapolation routines
+   /// </remarks>
    public class FittedBondDiscountCurve : YieldTermStructure
    {
       // Constructors
-      //! reference date based on current evaluation date
+      /// <summary>
+      /// Initializes the curve using a reference date based on the current evaluation date.
+      /// </summary>
       public FittedBondDiscountCurve(int settlementDays,
                                      Calendar calendar,
                                      List<BondHelper> bondHelpers,
@@ -94,7 +97,9 @@ namespace QLNet
          setup();
       }
 
-      //! curve reference date fixed for life of curve
+      /// <summary>
+      /// Initializes the curve with a reference date fixed for the life of the curve.
+      /// </summary>
       public FittedBondDiscountCurve(Date referenceDate,
                                      List<BondHelper> bondHelpers,
                                      DayCounter dayCounter,
@@ -119,15 +124,21 @@ namespace QLNet
       }
 
       // Inspectors
-      //! total number of bonds used to fit the yield curve
+      /// <summary>
+      /// Returns the total number of bonds used to fit the yield curve.
+      /// </summary>
       public int numberOfBonds() {return bondHelpers_.Count;}
-      //! the latest date for which the curve can return values
+      /// <summary>
+      /// Returns the latest date for which the curve can provide values.
+      /// </summary>
       public override Date maxDate()
       {
          calculate();
          return maxDate_;
       }
-      //! class holding the results of the fit
+      /// <summary>
+      /// Returns the fitting results.
+      /// </summary>
       public FittingMethod fitResults()
       {
          calculate();
@@ -191,37 +202,40 @@ namespace QLNet
       private List<BondHelper> bondHelpers_;
       private FittingMethod fittingMethod_; // TODO Clone
 
-      //! Base fitting method used to construct a fitted bond discount curve
-      /*! This base class provides the specific methodology/strategy
-          used to construct a FittedBondDiscountCurve.  Derived classes
-          need only define the virtual function discountFunction() based
-          on the particular fitting method to be implemented, as well as
-          size(), the number of variables to be solved for/optimized. The
-          generic fitting methodology implemented here can be termed
-          nonlinear, in contrast to (typically faster, computationally)
-          linear fitting method.
-
-          Optional parameters for FittingMethod include an Array of
-          weights, which will be used as weights to each bond. If not given
-          or empty, then the bonds will be weighted by inverse duration
-
-          \todo derive the special-case class LinearFittingMethods from
-                FittingMethod. A linear fitting to a set of basis
-                functions \f$ b_i(t) \f$ is any fitting of the form
-                \f[
-                d(t) = \sum_{i=0} c_i b_i(t)
-                \f]
-                i.e., linear in the unknown coefficients \f$ c_i
-                \f$. Such a fitting can be reduced to a linear algebra
-                problem \f$ Ax = b \f$, and for large numbers of bonds,
-                would typically be much faster computationally than the
-                generic non-linear fitting method.
-
-          \warning some parameters to the Simplex optimization method
-                   may need to be tweaked internally to the class,
-                   depending on the fitting method used, in order to get
-                   proper/reasonable/faster convergence.
-      */
+      /// <summary>
+      /// Base fitting method used to construct a fitted bond discount curve
+      /// </summary>
+      /// <remarks>
+      /// This base class provides the specific methodology/strategy
+      /// used to construct a FittedBondDiscountCurve.  Derived classes
+      /// need only define the virtual function discountFunction() based
+      /// on the particular fitting method to be implemented, as well as
+      /// size(), the number of variables to be solved for/optimized. The
+      /// generic fitting methodology implemented here can be termed
+      /// nonlinear, in contrast to (typically faster, computationally)
+      /// linear fitting method.
+      ///
+      /// Optional parameters for FittingMethod include an Array of
+      /// weights, which will be used as weights to each bond. If not given
+      /// or empty, then the bonds will be weighted by inverse duration
+      ///
+      /// TODO: derive the special-case class LinearFittingMethods from
+      /// FittingMethod. A linear fitting to a set of basis
+      /// functions \f$ b_i(t) \f$ is any fitting of the form
+      /// \f[
+      /// d(t) = \sum_{i=0} c_i b_i(t)
+      /// \f]
+      /// i.e., linear in the unknown coefficients \f$ c_i
+      /// \f$. Such a fitting can be reduced to a linear algebra
+      /// problem \f$ Ax = b \f$, and for large numbers of bonds,
+      /// would typically be much faster computationally than the
+      /// generic non-linear fitting method.
+      ///
+      /// Warning: some parameters to the Simplex optimization method
+      /// may need to be tweaked internally to the class,
+      /// depending on the fitting method used, in order to get
+      /// proper/reasonable/faster convergence.
+      /// </remarks>
       public class FittingMethod
       {
          // internal class
@@ -286,26 +300,46 @@ namespace QLNet
 
          }
 
-         //! total number of coefficients to fit/solve for
+         /// <summary>
+         /// Returns the total number of coefficients to fit or solve for.
+         /// </summary>
          public virtual int size() { throw new NotImplementedException(); }
-         //! output array of results of optimization problem
+         /// <summary>
+         /// Returns the solution vector of the optimization problem.
+         /// </summary>
          public Vector solution() { return solution_;}
-         //! final number of iterations used in the optimization problem
+         /// <summary>
+         /// Returns the final number of iterations used by the optimization problem.
+         /// </summary>
          public int numberOfIterations() {return numberOfIterations_;}
-         //! final value of cost function after optimization
+         /// <summary>
+         /// Returns the final value of the cost function after optimization.
+         /// </summary>
          public double minimumCostValue() { return costValue_;}
-         //! clone of the current object
+         /// <summary>
+         /// Returns a clone of the current fitting method.
+         /// </summary>
          public virtual FittingMethod clone() { throw new NotImplementedException(); }
-         //! return whether there is a constraint at zero
+         /// <summary>
+         /// Returns whether the discount function is constrained at zero.
+         /// </summary>
          public bool constrainAtZero() {return constrainAtZero_;}
-         //! return weights being used
+         /// <summary>
+         /// Returns the weights being used.
+         /// </summary>
          public Vector weights() {return weights_;}
-         //! return optimization method being used
+         /// <summary>
+         /// Returns the optimization method being used.
+         /// </summary>
          public OptimizationMethod optimizationMethod() {return optimizationMethod_;}
-         //! open discountFunction to public
+         /// <summary>
+         /// Exposes the discount function publicly.
+         /// </summary>
          public double discount(Vector x, double t) {return discountFunction(x, t);}
 
-         //! constructor
+         /// <summary>
+         /// Initializes the fitting method.
+         /// </summary>
          protected FittingMethod(bool constrainAtZero = true,
                                  Vector weights = null,
                                  OptimizationMethod optimizationMethod = null)
@@ -315,7 +349,9 @@ namespace QLNet
             calculateWeights_ = weights_.empty();
             optimizationMethod_ = optimizationMethod;
          }
-         //! rerun every time instruments/referenceDate changes
+         /// <summary>
+         /// Reinitializes the fitting state whenever the instruments or reference date change.
+         /// </summary>
          internal virtual void init()
          {
             // yield conventions
@@ -370,21 +406,21 @@ namespace QLNet
 
          }
 
-         //! discount function called by FittedBondDiscountCurve
+         /// <summary>
+         /// Calculates the discount function used by <see cref="FittedBondDiscountCurve"/>.
+         /// </summary>
          internal virtual double discountFunction(Vector x, double t) { throw new NotImplementedException(); }
 
-         //! constrains discount function to unity at \f$ T=0 \f$, if true
+         // Constrains the discount function to unity at T = 0 when true.
          protected bool constrainAtZero_;
-         //! internal reference to the FittedBondDiscountCurve instance
+         // Internal reference to the fitted bond discount curve instance.
          internal FittedBondDiscountCurve curve_;
-         //! solution array found from optimization, set in calculate()
+         // Solution vector found by the optimization and set in calculate().
          internal Vector solution_;
-         //! optional guess solution to be passed into constructor.
-         /*! The idea is to use a previous solution as a guess solution to
-            the discount curve, in an attempt to speed up calculations.
-         */
+         // Optional guess solution passed into the constructor.
+         // A previous solution can be reused as a starting point to speed up calculations.
          protected Vector guessSolution_;
-         //! base class sets this cost function used in the optimization routine
+         // Cost function used by the optimization routine.
          protected FittingCost costFunction_;
 
          // curve optimization called here- adjust optimization parameters here

@@ -19,11 +19,12 @@
 
 namespace QLNet
 {
-   //! base class for path pricers
-   /*! Returns the value of an option on a given path.
-
-       \ingroup mcarlo
-   */
+   /// <summary>
+   /// base class for path pricers
+   /// </summary>
+   /// <remarks>
+   /// Returns the value of an option on a given path.
+   /// </remarks>
    public interface PathPricer<PathType>
    {
       double value(PathType pt);

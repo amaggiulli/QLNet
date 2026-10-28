@@ -21,16 +21,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Forward-rate term structure
-   /*! This abstract class acts as an adapter to YieldTermStructure allowing
-       the programmer to implement only the <tt>forwardImpl(Time)</tt> method
-       in derived classes.
-
-       Zero yields and discounts are calculated from forwards.
-       Forward rates are assumed to be annual continuous compounding.
-
-       \ingroup yieldtermstructures
-   */
+   /// <summary>
+   /// Forward-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to YieldTermStructure allowing
+   /// the programmer to implement only the <c>forwardImpl(Time)</c> method
+   /// in derived classes.
+   ///
+   /// Zero yields and discounts are calculated from forwards.
+   /// Forward rates are assumed to be annual continuous compounding.
+   /// </remarks>
    public abstract class ForwardRateStructure : YieldTermStructure
    {
       #region Constructors
@@ -56,19 +57,23 @@ namespace QLNet
       // range check has already been performed; therefore, they
       // must assume that extrapolation is required.
 
-      //! instantaneous forward-rate calculation
+      /// <summary>
+      /// Performs the instantaneous forward-rate calculation.
+      /// </summary>
       protected abstract double forwardImpl(double s);
-      /*! Returns the zero yield rate for the given date calculating it
-          from the instantaneous forward rate \f$ f(t) \f$ as
-          \f[
-          z(t) = \int_0^t f(\tau) d\tau
-          \f]
-
-          \warning This default implementation uses an highly inefficient
-                   and possibly wildly inaccurate numerical integration.
-                   Derived classes should override it if a more efficient
-                   implementation is available.
-      */
+      /// <summary>
+      /// Returns the zero yield rate for the given date calculating it
+      /// from the instantaneous forward rate \f$ f(t) \f$ as
+      /// \f[
+      /// z(t) = \int_0^t f(\tau) d\tau
+      /// \f]
+      /// </summary>
+      /// <remarks>
+      /// Warning: This default implementation uses an highly inefficient
+      /// and possibly wildly inaccurate numerical integration.
+      /// Derived classes should override it if a more efficient
+      /// implementation is available.
+      /// </remarks>
       protected virtual double zeroYieldImpl(double t)
       {
          if (t.IsEqual(0.0))
@@ -86,9 +91,9 @@ namespace QLNet
       #endregion
 
       #region YieldTermStructure implementation
-      /*! Returns the discount factor for the given date calculating it
-          from the zero rate as \f$ d(t) = \exp \left( -z(t) t \right) \f$
-      */
+      /// <summary>
+      /// Returns the discount factor for the given date, calculated from the zero rate.
+      /// </summary>
       protected override double discountImpl(double t)
       {
          if (t.IsEqual(0.0))     // this acts as a safe guard in cases where

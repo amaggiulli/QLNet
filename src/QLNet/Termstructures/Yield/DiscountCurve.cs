@@ -23,8 +23,9 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Term structure based on interpolation of discount factors
-   /*! \ingroup yieldtermstructures */
+   /// <summary>
+   /// Term structure based on interpolation of discount factors
+   /// </summary>
    public class InterpolatedDiscountCurve<Interpolator> : YieldTermStructure, InterpolatedCurve
       where Interpolator : class, IInterpolationFactory, new ()
    {

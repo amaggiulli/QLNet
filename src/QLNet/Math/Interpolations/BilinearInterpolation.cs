@@ -53,10 +53,17 @@ namespace QLNet
       }
    }
 
-   //! %bilinear interpolation between discrete points
+   /// <summary>
+   /// bilinear interpolation between discrete points
+   /// </summary>
    public class BilinearInterpolation : Interpolation2D
    {
-      /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a bilinear interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> and <c>y</c> values must be sorted.
+      /// </remarks>
 
       public BilinearInterpolation(List<double> xBegin, int xSize,
                                    List<double> yBegin, int ySize,
@@ -68,7 +75,9 @@ namespace QLNet
       }
    }
 
-   //! bilinear-interpolation factory
+   /// <summary>
+   /// bilinear-interpolation factory
+   /// </summary>
    public class Bilinear : IInterpolationFactory2D
    {
       public Interpolation2D interpolate(List<double> xBegin, int xSize,

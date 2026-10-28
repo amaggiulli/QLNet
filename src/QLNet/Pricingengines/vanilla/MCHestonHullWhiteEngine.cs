@@ -110,7 +110,9 @@ namespace QLNet
       }
    }
 
-   //! Monte Carlo Heston/Hull-White engine factory
+   /// <summary>
+   /// Monte Carlo Heston/Hull-White engine factory
+   /// </summary>
    public class MakeMCHestonHullWhiteEngine <RNG, S>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

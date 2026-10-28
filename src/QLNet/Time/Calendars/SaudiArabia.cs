@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -23,24 +23,21 @@ using System;
 
 namespace QLNet
 {
-   //! Saudi Arabian calendar
-   /*! Holidays for the Tadawul financial market
-       (data from <http://www.tadawul.com.sa>):
-       <ul>
-       <li>Thursdays</li>
-       <li>Fridays</li>
-       <li>National Day of Saudi Arabia, September 23rd</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2004-2011 only:)
-       <ul>
-       <li>Eid Al-Adha</li>
-       <li>Eid Al-Fitr</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Saudi Arabian calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Tadawul financial market
+   /// (data from http://www.tadawul.com.sa):
+   /// Thursdays
+   /// Fridays
+   /// National Day of Saudi Arabia, September 23rd
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2004-2011 only:)
+   /// Eid Al-Adha
+   /// Eid Al-Fitr
+   /// </remarks>
    public class SaudiArabia : Calendar
    {
       public SaudiArabia() : base(Impl.Singleton) { }

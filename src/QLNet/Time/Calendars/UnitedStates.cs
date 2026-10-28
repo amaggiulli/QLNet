@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,91 +21,86 @@ using System;
 
 namespace QLNet
 {
-   //! United States calendars
-   /*! Public holidays (see: http://www.opm.gov/fedhol/):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday if
-           actually on Sunday, or to Friday if on Saturday)</li>
-       <li>Martin Luther King's birthday, third Monday in January (since 1983)</li>
-       <li>Presidents' Day (a.k.a. Washington's birthday),
-           third Monday in February</li>
-       <li>Memorial Day, last Monday in May</li>
-       <li>Independence Day, July 4th (moved to Monday if Sunday or
-           Friday if Saturday)</li>
-       <li>Labor Day, first Monday in September</li>
-       <li>Columbus Day, second Monday in October</li>
-       <li>Veterans' Day, November 11th (moved to Monday if Sunday or
-           Friday if Saturday)</li>
-       <li>Thanksgiving Day, fourth Thursday in November</li>
-       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-           if Saturday)</li>
-       </ul>
-
-       Holidays for the stock exchange (data from http://www.nyse.com):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday if
-           actually on Sunday)</li>
-       <li>Martin Luther King's birthday, third Monday in January (since
-           1998)</li>
-       <li>Presidents' Day (a.k.a. Washington's birthday),
-           third Monday in February</li>
-       <li>Good Friday</li>
-       <li>Memorial Day, last Monday in May</li>
-       <li>Independence Day, July 4th (moved to Monday if Sunday or
-           Friday if Saturday)</li>
-       <li>Labor Day, first Monday in September</li>
-       <li>Thanksgiving Day, fourth Thursday in November</li>
-       <li>Presidential election day, first Tuesday in November of election
-           years (until 1980)</li>
-       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-           if Saturday)</li>
-       <li>Special historic closings (see
-           http://www.nyse.com/pdfs/closings.pdf)</li>
-       </ul>
-
-       Holidays for the government bond market (data from https://www.sifma.org/resources/general/holiday-schedule/):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday if
-           actually on Sunday)</li>
-       <li>Martin Luther King's birthday, third Monday in January</li>
-       <li>Presidents' Day (a.k.a. Washington's birthday),
-           third Monday in February</li>
-       <li>Good Friday</li>
-       <li>Memorial Day, last Monday in May</li>
-       <li>Independence Day, July 4th (moved to Monday if Sunday or
-           Friday if Saturday)</li>
-       <li>Labor Day, first Monday in September</li>
-       <li>Columbus Day, second Monday in October</li>
-       <li>Veterans' Day, November 11th (moved to Monday if Sunday or
-           Friday if Saturday)</li>
-       <li>Thanksgiving Day, fourth Thursday in November</li>
-       <li>Christmas, December 25th (moved to Monday if Sunday or Friday
-           if Saturday)</li>
-       </ul>
-
-       Holidays for the North American Energy Reliability Council
-       (data from http://www.nerc.com/~oc/offpeaks.html):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday if
-           actually on Sunday)</li>
-       <li>Memorial Day, last Monday in May</li>
-       <li>Independence Day, July 4th (moved to Monday if Sunday)</li>
-       <li>Labor Day, first Monday in September</li>
-       <li>Thanksgiving Day, fourth Thursday in November</li>
-       <li>Christmas, December 25th (moved to Monday if Sunday)</li>
-       </ul>
-
-       \test the correctness of the returned results is tested
-             against a list of known holidays.
-   */
+   /// <summary>
+   /// United States calendars
+   /// </summary>
+   /// <remarks>
+   /// Public holidays (see: http://www.opm.gov/fedhol/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday if
+   /// actually on Sunday, or to Friday if on Saturday)
+   /// Martin Luther King's birthday, third Monday in January (since 1983)
+   /// Presidents' Day (a.k.a. Washington's birthday),
+   /// third Monday in February
+   /// Memorial Day, last Monday in May
+   /// Independence Day, July 4th (moved to Monday if Sunday or
+   /// Friday if Saturday)
+   /// Labor Day, first Monday in September
+   /// Columbus Day, second Monday in October
+   /// Veterans' Day, November 11th (moved to Monday if Sunday or
+   /// Friday if Saturday)
+   /// Thanksgiving Day, fourth Thursday in November
+   /// Christmas, December 25th (moved to Monday if Sunday or Friday
+   /// if Saturday)
+   ///
+   /// Holidays for the stock exchange (data from http://www.nyse.com):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday if
+   /// actually on Sunday)
+   /// Martin Luther King's birthday, third Monday in January (since
+   /// 1998)
+   /// Presidents' Day (a.k.a. Washington's birthday),
+   /// third Monday in February
+   /// Good Friday
+   /// Memorial Day, last Monday in May
+   /// Independence Day, July 4th (moved to Monday if Sunday or
+   /// Friday if Saturday)
+   /// Labor Day, first Monday in September
+   /// Thanksgiving Day, fourth Thursday in November
+   /// Presidential election day, first Tuesday in November of election
+   /// years (until 1980)
+   /// Christmas, December 25th (moved to Monday if Sunday or Friday
+   /// if Saturday)
+   /// Special historic closings (see
+   /// http://www.nyse.com/pdfs/closings.pdf)
+   ///
+   /// Holidays for the government bond market (data from https://www.sifma.org/resources/general/holiday-schedule/):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday if
+   /// actually on Sunday)
+   /// Martin Luther King's birthday, third Monday in January
+   /// Presidents' Day (a.k.a. Washington's birthday),
+   /// third Monday in February
+   /// Good Friday
+   /// Memorial Day, last Monday in May
+   /// Independence Day, July 4th (moved to Monday if Sunday or
+   /// Friday if Saturday)
+   /// Labor Day, first Monday in September
+   /// Columbus Day, second Monday in October
+   /// Veterans' Day, November 11th (moved to Monday if Sunday or
+   /// Friday if Saturday)
+   /// Thanksgiving Day, fourth Thursday in November
+   /// Christmas, December 25th (moved to Monday if Sunday or Friday
+   /// if Saturday)
+   ///
+   /// Holidays for the North American Energy Reliability Council
+   /// (data from http://www.nerc.com/~oc/offpeaks.html):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday if
+   /// actually on Sunday)
+   /// Memorial Day, last Monday in May
+   /// Independence Day, July 4th (moved to Monday if Sunday)
+   /// Labor Day, first Monday in September
+   /// Thanksgiving Day, fourth Thursday in November
+   /// Christmas, December 25th (moved to Monday if Sunday)
+   ///
+   /// Test: the correctness of the returned results is tested
+   /// against a list of known holidays.
+   /// </remarks>
 
    public class UnitedStates : Calendar
    {
@@ -190,15 +185,45 @@ namespace QLNet
       }
 
 
-      //! US calendars
+      /// <summary>
+      /// Available United States calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,     //!< generic settlement calendar
-         NYSE,           //!< New York stock exchange calendar
-         GovernmentBond, //!< government-bond calendar
-         NERC,            //!< off-peak days for NERC
-         LiborImpact,    //!< Libor impact calendar
-         FederalReserve  //!< Federal Reserve Bankwire System
+         /// <summary>
+         /// Generic settlement calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// New York Stock Exchange calendar.
+         /// </summary>
+         NYSE,
+
+         /// <summary>
+         /// Government bond calendar.
+         /// </summary>
+         GovernmentBond,
+
+         /// <summary>
+         /// Off-peak days for NERC.
+         /// </summary>
+         NERC,
+
+         /// <summary>
+         /// Libor impact calendar.
+         /// </summary>
+         LiborImpact,
+
+         /// <summary>
+         /// Federal Reserve Bankwire System calendar.
+         /// </summary>
+         FederalReserve,
+
+         /// <summary>
+         /// SOFR fixing calendar.
+         /// </summary>
+         SOFR
       }
 
       public UnitedStates() : this(Market.Settlement) { }
@@ -223,6 +248,9 @@ namespace QLNet
                break;
             case Market.FederalReserve:
                _impl = FederalReserve.Singleton;
+               break;
+            case Market.SOFR:
+               _impl = SOFR.Singleton;
                break;
             default:
                throw new ArgumentException("Unknown market: " + m);
@@ -375,7 +403,7 @@ namespace QLNet
       private class GovernmentBond : WesternImpl
       {
          public static readonly GovernmentBond Singleton = new();
-         private GovernmentBond() { }
+         protected GovernmentBond() { }
 
          public override string name() { return "US government bond market"; }
          public override bool isBusinessDay(Date date)
@@ -459,9 +487,9 @@ namespace QLNet
             if (
                 // New Year's Day (possibly moved to Monday if on Sunday)
                 ((d == 1 || (d == 2 && w == DayOfWeek.Monday)) && m == Month.January)
-                // Good Friday (2015, 2021, 2023 are half day due to NFP/SIFMA;
+                // Good Friday (2015, 2021, 2023, 2026 are half day due to NFP/SIFMA;
                 // see <https://www.sifma.org/resources/general/holiday-schedule/>)
-                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023)
+                || (dd == em-3 && y != 2015 && y != 2021 && y != 2023 && y!=2026)
                 // Memorial Day (last Monday in May)
                 || isMemorialDay(d, m, y, w)
                 // Independence Day (Monday if Sunday or Friday if Saturday)
@@ -469,7 +497,9 @@ namespace QLNet
                      (d == 3 && w == DayOfWeek.Friday)) && m == Month.July)
                 // Christmas (Monday if Sunday or Friday if Saturday)
                 || ((d == 25 || (d == 26 && w == DayOfWeek.Monday) ||
-                     (d == 24 && w == DayOfWeek.Friday)) && m == Month.December))
+                     (d == 24 && w == DayOfWeek.Friday)) && m == Month.December)
+                // Jimmy Carter Day of Mourning- Jan 9th 2025
+                || ( d == 9 && m == Month.January && y == 2025))
                return true;
 
             // Thanksgiving Day the early close is the following friday
@@ -482,8 +512,8 @@ namespace QLNet
                ((d >= 22 && d <= 28) && w == DayOfWeek.Thursday && m == Month.November))
                return true;
 
-            // Good Friday 2015, 2021, 2023 are early close
-            if ((close.DayOfYear == em-3 && y is 2015 or 2021 or 2023 )) return true;
+            // Good Friday 2015, 2021, 2023 , 2026 are early close
+            if ((close.DayOfYear == em-3 && y is 2015 or 2021 or 2023 or 2026 )) return true;
 
             return false;
          }
@@ -579,6 +609,29 @@ namespace QLNet
                return false;
             return true;
          }
+      }
+
+      private class SOFR : GovernmentBond
+      {
+         public new static readonly SOFR Singleton = new();
+         private SOFR() { }
+
+         public override string name() { return "SOFR fixing calendar"; }
+         public override bool isBusinessDay(Date date)
+         {
+            // so far (that is, up to 2026 at the time of this change) SOFR never fixed
+            // on Good Friday.  We're extrapolating that pattern.  This might change if
+            // a fixing on Good Friday occurs in future years.
+            var dY = date.DayOfYear;
+            var y = date.Year;
+
+            // Good Friday
+            if (dY == (easterMonday(y) - 3))
+               return false;
+
+            return base.isBusinessDay(date);
+         }
+
       }
    }
 }

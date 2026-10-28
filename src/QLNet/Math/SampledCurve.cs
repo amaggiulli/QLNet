@@ -21,8 +21,12 @@ using System;
 
 namespace QLNet
 {
-   //! This class contains a sampled curve.
-   /*! Initially the class will contain one indexed curve */
+   /// <summary>
+   /// This class contains a sampled curve.
+   /// </summary>
+   /// <remarks>
+   /// Initially the class will contain one indexed curve
+   /// </remarks>
 
    public class SampledCurve : ICloneable
    {
@@ -101,7 +105,7 @@ namespace QLNet
       }
 
       // calculations
-      /*! \todo replace or complement with a more general function valueAt(spot) */
+      // TODO: replace or complement with a more general valueAt(spot) function.
 
       public double valueAtCenter()
       {
@@ -114,7 +118,7 @@ namespace QLNet
          return (values_[jmid] + values_[jmid - 1]) / 2.0;
       }
 
-      /*! \todo replace or complement with a more general function firstDerivativeAt(spot) */
+      // TODO: replace or complement with a more general firstDerivativeAt(spot) function.
 
       public double firstDerivativeAtCenter()
       {
@@ -128,7 +132,7 @@ namespace QLNet
          return (values_[jmid] - values_[jmid - 1]) / (grid_[jmid] - grid_[jmid - 1]);
       }
 
-      /*! \todo replace or complement with a more general function secondDerivativeAt(spot) */
+      // TODO: replace or complement with a more general secondDerivativeAt(spot) function.
 
       public double secondDerivativeAtCenter()
       {

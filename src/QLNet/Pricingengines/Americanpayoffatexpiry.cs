@@ -22,8 +22,9 @@ using System;
 
 namespace QLNet
 {
-   //! Analytic formula for American exercise payoff at-expiry options
-   //! \todo calculate greeks
+   /// <summary>
+   /// Analytic formula for American exercise payoff-at-expiry options.
+   /// </summary>
    public class AmericanPayoffAtExpiry
    {
       public AmericanPayoffAtExpiry(double spot, double discount, double dividendDiscount, double variance,

@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Constant swaption volatility, no time-strike dependence
+   /// <summary>
+   /// Constant swaption volatility, no time-strike dependence
+   /// </summary>
    public class ConstantSwaptionVolatility : SwaptionVolatilityStructure
    {
       private Handle<Quote> volatility_;
@@ -28,7 +30,9 @@ namespace QLNet
       private VolatilityType volatilityType_;
       private double? shift_;
 
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the structure with a floating reference date and floating market data.
+      /// </summary>
       public ConstantSwaptionVolatility(int settlementDays,
                                         Calendar cal,
                                         BusinessDayConvention bdc,
@@ -45,7 +49,9 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the structure with a fixed reference date and floating market data.
+      /// </summary>
       public ConstantSwaptionVolatility(Date referenceDate,
                                         Calendar cal,
                                         BusinessDayConvention bdc,
@@ -63,7 +69,9 @@ namespace QLNet
          volatility_.registerWith(update);
       }
 
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the structure with a floating reference date and fixed market data.
+      /// </summary>
       public ConstantSwaptionVolatility(int settlementDays,
                                         Calendar cal,
                                         BusinessDayConvention bdc,
@@ -79,7 +87,9 @@ namespace QLNet
          shift_ = shift;
       }
 
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the structure with a fixed reference date and fixed market data.
+      /// </summary>
       public ConstantSwaptionVolatility(Date referenceDate,
                                         Calendar cal,
                                         BusinessDayConvention bdc,

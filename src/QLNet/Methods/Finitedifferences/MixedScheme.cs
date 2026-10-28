@@ -31,12 +31,13 @@ namespace QLNet
       void setStep(double dt);
    }
 
-   //! Mixed (explicit/implicit) scheme for finite difference methods
-   /*! In this implementation, the passed operator must be derived
-       from either TimeConstantOperator or TimeDependentOperator.
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// Mixed (explicit/implicit) scheme for finite difference methods
+   /// </summary>
+   /// <remarks>
+   /// In this implementation, the passed operator must be derived
+   /// from either TimeConstantOperator or TimeDependentOperator.
+   /// </remarks>
    public class MixedScheme<Operator> : IMixedScheme where Operator : IOperator
    {
       protected Operator L_, I_, explicitPart_, implicitPart_;

@@ -27,7 +27,7 @@ namespace QLNet
    {
       /// <summary>
       /// Extremely fast generic factory method that returns an instance
-      /// of the type <typeparam name="T"/>.
+      /// of the type typeparam name="T".
       /// </summary>
       public static readonly Func<T> Create = DynamicModuleLambdaCompiler.GenerateFactory<T>();
    }

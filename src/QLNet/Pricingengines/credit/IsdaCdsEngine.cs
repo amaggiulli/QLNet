@@ -44,18 +44,12 @@ namespace QLNet
          // included
       }
 
-      /*! Constructor where the client code is responsible for providing a
-         default curve and an interest rate curve compliant with the ISDA
-         specifications.
-
-         To be precisely consistent with the ISDA specification
-         QL_USE_INDEXED_COUPON
-         must not be defined. This is not checked in order not to
-         kill the engine completely in this case.
-
-         Furthermore, the ibor index in the swap rate helpers should not
-         provide the evaluation date's fixing.
-      */
+      /// <summary>
+      /// Initializes the engine with default and interest-rate curves supplied by the caller.
+      /// </summary>
+      /// <remarks>
+      /// The supplied curves are expected to comply with the ISDA specifications. For strict ISDA consistency, <c>QL_USE_INDEXED_COUPON</c> should not be defined, and the ibor index used in the swap-rate helpers should not provide the evaluation-date fixing.
+      /// </remarks>
 
       public IsdaCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
                            double recoveryRate,

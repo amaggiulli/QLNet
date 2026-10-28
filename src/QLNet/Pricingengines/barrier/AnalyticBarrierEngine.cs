@@ -21,15 +21,11 @@ using System;
 namespace QLNet
 {
 
-   //! Pricing Engine for barrier options using analytical formulae
-//    ! The formulas are taken from "Option pricing formulas",
-//         E.G. Haug, McGraw-Hill, p.69 and following.
-//
-//        \ingroup barrierengines
-//
-//        \test the correctness of the returned value is tested by
-//              reproducing results available in literature.
-//
+   /// <summary>
+   /// Pricing engine for barrier options using analytical formulas.
+   /// </summary>
+   // The formulas are taken from "Option pricing formulas",
+   // E.G. Haug, McGraw-Hill, p.69 and following.
    public class AnalyticBarrierEngine : BarrierOption.Engine
    {
       public AnalyticBarrierEngine(GeneralizedBlackScholesProcess process)

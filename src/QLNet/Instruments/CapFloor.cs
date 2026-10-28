@@ -25,8 +25,9 @@ namespace QLNet
 {
    /// <summary>
    /// Base class for cap-like instruments
-   /// \ingroup instruments
-   /// \test
+   /// </summary>
+   /// <internalremarks>
+   /// Tests:
    /// - the correctness of the returned value is tested by checking
    ///   that the price of a cap (resp. floor) decreases
    ///   (resp. increases) with the strike rate.
@@ -38,7 +39,7 @@ namespace QLNet
    ///   by using it for reproducing the target value.
    /// - the correctness of the returned value is tested by checking
    ///   it against a known good value.
-   /// </summary>
+   /// </internalremarks>
    public class CapFloor : Instrument
    {
       #region Private Attributes
@@ -344,7 +345,6 @@ namespace QLNet
 
    /// <summary>
    /// Concrete cap class
-   /// \ingroup instruments
    /// </summary>
    public class Cap : CapFloor
    {
@@ -354,7 +354,6 @@ namespace QLNet
 
    /// <summary>
    /// Concrete floor class
-   /// \ingroup instruments
    /// </summary>
    public class Floor : CapFloor
    {
@@ -364,7 +363,6 @@ namespace QLNet
 
    /// <summary>
    /// Concrete collar class
-   /// \ingroup instruments
    /// </summary>
    public class Collar : CapFloor
    {
@@ -372,7 +370,9 @@ namespace QLNet
          : base(CapFloorType.Collar, floatingLeg, capRates, floorRates) { }
    }
 
-   //! base class for cap/floor engines
+   /// <summary>
+   /// base class for cap/floor engines
+   /// </summary>
    public abstract class CapFloorEngine
       : GenericEngine<CapFloor.Arguments, CapFloor.Results> {}
 

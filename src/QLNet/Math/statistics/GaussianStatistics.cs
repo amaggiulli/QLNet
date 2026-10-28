@@ -21,12 +21,15 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Statistics tool for gaussian-assumption risk measures
-   /*! This class wraps a somewhat generic statistic tool and adds
-       a number of gaussian risk measures (e.g.: value-at-risk, expected
-       shortfall, etc.) based on the mean and variance provided by
-       the underlying statistic tool.
-   */
+   /// <summary>
+   /// Statistics tool for gaussian-assumption risk measures
+   /// </summary>
+   /// <remarks>
+   /// This class wraps a somewhat generic statistic tool and adds
+   /// a number of gaussian risk measures (e.g.: value-at-risk, expected
+   /// shortfall, etc.) based on the mean and variance provided by
+   /// the underlying statistic tool.
+   /// </remarks>
    public class GenericGaussianStatistics<Stat> : IGeneralStatistics where Stat : IGeneralStatistics, new ()
    {
       public GenericGaussianStatistics() { }
@@ -64,16 +67,22 @@ namespace QLNet
 
 
       // Gaussian risk measures
-      /*! returns the downside variance
-      */
+      /// <summary>
+      /// Returns the downside variance.
+      /// </summary>
       public double gaussianDownsideVariance() { return gaussianRegret(0.0); }
 
-      /*! returns the downside deviation, defined as the square root of the downside variance. */
+      /// <summary>
+      /// Returns the downside deviation, defined as the square root of the downside variance.
+      /// </summary>
       public double gaussianDownsideDeviation() { return Math.Sqrt(gaussianDownsideVariance()); }
 
-      /*! returns the variance of observations below target
-          See Dembo, Freeman "The Rules Of Risk", Wiley (2001)
-      */
+      /// <summary>
+      /// Returns the variance of observations below a target value.
+      /// </summary>
+      /// <remarks>
+      /// See Dembo and Freeman, "The Rules Of Risk", Wiley (2001).
+      /// </remarks>
       public double gaussianRegret(double target)
       {
          double m = this.mean();
@@ -89,9 +98,12 @@ namespace QLNet
          return result / alfa;
       }
 
-      /*! gaussian-assumption y-th percentile
-      */
-      /*! \pre percentile must be in range (0%-100%) extremes excluded */
+      /// <summary>
+      /// Returns the percentile implied by a Gaussian assumption.
+      /// </summary>
+      /// <internalremarks>
+      /// Precondition: percentile must be in range (0%-100%), extremes excluded.
+      /// </internalremarks>
       public double gaussianPercentile(double percentile)
       {
          Utils.QL_REQUIRE(percentile > 0.0 && percentile < 1.0, () => "percentile (" + percentile + ") must be in (0.0, 1.0)");
@@ -101,7 +113,9 @@ namespace QLNet
       }
       public double gaussianTopPercentile(double percentile) { return gaussianPercentile(1.0 - percentile); }
 
-      //! gaussian-assumption Potential-Upside at a given percentile
+      /// <summary>
+      /// Returns the Gaussian-assumption potential upside at a given percentile.
+      /// </summary>
       public double gaussianPotentialUpside(double percentile)
       {
          Utils.QL_REQUIRE(percentile<1.0 && percentile >= 0.9, () => "percentile (" + percentile + ") out of range [0.9, 1)");
@@ -111,7 +125,9 @@ namespace QLNet
          return Math.Max(result, 0.0);
       }
 
-      //! gaussian-assumption Value-At-Risk at a given percentile
+      /// <summary>
+      /// Returns the Gaussian-assumption value-at-risk at a given percentile.
+      /// </summary>
       public double gaussianValueAtRisk(double percentile)
       {
          Utils.QL_REQUIRE(percentile < 1.0 && percentile >= 0.9, () => "percentile (" + percentile + ") out of range [0.9, 1)");
@@ -123,18 +139,17 @@ namespace QLNet
          return -Math.Min(result, 0.0);
       }
 
-      //! gaussian-assumption Expected Shortfall at a given percentile
-      /*! Assuming a gaussian distribution it
-          returns the expected loss in case that the loss exceeded
-          a VaR threshold,
-
-          that is the average of observations below the
-          given percentile \f$ p \f$.
-          Also know as conditional value-at-risk.
-
-          See Artzner, Delbaen, Eber and Heath,
-          "Coherent measures of risk", Mathematical Finance 9 (1999)
-      */
+      /// <summary>
+      /// Returns the Gaussian-assumption expected shortfall at a given percentile.
+      /// </summary>
+      /// <remarks>
+      /// Assuming a Gaussian distribution, this is the expected loss when the
+      /// loss exceeds a VaR threshold, i.e. the average of observations below
+      /// the given percentile. It is also known as conditional value-at-risk.
+      ///
+      /// See Artzner, Delbaen, Eber and Heath, "Coherent measures of risk",
+      /// Mathematical Finance 9 (1999).
+      /// </remarks>
       public double gaussianExpectedShortfall(double percentile)
       {
          Utils.QL_REQUIRE(percentile < 1.0 && percentile >= 0.9, () => "percentile (" + percentile + ") out of range [0.9, 1)");
@@ -151,14 +166,18 @@ namespace QLNet
          return -Math.Min(result, 0.0);
       }
 
-      //! gaussian-assumption Shortfall (observations below target)
+      /// <summary>
+      /// Returns the Gaussian-assumption shortfall, i.e. observations below a target.
+      /// </summary>
       public double gaussianShortfall(double target)
       {
          CumulativeNormalDistribution gIntegral = new CumulativeNormalDistribution(this.mean(), this.standardDeviation());
          return gIntegral.value(target);
       }
 
-      //! gaussian-assumption Average Shortfall (averaged shortfallness)
+      /// <summary>
+      /// Returns the Gaussian-assumption average shortfall.
+      /// </summary>
       public double gaussianAverageShortfall(double target)
       {
          double m = this.mean();
@@ -169,11 +188,15 @@ namespace QLNet
       }
    }
 
-   //! default gaussian statistic tool
+   /// <summary>
+   /// default gaussian statistic tool
+   /// </summary>
    public class GaussianStatistics : GenericGaussianStatistics<GeneralStatistics> { }
 
 
-   //! Helper class for precomputed distributions
+   /// <summary>
+   /// Helper class for precomputed distributions
+   /// </summary>
    public class StatsHolder : IGeneralStatistics
    {
       private double mean_, standardDeviation_;

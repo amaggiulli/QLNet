@@ -153,10 +153,9 @@ namespace QLNet
          return this.interpolation_.value(t, true);
       }
 
-      /*! Protected version for use when descendents don't want to
-          (or can't) provide the points for interpolation on
-          construction.
-      */
+      /// <summary>
+      /// Protected constructor for descendants that do not provide interpolation points at construction time.
+      /// </summary>
       protected InterpolatedZeroInflationCurve(Date referenceDate,
                                                Calendar calendar,
                                                DayCounter dayCounter,

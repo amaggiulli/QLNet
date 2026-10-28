@@ -34,7 +34,7 @@ namespace QLNet
    }
 
    // random number traits
-   public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new () where IC : IValue, new ()
+   public class GenericPseudoRandom<URNG, IC> : IRSG where URNG : IRNGTraits, new () where IC : class, IValue, new ()
    {
       // data
       private static IC icInstance_ = FastActivator<IC>.Create();
@@ -70,18 +70,25 @@ namespace QLNet
       }
    }
 
-   //! default traits for pseudo-random number generation
-   /*! \test a sequence generator is generated and tested by comparing samples against known good values. */
+   /// <summary>
+   /// default traits for pseudo-random number generation
+   /// </summary>
+   /// <remarks>
+   /// Test: a sequence generator is generated and tested by comparing samples against known good values.
+   /// </remarks>
    public class PseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativeNormal> { }
 
-   //! traits for Poisson-distributed pseudo-random number generation
-   /*! \test sequence generators are generated and tested by comparing
-             samples against known good values.
-   */
+   /// <summary>
+   /// traits for Poisson-distributed pseudo-random number generation
+   /// </summary>
+   /// <remarks>
+   /// Test: sequence generators are generated and tested by comparing
+   /// samples against known good values.
+   /// </remarks>
    public class PoissonPseudoRandom : GenericPseudoRandom<MersenneTwisterUniformRng, InverseCumulativePoisson> { }
 
 
-   public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new () where IC : IValue, new ()
+   public class GenericLowDiscrepancy<URSG, IC> : IRSG where URSG : IRNG, new () where IC : class, IValue, new ()
    {
       // data
       private static IC icInstance_ = FastActivator<IC>.Create();
@@ -110,6 +117,8 @@ namespace QLNet
       }
    }
 
-   //! default traits for low-discrepancy sequence generation
+   /// <summary>
+   /// default traits for low-discrepancy sequence generation
+   /// </summary>
    public class LowDiscrepancy : GenericLowDiscrepancy<SobolRsg, InverseCumulativeNormal> { }
 }

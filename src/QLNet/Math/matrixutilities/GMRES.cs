@@ -23,20 +23,19 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! References:
-       Saad, Yousef. 1996, Iterative methods for sparse linear systems,
-       http://www-users.cs.umn.edu/~saad/books.html
-
-       Dongarra et al. 1994,
-       Templates for the Solution of Linear Systems: Building Blocks
-       for Iterative Methods, 2nd Edition, SIAM, Philadelphia
-       http://www.netlib.org/templates/templates.pdf
-
-       Christian Kanzow
-       Numerik linearer Gleichungssysteme (German)
-       Chapter 6: GMRES und verwandte Verfahren
-       http://bilder.buecher.de/zusatz/12/12950/12950560_lese_1.pdf
-   */
+   /// <summary>
+   /// References:
+   /// Saad, Yousef. 1996, Iterative methods for sparse linear systems,
+   /// http://www-users.cs.umn.edu/~saad/books.html
+   /// Dongarra et al. 1994,
+   /// Templates for the Solution of Linear Systems: Building Blocks
+   /// for Iterative Methods, 2nd Edition, SIAM, Philadelphia
+   /// http://www.netlib.org/templates/templates.pdf
+   /// Christian Kanzow
+   /// Numerik linearer Gleichungssysteme (German)
+   /// Chapter 6: GMRES und verwandte Verfahren
+   /// http://bilder.buecher.de/zusatz/12/12950/12950560_lese_1.pdf
+   /// </summary>
 
    public struct GMRESResult
    {

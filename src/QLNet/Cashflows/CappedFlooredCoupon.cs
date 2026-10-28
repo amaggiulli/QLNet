@@ -24,9 +24,9 @@ namespace QLNet
    /// <summary>
    /// Capped and/or floored floating-rate coupon
    /// <remarks>
-   /// The payoff P of a capped floating-rate coupon is: P=N×T×min(aL+b,C).
-   /// The payoff of a floored floating-rate coupon is:  P=N×T×max(aL+b,F).
-   /// The payoff of a collared floating-rate coupon is: P=N×T×min(max(aL+b,F),C).
+   /// The payoff P of a capped floating-rate coupon is: P=NÃ—TÃ—min(aL+b,C).
+   /// The payoff of a floored floating-rate coupon is:  P=NÃ—TÃ—max(aL+b,F).
+   /// The payoff of a collared floating-rate coupon is: P=NÃ—TÃ—min(max(aL+b,F),C).
    /// where N is the notional, T is the accrual time, L is the floating rate, a is its gearing, b is the spread, and C and F the strikes.
    /// They can be decomposed in the following manner. Decomposition of a capped floating rate coupon:
    /// R=min(aL+b,C)=(aL+b)+min(C?b??|a|L,0)
@@ -112,7 +112,9 @@ namespace QLNet
             return floor_.GetValueOrDefault();
          return 0.0;
       }
-      //! floor
+      /// <summary>
+      /// Returns the floor, if any.
+      /// </summary>
       public double floor()
       {
          if ((gearing_ > 0) && isFloored_)
@@ -121,13 +123,17 @@ namespace QLNet
             return cap_.GetValueOrDefault();
          return 0.0;
       }
-      //! effective cap of fixing
+      /// <summary>
+      /// Returns the effective cap of the fixing.
+      /// </summary>
       public double? effectiveCap()
       {
          return isCapped_ ? (cap_.Value - spread()) / gearing() : (double?)null;
       }
 
-      //! effective floor of fixing
+      /// <summary>
+      /// Returns the effective floor of the fixing.
+      /// </summary>
       public double? effectiveFloor()
       {
          return isFloored_ ? (floor_.Value - spread()) / gearing() : (double?)null;

@@ -54,9 +54,12 @@ namespace QLNet
       protected CalendarImpl _impl;
 
       // constructors
-      /*! The default constructor returns a calendar with a null
-          implementation, which is therefore unusable except as a
-          placeholder. */
+      /// <summary>
+      /// Initializes a calendar with a null implementation.
+      /// </summary>
+      /// <remarks>
+      /// This instance is only usable as a placeholder until a concrete implementation is supplied.
+      /// </remarks>
       public Calendar()
       {}
 

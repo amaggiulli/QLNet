@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2009 Philippe Real (ph_real@hotmail.com)
- Copyright (C) 2008-2016  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -21,29 +21,24 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for European continuous geometric average price Asian
-   /*! This class implements a continuous geometric average price
-       Asian option with European exercise.  The formula is from
-       "Option Pricing Formulas", E. G. Haug (1997) pag 96-97.
-
-       \ingroup asianengines
-
-       \test
-       - the correctness of the returned value is tested by
-         reproducing results available in literature, and results
-         obtained using a discrete average approximation.
-       - the correctness of the returned greeks is tested by
-         reproducing numerical derivatives.
-
-       \todo handle seasoned options
-   */
+   /// <summary>
+   /// Pricing engine for European continuous geometric average price Asian
+   /// </summary>
+   /// <remarks>
+   /// This class implements a continuous geometric average price
+   /// Asian option with European exercise.  The formula is from
+   /// "Option Pricing Formulas", E. G. Haug (1997) pag 96-97.
+   /// </remarks>
    public class AnalyticContinuousGeometricAveragePriceAsianEngine : ContinuousAveragingAsianOption.Engine
    {
+      private GeneralizedBlackScholesProcess process_;
+
       public AnalyticContinuousGeometricAveragePriceAsianEngine(GeneralizedBlackScholesProcess process)
       {
          process_ = process;
          process_.registerWith(update);
       }
+
       public override void calculate()
       {
          Utils.QL_REQUIRE(arguments_.averageType == Average.Type.Geometric, () => "not a geometric average option");
@@ -102,7 +97,5 @@ namespace QLNet
             results_.theta = null;
          }
       }
-
-      private GeneralizedBlackScholesProcess process_;
    }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008, 2009 Siarhei Novik (snovik@gmail.com)
@@ -23,29 +23,26 @@ using System;
 
 namespace QLNet
 {
-   //! Taiwanese calendars
-   /*! Holidays for the Taiwan stock exchange
-       (data from <http://www.tse.com.tw/en/trading/trading_days.php>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Peace Memorial Day, February 28</li>
-       <li>Labor Day, May 1st</li>
-       <li>Double Tenth National Day, October 10th</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2002-2013 only:)
-       <ul>
-       <li>Chinese Lunar New Year</li>
-       <li>Tomb Sweeping Day</li>
-       <li>Dragon Boat Festival</li>
-       <li>Moon Festival</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Taiwanese calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Taiwan stock exchange
+   /// (data from http://www.tse.com.tw/en/trading/trading_days.php):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Peace Memorial Day, February 28
+   /// Labor Day, May 1st
+   /// Double Tenth National Day, October 10th
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2002-2013 only:)
+   /// Chinese Lunar New Year
+   /// Tomb Sweeping Day
+   /// Dragon Boat Festival
+   /// Moon Festival
+   /// </remarks>
    public class Taiwan :  Calendar
    {
       public Taiwan() : base(Impl.Singleton) { }

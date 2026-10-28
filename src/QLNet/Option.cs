@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! base option class
+   /// <summary>
+   /// base option class
+   /// </summary>
    public class Option : Instrument
    {
       public enum Type
@@ -59,7 +61,9 @@ namespace QLNet
          arguments.exercise = exercise_;
       }
 
-      //! basic %option %arguments
+      /// <summary>
+      /// basic option arguments
+      /// </summary>
       public class Arguments : IPricingEngineArguments
       {
          public Payoff payoff { get; set; }

@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! Region class, used for inflation applicability.
+   /// <summary>
+   /// Region class, used for inflation applicability.
+   /// </summary>
    public class Region
    {
       // Inspectors
@@ -71,7 +73,9 @@ namespace QLNet
       }
    }
 
-   //! Australia as geographical/economic region
+   /// <summary>
+   /// Australia as geographical/economic region
+   /// </summary>
    public class AustraliaRegion : Region
    {
       public AustraliaRegion()
@@ -82,7 +86,9 @@ namespace QLNet
 
    }
 
-   //! European Union as geographical/economic region
+   /// <summary>
+   /// European Union as geographical/economic region
+   /// </summary>
    public class EURegion : Region
    {
       public EURegion()
@@ -92,7 +98,9 @@ namespace QLNet
       }
    }
 
-   //! France as geographical/economic region
+   /// <summary>
+   /// France as geographical/economic region
+   /// </summary>
    public class FranceRegion : Region
    {
       public FranceRegion()
@@ -103,7 +111,9 @@ namespace QLNet
    }
 
 
-   //! United Kingdom as geographical/economic region
+   /// <summary>
+   /// United Kingdom as geographical/economic region
+   /// </summary>
    public class UKRegion : Region
    {
       public UKRegion()
@@ -113,7 +123,9 @@ namespace QLNet
       }
    }
 
-   //! USA as geographical/economic region
+   /// <summary>
+   /// USA as geographical/economic region
+   /// </summary>
    public class USRegion : Region
    {
       public USRegion()
@@ -123,7 +135,9 @@ namespace QLNet
       }
    }
 
-   //! South Africa as geographical/economic region
+   /// <summary>
+   /// South Africa as geographical/economic region
+   /// </summary>
    public class ZARegion : Region
    {
       public ZARegion()

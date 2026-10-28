@@ -21,33 +21,34 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Backward Euler scheme for finite difference methods
-   /*! In this implementation, the passed operator must be derived
-       from either TimeConstantOperator or TimeDependentOperator.
-       Also, it must implement at least the following interface:
-
-       // copy constructor/assignment
-       // (these will be provided by the compiler if none is defined)
-       Operator(const Operator&);
-       Operator& operator=(const Operator&);
-
-       // inspectors
-       Size size();
-
-       // modifiers
-       void setTime(Time t);
-
-       // operator interface
-       array_type solveFor(const array_type&);
-       static Operator identity(Size size);
-
-       // operator algebra
-       Operator operator*(Real, const Operator&);
-       Operator operator+(const Operator&, const Operator&);
-       \endcode
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// Backward Euler scheme for finite difference methods
+   /// </summary>
+   /// <remarks>
+   /// In this implementation, the passed operator must be derived
+   /// from either TimeConstantOperator or TimeDependentOperator.
+   /// Also, it must implement at least the following interface:
+   ///
+   /// // copy constructor/assignment
+   /// // (these will be provided by the compiler if none is defined)
+   /// Operator(const Operator&amp;);
+   /// Operator&amp; operator=(const Operator&amp;);
+   ///
+   /// // inspectors
+   /// Size size();
+   ///
+   /// // modifiers
+   /// void setTime(Time t);
+   ///
+   /// // operator interface
+   /// array_type solveFor(const array_type&amp;);
+   /// static Operator identity(Size size);
+   ///
+   /// // operator algebra
+   /// Operator operator*(Real, const Operator&amp;);
+   /// Operator operator+(const Operator&amp;, const Operator&amp;);
+   /// \endcode
+   /// </remarks>
    public class ImplicitEuler<Operator> : MixedScheme<Operator> where Operator : IOperator
    {
       // constructors

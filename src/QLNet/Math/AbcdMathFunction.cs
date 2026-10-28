@@ -18,9 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Abcd functional form
-   /*! \f[ f(t) = [ a + b*t ] e^{-c*t} + d \f]
-       following Rebonato's notation. */
+   /// <summary>
+   /// Abcd functional form
+   /// </summary>
+   /// <remarks>
+   /// \f[ f(t) = [ a + b*t ] e^{-c*t} + d \f]
+   /// following Rebonato's notation.
+   /// </remarks>
    public class AbcdMathFunction
    {
       public AbcdMathFunction(double a = 0.002, double b = 0.001, double c = 0.16, double d = 0.0005)
@@ -49,13 +53,17 @@ namespace QLNet
          initialize_();
       }
 
-      //! function value at time t: \f[ f(t) \f]
+      /// <summary>
+      /// Returns the function value at time <paramref name="t" />.
+      /// </summary>
       public double value(double t)
       {
          return t < 0 ? 0.0 : (a_ + b_ * t) * Math.Exp(-c_ * t) + d_;
       }
 
-      //! time at which the function reaches maximum (if any)
+      /// <summary>
+      /// Returns the time at which the function reaches its maximum, if any.
+      /// </summary>
       public double maximumLocation()
       {
          if (b_ .IsEqual(0.0))
@@ -73,7 +81,9 @@ namespace QLNet
          return (zeroFirstDerivative > 0.0 ? zeroFirstDerivative : 0.0);
       }
 
-      //! maximum value of the function
+      /// <summary>
+      /// Returns the maximum value of the function.
+      /// </summary>
       public double maximumValue()
       {
          if (b_.IsEqual(0.0) || a_ <= 0.0)
@@ -81,41 +91,69 @@ namespace QLNet
          return this.value(maximumLocation());
       }
 
-      //! function value at time +inf: \f[ f(\inf) \f]
+      /// <summary>
+      /// Returns the long-term value of the function.
+      /// </summary>
       public double longTermValue()  { return d_; }
 
-      /*! first derivative of the function at time t
-         \f[ f'(t) = [ (b-c*a) + (-c*b)*t) ] e^{-c*t} \f] */
+      /// <summary>
+      /// Returns the first derivative of the function at time <paramref name="t" />.
+      /// </summary>
       public double derivative(double t)
       {
          return t < 0 ? 0.0 : (da_ + db_ * t) * Math.Exp(-c_ * t);
       }
 
-      /*! indefinite integral of the function at time t
-         \f[ \int f(t)dt = [ (-a/c-b/c^2) + (-b/c)*t ] e^{-c*t} + d*t \f] */
+      /// <summary>
+      /// Returns the indefinite integral evaluated at time <paramref name="t" />.
+      /// </summary>
       public double primitive(double t)
       {
          return t < 0 ? 0.0 : (pa_ + pb_ * t) * Math.Exp(-c_ * t) + d_ * t + K_;
       }
 
-      /*! definite integral of the function between t1 and t2
-         \f[ \int_{t1}^{t2} f(t)dt \f] */
+      /// <summary>
+      /// Returns the definite integral of the function between <paramref name="t1" /> and <paramref name="t2" />.
+      /// </summary>
       public double definiteIntegral(double t1, double t2)
       {
          return primitive(t2) - primitive(t1);
       }
 
-      /*! Inspectors */
+      /// <summary>
+      /// Returns the <c>a</c> parameter.
+      /// </summary>
       public double a()  { return a_; }
+
+      /// <summary>
+      /// Returns the <c>b</c> parameter.
+      /// </summary>
       public double b()  { return b_; }
+
+      /// <summary>
+      /// Returns the <c>c</c> parameter.
+      /// </summary>
       public double c()  { return c_; }
+
+      /// <summary>
+      /// Returns the <c>d</c> parameter.
+      /// </summary>
       public double d()  { return d_; }
+
+      /// <summary>
+      /// Returns the abcd coefficients.
+      /// </summary>
       public List<double> coefficients() { return abcd_; }
+
+      /// <summary>
+      /// Returns the derivative coefficients.
+      /// </summary>
       public List<double> derivativeCoefficients() { return dabcd_; }
       // the primitive is not abcd
 
-      /*! coefficients of a AbcdMathFunction defined as definite
-         integral on a rolling window of length tau, with tau = t2-t */
+      /// <summary>
+      /// Returns the coefficients of the rolling-window definite integral defined over <c>tau = t2 - t</c>.
+      /// </summary>
       public List<double> definiteIntegralCoefficients(double t, double t2)
       {
          double dt = t2 - t;
@@ -128,8 +166,9 @@ namespace QLNet
          return result;
       }
 
-      /*! coefficients of a AbcdMathFunction defined as definite
-         derivative on a rolling window of length tau, with tau = t2-t */
+      /// <summary>
+      /// Returns the coefficients of the rolling-window definite derivative defined over <c>tau = t2 - t</c>.
+      /// </summary>
       public List<double> definiteDerivativeCoefficients(double t, double t2)
       {
          double dt = t2 - t;

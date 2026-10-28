@@ -18,10 +18,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! helper class for instantiating CMS
-   /*! This class provides a more comfortable way
-       to instantiate standard market constant maturity swap.
-   */
+   /// <summary>
+   /// helper class for instantiating CMS
+   /// </summary>
+   /// <remarks>
+   /// This class provides a more comfortable way
+   /// to instantiate standard market constant maturity swap.
+   /// </remarks>
    public class MakeCms
    {
       public MakeCms(Period swapTenor,

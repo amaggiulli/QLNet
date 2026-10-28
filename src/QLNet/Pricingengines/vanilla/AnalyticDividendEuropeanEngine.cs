@@ -20,12 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! Analytic pricing engine for European options with discrete dividends
-   /*! \ingroup vanillaengines
-
-       \test the correctness of the returned greeks is tested by
-             reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Analytic pricing engine for European options with discrete dividends
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class AnalyticDividendEuropeanEngine : DividendVanillaOption.Engine
    {
       public AnalyticDividendEuropeanEngine(GeneralizedBlackScholesProcess process)

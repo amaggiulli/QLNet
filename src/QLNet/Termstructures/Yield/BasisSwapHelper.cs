@@ -18,18 +18,20 @@
 
 namespace QLNet
 {
-   //! Basis Swap Rate Helper
-   /*! Rate helper for bootstrapping over basis swap spreads
-       Assumes that you have, at a minimum, either:
-       - shortIndex with attached YieldTermStructure
-       - longIndex with attached YieldTermStructure
-       - Discount curve linked to discount swap engine
-       The other leg is then solved for i.e. index curve (if no
-       YieldTermStructure is attached to its index).
-       The settlement date of the spot is
-       assumed to be equal to the settlement date of the swap itself.
-               \ingroup termstructures
-   */
+   /// <summary>
+   /// Basis Swap Rate Helper
+   /// </summary>
+   /// <remarks>
+   /// Rate helper for bootstrapping over basis swap spreads
+   /// Assumes that you have, at a minimum, either:
+   /// - shortIndex with attached YieldTermStructure
+   /// - longIndex with attached YieldTermStructure
+   /// - Discount curve linked to discount swap engine
+   /// The other leg is then solved for i.e. index curve (if no
+   /// YieldTermStructure is attached to its index).
+   /// The settlement date of the spot is
+   /// assumed to be equal to the settlement date of the swap itself.
+   /// </remarks>
    public class BasisSwapHelper : RelativeDateRateHelper
    {
       public BasisSwapHelper(Handle<Quote> spreadQuote,
@@ -83,9 +85,6 @@ namespace QLNet
          initializeDates();
       }
 
-      //! \name RateHelper interface
-      //@{
-
       public override double impliedQuote()
       {
          Utils.QL_REQUIRE(termStructure_ != null, () => "Term structure needs to be set");
@@ -93,11 +92,7 @@ namespace QLNet
          return (spreadOnShort_ ? swap_.fairShortSpread() : swap_.fairLongSpread());
       }
 
-      //@}
-      //! \name inspectors
-      //@{
       public BasisSwap swap() { return swap_; }
-      //@}
 
       protected override void initializeDates()
       {

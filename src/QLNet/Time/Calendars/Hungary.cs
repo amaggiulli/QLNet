@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,25 +23,24 @@ using System;
 
 namespace QLNet
 {
-   //! Hungarian calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>Easter Monday</li>
-       <li>Whit(Pentecost) Monday </li>
-       <li>New Year's Day, January 1st</li>
-       <li>National Day, March 15th</li>
-       <li>Labour Day, May 1st</li>
-       <li>Constitution Day, August 20th</li>
-       <li>Republic Day, October 23rd</li>
-       <li>All Saints Day, November 1st</li>
-       <li>Christmas, December 25th</li>
-       <li>2nd Day of Christmas, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Hungarian calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// Easter Monday
+   /// Whit(Pentecost) Monday 
+   /// New Year's Day, January 1st
+   /// National Day, March 15th
+   /// Labour Day, May 1st
+   /// Constitution Day, August 20th
+   /// Republic Day, October 23rd
+   /// All Saints Day, November 1st
+   /// Christmas, December 25th
+   /// 2nd Day of Christmas, December 26th
+   /// </remarks>
    public class Hungary : Calendar
    {
       public Hungary() : base(Impl.Singleton) { }

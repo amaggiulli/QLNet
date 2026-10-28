@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,9 +20,12 @@
 namespace QLNet
 {
 
-   //! %NZD %LIBOR rate
-   /*! New Zealand Dollar LIBOR discontinued as of 2013.
-   */
+   /// <summary>
+   /// NZD LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// New Zealand Dollar LIBOR discontinued as of 2013.
+   /// </remarks>
    public class NZDLibor : Libor
    {
       public NZDLibor(Period tenor)

@@ -18,30 +18,29 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for double barrier options using binomial trees
-   /*! \ingroup barrierengines
-
-       \note This engine requires a the discretized option classes.
-       By default uses a standard binomial implementation, but it can
-       also work with DiscretizedDermanKaniDoubleBarrierOption to
-       implement a Derman-Kani optimization.
-
-       \test the correctness of the returned values is tested by
-             checking it against analytic results.
-   */
+   /// <summary>
+   /// Pricing engine for double barrier options using binomial trees
+   /// </summary>
+   /// <remarks>
+   /// Note: This engine requires a the discretized option classes.
+   /// By default uses a standard binomial implementation, but it can
+   /// also work with DiscretizedDermanKaniDoubleBarrierOption to
+   /// implement a Derman-Kani optimization.
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking it against analytic results.
+   /// </remarks>
    public class BinomialDoubleBarrierEngine : DoubleBarrierOption.Engine
    {
       public delegate ITree GetTree(StochasticProcess1D process, double end, int steps, double strike);
       public delegate DiscretizedAsset GetAsset(DoubleBarrierOption.Arguments args, StochasticProcess process, TimeGrid grid = null);
 
-      /*! \param maxTimeSteps is used to limit timeSteps when using Boyle-Lau
-                   optimization. If zero (the default) the maximum number of
-                   steps is calculated by an heuristic: anything when < 1000,
-                   otherwise no more than 5*timeSteps.
-                   If maxTimeSteps is equal to timeSteps Boyle-Lau is disabled.
-                   Likewise if the lattice is not CoxRossRubinstein Boyle-Lau is
-                   disabled and maxTimeSteps ignored.
-      */
+      /// <summary>
+      /// Initializes the engine.
+      /// </summary>
+      /// <remarks>
+      /// <paramref name="maxTimeSteps" /> limits the number of time steps used by Boyle-Lau optimization. If it is zero, the maximum is chosen heuristically: any value below 1000, otherwise no more than <c>5 * timeSteps</c>. If <paramref name="maxTimeSteps" /> equals <paramref name="timeSteps" />, Boyle-Lau is disabled. It is also disabled, and <paramref name="maxTimeSteps" /> ignored, when the lattice is not Cox-Ross-Rubinstein.
+      /// </remarks>
       public BinomialDoubleBarrierEngine(GetTree getTree, GetAsset getAsset,
                                          GeneralizedBlackScholesProcess process, int timeSteps, int maxTimeSteps = 0)
       {

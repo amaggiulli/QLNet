@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! %Tree approximating a single-factor diffusion
+   /// <summary>
+   /// Tree approximating a single-factor diffusion
+   /// </summary>
    public class Tree<T>
    {
       private int columns_;

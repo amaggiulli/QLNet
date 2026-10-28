@@ -31,7 +31,12 @@ namespace QLNet
    /// </summary>
    public class BlackCallableFixedRateBondEngine : CallableFixedRateBond.Engine
    {
-      //! volatility is the quoted fwd yield volatility, not price vol
+      /// <summary>
+      /// Initializes the engine from quoted forward-yield volatility.
+      /// </summary>
+      /// <remarks>
+      /// The volatility is the quoted forward-yield volatility, not price volatility.
+      /// </remarks>
       public BlackCallableFixedRateBondEngine(Handle<Quote> fwdYieldVol, Handle<YieldTermStructure> discountCurve)
       {
          volatility_ = new Handle<CallableBondVolatilityStructure>(new CallableBondConstantVolatility(0, new NullCalendar(),
@@ -40,7 +45,12 @@ namespace QLNet
          volatility_.registerWith(update);
          discountCurve_.registerWith(update);
       }
-      //! volatility is the quoted fwd yield volatility, not price vol
+      /// <summary>
+      /// Initializes the engine from a callable-bond volatility structure.
+      /// </summary>
+      /// <remarks>
+      /// The volatility is the quoted forward-yield volatility, not price volatility.
+      /// </remarks>
       public BlackCallableFixedRateBondEngine(Handle<CallableBondVolatilityStructure> yieldVolStructure,
                                               Handle<YieldTermStructure> discountCurve)
       {
@@ -72,6 +82,8 @@ namespace QLNet
          var exerciseTime = volatility_.link.dayCounter().yearFraction(
                                   volatility_.link.referenceDate(),
                                   exerciseDate);
+         var discount = discountCurve_.link.discount(exerciseDate);
+         var discountToSettlement = discount / discountCurve_.link.discount(settle);
          var embeddedOptionValue = Utils.blackFormula(type,
                                                          cashStrike,
                                                          fwdCashPrice,
@@ -79,13 +91,13 @@ namespace QLNet
 
          if (type == Option.Type.Call)
          {
-            results_.value = npv - embeddedOptionValue;
-            results_.settlementValue = value - embeddedOptionValue;
+            results_.value = npv - embeddedOptionValue * discount;
+            results_.settlementValue = value - embeddedOptionValue * discountToSettlement;
          }
          else
          {
-            results_.value = npv + embeddedOptionValue;
-            results_.settlementValue = value + embeddedOptionValue;
+            results_.value = npv + embeddedOptionValue * discount;
+            results_.settlementValue = value + embeddedOptionValue * discountToSettlement;
          }
       }
 

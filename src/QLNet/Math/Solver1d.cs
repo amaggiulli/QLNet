@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -34,13 +34,16 @@ namespace QLNet
       }
    }
 
-   //! Base class for 1-D solvers
-   /*! Before calling <tt>solveImpl</tt>, the base class will set its protected data members so that:
-       - <tt>xMin_</tt> and  <tt>xMax_</tt> form a valid bracket
-       - <tt>fxMin_</tt> and <tt>fxMax_</tt> contain the values of the function in <tt>xMin_</tt> and <tt>xMax_</tt>
-       - <tt>root_</tt> is a valid initial guess.
-       The implementation of <tt>solveImpl</tt> can safely assume all of the above.
-   */
+   /// <summary>
+   /// Base class for 1-D solvers
+   /// </summary>
+   /// <remarks>
+   /// Before calling <c>solveImpl</c>, the base class will set its protected data members so that:
+   /// - <c>xMin_</c> and  <c>xMax_</c> form a valid bracket
+   /// - <c>fxMin_</c> and <c>fxMax_</c> contain the values of the function in <c>xMin_</c> and <c>xMax_</c>
+   /// - <c>root_</c> is a valid initial guess.
+   /// The implementation of <c>solveImpl</c> can safely assume all of the above.
+   /// </remarks>
 
    public abstract class Solver1D
    {
@@ -53,14 +56,14 @@ namespace QLNet
       private double lowerBound_, upperBound_;
       private bool lowerBoundEnforced_ = false, upperBoundEnforced_ = false;
 
-      /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
-                  depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
-                  \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
-
-                  This method contains a bracketing routine to which an initial guess must be supplied as well as a step used to
-                  scan the range of the possible bracketing values.
-              */
-
+      /// <summary>
+      /// Solves for a root starting from an initial guess and a bracketing step.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the solver, the requested accuracy can refer either to the function
+      /// value or to the distance from the actual root. This overload performs its own
+      /// bracketing search around the supplied guess.
+      /// </remarks>
       public double solve(ISolver1d f, double accuracy, double guess, double step)
       {
          Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
@@ -91,6 +94,15 @@ namespace QLNet
             fxMax_ = f.value(xMax_);
          }
 
+         if (double.IsNaN(fxMax_) || double.IsNaN(fxMin_))
+         {
+            Utils.QL_FAIL("unable to bracket root function evaluations (Undefined value on initial bracket: "
+                          + "f[" + xMin_ + "," + xMax_ +
+                          "] "
+                          + "-> [" + fxMin_ + "," + fxMax_ + "])",
+                          QLNetExceptionEnum.RootNotBracketException);
+         }
+
          evaluationNumber_ = 2;
          while (evaluationNumber_ <= maxEvaluations_)
          {
@@ -101,29 +113,37 @@ namespace QLNet
                if (Utils.close(fxMax_, 0.0))
                   return xMax_;
                root_ = (xMax_ + xMin_) / 2.0;
+
+               if (double.IsInfinity(fxMin_) || double.IsInfinity(fxMax_))
+               {
+                  Utils.QL_FAIL("unable to bracket root function evaluations (Undefined value on initial bracket: "
+                          + "f[" + xMin_ + "," + xMax_ +
+                          "] "
+                          + "-> [" + fxMin_ + "," + fxMax_ + "])",
+                          QLNetExceptionEnum.RootNotBracketException);
+               }
+
                return solveImpl(f, accuracy);
             }
             if (Math.Abs(fxMin_) < Math.Abs(fxMax_))
             {
-               xMin_ = enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_));
-               fxMin_ = f.value(xMin_);
+               (xMin_, fxMin_) = computeGrowthStep(f, xMin_, enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_)));
             }
             else if (Math.Abs(fxMin_) > Math.Abs(fxMax_))
             {
-               xMax_ = enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_));
-               fxMax_ = f.value(xMax_);
+               (xMax_, fxMax_) = computeGrowthStep(f, xMax_, enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_)));
             }
             else if (flipflop == -1)
             {
-               xMin_ = enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_));
-               fxMin_ = f.value(xMin_);
+               (xMin_, fxMin_) = computeGrowthStep(f, xMin_, enforceBounds_(xMin_ + growthFactor * (xMin_ - xMax_)));
+
                evaluationNumber_++;
                flipflop = 1;
             }
             else if (flipflop == 1)
             {
-               xMax_ = enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_));
-               fxMax_ = f.value(xMax_);
+               (xMax_, fxMax_) = computeGrowthStep(f, xMax_, enforceBounds_(xMax_ + growthFactor * (xMax_ - xMin_)));
+
                flipflop = -1;
             }
             evaluationNumber_++;
@@ -137,15 +157,14 @@ namespace QLNet
          return 0;
       }
 
-      /*! This method returns the zero of the function \f$ f \f$, determined with the given accuracy \f$ \epsilon \f$
-          depending on the particular solver, this might mean that the returned \f$ x \f$ is such that \f$ |f(x)| < \epsilon
-          \f$, or that \f$ |x-\xi| < \epsilon \f$ where \f$ \xi \f$ is the real zero.
-
-          An initial guess must be supplied, as well as two values \f$ x_\mathrm{min} \f$ and \f$ x_\mathrm{max} \f$ which
-          must bracket the zero (i.e., either \f$ f(x_\mathrm{min}) \leq 0 \leq f(x_\mathrm{max}) \f$, or \f$
-          f(x_\mathrm{max}) \leq 0 \leq f(x_\mathrm{min}) \f$ must be true).
-      */
-
+      /// <summary>
+      /// Solves for a root inside a pre-existing bracket.
+      /// </summary>
+      /// <remarks>
+      /// Depending on the solver, the requested accuracy can refer either to the function
+      /// value or to the distance from the actual root. The interval
+      /// <paramref name="xMin"/>-<paramref name="xMax"/> must bracket the root.
+      /// </remarks>
       public double solve(ISolver1d f, double accuracy, double guess, double xMin, double xMax)
       {
          Utils.QL_REQUIRE(accuracy > 0.0, () => "accuracy (" + accuracy + ") must be positive");
@@ -182,23 +201,26 @@ namespace QLNet
          return solveImpl(f, accuracy);
       }
 
-      /*! This method sets the maximum number of function evaluations for the bracketing routine. An error is thrown
-          if a bracket is not found after this number of evaluations.
-      */
-
+      /// <summary>
+      /// Sets the maximum number of function evaluations allowed during bracketing.
+      /// </summary>
       public void setMaxEvaluations(int evaluations)
       {
          maxEvaluations_ = evaluations;
       }
 
-      //! sets the lower bound for the function domain
+      /// <summary>
+      /// Sets the lower bound for the function domain.
+      /// </summary>
       public void setLowerBound(double lowerBound)
       {
          lowerBound_ = lowerBound;
          lowerBoundEnforced_ = true;
       }
 
-      //! sets the upper bound for the function domain
+      /// <summary>
+      /// Sets the upper bound for the function domain.
+      /// </summary>
       public void setUpperBound(double upperBound)
       {
          upperBound_ = upperBound;
@@ -210,6 +232,21 @@ namespace QLNet
          if (lowerBoundEnforced_ && x < lowerBound_) return lowerBound_;
          if (upperBoundEnforced_ && x > upperBound_) return upperBound_;
          return x;
+      }
+
+      private (double x, double fx) computeGrowthStep(ISolver1d f, double previousX, double x)
+      {
+         double fx = f.value(x);
+
+         while (double.IsNaN(fx) && Math.Abs(x - previousX) > double.Epsilon && evaluationNumber_ <= maxEvaluations_)
+         {
+            x = (x + previousX) / 2;
+            fx = f.value(x);
+
+            evaluationNumber_++;
+         }
+
+         return (x, fx);
       }
 
       protected abstract double solveImpl(ISolver1d f, double xAccuracy);

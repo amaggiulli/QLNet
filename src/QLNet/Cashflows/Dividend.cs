@@ -20,8 +20,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public abstract class Dividend : CashFlow
    {
       protected Date date_;
@@ -36,8 +40,12 @@ namespace QLNet
       public abstract double amount(double underlying);
    }
 
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public class FixedDividend : Dividend
    {
       protected double amount_;
@@ -51,8 +59,12 @@ namespace QLNet
       }
    }
 
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public class FractionalDividend : Dividend
    {
       protected double rate_;
@@ -90,7 +102,9 @@ namespace QLNet
 
    public static partial class Utils
    {
-      //! helper function building a sequence of fixed dividends
+      /// <summary>
+      /// Helper function building a sequence of fixed dividends.
+      /// </summary>
       public static DividendSchedule DividendVector(List<Date> dividendDates, List<double> dividends)
       {
          QL_REQUIRE(dividendDates.Count == dividends.Count, () => "size mismatch between dividend dates and amounts");

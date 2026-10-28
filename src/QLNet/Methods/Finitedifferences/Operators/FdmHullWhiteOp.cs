@@ -37,7 +37,12 @@ namespace QLNet
       }
       public override int size() { return 1; }
 
-      //! Time \f$t1 <= t2\f$ is required
+      /// <summary>
+      /// Sets the operator time interval.
+      /// </summary>
+      /// <remarks>
+      /// This method requires <c>t1 &lt;= t2</c>.
+      /// </remarks>
       public override void setTime(double t1, double t2)
       {
          OneFactorModel.ShortRateDynamics dynamics = model_.dynamics();

@@ -24,24 +24,15 @@ namespace QLNet
 {
    public static partial class MatrixUtilities
    {
-      //! QR decompoisition
-      /*! This implementation is based on MINPACK
-          (<http://www.netlib.org/minpack>,
-          <http://www.netlib.org/cephes/linalg.tgz>)
-
-          This subroutine uses householder transformations with column
-          pivoting (optional) to compute a qr factorization of the
-          m by n matrix A. That is, qrfac determines an orthogonal
-          matrix q, a permutation matrix p, and an upper trapezoidal
-          matrix r with diagonal elements of nonincreasing magnitude,
-          such that A*p = q*r.
-
-          Return value ipvt is an integer array of length n, which
-          defines the permutation matrix p such that A*p = q*r.
-          Column j of p is column ipvt(j) of the identity matrix.
-
-          See lmdiff.cpp for further details.
-      */
+      /// <summary>
+      /// Performs a QR decomposition of the given matrix.
+      /// </summary>
+      /// <remarks>
+      /// This implementation is based on MINPACK and uses Householder transformations
+      /// with optional column pivoting to compute matrices <c>Q</c> and <c>R</c> such
+      /// that <c>A * P = Q * R</c>. The returned pivot vector defines the permutation
+      /// matrix <c>P</c>.
+      /// </remarks>
       public static List<int> qrDecomposition(Matrix M, ref Matrix q, ref Matrix r, bool pivot)
       {
          Matrix mT = Matrix.transpose(M);
@@ -109,24 +100,14 @@ namespace QLNet
          return ipvt;
       }
 
-      //! QR Solve
-      /*! This implementation is based on MINPACK
-          (<http://www.netlib.org/minpack>,
-          <http://www.netlib.org/cephes/linalg.tgz>)
-
-          Given an m by n matrix A, an n by n diagonal matrix d,
-          and an m-vector b, the problem is to determine an x which
-          solves the system
-
-          A*x = b ,     d*x = 0 ,
-
-          in the least squares sense.
-
-          d is an input array of length n which must contain the
-          diagonal elements of the matrix d.
-
-          See lmdiff.cpp for further details.
-      */
+      /// <summary>
+      /// Solves the QR least-squares problem for the given system.
+      /// </summary>
+      /// <remarks>
+      /// This implementation is based on MINPACK. Given a matrix <c>A</c>, a diagonal
+      /// matrix represented by <c>d</c>, and a vector <c>b</c>, it determines the
+      /// least-squares solution of <c>A * x = b</c> subject to <c>d * x = 0</c>.
+      /// </remarks>
       public static Vector qrSolve(Matrix a, Vector b, bool pivot = true, Vector d = null)
       {
          int m = a.rows();

@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Basis swap. Simple Libor swap vs Libor swap
+   /// <summary>
+   /// Basis swap. Simple Libor swap vs Libor swap
+   /// </summary>
    public class BasisSwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }
@@ -280,7 +282,9 @@ namespace QLNet
       private double? fairLongSpread_;
       private double? fairShortSpread_;
 
-      //! %Arguments for simple swap calculation
+      /// <summary>
+      /// Arguments for basis-swap valuation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public Type type { get; set; }
@@ -344,7 +348,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from simple swap calculation
+      /// <summary>
+      /// Results from basis-swap valuation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairLongSpread { get; set; }

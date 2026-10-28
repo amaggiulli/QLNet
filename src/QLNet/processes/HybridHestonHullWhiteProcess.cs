@@ -17,14 +17,15 @@ using System;
 
 namespace QLNet
 {
-   //! Hybrid Heston Hull-White stochastic process
-   /*! This class implements a three factor Heston Hull-White model
-
-       \bug This class was not tested enough to guarantee
-            its functionality... work in progress
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Hybrid Heston Hull-White stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class implements a three factor Heston Hull-White model
+   ///
+   /// Bug: This class was not tested enough to guarantee
+   /// its functionality... work in progress
+   /// </remarks>
    public class HybridHestonHullWhiteProcess : StochasticProcess
    {
       public enum Discretization { Euler, BSMHullWhite }

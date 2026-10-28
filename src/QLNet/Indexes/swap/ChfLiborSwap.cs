@@ -20,16 +20,17 @@
 namespace QLNet
 {
 
-   //! %ChfLiborSwapIsdaFix index base class
-   /*! %CHF %Libor %Swap indexes fixed by ISDA in cooperation with
-       Reuters and Intercapital Brokers at 11am London.
-       Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
-       Reuters page ISDAFIX4 or CHFSFIX=.
-
-       Further info can be found at <http://www.isda.org/fix/isdafix.html> or
-       Reuters page ISDAFIX.
-
-   */
+   /// <summary>
+   /// ChfLiborSwapIsdaFix index base class
+   /// </summary>
+   /// <remarks>
+   /// CHF Libor Swap indexes fixed by ISDA in cooperation with
+   /// Reuters and Intercapital Brokers at 11am London.
+   /// Annual 30/360 vs 6M Libor, 1Y vs 3M Libor.
+   /// Reuters page ISDAFIX4 or CHFSFIX=.
+   /// Further info can be found at http://www.isda.org/fix/isdafix.html or
+   /// Reuters page ISDAFIX.
+   /// </remarks>
    public class ChfLiborSwapIsdaFix : SwapIndex
    {
       public ChfLiborSwapIsdaFix(Period tenor)

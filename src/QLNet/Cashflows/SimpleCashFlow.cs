@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,8 +21,12 @@ using System;
 
 namespace QLNet
 {
-   //! Predetermined cash flow
-   /*! This cash flow pays a predetermined amount at a given date. */
+   /// <summary>
+   /// Predetermined cash flow
+   /// </summary>
+   /// <remarks>
+   /// This cash flow pays a predetermined amount at a given date.
+   /// </remarks>
    public class SimpleCashFlow : CashFlow
    {
       private double amount_;
@@ -38,28 +42,37 @@ namespace QLNet
       }
    }
 
-   //! Bond redemption
-   /*! This class specializes SimpleCashFlow so that visitors
-       can perform more detailed cash-flow analysis.
-   */
+   /// <summary>
+   /// Bond redemption
+   /// </summary>
+   /// <remarks>
+   /// This class specializes SimpleCashFlow so that visitors
+   /// can perform more detailed cash-flow analysis.
+   /// </remarks>
    public class Redemption : SimpleCashFlow
    {
       public Redemption(double amount, Date date) : base(amount, date) { }
    }
 
-   //! Amortizing payment
-   /*! This class specializes SimpleCashFlow so that visitors
-       can perform more detailed cash-flow analysis.
-   */
+   /// <summary>
+   /// Amortizing payment
+   /// </summary>
+   /// <remarks>
+   /// This class specializes SimpleCashFlow so that visitors
+   /// can perform more detailed cash-flow analysis.
+   /// </remarks>
    public class AmortizingPayment : SimpleCashFlow
    {
       public AmortizingPayment(double amount, Date date) : base(amount, date) { }
    }
 
-   //! Voluntary Prepay
-   /*! This class specializes SimpleCashFlow so that visitors
-       can perform more detailed cash-flow analysis.
-   */
+   /// <summary>
+   /// Voluntary Prepay
+   /// </summary>
+   /// <remarks>
+   /// This class specializes SimpleCashFlow so that visitors
+   /// can perform more detailed cash-flow analysis.
+   /// </remarks>
    public class VoluntaryPrepay : SimpleCashFlow
    {
       public VoluntaryPrepay(double amount, Date date) : base(amount, date) { }

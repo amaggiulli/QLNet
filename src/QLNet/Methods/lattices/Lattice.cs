@@ -22,11 +22,14 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Tree-based lattice-method base class
-   /*! This class defines a lattice method that is able to rollback
-       (with discount) a discretized asset object. It will be based
-       on one or more trees.
-   */
+   /// <summary>
+   /// Tree-based lattice-method base class
+   /// </summary>
+   /// <remarks>
+   /// This class defines a lattice method that is able to rollback
+   /// (with discount) a discretized asset object. It will be based
+   /// on one or more trees.
+   /// </remarks>
    public interface IGenericLattice
    {
       int size(int i);
@@ -78,7 +81,8 @@ namespace QLNet
          if (Utils.close(from, to))
             return;
 
-         Utils.QL_REQUIRE(from > to, () => "cannot roll the asset back to" + to + " (it is already at t = " + from + ")");
+         if (!(from > to))
+            Utils.QL_FAIL("cannot roll the asset back to" + to + " (it is already at t = " + from + ")");
 
          int iFrom = t_.index(from);
          int iTo = t_.index(to);
@@ -95,7 +99,9 @@ namespace QLNet
          }
       }
 
-      //! Computes the present value of an asset using Arrow-Debrew prices
+      /// <summary>
+      /// Computes the present value of an asset using Arrow-Debreu prices.
+      /// </summary>
       public override double presentValue(DiscretizedAsset asset)
       {
          int i = t_.index(asset.time());
@@ -111,17 +117,16 @@ namespace QLNet
 
       public virtual void stepback(int i, Vector values, Vector newValues)
       {
-         for (int j = 0; j < impl().size(i); j++)
+         T lattice = impl();
+         int size = lattice.size(i);
+         for (int j = 0; j < size; j++)
          {
             double value = 0.0;
             for (int l = 0; l < n_; l++)
             {
-               double d1, d2;
-               d1 = impl().probability(i, j, l);
-               d2 = values[impl().descendant(i, j, l)];
-               value += impl().probability(i, j, l) * values[impl().descendant(i, j, l)];
+               value += lattice.probability(i, j, l) * values[lattice.descendant(i, j, l)];
             }
-            value *= impl().discount(i, j);
+            value *= lattice.discount(i, j);
             newValues[j] = value;
          }
       }

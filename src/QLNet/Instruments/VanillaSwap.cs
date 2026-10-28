@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  *
@@ -22,22 +22,25 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Plain-vanilla swap: fix vs floating leg
-   /*! \warning if <tt>Settings::includeReferenceDateCashFlows()</tt>
-                 is set to <tt>true</tt>, payments occurring at the
-                 settlement date of the swap might be included in the
-                 NPV and therefore affect the fair-rate and
-                 fair-spread calculation. This might not be what you
-                 want.
-
-   \test
-   - the correctness of the returned value is tested by checking
-   - that the price of a swap paying the fair fixed rate is null.
-   - that the price of a swap receiving the fair floating-rate spread is null.
-   - that the price of a swap decreases with the paid fixed rate.
-   - that the price of a swap increases with the received floating-rate spread.
-   - the correctness of the returned value is tested by checking it against a known good value.
-   */
+   /// <summary>
+   /// Plain-vanilla swap: fix vs floating leg
+   /// </summary>
+   /// <remarks>
+   /// Warning: if <c>Settings::includeReferenceDateCashFlows()</c>
+   /// is set to <c>true</c>, payments occurring at the
+   /// settlement date of the swap might be included in the
+   /// NPV and therefore affect the fair-rate and
+   /// fair-spread calculation. This might not be what you
+   /// want.
+   ///
+   /// Test:
+   /// - the correctness of the returned value is tested by checking
+   /// - that the price of a swap paying the fair fixed rate is null.
+   /// - that the price of a swap receiving the fair floating-rate spread is null.
+   /// - that the price of a swap decreases with the paid fixed rate.
+   /// - that the price of a swap increases with the received floating-rate spread.
+   /// - the correctness of the returned value is tested by checking it against a known good value.
+   /// </remarks>
    public class VanillaSwap : Swap
    {
       public enum Type { Receiver = -1, Payer = 1 }
@@ -274,7 +277,9 @@ namespace QLNet
       }
 
 
-      //! %Arguments for simple swap calculation
+      /// <summary>
+      /// Arguments for vanilla-swap calculation.
+      /// </summary>
       public new class Arguments : Swap.Arguments
       {
          public Type type { get; set; }
@@ -320,7 +325,9 @@ namespace QLNet
          }
       }
 
-      //! %Results from simple swap calculation
+      /// <summary>
+      /// Results from vanilla-swap calculation.
+      /// </summary>
       public new class Results : Swap.Results
       {
          public double? fairRate { get; set; }

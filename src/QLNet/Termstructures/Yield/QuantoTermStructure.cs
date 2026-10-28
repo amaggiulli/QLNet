@@ -21,14 +21,16 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Quanto term structure
-   /*! Quanto term structure for modelling quanto effect in
-       option pricing.
-
-       \note This term structure will remain linked to the original
-             structures, i.e., any changes in the latters will be
-             reflected in this structure as well.
-   */
+   /// <summary>
+   /// Quanto term structure
+   /// </summary>
+   /// <remarks>
+   /// Quanto term structure for modelling quanto effect in
+   /// option pricing.
+   /// Note: This term structure will remain linked to the original
+   /// structures, i.e., any changes in the latters will be
+   /// reflected in this structure as well.
+   /// </remarks>
    public class QuantoTermStructure : ZeroYieldStructure
    {
 

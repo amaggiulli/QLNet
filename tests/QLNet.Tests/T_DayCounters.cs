@@ -652,6 +652,31 @@ namespace QLNet.Tests
                          + "    calculated: " + t + "\n"
                          + "    expected:   " + expected);
          }
+
+         // Endpoints falling on the 31st, which the case above does not exercise.
+         // The 31 -> 30 adjustment is the one prescribed by ISO 20022.
+         Thirty360Case[] data =
+         {
+            new Thirty360Case(new Date(31, Month.January, 2007),  new Date(1, Month.February, 2007),     1),
+            new Thirty360Case(new Date(31, Month.December, 2007), new Date(1, Month.January, 2008),      1),
+            new Thirty360Case(new Date(1, Month.January, 2007),   new Date(31, Month.January, 2007),    29),
+            new Thirty360Case(new Date(31, Month.January, 2007),  new Date(28, Month.February, 2007),   28),
+            new Thirty360Case(new Date(31, Month.January, 2007),  new Date(31, Month.March, 2007),      60),
+            new Thirty360Case(new Date(31, Month.December, 2006), new Date(31, Month.December, 2007),  360),
+            new Thirty360Case(new Date(29, Month.February, 2008), new Date(31, Month.March, 2008),      31)
+         };
+
+         foreach (var x in data)
+         {
+            var calculated = dayCounter.dayCount(x._start, x._end);
+            if (calculated != x._expected)
+            {
+               QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+            }
+         }
       }
 
       [Fact]
@@ -891,6 +916,108 @@ namespace QLNet.Tests
                          + "    expected:   " + x._expected);
             }
          }
+      }
+
+      [Fact]
+      public void testThirty360_USA()
+      {
+         // Testing thirty/360 day counter (US)
+         // Source: SIA "Standard Securities Calculation Methods", as summarised at
+         // https://en.wikipedia.org/wiki/Day_count_convention#30/360_US
+
+         DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Thirty360Case[] data =
+         {
+            // start date is the last day of February: it becomes the 30th, which in turn
+            // lets an end date on the 31st be pulled back to the 30th
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(31, Month.March, 2007),      30),
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(31, Month.May, 2007),        90),
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(31, Month.August, 2007),    180),
+            new Thirty360Case(new Date(29, Month.February, 2008), new Date(31, Month.August, 2008),    180),
+            // both dates are the last day of February
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(28, Month.February, 2008),  358),
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(29, Month.February, 2008),  360),
+            new Thirty360Case(new Date(29, Month.February, 2008), new Date(28, Month.February, 2009),  360),
+            // start date is the last day of February, end date is not the 31st
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(1, Month.March, 2007),        1),
+            new Thirty360Case(new Date(29, Month.February, 2008), new Date(1, Month.March, 2008),        1),
+            // start date is in February but not its last day: the end date keeps its 31
+            new Thirty360Case(new Date(15, Month.February, 2007), new Date(31, Month.March, 2007),      46),
+            new Thirty360Case(new Date(28, Month.February, 2008), new Date(31, Month.August, 2008),    183),
+            // no February involved
+            new Thirty360Case(new Date(30, Month.January, 2007),  new Date(31, Month.March, 2007),      60),
+            new Thirty360Case(new Date(31, Month.January, 2007),  new Date(31, Month.March, 2007),      60),
+            new Thirty360Case(new Date(20, Month.August, 2006),   new Date(20, Month.February, 2007),  180),
+            new Thirty360Case(new Date(31, Month.August, 2007),   new Date(28, Month.February, 2008),  178),
+            new Thirty360Case(new Date(30, Month.September, 2006), new Date(31, Month.October, 2006),   30),
+            new Thirty360Case(new Date(31, Month.October, 2006),  new Date(28, Month.November, 2006),   28),
+            new Thirty360Case(new Date(30, Month.November, 2007), new Date(31, Month.December, 2007),   30),
+            new Thirty360Case(new Date(31, Month.December, 2007), new Date(31, Month.January, 2008),    30)
+         };
+
+         foreach (var x in data)
+         {
+            var calculated = dayCounter.dayCount(x._start, x._end);
+            if (calculated != x._expected)
+            {
+               QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+            }
+         }
+      }
+
+      [Fact]
+      public void testThirty360_NASD()
+      {
+         // Testing thirty/360 day counter (NASD)
+
+         DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.NASD);
+
+         Thirty360Case[] data =
+         {
+            // end date on the 31st with a start date before the 30th rolls to the 1st
+            // of the next month, so February is not treated specially here
+            new Thirty360Case(new Date(28, Month.February, 2007), new Date(31, Month.March, 2007),      33),
+            new Thirty360Case(new Date(15, Month.February, 2007), new Date(31, Month.March, 2007),      46),
+            new Thirty360Case(new Date(29, Month.February, 2008), new Date(31, Month.August, 2008),    182),
+            new Thirty360Case(new Date(1, Month.January, 2007),   new Date(31, Month.January, 2007),    30),
+            new Thirty360Case(new Date(15, Month.June, 2007),     new Date(31, Month.December, 2007),  196),
+            // start date on the 30th or 31st pulls the end date back to the 30th instead
+            new Thirty360Case(new Date(30, Month.January, 2007),  new Date(31, Month.March, 2007),      60),
+            new Thirty360Case(new Date(31, Month.January, 2007),  new Date(31, Month.March, 2007),      60),
+            new Thirty360Case(new Date(20, Month.August, 2006),   new Date(20, Month.February, 2007),  180),
+            new Thirty360Case(new Date(31, Month.August, 2007),   new Date(28, Month.February, 2008),  178)
+         };
+
+         foreach (var x in data)
+         {
+            var calculated = dayCounter.dayCount(x._start, x._end);
+            if (calculated != x._expected)
+            {
+               QAssert.Fail("from " + x._start
+                         + " to " + x._end + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + x._expected);
+            }
+         }
+      }
+
+      [Fact]
+      public void testActual365_CanadianLongReferencePeriod()
+      {
+         // Testing that Actual/365 (Canadian) rejects a reference period longer than a year
+         // instead of dividing by a zero frequency
+
+         var dayCounter = new Actual365Fixed(Actual365Fixed.Convention.Canadian);
+
+         Assert.Throws<ArgumentException>(() =>
+            dayCounter.yearFraction(new Date(1, Month.January, 2007),
+                                    new Date(1, Month.July, 2007),
+                                    new Date(1, Month.January, 2007),
+                                    new Date(1, Month.January, 2009)));
       }
 
       [Fact]

@@ -163,7 +163,7 @@ namespace QLNet
       //    <tt>v *= w</tt> and similar operation involving two vectors are
       //    shortcuts for \f$ \forall i : v_i = v_i \times w_i \f$
 
-      //    \pre all arrays involved in an algebraic expression must have the same size.
+      //    All arrays involved in an algebraic expression must have the same size.
       //
       public static Vector operator +(Vector v1, Vector v2)
       {

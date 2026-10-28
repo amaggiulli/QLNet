@@ -24,7 +24,12 @@ namespace QLNet
 {
    public abstract class FdmLinearOpComposite : FdmLinearOp
    {
-      //! Time \f$t1 <= t2\f$ is required
+      /// <summary>
+      /// Sets the operator time interval.
+      /// </summary>
+      /// <remarks>
+      /// This method requires <c>t1 &lt;= t2</c>.
+      /// </remarks>
       public abstract void setTime(double t1, double t2);
 
       public abstract Vector apply_mixed(Vector r);

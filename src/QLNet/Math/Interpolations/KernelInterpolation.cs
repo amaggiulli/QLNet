@@ -133,20 +133,25 @@ namespace QLNet
 
    }
 
-   //! Kernel interpolation between discrete points
-   /*! Implementation of the kernel interpolation approach, which can
-      be found in "Foreign Exchange Risk" by Hakala, Wystup page
-      256.
-
-      The kernel in the implementation is kept general, although a Gaussian
-      is considered in the cited text.
-   */
+   /// <summary>
+   /// Kernel interpolation between discrete points
+   /// </summary>
+   /// <remarks>
+   /// Implementation of the kernel interpolation approach, which can
+   /// be found in "Foreign Exchange Risk" by Hakala, Wystup page
+   /// 256.
+   /// The kernel in the implementation is kept general, although a Gaussian
+   /// is considered in the cited text.
+   /// </remarks>
    public class KernelInterpolation : Interpolation
    {
 
-      /*! \pre the \f$ x \f$ values must be sorted.
-         \pre kernel needs a Real operator()(Real x) implementation
-      */
+      /// <summary>
+      /// Initializes a kernel interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted, and the kernel must implement an operator that evaluates the kernel at a given point.
+      /// </remarks>
       public KernelInterpolation(List<double> xBegin, int size, List<double> yBegin, IKernelFunction kernel)
       {
          impl_ = new KernelInterpolationImpl<IKernelFunction>(xBegin, size, yBegin, kernel);

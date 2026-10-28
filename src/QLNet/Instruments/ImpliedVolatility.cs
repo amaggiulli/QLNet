@@ -20,9 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! helper class for one-asset implied-volatility calculation
-   /*! The passed engine must be linked to the passed quote (see,
-       e.g., VanillaOption to see how this can be achieved.) */
+   /// <summary>
+   /// helper class for one-asset implied-volatility calculation
+   /// </summary>
+   /// <remarks>
+   /// The passed engine must be linked to the passed quote (see,
+   /// e.g., VanillaOption to see how this can be achieved.)
+   /// </remarks>
    public static class ImpliedVolatilityHelper
    {
       public static double calculate(Instrument instrument, IPricingEngine engine, SimpleQuote volQuote,

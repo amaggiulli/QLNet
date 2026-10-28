@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -22,8 +22,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! interest rate volatility smile section
-   /*! This abstract class provides volatility smile section interface */
+   /// <summary>
+   /// interest rate volatility smile section
+   /// </summary>
+   /// <remarks>
+   /// This abstract class provides volatility smile section interface
+   /// </remarks>
    public abstract class SmileSection : LazyObject
    {
       protected SmileSection(Date d, DayCounter dc = null, Date referenceDate = null,

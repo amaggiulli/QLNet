@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -21,14 +21,15 @@
 namespace QLNet
 {
 
-   //! %JPY %LIBOR rate
-   /*! Japanese Yen LIBOR fixed by ICE.
-
-       See <https://www.theice.com/marketdata/reports/170>.
-
-       \warning This is the rate fixed in London by ICE. Use TIBOR if
-                you're interested in the Tokio fixing.
-   */
+   /// <summary>
+   /// JPY LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Japanese Yen LIBOR fixed by ICE.
+   /// See https://www.theice.com/marketdata/reports/170.
+   /// Warning: This is the rate fixed in London by ICE. Use TIBOR if
+   /// you're interested in the Tokio fixing.
+   /// </remarks>
    public class JPYLibor : Libor
    {
       public JPYLibor(Period tenor)
@@ -41,7 +42,9 @@ namespace QLNet
 
    }
 
-   //! base class for the one day deposit ICE %JPY %LIBOR indexes
+   /// <summary>
+   /// base class for the one day deposit ICE JPY LIBOR indexes
+   /// </summary>
    public class DailyTenorJPYLibor : DailyTenorLibor
    {
       public DailyTenorJPYLibor(int settlementDays) : this(settlementDays, new Handle<YieldTermStructure>())

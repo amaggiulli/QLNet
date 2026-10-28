@@ -21,14 +21,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Affine model class
-   /*! Base class for analytically tractable models.
-
-       \ingroup shortrate
-   */
+   /// <summary>
+   /// Affine model class
+   /// </summary>
+   /// <remarks>
+   /// Base class for analytically tractable models.
+   /// </remarks>
    public abstract class AffineModel : IObservable
    {
-      //! Implied discount curve
+      /// <summary>
+      /// Returns the implied discount factor at the given time.
+      /// </summary>
       public abstract double discount(double t);
       public abstract double discountBond(double now, double maturity, Vector factors);
       public abstract double discountBondOption(Option.Type type, double strike, double maturity, double bondMaturity);
@@ -110,7 +113,9 @@ namespace QLNet
       void update();
    }
 
-   //! Calibrated model class
+   /// <summary>
+   /// Calibrated model class
+   /// </summary>
    public class CalibratedModel : IObserver, IObservable
    {
       protected List<Parameter> arguments_;
@@ -129,10 +134,12 @@ namespace QLNet
          shortRateEndCriteria_ = EndCriteria.Type.None;
       }
 
-      //! Calibrate to a set of market instruments (caps/swaptions)
-      /*! An additional constraint can be passed which must be
-          satisfied in addition to the constraints of the model.
-      */
+      /// <summary>
+      /// Calibrates the model to a set of market instruments.
+      /// </summary>
+      /// <remarks>
+      /// An additional constraint can be provided and is enforced together with the model constraints.
+      /// </remarks>
       public void calibrate(List<CalibrationHelper> instruments,
                             OptimizationMethod method,
                             EndCriteria endCriteria,
@@ -178,7 +185,9 @@ namespace QLNet
          return f.value(parameters);
       }
 
-      //! Returns array of arguments on which calibration is done
+      /// <summary>
+      /// Returns the parameter array used for calibration.
+      /// </summary>
       public Vector parameters()
       {
          int size = 0, i;
@@ -215,7 +224,9 @@ namespace QLNet
       protected virtual void generateArguments() {}
 
 
-      //! Constraint imposed on arguments
+      /// <summary>
+      /// Constraint imposed on arguments
+      /// </summary>
       private class PrivateConstraint : Constraint
       {
          public PrivateConstraint(List<Parameter> arguments) : base(new Impl(arguments)) { }
@@ -291,7 +302,9 @@ namespace QLNet
          }
       }
 
-      //! Calibration cost function class
+      /// <summary>
+      /// Calibration cost function class
+      /// </summary>
       private class CalibrationFunction : CostFunction
       {
          public CalibrationFunction(CalibratedModel model,
@@ -371,8 +384,9 @@ namespace QLNet
       #endregion
    }
 
-   //! Abstract short-rate model class
-   /*! \ingroup shortrate */
+   /// <summary>
+   /// Abstract short-rate model class
+   /// </summary>
    public abstract class ShortRateModel : CalibratedModel
    {
       protected ShortRateModel(int nArguments) : base(nArguments) { }

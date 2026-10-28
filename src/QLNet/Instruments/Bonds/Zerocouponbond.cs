@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,11 +19,12 @@
 
 namespace QLNet
 {
-   //! zero-coupon bond
-   /*! \ingroup instruments
-
-       \test calculations are tested by checking results against cached values.
-   */
+   /// <summary>
+   /// zero-coupon bond
+   /// </summary>
+   /// <remarks>
+   /// Test: calculations are tested by checking results against cached values.
+   /// </remarks>
    public class ZeroCouponBond : Bond
    {
       public ZeroCouponBond(int settlementDays, Calendar calendar, double faceAmount, Date maturityDate,

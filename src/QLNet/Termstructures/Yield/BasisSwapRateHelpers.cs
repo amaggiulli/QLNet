@@ -124,13 +124,16 @@ namespace QLNet
       }
    }
 
-   //! Rate helper for bootstrapping over overnight-ibor basis swaps
-   /*! The swap is assumed to pay baseIndex + basis and receive
-       otherIndex.  This helper can be used to bootstrap the forecast
-       curve for otherIndex; baseIndex will need an existing forecast
-       curve.  An exogenous discount curve can be passed; if not,
-       the overnight-index curve will be used.
-   */
+   /// <summary>
+   /// Rate helper for bootstrapping over overnight-ibor basis swaps
+   /// </summary>
+   /// <remarks>
+   /// The swap is assumed to pay baseIndex + basis and receive
+   /// otherIndex.  This helper can be used to bootstrap the forecast
+   /// curve for otherIndex; baseIndex will need an existing forecast
+   /// curve.  An exogenous discount curve can be passed; if not,
+   /// the overnight-index curve will be used.
+   /// </remarks>
    public class OvernightIborBasisSwapRateHelper : RelativeDateRateHelper
    {
       private Period tenor_;

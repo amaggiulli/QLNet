@@ -20,33 +20,34 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for European vanilla options using analytical formulae
-   /*! \ingroup vanillaengines
-
-       \test
-       - the correctness of the returned value is tested by
-         reproducing results available in literature.
-       - the correctness of the returned greeks is tested by
-         reproducing results available in literature.
-       - the correctness of the returned greeks is tested by
-         reproducing numerical derivatives.
-       - the correctness of the returned implied volatility is tested
-         by using it for reproducing the target value.
-       - the implied-volatility calculation is tested by checking
-         that it does not modify the option.
-       - the correctness of the returned value in case of
-         cash-or-nothing digital payoff is tested by reproducing
-         results available in literature.
-       - the correctness of the returned value in case of
-         asset-or-nothing digital payoff is tested by reproducing
-         results available in literature.
-       - the correctness of the returned value in case of gap digital
-         payoff is tested by reproducing results available in
-         literature.
-       - the correctness of the returned greeks in case of
-         cash-or-nothing digital payoff is tested by reproducing
-         numerical derivatives.
-   */
+   /// <summary>
+   /// Pricing engine for European vanilla options using analytical formulae
+   /// </summary>
+   /// <remarks>
+   /// Test:
+   /// - the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks is tested by
+   /// reproducing numerical derivatives.
+   /// - the correctness of the returned implied volatility is tested
+   /// by using it for reproducing the target value.
+   /// - the implied-volatility calculation is tested by checking
+   /// that it does not modify the option.
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing digital payoff is tested by reproducing
+   /// results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing digital payoff is tested by reproducing
+   /// results available in literature.
+   /// - the correctness of the returned value in case of gap digital
+   /// payoff is tested by reproducing results available in
+   /// literature.
+   /// - the correctness of the returned greeks in case of
+   /// cash-or-nothing digital payoff is tested by reproducing
+   /// numerical derivatives.
+   /// </remarks>
    public class AnalyticEuropeanEngine : VanillaOption.Engine
    {
       private GeneralizedBlackScholesProcess process_;

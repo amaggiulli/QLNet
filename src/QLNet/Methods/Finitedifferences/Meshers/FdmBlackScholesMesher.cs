@@ -19,14 +19,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-/*! \file fdmblackscholesmesher.cpp
-    \brief 1-d mesher for the Black-Scholes process (in ln(S))
-*/
 
 namespace QLNet
 {
+   /// <summary>
+   /// One-dimensional mesher for the Black-Scholes process in <c>ln(S)</c>.
+   /// </summary>
    public class Pair<TFirst, TSecond>
    {
       protected KeyValuePair<TFirst, TSecond> pair;

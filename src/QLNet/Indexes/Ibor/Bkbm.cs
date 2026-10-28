@@ -16,11 +16,13 @@
 
 namespace QLNet
 {
-   //! %Bkbm index
-   /*! Bkbm rate fixed by NZFMA.
-
-       See <http://www.nzfma.org/Site/data/default.aspx>.
-   */
+   /// <summary>
+   /// Bkbm index
+   /// </summary>
+   /// <remarks>
+   /// Bkbm rate fixed by NZFMA.
+   /// See http://www.nzfma.org/Site/data/default.aspx.
+   /// </remarks>
    public class Bkbm : IborIndex
    {
       public Bkbm(Period tenor, Handle<YieldTermStructure> h = null)
@@ -35,7 +37,9 @@ namespace QLNet
       }
    }
 
-   //! 1-month %Bkbm index
+   /// <summary>
+   /// 1-month Bkbm index
+   /// </summary>
    public class Bkbm1M : Bkbm
    {
       public Bkbm1M(Handle<YieldTermStructure> h = null)
@@ -43,7 +47,9 @@ namespace QLNet
       {}
    }
 
-   //! 2-month %Bkbm index
+   /// <summary>
+   /// 2-month Bkbm index
+   /// </summary>
    public class Bkbm2M : Bkbm
    {
       public Bkbm2M(Handle<YieldTermStructure> h = null)
@@ -51,7 +57,9 @@ namespace QLNet
       { }
    }
 
-   //! 3-month %Bkbm index
+   /// <summary>
+   /// 3-month Bkbm index
+   /// </summary>
    public class Bkbm3M : Bkbm
    {
       public Bkbm3M(Handle<YieldTermStructure> h = null)
@@ -59,7 +67,9 @@ namespace QLNet
       { }
    }
 
-   //! 4-month %Bkbm index
+   /// <summary>
+   /// 4-month Bkbm index
+   /// </summary>
    public class Bkbm4M : Bkbm
    {
       public Bkbm4M(Handle<YieldTermStructure> h = null)
@@ -67,7 +77,9 @@ namespace QLNet
       { }
    }
 
-   //! 5-month %Bkbm index
+   /// <summary>
+   /// 5-month Bkbm index
+   /// </summary>
    public class Bkbm5M : Bkbm
    {
       public Bkbm5M(Handle<YieldTermStructure> h = null)
@@ -75,7 +87,9 @@ namespace QLNet
       { }
    }
 
-   //! 6-month %Bkbm index
+   /// <summary>
+   /// 6-month Bkbm index
+   /// </summary>
    public class Bkbm6M : Bkbm
    {
       public Bkbm6M(Handle<YieldTermStructure> h = null)

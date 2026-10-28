@@ -20,16 +20,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Crank-Nicolson scheme for finite difference methods
-   /*! In this implementation, the passed operator must be derived
-       from either TimeConstantOperator or TimeDependentOperator.
-       Also, it must implement at least the following interface:
-
-       \warning The differential operator must be linear for
-                this evolver to work.
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// Crank-Nicolson scheme for finite difference methods
+   /// </summary>
+   /// <remarks>
+   /// In this implementation, the passed operator must be derived
+   /// from either TimeConstantOperator or TimeDependentOperator.
+   /// Also, it must implement at least the following interface:
+   ///
+   /// Warning: The differential operator must be linear for
+   /// this evolver to work.
+   /// </remarks>
    public class CrankNicolson<Operator> : MixedScheme<Operator>, ISchemeFactory where Operator : IOperator
    {
       // constructors

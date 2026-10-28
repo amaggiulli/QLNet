@@ -20,22 +20,23 @@
 
 namespace QLNet
 {
-   //! General-purpose Monte Carlo model for path samples
-   /*! The template arguments of this class correspond to available
-       policies for the particular model to be instantiated---i.e.,
-       whether it is single- or multi-asset, or whether it should use
-       pseudo-random or low-discrepancy numbers for path
-       generation. Such decisions are grouped in trait classes so as
-       to be orthogonal---see mctraits for examples.
-
-       The constructor accepts two safe references, i.e. two smart
-       pointers, one to a path generator and the other to a path
-       pricer.  In case of control variate technique the user should
-       provide the additional control option, namely the option path
-       pricer and the option value.
-
-       \ingroup mcarlo
-   */
+   /// <summary>
+   /// General-purpose Monte Carlo model for path samples
+   /// </summary>
+   /// <remarks>
+   /// The template arguments of this class correspond to available
+   /// policies for the particular model to be instantiated---i.e.,
+   /// whether it is single- or multi-asset, or whether it should use
+   /// pseudo-random or low-discrepancy numbers for path
+   /// generation. Such decisions are grouped in trait classes so as
+   /// to be orthogonal---see mctraits for examples.
+   ///
+   /// The constructor accepts two safe references, i.e. two smart
+   /// pointers, one to a path generator and the other to a path
+   /// pricer.  In case of control variate technique the user should
+   /// provide the additional control option, namely the option path
+   /// pricer and the option value.
+   /// </remarks>
    public class MonteCarloModel<MC, RNG, S> where S : IGeneralStatistics
    {
       public MonteCarloModel(IPathGenerator<IRNG> pathGenerator, PathPricer<IPath> pathPricer,

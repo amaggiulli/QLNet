@@ -26,10 +26,6 @@ namespace QLNet
       CapFloor.Results>
    {
 
-      /*! \note the term structure is only needed when the short-rate
-                model cannot provide one itself.
-      */
-
       private Handle<YieldTermStructure> termStructure_;
 
       public AnalyticCapFloorEngine(IAffineModel model)
@@ -40,6 +36,8 @@ namespace QLNet
                                     Handle<YieldTermStructure> termStructure)
          : base(model)
       {
+         // The term structure is only needed when the short-rate model
+         // cannot provide one itself.
          termStructure_ = termStructure;
          termStructure_.registerWith(update);
       }
@@ -54,7 +52,6 @@ namespace QLNet
          try
          {
             TermStructureConsistentModel tsmodel = (TermStructureConsistentModel)model_.link;
-            ///if (tsmodel != null)
             referenceDate = tsmodel.termStructure().link.referenceDate();
             dayCounter = tsmodel.termStructure().link.dayCounter();
          }

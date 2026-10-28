@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -26,16 +26,17 @@ using QLNet.Responses;
 
 namespace QLNet
 {
-   //! Bond adapters of CashFlows functions
-   /*! See CashFlows for functions' documentation.
-
-       These adapters calls into CashFlows functions passing as input the
-       Bond cashflows, the dirty price (i.e. npv) calculated from clean
-       price, the bond settlementDate date (unless another date is given), zero
-       ex-dividend days, and excluding any cashflow on the settlementDate date.
-
-       Prices are always clean, as per market convention.
-   */
+   /// <summary>
+   /// Bond adapters of CashFlows functions
+   /// </summary>
+   /// <remarks>
+   /// See CashFlows for functions' documentation.
+   /// These adapters calls into CashFlows functions passing as input the
+   /// Bond cashflows, the dirty price (i.e. npv) calculated from clean
+   /// price, the bond settlementDate date (unless another date is given), zero
+   /// ex-dividend days, and excluding any cashflow on the settlementDate date.
+   /// Prices are always clean, as per market convention.
+   /// </remarks>
 
    public class BondFunctions
    {
@@ -449,7 +450,7 @@ namespace QLNet
       public static double basisPointValue(Bond bond, double yield, DayCounter dayCounter, Compounding compounding, Frequency frequency,
                                            Date settlementDate = null)
       {
-         return CashFlows.basisPointValue(bond.cashflows(), new InterestRate(yield, dayCounter, compounding, frequency), false, settlementDate);
+         return basisPointValue(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       public static double yieldValueBasisPoint(Bond bond, InterestRate yield, Date settlementDate = null)
       {
@@ -467,7 +468,7 @@ namespace QLNet
       public static double yieldValueBasisPoint(Bond bond, double yield, DayCounter dayCounter, Compounding compounding,
                                                 Frequency frequency, Date settlementDate = null)
       {
-         return CashFlows.yieldValueBasisPoint(bond.cashflows(), new InterestRate(yield, dayCounter, compounding, frequency), false, settlementDate);
+         return yieldValueBasisPoint(bond, new InterestRate(yield, dayCounter, compounding, frequency), settlementDate);
       }
       #endregion
 

@@ -21,8 +21,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! base class for early exercise path pricers
-   // Returns the value of an option on a given path and given time.
+   /// <summary>
+   /// Base types for early-exercise path pricers.
+   /// </summary>
+   /// <remarks>
+   /// These abstractions return the value of an option on a given path
+   /// and at a given time.
+   /// </remarks>
 
    public static class EarlyExerciseTraits<PathType> where PathType : IPath
    {

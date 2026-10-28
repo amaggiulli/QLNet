@@ -17,10 +17,13 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for European continuous floating-strike lookback
-   /*! Formula from "Option Pricing Formulas",
-       E.G. Haug, McGraw-Hill, 1998, p.61-62
-   */
+   /// <summary>
+   /// Pricing engine for European continuous floating-strike lookback
+   /// </summary>
+   /// <remarks>
+   /// Formula from "Option Pricing Formulas",
+   /// E.G. Haug, McGraw-Hill, 1998, p.61-62
+   /// </remarks>
    public class AnalyticContinuousFloatingLookbackEngine : ContinuousFloatingLookbackOption.Engine
    {
       public AnalyticContinuousFloatingLookbackEngine(GeneralizedBlackScholesProcess process)

@@ -21,12 +21,13 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Correlated multiple asset paths
-   /*! MultiPath contains the list of paths for each asset, i.e.,
-       multipath[j] is the path followed by the j-th asset.
-
-       \ingroup mcarlo
-   */
+   /// <summary>
+   /// Correlated multiple asset paths
+   /// </summary>
+   /// <remarks>
+   /// MultiPath contains the list of paths for each asset, i.e.,
+   /// multipath[j] is the path followed by the j-th asset.
+   /// </remarks>
    public class MultiPath : IPath
    {
       private List<Path> multiPath_;

@@ -21,60 +21,60 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Forward contract on a fixed-rate bond
-   /*! 1. valueDate refers to the settlement date of the bond forward
-         contract.  maturityDate is the delivery (or repurchase)
-         date for the underlying bond (not the bond's maturity
-         date).
-
-      2. Relevant formulas used in the calculations (\f$P\f$ refers
-         to a price):
-
-         a. \f$ P_{CleanFwd}(t) = P_{DirtyFwd}(t) -
-           AI(t=deliveryDate) \f$ where \f$ AI \f$ refers to the
-           accrued interest on the underlying bond.
-
-         b. \f$ P_{DirtyFwd}(t) = \frac{P_{DirtySpot}(t) -
-           SpotIncome(t)} {discountCurve->discount(t=deliveryDate)} \f$
-
-         c. \f$ SpotIncome(t) = \sum_i \left( CF_i \times
-           incomeDiscountCurve->discount(t_i) \right) \f$ where \f$
-           CF_i \f$ represents the ith bond cash flow (coupon
-           payment) associated with the underlying bond falling
-           between the settlementDate and the deliveryDate. (Note
-           the two different discount curves used in b. and c.)
-
-      <b>Example: </b>
-      \link Repo.cpp
-      valuation of a repo on a fixed-rate bond
-      \endlink
-
-      \todo Add preconditions and tests
-
-      \todo Create switch- if coupon goes to seller is toggled on,
-           don't consider income in the \f$ P_{DirtyFwd}(t) \f$
-           calculation.
-
-      \todo Verify this works when the underlying is paper (in which
-           case ignore all AI.)
-
-      \warning This class still needs to be rigorously tested
-
-      \ingroup instruments
-   */
+   /// <summary>
+   /// Forward contract on a fixed-rate bond
+   /// </summary>
+   /// <remarks>
+   /// 1. valueDate refers to the settlement date of the bond forward
+   /// contract.  maturityDate is the delivery (or repurchase)
+   /// date for the underlying bond (not the bond's maturity
+   /// date).
+   ///
+   /// 2. Relevant formulas used in the calculations (\f$P\f$ refers
+   /// to a price):
+   ///
+   /// a. \f$ P_{CleanFwd}(t) = P_{DirtyFwd}(t) -
+   /// AI(t=deliveryDate) \f$ where \f$ AI \f$ refers to the
+   /// accrued interest on the underlying bond.
+   ///
+   /// b. \f$ P_{DirtyFwd}(t) = \frac{P_{DirtySpot}(t) -
+   /// SpotIncome(t)} {discountCurve-&gt;discount(t=deliveryDate)} \f$
+   ///
+   /// c. \f$ SpotIncome(t) = \sum_i \left( CF_i \times
+   /// incomeDiscountCurve-&gt;discount(t_i) \right) \f$ where \f$
+   /// CF_i \f$ represents the ith bond cash flow (coupon
+   /// payment) associated with the underlying bond falling
+   /// between the settlementDate and the deliveryDate. (Note
+   /// the two different discount curves used in b. and c.)
+   ///
+   /// Example:
+   /// \link Repo.cpp
+   /// valuation of a repo on a fixed-rate bond
+   /// \endlink
+   ///
+   /// TODO: Add preconditions and tests
+   ///
+   /// TODO: Create switch- if coupon goes to seller is toggled on,
+   /// don't consider income in the \f$ P_{DirtyFwd}(t) \f$
+   /// calculation.
+   ///
+   /// TODO: Verify this works when the underlying is paper (in which
+   /// case ignore all AI.)
+   ///
+   /// Warning: This class still needs to be rigorously tested
+   /// </remarks>
 
    public class FixedRateBondForward : Forward
    {
       protected FixedRateBond fixedCouponBond_;
 
       // Constructors
-      /*! If strike is given in the constructor, can calculate the
-          NPV of the contract via NPV().
-
-          If strike/forward price is desired, it can be obtained via
-          forwardPrice(). In this case, the strike variable in the
-          constructor is irrelevant and will be ignored.
-      */
+      /// <summary>
+      /// Initializes a fixed-rate bond forward.
+      /// </summary>
+      /// <remarks>
+      /// If a strike is provided, the contract NPV can be obtained via <c>NPV()</c>. If the strike or forward price is desired directly, it can be obtained via <c>forwardPrice()</c>; in that case the constructor strike is ignored.
+      /// </remarks>
       public FixedRateBondForward(Date valueDate, Date maturityDate, Position.Type type, double strike,
                                   int settlementDays,
                                   DayCounter dayCounter, Calendar calendar, BusinessDayConvention businessDayConvention,
@@ -91,24 +91,28 @@ namespace QLNet
 
       // Calculations
 
-      //! (dirty) forward bond price
+      /// <summary>
+      /// Returns the dirty forward bond price.
+      /// </summary>
       public double forwardPrice()
       {
          return forwardValue();
       }
 
-      //! (dirty) forward bond price minus accrued on bond at delivery
+      /// <summary>
+      /// Returns the clean forward bond price.
+      /// </summary>
       public double cleanForwardPrice()
       {
          return forwardValue() - fixedCouponBond_.accruedAmount(maturityDate_);
       }
 
-      //!  NPV of bond coupons discounted using incomeDiscountCurve
-      /*! Here only coupons between max(evaluation date,settlement
-          date) and maturity date of bond forward contract are
-          considered income.
-      */
-
+      /// <summary>
+      /// Returns the present value of bond coupons discounted using the income discount curve.
+      /// </summary>
+      /// <remarks>
+      /// Only coupons between the later of the evaluation date and settlement date, and the maturity date of the bond-forward contract, are treated as income.
+      /// </remarks>
       public override double spotIncome(Handle<YieldTermStructure> incomeDiscountCurve)
       {
          double income = 0.0;
@@ -138,7 +142,9 @@ namespace QLNet
          return income;
       }
 
-      //!  NPV of underlying bond
+      /// <summary>
+      /// Returns the present value of the underlying bond.
+      /// </summary>
       public override double spotValue()
       {
          return fixedCouponBond_.dirtyPrice();

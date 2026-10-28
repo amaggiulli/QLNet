@@ -23,23 +23,22 @@ using System;
 
 namespace QLNet
 {
-   //! Turkish calendar
-   /*! Holidays for the Istanbul Stock Exchange:
-       (data from <https://borsaistanbul.com/en/sayfa/3631/official-holidays>) and
-       <https://feiertagskalender.ch/index.php?geo=3539&hl=en>
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>National Sovereignty and Children’s Day, April 23rd</li>
-       <li>Youth and Sports Day, May 19th</li>
-       <li>Victory Day, August 30th</li>
-       <li>Republic Day, October 29th</li>
-       <li>Local Holidays (Kurban, Ramadan - dates need further validation for >= 2024) </li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Turkish calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Istanbul Stock Exchange:
+   /// (data from https://borsaistanbul.com/en/sayfa/3631/official-holidays) and
+   /// https://feiertagskalender.ch/index.php?geo=3539&amp;hl=en
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// National Sovereignty and Children’s Day, April 23rd
+   /// Youth and Sports Day, May 19th
+   /// Victory Day, August 30th
+   /// Republic Day, October 29th
+   /// Local Holidays (Kurban, Ramadan - dates need further validation for &gt;= 2024) 
+   /// </remarks>
    public class Turkey :  Calendar
    {
       public Turkey() : base(Impl.Singleton) { }

@@ -22,12 +22,13 @@ using System;
 namespace QLNet
 {
 
-   //! Criteria to end optimization process:
-//    ! - maximum number of iterations AND minimum number of iterations around stationary point
-//        - x (independent variable) stationary point
-//        - y=f(x) (dependent variable) stationary point
-//        - stationary gradient
-//
+   /// <summary>
+   /// Termination criteria for optimization algorithms.
+   /// </summary>
+   /// <remarks>
+   /// The criteria combine a maximum number of iterations with convergence checks on the
+   /// independent variable, the function value, and the gradient norm.
+   /// </remarks>
    public class EndCriteria
    {
       public enum Type
@@ -41,7 +42,9 @@ namespace QLNet
          Unknown
       }
 
-      //! Initialization constructor
+      /// <summary>
+      /// Initializes the end criteria used by an optimization routine.
+      /// </summary>
       public EndCriteria(int maxIterations, int? maxStationaryStateIterations, double rootEpsilon, double functionEpsilon, double? gradientNormEpsilon)
       {
          maxIterations_ = maxIterations;
@@ -94,7 +97,9 @@ namespace QLNet
          return checkMaxIterations(iteration, ref ecType) || checkStationaryFunctionValue(fold, fnew, ref statStateIterations, ref ecType) || checkStationaryFunctionAccuracy(fnew, positiveOptimization, ref ecType) || checkZeroGradientNorm(normgnew, ref ecType);
       }
 
-      //! Test if the number of iteration is below MaxIterations
+      /// <summary>
+      /// Checks whether the maximum number of iterations has been reached.
+      /// </summary>
       public bool checkMaxIterations(int iteration, ref EndCriteria.Type ecType)
       {
          if (iteration < maxIterations_)
@@ -102,7 +107,9 @@ namespace QLNet
          ecType = Type.MaxIterations;
          return true;
       }
-      //! Test if the root variation is below rootEpsilon
+      /// <summary>
+      /// Checks whether the change in the independent variable is below the root tolerance.
+      /// </summary>
       public bool checkStationaryPoint(double xOld, double xNew, ref int statStateIterations, ref EndCriteria.Type ecType)
       {
          if (Math.Abs(xNew - xOld) >= rootEpsilon_)
@@ -116,7 +123,9 @@ namespace QLNet
          ecType = Type.StationaryPoint;
          return true;
       }
-      //! Test if the function variation is below functionEpsilon
+      /// <summary>
+      /// Checks whether the change in function value is below the function tolerance.
+      /// </summary>
       public bool checkStationaryFunctionValue(double fxOld, double fxNew, ref int statStateIterations, ref EndCriteria.Type ecType)
       {
          if (Math.Abs(fxNew - fxOld) >= functionEpsilon_)
@@ -130,7 +139,9 @@ namespace QLNet
          ecType = Type.StationaryFunctionValue;
          return true;
       }
-      //! Test if the function value is below functionEpsilon
+      /// <summary>
+      /// Checks whether the function value itself is below the function tolerance.
+      /// </summary>
       public bool checkStationaryFunctionAccuracy(double f, bool positiveOptimization, ref EndCriteria.Type ecType)
       {
          if (!positiveOptimization)
@@ -149,11 +160,11 @@ namespace QLNet
          return true;
       }
 
-      //! Maximum number of iterations
+      // Maximum number of iterations.
       protected int maxIterations_;
-      //! Maximun number of iterations in stationary state
+      // Maximum number of iterations in stationary state.
       protected int? maxStationaryStateIterations_;
-      //! root, function and gradient epsilons
+      // Root, function and gradient epsilons.
       protected double rootEpsilon_;
       protected double functionEpsilon_;
       protected double? gradientNormEpsilon_;

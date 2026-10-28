@@ -21,7 +21,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Finite-differences pricing engine for American-style vanilla options
+   /// <summary>
+   /// Finite-differences pricing engine for American-style vanilla options
+   /// </summary>
    public class FDStepConditionEngine : FDConditionEngineTemplate
    {
       protected TridiagonalOperator controlOperator_;

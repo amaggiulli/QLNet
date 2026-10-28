@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Andrea Maggiulli
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
@@ -192,12 +192,13 @@ namespace QLNet
       public RONCurrency() : base("Romanian new leu", "RON", 946, "L", "", 100, new Rounding(), "%1$.2f %3%") { }
    }
 
-   //! Russian ruble
-   /*! The ISO three-letter code is RUB; the numeric code is 643.
-       It is divided in 100 kopeyki.
-
-       \ingroup currencies
-   */
+   /// <summary>
+   /// Russian ruble
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is RUB; the numeric code is 643.
+   /// It is divided in 100 kopeyki.
+   /// </remarks>
    public class RUBCurrency : Currency
    {
       public RUBCurrency(): base("Russian ruble", "RUB", 643, "", "", 100, new Rounding(), "%1$.2f %2%") { }
@@ -354,12 +355,13 @@ namespace QLNet
       public PTECurrency() : base("Portuguese escudo", "PTE", 620, "Esc", "", 100, new Rounding(), "%1$.0f %3%", new EURCurrency()) { }
    }
 
-   //! Ukrainian hryvnia
-   /*! The ISO three-letter code is UAH; the numeric code is 980.
-      It is divided in 100 kopiykas.
-
-      \ingroup currencies
-   */
+   /// <summary>
+   /// Ukrainian hryvnia
+   /// </summary>
+   /// <remarks>
+   /// The ISO three-letter code is UAH; the numeric code is 980.
+   /// It is divided in 100 kopiykas.
+   /// </remarks>
    public class UAHCurrency : Currency
    {
       public UAHCurrency() : base("Ukrainian hryvnia", "UAH", 980, "hrn", "", 100, new Rounding(), "%1$.2f %3%") { }

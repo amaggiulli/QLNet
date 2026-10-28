@@ -23,10 +23,11 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! References:
-       Levy, D. Numerical Integration
-       http://www2.math.umd.edu/~dlevy/classes/amsc466/lecture-notes/integration-chap.pdf
-   */
+   /// <summary>
+   /// References:
+   /// Levy, D. Numerical Integration
+   /// http://www2.math.umd.edu/~dlevy/classes/amsc466/lecture-notes/integration-chap.pdf
+   /// </summary>
    public class DiscreteTrapezoidIntegral
    {
       public double value(Vector x, Vector f)

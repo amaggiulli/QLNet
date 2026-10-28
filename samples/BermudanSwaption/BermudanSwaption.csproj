@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.12.0</VersionPrefix>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <VersionPrefix>1.13.1</VersionPrefix>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);QL_NEGATIVE_RATES</DefineConstants>
     <AssemblyName>BermudanSwaption</AssemblyName>
     <PackageId>BermudanSwaption</PackageId>
@@ -12,7 +12,7 @@
   </PropertyGroup>
  
   <ItemGroup>
-    <PackageReference Include="QLNet" Version="1.12.0" />
+    <PackageReference Include="QLNet" Version="1.13.1" />
   </ItemGroup>
 
 </Project>

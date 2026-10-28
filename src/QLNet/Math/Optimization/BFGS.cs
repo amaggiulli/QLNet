@@ -17,13 +17,14 @@ using System;
 
 namespace QLNet
 {
-   //! Broyden-Fletcher-Goldfarb-Shanno algorithm
-   /*! See <http://en.wikipedia.org/wiki/BFGS_method>.
-
-       Adapted from Numerical Recipes in C, 2nd edition.
-
-       User has to provide line-search method and optimization end criteria.
-   */
+   /// <summary>
+   /// Broyden-Fletcher-Goldfarb-Shanno algorithm
+   /// </summary>
+   /// <remarks>
+   /// See http://en.wikipedia.org/wiki/BFGS_method.
+   /// Adapted from Numerical Recipes in C, 2nd edition.
+   /// User has to provide line-search method and optimization end criteria.
+   /// </remarks>
    public class BFGS : LineSearchBasedMethod
    {
       public BFGS(LineSearch lineSearch = null)

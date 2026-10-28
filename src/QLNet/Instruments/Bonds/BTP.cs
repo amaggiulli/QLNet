@@ -22,12 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   /*! Italian CCTEU (Certificato di credito del tesoro)
-        Euribor6M indexed floating rate bond
-
-        \ingroup instruments
-
-   */
+   /// <summary>
+   /// Italian CCTEU (Certificato di Credito del Tesoro) Euribor 6M indexed floating-rate bond.
+   /// </summary>
    public class CCTEU : FloatingRateBond
    {
       public CCTEU(Date maturityDate, double spread, Handle<YieldTermStructure> fwdCurve = null,
@@ -51,8 +48,12 @@ namespace QLNet
 
       #region Bond interface
 
-      //! accrued amount at a given date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the accrued amount at the given date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public override double accruedAmount(Date d = null)
       {
          double result = base.accruedAmount(d);
@@ -63,10 +64,9 @@ namespace QLNet
 
    }
 
-   //! Italian BTP (Buono Poliennali del Tesoro) fixed rate bond
-   /*! \ingroup instruments
-
-   */
+   /// <summary>
+   /// Italian BTP (Buono Poliennali del Tesoro) fixed rate bond
+   /// </summary>
    public class BTP : FixedRateBond
    {
       public BTP(Date maturityDate, double fixedRate, Date startDate = null, Date issueDate = null)
@@ -78,9 +78,12 @@ namespace QLNet
       new ActualActual(ActualActual.Convention.ISMA),
       BusinessDayConvention.ModifiedFollowing, 100.0, issueDate, new TARGET()) { }
 
-      /*! constructor needed for legacy non-par redemption BTPs.
-          As of today the only remaining one is IT123456789012
-          that will redeem 99.999 on xx-may-2037 */
+      /// <summary>
+      /// Initializes a legacy BTP with non-par redemption.
+      /// </summary>
+      /// <remarks>
+      /// This constructor is needed for legacy non-par redemption BTPs. At present, the only remaining case is IT123456789012, which redeems 99.999 on xx-may-2037.
+      /// </remarks>
       public BTP(Date maturityDate, double fixedRate, double redemption, Date startDate = null, Date issueDate = null)
          : base(2, 100.0, new Schedule(startDate,
                                        maturityDate, new Period(6, TimeUnit.Months),
@@ -91,8 +94,12 @@ namespace QLNet
       BusinessDayConvention.ModifiedFollowing, redemption, issueDate, new TARGET()) { }
       #region Bond interface
 
-      //! accrued amount at a given date
-      /*! The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the accrued amount at the given date.
+      /// </summary>
+      /// <remarks>
+      /// The default bond settlement is used if no date is given.
+      /// </remarks>
       public override double accruedAmount(Date d = null)
       {
          double result = base.accruedAmount(d);
@@ -101,10 +108,12 @@ namespace QLNet
 
       #endregion
 
-      //! BTP yield given a (clean) price and settlement date
-      /*! The default BTP conventions are used: Actual/Actual (ISMA),
-          Compounded, Annual.
-          The default bond settlement is used if no date is given. */
+      /// <summary>
+      /// Returns the BTP yield for a clean price and settlement date.
+      /// </summary>
+      /// <remarks>
+      /// The default BTP conventions are Actual/Actual (ISMA), compounded, annual. The default bond settlement is used if no date is given.
+      /// </remarks>
       public double yield(double cleanPrice, Date settlementDate = null, double accuracy = 1.0e-8, int maxEvaluations = 100)
       {
          return base.yield(cleanPrice, new ActualActual(ActualActual.Convention.ISMA),
@@ -408,7 +417,9 @@ namespace QLNet
       private List < double? > swapBondYields_, swapRates_;
    }
 
-   //! RendistatoCalculator equivalent swap lenth Quote adapter
+   /// <summary>
+   /// RendistatoCalculator equivalent swap lenth Quote adapter
+   /// </summary>
    public class RendistatoEquivalentSwapLengthQuote : Quote
    {
       public RendistatoEquivalentSwapLengthQuote(RendistatoCalculator r) { r_ = r; }
@@ -429,7 +440,9 @@ namespace QLNet
       private RendistatoCalculator r_;
    }
 
-   //! RendistatoCalculator equivalent swap spread Quote adapter
+   /// <summary>
+   /// RendistatoCalculator equivalent swap spread Quote adapter
+   /// </summary>
    public class RendistatoEquivalentSwapSpreadQuote : Quote
    {
       public RendistatoEquivalentSwapSpreadQuote(RendistatoCalculator r) { r_ = r; }

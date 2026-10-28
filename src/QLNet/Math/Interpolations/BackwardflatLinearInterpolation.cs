@@ -64,7 +64,12 @@ namespace QLNet
 
    public class BackwardflatLinearInterpolation : Interpolation2D
    {
-      /*! \pre the \f$ x \f$ and \f$ y \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a backward-flat linear interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> and <c>y</c> values must be sorted.
+      /// </remarks>
       public BackwardflatLinearInterpolation(List<double> xBegin, int xEnd, List<double> yBegin, int yEnd, Matrix zData)
       {
          impl_ = new BackwardflatLinearInterpolationImpl(xBegin, xEnd, yBegin, yEnd, zData);

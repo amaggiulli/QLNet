@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Zero-coupon inflation-swap bootstrap helper
+   /// <summary>
+   /// Zero-coupon inflation-swap bootstrap helper
+   /// </summary>
    public class ZeroCouponInflationSwapHelper : BootstrapHelper<ZeroInflationTermStructure>
    {
       public ZeroCouponInflationSwapHelper(
@@ -127,7 +129,9 @@ namespace QLNet
       protected ZeroCouponInflationSwap zciis_;
    }
 
-   //! Year-on-year inflation-swap bootstrap helper
+   /// <summary>
+   /// Year-on-year inflation-swap bootstrap helper
+   /// </summary>
    public class YearOnYearInflationSwapHelper  : BootstrapHelper<YoYInflationTermStructure>
    {
       public YearOnYearInflationSwapHelper(Handle<Quote> quote,

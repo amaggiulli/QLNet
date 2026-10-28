@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,7 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! Simple stock class
+   /// <summary>
+   /// Simple stock class
+   /// </summary>
    public class Stock : Instrument
    {
       private Handle<Quote> quote_;

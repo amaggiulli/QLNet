@@ -20,7 +20,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! amortizing CMS-rate bond
+   /// <summary>
+   /// amortizing CMS-rate bond
+   /// </summary>
    public class AmortizingCmsRateBond : Bond
    {
       public AmortizingCmsRateBond(int settlementDays,

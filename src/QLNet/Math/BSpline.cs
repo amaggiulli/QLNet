@@ -18,21 +18,21 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! B-spline basis functions
-   /*! Follows treatment and notation from:
-
-       Weisstein, Eric W. "B-Spline." From MathWorld--A Wolfram Web
-       Resource.  <http://mathworld.wolfram.com/B-Spline.html>
-
-       \f$ (p+1) \f$-th order B-spline (or p degree polynomial) basis
-       functions \f$ N_{i,p}(x), i = 0,1,2 \ldots n \f$, with \f$ n+1 \f$
-       control points, or equivalently, an associated knot vector
-       of size \f$ p+n+2 \f$ defined at the increasingly sorted points
-       \f$ (x_0, x_1 \ldots x_{n+p+1}) \f$. A linear B-spline has
-       \f$ p=1 \f$, quadratic B-spline has \f$ p=2 \f$, a cubic
-       B-spline has \f$ p=3 \f$, etc.
-
-   */
+   /// <summary>
+   /// B-spline basis functions
+   /// </summary>
+   /// <remarks>
+   /// Follows treatment and notation from:
+   /// Weisstein, Eric W. "B-Spline." From MathWorld--A Wolfram Web
+   /// Resource.  http://mathworld.wolfram.com/B-Spline.html
+   /// \f$ (p+1) \f$-th order B-spline (or p degree polynomial) basis
+   /// functions \f$ N_{i,p}(x), i = 0,1,2 \ldots n \f$, with \f$ n+1 \f$
+   /// control points, or equivalently, an associated knot vector
+   /// of size \f$ p+n+2 \f$ defined at the increasingly sorted points
+   /// \f$ (x_0, x_1 \ldots x_{n+p+1}) \f$. A linear B-spline has
+   /// \f$ p=1 \f$, quadratic B-spline has \f$ p=2 \f$, a cubic
+   /// B-spline has \f$ p=3 \f$, etc.
+   /// </remarks>
    public class BSpline
    {
       public BSpline(int p, int n, List<double> knots)

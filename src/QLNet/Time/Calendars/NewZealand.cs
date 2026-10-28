@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -24,33 +24,33 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! New Zealand calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday or
-           Tuesday)</li>
-       <li>Day after New Year's Day, January 2st (possibly moved to
-           Monday or Tuesday)</li>
-       <li>Anniversary Day, Monday nearest January 22nd</li>
-       <li>Waitangi Day. February 6th</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>ANZAC Day. April 25th</li>
-       <li>Queen's Birthday, first Monday in June</li>
-       <li>Matariki Holiday Date, based on Maori lunar calendar, always a Friday</li>
-       <li>Labour Day, fourth Monday in October</li>
-       <li>Christmas, December 25th (possibly moved to Monday or Tuesday)</li>
-       <li>Boxing Day, December 26th (possibly moved to Monday or
-           Tuesday)</li>
-       </ul>
-       \note The holiday rules for New Zealand were documented by
-             David Gilbert for IDB (http://www.jrefinery.com/ibd/)
-             The Matariki holiday calendar has been released by the NZ Government
-             (https://www.legislation.govt.nz/act/public/2022/0014/latest/LMS557893.html)   
-       \ingroup calendars
-   */
+   /// <summary>
+   /// New Zealand calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday or
+   /// Tuesday)
+   /// Day after New Year's Day, January 2st (possibly moved to
+   /// Monday or Tuesday)
+   /// Anniversary Day, Monday nearest January 22nd
+   /// Waitangi Day. February 6th
+   /// Good Friday
+   /// Easter Monday
+   /// ANZAC Day. April 25th
+   /// Queen's Birthday, first Monday in June
+   /// Matariki Holiday Date, based on Maori lunar calendar, always a Friday
+   /// Labour Day, fourth Monday in October
+   /// Christmas, December 25th (possibly moved to Monday or Tuesday)
+   /// Boxing Day, December 26th (possibly moved to Monday or
+   /// Tuesday)
+   /// Note: The holiday rules for New Zealand were documented by
+   /// David Gilbert for IDB (http://www.jrefinery.com/ibd/)
+   /// The Matariki holiday calendar has been released by the NZ Government
+   /// (https://www.legislation.govt.nz/act/public/2022/0014/latest/LMS557893.html)
+   /// </remarks>
    public class NewZealand : Calendar
    {
       public NewZealand() : base(Impl.Singleton) { }

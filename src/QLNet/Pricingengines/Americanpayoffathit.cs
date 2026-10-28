@@ -21,8 +21,9 @@ using System;
 namespace QLNet
 {
 
-   //! Analytic formula for American exercise payoff at-hit options
-   //! \todo calculate greeks
+   /// <summary>
+   /// Analytic formula for American exercise payoff-at-hit options.
+   /// </summary>
    public class AmericanPayoffAtHit
    {
       private double spot_;

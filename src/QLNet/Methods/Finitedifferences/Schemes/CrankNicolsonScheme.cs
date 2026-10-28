@@ -22,10 +22,11 @@ using System.Linq;
 
 namespace QLNet
 {
-   /*! In one dimension the Crank-Nicolson scheme is equivalent to the
-       Douglas scheme and in higher dimensions it is usually inferior to
-       operator splitting methods like Craig-Sneyd or Hundsdorfer-Verwer.
-   */
+   /// <summary>
+   /// In one dimension the Crank-Nicolson scheme is equivalent to the
+   /// Douglas scheme and in higher dimensions it is usually inferior to
+   /// operator splitting methods like Craig-Sneyd or Hundsdorfer-Verwer.
+   /// </summary>
    public class CrankNicolsonScheme : IMixedScheme, ISchemeFactory
    {
       public CrankNicolsonScheme()
@@ -59,10 +60,10 @@ namespace QLNet
       public void step(ref object a, double t, double theta = 1.0)
       {
          Utils.QL_REQUIRE(t - dt_ > -1e-8, () => "a step towards negative time given");
-         if (theta_ != 1.0)
+         if (theta_.IsNotEqual(1.0))
             explicit_.step(ref a, t, 1.0 - theta_);
 
-         if (theta_ != 0.0)
+         if (theta_.IsNotEqual(0.0))
             implicit_.step(ref a, t, theta_);
       }
 

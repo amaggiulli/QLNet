@@ -24,25 +24,15 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Analytic pricing engine for double barrier binary options
-   /*! This engine implements C.H.Hui series ("One-Touch Double Barrier
-       Binary Option Values", Applied Financial Economics 6/1996), as
-       described in "The complete guide to option pricing formulas 2nd Ed",
-       E.G. Haug, McGraw-Hill, p.180
-
-       The Knock In part of KI+KO and KO+KI options pays at hit, while the
-       Double Knock In pays at end.
-       This engine thus requires European esercise for Double Knock options,
-       and American exercise for KIKO/KOKI.
-
-       \ingroup barrierengines
-
-       greeks are calculated by simple numeric derivation
-
-       \test
-       - the correctness of the returned value is tested by reproducing
-         results available in literature.
-   */
+   /// <summary>
+   /// Analytic pricing engine for double-barrier binary options.
+   /// </summary>
+   /// <remarks>
+   /// This engine implements the C. H. Hui series for one-touch double-barrier binary option values, as described by Haug.
+   /// The knock-in part of KI+KO and KO+KI options pays at hit, while double knock-in pays at expiry.
+   /// Therefore, this engine requires European exercise for double-knock options and American exercise for KIKO and KOKI.
+   /// Greeks are calculated by simple numerical differentiation.
+   /// </remarks>
 
    // calc helper object
    public class AnalyticDoubleBarrierBinaryEngineHelper

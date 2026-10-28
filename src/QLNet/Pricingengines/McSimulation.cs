@@ -23,13 +23,15 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! base class for Monte Carlo engines
-   /*! Eventually this class might offer greeks methods.  Deriving a
-       class from McSimulation gives an easy way to write a Monte
-       Carlo engine.
-
-       See McVanillaEngine as an example.
-   */
+   /// <summary>
+   /// base class for Monte Carlo engines
+   /// </summary>
+   /// <remarks>
+   /// Eventually this class might offer greeks methods.  Deriving a
+   /// class from McSimulation gives an easy way to write a Monte
+   /// Carlo engine.
+   /// See McVanillaEngine as an example.
+   /// </remarks>
    public abstract class McSimulation<MC, RNG, S> where S : IGeneralStatistics, new ()
    {
       protected McSimulation(bool antitheticVariate, bool controlVariate)
@@ -38,7 +40,9 @@ namespace QLNet
          controlVariate_ = controlVariate;
       }
 
-      //! add samples until the required absolute tolerance is reached
+      /// <summary>
+      /// Adds samples until the required absolute tolerance is reached.
+      /// </summary>
       public double value(double tolerance, int maxSamples = int.MaxValue, int minSamples = 1023)
       {
          int sampleNumber = mcModel_.sampleAccumulator().samples();
@@ -72,7 +76,9 @@ namespace QLNet
          return mcModel_.sampleAccumulator().mean();
       }
 
-      //! simulate a fixed number of samples
+      /// <summary>
+      /// Simulates a fixed number of samples.
+      /// </summary>
       public double valueWithSamples(int samples)
       {
 
@@ -87,19 +93,25 @@ namespace QLNet
          return mcModel_.sampleAccumulator().mean();
       }
 
-      //! error estimated using the samples simulated so far
+      /// <summary>
+      /// Returns the error estimate based on the samples simulated so far.
+      /// </summary>
       public double errorEstimate() { return mcModel_.sampleAccumulator().errorEstimate(); }
 
-      //! access to the sample accumulator for richer statistics
+      /// <summary>
+      /// Returns the sample accumulator for richer statistics.
+      /// </summary>
       public S sampleAccumulator() { return mcModel_.sampleAccumulator(); }
 
-      //! basic calculate method provided to inherited pricing engines
+      /// <summary>
+      /// Basic calculation method provided to inherited pricing engines.
+      /// </summary>
       public void calculate(double? requiredTolerance, int? requiredSamples, int? maxSamples)
       {
          Utils.QL_REQUIRE(requiredTolerance != null ||
                           requiredSamples != null, () => "neither tolerance nor number of samples set");
 
-         //! Initialize the one-factor Monte Carlo
+         // Initialize the one-factor Monte Carlo engine.
          if (this.controlVariate_)
          {
 

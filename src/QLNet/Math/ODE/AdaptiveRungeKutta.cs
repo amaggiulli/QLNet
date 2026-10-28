@@ -35,12 +35,14 @@ namespace QLNet
 
       public delegate double OdeFct1d(double x, double y);
 
-      /*! The class is constructed with the following inputs:
-          - eps       prescribed error for the solution
-          - h1        start step size
-          - hmin      smallest step size allowed
-      */
-
+      /// <summary>
+      /// Initializes the adaptive Runge-Kutta integrator.
+      /// </summary>
+      /// <remarks>
+      /// <paramref name="eps"/> is the prescribed error tolerance,
+      /// <paramref name="h1"/> is the starting step size, and
+      /// <paramref name="hmin"/> is the smallest allowed step size.
+      /// </remarks>
       public AdaptiveRungeKutta(double eps = 1.0e-6,
                                 double h1 = 1.0e-4,
                                 double hmin = 0.0)
@@ -80,12 +82,12 @@ namespace QLNet
          dc6 = c6 - 0.25;
       }
 
-      /*! Integrate the ode from \f$ x1 \f$ to \f$ x2 \f$ with
-          initial value condition \f$ f(x1)=y1 \f$.
-
-          The ode is given by a function \f$ F: R \times K^n
-          \rightarrow K^n \f$ as \f$ f'(x) = F(x,f(x)) \f$, $K=R,
-          C$ */
+      /// <summary>
+      /// Integrates the ODE from <paramref name="x1"/> to <paramref name="x2"/> with initial value <paramref name="y1"/>.
+      /// </summary>
+      /// <remarks>
+      /// The ODE is defined by a function <c>F(x, f(x))</c> such that <c>f'(x) = F(x, f(x))</c>.
+      /// </remarks>
       public List<double> value(OdeFct ode,
                                 List<double> y1,
                                 double x1,

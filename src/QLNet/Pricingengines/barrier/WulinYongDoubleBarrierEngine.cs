@@ -17,15 +17,17 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for barrier options using analytical formulae
-   /*! The formulas are taken from "Barrier Option Pricing",
-        Wulin Suo, Yong Wang.
-
-       \ingroup barrierengines
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in literature.
-   */
+   /// <summary>
+   /// Pricing engine for barrier options using analytical formulae
+   /// </summary>
+   /// <remarks>
+   /// The formulas are taken from "Barrier Option Pricing",
+   /// Wulin Suo, Yong Wang.
+   ///
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in literature.
+   /// </remarks>
    public class WulinYongDoubleBarrierEngine : DoubleBarrierOption.Engine
    {
       public WulinYongDoubleBarrierEngine(GeneralizedBlackScholesProcess process, int series = 5)

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -25,7 +25,9 @@ using System.Reflection;
 namespace QLNet
 {
 
-   //! generic pricer for floating-rate coupons
+   /// <summary>
+   /// generic pricer for floating-rate coupons
+   /// </summary>
    public abstract class FloatingRateCouponPricer : IObservable, IObserver
    {
       // required interface
@@ -63,7 +65,9 @@ namespace QLNet
       #endregion
    }
 
-   //! base pricer for capped/floored Ibor coupons
+   /// <summary>
+   /// base pricer for capped/floored Ibor coupons
+   /// </summary>
    public abstract class IborCouponPricer : FloatingRateCouponPricer
    {
       protected IborCouponPricer(Handle<OptionletVolatilityStructure> v = null)
@@ -90,13 +94,15 @@ namespace QLNet
       private Handle<OptionletVolatilityStructure> capletVol_;
    }
 
-   /*! Black-formula pricer for capped/floored Ibor coupons
-       References for timing adjustments
-       Black76             Hull, Options, Futures and other
-                           derivatives, 4th ed., page 550
-       BivariateLognormal  http://ssrn.com/abstract=2170721
-       The bivariate lognormal adjustment implementation is
-       still considered experimental */
+   /// <summary>
+   /// Black-formula pricer for capped/floored Ibor coupons
+   /// References for timing adjustments
+   /// Black76             Hull, Options, Futures and other
+   /// derivatives, 4th ed., page 550
+   /// BivariateLognormal  http://ssrn.com/abstract=2170721
+   /// The bivariate lognormal adjustment implementation is
+   /// still considered experimental
+   /// </summary>
    public class BlackIborCouponPricer : IborCouponPricer
    {
       public enum TimingAdjustment { Black76, BivariateLognormal }
@@ -270,7 +276,9 @@ namespace QLNet
 
    }
 
-   //! base pricer for vanilla CMS coupons
+   /// <summary>
+   /// base pricer for vanilla CMS coupons
+   /// </summary>
    public abstract class CmsCouponPricer : FloatingRateCouponPricer
    {
       protected CmsCouponPricer(Handle<SwaptionVolatilityStructure> v = null)
@@ -291,8 +299,10 @@ namespace QLNet
       private Handle<SwaptionVolatilityStructure> swaptionVol_;
    }
 
-   /*! (CMS) coupon pricer that has a mean reversion parameter which can be
-      used to calibrate to cms market quotes */
+   /// <summary>
+   /// (CMS) coupon pricer that has a mean reversion parameter which can be
+   /// used to calibrate to cms market quotes
+   /// </summary>
    public interface IMeanRevertingPricer
    {
       double meanReversion() ;

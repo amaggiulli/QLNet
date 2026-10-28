@@ -20,15 +20,12 @@
 
 namespace QLNet
 {
-   //! \f$ D_{+} \f$ matricial representation
-   /*! The differential operator \f$ D_{+} \f$ discretizes the
-       first derivative with the first-order formula
-       \f[ \frac{\partial u_{i}}{\partial x} \approx
-           \frac{u_{i+1}-u_{i}}{h} = D_{+} u_{i}
-       \f]
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// Matrix representation of <c>D+</c>.
+   /// </summary>
+   /// <remarks>
+   /// This differential operator discretizes the first derivative with a first-order forward formula.
+   /// </remarks>
    public class DPlus : TridiagonalOperator
    {
       public DPlus(int gridPoints, double h)

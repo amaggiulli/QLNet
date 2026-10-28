@@ -21,10 +21,13 @@ using System;
 namespace QLNet
 {
 
-   //! Engine for a short-rate model specialized on a lattice
-   /*! Derived engines only need to implement the <tt>calculate()</tt>
-       method
-   */
+   /// <summary>
+   /// Engine for a short-rate model specialized on a lattice
+   /// </summary>
+   /// <remarks>
+   /// Derived engines only need to implement the <c>calculate()</c>
+   /// method
+   /// </remarks>
    public class LatticeShortRateModelEngine<ArgumentsType, ResultsType>
       : GenericModelEngine<ShortRateModel, ArgumentsType, ResultsType>
         where ArgumentsType : IPricingEngineArguments, new ()

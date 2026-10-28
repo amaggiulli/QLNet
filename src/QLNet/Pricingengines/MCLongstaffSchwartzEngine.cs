@@ -21,16 +21,19 @@ using System;
 
 namespace QLNet
 {
-   //! Longstaff-Schwarz Monte Carlo engine for early exercise options
-   /*! References:
-
-       Francis Longstaff, Eduardo Schwartz, 2001. Valuing American Options
-       by Simulation: A Simple Least-Squares Approach, The Review of
-       Financial Studies, Volume 14, No. 1, 113-147
-
-       \test the correctness of the returned value is tested by
-             reproducing results available in web/literature
-   */
+   /// <summary>
+   /// Longstaff-Schwarz Monte Carlo engine for early exercise options
+   /// </summary>
+   /// <remarks>
+   /// References:
+   ///
+   /// Francis Longstaff, Eduardo Schwartz, 2001. Valuing American Options
+   /// by Simulation: A Simple Least-Squares Approach, The Review of
+   /// Financial Studies, Volume 14, No. 1, 113-147
+   ///
+   /// Test: the correctness of the returned value is tested by
+   /// reproducing results available in web/literature
+   /// </remarks>
    public abstract class MCLongstaffSchwartzEngine<GenericEngine, MC, RNG>
       : MCLongstaffSchwartzEngine<GenericEngine, MC, RNG, Statistics>
         where GenericEngine : IPricingEngine, new ()

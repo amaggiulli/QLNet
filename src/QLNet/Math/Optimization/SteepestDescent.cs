@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,11 +20,13 @@
 
 namespace QLNet
 {
-   //! Multi-dimensional steepest-descent class
-   /*! User has to provide line-search method and optimization end criteria
-
-       search direction \f$ = - f'(x) \f$
-   */
+   /// <summary>
+   /// Multi-dimensional steepest-descent class
+   /// </summary>
+   /// <remarks>
+   /// User has to provide line-search method and optimization end criteria
+   /// search direction \f$ = - f'(x) \f$
+   /// </remarks>
    public class SteepestDescent : LineSearchBasedMethod
    {
       public SteepestDescent(LineSearch lineSearch = null)

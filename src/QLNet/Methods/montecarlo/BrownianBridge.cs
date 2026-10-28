@@ -29,15 +29,16 @@ using System.Collections.Generic;
 // ===========================================================================
 namespace QLNet
 {
-   //! Builds Wiener process paths using Gaussian variates
-   /*! This class generates normalized (i.e., unit-variance) paths as
-       sequences of variations. In order to obtain the actual path of
-       the underlying, the returned variations must be multiplied by
-       the integrated variance (including time) over the
-       corresponding time step.
-
-       \ingroup mcarlo
-   */
+   /// <summary>
+   /// Builds Wiener process paths using Gaussian variates
+   /// </summary>
+   /// <remarks>
+   /// This class generates normalized (i.e., unit-variance) paths as
+   /// sequences of variations. In order to obtain the actual path of
+   /// the underlying, the returned variations must be multiplied by
+   /// the integrated variance (including time) over the
+   /// corresponding time step.
+   /// </remarks>
    public class BrownianBridge
    {
       private int size_;
@@ -51,7 +52,9 @@ namespace QLNet
       private List<double> leftWeight_, rightWeight_, stdDev_;
 
 
-      //! unit-time path
+      /// <summary>
+      /// unit-time path
+      /// </summary>
       public BrownianBridge(int steps)
       {
          size_ = steps;
@@ -68,8 +71,12 @@ namespace QLNet
          initialize();
       }
 
-      //! generic times
-      /*! \note the starting time of the path is assumed to be 0 and must not be included */
+      /// <summary>
+      /// generic times
+      /// </summary>
+      /// <remarks>
+      /// Note: the starting time of the path is assumed to be 0 and must not be included
+      /// </remarks>
       public BrownianBridge(List<double> times)
       {
          size_ = times.Count;
@@ -84,7 +91,9 @@ namespace QLNet
          initialize();
       }
 
-      //! generic times
+      /// <summary>
+      /// Initializes the bridge from a generic time grid.
+      /// </summary>
       public BrownianBridge(TimeGrid timeGrid)
       {
          size_ = timeGrid.size() - 1;

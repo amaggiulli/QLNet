@@ -21,18 +21,19 @@ using System;
 
 namespace QLNet
 {
-   //! Generalized Black-Scholes stochastic process
-   /*! This class describes the stochastic process \f$ S \f$ governed by
-       \f[
-           d\ln S(t) = (r(t) - q(t) - \frac{\sigma(t, S)^2}{2}) dt
-                    + \sigma dW_t.
-       \f]
-
-       \warning while the interface is expressed in terms of \f$ S \f$,
-                the internal calculations work on \f$ ln S \f$.
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Generalized Black-Scholes stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process \f$ S \f$ governed by
+   /// \f[
+   /// d\ln S(t) = (r(t) - q(t) - \frac{\sigma(t, S)^2}{2}) dt
+   /// + \sigma dW_t.
+   /// \f]
+   ///
+   /// Warning: while the interface is expressed in terms of \f$ S \f$,
+   /// the internal calculations work on \f$ ln S \f$.
+   /// </remarks>
    public class GeneralizedBlackScholesProcess : StochasticProcess1D
    {
 
@@ -77,7 +78,7 @@ namespace QLNet
          return x0_.link.value();
       }
 
-      /*! \todo revise extrapolation */
+      // TODO: revise extrapolation.
       public override double drift(double t, double x)
       {
          double sigma = diffusion(t, x);
@@ -88,7 +89,7 @@ namespace QLNet
                 - 0.5 * sigma * sigma;
       }
 
-      /*! \todo revise extrapolation */
+      // TODO: revise extrapolation.
       public override double diffusion(double t, double x)
       {
          return localVolatility().link.localVol(t, x, true);
@@ -99,10 +100,13 @@ namespace QLNet
          return x0 * Math.Exp(dx);
       }
 
-      /*! \warning raises a "not implemented" exception.  It should
-             be rewritten to return the expectation E(S) of
-             the process, not exp(E(log S)).
-      */
+      /// <summary>
+      /// Returns the expectation of the process over the given time step.
+      /// </summary>
+      /// <remarks>
+      /// For strike-dependent local volatility this override is not implemented yet.
+      /// It should return <c>E(S)</c> for the process, not <c>exp(E(log S))</c>.
+      /// </remarks>
       public override double expectation(double t0, double x0, double dt)
       {
          localVolatility(); // trigger update
@@ -238,14 +242,15 @@ namespace QLNet
       private bool updated_, isStrikeIndependent_;
    }
 
-   //! Black-Scholes (1973) stochastic process
-   /*! This class describes the stochastic process S for a stock given by
-       \f[
-           dS(t, S) = (r(t) - \frac{\sigma(t, S)^2}{2}) dt + \sigma dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Black-Scholes (1973) stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process S for a stock given by
+   /// \f[
+   /// dS(t, S) = (r(t) - \frac{\sigma(t, S)^2}{2}) dt + \sigma dW_t.
+   /// \f]
+   /// </remarks>
 
    public class BlackScholesProcess : GeneralizedBlackScholesProcess
    {
@@ -266,16 +271,17 @@ namespace QLNet
       {}
    }
 
-   //! Merton (1973) extension to the Black-Scholes stochastic process
-   /*! This class describes the stochastic process for a stock or
-       stock index paying a continuous dividend yield given by
-       \f[
-           dS(t, S) = (r(t) - q(t) - \frac{\sigma(t, S)^2}{2}) dt
-                    + \sigma dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Merton (1973) extension to the Black-Scholes stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process for a stock or
+   /// stock index paying a continuous dividend yield given by
+   /// \f[
+   /// dS(t, S) = (r(t) - q(t) - \frac{\sigma(t, S)^2}{2}) dt
+   /// + \sigma dW_t.
+   /// \f]
+   /// </remarks>
 
    public class BlackScholesMertonProcess : GeneralizedBlackScholesProcess
    {
@@ -295,15 +301,16 @@ namespace QLNet
       {}
    }
 
-   //! Black (1976) stochastic process
-   /*! This class describes the stochastic process for a forward or
-       futures contract given by
-       \f[
-           dS(t, S) = \frac{\sigma(t, S)^2}{2} dt + \sigma dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Black (1976) stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process for a forward or
+   /// futures contract given by
+   /// \f[
+   /// dS(t, S) = \frac{\sigma(t, S)^2}{2} dt + \sigma dW_t.
+   /// \f]
+   /// </remarks>
 
    public class BlackProcess : GeneralizedBlackScholesProcess
    {
@@ -321,16 +328,17 @@ namespace QLNet
       {}
    }
 
-   //! Garman-Kohlhagen (1983) stochastic process
-   /*! This class describes the stochastic process for an exchange
-       rate given by
-       \f[
-           dS(t, S) = (r(t) - r_f(t) - \frac{\sigma(t, S)^2}{2}) dt
-                    + \sigma dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Garman-Kohlhagen (1983) stochastic process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process for an exchange
+   /// rate given by
+   /// \f[
+   /// dS(t, S) = (r(t) - r_f(t) - \frac{\sigma(t, S)^2}{2}) dt
+   /// + \sigma dW_t.
+   /// \f]
+   /// </remarks>
 
    public class GarmanKohlagenProcess : GeneralizedBlackScholesProcess
    {

@@ -76,12 +76,13 @@ namespace QLNet
          return 0;
       }
 
-      /*! Incomplete Beta function
-
-          The implementation of the algorithm was inspired by
-          "Numerical Recipes in C", 2nd edition,
-          Press, Teukolsky, Vetterling, Flannery, chapter 6
-      */
+      /// <summary>
+      /// Computes the incomplete beta function.
+      /// </summary>
+      /// <remarks>
+      /// The implementation is inspired by "Numerical Recipes in C", 2nd edition,
+      /// chapter 6.
+      /// </remarks>
       public static double incompleteBetaFunction(double a, double b, double x)
       {
          return incompleteBetaFunction(a, b, x, 1e-16, 100);

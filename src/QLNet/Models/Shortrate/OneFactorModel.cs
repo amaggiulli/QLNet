@@ -22,19 +22,24 @@ using System;
 
 namespace QLNet
 {
-   //! Single-factor short-rate model abstract class
-   /*! \ingroup shortrate */
+   /// <summary>
+   /// Single-factor short-rate model abstract class
+   /// </summary>
 
    public abstract class OneFactorModel : ShortRateModel
    {
       protected OneFactorModel(int nArguments) : base(nArguments)
       {}
 
-      //! Base class describing the short-rate dynamics
+      /// <summary>
+      /// Base class describing the short-rate dynamics
+      /// </summary>
       public abstract class ShortRateDynamics
       {
          private StochasticProcess1D process_;
-         //! Returns the risk-neutral dynamics of the state variable
+         /// <summary>
+         /// Returns the risk-neutral dynamics of the state variable.
+         /// </summary>
          public StochasticProcess1D process()
          {
             return process_;
@@ -45,24 +50,34 @@ namespace QLNet
             process_ = process;
          }
 
-         //! Compute state variable from short rate
+         /// <summary>
+         /// Computes the state variable from the short rate.
+         /// </summary>
          public abstract double variable(double t, double r);
 
-         //! Compute short rate from state variable
+         /// <summary>
+         /// Computes the short rate from the state variable.
+         /// </summary>
          public abstract double shortRate(double t, double variable);
       }
 
-      //! returns the short-rate dynamics
+      /// <summary>
+      /// Returns the short-rate dynamics.
+      /// </summary>
       public abstract ShortRateDynamics dynamics();
 
-      //! Return by default a trinomial recombining tree
+      /// <summary>
+      /// Returns a trinomial recombining tree by default.
+      /// </summary>
       public override Lattice tree(TimeGrid grid)
       {
          TrinomialTree trinomial = new TrinomialTree(dynamics().process(), grid);
          return new ShortRateTree(trinomial, dynamics(), grid);
       }
 
-      //! Recombining trinomial tree discretizing the state variable
+      /// <summary>
+      /// Recombining trinomial tree discretizing the state variable
+      /// </summary>
       public class ShortRateTree : TreeLattice1D<ShortRateTree>, IGenericLattice
       {
          protected override ShortRateTree impl()
@@ -70,7 +85,9 @@ namespace QLNet
             return this;
          }
 
-         //! Plain tree build-up from short-rate dynamics
+         /// <summary>
+         /// Initializes a tree directly from the short-rate dynamics.
+         /// </summary>
          public ShortRateTree(TrinomialTree tree,
                               ShortRateDynamics dynamics,
                               TimeGrid timeGrid)
@@ -80,7 +97,9 @@ namespace QLNet
             dynamics_ = dynamics;
          }
 
-         //! Tree build-up + numerical fitting to term-structure
+         /// <summary>
+         /// Initializes a tree from the short-rate dynamics and fits it numerically to the term structure.
+         /// </summary>
          public ShortRateTree(TrinomialTree tree, ShortRateDynamics dynamics, TermStructureFittingParameter.NumericalImpl theta,
                               TimeGrid timeGrid)
             : base(timeGrid, tree.size(1))

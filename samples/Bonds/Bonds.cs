@@ -1,8 +1,8 @@
 ﻿/*
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008, 2009 , 2010 Andrea Maggiulli (a.maggiulli@gmail.com)
- *
- This file is part of QLNet Project http://qlnet.sourceforge.net/
+
+ This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
  QLNet is free software: you can redistribute it and/or modify it
  under the terms of the QLNet license.  You should have received a
@@ -19,508 +19,363 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using QLNet;
 
-namespace Bonds
+namespace Bonds;
+
+public class Bonds
 {
-   class Bonds
+   public static void Main(string[] args)
    {
-      static void Main(string[] args)
+      var timer = DateTime.Now;
+      Calendar calendar = new TARGET();
+      var settlementDate = new Date(18, Month.September, 2008);
+      const int settlementDays = 3;
+      var todaysDate = calendar.advance(settlementDate, -settlementDays, TimeUnit.Days);
+      Settings.setEvaluationDate(todaysDate);
+
+      Console.WriteLine("Today: {0}, {1}", todaysDate.DayOfWeek, todaysDate);
+      Console.WriteLine("Settlement date: {0}, {1}", settlementDate.DayOfWeek, settlementDate);
+
+      /***************************************
+       * BUILDING THE DISCOUNTING BOND CURVE *
+       ***************************************/
+
+      // RateHelpers are built from the quotes together with
+      // other instrument-dependent info.  Quotes are passed in
+      // relinkable handles which could be relinked to some other
+      // data source later.
+
+      // Note that bootstrapping might not be the optimal choice for
+      // bond curves, since it requires to select a set of bonds
+      // with maturities that are not too close.  For alternatives,
+      // see the FittedBondCurve example.
+
+      var redemption = 100.0;
+
+      const int numberOfBonds = 5;
+
+      Date[] issueDates =
+      [
+         new(15, Month.March, 2005),
+         new(15, Month.June, 2005),
+         new(30, Month.June, 2006),
+         new(15, Month.November, 2002),
+         new(15, Month.May, 1987)
+      ];
+
+      Date[] maturities =
+      [
+         new(31, Month.August, 2010),
+         new(31, Month.August, 2011),
+         new(31, Month.August, 2013),
+         new(15, Month.August, 2018),
+         new(15, Month.May, 2038)
+      ];
+
+      double[] couponRates =
+      [
+         0.02375,
+         0.04625,
+         0.03125,
+         0.04000,
+         0.04500
+      ];
+
+      double[] marketQuotes =
+      [
+         100.390625,
+         106.21875,
+         100.59375,
+         101.6875,
+         102.140625
+      ];
+
+      var quote = new List<SimpleQuote>();
+      for (var i = 0; i < numberOfBonds; i++)
+         quote.Add(new SimpleQuote(marketQuotes[i]));
+
+      var quoteHandle = new InitializedList<RelinkableHandle<Quote>>(numberOfBonds);
+      for (var i = 0; i < numberOfBonds; i++)
+         quoteHandle[i].linkTo(quote[i]);
+
+      // Definition of the rate helpers
+      var bondsHelpers = new List<RateHelper>();
+      for (var i = 0; i < numberOfBonds; i++)
       {
+         var schedule = new Schedule(issueDates[i], maturities[i], new Period(Frequency.Semiannual),
+            calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+            DateGeneration.Rule.Backward, false);
 
-         DateTime timer = DateTime.Now;
-
-         /*********************
-          ***  MARKET DATA  ***
-          *********************/
-
-         Calendar calendar = new TARGET();
-
-         Date settlementDate = new Date(18, Month.September, 2008);
-         // must be a business day
-         settlementDate = calendar.adjust(settlementDate);
-
-         int fixingDays = 3;
-         int settlementDays = 3;
-
-         Date todaysDate = calendar.advance(settlementDate, -fixingDays, TimeUnit.Days);
-         // nothing to do with Date::todaysDate
-         Settings.setEvaluationDate(todaysDate);
-
-         Console.WriteLine("Today: {0}, {1}", todaysDate.DayOfWeek, todaysDate);
-         Console.WriteLine("Settlement date: {0}, {1}", settlementDate.DayOfWeek, settlementDate);
-
-
-         // Building of the bonds discounting yield curve
-
-         /*********************
-          ***  RATE HELPERS ***
-          *********************/
-
-         // RateHelpers are built from the above quotes together with
-         // other instrument dependant infos.  Quotes are passed in
-         // relinkable handles which could be relinked to some other
-         // data source later.
-
-         // Common data
-
-         // ZC rates for the short end
-         double zc3mQuote = 0.0096;
-         double zc6mQuote = 0.0145;
-         double zc1yQuote = 0.0194;
-
-         Quote zc3mRate = new SimpleQuote(zc3mQuote);
-         Quote zc6mRate = new SimpleQuote(zc6mQuote);
-         Quote zc1yRate = new SimpleQuote(zc1yQuote);
-
-         DayCounter zcBondsDayCounter = new Actual365Fixed();
-
-         RateHelper zc3m = new DepositRateHelper(new Handle<Quote>(zc3mRate),
-                                                 new Period(3, TimeUnit.Months), fixingDays,
-                                                 calendar, BusinessDayConvention.ModifiedFollowing,
-                                                 true, zcBondsDayCounter);
-         RateHelper zc6m = new DepositRateHelper(new Handle<Quote>(zc6mRate),
-                                                 new Period(6, TimeUnit.Months), fixingDays,
-                                                 calendar, BusinessDayConvention.ModifiedFollowing,
-                                                 true, zcBondsDayCounter);
-         RateHelper zc1y = new DepositRateHelper(new Handle<Quote>(zc1yRate),
-                                                 new Period(1, TimeUnit.Years), fixingDays,
-                                                 calendar, BusinessDayConvention.ModifiedFollowing,
-                                                 true, zcBondsDayCounter);
-
-         // setup bonds
-         double redemption = 100.0;
-
-         const int numberOfBonds = 5;
-
-         Date[] issueDates =
-         {
-            new Date(15, Month.March, 2005),
-            new Date(15, Month.June, 2005),
-            new Date(30, Month.June, 2006),
-            new Date(15, Month.November, 2002),
-            new Date(15, Month.May, 1987)
-         };
-
-         Date[] maturities =
-         {
-            new Date(31, Month.August, 2010),
-            new Date(31, Month.August, 2011),
-            new Date(31, Month.August, 2013),
-            new Date(15, Month.August, 2018),
-            new Date(15, Month.May, 2038)
-         };
-
-         double[] couponRates =
-         {
-            0.02375,
-            0.04625,
-            0.03125,
-            0.04000,
-            0.04500
-         };
-
-         double[] marketQuotes =
-         {
-            100.390625,
-            106.21875,
-            100.59375,
-            101.6875,
-            102.140625
-         };
-
-         List<SimpleQuote> quote = new List<SimpleQuote>();
-         for (int i = 0; i < numberOfBonds; i++)
-         {
-            SimpleQuote cp = new SimpleQuote(marketQuotes[i]);
-            quote.Add(cp);
-         }
-
-         List<RelinkableHandle<Quote>> quoteHandle = new InitializedList<RelinkableHandle<Quote>>(numberOfBonds);
-         for (int i = 0; i < numberOfBonds; i++)
-         {
-            quoteHandle[i].linkTo(quote[i]);
-         }
-
-         // Definition of the rate helpers
-         List<FixedRateBondHelper> bondsHelpers = new List<FixedRateBondHelper>();
-         for (int i = 0; i < numberOfBonds; i++)
-         {
-
-            Schedule schedule = new Schedule(issueDates[i], maturities[i], new Period(Frequency.Semiannual),
-                                             new UnitedStates(UnitedStates.Market.GovernmentBond),
-                                             BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
-                                             DateGeneration.Rule.Backward, false);
-
-            FixedRateBondHelper bondHelper = new FixedRateBondHelper(quoteHandle[i],
-                                                                     settlementDays,
-                                                                     100.0,
-                                                                     schedule,
-            new List<double>() { couponRates[i] },
+         var bondHelper = new FixedRateBondHelper(quoteHandle[i],
+            settlementDays,
+            100.0,
+            schedule,
+            [couponRates[i]],
             new ActualActual(ActualActual.Convention.Bond),
             BusinessDayConvention.Unadjusted,
             redemption,
             issueDates[i]);
 
-            bondsHelpers.Add(bondHelper);
-         }
+         // Th bond helper could also be done by creating a
+         // FixedRateBond instance and writing:
+         //
+         // var bondHelper = new BondHelper(quoteHandle[i], bond);
+         //
+         // This would also work for bonds that still don't have a
+         // specialized helper, such as floating-rate bonds.
 
-         /*********************
-          **  CURVE BUILDING **
-          *********************/
+         bondsHelpers.Add(bondHelper);
+      }
 
-         // Any DayCounter would be fine.
-         // ActualActual::ISDA ensures that 30 years is 30.0
-         DayCounter termStructureDayCounter = new ActualActual(ActualActual.Convention.ISDA);
+      // The term structure uses its day counter internally to
+      // convert between dates and times; it's not required to equal
+      // the day counter of the bonds.  In fact, a regular day
+      // counter is probably more appropriate.
+      DayCounter termStructureDayCounter = new Actual365Fixed();
 
-         double tolerance = 1.0e-15;
+      // The reference date of the term structure can be the
+      // settlement date of the bonds (since, during pricing, it
+      // won't be required to discount behind that date) but it can
+      // also be today's date.  This allows one to calculate both
+      // the price of the bond (based on the settlement date) and
+      // the NPV, that is, the value as of today's date of holding
+      // the bond and receiving its payments.
+      YieldTermStructure bondDiscountingTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(
+         todaysDate, bondsHelpers, termStructureDayCounter);
 
-         // A depo-bond curve
-         List<RateHelper> bondInstruments = new List<RateHelper>();
+      //
+      // BUILDING THE EURIBOR FORECASTING CURVE
+      //
 
-         // Adding the ZC bonds to the curve for the short end
-         bondInstruments.Add(zc3m);
-         bondInstruments.Add(zc6m);
-         bondInstruments.Add(zc1y);
+      // 6m deposits
+      var d6mQuote = 0.03385;
+      // swaps, fixed vs 6m
+      var s2yQuote = 0.0295;
+      var s3yQuote = 0.0323;
+      var s5yQuote = 0.0359;
+      var s10yQuote = 0.0412;
+      var s15yQuote = 0.0433;
 
-         // Adding the Fixed rate bonds to the curve for the long end
-         for (int i = 0; i < numberOfBonds; i++)
-         {
-            bondInstruments.Add(bondsHelpers[i]);
-         }
+      Quote d6mRate = new SimpleQuote(d6mQuote);
+      Quote s2yRate = new SimpleQuote(s2yQuote);
+      Quote s3yRate = new SimpleQuote(s3yQuote);
+      Quote s5yRate = new SimpleQuote(s5yQuote);
+      Quote s10yRate = new SimpleQuote(s10yQuote);
+      Quote s15yRate = new SimpleQuote(s15yQuote);
 
-         YieldTermStructure bondDiscountingTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(
-            settlementDate, bondInstruments,
-            termStructureDayCounter,
-            new List<Handle<Quote>>(),
-            new List<Date>(),
-            tolerance);
+      // setup deposits
+      DayCounter depositDayCounter = new Actual360();
+      var fixingDays = 2;
 
-         // Building of the Libor forecasting curve
-         // deposits
-         double d1wQuote = 0.043375;
-         double d1mQuote = 0.031875;
-         double d3mQuote = 0.0320375;
-         double d6mQuote = 0.03385;
-         double d9mQuote = 0.0338125;
-         double d1yQuote = 0.0335125;
-         // swaps
-         double s2yQuote = 0.0295;
-         double s3yQuote = 0.0323;
-         double s5yQuote = 0.0359;
-         double s10yQuote = 0.0412;
-         double s15yQuote = 0.0433;
+      RateHelper d6m = new DepositRateHelper(
+         new Handle<Quote>(d6mRate),
+         new Period(6, TimeUnit.Months), fixingDays,
+         calendar, BusinessDayConvention.ModifiedFollowing,
+         true, depositDayCounter);
 
+      // setup swaps
+      var swFixedLegFrequency = Frequency.Annual;
+      var swFixedLegConvention = BusinessDayConvention.Unadjusted;
+      DayCounter swFixedLegDayCounter = new Thirty360(Thirty360.Thirty360Convention.European);
+      IborIndex swFloatingLegIndex = new Euribor6M();
 
-         /********************
-          ***    QUOTES    ***
-          ********************/
+      RateHelper s2y = new SwapRateHelper(
+         new Handle<Quote>(s2yRate), new Period(2, TimeUnit.Years),
+         calendar, swFixedLegFrequency, swFixedLegConvention, swFixedLegDayCounter,
+         swFloatingLegIndex);
+      RateHelper s3y = new SwapRateHelper(
+         new Handle<Quote>(s3yRate), new Period(3, TimeUnit.Years),
+         calendar, swFixedLegFrequency, swFixedLegConvention, swFixedLegDayCounter,
+         swFloatingLegIndex);
+      RateHelper s5y = new SwapRateHelper(
+         new Handle<Quote>(s5yRate), new Period(5, TimeUnit.Years),
+         calendar, swFixedLegFrequency, swFixedLegConvention, swFixedLegDayCounter,
+         swFloatingLegIndex);
+      RateHelper s10y = new SwapRateHelper(
+         new Handle<Quote>(s10yRate), new Period(10, TimeUnit.Years),
+         calendar, swFixedLegFrequency, swFixedLegConvention, swFixedLegDayCounter,
+         swFloatingLegIndex);
+      RateHelper s15y = new SwapRateHelper(
+         new Handle<Quote>(s15yRate), new Period(15, TimeUnit.Years),
+         calendar, swFixedLegFrequency, swFixedLegConvention, swFixedLegDayCounter,
+         swFloatingLegIndex);
 
-         // SimpleQuote stores a value which can be manually changed;
-         // other Quote subclasses could read the value from a database
-         // or some kind of data feed.
+      var depoSwapInstruments = new List<RateHelper> { d6m, s2y, s3y, s5y, s10y, s15y };
 
-         // deposits
-         Quote d1wRate = new SimpleQuote(d1wQuote);
-         Quote d1mRate = new SimpleQuote(d1mQuote);
-         Quote d3mRate = new SimpleQuote(d3mQuote);
-         Quote d6mRate = new SimpleQuote(d6mQuote);
-         Quote d9mRate = new SimpleQuote(d9mQuote);
-         Quote d1yRate = new SimpleQuote(d1yQuote);
-         // swaps
-         Quote s2yRate = new SimpleQuote(s2yQuote);
-         Quote s3yRate = new SimpleQuote(s3yQuote);
-         Quote s5yRate = new SimpleQuote(s5yQuote);
-         Quote s10yRate = new SimpleQuote(s10yQuote);
-         Quote s15yRate = new SimpleQuote(s15yQuote);
+      // The start of the curve can be today's date or spot, depending on your preferences.
+      // Here we're picking spot (mostly because we picked today's date for the bond curve).
+      var spotDate = calendar.advance(todaysDate, fixingDays, TimeUnit.Days);
 
-         /*********************
-          ***  RATE HELPERS ***
-          *********************/
+      YieldTermStructure depoSwapTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(
+         spotDate, depoSwapInstruments, termStructureDayCounter);
 
-         // RateHelpers are built from the above quotes together with
-         // other instrument dependant infos.  Quotes are passed in
-         // relinkable handles which could be relinked to some other
-         // data source later.
+      // PRICING
+      var discountingTermStructure = new RelinkableHandle<YieldTermStructure>();
+      var forecastingTermStructure = new RelinkableHandle<YieldTermStructure>();
 
-         // deposits
-         DayCounter depositDayCounter = new Actual360();
+      // bonds to be priced
 
-         RateHelper d1w = new DepositRateHelper(
-            new Handle<Quote>(d1wRate),
-            new Period(1, TimeUnit.Weeks), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
-         RateHelper d1m = new DepositRateHelper(
-            new Handle<Quote>(d1mRate),
-            new Period(1, TimeUnit.Months), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
-         RateHelper d3m = new DepositRateHelper(
-            new Handle<Quote>(d3mRate),
-            new Period(3, TimeUnit.Months), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
-         RateHelper d6m = new DepositRateHelper(
-            new Handle<Quote>(d6mRate),
-            new Period(6, TimeUnit.Months), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
-         RateHelper d9m = new DepositRateHelper(
-            new Handle<Quote>(d9mRate),
-            new Period(9, TimeUnit.Months), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
-         RateHelper d1y = new DepositRateHelper(
-            new Handle<Quote>(d1yRate),
-            new Period(1, TimeUnit.Years), fixingDays,
-            calendar, BusinessDayConvention.ModifiedFollowing,
-            true, depositDayCounter);
+      // Common data
+      double faceAmount = 100;
 
-         // setup swaps
-         Frequency swFixedLegFrequency = Frequency.Annual;
-         BusinessDayConvention swFixedLegConvention = BusinessDayConvention.Unadjusted;
-         DayCounter swFixedLegDayCounter = new Thirty360(Thirty360.Thirty360Convention.European);
-         IborIndex swFloatingLegIndex = new Euribor6M();
+      // Pricing engine
+      IPricingEngine bondEngine = new DiscountingBondEngine(discountingTermStructure);
 
-         Period forwardStart = new Period(1, TimeUnit.Days);
+      // Zero coupon bond
+      var zeroCouponBond = new ZeroCouponBond(
+         settlementDays,
+         calendar,
+         faceAmount,
+         new Date(15, Month.August, 2013),
+         BusinessDayConvention.Following,
+         116.92,
+         new Date(15, Month.August, 2003));
 
-         RateHelper s2y = new SwapRateHelper(
-            new Handle<Quote>(s2yRate), new Period(2, TimeUnit.Years),
-            calendar, swFixedLegFrequency,
-            swFixedLegConvention, swFixedLegDayCounter,
-            swFloatingLegIndex, new Handle<Quote>(), forwardStart);
-         RateHelper s3y = new SwapRateHelper(
-            new Handle<Quote>(s3yRate), new Period(3, TimeUnit.Years),
-            calendar, swFixedLegFrequency,
-            swFixedLegConvention, swFixedLegDayCounter,
-            swFloatingLegIndex, new Handle<Quote>(), forwardStart);
-         RateHelper s5y = new SwapRateHelper(
-            new Handle<Quote>(s5yRate), new Period(5, TimeUnit.Years),
-            calendar, swFixedLegFrequency,
-            swFixedLegConvention, swFixedLegDayCounter,
-            swFloatingLegIndex, new Handle<Quote>(), forwardStart);
-         RateHelper s10y = new SwapRateHelper(
-            new Handle<Quote>(s10yRate), new Period(10, TimeUnit.Years),
-            calendar, swFixedLegFrequency,
-            swFixedLegConvention, swFixedLegDayCounter,
-            swFloatingLegIndex, new Handle<Quote>(), forwardStart);
-         RateHelper s15y = new SwapRateHelper(
-            new Handle<Quote>(s15yRate), new Period(15, TimeUnit.Years),
-            calendar, swFixedLegFrequency,
-            swFixedLegConvention, swFixedLegDayCounter,
-            swFloatingLegIndex, new Handle<Quote>(), forwardStart);
+      zeroCouponBond.setPricingEngine(bondEngine);
 
+      // Fixed 4.5% bond
+      var fixedBondSchedule = new Schedule(new Date(15, Month.May, 2007),
+         new Date(15, Month.May, 2017), new Period(Frequency.Annual),
+         calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
 
-         /*********************
-          **  CURVE BUILDING **
-          *********************/
-
-         // Any DayCounter would be fine.
-         // ActualActual::ISDA ensures that 30 years is 30.0
-
-         // A depo-swap curve
-         List<RateHelper> depoSwapInstruments = new List<RateHelper>();
-         depoSwapInstruments.Add(d1w);
-         depoSwapInstruments.Add(d1m);
-         depoSwapInstruments.Add(d3m);
-         depoSwapInstruments.Add(d6m);
-         depoSwapInstruments.Add(d9m);
-         depoSwapInstruments.Add(d1y);
-         depoSwapInstruments.Add(s2y);
-         depoSwapInstruments.Add(s3y);
-         depoSwapInstruments.Add(s5y);
-         depoSwapInstruments.Add(s10y);
-         depoSwapInstruments.Add(s15y);
-         YieldTermStructure depoSwapTermStructure = new PiecewiseYieldCurve<Discount, LogLinear>(
-            settlementDate, depoSwapInstruments,
-            termStructureDayCounter,
-            new List<Handle<Quote> >(),
-            new List<Date>(),
-            tolerance);
-
-         // Term structures that will be used for pricing:
-         // the one used for discounting cash flows
-         RelinkableHandle<YieldTermStructure> discountingTermStructure = new RelinkableHandle<YieldTermStructure>();
-         // the one used for forward rate forecasting
-         RelinkableHandle<YieldTermStructure> forecastingTermStructure = new RelinkableHandle<YieldTermStructure>();
-
-         /*********************
-          * BONDS TO BE PRICED *
-          **********************/
-
-         // Common data
-         double faceAmount = 100;
-
-         // Pricing engine
-         IPricingEngine bondEngine = new DiscountingBondEngine(discountingTermStructure);
-
-         // Zero coupon bond
-         ZeroCouponBond zeroCouponBond = new ZeroCouponBond(
-            settlementDays,
-            new UnitedStates(UnitedStates.Market.GovernmentBond),
-            faceAmount,
-            new Date(15, Month.August, 2013),
-            BusinessDayConvention.Following,
-            116.92,
-            new Date(15, Month.August, 2003));
-
-         zeroCouponBond.setPricingEngine(bondEngine);
-
-         // Fixed 4.5% US Treasury Note
-         Schedule fixedBondSchedule = new Schedule(new Date(15, Month.May, 2007),
-                                                   new Date(15, Month.May, 2017), new Period(Frequency.Semiannual),
-                                                   new UnitedStates(UnitedStates.Market.GovernmentBond),
-                                                   BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
-
-         FixedRateBond fixedRateBond = new FixedRateBond(
-            settlementDays,
-            faceAmount,
-            fixedBondSchedule,
-         new List<double>() { 0.045 },
+      var fixedRateBond = new FixedRateBond(
+         settlementDays,
+         faceAmount,
+         fixedBondSchedule,
+         [0.045],
          new ActualActual(ActualActual.Convention.Bond),
          BusinessDayConvention.ModifiedFollowing,
          100.0, new Date(15, Month.May, 2007));
 
-         fixedRateBond.setPricingEngine(bondEngine);
+      fixedRateBond.setPricingEngine(bondEngine);
 
-         // Floating rate bond (3M USD Libor + 0.1%)
-         // Should and will be priced on another curve later...
+      // Floating rate bond (6M Euribor + 0.1%)
+      var liborTermStructure = new RelinkableHandle<YieldTermStructure>();
+      IborIndex euribor6m = new Euribor(new Period(6, TimeUnit.Months), forecastingTermStructure);
+      euribor6m.addFixing(new Date(18, Month.October, 2007), 0.026);
+      euribor6m.addFixing(new Date(17, Month.April, 2008), 0.028);
 
-         RelinkableHandle<YieldTermStructure> liborTermStructure = new RelinkableHandle<YieldTermStructure>();
-         IborIndex libor3m = new USDLibor(new Period(3, TimeUnit.Months), liborTermStructure);
-         libor3m.addFixing(new Date(17, Month.July, 2008), 0.0278625);
+      var floatingBondSchedule = new Schedule(new Date(21, Month.October, 2005),
+         new Date(21, Month.October, 2010), new Period(Frequency.Semiannual),
+         calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, true);
 
-         Schedule floatingBondSchedule = new Schedule(new Date(21, Month.October, 2005),
-                                                      new Date(21, Month.October, 2010), new Period(Frequency.Quarterly),
-                                                      new UnitedStates(UnitedStates.Market.NYSE),
-                                                      BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, true);
-
-         FloatingRateBond floatingRateBond = new FloatingRateBond(
-            settlementDays,
-            faceAmount,
-            floatingBondSchedule,
-            libor3m,
-            new Actual360(),
-            BusinessDayConvention.ModifiedFollowing,
-            2,
-            // Gearings
-         new List<double>() { 1.0 },
+      var floatingRateBond = new FloatingRateBond(
+         settlementDays,
+         faceAmount,
+         floatingBondSchedule,
+         euribor6m,
+         new Actual360(),
+         BusinessDayConvention.ModifiedFollowing,
+         2,
+         // Gearings
+         [1.0],
          // Spreads
-         new List<double>() { 0.001 },
+         [0.001],
          // Caps
-         new List < double? >(),
+         [],
          // Floors
-         new List < double? >(),
+         [],
          // Fixing in arrears
-         true,
+         false,
          100.0,
          new Date(21, Month.October, 2005));
 
-         floatingRateBond.setPricingEngine(bondEngine);
+      floatingRateBond.setPricingEngine(bondEngine);
 
-         // Coupon pricers
-         IborCouponPricer pricer = new BlackIborCouponPricer();
+      // Coupon pricers
+      IborCouponPricer pricer = new BlackIborCouponPricer();
 
-         // optionLet volatilities
-         double volatility = 0.0;
-         Handle<OptionletVolatilityStructure> vol;
-         vol = new Handle<OptionletVolatilityStructure>(
-            new ConstantOptionletVolatility(
-               settlementDays,
-               calendar,
-               BusinessDayConvention.ModifiedFollowing,
-               volatility,
-               new Actual365Fixed()));
+      // optionLet volatilities
+      var volatility = 0.0;
+      var vol = new Handle<OptionletVolatilityStructure>(
+         new ConstantOptionletVolatility(
+            settlementDays,
+            calendar,
+            BusinessDayConvention.ModifiedFollowing,
+            volatility,
+            new Actual365Fixed()));
 
-         pricer.setCapletVolatility(vol);
-         Utils.setCouponPricer(floatingRateBond.cashflows(), pricer);
+      pricer.setCapletVolatility(vol);
+      Utils.setCouponPricer(floatingRateBond.cashflows(), pricer);
 
-         // Yield curve bootstrapping
-         forecastingTermStructure.linkTo(depoSwapTermStructure);
-         discountingTermStructure.linkTo(bondDiscountingTermStructure);
+      forecastingTermStructure.linkTo(depoSwapTermStructure);
+      discountingTermStructure.linkTo(bondDiscountingTermStructure);
 
-         // We are using the depo & swap curve to estimate the future Libor rates
-         liborTermStructure.linkTo(depoSwapTermStructure);
+      Console.WriteLine();
 
-         /***************
-          * BOND PRICING *
-          ****************/
+      // write column headings
+      int[] widths = [18, 10, 10, 10];
 
-         // write column headings
-         int[] widths = { 18, 10, 10, 10 };
+      Console.WriteLine("{0,18}{1,10}{2,10}{3,10}", "", "ZC", "Fixed", "Floating");
 
-         Console.WriteLine("{0,18}{1,10}{2,10}{3,10}", "", "ZC", "Fixed", "Floating");
+      var width = widths[0]
+                  + widths[1]
+                  + widths[2]
+                  + widths[3];
+      string rule = "".PadLeft(width, '-'), dblrule = "".PadLeft(width, '=');
 
-         int width = widths[0]
-                     + widths[1]
-                     + widths[2]
-                     + widths[3];
-         string rule = "".PadLeft(width, '-'), dblrule = "".PadLeft(width, '=');
-         string tab = "".PadLeft(8, ' ');
+      Console.WriteLine(rule);
 
-         Console.WriteLine(rule);
+      floatingRateBond.NPV();
 
-         Console.WriteLine("Net present value".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
-                           zeroCouponBond.NPV(),
-                           fixedRateBond.NPV(),
-                           floatingRateBond.NPV());
+      Console.WriteLine("Net present value".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
+         zeroCouponBond.NPV(),
+         fixedRateBond.NPV(),
+         floatingRateBond.NPV());
 
-         Console.WriteLine("Clean price".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
-                           zeroCouponBond.cleanPrice(),
-                           fixedRateBond.cleanPrice(),
-                           floatingRateBond.cleanPrice());
+      Console.WriteLine("Clean price".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
+         zeroCouponBond.cleanPrice(),
+         fixedRateBond.cleanPrice(),
+         floatingRateBond.cleanPrice());
 
-         Console.WriteLine("Dirty price".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
-                           zeroCouponBond.dirtyPrice(),
-                           fixedRateBond.dirtyPrice(),
-                           floatingRateBond.dirtyPrice());
+      Console.WriteLine("Dirty price".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
+         zeroCouponBond.dirtyPrice(),
+         fixedRateBond.dirtyPrice(),
+         floatingRateBond.dirtyPrice());
 
-         Console.WriteLine("Accrued coupon".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
-                           zeroCouponBond.accruedAmount(),
-                           fixedRateBond.accruedAmount(),
-                           floatingRateBond.accruedAmount());
+      Console.WriteLine("Accrued coupon".PadLeft(widths[0]) + "{0,10:n2}{1,10:n2}{2,10:n2}",
+         zeroCouponBond.accruedAmount(),
+         fixedRateBond.accruedAmount(),
+         floatingRateBond.accruedAmount());
 
-         Console.WriteLine("Previous coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
-                           "N/A",
-                           fixedRateBond.previousCouponRate(),
-                           floatingRateBond.previousCouponRate());
+      Console.WriteLine("Previous coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
+         "N/A",
+         fixedRateBond.previousCouponRate(),
+         floatingRateBond.previousCouponRate());
 
-         Console.WriteLine("Next coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
-                           "N/A",
-                           fixedRateBond.nextCouponRate(),
-                           floatingRateBond.nextCouponRate());
+      Console.WriteLine("Next coupon".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
+         "N/A",
+         fixedRateBond.nextCouponRate(),
+         floatingRateBond.nextCouponRate());
 
-         Console.WriteLine("Yield".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
-                           zeroCouponBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
-                           fixedRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
-                           floatingRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual));
+      Console.WriteLine("Yield".PadLeft(widths[0]) + "{0,10:0.00%}{1,10:0.00%}{2,10:0.00%}",
+         zeroCouponBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
+         fixedRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
+         floatingRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual));
 
-         Console.WriteLine();
+      Console.WriteLine();
 
-         // Other computations
-         Console.WriteLine("Sample indirect computations (for the floating rate bond): ");
-         Console.WriteLine(rule);
+      // Other computations
+      Console.WriteLine("Sample indirect computations (for the floating rate bond): ");
+      Console.WriteLine(rule);
 
-         Console.WriteLine("Yield to Clean Price: {0:n2}",
-                           floatingRateBond.cleanPrice(floatingRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
-                                                       new Actual360(), Compounding.Compounded, Frequency.Annual,
-                                                       settlementDate));
+      Console.WriteLine("Yield to Clean Price: {0:n2}",
+         floatingRateBond.cleanPrice(floatingRateBond.yield(new Actual360(), Compounding.Compounded, Frequency.Annual),
+            new Actual360(), Compounding.Compounded, Frequency.Annual,
+            settlementDate));
 
-         Console.WriteLine("Clean Price to Yield: {0:0.00%}",
-                           floatingRateBond.yield(floatingRateBond.cleanPrice(), new Actual360(), Compounding.Compounded, Frequency.Annual,
-                                                  settlementDate));
+      Console.WriteLine("Clean Price to Yield: {0:0.00%}",
+         floatingRateBond.yield(floatingRateBond.cleanPrice(), new Actual360(), Compounding.Compounded, Frequency.Annual,
+            settlementDate));
 
-         /* "Yield to Price"
-            "Price to Yield" */
+      /* "Yield to Price"
+         "Price to Yield" */
 
-         Console.WriteLine(" \nRun completed in {0}", DateTime.Now - timer);
-         Console.WriteLine();
+      Console.WriteLine(" \nRun completed in {0}", DateTime.Now - timer);
+      Console.WriteLine();
 
-         Console.Write("Press any key to continue ...");
-         Console.ReadKey();
-      }
+      Console.Write("Press any key to continue ...");
+      Console.ReadKey();
    }
 }

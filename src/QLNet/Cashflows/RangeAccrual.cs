@@ -481,7 +481,9 @@ namespace QLNet
       private double eps_;
    }
 
-   //! helper class building a sequence of range-accrual floating-rate coupons
+   /// <summary>
+   /// helper class building a sequence of range-accrual floating-rate coupons
+   /// </summary>
    public class RangeAccrualLeg
    {
       public RangeAccrualLeg(Schedule schedule, IborIndex index)

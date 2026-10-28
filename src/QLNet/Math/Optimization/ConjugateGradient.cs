@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -20,17 +20,18 @@
 
 namespace QLNet
 {
-   //! Multi-dimensional Conjugate Gradient class.
-   /*! Fletcher-Reeves-Polak-Ribiere algorithm
-       adapted from Numerical Recipes in C, 2nd edition.
-
-       User has to provide line-search method and optimization end criteria.
-
-       This optimization method requires the knowledge of
-       the gradient of the cost function.
-
-       \ingroup optimizers
-   */
+   /// <summary>
+   /// Multi-dimensional Conjugate Gradient class.
+   /// </summary>
+   /// <remarks>
+   /// Fletcher-Reeves-Polak-Ribiere algorithm
+   /// adapted from Numerical Recipes in C, 2nd edition.
+   ///
+   /// User has to provide line-search method and optimization end criteria.
+   ///
+   /// This optimization method requires the knowledge of
+   /// the gradient of the cost function.
+   /// </remarks>
    public class ConjugateGradient : LineSearchBasedMethod
    {
       public ConjugateGradient(LineSearch lineSearch = null)

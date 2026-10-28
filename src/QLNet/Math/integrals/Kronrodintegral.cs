@@ -108,22 +108,15 @@ namespace QLNet
       public static double[] k15t { get { return k15t_; } }
    }
 
-   //! Integral of a 1-dimensional function using the Gauss-Kronrod methods
-//    ! This class provide a non-adaptive integration procedure which
-//        uses fixed Gauss-Kronrod abscissae to sample the integrand at
-//        a maximum of 87 points.  It is provided for fast integration
-//        of smooth functions.
-//
-//        This function applies the Gauss-Kronrod 10-point, 21-point, 43-point
-//        and 87-point integration rules in succession until an estimate of the
-//        integral of f over (a, b) is achieved within the desired absolute and
-//        relative error limits, epsabs and epsrel. The function returns the
-//        final approximation, result, an estimate of the absolute error,
-//        abserr and the number of function evaluations used, neval. The
-//        Gauss-Kronrod rules are designed in such a way that each rule uses
-//        all the results of its predecessors, in order to minimize the total
-//        number of function evaluations.
-//
+   /// <summary>
+   /// Integral of a one-dimensional function using non-adaptive Gauss-Kronrod rules.
+   /// </summary>
+   /// <remarks>
+   /// This class uses fixed Gauss-Kronrod abscissae to sample the integrand at up to
+   /// 87 points. It is intended for fast integration of smooth functions and applies
+   /// the 10-point, 21-point, 43-point, and 87-point rules in succession until the
+   /// required absolute or relative accuracy is reached.
+   /// </remarks>
    public class GaussKronrodNonAdaptive : Integrator
    {
       public GaussKronrodNonAdaptive(double absoluteAccuracy, int maxEvaluations, double relativeAccuracy) : base(absoluteAccuracy, maxEvaluations)
@@ -260,25 +253,14 @@ namespace QLNet
       private double relativeAccuracy_;
    }
 
-   //! Integral of a 1-dimensional function using the Gauss-Kronrod methods
-//    ! This class provide an adaptive integration procedure using 15
-//        points Gauss-Kronrod integration rule.  This is more robust in
-//        that it allows to integrate less smooth functions (though
-//        singular functions should be integrated using dedicated
-//        algorithms) but less efficient beacuse it does not reuse
-//        precedently computed points during computation steps.
-//
-//        References:
-//
-//        Gauss-Kronrod Integration
-//        <http://mathcssun1.emporia.edu/~oneilcat/ExperimentApplet3/ExperimentApplet3.html>
-//
-//        NMS - Numerical Analysis Library
-//        <http://www.math.iastate.edu/burkardt/f_src/nms/nms.html>
-//
-//        \test the correctness of the result is tested by checking it
-//              against known good values.
-//
+   /// <summary>
+   /// Integral of a one-dimensional function using adaptive Gauss-Kronrod rules.
+   /// </summary>
+   /// <remarks>
+   /// This class uses a 15-point Gauss-Kronrod integration rule adaptively. It is more
+   /// robust for less smooth functions than the non-adaptive variant, although it is
+   /// less efficient because previously computed points are not reused across steps.
+   /// </remarks>
    public class GaussKronrodAdaptive : Integrator
    {
       public GaussKronrodAdaptive(double absoluteAccuracy, int maxEvaluations) : base(absoluteAccuracy, maxEvaluations)

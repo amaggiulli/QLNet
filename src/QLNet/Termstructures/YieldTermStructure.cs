@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -22,14 +22,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Interest-rate term structure
-   /*! This abstract class defines the interface of concrete
-      interest rate structures which will be derived from this one.
-
-      \ingroup yieldtermstructures
-
-      \test observability against evaluation date changes is checked.
-   */
+   /// <summary>
+   /// Interest-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class defines the interface of concrete
+   /// interest rate structures which will be derived from this one.
+   ///
+   ///
+   /// Test: observability against evaluation date changes is checked.
+   /// </remarks>
    public abstract class YieldTermStructure : TermStructure
    {
       private const double dt = 0.0001;
@@ -111,9 +113,12 @@ namespace QLNet
          return discount(timeFromReference(d), extrapolate);
       }
 
-      /*! The same day-counting rule used by the term structure
-          should be used for calculating the passed time t.
-      */
+      /// <summary>
+      /// Returns the discount factor at the given time.
+      /// </summary>
+      /// <remarks>
+      /// The supplied time should be computed with the same day-counting rule used by the term structure.
+      /// </remarks>
       public double discount(double t, bool extrapolate = false)
       {
          checkRange(t, extrapolate);
@@ -146,9 +151,9 @@ namespace QLNet
       //    given date or time.  In the former case, the time is
       //    calculated as a fraction of year from the reference date.
 
-      /*! The resulting interest rate has the required daycounting
-          rule.
-      */
+      /// <summary>
+      /// Returns the zero yield for the given date using the requested day-counting convention.
+      /// </summary>
       public InterestRate zeroRate(Date d, DayCounter dayCounter, Compounding comp, Frequency freq = Frequency.Annual,
                                    bool extrapolate = false)
       {
@@ -163,10 +168,12 @@ namespace QLNet
          return InterestRate.impliedRate(compound1, dayCounter, comp, freq, referenceDate(), d);
       }
 
-      /*! The resulting interest rate has the same day-counting rule
-          used by the term structure. The same rule should be used
-          for calculating the passed time t.
-      */
+      /// <summary>
+      /// Returns the zero yield for the given time using this term structure's day-counting convention.
+      /// </summary>
+      /// <remarks>
+      /// The supplied time should be computed with the same day-counting rule used by the term structure.
+      /// </remarks>
       public InterestRate zeroRate(double t, Compounding comp, Frequency freq = Frequency.Annual, bool extrapolate = false)
       {
          if (t.IsEqual(0.0))
@@ -186,9 +193,9 @@ namespace QLNet
       //    If both dates (times) are equal the instantaneous forward rate is
       //    returned.
 
-      /*! The resulting interest rate has the required day-counting
-          rule.
-      */
+      /// <summary>
+      /// Returns the forward rate between the given dates using the requested day-counting convention.
+      /// </summary>
       public InterestRate forwardRate(Date d1, Date d2, DayCounter dayCounter, Compounding comp,
                                       Frequency freq = Frequency.Annual, bool extrapolate = false)
       {
@@ -207,20 +214,24 @@ namespace QLNet
          return InterestRate.impliedRate(compound1, dayCounter, comp, freq, d1, d2);
       }
 
-      /*! The resulting interest rate has the required day-counting
-          rule.
-          \warning dates are not adjusted for holidays
-      */
+      /// <summary>
+      /// Returns the forward rate over the given period using the requested day-counting convention.
+      /// </summary>
+      /// <remarks>
+      /// Dates are not adjusted for holidays.
+      /// </remarks>
       public InterestRate forwardRate(Date d, Period p, DayCounter dayCounter, Compounding comp,
                                       Frequency freq = Frequency.Annual, bool extrapolate = false)
       {
          return forwardRate(d, d + p, dayCounter, comp, freq, extrapolate);
       }
 
-      /*! The resulting interest rate has the same day-counting rule
-          used by the term structure. The same rule should be used
-          for calculating the passed times t1 and t2.
-      */
+      /// <summary>
+      /// Returns the forward rate between the given times using this term structure's day-counting convention.
+      /// </summary>
+      /// <remarks>
+      /// The supplied times should be computed with the same day-counting rule used by the term structure.
+      /// </remarks>
       public InterestRate forwardRate(double t1, double t2, Compounding comp, Frequency freq = Frequency.Annual,
                                       bool extrapolate = false)
       {
@@ -273,7 +284,9 @@ namespace QLNet
       //    range check has already been performed; therefore, it
       //    must assume that extrapolation is required.
 
-      //! discount factor calculation
+      /// <summary>
+      /// Performs the discount-factor calculation for the given time.
+      /// </summary>
       protected abstract double discountImpl(double d);
 
       #endregion

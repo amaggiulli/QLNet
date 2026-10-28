@@ -20,9 +20,12 @@ using System;
 
 namespace QLNet
 {
-   //! transformed grid
-   /*! This package encapuslates an array of grid points.  It is used primarily in PDE calculations.
-   */
+   /// <summary>
+   /// transformed grid
+   /// </summary>
+   /// <remarks>
+   /// This package encapuslates an array of grid points.  It is used primarily in PDE calculations.
+   /// </remarks>
    public class TransformedGrid
    {
       protected Vector grid_;

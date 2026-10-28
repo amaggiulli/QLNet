@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! Integral of a one-dimensional function
-   /*! \test the correctness of the result is tested by checking it
-             against known good values.
-   */
+   /// <summary>
+   /// Integral of a one-dimensional function
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the result is tested by checking it
+   /// against known good values.
+   /// </remarks>
    public class SimpsonIntegral : TrapezoidIntegral<Default>
    {
       public SimpsonIntegral(double accuracy, int maxIterations) : base(accuracy, maxIterations) { }

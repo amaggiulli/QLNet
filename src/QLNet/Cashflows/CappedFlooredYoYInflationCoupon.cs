@@ -20,41 +20,22 @@ using System;
 
 namespace QLNet
 {
-   //! Capped or floored inflation coupon.
-   /*! Essentially a copy of the nominal version but taking a
-       different index and a set of pricers (not just one).
-
-       The payoff \f$ P \f$ of a capped inflation-rate coupon
-       with paysWithin = true is:
-
-       \f[ P = N \times T \times \min(a L + b, C). \f]
-
-       where \f$ N \f$ is the notional, \f$ T \f$ is the accrual
-       time, \f$ L \f$ is the inflation rate, \f$ a \f$ is its
-       gearing, \f$ b \f$ is the spread, and \f$ C \f$ and \f$ F \f$
-       the strikes.
-
-       The payoff of a floored inflation-rate coupon is:
-
-       \f[ P = N \times T \times \max(a L + b, F). \f]
-
-       The payoff of a collared inflation-rate coupon is:
-
-       \f[ P = N \times T \times \min(\max(a L + b, F), C). \f]
-
-       If paysWithin = false then the inverse is returned
-       (this provides for instrument cap and caplet prices).
-
-       They can be decomposed in the following manner.  Decomposition
-       of a capped floating rate coupon when paysWithin = true:
-       \f[
-       R = \min(a L + b, C) = (a L + b) + \min(C - b - \xi |a| L, 0)
-       \f]
-       where \f$ \xi = sgn(a) \f$. Then:
-       \f[
-       R = (a L + b) + |a| \min(\frac{C - b}{|a|} - \xi L, 0)
-       \f]
-    */
+   /// <summary>
+   /// Year-on-year inflation coupon with an optional cap, floor, or collar.
+   /// </summary>
+   /// <remarks>
+   /// This is the year-on-year inflation counterpart of the capped or floored coupon types used for nominal rates.
+   /// It applies optional cap and floor strikes to the coupon rate produced by the underlying inflation observation,
+   /// after gearing and spread have been taken into account.
+   ///
+   /// In practical terms:
+   /// a capped coupon limits the adjusted inflation rate to the cap,
+   /// a floored coupon ensures the adjusted inflation rate does not fall below the floor,
+   /// and a collared coupon keeps the adjusted inflation rate between the floor and the cap.
+   ///
+   /// When <c>paysWithin</c> is <c>false</c>, the inverse form is used so the coupon can be represented consistently
+   /// for cap/floor style pricing.
+   /// </remarks>
    public class CappedFlooredYoYInflationCoupon : YoYInflationCoupon
    {
       // we may watch an underlying coupon ...
@@ -147,7 +128,9 @@ namespace QLNet
          return swapletRate + floorletRate - capletRate;
 
       }
-      //! cap
+      /// <summary>
+      /// Returns the cap, if any.
+      /// </summary>
       public double? cap()
       {
          if ((gearing_ > 0) && isCapped_)
@@ -158,7 +141,9 @@ namespace QLNet
 
          return null;
       }
-      //! floor
+      /// <summary>
+      /// Returns the floor, if any.
+      /// </summary>
       public double? floor()
       {
          if ((gearing_ > 0) && isFloored_)
@@ -169,12 +154,16 @@ namespace QLNet
 
          return null;
       }
-      //! effective cap of fixing
+      /// <summary>
+      /// Returns the effective cap of the fixing.
+      /// </summary>
       public double effectiveCap()
       {
          return (cap_ - spread()) / gearing();
       }
-      //! effective floor of fixing
+      /// <summary>
+      /// Returns the effective floor of the fixing.
+      /// </summary>
       public double effectiveFloor()
       {
          return (floor_ - spread()) / gearing();

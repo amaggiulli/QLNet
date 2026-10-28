@@ -21,17 +21,19 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! zero inflation (i.e. CPI/RPI/HICP/etc.) volatility structures
-   /*! Abstract interface. CPI volatility is always with respect to
-       some base date.  Also deal with lagged observations of an index
-       with a (usually different) availability lag.
-   */
+   /// <summary>
+   /// zero inflation (i.e. CPI/RPI/HICP/etc.) volatility structures
+   /// </summary>
+   /// <remarks>
+   /// Abstract interface. CPI volatility is always with respect to
+   /// some base date.  Also deal with lagged observations of an index
+   /// with a (usually different) availability lag.
+   /// </remarks>
    public abstract class CPIVolatilitySurface : VolatilityTermStructure
    {
-      /*! calculates the reference date based on the global
-          evaluation date.
-      */
-
+      /// <summary>
+      /// Initializes the surface using a reference date derived from the global evaluation date.
+      /// </summary>
       protected CPIVolatilitySurface(int settlementDays,
                                      Calendar cal,
                                      BusinessDayConvention bdc,
@@ -49,15 +51,12 @@ namespace QLNet
       }
 
       // Volatility
-      /*! by default, inflation is observed with the lag
-          of the term structure.
-
-          Because inflation is highly linked to dates (for
-          interpolation, periods, etc) time-based overload of the
-          methods are not provided.
-      */
-
-      //! Returns the volatility for a given maturity date and strike rate.
+      /// <summary>
+      /// Returns the volatility for a given maturity date and strike.
+      /// </summary>
+      /// <remarks>
+      /// By default, inflation is observed with the lag of the term structure. Because inflation is tightly linked to dates, time-based overloads are not provided.
+      /// </remarks>
       double volatility(Date maturityDate, double strike,
                         Period obsLag = null,
                         bool extrapolate = false)
@@ -86,7 +85,9 @@ namespace QLNet
          }
       }
 
-      //! returns the volatility for a given option tenor and strike rate
+      /// <summary>
+      /// Returns the volatility for a given option tenor and strike.
+      /// </summary>
       public double? volatility(Period optionTenor, double strike,
                                 Period obsLag = null, bool extrapolate = false)
       {
@@ -97,15 +98,12 @@ namespace QLNet
          return volatility(maturityDate, strike, obsLag, extrapolate);
       }
 
-      //! Returns the total integrated variance for a given exercise
-      //! date and strike rate.
-      /*! Total integrated variance is useful because it scales out
-          t for the optionlet pricing formulae.  Note that it is
-          called "total" because the surface does not know whether
-          it represents Black, Bachelier or Displaced Diffusion
-          variance.  These are virtual so alternate connections
-          between const vol and total var are possible.
-      */
+      /// <summary>
+      /// Returns the total integrated variance for a given exercise date and strike.
+      /// </summary>
+      /// <remarks>
+      /// Total integrated variance is useful because it scales out time in optionlet pricing formulas. It is called "total" because the surface does not know whether it represents Black, Bachelier, or displaced-diffusion variance.
+      /// </remarks>
       public virtual double totalVariance(Date exerciseDate,
                                           double strike,
                                           Period obsLag = null,
@@ -119,8 +117,9 @@ namespace QLNet
          return vol * vol * t;
       }
 
-      //! returns the total integrated variance for a given option
-      //! tenor and strike rate.
+      /// <summary>
+      /// Returns the total integrated variance for a given option tenor and strike.
+      /// </summary>
       public virtual double? totalVariance(Period optionTenor,
                                            double strike,
                                            Period obsLag = null,
@@ -134,11 +133,12 @@ namespace QLNet
       }
 
       // Inspectors
-      /*! The term structure observes with a lag that is usually
-          different from the availability lag of the index.  An
-          inflation rate is given, by default, for the maturity
-          requested assuming this lag.
-      */
+      /// <summary>
+      /// Returns the observation lag used by the surface.
+      /// </summary>
+      /// <remarks>
+      /// This lag is usually different from the availability lag of the index. By default, inflation is provided for the requested maturity assuming this lag.
+      /// </remarks>
       public virtual Period observationLag() { return observationLag_; }
       public virtual Frequency frequency()  { return frequency_; }
       public virtual bool indexIsInterpolated()  { return indexIsInterpolated_;}
@@ -158,7 +158,12 @@ namespace QLNet
                                          frequency()).Key;
          }
       }
-      //! base date will be in the past because of observation lag
+      /// <summary>
+      /// Returns the time from the base date to the given maturity.
+      /// </summary>
+      /// <remarks>
+      /// The base date is typically in the past because of the observation lag.
+      /// </remarks>
       public virtual double timeFromBase(Date maturityDate, Period obsLag = null)
       {
          if (obsLag == null)
@@ -220,10 +225,9 @@ namespace QLNet
                           + minStrike() + "," + maxStrike() + "] at time = " + t);
       }
 
-      /*! Implements the actual volatility surface calculation in
-          derived classes e.g. bilinear interpolation.  N.B. does
-          not derive the surface.
-      */
+      /// <summary>
+      /// Implements the actual volatility-surface calculation in derived classes.
+      /// </summary>
       protected abstract double volatilityImpl(double length, double strike);
 
       protected double? baseLevel_;

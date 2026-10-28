@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! South African CPI index
+   /// <summary>
+   /// South African CPI index
+   /// </summary>
    public class ZACPI : ZeroInflationIndex
    {
       public ZACPI(bool interpolated)
@@ -37,7 +39,9 @@ namespace QLNet
                 ts) { }
    }
 
-   //! Genuine year-on-year South African CPI (i.e. not a ratio of South African CPI)
+   /// <summary>
+   /// Genuine year-on-year South African CPI (i.e. not a ratio of South African CPI)
+   /// </summary>
    public class YYZACPI : YoYInflationIndex
    {
       public YYZACPI(bool interpolated)
@@ -56,7 +60,9 @@ namespace QLNet
                 ts) { }
    }
 
-   //! Fake year-on-year South African CPI (i.e. a ratio of South African CPI)
+   /// <summary>
+   /// Fake year-on-year South African CPI (i.e. a ratio of South African CPI)
+   /// </summary>
    public class YYZACPIr : YoYInflationIndex
    {
       public YYZACPIr(bool interpolated)

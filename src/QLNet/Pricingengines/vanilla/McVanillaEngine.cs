@@ -21,8 +21,9 @@ using System;
 
 namespace QLNet
 {
-   //! Pricing engine for vanilla options using Monte Carlo simulation
-   /*! \ingroup vanillaengines */
+   /// <summary>
+   /// Pricing engine for vanilla options using Monte Carlo simulation
+   /// </summary>
    public abstract class MCVanillaEngine<MC, RNG, S> : MCVanillaEngine<MC, RNG, S, VanillaOption>
       where RNG : IRSG, new ()
       where S : IGeneralStatistics, new ()

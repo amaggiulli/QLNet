@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,51 +23,56 @@ using System;
 
 namespace QLNet
 {
-   //! South Korean calendars
-   /*! Public holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Independence Day, March 1st</li>
-       <li>Arbour Day, April 5th (until 2005)</li>
-       <li>Labour Day, May 1st</li>
-       <li>Children's Day, May 5th</li>
-       <li>Memorial Day, June 6th</li>
-       <li>Constitution Day, July 17th (until 2007)</li>
-       <li>Liberation Day, August 15th</li>
-       <li>National Fondation Day, October 3th</li>
-       <li>Christmas Day, December 25th</li>
-       </ul>
-
-       Other holidays for which no rule is given
-       (data available for 2004-2032 only:)
-       <ul>
-       <li>Lunar New Year, the last day of the previous lunar year</li>
-       <li>Election Days</li>
-       <li>National Assemblies</li>
-       <li>Presidency</li>
-       <li>Regional Election Days</li>
-       <li>Buddha's birthday</li>
-       <li>Harvest Moon Day</li>
-       </ul>
-
-       Holidays for the Korea exchange
-       (data from <http://www.krx.co.kr> or
-       <http://www.dooriworld.com/daishin/holiday/holiday.html>):
-       <ul>
-       <li>Public holidays as listed above</li>
-       <li>Year-end closing</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// South Korean calendars
+   /// </summary>
+   /// <remarks>
+   /// Public holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Independence Day, March 1st
+   /// Arbour Day, April 5th (until 2005)
+   /// Labour Day, May 1st
+   /// Children's Day, May 5th
+   /// Memorial Day, June 6th
+   /// Constitution Day, July 17th (until 2007)
+   /// Liberation Day, August 15th
+   /// National Fondation Day, October 3th
+   /// Christmas Day, December 25th
+   ///
+   /// Other holidays for which no rule is given
+   /// (data available for 2004-2032 only:)
+   /// Lunar New Year, the last day of the previous lunar year
+   /// Election Days
+   /// National Assemblies
+   /// Presidency
+   /// Regional Election Days
+   /// Buddha's birthday
+   /// Harvest Moon Day
+   ///
+   /// Holidays for the Korea exchange
+   /// (data from http://www.krx.co.kr or
+   /// http://www.dooriworld.com/daishin/holiday/holiday.html):
+   /// Public holidays as listed above
+   /// Year-end closing
+   /// </remarks>
    public class SouthKorea : Calendar
    {
+      /// <summary>
+      /// Available South Korean calendar markets.
+      /// </summary>
       public enum Market
       {
-         Settlement,  //!< Public holidays
-         KRX          //!< Korea exchange
+         /// <summary>
+         /// Public holidays calendar.
+         /// </summary>
+         Settlement,
+
+         /// <summary>
+         /// Korea Exchange calendar.
+         /// </summary>
+         KRX
       }
 
       public SouthKorea() : this(Market.KRX) { }

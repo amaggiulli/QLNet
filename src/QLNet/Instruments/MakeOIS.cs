@@ -20,10 +20,13 @@ using System;
 
 namespace QLNet
 {
-   //! helper class
-   /*! This class provides a more comfortable way
-       to instantiate overnight indexed swaps.
-   */
+   /// <summary>
+   /// helper class
+   /// </summary>
+   /// <remarks>
+   /// This class provides a more comfortable way
+   /// to instantiate overnight indexed swaps.
+   /// </remarks>
    public class MakeOIS
    {
       private Period swapTenor_;
@@ -46,6 +49,7 @@ namespace QLNet
       private DayCounter fixedDayCount_;
 
       private IPricingEngine engine_;
+      private int paymentLag_;
 
       public MakeOIS(Period swapTenor, OvernightIndex overnightIndex, double? fixedRate = null, Period fwdStart = null)
       {
@@ -63,6 +67,7 @@ namespace QLNet
          nominal_ = 1.0;
          overnightSpread_ = 0.0;
          fixedDayCount_ = overnightIndex.dayCounter();
+         paymentLag_ = 0;
       }
 
       public MakeOIS receiveFixed(bool flag = true)
@@ -152,6 +157,12 @@ namespace QLNet
          return this;
       }
 
+      public MakeOIS withPaymentLag(int paymentLag)
+      {
+         paymentLag_ = paymentLag;
+         return this;
+      }
+
       // OIswap creator
       public static implicit operator OvernightIndexedSwap(MakeOIS o) { return o.value(); }
 
@@ -206,7 +217,8 @@ namespace QLNet
                                                                  schedule,
                                                                  0.0, // fixed rate
                                                                  fixedDayCount_,
-                                                                 overnightIndex_, overnightSpread_);
+                                                               overnightIndex_, overnightSpread_,
+                                                               paymentLag_);
             if (engine_ == null)
             {
                Handle<YieldTermStructure> disc = overnightIndex_.forwardingTermStructure();
@@ -225,7 +237,8 @@ namespace QLNet
          OvernightIndexedSwap ois = new OvernightIndexedSwap(type_, nominal_,
                                                              schedule,
                                                              usedFixedRate.Value, fixedDayCount_,
-                                                             overnightIndex_, overnightSpread_);
+                                                             overnightIndex_, overnightSpread_,
+                                                             paymentLag_);
 
          if (engine_ == null)
          {

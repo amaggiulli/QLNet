@@ -22,40 +22,16 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! TR-BDF2 scheme for finite difference methods
-   /*! See <http://ssrn.com/abstract=1648878> for details.
-
-       In this implementation, the passed operator must be derived
-       from either TimeConstantOperator or TimeDependentOperator.
-       Also, it must implement at least the following interface:
-
-       // copy constructor/assignment
-       // (these will be provided by the compiler if none is defined)
-       Operator(const Operator&);
-       Operator& operator=(const Operator&);
-
-       // inspectors
-       Size size();
-
-       // modifiers
-       void setTime(Time t);
-
-       // operator interface
-       array_type applyTo(const array_type&);
-       array_type solveFor(const array_type&);
-       static Operator identity(Size size);
-
-       // operator algebra
-       Operator operator*(Real, const Operator&);
-       Operator operator+(const Operator&, const Operator&);
-       Operator operator+(const Operator&, const Operator&);
-       \endcode
-
-       \warning The differential operator must be linear for
-                this evolver to work.
-
-       \ingroup findiff
-   */
+   /// <summary>
+   /// TR-BDF2 scheme for finite difference methods.
+   /// </summary>
+   /// <remarks>
+   /// See http://ssrn.com/abstract=1648878 for details.
+   /// In this implementation, the passed operator must derive from either
+   /// <c>TimeConstantOperator</c> or <c>TimeDependentOperator</c> and provide
+   /// the standard operator interface used by this evolver.
+   /// Warning: the differential operator must be linear for this evolver to work.
+   /// </remarks>
 
    // NOTE: There is room for performance improvement especially in
    // the array manipulation

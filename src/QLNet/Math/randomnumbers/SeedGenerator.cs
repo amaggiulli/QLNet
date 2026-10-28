@@ -21,8 +21,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Random seed generator
-   /*! Random number generator used for automatic generation of initialization seeds. */
+   /// <summary>
+   /// Random seed generator
+   /// </summary>
+   /// <remarks>
+   /// Random number generator used for automatic generation of initialization seeds.
+   /// </remarks>
    public class SeedGenerator
    {
       private MersenneTwisterUniformRng rng_;

@@ -89,8 +89,7 @@ namespace QLNet
          double retVal;
          try
          {
-            double acc
-               = ((f(a) != 0.0 || f(b) != 0.0) ? (f(a) + f(b)) * 5e-5 : 1e-4);
+            double acc = ((f(a).IsNotEqual(0.0) || f(b).IsNotEqual(0.0)) ? (f(a) + f(b)) * 5e-5 : 1e-4);
             retVal = new SimpsonIntegral(acc, 8).value(f, a, b) / (b - a);
          }
          catch

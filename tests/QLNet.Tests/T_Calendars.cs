@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using QLNet;
 
@@ -335,6 +336,32 @@ namespace TestSuite
       }
 
       [Fact]
+      public void testSOFR()
+      {
+         // Testing holidays for SOFR
+         var calendar = new UnitedStates(UnitedStates.Market.SOFR);
+
+         // Good Friday
+         foreach (var goodFriday in new List<Date>
+                  {
+                     new Date(14, Month.April, 2017), new Date(30, Month.March, 2018), new Date(19, Month.April, 2019),
+                     new Date(10, Month.April, 2020), new Date(2, Month.April, 2021), new Date(15, Month.April, 2022),
+                     new Date(7, Month.April, 2023),
+                     new Date(29, Month.March, 2024), new Date(18, Month.April, 2025), new Date(3, Month.April, 2026),
+                     new Date(26, Month.March, 2027),
+                     new Date(14, Month.April, 2028), new Date(30, Month.March, 2029), new Date(19, Month.April, 2030),
+                     new Date(11, Month.April, 2031)
+                  })
+         {
+            QAssert.IsTrue(calendar.isHoliday(goodFriday));
+            QAssert.IsFalse(calendar.isBusinessDay(goodFriday));
+            QAssert.IsFalse(calendar.isEarlyClose(goodFriday));
+         }
+
+      }
+
+
+   [Fact]
       public void testTARGET()
       {
          List<Date> expectedHol = new List<Date>();
@@ -1732,10 +1759,68 @@ namespace TestSuite
       [InlineData("2024/11/29")]
       [InlineData("2024/12/24")]
       [InlineData("2024/12/31")]
+      [InlineData("2026/04/03")]
+      [InlineData("2026/05/22")]
+      [InlineData("2026/07/02")]
+      [InlineData("2026/11/27")]
+      [InlineData("2026/12/24")]
+      [InlineData("2026/12/31")]
       public void testUsGovernmentBondMarketEarlyClose(DateTime expectedEarlyClose)
       {
          Calendar c = new UnitedStates(UnitedStates.Market.GovernmentBond);
          QAssert.IsTrue(c.isEarlyClose(expectedEarlyClose));
       }
+
+      [Theory]
+      [InlineData(
+         "2025/01/01",
+         "2025/04/18",
+         "2025/05/01",
+         "2025/05/21",
+         "2025/06/20",
+         "2025/07/16",
+         "2025/08/15",
+         "2025/09/18",
+         "2025/09/19",
+         "2025/10/31",
+         "2025/12/08",
+         "2025/12/25"
+         )]
+      public void testChileCalendar2025(params String[] expectedHolidaysArray )
+      {
+         List<Date> expectedHolidays = expectedHolidaysArray.Select(x => new Date(DateTime.Parse(x))).ToList();
+         Calendar chileCalendar = new Chile();
+
+         List<Date> holidays = chileCalendar.holidayList(new Date(1, Month.Jan, 2025), new Date(31, Month.Dec, 2025))
+            .Where(dt => dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday).ToList(); // Exclude Saturdays and Sundays
+
+         for (int i = 0; i < Math.Min(expectedHolidays.Count, holidays.Count); i++)
+         {
+            if (holidays[i] != expectedHolidays[i])
+               QAssert.Fail("expected holiday was " + expectedHolidays[i]
+                                                    + " while calculated holiday is " + holidays[i]);
+         }
+
+         if (holidays.Count != expectedHolidays.Count)
+            QAssert.Fail("there were " + expectedHolidays.Count
+                                       + " expected holidays, while there are " + holidays.Count
+                                       + " calculated holidays");
+
+      }
+
+      [Fact]
+      public void testColombiaChiquinquiraHoliday2026()
+      {
+         Calendar colombia = new Colombia();
+
+         // Feast is July 9; observed on the next Monday (or the same day if already Monday, per Ley Emiliani) from 2026 onward.
+         QAssert.IsTrue(colombia.isBusinessDay(new Date(9, Month.July, 2026)));
+         QAssert.IsFalse(colombia.isBusinessDay(new Date(13, Month.July, 2026)));
+         QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2026)));
+
+         // Not observed before 2026.
+         QAssert.IsTrue(colombia.isBusinessDay(new Date(14, Month.July, 2025)));
+      }
+
    }
 }

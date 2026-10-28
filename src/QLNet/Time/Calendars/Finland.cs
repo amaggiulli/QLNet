@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,26 +23,25 @@ using System;
 
 namespace QLNet
 {
-   //! Finnish calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Epiphany, January 6th</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>Ascension Thursday</li>
-       <li>Labour Day, May 1st</li>
-       <li>Midsummer Eve (Friday between June 18-24)</li>
-       <li>Independence Day, December 6th</li>
-       <li>Christmas Eve, December 24th</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Finnish calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Epiphany, January 6th
+   /// Good Friday
+   /// Easter Monday
+   /// Ascension Thursday
+   /// Labour Day, May 1st
+   /// Midsummer Eve (Friday between June 18-24)
+   /// Independence Day, December 6th
+   /// Christmas Eve, December 24th
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   /// </remarks>
    public class Finland : Calendar
    {
       public Finland() : base(Impl.Singleton) { }

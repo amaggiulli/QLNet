@@ -24,15 +24,17 @@ namespace QLNet
 {
    public class FixedRateBond : Bond
    {
-      //! fixed-rate bond
-      /*! \ingroup instruments
+      /// <summary>
+      /// Fixed-rate bond.
+      /// </summary>
+      /// <internalremarks>
+      /// Tests: calculations are checked against cached values.
+      /// </internalremarks>
 
-          \test calculations are tested by checking results against
-                cached values.
-      */
 
-
-      //! simple annual compounding coupon rates
+      /// <summary>
+      /// Initializes a fixed-rate bond with simple annual-compounding coupon rates.
+      /// </summary>
       public FixedRateBond(int settlementDays, double faceAmount, Schedule schedule, List<double> coupons,
                            DayCounter accrualDayCounter, BusinessDayConvention paymentConvention = BusinessDayConvention.Following,
                            double redemption = 100, Date issueDate = null, Calendar paymentCalendar = null,
@@ -63,8 +65,9 @@ namespace QLNet
          Utils.QL_REQUIRE(redemptions_.Count == 1, () => "multiple redemptions created");
       }
 
-      /*! simple annual compounding coupon rates
-          with internal schedule calculation */
+      /// <summary>
+      /// Initializes a fixed-rate bond with simple annual-compounding coupon rates and internal schedule calculation.
+      /// </summary>
       public FixedRateBond(int settlementDays,
                            Calendar calendar,
                            double faceAmount,

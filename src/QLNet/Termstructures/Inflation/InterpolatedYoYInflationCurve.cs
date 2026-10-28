@@ -21,10 +21,12 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Inflation term structure based on interpolated year-on-year rates
-   /*! \note The provided rates are not YY inflation-swap quotes.
-       \ingroup inflationtermstructures
-   */
+   /// <summary>
+   /// Inflation term structure based on interpolated year-on-year rates
+   /// </summary>
+   /// <remarks>
+   /// Note: The provided rates are not YY inflation-swap quotes.
+   /// </remarks>
    public class InterpolatedYoYInflationCurve<Interpolator> : YoYInflationTermStructure, InterpolatedCurve
       where Interpolator : class, IInterpolationFactory, new ()
    {

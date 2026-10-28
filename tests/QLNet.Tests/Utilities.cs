@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2016 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -158,6 +158,11 @@ namespace TestSuite
          Utils.QL_FAIL("unknown payoff type");
          return String.Empty;
       }
+
+      public static int timeToDays(double t, int daysPerYear = 360)
+      {
+         return (int)Math.Round(t * daysPerYear);
+      }
    }
 
    // this cleans up index-fixing histories when disposed
@@ -184,7 +189,7 @@ namespace TestSuite
 
       public static void Fail(string message)
       {
-         Assert.True(false, message);
+         Assert.Fail(message);
       }
 
       public static void AreEqual(double expected, double actual, double delta)
@@ -251,6 +256,16 @@ namespace TestSuite
          Xunit.Assert.Throws<T>(action);
       }
 
+      public static void Close(string name, Date settlement, double calculated, double expected, double tolerance)
+      {
+         if (Math.Abs(calculated - expected) > tolerance)
+         {
+            Fail(name + " calculation failed: "
+                         + "\n    at:     " + settlement
+                         + "\n    calculated:  " + calculated
+                         + "\n    expected:    " + expected);
+         }
+      }
    }
 
    public struct SwaptionTenors

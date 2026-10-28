@@ -19,25 +19,25 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! Provides cpi cap/floor prices by interpolation and put/call parity (not cap/floor/swap* parity).
-   /*!
-       The inflation index MUST contain a ZeroInflationTermStructure as
-       this is used to create ATM.  Unlike YoY price surfaces we
-       assume that 1) an ATM ZeroInflationTermStructure is available
-       and 2) that it is safe to use it.  This is supported by the
-       fact that no stripping is required for CPI cap/floors as they
-       only give one flow.
-
-       cpi cap/floors have a single (one) flow (unlike nominal
-       caps) because they observe cumulative inflation up to
-       their maturity.  Options are on CPI(T)/CPI(0) but strikes
-       are quoted for yearly average inflation, so require transformation
-       via (1+quote)^T to obtain actual strikes.  These are consistent
-       with ZCIIS quoting conventions.
-
-       The observationLag is that for the referenced instrument prices.
-       Strikes are as-quoted not as-used.
-   */
+   /// <summary>
+   /// Provides cpi cap/floor prices by interpolation and put/call parity (not cap/floor/swap* parity).
+   /// </summary>
+   /// <remarks>
+   /// The inflation index MUST contain a ZeroInflationTermStructure as
+   /// this is used to create ATM.  Unlike YoY price surfaces we
+   /// assume that 1) an ATM ZeroInflationTermStructure is available
+   /// and 2) that it is safe to use it.  This is supported by the
+   /// fact that no stripping is required for CPI cap/floors as they
+   /// only give one flow.
+   /// cpi cap/floors have a single (one) flow (unlike nominal
+   /// caps) because they observe cumulative inflation up to
+   /// their maturity.  Options are on CPI(T)/CPI(0) but strikes
+   /// are quoted for yearly average inflation, so require transformation
+   /// via (1+quote)^T to obtain actual strikes.  These are consistent
+   /// with ZCIIS quoting conventions.
+   /// The observationLag is that for the referenced instrument prices.
+   /// Strikes are as-quoted not as-used.
+   /// </remarks>
    public abstract class CPICapFloorTermPriceSurface : InflationTermStructure
    {
       protected CPICapFloorTermPriceSurface(double nominal,
@@ -136,20 +136,27 @@ namespace QLNet
          return zeroInflationIndex().link.zeroInflationTermStructure().link.baseDate();
       }
 
-      //! is based on
+      /// <summary>
+      /// Returns the zero-inflation index on which the surface is based.
+      /// </summary>
       public Handle<ZeroInflationIndex> zeroInflationIndex() { return zii_; }
 
 
-      //! inspectors
-      /*! \note you don't know if price() is a cap or a floor
-               without checking the ZeroInflation ATM level.
-      */
+      /// <summary>
+      /// inspectors
+      /// </summary>
+      /// <remarks>
+      /// Note: you don't know if price() is a cap or a floor
+      /// without checking the ZeroInflation ATM level.
+      /// </remarks>
       public virtual double nominal() {return nominal_;}
       public virtual BusinessDayConvention businessDayConvention() {return bdc_;}
 
-      //! \warning you MUST remind the compiler in any descendants with the using:: mechanism
-      //!          because you overload the names
-      //! remember that the strikes use the quoting convention
+      /// <remarks>
+      /// Warning: in descendants, you must remind the compiler with the
+      /// <c>using</c> mechanism because this overload hides other members with
+      /// the same name. Remember that the strikes use the quoting convention.
+      /// </remarks>
       public virtual double price(Period d, double k)
       {
          return this.price(cpiOptionDateFromTenor(d), k);
@@ -236,10 +243,9 @@ namespace QLNet
       // LazyObject interface
       public override void update() { notifyObservers(); }
 
-      //! set up the interpolations for capPrice_ and floorPrice_
-      //! since we know ATM, and we have single flows,
-      //! we can use put/call parity to extend the surfaces
-      //! across all strikes
+      // Set up the interpolations for capPrice_ and floorPrice_.
+      // Since ATM prices are known for single flows, put/call parity
+      // can be used to extend the surfaces across all strikes.
       protected override void performCalculations()
       {
          allStrikes_ = new List<double>();
@@ -308,7 +314,12 @@ namespace QLNet
          floorPrice_.enableExtrapolation();
       }
 
-      //! remember that the strikes use the quoting convention
+      /// <summary>
+      /// Returns the price at the given date and strike.
+      /// </summary>
+      /// <remarks>
+      /// The strike uses the quoting convention of the surface.
+      /// </remarks>
       public override double price(Date d, double k)
       {
          double atm = zeroInflationIndex().link.zeroInflationTermStructure().link.zeroRate(d);

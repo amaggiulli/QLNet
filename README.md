@@ -7,7 +7,6 @@ which has been used as a base reference for modelling various financial instrume
 QLNet also contains new developments on the bond market like MBS, Amortized Cost, PSA Curve and others.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/nn0a2mw6qu8mg481?svg=true)](https://ci.appveyor.com/project/amaggiulli/qlnet-p0t4r)
-[![NuGet](https://buildstats.info/nuget/qlnet)](https://www.nuget.org/packages/qlnet/)
 [![NuGet](https://img.shields.io/nuget/vpre/QLNet?style=flat-square)](https://www.nuget.org/packages/QLNet)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?item_name=Donation+to+QLNet&cmd=_donations&business=a.maggiulli%40gmail.com)
 
@@ -59,5 +58,4 @@ As soon as the fix is complete, it will be merged into both *master* and *develo
 
 Thanks to all Quantlib creators and contributors.
 Thanks to all QLNet contributors.
-Special thanks to [JetBrains](https://www.jetbrains.com/?from=qlnet) for their support of open source projects; QLNet makes extensive use of [Resharper](https://www.jetbrains.com/dotnet/?from=qlnet).  
  

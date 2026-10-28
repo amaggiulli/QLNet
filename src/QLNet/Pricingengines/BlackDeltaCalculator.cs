@@ -17,11 +17,14 @@ using System;
 
 namespace QLNet
 {
-   //! Black delta calculator class
-   /*! Class includes many operations needed for different applications
-       in FX markets, which has special quoation mechanisms, since
-       every price can be expressed in both numeraires.
-   */
+   /// <summary>
+   /// Black delta calculator class
+   /// </summary>
+   /// <remarks>
+   /// Class includes many operations needed for different applications
+   /// in FX markets, which has special quoation mechanisms, since
+   /// every price can be expressed in both numeraires.
+   /// </remarks>
    public class BlackDeltaCalculator
    {
       // A parsimonious constructor is chosen, which for example

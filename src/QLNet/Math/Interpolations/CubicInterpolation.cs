@@ -22,46 +22,49 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! %Cubic interpolation between discrete points.
-   /*! Cubic interpolation is fully defined when the ${f_i}$ function values
-       at points ${x_i}$ are supplemented with ${f_i}$ function derivative
-       values.
-
-       Different type of first derivative approximations are implemented, both
-       local and non-local. Local schemes (Fourth-order, Parabolic,
-       Modified Parabolic, Fritsch-Butland, Akima, Kruger) use only $f$ values
-       near $x_i$ to calculate $f_i$. Non-local schemes (Spline with different
-       boundary conditions) use all ${f_i}$ values and obtain ${f_i}$ by
-       solving a linear system of equations. Local schemes produce $C^1$
-       interpolants, while the spline scheme generates $C^2$ interpolants.
-
-       Hyman's monotonicity constraint filter is also implemented: it can be
-       applied to all schemes to ensure that in the regions of local
-       monotoniticity of the input (three successive increasing or decreasing
-       values) the interpolating cubic remains monotonic. If the interpolating
-       cubic is already monotonic, the Hyman filter leaves it unchanged
-       preserving all its original features.
-
-       In the case of $C^2$ interpolants the Hyman filter ensures local
-       monotonicity at the expense of the second derivative of the interpolant
-       which will no longer be continuous in the points where the filter has
-       been applied.
-
-       While some non-linear schemes (Modified Parabolic, Fritsch-Butland,
-       Kruger) are guaranteed to be locally monotone in their original
-       approximation, all other schemes must be filtered according to the
-       Hyman criteria at the expense of their linearity.
-
-       See R. L. Dougherty, A. Edelman, and J. M. Hyman,
-       "Nonnegativity-, Monotonicity-, or Convexity-Preserving CubicSpline and
-       Quintic Hermite Interpolation"
-       Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
-
-       \todo implement missing schemes (FourthOrder and ModifiedParabolic) and
-             missing boundary conditions (Periodic and Lagrange).
-
-       \test to be adapted from old ones.
-   */
+   /// <summary>
+   /// Cubic interpolation between discrete points.
+   /// </summary>
+   /// <remarks>
+   /// Cubic interpolation is fully defined when the ${f_i}$ function values
+   /// at points ${x_i}$ are supplemented with ${f_i}$ function derivative
+   /// values.
+   ///
+   /// Different type of first derivative approximations are implemented, both
+   /// local and non-local. Local schemes (Fourth-order, Parabolic,
+   /// Modified Parabolic, Fritsch-Butland, Akima, Kruger) use only $f$ values
+   /// near $x_i$ to calculate $f_i$. Non-local schemes (Spline with different
+   /// boundary conditions) use all ${f_i}$ values and obtain ${f_i}$ by
+   /// solving a linear system of equations. Local schemes produce $C^1$
+   /// interpolants, while the spline scheme generates $C^2$ interpolants.
+   ///
+   /// Hyman's monotonicity constraint filter is also implemented: it can be
+   /// applied to all schemes to ensure that in the regions of local
+   /// monotoniticity of the input (three successive increasing or decreasing
+   /// values) the interpolating cubic remains monotonic. If the interpolating
+   /// cubic is already monotonic, the Hyman filter leaves it unchanged
+   /// preserving all its original features.
+   ///
+   /// In the case of $C^2$ interpolants the Hyman filter ensures local
+   /// monotonicity at the expense of the second derivative of the interpolant
+   /// which will no longer be continuous in the points where the filter has
+   /// been applied.
+   ///
+   /// While some non-linear schemes (Modified Parabolic, Fritsch-Butland,
+   /// Kruger) are guaranteed to be locally monotone in their original
+   /// approximation, all other schemes must be filtered according to the
+   /// Hyman criteria at the expense of their linearity.
+   ///
+   /// See R. L. Dougherty, A. Edelman, and J. M. Hyman,
+   /// "Nonnegativity-, Monotonicity-, or Convexity-Preserving CubicSpline and
+   /// Quintic Hermite Interpolation"
+   /// Mathematics Of Computation, v. 52, n. 186, April 1989, pp. 471-494.
+   ///
+   /// TODO: implement missing schemes (FourthOrder and ModifiedParabolic) and
+   /// missing boundary conditions (Periodic and Lagrange).
+   ///
+   /// Test: to be adapted from old ones.
+   /// </remarks>
 
    public class CubicInterpolation : Interpolation
    {
@@ -69,54 +72,80 @@ namespace QLNet
 
       public enum DerivativeApprox
       {
-         /*! Spline approximation (non-local, non-monotone, linear[?]).
-             Different boundary conditions can be used on the left and right
-             boundaries: see BoundaryCondition.
-         */
+         /// <summary>
+         /// Spline approximation.
+         /// </summary>
+         /// <remarks>
+         /// This is a non-local, non-monotone approximation. Different boundary conditions can be used on the left and right boundaries.
+         /// </remarks>
          Spline,
 
-         //! Overshooting minimization 1st derivative
+         /// <summary>
+         /// Overshooting-minimization first-derivative approximation.
+         /// </summary>
          SplineOM1,
 
-         //! Overshooting minimization 2nd derivative
+         /// <summary>
+         /// Overshooting-minimization second-derivative approximation.
+         /// </summary>
          SplineOM2,
 
-         //! Fourth-order approximation (local, non-monotone, linear)
+         /// <summary>
+         /// Fourth-order approximation.
+         /// </summary>
          FourthOrder,
 
-         //! Parabolic approximation (local, non-monotone, linear)
+         /// <summary>
+         /// Parabolic approximation.
+         /// </summary>
          Parabolic,
 
-         //! Fritsch-Butland approximation (local, monotone, non-linear)
+         /// <summary>
+         /// Fritsch-Butland approximation.
+         /// </summary>
          FritschButland,
 
-         //! Akima approximation (local, non-monotone, non-linear)
+         /// <summary>
+         /// Akima approximation.
+         /// </summary>
          Akima,
 
-         //! Kruger approximation (local, monotone, non-linear)
+         /// <summary>
+         /// Kruger approximation.
+         /// </summary>
          Kruger,
 
-         //! Weighted harmonic mean approximation (local, monotonic, non-linear)
+         /// <summary>
+         /// Weighted harmonic-mean approximation.
+         /// </summary>
          Harmonic
       }
 
       public enum BoundaryCondition
       {
-         //! Make second(-last) point an inactive knot
+         /// <summary>
+         /// Makes the second or second-to-last point an inactive knot.
+         /// </summary>
          NotAKnot,
 
-         //! Match value of end-slope
+         /// <summary>
+         /// Matches the end-slope value.
+         /// </summary>
          FirstDerivative,
 
-         //! Match value of second derivative at end
+         /// <summary>
+         /// Matches the second derivative at the end.
+         /// </summary>
          SecondDerivative,
 
-         //! Match first and second derivative at either end
+         /// <summary>
+         /// Matches first and second derivatives at both ends.
+         /// </summary>
          Periodic,
 
-         /*! Match end-slope to the slope of the cubic that matches
-             the first four data at the respective end
-         */
+         /// <summary>
+         /// Matches the end-slope to the cubic fitted through the first four points at the respective end.
+         /// </summary>
          Lagrange
       }
 
@@ -155,7 +184,12 @@ namespace QLNet
 
    public class CubicNaturalSpline : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public CubicNaturalSpline(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Spline, false,
@@ -166,7 +200,12 @@ namespace QLNet
 
    public class MonotonicCubicNaturalSpline : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a monotonic cubic natural spline interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MonotonicCubicNaturalSpline(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Spline, true,
@@ -177,7 +216,12 @@ namespace QLNet
 
    public class CubicSplineOvershootingMinimization1 : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a cubic spline interpolation with first overshooting minimization.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public CubicSplineOvershootingMinimization1(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.SplineOM1, false,
@@ -188,7 +232,12 @@ namespace QLNet
 
    public class CubicSplineOvershootingMinimization2 : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a cubic spline interpolation with second overshooting minimization.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public CubicSplineOvershootingMinimization2(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.SplineOM2, false,
@@ -199,7 +248,12 @@ namespace QLNet
 
    public class AkimaCubicInterpolation : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes an Akima cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public AkimaCubicInterpolation(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Akima, false,
@@ -210,7 +264,12 @@ namespace QLNet
 
    public class KrugerCubic : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a Kruger cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public KrugerCubic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Kruger, false,
@@ -221,7 +280,12 @@ namespace QLNet
 
    public class HarmonicCubic : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a harmonic cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public HarmonicCubic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Harmonic, false,
@@ -232,7 +296,12 @@ namespace QLNet
 
    public class FritschButlandCubic : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a Fritsch-Butland cubic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public FritschButlandCubic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.FritschButland, false,
@@ -243,7 +312,12 @@ namespace QLNet
 
    public class Parabolic : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public Parabolic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Parabolic, false,
@@ -254,7 +328,12 @@ namespace QLNet
 
    public class MonotonicParabolic : CubicInterpolation
    {
-      /*! \pre the \f$ x \f$ values must be sorted. */
+      /// <summary>
+      /// Initializes a monotonic parabolic interpolation.
+      /// </summary>
+      /// <remarks>
+      /// The <c>x</c> values must be sorted.
+      /// </remarks>
       public MonotonicParabolic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
                 CubicInterpolation.DerivativeApprox.Parabolic, true,
@@ -263,7 +342,9 @@ namespace QLNet
       {}
    }
 
-   //! %Cubic interpolation factory and traits
+   /// <summary>
+   /// Cubic interpolation factory and traits
+   /// </summary>
    public class Cubic : IInterpolationFactory
    {
       private CubicInterpolation.DerivativeApprox da_;

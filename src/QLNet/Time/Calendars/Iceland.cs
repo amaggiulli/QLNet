@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
@@ -22,28 +22,27 @@ using System;
 
 namespace QLNet
 {
-   //! Icelandic calendars
-   /*! Holidays for the Iceland stock exchange
-       (data from <http://www.icex.is/is/calendar?languageID=1>):
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Holy Thursday</li>
-       <li>Good Friday</li>
-       <li>Easter Monday</li>
-       <li>First day of Summer (third or fourth Thursday in April)</li>
-       <li>Labour Day, May 1st</li>
-       <li>Ascension Thursday</li>
-       <li>Pentecost Monday</li>
-       <li>Independence Day, June 17th</li>
-       <li>Commerce Day, first Monday in August</li>
-       <li>Christmas, December 25th</li>
-       <li>Boxing Day, December 26th</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Icelandic calendars
+   /// </summary>
+   /// <remarks>
+   /// Holidays for the Iceland stock exchange
+   /// (data from http://www.icex.is/is/calendar?languageID=1):
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday)
+   /// Holy Thursday
+   /// Good Friday
+   /// Easter Monday
+   /// First day of Summer (third or fourth Thursday in April)
+   /// Labour Day, May 1st
+   /// Ascension Thursday
+   /// Pentecost Monday
+   /// Independence Day, June 17th
+   /// Commerce Day, first Monday in August
+   /// Christmas, December 25th
+   /// Boxing Day, December 26th
+   /// </remarks>
    public class Iceland : Calendar
    {
       public Iceland() : base(Impl.Singleton) { }

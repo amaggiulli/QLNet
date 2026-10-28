@@ -28,12 +28,9 @@ namespace QLNet
    /// </summary>
    public class TreeVanillaSwapEngine : LatticeShortRateModelEngine<VanillaSwap.Arguments, VanillaSwap.Results>
    {
+      // The term structure is only needed when the short-rate model
+      // cannot provide one itself.
       private Handle<YieldTermStructure> termStructure_;
-
-      /* Constructors
-          \note the term structure is only needed when the short-rate
-                model cannot provide one itself.
-      */
 
       public TreeVanillaSwapEngine(ShortRateModel model,
                                    int timeSteps,

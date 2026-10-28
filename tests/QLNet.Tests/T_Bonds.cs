@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -1902,8 +1902,49 @@ namespace TestSuite
       }
 
       [Theory]
-      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
       [InlineData(2.200, "10/22/2014", "10/22/2019", "12/24/2018", "4/22/2015", 994.263)]
+      public void testSolverNaNCase(double Coupon,
+                                      string AccrualDate, string MaturityDate, string SettlementDate,
+                                      string FirstCouponDate, double Price)
+      {
+         // Convert dates
+         Date maturityDate = Convert.ToDateTime(MaturityDate, new CultureInfo("en-US"));
+         Date settlementDate = Convert.ToDateTime(SettlementDate, new CultureInfo("en-US"));
+         Date datedDate = Convert.ToDateTime(AccrualDate, new CultureInfo("en-US"));
+         Date firstCouponDate = null;
+         if (FirstCouponDate != String.Empty)
+            firstCouponDate = Convert.ToDateTime(FirstCouponDate, new CultureInfo("en-US"));
+
+         Coupon = Coupon / 100;
+
+         Calendar calendar = new TARGET();
+         int settlementDays = 0;
+         Period tenor = new Period(6, TimeUnit.Months);
+         Compounding comp = Compounding.Compounded;
+         Frequency freq = Frequency.Semiannual;
+         DayCounter dc = new Thirty360(Thirty360.Thirty360Convention.USA);
+
+         Schedule schedule = new Schedule(datedDate, maturityDate, tenor, calendar,
+                                          BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+                                          DateGeneration.Rule.Backward, false, firstCouponDate);
+
+         CallableFixedRateBond bond = new CallableFixedRateBond(settlementDays, 100.0, schedule,
+                                                                new InitializedList<double>(1, Coupon), dc, BusinessDayConvention.Unadjusted);
+
+         double ytm = BondFunctions.yield(bond, Price, dc, comp, freq, settlementDate);
+
+         double price = BondFunctions.cleanPrice(bond, ytm, dc, comp, freq, settlementDate);
+
+         if (Math.Abs(price - Price) > 1e-2)
+            QAssert.Fail("Failed to retrieve the clean price from the computed yield " + settlementDate
+                         + "\n    calculated yield: " + ytm
+                         + "\n    retrieved clean price: " + price
+                         + "\n    expected:   " + Price);
+      }
+
+      [Theory]
+      [InlineData(1.850, "11/23/2015", "11/23/2018", "11/23/2018", "5/23/2016", 100.8547)]
+      [InlineData(2.200, "10/22/2014", "10/22/2019", "10/01/2019", "4/22/2015", 994.263)]
       public void testQLNetExceptions(double Coupon,
                                       string AccrualDate, string MaturityDate, string SettlementDate,
                                       string FirstCouponDate, double Price)
@@ -1986,5 +2027,58 @@ namespace TestSuite
 
          QAssert.AreEqual(expectedYield, bey, delta);
       }
+
+      [Theory]
+      [InlineData("", -795.459834, -0.0012571287)]
+      [InlineData("01/30/2024", -795.459834, -0.0012571287)]
+      [InlineData("02/12/2024", -793.149033, -0.0012607913)]
+      public void testBasisPointValue(string settlementDate,  double bpv, double yvbp)
+      {
+         const double tolerance = 1e-6;
+
+         Date settlement = null;
+         if (settlementDate != string.Empty)
+            settlement = Convert.ToDateTime(settlementDate, new CultureInfo("en-US"));
+
+         // Testing consistency of bond basisPointValue and yieldValueBasisPoint calculations
+         var vars = new CommonVars();
+         var today = new Date(29, Month.January, 2024);
+         Settings.setEvaluationDate(today);
+
+         var datedDate = new Date(15, Month.November, 2023);
+         var maturity = new Date(15, Month.August, 2033);
+
+         DayCounter dayCounter = new Thirty360(Thirty360.Thirty360Convention.USA);
+         var compounding = Compounding.Compounded;
+         var frequency = Frequency.Semiannual;
+         var period = new Period(frequency);
+
+         var fixedBondSchedule= new Schedule(datedDate, maturity, period,
+            new UnitedStates(UnitedStates.Market.GovernmentBond), BusinessDayConvention.Unadjusted,
+            BusinessDayConvention.Unadjusted, DateGeneration.Rule.Forward, false);
+
+         var fixedRateBond = new FixedRateBond(1, vars.faceAmount, fixedBondSchedule,
+            [0.045], dayCounter, BusinessDayConvention.Unadjusted, 100.0);
+
+         var defaultSettlement = fixedRateBond.settlementDate();
+         var cleanPrice = new Bond.Price(102.890625, Bond.Price.Type.Clean);
+
+         var yield = BondFunctions.yield(fixedRateBond, cleanPrice.amount(), dayCounter, compounding, frequency);
+         QAssert.Close("yield", defaultSettlement, yield, 0.041301, tolerance);
+
+         var bpv1 = BondFunctions.basisPointValue(fixedRateBond, yield, dayCounter, compounding, frequency, settlement);
+         QAssert.Close("basisPointValue from yield", settlement, bpv1, bpv, tolerance);
+
+         var bpv2 = BondFunctions.basisPointValue(fixedRateBond, new InterestRate(yield, dayCounter, compounding, frequency), settlement);
+         QAssert.Close("basisPointValue from InterestRate", settlement, bpv2, bpv, tolerance);
+
+         var yvbp1 = BondFunctions.yieldValueBasisPoint(fixedRateBond, yield, dayCounter, compounding, frequency, settlement);
+         yvbp1 *= vars.faceAmount;
+         QAssert.Close("yieldValueBasisPoint from yield", settlement, yvbp1, yvbp, tolerance);
+
+         var yvbp2 = BondFunctions.yieldValueBasisPoint(fixedRateBond, new InterestRate(yield, dayCounter, compounding, frequency), settlement);
+         yvbp2 *= vars.faceAmount;
+         QAssert.Close("yieldValueBasisPoint from InterestRate", settlement, yvbp2, yvbp, tolerance);
+     }
    }
 }

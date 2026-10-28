@@ -20,11 +20,10 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! cpi bond; if there is only one date in the schedule it
-   //! is a zero bond returning an inflated notional.
-   /*! \ingroup instruments
-
-    */
+   // CPI bond; if there is only one date in the schedule it
+   /// <summary>
+   /// is a zero bond returning an inflated notional.
+   /// </summary>
    public class CPIBond : Bond
    {
       public CPIBond(int settlementDays,

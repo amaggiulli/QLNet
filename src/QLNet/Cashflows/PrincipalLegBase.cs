@@ -61,7 +61,9 @@ namespace QLNet
 
    }
 
-   //! helper class building a Bullet Principal leg
+   /// <summary>
+   /// helper class building a Bullet Principal leg
+   /// </summary>
    public class PricipalLeg : PrincipalLegBase
    {
       // constructor
@@ -111,7 +113,9 @@ namespace QLNet
       }
    }
 
-   //! helper class building a Bullet Principal leg
+   /// <summary>
+   /// helper class building a Bullet Principal leg
+   /// </summary>
    public class BulletPricipalLeg : PrincipalLegBase
    {
       // constructor

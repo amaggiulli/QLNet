@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
- Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -57,15 +57,15 @@ namespace TestSuite
          public RelinkableHandle<YieldTermStructure> termStructure = new RelinkableHandle<YieldTermStructure>();
 
          // utilities
-         public VanillaSwap makeSwap(int length, double fixedRate, double floatingSpread)
+         public VanillaSwap makeSwap(int length, double fixedRate, double floatingSpread, DateGeneration.Rule rule = DateGeneration.Rule.Forward)
          {
-            Date maturity = calendar.advance(settlement, length, TimeUnit.Years, floatingConvention);
-            Schedule fixedSchedule = new Schedule(settlement, maturity, new Period(fixedFrequency),
-                                                  calendar, fixedConvention, fixedConvention, DateGeneration.Rule.Forward, false);
-            Schedule floatSchedule = new Schedule(settlement, maturity, new Period(floatingFrequency),
-                                                  calendar, floatingConvention, floatingConvention, DateGeneration.Rule.Forward, false);
-            VanillaSwap swap = new VanillaSwap(type, nominal, fixedSchedule, fixedRate, fixedDayCount,
-                                               floatSchedule, index, floatingSpread, index.dayCounter());
+            var maturity = calendar.advance(settlement, length, TimeUnit.Years, floatingConvention);
+            var fixedSchedule = new Schedule(settlement, maturity, new Period(fixedFrequency),
+               calendar, fixedConvention, fixedConvention, rule, false);
+            var floatSchedule = new Schedule(settlement, maturity, new Period(floatingFrequency),
+               calendar, floatingConvention, floatingConvention, rule, false);
+            var swap = new VanillaSwap(type, nominal, fixedSchedule, fixedRate, fixedDayCount,
+               floatSchedule, index, floatingSpread, index.dayCounter());
             swap.setPricingEngine(new DiscountingSwapEngine(termStructure));
             return swap;
          }
@@ -84,7 +84,7 @@ namespace TestSuite
             index = new Euribor(new Period(floatingFrequency), termStructure);
 
             calendar = index.fixingCalendar();
-            today = calendar.adjust(Date.Today);
+            today = calendar.adjust(new Date(16,09,2015));
             Settings.setEvaluationDate(today);
             settlement = calendar.advance(today, settlementDays, TimeUnit.Days);
 
@@ -350,6 +350,22 @@ namespace TestSuite
          catch (Exception ex)
          {
             QAssert.Fail(ex.Message);
+         }
+      }
+      [Fact]
+      public void testThirdWednesdayAdjustment()
+      {
+         // Testing third-Wednesday adjustment...");
+         var vars = new CommonVars();
+
+         var swap = vars.makeSwap(1, 0.0, -0.001, DateGeneration.Rule.ThirdWednesdayInclusive);
+
+         if (swap.floatingSchedule().startDate() != new Date(16, Month.September, 2015))
+            QAssert.Fail("Wrong Start Date " + swap.floatingSchedule().startDate());
+
+         if (swap.floatingSchedule().endDate() != new Date(21, Month.September, 2016))
+         {
+            QAssert.Fail("Wrong End Date " + swap.floatingSchedule().endDate());
          }
       }
 

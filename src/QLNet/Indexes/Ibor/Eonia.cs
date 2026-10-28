@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! %Eonia (Euro Overnight Index Average) rate fixed by the ECB.
+   /// <summary>
+   /// Eonia (Euro Overnight Index Average) rate fixed by the ECB.
+   /// </summary>
    public class Eonia : OvernightIndex
    {
       public Eonia() : this(new Handle<YieldTermStructure>()) { }

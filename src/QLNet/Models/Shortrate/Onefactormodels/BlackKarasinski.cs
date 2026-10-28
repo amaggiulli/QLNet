@@ -20,7 +20,14 @@ using System;
 
 namespace QLNet
 {
-
+   /// <summary>
+   /// Standard Black-Karasinski model.
+   /// </summary>
+   /// <remarks>
+   /// This class implements the standard Black-Karasinski model defined by:
+   /// d ln(r_t) = (theta(t) - alpha ln(r_t)) dt + sigma dW_t
+   /// where alpha and sigma are constants.
+   /// </remarks>
    public class BlackKarasinski :   OneFactorModel,
       ITermStructureConsistentModel
    {
@@ -36,7 +43,7 @@ namespace QLNet
       {
          a_ = arguments_[0];
          sigma_ = arguments_[1];
-         a_ = arguments_[0] = new ConstantParameter(a, new PositiveConstraint());
+         a_ = arguments_[0] = new ConstantParameter(a, new BoundaryConstraint(0.0, double.MaxValue));
          sigma_ = arguments_[1] = new ConstantParameter(sigma, new PositiveConstraint());
          termStructure_ = new Handle<YieldTermStructure>();
          termStructure_ = termStructure;
@@ -95,7 +102,9 @@ namespace QLNet
       #endregion
    }
 
-   //! Short-rate dynamics in the Black-Karasinski model
+   /// <summary>
+   /// Short-rate dynamics in the Black-Karasinski model
+   /// </summary>
    public class Dynamics : OneFactorModel.ShortRateDynamics
    {
 

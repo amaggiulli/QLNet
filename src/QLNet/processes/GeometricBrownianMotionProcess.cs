@@ -19,14 +19,15 @@
 
 namespace QLNet
 {
-   //! Geometric brownian-motion process
-   /*! This class describes the stochastic process governed by
-       \f[
-           dS(t, S)= \mu S dt + \sigma S dW_t.
-       \f]
-
-       \ingroup processes
-   */
+   /// <summary>
+   /// Geometric brownian-motion process
+   /// </summary>
+   /// <remarks>
+   /// This class describes the stochastic process governed by
+   /// \f[
+   /// dS(t, S)= \mu S dt + \sigma S dW_t.
+   /// \f]
+   /// </remarks>
    public class GeometricBrownianMotionProcess : StochasticProcess1D
    {
       protected double initialValue_;

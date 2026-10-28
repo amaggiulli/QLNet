@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,9 +20,12 @@
 namespace QLNet
 {
 
-   //! %AUD %LIBOR rate
-   /*! Australian Dollar LIBOR discontinued as of 2013.
-   */
+   /// <summary>
+   /// AUD LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Australian Dollar LIBOR discontinued as of 2013.
+   /// </remarks>
    public class AUDLibor : Libor
    {
       public AUDLibor(Period tenor)

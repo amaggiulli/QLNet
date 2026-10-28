@@ -56,7 +56,9 @@ namespace QLNet
       public abstract double amount(Date defaultDate, double notional, double recoveryRate);
    }
 
-   //! Claim on a notional
+   /// <summary>
+   /// Claim on a notional
+   /// </summary>
    public class FaceValueClaim : Claim
    {
       public override double amount(Date d, double notional, double recoveryRate)
@@ -65,7 +67,9 @@ namespace QLNet
       }
    }
 
-   //! Claim on the notional of a reference security, including accrual
+   /// <summary>
+   /// Claim on the notional of a reference security, including accrual
+   /// </summary>
    public class FaceValueAccrualClaim : Claim
    {
       public FaceValueAccrualClaim(Bond referenceSecurity)

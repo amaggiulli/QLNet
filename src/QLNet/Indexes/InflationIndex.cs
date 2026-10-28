@@ -22,19 +22,17 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Base class for inflation-rate indexes,
+   /// <summary>
+   /// Base class for inflation-rate indexes,
+   /// </summary>
    public class InflationIndex : Index, IObserver
    {
-      /*! An inflation index may return interpolated
-          values.  These are linearly interpolated
-          values with act/act convention within a period.
-          Note that stored "fixings" are always flat (constant)
-          within a period and interpolated as needed.  This
-          is because interpolation adds an addional availability
-          lag (because you always need the next period to
-          give the previous period's value)
-          and enables storage of the most recent uninterpolated value.
-      */
+      /// <summary>
+      /// Initializes an inflation index.
+      /// </summary>
+      /// <remarks>
+      /// An inflation index may return interpolated values. These are linearly interpolated within a period using an Act/Act convention. Stored fixings remain flat within a period and are interpolated as needed so the most recent uninterpolated value can still be stored without adding extra availability lag.
+      /// </remarks>
       public InflationIndex(string familyName,
                             Region region,
                             bool revised,
@@ -59,32 +57,30 @@ namespace QLNet
       // Index interface
       public override string name() { return name_; }
 
-      /*! Inflation indices do not have fixing calendars.  An
-          inflation index value is valid for every day (including
-          weekends) of a calendar period.  I.e. it uses the
-          NullCalendar as its fixing calendar.
-      */
+      /// <summary>
+      /// Returns the fixing calendar for the inflation index.
+      /// </summary>
+      /// <remarks>
+      /// Inflation indices do not have fixing calendars in practice. Their value is valid for every day of a calendar period, so they use <see cref="NullCalendar"/>.
+      /// </remarks>
       public override Calendar fixingCalendar() { return new NullCalendar(); }
 
       public override bool isValidFixingDate(Date fixingDate) { return true; }
 
-      /*! Forecasting index values requires an inflation term
-          structure.  The inflation term structure (ITS) defines the
-          usual lag (not the index).  I.e.  an ITS is always relatve
-          to a base date that is earlier than its asof date.  This
-          must be so because indices are available only with a lag.
-          However, the index availability lag only sets a minimum
-          lag for the ITS.  An ITS may be relative to an earlier
-          date, e.g. an index may have a 2-month delay in
-          publication but the inflation swaps may take as their base
-          the index 3 months before.
-      */
+      /// <summary>
+      /// Returns the fixing for the given date.
+      /// </summary>
+      /// <remarks>
+      /// Forecasting index values requires an inflation term structure. The term structure defines the effective lag, which must be at least as large as the index availability lag but can be longer.
+      /// </remarks>
       public override double fixing(Date fixingDate, bool forecastTodaysFixing = false) { return 0; }
 
-      /*! this method creates all the "fixings" for the relevant
-          period of the index.  E.g. for monthly indices it will put
-          the same value in every calendar day in the month.
-      */
+      /// <summary>
+      /// Adds fixings for the full period that contains the given fixing date.
+      /// </summary>
+      /// <remarks>
+      /// For example, a monthly index stores the same value for every calendar day in the month.
+      /// </remarks>
       public override void addFixing(Date fixingDate, double fixing, bool forceOverwrite = false)
       {
          KeyValuePair<Date, Date> lim = Utils.inflationPeriod(fixingDate, frequency_);
@@ -109,21 +105,20 @@ namespace QLNet
       public string familyName() { return familyName_; }
       public Region region() { return region_; }
       public bool revised() { return revised_; }
-      /*! Forecasting index values using an inflation term structure
-         uses the interpolation of the inflation term structure
-         unless interpolation is set to false.  In this case the
-         extrapolated values are constant within each period taking
-         the mid-period extrapolated value.
-      */
+      /// <summary>
+      /// Returns whether the index is interpolated.
+      /// </summary>
+      /// <remarks>
+      /// When this is false, forecast values are held constant within each period using the mid-period extrapolated value.
+      /// </remarks>
       public bool interpolated() { return interpolated_; }
       public Frequency frequency() { return frequency_; }
-      /*! The availability lag describes when the index is
-         <i>available</i>, not how it is used.  Specifically the
-         fixing for, say, January, may only be available in April
-         but the index will always return the index value
-         applicable for January as its January fixing (independent
-         of the lag in availability).
-      */
+      /// <summary>
+      /// Returns the availability lag of the index.
+      /// </summary>
+      /// <remarks>
+      /// The availability lag describes when the index becomes available, not how it is used. For instance, a January fixing might only be published in April, while still representing the January value.
+      /// </remarks>
       public Period availabilityLag() { return availabilityLag_; }
       public Currency currency() { return currency_; }
 
@@ -140,10 +135,14 @@ namespace QLNet
    }
 
 
-   //! Base class for zero inflation indices.
+   /// <summary>
+   /// Base class for zero inflation indices.
+   /// </summary>
    public class ZeroInflationIndex : InflationIndex
    {
-      //! Always use the evaluation date as the reference date
+      /// <summary>
+      /// Initializes a zero-inflation index that always uses the evaluation date as its reference date.
+      /// </summary>
       public ZeroInflationIndex(string familyName,
                                 Region region,
                                 bool revised,
@@ -159,9 +158,10 @@ namespace QLNet
          zeroInflation_.registerWith(update);
       }
 
-      /*! \warning the forecastTodaysFixing parameter (required by
-                   the Index interface) is currently ignored.
-      */
+      /// <remarks>
+      /// Warning: the forecastTodaysFixing parameter (required by
+      /// the Index interface) is currently ignored.
+      /// </remarks>
       public override double fixing(Date aFixingDate, bool forecastTodaysFixing = false)
       {
          if (!needsForecast(aFixingDate))
@@ -289,11 +289,14 @@ namespace QLNet
 
    }
 
-   //! Base class for year-on-year inflation indices.
-   /*! These may be genuine indices published on, say, Bloomberg, or
-       "fake" indices that are defined as the ratio of an index at
-       different time points.
-   */
+   /// <summary>
+   /// Base class for year-on-year inflation indices.
+   /// </summary>
+   /// <remarks>
+   /// These may be genuine indices published on, say, Bloomberg, or
+   /// "fake" indices that are defined as the ratio of an index at
+   /// different time points.
+   /// </remarks>
    public class YoYInflationIndex : InflationIndex
    {
       public YoYInflationIndex(string familyName,

@@ -22,21 +22,25 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! At-the-money swaption-volatility matrix
-   /*! This class provides the at-the-money volatility for a given
-       swaption by interpolating a volatility matrix whose elements
-       are the market volatilities of a set of swaption with given
-       option date and swapLength.
-
-       The volatility matrix <tt>M</tt> must be defined so that:
-       - the number of rows equals the number of option dates
-       - the number of columns equals the number of swap tenors
-       - <tt>M[i][j]</tt> contains the volatility corresponding
-         to the <tt>i</tt>-th option and <tt>j</tt>-th tenor.
-   */
+   /// <summary>
+   /// At-the-money swaption-volatility matrix
+   /// </summary>
+   /// <remarks>
+   /// This class provides the at-the-money volatility for a given
+   /// swaption by interpolating a volatility matrix whose elements
+   /// are the market volatilities of a set of swaption with given
+   /// option date and swapLength.
+   /// The volatility matrix <c>M</c> must be defined so that:
+   /// - the number of rows equals the number of option dates
+   /// - the number of columns equals the number of swap tenors
+   /// - <c>M[i][j]</c> contains the volatility corresponding
+   /// to the <c>i</c>-th option and <c>j</c>-th tenor.
+   /// </remarks>
    public class SwaptionVolatilityMatrix : SwaptionVolatilityDiscrete
    {
-      //! floating reference date, floating market data
+      /// <summary>
+      /// Initializes the matrix with a floating reference date and floating market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Calendar calendar,
          BusinessDayConvention bdc,
@@ -95,7 +99,9 @@ namespace QLNet
          }
       }
 
-      //! fixed reference date, floating market data
+      /// <summary>
+      /// Initializes the matrix with a fixed reference date and floating market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Date referenceDate,
          Calendar calendar,
@@ -155,7 +161,9 @@ namespace QLNet
          }
       }
 
-      //! floating reference date, fixed market data
+      /// <summary>
+      /// Initializes the matrix with a floating reference date and fixed market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Calendar calendar,
          BusinessDayConvention bdc,
@@ -211,7 +219,9 @@ namespace QLNet
          }
       }
 
-      //! fixed reference date, fixed market data
+      /// <summary>
+      /// Initializes the matrix with a fixed reference date and fixed market data.
+      /// </summary>
       public SwaptionVolatilityMatrix(
          Date referenceDate,
          Calendar calendar,
@@ -368,7 +378,9 @@ namespace QLNet
       }
 
       // Other inspectors
-      //! returns the lower indexes of surrounding volatility matrix corners
+      /// <summary>
+      /// Returns the lower indexes of the surrounding volatility-matrix corners.
+      /// </summary>
       public KeyValuePair<int, int> locate(Date optionDate,
                                            Period swapTenor)
       {
@@ -376,7 +388,9 @@ namespace QLNet
                        swapLength(swapTenor));
       }
 
-      //! returns the lower indexes of surrounding volatility matrix corners
+      /// <summary>
+      /// Returns the lower indexes of the surrounding volatility-matrix corners.
+      /// </summary>
       public KeyValuePair<int, int> locate(double optionTime,
                                            double swapLength)
       {

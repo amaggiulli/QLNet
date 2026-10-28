@@ -20,15 +20,17 @@
 namespace QLNet
 {
 
-   //! %CHF %ZIBOR rate
-//    ! Zurich Interbank Offered Rate.
-//
-//        \warning This is the rate fixed in Zurich by BBA. Use CHFLibor if
-//                 you're interested in the London fixing by BBA.
-//
-//        \todo check settlement days, end-of-month adjustment,
-//              and day-count convention.
-//
+   /// <summary>
+   /// CHF ZIBOR rate.
+   /// </summary>
+   /// <remarks>
+   /// Zurich Interbank Offered Rate.
+   /// Warning: this is the rate fixed in Zurich by BBA. Use <see cref="CHFLibor"/>
+   /// if you're interested in the London fixing by BBA.
+   /// </remarks>
+   /// <internalremarks>
+   /// TODO: check settlement days, end-of-month adjustment, and day-count convention.
+   /// </internalremarks>
    public class Zibor : IborIndex
    {
       public Zibor(Period tenor)

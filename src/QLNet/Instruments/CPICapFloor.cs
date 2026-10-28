@@ -16,31 +16,30 @@
 
 namespace QLNet
 {
-   //! CPI cap or floor
-   /*! Quoted as a fixed strike rate \f$ K \f$.  Payoff:
-    \f[
-    P_n(0,T) \max(y (N [(1+K)^{T}-1] -
-                N \left[ \frac{I(T)}{I(0)} -1 \right]), 0)
-    \f]
-    where \f$ T \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
-    nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
-    notional, and \f$ I(t) \f$ is the inflation index value at
-    time \f$ t \f$.
-
-    Inflation is generally available on every day, including
-    holidays and weekends.  Hence there is a variable to state
-    whether the observe/fix dates for inflation are adjusted or
-    not.  The default is not to adjust.
-
-    N.B. a cpi cap or floor is an option, not a cap or floor on a coupon.
-    Thus this is very similar to a ZCIIS and has a single flow, this is
-    as usual for cpi because it is cumulative up to option maturity from base
-    date.
-
-    We do not inherit from Option, although this would be reasonable,
-    because we do not have that degree of generality.
-
-   */
+   /// <summary>
+   /// CPI cap or floor
+   /// </summary>
+   /// <remarks>
+   /// Quoted as a fixed strike rate \f$ K \f$.  Payoff:
+   /// \f[
+   /// P_n(0,T) \max(y (N [(1+K)^{T}-1] -
+   /// N \left[ \frac{I(T)}{I(0)} -1 \right]), 0)
+   /// \f]
+   /// where \f$ T \f$ is the maturity time, \f$ P_n(0,t) \f$ is the
+   /// nominal discount factor at time \f$ t \f$, \f$ N \f$ is the
+   /// notional, and \f$ I(t) \f$ is the inflation index value at
+   /// time \f$ t \f$.
+   /// Inflation is generally available on every day, including
+   /// holidays and weekends.  Hence there is a variable to state
+   /// whether the observe/fix dates for inflation are adjusted or
+   /// not.  The default is not to adjust.
+   /// N.B. a cpi cap or floor is an option, not a cap or floor on a coupon.
+   /// Thus this is very similar to a ZCIIS and has a single flow, this is
+   /// as usual for cpi because it is cumulative up to option maturity from base
+   /// date.
+   /// We do not inherit from Option, although this would be reasonable,
+   /// because we do not have that degree of generality.
+   /// </remarks>
    public class CPICapFloor : Instrument
    {
       public class Arguments : IPricingEngineArguments
@@ -126,9 +125,16 @@ namespace QLNet
       // Inspectors
       public Option.Type type()  { return type_; }
       public double nominal() { return nominal_; }
-      //! \f$ K \f$ in the above formula.
+      /// <summary>
+      /// Returns the strike used in the pricing formula.
+      /// </summary>
       public double strike() { return strike_; }
-      //! when you fix - but remember that there is an observation interpolation factor as well
+      /// <summary>
+      /// Returns the fixing date.
+      /// </summary>
+      /// <remarks>
+      /// The observation interpolation factor must also be taken into account.
+      /// </remarks>
       public Date fixingDate() { return fixCalendar_.adjust(maturity_ - observationLag_, fixConvention_); }
       public Date payDate() { return payCalendar_.adjust(maturity_, payConvention_); }
       public Handle<ZeroInflationIndex> inflationIndex() { return infIndex_; }

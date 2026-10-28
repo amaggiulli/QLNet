@@ -1,5 +1,6 @@
 ﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
+ Copyright (C) 2008-2025  Andrea Maggiulli (a.maggiulli@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
 
@@ -21,11 +22,14 @@ using System.Reflection;
 
 namespace QLNet
 {
-   //! Black 1976 calculator class
-   /*! \bug When the variance is null, division by zero occur during
-            the calculation of delta, delta forward, gamma, gamma
-            forward, rho, dividend rho, vega, and strike sensitivity.
-   */
+   /// <summary>
+   /// Black 1976 calculator class
+   /// </summary>
+   /// <remarks>
+   /// Bug: When the variance is null, division by zero occur during
+   /// the calculation of delta, delta forward, gamma, gamma
+   /// forward, rho, dividend rho, vega, and strike sensitivity.
+   /// </remarks>
    public class BlackCalculator
    {
       protected double strike_, forward_, stdDev_, discount_, variance_;
@@ -39,11 +43,25 @@ namespace QLNet
          forward_ = forward;
          stdDev_ = stdDev;
          discount_ = discount;
-         variance_ = stdDev * stdDev;
+         variance_ = (stdDev * stdDev);
+         initialize(payoff);
+      }
 
-         Utils.QL_REQUIRE(forward > 0.0, () => "positive forward value required: " + forward + " not allowed");
-         Utils.QL_REQUIRE(stdDev >= 0.0, () => "non-negative standard deviation required: " + stdDev + " not allowed");
-         Utils.QL_REQUIRE(discount > 0.0, () => "positive discount required: " + discount + " not allowed");
+      public BlackCalculator(Option.Type optionType, double strike, double forward, double stdDev, double discount = 1.0)
+      {
+         strike_ = strike;
+         forward_ = forward;
+         stdDev_ = stdDev;
+         discount_ = discount;
+         variance_ = stdDev * stdDev;
+         initialize(new PlainVanillaPayoff(optionType, strike));
+      }
+
+      public void initialize(StrikedTypePayoff payoff)
+      {
+         Utils.QL_REQUIRE(forward_ > 0.0, () => "positive forward value required: " + forward_ + " not allowed");
+         Utils.QL_REQUIRE(stdDev_ >= 0.0, () => "non-negative standard deviation required: " + stdDev_ + " not allowed");
+         Utils.QL_REQUIRE(discount_ > 0.0, () => "positive discount required: " + discount_ + " not allowed");
 
          if (stdDev_ >= Const.QL_EPSILON)
          {
@@ -56,7 +74,7 @@ namespace QLNet
             }
             else
             {
-               D1_ = Math.Log(forward / strike_) / stdDev_ + 0.5 * stdDev_;
+               D1_ = Math.Log(forward_ / strike_) / stdDev_ + 0.5 * stdDev_;
                D2_ = D1_ - stdDev_;
                CumulativeNormalDistribution f = new CumulativeNormalDistribution();
                cum_d1_ = f.value(D1_);
@@ -67,7 +85,7 @@ namespace QLNet
          }
          else
          {
-            if (forward > strike_)
+            if (forward_ > strike_)
             {
                cum_d1_ = 1.0;
                cum_d2_ = 1.0;
@@ -122,7 +140,9 @@ namespace QLNet
          return result;
       }
 
-      /*! Sensitivity to change in the underlying forward price. */
+      /// <summary>
+      /// Returns the sensitivity to a change in the underlying forward price.
+      /// </summary>
       public double deltaForward()
       {
 
@@ -135,7 +155,9 @@ namespace QLNet
          return discount_ * temp2;
       }
 
-      /*! Sensitivity to change in the underlying spot price. */
+      /// <summary>
+      /// Returns the sensitivity to a change in the underlying spot price.
+      /// </summary>
       public virtual double delta(double spot)
       {
          Utils.QL_REQUIRE(spot > 0.0, () => "positive spot value required: " + spot + " not allowed");
@@ -151,8 +173,9 @@ namespace QLNet
          return discount_ * temp2;
       }
 
-      /*! Sensitivity in percent to a percent change in the
-          underlying forward price. */
+      /// <summary>
+      /// Returns the elasticity with respect to the underlying forward price.
+      /// </summary>
       public double elasticityForward()
       {
          double val = value();
@@ -166,8 +189,9 @@ namespace QLNet
          return double.MinValue;
       }
 
-      /*! Sensitivity in percent to a percent change in the
-          underlying spot price. */
+      /// <summary>
+      /// Returns the elasticity with respect to the underlying spot price.
+      /// </summary>
       public virtual double elasticity(double spot)
       {
          double val = value();
@@ -181,8 +205,9 @@ namespace QLNet
          return double.MinValue;
       }
 
-      /*! Second order derivative with respect to change in the
-          underlying forward price. */
+      /// <summary>
+      /// Returns the second derivative with respect to the underlying forward price.
+      /// </summary>
       public double gammaForward()
       {
 
@@ -199,8 +224,9 @@ namespace QLNet
          return discount_ * temp2;
       }
 
-      /*! Second order derivative with respect to change in the
-          underlying spot price. */
+      /// <summary>
+      /// Returns the second derivative with respect to the underlying spot price.
+      /// </summary>
       public virtual double gamma(double spot)
       {
 
@@ -221,7 +247,9 @@ namespace QLNet
          return discount_ * temp2;
       }
 
-      /*! Sensitivity to time to maturity. */
+      /// <summary>
+      /// Returns the sensitivity to time to maturity.
+      /// </summary>
       public virtual double theta(double spot, double maturity)
       {
 
@@ -234,14 +262,17 @@ namespace QLNet
                   + 0.5 * variance_ * spot  * spot * gamma(spot)) / maturity;
       }
 
-      /*! Sensitivity to time to maturity per day,
-          assuming 365 day per year. */
+      /// <summary>
+      /// Returns the sensitivity to time to maturity per day, assuming 365 days per year.
+      /// </summary>
       public virtual double thetaPerDay(double spot, double maturity)
       {
          return theta(spot, maturity) / 365.0;
       }
 
-      /*! Sensitivity to volatility. */
+      /// <summary>
+      /// Returns the sensitivity to volatility.
+      /// </summary>
       public double vega(double maturity)
       {
          Utils.QL_REQUIRE(maturity >= 0.0, () => "negative maturity not allowed");
@@ -257,7 +288,9 @@ namespace QLNet
 
       }
 
-      /*! Sensitivity to discounting rate. */
+      /// <summary>
+      /// Returns the sensitivity to the discounting rate.
+      /// </summary>
       public double rho(double maturity)
       {
          Utils.QL_REQUIRE(maturity >= 0.0, () => "negative maturity not allowed");
@@ -270,7 +303,9 @@ namespace QLNet
          return maturity * (discount_ * temp - value());
       }
 
-      /*! Sensitivity to dividend/growth rate. */
+      /// <summary>
+      /// Returns the sensitivity to the dividend or growth rate.
+      /// </summary>
       public double dividendRho(double maturity)
       {
          Utils.QL_REQUIRE(maturity >= 0.0, () => "negative maturity not allowed");
@@ -284,25 +319,31 @@ namespace QLNet
          return maturity * discount_ * temp;
       }
 
-      /*! Probability of being in the money in the bond martingale
-          measure, i.e. N(d2).
-          It is a risk-neutral probability, not the real world one.
-      */
+      /// <summary>
+      /// Returns the probability of finishing in the money in the bond martingale measure.
+      /// </summary>
+      /// <remarks>
+      /// This is the risk-neutral probability <c>N(d2)</c>, not a real-world probability.
+      /// </remarks>
       public double itmCashProbability()
       {
          return cum_d2_;
       }
 
-      /*! Probability of being in the money in the asset martingale
-          measure, i.e. N(d1).
-          It is a risk-neutral probability, not the real world one.
-      */
+      /// <summary>
+      /// Returns the probability of finishing in the money in the asset martingale measure.
+      /// </summary>
+      /// <remarks>
+      /// This is the risk-neutral probability <c>N(d1)</c>, not a real-world probability.
+      /// </remarks>
       public double itmAssetProbability()
       {
          return cum_d1_;
       }
 
-      /*! Sensitivity to strike. */
+      /// <summary>
+      /// Returns the sensitivity to the strike.
+      /// </summary>
       public double strikeSensitivity()
       {
 

@@ -23,7 +23,9 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Base class for model arguments
+   /// <summary>
+   /// Base class for model arguments
+   /// </summary>
    public class Parameter
    {
       protected Impl impl_;
@@ -53,14 +55,18 @@ namespace QLNet
       public double value(double t) { return impl_.value(params_, t); }
       public Constraint constraint() { return constraint_; }
 
-      //! Base class for model parameter implementation
+      /// <summary>
+      /// Base class for model parameter implementation
+      /// </summary>
       public abstract class Impl
       {
          public abstract double value(Vector p, double t);
       }
    }
 
-   //! Standard constant parameter \f$ a(t) = a \f$
+   /// <summary>
+   /// Standard constant parameter \f$ a(t) = a \f$
+   /// </summary>
    public class ConstantParameter : Parameter
    {
       private new class Impl : Parameter.Impl
@@ -85,7 +91,9 @@ namespace QLNet
 
    }
 
-   //! %Parameter which is always zero \f$ a(t) = 0 \f$
+   /// <summary>
+   /// Parameter which is always zero \f$ a(t) = 0 \f$
+   /// </summary>
    public class NullParameter : Parameter
    {
       private new class Impl : Parameter.Impl
@@ -101,7 +109,9 @@ namespace QLNet
       }
    }
 
-   //! Piecewise-constant parameter
+   /// <summary>
+   /// Piecewise-constant parameter.
+   /// </summary>
    //    ! \f$ a(t) = a_i if t_{i-1} \geq t < t_i \f$.
    //        This kind of parameter is usually used to enhance the fitting of a
    //        model
@@ -117,13 +127,12 @@ namespace QLNet
 
          public override double value(Vector parameters, double t)
          {
-            int size = times_.Count;
-            for (int i = 0; i < size; i++)
-            {
-               if (t < times_[i])
-                  return parameters[i];
-            }
-            return parameters[size];
+            int i = times_.BinarySearch(t);
+            if (i >= 0)
+               return parameters[i + 1];
+
+            i = ~i;
+            return parameters[i];
          }
          private List<double> times_;
       }
@@ -133,7 +142,9 @@ namespace QLNet
       }
    }
 
-   //! Deterministic time-dependent parameter used for yield-curve fitting
+   /// <summary>
+   /// Deterministic time-dependent parameter used for yield-curve fitting
+   /// </summary>
    public class TermStructureFittingParameter : Parameter
    {
       public class NumericalImpl : Parameter.Impl
@@ -141,16 +152,21 @@ namespace QLNet
          private List<double> times_;
          private List<double> values_;
          private Handle<YieldTermStructure> termStructure_;
+         // true while times_ is strictly increasing, which is what makes the binary search in value() exact
+         private bool timesIncreasing_;
 
          public NumericalImpl(Handle<YieldTermStructure> termStructure)
          {
             times_ = new List<double>();
             values_ = new List<double>();
             termStructure_ = termStructure;
+            timesIncreasing_ = true;
          }
 
          public void setvalue(double t, double x)
          {
+            if (times_.Count > 0 && !(t > times_[times_.Count - 1]))
+               timesIncreasing_ = false;
             times_.Add(t);
             values_.Add(x);
          }
@@ -164,13 +180,42 @@ namespace QLNet
          {
             times_.Clear();
             values_.Clear();
+            timesIncreasing_ = true;
          }
          public override double value(Vector UnnamedParameter1, double t)
          {
-            int nIndex = times_.FindIndex(val => val.IsEqual(t));
-            Utils.QL_REQUIRE(nIndex != -1, () => "fitting parameter not set!");
+            int nIndex = timesIncreasing_ ? findIndexSorted(t) : findIndex(t);
+            if (nIndex == -1)
+               Utils.QL_FAIL("fitting parameter not set!");
 
             return values_[nIndex];
+         }
+
+         private int findIndex(double t)
+         {
+            for (int i = 0; i < times_.Count; i++)
+            {
+               if (times_[i].IsEqual(t))
+                  return i;
+            }
+            return -1;
+         }
+
+         // Returns the first index matching t under IsEqual, as findIndex does. IsEqual accepts a
+         // difference of at most double.Epsilon, so in a strictly increasing list only the element
+         // before the lower bound of t, the lower bound itself and the one after it can match.
+         private int findIndexSorted(double t)
+         {
+            int lower = times_.BinarySearch(t);
+            if (lower < 0)
+               lower = ~lower;
+            int last = Math.Min(lower + 1, times_.Count - 1);
+            for (int i = Math.Max(lower - 1, 0); i <= last; i++)
+            {
+               if (times_[i].IsEqual(t))
+                  return i;
+            }
+            return -1;
          }
 
          public Handle<YieldTermStructure> termStructure() { return termStructure_; }

@@ -23,12 +23,13 @@ using System;
 namespace QLNet
 {
    // Swaption pricing engine for two-factor additive Gaussian Model G2 + +
-   //! %Swaption priced by means of the Black formula
-   /*! \ingroup swaptionengines
-
-       \warning The engine assumes that the exercise date equals the
-                start date of the passed swap.
-   */
+   /// <summary>
+   /// Swaption priced by means of the Black formula
+   /// </summary>
+   /// <remarks>
+   /// Warning: The engine assumes that the exercise date equals the
+   /// start date of the passed swap.
+   /// </remarks>
    public class G2SwaptionEngine : GenericModelEngine<G2, Swaption.Arguments,
       Swaption.Results>
    {

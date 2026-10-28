@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! US CPI index
+   /// <summary>
+   /// US CPI index
+   /// </summary>
    public class USCPI : ZeroInflationIndex
    {
       public USCPI(bool interpolated)
@@ -37,7 +39,9 @@ namespace QLNet
                 ts) {}
    }
 
-   //! Genuine year-on-year US CPI (i.e. not a ratio of US CPI)
+   /// <summary>
+   /// Genuine year-on-year US CPI (i.e. not a ratio of US CPI)
+   /// </summary>
    public class YYUSCPI : YoYInflationIndex
    {
       public YYUSCPI(bool interpolated)
@@ -56,7 +60,9 @@ namespace QLNet
                 ts) {}
    }
 
-   //! Fake year-on-year US CPI (i.e. a ratio of US CPI)
+   /// <summary>
+   /// Fake year-on-year US CPI (i.e. a ratio of US CPI)
+   /// </summary>
    public class YYUSCPIr : YoYInflationIndex
    {
       public YYUSCPIr(bool interpolated)

@@ -22,16 +22,17 @@ namespace QLNet
       {
          KnockIn,
          KnockOut,
-         KIKO,     //! lower barrier KI, upper KO
-         KOKI      //! lower barrier KO, upper KI
+         KIKO,     // lower barrier KI, upper KO
+         KOKI      // lower barrier KO, upper KI
       }
    }
 
-   //! %Double Barrier option on a single asset.
-   /*! The analytic pricing engine will be used if none if passed.
-
-       \ingroup instruments
-   */
+   /// <summary>
+   /// Double Barrier option on a single asset.
+   /// </summary>
+   /// <remarks>
+   /// The analytic pricing engine will be used if none if passed.
+   /// </remarks>
    public class DoubleBarrierOption : OneAssetOption
    {
 
@@ -61,9 +62,10 @@ namespace QLNet
          moreArgs.rebate = rebate_;
       }
 
-      /*! \warning see VanillaOption for notes on implied-volatility
-                  calculation.
-      */
+      /// <remarks>
+      /// Warning: see VanillaOption for notes on implied-volatility
+      /// calculation.
+      /// </remarks>
       public double impliedVolatility(double targetValue,
                                       GeneralizedBlackScholesProcess process,
                                       double accuracy = 1.0e-4,
@@ -104,7 +106,9 @@ namespace QLNet
       protected double barrier_hi_;
       protected double rebate_;
 
-      //! %Arguments for double barrier option calculation
+      /// <summary>
+      /// Arguments for double-barrier option calculation.
+      /// </summary>
       public new class Arguments : OneAssetOption.Arguments
       {
          public Arguments()
@@ -133,7 +137,9 @@ namespace QLNet
          }
       }
 
-      //! %Double-Barrier-option %engine base class
+      /// <summary>
+      /// Double-barrier option engine base class.
+      /// </summary>
       public new class Engine : GenericEngine<DoubleBarrierOption.Arguments, DoubleBarrierOption.Results>
       {
          protected bool triggered(double underlying)

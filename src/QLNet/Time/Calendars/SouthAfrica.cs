@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008-2024 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -24,29 +24,28 @@ using System;
 namespace QLNet
 {
 
-   //! South-African calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st (possibly moved to Monday)</li>
-       <li>Good Friday</li>
-       <li>Family Day, Easter Monday</li>
-       <li>Human Rights Day, March 21st (possibly moved to Monday)</li>
-       <li>Freedom Day, April 27th (possibly moved to Monday)</li>
-       <li>Workers Day, May 1st (possibly moved to Monday)</li>
-       <li>Youth Day, June 16th (possibly moved to Monday)</li>
-       <li>National Women's Day, August 9th
-       (possibly moved to Monday)</li>
-       <li>Heritage Day, September 24th (possibly moved to Monday)</li>
-       <li>Day of Reconciliation, December 16th
-       (possibly moved to Monday)</li>
-       <li>Christmas December 25th </li>
-       <li>Day of Goodwill December 26th (possibly moved to Monday)</li>
-       </ul>
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// South-African calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st (possibly moved to Monday)
+   /// Good Friday
+   /// Family Day, Easter Monday
+   /// Human Rights Day, March 21st (possibly moved to Monday)
+   /// Freedom Day, April 27th (possibly moved to Monday)
+   /// Workers Day, May 1st (possibly moved to Monday)
+   /// Youth Day, June 16th (possibly moved to Monday)
+   /// National Women's Day, August 9th
+   /// (possibly moved to Monday)
+   /// Heritage Day, September 24th (possibly moved to Monday)
+   /// Day of Reconciliation, December 16th
+   /// (possibly moved to Monday)
+   /// Christmas December 25th 
+   /// Day of Goodwill December 26th (possibly moved to Monday)
+   /// </remarks>
    public class SouthAfrica :  Calendar
    {
       public SouthAfrica() : base(Impl.Singleton) { }

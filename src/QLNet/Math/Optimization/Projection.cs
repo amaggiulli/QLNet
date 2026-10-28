@@ -36,8 +36,9 @@ namespace QLNet
          Utils.QL_REQUIRE(numberOfFreeParameters_ > 0, () => "numberOfFreeParameters==0");
       }
 
-      //! returns the subset of free parameters corresponding
-      // to set of parameters
+      /// <summary>
+      /// Returns the subset of free parameters corresponding to a full parameter set.
+      /// </summary>
       public virtual Vector project(Vector parameters)
       {
          Utils.QL_REQUIRE(parameters.size() == fixParameters_.Count, () => "parameters.size()!=parametersFreedoms_.size()");
@@ -49,8 +50,9 @@ namespace QLNet
          return projectedParameters;
       }
 
-      //! returns whole set of parameters corresponding to the set
-      // of projected parameters
+      /// <summary>
+      /// Rebuilds the full parameter set from the projected free parameters.
+      /// </summary>
       public virtual Vector include(Vector projectedParameters)
       {
          Utils.QL_REQUIRE(projectedParameters.size() == numberOfFreeParameters_, () =>

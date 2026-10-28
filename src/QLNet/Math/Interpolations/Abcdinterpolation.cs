@@ -170,11 +170,14 @@ namespace QLNet
 
    }
 
-   //! %Abcd interpolation between discrete points.
-   /*! \ingroup interpolations */
+   /// <summary>
+   /// Abcd interpolation between discrete points.
+   /// </summary>
    public class AbcdInterpolation : Interpolation
    {
-      /*! Constructor */
+      /// <summary>
+      /// Initializes an abcd interpolation.
+      /// </summary>
       public AbcdInterpolation(List<double> xBegin, int size, List<double> yBegin,
                                double a = -0.06,
                                double b =  0.17,
@@ -218,8 +221,9 @@ namespace QLNet
 
    }
 
-   //! %Abcd interpolation factory and traits
-   /*! \ingroup interpolations */
+   /// <summary>
+   /// Abcd interpolation factory and traits
+   /// </summary>
    public class Abcd
    {
       public Abcd(double a, double b, double c, double d,

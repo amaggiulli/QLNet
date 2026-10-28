@@ -20,9 +20,13 @@
 
 namespace QLNet
 {
-   //! Constant Black volatility, no time-strike dependence
-   /*! This class implements the BlackVolatilityTermStructure interface for a constant Black volatility (no time/strike
-       dependence). */
+   /// <summary>
+   /// Constant Black volatility, no time-strike dependence
+   /// </summary>
+   /// <remarks>
+   /// This class implements the BlackVolatilityTermStructure interface for a constant Black volatility (no time/strike
+   /// dependence).
+   /// </remarks>
    public class BlackConstantVol : BlackVolatilityTermStructure
    {
       private Handle<Quote> volatility_;

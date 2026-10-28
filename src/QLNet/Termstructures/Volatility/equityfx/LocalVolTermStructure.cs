@@ -22,29 +22,36 @@ using System;
 
 namespace QLNet
 {
-   /*! This abstract class defines the interface of concrete
-       local-volatility term structures which will be derived from this one.
-
-       Volatilities are assumed to be expressed on an annual basis.
-   */
+   /// <summary>
+   /// This abstract class defines the interface of concrete
+   /// local-volatility term structures which will be derived from this one.
+   /// Volatilities are assumed to be expressed on an annual basis.
+   /// </summary>
    public abstract class LocalVolTermStructure : VolatilityTermStructure
    {
       #region Constructors
-      //! default constructor
-      /*! \warning term structures initialized by means of this
-                   constructor must manage their own reference date
-                   by overriding the referenceDate() method.
-      */
+      /// <summary>
+      /// default constructor
+      /// </summary>
+      /// <remarks>
+      /// Warning: term structures initialized by means of this
+      /// constructor must manage their own reference date
+      /// by overriding the referenceDate() method.
+      /// </remarks>
 
       protected LocalVolTermStructure(BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(bdc, dc) {}
 
-      //! initialize with a fixed reference date
+      /// <summary>
+      /// Initializes the structure with a fixed reference date.
+      /// </summary>
       protected LocalVolTermStructure(Date referenceDate, Calendar cal = null,
                                       BusinessDayConvention bdc = BusinessDayConvention.Following, DayCounter dc = null)
          : base(referenceDate, cal, bdc, dc) {}
 
-      //! calculate the reference date based on the global evaluation date
+      /// <summary>
+      /// Initializes the structure using a reference date derived from the global evaluation date.
+      /// </summary>
       protected LocalVolTermStructure(int settlementDays, Calendar cal, BusinessDayConvention bdc = BusinessDayConvention.Following,
                                       DayCounter dc = null)
          : base(settlementDays, cal, bdc, dc) {}
@@ -76,7 +83,9 @@ namespace QLNet
           assume that extrapolation is required.
       */
 
-      //! local vol calculation
+      /// <summary>
+      /// Implements local-volatility calculation in derived classes.
+      /// </summary>
       protected abstract double localVolImpl(double t, double strike);
 
       #endregion

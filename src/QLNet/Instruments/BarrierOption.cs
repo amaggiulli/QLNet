@@ -19,11 +19,12 @@
 
 namespace QLNet
 {
-   //! %Barrier option on a single asset.
-   //    ! The analytic pricing Engine will be used if none if passed.
-   //
-   //        \ingroup instruments
-   //
+   /// <summary>
+   /// Barrier option on a single asset.
+   /// </summary>
+   /// <remarks>
+   /// The analytic pricing engine will be used if none is passed.
+   /// </remarks>
    public class BarrierOption : OneAssetOption
    {
       public new class Arguments : OneAssetOption.Arguments
@@ -95,9 +96,9 @@ namespace QLNet
          moreArgs.barrier = barrier_;
          moreArgs.rebate = rebate_;
       }
-      //        ! \warning see VanillaOption for notes on implied-volatility
-      //                     calculation.
-      //
+      /// <remarks>
+      /// See <see cref="VanillaOption"/> for notes on implied-volatility calculation.
+      /// </remarks>
       public double impliedVolatility(double targetValue, GeneralizedBlackScholesProcess process, double accuracy = 1.0e-4,
                                       int maxEvaluations = 100, double minVol = 1.0e-7, double maxVol = 4.0)
       {

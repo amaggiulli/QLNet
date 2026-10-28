@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -20,9 +20,12 @@
 namespace QLNet
 {
 
-   //! %SEK %LIBOR rate
-   /*! Sweden Krone LIBOR discontinued as of 2013.
-   */
+   /// <summary>
+   /// SEK LIBOR rate
+   /// </summary>
+   /// <remarks>
+   /// Sweden Krone LIBOR discontinued as of 2013.
+   /// </remarks>
    public class SEKLibor : Libor
    {
       public SEKLibor(Period tenor)

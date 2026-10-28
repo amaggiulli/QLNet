@@ -21,19 +21,20 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   //! Hazard-rate term structure
-   /*! This abstract class acts as an adapter to
-      DefaultProbabilityTermStructure allowing the programmer to implement
-      only the <tt>hazardRateImpl(Time)</tt> method in derived classes.
-
-      Survival/default probabilities and default densities are calculated
-      from hazard rates.
-
-      Hazard rates are defined with annual frequency and continuous
-      compounding.
-
-      \ingroup defaultprobabilitytermstructures
-   */
+   /// <summary>
+   /// Hazard-rate term structure
+   /// </summary>
+   /// <remarks>
+   /// This abstract class acts as an adapter to
+   /// DefaultProbabilityTermStructure allowing the programmer to implement
+   /// only the <c>hazardRateImpl(Time)</c> method in derived classes.
+   ///
+   /// Survival/default probabilities and default densities are calculated
+   /// from hazard rates.
+   ///
+   /// Hazard rates are defined with annual frequency and continuous
+   /// compounding.
+   /// </remarks>
    public abstract class HazardRateStructure : DefaultProbabilityTermStructure
    {
       #region Constructors
@@ -58,24 +59,21 @@ namespace QLNet
       // range check has already been performed; therefore, it
       // must assume that extrapolation is required.
 
-      //! hazard rate calculation
+      /// <summary>
+      /// Performs the hazard-rate calculation.
+      /// </summary>
       protected abstract double hazardRateImpl(double t);
 
       #endregion
 
       #region DefaultProbabilityTermStructure implementation
 
-      /*! survival probability calculation
-         implemented in terms of the hazard rate \f$ h(t) \f$ as
-         \f[
-         S(t) = \exp\left( - \int_0^t h(\tau) d\tau \right).
-         \f]
-
-         \warning This default implementation uses numerical integration,
-                  which might be inefficient and inaccurate.
-                  Derived classes should override it if a more efficient
-                  implementation is available.
-      */
+      /// <summary>
+      /// Calculates the survival probability from the hazard rate.
+      /// </summary>
+      /// <remarks>
+      /// This default implementation uses numerical integration and might be inefficient or inaccurate. Derived classes should override it if a more efficient implementation is available.
+      /// </remarks>
       protected override double survivalProbabilityImpl(double t)
       {
          GaussChebyshevIntegration integral = new GaussChebyshevIntegration(48);
@@ -88,7 +86,9 @@ namespace QLNet
          return Math.Exp(-integral.value(hazardRateImpl) * t / 2.0);
       }
 
-      //! default density calculation
+      /// <summary>
+      /// Calculates the default density.
+      /// </summary>
       protected override double defaultDensityImpl(double t)
       {
          return hazardRateImpl(t) * survivalProbabilityImpl(t);

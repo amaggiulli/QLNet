@@ -30,8 +30,9 @@ namespace QLNet
       {}
    }
 
-   //! Simple binomial lattice approximating the Black-Scholes model
-   /*! \ingroup lattices */
+   /// <summary>
+   /// Simple binomial lattice approximating the Black-Scholes model
+   /// </summary>
 
    public class BlackScholesLattice : TreeLattice1D<BlackScholesLattice>, IGenericLattice
    {

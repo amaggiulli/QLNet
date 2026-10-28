@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Alessandro Duci
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
@@ -23,37 +23,36 @@ using System;
 
 namespace QLNet
 {
-   //! Japanese calendar
-   /*! Holidays:
-       <ul>
-       <li>Saturdays</li>
-       <li>Sundays</li>
-       <li>New Year's Day, January 1st</li>
-       <li>Bank Holiday, January 2nd</li>
-       <li>Bank Holiday, January 3rd</li>
-       <li>Coming of Age Day, 2nd Monday in January</li>
-       <li>National Foundation Day, February 11th</li>
-       <li>Vernal Equinox</li>
-       <li>Greenery Day, April 29th</li>
-       <li>Constitution Memorial Day, May 3rd</li>
-       <li>Holiday for a Nation, May 4th</li>
-       <li>Children's Day, May 5th</li>
-       <li>Marine Day, 3rd Monday in July</li>
-       <li>Mountain Day, August 11th (from 2016 onwards)</li>
-       <li>Respect for the Aged Day, 3rd Monday in September</li>
-       <li>Autumnal Equinox</li>
-       <li>Health and Sports Day, 2nd Monday in October</li>
-       <li>National Culture Day, November 3rd</li>
-       <li>Labor Thanksgiving Day, November 23rd</li>
-       <li>Emperor's Birthday, December 23rd</li>
-       <li>Bank Holiday, December 31st</li>
-       <li>a few one-shot holidays</li>
-       </ul>
-       Holidays falling on a Sunday are observed on the Monday following
-       except for the bank holidays associated with the new year.
-
-       \ingroup calendars
-   */
+   /// <summary>
+   /// Japanese calendar
+   /// </summary>
+   /// <remarks>
+   /// Holidays:
+   /// Saturdays
+   /// Sundays
+   /// New Year's Day, January 1st
+   /// Bank Holiday, January 2nd
+   /// Bank Holiday, January 3rd
+   /// Coming of Age Day, 2nd Monday in January
+   /// National Foundation Day, February 11th
+   /// Vernal Equinox
+   /// Greenery Day, April 29th
+   /// Constitution Memorial Day, May 3rd
+   /// Holiday for a Nation, May 4th
+   /// Children's Day, May 5th
+   /// Marine Day, 3rd Monday in July
+   /// Mountain Day, August 11th (from 2016 onwards)
+   /// Respect for the Aged Day, 3rd Monday in September
+   /// Autumnal Equinox
+   /// Health and Sports Day, 2nd Monday in October
+   /// National Culture Day, November 3rd
+   /// Labor Thanksgiving Day, November 23rd
+   /// Emperor's Birthday, December 23rd
+   /// Bank Holiday, December 31st
+   /// a few one-shot holidays
+   /// Holidays falling on a Sunday are observed on the Monday following
+   /// except for the bank holidays associated with the new year.
+   /// </remarks>
    public class Japan : Calendar
    {
       public Japan() : base(Impl.Singleton) { }

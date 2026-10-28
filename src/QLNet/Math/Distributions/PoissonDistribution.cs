@@ -21,10 +21,13 @@ using System;
 
 namespace QLNet
 {
-   //! Inverse cumulative Poisson distribution function
-   /*! \test the correctness of the returned value is tested by
-             checking it against known good results.
-   */
+   /// <summary>
+   /// Inverse cumulative Poisson distribution function
+   /// </summary>
+   /// <remarks>
+   /// Test: the correctness of the returned value is tested by
+   /// checking it against known good results.
+   /// </remarks>
    public class InverseCumulativePoisson : IValue
    {
       private double lambda_;

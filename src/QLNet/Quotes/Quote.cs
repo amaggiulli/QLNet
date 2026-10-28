@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,15 +19,21 @@
 
 namespace QLNet
 {
-   //! purely virtual base class for market observables
+   /// <summary>
+   /// purely virtual base class for market observables
+   /// </summary>
    public class Quote : IObservable
    {
       // recheck this abstract implementations of methods which otherwise should throw "notimplemented"
       // such default implementation is needed for Handles
 
-      //! returns the current value, 0 by default
+      /// <summary>
+      /// Returns the current value, 0 by default.
+      /// </summary>
       public virtual double value() { return 0; }
-      //! returns true if the Quote holds a valid value, true by default
+      /// <summary>
+      /// Returns true if the quote holds a valid value, true by default.
+      /// </summary>
       public virtual bool isValid() { return true; }
 
       // observable interface

@@ -16,28 +16,29 @@
 
 namespace QLNet
 {
-   //! Analytic pricing engine for American vanilla options with digital payoff
-   /*! \ingroup vanillaengines
-
-       \todo add more greeks (as of now only delta and rho available)
-
-       \test
-       - the correctness of the returned value in case of
-         cash-or-nothing at-hit digital payoff is tested by
-         reproducing results available in literature.
-       - the correctness of the returned value in case of
-         asset-or-nothing at-hit digital payoff is tested by
-         reproducing results available in literature.
-       - the correctness of the returned value in case of
-         cash-or-nothing at-expiry digital payoff is tested by
-         reproducing results available in literature.
-       - the correctness of the returned value in case of
-         asset-or-nothing at-expiry digital payoff is tested by
-         reproducing results available in literature.
-       - the correctness of the returned greeks in case of
-         cash-or-nothing at-hit digital payoff is tested by
-         reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Analytic pricing engine for American vanilla options with digital payoff
+   /// </summary>
+   /// <remarks>
+   /// TODO: add more greeks (as of now only delta and rho available)
+   ///
+   /// Test:
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing at-hit digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing at-hit digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing at-expiry digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing at-expiry digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks in case of
+   /// cash-or-nothing at-hit digital payoff is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
    public class AnalyticDigitalAmericanEngine : VanillaOption.Engine
    {
       public AnalyticDigitalAmericanEngine(GeneralizedBlackScholesProcess process)
@@ -89,28 +90,29 @@ namespace QLNet
       private GeneralizedBlackScholesProcess process_;
    }
 
-   //! Analytic pricing engine for American Knock-out options with digital payoff
-   /*! \ingroup vanillaengines
-
-        \todo add more greeks (as of now only delta and rho available)
-
-        \test
-        - the correctness of the returned value in case of
-          cash-or-nothing at-hit digital payoff is tested by
-          reproducing results available in literature.
-        - the correctness of the returned value in case of
-          asset-or-nothing at-hit digital payoff is tested by
-          reproducing results available in literature.
-        - the correctness of the returned value in case of
-          cash-or-nothing at-expiry digital payoff is tested by
-          reproducing results available in literature.
-        - the correctness of the returned value in case of
-          asset-or-nothing at-expiry digital payoff is tested by
-          reproducing results available in literature.
-        - the correctness of the returned greeks in case of
-          cash-or-nothing at-hit digital payoff is tested by
-          reproducing numerical derivatives.
-   */
+   /// <summary>
+   /// Analytic pricing engine for American Knock-out options with digital payoff
+   /// </summary>
+   /// <remarks>
+   /// TODO: add more greeks (as of now only delta and rho available)
+   ///
+   /// Test:
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing at-hit digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing at-hit digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// cash-or-nothing at-expiry digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned value in case of
+   /// asset-or-nothing at-expiry digital payoff is tested by
+   /// reproducing results available in literature.
+   /// - the correctness of the returned greeks in case of
+   /// cash-or-nothing at-hit digital payoff is tested by
+   /// reproducing numerical derivatives.
+   /// </remarks>
 
    public class AnalyticDigitalAmericanKOEngine : AnalyticDigitalAmericanEngine
    {

@@ -22,6 +22,9 @@ using System;
 
 namespace QLNet
 {
+   /// <summary>
+   /// Coupon paying a floating interest rate.
+   /// </summary>
    public class FloatingRateCoupon : Coupon, IObserver
    {
       protected InterestRateIndex index_;
@@ -120,22 +123,49 @@ namespace QLNet
 
       //////////////////////////////////////////////////////////////////////////////////////
       // properties
-      public InterestRateIndex index() { return index_; }              //! floating index
-      public int fixingDays { get { return fixingDays_; } }                   //! fixing days
+      /// <summary>
+      /// Returns the floating index.
+      /// </summary>
+      public InterestRateIndex index() { return index_; }
+
+      /// <summary>
+      /// Returns the fixing days.
+      /// </summary>
+      public int fixingDays { get { return fixingDays_; } }
+
+      /// <summary>
+      /// Returns the fixing date.
+      /// </summary>
       public virtual Date fixingDate()
       {
-         //! fixing date
          // if isInArrears_ fix at the end of period
          Date refDate = isInArrears_ ? accrualEndDate_ : accrualStartDate_;
          return index_.fixingCalendar().advance(refDate, -fixingDays_, TimeUnit.Days, BusinessDayConvention.Preceding);
       }
-      public double gearing() { return gearing_; }                     //! index gearing, i.e. multiplicative coefficient for the index
-      public double spread() { return spread_; }                       //! spread paid over the fixing of the underlying index
-      //! fixing of the underlying index
+
+      /// <summary>
+      /// Returns the index gearing, i.e. the multiplicative coefficient for the index.
+      /// </summary>
+      public double gearing() { return gearing_; }
+
+      /// <summary>
+      /// Returns the spread paid over the fixing of the underlying index.
+      /// </summary>
+      public double spread() { return spread_; }
+
+      /// <summary>
+      /// Returns the fixing of the underlying index.
+      /// </summary>
       public virtual double indexFixing() { return index_.fixing(fixingDate()); }
-      //! convexity-adjusted fixing
+
+      /// <summary>
+      /// Returns the convexity-adjusted fixing.
+      /// </summary>
       public double adjustedFixing { get { return (rate() - spread()) / gearing(); } }
-      //! whether or not the coupon fixes in arrears
+
+      /// <summary>
+      /// Returns true if the coupon fixes in arrears.
+      /// </summary>
       public bool isInArrears() { return isInArrears_; }
 
 
@@ -150,13 +180,17 @@ namespace QLNet
          return amount() * yts.discount(date());
       }
 
-      //! convexity adjustment for the given index fixing
+      /// <summary>
+      /// Returns the convexity adjustment for the given index fixing.
+      /// </summary>
       protected double convexityAdjustmentImpl(double f)
       {
          return (gearing().IsEqual(0.0) ? 0.0 : adjustedFixing - f);
       }
 
-      //! convexity adjustment
+      /// <summary>
+      /// Returns the convexity adjustment.
+      /// </summary>
       public virtual double convexityAdjustment()
       {
          return convexityAdjustmentImpl(indexFixing());

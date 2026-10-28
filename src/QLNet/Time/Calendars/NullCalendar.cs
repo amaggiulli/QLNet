@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2008-2022 Andrea Maggiulli (a.maggiulli@gmail.com)
 
@@ -21,8 +21,12 @@ using System;
 
 namespace QLNet
 {
-   //! %Calendar for reproducing theoretical calculations.
-   /*! This calendar has no holidays. It ensures that dates at whole-month distances have the same day of month.    */
+   /// <summary>
+   /// Calendar for reproducing theoretical calculations.
+   /// </summary>
+   /// <remarks>
+   /// This calendar has no holidays. It ensures that dates at whole-month distances have the same day of month.
+   /// </remarks>
    public class NullCalendar : Calendar
    {
       public NullCalendar() : base(Impl.Singleton) { }

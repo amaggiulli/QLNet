@@ -20,7 +20,9 @@
 
 namespace QLNet
 {
-   //! caplet const volatility model
+   /// <summary>
+   /// caplet const volatility model
+   /// </summary>
    public class LmConstWrapperVolatilityModel : LmVolatilityModel
    {
       public LmConstWrapperVolatilityModel(LmVolatilityModel volaModel)

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2008-2013  Andrea Maggiulli (a.maggiulli@gmail.com)
+ Copyright (C) 2008-2025 Andrea Maggiulli (a.maggiulli@gmail.com)
  Copyright (C) 2008 Siarhei Novik (snovik@gmail.com)
  Copyright (C) 2015 Francois Botha (igitur@gmail.com)
 
@@ -29,9 +29,6 @@ namespace QLNet
    /// </summary>
    public class Schedule
    {
-
-
-
       #region Constructors
 
       public Schedule() { }
@@ -154,7 +151,7 @@ namespace QLNet
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
                   Utils.QL_REQUIRE(firstDate_ > effectiveDate &&
-                                   firstDate_ < terminationDate, () =>
+                                   firstDate_ <= terminationDate, () =>
                                    "first date (" + firstDate_ + ") out of effective-termination date range [" +
                                    effectiveDate + ", " + terminationDate + ")");
                   // we should ensure that the above condition is still verified after adjustment
@@ -182,7 +179,7 @@ namespace QLNet
             {
                case DateGeneration.Rule.Backward:
                case DateGeneration.Rule.Forward:
-                  Utils.QL_REQUIRE(nextToLastDate_ > effectiveDate&& nextToLastDate_ < terminationDate, () =>
+                  Utils.QL_REQUIRE(nextToLastDate_ >= effectiveDate&& nextToLastDate_ < terminationDate, () =>
                                    "next to last date (" + nextToLastDate_ + ") out of effective-termination date range (" +
                                    effectiveDate + ", " + terminationDate + "]");
                   // we should ensure that the above condition is still verified after adjustment
@@ -273,6 +270,7 @@ namespace QLNet
             case DateGeneration.Rule.Twentieth:
             case DateGeneration.Rule.TwentiethIMM:
             case DateGeneration.Rule.ThirdWednesday:
+            case DateGeneration.Rule.ThirdWednesdayInclusive:
             case DateGeneration.Rule.OldCDS:
             case DateGeneration.Rule.CDS:
             case DateGeneration.Rule.CDS2015:
@@ -280,15 +278,18 @@ namespace QLNet
             goto case DateGeneration.Rule.Forward;       // fall through
 
             case DateGeneration.Rule.Forward:
-               if (rule_.Value == DateGeneration.Rule.CDS ||
-                   rule_.Value == DateGeneration.Rule.CDS2015)
+               if (rule_.Value is DateGeneration.Rule.CDS or DateGeneration.Rule.CDS2015)
                {
-                  dates_.Add(previousTwentieth(effectiveDate, rule_.Value));
+                  Date prev20th = previousTwentieth(effectiveDate, rule_.Value);
+                  if (calendar_.adjust(prev20th, convention) > effectiveDate)
+                  {
+                     dates_.Add(prev20th - new Period(3 , TimeUnit.Months));
+                     isRegular_.Add(true);
+                  }
+                  dates_.Add(prev20th);
                }
-               else
-               {
+               else 
                   dates_.Add(effectiveDate);
-               }
 
                seed = dates_.Last();
                if (firstDate_ != null)
@@ -367,19 +368,11 @@ namespace QLNet
                   if (rule_.Value == DateGeneration.Rule.Twentieth ||
                       rule_.Value == DateGeneration.Rule.TwentiethIMM ||
                       rule_.Value == DateGeneration.Rule.OldCDS ||
-                      rule_.Value == DateGeneration.Rule.CDS)
+                      rule_.Value == DateGeneration.Rule.CDS ||
+                      rule_.Value == DateGeneration.Rule.CDS2015)
                   {
                      dates_.Add(nextTwentieth(terminationDate, rule_.Value));
                      isRegular_.Add(true);
-                  }
-                  else if (rule_ == DateGeneration.Rule.CDS2015)
-                  {
-                     Date tentativeTerminationDate = nextTwentieth(terminationDate, rule_.Value);
-                     if (tentativeTerminationDate.month() % 2 == 0)
-                     {
-                        dates_.Add(tentativeTerminationDate);
-                        isRegular_.Add(true);
-                     }
                   }
                   else
                   {
@@ -396,51 +389,44 @@ namespace QLNet
 
          // adjustments
          if (rule_ == DateGeneration.Rule.ThirdWednesday)
-            for (int i = 1; i < dates_.Count - 1; ++i)
+            for (var i = 1; i < dates_.Count - 1; ++i)
                dates_[i] = Date.nthWeekday(3, DayOfWeek.Wednesday, dates_[i].Month, dates_[i].Year);
+         else if (rule_ == DateGeneration.Rule.ThirdWednesdayInclusive)
+            for (var i = 0; i < dates_.Count; ++i)
+               dates_[i] = Date.nthWeekday(3, DayOfWeek.Wednesday, dates_[i].month(), dates_[i].year());
+
+         // first date not adjusted for old CDS schedules
+         if (convention != BusinessDayConvention.Unadjusted && rule_ != DateGeneration.Rule.OldCDS)
+            dates_[0] = calendar_.adjust(dates_[0], convention);
+
+         // termination date is NOT adjusted as per ISDA
+         // specifications, unless otherwise specified in the
+         // confirmation of the deal or unless we're creating a CDS
+         // schedule
+         if (terminationDateConvention_.Value != BusinessDayConvention.Unadjusted 
+             && rule_.Value != DateGeneration.Rule.CDS 
+             && rule_.Value != DateGeneration.Rule.CDS2015) {
+            dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
+         }
 
          if (endOfMonth && calendar_.isEndOfMonth(seed))
          {
             // adjust to end of month
             if (convention_ == BusinessDayConvention.Unadjusted)
             {
-               for (int i = 1; i < dates_.Count - 1; ++i)
+               for (var i = 1; i < dates_.Count - 1; ++i)
                   dates_[i] = Date.endOfMonth(dates_[i]);
             }
             else
             {
-               for (int i = 1; i < dates_.Count - 1; ++i)
+               for (var i = 1; i < dates_.Count - 1; ++i)
                   dates_[i] = calendar_.endOfMonth(dates_[i]);
-            }
-            if (terminationDateConvention_ != BusinessDayConvention.Unadjusted)
-            {
-               dates_[0] = calendar_.endOfMonth(dates_.First());
-               dates_[dates_.Count - 1] = calendar_.endOfMonth(dates_.Last());
-            }
-            else
-            {
-               // the termination date is the first if going backwards,
-               // the last otherwise.
-               if (rule_ == DateGeneration.Rule.Backward)
-                  dates_[dates_.Count - 1] = Date.endOfMonth(dates_.Last());
-               else
-                  dates_[0] = Date.endOfMonth(dates_.First());
             }
          }
          else
          {
-            // first date not adjusted for CDS schedules
-            if (rule_ != DateGeneration.Rule.OldCDS)
-               dates_[0] = calendar_.adjust(dates_[0], convention_);
-            for (int i = 1; i < dates_.Count - 1; ++i)
+            for (var i = 1; i < dates_.Count - 1; ++i)
                dates_[i] = calendar_.adjust(dates_[i], convention_);
-
-            // termination date is NOT adjusted as per ISDA specifications, unless otherwise specified in the
-            // confirmation of the deal or unless we're creating a CDS schedule
-            if (terminationDateConvention_.Value != BusinessDayConvention.Unadjusted
-                && rule_.Value != DateGeneration.Rule.CDS
-                && rule_.Value != DateGeneration.Rule.CDS2015)
-               dates_[dates_.Count - 1] = calendar_.adjust(dates_.Last(), terminationDateConvention_.Value);
          }
 
          // Final safety checks to remove extra next-to-last date, if
@@ -449,9 +435,12 @@ namespace QLNet
          // for an example).
          if (dates_.Count >= 2 &&  dates_[dates_.Count - 2] >= dates_.Last())
          {
-            isRegular_[isRegular_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
-            dates_[dates_.Count - 2] = dates_.Last();
+            if (isRegular_.Count >= 2)
+            {
+               isRegular_[isRegular_.Count - 2] = (dates_[dates_.Count - 2] == dates_.Last());
+            }
 
+            dates_[dates_.Count - 2] = dates_.Last();
             dates_.RemoveAt(dates_.Count - 1);
             isRegular_.RemoveAt(isRegular_.Count - 1);
          }
@@ -476,8 +465,6 @@ namespace QLNet
                           "\n end of month: " + endOfMonth_.Value);
       }
       #endregion
-
-
 
       // Date access
       public int size() { return dates_.Count; }
@@ -540,6 +527,8 @@ namespace QLNet
       public Calendar calendar() { return calendar_; }
       public Date startDate() { return dates_.First(); }
       public Date endDate() { return dates_.Last(); }
+      public bool hasTenor() { return tenor_ != null; }
+      public bool hasIsRegular() { return isRegular_.Count > 0; }
       public Period tenor()
       {
          Utils.QL_REQUIRE(tenor_ != null, () => "full interface (tenor) not available");
@@ -565,7 +554,9 @@ namespace QLNet
          return endOfMonth_.Value;
       }
 
-      //! truncated schedule
+      /// <summary>
+      /// Returns a truncated schedule ending at the given date.
+      /// </summary>
       public Schedule until(Date truncationDate)
       {
          var result = (Schedule)MemberwiseClone();
@@ -602,6 +593,43 @@ namespace QLNet
                result.nextToLastDate_ = null;
             if (result.firstDate_ >= truncationDate)
                result.firstDate_ = null;
+         }
+
+         return result;
+      }
+      public Schedule after(Date truncationDate)
+      {
+         var result = this;
+
+         Utils.QL_REQUIRE(truncationDate < result.dates_.Last(),()=>
+            "truncation date " + truncationDate +
+            " must be before the last schedule date " +
+            result.dates_.Last());
+         if (truncationDate > result.dates_[0])
+         {
+            // remove earlier dates
+            while (result.dates_[0] < truncationDate)
+            {
+               result.dates_.RemoveAt(0);
+               if (!result.isRegular_.empty())
+                  result.isRegular_.RemoveAt(0);
+            }
+
+            // add truncationDate if missing
+            if (truncationDate != result.dates_.First())
+            {
+               result.dates_.Insert(0, truncationDate); // result.dates_.insert(result.dates_.begin(), truncationDate);
+               result.isRegular_.Insert(0, false); // result.isRegular_.insert(result.isRegular_.begin(), false);
+               result.terminationDateConvention_ = BusinessDayConvention.Unadjusted;
+            }
+            else 
+               result.terminationDateConvention_ = convention_;
+            
+
+            if (result.nextToLastDate_ <= truncationDate)
+               result.nextToLastDate_ = new Date();
+            if (result.firstDate_ <= truncationDate)
+               result.firstDate_ = new Date();
          }
 
          return result;
@@ -643,7 +671,7 @@ namespace QLNet
          }
          return result;
       }
-      private Date previousTwentieth(Date d, DateGeneration.Rule rule)
+      public static Date previousTwentieth(Date d, DateGeneration.Rule rule)
       {
          Date result = new Date(20, d.month(), d.year());
          if (result > d)

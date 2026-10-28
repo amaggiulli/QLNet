@@ -18,11 +18,12 @@ using System.Collections.Generic;
 
 namespace QLNet
 {
-   /*! Helper class to extend an OptionletStripper1 object stripping
-        additional optionlet (i.e. caplet/floorlet) volatilities (a.k.a.
-        forward-forward volatilities) from the (cap/floor) At-The-Money
-        term volatilities of a CapFloorTermVolCurve.
-   */
+   /// <summary>
+   /// Helper class to extend an OptionletStripper1 object stripping
+   /// additional optionlet (i.e. caplet/floorlet) volatilities (a.k.a.
+   /// forward-forward volatilities) from the (cap/floor) At-The-Money
+   /// term volatilities of a CapFloorTermVolCurve.
+   /// </summary>
    public class OptionletStripper2 : OptionletStripper
    {
 

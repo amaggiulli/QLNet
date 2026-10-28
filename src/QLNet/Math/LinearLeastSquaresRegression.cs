@@ -22,14 +22,17 @@ using System.Linq;
 
 namespace QLNet
 {
-   //! general linear least squares regression
-   /*! References:
-      "Numerical Recipes in C", 2nd edition,
-       Press, Teukolsky, Vetterling, Flannery,
-
-       \test the correctness of the returned values is tested by
-             checking their properties.
-   */
+   /// <summary>
+   /// general linear least squares regression
+   /// </summary>
+   /// <remarks>
+   /// References:
+   /// "Numerical Recipes in C", 2nd edition,
+   /// Press, Teukolsky, Vetterling, Flannery,
+   ///
+   /// Test: the correctness of the returned values is tested by
+   /// checking their properties.
+   /// </remarks>
    public class LinearLeastSquaresRegression : LinearLeastSquaresRegression<double>
    {
       public LinearLeastSquaresRegression(List<double> x, List<double> y, List<Func<double, double>> v)
@@ -43,9 +46,13 @@ namespace QLNet
       public Vector coefficients() { return a_; }
       public Vector residuals() { return residuals_; }
 
-      //! standard parameter errors as given by Excel, R etc.
+      /// <summary>
+      /// Returns the standard parameter errors as commonly reported by tools such as Excel or R.
+      /// </summary>
       public Vector standardErrors() { return standardErrors_; }
-      //! modeling uncertainty as definied in Numerical Recipes
+      /// <summary>
+      /// Returns the modeling uncertainty as defined in Numerical Recipes.
+      /// </summary>
 
       public Vector error() { return err_; }
 
@@ -97,19 +104,25 @@ namespace QLNet
       }
    }
 
-   //! linear regression y_i = a_0 + a_1*x_0 +..+a_n*x_{n-1} + eps
+   /// <summary>
+   /// linear regression y_i = a_0 + a_1*x_0 +..+a_n*x_{n-1} + eps
+   /// </summary>
    public class LinearRegression
    {
       private LinearLeastSquaresRegression<List<double>> reg_;
 
 
-      //! one dimensional linear regression
+      /// <summary>
+      /// Initializes a one-dimensional linear regression.
+      /// </summary>
       public LinearRegression(List<double> x, List<double> y)
       {
          reg_ = new LinearLeastSquaresRegression<List<double>>(argumentWrapper(x), y, linearFcts(1));
       }
 
-      //! multi dimensional linear regression
+      /// <summary>
+      /// Initializes a multi-dimensional linear regression.
+      /// </summary>
       public LinearRegression(List<List<double>> x, List<double> y)
       {
          reg_ = new LinearLeastSquaresRegression<List<double>>(x, y, linearFcts(x[0].Count));

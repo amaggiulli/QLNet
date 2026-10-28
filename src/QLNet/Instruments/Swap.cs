@@ -89,9 +89,9 @@ namespace QLNet
          }
       }
 
-      /*! This constructor can be used by derived classes that will
-            build their legs themselves.
-      */
+      /// <summary>
+      /// Initializes a swap whose legs are built by a derived class.
+      /// </summary>
       protected Swap(int legs)
       {
          legs_ = new InitializedList<List<CashFlow>>(legs);

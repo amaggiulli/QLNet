@@ -20,8 +20,9 @@ using System;
 
 namespace QLNet
 {
-   //! condition to be applied at every time step
-   /*! \ingroup findiff */
+   /// <summary>
+   /// condition to be applied at every time step
+   /// </summary>
    public interface IStepCondition<array_type> where array_type : Vector
    {
       void applyTo(object o, double t);
@@ -102,8 +103,9 @@ namespace QLNet
    }
 
 
-   //! %null step condition
-   /*! \ingroup findiff */
+   /// <summary>
+   /// null step condition
+   /// </summary>
    public class NullCondition<array_type> : IStepCondition<array_type> where array_type : Vector
    {
       public void applyTo(object a, double t)

@@ -1,4 +1,4 @@
-/*
+﻿/*
  Copyright (C) 2008 Toyin Akin (toyin_akin@hotmail.com)
 
  This file is part of QLNet Project https://github.com/amaggiulli/qlnet
@@ -19,7 +19,9 @@
 
 namespace QLNet
 {
-   //! Base class for options on multiple assets
+   /// <summary>
+   /// Base class for options on multiple assets
+   /// </summary>
    public class MultiAssetOption : Option
    {
       public class Engine : GenericEngine<MultiAssetOption.Arguments, MultiAssetOption.Results>
