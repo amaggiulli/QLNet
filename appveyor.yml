@@ -6,7 +6,7 @@
   branches:
     only:
       - master
-  version: 1.13.1
+  version: 1.13.2
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -30,9 +30,9 @@
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.13.1
-    release: QLNet Version 1.13.1
-    description: QLNet 1.13.1
+    tag: QLNet-v1.13.2
+    release: QLNet Version 1.13.2
+    description: QLNet 1.13.2
     auth_token:
       secure: 4cCBgQRwNh1N6VbvMJTCUKpp1EYpNHGlXj/LFfVgcCMnTYk5yDX/7vURrRGrLy+zflAFBotCGVgLQ1WkdIXPBrpS9fs4n43oKDWPezRFLt22jYdTeIWxGDdS9vF7y+zI
     artifact: src\QLNet\bin\Release\net10.0\QLNet.dll
@@ -50,7 +50,7 @@
   branches:
     only:
       - develop
-  version: 1.13.2-preview.{build}
+  version: 1.13.3-preview.{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -104,7 +104,7 @@
   branches:
     only:
       - /feature/
-  version: 1.13.2-{build}
+  version: 1.13.3-{build}
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -113,7 +113,7 @@
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk11
     - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.13.2-%newVersion%"
+    - cmd: appveyor UpdateBuild -Version "1.13.3-%newVersion%"
   install:
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"

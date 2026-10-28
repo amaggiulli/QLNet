@@ -1,36 +1,53 @@
-QLNet 1.13.1
+QLNet 1.13.2
 =========================
 
-QLNet 1.13.1
-Mayor changes <https://github.com/amaggiulli/QLNet/milestone/5?closed=1>.
+QLNet 1.13.2
+Mayor changes <https://github.com/amaggiulli/QLNet/milestone/6?closed=1>.
 A detailed list of changes is available in ChangeLog.txt.
 
 FRAMEWORK
 
-+ Updated to .NET 8.0
++ Update to .NET 9 (#293)
++ Update to .NET 10.0 (#314)
++ Convert Doxygen comments to standard C# XML documentation (#316)
++ Add opt-in per-thread suppression scope for WeakEventSource to avoid notification overhead for short-lived observable graphs (#325)
 
 INSTRUMENTS
 
-+ Fixed DividendVanillaOption Engine bug, thx to Lorenzo Di Puccio for reporting it.
-+ Updated callable bonds.
-+ Added Bond Equivalent Yield calculation.
-+ Added Futures Type - Custom, thx @ninetiger and Xiao Gong
++ Callable Bonds - Add a method to return putable/callable yields for each callability schedule date (#305)
++ Callable Bonds - Add a method to return yields on a given date (#307)
++ Support callable amortizing fixed-rate bonds (sinkable / sinking fund) (#321)
++ TreeCallableFixedRateBondEngine keeps a stale spread at zero and rebuilds the lattice on every calculation (#329)
++ Refactor BondFunctions BPV and YVBP (#292)
 
-INDEXES  
+CASH FLOWS
 
-+ Added CAD-CORRA overnight index, thx Konstantin Novitsky 
++ Add support for payment lag in cash flow calculations (#320), thx Konstantin Novitsky
+
+PRICING ENGINES
+
++ Update and refactor Asian engines (#286)
++ Reduce allocations and redundant work in tree lattice pricing (#331), thx Sean O'Connor
+
+MATH
+
++ Solver1d hardening to improve resolution with case driving to NaN values (#301), thx Xavier Solau
++ Added a check for ConvexMonotone interpolation (#298), thx Konstantin Novitsky
++ MixedInterpolationImpl fixes (#295), thx Konstantin Novitsky
 
 CALENDARS
 
-+ Added 2023-12-15 as South African public holiday, thx Francois Botha
-+ Added early close logic for US bond market.
-+ Updated several caledars up to 2024
-+ Fixed Aboriginal people day in Chile calendar, thx @bet0x10
++ Add SOFR to US calendars (#317)
++ Add Good Friday 2026 as early close (#319)
++ Fixed bug in Chile calendar and added tests for 2025 (#297), thx @albertoitg
++ Add support for Colombian holidays (#327), thx Konstantin Novitsky
+
+TIME
+
++ Wrong schedule generation (#296)
++ Fix 30/360 US, 30/365 and Act/365 Canadian day counters diverging from QuantLib (#324), thx Bing Gao
 
 MISC
 
-+ Added Compounded Then Simple calculation.
- 
-TIME
-
-+ Fixd Schedule.previousDate and Schedule.nextDate, thx Francois Botha
++ Fix SonarQube bugs (#291)
++ Fix SonarCube on AppVeyor (#303)
