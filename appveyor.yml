@@ -6,7 +6,8 @@
   branches:
     only:
       - master
-  version: 1.13.2
+  # Overwritten in install with the VersionPrefix of QLNet.csproj
+  version: '{build}'
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -17,6 +18,9 @@
   nuget:
     disable_publish_on_pr: true
   install:
+    - ps: |
+        $version = (Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
+        Update-AppveyorBuild -Version $version
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   build_script:
@@ -30,9 +34,9 @@
       name: ng
   deploy:
   - provider: GitHub
-    tag: QLNet-v1.13.2
-    release: QLNet Version 1.13.2
-    description: QLNet 1.13.2
+    tag: QLNet-v$(APPVEYOR_BUILD_VERSION)
+    release: QLNet Version $(APPVEYOR_BUILD_VERSION)
+    description: QLNet $(APPVEYOR_BUILD_VERSION)
     auth_token:
       secure: 4cCBgQRwNh1N6VbvMJTCUKpp1EYpNHGlXj/LFfVgcCMnTYk5yDX/7vURrRGrLy+zflAFBotCGVgLQ1WkdIXPBrpS9fs4n43oKDWPezRFLt22jYdTeIWxGDdS9vF7y+zI
     artifact: src\QLNet\bin\Release\net10.0\QLNet.dll
@@ -50,7 +54,8 @@
   branches:
     only:
       - develop
-  version: 1.13.3-preview.{build}
+  # Overwritten in install with the next patch of QLNet.csproj VersionPrefix
+  version: '{build}'
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -64,6 +69,9 @@
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk17
   install:
+    - ps: |
+        $v = [version](Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
+        Update-AppveyorBuild -Version ("{0}.{1}.{2}-preview.{3}" -f $v.Major, $v.Minor, ($v.Build + 1), $env:APPVEYOR_BUILD_NUMBER)
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
@@ -104,7 +112,8 @@
   branches:
     only:
       - /feature/
-  version: 1.13.3-{build}
+  # Overwritten in install with the next patch of QLNet.csproj VersionPrefix plus the branch name
+  version: '{build}'
   configuration: Release
   platform: Any CPU
   image: Visual Studio 2022
@@ -112,9 +121,11 @@
   clone_folder: c:\projects\qlnet_feature
   init:
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk11
-    - cmd: "set branch=%APPVEYOR_REPO_BRANCH%\necho branch:%branch%\nset gitVersion=%branch:/=.%\necho gitversion:%gitVersion%\nset newVersion=%gitVersion%.%APPVEYOR_BUILD_NUMBER%\necho %newVersion%"
-    - cmd: appveyor UpdateBuild -Version "1.13.3-%newVersion%"
   install:
+    - ps: |
+        $v = [version](Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
+        $branch = $env:APPVEYOR_REPO_BRANCH -replace '/', '.'
+        Update-AppveyorBuild -Version ("{0}.{1}.{2}-{3}.{4}" -f $v.Major, $v.Minor, ($v.Build + 1), $branch, $env:APPVEYOR_BUILD_NUMBER)
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
