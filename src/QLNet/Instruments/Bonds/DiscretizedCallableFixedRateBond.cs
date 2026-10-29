@@ -97,7 +97,17 @@ namespace QLNet
             adjustedCallabilityPrices_[i] *= arguments_.faceAmount / 100.0;
             callabilityTimes_[i] = callabilityTime;
          }
-          
+
+         // not snapped itself, but a snapped neighbour may have moved this coupon ahead
+         for (var i = 0; i < callabilityTimes_.Count; i++)
+         {
+            for (var j = 0; j < couponTimes_.Count; j++)
+            {
+               if (couponAdjustments_[j] == CouponAdjustment.Pre &&
+                   args.callabilityDates[i] == args.couponDates[j])
+                  adjustedCallabilityPrices_[i] += args.couponAmounts[j];
+            }
+         }
       }
 
       public override void reset(int size)
