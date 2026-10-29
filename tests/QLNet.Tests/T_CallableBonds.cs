@@ -713,6 +713,68 @@ public class CallableBondsTests
       }
    }
 
+   [Fact]
+   public void testEffectiveDurationAndConvexity()
+   {
+      // Testing effective duration and convexity of a callable fixed-rate bond using dirty price
+      var settlementDate = new Date(30, Month.November, 2023);
+      Settings.setEvaluationDate(settlementDate);
+
+      var effectiveDate = new Date(20, Month.May, 2021);
+      var maturityDate = new Date(1, Month.June, 2029);
+      var firstCouponDate = new Date(1, Month.December, 2021);
+
+      var calendar = new UnitedStates(UnitedStates.Market.GovernmentBond);
+      var dayCount = new Thirty360(Thirty360.Thirty360Convention.ISDA);
+
+      var schedule = new Schedule(effectiveDate, maturityDate, new Period(6, TimeUnit.Months),
+         calendar, BusinessDayConvention.Unadjusted, BusinessDayConvention.Unadjusted,
+         DateGeneration.Rule.Backward, true, firstCouponDate);
+
+      var callSchedule = new CallabilitySchedule
+      {
+         new(new Bond.Price(102.438, Bond.Price.Type.Clean), Callability.Type.Call, new Date(1, Month.June, 2024)),
+         new(new Bond.Price(101.219, Bond.Price.Type.Clean), Callability.Type.Call, new Date(1, Month.June, 2025)),
+         new(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, new Date(1, Month.June, 2026)),
+         new(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, new Date(1, Month.June, 2029))
+      };
+
+      var settlementDays = 2;
+      var callableBond = new CallableFixedRateBond(settlementDays, 100.0, schedule, new List<double> { 0.04875 },
+         dayCount, BusinessDayConvention.Unadjusted, 100.0, effectiveDate, callSchedule);
+
+      var flatRate = new Handle<YieldTermStructure>(new FlatForward(settlementDays, calendar, 0.05, dayCount));
+
+      var hw = new HullWhite(flatRate, 0.03, 0.012);
+
+      var gridSteps = (maturityDate - settlementDate) / 30;
+      callableBond.setPricingEngine(new TreeCallableFixedRateBondEngine(hw, gridSteps));
+
+      var cleanPrice = 70.926;
+      var oas = callableBond.OAS(cleanPrice, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, settlementDate);
+
+      var shift = 0.001;
+      var effDur = callableBond.effectiveDuration(oas, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, shift);
+      var effConv = callableBond.effectiveConvexity(oas, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, shift);
+
+      // expected duration and convexity computed by hand on the dirty price
+      var accrued = callableBond.accruedAmount(settlementDate);
+      var p0 = callableBond.cleanPriceOAS(oas, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, settlementDate) + accrued;
+      var pUp = callableBond.cleanPriceOAS(oas + shift, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, settlementDate) + accrued;
+      var pDown = callableBond.cleanPriceOAS(oas - shift, flatRate, dayCount, Compounding.Compounded, Frequency.Semiannual, settlementDate) + accrued;
+
+      var expectedEffDur = (pDown - pUp) / (2.0 * p0 * shift);
+      var expectedEffConv = (pDown + pUp - 2.0 * p0) / (p0 * shift * shift);
+
+      // the value a clean price in the denominator would give
+      var cleanP0 = p0 - accrued;
+      var incorrectEffDur = (pDown - pUp) / (2.0 * cleanP0 * shift);
+
+      QAssert.AreEqual(expectedEffDur, effDur, Math.Abs(expectedEffDur) * 1e-6, "effective duration");
+      QAssert.AreEqual(expectedEffConv, effConv, Math.Abs(expectedEffConv) * 1e-6, "effective convexity");
+      QAssert.IsTrue(Math.Abs(effDur - incorrectEffDur) > 0.01, "effective duration should differ from the clean-price one");
+   }
+
    [Fact,Priority(5)]
    public void testBlackEngine()
    {
@@ -1143,7 +1205,7 @@ public class CallableBondsTests
       const double referenceCleanPrice = 104.582;
       const double referenceEffectiveDuration = 7.91;
       const double effectiveDurationTolerance = 0.15;
-      const double referenceOasDuration = 13.94;
+      const double referenceOasDuration = 13.66;
       const double oasDurationTolerance = 0.02;
 
       Settings.setEvaluationDate(settlementDate);
