@@ -646,6 +646,73 @@ public class CallableBondsTests
       }
    }
 
+   [Fact]
+   public void testUnexercisableCallability()
+   {
+      // Testing that an unexercisable callability leaves the price alone
+      var vars = new Globals();
+
+      vars.today = new Date(3, Month.June, 2004);
+      Settings.setEvaluationDate(vars.today);
+      vars.settlement = vars.calendar.advance(vars.today, 3, TimeUnit.Days);
+
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.032));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      Schedule schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(Frequency.Semiannual)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var timeSteps = 240;
+
+      var engine = new TreeCallableFixedRateBondEngine(vars.model.currentLink(), timeSteps, vars.termStructure);
+
+      double Price(CallabilitySchedule exercises)
+      {
+         var bond = new CallableFixedRateBond(3, 10000.0, schedule, new InitializedList<double>(1, 0.05),
+            new Thirty360(Thirty360.Thirty360Convention.BondBasis), vars.rollingConvention, 100.0,
+            vars.issueDate(), exercises);
+         bond.setPricingEngine(engine);
+         return bond.cleanPrice();
+      }
+
+      var couponDate = schedule.date(8);
+      var tolerance = 1e-10;
+
+      foreach (var type in new[] { Callability.Type.Call, Callability.Type.Put })
+      {
+         var strike = type == Callability.Type.Call ? 100.0 : 110.0;
+         var unreachable = type == Callability.Type.Call ? 200.0 : 0.0;
+
+         var onCouponDate = new CallabilitySchedule
+         {
+            new(new Bond.Price(strike, Bond.Price.Type.Clean), type, couponDate)
+         };
+
+         var expected = Price(onCouponDate);
+
+         for (var days = 1; days <= 7; days++)
+         {
+            var exercises = new CallabilitySchedule
+            {
+               new(new Bond.Price(unreachable, Bond.Price.Type.Dirty), type, couponDate - days),
+               onCouponDate[0]
+            };
+
+            var calculated = Price(exercises);
+            if (Math.Abs(calculated - expected) > tolerance)
+               QAssert.Fail("unexercisable " + (type == Callability.Type.Call ? "call" : "put")
+                            + " on " + (couponDate - days) + " changed the price:\n"
+                            + "    calculated: " + calculated + "\n"
+                            + "    expected:   " + expected);
+         }
+      }
+   }
+
    [Fact,Priority(5)]
    public void testBlackEngine()
    {
