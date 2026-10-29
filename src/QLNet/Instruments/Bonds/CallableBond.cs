@@ -400,10 +400,12 @@ namespace QLNet
 
          double Pmm = cleanPriceOAS(oas - bump, engineTS, dayCounter, compounding, frequency);
 
-         if (P.IsEqual(0.0))
+         double dirtyP = P + accruedAmount();
+
+         if (dirtyP.IsEqual(0.0))
             return 0;
 
-         return (Pmm - Ppp) / (2 * P * bump);
+         return (Pmm - Ppp) / (2 * dirtyP * bump);
       }
 
       /// <summary>
@@ -434,10 +436,12 @@ namespace QLNet
 
          double Pmm = cleanPriceOAS(oas - bump, engineTS, dayCounter, compounding, frequency);
 
-         if (P.IsEqual(0.0))
+         double dirtyP = P + accruedAmount();
+
+         if (dirtyP.IsEqual(0.0))
             return 0;
 
-         return (Ppp + Pmm - 2 * P) / (Math.Pow(bump, 2) * P);
+         return (Ppp + Pmm - 2 * P) / (Math.Pow(bump, 2) * dirtyP);
       }
 
       /// <summary>
