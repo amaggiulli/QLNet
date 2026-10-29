@@ -1027,7 +1027,8 @@ namespace QLNet
 
          for (var i = 0; i < mainSchedule_.Count - 1; i++)
          {
-            if (exerciseDate <= mainSchedule_[i + 1])
+            // a call on a sink date is exercised after that day's principal payment
+            if (exerciseDate < mainSchedule_[i + 1])
             {
                return notionalsByPeriod_[Math.Min(i, notionalsByPeriod_.Count - 1)];
             }
