@@ -714,6 +714,68 @@ public class CallableBondsTests
    }
 
    [Fact]
+   public void testCallabilityTypeAfterSettledCallability()
+   {
+      // Testing callability types after a settled callability
+      var vars = new Globals();
+
+      vars.today = new Date(3, Month.June, 2004);
+      Settings.setEvaluationDate(vars.today);
+      vars.settlement = vars.calendar.advance(vars.today, 3, TimeUnit.Days);
+
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.032));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      Schedule schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(Frequency.Semiannual)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var timeSteps = 240;
+
+      var engine = new TreeCallableFixedRateBondEngine(vars.model.currentLink(), timeSteps, vars.termStructure);
+
+      double Price(CallabilitySchedule exercises)
+      {
+         var bond = new CallableFixedRateBond(3, 10000.0, schedule, new InitializedList<double>(1, 0.05),
+            new Thirty360(Thirty360.Thirty360Convention.BondBasis), vars.rollingConvention, 100.0,
+            vars.issueDate(), exercises);
+         bond.setPricingEngine(engine);
+         return bond.cleanPrice();
+      }
+
+      var tolerance = 1e-10;
+
+      foreach (var type in new[] { Callability.Type.Call, Callability.Type.Put })
+      {
+         var settledType = type == Callability.Type.Call ? Callability.Type.Put : Callability.Type.Call;
+
+         var live = new CallabilitySchedule();
+         foreach (var i in new[] { 4, 8 })
+            live.Add(new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), type, schedule.date(i)));
+
+         // a callability on the settlement date has already occurred
+         var exercises = new CallabilitySchedule
+         {
+            new(new Bond.Price(100.0, Bond.Price.Type.Clean), settledType, vars.settlement)
+         };
+         exercises.AddRange(live);
+
+         var expected = Price(live);
+         var calculated = Price(exercises);
+         if (Math.Abs(calculated - expected) > tolerance)
+            QAssert.Fail("settled " + (settledType == Callability.Type.Call ? "call" : "put")
+                         + " changed the price of a bond with later "
+                         + (type == Callability.Type.Call ? "calls" : "puts") + ":\n"
+                         + "    calculated: " + calculated + "\n"
+                         + "    expected:   " + expected);
+      }
+   }
+
+   [Fact]
    public void testEffectiveDurationAndConvexity()
    {
       // Testing effective duration and convexity of a callable fixed-rate bond using dirty price
