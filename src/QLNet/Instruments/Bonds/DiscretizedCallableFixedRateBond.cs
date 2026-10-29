@@ -223,7 +223,7 @@ namespace QLNet
       private void applyCallability(int i)
       {
          int j;
-         switch (arguments_.putCallSchedule[i].type())
+         switch (arguments_.callabilityTypes[i])
          {
             case Callability.Type.Call:
                for (j = 0; j < values_.size(); j++)
