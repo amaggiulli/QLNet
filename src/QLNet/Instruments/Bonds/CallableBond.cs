@@ -153,6 +153,7 @@ namespace QLNet
          arguments.redemptionDate = redemption().date();
          arguments.callabilityPrices = new List<double>(putCallSchedule_.Count);
          arguments.callabilityDates = new List<Date>(putCallSchedule_.Count);
+         arguments.callabilityTypes = new List<Callability.Type>(putCallSchedule_.Count);
          arguments.paymentDayCounter = paymentDayCounter_;
          arguments.frequency = frequency_;
          arguments.putCallSchedule = putCallSchedule_;
@@ -181,6 +182,7 @@ namespace QLNet
                if (!putCallSchedule_[i].hasOccurred(settlement, false))
                {
                   arguments.callabilityDates.Add(putCallSchedule_[i].date());
+                  arguments.callabilityTypes.Add(putCallSchedule_[i].type());
                   arguments.callabilityPrices.Add(putCallSchedule_[i].price().amount());
 
                   if (putCallSchedule_[i].price().type() == Bond.Price.Type.Clean)
@@ -203,6 +205,7 @@ namespace QLNet
             if (!putCallSchedule_[i].hasOccurred(settlement, false))
             {
                arguments.callabilityDates.Add(putCallSchedule_[i].date());
+               arguments.callabilityTypes.Add(putCallSchedule_[i].type());
                arguments.callabilityPrices.Add(CalculateCallabilityPrice(putCallSchedule_[i]));
             }
          }
@@ -714,6 +717,7 @@ namespace QLNet
          /// </summary>
          public List<double> callabilityPrices { get; set; }
          public List<Date> callabilityDates { get; set; }
+         public List<Callability.Type> callabilityTypes { get; set; }
 
          /// <summary>
          /// Spread to apply to the valuation.
@@ -731,6 +735,8 @@ namespace QLNet
             Utils.QL_REQUIRE(redemption >= 0.0, () => "positive redemption required: " + redemption + " not allowed");
             Utils.QL_REQUIRE(callabilityDates.Count == callabilityPrices.Count,
                () => "different number of callability dates and prices");
+            Utils.QL_REQUIRE(callabilityDates.Count == callabilityTypes.Count,
+               () => "different number of callability dates and types");
             Utils.QL_REQUIRE(couponDates.Count == couponAmounts.Count,
                () => "different number of coupon dates and amounts");
          }
