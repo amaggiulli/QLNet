@@ -96,7 +96,7 @@ This ensures that bond construction overhead doesn't skew the yield calculation 
 
 Benchmark results are saved to:
 ```
-tests/QLNet.Benchmarks/bin/Release/net9.0/BenchmarkDotNet.Artifacts/results/
+tests/QLNet.Benchmarks/bin/Release/net10.0/BenchmarkDotNet.Artifacts/results/
 ```
 
 Generated reports:

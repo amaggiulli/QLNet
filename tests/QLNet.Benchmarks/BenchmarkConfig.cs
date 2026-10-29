@@ -19,7 +19,6 @@ public class BenchmarkConfig : ManualConfig
         // Job configuration - Use ShortRun for faster benchmarks during development
         // For production benchmarks, use Job.Default instead
         AddJob(Job.ShortRun
-            .WithRuntime(CoreRuntime.Core90)
             .WithPlatform(Platform.X64)
             .WithJit(Jit.RyuJit));
 

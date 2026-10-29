@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 namespace QLNet.Benchmarks
 {
    // Use ShortRunJob for faster benchmarks (3 warmup, 3 iterations instead of ~15-100)
-   [ShortRunJob(RuntimeMoniker.Net90)]
+   [ShortRunJob]
    [MemoryDiagnoser]
    public class ScheduleUntilBenchmark(
        Schedule schedule10Years,
