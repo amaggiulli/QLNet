@@ -1328,6 +1328,49 @@ public class CallableBondsTests
    }
 
    [Fact]
+   public void testSinkableCallOnSinkDate()
+   {
+      // Testing that a call on a sink date is struck on the notional left after the sink
+      var today = new Date(15, Month.January, 2025);
+      Settings.setEvaluationDate(today);
+
+      var dayCounter = new Thirty360(Thirty360.Thirty360Convention.BondBasis);
+      var termStructure = new Handle<YieldTermStructure>(new FlatForward(today, 0.03, dayCounter));
+      var model = new HullWhite(termStructure, 0.03, 0.01);
+
+      var schedule = new Schedule(new Date(1, Month.December, 2024), new Date(1, Month.December, 2039),
+         new Period(Frequency.Semiannual), new NullCalendar(), BusinessDayConvention.Unadjusted,
+         BusinessDayConvention.Unadjusted, DateGeneration.Rule.Backward, false);
+
+      // 20% of the face sinks on schedule date 10, the rest at maturity
+      var sinkDate = schedule.date(10);
+      var notionals = new List<double>();
+      for (var i = 0; i < schedule.size() - 1; i++)
+         notionals.Add(i < 10 ? 100.0 : 80.0);
+
+      double Price(Date callDate)
+      {
+         var calls = new CallabilitySchedule
+         {
+            new(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, callDate)
+         };
+         var bond = new CallableFixedRateBond(0, 100.0, schedule, [0.05], notionals, dayCounter,
+            BusinessDayConvention.Unadjusted, 100.0, schedule.date(0), calls);
+         bond.setPricingEngine(new TreeCallableFixedRateBondEngine(model, 200, termStructure));
+         return bond.cleanPrice();
+      }
+
+      var onSinkDate = Price(sinkDate);
+      var dayAfter = Price(sinkDate + 1);
+
+      // a day later only changes the discounting of the call and the accrual of one day
+      if (Math.Abs(onSinkDate - dayAfter) > 0.01)
+         QAssert.Fail("call on the sink date " + sinkDate + " is out of line with the day after:\n"
+                      + "    on sink date: " + onSinkDate + "\n"
+                      + "    day after:    " + dayAfter);
+   }
+
+   [Fact]
    public void testBlackEngineDeepInTheMoney()
    {
       // Testing Black engine for deep ITM European callable bond
