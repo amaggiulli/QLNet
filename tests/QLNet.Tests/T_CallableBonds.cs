@@ -1605,6 +1605,43 @@ public class CallableBondsTests
                       + "    (sweep from " + sweepStart + " to " + sweepEnd + ")");
    }
 
+   [Fact]
+   public void testIncompleteCallerSuppliedGridIsRejected()
+   {
+      // A caller-supplied grid that omits coupon or callability times must be rejected
+      // rather than silently dropping those cash flows.
+      var vars = new Globals();
+      vars.termStructure.linkTo(vars.makeFlatCurve(0.03));
+      vars.model.linkTo(new HullWhite(vars.termStructure));
+
+      var schedule = new MakeSchedule()
+         .from(vars.issueDate())
+         .to(vars.maturityDate())
+         .withCalendar(vars.calendar)
+         .withFrequency(Frequency.Semiannual)
+         .withConvention(vars.rollingConvention)
+         .withRule(DateGeneration.Rule.Backward).value();
+
+      var callabilities = new CallabilitySchedule();
+      callabilities.AddRange(vars.evenYears().Select(callDate =>
+         new Callability(new Bond.Price(100.0, Bond.Price.Type.Clean), Callability.Type.Call, callDate)));
+
+      var bond = new CallableFixedRateBond(3, 100.0, schedule,
+         new InitializedList<double>(1, 0.05), new Thirty360(Thirty360.Thirty360Convention.BondBasis),
+         vars.rollingConvention, 100.0, vars.issueDate(), callabilities);
+
+      // the grid holds the two endpoints only, so every coupon and callability time is missing
+      var referenceDate = vars.termStructure.link.referenceDate();
+      var grid = new TimeGrid(new List<double>
+      {
+         0.0, vars.dayCounter.yearFraction(referenceDate, vars.maturityDate())
+      });
+      bond.setPricingEngine(new TreeCallableFixedRateBondEngine(vars.model, grid, vars.termStructure));
+
+      var exception = Assert.Throws<ArgumentException>(() => bond.cleanPrice());
+      Assert.Contains("inadequate time grid", exception.Message);
+   }
+
    private static InterpolatedZeroCurve<Linear> buildReferenceCurve(DateTime settlementDate, DayCounter dayCounter)
    {
       var dates = new List<Date>

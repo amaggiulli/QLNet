@@ -150,13 +150,13 @@ namespace QLNet
 
       protected override void preAdjustValuesImpl()
       {
-         checkGridTimes();
+         validateGridTimes();
          for (var i = 0; i < couponTimes_.Count; i++)
          {
             if (couponAdjustments_[i] == CouponAdjustment.Pre)
             {
                var t = couponTimes_[i];
-               if (t >= 0.0 && isOnGridTime(t, couponGridTimes_, i))
+               if (t >= 0.0 && isOnGridTime(t))
                {
                   addCoupon(i);
                }
@@ -165,11 +165,11 @@ namespace QLNet
       }
       protected override void postAdjustValuesImpl()
       {
-         checkGridTimes();
+         validateGridTimes();
          for (int i = 0; i < callabilityTimes_.Count; i++)
          {
             double t = callabilityTimes_[i];
-            if (t >= 0.0 && isOnGridTime(t, callabilityGridTimes_, i))
+            if (t >= 0.0 && isOnGridTime(t))
             {
                applyCallability(i);
             }
@@ -179,7 +179,7 @@ namespace QLNet
             if (couponAdjustments_[i] == CouponAdjustment.Post)
             {
                var t = couponTimes_[i];
-               if (t >= 0.0 && isOnGridTime(t, couponGridTimes_, i))
+               if (t >= 0.0 && isOnGridTime(t))
                {
                   addCoupon(i);
                }
@@ -187,38 +187,52 @@ namespace QLNet
          }
       }
 
-      // Grid times of the coupon and callability events on the current lattice, filled on first use
-      // (NaN until then) so each event's grid lookup runs once per lattice rather than at every step.
-      private Lattice gridTimesMethod_;
-      private double[] couponGridTimes_;
-      private double[] callabilityGridTimes_;
-
-      private void checkGridTimes()
+      // validateGridTimes() has established, for the current lattice, that every coupon and
+      // callability time sits on exactly one grid node. The grid is sorted, so no farther node
+      // can match either: comparing t with the current time directly gives the same answer as
+      // the old grid[grid.index(t)] lookup, without searching the grid at every time step.
+      private bool isOnGridTime(double t)
       {
-         if (ReferenceEquals(gridTimesMethod_, method()))
+         return Utils.close(t, time());
+      }
+
+      // Verifies, once per lattice, that every event time maps to exactly one grid node.
+      // TimeGrid.index throws when the time is missing from the grid. This is what makes the
+      // direct comparison in isOnGridTime() safe, including for the caller-supplied grid taken
+      // by the TreeCallableFixedRateBondEngine(TimeGrid) constructor: a grid that does not hold
+      // an event time is rejected here rather than silently dropping that cash flow. A grid
+      // holding two nodes within the matching tolerance of one event would apply it twice, so
+      // it is rejected too.
+      private void validateGridTimes()
+      {
+         if (ReferenceEquals(validatedMethod_, method()))
             return;
-         couponGridTimes_ = newGridTimes(couponTimes_.Count);
-         callabilityGridTimes_ = newGridTimes(callabilityTimes_.Count);
-         gridTimesMethod_ = method();
+         TimeGrid grid = method().timeGrid();
+         foreach (var t in couponTimes_)
+            checkSingleGridNode(grid, t);
+         foreach (var t in callabilityTimes_)
+            checkSingleGridNode(grid, t);
+         validatedMethod_ = method();
       }
 
-      private static double[] newGridTimes(int size)
+      private static void checkSingleGridNode(TimeGrid grid, double t)
       {
-         var gridTimes = new double[size];
-         for (int i = 0; i < size; i++)
-            gridTimes[i] = double.NaN;
-         return gridTimes;
+         if (t < 0.0)
+            return;
+         int i = grid.index(t);
+         bool lowerMatches = i > 0 && Utils.close(t, grid[i - 1]);
+         bool upperMatches = i + 1 < grid.size() && Utils.close(t, grid[i + 1]);
+         if (!lowerMatches && !upperMatches)
+            return;
+         string nodes = lowerMatches
+            ? (upperMatches ? grid[i] + ", " + grid[i - 1] + ", " + grid[i + 1]
+                            : grid[i] + ", " + grid[i - 1])
+            : grid[i] + ", " + grid[i + 1];
+         Utils.QL_FAIL("time grid has more than one node matching the event time t = "
+                       + t + " (nodes " + nodes + ")");
       }
 
-      private bool isOnGridTime(double t, double[] gridTimes, int i)
-      {
-         if (double.IsNaN(gridTimes[i]))
-         {
-            TimeGrid grid = method().timeGrid();
-            gridTimes[i] = grid[grid.index(t)];
-         }
-         return Utils.close(gridTimes[i], time());
-      }
+      private Lattice validatedMethod_;
 
       private void applyCallability(int i)
       {
