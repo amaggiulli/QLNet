@@ -59,6 +59,13 @@ namespace QLNet
 
                dx = (xh - xl) / 2.0;
                root_ = xl + dx;
+               // if the root estimate just computed is close to the previous one, we should calculate dfroot at root and
+               // xh rather than root and rootold (xl instead of xh would be just as good)
+               if (Utils.close(root_, rootold, 2500))
+               {
+                  rootold = xh;
+                  frootold = f.value(xh);
+               }
             }
             else     // Newton
             {
