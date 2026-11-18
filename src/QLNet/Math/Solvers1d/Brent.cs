@@ -31,11 +31,23 @@ namespace QLNet
 
          double min1, min2;
          double froot, p, q, r, s, xAcc1, xMid;
-         // dummy assignements to avoid compiler warning
-         double d = 0.0, e = 0.0;
 
-         root_ = xMax_;
-         froot = fxMax_;
+         // we want to start with root_ (which equals the guess) on one side of the bracket and both xMin_ and xMax_ on the other.
+         froot = f.value(root_);
+         ++evaluationNumber_;
+         if (froot * fxMin_ < 0)
+         {
+            xMax_ = xMin_;
+            fxMax_ = fxMin_;
+         }
+         else
+         {
+            xMin_ = xMax_;
+            fxMin_ = fxMax_;
+         }
+         double d = root_ - xMax_;
+         double e = d;
+
          while (evaluationNumber_ <= maxEvaluations_)
          {
             if ((froot > 0.0 && fxMax_ > 0.0) ||
@@ -60,7 +72,11 @@ namespace QLNet
             xAcc1 = 2.0 * Const.QL_EPSILON * Math.Abs(root_) + 0.5 * xAccuracy;
             xMid = (xMax_ - root_) / 2.0;
             if (Math.Abs(xMid) <= xAcc1 || Utils.close(froot, 0.0))
+            {
+               f.value(root_);
+               ++evaluationNumber_;
                return root_;
+            }
             if (Math.Abs(e) >= xAcc1 &&
                 Math.Abs(fxMin_) > Math.Abs(froot))
             {
