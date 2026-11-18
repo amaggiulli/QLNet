@@ -65,6 +65,7 @@ namespace QLNet
                {
                   rootold = xh;
                   frootold = f.value(xh);
+                  ++evaluationNumber_;
                }
             }
             else     // Newton
