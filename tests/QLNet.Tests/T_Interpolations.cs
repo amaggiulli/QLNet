@@ -1724,6 +1724,24 @@ namespace TestSuite
          }
       }
 
+      [Fact]
+      public void testFritschButlandCubicIsMonotonic()
+      {
+         // FritschButlandCubic applies the Hyman monotonicity filter
+         var xs = new List<double> { 0.0, 1.0, 2.0, 3.0 };
+         var ys = new List<double> { 0.0, 0.3, 1.7, 4.0 };
+         var actual = new FritschButlandCubic(xs, xs.Count, ys);
+         var expected = new CubicInterpolation(xs, xs.Count, ys, CubicInterpolation.DerivativeApprox.FritschButland, true,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
+
+         for (double x = 0.0; x <= 3.0; x += 0.125)
+         {
+            QAssert.AreEqual(expected.value(x), actual.value(x), 1.0e-12,
+                             "FritschButlandCubic differs from monotonic cubic at x = " + x);
+         }
+      }
+
 
       #region Functions
       List<double> xRange(double start, double finish, int points)
