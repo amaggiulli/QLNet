@@ -505,8 +505,8 @@ namespace QLNet
          {
             double dxPrev = xBegin_[i] - xBegin_[i - 1];
             double dx = xBegin_[i + 1] - xBegin_[i];
-            f[i] = dxPrev / (dx + dxPrev) * yBegin_[i]
-                   + dx / (dx + dxPrev) * yBegin_[i + 1];
+            f[i] = dx / (dx + dxPrev) * yBegin_[i]
+                   + dxPrev / (dx + dxPrev) * yBegin_[i + 1];
          }
 
          if (startPoint > 1)
