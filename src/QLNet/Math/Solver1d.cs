@@ -32,6 +32,11 @@ namespace QLNet
       {
          return 0;
       }
+
+      public virtual double secondDerivative(double x)
+      {
+         return 0;
+      }
    }
 
    /// <summary>

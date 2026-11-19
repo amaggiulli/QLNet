@@ -31,7 +31,7 @@ namespace QLNet
             Cambridge University Press
          */
 
-         double fl, fh, xl, xh, dx, del, froot;
+         double fl, fh, xl, xh, del, froot;
 
          // Identify the limits so that xl corresponds to the low side
          if (fxMin_ < 0.0)
@@ -48,12 +48,11 @@ namespace QLNet
             xh = xMin_;
             fh = fxMin_;
          }
-         dx = xh - xl ;
 
          while (evaluationNumber_ <= maxEvaluations_)
          {
             // Increment with respect to latest value
-            root_ = xl + dx * fl / (fl - fh);
+            root_ = xl + (xh - xl) * fl / (fl - fh);
             froot = f.value(root_);
             evaluationNumber_++;
             if (froot < 0.0)         // Replace appropriate limit
@@ -68,7 +67,6 @@ namespace QLNet
                xh = root_;
                fh = froot;
             }
-            dx = xh - xl;
             // Convergence criterion
             if (Math.Abs(del) < xAccuracy || Utils.close(froot, 0.0))
             {
