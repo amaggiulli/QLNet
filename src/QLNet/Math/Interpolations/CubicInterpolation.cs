@@ -304,7 +304,7 @@ namespace QLNet
       /// </remarks>
       public FritschButlandCubic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
-                CubicInterpolation.DerivativeApprox.FritschButland, false,
+                CubicInterpolation.DerivativeApprox.FritschButland, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
       {}
