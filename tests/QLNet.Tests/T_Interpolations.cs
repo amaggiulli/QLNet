@@ -1740,6 +1740,30 @@ namespace TestSuite
             QAssert.AreEqual(expected.value(x), actual.value(x), 1.0e-12,
                              "FritschButlandCubic differs from monotonic cubic at x = " + x);
          }
+      public void testConvexMonotoneNonUniformGrid()
+      {
+         // Boundary forwards weight each neighbouring interval forward by the length of the other interval.
+         // The weights are indistinguishable on uniform grids.
+         var xs = new List<double> { 0.0, 1.0, 2.0, 5.0 };
+         var ys = new List<double> { 0.05, 0.05, 0.06, 0.08 };
+         var interp = new ConvexMonotoneInterpolation(xs, 4, ys, 0.3, 0.7, false, false);
+
+         // expected value on a non-uniform grid
+         QAssert.AreEqual(0.06, interp.value(1.5, true), 1.0e-10);
+      }
+
+      [Fact]
+      public void testConvexMonotoneNodeForwardNonUniformGrid()
+      {
+         // With quadraticity = 1 the interpolated value at a node is the node forward:
+         // (dxNext * fwdPrev + dxPrev * fwdNext) / (dxNext + dxPrev)
+         var xs = new List<double> { 0.0, 1.0, 2.0, 5.0 };
+         var ys = new List<double> { 0.05, 0.05, 0.06, 0.08 };
+         var interp = new ConvexMonotoneInterpolation(xs, 4, ys, 1.0, 0.0, false, false);
+
+         QAssert.AreEqual(0.055, interp.value(1.0, true), 1.0e-10);
+         // gaps 1 and 3: (3 * 0.06 + 1 * 0.08) / 4
+         QAssert.AreEqual(0.065, interp.value(2.0, true), 1.0e-10);
       }
 
 

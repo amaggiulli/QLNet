@@ -19,7 +19,12 @@
     disable_publish_on_pr: true
   install:
     - ps: |
+        $ErrorActionPreference = 'Stop'
         $version = (Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
+        # PR builds share the build number and never publish: give them their own version so they
+        # do not take the one the next push build needs
+        if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { $version = "$version-pr$($env:APPVEYOR_PULL_REQUEST_NUMBER).$($env:APPVEYOR_BUILD_ID)" }
+        # fail the build instead of packing with the '{build}' fallback version
         Update-AppveyorBuild -Version $version
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
@@ -70,8 +75,14 @@
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk17
   install:
     - ps: |
+        $ErrorActionPreference = 'Stop'
         $v = [version](Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
-        Update-AppveyorBuild -Version ("{0}.{1}.{2}-preview.{3}" -f $v.Major, $v.Minor, ($v.Build + 1), $env:APPVEYOR_BUILD_NUMBER)
+        $tag = "preview.$($env:APPVEYOR_BUILD_NUMBER)"
+        # PR builds share the build number and never publish: give them their own version so they
+        # do not take the one the next push build needs
+        if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { $tag = "pr$($env:APPVEYOR_PULL_REQUEST_NUMBER).$($env:APPVEYOR_BUILD_ID)" }
+        # fail the build instead of packing with the '{build}' fallback version
+        Update-AppveyorBuild -Version ("{0}.{1}.{2}-{3}" -f $v.Major, $v.Minor, ($v.Build + 1), $tag)
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
@@ -123,9 +134,14 @@
     - cmd: set JAVA_HOME=C:\Program Files\Java\jdk11
   install:
     - ps: |
+        $ErrorActionPreference = 'Stop'
         $v = [version](Select-Xml -Path src\QLNet\QLNet.csproj -XPath '//VersionPrefix').Node.InnerText
         $branch = $env:APPVEYOR_REPO_BRANCH -replace '/', '.'
-        Update-AppveyorBuild -Version ("{0}.{1}.{2}-{3}.{4}" -f $v.Major, $v.Minor, ($v.Build + 1), $branch, $env:APPVEYOR_BUILD_NUMBER)
+        $tag = "$branch.$($env:APPVEYOR_BUILD_NUMBER)"
+        # PR builds share the build number and never publish: give them their own version
+        if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { $tag = "pr$($env:APPVEYOR_PULL_REQUEST_NUMBER).$($env:APPVEYOR_BUILD_ID)" }
+        # fail the build instead of packing with the '{build}' fallback version
+        Update-AppveyorBuild -Version ("{0}.{1}.{2}-{3}" -f $v.Major, $v.Minor, ($v.Build + 1), $tag)
     - ps: Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
     - ps: ./dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
   before_build:
