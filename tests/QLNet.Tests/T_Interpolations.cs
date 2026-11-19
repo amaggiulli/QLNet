@@ -1725,6 +1725,82 @@ namespace TestSuite
       }
 
       [Fact]
+      public void testFritschButlandCubicIsMonotonic()
+      {
+         // FritschButlandCubic applies the Hyman monotonicity filter
+         var xs = new List<double> { 0.0, 1.0, 2.0, 3.0 };
+         var ys = new List<double> { 0.0, 0.3, 1.7, 4.0 };
+         var actual = new FritschButlandCubic(xs, xs.Count, ys);
+         var expected = new CubicInterpolation(xs, xs.Count, ys, CubicInterpolation.DerivativeApprox.FritschButland, true,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
+
+         for (double x = 0.0; x <= 3.0; x += 0.125)
+         {
+            QAssert.AreEqual(expected.value(x), actual.value(x), 1.0e-12,
+                             "FritschButlandCubic differs from monotonic cubic at x = " + x);
+         }
+      }
+
+      [Fact]
+      public void testFritschButland()
+      {
+         // Testing Fritsch-Butland interpolation...
+         var x = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0 };
+         var y = new List<List<double>>
+         {
+            new List<double> { 1.0, 2.0, 1.0, 1.0, 2.0 },
+            new List<double> { 1.0, 2.0, 1.0, 1.0, 1.0 },
+            new List<double> { 2.0, 1.0, 0.0, 2.0, 3.0 }
+         };
+
+         for (int i = 0; i < 3; ++i)
+         {
+            var f = new FritschButlandCubic(x, x.Count, y[i]);
+
+            for (int j = 0; j < 4; ++j)
+            {
+               double leftKnot = x[j];
+               int expectedSign = Math.Sign(y[i][j + 1] - y[i][j]);
+               for (int k = 0; k < 10; ++k)
+               {
+                  double x1 = leftKnot + k * 0.1, x2 = leftKnot + (k + 1) * 0.1;
+                  double y1 = f.value(x1), y2 = f.value(x2);
+                  if (double.IsNaN(y1))
+                     QAssert.Fail("NaN detected in case " + i + ":"
+                                  + "\n    f(" + x1 + ") = " + y1);
+                  else if (Math.Sign(y2 - y1) != expectedSign)
+                     QAssert.Fail("interpolation is not monotonic in case " + i + ":"
+                                  + "\n    f(" + x1 + ") = " + y1
+                                  + "\n    f(" + x2 + ") = " + y2);
+               }
+            }
+         }
+      }
+
+      [Fact]
+      public void testFritschButlandFlatSlopes()
+      {
+         // Two consecutive zero slopes give Smax + 2 Smin = 0: the node derivative must be 0, not NaN,
+         // also without the monotonicity filter
+         var x = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0 };
+         var y = new List<double> { 1.0, 2.0, 1.0, 1.0, 1.0 };
+         var unfiltered = new CubicInterpolation(x, x.Count, y, CubicInterpolation.DerivativeApprox.FritschButland, false,
+                                                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
+                                                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
+         var mixed = new MixedLinearFritschButlandCubic(x, x.Count, y, 1);
+
+         for (double t = 0.0; t <= 4.0; t += 0.125)
+         {
+            QAssert.IsFalse(double.IsNaN(unfiltered.value(t)), "NaN in unfiltered Fritsch-Butland cubic at x = " + t);
+            QAssert.IsFalse(double.IsNaN(mixed.value(t)), "NaN in MixedLinearFritschButlandCubic at x = " + t);
+         }
+         // flat region stays flat
+         for (double t = 3.0; t <= 4.0; t += 0.125)
+            QAssert.AreEqual(1.0, unfiltered.value(t), 1.0e-12, "unfiltered Fritsch-Butland cubic at x = " + t);
+      }
+
+      [Fact]
       public void testConvexMonotoneNonUniformGrid()
       {
          // Boundary forwards weight each neighbouring interval forward by the length of the other interval.
