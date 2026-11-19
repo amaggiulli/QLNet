@@ -1724,6 +1724,18 @@ namespace TestSuite
          }
       }
 
+      [Fact]
+      public void testSabrSpecsBetaOneRoundTrip()
+      {
+         // beta = 1 must survive the inverse/direct transformation for lognormal SABR
+         var specs = new SABRSpecs();
+         var y = new Vector(4);
+         y[0] = 0.05; y[1] = 1.0; y[2] = 0.4; y[3] = -0.3;
+         var back = specs.direct(specs.inverse(y, new List<bool> { false, false, false, false }, null, 0.0),
+                                 new List<bool> { false, false, false, false }, null, 0.0);
+         QAssert.AreEqual(1.0, back[1], 1.0e-12);
+      }
+
 
       #region Functions
       List<double> xRange(double start, double finish, int points)
