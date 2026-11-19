@@ -1740,6 +1740,9 @@ namespace TestSuite
             QAssert.AreEqual(expected.value(x), actual.value(x), 1.0e-12,
                              "FritschButlandCubic differs from monotonic cubic at x = " + x);
          }
+      }
+
+      [Fact]
       public void testConvexMonotoneNonUniformGrid()
       {
          // Boundary forwards weight each neighbouring interval forward by the length of the other interval.
