@@ -92,18 +92,25 @@ namespace TestSuite
       {
          public override double value(double x) { return x * x - 1.0; }
          public override double derivative(double x) { return 2.0 * x; }
+         public override double secondDerivative(double x) { return 2.0; }
       }
 
       class F2 : ISolver1d
       {
          public override double value(double x) { return 1.0 - x * x; }
          public override double derivative(double x) { return -2.0 * x; }
+         public override double secondDerivative(double x) { return -2.0; }
       }
 
       class F3 : ISolver1d
       {
          public override double value(double x) { return Math.Atan(x - 1.0); }
          public override double derivative(double x) { return 1.0 / (1.0 + (x - 1.0) * (x - 1.0)); }
+         public override double secondDerivative(double x)
+         {
+            double u = x - 1.0;
+            return -2.0 * u / ((1.0 + u * u) * (1.0 + u * u));
+         }
       }
 
       // records the last argument the function was evaluated at
@@ -125,6 +132,7 @@ namespace TestSuite
             return previous_ + offset_ - x * x;
          }
          public override double derivative(double x) { return -2.0 * x; }
+         public override double secondDerivative(double x) { return -2.0; }
       }
 
       private void testNotBracketed(Solver1D solver, string name, ISolver1d f, double guess)
@@ -239,6 +247,9 @@ namespace TestSuite
 
       [Fact]
       public void testSecantLastCall() { testSolver(new Secant(), "Secant", 1.0e-6); }
+
+      [Fact]
+      public void testHalley() { testSolver(new Halley(), "Halley", 1.0e-6); }
 
       class NanSolver : ISolver1d
       {
