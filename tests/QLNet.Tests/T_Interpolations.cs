@@ -1827,6 +1827,21 @@ namespace TestSuite
          QAssert.AreEqual(0.065, interp.value(2.0, true), 1.0e-10);
       }
 
+      [Fact]
+      public void testMixedLinearCubicSplitRanges()
+      {
+         // with SplitRanges the linear part must extend up to and including the switch point
+         var xs = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0 };
+         var ys = new List<double> { 0.0, 1.0, 5.0, 6.0, 7.0, 8.0 };
+         var interp = new MixedLinearCubicNaturalSpline(xs, xs.Count, ys, 2, Behavior.SplitRanges);
+
+         // linear between (1, 1) and (2, 5)
+         QAssert.AreEqual(3.0, interp.value(1.5), 1.0e-12);
+         QAssert.AreEqual(4.0, interp.derivative(1.5), 1.0e-12);
+         // area under the linear part up to the switch point: 0.5 + 3.0
+         QAssert.AreEqual(3.5, interp.primitive(2.0), 1.0e-12);
+      }
+
 
       #region Functions
       List<double> xRange(double start, double finish, int points)
