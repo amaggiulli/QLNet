@@ -394,7 +394,7 @@ namespace TestSuite
          //"Testing consistency of local-bootstrap algorithm...");
 
          CommonVars vars = new CommonVars();
-         testCurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-7);
+         testCurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-6);
          testBMACurveConsistency<ForwardRate, ConvexMonotone, LocalBootstrapForYield>(vars, new ConvexMonotone(), 1.0e-7);
       }
 

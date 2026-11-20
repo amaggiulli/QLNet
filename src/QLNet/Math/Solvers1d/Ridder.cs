@@ -50,12 +50,20 @@ namespace QLNet
             ++evaluationNumber_;
             s = Math.Sqrt(fxMid * fxMid - fxMin_ * fxMax_);
             if (Utils.close(s, 0.0))
+            {
+               f.value(root_);
+               ++evaluationNumber_;
                return root_;
+            }
             // Updating formula
             nextRoot = xMid + (xMid - xMin_) *
                        ((fxMin_  >= fxMax_ ? 1.0 : -1.0) * fxMid / s);
             if (Math.Abs(nextRoot - root_) <= xAccuracy)
+            {
+               f.value(root_);
+               ++evaluationNumber_;
                return root_;
+            }
 
             root_ = nextRoot;
             // Second of two function evaluations per iteration
@@ -88,7 +96,11 @@ namespace QLNet
             }
 
             if (Math.Abs(xMax_ - xMin_) <= xAccuracy)
+            {
+               f.value(root_);
+               ++evaluationNumber_;
                return root_;
+            }
          }
 
          Utils.QL_FAIL("maximum number of function evaluations (" + maxEvaluations_ + ") exceeded",
