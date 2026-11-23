@@ -65,7 +65,7 @@ namespace QLNet
                interpolation2_ = factory2.interpolate(xBegin_, size_, yBegin_);
                break;
             case Behavior.SplitRanges:
-               interpolation1_ = factory1.interpolate(xBegin_, n_, yBegin_);
+               interpolation1_ = factory1.interpolate(xBegin_, n_ + 1, yBegin_);
                interpolation2_ = factory2.interpolate(xBegin2_, size_ - n, yBegin2_);
                break;
             default:

@@ -56,7 +56,11 @@ namespace QLNet
                return s.solve(f, xAccuracy, root_ + dx, xMin_, xMax_);
             }
             if (Math.Abs(dx) < xAccuracy)
+            {
+               f.value(root_);
+               evaluationNumber_++;
                return root_;
+            }
             froot = f.value(root_);
             dfroot = f.derivative(root_);
             evaluationNumber_++;

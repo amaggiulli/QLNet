@@ -56,6 +56,8 @@ namespace QLNet
                root_ = xMid;
             if (Math.Abs(dx) < xAccuracy || Utils.close(fMid, 0.0))
             {
+               f.value(root_);
+               evaluationNumber_++;
                return root_;
             }
          }
