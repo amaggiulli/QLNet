@@ -111,7 +111,9 @@ namespace QLNet
          Vector x = new Vector(4);
          x[0] = y[0] < 25.0 + eps1() ? Math.Sqrt(Math.Max(eps1(), y[0]) - eps1())
                 : (y[0] - eps1() + 25.0) / 10.0;
-         x[1] = y[1].IsEqual(0.0) ? 0.0 : Math.Sqrt(-Math.Log(y[1]));
+         // beta <= eps1 is encoded at the cutoff, so that direct returns eps1 (lognormal) or 0 (normal)
+         // while beta = 1 is encoded as 0 for both volatility types
+         x[1] = y[1] <= eps1() ? Math.Sqrt(-Math.Log(eps1())) : Math.Sqrt(-Math.Log(y[1]));
          x[2] = y[2] < 25.0 + eps1() ? Math.Sqrt(y[2] - eps1())
                 : (y[2] - eps1() + 25.0) / 10.0;
          x[3] = Math.Asin(y[3] / eps2());
@@ -123,9 +125,7 @@ namespace QLNet
          y[0] = Math.Abs(x[0]) < 5.0
                 ? x[0] * x[0] + eps1()
                 : (10.0 * Math.Abs(x[0]) - 25.0) + eps1();
-         // x[1] == 0 encodes beta = 0 for normal vol; for lognormal it is beta = 1 and exp(0) must be returned
-         y[1] = Math.Abs(x[1]) < Math.Sqrt(-Math.Log(eps1())) &&
-                (volatilityType_ == VolatilityType.ShiftedLognormal || x[1].IsNotEqual(0.0))
+         y[1] = Math.Abs(x[1]) < Math.Sqrt(-Math.Log(eps1()))
                 ? Math.Exp(-(x[1] * x[1]))
                 : (volatilityType_ == VolatilityType.ShiftedLognormal ? eps1() : 0.0);
          y[2] = Math.Abs(x[2]) < 5.0

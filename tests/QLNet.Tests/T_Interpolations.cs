@@ -1736,6 +1736,41 @@ namespace TestSuite
          QAssert.AreEqual(1.0, back[1], 1.0e-12);
       }
 
+      [Theory]
+      [InlineData(false, 0.0, 1.0e-7)]
+      [InlineData(false, 0.5, 0.5)]
+      [InlineData(false, 1.0, 1.0)]
+      [InlineData(true, 0.0, 0.0)]
+      [InlineData(true, 0.5, 0.5)]
+      [InlineData(true, 1.0, 1.0)]
+      public void testSabrSpecsBetaRoundTrip(bool normalVol, double beta, double expected)
+      {
+         // beta = 0 and beta = 1 must survive the inverse/direct transformation for both volatility types;
+         // for lognormal vol beta = 0 is floored at eps1
+         var specs = new SABRSpecs();
+         var fixedParams = new List<bool> { false, false, false, false };
+         specs.instance(1.0, 0.03, new List<double?> { 0.05, 0.5, 0.4, -0.3 },
+                        new List<double?> { 0.0, normalVol ? 1.0 : 0.0, (double)SabrApproximationModel.Hagan2002 });
+         var y = new Vector(4);
+         y[0] = 0.05; y[1] = beta; y[2] = 0.4; y[3] = -0.3;
+         var back = specs.direct(specs.inverse(y, fixedParams, null, 0.0), fixedParams, null, 0.0);
+         QAssert.AreEqual(expected, back[1], 1.0e-12);
+      }
+
+      [Theory]
+      [InlineData(0.0, 1.0e-7)]
+      [InlineData(1.0, 1.0)]
+      public void testSabrInterpolationFixedBeta(double beta, double expected)
+      {
+         // a fixed beta must be used as given in the calibration (lognormal beta = 0 is floored at eps1)
+         var strikes = new List<double> { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06 };
+         var vols = new List<double> { 0.6, 0.45, 0.38, 0.35, 0.34, 0.345 };
+         var sabr = new SABRInterpolation(strikes, strikes.Count, vols, 1.0, 0.03, 0.1, beta, 0.4, -0.2,
+                                          false, true, false, false);
+         sabr.update();
+         QAssert.AreEqual(expected, sabr.beta(), 1.0e-12);
+      }
+
       [Fact]
       public void testFritschButlandCubicIsMonotonic()
       {
