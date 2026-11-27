@@ -251,6 +251,81 @@ namespace TestSuite
       [Fact]
       public void testHalley() { testSolver(new Halley(), "Halley", 1.0e-6); }
 
+      // f(x) = x^3 - 8 has the root 2 and a derivative that vanishes at 0
+      class CubicMinusEight : ISolver1d
+      {
+         public override double value(double x) { return x * x * x - 8.0; }
+         public override double derivative(double x) { return 3.0 * x * x; }
+         public override double secondDerivative(double x) { return 6.0 * x; }
+      }
+
+      // f(x) = tanh(x - 2) has root 2; at 25, tanh(x - 2) rounds to 1,
+      // so the computed derivative 1 - tanh(x - 2)^2 is zero.
+      class ShiftedTanh : ISolver1d
+      {
+         public override double value(double x) { return Math.Tanh(x - 2.0); }
+         public override double derivative(double x)
+         {
+            double t = Math.Tanh(x - 2.0);
+            return 1.0 - t * t;
+         }
+         public override double secondDerivative(double x)
+         {
+            double t = Math.Tanh(x - 2.0);
+            return -2.0 * t * (1.0 - t * t);
+         }
+      }
+
+      // records the arguments of the function calls
+      class Recorder : ISolver1d
+      {
+         private readonly ISolver1d f_;
+         public readonly System.Collections.Generic.List<double> arguments = new System.Collections.Generic.List<double>();
+         public Recorder(ISolver1d f) { f_ = f; }
+         public override double value(double x)
+         {
+            arguments.Add(x);
+            return f_.value(x);
+         }
+         public override double derivative(double x) { return f_.derivative(x); }
+         public override double secondDerivative(double x) { return f_.secondDerivative(x); }
+      }
+
+      private void testFallback(Solver1D solver, string name, ISolver1d f,
+                                double expected, double guess, double xMin, double xMax)
+      {
+         double accuracy = 1.0e-10;
+         double root = solver.solve(f, accuracy, guess, xMin, xMax);
+         if (Math.Abs(root - expected) > accuracy)
+            QAssert.Fail(name + " solver, guess " + guess + ":\n"
+                         + "    expected:   " + expected + "\n"
+                         + "    calculated: " + root + "\n"
+                         + "    accuracy:   " + accuracy);
+      }
+
+      [Fact]
+      public void testNewtonAndHalleyFallback()
+      {
+         // Unlike QuantLib, where the fallback to NewtonSafe finds the root, QLNet treats a zero derivative
+         // as a function that does not implement derivative(): Newton rejects it at the guess and Halley,
+         // whose step is then not a finite number, falls back to NewtonSafe, which rejects it as well.
+         Assert.Throws<ArgumentException>(() => testFallback(new Newton(), "Newton", new CubicMinusEight(), 2.0, 0.0, -1.0, 5.0));
+         Assert.Throws<ArgumentException>(() => testFallback(new Halley(), "Halley", new CubicMinusEight(), 2.0, 0.0, -1.0, 5.0));
+         Assert.Throws<ArgumentException>(() => testFallback(new Newton(), "Newton", new ShiftedTanh(), 2.0, 25.0, -20.0, 30.0));
+         Assert.Throws<ArgumentException>(() => testFallback(new Halley(), "Halley", new ShiftedTanh(), 2.0, 25.0, -20.0, 30.0));
+
+         // The derivative is tiny, so the step is finite but takes the iterate far
+         // out of the bracket. The Newton-safe solver must start again from the
+         // guess, not from an iterate reconstructed by adding the step back.
+         double guess = 1.0e-9;
+         var f = new Recorder(new CubicMinusEight());
+         testFallback(new Newton(), "Newton", f, 2.0, guess, -1.0, 5.0);
+         // the first call is made by the Newton solver, the second by the other one
+         int calls = f.arguments.FindAll(x => x == guess).Count;
+         if (calls < 2)
+            QAssert.Fail("Newton solver: the guess was passed " + calls + " times, expected at least 2");
+      }
+
       class NanSolver : ISolver1d
       {
          public override double value(double x) { return (x < 1.25) ? double.NaN : x * x - 1.60; }

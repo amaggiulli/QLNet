@@ -47,13 +47,15 @@ namespace QLNet
          while (evaluationNumber_ <= maxEvaluations_)
          {
             dx = froot / dfroot;
+            double rootold = root_;
             root_ -= dx;
-            // jumped out of brackets, switch to NewtonSafe
-            if ((xMin_ - root_) * (root_ - xMax_) < 0.0)
+            // jumped out of brackets (or the step is not a finite number),
+            // switch to NewtonSafe starting from the previous estimate
+            if (!((xMin_ - root_) * (root_ - xMax_) >= 0.0))
             {
                NewtonSafe s = new NewtonSafe();
                s.setMaxEvaluations(maxEvaluations_ - evaluationNumber_);
-               return s.solve(f, xAccuracy, root_ + dx, xMin_, xMax_);
+               return s.solve(f, xAccuracy, rootold, xMin_, xMax_);
             }
             if (Math.Abs(dx) < xAccuracy)
             {

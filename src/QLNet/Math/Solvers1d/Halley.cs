@@ -39,14 +39,16 @@ namespace QLNet
             double fPrime = f.derivative(root_);
             double lf = fx * f.secondDerivative(root_) / (fPrime * fPrime);
             double step = 1.0 / (1.0 - 0.5 * lf) * fx / fPrime;
+            double rootold = root_;
             root_ -= step;
 
-            // jumped out of brackets, switch to NewtonSafe
-            if ((xMin_ - root_) * (root_ - xMax_) < 0.0)
+            // jumped out of brackets (or the step is not a finite number),
+            // switch to NewtonSafe starting from the previous estimate
+            if (!((xMin_ - root_) * (root_ - xMax_) >= 0.0))
             {
                var s = new NewtonSafe();
                s.setMaxEvaluations(maxEvaluations_ - evaluationNumber_);
-               return s.solve(f, xAccuracy, root_ + step, xMin_, xMax_);
+               return s.solve(f, xAccuracy, rootold, xMin_, xMax_);
             }
 
             if (Math.Abs(step) < xAccuracy)
