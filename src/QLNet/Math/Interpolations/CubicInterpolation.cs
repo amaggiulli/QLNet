@@ -304,7 +304,7 @@ namespace QLNet
       /// </remarks>
       public FritschButlandCubic(List<double> xBegin, int size, List<double> yBegin)
          : base(xBegin, size, yBegin,
-                CubicInterpolation.DerivativeApprox.FritschButland, false,
+                CubicInterpolation.DerivativeApprox.FritschButland, true,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0)
       {}
@@ -652,7 +652,17 @@ namespace QLNet
                      {
                         double Smin = Math.Min(S[i - 1], S[i]);
                         double Smax = Math.Max(S[i - 1], S[i]);
-                        tmp[i] = 3.0 * Smin * Smax / (Smax + 2.0 * Smin);
+                        if (Smax + 2.0 * Smin == 0.0)
+                        {
+                           if (Smin * Smax < 0)
+                              tmp[i] = double.MinValue;   // QL_MIN_REAL
+                           else if (Smin * Smax == 0)
+                              tmp[i] = 0.0;
+                           else
+                              tmp[i] = double.MaxValue;   // QL_MAX_REAL
+                        }
+                        else
+                           tmp[i] = 3.0 * Smin * Smax / (Smax + 2.0 * Smin);
                      }
                      // end points
                      tmp[0] = ((2.0 * dx[0] + dx[1]) * S[0] - dx[0] * S[1]) / (dx[0] + dx[1]);

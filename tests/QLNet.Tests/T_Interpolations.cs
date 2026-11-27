@@ -1724,6 +1724,171 @@ namespace TestSuite
          }
       }
 
+      [Fact]
+      public void testSabrSpecsBetaOneRoundTrip()
+      {
+         // beta = 1 must survive the inverse/direct transformation for lognormal SABR
+         var specs = new SABRSpecs();
+         var y = new Vector(4);
+         y[0] = 0.05; y[1] = 1.0; y[2] = 0.4; y[3] = -0.3;
+         var back = specs.direct(specs.inverse(y, new List<bool> { false, false, false, false }, null, 0.0),
+                                 new List<bool> { false, false, false, false }, null, 0.0);
+         QAssert.AreEqual(1.0, back[1], 1.0e-12);
+      }
+
+      [Theory]
+      [InlineData(false, 0.0, 1.0e-7)]
+      [InlineData(false, 0.5, 0.5)]
+      [InlineData(false, 1.0, 1.0)]
+      [InlineData(true, 0.0, 0.0)]
+      [InlineData(true, 0.5, 0.5)]
+      [InlineData(true, 1.0, 1.0)]
+      public void testSabrSpecsBetaRoundTrip(bool normalVol, double beta, double expected)
+      {
+         // beta = 0 and beta = 1 must survive the inverse/direct transformation for both volatility types;
+         // for lognormal vol beta = 0 is floored at eps1
+         var specs = new SABRSpecs();
+         var fixedParams = new List<bool> { false, false, false, false };
+         specs.instance(1.0, 0.03, new List<double?> { 0.05, 0.5, 0.4, -0.3 },
+                        new List<double?> { 0.0, normalVol ? 1.0 : 0.0, (double)SabrApproximationModel.Hagan2002 });
+         var y = new Vector(4);
+         y[0] = 0.05; y[1] = beta; y[2] = 0.4; y[3] = -0.3;
+         var back = specs.direct(specs.inverse(y, fixedParams, null, 0.0), fixedParams, null, 0.0);
+         QAssert.AreEqual(expected, back[1], 1.0e-12);
+      }
+
+      [Theory]
+      [InlineData(0.0, 1.0e-7)]
+      [InlineData(1.0, 1.0)]
+      public void testSabrInterpolationFixedBeta(double beta, double expected)
+      {
+         // a fixed beta must be used as given in the calibration (lognormal beta = 0 is floored at eps1)
+         var strikes = new List<double> { 0.01, 0.02, 0.03, 0.04, 0.05, 0.06 };
+         var vols = new List<double> { 0.6, 0.45, 0.38, 0.35, 0.34, 0.345 };
+         var sabr = new SABRInterpolation(strikes, strikes.Count, vols, 1.0, 0.03, 0.1, beta, 0.4, -0.2,
+                                          false, true, false, false);
+         sabr.update();
+         QAssert.AreEqual(expected, sabr.beta(), 1.0e-12);
+      }
+
+      [Fact]
+      public void testFritschButlandCubicIsMonotonic()
+      {
+         // FritschButlandCubic applies the Hyman monotonicity filter
+         var xs = new List<double> { 0.0, 1.0, 2.0, 3.0 };
+         var ys = new List<double> { 0.0, 0.3, 1.7, 4.0 };
+         var actual = new FritschButlandCubic(xs, xs.Count, ys);
+         var expected = new CubicInterpolation(xs, xs.Count, ys, CubicInterpolation.DerivativeApprox.FritschButland, true,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
+                                               CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
+
+         for (double x = 0.0; x <= 3.0; x += 0.125)
+         {
+            QAssert.AreEqual(expected.value(x), actual.value(x), 1.0e-12,
+                             "FritschButlandCubic differs from monotonic cubic at x = " + x);
+         }
+      }
+
+      [Fact]
+      public void testFritschButland()
+      {
+         // Testing Fritsch-Butland interpolation...
+         var x = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0 };
+         var y = new List<List<double>>
+         {
+            new List<double> { 1.0, 2.0, 1.0, 1.0, 2.0 },
+            new List<double> { 1.0, 2.0, 1.0, 1.0, 1.0 },
+            new List<double> { 2.0, 1.0, 0.0, 2.0, 3.0 }
+         };
+
+         for (int i = 0; i < 3; ++i)
+         {
+            var f = new FritschButlandCubic(x, x.Count, y[i]);
+
+            for (int j = 0; j < 4; ++j)
+            {
+               double leftKnot = x[j];
+               int expectedSign = Math.Sign(y[i][j + 1] - y[i][j]);
+               for (int k = 0; k < 10; ++k)
+               {
+                  double x1 = leftKnot + k * 0.1, x2 = leftKnot + (k + 1) * 0.1;
+                  double y1 = f.value(x1), y2 = f.value(x2);
+                  if (double.IsNaN(y1))
+                     QAssert.Fail("NaN detected in case " + i + ":"
+                                  + "\n    f(" + x1 + ") = " + y1);
+                  else if (Math.Sign(y2 - y1) != expectedSign)
+                     QAssert.Fail("interpolation is not monotonic in case " + i + ":"
+                                  + "\n    f(" + x1 + ") = " + y1
+                                  + "\n    f(" + x2 + ") = " + y2);
+               }
+            }
+         }
+      }
+
+      [Fact]
+      public void testFritschButlandFlatSlopes()
+      {
+         // Two consecutive zero slopes give Smax + 2 Smin = 0: the node derivative must be 0, not NaN,
+         // also without the monotonicity filter
+         var x = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0 };
+         var y = new List<double> { 1.0, 2.0, 1.0, 1.0, 1.0 };
+         var unfiltered = new CubicInterpolation(x, x.Count, y, CubicInterpolation.DerivativeApprox.FritschButland, false,
+                                                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0,
+                                                 CubicInterpolation.BoundaryCondition.SecondDerivative, 0.0);
+         var mixed = new MixedLinearFritschButlandCubic(x, x.Count, y, 1);
+
+         for (double t = 0.0; t <= 4.0; t += 0.125)
+         {
+            QAssert.IsFalse(double.IsNaN(unfiltered.value(t)), "NaN in unfiltered Fritsch-Butland cubic at x = " + t);
+            QAssert.IsFalse(double.IsNaN(mixed.value(t)), "NaN in MixedLinearFritschButlandCubic at x = " + t);
+         }
+         // flat region stays flat
+         for (double t = 3.0; t <= 4.0; t += 0.125)
+            QAssert.AreEqual(1.0, unfiltered.value(t), 1.0e-12, "unfiltered Fritsch-Butland cubic at x = " + t);
+      }
+
+      [Fact]
+      public void testConvexMonotoneNonUniformGrid()
+      {
+         // Boundary forwards weight each neighbouring interval forward by the length of the other interval.
+         // The weights are indistinguishable on uniform grids.
+         var xs = new List<double> { 0.0, 1.0, 2.0, 5.0 };
+         var ys = new List<double> { 0.05, 0.05, 0.06, 0.08 };
+         var interp = new ConvexMonotoneInterpolation(xs, 4, ys, 0.3, 0.7, false, false);
+
+         // expected value on a non-uniform grid
+         QAssert.AreEqual(0.06, interp.value(1.5, true), 1.0e-10);
+      }
+
+      [Fact]
+      public void testConvexMonotoneNodeForwardNonUniformGrid()
+      {
+         // With quadraticity = 1 the interpolated value at a node is the node forward:
+         // (dxNext * fwdPrev + dxPrev * fwdNext) / (dxNext + dxPrev)
+         var xs = new List<double> { 0.0, 1.0, 2.0, 5.0 };
+         var ys = new List<double> { 0.05, 0.05, 0.06, 0.08 };
+         var interp = new ConvexMonotoneInterpolation(xs, 4, ys, 1.0, 0.0, false, false);
+
+         QAssert.AreEqual(0.055, interp.value(1.0, true), 1.0e-10);
+         // gaps 1 and 3: (3 * 0.06 + 1 * 0.08) / 4
+         QAssert.AreEqual(0.065, interp.value(2.0, true), 1.0e-10);
+      }
+
+      [Fact]
+      public void testMixedLinearCubicSplitRanges()
+      {
+         // with SplitRanges the linear part must extend up to and including the switch point
+         var xs = new List<double> { 0.0, 1.0, 2.0, 3.0, 4.0, 5.0 };
+         var ys = new List<double> { 0.0, 1.0, 5.0, 6.0, 7.0, 8.0 };
+         var interp = new MixedLinearCubicNaturalSpline(xs, xs.Count, ys, 2, Behavior.SplitRanges);
+
+         // linear between (1, 1) and (2, 5)
+         QAssert.AreEqual(3.0, interp.value(1.5), 1.0e-12);
+         QAssert.AreEqual(4.0, interp.derivative(1.5), 1.0e-12);
+         // area under the linear part up to the switch point: 0.5 + 3.0
+         QAssert.AreEqual(3.5, interp.primitive(2.0), 1.0e-12);
+      }
+
 
       #region Functions
       List<double> xRange(double start, double finish, int points)
